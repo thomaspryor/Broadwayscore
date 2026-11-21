@@ -22,9 +22,17 @@ test('a review page is never refused: says review, is long, or has a review-shap
   assert.equal(classifyNewsPost({ url: u, text: 'x'.repeat(3500) }).news, false);
   // A title-only slug with a body that has no announcement phrases (BRO-7874: two phrases now refuse).
   assert.equal(classifyNewsPost({ url: 'https://thefrontrowcenter.com/2023/11/arcadia/', text: 'A clever, chilly revival that never quite warms.' }).news, false);
-  // BRO-7874: no text is refused on an announcement slug alone, never on any other slug.
-  assert.equal(classifyNewsPost({ url: u, text: '' }).news, true);
-  assert.equal(classifyNewsPost({ url: u, text: null }).news, true);
+  // BRO-7874: no text is refused only on a cancellation / closing-night slug, never on a softer one
+  // (a failed extraction of a real "...-tickets-on-sale-..." review must not drop it).
+  assert.equal(classifyNewsPost({ url: u, text: '' }).news, false);
+  assert.equal(classifyNewsPost({ url: 'https://theaterpizzazz.com/2022/01/assassins-cancels-remaining-performances-due-to-covid/', text: null }).news, true);
+  assert.equal(classifyNewsPost({ url: 'https://theaterpizzazz.com/2022/01/ain-t-too-proud-bows-to-closing-nite-audience/', text: '' }).news, true);
+  for (const real of [
+    'https://www.theatrereviews.example/2016/09/allegiance-tickets-on-sale-through-sunday-september-25-2016/',
+    'https://splashmagazines.example/2022/rent-celebrates-30th-anniversary-with-a-legacy-production/',
+  ]) assert.equal(classifyNewsPost({ url: real, text: '' }).news, false, real);
+  // Two ordinary review phrases in a short teaser are not an announcement (weak signals need three).
+  assert.equal(classifyNewsPost({ url: 'https://x.com/2026/05/some-play/', text: 'Our critic finds this play, which officially opened Thursday and will transfer to the West End, thrilling.' }).news, false);
   assert.equal(classifyNewsPost({ url: 'https://thefrontrowcenter.com/2023/11/arcadia/', text: null }).news, false);
 });
 

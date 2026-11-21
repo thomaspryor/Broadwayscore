@@ -14,7 +14,7 @@
  * A page is refused when it is SHORT, has no review signal, and EITHER its url slug is
  * announcement-shaped and its body carries one announcement phrase, OR its body carries two or more
  * distinct announcement phrases. A page with no
- * extracted text is refused only on an announcement slug. A long page, a review-shaped slug, a star
+ * extracted text is refused only on a cancellation / closing-night slug. A long page, a review-shaped slug, a star
  * rating, or the word "review" in the body's own prose (not a link to other reviews, not inside a
  * url) always passes, so a paywall teaser of a real review (WSJ, Broadway News) is never refused.
  */
@@ -39,6 +39,11 @@ const NEWS_SLUG = new RegExp([
   ')',
 ].join(''), 'i');
 
+// BRO-7874 review: with NO extracted text only a cancellation / closing-night slug is proof enough.
+// Review outlets also title real reviews "...-tickets-on-sale-...", "...-celebrates-30th-anniversary-..."
+// (Theatre Reviews Limited, Splash Magazines), and a failed extraction must not drop those.
+const STRONG_NEWS_SLUG = /(?:^|-)(?:cancel(?:s|ed|led|ling)?-(?:(?:all|its|the)-)?(?:remaining-)?performances?(?:-|$)|bows?-to-(?:a-)?closing|closing-(?:nite|night)-(?:audience|bow|performance)|plays?-(?:its-)?final-performance)/i;
+
 // Phrases that belong to an announcement, not a critique. Each is one signal; two distinct ones are
 // needed when the slug says nothing. A review rarely carries even one of them.
 const NEWS_BODY = [
@@ -57,9 +62,10 @@ const NEWS_BODY = [
   ['casting', /\b(?:join(?:s|ed)\s+the\s+cast|casting\s+(?:has\s+been\s+|was\s+)?announced)\b/i],
 ];
 
+const WEAK_SIGNALS = new Set(['will-close-reopen', 'recouped', 'officially-opened', 'extended', 'anniversary', 'casting', 'tickets-on-sale']);
 const MAX_NEWS_CHARS = 3000;
 const REVIEW_WORD = /\breview(?:s|ed|er|ing)?\b/i;
-const STAR_RATING = /(\d(?:\.\d)?\s*(?:out of|\/)\s*5\s*stars?)|★{1,5}|\brating:\s*[A-F][+-]?\b/i;
+const STAR_RATING = /(\d(?:\.\d)?\s*(?:out of|\/)\s*5(?:\s*stars?)?)|★{1,5}|\brating:\s*[A-F][+-]?\b/i;
 
 function slugOf(url) {
   try { return new URL(url).pathname.replace(/\/+$/, '').split('/').slice(-1)[0] || ''; } catch { return String(url || ''); }
@@ -86,7 +92,7 @@ function classifyNewsPost({ url, text }) {
   if (/review/i.test(slug)) return { news: false };
   const slugNews = NEWS_SLUG.test(slug);
   if (!body.trim()) {
-    return slugNews ? { news: true, reason: 'announcement-shaped url slug and no article text' } : { news: false };
+    return STRONG_NEWS_SLUG.test(slug) ? { news: true, reason: 'cancellation / closing-night url slug and no article text' } : { news: false };
   }
   if (body.length > MAX_NEWS_CHARS) return { news: false };
   if (STAR_RATING.test(body)) return { news: false };
@@ -97,10 +103,12 @@ function classifyNewsPost({ url, text }) {
   if (slugNews && signals.length >= 1) {
     return { news: true, signals, reason: `announcement-shaped url slug and a ${body.length}-char body with no "review"` };
   }
-  if (signals.length >= 2) {
+  // Ordinary review prose says "officially opened" or "will transfer", so weak phrases alone need three.
+  const strongCount = signals.filter((n) => !WEAK_SIGNALS.has(n)).length;
+  if ((strongCount >= 1 && signals.length >= 2) || signals.length >= 3) {
     return { news: true, signals, reason: `a ${body.length}-char body with announcement phrases (${signals.join(', ')}) and no "review"` };
   }
   return { news: false };
 }
 
-module.exports = { classifyNewsPost, NEWS_SLUG, NEWS_BODY, MAX_NEWS_CHARS };
+module.exports = { classifyNewsPost, NEWS_SLUG, STRONG_NEWS_SLUG, NEWS_BODY, MAX_NEWS_CHARS };
