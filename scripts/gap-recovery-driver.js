@@ -218,7 +218,7 @@ function printPlan(cands) {
     console.log(`  ${k.padEnd(26)} ${String(byClass[k]).padStart(5)}  ${Object.entries(v).map(([s, n]) => `${s}=${n}`).join(' ')}`);
   }
   console.log('\nno strategy, by first skip reason chain:', JSON.stringify(skipReasons));
-  console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(STRATEGY_FLAGS).map(([k, v]) => [k, v.enabled]))));
+  console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v.enabled]))));
   return { byClass, byStrategy, byClassStrategy, skipReasons };
 }
 
@@ -385,7 +385,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, ReviewTextsPushError } = require('./lib/review-texts-checkpoint');
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const S = require('./lib/gap-strategies');
-  const { adapterFor, openSession } = require('./lib/browser-outlet-adapters');
+  const { adapterFor, openSession, closeOtherSessions } = require('./lib/browser-outlet-adapters');
   // A per-run cap (the nightly job) replaces the per-UTC-day count, so manual
   // runs earlier in the same UTC day do not eat the night's budget.
   const runCeiling = L.runCeiling();
@@ -524,6 +524,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       if (strategy === 'BROWSER_SESSION') {
         const ad = adapterFor(c.outletId);
         if (!sessions.has(ad.name)) {
+          // Every adapter session holds the one cookie-renew lock, so a second
+          // outlet could never open while the first stays open (BRO-7943: FT
+          // joined The Stage in the nightly). Close the others first; a closed
+          // outlet reopens later in the run if it has more work.
+          await closeOtherSessions(sessions, ad.name);
           const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
           sessions.set(ad.name, o.ok ? o.session : { failed: o });
           if (o.ok) SUMMARY.authOkOutlets.push(ad.name);

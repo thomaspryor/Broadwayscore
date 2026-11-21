@@ -363,4 +363,23 @@ async function openSession(adapter) {
   }
 }
 
-module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, extractTelegraphBody, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE, TELEGRAPH_WALL_RE };
+/**
+ * Close every open (not failed) session except `keepName` and drop it from the
+ * map, releasing the shared cookie-renew lock so another outlet can open.
+ * Failed entries stay, so a failed outlet is not retried in the same run.
+ * @param {Map<string, object>} sessions adapter name -> session | {failed}
+ * @param {string} keepName
+ * @returns {Promise<string[]>} names closed
+ */
+async function closeOtherSessions(sessions, keepName) {
+  const closed = [];
+  for (const [name, s] of [...sessions.entries()]) {
+    if (name === keepName || !s || s.failed || typeof s.close !== 'function') continue;
+    await s.close().catch(() => {});
+    sessions.delete(name);
+    closed.push(name);
+  }
+  return closed;
+}
+
+module.exports = { closeOtherSessions, ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, extractTelegraphBody, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE, TELEGRAPH_WALL_RE };

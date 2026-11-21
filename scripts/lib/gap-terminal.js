@@ -52,7 +52,8 @@ function routeFingerprint(outletId) {
   const ad = outletId ? adapterFor(outletId) : null;
   const flags = Object.entries(STRATEGY_FLAGS)
     .filter(([k, f]) => f.enabled && (k === 'BROWSER_SESSION' || PAYWALL_ACCESS_ROUTES.includes(k))) // only routes a record's evidence depends on
-    .map(([k, f]) => `${k}${f.minShowAgeDays ? `@${f.minShowAgeDays}d` : ''}${f.historicOnly ? '@historic' : ''}`)
+    // minShowAgeDays is left out: terminal rows are historic shows, far past any minimum age.
+    .map(([k, f]) => `${k}${f.historicOnly ? '@historic' : ''}`)
     .sort().join(',');
   return `adapter=${ad ? `${ad.name}:${adapterUsable(outletId) ? 'nightly' : 'manual'}` : 'none'};flags=${flags}`;
 }

@@ -85,3 +85,26 @@ test('terminal records re-evaluate when routes change (BRO-7943 item 6)', () => 
   const noad = { outletId: 'broadwayworld', url: 'https://www.broadwayworld.com/x' };
   assert.equal(G.validateTerminal({ ...noad, textUnrecoverable: rec({ urlAtDecision: noad.url }) }, { recency: 'historic' }).valid, true);
 });
+
+test('review fixes: URL_FIND runs before PAID_FETCH; URL_DEAD never pays; --strategy=URL_FIND sees a spent refetch', () => {
+  // both free routes spent, URL_FIND and PAID_FETCH eligible: the free url search wins
+  const r = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, showAgeDays: 400, eligible: (s) => (s === 'URL_FIND' || s === 'PAID_FETCH' ? ok : no('abandoned')) });
+  assert.equal(r.strategy, 'URL_FIND');
+  // a dead url: everything else spent, PAID_FETCH must not be the route
+  const dead = T.selectStrategy({ gapClass: 'URL_DEAD', hasUrl: true, hasAdapter: false, showAgeDays: 400, eligible: (s) => (s === 'PAID_FETCH' ? ok : no('cooldown')) });
+  assert.equal(dead.strategy, null);
+  assert.ok(!dead.skipped.some((k) => k.strategy === 'PAID_FETCH'));
+  // only=URL_FIND never visits REFETCH_FREE, but its spent state still counts
+  const only = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, only: 'URL_FIND', eligible: (s) => (s === 'URL_FIND' ? ok : no('abandoned')) });
+  assert.equal(only.strategy, 'URL_FIND');
+});
+
+test('review fix: opening a second outlet session closes the first (one shared cookie-renew lock)', async () => {
+  const log = [];
+  const sess = (n) => ({ close: async () => { log.push(n); } });
+  const m = new Map([['thestage', sess('thestage')], ['nyt', { failed: { outcome: 'auth_failed' } }], ['ft', sess('ft')]]);
+  const closed = await A.closeOtherSessions(m, 'ft');
+  assert.deepEqual(closed, ['thestage']);
+  assert.deepEqual(log, ['thestage']);
+  assert.deepEqual([...m.keys()].sort(), ['ft', 'nyt']); // failed outlet stays failed for the run
+});
