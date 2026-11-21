@@ -105,3 +105,30 @@ test("leg 'both': a record fails when EITHER shadow leg errored", () => {
   assert.equal(M.computeReport(rs, { leg: 'both' }).gates.shadowErrors.value.shadow, 1);
   assert.equal(M.computeReport(rs).gates.shadowErrors.value.shadow, 0, 'red-then-green: the OpenAI-only view misses it');
 });
+
+test("multi-leg: each leg is gated on its OWN error rate, not the union", () => {
+  const rs = [];
+  // 0.6% errors on each leg, on different reviews: each passes the 1% gate.
+  for (let i = 0; i < 1000; i++) {
+    const sh = { openaiLegOk: !(i < 6), claudeLegOk: !(i >= 6 && i < 12), openaiLegRejected: false, claudeLegRejected: false };
+    rs.push(rec(`s${i % 12}`, arm(70, 'Positive', { openaiLegOk: true, claudeLegOk: true }), arm(70, 'Positive', sh)));
+  }
+  const r = M.computeReport(rs, { leg: 'both' });
+  assert.equal(r.gates.shadowErrors.pass, true);
+  assert.deepEqual(r.gates.shadowErrors.value.perLeg, { openai: { shadow: 0.006, control: 0 }, claude: { shadow: 0.006, control: 0 } });
+});
+
+test("leg 'all' covers the Gemini leg", () => {
+  const rs = [];
+  for (let i = 0; i < 40; i++) rs.push(rec(`s${i % 12}`, arm(60, 'Mixed', { claudeScore: 60, geminiScore: 60 }), arm(60, 'Mixed', { claudeScore: 60, geminiScore: 75 }), { band: { floor: 51, ceiling: 70 } }));
+  assert.equal(M.computeReport(rs, { leg: 'all' }).gates.legAccuracy.pass, false, 'the Gemini leg got worse');
+  assert.throws(() => M.computeReport(rs, { leg: 'bogus' }), /unknown leg/);
+});
+
+test('interactionTerm: 0 when the combined change is the sum of the single changes', () => {
+  const r = (c, s1, s2, both) => ({ weight: 1, control: arm(c, 'Positive'), a: arm(s1, 'Positive'), b: arm(s2, 'Positive'), ab: arm(both, 'Positive') });
+  assert.deepEqual(M.interactionTerm([r(75, 77, 74, 76)], 'ab', ['a', 'b']), { n: 1, meanInteraction: 0, meanAbsInteraction: 0, over5Pts: 0 });
+  const x = M.interactionTerm([r(75, 77, 74, 76), r(75, 75, 75, 82)], 'ab', ['a', 'b']);
+  assert.equal(x.meanInteraction, 3.5);
+  assert.equal(x.over5Pts, 0.5);
+});
