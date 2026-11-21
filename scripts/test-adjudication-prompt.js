@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Tests for adjudication prompt builder — verifies KNOWN_STAR_OUTLETS gating.
  * Uses require() on the real lib module (never copies logic).

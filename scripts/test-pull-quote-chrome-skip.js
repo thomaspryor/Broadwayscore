@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Fixtures for stripLeadingChrome (scripts/lib/pull-quote-guards.js).
  *

@@ -1,3 +1,4 @@
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 // Pins the compare-video framing rule (BRO-6412 / owner 2026-10-27): puzzle opener with computed gap and direction,
 // both scores, the like-for-like caveat, neutral maybes, and an open closing question in voice AND caption.
 const assert = require('assert');

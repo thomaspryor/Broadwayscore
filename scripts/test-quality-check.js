@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 const fs = require('fs');
 const path = require('path');
 const { assessTextQuality } = require('./lib/content-quality');

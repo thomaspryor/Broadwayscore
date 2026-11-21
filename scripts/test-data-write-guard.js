@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 // scripts/test-data-write-guard.js — CLI wrapper for
 // scripts/lib/test-data-write-guard.js. Scans tests/**/*.{mjs,ts,js} plus
 // colocated scripts/**/*.test.{mjs,ts,js} (CLAUDE.md rule 15's convention —

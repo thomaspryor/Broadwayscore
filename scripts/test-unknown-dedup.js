@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Test --unknown dedup: find all cases in review-texts where a named-critic
  * file coexists with an --unknown file for the same outlet. Each is a case

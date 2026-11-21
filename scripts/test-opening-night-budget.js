@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Unit tests for scripts/lib/opening-night-budget.js
  *

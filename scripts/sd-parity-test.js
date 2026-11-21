@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * S1-T1 (Scraping cost v3, card 3b1637c5): live Scrapingdog parity test for
  * didtheylikeit.com and theatre.reviews — the two hosts opening-night-poller

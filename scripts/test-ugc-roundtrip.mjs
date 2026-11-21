@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './lib/refuse-under-bare-node-test.js'; // BRO-7984: skip under bare `node --test`
 /**
  * Authenticated UGC round-trip test.
  *

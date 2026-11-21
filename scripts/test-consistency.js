@@ -1,3 +1,4 @@
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Test model self-consistency by scoring the same reviews twice
  */

@@ -1,3 +1,4 @@
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: skip under bare `node --test`
 // Send the week's newsletter to thomas.pryor@gmail.com as a transactional email
 // (NOT broadcast — per CLAUDE.md rule 16, never use broadcast API for test sends).
 // Also sends to the +claude email-worker alias (BRO-40 Phase 2) so its

@@ -1,3 +1,4 @@
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: skip under bare `node --test`
 // Newsletter regression test — compares THIS week's generator output against
 // a frozen baseline meta.json. Catches the most common silent breakage modes:
 //
