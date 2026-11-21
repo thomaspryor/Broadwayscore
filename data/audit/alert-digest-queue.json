@@ -278,20 +278,6 @@
     "queuedAt": "2026-11-21T11:21:30.474Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +19 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T12:46:58.537Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category",
     "title": "Live-data test failing: every shows.json id suffix matches its category (tests/unit/show-id-market-suffix.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every shows.json id suffix matches its category\" in tests/unit/show-id-market-suffix.test.mjs is red against the live corpus.\n\nnew id/category mismatch: fix the id (scripts/rename-show-id.js) or the category\n+ actual - expected\n\n+ [\n+   'the-seagull-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-three-sisters-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'brigadoon-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-glass-menagerie-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alice-in-wonderland-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-invention-of-love-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-maids-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'in-praise-of-love-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-lady-from-the-sea-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alls-well-that-ends-well-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cymbeline-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cyrano-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'marie-and-rosetta-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'an-oak-tree-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'hold-on-to-your-butts-west-end-",
@@ -350,6 +336,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T14:33:21.085Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-21.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T15:32:55.747Z"
   },
   {
     "conditionKey": "land:land/bro-7993-we-closing-press-confirm",
