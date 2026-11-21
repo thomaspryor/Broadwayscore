@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-21T11:32:33.291Z",
+  "timestamp": "2026-11-21T12:08:58.979Z",
   "stats": {
     "totalReviews": 83613,
     "alreadyFlagged": 22413,
     "dateGuardCatches": 235,
     "directorMismatch": 3842,
-    "tvFilmSignals": 2393,
+    "tvFilmSignals": 2394,
     "londonSignals": 3900,
     "offBroadwaySignals": 776,
     "yearMismatch": 392,
@@ -40185,6 +40185,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"daniel fish\" from kramerfauci-st-anns-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/krapps-last-tape-royal-court-theatre-review-gary-oldman/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
