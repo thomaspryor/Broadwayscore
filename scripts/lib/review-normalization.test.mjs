@@ -188,3 +188,20 @@ test('BRO-7769: guard fails open without a show title or with short incoming tex
   const short = { ...unrelated, fullText: 'Paywalled teaser.' };
   assert.equal(mergeReviews(slot(), short, {}, { show: { title: GT_TITLE }, script: 'test' }).url, short.url);
 });
+
+test('BRO-7769: refused swap also refuses the unrelated article score, date and byline', () => {
+  const ex = { ...slot(), criticName: 'Unknown' };
+  const incoming = { ...ex, url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText, originalScore: 'B+', publishDate: '2026-01-05', criticName: 'Zed Q' };
+  const m = mergeReviews(ex, incoming, {}, { show: { title: GT_TITLE }, script: 'test' });
+  assert.equal(m.url, ex.url);
+  assert.ok(!m.originalScore && !m.publishDate);
+  assert.equal(m.criticName, 'Unknown');
+});
+
+test('BRO-7769: entity-encoded title and short titles do not trigger a false refusal', () => {
+  const enc = 'Hell&#8217;s Kitchen opens tonight and the cast delivers. '.repeat(15);
+  const a = { ...slot(), url: 'https://www.theatermania.com/news/some-headline_1_/', fullText: enc };
+  assert.equal(mergeReviews(slot(), a, {}, { show: { title: "Hell's Kitchen" }, script: 'test' }).url, a.url);
+  const b = { ...a, fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), b, {}, { show: { title: 'SIX' }, script: 'test' }).url, b.url);
+});

@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
-const { textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const { buildShowTitleVariants, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
 const SHOW_MENTION_SWAP_MIN_CHARS = 600;
 const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
@@ -871,10 +871,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // incoming text too short to judge (paywall stubs), and passes when the
   // incoming url slug names the show.
   const _mentionTitle = (context.show && context.show.title) || context.showTitle || null;
-  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && !!_mentionTitle
-    && typeof incoming.fullText === 'string' && incoming.fullText.length >= SHOW_MENTION_SWAP_MIN_CHARS
-    && !textMentionsTitle(incoming.fullText, _mentionTitle)
-    && !textMentionsShortTitle(incoming.fullText, _mentionTitle)
+  // Fails open for titles with no 4+ char variant (SIX, Art, 13): textMentionsTitle cannot see them.
+  const _titleCheckable = !!_mentionTitle && buildShowTitleVariants(_mentionTitle).some((v) => v.length >= 4);
+  const _swapText = typeof incoming.fullText === 'string' ? decodeHtmlEntities(incoming.fullText) : '';
+  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && _titleCheckable
+    && _swapText.length >= SHOW_MENTION_SWAP_MIN_CHARS
+    && !textMentionsTitle(_swapText, _mentionTitle)
+    && !textMentionsShortTitle(_swapText, _mentionTitle)
     && !urlSlugNamesShow(incoming.url, _mentionTitle);
   if (urlIsUnrelatedToShow) {
     console.warn(`[mergeReviews] refused url swap, incoming text never mentions "${_mentionTitle}" for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
@@ -1088,10 +1091,10 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // copied. Its byline still fills an Unknown one: per-critic roundup rows
   // (WET, BWW RR) name this review's own critic, and gather-reviews renames
   // the file to that critic right after this merge (Unknown→named).
-  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage;
+  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage || urlIsUnrelatedToShow;
 
   // Upgrade Unknown critic name from incoming data
-  if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
+  if (!incomingIsOtherArticle && !urlIsUnrelatedToShow && incoming.criticName && incoming.criticName !== 'Unknown'
       && (!existing.criticName || existing.criticName === 'Unknown')
       && !existing.criticNameManual) {
     merged.criticName = incoming.criticName;
