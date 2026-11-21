@@ -86,6 +86,13 @@ test('Codex review: a quoted NO-RECAP does not bypass, and a recap that says not
   assert.equal(decide(ev, 'This session:\nNothing changed in the live test.\nThe archive recap check was built.\n\n' + TAIL).decision, 'allow', 'one real line is enough');
 });
 
+test('ship-check review: product names are not leaks, fenced NO-RECAP does not bypass', () => {
+  const ev = [...owner(1), ...land()];
+  assert.equal(decide(ev, 'This session:\nUpgraded the site to the newest Next.js and Node.js.\nSwitched to SHA-256 checks.\n\n' + TAIL).decision, 'allow');
+  assert.match(decide(ev, 'This session:\nEdited verify-edits.sh.\n\n' + TAIL).message, /file path/, 'real file names still leak');
+  assert.equal(decide(ev, '```\nNO-RECAP: pasted example reason\n```\nplain\n\n' + TAIL).decision, 'block');
+});
+
 test('kill switch, bypass, non-cloud and missing transcript all allow', () => {
   const ev = [...owner(1), ...land()]; const m = 'plain\n\n' + TAIL;
   assert.equal(decide(ev, m, { ...ENV, SESSION_RECAP_STOP_DISABLE: '1' }).decision, 'allow');

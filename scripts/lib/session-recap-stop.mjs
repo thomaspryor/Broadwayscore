@@ -25,11 +25,11 @@ export const MAX_NUDGES = 3;
 const RECAP_HEAD_RE = /^[*_>#\s]*This session[*_\s]*:[*_\s]*(.*)$/i;
 // Lines that end the recap: the next owner-format section, the verdict, a decision block.
 const SECTION_RE = /^(?:(?:DISPATCHED|DEFERRED|HANDOFF PROMPT|PR-BLOCKER|NO-[A-Z-]+|EXECUTED|PREVENTION|ROOT-CAUSE|CLASS-GUARD|COUSINS|EFFECT|RED-THEN-GREEN|WORKTREE):|Still running\b|Nothing is still running|You need to\b|Nothing needed from you|DECISION NEEDED\b|Why this is your call|Option [AB]\b|My recommendation|Default:|SAFE TO (?:ARCHIVE|EXIT)\b|KEEP OPEN\b|ACTION NEEDED FROM YOU\b|You can remove the worktree|Keep the worktree)/i;
-const ID_RE = /\b(?!COVID\b)[A-Z]{2,6}-\d{2,}\b/;
+const ID_RE = /\b(?!(?:COVID|SHA|ISO|RFC|UTF|MD|HTTP|TLS|WCAG)-)[A-Z]{2,6}-\d{2,}\b/;
 const CODE_RE = /`/;
 // A recap line that says nothing was done is the failure this gate exists to stop ("Nothing changed since my last message").
 const EMPTY_RE = /^(?:nothing (?:has )?changed|no (?:new )?changes|nothing (?:new|to report|else)|same as (?:before|above)|see (?:above|earlier|my last message))\b/i;
-const PATH_RE = /(?:^|[\s`'"(])(?:(?:src|scripts|data|memory|public|node_modules|\.claude|\.github)\/\S+|[\w.-]+\.(?:mjs|cjs|js|jsx|ts|tsx|json|jsonl|md|sh|yml|yaml|css)\b)/;
+const PATH_RE = /(?:^|[\s`'"(])(?:(?:src|scripts|data|memory|public|node_modules|\.claude|\.github)\/\S+|[a-z][\w-]*\.(?:mjs|cjs|js|jsx|ts|tsx|json|jsonl|md|sh|yml|yaml|css)\b)/; // a lowercase file name: Next.js and Node.js are product names
 const HASH_RE = /\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b/;
 
 const clean = (l) => l.trim().replace(/^[*_>#\s]+(?=This session)/i, '');
@@ -73,7 +73,7 @@ export function sessionRecapDecision({ lastMessage = '', events = null, env = pr
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.SESSION_RECAP_STOP_DISABLE === '1') return { decision: 'allow', reason: 'SESSION_RECAP_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
-  if (/^[ \t>*_-]*NO-RECAP:[ \t]*\S.{9,}/m.test(lastMessage)) return { decision: 'allow', reason: 'NO-RECAP bypass' };
+  if (/^[ \t>*_-]*NO-RECAP:[ \t]*\S.{9,}/m.test(String(lastMessage).replace(/```[\s\S]*?```/g, ''))) return { decision: 'allow', reason: 'NO-RECAP bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const landed = landedPushIndices(events).length;
   const owner = ownerMessageCount(events);
@@ -116,7 +116,7 @@ export function main(argv, { env = process.env } = {}) {
   try { count = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0; } catch { /* first time */ }
   logHit({ session: input.session_id || null, blocked: count < MAX_NUDGES, nudge: count + 1, reason: d.reason });
   if (count >= MAX_NUDGES) return 0;
-  try { fs.writeFileSync(counter, String(count + 1)); } catch { /* best effort */ }
+  try { fs.writeFileSync(counter, String(count + 1)); } catch { return 0; } // an unwritable counter would block forever: fail open
   process.stderr.write((count > 0 ? `(Repeat ${count + 1} of ${MAX_NUDGES}: closing again does not clear this. Add the recap, or write NO-RECAP: <reason>.)\n` : '') + d.message + '\n');
   return 2;
 }
