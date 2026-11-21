@@ -89,6 +89,12 @@ const LABELS = {
   PAID_FETCH: { fetchMethod: 'gap-recovery-paid-fetch', sourceMethod: 'gap-recovery-paid-fetch', contentTierReasonFallback: 'Recovered by the gap-recovery driver (paid fetch)' },
 };
 
+/** Days since the show opened (previews if no opening date); null when undated. */
+function showAgeDays(show) {
+  const t = Date.parse((show && (show.openingDate || show.previewsStartDate)) || '');
+  return Number.isFinite(t) ? Math.floor((Date.now() - t) / 86400000) : null;
+}
+
 /** Build the candidate list with a strategy per review (no writes). */
 function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
   const { scanCorpus } = require('./lib/text-gap-metric');
@@ -132,6 +138,8 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,
+      // ARCHIVE needs a show old enough to have a Wayback capture (BRO-7943: min age, not 'historic only').
+      showAgeDays: showAgeDays(show),
       storedUrlOk: row.gapClass === 'URL_WRONG_PAGE' ? storedUrlWorthRetry({ url: review.url, show }) : undefined,
       eligible,
       runGates: { ...runGates, ...extraGates },

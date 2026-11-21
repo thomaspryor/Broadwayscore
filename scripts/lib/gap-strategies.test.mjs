@@ -302,11 +302,11 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.deepEqual([r.outcome, r.reason, called], ['non_evidence', 'no_free_tier', 0]);
   });
   _t0('selectStrategy: no free tier skips REFETCH_FREE and falls to PAID_FETCH last', () => {
-    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, recency: 'recent' });
+    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, recency: 'recent', showAgeDays: 10 });
     _a0.equal(r.strategy, 'PAID_FETCH');
     _a0.ok(r.skipped.some((k) => k.strategy === 'REFETCH_FREE' && k.reason === 'no_free_tier'));
     // default (free tier available) is unchanged
-    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent' }).strategy, 'REFETCH_FREE');
+    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, 'REFETCH_FREE');
   });
   _t0('freeTiersForUrl: BroadwayWorld has no free tier (Playwright tier-skipped, no cookie jar)', () => {
     _a0.deepEqual(freeTiersForUrl('https://www.broadwayworld.com/westend/article/Review-X-20261027'), []);
@@ -334,9 +334,9 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.equal(r2.outcome, 'no_evidence');
   });
   _t0('selectStrategy: no free AND no paid tier -> neither planned', () => {
-    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, paidTierOk: false, recency: 'recent' });
+    const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, paidTierOk: false, recency: 'recent', showAgeDays: 10 });
     _a0.equal(r.strategy, null);
-    const p = selectStrategy({ gapClass: 'PAYWALL_TRUNCATED', hasUrl: true, hasAdapter: false, paidTierOk: false, recency: 'recent', eligible: (s) => ({ ok: s === 'PAID_FETCH', reason: 'x' }) });
+    const p = selectStrategy({ gapClass: 'PAYWALL_TRUNCATED', hasUrl: true, hasAdapter: false, paidTierOk: false, recency: 'recent', showAgeDays: 10, eligible: (s) => ({ ok: s === 'PAID_FETCH', reason: 'x' }) });
     _a0.ok(p.skipped.some((k) => k.strategy === 'PAID_FETCH' && k.reason === 'no_paid_tier'));
   });
 }
@@ -348,19 +348,19 @@ import { createRequire as _cr0 } from 'node:module';
   const req = _cr0(import.meta.url);
   const { selectStrategy } = req('./gap-strategy-table.js');
   _t0('selectStrategy: GARBAGE_PAGE with no url -> URL_FIND', () => {
-    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: false, hasAdapter: false, recency: 'recent' });
+    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: false, hasAdapter: false, recency: 'recent', showAgeDays: 10 });
     _a0.equal(r.strategy, 'URL_FIND');
   });
   _t0('selectStrategy: GARBAGE_PAGE with an abandoned stored url -> URL_FIND', () => {
-    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent', eligible: (s) => (s === 'REFETCH_FREE' ? { ok: false, reason: 'abandoned' } : { ok: true, reason: 'ok' }) });
+    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent', showAgeDays: 10, eligible: (s) => (s === 'REFETCH_FREE' ? { ok: false, reason: 'abandoned' } : { ok: true, reason: 'ok' }) });
     _a0.equal(r.strategy, 'URL_FIND');
   });
   _t0('selectStrategy: any routed class with no url falls back to URL_FIND; unrouted classes stay unrouted', () => {
     for (const gapClass of ['TRUNCATED_OTHER', 'SHORT_UNVERIFIED', 'BLOCKED', 'PAYWALL_PAGE']) {
-      _a0.equal(selectStrategy({ gapClass, hasUrl: false, hasAdapter: false, recency: 'recent' }).strategy, 'URL_FIND', gapClass);
+      _a0.equal(selectStrategy({ gapClass, hasUrl: false, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, 'URL_FIND', gapClass);
     }
-    _a0.equal(selectStrategy({ gapClass: 'UNCLASSIFIED', hasUrl: false, hasAdapter: false, recency: 'recent' }).strategy, null);
+    _a0.equal(selectStrategy({ gapClass: 'UNCLASSIFIED', hasUrl: false, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, null);
     // a url-holding truncated row keeps its refetch route
-    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent' }).strategy, 'REFETCH_FREE');
+    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, 'REFETCH_FREE');
   });
 }
