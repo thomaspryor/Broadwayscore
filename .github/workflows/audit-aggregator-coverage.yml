@@ -61,11 +61,6 @@ jobs:
         env:
           INPUT_STATUS: ${{ inputs.status }}
           INPUT_SHOW: ${{ inputs.show }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: |
           ARGS=""
           if [ -n "${INPUT_STATUS}" ]; then

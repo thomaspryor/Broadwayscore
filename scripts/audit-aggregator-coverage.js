@@ -194,7 +194,7 @@ function extractNYCTheatreCount(showId) {
     if (wrongShow) return wrongShow;
     // BRO-7931 #9: call the REAL parser. The audit's private copy of the heading
     // walk undercounted (0 where the scraper finds 8-12), so gaps were phantom.
-    const { extractReviewsFromRoundup } = require('./scrape-nyc-theatre-roundups');
+    const { extractReviewsFromRoundup } = require('./lib/nyc-theatre-roundup-parser');
     const origLog = console.log; console.log = () => {};
     let parsed;
     try { parsed = extractReviewsFromRoundup(html, showId); } finally { console.log = origLog; }

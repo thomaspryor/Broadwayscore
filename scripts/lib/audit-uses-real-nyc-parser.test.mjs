@@ -5,7 +5,7 @@ import fs from 'node:fs';
 // never keep a private copy of the roundup walk (copy undercounted 0 vs 8-12).
 const src = fs.readFileSync(new URL('../audit-aggregator-coverage.js', import.meta.url), 'utf8');
 test('audit imports the real NYC Theatre parser', () => {
-  assert.match(src, /require\('\.\/scrape-nyc-theatre-roundups'\)/);
+  assert.match(src, /require\('\.\/lib\/nyc-theatre-roundup-parser'\)/);
   assert.match(src, /extractReviewsFromRoundup\(/);
 });
 test('audit has no private heading-walk copy', () => {
