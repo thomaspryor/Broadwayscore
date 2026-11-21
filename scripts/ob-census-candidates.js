@@ -61,7 +61,7 @@ function itemNames(item, key) {
 // cataloged show). out-of-window counts: it is an earlier run of a cataloged title.
 // theater-scene's reviews all land in not-review (the census cannot read its review
 // markers), so for that one outlet not-review still counts.
-const SKIP_BUCKETS = new Set(['held', 'held-alt-url', 'held-other-market', 'held-unmatched', 'misfile']);
+const SKIP_BUCKETS = new Set(['held', 'held-alt-url', 'held-other-market', 'held-unmatched', 'held-excluded', 'misfile']);
 const countsAsReview = (outletId, bucket) => !SKIP_BUCKETS.has(bucket) && (bucket !== 'not-review' || outletId === 'theater-scene');
 
 /** Notability from per-outlet tiers (one entry per distinct outlet). */

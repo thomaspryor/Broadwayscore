@@ -145,6 +145,34 @@ function buildCorpusIndex(entries) {
   return index;
 }
 
+/**
+ * BRO-7999 R2: split the corpus into URLs a live (includable) file holds and URLs held ONLY by
+ * files an exclusion rule keeps off the site. A row carries `excludedRule` (explainExclusion's
+ * name for it) when excluded; reviews.json rows never do, so a URL reviews.json lists is live.
+ * The census counts the excluded-only ones as their own bucket, outside recall, so a review we
+ * hold but keep hidden stops reading as covered.
+ */
+function buildCorpusIndexes(entries) {
+  const live = buildCorpusIndex((entries || []).filter((e) => e && !e.excludedRule));
+  const all = buildCorpusIndex(entries);
+  const excludedOnly = new Map();
+  for (const [k, ids] of all) if (!live.has(k)) excludedOnly.set(k, ids);
+  return { live, excludedOnly };
+}
+
+/** Held-excluded rows never leave the process: no URL, headline or date reaches a committed file. */
+function publicResults(results) {
+  return (results || []).filter((r) => r && r.bucket !== 'held-excluded');
+}
+
+/** Throws when a report or manifest about to be committed carries a held-excluded row. */
+function assertNoHeldExcludedRows(doc) {
+  const bad = (v) => Array.isArray(v) && v.some((r) => r && typeof r === 'object' && r.bucket === 'held-excluded');
+  for (const [k, v] of Object.entries(doc || {})) {
+    if (bad(v)) throw new Error(`held-excluded rows must not be written (${k}): only the count is public`);
+  }
+}
+
 function decodeEntities(s) {
   return String(s || '')
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
@@ -548,6 +576,13 @@ function bucketItem(item, ctx) {
   const out = { bucket: null, classifyReason: cls.reason, matchVia, held, matchedIds: inIds, outOfWindowIds: matched.filter((s) => !inIds.includes(s.id) && !venueMismatchIds.includes(s.id) && !collisionIds.has(s.id)).map((s) => s.id) };
   if (venueMismatchIds.length) out.venueMismatchIds = [...new Set(venueMismatchIds)];
 
+  // BRO-7999 R2: held only by files an exclusion rule hides. The row keeps no show ids, so the
+  // bucket is a count and nothing else.
+  if (held.length === 0 && ctx.corpusExcluded) {
+    const exIds = ctx.corpusExcluded.get(urlKey(item.url)) || (item.aliasKey && ctx.corpusExcluded.get(item.aliasKey));
+    if (exIds && [...exIds].some((id) => ctx.nycIds.has(id))) return { bucket: 'held-excluded', classifyReason: cls.reason, matchVia: null, held: [], matchedIds: [], outOfWindowIds: [] };
+  }
+
   if (held.length > 0) {
     if (nycHeld.length === 0) { out.bucket = 'held-other-market'; return out; }
     if (inIds.some((id) => heldIds.has(id))) out.bucket = 'held';
@@ -909,6 +944,9 @@ module.exports = {
   venueContradicts,
   classifyItem,
   corpusSideMisses,
+  buildCorpusIndexes,
+  publicResults,
+  assertNoHeldExcludedRows,
   extractPageMeta,
   inRunWindow,
   isNycShow,
