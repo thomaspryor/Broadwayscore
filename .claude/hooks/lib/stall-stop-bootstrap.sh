@@ -20,7 +20,7 @@ mode="${1:-stop}"
 HOME_DIR="${BSC_HOOKS_HOME:-/home/user}"
 URL="${BSC_HOOKS_REPO_URL:-https://github.com/thomaspryor/Broadwayscore}"
 PROMISE_FALLBACK='KEEP OPEN|check(ing)? back|report(ing)? back|I.ll (check|wait|come back|continue|report)|I.m (continuing|waiting)|will (check|report|continue)'
-STALL_CODES='CHILDSTALL|CHILDWAIT|CHILDJOBS|CHILDWATCH|OPENCLAIM|WAKELESS|WAKEPROMISE'
+STALL_CODES='CHILDSTALL|CHILDWAIT|CHILDJOBS|CHILDWATCH|DEADWAIT|NEWSESSIONASK|OPENCLAIM|WAKELESS|WAKEPROMISE'
 msg() { printf '{"systemMessage":"%s"}\n' "$1"; }
 
 find_runner() {
