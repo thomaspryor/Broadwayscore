@@ -271,7 +271,7 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superse
       : null,
   };
   row.zeroYieldStrategies = status === 'ran' ? zeroYieldStrategies(prevRows, row.byStrategy) : [];
-  row.urlFindMethodErrors = status === 'ran' ? require('./gap-url-find').urlFindMethodErrorRates(ledgerRows, { nowMs }) : [];
+  row.urlFindMethodErrors = status === 'ran' ? require('./url-find-method-health').urlFindMethodErrorRates(ledgerRows, { nowMs }) : [];
   row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
     timeBudgetHit: row.timeBudgetHit, zeroStrategies: row.zeroYieldStrategies,
     authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,

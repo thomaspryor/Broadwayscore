@@ -309,3 +309,11 @@ test('BRO-8000: a 200 upstream_error envelope from the archive is also the typed
   const rows = [0, 1, 2, 3, 4, 5].map((i) => ({ strategy: 'URL_FIND', ts: `2026-11-21T0${i}:00:00Z`, detail: { methods: { WAYBACK_CDX: 'found_unreadable' }, methodErrors: { WAYBACK_CDX: 'archive_auth_required' } } }));
   assert.equal(UF.urlFindMethodErrorRates(rows, { nowMs: now }).length, 1);
 });
+
+test('BRO-8000: the nightly row / digest path stays dependency-free (no gap-url-find, scraper, playwright)', () => {
+  for (const f of ['url-find-method-health.js', 'gap-recovery-nightly.js']) {
+    const src = require('node:fs').readFileSync(new URL(`./${f}`, import.meta.url), 'utf8');
+    assert.ok(!/require\(['"]\.\/gap-url-find['"]\)/.test(src), `${f} must not require gap-url-find`);
+  }
+  assert.ok(UF.METHOD_DONE.size === 3 && [...UF.METHOD_DONE].every((m) => ['no_candidates', 'not_applicable', 'candidates_refused'].includes(m)), 'url-find-method-health mirrors METHOD_DONE');
+});
