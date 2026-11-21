@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-21T13:29:31.472Z",
-  "processed": 57,
-  "failed": 46,
-  "successRate": "55.3%",
+  "updatedAt": "2026-11-21T14:02:48.217Z",
+  "processed": 123,
+  "failed": 70,
+  "successRate": "63.7%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 73,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 8,
+    "scrapingdog": 21,
+    "scrapingbee": 10,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 22
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-11-21T12:57:08.948Z",
@@ -49,6 +49,12 @@
       "t": "2026-11-21T13:07:52.564Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-21T13:44:43.360Z",
+      "event": "bb-session",
+      "session": "1eb82f25",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
