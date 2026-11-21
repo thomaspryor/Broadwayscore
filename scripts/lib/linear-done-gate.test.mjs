@@ -184,3 +184,41 @@ test('UX resolution uses this finding and fails closed for missing or malformed 
     else process.env.LINEAR_API_KEY = previous;
   }
 });
+
+// BRO-7994: outside-setting close check.
+test('BRO-7994 outsideSettingCloseCheck: the incident card (declared, 30-day recheck, test -f) is refused from the blocking date', async () => {
+  const { outsideSettingCloseCheck } = (await import('node:module')).createRequire(import.meta.url)('./linear-done-gate.js');
+  const card = 'OUTSIDE-SETTING: Google web client must list both site origins\nRECHECK-AFTER: 2026-12-21\nVERIFY: `test -f src/lib/google-one-tap.ts`';
+  const before = outsideSettingCloseCheck({ description: card, nowMs: Date.parse('2026-11-21T12:00:00Z'), env: {} }, {});
+  assert.equal(before.blocking, false);
+  assert.match(before.message, /Advisory now/);
+  const after = outsideSettingCloseCheck({ description: card, nowMs: Date.parse('2026-11-28T12:00:00Z'), env: {} }, {});
+  assert.equal(after.blocking, true);
+  assert.equal(outsideSettingCloseCheck({ description: card, nowMs: Date.parse('2026-11-28T12:00:00Z'), env: { OUTSIDE_SETTING_DONE_GATE: 'advisory' } }, {}).blocking, false);
+});
+
+test('BRO-7994 outsideSettingCloseCheck: no declaration, a LIVE-CHECK, or an executed real VERIFY passes', async () => {
+  const { outsideSettingCloseCheck } = (await import('node:module')).createRequire(import.meta.url)('./linear-done-gate.js');
+  const nowMs = Date.parse('2026-11-28T12:00:00Z');
+  assert.equal(outsideSettingCloseCheck({ description: 'plain card', nowMs, env: {} }, {}), null);
+  const decl = 'OUTSIDE-SETTING: Google web client must list both site origins';
+  assert.equal(outsideSettingCloseCheck({ description: decl, commentText: 'LIVE-CHECK: 5 One Tap sign-ins completed since 14:00', nowMs, env: {} }, {}), null);
+  assert.equal(outsideSettingCloseCheck({ description: decl, nowMs, env: {} }, { cmdExecution: { allowed: true }, cmd: 'node scripts/check-alert-condition-absent.js --key-b64 eA' }), null);
+  assert.notEqual(outsideSettingCloseCheck({ description: decl, nowMs, env: {} }, { cmdExecution: { allowed: true }, cmd: 'test -f src/lib/google-one-tap.ts' }), null);
+});
+
+test('BRO-7994 outsideSettingCloseCheck: a short real recheck does not clear Done (it is a reason to pause)', async () => {
+  const { outsideSettingCloseCheck } = (await import('node:module')).createRequire(import.meta.url)('./linear-done-gate.js');
+  const nowMs = Date.parse('2026-11-28T12:00:00Z');
+  const card = 'OUTSIDE-SETTING: Google web client must list both site origins\nRECHECK-AFTER: 2026-11-30\nVERIFY: `node scripts/lib/account-metrics.js --one-tap --min=2`';
+  const r = outsideSettingCloseCheck({ description: card, nowMs, env: {} }, {});
+  assert.notEqual(r, null);
+  assert.equal(r.blocking, true);
+  assert.match(r.message, /Paused \(not Done\)/);
+});
+
+test('BRO-7994 outsideSettingCloseCheck: NO-OUTSIDE-SETTING on the card clears it', async () => {
+  const { outsideSettingCloseCheck } = (await import('node:module')).createRequire(import.meta.url)('./linear-done-gate.js');
+  const card = 'OUTSIDE-SETTING: Google web client must list both site origins\nNO-OUTSIDE-SETTING: the origins were already listed before this change shipped';
+  assert.equal(outsideSettingCloseCheck({ description: card, nowMs: Date.parse('2026-11-28T12:00:00Z'), env: {} }, {}), null);
+});

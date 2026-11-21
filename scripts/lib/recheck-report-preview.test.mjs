@@ -54,3 +54,12 @@ test('namesCommand matches whole commands only', () => {
   assert.equal(namesCommand('VERIFY: node x.js --max=100.', 'node x.js --max=100'), true);
   assert.equal(namesCommand('VERIFY: node x.js --max=100', 'node x.js --max=10'), false);
 });
+
+test('BRO-7994: the One Tap recheck (test -f) warns that it passes whatever happens live', () => {
+  const oneTap = { ...issue, identifier: 'BRO-6917', description: 'prose only' };
+  const reportBody = '**Session report (paused)**\n\nRECHECK-AFTER: 2026-12-21\n\nVERIFY: test -f src/lib/google-one-tap.ts\n';
+  const r = previewRecheckCommand({ issue: oneTap, reportBody, launchEntries: [], now: '2026-11-21T12:00:00Z' });
+  assert.equal(r.warn, true);
+  assert.equal(r.cmd, 'test -f src/lib/google-one-tap.ts');
+  assert.match(r.message, /only shows a file exists/);
+});

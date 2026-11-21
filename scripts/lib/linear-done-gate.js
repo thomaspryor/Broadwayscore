@@ -316,6 +316,38 @@ function recordedCheckCloseCheck({ description = '', commentText = '', existingC
   }
 }
 
+// BRO-7994: a card that declares its launch depends on a setting outside the repo (an OUTSIDE-SETTING: line, which the
+// Stop check asks for) may close only once that setting is seen working: a LIVE-CHECK: line citing 2+ successes (the
+// Stop check matched its numbers against a live read) or a real acceptance command this gate executed (not test -f /
+// ls). A RECHECK-AFTER does not clear it: that card belongs in Paused until the recheck passes. Incident: BRO-6917 Part 5 (Google One Tap)
+// carried RECHECK-AFTER 30 days out with `test -f`; 14 of 14 real attempts were refused that day.
+// ADVISORY until OUTSIDE_SETTING_BLOCKING_FROM, then it refuses; OUTSIDE_SETTING_DONE_GATE=advisory rolls that back.
+const OUTSIDE_SETTING_BLOCKING_FROM = '2026-11-28';
+
+function outsideSettingCloseCheck({ description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}, result = {}) {
+  try {
+    const os = require('./outside-setting.js');
+    const text = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean).join('\n');
+    const declared = os.declaration(text);
+    if (!declared) return null;
+    if (os.bypass(text)) return null;
+    if (os.liveCheckClaims(text).length) return null;
+    if (result.cmdExecution && os.acceptanceIsReal(result.cmd)) return null;
+    // A future RECHECK-AFTER is a reason to PAUSE the card, not proof at Done time (ship-check, Codex): it never
+    // clears this check; the recheck reason is only reported.
+    const recheck = os.recheckAcceptanceOk(text, new Date(nowMs));
+    const blocking = env.OUTSIDE_SETTING_DONE_GATE !== 'advisory' && nowMs >= Date.parse(`${OUTSIDE_SETTING_BLOCKING_FROM}T00:00:00Z`);
+    return {
+      blocking,
+      message: `This card says the launch depends on an outside setting ("${declared.slice(0, 100)}") and nothing on it shows that setting working for real users. ` +
+        'Add a LIVE-CHECK: line with 2+ real successes read from live data after the land, or leave the card Paused (not Done) with RECHECK-AFTER within 7 days and a VERIFY command that checks the live effect ' +
+        `(recheck: ${recheck.reason}).` + (blocking ? '' : ` Advisory now; refused from ${OUTSIDE_SETTING_BLOCKING_FROM}.`),
+    };
+  } catch {
+    return null;
+  }
+}
+
 function checkLinearDoneTransition(args = {}) {
   let result = checkDoneEvidence(args);
   if (args.targetStateType !== 'completed') return result;
@@ -327,6 +359,12 @@ function checkLinearDoneTransition(args = {}) {
         ? { ...result, gated: true, allowed: false, verdict: 'recorded-check-not-on-main', reason: cc.message }
         : addWarning(result, cc.message);
     }
+  }
+  const osc = outsideSettingCloseCheck(args, result);
+  if (osc) {
+    result = osc.blocking && result.allowed !== false
+      ? { ...result, gated: true, allowed: false, verdict: 'outside-setting-unseen', reason: osc.message }
+      : addWarning(result, osc.message);
   }
   const rw = recurrenceWarning(args);
   if (rw) {
@@ -350,4 +388,4 @@ function checkLinearDoneTransition(args = {}) {
   return result;
 }
 
-module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };
+module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, outsideSettingCloseCheck, OUTSIDE_SETTING_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };

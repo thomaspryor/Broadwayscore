@@ -60,6 +60,16 @@ function previewRecheckCommand({ issue, reportBody, launchEntries = [], now = ne
         + '(it must also be a safe form in scripts/lib/check-paths.js SAFE_CHECK_FORMS).',
     };
   }
+  // BRO-7994: a recheck whose command only shows a file exists (test -f, ls) passes whatever happens live. The
+  // incident card (Google One Tap) rechecked `test -f src/lib/google-one-tap.ts` while 14 of 14 real attempts failed.
+  if (cmd && !require('./outside-setting.js').acceptanceIsReal(cmd)) {
+    return {
+      warn: true,
+      cmd,
+      message: `RECHECK-AFTER preview: on ${new Date(stampAt).toISOString().slice(0, 10)} the nightly recheck will run ${cmd}, which only shows a file exists and passes whatever happens live.\n`
+        + 'If the point of the recheck is a live effect, post VERIFY (correction): <safe-form command that reads the live result>.',
+    };
+  }
   if (cmd) {
     return {
       warn: false,
