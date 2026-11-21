@@ -27,6 +27,24 @@ test('SAFE TO ARCHIVE after a failed send is allowed', () => {
 test('a live wake lets KEEP OPEN stand', () => {
   assert.equal(undeliveredDecision({ closing: KEEP, tools: [send(1, false)], liveWake: true }).block, false);
 });
+test('a failed send to @parent is cleared by a later success to the parent real id', () => {
+  const t = [{ idx: 1, name: 'mcp__claude-code-remote__send_message', input: { session_id: '@parent' }, ok: false }, send(2, true, { input: { session_id: 'session_P' } })];
+  assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — waiting on the parent reply', tools: t, parentIds: ['session_P'] }).block, false);
+});
+test('a wait on a different session than the failed target is not blocked', () => {
+  const t = [send(1, false), send(2, true, { input: { session_id: 'session_Y' }, result: '{"status":"delivered"}' })];
+  assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — waiting on the reply from session_Y', tools: t }).block, false);
+  assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — waiting on the reply from session_X', tools: t }).block, true);
+});
+test('waiting on the owner, NOT SAFE TO EXIT, and error-string results', () => {
+  assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — waiting until you answer', tools: [send(1, false)] }).block, false);
+  assert.equal(undeliveredDecision({ closing: 'NOT SAFE TO EXIT — waiting on the reply from the peer', tools: [send(1, false)] }).block, true);
+  assert.deepEqual(undeliveredTargets([send(1, true, { result: '{"error":"rate limited"}' })]), ['session_X']);
+});
+test('a live child session keeps a KEEP OPEN legitimate (wired)', () => {
+  const r = deadWaitDecision({ closing: KEEP, tools: [send(1, false)], done: [], now: Date.now(), liveChildren: ['session_C'] });
+  assert.notEqual(r.target && /undelivered/.test(r.target), true);
+});
 test('KEEP OPEN on something else (a landing) is not this gate', () => {
   assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — the landing run finishes', tools: [send(1, false)] }).block, false);
 });
@@ -60,7 +78,9 @@ function runHook(lines, lastMsg = CLOSING) {
   fs.rmSync(dir, { recursive: true, force: true });
   return { status: r.status, stderr: r.stderr || '' };
 }
-test('e2e: the real hook blocks KEEP OPEN after a denied send_message', () => {
+// Note: WAKELESS fires before DEADWAIT in the real hook, so this proves the block message carries the sentence;
+// the DEADWAIT wiring is proven by the 'wired into DEADWAIT' unit test above (fails with the guard change reverted).
+test('e2e: the real hook block message tells the session to say it could not reach the other one', () => {
   const r = runHook([user('do the task'),
     use('t1', 'mcp__claude-code-remote__send_message', { session_id: 'session_X', message: 'question?' }, 5),
     res('t1', 'Permission denied: needs approval', 5, true)]);
