@@ -205,9 +205,9 @@ let DRY_WORK_ORDER = null;
 let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
 const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
 function writeSummary() {
-  const p = arg('summary');
-  if (!p) return;
-  try { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, JSON.stringify(SUMMARY, null, 2)); } catch (e) { console.error(`summary write failed: ${e.message}`); }
+  const summaryFile = arg('summary');
+  if (!summaryFile) return;
+  try { fs.mkdirSync(path.dirname(summaryFile), { recursive: true }); fs.writeFileSync(summaryFile, JSON.stringify(SUMMARY, null, 2)); } catch (e) { console.error(`summary write failed: ${e.message}`); }
 }
 
 /**
