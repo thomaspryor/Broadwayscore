@@ -757,6 +757,44 @@ function quoteOutsideTargetSection(quote, data, showTitle) {
   return !norm(section).includes(norm(quote));
 }
 
+/**
+ * BRO-7977: on a combined multi-show column (one post reviewing several shows)
+ * a quote must be about THIS show. The Sweat copy of a Theater Life Sheward
+ * column shipped "Jones turns Yank's journey into a road trip to hell" (The
+ * Hairy Ape). A joint column has no per-show footer to cut the text on, so the
+ * test is positive evidence: the quote names a cast or creative-team member of
+ * this show (full name or surname, never a lone first name; the title only
+ * when the show has no such data). A quote with none of those is
+ * unattributable in a combined column and is dropped, so a cleaner source wins.
+ * Applies only to isCombinedReview records with combinedWith and a 'joint' split anchor; single-show
+ * reviews are untouched. Pure (CLAUDE.md §15).
+ */
+function combinedColumnQuoteLacksOwnShow(quote, data, show) {
+  if (!quote || !data || data.isCombinedReview !== true) return false;
+  if (!Array.isArray(data.combinedWith) || data.combinedWith.length === 0) return false;
+  // Only a column the section splitter could NOT separate (anchor 'joint': every show's text still in one body). Other
+  // anchors were trimmed to this show's own section; unsplit files are flagged from a shared URL alone (748 of 964).
+  // Child copies of a joint split carry only their own section; the parent keeps text about shows outside combinedWith.
+  if (data.multiShowSplitAnchorKind !== 'joint' || data.multiShowSplitParent !== true) return false;
+  const title = (show && show.title) || data.showTitle;
+  if (!title) return false;
+  const norm = (t) => ' ' + foldDiacritics(String(t || '').toLowerCase()).replace(/[’‘ʼ']/g, '').replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  const body = norm(quote);
+  const names = [];
+  for (const m of [...(show && show.cast || []), ...(show && show.creativeTeam || [])]) {
+    const n = norm(m && typeof m === 'object' ? m.name : m).trim();
+    if (n.split(' ').length < 2) continue;
+    names.push(n, n.split(' ').pop()); // full name, then surname ("Nottage's script")
+  }
+  const bareTitle = norm(title).trim().replace(/^the /, '');
+  // A title alone is not evidence: another show's sentence can name this one
+  // ("predicted by Sweat and Hairy Ape"). It counts only when the record has
+  // no cast or creative team to check instead.
+  const needles = (names.length ? names : [bareTitle]).filter((n) => n && n.length >= 4);
+  if (!needles.length) return false; // a title under 4 chars ("Hir") with no cast data: no usable evidence
+  return !needles.some((n) => body.includes(' ' + n + ' ') || body.includes(' ' + n + 's ')); // "Nottage's" folds to "nottages"
+}
+
 // ---------------------------------------------------------------------------
 // Contiguity: is the displayed quote a passage the critic actually wrote?
 //
@@ -1380,6 +1418,7 @@ const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentim
 const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'source-truncated': 2.5, 'sentiment-mismatch': 3, 'page-chrome': 4, 'parenthetical-aside': 5 };
 
 module.exports = {
+  combinedColumnQuoteLacksOwnShow,
   isContextDependentQuote,
   CONTEXT_DEPENDENT_PATTERNS,
   startsMidClause,

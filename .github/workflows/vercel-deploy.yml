@@ -520,6 +520,19 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/check-coverage-floor-trace.js .next
 
+      # BRO-7983: supersede stacked dispatches. This run's Build succeeded and it is about
+      # to deploy, so cancel older main runs still before their own "Deploy to Production":
+      # this run built newer code + core data. Placed AFTER Build on purpose: cancelling at
+      # job start left nothing deploying if this run then failed. Never cancels pre-warm
+      # runs; fails open. Own kill switch: repo var DEPLOY_COALESCE_DISABLED=true.
+      # Logic + tests: scripts/lib/deploy-coalesce.js (opening night 2026-11-20: 31 stacked builds).
+      - name: Supersede older pending deploys
+        if: inputs.wait_for_run == '' && vars.DEPLOY_COALESCE_DISABLED != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/deploy-coalesce-gate.js
+
       - name: Deploy to Production
         id: deploy
         env:

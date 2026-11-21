@@ -188,6 +188,60 @@ test('a single failing message warns rather than pages', () => {
   assert.equal(s.findings.some((f) => f.code === 'pass-rate-degraded'), false);
 });
 
+test('a small source fully rejected by policy is info, not a daily warn (BRO-7972)', () => {
+  const rejected = (over = {}) => record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [], ...over });
+  const s = summarizeReports([report({ records: [record({ count: 500 }), rejected()] })]);
+  const f = s.findings.find((x) => x.code === 'unauthenticated-source');
+  assert.equal(f.severity, 'info');
+  const hr = dmarcHealthResult(s, { now: '2026-08-02T12:00:00.000Z' });
+  assert.equal(hr.status, 'pass');
+  // Mail that slipped through (disposition none) still warns.
+  const leaked = summarizeReports([report({ records: [record({ count: 500 }), rejected({ disposition: 'none' })] })]);
+  assert.equal(leaked.findings.find((x) => x.code === 'unauthenticated-source').severity, 'warn');
+});
+
+test('a stored warn for a fully rejected source no longer warns in the health row (BRO-7972)', () => {
+  const stored = {
+    windowEnd: '2026-11-19T23:59:59.000Z',
+    policy: { p: 'reject', domain: 'broadwayscorecard.com' },
+    sources: [{ ip: '13.211.69.231', fail: 3, pass: 0, dkimDomains: [], dispositions: ['reject'] }],
+    findings: [{ severity: 'warn', code: 'unauthenticated-source', message: 'x', evidence: { ip: '13.211.69.231' } }],
+  };
+  assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'pass');
+  stored.sources[0].dispositions = ['none'];
+  assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'warn');
+});
+
+test('rejected-source downgrade keeps warn/action for look-alike-us, partial-pass and 5+ failures (BRO-7972)', () => {
+  const sev = (over) => summarizeReports([report({ records: [record({ count: 500 }),
+    record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [], ...over })] })])
+    .findings.find((x) => x.code === 'unauthenticated-source').severity;
+  // Signs with our own domain but fails alignment: a misconfigured sender, keep visible.
+  assert.equal(sev({ dkim: [{ domain: 'broadwayscorecard.com', result: 'fail', selector: 'x' }] }), 'warn');
+  assert.equal(sev({ count: 5 }), 'action');
+  assert.equal(sev({ disposition: 'quarantine' }), 'warn');
+
+  // Partial-pass: same IP also delivered authenticated mail, so it is a real sender losing mail.
+  const mixed = summarizeReports([report({ records: [record({ count: 500 }),
+    record({ sourceIp: '198.51.100.7', count: 5, disposition: 'reject' }),
+    record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [] })] })]);
+  assert.equal(mixed.findings.find((x) => x.code === 'unauthenticated-source').severity, 'warn');
+
+  // Same rule through the stored-summary health path (needs policy.domain).
+  const stored = (dkimDomains, pass) => ({
+    windowEnd: '2026-11-19T23:59:59.000Z',
+    policy: { p: 'reject', domain: 'broadwayscorecard.com' },
+    sources: [{ ip: '198.51.100.7', fail: 3, pass, dkimDomains, dispositions: ['reject'] }],
+    findings: [{ severity: 'warn', code: 'unauthenticated-source', message: 'x', evidence: { ip: '198.51.100.7' } }],
+  });
+  const now = { now: '2026-11-20T12:00:00.000Z' };
+  assert.equal(dmarcHealthResult(stored(['broadwayscorecard.com'], 0), now).status, 'warn');
+  assert.equal(dmarcHealthResult(stored([], 4), now).status, 'warn');
+  assert.equal(dmarcHealthResult(stored([], 0), now).status, 'pass');
+  const noDkim = stored([], 0); delete noDkim.sources[0].dkimDomains;
+  assert.equal(dmarcHealthResult(noDkim, now).status, 'warn', 'missing evidence fails closed');
+});
+
 test('p=none is flagged as unenforced regardless of pass rate', () => {
   const s = summarizeReports([report({ policy: { ...POLICY, p: 'none', sp: 'none' } })]);
   const f = s.findings.find((x) => x.code === 'policy-unenforced');

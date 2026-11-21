@@ -445,3 +445,37 @@ test('BRO-7967: a Show Score archive that is another production\'s page (dates y
   assert.ok(ok.count > 0, 'an in-window page still feeds the census');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// BRO-7965: Elektra (2026 off-Broadway) Show Score page listed the 2022 Met Opera NYT/Observer/OperaWire tiles.
+function ssTile(url, date) {
+  return `<div class="x"><div class="review-tile-v2 -critic"><div class="review-tile-v2__date">${date}</div>`
+    + `<div class="review-tile-v2__body"><a href="${url}">Read more <i></i></a></div></div></div>`;
+}
+test('parseShowScore drops tiles dated before this production (BRO-7965), keeps current and undated ones', () => {
+  const html = ssTile('https://www.nytimes.com/2022/04/03/arts/music/elektra-met-opera.html', 'April 3rd, 2022')
+    + ssTile('https://operawire.com/metropolitan-opera-2021-22-review-elektra/', 'April 5th, 2022')
+    + ssTile('https://culturesauce.com/elektra-daniel-fish-off-broadway-review/', 'November 20th, 2026');
+  const show = { openingDate: '2026-11-20', previewsStartDate: '2026-11-10', status: 'open' };
+  const ids = (rows) => rows.map((r) => r.outletId).sort();
+  assert.deepEqual(ids(parseShowScore(html, 'elektra', show)), ['culturesauce']);
+  // no show passed: legacy behavior, nothing dropped
+  assert.equal(parseShowScore(html, 'elektra').length, 3);
+  // a declared prior run covering the date keeps the tile
+  const withPrior = { ...show, priorRuns: [{ openingDate: '2022-03-01', closingDate: '2022-05-01' }] };
+  assert.equal(parseShowScore(html, 'elektra', withPrior).length, 3);
+});
+test('buildCensusFromArchives hands the show to the Show Score parser (BRO-7965)', () => {
+  const src = fs.readFileSync(new URL('./review-census.js', import.meta.url), 'utf8');
+  assert.match(src, /s\.takesShow \? s\.fn\(html, showId, opts\.show\) : s\.fn\(html, showId\)/);
+  // only the Show Score source opts in (LBO's third arg is a source URL, theatre-reviews' is an options bag)
+  assert.equal((src.match(/takesShow: true/g) || []).length, 1);
+});
+
+test('parseShowScore: exempt same-production page keeps old tiles; &amp; URLs still match (BRO-7965)', () => {
+  const old = ssTile('https://www.nytimes.com/2019/04/03/arts/x.html?a=1&amp;b=2', 'April 3rd, 2019');
+  const show = { openingDate: '2021-10-04', previewsStartDate: '2021-09-01', status: 'open' };
+  assert.equal(parseShowScore(old, 'slave-play-2021', show).length, 0);
+  const exemptPage = `<link rel="canonical" href="https://www.show-score.com/broadway-shows/slave-play">` + old;
+  // canonical present but not exempt-keyed by url: still dropped; exemption is by show id via exemptionFor
+  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', { ...show, id: 'slave-play-2021' }).length, 1);
+});

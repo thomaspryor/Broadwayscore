@@ -68,6 +68,7 @@ const {
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
   isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, PAREN_ASIDE_START_RE,
+  combinedColumnQuoteLacksOwnShow,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -860,6 +861,14 @@ function selectBestExcerpt(data, showTitle) {
     // "prefer a cleaner source" behaviour while guaranteeing a fallback.
     // BRO-7675: cut a closed leading aside/photo credit ("(Courtesy ...) The
     // stage musical..."); an aside that is the whole candidate is deferred last.
+    // Layer 0a (before the soft-defer layers below, which would otherwise ship it as a fallback) (BRO-7977): a combined multi-show column's quote must name this show.
+    if (combinedColumnQuoteLacksOwnShow(excerpt, data, showById[showId])) {
+      if (!stats.combinedColumnQuoteRejected) stats.combinedColumnQuoteRejected = [];
+      stats.combinedColumnQuoteRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [combined-column] ${showId}: "${source}" does not name this show`);
+      return null;
+    }
+
     excerpt = trimToCompleteSentence(stripLeadingParenAside(excerpt));
     if (PAREN_ASIDE_START_RE.test(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'parenthetical-aside', source });
