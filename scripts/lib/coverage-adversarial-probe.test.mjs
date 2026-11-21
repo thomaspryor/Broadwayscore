@@ -462,3 +462,19 @@ test('merging is idempotent — re-merging the same sides changes nothing', () =
   const twice = mergeCoverageAdversarialProbeTrend(once, remote).merged;
   assert.deepEqual(twice, once);
 });
+
+test('BRO-7975 demoteDeadGaps: only confirmed 404/410 demotes a gap', async () => {
+  const { demoteDeadGaps } = require('./coverage-adversarial-probe.js');
+  const codes = { 'https://a/404': 404, 'https://a/410': 410, 'https://a/200': 200, 'https://a/403': 403, 'https://a/throw': null };
+  const input = Object.keys(codes).map(url => ({ url, state: 'gap', reason: null }))
+    .concat([{ url: 'https://a/live', state: 'live', reason: null }]);
+  const out = await demoteDeadGaps(input, async (u) => { if (u.endsWith('throw')) throw new Error('x'); return codes[u]; });
+  const by = Object.fromEntries(out.map(c => [c.url, c.state]));
+  assert.equal(by['https://a/404'], 'excluded');
+  assert.equal(by['https://a/410'], 'excluded');
+  assert.equal(by['https://a/200'], 'gap');
+  assert.equal(by['https://a/403'], 'gap');
+  assert.equal(by['https://a/throw'], 'gap');
+  assert.equal(by['https://a/live'], 'live');
+  assert.match(out[0].reason, /dead-url/);
+});
