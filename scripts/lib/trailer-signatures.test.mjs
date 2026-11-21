@@ -461,3 +461,67 @@ test('run-info stripper: price/link mid-sentence is not a ticket line end (BRO-7
     assert.equal(T.stripRunInfoTrailer(lead + tail), lead, JSON.stringify(tail));
   }
 });
+
+// ---------------------------------------------------------------------------
+// BRO-7942: furniture tail. Fixtures are the real endings of corpus files
+// (gap-recovery TRUNCATED_OTHER / SHORT_UNVERIFIED rows) behind enough prose.
+// ---------------------------------------------------------------------------
+const FT_PROSE = 'The staging is confident and the second act lands every beat it reaches for, with an ensemble that never lets the pace slip. '.repeat(8) + 'This is a revival worth seeing.';
+const FT = require('./trailer-signatures.js');
+const stripped = (tail, outlet = 'unknown-outlet') => FT.stripKnownTrailers(`${FT_PROSE} ${tail}`, outlet);
+
+test('furniture tail: real corpus endings are removed, prose stays', () => {
+  const cases = [
+    'It runs until 25 January 2026. Tickets: here. Review: Oliver Popa Photos: Mark Senior',
+    'Runs until 28th November Photo credit: Anthony Leary-White',
+    'Runs until 8th NovemberPhoto credit: Alex Brenner',
+    'Photo credit Johan Persson',
+    'Photo Credit: Adrian O. Walker Review by Rachel Weinberg',
+    'Running time: 1hr 25mins. No intermission. Through July 23.',
+    'Running time:',
+    'Until October 24 KilnTheatre.com',
+    'Until January 13 nationaltheatre.org.uk',
+    'To 7 Aug, nationaltheatre.org.uk',
+    'Until March 5, Wyndham\'s Theatre (0844 482 5120)',
+    'Keep up with the latest news and reviews on our Time Out Theater Facebook page Jonah | Photograph: Joan Marcus',
+    'Follow Time Out Theater on X: @TimeOutTheaterFollow Time Out Theater on Facebook: Time Out Theater The Beacon | Photograph: Courtesy Carol Rosegg',
+    'To learn more about Robert Tanitch and his reviews, click here to go to his website',
+    'For further information or to book visit the theatre\'s website here . Related Items featured review',
+    'For more shows visit Theatre in Chicago',
+    'CLICK HERE TO READ MORE ARTICLES BY AMY MUNICE.',
+    '• Did you catch this show – or any other recently? Tell us about it using #gdnreview',
+    'Δ document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );',
+    "window.dataLayer = window.dataLayer || []; gtag('js', new Date());</p> <p> gtag('config', 'G-J2EENS4G51');",
+    '@page WordSection1 {size:8.5in 11.0in; margin:1.0in 1.25in 1.0in 1.25in;',
+  ];
+  for (const tail of cases) {
+    const out = stripped(tail);
+    assert.equal(out, FT_PROSE, `not stripped: ${tail}`);
+  }
+});
+
+test('furniture tail: Guardian bullet listing that ends on a dated year is a trailer', () => {
+  assert.equal(stripped('• At Shoreditch town hall, London, until 13 November, then touring until 7 March 2027', 'guardian'), FT_PROSE);
+});
+
+test('furniture tail: a review cut off mid-sentence stays truncated (no strip)', () => {
+  const cut = `${FT_PROSE.slice(0, -1)} and the lead is at the Garrick until 7 June`;
+  assert.equal(FT.stripFurnitureTail(cut), cut, 'run date inside a cut sentence');
+  const cut2 = `${FT_PROSE} Photos by Weegee line the walls of the set, and the`;
+  assert.equal(FT.stripKnownTrailers(cut2, 'x'), cut2, 'a dangling sentence is not a credit');
+  const cut3 = `${FT_PROSE.slice(0, -1)}, but the second act`;
+  assert.equal(FT.stripKnownTrailers(`${cut3} Tickets: here`, 'x'), `${cut3} Tickets: here`, 'prose before the trailer must end a sentence');
+});
+
+test('furniture tail: a short text is never reduced below the prose floor, and the kill switch restores old behaviour', () => {
+  const short = 'A good night out. Runs until 28th November Photo credit: Anthony Leary-White';
+  assert.equal(FT.stripKnownTrailers(short, 'x'), short);
+  process.env.FURNITURE_TAIL_DISABLED = 'true';
+  try { assert.equal(stripped('Runs until 28th November Photo credit: Anthony Leary-White'), `${FT_PROSE} Runs until 28th November Photo credit: Anthony Leary-White`); } finally { delete process.env.FURNITURE_TAIL_DISABLED; }
+});
+
+test('furniture tail is classify-only: the save-path stripper leaves saved text alone', () => {
+  const TC = require('./text-cleaning.js');
+  const text = `${FT_PROSE} Runs until 28th November Photo credit: Anthony Leary-White`;
+  assert.equal(TC.stripTrailingJunk(text, 'jonathan-baz'), text);
+});
