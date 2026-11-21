@@ -63,10 +63,12 @@ const LISTING_SOURCES = [
     pageUrls: (show) => {
       const full = slug(show.title);
       const bare = full.replace(/^(?:the|a|an)-/, '');
-      return [...new Set([bare, full].filter(Boolean))].map((s) => `https://theatrewashington.org/shows/${s}`);
+      return [...new Set([full, bare].filter(Boolean))].map((s) => `https://theatrewashington.org/shows/${s}`);
     },
-    extractImage: (html, baseUrl) => {
-      const m = String(html || '').match(/["'](\/sites\/default\/files\/(?:styles\/[^/"']+\/public\/)?[^"'?]+\.(?:jpe?g|png|webp))(?:\?[^"']*)?["']/i);
+    // pageText must carry the show title: a 404 body or another show's page is never art for this one.
+    extractImage: (html, baseUrl, show) => {
+      if (show && show.title && !String(html || '').toLowerCase().includes(String(show.title).toLowerCase().replace(/&/g, '&amp;')) && !String(html || '').toLowerCase().includes(String(show.title).toLowerCase())) return null;
+      const m = String(html || '').match(/["'](?:https?:\/\/theatrewashington\.org)?(\/sites\/default\/files\/(?:styles\/[^/"']+\/public\/)?[^"'?]+\.(?:jpe?g|png|webp))(?:\?[^"']*)?["']/i);
       if (!m) return null;
       try { return new URL(m[1].replace(/\/styles\/[^/]+\/public\//, '/'), baseUrl).href; } catch { return null; }
     },
