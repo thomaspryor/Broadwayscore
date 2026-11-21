@@ -137,3 +137,16 @@ test('gap driver stamps urlFindLastTryMs on every candidate (guards the priority
   const fs = await import('node:fs');
   assert.match(fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8'), /urlFindLastTryMs:/);
 });
+
+test('BRO-8023: unsettled _pending candidates count as never-attempted gaps and lower the rate', () => {
+  const rates = { 'times-uk': { n: 98, pct: 100, floor: 98 } };
+  const v = F.evaluateFloors({ rates, gaps: [], attemptedKeys: new Set(), pendingCandidates: { 'times-uk': 2, wsj: 1 } });
+  const t = v.outlets.find((x) => x.outlet === 'times-uk');
+  assert.equal(t.pending, 2);
+  assert.equal(t.pct, 98);
+  assert.equal(t.fail, false, 'exactly at floor');
+  const w = v.outlets.find((x) => x.outlet === 'wsj');
+  assert.equal(w.pct, 0);
+  assert.equal(w.fail, true, 'an outlet with only pending candidates is below floor with unattempted gaps');
+  assert.equal(v.ok, false);
+});
