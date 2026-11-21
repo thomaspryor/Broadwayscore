@@ -431,13 +431,19 @@ function executeRunScript(action) {
     console.log(`Running: ${cmd}`);
     const outcome = require('./lib/ingest-outcome');
     const outcomeFile = outcome.newOutcomeFile();
+    let heldOutNote = '';
     try {
       execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000, env: { ...process.env, [outcome.ENV]: outcomeFile } }); // 5 min timeout
       // BRO-6872: an ingest that only filed a retry stub exits 0, but no review reached the site.
-      const stubbed = outcome.stubProblem(outcome.readIngestOutcome(outcomeFile), script);
+      const reported = outcome.readIngestOutcome(outcomeFile);
+      const stubbed = outcome.stubProblem(reported, script);
       if (stubbed) return { ok: false, reason: stubbed };
+      // BRO-7999: the record is on file but an exclusion rule keeps it off the site. Not a
+      // failure (a later action in the plan may clear it), but the log must not say "recovered".
+      const held = outcome.heldOutNote(reported);
+      if (held) { heldOutNote = `; ${held}`; console.log(`⚠️  ${held}`); }
     } finally { outcome.removeOutcomeFile(outcomeFile); }
-    return { ok: true, msg: `Ran ${script} successfully` };
+    return { ok: true, msg: `Ran ${script} successfully${heldOutNote}` };
   } catch (err) {
     return { ok: false, reason: `Script ${script} failed: ${err.message}` };
   }
