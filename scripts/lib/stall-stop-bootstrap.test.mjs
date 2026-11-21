@@ -46,7 +46,7 @@ test('fetch makes a sparse checkout in .bsc-hooks, then stop execs the runner st
   assert.ok(fs.existsSync(path.join(home, '.bsc-hooks/.claude/hooks/lib/home-hook-runner.sh')), f.stdout);
   const s = run('stop', env, '{"x":1}');
   assert.equal(s.status, 0);
-  assert.match(s.stdout, /RUNNER hook=verify-edits\.sh only=CHILDSTALL\|CHILDWAIT\|CHILDJOBS\|CHILDWATCH\|OPENCLAIM\|WAKELESS\|WAKEPROMISE stdin=\{"x":1\}/);
+  assert.match(s.stdout, /RUNNER hook=verify-edits\.sh only=CHILDSTALL\|CHILDWAIT\|CHILDJOBS\|CHILDWATCH\|DEADWAIT\|NEWSESSIONASK\|OPENCLAIM\|WAKELESS\|WAKEPROMISE stdin=\{"x":1\}/);
   // a second fetch refreshes in place (no re-clone, still works)
   assert.equal(run('fetch', env).status, 0);
   assert.equal(run('stop', env, '{}').status, 0);

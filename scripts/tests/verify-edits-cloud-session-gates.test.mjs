@@ -164,7 +164,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...HOST_ENV, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
+      env: { ...HOST_ENV, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', DEADWAIT_GATE_DISABLE: '1', NEWSESSIONASK_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2798,4 +2798,61 @@ test('ENGINE_CRASH: a node pre-check that dies (not 0, not 2, not a timeout) blo
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+// ─── DEADWAIT + NEWSESSIONASK (BRO-7918): real Stop hook, real closing messages ─────────────
+const DEAD_FX = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'scripts/lib/fixtures/bro-7918-dead-keep-open/closings.json'), 'utf8'));
+// WAKELESS off isolates DEADWAIT (WAKELESS already blocks a plain KEEP OPEN with nothing live; DEADWAIT also
+// covers the paths WAKELESS passes). CHILDWAIT stays on, as in production.
+const DW_ON = { ...PAUSE_GATES, WAKELESS_GATE_DISABLE: '1', DEADWAIT_GATE_DISABLE: '0', DEADWAIT_GATE_MODE: 'block',
+  CHILDWAIT_GATE_DISABLE: '0', CHILDJOBS_GATE_DISABLE: '0', CHILDWATCH_GATE_DISABLE: '0', CLEARCLOSE_GATE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1' };
+
+for (const k of ['bro-7741-fresh-worker', 'bro-7816-follow-up-card', 'bro-7780-board-worker', 'bro-7817-recheck-date', 'bro-7817-card-paused', 'bro-7780-real-dead-keep-open']) {
+  test(`DEADWAIT: real dead KEEP OPEN (${k}) is blocked by the hook with nothing running`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('dw-block');
+    try {
+      const result = runHook(pauseTranscript(dir, []), DEAD_FX[k], DW_ON);
+      assertBlocked(result, k);
+      assert.match(result.stderr, /\[VE:(?:DEADWAIT|CHILDWAIT)\]/, result.stderr.slice(0, 300));
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+}
+test('DEADWAIT: the BRO-7741 wording is blocked as DEADWAIT, with a message that offers the working exit', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-msg');
+  try {
+    const result = runHook(pauseTranscript(dir, []), DEAD_FX['bro-7741-fresh-worker'], DW_ON);
+    assertBlocked(result, 'bro-7741');
+    assert.ok(result.stderr.includes('[VE:DEADWAIT]'), result.stderr.slice(0, 300));
+    assert.match(result.stderr, /Nothing will wake this session/);
+    assert.match(result.stderr, /SAFE TO ARCHIVE/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+test('DEADWAIT: the same wording passes with a live background wait, and the SAFE TO ARCHIVE ending passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-pass');
+  try {
+    assertAllowed(runHook(pauseTranscript(dir, [BG_WAIT]), DEAD_FX['bro-7817-live-wait'], DW_ON), 'real live-wait KEEP OPEN');
+    assertAllowed(runHook(writeTranscript(dir, []), DEAD_FX['bro-7816-safe'], DW_ON), 'real SAFE TO ARCHIVE');
+    for (const k of ['bro-7780-real-safe-after', 'bro-7780-real-safe-fix']) assertAllowed(runHook(writeTranscript(dir, []), DEAD_FX[k], DW_ON), `real SAFE TO ARCHIVE ${k}`);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+test('DEADWAIT: advisory mode and the kill switch let it through', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-off');
+  try {
+    const t = pauseTranscript(dir, []);
+    assertAllowed(runHook(t, DEAD_FX['bro-7741-fresh-worker'], { ...DW_ON, DEADWAIT_GATE_MODE: 'advisory' }), 'advisory');
+    assertAllowed(runHook(t, DEAD_FX['bro-7741-fresh-worker'], { ...DW_ON, DEADWAIT_GATE_DISABLE: '1' }), 'kill switch');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+const NS_ON = { ...PAUSE_GATES, NEWSESSIONASK_GATE_DISABLE: '0', CLEARCLOSE_GATE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1' };
+test('NEWSESSIONASK: telling the owner to start a new session is blocked; rules and quotes pass', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ns');
+  try {
+    const t = writeTranscript(dir, []);
+    const bad = runHook(t, 'The fix is not live yet.\nYou need to: start a new session and tell it to finish and release BRO-7741.\n\nACTION NEEDED FROM YOU — start a new session.', NS_ON);
+    assertBlocked(bad, 'bro-7741 owner ask');
+    assert.ok(bad.stderr.includes('[VE:NEWSESSIONASK]'), bad.stderr.slice(0, 300));
+    assertAllowed(runHook(t, 'Nothing is still running.\nNothing needed from you. Never ask the owner to start a new session.\n\nSAFE TO ARCHIVE — all done.', NS_ON), 'negated rule');
+    assertAllowed(runHook(t, 'Nothing is still running.\nNothing needed from you. The gate now blocks "start a fresh session" in closings.\n\nSAFE TO ARCHIVE — all done.', NS_ON), 'quoted');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
