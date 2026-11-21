@@ -169,9 +169,14 @@ gate() {
   local name="$1"; shift
   if ! want_gate "$name"; then echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
   if [[ ",${BG_GATES:-}," == *",$name,"* ]]; then echo "gate $name: running in the background lane"; return 0; fi
+  rm -f "$OUT/$name.secs"  # BRO-7324: a reused out-dir must not keep an old time
   echo "::group::gate $name — $*"
+  local t0="${EPOCHREALTIME:-}"
   "$@" 2>&1 | tee "$OUT/$name.log"
   local rc=${PIPESTATUS[0]}
+  # BRO-7324: wall seconds per gate, read by land-gate-timing.js. Timing only,
+  # never an input to the verdict (bash 5 has EPOCHREALTIME; without it, no file).
+  [ -n "$t0" ] && [ -n "${EPOCHREALTIME:-}" ] && awk -v a="$t0" -v b="$EPOCHREALTIME" 'BEGIN { printf "%.1f\n", b - a }' > "$OUT/$name.secs" 2>/dev/null
   # land-local-check hides stdout. Keep local missing-tool warnings visible.
   sed -n -e '/^::warning::.*not installed here; CI runs/p' \
     -e 's/.*# SKIP \(.*not installed here; CI runs.*\)/::warning::\1/p' "$OUT/$name.log" >&2
@@ -189,7 +194,7 @@ fi
 BG_GATES=""
 if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
   # A stale .exit in a reused out-dir must not stand in for a lane that died.
-  for g in bash-integration lint-workflows; do want_gate "$g" && { BG_GATES="${BG_GATES:+$BG_GATES,}$g"; rm -f "$OUT/$g.exit"; }; done
+  for g in bash-integration lint-workflows; do want_gate "$g" && { BG_GATES="${BG_GATES:+$BG_GATES,}$g"; rm -f "$OUT/$g.exit" "$OUT/$g.secs"; }; done
   if [ -n "$BG_GATES" ]; then
     # SCOPE_DIR was unset from the env above; hand it to the child explicitly (BRO-5766).
     # Gates log their output; inherit stderr so tool warnings reach land-local-check.
@@ -597,7 +602,9 @@ node -e '
   const [out, sha, root, t0, t1] = process.argv.slice(1);
   const gates = require("fs").readdirSync(out).filter(f => f.endsWith(".exit")).map(f => f.replace(/\.exit$/, "")).sort();
   const exits = Object.fromEntries(gates.map(g => [g, Number(require("fs").readFileSync(`${out}/${g}.exit`, "utf8").trim())]));
-  require("fs").writeFileSync(`${out}/meta.json`, JSON.stringify({ sha, root, wallMs: Number(t1) - Number(t0), finishedAt: new Date().toISOString(), node: process.version, gates, exits, checkedOut: process.argv[6] === "1", depsReinstalled: process.argv[7] === "1" }, null, 2) + "\n");
+  const gateSecs = {};  // BRO-7324: timing only, absent when a gate wrote no .secs
+  for (const g of gates) { try { const v = Number(require("fs").readFileSync(`${out}/${g}.secs`, "utf8").trim()); if (Number.isFinite(v)) gateSecs[g] = v; } catch {} }
+  require("fs").writeFileSync(`${out}/meta.json`, JSON.stringify({ sha, root, wallMs: Number(t1) - Number(t0), finishedAt: new Date().toISOString(), node: process.version, gates, exits, gateSecs, checkedOut: process.argv[6] === "1", depsReinstalled: process.argv[7] === "1" }, null, 2) + "\n");
 ' "$OUT" "$SHA" "$ROOT" "$T0" "$T1" "$([ -n "$CHECKOUT" ] && echo 1 || echo 0)" "$DEPS_CHANGED"
 echo "gauntlet done: $SHA in $(( (T1 - T0) / 1000 ))s → $OUT ($(tr '\n' ' ' < <(for g in "$OUT"/*.exit; do printf '%s=%s\n' "$(basename "${g%.exit}")" "$(cat "$g")"; done)))"
 exit 0

@@ -162,6 +162,7 @@ jobs:
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
       hook_seed: ${{ steps.hookseed.outputs.seed }}
       receipt: ${{ steps.receipt.outputs.receipt }}
+      timing: ${{ steps.gatetiming.outputs.timing }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -175,7 +176,10 @@ jobs:
           filter: blob:none
 
       - name: Configure git
+        id: gitcfg
         run: |
+          # BRO-7324: job start for the gate-timing record (a restored base older than this is not counted).
+          echo "t0=$(date +%s%3N)" >> "$GITHUB_OUTPUT"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # The gauntlet's temp-git-repo tests rm their repos in teardown;
@@ -779,6 +783,22 @@ jobs:
             exit 1
           fi
 
+      # BRO-7324: per-gate seconds of every gauntlet this job ran (meta.json gateSecs),
+      # handed to the Land job for the landings.jsonl row; read it with
+      # `node scripts/lib/land-timing-report.js --gates`. Timing only: never an input
+      # to the verdict above, runs after it, continue-on-error, and the CLI exits 0.
+      - name: Record gate timing (advisory)
+        id: gatetiming
+        if: always()
+        continue-on-error: true
+        env:
+          T0: ${{ steps.gitcfg.outputs.t0 }}
+        run: |
+          [ -f scripts/lib/land-gate-timing.js ] || { echo "no land-gate-timing.js on this tree"; exit 0; }
+          node scripts/lib/land-gate-timing.js emit --t0="${T0:-0}" \
+            --root="$RUNNER_TEMP/land-gauntlet" --root="$RUNNER_TEMP/land-fast" \
+            --github-output="$GITHUB_OUTPUT" --summary-file="$GITHUB_STEP_SUMMARY" || true
+
       # BRO-6043: hand the Land job a "tsc already passed on this exact tree"
       # token so even the FIRST pre-push tsc under the mutex (66-80s) is skipped,
       # not just the BRO-5783 retry. Exported only when the branch gauntlet's own
@@ -1351,6 +1371,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ steps.land.outputs.sha }}
           TIP: ${{ needs.checks.outputs.tip }}
+          # BRO-7324: compact JSON from the checks job; env (never inline) so quotes survive.
+          LAND_TIMING: ${{ needs.checks.outputs.timing }}
         # The ref is deleted only AFTER scripts/lib/landing-verify.js confirms
         # the landed sha is an ancestor of a freshly fetched origin/main (exit
         # 0). UNKNOWN (exit 2) or NOT_LANDED keep the ref and say so; a ref
@@ -1393,7 +1415,7 @@ jobs:
                 let onMain = "";
                 try { onMain = require("child_process").execFileSync("git", ["show", "origin/main:data/audit/landings.jsonl"], { encoding: "utf8", maxBuffer: 64 << 20 }); } catch { onMain = ""; }
                 if (parseLandings && parseLandings(onMain).some((x) => x.sha === e.LAND_SHA && x.branch === e.LAND_BRANCH)) { console.log("landings.jsonl on main already has this row (merge train)"); process.exit(0); }
-                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null, receipt: e.LAND_RECEIPT || null });
+                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null, receipt: e.LAND_RECEIPT || null, timing: (() => { try { return e.LAND_TIMING ? JSON.parse(e.LAND_TIMING) : null; } catch { return null; } })() });
                 console.log(`landings.jsonl += ${JSON.stringify(row)}`);
               ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
                 || echo "::warning::landings.jsonl row for ${SHA:0:10} could NOT be written — the landing itself is verified; check-direct-push-to-main.yml may digest this sha as unrecorded"
