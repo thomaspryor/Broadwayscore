@@ -623,6 +623,18 @@ test('BRO-7186: a gone ref counts as landed only via an exact-branch recent ledg
   assert.equal(landedOnMain({ ref: 'land/other', nowMs: now, ledgerRows: [row] }).landed, false);
   assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'failure' } }).landed, false);
   assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'success' } }).landed, true);
+  // BRO-7324: a red run whose Land job succeeded (only an advisory job red) landed, when its jobs are known.
+  const landOk = { name: 'Land', conclusion: 'success' };
+  const shardRed = { name: 'Checks (shard 2/2)', conclusion: 'failure' };
+  for (const conclusion of ['failure', 'cancelled']) {
+    assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion, jobs: [landOk, shardRed] } }), { landed: true, sha: 'abc', tip: 't1', via: 'landings ledger' });
+    // Land itself red, or jobs unknown: still refused, never landed.
+    assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion, jobs: [{ ...landOk, conclusion: 'failure' }, shardRed] } }).landed, false);
+    assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion, jobs: null } }).landed, false);
+    assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion } }).landed, false);
+    // Land succeeded but no ledger row: not landed (the ledger is still the proof).
+    assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [], run: { conclusion, jobs: [landOk, shardRed] } }).landed, false);
+  }
 });
 
 test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones', () => {

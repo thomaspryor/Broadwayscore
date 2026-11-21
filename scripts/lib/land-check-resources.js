@@ -53,10 +53,16 @@ function envFailureLogs(dirs, { readdir = require('fs').readdirSync, read = requ
  * branch within 6h counts (a BRO id in a commit subject does not: cards land
  * more than once, and reverts / follow-ups cite the same id).
  * run: the latest land run found for the ref, or null; a red/cancelled run
- * means the ref was refused, never landed. -> { landed, sha?, tip?, via? }
+ * means the ref was refused, never landed, unless run.jobs (when known) shows
+ * its Land job succeeded: BRO-7324, an advisory job ("Checks (shard 2/2)")
+ * alone can turn a landed run red. Jobs unknown keeps the red = refused rule.
+ * -> { landed, sha?, tip?, via? }
  */
 function landedOnMain({ ref, ledgerRows = [], run = null, nowMs = Date.now() }) {
-  if (run && run.conclusion && run.conclusion !== 'success') return { landed: false };
+  if (run && run.conclusion && run.conclusion !== 'success') {
+    const { landJobSucceeded } = require('./land-retry-on-cancel');
+    if (!(Array.isArray(run.jobs) && landJobSucceeded(run.jobs))) return { landed: false };
+  }
   const rows = ledgerRows
     .filter((r) => r && r.branch === ref && r.sha && r.ts && nowMs - Date.parse(r.ts) < RECENT_MS)
     .sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
