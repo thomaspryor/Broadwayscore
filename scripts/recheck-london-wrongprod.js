@@ -61,6 +61,8 @@ function storedAudit(since, strict) {
   }
   console.log(JSON.stringify({ londonCollectorFlags: out.length, unhealedOwnVenueFlags: bad.length }));
   bad.forEach(b => console.log(`  ${b}`));
+  // A corpus that yields no flags at all is a broken read, not a clean bill (the gate must not pass on missing data).
+  if (strict && out.length === 0) { console.error('stored-audit: no London collector flags found; corpus unreadable?'); process.exit(2); }
   if (strict && bad.length) process.exit(1);
 }
 
