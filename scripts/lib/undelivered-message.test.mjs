@@ -14,6 +14,10 @@ test('a denied send followed by KEEP OPEN on the reply is blocked', () => {
 test('an errored result string (session_inactive) counts as undelivered', () => {
   assert.deepEqual(undeliveredTargets([send(1, true, { result: '{"error":"session_inactive"}' })]), ['session_X']);
 });
+test('a delivery receipt that mentions failed checks is not a failure', () => {
+  assert.deepEqual(undeliveredTargets([send(1, true, { result: '{"status":"delivered","note":"0 failed checks"}' })]), []);
+  assert.deepEqual(undeliveredTargets([send(1, true, { result: 'Message sent' })]), []);
+});
 test('a later successful send to the same target clears it', () => {
   assert.equal(undeliveredDecision({ closing: KEEP, tools: [send(1, false), send(2, true, { result: '{"status":"delivered"}' })] }).block, false);
 });

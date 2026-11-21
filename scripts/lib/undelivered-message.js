@@ -5,11 +5,13 @@
 
 const SEND_RE = /(?:^|__)send_?message$/i;
 // A send tool_result that is not a delivery: refusal, inactive session, error status.
-const FAIL_RESULT_RE = /\b(?:denied|refused|not allowed|needs approval|session_inactive|inactive|not found|unreachable|error|failed)\b|"status"\s*:\s*"(?!delivered"|queued")/i;
+const FAIL_RESULT_RE = /\b(?:permission denied|denied|refused|not allowed|needs approval|session_inactive|session not found|unreachable)\b|"status"\s*:\s*"(?:error|failed|refused|denied|inactive)"/i;
+const DELIVERED_RE = /"(?:status"\s*:\s*"(?:delivered|queued|sent)"|delivered"\s*:\s*true)/i;
 const WAIT_ON_RE = /\b(?:repl(?:y|ies)|report(?:-?backs?)?|response|answer|ack(?:nowledg\w+)?|parent|sessions?|workers?|peer)\b/i;
 
 const targetOf = (t) => String((t.input && (t.input.session_id || t.input.to)) || '');
-const failed = (t) => t.ok === false || (t.result ? FAIL_RESULT_RE.test(String(t.result)) : false);
+// A delivery receipt wins over words like "failed" elsewhere in the result (e.g. "0 failed checks").
+const failed = (t) => t.ok === false || (t.result ? !DELIVERED_RE.test(String(t.result)) && FAIL_RESULT_RE.test(String(t.result)) : false);
 
 /** Targets whose LAST send (in tool order) failed. tools: [{idx, name, input, ok, result?}] */
 function undeliveredTargets(tools = []) {
