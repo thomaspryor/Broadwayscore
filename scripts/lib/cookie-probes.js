@@ -81,9 +81,13 @@ const COOKIE_PROBES = {
     url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html',
     minBody: 4500,
     loginWallMarker: /gateway-content|regiwall|lready a subscriber/i,
-    // NOTE (BRO-7765): the cookie-less control gets a DataDome HTTP 403 on every
-    // run (measured 2026-11-18), so vacuity is unmeasurable in-browser. That is
-    // reported as 'control-blocked' and fails closed for write runs.
+    // BRO-7765/7922: DataDome answers every cookie-less browser (headless or
+    // headed, throwaway profile) and plain fetch with HTTP 403 (2026-11-18,
+    // 2026-11-21), so the control is the persistent profile with only the
+    // session cookies removed (cookie-browser-probe.profileControlProbe).
+    // Only if that is blocked too is it 'control-blocked' (fails closed for
+    // write runs).
+    profileControl: true,
   },
   wapo: {
     url: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',
@@ -91,7 +95,16 @@ const COOKIE_PROBES = {
     loginWallMarker: /paywall-overlay|subs-turnstile-hook-wall|lready a subscriber/i,
   },
   newyorker: {
-    url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
+    // BRO-7922: the 2023 Doll's House review is now free to anonymous browsers
+    // (8474 chars, no bar), so it read 'vacuous'. Walled today (anon browser,
+    // 2026-11-21): Other Desert Cities 1081 chars + barrier; Downstate 10108
+    // chars + paywall-bar. Recent magazine reviews are metered, so older ones
+    // age out: classifyWithControl rotates through altUrls when this one reads
+    // vacuous. Add a fresh walled review to the front when one does.
+    url: 'https://www.newyorker.com/magazine/2026/11/02/other-desert-cities-theatre-review-a-bright-room-called-day',
+    altUrls: [
+      'https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review',
+    ],
     minBody: 4000,
     browserOnly: true,
     // Since 2026-11-19 a fresh anonymous browser gets this article as a free

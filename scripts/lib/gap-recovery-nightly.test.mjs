@@ -22,7 +22,7 @@ test('planCounts: recent never needs a decision; historic with every try used up
     { recency: 'historic', strategy: null, skipped: [{ strategy: 'URL_REDISCOVER', reason: 'disabled' }] },
     { recency: 'historic', strategy: 'ARCHIVE', skipped: [] },
   ]);
-  assert.deepEqual(c, { openTotal: 6, openRecent: 2, needsDecision: 1 });
+  assert.deepEqual(c, { openTotal: 6, openRecent: 2, needsDecision: 1, excludedRecords: 0 });
 });
 
 test('pendingStuckCount: only a LATEST pending_push row older than 24h counts', () => {
@@ -157,5 +157,22 @@ test('planCounts: a historic review blocked by superseded_at_url reaches a decis
   const c = N.planCounts([
     { recency: 'historic', strategy: null, skipped: [{ strategy: 'REFETCH_FREE', reason: 'superseded_at_url' }, { strategy: 'ARCHIVE', reason: 'superseded_at_url' }] },
   ]);
-  assert.deepEqual(c, { openTotal: 1, openRecent: 0, needsDecision: 1 });
+  assert.deepEqual(c, { openTotal: 1, openRecent: 0, needsDecision: 1, excludedRecords: 0 });
+});
+
+// BRO-7942: excluded_record rows (wrongShow/wrongProduction) are not recoverable gaps.
+test('planCounts: excluded_record rows leave openTotal and are reported apart', () => {
+  const c = N.planCounts([
+    { recency: 'recent', strategy: 'REFETCH_FREE', skipped: [] },
+    { recency: 'recent', strategy: null, skipped: [{ strategy: 'ANY', reason: 'excluded_record' }] },
+    { recency: 'historic', strategy: null, skipped: [{ strategy: 'ANY', reason: 'excluded_record' }] },
+  ]);
+  assert.deepEqual(c, { openTotal: 1, openRecent: 1, needsDecision: 0, excludedRecords: 2 });
+});
+
+test('nightly row: recovered counts only tier-improving landings', () => {
+  const row = N.buildNightlyRow({ runId: 'r', status: 'ok', summary: { landed: 5, landedImproved: 2, accepted: 5, attempted: 9 }, counts: { openTotal: 1, openRecent: 1, needsDecision: 0, excludedRecords: 3 } });
+  assert.equal(row.recovered, 2);
+  assert.equal(row.landedNoTierGain, 3);
+  assert.equal(row.excludedRecords, 3);
 });

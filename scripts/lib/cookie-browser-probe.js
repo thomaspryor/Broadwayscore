@@ -87,24 +87,76 @@ function classify(probe, withCookies, withoutCookies) {
  * @param {{anon?: Function}} [deps]  anon(probe, {waitMs}) for tests
  * @returns {Promise<{status:string, control:{html:string, body:string}}>}
  */
-async function classifyWithControl(probe, withCookies, { anon = anonymousProbe } = {}) {
+async function classifyWithControl(probe, withCookies, { anon = anonymousProbe, profileControl = null, loadWithCookies = null } = {}) {
+  const r = await classifyOneUrl(probe, withCookies, { anon, profileControl });
+  // BRO-7922: a probe url that has aged into the free archive (New Yorker 2023
+  // review, 2026-11-21) reads 'vacuous'. Rotate through probe.altUrls instead of
+  // failing the outlet: each alternate is loaded in the logged-in profile
+  // (loadWithCookies) and against its own anonymous control. The first one that
+  // is walled for the control wins; the result names the url used.
+  if (r.status !== 'vacuous' || !loadWithCookies || !(probe.altUrls || []).length) return r;
+  for (const url of probe.altUrls) {
+    const alt = { ...probe, url };
+    let sub;
+    try { sub = await loadWithCookies(alt); } catch { continue; }
+    const ar = await classifyOneUrl(alt, sub, { anon, profileControl });
+    if (ar.status === 'logged-in') return { ...ar, usedUrl: url, rotatedFrom: probe.url };
+  }
+  return r;
+}
+
+async function classifyOneUrl(probe, withCookies, { anon, profileControl }) {
   const blockedOnly = (c) => !!c && isBotChallenge(c.html) && !(withCookies && isBotChallenge(withCookies.html));
-  let control = await anon(probe, {});
   // A cookie-less profile that DataDome/Cloudflare answers with a bot
   // challenge (NYT: HTTP 403, every run, BRO-7765) says nothing about whether
-  // the url is free. Name it so callers can tell it from an unrecognised page.
+  // the url is free. BRO-7922: for probes that opt in (profileControl: true)
+  // and callers that supply one, fall back to the persistent profile itself
+  // with only the session cookies removed (same trusted fingerprint, no
+  // login): DataDome answers every throwaway profile and plain fetch with
+  // HTTP 403 but serves this one (NYT, measured 2026-11-21). If that is also
+  // blocked, name it so callers can tell it from an unrecognised page.
+  const getControl = async (opts) => {
+    let c = await anon(probe, opts);
+    if (blockedOnly(c) && probe.profileControl && profileControl) {
+      const pc = await profileControl(probe, opts).catch(() => null);
+      if (pc && pc.html && pc.httpStatus === 200 && !isBotChallenge(pc.html)) c = pc;
+    }
+    return c;
+  };
+  let control = await getControl({});
   if (blockedOnly(control)) return { status: 'control-blocked', control };
   let status = classify(probe, withCookies, control);
   if (status === 'vacuous') {
-    control = await anon(probe, { waitMs: 8000 });
+    control = await getControl({ waitMs: 8000 });
     if (blockedOnly(control)) return { status: 'control-blocked', control };
     status = classify(probe, withCookies, control);
   }
   return { status, control };
 }
 
+/**
+ * Control for bot-walled outlets: load the probe url in the SAME persistent
+ * context with the session (auth) cookies removed, then put them back (always,
+ * in finally). Only the named auth cookies go, so the bot-trust cookies stay.
+ * Nothing is sent to the outlet to log out; this is local state only.
+ * @param {import('playwright').BrowserContext} context
+ * @param {object} probe
+ * @param {string[]} authCookies  cookie names that carry the session
+ */
+async function profileControlProbe(context, probe, authCookies, { waitMs } = {}) {
+  const names = new Set(authCookies || []);
+  if (!names.size) throw new Error('profileControlProbe needs the outlet auth cookie names');
+  const saved = (await context.cookies()).filter((c) => names.has(c.name));
+  try {
+    for (const c of saved) await context.clearCookies({ name: c.name, domain: c.domain });
+    return await loadProbe(context, probe, { waitMs });
+  } finally {
+    if (saved.length) await context.addCookies(saved);
+  }
+}
+
 function describe(probe, r) {
   return `body ${r.body.length} chars, floor ${probe.minBody}${probe.wallMarker ? `, wall marker ${probe.wallMarker.test(r.html) ? 'present' : 'absent'}` : ''}`;
 }
 
-module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, confirmWall, describe };
+module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, profileControlProbe, confirmWall, describe };

@@ -438,3 +438,72 @@ test('metered free reads in the control are not vacuous (Telegraph subscriber cl
   assert.ok(bprobe.confirmWall({ status: 'logged-out', page: { html: nyFree.html, httpStatus: 200 }, hasAuthCookie: true }, ny).ok);
   assert.ok(!bprobe.confirmWall({ status: 'logged-out', page: { html: nySub.html, httpStatus: 200 }, hasAuthCookie: true }, ny).ok);
 });
+
+// BRO-7922: false FAILs on 2026-11-21 (New Yorker probe url aged free; NYT browser control 403).
+test('classifyWithControl: NYT browser control blocked -> session-less profile control decides', async () => {
+  const p = COOKIE_PROBES.nytimes;
+  assert.equal(p.profileControl, true);
+  const sub = { html: '<article>full</article>', body: 'x'.repeat(6170) };
+  const blocked = { html: '<script src="https://geo.captcha-delivery.com/x"></script>', body: '', httpStatus: 403 };
+  const sessionless = { html: '<div class="regiwall gateway-content">', body: 'x'.repeat(2904), httpStatus: 200 };
+  const err404 = { ...sessionless, httpStatus: 404 };
+  const r = await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => sessionless });
+  assert.equal(r.status, 'logged-in');
+  // profile control also blocked, or none supplied -> still fails closed as before
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => blocked })).status, 'control-blocked');
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked })).status, 'control-blocked');
+  // a 404 from the profile control is not evidence
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => err404 })).status, 'control-blocked');
+  // a session-less profile that still reads the full article means the url is free
+  const free = { html: '<article>full</article>', body: 'x'.repeat(6170), httpStatus: 200 };
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => free })).status, 'vacuous');
+  // outlets that did not opt in never use it
+  const tg = COOKIE_PROBES.telegraph;
+  let called = false;
+  const r3 = await bprobe.classifyWithControl(tg, sub, { anon: async () => blocked, profileControl: async () => { called = true; return sessionless; } });
+  assert.equal(r3.status, 'control-blocked'); assert.equal(called, false);
+});
+
+test('profileControlProbe removes only the auth cookies while loading, and always restores them', async () => {
+  const jar = [{ name: 'NYT-S', domain: '.nytimes.com', value: 's' }, { name: 'datadome', domain: '.nytimes.com', value: 'd' }];
+  const seen = [];
+  const ctx = {
+    cookies: async () => [...jar],
+    clearCookies: async ({ name }) => { const i = jar.findIndex((c) => c.name === name); if (i >= 0) jar.splice(i, 1); },
+    addCookies: async (cs) => { jar.push(...cs); },
+    pages: () => [{ goto: async () => { seen.push(jar.map((c) => c.name).join(',')); return { status: () => 200 }; }, waitForTimeout: async () => {}, content: async () => '<html></html>' }],
+  };
+  await bprobe.profileControlProbe(ctx, { url: 'https://www.nytimes.com/x', minBody: 1 }, ['NYT-S'], { waitMs: 0 });
+  assert.deepEqual(seen, ['datadome'], 'auth cookie absent, trust cookie present during the load');
+  assert.deepEqual(jar.map((c) => c.name).sort(), ['NYT-S', 'datadome']);
+  await assert.rejects(bprobe.profileControlProbe(ctx, { url: 'x' }, []));
+});
+
+test('classifyWithControl: a vacuous New Yorker probe url rotates to a walled alternate', async () => {
+  const p = COOKIE_PROBES.newyorker;
+  assert.ok(p.altUrls.length >= 1);
+  const full = { html: '<p>article</p>', body: 'x'.repeat(8474) };
+  const walled = { html: '<div data-testid="paywall-bar-thin">', body: 'x'.repeat(645) };
+  const anon = async (probe) => (probe.url === p.url ? full : walled);
+  const loadWithCookies = async () => full;
+  const r = await bprobe.classifyWithControl(p, full, { anon, loadWithCookies });
+  assert.equal(r.status, 'logged-in');
+  assert.equal(r.usedUrl, p.altUrls[0]);
+  // no rotation without a loader (verify-cookie-login path) or when every alternate is free
+  assert.equal((await bprobe.classifyWithControl(p, full, { anon })).status, 'vacuous');
+  assert.equal((await bprobe.classifyWithControl(p, full, { anon: async () => full, loadWithCookies })).status, 'vacuous');
+});
+
+test('every probe url in COOKIE_PROBES is unique and absolute (rotation list hygiene)', () => {
+  const urls = Object.values(COOKIE_PROBES).flatMap((x) => [x.url, ...(x.altUrls || [])]);
+  assert.equal(new Set(urls).size, urls.length);
+  for (const u of urls) assert.match(u, /^https:\/\//);
+});
+
+test('rotation never passes a logged-out profile (alternate walled for the profile too)', async () => {
+  const p = COOKIE_PROBES.newyorker;
+  const full = { html: '<p>article</p>', body: 'x'.repeat(8474) };
+  const walled = { html: '<div data-testid="paywall-bar-thin">', body: 'x'.repeat(645) };
+  const r = await bprobe.classifyWithControl(p, full, { anon: async (pr) => (pr.url === p.url ? full : walled), loadWithCookies: async () => walled });
+  assert.equal(r.status, 'vacuous', 'a dead session must keep the safe vacuous stop');
+});

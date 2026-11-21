@@ -118,3 +118,22 @@ test('recent productions = this year and last, by the clock', () => {
   assert.equal(F.isRecentProductionShow('play-2025', at('2027-03-01T00:00:00Z')), false, 'rolls forward in 2027');
   assert.equal(F.isRecentProductionShow('play-2027', at('2027-03-01T00:00:00Z')), true);
 });
+
+// BRO-7922: slots rotate; a gap tried last night must not outrank a never-tried floor gap.
+test('URL_FIND slots: never-tried floor gaps outrank retried ones, least recently tried first', () => {
+  const base = { outletId: 'times-uk', recency: 'recent', showDate: '2026-01-01' };
+  const c = [
+    { ...base, reviewKey: 'a-2026/times-uk--a.json', showId: 'a-2026', showDate: '2026-11-01', urlFindLastTryMs: Date.parse('2026-11-19') },
+    { ...base, reviewKey: 'b-2026/times-uk--b.json', showId: 'b-2026', urlFindLastTryMs: Date.parse('2026-11-10') },
+    { ...base, reviewKey: 'c-2026/times-uk--c.json', showId: 'c-2026', urlFindLastTryMs: 0 },
+  ];
+  const plan = UF.planUrlFindWork(c.map((x) => ({ ...x, strategy: 'URL_FIND' })), { paidSlots: 1, freeSlots: 1, tierOf: () => 1 });
+  assert.equal(plan[0].reviewKey, 'c-2026/times-uk--c.json');
+  assert.equal(plan[1].reviewKey, 'b-2026/times-uk--b.json');
+  assert.equal(plan.skippedUrlFind, 1);
+});
+
+test('gap driver stamps urlFindLastTryMs on every candidate (guards the priority input)', async () => {
+  const fs = await import('node:fs');
+  assert.match(fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8'), /urlFindLastTryMs:/);
+});
