@@ -40,7 +40,9 @@ const norm = s => foldDiacritics(String(s || '')).toLowerCase()
  */
 function genericSingleWordTitle(title) {
   const words = norm(title).split(' ').filter(Boolean);
-  if (words.length === 1) return BARE_GENERIC_TITLE_WORDS.has(words[0]) ? words[0] : null;
+  // BRO-7930: a numeric or 1-2 letter bare title ("13", "G", "Da", "44") matches any year, price, initial or
+  // fragment in a URL: 13-2008 held 70 junk _pending stubs, g-west-end-2024 106, da-1978 70. Same bare-context rule.
+  if (words.length === 1) return BARE_GENERIC_TITLE_WORDS.has(words[0]) || /^\d+$/.test(words[0]) || words[0].length <= 2 ? words[0] : null;
   if (words.length !== 2 || !ARTICLES.has(words[0])) return null;
   return GENERIC_SINGLE_TITLE_WORDS.has(words[1]) ? words[1] : null;
 }

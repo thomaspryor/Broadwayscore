@@ -176,23 +176,29 @@ function isPendingDrainEligible(show, closedWithin = 0, today = new Date()) {
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
 const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
-const { pendingFileTimestamp, orderPendingWork } = require('./lib/pending-drain-order');
+const { pendingFileTimestamp, orderPendingWork, pathKey } = require('./lib/pending-drain-order');
+const drainState = require('./lib/pending-drain-state');
+const { classifyTargetCollision } = require('./lib/pending-drain-collision');
 
 // Newest strands first (BRO-4408), so a budget-limited run reaches a fresh
 // opening-night review before re-fetching old no-byline strands.
-function planPendingWork(ids) {
+// BRO-7930: --all-open / --all-pending sweeps ROTATE from a persisted cursor instead; newest-first stays
+// for the opening-night poller and --show/--shows runs (their scope is small and freshness is the point).
+function planPendingWork(ids, opts = {}) {
   const shows = ids.map(showId => {
     const dir = path.join(PENDING_ROOT, showId);
     let names = [];
     try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { /* no _pending dir */ }
     const files = names.map(file => {
       let ts = 0;
-      try { ts = pendingFileTimestamp(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))); } catch { /* unreadable: sort last */ }
+      let mtimeMs = 0;
+      try { mtimeMs = fs.statSync(path.join(dir, file)).mtimeMs; } catch { /* gone */ }
+      try { ts = pendingFileTimestamp(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')), mtimeMs); } catch { ts = pendingFileTimestamp(null, mtimeMs); }
       return { file, ts };
     });
     return { showId, files };
   });
-  return orderPendingWork(shows);
+  return orderPendingWork(shows, opts);
 }
 
 function listOperaShowIds() {
@@ -351,7 +357,7 @@ async function processShow(showId, deps = {}) {
   const pendingDir = path.join(root, '_pending', showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
-    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0 };
+    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0, tagged: 0, inspected: 0, lastFile: null };
   }
   const show = deps.show !== undefined ? deps.show : loadShow(showId);
   const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
@@ -359,6 +365,9 @@ async function processShow(showId, deps = {}) {
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
   let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0;
+  // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
+  // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
+  let tagged = 0, inspected = 0, lastFile = null;
   // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
   // after the loop — never a silent "keep".
   const unrecoverable = [];
@@ -396,7 +405,7 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -444,6 +453,8 @@ async function processShow(showId, deps = {}) {
       return finish({ budgetExceeded: true });
     }
     const filepath = path.join(pendingDir, file);
+    lastFile = file;
+    inspected++;
     let data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     // Already evaluated and skipped on a prior run — don't re-fetch the URL.
     if (data.promoteSkippedReason) {
@@ -470,6 +481,7 @@ async function processShow(showId, deps = {}) {
         data.promoteSkippedAt = now().toISOString();
         try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
       }
+      tagged++;
       kept++;
       continue;
     }
@@ -488,9 +500,25 @@ async function processShow(showId, deps = {}) {
           data.rssIdentityRejectedAt = now().toISOString();
           try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
         }
+        tagged++;
         kept++;
         continue;
       }
+    }
+    // BRO-7930: a stub whose url names no identity for a numeric / 1-2 letter / generic bare title ("13", "G", "Da",
+    // "The Story") is a discovery fluke (Daily Mail restaurant pages under 44-off-broadway-2025), never a stuck review.
+    if (show?.title && require('./lib/generic-title-guard').genericSingleWordTitle(show.title)
+        && !require('./lib/generic-title-guard').passesGenericTitleIdentity(data.url || '', show.title)
+        && !(data.source === 'submit-review-form' || data.source === 'manual-user-request')) {
+      console.log(`  [${file}] url carries no identity for the bare title "${show.title}" — tagged, not a stuck review (BRO-7930)`);
+      if (!dry) {
+        data.promoteSkippedReason = `url has no identity for the bare title "${show.title}" (BRO-7930)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
     }
     const url = data.url;
     if (!url) {
@@ -562,6 +590,7 @@ async function processShow(showId, deps = {}) {
         data.promoteSkippedReason = rejectReason;
         data.promoteSkippedAt = new Date().toISOString();
         if (!dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+        tagged++;
         kept++;
         continue;
       }
@@ -611,6 +640,28 @@ async function processShow(showId, deps = {}) {
 
     // Don't overwrite an existing real file
     if (fs.existsSync(newPath)) {
+      // BRO-7930: settle it instead of keeping it forever (43 of ~82 unresolved open-show stubs).
+      let existing = null;
+      try { existing = JSON.parse(fs.readFileSync(newPath, 'utf8')); } catch { /* unreadable primary: fall through to keep */ }
+      const verdict = existing ? classifyTargetCollision(data, existing) : null;
+      const existingHasText = !!existing && typeof existing.fullText === 'string' && existing.fullText.trim().length >= 200;
+      if (verdict === 'same-article' && (existingHasText || isRedundantPendingStub(data, newFilename))) {
+        console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this article`);
+        if (!dry) fs.unlinkSync(filepath);
+        droppedRedundant++;
+        continue;
+      }
+      if (verdict === 'different-article') {
+        console.log(`  [${file}] ${newFilename} is the same critic's OTHER article — tagged, cannot take that filename`);
+        if (!dry) {
+          data.promoteSkippedReason = `byline resolves to ${newFilename}, which already holds a different article (BRO-7930)`;
+          data.promoteSkippedAt = now().toISOString();
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        tagged++;
+        kept++;
+        continue;
+      }
       console.log(`  [${file}] would-be target ${newFilename} already exists — keep pending`);
       if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); // keep the rebuilt body
       kept++;
@@ -668,6 +719,45 @@ async function processShow(showId, deps = {}) {
   return finish();
 }
 
+/** Count every .json file under _pending/<show>/ (the number the "growing" alert watches). */
+function countPendingFiles(root = PENDING_ROOT) {
+  let n = 0;
+  try {
+    for (const d of fs.readdirSync(root, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue;
+      try { n += fs.readdirSync(path.join(root, d.name)).filter(f => f.endsWith('.json')).length; } catch { /* unreadable */ }
+    }
+  } catch { /* no _pending */ }
+  return n;
+}
+
+/** BRO-7930: alert when sweeps resolve nothing for N runs, or when _pending keeps growing; resolve when healthy. */
+async function raiseDrainHealthAlerts(history, deps = {}) {
+  const alert = deps.alert || defaultRouteAlert;
+  const resolve = deps.resolve || defaultResolveCondition;
+  const h = drainState.evaluateDrainHealth(history);
+  const last = history[history.length - 1] || {};
+  const conds = [
+    ['pending-drain-zero-promote', h.zeroPromote, {
+      title: `_pending drain resolved nothing for ${h.zeroRuns} sweeps in a row`,
+      description: `replay-pending-bylines.js inspected files but promoted, dropped, rejected or tagged none for ${h.zeroRuns} consecutive --all-open/--all-pending runs (_pending holds ${last.pending}). The drain is stuck or starved.`,
+      hint: 'Read the last enrich-reviews "Drain pending" step log; run node scripts/replay-pending-bylines.js --all-open --dry-run.',
+    }],
+    ['pending-drain-growth', h.growth, {
+      title: `_pending grew by ${h.delta} files over ${drainState.GROWTH_RUNS} sweeps`,
+      description: `The _pending backlog rose on every one of the last ${drainState.GROWTH_RUNS} sweeps (now ${last.pending}): intake is outrunning the drain, or a discovery path is writing junk.`,
+      hint: 'Check which show dirs grew: du over data/review-texts/_pending; look for a bare-title show (generic-title-guard).',
+    }],
+  ];
+  for (const [conditionKey, firing, body] of conds) {
+    try {
+      if (firing) await alert({ conditionKey, ...body, disposition: 'human', severity: 'warning', cooldownHours: 24 });
+      else await resolve(conditionKey, { reason: 'drain healthy on the latest sweep' });
+    } catch (e) { console.log(`  drain alert ${conditionKey} failed: ${e.message}`); }
+  }
+  return h;
+}
+
 module.exports = {
   pendingPromoteRejectReason,
   NON_THEATRE_SECTIONS,
@@ -684,6 +774,10 @@ module.exports = {
   shouldAlertUnrecoverable,
   unrecoverableAlertPayload,
   PENDING_UNRECOVERABLE_STAGE,
+  // BRO-7930
+  planPendingWork,
+  countPendingFiles,
+  raiseDrainHealthAlerts,
 };
 
 if (require.main === module) {
@@ -705,18 +799,28 @@ if (require.main === module) {
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0;
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0;
     const alertPromises = [];
-    for (const { showId: id, files } of planPendingWork(ids)) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, alertPromise } = await processShow(id, { files });
+    // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
+    const sweep = allOpen || allPending;
+    const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
+    let cursor = state ? state.cursor : null;
+    const plan = planPendingWork(ids, sweep ? { mode: 'rotate', cursor } : {});
+    if (sweep) console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) in scope, resuming after ${cursor || '(start)'}`);
+    let completedPass = true;
+    for (const { showId: id, files } of plan) {
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, alertPromise } = await processShow(id, { files });
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
       totalDropped += droppedRedundant || 0;
       totalUnrecoverable += unrecoverable || 0;
       totalRefetched += refetched || 0;
+      totalTagged += tagged || 0;
+      totalInspected += inspected || 0;
+      if (lastFile) cursor = pathKey(id, lastFile);
       if (alertPromise) alertPromises.push(alertPromise);
-      if (budgetExceeded) break;
+      if (budgetExceeded) { completedPass = false; break; }
     }
     await Promise.all(alertPromises);
 
@@ -724,9 +828,29 @@ if (require.main === module) {
     console.log(`Promoted: ${totalPromoted}`);
     console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
     console.log(`Dropped (url already filed, stub had nothing extra): ${totalDropped}`);
+    console.log(`Tagged as settled junk (skipped from now on): ${totalTagged}`);
     console.log(`Kept in _pending: ${totalKept}`);
     console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
+
+    if (sweep) {
+      // Finished a full pass: the next run starts over from the top. Otherwise it resumes after the last file reached.
+      const nextCursor = completedPass ? null : cursor;
+      const pending = countPendingFiles();
+      console.log(`Rotation: ${completedPass ? 'full pass complete — next run restarts at the top' : `budget hit — next run resumes after ${nextCursor}`}; _pending now holds ${pending} file(s)`);
+      if (!dryRun) {
+        state.cursor = nextCursor;
+        state.history.push({ at: new Date().toISOString(), scope: allPending ? 'all-pending' : 'all-open', promoted: totalPromoted, dropped: totalDropped, rejected: totalRejected, tagged: totalTagged, inspected: totalInspected, pending });
+        drainState.saveState(REVIEW_TEXTS_ROOT, state);
+        await raiseDrainHealthAlerts(state.history);
+        // BRO-7930 limbo gate: every unflagged, unscored file older than the grace window gets a route.
+        try {
+          const { routeLimbo } = require('./route-limbo-reviews');
+          const r = routeLimbo({ apply: true, log: console.log });
+          console.log(`Limbo gate: ${r.counts.routed} routed (${JSON.stringify(r.counts.byRoute)}), ${r.counts.grace} still inside the ${r.graceDays}-day grace window`);
+        } catch (e) { console.log(`Limbo gate failed: ${e.message}`); }
+      }
+    }
   })().catch(e => {
     console.error(e);
     process.exitCode = 1;
