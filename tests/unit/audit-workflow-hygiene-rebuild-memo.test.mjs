@@ -96,3 +96,22 @@ describe('restore gated narrower than the rebuild (the actual BRO-8012 bug)', ()
     assert.deepEqual(findRebuildWithoutMemoRestore(gated("inputs.x == 'y'", "inputs.x == 'y'")), []);
   });
 });
+
+describe('restore detection edge cases (ship-check review)', () => {
+  test('a save or rm step that names the memo file is not a restore', () => {
+    const rm = `      - name: Clear memo\n        run: rm -f .cache/rebuild-fp-cache.json\n`;
+    const save = `      - name: Save memo\n        uses: actions/cache/save@v5\n        with:\n          path: .cache/rebuild-fp-cache.json\n          key: k\n`;
+    assert.equal(findRebuildWithoutMemoRestore(wf(job('poll', rm + REBUILD))).length, 1);
+    assert.equal(findRebuildWithoutMemoRestore(wf(job('poll', save + REBUILD))).length, 1);
+  });
+
+  test('block-scalar if: on the restore is read as its expression', () => {
+    const gatedRestore = RESTORE.replace('        uses:', '        if: |\n          inputs.fast_path == true\n        uses:');
+    const gatedRebuild = REBUILD.replace('        run:', '        if: |\n          inputs.fast_path == true\n        run:');
+    const otherRebuild = REBUILD.replace('        run:', '        if: >\n          inputs.other == true\n        run:');
+    assert.deepEqual(findRebuildWithoutMemoRestore(wf(job('poll', gatedRestore + gatedRebuild))), []);
+    const hits = findRebuildWithoutMemoRestore(wf(job('poll', gatedRestore + otherRebuild)));
+    assert.equal(hits.length, 1);
+    assert.match(hits[0].reason, /gated/);
+  });
+});

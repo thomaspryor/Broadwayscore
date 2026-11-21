@@ -645,9 +645,20 @@ function stepAt(lines, i, jobStart) {
   let ifExpr = null;
   for (let k = start; k < end; k++) {
     const m = lines[k].match(/^ {6}(?:- | {2})if:\s*(.+?)\s*$/);
-    if (m) { ifExpr = m[1].replace(/^['"]|['"]$/g, ''); break; }
+    if (!m) continue;
+    if (/^[|>][-+]?$/.test(m[1])) {
+      // Block-scalar `if: |` / `if: >`: the expression is the indented lines below.
+      const body = [];
+      for (let j = k + 1; j < end && /^ {10,}\S/.test(lines[j]); j++) body.push(lines[j].trim());
+      ifExpr = body.join(' ');
+    } else {
+      ifExpr = m[1].replace(/^['"]|['"]$/g, '');
+    }
+    break;
   }
-  return { start, ifExpr };
+  // Only a cache restore step restores the memo (a save or rm step that names the file does not).
+  const isRestore = lines.slice(start, end).some((l) => /uses:\s*actions\/cache(?:\/restore)?@/.test(l));
+  return { start, ifExpr, isRestore };
 }
 
 function findRebuildWithoutMemoRestore(raw) {
@@ -671,6 +682,7 @@ function findRebuildWithoutMemoRestore(raw) {
     for (let k = jobStart; k < rebuildStep.start && !covered; k++) {
       if (lines[k].trimStart().startsWith('#') || !MEMO_PATH_RE.test(lines[k])) continue;
       const restoreStep = stepAt(lines, k, jobStart);
+      if (!restoreStep.isRestore) continue;
       if (restoreCoversRebuild(restoreStep.ifExpr, rebuildStep.ifExpr)) covered = true;
       else gated = true;
     }
