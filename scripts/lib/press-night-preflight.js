@@ -29,12 +29,14 @@ function preflightVerdict({ results = [], sb = null } = {}) {
     const crashed = /^Check threw error/.test(String(r.message || ''));
     if (r.status === 'fail' || r.status === 'skip' || crashed) problems.push({ key: name, why: `${crashed ? 'check crashed' : r.status}: ${String(r.message || '').slice(0, 160)}` });
   }
-  // Unknown status (null, no key, API error) is not a problem on its own; check-secrets-health covers the key.
-  const sbV = sb && sb.ok ? sbCreditVerdict(sb) : null;
-  if (sbV && sbV.level === 'fail') problems.push({ key: 'ScrapingBee credits', why: sbV.detail });
-  const sbNote = sbV && sbV.level === 'warn' ? sbV.detail : null;
+  // Unknown status (null, API error, unreadable payload) is not a problem on its own (check-secrets-health covers
+  // the key), but it is not proof of credit either: sbUnknown stops a run from clearing an earlier page.
+  const sbV = sb ? sbCreditVerdict(sb) : null;
+  const sbUnknown = !sb || !sb.ok;
+  if (sbV && !sbUnknown && sbV.level === 'fail') problems.push({ key: 'ScrapingBee credits', why: sbV.detail });
+  const sbNote = sbV && (sbV.level === 'warn' || sbV.level === 'skip') ? sbV.detail : null;
   const resendDown = problems.some((p) => p.key === 'Resend');
-  return { ok: problems.length === 0, problems, resendDown, sbNote };
+  return { ok: problems.length === 0, problems, resendDown, sbNote, sbUnknown };
 }
 
 module.exports = { preflightVerdict, REQUIRED };

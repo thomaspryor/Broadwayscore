@@ -37,8 +37,19 @@ test('thin ScrapingBee balance never pages (ride-out policy, BRO-7854); exhauste
   assert.match(today.sbNote, /91% used/);
   const thin = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 99, usedCredits: 995000, maxCredits: 1000000, remaining: 5000 } });
   assert.equal(thin.ok, true);
+  assert.match(thin.sbNote, /5000 left/);
   const empty = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
   assert.deepEqual(empty.problems.map((p) => p.key), ['ScrapingBee credits']);
   const noCount = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100 } });
   assert.deepEqual(noCount.problems.map((p) => p.key), ['ScrapingBee credits']);
+});
+
+test('unreadable credit status: no page, but flagged so the run does not clear earlier pages', () => {
+  for (const sb of [null, { ok: false, reason: 'api-error', message: 'timeout' }]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.equal(v.ok, true);
+    assert.equal(v.sbUnknown, true);
+  }
+  assert.match(preflightVerdict({ results: all(), sb: { ok: false, reason: 'api-error', message: 'timeout' } }).sbNote, /Could not read/);
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 10, usedCredits: 1, maxCredits: 10, remaining: 9 } }).sbUnknown, false);
 });

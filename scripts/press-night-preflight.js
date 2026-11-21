@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * press-night-preflight.js (BRO-6858): 24h and 3h before a Broadway press night, check that every key the night
+ * press-night-preflight.js (BRO-6858): 24h and 3h before a press night in any lane market, check that every key the night
  * spends on works and ScrapingBee has credits left. A problem pages the owner (press-night:preflight:, page-worthy)
  * with time to fix it; a clean run resolves the condition. Started by press-night-clock.yml.
  *
@@ -44,12 +44,17 @@ async function main() {
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   const conditionKey = `press-night:preflight:${show}:${night}:${label}`;
   // A clean run clears every preflight page of the night (a clean pf3 clears a pf24 page fixed since).
-  if (v.ok) { for (const l of new Set([label, 'pf24', 'pf3'])) resolveCondition(`press-night:preflight:${show}:${night}:${l}`, { reason: `preflight ${label} clean` }); return 0; }
+  if (v.ok) {
+    // An unreadable credit status is not proof the earlier page is fixed: leave it open (BRO-8009 review).
+    if (v.sbUnknown) { console.log('clean, but ScrapingBee credits unreadable: not clearing earlier preflight pages'); return 0; }
+    for (const l of new Set([label, 'pf24', 'pf3'])) resolveCondition(`press-night:preflight:${show}:${night}:${l}`, { reason: `preflight ${label} clean` });
+    return 0;
+  }
   const runUrl = process.env.GITHUB_RUN_ID ? `https://github.com/${REPO}/actions/runs/${process.env.GITHUB_RUN_ID}` : undefined;
   const when = label === 'pf3' ? '3 hours' : label === 'pf24' ? '24 hours' : 'soon';
   const res = await routeAlert({
     conditionKey, severity: 'error', disposition: 'human', cooldownHours: 24,
-    title: `Press night in ${when}: ${show} has ${v.problems.length} broken key(s)`,
+    title: `Press night in ${when}: ${show} has ${v.problems.length} problem(s) with keys or credits`,
     description: `${v.problems.map((p) => `${p.key} (${p.why})`).join('; ')}.${v.resendDown ? ' Resend is down, so this email may not arrive; the alert also goes to Linear.' : ''} Run: ${runUrl || 'local'}`,
     url: runUrl,
   });
