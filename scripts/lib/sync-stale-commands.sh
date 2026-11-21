@@ -17,11 +17,14 @@ root="$1"; home_cmds="$HOME/.claude/commands"
 [ -d "$root/.claude/commands" ] && [ -d "$home_cmds" ] || exit 0
 case "$(git -C "$root" remote get-url origin 2>/dev/null)" in *thomaspryor/Broadwayscore*) ;; *) exit 0 ;; esac
 synced=""
+backup_dir=$(mktemp -d "${TMPDIR:-/tmp}/sync-cmds.XXXXXX") || exit 0
+trap 'rm -rf "$backup_dir"' EXIT
 for cf in "$root"/.claude/commands/*.md; do
   [ -f "$cf" ] || continue
   cb=$(basename "$cf"); gf="$home_cmds/$cb"
   [ -f "$gf" ] && ! cmp -s "$cf" "$gf" || continue
   git -C "$root" diff --quiet origin/main -- ".claude/commands/$cb" 2>/dev/null || continue
+  git -C "$HOME/.claude" ls-files --error-unmatch -- "commands/$cb" >/dev/null 2>&1 || continue # tracked only
   git -C "$HOME/.claude" diff --quiet HEAD -- "commands/$cb" 2>/dev/null || continue
   gh=$(git hash-object "$gf" 2>/dev/null); [ -n "$gh" ] || continue
   hit=""
@@ -29,10 +32,19 @@ for cf in "$root"/.claude/commands/*.md; do
     [ "$(git -C "$root" rev-parse "$c:.claude/commands/$cb" 2>/dev/null)" = "$gh" ] && { hit=1; break; }
   done
   [ -n "$hit" ] || continue
+  backup="$backup_dir/$cb"; cp -p "$gf" "$backup" 2>/dev/null || continue # restored if the commit fails
   if cp "$cf" "$gf.sync.$$" 2>/dev/null && mv "$gf.sync.$$" "$gf" 2>/dev/null; then synced="$synced $cb"; else rm -f "$gf.sync.$$"; fi
 done
 [ -n "$synced" ] || exit 0
 paths=""; for s in $synced; do paths="$paths commands/$s"; done
 # shellcheck disable=SC2086
-( cd "$HOME/.claude" && git add -- $paths && git commit -q -m "commands: auto-sync$synced from Broadwayscore (global copy was strictly behind; BRO-7887)" -- $paths ) >/dev/null 2>&1 || true
-echo "$synced"
+if ( cd "$HOME/.claude" && git add -- $paths && git commit -q -m "commands: auto-sync$synced from Broadwayscore (global copy was strictly behind; BRO-7887)" -- $paths ) >/dev/null 2>&1; then
+  echo "$synced"
+else
+  # Commit failed (index.lock held by a parallel claude-sync, ...): put the committed copies back so ~/.claude is not
+  # left dirty (claude-sync pull would refuse) and the next session retries. Print nothing: nothing was synced.
+  # Copy files back (no git: the lock that failed the commit would fail a checkout too), then unstage if possible.
+  for s in $synced; do mv "$backup_dir/$s" "$home_cmds/$s" 2>/dev/null; done
+  # shellcheck disable=SC2086
+  ( cd "$HOME/.claude" && git reset -q -- $paths ) >/dev/null 2>&1 || true
+fi

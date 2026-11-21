@@ -55,3 +55,19 @@ test('a worktree whose copy differs from origin/main does not sync', () => {
   assert.equal(run(repo, home), '');
   assert.equal(fs.readFileSync(path.join(cmds, 'a.md'), 'utf8'), 'a v1\n');
 });
+
+test('a failed ~/.claude commit restores the old copy and reports nothing (next session retries)', () => {
+  const { repo, home, cmds } = fixture('https://github.com/thomaspryor/Broadwayscore.git');
+  fs.writeFileSync(path.join(home, '.claude/.git/index.lock'), ''); // a parallel git holds the index
+  assert.equal(run(repo, home), '');
+  fs.rmSync(path.join(home, '.claude/.git/index.lock'));
+  assert.equal(fs.readFileSync(path.join(cmds, 'a.md'), 'utf8'), 'a v1\n', 'copy reverted, ~/.claude not left dirty');
+  assert.equal(run(repo, home), 'a.md', 'retried on the next run');
+});
+
+test('an untracked global file is left alone', () => {
+  const { repo, home, cmds } = fixture('https://github.com/thomaspryor/Broadwayscore.git');
+  git(path.join(home, '.claude'), 'rm', '-q', '--cached', 'commands/a.md'); git(path.join(home, '.claude'), 'commit', '-qm', 'untrack');
+  assert.equal(run(repo, home), '');
+  assert.equal(fs.readFileSync(path.join(cmds, 'a.md'), 'utf8'), 'a v1\n');
+});
