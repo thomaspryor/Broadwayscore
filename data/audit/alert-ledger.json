@@ -41436,7 +41436,7 @@
     },
     "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts": {
       "status": "resolved",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-19T17:00:14.718Z",
@@ -41447,8 +41447,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7906",
-      "silentRefires": 56,
-      "resolvedAt": "2026-11-21T17:20:02.415Z",
+      "escalatedAt": "2026-11-21T17:09:40.044Z",
+      "escalationLane": "cloud-start-now",
+      "resolvedAt": "2026-11-21T17:26:10.950Z",
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
