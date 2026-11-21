@@ -208,7 +208,7 @@ function ingest(showId, m, url, show) {
     const f = path.join(reviewDir(showId), name);
     let body = '';
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
-    if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
+    if (body.length < 200 || !(pageMentionsShowTitle(body, show.title) || (m.outletId === 'thestage' && lib.urlSlugNamesTitle(url, show.title)))) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     // BRO-6487: sitemap slugs often carry no venue; a same-title production elsewhere must not pass on the title alone.
     if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;

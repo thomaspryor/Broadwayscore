@@ -201,3 +201,19 @@ test('guardianItemIsReview is the shared Guardian review predicate (BRO-6503, ou
   assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/2011/feb/04/x', fields: { headline: 'Clybourne Park', starRating: '4' } }), true);
   assert.equal(guardianItemIsReview({ webUrl: 'https://www.theguardian.com/stage/2011/feb/04/y', fields: { headline: 'Clybourne Park – review' } }), true);
 });
+
+test('urlSlugNamesTitle: Stage slugs name the show even when the body does not', () => {
+  const u = (slug) => `https://www.thestage.co.uk/reviews/${slug}`;
+  assert.equal(lib.urlSlugNamesTitle(u('the-father-at-wyndhams-theatre-london--carefully-calibrated-but-too-clinical'), 'The Father'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('irving-berlins-white-christmas'), 'White Christmas'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('the-mentalists'), 'The Mentalists'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('mr-footes-other-leg-review-at-theatre-royal-haymarket-london--witty-and-warm-hearted'), "Mr Foote's Other Leg"), true);
+  assert.equal(lib.urlSlugNamesTitle(u('damon-albarns-wonderland-review-at-the-olivier-national-theatre--disappointing'), 'Wonder.land'), true);
+});
+
+test('urlSlugNamesTitle: a different show or an unrelated slug does not match', () => {
+  const u = (slug) => `https://www.thestage.co.uk/reviews/${slug}`;
+  assert.equal(lib.urlSlugNamesTitle(u('the-mother-at-the-national-theatre'), 'The Father'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('hangmen-review-at-wyndhams'), 'Hang'), false);
+  assert.equal(lib.urlSlugNamesTitle('not a url', 'Hamlet'), false);
+});

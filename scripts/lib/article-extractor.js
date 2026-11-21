@@ -345,15 +345,17 @@ function extractStageBody(html) {
     for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
       if (!isAnchor(found[trailerAt].t)) continue;
       if (trailerAt === 0) continue;
-      // Only the author bio may sit far (author-card markup) from the review; a lone subscribe/copyright footer
-      // line is on every page, so it must follow the prose closely.
-      if (found[trailerAt].at - found[trailerAt - 1].end > (isPlainBio(found[trailerAt].t) ? 60000 : 5000)) continue;
       // The author-card markup between the review and its trailer can be tens of thousands of characters
-      // (live: 30k), so the gap rule applies inside the run of review paragraphs, not before the trailer.
+      // (live: 30k to the bio, 75k to the subscribe line on pages with no bio), so the gap rule applies inside the
+      // run of review paragraphs. A lone footer line (subscribe/copyright) is on every page, so it may only sit far
+      // from the run when the run is substantial prose (>=4 paragraphs, >=1200 chars); the bio may always.
+      const farGap = found[trailerAt].at - found[trailerAt - 1].end > 5000;
       let from = trailerAt - 1;
       while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
       const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t));
-      if (run.length >= 3 && run.join('\n\n').length >= 600) paras = run;
+      const runLen = run.join('\n\n').length;
+      const farOk = !farGap || isPlainBio(found[trailerAt].t) || (run.length >= 4 && runLen >= 1200);
+      if (run.length >= 3 && runLen >= 600 && farOk) paras = run;
     }
     if (!paras) return null;
   }

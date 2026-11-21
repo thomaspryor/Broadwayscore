@@ -257,7 +257,24 @@ function hostMatchesSlot(m, host) {
   return (m.hosts || [m.domain]).some(d => h === d || h.endsWith('.' + d));
 }
 
+/**
+ * True when the last URL path segment names the show: its title tokens appear in order in the slug (or, for a long
+ * title, with punctuation squeezed out, e.g. "Wonder.land" in damon-albarns-wonderland). The Stage puts the title in
+ * the headline and URL, not in the review body, so the body-names-title guard cannot clear a real Stage review.
+ */
+function urlSlugNamesTitle(url, title) {
+  let slug = '';
+  try { slug = decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).pop() || ''); } catch { return false; }
+  const toks = (x) => String(x || '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const t = toks(title), g = toks(slug);
+  if (!t.length || !g.length) return false;
+  if (` ${g.join(' ')} `.includes(` ${t.join(' ')} `)) return true;
+  const flat = t.join('');
+  return flat.length >= 9 && g.join('').includes(flat);
+}
+
 module.exports = {
+  urlSlugNamesTitle,
   hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
   norm, venueAgrees, matchWosPosts, matchGuardianResults, guardianItemIsReview, ledgerUsd, CostTally, addDays,
 };

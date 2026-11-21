@@ -95,3 +95,11 @@ test('listing page: teaser paragraphs, then a far-away lone subscribe or copyrig
   assert.equal(extractArticleText(page(ps(teasers) + far + '<p>Invest in The Stage today with a subscription starting at £1.</p>'), 'thestage.co.uk'), null);
   assert.equal(extractArticleText(page(ps(teasers) + far + '<p>© Copyright Playbook Media Trading Company Limited</p>'), 'thestage.co.uk'), null);
 });
+
+test('page with no bio: a substantial review run then ~75k of markup then the subscribe line still extracts', () => {
+  const long = BODY.map((x) => x + ' ' + x.slice(0, 80));
+  const far = '<div>' + '<span>card</span>'.repeat(4500) + '</div>';
+  const html = `<html><body><h1>All That Fall review</h1>${ps(long)}${far}<p>Invest in The Stage today with a subscription starting at £1.</p><p>© Copyright Playbook Media Trading Company Limited</p></body></html>`;
+  const tx = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(tx && tx.includes('criss-crossing') && !/Invest in The Stage/.test(tx));
+});
