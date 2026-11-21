@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   GATES, decideGateDelta, decideAllGates, firstFailingGate, parseGateFailures, parseTscFailures,
   parseNextLintFailures, parseLintWorkflowsFailures, parseBashIntegrationFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
-  redGates, computeRerunScope,
+  redGates, computeRerunScope, tapRunFinished, shardPart, checkShardManifest, readGateResult,
 } = require('./land-gate-delta.js');
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
@@ -843,4 +843,155 @@ test('BRO-7106: land.yml e2e-harness staging copies everything land-gate-delta.j
   } finally {
     fs.rmSync(H, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+
+// ── BRO-7324 step A: split (sharded) runs fail closed ───────────────────────
+// The hole: with base red, a merged log where part 2 never reported but part 1
+// shows only a pre-existing failure reads as a clean delta PASS.
+const PRE = [['tests/unit/a.test.mjs', 'image self-heal']];
+const shard1Log = tap(ROOT, PRE); // part 1's own log, finished (`# tests N`)
+const fullManifest = (p2 = { exit: 0, finished: true }) => ({ expected: ['1/2', '2/2'], parts: { '1/2': { exit: 1, finished: true }, '2/2': p2 } });
+
+test('BRO-7324 hole, documented: the same joined input WITHOUT a manifest reads PASS (why step A exists)', () => {
+  const d = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: shard1Log, root: ROOT } });
+  assert.equal(d.verdict, 'pass');
+});
+
+test('BRO-7324: part 2 missing, part 1 has a pre-existing failure, base red → shard-incomplete FAIL, never PASS', () => {
+  const d = decideGateDelta({
+    gate: 'unit-tests-node',
+    base: { exit: 1, text: tap(ROOT, PRE), root: ROOT },
+    branch: { exit: 1, text: shard1Log, root: ROOT, shards: { expected: ['1/2', '2/2'], parts: { '1/2': { exit: 1, finished: true } } } },
+  });
+  assert.equal(d.verdict, 'fail');
+  assert.equal(d.mode, 'shard-incomplete');
+  assert.match(d.reason, /infrastructure failure/);
+  assert.match(d.reason, /part 2\/2 is missing/);
+});
+
+test('BRO-7324: a merged exit 0 with an incomplete manifest still fails (checked before the green path)', () => {
+  const d = decideGateDelta({ gate: 'unit-tests-node', base: null, branch: { exit: 0, text: '# tests 3', shards: fullManifest(null) } });
+  assert.equal(d.verdict, 'fail');
+  assert.equal(d.mode, 'shard-incomplete');
+});
+
+test('BRO-7324: a killed part (exit 137) and an unfinished part (no summary) are refused', () => {
+  const killed = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: shard1Log, root: ROOT, shards: fullManifest({ exit: 137, finished: false }) } });
+  assert.equal(killed.mode, 'shard-incomplete');
+  assert.match(killed.reason, /exited 137/);
+  const cut = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: shard1Log, root: ROOT, shards: fullManifest({ exit: 1, finished: false }) } });
+  assert.equal(cut.mode, 'shard-incomplete');
+  assert.match(cut.reason, /did not finish/);
+});
+
+test('BRO-7324: malformed manifests are refused (invalid, bad expected list, unknown part, non-TAP gate split)', () => {
+  for (const [gate, shards, re] of [
+    ['unit-tests-node', { invalid: 'x.shards.json is unreadable' }, /unreadable/],
+    ['unit-tests-node', { expected: [], parts: {} }, /no valid expected/],
+    ['unit-tests-node', { expected: ['1/2'], parts: { '1/2': { exit: 0, finished: true } } }, /not exactly/],
+    ['unit-tests-node', { ...fullManifest(), parts: { ...fullManifest().parts, '3/2': { exit: 0, finished: true } } }, /unexpected part 3\/2/],
+    ['tsc', { expected: ['1/2', '2/2'], parts: { '1/2': { exit: 0, finished: true }, '2/2': { exit: 0, finished: true } } }, /not a TAP gate/],
+    ['tsc', { expected: ['1/1'], parts: { '1/1': { exit: 137, finished: true } } }, /exited 137/],
+    ['unit-tests-node', { expected: ['1/9999999999'], parts: {} }, /outside 1\.\.16/],
+  ]) {
+    const d = decideGateDelta({ gate, base: null, branch: { exit: 0, text: '', shards } });
+    assert.equal(d.mode, 'shard-incomplete', JSON.stringify(shards));
+    assert.match(d.reason, re);
+  }
+});
+
+test('BRO-7324: a complete manifest changes nothing — the normal delta still runs', () => {
+  const joined = `${shard1Log}\n${tap(ROOT, [])}`; // both parts' logs, two `# tests N` lines
+  const d = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: joined, root: ROOT, shards: fullManifest() } });
+  assert.equal(d.verdict, 'pass');
+  assert.equal(d.mode, 'delta');
+  const n = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: `${tap(ROOT, [...PRE, ['tests/unit/n.test.mjs', 'new']])}\n${tap(ROOT, [])}`, root: ROOT, shards: fullManifest() } });
+  assert.equal(n.verdict, 'fail');
+  assert.equal(n.mode, 'delta');
+});
+
+test('BRO-7324: an incomplete base manifest cannot vouch → strict, with its own reason', () => {
+  const d = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT, shards: fullManifest(null) }, branch: { exit: 1, text: shard1Log, root: ROOT } });
+  assert.equal(d.verdict, 'fail');
+  assert.equal(d.mode, 'strict');
+  assert.match(d.reason, /incomplete split run/);
+});
+
+test('BRO-7324: shard-incomplete is never downgraded on an advisory gate', () => {
+  const prev = process.env.LAND_TOPLEVEL_ADVISORY;
+  process.env.LAND_TOPLEVEL_ADVISORY = '1';
+  try {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
+    const red = resultDir(tmp, 'branch', { 'toplevel-regression': { exit: 1, text: 'x' } });
+    // Control: plain red on the advisory gate IS downgraded.
+    const plain = decideAllGates({ gates: ['toplevel-regression'], base: null, branch: red });
+    assert.equal(plain[0].verdict, 'pass');
+    fs.writeFileSync(path.join(red, 'toplevel-regression.shards.json'), JSON.stringify({ expected: ['1/1'], parts: {} }));
+    const split = decideAllGates({ gates: ['toplevel-regression'], base: null, branch: red });
+    assert.equal(split[0].verdict, 'fail');
+    assert.equal(split[0].mode, 'shard-incomplete');
+  } finally {
+    if (prev === undefined) delete process.env.LAND_TOPLEVEL_ADVISORY; else process.env.LAND_TOPLEVEL_ADVISORY = prev;
+  }
+});
+
+test('BRO-7324: readGateResult — meta.sharded with a gate manifest missing is refused; unsplit dirs carry no shards', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
+  const plain = resultDir(tmp, 'plain', { tsc: { exit: 0, text: '' } });
+  assert.equal(readGateResult(plain, 'tsc').shards, undefined);
+  const split = resultDir(tmp, 'split', { tsc: { exit: 0, text: '' }, 'unit-tests-node': { exit: 0, text: '# tests 1' } }, { sharded: true });
+  assert.match(readGateResult(split, 'tsc').shards.invalid, /tsc\.shards\.json is missing/);
+  const d = decideAllGates({ gates: ['tsc'], base: null, branch: split });
+  assert.equal(d[0].mode, 'shard-incomplete');
+  fs.writeFileSync(path.join(split, 'unit-tests-node.shards.json'), '{not json');
+  assert.match(readGateResult(split, 'unit-tests-node').shards.invalid, /unreadable/);
+  fs.writeFileSync(path.join(split, 'tsc.shards.json'), JSON.stringify({ expected: ['1/1'], parts: { '1/1': shardPart('tsc', { exit: 0, text: '' }) } }));
+  // tsc whole and finished → judged on its own exit (0 here), not shard-incomplete.
+  const t = decideAllGates({ gates: ['tsc'], base: null, branch: split });
+  assert.equal(t[0].mode, 'green');
+  // A merged exit 0 over a red part (exit 2) is a lying merge → refused.
+  fs.writeFileSync(path.join(split, 'tsc.shards.json'), JSON.stringify({ expected: ['1/1'], parts: { '1/1': shardPart('tsc', { exit: 2, text: 'error TS2322' }) } }));
+  const lie = decideAllGates({ gates: ['tsc'], base: null, branch: split });
+  assert.equal(lie[0].mode, 'shard-incomplete');
+  assert.match(lie[0].reason, /disagrees with its parts/);
+});
+
+test('BRO-7324: a lost manifest marker is caught by any other gate manifest in the dir', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
+  const dir = resultDir(tmp, 'b', { tsc: { exit: 0, text: '' }, 'unit-tests-node': { exit: 1, text: shard1Log } });
+  fs.writeFileSync(path.join(dir, 'tsc.shards.json'), JSON.stringify({ expected: ['1/1'], parts: { '1/1': { exit: 0, finished: true } } }));
+  assert.match(readGateResult(dir, 'unit-tests-node').shards.invalid, /other gates/);
+});
+
+test('BRO-7324: a merged TAP log missing a part summary is refused even when the manifest says both finished', () => {
+  const d = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 1, text: tap(ROOT, PRE), root: ROOT }, branch: { exit: 1, text: shard1Log, root: ROOT, shards: fullManifest() } });
+  assert.equal(d.mode, 'shard-incomplete');
+  assert.match(d.reason, /holds 1 of 2/);
+});
+
+test('empty or garbled .exit files are "no exit", never green, and never downgraded on advisory gates', () => {
+  const prev = process.env.LAND_TOPLEVEL_ADVISORY;
+  process.env.LAND_TOPLEVEL_ADVISORY = '1';
+  try {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-'));
+    const dir = resultDir(tmp, 'b', { tsc: { exit: '', text: '' }, 'toplevel-regression': { exit: 'oops', text: '' } });
+    assert.equal(readGateResult(dir, 'tsc').exit, null);
+    const d = decideAllGates({ gates: ['tsc', 'toplevel-regression'], base: null, branch: dir });
+    assert.deepEqual(d.map((x) => [x.verdict, x.mode]), [['fail', 'fail-safe'], ['fail', 'fail-safe']]);
+  } finally {
+    if (prev === undefined) delete process.env.LAND_TOPLEVEL_ADVISORY; else process.env.LAND_TOPLEVEL_ADVISORY = prev;
+  }
+});
+
+test('BRO-7324: shardPart / tapRunFinished — the finish rule is TAP-only; timeouts and kills never finish', () => {
+  assert.equal(tapRunFinished({ exit: 1, text: 'not ok 1\n# tests 1\n' }), true);
+  assert.equal(tapRunFinished({ exit: 1, text: 'not ok 1\n' }), false);
+  assert.equal(tapRunFinished({ exit: 137, text: '# tests 1' }), false);
+  assert.deepEqual(shardPart('unit-tests-node', { exit: 0, text: '# tests 4' }), { exit: 0, finished: true });
+  assert.deepEqual(shardPart('unit-tests-node', { exit: 1, text: 'cut' }), { exit: 1, finished: false });
+  assert.deepEqual(shardPart('tsc', { exit: 2, text: '' }), { exit: 2, finished: true });
+  assert.deepEqual(shardPart('bash-integration', { exit: 124, text: '' }), { exit: 124, finished: false });
+  assert.deepEqual(shardPart('next-lint', { exit: null, text: '' }), { exit: null, finished: false });
+  assert.equal(checkShardManifest('unit-tests-node', fullManifest()).complete, true);
 });

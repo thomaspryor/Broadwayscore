@@ -268,6 +268,75 @@ function parseGateFailures(gate, text, treeRoot) {
 
 // ── The decision ────────────────────────────────────────────────────────────
 
+// ── Shard manifests (BRO-7324 step A) ───────────────────────────────────────
+// When a gate's result is the union of several runners' parts (step B's
+// `land-gauntlet.sh --merge`), a part that is missing, was killed, or stopped
+// before its final `# tests N` line would leave a merged log that looks like a
+// smaller red run. With base red, that can read as "only pre-existing
+// failures" and PASS a gate that never ran half its files. So a merged result
+// dir carries `meta.json` `sharded: true` and one `<gate>.shards.json` per gate:
+//   { "expected": ["1/2","2/2"], "parts": { "1/2": {"exit":1,"finished":true}, "2/2": null } }
+// Any gap is an infrastructure failure: the gate is refused, never diffed.
+
+const MAX_SHARDS = 16;
+
+/** True when a TAP batch ran to its end: exit 0/1 and a final `# tests N` line. */
+function tapRunFinished({ exit, text } = {}) {
+  return (exit === 0 || exit === 1) && /^# tests \d+\s*$/m.test(text || '');
+}
+
+/** One part's manifest record, from that runner's own exit and log. */
+function shardPart(gate, { exit, text } = {}) {
+  const code = Number.isInteger(exit) ? exit : null;
+  // Non-TAP gates print no `# tests N`; they run whole (part "1/1") and count as
+  // finished on any ordinary exit. 124 (timeout) and 128+ (killed) never finish.
+  const finished = TAP_GATES.has(gate) ? tapRunFinished({ exit: code, text }) : (code !== null && code >= 0 && code < 124);
+  return { exit: code, finished };
+}
+
+/** Pure. A gate's manifest entry → { complete, problems[] }. Anything odd is a problem. */
+function checkShardManifest(gate, entry) {
+  const problems = [];
+  if (!entry || typeof entry !== 'object' || entry.invalid) return { complete: false, problems: [entry && entry.invalid ? entry.invalid : 'shard manifest missing or unreadable'] };
+  const expected = entry.expected;
+  const parts = entry.parts;
+  if (!Array.isArray(expected) || expected.length === 0 || !expected.every((k) => typeof k === 'string' && /^\d+\/\d+$/.test(k))) {
+    return { complete: false, problems: ['shard manifest has no valid expected part list'] };
+  }
+  if (!parts || typeof parts !== 'object' || Array.isArray(parts)) return { complete: false, problems: ['shard manifest has no parts object'] };
+  const n = Number(expected[0].split('/')[1]);
+  if (!(n >= 1 && n <= MAX_SHARDS)) return { complete: false, problems: [`shard count ${expected[0]} is outside 1..${MAX_SHARDS}`] };
+  const want = Array.from({ length: n }, (_, i) => `${i + 1}/${n}`);
+  if (expected.length !== n || want.some((k) => !expected.includes(k))) problems.push(`expected parts ${JSON.stringify(expected)} are not exactly 1/${n}..${n}/${n}`);
+  if (n > 1 && !TAP_GATES.has(gate)) problems.push(`${gate} is not a TAP gate and cannot be split into ${n} parts`);
+  for (const k of Object.keys(parts)) if (!expected.includes(k)) problems.push(`unexpected part ${k}`);
+  for (const k of expected) {
+    const part = parts[k];
+    if (!part || typeof part !== 'object') { problems.push(`part ${k} is missing (its runner never reported)`); continue; }
+    if (!Number.isInteger(part.exit)) { problems.push(`part ${k} has no exit code`); continue; }
+    if ((TAP_GATES.has(gate) && part.exit !== 0 && part.exit !== 1) || part.exit < 0 || part.exit >= 124) { problems.push(`part ${k} exited ${part.exit} (killed or timed out)`); continue; }
+    if (part.finished !== true) problems.push(`part ${k} did not finish (exit ${part.exit}, no final summary)`);
+  }
+  return { complete: problems.length === 0, problems };
+}
+
+/**
+ * Pure. Does the merged exit/log agree with a complete manifest's parts? A
+ * merge that dropped a red part's log or wrote exit 0 over a red part would
+ * otherwise be judged on what survived.
+ */
+function mergedResultGaps(gate, merged, entry) {
+  const parts = entry.expected.map((k) => entry.parts[k]);
+  const allGreen = parts.every((p) => p.exit === 0);
+  const gaps = [];
+  if (allGreen !== (merged.exit === 0)) gaps.push(`merged exit ${merged.exit} disagrees with its parts' exits (${parts.map((p) => p.exit).join(', ')})`);
+  if (TAP_GATES.has(gate) && parts.length > 1) {
+    const summaries = ((merged.text || '').match(/^# tests \d+\s*$/gm) || []).length;
+    if (summaries < parts.length) gaps.push(`merged log holds ${summaries} of ${parts.length} parts' final summaries (a part's log was lost)`);
+  }
+  return gaps;
+}
+
 /**
  * Pure. `base` / `branch` are { exit: number|null, text: string, root?: string }
  * (base may be null/undefined: no baseline available → strict).
@@ -278,7 +347,17 @@ function decideGateDelta({ gate, base, branch }) {
   if (!branch || typeof branch.exit !== 'number') {
     return { gate, verdict: 'fail', mode: 'fail-safe', reason: 'no branch result — the gate never ran', newFailures: [], preExisting: [], fixed: [] };
   }
-  const baseKnown = base && typeof base.exit === 'number';
+  // BRO-7324: a merged result with a missing/killed/unfinished part is refused
+  // before ANY verdict path, green included. Never downgraded to advisory.
+  if (branch.shards !== undefined) {
+    const m = checkShardManifest(gate, branch.shards);
+    const gaps = m.complete ? mergedResultGaps(gate, branch, branch.shards) : m.problems;
+    if (gaps.length) {
+      return { gate, verdict: 'fail', mode: 'shard-incomplete', reason: `infrastructure failure, not your change: the split run is incomplete (${gaps.join('; ')}) — refusing rather than judge part of the gate`, newFailures: [], preExisting: [], fixed: [] };
+    }
+  }
+  const baseShardGap = base && base.shards !== undefined && !checkShardManifest(gate, base.shards).complete;
+  const baseKnown = !baseShardGap && base && typeof base.exit === 'number';
   const baseFailures = baseKnown && base.exit !== 0 ? parseGateFailures(gate, base.text, base.root) : new Map();
 
   if (branch.exit === 0) {
@@ -295,7 +374,7 @@ function decideGateDelta({ gate, base, branch }) {
   if (!baseKnown || base.exit === 0) {
     // Strict: nothing on the base to subtract. Every parsed failure is new;
     // an unparseable red run is still a red run.
-    const why = !baseKnown ? 'no base result to diff against' : 'base is green';
+    const why = baseShardGap ? 'the base result is an incomplete split run, so it cannot vouch for anything' : !baseKnown ? 'no base result to diff against' : 'base is green';
     return {
       gate, verdict: 'fail', mode: 'strict',
       reason: `${why} — ${exitNote}, ${branchFailures.size} failure(s)${branchFailures.size ? '' : ' (none parseable — crash/timeout?)'}`,
@@ -351,7 +430,7 @@ function computeRerunScope({ gate, branch, branchFiles, isolated = false }) {
   // BRO-7134: an isolated re-run only judges the files that printed a failure. A batch killed at
   // its time or output limit (exit not 1, or no final `# tests N` summary) never ran the rest, so
   // passing those few alone must not clear the gate: keep the batch verdict.
-  if (isolated && (branch.exit !== 1 || !/^# tests \d+\s*$/m.test(branch.text || ''))) return full('the batch did not finish (killed or cut short)');
+  if (isolated && (branch.exit !== 1 || !tapRunFinished(branch))) return full('the batch did not finish (killed or cut short)');
   // Normalized path -> the entry exactly as the gate listed it, so the
   // gauntlet matches its own spelling.
   const ran = new Map(branchFiles.map((p) => [normalizeTestPath(p), p]));
@@ -405,7 +484,8 @@ function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) 
     const advisoryWhy = ADVISORY_GATES[gate] ? ADVISORY_GATES[gate]() : null;
     // Only a gate that never ran ON THE BRANCH stays blocking. A base tree that
     // predates the gate (first land of it) also reaches fail-safe, and must not block.
-    if (d.verdict === 'pass' || !advisoryWhy || !branchResult) return d;
+    // A gate that produced no valid exit on the branch never ran: blocking too.
+    if (d.verdict === 'pass' || !advisoryWhy || !branchResult || typeof branchResult.exit !== 'number' || d.mode === 'shard-incomplete') return d;
     return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (${advisoryWhy}): ${d.reason}` };
   });
 }
@@ -425,11 +505,40 @@ function readGateResult(dir, gate) {
   if (!dir) return null;
   const exitFile = path.join(dir, `${gate}.exit`);
   if (!fs.existsSync(exitFile)) return null;
-  const exit = Number(fs.readFileSync(exitFile, 'utf8').trim());
+  const raw = fs.readFileSync(exitFile, 'utf8').trim();
+  // An empty or garbled .exit file is "no exit", never Number('') === 0 (green).
+  const exit = /^-?\d+$/.test(raw) ? Number(raw) : null;
   let text = '';
   try { text = fs.readFileSync(path.join(dir, `${gate}.log`), 'utf8'); } catch { text = ''; }
   const meta = readMeta(dir);
-  return { exit: Number.isInteger(exit) ? exit : null, text, root: meta && meta.root ? meta.root : undefined };
+  const out = { exit: Number.isInteger(exit) ? exit : null, text, root: meta && meta.root ? meta.root : undefined };
+  const shards = readShardEntry(dir, gate, meta);
+  if (shards !== undefined) out.shards = shards;
+  return out;
+}
+
+/**
+ * The gate's shard manifest entry: undefined for an ordinary (unsplit) dir.
+ * A dir marked `sharded` (or holding any manifest) must have a readable one
+ * for EVERY gate; a gap becomes { invalid } so decideGateDelta refuses it.
+ * Keep `<gate>.shards.json` beside `.exit` when a gate's log/exit is swapped
+ * (land-local-check.js adoptAloneResult): it is what keeps a gap refused.
+ */
+function readShardEntry(dir, gate, meta) {
+  const file = path.join(dir, `${gate}.shards.json`);
+  if (!fs.existsSync(file)) {
+    if (meta && meta.sharded) return { invalid: `meta.json says the run was split but ${gate}.shards.json is missing` };
+    // Any other gate's manifest also marks the dir as split (meta.json lost or overwritten).
+    let other = false;
+    try { other = fs.readdirSync(dir).some((f) => f.endsWith('.shards.json')); } catch { other = false; }
+    return other ? { invalid: `other gates in this dir carry a split manifest but ${gate}.shards.json is missing` } : undefined;
+  }
+  try {
+    const entry = JSON.parse(fs.readFileSync(file, 'utf8'));
+    return entry && typeof entry === 'object' ? entry : { invalid: `${gate}.shards.json is not an object` };
+  } catch (e) {
+    return { invalid: `${gate}.shards.json is unreadable (${e.message})` };
+  }
 }
 
 // ── Reporting ───────────────────────────────────────────────────────────────
@@ -594,6 +703,11 @@ module.exports = {
   addWithMultiplicity,
   isCacheKeyRelevant,
   decideGateDelta,
+  tapRunFinished,
+  shardPart,
+  checkShardManifest,
+  readShardEntry,
+  mergedResultGaps,
   computeRerunScope,
   readGateFiles,
   decideAllGates,
