@@ -649,7 +649,7 @@ function stepAt(lines, i, jobStart) {
     if (/^[|>][-+]?$/.test(m[1])) {
       // Block-scalar `if: |` / `if: >`: the expression is the indented lines below.
       const body = [];
-      for (let j = k + 1; j < end && /^ {10,}\S/.test(lines[j]); j++) body.push(lines[j].trim());
+      for (let j = k + 1; j < end && (/^ {10,}\S/.test(lines[j]) || !lines[j].trim()); j++) if (lines[j].trim()) body.push(lines[j].trim());
       ifExpr = body.join(' ');
     } else {
       ifExpr = m[1].replace(/^['"]|['"]$/g, '');
@@ -657,7 +657,7 @@ function stepAt(lines, i, jobStart) {
     break;
   }
   // Only a cache restore step restores the memo (a save or rm step that names the file does not).
-  const isRestore = lines.slice(start, end).some((l) => /uses:\s*actions\/cache(?:\/restore)?@/.test(l));
+  const isRestore = lines.slice(start, end).some((l) => /^ {6}(?:- | {2})uses:\s*actions\/cache(?:\/restore)?@/.test(l));
   return { start, ifExpr, isRestore };
 }
 
