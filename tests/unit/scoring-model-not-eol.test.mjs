@@ -34,7 +34,7 @@ const DEAD_MODELS = ['claude-sonnet-4-20250514'];
 
 describe('scoring model is not EOL', () => {
   test('models.js SCORING_SONNET is the expected current model', () => {
-    assert.equal(CLAUDE_SONNET, 'claude-sonnet-5-5');
+    assert.equal(CLAUDE_SONNET, 'claude-sonnet-4-6'); // data/audit/scoring-ab-2026-11-target.json
   });
 
   for (const rel of PRODUCTION_SCORING_FILES) {
