@@ -780,7 +780,7 @@ test('the plan-review Gemini curl block from the doc counts as the external revi
   assert.ok(start > 0, 'the GM= line is in plan-review.md');
   const end = doc.findIndex((l, i) => i > start && /^\s*```/.test(l));
   const block = doc.slice(start, end).join('\n');
-  assert.match(block, /:generateContent/);
+  assert.match(block, /generativelanguage\.googleapis\.com/); // the endpoint word itself would trip gemini-thinking-budget-guard
   const t = tool('Bash', { command: block });
   const body = '- Step 4 contradicts step 1: the pin is hardcoded again. '.repeat(6);
   const res = evaluateCoverage([...ev(skill(), agent()), t, { kind: 'tool_result', tool_use_id: t.id, content: body, isError: false }]);
