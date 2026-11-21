@@ -127,7 +127,9 @@ jobs:
           INPUT_LIMIT: ${{ inputs.limit }}
           INPUT_ROUNDUP_URL: ${{ inputs.roundup_url }}
         run: |
-          FLAGS="--type=${{ inputs.type || 'all' }}"
+          # BRO-7931: 330-min budget (< timeout-minutes 360) + rotating cursor in
+          # the archive, so the run ends clean and resumes where it stopped.
+          FLAGS="--type=${{ inputs.type || 'all' }} --time-budget-min=330"
           if [ -n "${INPUT_SHOWS}" ]; then
             FLAGS="$FLAGS --shows=${INPUT_SHOWS}"
           fi
@@ -319,7 +321,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        if: failure() || cancelled()  # BRO-7931: cancelled runs (timeout kill) were silent
         uses: ./.github/actions/notify-failure
         with:
           title: 'BWW Reviews Scraper Failed'

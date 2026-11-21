@@ -192,49 +192,14 @@ function extractNYCTheatreCount(showId) {
     const html = fs.readFileSync(archivePath, 'utf8');
     const wrongShow = wrongShowArchive(html, showId);
     if (wrongShow) return wrongShow;
-    const $ = cheerio.load(html);
-
-    let inReviewSection = false;
-    let outletCount = 0;
-
-    $('h2, h3, h4, h5, p, blockquote').each((_, el) => {
-      const tag = el.tagName.toLowerCase();
-      const text = $(el).text().trim().replace(/\s+/g, ' ');
-
-      // Detect review section start
-      if (['h2', 'h3'].includes(tag)) {
-        if (/^the reviews$/i.test(text) || /what.*critics|reviews? are in|critics? thought/i.test(text)) {
-          inReviewSection = true;
-          return;
-        }
-        // Detect section end
-        if (inReviewSection) {
-          if (/more reviews|news.*tickets|need help|connect with/i.test(text)) {
-            inReviewSection = false;
-            return;
-          }
-          if (text.length < 50 && !text.includes('"') && !/reviews?|critics?/i.test(text)) {
-            inReviewSection = false;
-            return;
-          }
-        }
-      }
-
-      // Count outlet headings within review section
-      if (inReviewSection && ['h4', 'h5'].includes(tag) && text.length > 0 && text.length < 100) {
-        outletCount++;
-      }
-
-      // Pattern B fallback: "quote text" - Outlet Name
-      if (inReviewSection && ['p', 'blockquote'].includes(tag) && outletCount === 0) {
-        const trailingMatch = text.match(/["\u201d']\s*[-\u2013\u2014]\s*([A-Z][A-Za-z\s.&']{2,50})\s*$/);
-        if (trailingMatch) {
-          outletCount++;
-        }
-      }
-    });
-
-    return { reviewCount: outletCount, hasArchive: true, method: outletCount > 0 ? 'headings' : 'none-found' };
+    // BRO-7931 #9: call the REAL parser. The audit's private copy of the heading
+    // walk undercounted (0 where the scraper finds 8-12), so gaps were phantom.
+    const { extractReviewsFromRoundup } = require('./scrape-nyc-theatre-roundups');
+    const origLog = console.log; console.log = () => {};
+    let parsed;
+    try { parsed = extractReviewsFromRoundup(html, showId); } finally { console.log = origLog; }
+    const outletCount = parsed.length;
+    return { reviewCount: outletCount, hasArchive: true, method: outletCount > 0 ? 'real-parser' : 'none-found' };
   } catch (error) {
     return { reviewCount: null, hasArchive: true, error: error.message };
   }
