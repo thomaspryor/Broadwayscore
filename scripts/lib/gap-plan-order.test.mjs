@@ -121,3 +121,13 @@ test('tier gain: recovered only when the tier rises', () => {
   assert.equal(row.detail.tierImproved, false);
   assert.equal(L.recoveredRowFromLanding({ path: '/x/show-2026/nytimes--a.json' }, { strategy: 'ARCHIVE' }).detail, undefined);
 });
+
+test('ship-check: browser_unavailable rows are not attempts; URL_FIND found-link urls do not reset backoff; permanent reasons are not hidden', async () => {
+  assert.equal(PO.attemptFacts([{ strategy: 'BROWSER_SESSION', outcome: 'browser_unavailable', ts: new Date(NOW).toISOString() }]).attempts, 0);
+  const rej = { strategy: 'URL_FIND', outcome: 'rejected', reason: 'x', ts: new Date(NOW - 2 * H).toISOString(), url: 'https://found.example/a' };
+  assert.equal(PO.backoffGate([rej], 'URL_FIND', { nowMs: NOW, reviewUrl: null }).ok, false);
+  assert.equal(PO.backoffGate([{ ...rej, strategy: 'URL_FIND' }], 'URL_FIND', { nowMs: NOW, reviewUrl: 'https://stored.example/z' }).ok, false, 'found link != stored url is not new evidence');
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  assert.ok(src.indexOf('const e = baseEligible(strategy)') < src.indexOf('PO.backoffGate('), 'base eligibility is checked before backoff');
+});

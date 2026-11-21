@@ -525,3 +525,10 @@ test('furniture tail is classify-only: the save-path stripper leaves saved text 
   const text = `${FT_PROSE} Runs until 28th November Photo credit: Anthony Leary-White`;
   assert.equal(TC.stripTrailingJunk(text, 'jonathan-baz'), text);
 });
+
+test('furniture tail: ship-check cases, a cut sentence that starts with a date or follows a <p> tag is not stripped', () => {
+  for (const tail of ['Through May 3, Hamlet broods in a way that feels', 'Until 7 June, Rhys Ifans and Ruth Wilson play', '</p><p>The second act falls apart and the', 'Until March 5 and the whole thing sags under']) {
+    const t = `${FT_PROSE} ${tail}`;
+    assert.equal(FT.stripKnownTrailers(t, 'x'), t, tail);
+  }
+});

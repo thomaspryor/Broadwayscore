@@ -456,8 +456,7 @@ const FURN_CODE_RES = [
   /\s*Δ\s*document\.getElementById\([\s\S]*$/,
   /\s*(?:window\.)?dataLayer\s*=\s*window\.dataLayer[\s\S]*$/,
   /\s*@page\s+WordSection\d[\s\S]*$/,
-  /\s*(?:\/\*[\s\S]{0,40})?(?:mso-[a-z-]+\s*:[^;]{0,60};\s*){2,}[\s\S]*$/,
-  /\s*(?:&amp;lt;|&lt;|<)\/?p(?:&amp;gt;|&gt;|>)[\s\S]{0,300}$/,
+  /\s*(?:\/\*[\s\S]{0,40})?(?:mso-[a-z-]+\s*:[^;]{0,60};\s*){2,}[\s\S]{0,2500}$/,
   /\s*css:\s*\{[\s\S]{0,300}$/,
 ];
 // Boilerplate footers, whole tail.
@@ -479,7 +478,7 @@ const FURN_TICKETS_RE = /(?:^|\s)Tickets?:\s*(?:here|click here|link|https?:\/\/
 const FURN_CREDIT_RE = new RegExp(`(?:^|\\s|\\||(?<=[\\p{L}\\d.!?]))(?:Review(?:ed)?(?:\\s+by)?\\s*:|(?:Review(?:ed)?\\s+)?by\\s*:|(?:Photos?|Photography|Photograph|Images?)(?:\\s+credits?)?\\s*(?::|\\bby\\b)|(?:Photo|Image)\\s+credits?\\s*:?)\\s*(?:courtesy\\s+of\\s+)?${FURN_NAMES}\\s*$`, 'iu');
 const FURN_RUNS_RE = new RegExp(`(?:^|\\s|\\||(?<=[.!?]))(?:(?:It|The\\s+(?:show|production|run))\\s+)?(?:runs|continues|plays|booking|books|bookings?)\\s+(?:until|through|thru|to)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?\\s*$`, 'iu');
 // "Until October 24 KilnTheatre.com", "Until Jan 31", "Details: Midnight, to January 3": a bare run line, only after a sentence end.
-const FURN_BARE_UNTIL_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:Details:\\s*[^.!?\\n]{0,40}?,?\\s*)?(?:Until|To|Through|Runs until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?(?:,?\\s*[\\p{Lu}][^.!?\\n]{1,60}?)?(?:,?\\s+[\\w.-]+\\.(?:com|org|net|co\\.uk|org\\.uk|uk)|\\s*\\([\\d ]{8,16}\\))?\\.?\\s*$`, 'u');
+const FURN_BARE_UNTIL_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:Details:\\s*[^.!?\\n]{0,40}?,?\\s*)?(?:Until|To|Through|Runs until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?(?:,?\\s*[\\p{Lu}][^.!?\\n]{1,60}?(?=\\s*\\([\\d ]{8,16}\\)\\.?\\s*$))?(?:,?\\s+[\\w.-]+\\.(?:com|org|net|co\\.uk|org\\.uk|uk)|\\s*\\([\\d ]{8,16}\\))?\\.?\\s*$`, 'u');
 // A Time Out capsule's credits: "Public Theater (Off Broadway). By X. Directed by Y. With ensemble cast. Running time:"
 const FURN_TIMEOUT_CREDITS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)[\p{Lu}][^.!?\n]{2,70}\((?:Off[- ])?Broadway\)\.\s+By\s[^.!?\n]{1,80}\.\s+Directed by\s[^.!?\n]{1,80}\.(?:\s+(?:With|Starring)\s[^.!?\n]{1,200}\.)?(?:\s+Running time:[^.!?\n]{0,60}\.?)?(?:\s+(?:One|Two|No)\s+intermissions?\.?)?\s*$/u;
 
@@ -518,6 +517,8 @@ function stripFurnitureTail(text) {
     const next = t.slice(0, m.cut).trimEnd();
     // a short piece only (code and footers may be longer, they are fenced by their own regexes)
     if (!m.code && t.length - next.length > 400) break;
+    // template code is never prose: a tail holding a run of plain words is a review, not residue
+    if (m.code && /(?:\b[a-z]{2,}\b\s+){12}/.test(t.slice(next.length))) break;
     if (next.length < RELATED_MIN_REMAINING) break;
     t = next;
   }

@@ -24,6 +24,9 @@ const BACKOFF_BASE_H = 36; // > one night (the nightly starts ~24h apart, a try 
 const BACKOFF_CAP_H = 21 * 24;
 const NO_GAIN_OUTCOMES = new Set(['no_evidence', 'rejected']);
 const INERT = new Set(['URL_FIND_PROBE']);
+const ATTEMPT_OUTCOMES = new Set(['no_evidence', 'rejected', 'pending_push', 'recovered']);
+// Only these strategies store the review's own url on their rows (URL_FIND / URL_REDISCOVER store the found link).
+const STORED_URL_STRATEGIES = new Set(['REFETCH_FREE', 'ARCHIVE', 'PAID_FETCH', 'BROWSER_SESSION']);
 // Identical-refetch proof: this many REFETCH_FREE refusals with the same fetched-text hash.
 const IDENTICAL_REFETCH_PROOF = 2;
 const NOT_LONGER_REASONS = new Set(['not_longer', 'not_materially_longer']);
@@ -43,7 +46,8 @@ function bandOf(c) {
 
 /** Attempt facts from a review's live ledger rows (already past the last reopen). */
 function attemptFacts(liveRows) {
-  const rows = (liveRows || []).filter((r) => !INERT.has(r.strategy) && r.outcome !== 'reopened');
+  // Only real tries: a browser_unavailable / auth_failed / vanished-file row is not an attempt.
+  const rows = (liveRows || []).filter((r) => !INERT.has(r.strategy) && ATTEMPT_OUTCOMES.has(r.outcome));
   let lastTryMs = 0;
   for (const r of rows) lastTryMs = Math.max(lastTryMs, ms(r.ts));
   return { attempts: rows.length, lastTryMs };
@@ -87,7 +91,7 @@ function noGainStreak(liveRows, strategy, { reviewUrl = null } = {}) {
     n++;
   }
   // New evidence: the stored url changed since the last failed try.
-  if (last && reviewUrl && last.url && String(last.url) !== String(reviewUrl)) return { n: 0, lastTs: null, newEvidence: true };
+  if (last && reviewUrl && last.url && STORED_URL_STRATEGIES.has(strategy) && require('./url-change-invariant').urlCanonicallyChanged(last.url, reviewUrl)) return { n: 0, lastTs: null, newEvidence: true };
   return { n, lastTs: last ? last.ts : null, newEvidence: false };
 }
 

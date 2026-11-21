@@ -81,7 +81,7 @@ const ACCESS_FAILED = new Set(['rejected', 'no_evidence', 'auth_failed']);
 // yield, no url / no adapter for it, a stored url that names another show, or
 // every url-finding method already run. Anything else (cooldown,
 // browser_unavailable, no_serp_key, url_find_cooldown, ...) is waiting.
-const PERMANENT_SKIPS = /^(?:disabled|disabled_recent|no_url|no_adapter|url_names_other_(?:show|venue)|url_find_exhausted|identical_refetch_complete)$/;
+const PERMANENT_SKIPS = /^(?:disabled|disabled_recent|no_url|no_adapter|url_names_other_(?:show|venue)|url_find_exhausted)$/;
 
 const { liveRows } = require('./gap-recovery-ledger');
 

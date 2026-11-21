@@ -112,15 +112,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const ffEntry = ff.get(reviewKey) || null;
     const live = L.liveRows(ledgerIndex.get(reviewKey) || []);
     const facts = PO.attemptFacts(live);
-    const eligible = (strategy) => {
-      // BRO-7942: per-review, per-strategy exponential backoff after no gain; two
-      // identical refetches prove the text is complete (no third one).
-      if (strategy === 'REFETCH_FREE') {
-        const proof = PO.identicalRefetchProof(live);
-        if (proof.ok) return { ok: false, reason: 'identical_refetch_complete' };
-      }
-      const bo = PO.backoffGate(live, strategy, { reviewUrl: review.url || null, baseH: Number(process.env.GAP_BACKOFF_BASE_H) || undefined });
-      if (!bo.ok) return { ok: false, reason: bo.reason };
+    const baseEligible = (strategy) => {
       // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
       if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20) });
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
@@ -129,6 +121,20 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
         const g = collectorRefetchGate(rg.shouldRetryFetch(show, review, ffEntry));
         if (!g.ok) return g;
       }
+      return e;
+    };
+    const eligible = (strategy) => {
+      // The permanent / policy reasons come first so backoff never hides them (BRO-7942).
+      const e = baseEligible(strategy);
+      if (!e.ok) return e;
+      // BRO-7942: per-review, per-strategy exponential backoff after no gain; two
+      // identical refetches prove the text is complete (no third one).
+      if (strategy === 'REFETCH_FREE') {
+        const proof = PO.identicalRefetchProof(live);
+        if (proof.ok) return { ok: false, reason: 'identical_refetch_complete' };
+      }
+      const bo = PO.backoffGate(live, strategy, { reviewUrl: review.url || null, baseH: Number(process.env.GAP_BACKOFF_BASE_H) || undefined });
+      if (!bo.ok) return { ok: false, reason: bo.reason };
       return e;
     };
     const owned = L.ownedRecordReason(review);
@@ -499,7 +505,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
       else if (strategy === 'PAID_FETCH') got = await S.paidFetch(c);
       else if (strategy === 'URL_FIND') {
-        if (PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; continue; } // fallback-reached URL_FIND obeys the slice too
+        if (PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; stats.attempted--; continue; } // fallback-reached URL_FIND obeys the slice too
         // Links a past URL_FIND run found and the live gate refused are not fetched again.
         const refusedUrls = new Set(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || [])
           .filter((r) => r.strategy === 'URL_FIND')
