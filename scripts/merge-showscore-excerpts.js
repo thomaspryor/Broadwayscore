@@ -3,7 +3,11 @@
 /**
  * Merge Show Score excerpts into existing review files
  * Uses data/show-score.json as the source
+ *
+ * Usage: node scripts/merge-showscore-excerpts.js [--help|-h]
  */
+
+require('./lib/cli-help').exitOnHelp(module);
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { hasExcerpt } = require('./lib/excerpt-fields');
