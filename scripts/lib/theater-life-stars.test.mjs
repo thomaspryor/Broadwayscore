@@ -126,3 +126,17 @@ test('combined titles split by commas, with subtitles, and a one-show title with
   assert.equal(pick('Sunday in the Park with George **** &#8211; Linda ***1/2', 'Linda'), '3.5/5 stars');
   assert.equal(pick('Clara- Sex, Love and Classical Music *** – Mrs. Schumann Speaks Out', 'Clara: Sex, Love and Classical Music'), '3/5 stars');
 });
+
+test('title segments: "and" joiner, and an exact name beats a prefix one (BRO-7928 review)', () => {
+  const pick = (title, show) => resolveTheaterLifeStars({ title, text: '', showTitles: [show] }).rating;
+  const elephant = 'The Elephant Man  ***    and    A Delicate Balance ****';
+  assert.equal(pick(elephant, 'The Elephant Man'), '3/5 stars');
+  assert.equal(pick(elephant, 'A Delicate Balance'), '4/5 stars');
+  assert.equal(pick('Fish ** &#8211; Fish in the Dark ****', 'Fish'), '2/5 stars');
+  assert.equal(pick('Fish ** &#8211; Fish in the Dark ****', 'Fish in the Dark'), '4/5 stars');
+  assert.equal(pick('Company ***1/2 &#8211; Company: The Musical **', 'Company'), '3.5/5 stars');
+  const liaisons = 'Plenty** Love, Love, Love ** Les Liaisons Dangereuses**** Vietgone****';
+  assert.equal(pick(liaisons, 'Les Liaisons Dangereuses'), '4/5 stars');
+  assert.equal(pick(liaisons, 'Love, Love, Love'), '2/5 stars');
+  assert.equal(pick('Good Time Charlie ***, Fish ****, Anon ***', 'ANON – a tempest at our kitchen table'), '3/5 stars');
+});

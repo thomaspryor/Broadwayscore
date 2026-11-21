@@ -122,14 +122,22 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
  * Null when no segment names a show, or two named segments disagree.
  */
 function segmentTitleStars(title, shows) {
-  const found = new Set();
+  const exact = new Set();
+  const loose = new Set();
   const re = new RegExp(`([^*★]*?)\\s*${STARS}${FRACTION}`, 'g');
   const t = decodeHtmlEntities(String(title || ''));
+  const bare = (x) => normTitle(x).replace(/^the /, '');
   let m;
   while ((m = re.exec(t)) !== null) {
-    const name = m[1].replace(/^[\s,;|–—-]+/, '').replace(/[\s,;|–—:-]+$/, '');
-    if (name && shows.some(s => sameTitle(s, name))) found.add(toRating(m[2], m[3]));
+    // "The Elephant Man *** and A Delicate Balance ****": drop the joiner too.
+    const name = m[1].replace(/^[\s,;|–—-]+/, '').replace(/^(?:and|plus|&)\s+/i, '').replace(/[\s,;|–—:-]+$/, '');
+    if (!name) continue;
+    const rating = toRating(m[2], m[3]);
+    // An exact name beats a prefix one ("Fish ** – Fish in the Dark ****").
+    if (shows.some(s => bare(s) === bare(name))) exact.add(rating);
+    else if (shows.some(s => sameTitle(s, name))) loose.add(rating);
   }
+  const found = exact.size ? exact : loose;
   return found.size === 1 ? [...found][0] : null;
 }
 
