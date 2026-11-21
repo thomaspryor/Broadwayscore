@@ -267,6 +267,24 @@ function formatMirrorReport(cmp, { limit = 5 } = {}) {
  * that check-corpus-drift.js reads without rescanning the corpus. `previous`
  * is the prior summary; per-rule deltas are computed against its counts.
  */
+/**
+ * BRO-7999 R4: a wrongAttribution flag must say why. 413 files carry it; 48 carry no
+ * reason in any field a person or script has used, so nobody can tell a real misattribution
+ * from a stale automated guess and the review stays held out unexamined. Any of these
+ * fields counts as the reason (wrongAttributionManualFlag = a person set it by hand).
+ */
+const WRONG_ATTRIBUTION_REASON_FIELDS = ['wrongAttributionReason', '_c2FixReason', 'wrongAttributionNote', 'misattributionReason', 'wrongAttributionManualFlag'];
+function isReasonlessWrongAttribution(data) {
+  if (!data || data.wrongAttribution !== true) return false;
+  return !WRONG_ATTRIBUTION_REASON_FIELDS.some((k) => {
+    const v = data[k];
+    return v === true || (typeof v === 'string' && v.trim() !== '');
+  });
+}
+// Corpus count when R4 landed (2026-11-21). The check fails when it GROWS: new flags must
+// carry a reason. Lower it as old ones get one; never raise it to make a breach go away.
+const REASONLESS_WRONG_ATTRIBUTION_BASELINE = 48;
+
 function buildMirrorSummary(census, comparison, previous, now = new Date()) {
   const ruleCounts = Object.fromEntries(Object.entries(census.byRule || {})
     .map(([rule, v]) => [rule, v.count]).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
@@ -289,6 +307,7 @@ function buildMirrorSummary(census, comparison, previous, now = new Date()) {
     previousGeneratedAt: previous ? previous.generatedAt || null : null,
     mirror,
     previousDisagreementRate: previous && previous.mirror ? previous.mirror.disagreementRate : null,
+    ...(typeof census.reasonlessWrongAttribution === 'number' ? { reasonlessWrongAttribution: census.reasonlessWrongAttribution } : {}),
   };
 }
 
@@ -297,7 +316,7 @@ function buildMirrorSummary(census, comparison, previous, now = new Date()) {
  * list of breaches (empty = ok). Thresholds are deltas against the previous
  * summary, so a long-standing, stable disagreement does not alarm daily.
  */
-function checkMirrorSummary(summary, { maxRuleDelta = Infinity, maxRateRise = Infinity, maxAgeDays = 3, now = Date.now() } = {}) {
+function checkMirrorSummary(summary, { maxRuleDelta = Infinity, maxRateRise = Infinity, maxAgeDays = 3, now = Date.now(), maxReasonless = REASONLESS_WRONG_ATTRIBUTION_BASELINE } = {}) {
   const breaches = [];
   if (!summary) return ['no mirror summary found (has rebuild-reviews run the census?)'];
   const ageDays = (now - Date.parse(summary.generatedAt)) / 86400000;
@@ -309,6 +328,11 @@ function checkMirrorSummary(summary, { maxRuleDelta = Infinity, maxRateRise = In
   const prev = summary.previousDisagreementRate;
   if (rate !== null && prev !== null && prev !== undefined && rate - prev > maxRateRise) {
     breaches.push(`mirror disagreement rate rose ${(prev * 100).toFixed(2)}% -> ${(rate * 100).toFixed(2)}% (> +${(maxRateRise * 100).toFixed(2)} pts)`);
+  }
+  // Absent on summaries written before BRO-7999: no breach until a census writes it.
+  const reasonless = summary.reasonlessWrongAttribution;
+  if (typeof reasonless === 'number' && reasonless > maxReasonless) {
+    breaches.push(`${reasonless} wrongAttribution files carry no reason (baseline ${maxReasonless}): a new flag was set without wrongAttributionReason; find them with node scripts/exclusion-rule-census.js --list-reasonless`);
   }
   return breaches;
 }
@@ -326,4 +350,7 @@ module.exports = {
   formatMirrorReport,
   buildMirrorSummary,
   checkMirrorSummary,
+  isReasonlessWrongAttribution,
+  WRONG_ATTRIBUTION_REASON_FIELDS,
+  REASONLESS_WRONG_ATTRIBUTION_BASELINE,
 };
