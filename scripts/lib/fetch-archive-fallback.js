@@ -55,7 +55,13 @@ async function defaultFetchJson(u) {
   const t = setTimeout(() => ctl.abort(), 15000);
   try {
     const r = await fetch(u, { signal: ctl.signal });
-    if (!r.ok) throw new Error(`CDX HTTP ${r.status}`);
+    if (!r.ok) {
+      // BRO-8000: IA refuses CDX without auth; that is a blocked route, not "no capture".
+      const AC = require('./archive-cdx');
+      const body = await r.text().catch(() => '');
+      if (AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(u);
+      throw new Error(`CDX HTTP ${r.status}`);
+    }
     return await r.json();
   } finally { clearTimeout(t); }
 }

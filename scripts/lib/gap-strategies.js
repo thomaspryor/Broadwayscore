@@ -334,14 +334,19 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
   const tried = new Set([...refusedUrls].map((u) => u.replace(/\/$/, '')));
   const refusedCandidates = [];
   const foundUnreadable = [];
+  // BRO-8000: each errored method's error text (the ledger kept none, so a week-long outage was invisible).
+  const methodErrors = {};
   // BRO-7962 review: each method's status if its walled links turn out dead,
   // so a browser 404 never marks a method done that had unread or errored links.
   const methodsIfWalledRefused = {};
   for (const m of only || UF.METHODS) {
     if (m === 'SERP' && !serpLeft) { status[m] = 'skipped_paid'; continue; }
-    if (m === 'COMMON_CRAWL') { try { await ensureCcCollections(UF); } catch { status[m] = 'error'; continue; } }
+    if (m === 'COMMON_CRAWL') { try { await ensureCcCollections(UF); } catch (e) { status[m] = 'error'; methodErrors[m] = `collinfo: ${String(e.message).slice(0, 140)}`; continue; } }
     const r = await UF.runMethod(m, ctx, ufDeps || undefined);
     if (m === 'SERP' && r.paid) urlFindSerpUsed++;
+    if (r.error) methodErrors[m] = String(r.error).slice(0, 160);
+    // A typed blocked route (IA CDX needs auth) is not evidence: its own status, never done.
+    if (r.blocked && !r.candidates.length) { status[m] = r.blocked; continue; }
     if (r.error && !r.candidates.length) { status[m] = /no_serp_key/.test(r.error) ? 'skipped_paid' : 'error'; continue; }
     if (!r.candidates.length) {
       status[m] = UF.methodNotApplicable(m, r, ctx) ? 'not_applicable' : 'no_candidates';
@@ -370,7 +375,7 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
       });
       if (d.ok || d.code === 'dry_run_needs_llm') {
         status[m] = 'found';
-        return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable, methodsIfWalledRefused };
+        return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable, methodsIfWalledRefused, methodErrors };
       }
       if (URL_IDENTITY_REFUSALS.has(d.code)) { refusedCandidates.push(cand.url); continue; }
       // BRO-7986: the record's url is pinned and this link is not a cosmetic
@@ -390,7 +395,7 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
     if (walledSeen) methodsIfWalledRefused[m] = st;
     status[m] = walledSeen ? 'found_unreadable' : st;
   }
-  return { ok: false, ...UF.urlFindOutcome(status, foundUnreadable), methods: status, refusedCandidates, foundUnreadable, methodsIfWalledRefused };
+  return { ok: false, ...UF.urlFindOutcome(status, foundUnreadable), methods: status, refusedCandidates, foundUnreadable, methodsIfWalledRefused, methodErrors };
 }
 
 async function ensureCcCollections(UF) {

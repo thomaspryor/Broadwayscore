@@ -221,3 +221,15 @@ test('buildNightlyRow: time-budget stop and a 3-night 0% strategy become alerts'
   assert.equal(row.timeBudgetHit, true);
   assert.match(N.renderDigestLine([row], NOW), /time budget/);
 });
+
+// BRO-8000: a URL_FIND method failing most of its runs raises an alert.
+test('buildNightlyRow: url_find_method_failing alert when a method errors on >50% of the day\'s runs', async () => {
+  const { createRequire } = await import('node:module');
+  const N = createRequire(import.meta.url)('./gap-recovery-nightly.js');
+  const nowMs = Date.parse('2026-11-21T12:00:00Z');
+  const ledgerRows = [0, 1, 2, 3, 4, 5].map((i) => ({ strategy: 'URL_FIND', ts: `2026-11-21T0${i}:00:00Z`, detail: { methods: { WAYBACK_CDX: 'archive_auth_required' }, methodErrors: { WAYBACK_CDX: 'archive_auth_required' } } }));
+  const row = N.buildNightlyRow({ runId: 'r', status: 'ran', summary: { attempted: 6 }, counts: null, ledgerRows, nowMs });
+  assert.ok(row.alerts.some((a) => a.key === 'url_find_method_failing' && /WAYBACK_CDX/.test(a.text)));
+  const ok = N.buildNightlyRow({ runId: 'r', status: 'ran', summary: { attempted: 6 }, counts: null, ledgerRows: [], nowMs });
+  assert.ok(!ok.alerts.some((a) => a.key === 'url_find_method_failing'));
+});

@@ -291,7 +291,13 @@ function defaultDeps() {
   return {
     fetchText: async (url, { timeoutMs = 90000 } = {}) => {
       const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) BroadwayScorecard/1.0' }, signal: AbortSignal.timeout(timeoutMs) });
-      if (!r.ok) { const e = new Error(`HTTP ${r.status}`); e.status = r.status; throw e; }
+      if (!r.ok) {
+        // BRO-8000: the Internet Archive's CDX 403s without auth: a typed blocked route, not an outage or "no capture".
+        const AC = require('./archive-cdx');
+        const body = await r.text().catch(() => '');
+        if (AC.isArchiveIndexUrl(url) && AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(url);
+        const e = new Error(`HTTP ${r.status}`); e.status = r.status; throw e;
+      }
       return r.text();
     },
     readFile: (p) => require('fs').readFileSync(p, 'utf8'),
@@ -361,11 +367,14 @@ async function runMethod(method, ctx, deps = defaultDeps()) {
       if (!stages.length) { res.tried.push('no date to anchor the search'); return res; }
       let errors = 0; let ran = 0;
       for (const qs of stages) {
+        if (res.blocked) break;
         for (const q of qs) {
           res.tried.push(q);
           ran++;
           let txt;
           try { txt = await fetchIndexWithRetry(q, deps, { ...(deps.indexRetry || {}), method }); } catch (e) {
+            // BRO-8000: auth refusal blocks every query on this route; stop, and never read it as "no capture".
+            if (e.kind === 'archive_auth_required') { res.error = 'archive_auth_required'; res.blocked = 'archive_auth_required'; errors++; break; }
             // The Common Crawl index answers 404 for "no captures": an empty result, not an outage.
             if (method === 'COMMON_CRAWL' && e.status === 404) { txt = ''; } else { errors++; res.error = e.indexDown ? 'index_down_this_run' : `${method} ${e.message}`; continue; }
           }
@@ -375,7 +384,7 @@ async function runMethod(method, ctx, deps = defaultDeps()) {
       // Some queries answered: the method ran, the errors are reported but
       // the method only counts as done when every query answered.
       if (!ran) res.tried.push(method === 'COMMON_CRAWL' ? 'no crawl covers the review dates' : 'no date to anchor the search');
-      if (errors && errors < ran) res.error = `${method} partial: ${errors}/${ran} queries failed`;
+      if (errors && errors < ran && !res.blocked) res.error = `${method} partial: ${errors}/${ran} queries failed`;
     } else if (method === 'SERP') {
       if (!ctx.allowPaid) { res.tried.push('paid search not allowed this run'); return res; }
       const { scrapingBeeKey = '', brightDataKey = '' } = ctx.serpKeys || {};
@@ -687,6 +696,34 @@ function methodNotApplicable(method, r, ctx) {
   return false;
 }
 
+/**
+ * BRO-8000 class guard: per URL_FIND method, the share of runs in the last day
+ * whose status was an error or a blocked route. A method that fails most of
+ * its runs is an outage, not "nothing found". Pure. Returns
+ * [{method, runs, errored, rate, lastError}] for methods over `threshold`
+ * (default >50%) with at least `minRuns` runs.
+ */
+const METHOD_FAIL_STATUS = new Set(['error', 'archive_auth_required']);
+function urlFindMethodErrorRates(rows, { nowMs = Date.now(), hours = 24, threshold = 0.5, minRuns = 5 } = {}) {
+  const since = nowMs - hours * 3600000;
+  const by = {};
+  for (const r of rows || []) {
+    if (!r || r.strategy !== 'URL_FIND') continue;
+    const t = Date.parse(r.ts || '');
+    if (!Number.isFinite(t) || t < since) continue;
+    const ms = (r.detail && r.detail.methods) || {};
+    const errs = (r.detail && r.detail.methodErrors) || {};
+    for (const [m, st] of Object.entries(ms)) {
+      if (st === 'skipped_paid' || st === 'not_run') continue;
+      const b = by[m] || (by[m] = { method: m, runs: 0, errored: 0, lastError: null });
+      b.runs++;
+      if (METHOD_FAIL_STATUS.has(st)) { b.errored++; b.lastError = errs[m] || st; }
+    }
+  }
+  return Object.values(by).map((b) => ({ ...b, rate: b.runs ? b.errored / b.runs : 0 }))
+    .filter((b) => b.runs >= minRuns && b.rate > threshold).sort((a, b) => b.rate - a.rate);
+}
+
 const DEAD_FREE_RE = /^free:no_evidence\/url_dead/;
 
 async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPaid = null } = {}, deps = null) {
@@ -726,6 +763,7 @@ async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPai
 function probeMethodStatus(mr) {
   if (!mr) return 'not_run';
   if (mr.verified) return 'verified';
+  if (mr.blocked) return mr.blocked;
   if (mr.error) return 'error';
   if (mr.found > 0) return 'candidates_refused';
   if ((mr.tried || []).some((t) => /^no (sitemap|fill-in)|not applicable/i.test(String(t)))) return 'not_applicable';
@@ -838,7 +876,7 @@ module.exports = {
   planUrlFindWork,
   fallbackUrlFindSlot,
   probeLedgerRow,
-  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, walledFetchReason, refusedUrlsFromRows, walledHandoffLink, applyWalledBrowserResult, urlFindOutcome, walledSightings, WALLED_PARK_AFTER, REFUSAL_POLICY, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry, resetIndexBreaker, INDEX_BREAKER_LIMIT,
+  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, walledFetchReason, refusedUrlsFromRows, walledHandoffLink, applyWalledBrowserResult, urlFindOutcome, walledSightings, WALLED_PARK_AFTER, REFUSAL_POLICY, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry, urlFindMethodErrorRates, resetIndexBreaker, INDEX_BREAKER_LIMIT,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,
   rankCandidates, cdxFilterToken, waybackQueries, learnTitleStartDirs, titleStartQueries, yearWindow, parseCdxCandidates, learnSlugTemplates, slugify, sitemapDays,
   parseSitemapLocs, aggregatorFilesFor, runMethod, defaultDeps, commonCrawlQueries, parseCcCandidates, setCcCollections,

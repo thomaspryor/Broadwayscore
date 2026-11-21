@@ -641,7 +641,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
       }
 
       const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, refusalPolicy: require('./lib/gap-url-find').REFUSAL_POLICY, methods: got.methods, foundBy: got.foundBy || null,
-        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [], ...(got.walledBrowser ? { walledBrowser: got.walledBrowser } : {}) } : undefined;
+        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [], ...(got.methodErrors && Object.keys(got.methodErrors).length ? { methodErrors: got.methodErrors } : {}), ...(got.walledBrowser ? { walledBrowser: got.walledBrowser } : {}) } : undefined;
       if (!got.ok) {
         console.log(`  ✗ ${got.outcome} (${got.reason})${got.methods ? ` ${JSON.stringify(got.methods)}` : ''}`);
         record(c, strategy, { outcome: got.outcome, reason: got.reason, ...L.refusalDiagnostics({ c, got }), ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
