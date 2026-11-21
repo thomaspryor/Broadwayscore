@@ -973,12 +973,13 @@ function validateDates(shows) {
       warn(`Show "${show.title}" (${show.id}, ${show.category || 'no-category'}) is status:open with null openingDate — score shows but "Opened …" is blank and opening-night review discovery can't anchor. Backfill from ${openingDateSourceHint(show.category)}.`);
     }
 
-    // BRO-7929: open/closed show with no openingDate. New offenders are errors; legacy ones
-    // are frozen in data/audit/missing-opening-date-baseline.json (scripts/lib/opening-date-required.js).
+    // BRO-7929: open/closed show with no openingDate. ADVISORY (warn) per CLAUDE.md §19: update-show-status.js
+    // Check 2d intentionally leaves openingDate null on a review-driven flip when every review is dateless, so an
+    // error here would turn test.yml and every core-data push red on a legitimate state. Arm as an error only once
+    // Check 2d always writes a date. Legacy ids frozen in data/audit/missing-opening-date-baseline.json.
     if (needsOpeningDate(show)) {
       if (!MISSING_OPENING_BASELINE.has(show.id)) {
-        error(`Show "${show.title}" (${show.id}) is status:${show.status} with no openingDate — backfill from ${openingDateSourceHint(show.category)} (BRO-7929; reviews of a later same-title production get parked on it as wrongProduction).`);
-        issues++;
+        warn(`Show "${show.title}" (${show.id}) is status:${show.status} with no openingDate — backfill from ${openingDateSourceHint(show.category)} (BRO-7929; reviews of a later same-title production get parked on it as wrongProduction).`);
       }
     }
 

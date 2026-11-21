@@ -137,6 +137,10 @@ if (ARGV.includes('--rehome')) {
         // (Date window + same title + no other same-title show covering it is already the orphan definition.)
         const hay = `${j.fullText || ''} ${j.excerpt || ''}`.toLowerCase();
         const o = outlets[j.outletId] || {};
+        // Same-market outlet is enough on purpose. Requiring the venue name in full-text reviews was tried (2026-11-21
+        // review) and would have refused 42 of the 83 reviews already rehomed, all real (London critics rarely name the
+        // venue). Regional/tour runs are kept out by isCrossMarketNote + isCovered above; every move is reversible via
+        // reroutedFrom.
         const ok = L.reviewMarket(j, outlets) === s.market || o.isDualMarket || needles.some((n) => hay.includes(n));
         if (!ok) { rejected++; continue; }
         const key = `${f}|${ms}`;
