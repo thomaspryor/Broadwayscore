@@ -293,8 +293,17 @@ function extractByParagraphDensity(html) {
  */
 function extractStageBody(html) {
   const startM = html.match(/<div[^>]*class="[^"]*aos-Article-IntroText[^"]*"[^>]*>/);
-  if (!startM) return null;
-  let region = html.slice(startM.index);
+  // BRO-6487: older (2016-era) review pages have no IntroText block: the review is a run of plain
+  // <p> after the <h1>, then the author bio, subscribe line and copyright. Fall back to that shape,
+  // but only on a logged-in page (the registration gate marks a dead session, which must stay null).
+  const GATE = /utm_source=Reggate|create a free account|Subscribe to continue/i;
+  let region;
+  if (startM) region = html.slice(startM.index);
+  else {
+    const h1 = html.search(/<h1[\s>]/);
+    if (h1 < 0 || GATE.test(html)) return null;
+    region = html.slice(h1);
+  }
   // BRO-7171 Stage 5: the author card (job title + biography) follows the
   // review. Its bio "Sam Marlowe is reviews editor for The Stage..." has no
   // article before "editor", so the bio shape below missed it; cut the region
@@ -307,6 +316,8 @@ function extractStageBody(html) {
     // multi-word-name pattern, so allow zero additional name parts.
     // BRO-6872: case-sensitive and short only; with /i "The protagonist is a writer…" was dropped.
     (t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t)) ||
+    // BRO-6487: older pages' bio line, e.g. "Natasha is international editor for The Stage" (no "a/an/the" after "is").
+    (t.length < 250 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+.{0,40}\b(?:editor|critic|reporter|journalist|writer)\b.{0,40}\bThe Stage\b/.test(t)) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
@@ -322,6 +333,8 @@ function extractStageBody(html) {
     .map((m) => stripHtml(m[1]))
     .filter((t) => t.length > 40 && /[a-z]/.test(t) && !isTrailingNoise(t));
   const body = paras.join('\n\n');
+  // The IntroText-less fallback needs a real run of prose (page chrome rarely has 3+ long paragraphs).
+  if (!startM && (paras.length < 3 || body.length < 600)) return null;
   return body.length >= 300 ? body : null;
 }
 
