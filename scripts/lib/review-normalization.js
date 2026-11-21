@@ -2196,6 +2196,11 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     const canonUrl = canonicalReviewUrl(url);
     if (canonUrl) {
       let folded = null; // first www/protocol-folded match; an exact match wins over it
+      // BRO-7999: a URL held under two critics (a wrongAttribution file and its correctly
+      // credited twin) matched whichever sorted first, so a re-ingest merged fresh text into
+      // the file the site excludes (20 such pairs). A wrongAttribution match is a fallback only.
+      let flaggedExact = null;
+      let flaggedFolded = null;
       for (const file of files) {
         const filePath = path.join(showDir, file);
         try {
@@ -2209,13 +2214,20 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
           // "www." missed the stored "www." file and minted an outlet--unknown duplicate
           // every poller run. sameArticleUrl is the collision guard's identity (it folds
           // www/protocol and tracking params, keeps real query ids).
+          const hit = { path: filePath, filename: file, data };
           if (canonicalReviewUrl(data.url) === canonUrl) {
-            return { path: filePath, filename: file, data };
+            if (!data.wrongAttribution) return hit;
+            if (!flaggedExact) flaggedExact = hit;
+            continue;
           }
-          if (!folded && sameArticleUrl(data.url, url)) folded = { path: filePath, filename: file, data };
+          if (sameArticleUrl(data.url, url)) {
+            if (!data.wrongAttribution) { if (!folded) folded = hit; } else if (!flaggedFolded) flaggedFolded = hit;
+          }
         } catch { /* unreadable — skip */ }
       }
       if (folded) return folded;
+      if (flaggedExact) return flaggedExact;
+      if (flaggedFolded) return flaggedFolded;
       const crossOutlet = findCrossOutletUrlOwner(showDir, files, url, outletName);
       if (crossOutlet) return crossOutlet;
     }
