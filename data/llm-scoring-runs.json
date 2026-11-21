@@ -578652,5 +578652,51 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-21T06:29:58.251Z",
+    "completedAt": "2026-11-21T06:30:00.849Z",
+    "totalReviews": 67,
+    "processed": 0,
+    "skipped": 65,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 4561,
+      "output": 143,
+      "cacheRead": 0,
+      "cacheWrite": 5418,
+      "total": 14229
+    },
+    "costUsd": 0.026035000000000003,
+    "runId": "44875423847",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "notmoses-west-end-2016",
+        "outletId": "whatsonstage",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-21T06:35:00.656Z",
+    "completedAt": "2026-11-21T06:35:00.723Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44875423847",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
   }
 ]
