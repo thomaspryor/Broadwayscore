@@ -217,6 +217,15 @@ test('BRO-7769: refusal is idempotent and text just under the cutoff fails open'
   assert.equal(mergeReviews(slot(), under, {}, ctx).url, under.url);
 });
 
+test('BRO-7769: guard fails open with an empty show title or no incoming fullText', () => {
+  const noText = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/' };
+  delete noText.fullText;
+  assert.equal(mergeReviews(slot(), noText, {}, { show: { title: GT_TITLE }, script: 'test' }).url, noText.url);
+  const withText = { ...noText, fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), withText, {}, { show: { title: '' }, script: 'test' }).url, withText.url);
+  assert.equal(mergeReviews(slot(), withText, {}, { show: {}, script: 'test' }).url, withText.url);
+});
+
 test('BRO-7769: a substantive existing review keeps its url-swap behaviour (guard only protects weak slots)', () => {
   const ex = { ...slot(), fullText: 'A real review of the production. '.repeat(80) };
   const incoming = { ...ex, url: 'https://www.theatermania.com/news/other_1859996/', fullText: unrelatedText };
