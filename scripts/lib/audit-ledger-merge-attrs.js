@@ -265,6 +265,15 @@ const EXEMPT_LEDGERS = [
       'script, so merge=union protects nothing and could mask a conflicting ' +
       'fixture edit.',
   },
+  {
+    file: 'scripts/lib/fixtures/bro-7985-long-session/transcript.jsonl',
+    reason:
+      '2026-11-21 (BRO-7985): three real events from a long session (an owner ' +
+      'message, a land push, its result), replayed through verify-edits.sh by ' +
+      'session-recap-stop.test.mjs. Captured once, never appended to by any ' +
+      'script, so merge=union protects nothing and could mask a conflicting ' +
+      'fixture edit.',
+  },
 ];
 
 // BRO-7256: city-hub dual-model audit caches. the city-hub dual-model audit script keeps the LAST row per key on read and

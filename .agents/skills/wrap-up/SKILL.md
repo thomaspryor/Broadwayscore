@@ -80,6 +80,8 @@ Check for:
    (INFLIGHT): SAFE TO ARCHIVE with any of them live is blocked, because the
    owner reads SAFE TO ARCHIVE as "I can archive this session now".
 
+   **Long session + SAFE TO ARCHIVE = whole-session recap (BRO-7985, owner 2026-11-21):** if the session landed changes or the owner wrote 3+ messages, the final message starts with a `This session:` line followed by up to 5 plain-English lines, one per thing built or fixed, written for someone who has not read the thread (no card ids, paths, hashes or backticks). Build it from the session's cards (titles, Outcome comments) and its land pushes, not from the last turn. "Nothing changed since my last message" alone is refused. The Stop check `session-recap-stop.mjs` blocks up to 3 times; kill switch `SESSION_RECAP_STOP_DISABLE=1`, one-off bypass `NO-RECAP: <reason>`. Short sessions and KEEP OPEN are exempt.
+
    **The last line is one of three verdicts (BRO-6020, owner 2026-10-22):**
    - `SAFE TO ARCHIVE — <why>`: every piece of work discussed is finished
      and verified, carded, or owned end to end by a session you started.
