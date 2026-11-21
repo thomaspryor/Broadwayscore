@@ -70,3 +70,22 @@ test('ambiguousShow is absent (not falsy-but-present) for a normal single-show d
   const parsed = loadIssueDiagnosis(body, { store: emptyStore() });
   assert.equal(parsed.ambiguousShow, false);
 });
+
+// BRO-7919: a request for a show already in the catalog is closed, not parked.
+import { createRequire as __cr } from 'module';
+import { test as __t } from 'node:test';
+import __assert from 'node:assert/strict';
+const __req = __cr(import.meta.url);
+const __body = __req('./feedback-issue-body.js');
+const __route = __req('./content-request-routing.js');
+
+__t('already-in-catalog ask (real router output) is closed; missing show is not', () => {
+  const shows = [{ id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', openingDate: '2015-08-06', status: 'open', market: 'broadway' }];
+  const live = __route.planContentRequestActions({ message: 'Love this site, thoughts on Hamilton?', show: 'Hamilton', shows });
+  __assert.equal(__body.isAlreadyInCatalog(live), true, JSON.stringify(live));
+  __assert.match(__body.buildAlreadyInCatalogComment(live), /show\/hamilton-2015/);
+  const missing = __route.planContentRequestActions({ message: 'Please add "Some New Play"', show: 'Some New Play', shows });
+  __assert.equal(__body.isAlreadyInCatalog(missing), false);
+  __assert.equal(__body.isAlreadyInCatalog([]), false);
+  __assert.equal(__body.isAlreadyInCatalog([{ kind: 'unroutable', reason: 'ambiguous' }]), false);
+});

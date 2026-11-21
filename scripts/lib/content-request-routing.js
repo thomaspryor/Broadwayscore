@@ -674,6 +674,8 @@ function planContentRequestActions({
             `"${existing.title}" and is already live on the site (nothing to add); ` +
             `ask is not a recognised image or review-gap request`,
           showId: existing.id,
+          // BRO-7919: the workflow closes the issue on this (nothing left to do).
+          alreadyInCatalog: true,
         });
       }
     }
