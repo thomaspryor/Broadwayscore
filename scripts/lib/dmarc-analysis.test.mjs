@@ -220,6 +220,24 @@ test('rejected-source downgrade keeps warn/action for look-alike-us, partial-pas
   assert.equal(sev({ dkim: [{ domain: 'broadwayscorecard.com', result: 'fail', selector: 'x' }] }), 'warn');
   assert.equal(sev({ count: 5 }), 'action');
   assert.equal(sev({ disposition: 'quarantine' }), 'warn');
+
+  // Partial-pass: same IP also delivered authenticated mail, so it is a real sender losing mail.
+  const mixed = summarizeReports([report({ records: [record({ count: 500 }),
+    record({ sourceIp: '198.51.100.7', count: 5, disposition: 'reject' }),
+    record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [] })] })]);
+  assert.equal(mixed.findings.find((x) => x.code === 'unauthenticated-source').severity, 'warn');
+
+  // Same rule through the stored-summary health path (needs policy.domain).
+  const stored = (dkimDomains, pass) => ({
+    windowEnd: '2026-11-19T23:59:59.000Z',
+    policy: { p: 'reject', domain: 'broadwayscorecard.com' },
+    sources: [{ ip: '198.51.100.7', fail: 3, pass, dkimDomains, dispositions: ['reject'] }],
+    findings: [{ severity: 'warn', code: 'unauthenticated-source', message: 'x', evidence: { ip: '198.51.100.7' } }],
+  });
+  const now = { now: '2026-11-20T12:00:00.000Z' };
+  assert.equal(dmarcHealthResult(stored(['broadwayscorecard.com'], 0), now).status, 'warn');
+  assert.equal(dmarcHealthResult(stored([], 4), now).status, 'warn');
+  assert.equal(dmarcHealthResult(stored([], 0), now).status, 'pass');
 });
 
 test('p=none is flagged as unenforced regardless of pass rate', () => {
