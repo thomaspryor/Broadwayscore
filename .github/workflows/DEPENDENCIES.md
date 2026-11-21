@@ -355,17 +355,17 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `BRIGHTDATA_ZONE` | 72 cross-repo writers (of 100 workflows using it) |
 | `BROWSERBASE_API_KEY` | 18 cross-repo writers (of 21 workflows using it) |
 | `BROWSERBASE_PROJECT_ID` | 18 cross-repo writers (of 21 workflows using it) |
-| `COOKIES_BUNDLE_1` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_10` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_11` | 16 cross-repo writers (of 18 workflows using it) |
-| `COOKIES_BUNDLE_2` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_3` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_4` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_5` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_6` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 20 workflows using it) |
-| `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 20 workflows using it) |
+| `COOKIES_BUNDLE_1` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_10` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_11` | 16 cross-repo writers (of 19 workflows using it) |
+| `COOKIES_BUNDLE_2` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_3` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_4` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_5` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_6` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 21 workflows using it) |
+| `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 21 workflows using it) |
 | `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 201 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
