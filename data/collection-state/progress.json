@@ -984,7 +984,8 @@
       "data/review-texts/the-great-gatsby-2024/deadline--greg-evans.json",
       "the-great-gatsby-2024/deadline--greg-evans.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
-      "data/review-texts/falsettos-regional-2026/nytimes--unknown.json"
+      "data/review-texts/falsettos-regional-2026/nytimes--unknown.json",
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1237,7 +1238,7 @@
     ]
   },
   "startTime": "2026-11-20T21:57:04.948Z",
-  "lastProcessed": "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
   "log": [
     {
       "t": "2026-11-21T00:27:00.760Z",
@@ -1546,6 +1547,50 @@
     },
     {
       "t": "2026-11-21T08:06:45.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T09:33:56.645Z",
+      "event": "bb-session",
+      "session": "760c38b6",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-21T09:33:57.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T09:35:31.911Z",
+      "event": "bb-session",
+      "session": "5546c80c",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-21T09:35:32.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T09:37:01.201Z",
+      "event": "bb-session",
+      "session": "2a84348b",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-21T09:37:01.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T09:37:18.273Z",
+      "event": "bb-session",
+      "session": "fa5ff177",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-21T09:37:18.696Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
