@@ -180,7 +180,7 @@ test('BRO-4078: computeStrandedTie skips the patch lookup entirely when landed i
 // BRO-8008: the job merged origin/main into its branch before being stranded,
 // so the tip is a merge and patch IDs of the landed (rebased) twins differ.
 // Content tie: every file the job touched is identical on origin/main.
-function mergeTipScenario({ divergeAfter }) {
+function mergeTipScenario({ divergeAfter, partial = false }) {
   git(['checkout', '-q', '-b', 'job']);
   commit(`fix(${REF}): part one`, '2026-01-01T10:00:00Z', 'a.txt');
   commit(`fix(${REF}): part two`, '2026-01-01T10:05:00Z', 'b.txt');
@@ -193,11 +193,12 @@ function mergeTipScenario({ divergeAfter }) {
   // Landed twins: rebase-equivalent, but with content tweaks to the commit
   // so the patch IDs differ while the final files are identical.
   git(['checkout', '-q', 'main']);
-  git(['checkout', 'job', '--', 'a.txt', 'b.txt']);
-  git(['add', 'a.txt', 'b.txt']);
+  const landFiles = partial ? ['a.txt'] : ['a.txt', 'b.txt'];
+  git(['checkout', 'job', '--', ...landFiles]);
+  git(['add', ...landFiles]);
   git(['commit', '-q', '-m', `fix(${REF}): landed twin`], { date: '2026-01-01T10:30:00Z' });
   const twin = git(['rev-parse', 'HEAD']);
-  if (divergeAfter) commit('chore: later edit to a.txt', '2026-01-01T11:00:00Z', 'a.txt');
+  if (divergeAfter) commit('chore: later edit', '2026-01-01T11:00:00Z', partial ? 'b.txt' : 'a.txt');
   git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
   return { strandedTip, twin };
 }
@@ -209,8 +210,8 @@ test('BRO-8008: merge-tip stranded job whose files are identical on origin/main 
   assert.equal(tie.tiedToStranded, false);
 });
 
-test('BRO-8008: a touched file that differs on origin/main refuses the content tie', () => {
-  const { strandedTip, twin } = mergeTipScenario({ divergeAfter: true });
+test('BRO-8008: a touched file that differs on origin/main and on the landed sha refuses the content tie', () => {
+  const { strandedTip, twin } = mergeTipScenario({ divergeAfter: true, partial: true });
   const tie = computeStrandedTie(twin, strandedTip, { cwd: repo });
   assert.equal(tie.tiedToStrandedByContent, false);
   assert.equal(tie.tiedToStrandedByPatch, false);
@@ -246,4 +247,11 @@ test('BRO-8008: a file changed only in the job\'s merge-conflict resolution is c
   git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
   const tie = computeStrandedTie(twin, tip, { cwd: repo });
   assert.equal(tie.tiedToStrandedByContent, false, 'r.txt differs on main, so the work is not fully landed');
+});
+
+test('BRO-8008: a job file edited on main AFTER the landing still ties via the landed sha tree', () => {
+  const { strandedTip, twin } = mergeTipScenario({ divergeAfter: true });
+  // divergeAfter edited a.txt on main after the twin landed; the twin itself matches the tip.
+  const tie = computeStrandedTie(twin, strandedTip, { cwd: repo });
+  assert.equal(tie.tiedToStrandedByContent, true);
 });

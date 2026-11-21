@@ -83,8 +83,11 @@ function contentIdentical(git, tip, commit) {
   const files = jobTouchedFiles(git, tip);
   if (!files.length) return false;
   const nul = x => x.split('\0').filter(Boolean);
-  const differs = nul(git(['--literal-pathspecs', 'diff', '-z', '--name-only', tip, 'origin/main', '--', ...files]));
-  if (differs.length) return false;
+  // Identical to origin/main OR to the landed sha's own tree: later unrelated
+  // edits to a job file on main must not strand a landing that was complete
+  // when it landed (BRO-7997: gap-recovery-driver.js edited after the land).
+  const differsFrom = ref => nul(git(['--literal-pathspecs', 'diff', '-z', '--name-only', tip, ref, '--', ...files])).length > 0;
+  if (differsFrom('origin/main') && differsFrom(commit)) return false;
   const shaFiles = new Set(nul(git(['diff-tree', '-z', '--no-commit-id', '--name-only', '-r', '--root', '-m', '--first-parent', commit])));
   return files.some(f => shaFiles.has(f));
 }
