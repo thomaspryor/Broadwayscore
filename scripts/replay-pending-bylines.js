@@ -495,6 +495,7 @@ async function processShow(showId, deps = {}) {
     }
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
+    stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
   // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
   const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
@@ -787,6 +788,7 @@ async function processShow(showId, deps = {}) {
       } else {
         console.log(`  [${file}] no byline detected — keep in pending`);
         if (!data.pendingRefetchedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-byline');
+        else if (!data.pendingFetchAttemptedAt && !dry) { data.pendingFetchAttemptedAt = now().toISOString(); data.pendingFetchAttemptResult = 'no-byline'; } // written just below
         // A rebuilt body is still progress: persist it so the next run (or a
         // human) starts from the text, not an empty stub.
         if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
