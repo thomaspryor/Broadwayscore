@@ -73,7 +73,7 @@ test('index fetch retries 503 with backoff; a hard 404 is not retried', async ()
 test('WAYBACK_CDX: an index outage is an error (not "nothing found"), so it never counts as tried', async () => {
   const ctx = { review: { showId: 'julie-west-end-2018', outletId: 'telegraph', publishDate: '2018-06-08' }, show: null, title: 'Julie',
     profile: { hosts: ['telegraph.co.uk'], prefixes: ['telegraph.co.uk/theatre'] }, hosts: ['telegraph.co.uk'], titleDirs: [] };
-  const down = { fetchText: async () => { const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexRetry: { baseMs: 0, sleep: async () => {} } };
+  const down = { fetchText: async () => { const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexBreaker: {}, indexRetry: { baseMs: 0, sleep: async () => {} } };
   const r = await UF.runMethod('WAYBACK_CDX', ctx, down);
   assert.equal(r.candidates.length, 0);
   assert.match(r.error, /503/);
@@ -82,6 +82,32 @@ test('WAYBACK_CDX: an index outage is an error (not "nothing found"), so it neve
   const r2 = await UF.runMethod('WAYBACK_CDX', ctx, up);
   assert.equal(r2.error, null);
   assert.equal(r2.candidates[0].url, 'https://www.telegraph.co.uk/theatre/what-to-see/vanessa-kirby-crown-jewel-lacklustre-julie-national-theatre/');
+});
+
+test('index circuit breaker: a 503-everywhere index costs at most 3 fetches per method per run, then index_down_this_run', async () => {
+  const mk = (n) => ({ fetchText: async () => { n.c++; const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexBreaker: {}, indexRetry: { baseMs: 0, sleep: async () => {} } });
+  const ctx = { review: { showId: 'julie-west-end-2018', outletId: 'telegraph', publishDate: '2018-06-08' }, show: null, title: 'Julie',
+    profile: { hosts: ['telegraph.co.uk'], prefixes: ['telegraph.co.uk/theatre'] }, hosts: ['telegraph.co.uk'], titleDirs: [] };
+  const n = { c: 0 }; const deps = mk(n);
+  const r1 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  const after1 = n.c;
+  assert.ok(after1 <= UF.INDEX_BREAKER_LIMIT, `fetches ${after1}`);
+  assert.match(r1.error, /503|index_down_this_run/);
+  const r2 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  assert.ok(n.c <= UF.INDEX_BREAKER_LIMIT, `fetches ${n.c}`);
+  assert.equal(r2.error, 'index_down_this_run');
+  // later gaps in the same run make no further fetches for that method
+  const after2 = n.c;
+  const r3 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  assert.equal(n.c, after2);
+  assert.equal(r3.error, 'index_down_this_run');
+  // a success resets the count
+  const b = {}; let fail = true;
+  const d2 = { fetchText: async () => { if (fail) { const e = new Error('HTTP 503'); e.status = 503; throw e; } return 'ok'; }, indexBreaker: b };
+  await assert.rejects(UF.fetchIndexWithRetry('q', d2, { tries: 2, baseMs: 0, sleep: async () => {}, method: 'COMMON_CRAWL' }));
+  fail = false;
+  assert.equal(await UF.fetchIndexWithRetry('q', d2, { baseMs: 0, sleep: async () => {}, method: 'COMMON_CRAWL' }), 'ok');
+  assert.equal(b.COMMON_CRAWL, 0);
 });
 
 test('url-find progress: union of live rows, errors and paid skips do not count; eligibility cools down', () => {

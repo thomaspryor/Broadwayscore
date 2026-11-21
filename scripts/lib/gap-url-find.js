@@ -365,9 +365,9 @@ async function runMethod(method, ctx, deps = defaultDeps()) {
           res.tried.push(q);
           ran++;
           let txt;
-          try { txt = await fetchIndexWithRetry(q, deps, deps.indexRetry || {}); } catch (e) {
+          try { txt = await fetchIndexWithRetry(q, deps, { ...(deps.indexRetry || {}), method }); } catch (e) {
             // The Common Crawl index answers 404 for "no captures": an empty result, not an outage.
-            if (method === 'COMMON_CRAWL' && e.status === 404) { txt = ''; } else { errors++; res.error = `${method} ${e.message}`; continue; }
+            if (method === 'COMMON_CRAWL' && e.status === 404) { txt = ''; } else { errors++; res.error = e.indexDown ? 'index_down_this_run' : `${method} ${e.message}`; continue; }
           }
           res.candidates.push(...(method === 'WAYBACK_CDX' ? parseCdxCandidates(txt, title) : parseCcCandidates(txt, title)));
         }
@@ -404,17 +404,30 @@ async function runMethod(method, ctx, deps = defaultDeps()) {
  */
 let lastIndexCallMs = 0;
 const INDEX_MIN_GAP_MS = 4000;
-async function fetchIndexWithRetry(q, deps, { tries = 2, baseMs = 10000, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+// Per-run circuit breaker: after INDEX_BREAKER_LIMIT consecutive transient
+// failures for a method, skip that method's remaining index queries this run
+// (error 'index_down_this_run' stays an error, so METHOD_DONE never counts it
+// and the next run retries). Any success resets the count. BRO-7966.
+const INDEX_BREAKER_LIMIT = 3;
+const defaultIndexBreaker = {};
+function resetIndexBreaker(b = defaultIndexBreaker) { for (const k of Object.keys(b)) delete b[k]; }
+async function fetchIndexWithRetry(q, deps, { tries = 2, baseMs = 10000, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), method = null } = {}) {
   let last;
+  const breaker = (deps && deps.indexBreaker) || defaultIndexBreaker;
   for (let i = 0; i < tries; i++) {
+    if (method && (breaker[method] || 0) >= INDEX_BREAKER_LIMIT) {
+      const e = new Error('index_down_this_run'); e.indexDown = true; throw e;
+    }
     // Pace index calls: heavy prefix scans in a burst draw 503s.
     const wait = lastIndexCallMs + INDEX_MIN_GAP_MS - Date.now();
     if (wait > 0) await sleep(wait);
     lastIndexCallMs = Date.now();
-    try { return await deps.fetchText(q, { timeoutMs: 90000 }); } catch (e) {
+    try { const out = await deps.fetchText(q, { timeoutMs: 90000 }); if (method) breaker[method] = 0; return out; } catch (e) {
       last = e;
       const transient = !e.status || [429, 500, 502, 503, 504].includes(e.status);
       if (!transient) throw e;
+      if (method) breaker[method] = (breaker[method] || 0) + 1;
+      if (method && breaker[method] >= INDEX_BREAKER_LIMIT) { last.indexDown = true; throw last; }
       await sleep(baseMs * (i + 1) * (i + 1));
     }
   }
@@ -708,7 +721,7 @@ module.exports = {
   planUrlFindWork,
   fallbackUrlFindSlot,
   probeLedgerRow,
-  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry,
+  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry, resetIndexBreaker, INDEX_BREAKER_LIMIT,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,
   rankCandidates, cdxFilterToken, waybackQueries, learnTitleStartDirs, titleStartQueries, yearWindow, parseCdxCandidates, learnSlugTemplates, slugify, sitemapDays,
   parseSitemapLocs, aggregatorFilesFor, runMethod, defaultDeps, commonCrawlQueries, parseCcCandidates, setCcCollections,
