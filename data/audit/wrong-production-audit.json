@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-21T04:48:13.881Z",
+  "timestamp": "2026-11-21T05:07:58.707Z",
   "stats": {
-    "totalReviews": 83573,
-    "alreadyFlagged": 22627,
-    "dateGuardCatches": 222,
-    "directorMismatch": 3805,
-    "tvFilmSignals": 2385,
-    "londonSignals": 3860,
-    "offBroadwaySignals": 777,
+    "totalReviews": 83576,
+    "alreadyFlagged": 22530,
+    "dateGuardCatches": 237,
+    "directorMismatch": 3825,
+    "tvFilmSignals": 2389,
+    "londonSignals": 3876,
+    "offBroadwaySignals": 778,
     "yearMismatch": 390,
     "noPublishDate": 8250
   },
@@ -12419,6 +12419,39 @@
       ]
     },
     {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 71,
+      "publishDate": "2024-12-18",
+      "url": "https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 88,
+      "publishDate": "2024-12-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "cat-on-a-hot-tin-roof-west-end-2017",
       "file": "nytimes--ben-brantley.json",
       "score": 91,
@@ -23620,6 +23653,81 @@
       ]
     },
     {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 88,
+      "publishDate": "2025-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 88,
+      "publishDate": "2025-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 88,
+      "publishDate": "2025-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "sunday-times--dominic-maxwell.json",
+      "score": 72,
+      "publishDate": "2025-06-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 91,
+      "publishDate": "2025-06-04",
+      "url": "https://www.thetimes.com/article/9d54ed4c-701b-4787-a84e-91f29e6332ec",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
       "showId": "fiddler-on-the-roof-regional-2024",
       "file": "chicago-theatre-review--colin-douglas.json",
       "score": 85,
@@ -27197,6 +27305,221 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (11x) more than 2023 (1x). 2026 matches production: good-night-oscar-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 78,
+      "publishDate": "2025-08-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 88,
+      "publishDate": "2025-08-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "financialtimes--tim-auld.json",
+      "score": 73,
+      "publishDate": "2025-08-08",
+      "url": "https://www.ft.com/content/953d0f50-f11c-4a86-a424-6a0f7454dc37",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "guardian--mark-lawson.json",
+      "score": 75,
+      "publishDate": "2025-08-08",
+      "url": "https://www.theguardian.com/stage/2025/aug/08/good-night-oscar-review-barbican-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 66,
+      "publishDate": "2025-08-07",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/good-night-oscar-levant-sean-hayes-b2803499.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "london-theatre--julia-rank.json",
+      "score": 86,
+      "publishDate": "2025-08-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": 85,
+      "publishDate": "2025-08-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 78,
+      "publishDate": "2025-08-07",
+      "url": "https://www.standard.co.uk/culture/theatre/good-night-oscar-at-the-barbican-b1241882.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "telegraph--fiona-mountford.json",
+      "score": 44,
+      "publishDate": "2025-08-07",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/good-night-oscar-barbican-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 88,
+      "publishDate": "2025-08-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "thereviewshub--john-cutler.json",
+      "score": 79,
+      "publishDate": "2025-08-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 76,
+      "publishDate": "2025-08-07",
+      "url": "https://www.thestage.co.uk/reviews/good-night-oscar-review-barbican-centre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "timeout-london--tom-wicker.json",
+      "score": 86,
+      "publishDate": "2025-08-07",
+      "url": "https://www.timeout.com/london/theatre/good-night-oscar-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "times-uk--ben-dowell.json",
+      "score": 86,
+      "publishDate": "2025-08-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/good-night-oscar-review-sean-hayes-barbican-rb0v8nzzz",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 87,
+      "publishDate": "2025-08-07",
+      "url": "https://www.whatsonstage.com/news/good-night-oscar-review-sean-hayes-is-flawless-in-his-west-end-debut_1689802/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
         }
       ]
     },
@@ -71332,6 +71655,25 @@
       ]
     },
     {
+      "showId": "the-front-page-2016",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "publishDate": "2016-03-24",
+      "url": "https://www.theatermania.com/news/ben-hecht-and-charles-macarthurs-the-front-page-may-get-another-broadway-revival_76466/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 180d before show (2016-03-24 vs 2016-09-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from the-front-page-1986"
+        }
+      ]
+    },
+    {
       "showId": "the-full-monty-west-end-2014",
       "file": "financialtimes--suzi-feay.json",
       "score": 74,
@@ -75161,6 +75503,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"austin pendleton\" from the-little-foxes-1981"
+        }
+      ]
+    },
+    {
+      "showId": "the-little-foxes-off-west-end-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 80,
+      "publishDate": "2024-12-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -91368,6 +91729,62 @@
       ]
     },
     {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 88,
+      "publishDate": "2025-07-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "score": 42,
+      "publishDate": "2025-06-26",
+      "url": "https://www.theguardian.com/stage/2025/jun/26/a-moon-for-the-misbegotten-review-ruth-wilson-michael-shannon-david-threlfall-almeida-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 88,
+      "publishDate": "2025-06-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 72,
+      "publishDate": "2025-06-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "a-night-with-janis-joplin-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 81,
@@ -98082,6 +98499,47 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "london-theatre--holly-omahony.json",
+      "publishDate": "2024-12-18",
+      "url": "https://www.londontheatre.co.uk/reviews/cat-on-a-hot-tin-roof-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 88,
+      "publishDate": "2024-12-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 43,
+      "publishDate": "2024-12-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cat-on-a-hot-tin-roof-review-a-long-evening-of-mannered-excess-c9h6jdv9x",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -105377,6 +105835,62 @@
       ]
     },
     {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "british-theatre--zia-trench.json",
+      "score": 88,
+      "publishDate": "2025-06-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 84,
+      "publishDate": "2025-06-04",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14777879/Patrick-Marmion-reviews-Fiddler-Roof-Barbican.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 88,
+      "publishDate": "2025-06-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 88,
+      "publishDate": "2025-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "finding-neverland-2015",
       "file": "amny--matt-windman.json",
       "score": null,
@@ -107450,6 +107964,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-off-west-end-2025",
+      "file": "sunday-times--hadley-freeman.json",
+      "score": 76,
+      "publishDate": "2025-08-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -113893,6 +114421,20 @@
     },
     {
       "showId": "jekyll-and-hyde-2013",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "publishDate": "2012-11-29",
+      "url": "https://www.theatermania.com/news/jekyll-hyde_63858/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 127d before show (2012-11-29 vs 2013-04-05)"
+        }
+      ]
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
       "file": "timeout--adam-feldman.json",
       "score": 22,
       "publishDate": "2013-04-18",
@@ -119928,6 +120470,120 @@
     },
     {
       "showId": "mexodus-off-broadway-2026",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2025-09-27",
+      "url": "https://broadwayandme.blogspot.com/2025/09/mexodus-hip-mix-of-hip-hop-and-history.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 160d before show (2025-09-27 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": 78,
+      "publishDate": "September 18, 2025",
+      "url": "https://culturesauce.com/2025/09/18/mexodus-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (September 18, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "front-row-center--holli-harms.json",
+      "score": 85,
+      "publishDate": "September 18th, 2025",
+      "url": "https://thefrontrowcenter.com/2025/09/mexodus/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (September 18th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 81,
+      "publishDate": "September 23rd, 2025",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR2K57",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 164d before show (September 23rd, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 74,
+      "publishDate": "2025-10-05",
+      "url": "https://newyorktheater.me/2025/10/04/mexodus-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 152d before show (2025-10-05 vs 2026-03-06)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "nyt-theater--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 153d before show (2025-10-04 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "nytg--austin-fimmano.json",
+      "score": 78,
+      "publishDate": "September 18th, 2025",
+      "url": "https://www.newyorktheatreguide.com/reviews/mexodus-off-broadway-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (September 18th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "nytimes--brittani-samuel.json",
+      "score": 76,
+      "publishDate": "September 19th, 2025",
+      "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 168d before show (September 19th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
       "file": "nytimes--rachel-sherman.json",
       "score": 72,
       "publishDate": "2026-04-15",
@@ -119950,6 +120606,76 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "talkinbroadway--james-wilson.json",
+      "score": 72,
+      "publishDate": "September 18th, 2025",
+      "url": "https://www.talkinbroadway.com/page/ob/09_18_25b.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (September 18th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 79,
+      "publishDate": "October 2nd, 2025",
+      "url": "https://www.theaterscene.net/musicals/offbway/mexodus/victor-gluck/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 155d before show (October 2nd, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 74,
+      "publishDate": "September 18th, 2025",
+      "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (September 18th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "theatre-reviews-limited--joseph-verlezza.json",
+      "score": 80,
+      "publishDate": "September 19th, 2025",
+      "url": "https://www.theatrereviews.com/off-broadway-review-mexodus-at-the-minetta-lane-theatre-through-saturday-october-18-2025/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 168d before show (September 19th, 2025 vs 2026-03-06)"
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": 76,
+      "publishDate": "September 19, 2025",
+      "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 168d before show (September 19, 2025 vs 2026-03-06)"
         }
       ]
     },
