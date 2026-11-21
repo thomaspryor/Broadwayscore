@@ -20,6 +20,7 @@
 
 const { foldDiacritics } = require('./title-match');
 const { isBlockedOfficialUrl } = require('./official-url-discovery');
+const { venueHostForShow } = require('./ticket-link-discovery');
 
 // Statuses a "new show" can be in before it's fully on sale. `closed` and
 // anything else are excluded — a closed show correctly has no buy button.
@@ -28,7 +29,23 @@ const ACTIVE_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
 // off-off-broadway shows are promoted under category 'off-broadway' (no
 // distinct category exists yet — see BRO-2485); off-west-end is the West
 // End-side equivalent tier.
-const TARGET_CATEGORIES = new Set(['off-broadway', 'off-west-end']);
+//
+// BRO-7437: 'regional' too. Regional rows (UK regional backfills, the US city
+// hubs) were ~80 of the ~100 open shows the freshness report flagged
+// missing_tickets every day, and this "never dead-end" producer never looked
+// at them, so the owner's 2026-08-04 rule (an unmonetized venue/official link
+// beats no link) was never applied to the category that needed it most.
+const TARGET_CATEGORIES = new Set(['off-broadway', 'off-west-end', 'regional']);
+
+// Categories that get SERP discovery of a show-specific site. Regional rows do
+// not: their titles are mostly revivals of famous works ("King Lear", "Annie",
+// "Little Women"), so a title-in-domain match would hand a local production
+// some other production's site. They take the venue-scoped fallback only.
+const SERP_CATEGORIES = new Set(['off-broadway', 'off-west-end']);
+
+function usesSerpDiscovery(show) {
+  return !!show && SERP_CATEGORIES.has(show.category);
+}
 
 /**
  * Shows that currently dead-end with no buy button: active, off-broadway
@@ -67,6 +84,7 @@ function significantTokens(s) {
  * registry only. Keeping them separate prevents a NY namesake from winning.
  */
 function venueFallbackUrl(show, venueConfigs, oweVenueConfigs = venueConfigs) {
+  if (show && show.category === 'regional') return regionalVenueFallbackUrl(show);
   const venueTokens = significantTokens(show && show.venue);
   if (venueTokens.length === 0) return null;
   const configs = show && show.category === 'off-west-end' ? oweVenueConfigs : venueConfigs;
@@ -97,9 +115,27 @@ function venueFallbackUrl(show, venueConfigs, oweVenueConfigs = venueConfigs) {
   }
 }
 
+/**
+ * Regional shows: the venue's own site, but only for a venue already in the
+ * venue-scoped first-party registry (ticket-link-discovery.js
+ * REGIONAL_VENUE_SITES, matched on the show's venue line). The NY/London
+ * venue configs are never consulted, so a "Theatre Royal" outside Bath cannot
+ * pick up Bath's site. Unknown venue -> null (still a gap, still reported).
+ */
+function regionalVenueFallbackUrl(show) {
+  if (!show || show.category !== 'regional') return null;
+  const host = venueHostForShow(show);
+  if (!host) return null;
+  const url = `https://${host}/`;
+  return isBlockedOfficialUrl(url) ? null : url;
+}
+
 module.exports = {
   ACTIVE_STATUSES,
   TARGET_CATEGORIES,
+  SERP_CATEGORIES,
   findDeadEndShows,
+  usesSerpDiscovery,
   venueFallbackUrl,
+  regionalVenueFallbackUrl,
 };

@@ -48,7 +48,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { discoverOfficialUrl } = require('./lib/official-url-discovery');
 const { hasSerpProvider } = require('./lib/url-discovery');
 const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
-const { findDeadEndShows, venueFallbackUrl } = require('./lib/ob-ticket-link-gaps');
+const { findDeadEndShows, venueFallbackUrl, usesSerpDiscovery } = require('./lib/ob-ticket-link-gaps');
 const { londonReaderConfigs } = require('./lib/ob-venue-reader-coverage');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -66,8 +66,12 @@ async function main() {
   const showsData = loadShows();
   const shows = Array.isArray(showsData) ? showsData : showsData.shows;
 
-  let targets = findDeadEndShows(shows);
-  console.log(`OB/off-west-end shows with no buy button at all: ${targets.length}`);
+  const deadEnds = findDeadEndShows(shows);
+  console.log(`OB/off-west-end/regional shows with no buy button at all: ${deadEnds.length}`);
+  // BRO-7437: regional rows take the free venue-scoped fallback only (no SERP),
+  // so they are not rationed by --limit, which bounds SERP spend.
+  const venueOnly = deadEnds.filter((s) => !usesSerpDiscovery(s));
+  let targets = deadEnds.filter((s) => usesSerpDiscovery(s));
 
   if (targets.length > LIMIT) {
     // Day-of-month rotation (same idiom as enrich-fallback-ticket-links.js) so
@@ -87,6 +91,14 @@ async function main() {
   let serpFound = 0;
   let venueFound = 0;
   let stillMissing = 0;
+
+  for (const show of venueOnly) {
+    const url = venueFallbackUrl(show, OB_VENUE_CONFIGS, loadLondonFallbackConfigs());
+    if (!url) { stillMissing++; continue; }
+    console.log(`${show.id}: ✓ venue fallback (regional): ${url}`);
+    venueFound++;
+    if (!DRY_RUN) show.officialUrl = url;
+  }
 
   for (const show of targets) {
     if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
