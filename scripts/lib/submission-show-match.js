@@ -72,11 +72,15 @@ function dayMs(iso) {
 /** Does this review date fall in the production's run window? null when the show or date is undated. */
 function reviewDateFitsShow(show, reviewDate) {
   const r = dayMs(reviewDate);
-  const open = dayMs(show && show.openingDate);
+  // Previews can start long before opening; use the earlier of the two.
+  const opens = [dayMs(show && show.previewsStartDate), dayMs(show && show.openingDate)].filter((x) => x != null);
+  const open = opens.length ? Math.min(...opens) : null;
   if (r == null || open == null) return null;
   if (r < open - PREVIEW_LEAD_DAYS * DAY_MS) return false;
   const close = dayMs(show.closingDate);
-  return close == null || r <= close + POST_CLOSE_GRACE_DAYS * DAY_MS;
+  // A closed show with no closing date is unknown, never "fits forever".
+  if (close == null) return show.status === 'closed' ? null : true;
+  return r <= close + POST_CLOSE_GRACE_DAYS * DAY_MS;
 }
 
 /**

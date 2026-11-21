@@ -120,17 +120,24 @@ function findShowForSubmission(url, shows, reviewTextsDir) {
 function checkSubmissionLandedAnywhere({ showId, url, reviews, reviewTextsDir, show, shows }) {
   const named = checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show });
   if (named.file) return named;
-  // Several other shows can hold a copy of the same URL; prefer one that is
-  // actually live in reviews.json, else the first.
-  const holders = (shows || []).filter((s) => s.id !== showId
-    && findSubmissionFile(path.join(reviewTextsDir, s.id), url));
-  if (!holders.length) return named;
+  const found = checkSubmissionLandedAcrossShows({ url, reviews, reviewTextsDir, shows: (shows || []).filter((s) => s.id !== showId) });
+  return found || named;
+}
+
+/**
+ * Every show holding a file for the URL is checked; one live in reviews.json
+ * wins, else the first holder's verdict. null when no show holds a file.
+ * @returns {null|{landed:boolean,reason:string|null,file:string|null,actualShowId:string}}
+ */
+function checkSubmissionLandedAcrossShows({ url, reviews, reviewTextsDir, shows }) {
+  const holders = (shows || []).filter((s) => findSubmissionFile(path.join(reviewTextsDir, s.id), url));
+  if (!holders.length) return null;
   const results = holders.map((s) => ({ s, res: checkSubmissionLanded({ showId: s.id, url, reviews, reviewTextsDir, show: s }) }));
   const pick = results.find((r) => r.res.landed) || results[0];
   return { ...pick.res, actualShowId: pick.s.id };
 }
 
 module.exports = {
-  checkSubmissionLanded, checkSubmissionLandedAnywhere, findSubmissionFile, submissionUrlKey, decideAwaitingSubmission, findShowForSubmission,
+  checkSubmissionLanded, checkSubmissionLandedAnywhere, checkSubmissionLandedAcrossShows, findSubmissionFile, submissionUrlKey, decideAwaitingSubmission, findShowForSubmission,
   AWAITING_SCORE_MAX_HOURS,
 };

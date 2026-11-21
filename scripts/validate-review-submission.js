@@ -385,6 +385,7 @@ async function validateSubmission(issueBody) {
       }
       if (claudeValidation.extractedData) {
         claudeValidation.extractedData.showId = byDate ? byDate.id : resolvedId;
+        if (byDate && byDate.id !== resolvedId) claudeValidation.extractedData.showTitle = byDate.title;
       }
     } else {
       claudeValidation.recommendation = 'needs-manual-review';
