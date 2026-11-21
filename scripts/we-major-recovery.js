@@ -290,6 +290,11 @@ async function cmdRun() {
         if (!raw) { console.log('[stage-diag] no cookie loaded or fetch failed'); throw new Error('skip'); }
         const h = raw.content || '';
         console.log(`[stage-diag] ${h.length} chars, introText=${/aos-Article-IntroText/.test(h)}, gate=${/utm_source=Reggate/i.test(h)}, paras=${(h.match(/<p[ >]/g) || []).length}, title=${((/<title>([^<]{0,80})/.exec(h) || [])[1] || '').trim()}`);
+        // Structure only: class tokens and paragraph lengths with a 40-char head, to write an extractor for this layout.
+        const cls = [...new Set((h.match(/class="[^"]*(?:aos|article|review|content|body|story)[^"]*"/gi) || []).map(c => c.slice(7, -1).split(/\s+/).filter(t => /aos|article|review|content|body|story/i.test(t)).join('.')))].slice(0, 25);
+        const paras = (h.match(/<p[ >][\s\S]*?<\/p>/g) || []).map(x => x.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+        console.log(`[stage-diag] classes: ${cls.join(' ')}`);
+        console.log(`[stage-diag] paras: ${paras.map(x => `${x.length}:${x.slice(0, 40)}`).join(' || ')}`);
       } catch (e) { if (e.message !== 'skip') console.log(`[stage-diag] error ${String(e.message).slice(0, 80)}`); }
     }
     if (results.length % 25 === 0) console.log(tally.line());
