@@ -582,3 +582,23 @@ test('CMS footer: Standard widget with a gallery caption and no MORE ABOUT block
     assert.equal(tier(BODY.slice(0, -40) + ' MORE ABOUT ' + tag + ' Shopping Best Buys Best toy advent calendars', 'standard').contentTier, 'truncated', tag);
   }
 });
+
+test('CMS footer review fixes: the caption strip never eats a cut sentence; long whitespace before a widget stays fast (BRO-7943)', () => {
+  const W = " November's best theatre 1 / 10 Shopping Best Buys Best heat-protectant leave-ins for fine hair";
+  assert.equal(tier(BODY + ' But the lead never quite' + W, 'standard').contentTier, 'truncated');
+  assert.equal(tier(BODY.slice(0, -40) + ' Hello, Dolly! 1 / 10 Shopping Best Buys offers', 'standard').contentTier, 'truncated');
+  // a long tag block ending on a punctuated tag is still removed
+  assert.equal(tier(BODY.slice(0, -40) + ' MORE ABOUT ' + 'Theatre '.repeat(60) + 'Hello, Dolly! Shopping Best Buys offers', 'standard').contentTier, 'truncated');
+  for (const tail of [' '.repeat(10000) + 'x Shopping Best Buys suffix', ' '.repeat(10000) + 'x Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies']) {
+    const t0 = Date.now(); T.stripCmsWidgetFooters(BODY + tail); assert.ok(Date.now() - t0 < 200, `slow: ${Date.now() - t0}ms`);
+  }
+});
+
+test('CMS footer: Standard "in pictures" caption and GO London ticket line (real corpus tails, BRO-7943)', () => {
+  const tails = [
+    ' Until Jan 4 (020 7927 0900, whitechristmasthemusical.co.uk ) Best pantos to see this Christmas in London - in pictures 1 / 7 Shopping Best Buys Best mirrors to make a statement',
+    ' Submit to it. Until September 8 Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys Best mirrors to make a statement',
+  ];
+  for (const t of tails) assert.equal(tier(BODY + t, 'standard').contentTier, 'complete', t.slice(0, 40));
+  assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys x', 'standard').contentTier, 'truncated');
+});
