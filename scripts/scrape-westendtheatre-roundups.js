@@ -215,6 +215,7 @@ function extractShowTitle(wpTitle) {
   title = title
     .replace(/\s+reviews?\s+round-?up\b.*$/i, '')       // "X Reviews Round-up – venue"
     .replace(/\s+reviews?:\s+.+$/i, '')                   // "X reviews: Is it the best..."
+    .replace(/\s+reviews?\s+[-–—]\s+.+$/i, '')            // BRO-7931: "X Reviews - Venue" (new WET format)
     .replace(/\s+in\s+(the\s+)?west\s+end\b.*$/i, '')    // "X in the West End ..."
     .replace(/\s+in\s+london\b.*$/i, '')                  // "X in London"
     .trim();
@@ -533,6 +534,7 @@ async function main() {
     }
 
     const show = matchResult.show;
+    stats.titleMatched = (stats.titleMatched || 0) + 1;
 
     // BRO-6682: never archive a roundup on a non-London row or a pre-run post.
     {
@@ -735,6 +737,11 @@ async function main() {
   if (stats.errors.length > 0) {
     console.log(`  Errors:         ${stats.errors.length}`);
     stats.errors.forEach(e => console.log(`    ⚠️  ${e}`));
+  }
+  const zero = require('./lib/wet-zero-match').wetZeroMatchProblem({ totalPosts: stats.totalPosts, titleMatched: stats.titleMatched, showFilter });
+  if (zero) {
+    console.error(`::error::${zero}`);
+    process.exitCode = 1;
   }
 }
 

@@ -17,6 +17,7 @@
  *   --time-budget-min=N: wall-clock budget (default 100 minutes)
  */
 
+import { parseFetchedDate, isStalePreOpeningArchive } from './lib/archive-staleness.js';
 import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -157,6 +158,16 @@ function archiveExists(aggregator: string, showId: string): boolean {
                         aggregator === 'dtli' ? 'dtli' : 'bww-roundups';
   const filePath = path.join(ARCHIVE_DIR, archiveSubdir, `${showId}.html`);
   return fs.existsSync(filePath);
+}
+
+// BRO-7931 #1: archives captured before opening + 7d are refetched once.
+function archiveIsStalePreOpening(aggregator: string, showId: string, openingDate?: string): boolean {
+  const subdir = aggregator === 'show-score' ? 'show-score' : aggregator === 'dtli' ? 'dtli' : 'bww-roundups';
+  try {
+    const fd = fs.openSync(path.join(ARCHIVE_DIR, subdir, `${showId}.html`), 'r');
+    const buf = Buffer.alloc(512); fs.readSync(fd, buf, 0, 512, 0); fs.closeSync(fd);
+    return isStalePreOpeningArchive({ fetched: parseFetchedDate(buf.toString('utf8')), openingDate });
+  } catch { return false; }
 }
 
 // === SHOW SCORE ===
@@ -733,7 +744,7 @@ async function main() {
         }
 
         // Skip if file exists and not forcing
-        if (!force && archiveExists(aggregator, showId)) {
+        if (!force && archiveExists(aggregator, showId) && !archiveIsStalePreOpening(aggregator, showId, show?.openingDate)) {
           continue;
         }
 
