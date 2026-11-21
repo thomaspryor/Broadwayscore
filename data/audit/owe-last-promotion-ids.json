@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T22:17:56.986Z",
+  "generatedAt": "2026-11-21T20:59:01.414Z",
   "promoted": [
     {
       "id": "jack-and-the-beanstalk-off-west-end-2027",
@@ -1447,6 +1447,14 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
+    },
+    {
+      "title": "High School Musical",
+      "venue": "Troubadour Wembley Park Theatre",
+      "source": "venue-page:troubadour-wembley-park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
     }
   ]
 }

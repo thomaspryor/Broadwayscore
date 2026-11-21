@@ -1150,20 +1150,6 @@
     "queuedAt": "2026-11-21T19:35:01.141Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T20:18:41.048Z"
-  },
-  {
     "conditionKey": "land:land/bro-7324-data-pin",
     "title": "Landing blocked: rebase red on land/bro-7324-data-pin",
     "description": "land.yml did not land land/bro-7324-data-pin: the rebase gate went red at 92717e19a9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44944172689",
@@ -1193,5 +1179,225 @@
       }
     ],
     "queuedAt": "2026-11-21T20:09:11.761Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:ceilidh-off-broadway-2027",
+    "title": "Ceilidh @ Perelman Performing Arts Center — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-06-19 to 2027-08-08). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/ceilidh-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T20:29:37.715Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:frankie-mcnair-huge-ass-mindset-off-broadway-2027",
+    "title": "Frankie McNair - Huge Ass Mindset @ Soho Playhouse — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-11 to 2027-03-21, 10 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/frankie-mcnair-huge-ass-mindset-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T20:29:37.737Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:lara-ricote-inkling-off-broadway-2027",
+    "title": "Lara Ricote: Inkling @ Soho Playhouse — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-20 to 2027-01-31, 10 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/lara-ricote-inkling-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T20:29:37.761Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:olga-koch-fat-tom-cruise-off-broadway-2027",
+    "title": "Olga Koch: Fat Tom Cruise @ Soho Playhouse — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-05 to 2027-01-31, 24 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/olga-koch-fat-tom-cruise-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T20:29:37.784Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:tom-cashman-npc-nearly-proficient-comedian-off-broadway-2027",
+    "title": "Tom Cashman: NPC (Nearly Proficient Comedian) @ Soho Playhouse — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-09 to 2027-03-21, 12 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/tom-cashman-npc-nearly-proficient-comedian-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T20:29:37.808Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7324-data-pin-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7324-data-pin-v2",
+    "description": "land.yml did not land land/bro-7324-data-pin-v2: the unit-tests-node gate went red at 56e5248c45. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44945679534",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7324-data-pin-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "56e5248c45da13dff353e14cc11d9cc5dae5c60c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44945679534"
+      }
+    ],
+    "queuedAt": "2026-11-21T20:37:47.045Z"
+  },
+  {
+    "conditionKey": "mezzanine:transient-failure",
+    "title": "Mezzanine Scraper Failed — Transient API Failure",
+    "description": "The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. No token action required — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44947749548",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44947749548)"
+      }
+    ],
+    "queuedAt": "2026-11-21T20:44:05.109Z"
+  },
+  {
+    "conditionKey": "land:land/mac-studio-docs",
+    "title": "Landing blocked: unit-tests-node red on land/mac-studio-docs",
+    "description": "land.yml did not land land/mac-studio-docs: the unit-tests-node gate went red at 6650168d95. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44947402621",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-studio-docs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6650168d951d9ffca5e3f7f69aa9b9d94cd09569"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44947402621"
+      }
+    ],
+    "queuedAt": "2026-11-21T20:46:07.057Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T21:35:21.094Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44949009659",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44949009659)"
+      }
+    ],
+    "queuedAt": "2026-11-21T21:15:32.747Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-the-ugly-one-off-west-end-2026",
+    "title": "Unverified revival on The Ugly One",
+    "description": "the-ugly-one-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T21:08:30.715Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-the-beauty-queen-of-leenane-regional-2026",
+    "title": "Placeholder synopsis on The Beauty Queen of Leenane",
+    "description": "synopsis for the-beauty-queen-of-leenane-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T21:08:31.370Z"
   }
 ]

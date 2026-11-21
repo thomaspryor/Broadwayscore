@@ -46,7 +46,7 @@
 const PAGE_WORTHY_PREFIXES = [
   'workflow-invalid-file:page:', // health-check.js (BRO-7307): a page-worthy workflow's file is invalid, so it fails instantly on every push and its schedule never runs (health-check only emits this key for PAGE_WORTHY_WORKFLOWS)
   'press-night:stuck:', // press-night-watchdog.js (BRO-6858): on a Broadway press night a found review is not live 15 min after it was found and no pipeline run is moving it (the watchdog's one automatic retry already went out)
-  'press-night:preflight:', // press-night-preflight.js (BRO-6858): 24h / 3h before a Broadway embargo, a scraper credit, LLM key or secret the night needs is failing
+  'press-night:preflight:', // press-night-preflight.js (BRO-6858): 24h / 3h before a press night in any lane market, an LLM key, scraper key or secret the night needs is failing, or ScrapingBee is out of credit
   'lane-live-timeout:', // opening-night lane (real-ports.js, BRO-6649): a publish pushed to core data is still not on the live site after 30 minutes on a press night (BRO-7232: files an auto-fix card first, emails only if that fix fails)
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight

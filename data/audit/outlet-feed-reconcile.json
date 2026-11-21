@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T20:19:09.440Z",
+  "generatedAt": "2026-11-21T21:35:48.897Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -104,6 +104,11 @@
       "openingDate": "2026-11-17"
     },
     {
+      "id": "arrowhead-regional-2026",
+      "title": "Arrowhead",
+      "openingDate": "2026-11-21"
+    },
+    {
       "id": "our-town-regional-2026",
       "title": "Our Town",
       "openingDate": "2026-11-15"
@@ -152,6 +157,16 @@
       "id": "the-beauty-queen-of-leenane-regional-2026",
       "title": "The Beauty Queen of Leenane",
       "openingDate": "2026-11-20"
+    },
+    {
+      "id": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
+      "title": "Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West",
+      "openingDate": "2026-11-18"
+    },
+    {
+      "id": "the-farce-awakens-feydeau-x-2-regional-2026",
+      "title": "The Farce Awakens: Feydeau x 2",
+      "openingDate": "2026-11-19"
     }
   ],
   "skipped": [
@@ -161,10 +176,6 @@
     },
     {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "arrowhead-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -179,12 +190,12 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
-      "outletId": "this-week-in-new-york",
-      "error": "Timeout fetching https://twi-ny.com/feed/"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
       "outletId": "theartsdispatch",
@@ -199,7 +210,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 878,
+  "itemsScanned": 868,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [

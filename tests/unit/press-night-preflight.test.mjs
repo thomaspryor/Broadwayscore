@@ -13,7 +13,7 @@ test('all pass, warnings and unrelated failures: clean', () => {
 });
 
 test('fail or skip on a needed key, missing results, low credits: problems', () => {
-  const v = preflightVerdict({ results: all({ Anthropic: { status: 'fail', message: '401' }, Resend: { status: 'skip' } }).filter((x) => x.name !== 'Vercel'), sb: { ok: true, pctUsed: 93, remaining: 70 } });
+  const v = preflightVerdict({ results: all({ Anthropic: { status: 'fail', message: '401' }, Resend: { status: 'skip' } }).filter((x) => x.name !== 'Vercel'), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
   assert.equal(v.ok, false);
   assert.deepEqual(v.problems.map((p) => p.key).sort(), ['Anthropic', 'Resend', 'ScrapingBee credits', 'Vercel']);
   assert.equal(v.resendDown, true);
@@ -31,17 +31,38 @@ test('a crashed check is matched by its function name and counts as a problem', 
   assert.match(v.problems[0].why, /check crashed/);
 });
 
-test('credits gate on credits left, not percent used (2026-11-21 false page: 91% used, 23,738 left)', () => {
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, remaining: 23738 } }).ok, true);
-  const low = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 40, remaining: 9000 } });
-  assert.deepEqual(low.problems.map((p) => p.key), ['ScrapingBee credits']);
+test('thin ScrapingBee balance never pages (ride-out policy, BRO-7854); exhausted does (2026-11-21 false page: 91% used, 23,738 left)', () => {
+  const today = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, usedCredits: 976262, maxCredits: 1000000, remaining: 23738 } });
+  assert.equal(today.ok, true);
+  assert.match(today.sbNote, /91% used/);
+  const thin = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 99, usedCredits: 995000, maxCredits: 1000000, remaining: 5000 } });
+  assert.equal(thin.ok, true);
+  assert.match(thin.sbNote, /5000 left/);
+  const empty = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
+  assert.deepEqual(empty.problems.map((p) => p.key), ['ScrapingBee credits']);
+  const noCount = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100 } });
+  assert.deepEqual(noCount.problems.map((p) => p.key), ['ScrapingBee credits']);
 });
 
-test('credit count missing or malformed: falls back to percent used, never passes a near-empty account silently', () => {
-  for (const remaining of [undefined, null, 'abc', NaN]) {
-    assert.deepEqual(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 95, remaining } }).problems.map((p) => p.key), ['ScrapingBee credits']);
-    assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 50, remaining } }).ok, true);
+test('unreadable credit status: no page, but flagged so the run does not clear earlier pages', () => {
+  for (const sb of [null, { ok: false, reason: 'api-error', message: 'timeout' }]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.equal(v.ok, true);
+    assert.equal(v.sbUnknown, true);
   }
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 10000, pctUsed: 99 } }).ok, true);
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 9999, pctUsed: 20 } }).ok, false);
+  assert.match(preflightVerdict({ results: all(), sb: { ok: false, reason: 'api-error', message: 'timeout' } }).sbNote, /Could not read/);
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 10, usedCredits: 1, maxCredits: 10, remaining: 9 } }).sbUnknown, false);
+});
+
+test('live-shaped ScrapingBee replies (captured 2026-11-21 from fetchSBCreditStatus)', () => {
+  const live401 = { ok: false, reason: 'api-error', status: 401, message: 'usage endpoint returned 401' };
+  const noKey = { ok: false, reason: 'no-key', message: 'SCRAPINGBEE_API_KEY not set' };
+  const missingCount = { ok: true, maxCredits: 250000, usedCredits: 250000, pctUsed: 100, pctRemaining: 0 };
+  for (const sb of [live401, noKey]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.deepEqual([v.ok, v.problems.length, v.sbUnknown], [true, 0, true]);
+    assert.ok(v.sbNote);
+  }
+  const m = preflightVerdict({ results: all(), sb: missingCount });
+  assert.deepEqual(m.problems.map((p) => p.key), ['ScrapingBee credits']);
 });

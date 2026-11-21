@@ -203,6 +203,66 @@ describe('buildStageResults — env-var contract used by the CLI wrapper', () =>
   });
 });
 
+// BRO-8012: runs 44926969515 / 44927509431 paged the owner because the
+// readiness-only local rebuild hit its 10-min step timeout, while the real
+// rebuild (rebuild-reviews.yml) had been dispatched and succeeded.
+describe('readiness rebuild off the fast path (BRO-8012)', () => {
+  const base = {
+    GATHER_FAILED: '0', GATHER_TOTAL: '1',
+    COLLECT_ATTEMPTED: 'true', COLLECT_OUTCOME: 'success',
+    SCORE_FAILED: '0', SCORE_TOTAL: '1',
+    REBUILD_ATTEMPTED: 'true', REBUILD_OUTCOME: 'cancelled',
+    DEPLOY_ATTEMPTED: 'false',
+    FAST_PATH: '',
+  };
+
+  test('run-44927509431 shape: readiness rebuild cancelled, real rebuild dispatched -> degraded, no page', () => {
+    const v = verifyPipeline(buildStageResults({ ...base, LEGACY_REBUILD_OUTCOME: 'success' }));
+    assert.equal(v.ok, true);
+    assert.equal(v.degraded.length, 1);
+    assert.match(v.degraded[0].reason, /rebuild-reviews\.yml was dispatched/);
+    assert.match(v.degraded[0].reason, /broadcast may wait one poll/);
+  });
+
+  test('lane-only gate suppressed the dispatch on purpose -> degraded', () => {
+    const r = verifyRebuildStage({
+      attempted: true, outcome: 'failure', fastPath: false, dispatchOutcome: 'skipped', laneSuppressed: true,
+    });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, true);
+    assert.match(r.reason, /lane pipeline owns the rebuild/);
+  });
+
+  test('dispatch failed too -> still a hard failure (nothing rebuilt the site)', () => {
+    const v = verifyPipeline(buildStageResults({ ...base, LEGACY_REBUILD_OUTCOME: 'failure' }));
+    assert.equal(v.ok, false);
+    assert.match(v.failed[0].reason, /crashed/);
+  });
+
+  test('dispatch skipped WITHOUT lane suppression -> hard failure', () => {
+    const r = verifyRebuildStage({
+      attempted: true, outcome: 'cancelled', fastPath: false, dispatchOutcome: 'skipped', laneSuppressed: false,
+    });
+    assert.equal(r.ok, false);
+  });
+
+  test('fast path: the rebuild step IS the real rebuild, so a crash stays a hard failure', () => {
+    const v = verifyPipeline(buildStageResults({ ...base, FAST_PATH: 'true', LEGACY_REBUILD_OUTCOME: 'success' }));
+    assert.equal(v.ok, false);
+  });
+
+  test('FAST_PATH unset keeps the strict legacy behavior', () => {
+    const { FAST_PATH, ...noFast } = base;
+    assert.equal(verifyPipeline(buildStageResults({ ...noFast, LEGACY_REBUILD_OUTCOME: 'success' })).ok, false);
+  });
+
+  test('a successful readiness rebuild stays clean (not degraded)', () => {
+    const r = verifyRebuildStage({ attempted: true, outcome: 'success', fastPath: false, dispatchOutcome: 'success' });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, undefined);
+  });
+});
+
 // BRO-4273: runs 36493405907 / 36503960657 finished collecting and pushed
 // their texts, then node stayed alive until the 12-min step kill; the
 // verifier read the kill as a crash and failed a run whose deploy went live.

@@ -1252,8 +1252,11 @@ jobs:
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files
       # this job wrote), and record which shows drifted.
-      - name: Restore fingerprint memo (fast_path)
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+      # BRO-8012: restore for BOTH inline rebuilds (fast_path and the
+      # readiness rebuild below). The readiness copy ran cold and outgrew its
+      # 10-min step timeout. Restore-only, so an extra run costs nothing.
+      - name: Restore fingerprint memo
+        if: steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         continue-on-error: true
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
@@ -1536,6 +1539,7 @@ jobs:
 
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
+        id: legacy_rebuild
         if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.lane_only.outputs.suppress != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -1559,7 +1563,10 @@ jobs:
       - name: Rebuild reviews.json locally (for readiness check)
         id: readiness_rebuild
         # BRO-5426: skip when fast_rebuild already rebuilt reviews.json this run;
-        # running the same 3.5-5 min rebuild twice only spent job budget.
+        # running the same rebuild twice only spent job budget. BRO-8012: the
+        # rebuild takes ~7-9 min on CI with the fingerprint memo restored above
+        # (12+ min cold); if it still times out, the verify step reads it as
+        # degraded because rebuild-reviews.yml was dispatched.
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.fast_rebuild.outcome != 'success'
         env:
           # BRO-2757: this local rebuild only feeds the readiness check (the real
@@ -1666,6 +1673,10 @@ jobs:
           REBUILD_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
           FAST_REBUILD_OUTCOME: ${{ steps.fast_rebuild.outcome }}
           READINESS_REBUILD_OUTCOME: ${{ steps.readiness_rebuild.outcome }}
+          # BRO-8012: a slow readiness rebuild is degraded, not a page, when the
+          # real rebuild was dispatched (or the lane pipeline owns it).
+          LEGACY_REBUILD_OUTCOME: ${{ steps.legacy_rebuild.outcome }}
+          LANE_ONLY_SUPPRESS: ${{ steps.lane_only.outputs.suppress }}
           DEPLOY_ATTEMPTED_RAW: ${{ steps.fast_rebuild.outcome }}
           DEPLOY_DISPATCHED: ${{ steps.deploy.outputs.dispatched }}
           DEPLOY_VERIFIED: ${{ steps.deploy_verify.outputs.verified }}

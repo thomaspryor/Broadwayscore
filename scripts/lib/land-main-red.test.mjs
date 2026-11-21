@@ -51,6 +51,17 @@ test('workflow wiring: no sleep-poll admit job; Land needs checks (+dispatch-gua
   const shardJob = y.slice(y.indexOf('\n  checks-shard:\n'));
   const shardHeader = shardJob.slice(0, shardJob.indexOf('\n    steps:\n'));
   assert.match(shardHeader, /\n    continue-on-error: true(?:\n|$)/, 'checks-shard has job-level continue-on-error: true');
+  // BRO-7324: both runners check out ONE core-data rev (dispatch-guard's pin);
+  // Land and e2e-local never pin (they read live main's data).
+  assert.match(y, /\n      data_rev: \$\{\{ steps\.shard\.outputs\.data_rev \}\}\n/, 'dispatch-guard exposes data_rev');
+  const coreDataRefs = (job) => [...job.matchAll(/uses: \.\/\.github\/actions\/checkout-core-data\n        with:\n(?:          [^\n]*\n)*/g)]
+    .map((m) => (m[0].match(/\n          ref: ([^\n]*)/) || [])[1] || null);
+  const checksJob = y.slice(y.indexOf('\n  checks:\n'), y.indexOf('\n  e2e-local:\n'));
+  assert.match(checksJob.slice(0, checksJob.indexOf('\n    steps:\n')), /\n    needs: dispatch-guard\n/);
+  assert.deepEqual(coreDataRefs(checksJob), ["${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}"]);
+  assert.deepEqual(coreDataRefs(shardJob), ["${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}"]);
+  assert.deepEqual(coreDataRefs(landJob), [null], 'Land checks out live core-data main');
+  assert.deepEqual(coreDataRefs(y.slice(y.indexOf('\n  e2e-local:\n'), y.indexOf('\n  land:\n'))), [null], 'e2e-local checks out live core-data main');
   const { ticketName } = require('./land-mutex.js');
   const t = (mainRed) => ticketName({ mainRed, enqueuedAt: 1, runId: '1', attempt: 1 });
   assert.ok(t(true) < t(false), 'main-red ticket sorts ahead of an ordinary one');

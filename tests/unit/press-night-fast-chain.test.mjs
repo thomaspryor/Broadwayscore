@@ -92,8 +92,11 @@ test('rebuild-reviews.yml and the poller fast_path restore the fingerprint memo 
   assert.ok(r.indexOf('- name: Restore fingerprint memo') < r.indexOf('- name: Rebuild reviews.json\n'));
   assert.match(r, /- name: Save fingerprint memo/);
   const p = wf('opening-night-poller.yml');
-  const restore = p.indexOf('- name: Restore fingerprint memo (fast_path)');
+  // BRO-8012: one restore now serves both the fast_path rebuild and the
+  // readiness rebuild, so it must come before each of them.
+  const restore = p.indexOf('- name: Restore fingerprint memo');
   assert.ok(restore > 0 && restore < p.indexOf('- name: Rebuild reviews.json (fast_path)'));
+  assert.ok(restore < p.indexOf('- name: Rebuild reviews.json locally (for readiness check)'));
   assert.doesNotMatch(p, /actions\/cache\/save@[^\n]*\n[^\n]*\n\s*path: \.cache\/rebuild-fp-cache\.json/);
   for (const y of [r, p]) assert.match(y, /rebuild-fp-memo-v1-\$\{\{ hashFiles\('scripts\/lib\/text-cleaning\.js'/);
 });

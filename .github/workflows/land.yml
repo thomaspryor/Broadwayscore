@@ -116,6 +116,9 @@ jobs:
     outputs:
       shard: ${{ steps.shard.outputs.shard }}
       base: ${{ steps.shard.outputs.base }}
+      # BRO-7324: the private core-data main sha both runners check out, so
+      # land-shard.js collect sees one data rev. Empty = no pin (A falls back).
+      data_rev: ${{ steps.shard.outputs.data_rev }}
     steps:
       - name: Checkout the guard
         if: github.event_name == 'workflow_dispatch'
@@ -138,6 +141,7 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          CORE_DATA_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           LAND_NODE_SHARD_DISABLED: ${{ vars.LAND_NODE_SHARD_DISABLED }}
         run: |
           SHARD=true
@@ -150,9 +154,24 @@ jobs:
             echo "::warning::could not read main's sha; node shard off, Checks runs every gate unsplit"
             SHARD=false; BASE=""
           fi
+          # Pin the private core-data main too (only when sharded): the two
+          # runners clone it minutes apart, and a data rev mismatch makes A
+          # refuse B's part and re-run it (run 44938831691, 11 min lost).
+          # Unreadable = empty = no pin; A then compares revs as before.
+          DATA_REV=""
+          if [ "$SHARD" = "true" ] && [ -n "$CORE_DATA_TOKEN" ]; then
+            if OUT=$(timeout 60 git ls-remote "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" refs/heads/main 2>/dev/null); then
+              DATA_REV=$(printf '%s\n' "$OUT" | awk '$2 == "refs/heads/main" {print $1}' | head -1)
+            fi
+            if ! printf '%s' "$DATA_REV" | grep -Eq '^[0-9a-f]{40}$'; then
+              echo "::warning::could not read core-data main's sha; the two runners clone it unpinned"
+              DATA_REV=""
+            fi
+          fi
           echo "shard=$SHARD" >> "$GITHUB_OUTPUT"
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
-          echo "node shard: $SHARD; pinned base: ${BASE:-none (Checks rebases onto main as it is then)}"
+          echo "data_rev=$DATA_REV" >> "$GITHUB_OUTPUT"
+          echo "node shard: $SHARD; pinned base: ${BASE:-none (Checks rebases onto main as it is then)}; pinned core data: ${DATA_REV:-none}"
 
   checks:
     name: Checks
@@ -431,6 +450,9 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-7324: same core-data rev as "Checks (shard 2/2)". Attempt 1
+          # only: a re-run rebases onto live main and runs part 2 itself.
+          ref: ${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}
 
       - name: Lane code freeze (advisory)
         id: lanefreeze
@@ -1828,6 +1850,9 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-7324: same core-data rev as Checks (dispatch-guard's pin), and
+          # the same attempt-1-only rule, so a re-run never pins one side only.
+          ref: ${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}
 
       - name: Generate gitignored manifests
         if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
