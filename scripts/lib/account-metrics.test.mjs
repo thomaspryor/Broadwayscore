@@ -370,3 +370,23 @@ test('evaluateEmailCodeAlert fires at the threshold, clears well below it, and n
   assert.doesNotMatch(with_(30).description, /BRO-\d/, 'no card ids in owner copy');
   assert.equal(m.evaluateEmailCodeAlert(null), null, 'no account list, no verdict either way');
 });
+
+test('One Tap skips are reported and origin alerts use the 24-hour desktop threshold', () => {
+  const q = m.buildQueries();
+  assert.match(q.oneTapSkips, /one_tap_not_displayed/);
+  assert.match(q.oneTapSkips, /INTERVAL 30 DAY/);
+  assert.match(q.health, /INTERVAL 24 HOUR/);
+  assert.match(q.health, /properties\.\$device_type = 'Desktop'/);
+  assert.match(q.health, /count\(DISTINCT if\(event = 'one_tap_not_displayed'/);
+  assert.match(q.health, /'unregistered_origin'/);
+  const rows = [{ reason: 'unregistered_origin', n: '21', devices: '20' }, { reason: 'suppressed_by_user', n: 4, devices: 3 }];
+  assert.deepEqual(m.summarizeOneTapSkips(rows), [{ reason: 'unregistered_origin', count: 21, devices: 20 }, { reason: 'suppressed_by_user', count: 4, devices: 3 }]);
+  const d = m.buildDashboardData({ now: NOW, accounts: m.summarizeAccounts([], {}, NOW), ph: { oneTapSkips: rows } });
+  assert.deepEqual(d.oneTapSkips, m.summarizeOneTapSkips(rows));
+  assert.match(m.weeklySummaryLines(d).join('\n'), /unregistered_origin.*21.*20/);
+  const alert = (health) => m.evaluateAlerts(health).find((a) => a.key === m.ALERT_KEYS.oneTapOrigin);
+  assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 21, one_tap_devices: 20 }).firing, true);
+  assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 20, one_tap_devices: 20 }).firing, false);
+  assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 21, one_tap_devices: 19 }).firing, false);
+  assert.equal(m.buildDashboardData({ accounts: null, ph: { oneTapSkips: null } }).oneTapSkips, null);
+});
