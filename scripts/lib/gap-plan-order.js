@@ -142,12 +142,39 @@ function slotSplit(work) {
  * URL_FIND time slice. Each attempt runs 3-6 minutes for ~0% yield; once the
  * night's URL_FIND time passes the slice the rest wait for another night.
  */
-function urlFindSliceMs(env = process.env) {
-  const n = Number(env.GAP_URL_FIND_SLICE_MIN);
-  return (Number.isFinite(n) && n >= 0 ? n : 15) * 60000;
+// BRO-7986: the 15-min slice was sized for the 90-min nightly (a sixth of the
+// run). A shorter run (a 20-min batch round) gets the same sixth, never more
+// than 15 min; GAP_URL_FIND_SLICE_MIN set explicitly always wins. The run
+// length is read exactly as gap-recovery-driver reads it (parseInt, 60 unset).
+const URL_FIND_SLICE_MAX_MIN = 15;
+const URL_FIND_SLICE_SHARE = 1 / 6;
+function runBudgetMin(env = process.env) {
+  return parseInt(env.TIME_BUDGET_MIN || '60', 10) || 60;
 }
-function urlFindSliceExhausted(spentMs, env = process.env) {
-  return spentMs >= urlFindSliceMs(env);
+/**
+ * @param {object} [env]
+ * @param {{only?: string|null}} [opts]  the driver's --strategy filter: a run
+ *   that does nothing but URL_FIND has no other strategy to share time with,
+ *   so the slice is the whole run.
+ */
+function urlFindSliceMs(env = process.env, { only = null } = {}) {
+  const raw = env.GAP_URL_FIND_SLICE_MIN;
+  const n = Number(raw);
+  if (raw != null && String(raw).trim() !== '' && Number.isFinite(n) && n >= 0) return n * 60000;
+  if (only === 'URL_FIND') return runBudgetMin(env) * 60000;
+  return Math.round(Math.min(URL_FIND_SLICE_MAX_MIN, runBudgetMin(env) * URL_FIND_SLICE_SHARE) * 60000);
+}
+/**
+ * The slice opts for a run: URL_FIND gets the whole run when it is all the run
+ * plans (--strategy=URL_FIND, or a --class whose items all plan URL_FIND).
+ * Pure.
+ */
+function urlFindSliceOpts(work, only = null) {
+  const all = only === 'URL_FIND' || (Array.isArray(work) && work.length > 0 && work.every((c) => c && c.strategy === 'URL_FIND'));
+  return { only: all ? 'URL_FIND' : only };
+}
+function urlFindSliceExhausted(spentMs, env = process.env, opts = {}) {
+  return spentMs >= urlFindSliceMs(env, opts);
 }
 
 /**
@@ -190,6 +217,6 @@ function groupBrowserSessions(work, adapterNameOf) {
 module.exports = {
   groupBrowserSessions,
   bandOf, attemptFacts, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof,
-  slotSplit, urlFindSliceMs, urlFindSliceExhausted,
+  slotSplit, urlFindSliceMs, urlFindSliceExhausted, urlFindSliceOpts, runBudgetMin,
   BACKOFF_BASE_H, BACKOFF_CAP_H, IDENTICAL_REFETCH_PROOF,
 };

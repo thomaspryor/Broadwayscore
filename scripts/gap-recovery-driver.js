@@ -74,7 +74,7 @@ const OPTS = {
   historicOnly: flag('historic-only'),
   jsonOut: arg('json'),
   summaryOut: arg('summary'),
-  timeBudgetMs: (parseInt(process.env.TIME_BUDGET_MIN || '60', 10) || 60) * 60000,
+  timeBudgetMs: PO.runBudgetMin() * 60000, // same reader as the URL_FIND slice (BRO-7986)
 };
 
 const ROOT = path.join(__dirname, '..');
@@ -428,9 +428,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
   if (todo.skippedUrlFind) console.log(`  URL_FIND: ${URL_FIND_MAX_PER_RUN} full + ${URL_FIND_FREE_MAX_PER_RUN} free-only slots tonight; ${todo.skippedUrlFind} wait for a later night`);
   // Browser items grouped by adapter: one Chrome launch + auth probe per outlet, not per switch (BRO-7943).
   const work = PO.groupBrowserSessions(OPTS.limit ? todo.slice(0, OPTS.limit) : todo, (c) => { const a = adapterFor(c.outletId); return a && a.name; });
+  const sliceOpts = PO.urlFindSliceOpts(work, OPTS.only); // BRO-7986: an all-URL_FIND run has nothing to share time with
   const split = PO.slotSplit(work);
   SUMMARY.slots = { retry: split.retry, new: split.new };
-  console.log(`  slots tonight: ${split.retry} retries + ${split.new} new items (of ${work.length}); URL_FIND time slice ${Math.round(PO.urlFindSliceMs() / 60000)} min`);
+  console.log(`  slots tonight: ${split.retry} retries + ${split.new} new items (of ${work.length}); URL_FIND time slice ${Math.round(PO.urlFindSliceMs(process.env, sliceOpts) / 60000)} min`);
   let urlFindSpentMs = 0;
   let urlFindSliceSkipped = 0;
   console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
@@ -539,7 +540,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
       if (earlierPending.has(c.reviewKey) || pendingInfo.has(c.reviewKey)) continue;
       if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
       // BRO-7942: URL_FIND ran ~55 of the 85 nightly minutes for 0/96 accepted: it gets a time slice.
-      if (c.strategy === 'URL_FIND' && PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; continue; }
+      if (c.strategy === 'URL_FIND' && PO.urlFindSliceExhausted(urlFindSpentMs, process.env, sliceOpts)) { urlFindSliceSkipped++; continue; }
       if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly) urlFindRuns++;
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
@@ -576,7 +577,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
       else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
       else if (strategy === 'PAID_FETCH') got = await S.paidFetch(c);
       else if (strategy === 'URL_FIND') {
-        if (PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; stats.attempted--; continue; } // fallback-reached URL_FIND obeys the slice too
+        if (PO.urlFindSliceExhausted(urlFindSpentMs, process.env, sliceOpts)) { urlFindSliceSkipped++; stats.attempted--; continue; } // fallback-reached URL_FIND obeys the slice too
         // Links a past URL_FIND run found and the live gate refused are not fetched again.
         const refusedUrls = require('./lib/gap-url-find').refusedUrlsFromRows(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || []));
         // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
@@ -691,10 +692,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
       stats.accepted++;
       let priorFullTextHash = null;
       try { priorFullTextHash = readJson(c.filePath).textRecoveryProvenance.priorFullTextHash; } catch { /* none */ }
-      const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID, priorTier: r.decision.priorTier || null, newTier: r.decision.newTier || null };
+      const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: r.landedUrl || got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID, priorTier: r.decision.priorTier || null, newTier: r.decision.newTier || null };
       pendingInfo.set(c.reviewKey, info);
       console.log(`  ✓ accepted ${r.newLen} chars via ${got.via} (tier ${r.decision.priorTier} -> ${r.decision.newTier})`);
-      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, acceptedHash: acceptedHash(c.filePath), priorTier: r.decision.priorTier || null, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
+      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: r.landedUrl || got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, acceptedHash: acceptedHash(c.filePath), priorTier: r.decision.priorTier || null, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
       stats.byStrategy[strategy].accepted++;
       // Every 5 accepts, or once an accept has waited 2 minutes: an uncommitted
       // write in the shared review-texts clone is lost to any other job's

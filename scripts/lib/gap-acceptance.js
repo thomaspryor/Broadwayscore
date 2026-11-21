@@ -471,6 +471,73 @@ function landedAsRecovered(landed, expected, writeResult = {}) {
 }
 
 /**
+ * BRO-7986: a url the write guard keeps for the move to candidateUrl (human
+ * pin, manual override, lock, or an auto pin the guard's flip-flop rule does
+ * not lift). A move onto such a url ends write_rolled_back with the text
+ * written under the old url and move fields stamped for a move that never
+ * happened, so it is decided before the write.
+ */
+function pinnedUrl(existing, candidateUrl) {
+  if (!existing || !existing.url) return false;
+  if (existing._locked === true || existing.urlManualOverride === true) return true;
+  if (existing.urlVerified !== true) return false;
+  // An auto pin yields where the guard lets it (malformed or non-review pinned
+  // url -> a well-formed same-host article): keep that move on the normal path.
+  if (existing.urlVerifiedAuto === true && candidateUrl
+    && require('./review-write-guard')._flipFlopShouldTakeIncoming(existing.url, candidateUrl, existing)) return false;
+  return true;
+}
+
+// A path that is a script (index.php?p=1) needs its query to name the article.
+const SCRIPT_PATH_RE = /\.(php|aspx?|jsp|cfm|cgi)$/i;
+
+/**
+ * Same article at a cosmetically different address: scheme, "www.", case, a
+ * trailing slash, a ".html"/".htm" suffix, fragment, and the query when the
+ * path itself names the article (dead-outlaw-2025 Vulture: the pinned url and
+ * the same url + ".html"; wsj "?mod=googlenewsfeed"). A script path keeps its
+ * raw query, and any path keeps its article-id params (review?id=1 is not
+ * review?id=2: review-url-clusters ARTICLE_ID_QUERY_KEY, BRO-2274); the site
+ * root never matches. Nothing is percent-decoded (a
+ * decoded "%26" must not collide with "&"). This only decides WHERE the text
+ * is stored: the page actually fetched still passes the full gate (identity,
+ * date, blocklist). Pure.
+ */
+function isTrivialUrlVariant(a, b) {
+  const key = (u) => {
+    try {
+      const x = new URL(String(u));
+      const host = x.hostname.toLowerCase().replace(/^www\./, '');
+      const p = x.pathname.replace(/\/+$/, '').replace(/\.html?$/i, '').toLowerCase();
+      if (!p) return null;
+      if (SCRIPT_PATH_RE.test(p)) return `${host}${p}${x.search}`;
+      const { ARTICLE_ID_QUERY_KEY } = require('./review-url-clusters');
+      const ids = x.search.slice(1).split('&').filter((kv) => kv && ARTICLE_ID_QUERY_KEY.test(kv.split('=')[0])).sort();
+      return ids.length ? `${host}${p}?${ids.join('&')}` : `${host}${p}`;
+    } catch { return null; }
+  };
+  const ka = key(a);
+  return !!ka && ka === key(b);
+}
+
+/**
+ * What a recovery may do with a pinned record's url, decided before the write.
+ * keepPinned: the fetched page is a trivial variant of the pinned url, so the
+ * text is stored under the pinned url with no move (the fetched url is still
+ * the one the gate checks). refusal: any other url; the guard would refuse the
+ * move, so nothing is written ('url_pinned', non-evidence: the page may well
+ * be this review, the record just cannot take its url).
+ * @returns {{keepPinned: boolean, refusal: string|null}}
+ */
+function pinnedUrlRoute(existing, candidateUrl) {
+  const none = { keepPinned: false, refusal: null };
+  if (!candidateUrl || !pinnedUrl(existing, candidateUrl)) return none;
+  if (!require('./url-change-invariant').urlCanonicallyChanged(existing.url, candidateUrl)) return none;
+  if (isTrivialUrlVariant(existing.url, candidateUrl)) return { keepPinned: true, refusal: null };
+  return { keepPinned: false, refusal: 'url_pinned' };
+}
+
+/**
  * The LLM identity proof the gate accepts for a url move: content-verifier's
  * verifyContent() said valid with high confidence, from a model (not the
  * heuristic fallback), and flagged nothing.
@@ -631,8 +698,16 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
         return { ok: false, code: 'url_moved_during_fetch', reason: `record url changed while fetching (${exp || 'none'} -> ${disk || 'none'})`, decision: null, dryRun };
       }
     }
+    // BRO-7986: a pinned url is decided here, before anything is written. The
+    // gate below still judges the page actually fetched (url), pinned or not.
+    const route = pinnedUrlRoute(data, url);
+    if (route.refusal) {
+      return { ok: false, code: route.refusal, reason: `${data.url} is pinned (urlVerified/urlManualOverride/_locked); not moving it to ${url}`, decision: null, dryRun };
+    }
     const ctx = buildAcceptanceContext(filePath, data, url, ctxOpts);
     const decision = acceptRecoveredText(data, { rawText, url, headline, pageDate, pageByline }, ctx);
+    // A trivial variant of a pinned url: same article, stored under the pinned url.
+    const moveUrl = decision.urlChanged && !route.keepPinned;
     if (!decision.accept || dryRun) {
       return { ok: decision.accept, code: decision.code, reason: decision.reason, newLen: decision.cleanedText && decision.cleanedText.length, decision, dryRun };
     }
@@ -642,12 +717,13 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
       priorFullTextHash: data.fullText ? sha256(data.fullText) : null,
       priorTextLength: (data.fullText || '').length,
       priorContentTier: data.contentTier || null,
-      priorUrl: decision.urlChanged ? (data.url || null) : undefined,
+      priorUrl: moveUrl ? (data.url || null) : undefined,
+      sourceUrl: route.keepPinned ? url : undefined,
       newFullTextHash: sha256(text),
       method: labels.sourceMethod,
       at,
     };
-    if (decision.urlChanged) {
+    if (moveUrl) {
       if (data.url) data.previousUrl = data.url;
       data.url = url;
       data.urlDiscoveredAt = at;
@@ -686,9 +762,12 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
     if (data.llmScore && data.llmScore.score) {
       require('./rescore-flagging').markRescoreNeeded(data, `fullText recovered via ${labels.sourceMethod}`, undefined, { requeue: true });
     }
+    // The url this text must land under: an unlocked url edit merged in by the
+    // write (review-field-edit) must not end up holding this text (Codex).
+    const storedUrl = moveUrl ? url : (data.url || null);
     const write = persistReviewViaSafeWrite(
       { filePath, data, trailingNewline: true },
-      decision.urlChanged ? { preserveUrlDerivedFields: require('./rediscovery-candidate').AGGREGATOR_FIELDS } : {},
+      moveUrl ? { preserveUrlDerivedFields: require('./rediscovery-candidate').AGGREGATOR_FIELDS } : {},
     );
     if (tracker && write.wrote) tracker.add(path.resolve(filePath));
     if (!write.wrote) {
@@ -699,7 +778,7 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
     // the text back (regressed-swap / flip-flop paths) while returning
     // wrote:true. Only the record on disk says whether this was a recovery.
     const landed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const verdict = landedAsRecovered(landed, { text, url: decision.urlChanged ? url : landed.url }, write);
+    const verdict = landedAsRecovered(landed, { text, url: storedUrl }, write);
     if (!verdict.ok) {
       if (tracker && tracker.expected) tracker.expected.delete(path.resolve(filePath));
       return { ok: false, code: 'write_rolled_back', reason: `write landed but ${verdict.why}`, decision, write };
@@ -707,7 +786,7 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
     // The checkpoint confirms THIS text + url reached origin/main, not whatever
     // another writer left in the file by commit time.
     if (tracker && tracker.expected) tracker.expected.set(path.resolve(filePath), require('./review-texts-checkpoint').landingKey(landed));
-    return { ok: true, code: 'accepted', reason: decision.reason, newLen: text.length, decision, write };
+    return { ok: true, code: 'accepted', reason: route.keepPinned ? `accepted at pinned url ${landed.url} (fetched ${url})` : decision.reason, newLen: text.length, landedUrl: landed.url, decision, write };
   };
   if (dryRun) return run();
   return withReviewTextsLock(`recover-text:${path.basename(path.dirname(filePath))}/${path.basename(filePath)}`, run);
@@ -806,6 +885,7 @@ module.exports = {
   cleanCandidateText,
   proveIdentity,
   landedAsRecovered,
+  pinnedUrl, isTrivialUrlVariant, pinnedUrlRoute,
   llmIdentityVerdict,
   sha256,
   TIER_RANK,
