@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-21T14:34:58.622Z",
+  "generatedAt": "2026-11-21T16:30:36.950Z",
   "summary": {
     "total": 17,
-    "high": 9,
-    "medium": 6,
+    "high": 10,
+    "medium": 5,
     "low": 2
   },
   "collisions": [
@@ -33,33 +33,6 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
-    },
-    {
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14694097/PATRICK-MARMION-reviews-National-Theatre-notch-cast-Sondheims-send-flimsy-forgettable.html",
-      "normalizedUrl": "https://dailymail.co.uk/tvshowbiz/article-14694097/patrick-marmion-reviews-national-theatre-notch-cast-sondheims-send-flimsy-forgettable.html",
-      "candidates": [
-        {
-          "showId": "an-oak-tree-west-end-2025",
-          "file": "daily-mail--veronica-lee.json",
-          "publishDate": "2025-05-07",
-          "openingDate": "2025-05-06",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "daily-mail"
-        },
-        {
-          "showId": "here-we-are-west-end-2025",
-          "file": "daily-mail--patrick-marmion.json",
-          "publishDate": "2025-05-09",
-          "openingDate": "2025-05-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "daily-mail"
-        }
-      ],
-      "suggestedWinner": "an-oak-tree-west-end-2025",
-      "reason": "publishDate 2025-05-07 is 1 days from an-oak-tree-west-end-2025 but also 1 days from here-we-are-west-end-2025",
-      "confidence": "medium"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -194,6 +167,33 @@
       ],
       "suggestedWinner": "hadestown-west-end-2018",
       "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "normalizedUrl": "https://thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "candidates": [
+        {
+          "showId": "inter-alia-west-end-2025",
+          "file": "times-uk--dominic-maxwell.json",
+          "publishDate": null,
+          "openingDate": "2025-07-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "inter-alia-west-end-2026",
+          "file": "times-uk--dominic-maxwell.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "inter-alia-west-end-2026",
+      "reason": "publishDate 2026-04-07 is 0 days from inter-alia-west-end-2026 opening (2026-04-07)",
       "confidence": "high"
     },
     {
@@ -404,7 +404,7 @@
           "publishDate": "2025-07-09",
           "openingDate": "2025-07-09",
           "hasScore": true,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "timeout-london"
         }
       ],
