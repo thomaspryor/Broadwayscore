@@ -41,6 +41,7 @@ const STOP_GATES = [
   { code: '[VE:EFFECTPENDING]', log: 'effect-pending-stop', module: './effect-pending-stop.mjs' },
   { code: '[VE:RETROCOV]', log: 'retro-coverage-stop' }, // its own dry run would judge the --record being written
   { code: '[VE:ROOTCAUSE]', log: 'root-cause-stop' }, // judges the closing message's ROOT-CAUSE block, so no synthetic close
+  { code: '[VE:RECAP]', log: 'session-recap-stop' }, // BRO-7985: no dry run, it judges the closing message's "This session:" recap
   { code: '[VE:SKEPTIC]', log: 'skeptic-review-stop' }, // BRO-7839: no dry run, it would spend an LLM call per --record
 ];
 const DRY_RUN_CLOSE = 'SAFE TO ARCHIVE (session-retro --record dry run)';
