@@ -55,7 +55,7 @@ export class GeminiScorer {
       // demoting the ensemble to two-model-fallback. 2.5-flash uses a separate
       // quota pool. The thinkingConfig:{thinkingBudget:0} below disables 2.5's
       // hidden reasoning tokens that would otherwise truncate V5 JSON output.
-      model: options.model || 'gemini-2.5-flash',
+      model: options.model || require('../lib/models').SCORING_GEMINI,
       maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false,
       temperature: options.temperature ?? 0.3

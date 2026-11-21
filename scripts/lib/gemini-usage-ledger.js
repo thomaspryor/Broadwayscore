@@ -61,6 +61,7 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 // tier; an estimate for attribution, not an invoice. Cached input bills at a
 // quarter of the input rate (Gemini 2.5 context caching). Unknown -> null.
 const PRICES_PER_M = [
+  [/gemini-3\.5-flash-lite/, [0.30, 2.50]], // Google pricing page, checked 2026-11-21 (BRO-7511 scoring pin)
   [/gemini-2\.5-pro/, [1.25, 10]],
   [/gemini-2\.5-flash-lite/, [0.10, 0.40]],
   [/gemini-2\.5-flash/, [0.30, 2.50]],
