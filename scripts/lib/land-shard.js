@@ -25,7 +25,8 @@
  * CLI:
  *   land-shard.js gates <1|2>
  *   land-shard.js collect --repo=o/r --run-id=N --attempt=N --out=DIR --merge-into=DIR
- *                         --harness=PATH [--wait-min=12] [--interval-s=20]
+ *                         --harness=PATH [--data-rev=SHA] [--wait-min=12] [--interval-s=20]
+ *     (--data-rev: this runner's core-data commit; a fetched part with another, or none, is not merged)
  *   land-shard.js watch --repo=o/r --run-id=N --attempt=N --stopped-marker=FILE -- <cmd> [args...]
  *   land-shard.js checks-done --repo=o/r --run-id=N --attempt=N
  *
@@ -90,6 +91,23 @@ function validateFetchedPart(metaA, metaB) {
     if (!metaA[k] || metaA[k] !== metaB[k]) return { ok: false, reason: `${k} differs (${metaA[k]} here vs ${metaB[k]} in the artifact)` };
   }
   return { ok: true, reason: 'part 2/2 of the same tree' };
+}
+
+/** B writes the private core-data commit it tested against here, next to meta.json. */
+const DATA_REV_FILE = 'data-rev.txt';
+const REV_RE = /^[0-9a-f]{40}$/;
+/**
+ * Pure. Did both parts read the SAME private core data? Each runner clones the
+ * data repo's main at its own time, and the tree check covers tracked files
+ * only. Missing or malformed on either side counts as different (fail closed).
+ * -> { ok, reason }
+ */
+function validateDataRev(revA, revB) {
+  const a = String(revA || '').trim(); const b = String(revB || '').trim();
+  if (!REV_RE.test(a)) return { ok: false, reason: `this runner's core-data revision is missing (${JSON.stringify(a)})` };
+  if (!REV_RE.test(b)) return { ok: false, reason: `the artifact's core-data revision is missing (${JSON.stringify(b)})` };
+  if (a !== b) return { ok: false, reason: `core data differs (${a.slice(0, 10)} here vs ${b.slice(0, 10)} in the artifact)` };
+  return { ok: true, reason: 'same core-data revision' };
 }
 
 /** Pure. B's first step: is A's "Checks" job already over? Exact name only. */
@@ -183,6 +201,11 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
         const v = validateFetchedPart(readJson(path.join(o['merge-into'], 'meta.json')), readJson(path.join(o.out, 'meta.json')));
         if (!v.ok) { log(`node-shard: not merging ${name}: ${v.reason}; running part 2 here`); source = 'local'; }
       }
+      if (source === 'artifact') {
+        let revB = null; try { revB = fs.readFileSync(path.join(o.out, DATA_REV_FILE), 'utf8'); } catch { revB = null; }
+        const v = validateDataRev(o['data-rev'], revB);
+        if (!v.ok) { log(`node-shard: not merging ${name}: ${v.reason}; running part 2 here`); source = 'local'; }
+      }
       break;
     }
     if (d.action === 'local') { source = 'local'; break; }
@@ -253,6 +276,6 @@ async function main(argv) {
   return 2;
 }
 
-module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, shardArtifactName, decideShardPoll, decidePeerWatch, validateFetchedPart, decideChecksDone, collect, watch, checksDone, parseArgs };
+module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, DATA_REV_FILE, shardArtifactName, decideShardPoll, decidePeerWatch, validateFetchedPart, validateDataRev, decideChecksDone, collect, watch, checksDone, parseArgs };
 
 if (require.main === module) main(process.argv.slice(2)).then((c) => { process.exitCode = c; });

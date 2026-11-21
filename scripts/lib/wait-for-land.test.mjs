@@ -239,6 +239,15 @@ test('BRO-7324: only "Checks (shard 2/2)" red or cancelled while Land succeeded 
   // Jobs unreadable on a red run: stays red, never guessed landed.
   const unread = readLatestRun(r.head_branch, { read: (e) => (e.includes('/jobs?') ? (() => { throw new Error('HTTP 502'); })() : read(e)), cache: new Map() });
   assert.equal(unread.conclusion, 'failure');
+  // ...and no terminal verdict either: neither "refused" (tip still there) nor
+  // "deleted by hand" (ref gone); the next poll retries the lookup.
+  assert.equal(unread.jobsUnread, true);
+  assert.equal(verdict({ refSha: TIP, run: unread }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: null, lastSha: TIP, run: unread }).verdict, 'waiting');
+  // The next poll reads the jobs: a real refusal is then terminal.
+  const reread = readLatestRun(r.head_branch, { read, cache: new Map() });
+  assert.equal(reread.jobsUnread, false);
+  assert.equal(verdict({ refSha: TIP, run: reread }).verdict, 'refused');
 });
 
 test('a red run for an OLDER tip says nothing about a fresh push', () => {

@@ -47,6 +47,10 @@ test('workflow wiring: no sleep-poll admit job; Land needs checks (+dispatch-gua
   assert.match(y, /\n  land:\n    name: Land\n(?:    #[^\n]*\n)*    needs: \[dispatch-guard, checks\]\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' && \(needs\.dispatch-guard\.outputs\.shard != 'true' \|\| needs\.checks\.outputs\.node_shard != '' \|\| needs\.checks\.outputs\.skip_gauntlet == 'true'\) \}\}/);
   const landJob = y.slice(y.indexOf('\n  land:\n'), y.indexOf('\n  alert-red:\n'));
   assert.ok(!/needs:[^\n]*checks-shard/.test(landJob), 'Land never needs checks-shard (A merges or runs part 2)');
+  // Runner B is advisory: its red/cancel must never make the run conclusion red.
+  const shardJob = y.slice(y.indexOf('\n  checks-shard:\n'));
+  const shardHeader = shardJob.slice(0, shardJob.indexOf('\n    steps:\n'));
+  assert.match(shardHeader, /\n    continue-on-error: true\n/, 'checks-shard has job-level continue-on-error: true');
   const { ticketName } = require('./land-mutex.js');
   const t = (mainRed) => ticketName({ mainRed, enqueuedAt: 1, runId: '1', attempt: 1 });
   assert.ok(t(true) < t(false), 'main-red ticket sorts ahead of an ordinary one');

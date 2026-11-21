@@ -96,6 +96,12 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
   const ageMs = run && run.updated_at ? nowMs - Date.parse(run.updated_at) : Infinity;
   const cancelledFailure = run && run.conclusion === 'cancelled'
     && ['timeout', 'other'].includes(run.cancellation?.kind);
+  // BRO-7324: a red run whose jobs could not be read may still have landed
+  // (only an advisory job red). Neither "refused" nor "deleted by hand" until
+  // a later poll reads them; the overall --timeout bounds the wait.
+  const redUnread = run && run.jobsUnread && run.status === 'completed' && RED_CONCLUSIONS.has(run.conclusion)
+    && (refSha ? run.head_sha === refSha : run.head_sha === lastSha);
+  if (redUnread) return { verdict: 'waiting', why: `run ${run.id} ${run.conclusion} but its jobs could not be read; retrying the lookup next poll` };
   if (!refSha) {
     if (lastSha) {
       if (run && run.head_sha === lastSha && run.status === 'completed' && (RED_CONCLUSIONS.has(run.conclusion) || cancelledFailure)) {
@@ -207,6 +213,7 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
   const r = readLatestLandRun(ref, { repo, read, readText, cache });
   if (!r) return null;
   let cancellation;
+  let jobsUnread = false;
   let conclusion = r.conclusion;
   if (r.status === 'completed' && r.conclusion !== 'success') {
     const key = `${r.id}:${r.run_attempt}:${r.updated_at}`;
@@ -248,11 +255,14 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
       }
       // An unread red run is not cached: the next poll may read its jobs.
       if (jobs) cache.set(key, entry);
+      // BRO-7324: unread jobs means "did Land succeed?" is unknown (an
+      // advisory job alone can turn a landed run red): no verdict this poll.
+      else jobsUnread = true;
     }
     if (entry.landed) conclusion = 'success';
     cancellation = entry.cancellation;
   }
-  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion, runConclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation };
+  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion, runConclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation, jobsUnread };
 }
 
 function remoteSha(ref) {
