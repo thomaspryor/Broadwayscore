@@ -613,7 +613,7 @@ async function processShow(showId, deps = {}) {
 
     // BRO-8023: the no-fetch triage. A url another show already scores, a non-review section/listing, or a
     // stub date outside the production window is settled here (tagged, KEPT), never fetched.
-    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex });
+    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
     if (tri.verdict === 'junk') {
       console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
       if (!dry) {
