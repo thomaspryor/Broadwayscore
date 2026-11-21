@@ -6,7 +6,7 @@
 // Fires only on a SAFE TO ARCHIVE ending (KEEP OPEN and ACTION NEEDED are exempt) in a long session: the session
 // landed changes (a land push) OR the owner wrote 3+ messages. The message must then carry a whole-session recap:
 // a "This session:" line followed by 1 to 5 plain-English lines with no card ids, file paths or commit hashes.
-// Short sessions are exempt. Cloud only, fails open on any error, up to MAX_NUDGES blocks per transcript per reason.
+// Short sessions are exempt. Cloud only, fails open on any error, up to MAX_NUDGES blocks per transcript.
 // Kill switch SESSION_RECAP_STOP_DISABLE=1; one-off bypass `NO-RECAP: <reason, 10+ chars>` in the closing message.
 // Wired in .claude/hooks/verify-edits.sh as [VE:RECAP]; pinned by session-recap-stop.test.mjs.
 import { createHash } from 'node:crypto';
@@ -22,10 +22,11 @@ export const MAX_LINES = 5;
 export const MIN_OWNER_MESSAGES = 3;
 export const MAX_NUDGES = 3;
 
-const RECAP_HEAD_RE = /^[*_>#\s]*This session:?[*_\s]*:?\s*(.*)$/i;
+const RECAP_HEAD_RE = /^[*_>#\s]*This session[*_\s]*:[*_\s]*(.*)$/i;
 // Lines that end the recap: the next owner-format section, the verdict, a decision block.
-const SECTION_RE = /^(?:Still running\b|Nothing is still running|You need to\b|Nothing needed from you|DECISION NEEDED\b|Why this is your call|Option [AB]\b|My recommendation|Default:|SAFE TO (?:ARCHIVE|EXIT)\b|KEEP OPEN\b|ACTION NEEDED FROM YOU\b|You can remove the worktree|Keep the worktree)/i;
-const ID_RE = /\b[A-Z]{2,6}-\d{2,}\b/;
+const SECTION_RE = /^(?:(?:DISPATCHED|DEFERRED|HANDOFF PROMPT|PR-BLOCKER|NO-[A-Z-]+|EXECUTED|PREVENTION|ROOT-CAUSE|CLASS-GUARD|COUSINS|EFFECT|RED-THEN-GREEN|WORKTREE):|Still running\b|Nothing is still running|You need to\b|Nothing needed from you|DECISION NEEDED\b|Why this is your call|Option [AB]\b|My recommendation|Default:|SAFE TO (?:ARCHIVE|EXIT)\b|KEEP OPEN\b|ACTION NEEDED FROM YOU\b|You can remove the worktree|Keep the worktree)/i;
+const ID_RE = /\b(?!COVID\b)[A-Z]{2,6}-\d{2,}\b/;
+const CODE_RE = /`/;
 const PATH_RE = /(?:^|[\s`'"(])(?:(?:src|scripts|data|memory|public|node_modules|\.claude|\.github)\/\S+|[\w.-]+\.(?:mjs|cjs|js|jsx|ts|tsx|json|jsonl|md|sh|yml|yaml|css)\b)/;
 const HASH_RE = /\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b/;
 
@@ -82,6 +83,7 @@ export function sessionRecapDecision({ lastMessage = '', events = null, env = pr
   if (lines.length > MAX_LINES) return { decision: 'block', reason: 'recap too long', message: MSG.toolong(lines.length) };
   const body = lines.join('\n');
   if (ID_RE.test(body)) return { decision: 'block', reason: 'recap has a card id', message: MSG.leak('a card id') };
+  if (CODE_RE.test(body)) return { decision: 'block', reason: 'recap has code', message: MSG.leak('code in backticks') };
   if (PATH_RE.test(body)) return { decision: 'block', reason: 'recap has a file path', message: MSG.leak('a file path') };
   if (HASH_RE.test(body)) return { decision: 'block', reason: 'recap has a commit hash', message: MSG.leak('a commit hash') };
   return { decision: 'allow', reason: 'recap present' };
@@ -106,7 +108,7 @@ export function main(argv, { env = process.env } = {}) {
   if (!tp || !fs.existsSync(tp)) return 0;
   const d = sessionRecapDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env });
   if (d.decision !== 'block') return 0;
-  const counter = path.join(os.tmpdir(), `session-recap-stop-${createHash('sha1').update(tp + '\u0000' + d.reason).digest('hex').slice(0, 12)}`);
+  const counter = path.join(os.tmpdir(), `session-recap-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
   let count = 0;
   try { count = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0; } catch { /* first time */ }
   logHit({ session: input.session_id || null, blocked: count < MAX_NUDGES, nudge: count + 1, reason: d.reason });

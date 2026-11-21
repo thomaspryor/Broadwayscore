@@ -121,6 +121,12 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${LIVE_RUN_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _lrs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:LIVERUN]\n' "$_lrs_err" >&2; exit 2; fi; _ve_pre_died live-run-stop.mjs $_ve_s
 fi
+# BRO-7985: a long session closing SAFE TO ARCHIVE must recap the whole session ("This session:" + up to 5 plain lines), not just the
+# last turn (session-recap-stop.mjs: cloud only, fails open, 3 blocks per transcript, kill SESSION_RECAP_STOP_DISABLE=1). Placed before
+# the skeptic reviewer so a message this cheap check refuses costs no reviewer call.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SESSION_RECAP_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/session-recap-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _rcp_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/session-recap-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:RECAP]\n' "$_rcp_err" >&2; exit 2; fi; _ve_pre_died session-recap-stop.mjs $_ve_s
+fi
 # BRO-7839: an independent reviewer asks the owner's "is this fully tested?" at SAFE TO ARCHIVE after code edits and the session must
 # close the gaps it names (skeptic-review-stop.mjs: cloud only, one LLM call capped at 25s, fails open, one block per chunk until its
 # blocking date, kill SKEPTIC_REVIEW_STOP_DISABLE=1). Last of the pre-gates so a chunk another gate refuses costs no reviewer call.

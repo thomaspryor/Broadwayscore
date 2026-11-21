@@ -66,6 +66,17 @@ test('the recap ends at the next owner-format section, even without a blank line
   assert.equal(parseRecap('```\nThis session:\nx\n```\nSAFE TO ARCHIVE — x').found, false, 'fenced code is ignored');
 });
 
+test('reviewer blockers: prose "This session is done" is no recap; gate-token lines are not recap lines; backticks leak', () => {
+  const ev = [...owner(1), ...land()];
+  assert.equal(parseRecap('This session is done.\nSAFE TO ARCHIVE — x').found, false);
+  assert.match(decide(ev, 'This session is done.\n\n' + TAIL).message, /Recap missing/);
+  const tok = 'This session:\nFixed the score page.\nDISPATCHED: BRO-123 ("x")\nNO-VERIFY: reason here\n\n' + TAIL;
+  assert.deepEqual(parseRecap(tok).lines, ['Fixed the score page.']);
+  assert.equal(decide(ev, tok).decision, 'allow');
+  assert.match(decide(ev, 'This session:\nRan `npm test` for it.\n\n' + TAIL).message, /backticks/);
+  assert.equal(decide(ev, 'This session:\nCOVID-19 data was not touched.\n\n' + TAIL).decision, 'allow');
+});
+
 test('kill switch, bypass, non-cloud and missing transcript all allow', () => {
   const ev = [...owner(1), ...land()]; const m = 'plain\n\n' + TAIL;
   assert.equal(decide(ev, m, { ...ENV, SESSION_RECAP_STOP_DISABLE: '1' }).decision, 'allow');
@@ -86,7 +97,7 @@ test('real Stop-hook entry: exit 2 without the recap, 0 with it, 0 with the kill
   ].join('\n'));
   const script = path.join(import.meta.dirname, 'session-recap-stop.mjs');
   const run = (msg, extra = {}) => spawnSyncStdinFile('node', [script, '--stop-hook'], { input: JSON.stringify({ transcript_path: tp, session_id: 's', last_assistant_message: msg }), env: { ...process.env, CLAUDE_CODE_REMOTE: 'true', ...extra }, encoding: 'utf8' });
-  const counter = path.join(os.tmpdir(), `session-recap-stop-${createHash('sha1').update(tp + '\u0000' + 'no recap').digest('hex').slice(0, 12)}`);
+  const counter = path.join(os.tmpdir(), `session-recap-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
   try {
     const bad = run('Nothing changed.\n\n' + TAIL);
     assert.equal(bad.status, 2, bad.stderr); assert.match(bad.stderr, /Recap missing/);
@@ -95,4 +106,25 @@ test('real Stop-hook entry: exit 2 without the recap, 0 with it, 0 with the kill
     assert.equal(run('Nothing changed.\n\n' + TAIL).status, 2, 'block 2 of 3'); assert.equal(run('Nothing changed.\n\n' + TAIL).status, 2, 'block 3 of 3');
     assert.equal(run('Nothing changed.\n\n' + TAIL).status, 0, 'the cap lets the fourth close through');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(counter, { force: true }); }
+});
+
+// Replay through the REAL verify-edits.sh Stop hook. The fixture is the opening owner message and the land push of the long
+// parent session of BRO-7985 (a real cloud transcript that ended "Nothing changed since my last message").
+test('hook replay: [VE:RECAP] blocks the "Nothing changed since my last message" close, passes with a recap, kill switch lets it by', () => {
+  const dir = import.meta.dirname;
+  const tp = path.join(dir, 'fixtures', 'bro-7985-long-session', 'transcript.jsonl');
+  const hook = path.join(dir, '..', '..', '.claude', 'hooks', 'verify-edits.sh');
+  const counter = path.join(os.tmpdir(), `session-recap-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
+  const off = { ROOT_CAUSE_STOP_DISABLE: '1', EFFECT_PENDING_STOP_DISABLE: '1', RETRO_COVERAGE_STOP_DISABLE: '1', LIVE_RUN_STOP_DISABLE: '1', SKEPTIC_REVIEW_STOP_DISABLE: '1' }; // isolate this gate
+  const run = (msg, extra = {}) => spawnSyncStdinFile('bash', [hook], { input: JSON.stringify({ transcript_path: tp, session_id: 's', stop_hook_active: false, last_assistant_message: msg }), env: { ...process.env, HOME: fs.mkdtempSync(path.join(os.tmpdir(), 'recap-home-')), CLAUDE_CODE_REMOTE: 'true', ...off, ...extra }, encoding: 'utf8' });
+  const CLOSE = '\n\nStill running: nothing.\nYou need to: nothing.\n\nSAFE TO ARCHIVE — everything is finished';
+  fs.rmSync(counter, { force: true });
+  try {
+    const bad = run('Nothing changed since my last message.' + CLOSE);
+    assert.equal(bad.status, 2, bad.stderr); assert.match(bad.stderr, /\[VE:RECAP\]/);
+    fs.rmSync(counter, { force: true });
+    assert.doesNotMatch(run('This session:\nSession messaging no longer asks for approval in the app project.\nA check now fails if that setting goes missing.' + CLOSE).stderr, /\[VE:RECAP\]/);
+    fs.rmSync(counter, { force: true });
+    assert.doesNotMatch(run('Nothing changed since my last message.' + CLOSE, { SESSION_RECAP_STOP_DISABLE: '1' }).stderr, /\[VE:RECAP\]/);
+  } finally { fs.rmSync(counter, { force: true }); }
 });
