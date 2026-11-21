@@ -1216,20 +1216,6 @@
     "queuedAt": "2026-11-20T14:41:13.636Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T02:41:53.564Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
     "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Charles Isherwood',\n+     outletId: 'broadwaynews',\n+     showId: 'time-and-the-conways-2017'\n+   }\n+ ]\n- []\n",
@@ -1613,6 +1599,20 @@
       }
     ],
     "queuedAt": "2026-11-21T05:00:08.208Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-21.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T05:32:22.360Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7922-mwpvjukl",

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-21T02:37:56.688Z",
+    "generatedAt": "2026-11-21T05:28:25.446Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,14 +10,14 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 1,
-    "coveredCount": 7,
-    "highChurnTracked": 8
+    "coveredCount": 3,
+    "highChurnTracked": 4
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 32
+      "churn": 35
     }
   ],
   "covered": [
@@ -28,32 +28,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 56,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 45,
+      "churn": 31,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/needs-human-review.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/rebuild-score-drift.json",
-      "churn": 32,
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
