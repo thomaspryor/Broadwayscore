@@ -109,7 +109,10 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    THE PLAN TO CRITIQUE:
    PROMPT_HEAD
      cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
-   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
+   } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
+   CODEX_RC=$?
+   # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
+   [ "$CODEX_RC" -eq 0 ] || { echo "codex exec exited $CODEX_RC:"; tail -5 "$PLAN_REVIEW_CODEX_OUT.log"; : > "$PLAN_REVIEW_CODEX_OUT"; }
    cat "$PLAN_REVIEW_CODEX_OUT"
    # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
    # On CODEX_EMPTY, read $PLAN_REVIEW_CODEX_OUT.log for the cause (auth, quota). Cloud: persist the login in case the exec rotated it.
@@ -134,7 +137,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      if [ "$CODEX_STATUS" -eq 0 ]; then echo CODEX_USABLE
      elif [ "$CODEX_KIND" = "refused" ]; then echo "CODEX_REFUSED: $CODEX_REASON"
      else echo "CODEX_EMPTY: $CODEX_REASON"; fi
-     rm -f "$PLAN_REVIEW_CODEX_OUT"
+     rm -f "$PLAN_REVIEW_CODEX_OUT" "$PLAN_REVIEW_CODEX_OUT.log"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
    - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
