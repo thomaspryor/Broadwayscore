@@ -222,7 +222,7 @@ const LONDON_SOURCES = {
   'london-box-office': { kind: 'sitemap', tier: 2, url: 'https://www.londonboxoffice.co.uk/news-sitemap.xml', urlFilter: /londonboxoffice\.co\.uk\/news\/post\/[^/]*review[^/]*$/, headlineFromSlug: true, sourceSaysReview: true },
   thereviewshub: wp('https://www.thereviewshub.com/wp-json/wp/v2/posts', { tier: 2 }),
   'british-theatre': { kind: 'sitemap', tier: 2, url: 'https://www.britishtheatreguide.info/sitemap.xml.gz', urlFilter: /britishtheatreguide\.info\/reviews\/[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
-  britishtheatrecom: { kind: 'sitemap', tier: 2, url: 'https://britishtheatre.com/sitemap-0.xml', urlFilter: /britishtheatre\.com\/posts\/[^/]*review[^/]*\/?$/, headlineFromSlug: true, sourceSaysReview: true },
+  britishtheatrecom: { kind: 'sitemap', tier: 2, url: 'https://www.britishtheatre.com/sitemap-posts.xml', urlFilter: /britishtheatre\.com\/posts\/[^/]*review[^/]*\/?$/, headlineFromSlug: true, sourceSaysReview: true },
   'theatre-weekly': wp('https://theatreweekly.com/wp-json/wp/v2/posts', { tier: 3, linkFilter: /review/i, sourceSaysReview: true }),
   'everything-theatre': wp('https://everything-theatre.co.uk/wp-json/wp/v2/posts', { tier: 3, linkFilter: /review/i, sourceSaysReview: true }),
   'all-that-dazzles-uk': { kind: 'sitemap', tier: 3, url: 'https://www.allthatdazzles.co.uk/blog-posts-sitemap.xml', urlFilter: /review/i, headlineFromSlug: true, sourceSaysReview: true },
