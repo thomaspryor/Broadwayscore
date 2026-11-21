@@ -150,6 +150,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
+      # BRO-7983: supersede stacked dispatches. This run's gate said proceed, so cancel
+      # older in-flight runs still before their "Checkout core data" step: this run
+      # pulls newer code + core data and ships a superset. Never cancels pre-warm runs
+      # or runs past that step; fails open. Logic + tests: scripts/lib/deploy-coalesce.js.
+      # Opening night 2026-11-20 stacked 31 parallel builds (20-40 min each).
+      - name: Supersede older pending deploys
+        if: inputs.wait_for_run == '' && vars.DEPLOY_GATE_DISABLED != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/deploy-coalesce-gate.js
+
 
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5

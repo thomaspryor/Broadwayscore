@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 test('should-deploy gate suite (dedup within window, ship on change, fail open) passes', () => {
-  const r = spawnSync(process.execPath, ['--test', path.join(here, 'lib', 'should-deploy-gate.test.mjs')], { encoding: 'utf8', timeout: 120000, env: { ...process.env, NODE_TEST_CONTEXT: undefined } });
+  const r = spawnSync(process.execPath, ['--test', path.join(here, 'lib', 'should-deploy-gate.test.mjs'), path.join(here, 'lib', 'deploy-coalesce.test.mjs')], { encoding: 'utf8', timeout: 120000, env: { ...process.env, NODE_TEST_CONTEXT: undefined } });
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   assert.equal(r.status, 0, `gate tests failed:\n${out.slice(-2000)}`);
   assert.match(out, /# fail 0/);
