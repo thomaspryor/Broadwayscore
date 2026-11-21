@@ -206,6 +206,14 @@ test('auditSeason: flags a review of the OTHER same-title production and duplica
   assert.equal(r.pass, false);
 });
 
+test('auditSeason (BRO-7998): only 2012-13 has a lowered displayable floor; every other season is held to 0.70', () => {
+  // Pins the thresholds so a floor cannot be re-added or the default lowered without an owner decision
+  // (BRO-6487: 2012-13 at 0.25. 2014-15 and 2015-16 had a temporary 0.55 that BRO-7998 made unnecessary).
+  const threshold = season => auditSeason({ shows: [], reviews: [], season }).checks.displayable.threshold;
+  assert.equal(threshold('2012-2013'), 0.25);
+  for (const s of ['2013-2014', '2014-2015', '2015-2016', '2016-2017', '2099-2100']) assert.equal(threshold(s), 0.7, s);
+});
+
 test('auditSeason (BRO-5851): counts review texts found but never fetched, without gating', () => {
   const show = { id: 'travesties-west-end-2017', title: 'Travesties', venue: 'Apollo Theatre', previewsStartDate: '2017-02-03', closingDate: '2017-04-29', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
   const textFiles = { [show.id]: [
