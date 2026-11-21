@@ -106,3 +106,11 @@ test('fallback: URL under no show stays not landed; unrelated show dirs are igno
   assert.equal(r.landed, false);
   assert.equal(r.file, null);
 });
+
+test('refiledUnder is reported on not-landed results too', () => {
+  const dir = fixture({});
+  const wrong = { id: 'waiting-for-lefty-regional-2024', market: 'regional' };
+  const r = checkSubmissionLanded({ showId: wrong.id, url: URL, reviews: [], reviewTextsDir: dir, show: wrong, shows: [wrong, SHOW] });
+  assert.equal(r.landed, false);
+  assert.equal(r.refiledUnder, SHOW.id);
+});

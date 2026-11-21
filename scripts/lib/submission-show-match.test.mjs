@@ -79,3 +79,15 @@ test('regional-only exact match also offers the covered-market production', () =
   assert.deepEqual(findMatchingShows('Waiting for Lefty', shows).map((s) => s.id),
     ['waiting-for-lefty-regional-2024', 'clifford-odets-waiting-for-lefty-off-broadway-2026']);
 });
+
+test('single-word regional titles do not expand; covered exact matches do not expand', () => {
+  const shows = [
+    { id: 'magic-regional', title: 'Magic', market: 'regional' },
+    { id: 'magic-mike-live', title: 'Magic Mike Live', market: 'broadway' },
+    { id: 'golden-boy-regional', title: 'Golden Boy', market: 'regional' },
+    { id: 'golden-boy-2012', title: 'Golden Boy', market: 'broadway' },
+    { id: 'golden-boy-tour', title: 'Golden Boy Revival', market: 'broadway' },
+  ];
+  assert.deepEqual(findMatchingShows('Magic', shows).map((s) => s.id), ['magic-regional']);
+  assert.deepEqual(findMatchingShows('Golden Boy', shows).map((s) => s.id), ['golden-boy-regional', 'golden-boy-2012']);
+});

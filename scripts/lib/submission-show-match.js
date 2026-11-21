@@ -47,9 +47,9 @@ function findMatchingShows(showName, shows) {
     // BRO-7921: "Waiting for Lefty" exactly matched only a 2024 regional entry
     // and hid "Clifford Odets' Waiting for Lefty" (the covered-market
     // production), so the review was filed against the wrong show. When every
-    // exact hit is outside the covered markets, add whole-word partial hits
+    // exact hit is outside the covered markets and the title has 2+ words (single words like "Magic" would drag in unrelated shows), add whole-word partial hits
     // from covered markets as extra candidates.
-    if (exact.every(isUncoveredMarket) && specificEnough(input)) {
+    if (exact.every(isUncoveredMarket) && input.includes(' ')) {
       const extra = shows.filter((s) => !exact.includes(s) && !isUncoveredMarket(s)
         && wordContains(normalizeTitle(s.title), input));
       return [...exact, ...extra];

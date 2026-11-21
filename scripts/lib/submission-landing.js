@@ -40,8 +40,14 @@ function findSubmissionFile(showDir, submittedUrl) {
 /**
  * @returns {{ landed: boolean, reason: string|null, file: string|null }}
  */
-function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show, shows }) {
-  const submittedShowId = showId;
+function checkSubmissionLanded(args) {
+  const r = checkSubmissionLandedInner(args);
+  if (r.file && r.refiledUnder === undefined && r.showIdUsed && r.showIdUsed !== args.showId) r.refiledUnder = r.showIdUsed;
+  delete r.showIdUsed;
+  return r;
+}
+
+function checkSubmissionLandedInner({ showId, url, reviews, reviewTextsDir, show, shows }) {
   let file = findSubmissionFile(path.join(reviewTextsDir, showId), url);
   // BRO-7921: the validator can pick a different production than the one the
   // ingest filed the review under (#1178: submitted against
@@ -57,7 +63,6 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show, sho
     }
   }
   if (!file) return { landed: false, reason: 'no review file was written for this URL', file: null };
-  const refiledUnder = showId !== submittedShowId ? showId : null;
   // URL identity only. An outlet+critic fallback would let an older, already
   // listed review by the same critic vouch for a submission that was itself
   // excluded (ship-check 2026-09-22). A merge that kept a different URL on the
@@ -65,16 +70,16 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show, sho
   // never a false "added".
   const fileUrl = submissionUrlKey(file.data.url);
   const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && submissionUrlKey(r.url) === fileUrl);
-  if (inReviews) return { landed: true, reason: null, file: file.path, refiledUnder };
+  if (inReviews) return { landed: true, reason: null, file: file.path, showIdUsed: showId };
   // BRO-4431: a page we couldn't read yet was saved as a stub that the
   // collector, the T1/T2 gap audit and the aggregator star relay keep
   // retrying. Same wait-then-escalate path as an unscored review (the sweep
   // closes it once live, escalates after AWAITING_SCORE_MAX_HOURS).
   if (isQueuedRetryStub(file.data)) {
-    return { landed: false, pendingScore: true, reason: 'page could not be read yet; queued for automatic retry', file: file.path };
+    return { landed: false, pendingScore: true, reason: 'page could not be read yet; queued for automatic retry', file: file.path, showIdUsed: showId };
   }
   const why = explainExclusion(file.data, show, file.path);
-  if (why) return { landed: false, reason: why, file: file.path };
+  if (why) return { landed: false, reason: why, file: file.path, showIdUsed: showId };
   // BRO-4141: an unscored review is left out of the rebuild and goes live when
   // the llm-ensemble-score cron scores it. That is a wait, not a failure: all
   // 11 "not on the site" owner emails of 9/23-9/24 were this case.
@@ -84,11 +89,11 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show, sho
   if (!isScored(file.data)) {
     const skip = unscoredSkipReason(file.data, { show, showTitle: show && show.title, filePath: file.path });
     if (skip === null) {
-      return { landed: false, pendingScore: true, reason: 'not scored yet (goes live once the scoring cron scores it)', file: file.path };
+      return { landed: false, pendingScore: true, reason: 'not scored yet (goes live once the scoring cron scores it)', file: file.path, showIdUsed: showId };
     }
-    return { landed: false, reason: `unscored and the scorer will skip it (${skip})`, file: file.path };
+    return { landed: false, reason: `unscored and the scorer will skip it (${skip})`, file: file.path, showIdUsed: showId };
   }
-  return { landed: false, reason: 'excluded during rebuild (date or duplicate check)', file: file.path };
+  return { landed: false, reason: 'excluded during rebuild (date or duplicate check)', file: file.path, showIdUsed: showId };
 }
 
 function isScored(data) {

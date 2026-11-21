@@ -43,5 +43,5 @@ console.log(result.landed
 if (process.env.GITHUB_OUTPUT) {
   const reason = String(result.reason || '').replace(/[\r\n]+/g, ' ');
   fs.appendFileSync(process.env.GITHUB_OUTPUT,
-    `landed=${result.landed}\npending_score=${!!result.pendingScore}\nexcluded_reason=${reason}\n`);
+    `landed=${result.landed}\nrefiled_under=${result.refiledUnder || ''}\npending_score=${!!result.pendingScore}\nexcluded_reason=${reason}\n`);
 }
