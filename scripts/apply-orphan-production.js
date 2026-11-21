@@ -93,8 +93,14 @@ const fin = ARGV.indexOf('--finalize');
 if (fin >= 0) {
   const ids = new Set((ARGV[fin + 1] || '').split(',').filter(Boolean));
   const data = guard.loadShows();
-  for (const s of data.shows) if (ids.has(s.id) && s.provisional) { delete s.provisional; console.log(`finalized: ${s.id}`); }
+  const done = new Set();
+  for (const s of data.shows) if (ids.has(s.id) && s.provisional) { delete s.provisional; done.add(s.id); console.log(`finalized: ${s.id}`); }
+  // A mistyped or already-final id must not pass silently (and must not rewrite shows.json for nothing).
+  const missed = [...ids].filter((id) => !done.has(id));
+  if (missed.length) console.error(`not finalized (absent or not provisional): ${missed.join(', ')}`);
+  if (!done.size) process.exit(1);
   if (!DRY) guard.saveShows(data);
+  if (missed.length) process.exit(1);
 }
 
 if (ARGV.includes('--rehome')) {
