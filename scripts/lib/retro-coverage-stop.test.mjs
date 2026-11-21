@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { stopHookDecision, shellEditsCode, transcriptHasTool } from './retro-coverage-stop.mjs';
+import { stopHookDecision, shellEditsCode, transcriptHasTool, claimsClose } from './retro-coverage-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true', COST_ROW_GATE: 'off' }; // the retro cases; the cost row has its own test
 let n = 0;
@@ -227,5 +227,44 @@ test('shell-edit detection: ship-check findings (absolute paths, cp/mv, quoted p
     const t0 = Date.now();
     shellEditsCode(big);
     assert.ok(Date.now() - t0 < 500, `a 100k-char input stays linear (${big.slice(0, 6)}...: ${Date.now() - t0}ms)`);
+  }
+});
+
+// BRO-7911: 2026-11-20 a board firing landed code and closed "ACTION NEEDED FROM YOU": the SAFE-only check never ran.
+test('BRO-7911: an ACTION NEEDED close is a close; KEEP OPEN is not', () => {
+  const ACTION = 'You need to: read the batch.\n\nACTION NEEDED FROM YOU — read the spam-held reader feedback batch.';
+  assert.equal(claimsClose(ACTION), true);
+  assert.equal(claimsClose('KEEP OPEN — waiting on a worker'), false);
+  assert.equal(claimsClose('ACTION NEEDED FROM YOU — x\n\nmore prose after it'), false, 'only the last line counts');
+  assert.equal(decide([...edit(), ...land()], ACTION).decision, 'block', 'landed code, no retro row, closing with ACTION NEEDED');
+  assert.equal(decide([...edit(), ...land()], 'KEEP OPEN — waiting').decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('', 'No retro threshold crossed.'), ...carry()], ACTION).decision, 'allow');
+});
+
+// BRO-7911: verify-edits.sh exits 0 once the chain has VE_CHAIN_BLOCK_CAP blocks, before [VE:RETROCOV] ran
+// (2026-11-20: two board firings spent the cap on RCOV/ROOTCAUSE/CLEARCLOSE, then closed with no retro row).
+test('BRO-7911: the retro gate still runs when the chain block cap is spent', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-cap-'));
+  const tp = path.join(dir, 't.jsonl');
+  const L = (o) => JSON.stringify(o);
+  fs.writeFileSync(tp, [
+    L({ type: 'assistant', message: { id: 'm1', content: [{ type: 'tool_use', id: 'e1', name: 'Edit', input: { file_path: '/home/user/Broadwayscore/scripts/a.js' } }] } }),
+    L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'e1', content: 'ok' }] } }),
+    L({ type: 'assistant', message: { id: 'm2', content: [{ type: 'tool_use', id: 'p1', name: 'Bash', input: { command: 'git push origin HEAD:refs/heads/land/x' } }] } }),
+    L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'p1', content: 'ok' }] } }),
+  ].join('\n'));
+  const chain = `/tmp/verify-edits-chain-${spawnSync('sh', ['-c', `printf '%s' '${tp}' | cksum | cut -d' ' -f1`], { encoding: 'utf8' }).stdout.trim()}`;
+  const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + 'landed code, no retro --record run').digest('hex').slice(0, 12)}`);
+  try {
+    fs.writeFileSync(chain, 'RCOV\nROOTCAUSE\nCLEARCLOSE\nEFFECTPENDING\n'); // 4 lines = the cap
+    const hook = path.join(import.meta.dirname, '..', '..', '.claude', 'hooks', 'verify-edits.sh');
+    const input = JSON.stringify({ transcript_path: tp, session_id: 's', stop_hook_active: true, last_assistant_message: 'ACTION NEEDED FROM YOU — read it' });
+    const r = spawnSync('bash', [hook], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+    assert.equal(r.status, 2, r.stderr);
+    assert.match(r.stderr, /\[VE:RETROCOV\]/);
+    const off = spawnSync('bash', [hook], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true', RETRO_COVERAGE_STOP_DISABLE: '1' }, encoding: 'utf8' });
+    assert.equal(off.status, 0, 'kill switch still lets the capped chain through');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(chain, { force: true }); fs.rmSync(counter, { force: true });
   }
 });
