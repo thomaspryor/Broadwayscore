@@ -710,6 +710,19 @@ async function processShow(showId, deps = {}) {
       }
     }
 
+    // BRO-8023: the byline is the show's own playwright/composer: a venue or listing page, never a review.
+    if (byline && pendingTriage.bylineIsShowCreator(byline, show)) {
+      console.log(`  [${file}] byline "${byline}" is on the show's creative team — not a review, tagged`);
+      if (!dry) {
+        data.promoteSkippedReason = `page byline "${byline}" is the show's own creative team, not a critic (BRO-8023)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
+    }
+
     if (!byline || byline === 'Unknown') {
       if (isUnrecoverablePendingStub(data, null)) {
         noteUnrecoverable(file, filepath, data, 'no byline in page and no recoverable body');
