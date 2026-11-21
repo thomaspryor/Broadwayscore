@@ -1520,5 +1520,36 @@
       }
     ],
     "queuedAt": "2026-11-21T03:59:38.434Z"
+  },
+  {
+    "conditionKey": "land:land/lazy-sharp-precommit",
+    "title": "Landing blocked: unit-tests-node red on land/lazy-sharp-precommit",
+    "description": "land.yml did not land land/lazy-sharp-precommit: the unit-tests-node gate went red at eaa87f67d3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44865684911",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/lazy-sharp-precommit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "eaa87f67d3802b2da63fed323eb42c88c726eb47"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44865684911"
+      }
+    ],
+    "queuedAt": "2026-11-21T04:28:15.743Z"
   }
 ]
