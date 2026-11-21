@@ -14,8 +14,8 @@ const INCLUDABLE_TIERS = new Set(['complete', 'truncated', 'excerpt']);
 // that decision, so the guard reads the same skip and never calls it a silent drop.
 function wholeShowSkipReason(show) {
   if (!show) return null;
-  const category = show.category || 'broadway';
-  if (show.status === 'previews' && category === 'broadway') return 'skippedPreviewsShows';
+  // isBroadwayCategory: a missing category is Broadway, the same default rebuild's showCategoryMap applies.
+  if (show.status === 'previews' && require('./venue-classification').isBroadwayCategory(show)) return 'skippedPreviewsShows';
   if (show.status === 'upcoming') return 'skippedUpcomingShows';
   return null;
 }
