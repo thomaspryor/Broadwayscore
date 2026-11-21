@@ -58,7 +58,7 @@ import { createRequire } from 'node:module';
 import { walkTranscript, isStopHookFeedback } from './transcript-scan.mjs';
 import { linearCommands } from './linear-command.js';
 import { isMainModule } from './is-main-module.mjs';
-const { evaluateGapAnswers, answerInstructions } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
+const { evaluateGapAnswers, answerInstructions, ranBeforeLastEditAdvice } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
@@ -171,7 +171,7 @@ export function findRuns(events, skills = STRONG_SKILLS) {
  * Coverage after the last strong review run in the session.
  * -> { ran, complete, skill, missing: string[], evidence|null }
  */
-export function evaluateCoverage(events, { requireBuild = false, now = new Date(), lastMessage = '', env = process.env } = {}) {
+export function evaluateCoverage(events, { requireBuild = false, now = new Date(), lastMessage = '', env = process.env, editIndices = null } = {}) {
   const runs = findRuns(events);
   if (runs.length === 0) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
@@ -204,10 +204,13 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
   // BRO-7872: each material gap in the latest skeptic report needs an answer (a command that ran, or a concrete reason).
   // Kept apart from `missing` so each caller can say what to do (re-running /ship-check would only renumber the gaps).
   let unansweredGaps = [];
+  let ranBeforeLastEdit = null; // BRO-7887 advisory: only measured when the caller passes editIndices
   if (skeptic.length && env.SKEPTIC_GAP_ANSWERS_DISABLE !== '1') {
     const idx = (e) => events.indexOf(e);
     const lastSk = skeptic[skeptic.length - 1];
-    unansweredGaps = evaluateGapAnswers(events, { firstIdx: idx(skeptic[0]), lastIdx: idx(lastSk), reportText: String(results.get(lastSk.id)?.content || ''), lastMessage }).unanswered;
+    const ga = evaluateGapAnswers(events, { firstIdx: idx(skeptic[0]), lastIdx: idx(lastSk), reportText: String(results.get(lastSk.id)?.content || ''), lastMessage, editIndices });
+    unansweredGaps = ga.unanswered;
+    ranBeforeLastEdit = ga.ranBeforeLastEdit;
   }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
   // Any build in the session counts (did-it-work often builds before ship-check is invoked).
@@ -232,7 +235,7 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
       checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`, ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
     };
   }
-  return { ran: true, complete, skill: last.skill, missing, advisory, evidence, unansweredGaps };
+  return { ran: true, complete, skill: last.skill, missing, advisory, evidence, unansweredGaps, ranBeforeLastEdit };
 }
 
 /**
@@ -557,7 +560,13 @@ async function main(argv) {
   }
   // BRO-7872: answers given on this command line count even before this call is written to the transcript.
   const answers = argv.filter((a) => a.startsWith('--answer=')).map((a) => a.slice('--answer='.length)).join('\n');
-  const cov = evaluateCoverage(walkTranscript(transcript), { lastMessage: answers });
+  const events = walkTranscript(transcript);
+  // BRO-7887: the Stop gate's edit matcher (dynamic import: skeptic-review-stop.mjs imports this module).
+  let editIndices = null;
+  try { editIndices = (await import('./skeptic-review-stop.mjs')).codeEditIndices(events, -1); } catch { /* advisory only */ }
+  const cov = evaluateCoverage(events, { lastMessage: answers, editIndices });
+  const staleAdvice = ranBeforeLastEditAdvice(cov.ranBeforeLastEdit);
+  if (staleAdvice) process.stderr.write(`review-coverage: ${staleAdvice}\n`);
   if (argv.includes('--json')) process.stdout.write(JSON.stringify(cov) + '\n');
   if (record) {
     if (!cov.complete) {

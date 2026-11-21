@@ -126,12 +126,13 @@ function verifyRan(claimed, gap, events, from) {
   if (wanted.size && ![...fileNames(c)].some((f) => wanted.has(f))) return { ok: false, why: `the command names none of the files the check names (${[...wanted].slice(0, 3).join(', ')})` };
   const results = new Map();
   for (const e of events) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
-  for (let i = from + 1; i < events.length; i++) {
+  // Latest qualifying run (BRO-7887): `at` is what the ran-before-last-edit check compares against later edits.
+  for (let i = events.length - 1; i > from; i--) {
     const e = events[i];
     if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') continue;
     const r = results.get(e.id);
     if (!r || r.isError || FAILED_OUTPUT_RE.test(String(typeof r.content === 'string' ? r.content : JSON.stringify(r.content ?? '')))) continue;
-    if (segments(e.input?.command).some((seg) => seg.startsWith(c))) return { ok: true };
+    if (segments(e.input?.command).some((seg) => seg.startsWith(c))) return { ok: true, at: i };
   }
   return { ok: false, why: 'no successful command after the skeptic run starts with it (a run whose output shows failing tests does not count)' };
 }
@@ -143,32 +144,51 @@ function verifyRan(claimed, gap, events, from) {
  * @param lastIdx index of the latest skeptic run (its list is the one to answer; answers come after it)
  * @param reportText that run's output
  * @param lastMessage the closing message (not yet in the transcript when a Stop hook runs)
- * -> { report, answered: number[], unanswered: [{ n, what, check, why }] }
+ * @param editIndices (BRO-7887, optional) indices of code edits: skeptic-review-stop.mjs codeEditIndices(events, -1),
+ *   the one edit matcher the Stop gate uses. With it, `ranBeforeLastEdit` lists accepted "ran" answers whose latest
+ *   crediting run is older than a code edit made before that answer was given (the proof is stale: the code it tested
+ *   changed after). ADVISORY (CLAUDE.md rule 19): it never moves a gap to `unanswered`. Edits after the answer are the
+ *   skeptic Stop gate's job (it re-reviews new edits), not this check's. Without editIndices it is null (not measured).
+ * -> { report, answered: number[], unanswered: [{ n, what, check, why }], ranBeforeLastEdit: number[]|null }
  */
-function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage = '' }) {
+function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage = '', editIndices = null }) {
   const report = parseSkepticReport(reportText);
-  if (report.verdict !== 'gaps') return { report, answered: [], unanswered: [] };
-  const texts = [];
-  for (const e of events.slice(lastIdx + 1)) {
-    if (e.kind === 'assistant_text') texts.push(e.text);
+  const measured = Array.isArray(editIndices);
+  if (report.verdict !== 'gaps') return { report, answered: [], unanswered: [], ranBeforeLastEdit: measured ? [] : null };
+  // Each answer keeps the index of the event it came from, so "before the answer" is per gap (last answer wins).
+  const answers = new Map();
+  const take = (texts, at) => { for (const [n, a] of answerLines(texts)) answers.set(n, { ...a, at }); };
+  events.forEach((e, i) => {
+    if (i <= lastIdx) return;
+    if (e.kind === 'assistant_text') take([e.text], i);
     // Answers passed to `review-coverage.mjs --record --answer='GAP n: ...'`. Chat text can be missing from the session
     // transcript (BRO-7872's own answers never reached it); a tool command always does.
-    else if (e.kind === 'assistant_tool_use' && e.name === 'Bash') texts.push(...answerArgs(e.input?.command));
-  }
-  texts.push(String(lastMessage || ''));
-  const answers = answerLines(texts);
+    else if (e.kind === 'assistant_tool_use' && e.name === 'Bash') take(answerArgs(e.input?.command), i);
+  });
+  take([String(lastMessage || '')], events.length);
   const answered = [];
   const unanswered = [];
+  const ranBeforeLastEdit = [];
   for (const g of report.gaps) {
     const a = answers.get(g.n);
     let why = null;
     if (!a) why = 'no answer';
-    else if (a.kind === 'ran') { const v = verifyRan(a.body, g, events, firstIdx); if (!v.ok) why = `"ran" not accepted: ${v.why}`; }
+    else if (a.kind === 'ran') {
+      const v = verifyRan(a.body, g, events, firstIdx);
+      if (!v.ok) why = `"ran" not accepted: ${v.why}`;
+      else if (measured && editIndices.some((x) => x > v.at && x < a.at)) ranBeforeLastEdit.push(g.n);
+    }
     else if (a.kind === 'cannot' || a.kind === 'not-a-gap') { if (!concreteReason(a.body)) why = `reason not accepted (15+ chars, concrete; a schedule-only reason like "next cron run" is not one): "${a.body.slice(0, 80)}"`; }
     else why = `"${a.raw.slice(0, 60)}" is not one of the three answer forms`;
     if (why) unanswered.push({ ...g, why }); else answered.push(g.n);
   }
-  return { report, answered, unanswered };
+  return { report, answered, unanswered, ranBeforeLastEdit: measured ? ranBeforeLastEdit : null };
+}
+
+/** PURE (BRO-7887). The advisory line for ranBeforeLastEdit, '' when there is nothing to say. */
+function ranBeforeLastEditAdvice(ns) {
+  if (!ns || !ns.length) return '';
+  return `advisory: gap(s) ${ns.join(', ')} were answered "ran ..." with a run older than a later code edit, so the proof predates the code it covers. Re-run that command now and answer again.`;
 }
 
 /** PURE. The instruction block shown wherever unanswered gaps stop a pass. */
@@ -189,12 +209,16 @@ function answerInstructions(unanswered) {
  * isSkepticCall(command) decides what a run is. It is required: pass review-coverage.mjs isSkepticReviewCall, the one
  * matcher the coverage gate uses. A looser text pattern here counted heredocs that only MENTION the reviewer (a test file
  * written with `cat > x <<EOF`) as failed runs: BRO-7872's own session recorded 4 runs / 3 errors for 1 real run.
- * -> { runs, gapsFound, gapsAnswered, errors }
+ * codeEditIndices(events, from) is required too (BRO-7887): pass skeptic-review-stop.mjs codeEditIndices, the Stop gate's
+ * edit matcher, for the same reason (a weaker default here would count edits differently from the gate).
+ * -> { runs, gapsFound, gapsAnswered, gapsRanBeforeLastEdit, errors }
  *    runs = every skeptic --ship-check invocation (errors = those with no verdict); gapsFound = material gaps in the LAST report;
- *    gapsAnswered = how many of those have an accepted answer; errors = UNAVAILABLE reports.
+ *    gapsAnswered = how many of those have an accepted answer; gapsRanBeforeLastEdit = accepted "ran" answers whose run
+ *    is older than a code edit made before the answer (advisory); errors = UNAVAILABLE reports.
  */
-function skepticStats(events, { isSkepticCall, lastMessage = '' } = {}) {
+function skepticStats(events, { isSkepticCall, codeEditIndices, lastMessage = '' } = {}) {
   if (typeof isSkepticCall !== 'function') throw new TypeError('skepticStats: pass isSkepticCall (review-coverage.mjs isSkepticReviewCall)');
+  if (typeof codeEditIndices !== 'function') throw new TypeError('skepticStats: pass codeEditIndices (skeptic-review-stop.mjs codeEditIndices)');
   const results = new Map();
   for (const e of events || []) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
   let runs = 0; let errors = 0; let first = -1; let last = -1; let lastText = '';
@@ -208,12 +232,12 @@ function skepticStats(events, { isSkepticCall, lastMessage = '' } = {}) {
     if (first < 0) first = i;
     last = i; lastText = text;
   });
-  if (last < 0) return { runs, gapsFound: 0, gapsAnswered: 0, errors };
-  const ev = evaluateGapAnswers(events, { firstIdx: first, lastIdx: last, reportText: lastText, lastMessage });
-  return { runs, gapsFound: ev.report.count, gapsAnswered: ev.answered.length, errors };
+  if (last < 0) return { runs, gapsFound: 0, gapsAnswered: 0, gapsRanBeforeLastEdit: 0, errors };
+  const ev = evaluateGapAnswers(events, { firstIdx: first, lastIdx: last, reportText: lastText, lastMessage, editIndices: codeEditIndices(events, -1) });
+  return { runs, gapsFound: ev.report.count, gapsAnswered: ev.answered.length, gapsRanBeforeLastEdit: ev.ranBeforeLastEdit.length, errors };
 }
 
 module.exports = {
   SCHEDULE_ONLY_REASON_RE, REAL_COST_REASON_RE, concreteReason,
-  parseSkepticReport, answerLines, answerArgs, verifyRan, evaluateGapAnswers, answerInstructions, skepticStats,
+  parseSkepticReport, answerLines, answerArgs, verifyRan, evaluateGapAnswers, ranBeforeLastEditAdvice, answerInstructions, skepticStats,
 };

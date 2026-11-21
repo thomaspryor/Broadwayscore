@@ -321,7 +321,7 @@ test('BRO-7872: --record writes the skeptic outcome (runs, gaps found/answered, 
     { encoding: 'utf8', env: { ...process.env, SESSION_RETRO_LEDGER: ledger } });
   assert.equal(r.status, 0, r.stderr);
   const rec = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
-  assert.deepEqual(rec.skeptic, { runs: 1, gapsFound: 2, gapsAnswered: 1, errors: 0 });
+  assert.deepEqual(rec.skeptic, { runs: 1, gapsFound: 2, gapsAnswered: 1, gapsRanBeforeLastEdit: 0, errors: 0 });
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

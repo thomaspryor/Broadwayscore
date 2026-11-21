@@ -99,14 +99,16 @@ async function dryRunGates(transcriptPath, env = process.env) {
   return { out, errors };
 }
 
-/** The row's `skeptic` field (BRO-7872): { runs, gapsFound, gapsAnswered, errors } for this session's
+/** The row's `skeptic` field (BRO-7872): { runs, gapsFound, gapsAnswered, gapsRanBeforeLastEdit (BRO-7887), errors } for this session's
  *  skeptic-review --ship-check runs, so ignored gaps show in the ledger and the digest. null when unreadable. */
 async function skepticOutcome(transcriptPath) {
   try {
     // The coverage gate's own matcher, so the retro counts exactly the runs review-coverage counts (BRO-7872).
     const { isSkepticReviewCall } = await import('./review-coverage.mjs');
+    // BRO-7887: the Stop gate's edit matcher, so "ran before the last edit" counts edits the way the gate does.
+    const { codeEditIndices } = await import('./skeptic-review-stop.mjs');
     const events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath);
-    return require('./skeptic-gap-answers.js').skepticStats(events, { isSkepticCall: isSkepticReviewCall });
+    return require('./skeptic-gap-answers.js').skepticStats(events, { isSkepticCall: isSkepticReviewCall, codeEditIndices });
   } catch { return null; }
 }
 

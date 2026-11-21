@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { shipCheckReport } from './skeptic-review-stop.mjs';
+import { shipCheckReport, codeEditIndices } from './skeptic-review-stop.mjs';
 
 import { isSkepticReviewCall } from './review-coverage.mjs';
 const { parseSkepticReport, answerLines, verifyRan, skepticStats, concreteReason } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
@@ -61,9 +61,11 @@ test('skepticStats counts runs, gaps found/answered and unavailable runs', () =>
   const two = 'SKEPTIC REVIEW: 2 material gap(s).\n1. a (b)\n   check: node scripts/q.js\n2. c (d)\n   check: node scripts/q.js --all';
   const events = [call('1'), out('1', 'SKEPTIC REVIEW UNAVAILABLE (timeout); this does not count as a review.'), call('2'), out('2', two),
     { kind: 'assistant_text', text: 'GAP 2: cannot run here: the full run spends real money on paid image APIs' }];
-  assert.deepEqual(skepticStats(events, { isSkepticCall: isSkepticReviewCall }), { runs: 2, gapsFound: 2, gapsAnswered: 1, errors: 1 });
-  assert.deepEqual(skepticStats([], { isSkepticCall: isSkepticReviewCall }), { runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0 });
+  const opts = { isSkepticCall: isSkepticReviewCall, codeEditIndices };
+  assert.deepEqual(skepticStats(events, opts), { runs: 2, gapsFound: 2, gapsAnswered: 1, gapsRanBeforeLastEdit: 0, errors: 1 });
+  assert.deepEqual(skepticStats([], opts), { runs: 0, gapsFound: 0, gapsAnswered: 0, gapsRanBeforeLastEdit: 0, errors: 0 });
   assert.throws(() => skepticStats(events), /pass isSkepticCall/, 'no silent loose fallback matcher');
+  assert.throws(() => skepticStats(events, { isSkepticCall: isSkepticReviewCall }), /pass codeEditIndices/, 'no weaker default edit matcher');
 });
 
 test('ship-check review: reading a file or a failing run is not "ran"; natural answer forms are accepted', () => {
@@ -97,4 +99,39 @@ test('answers passed to review-coverage --record --answer count (chat text can b
   ];
   assert.deepEqual(evaluateGapAnswers(events, { firstIdx: 0, lastIdx: 0, reportText: report }).answered, [1], 'read from the persisted record command');
   assert.deepEqual(evaluateGapAnswers(events.slice(0, 2), { firstIdx: 0, lastIdx: 0, reportText: report }).answered, [], 'nothing answered without it');
+});
+
+// BRO-7887: the 24h audit's rubber-stamp class. A "GAP n: ran X" answer was credited for any run after the FIRST skeptic
+// run, even when the code it tested was edited again before the answer. Advisory: the gap stays answered, but
+// ranBeforeLastEdit names it and the retro row / digest count it.
+test('ranBeforeLastEdit: a run older than a code edit made before the answer is flagged (advisory, still answered)', () => {
+  const { evaluateGapAnswers, ranBeforeLastEditAdvice } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
+  const W = '/Users/x/Broadwayscore/.claude/worktrees/job-a';
+  const report = 'SKEPTIC REVIEW: 1 material gap(s).\n1. sweep untested (b)\n   check: node --test scripts/lib/q.test.mjs';
+  const call = (id, command) => ({ kind: 'assistant_tool_use', name: 'Bash', id, input: { command } });
+  const out = (id, content) => ({ kind: 'tool_result', tool_use_id: id, content, isError: false });
+  const edit = (id) => ({ kind: 'assistant_tool_use', name: 'Edit', id, input: { file_path: `${W}/scripts/lib/q.js` } });
+  const sk = [call('s', 'node scripts/lib/skeptic-review-stop.mjs --ship-check'), out('s', report)];
+  const run = [call('t', 'node --test scripts/lib/q.test.mjs'), out('t', '# pass 3\n# fail 0')];
+  const answer = { kind: 'assistant_text', text: 'GAP 1: ran node --test scripts/lib/q.test.mjs' };
+  const judge = (events) => evaluateGapAnswers(events, { firstIdx: 0, lastIdx: 0, reportText: report, editIndices: codeEditIndices(events, -1) });
+
+  // skeptic -> run -> edit -> answer: stale (the reported proof predates the code change)
+  const stale = judge([...sk, ...run, edit('e'), answer]);
+  assert.deepEqual(stale.answered, [1], 'advisory: still answered');
+  assert.deepEqual(stale.ranBeforeLastEdit, [1]);
+  assert.match(ranBeforeLastEditAdvice(stale.ranBeforeLastEdit), /gap\(s\) 1 .*Re-run/);
+  // skeptic -> edit -> run -> answer: fresh
+  assert.deepEqual(judge([...sk, edit('e'), ...run, answer]).ranBeforeLastEdit, []);
+  // run -> edit -> run again -> answer: the LATEST run is credited, so fresh
+  assert.deepEqual(judge([...sk, ...run, edit('e'), call('t2', 'node --test scripts/lib/q.test.mjs'), out('t2', '# pass 3'), answer]).ranBeforeLastEdit, []);
+  // skeptic -> run -> answer -> edit: an edit after the answer is the Stop gate's job, not stale here
+  assert.deepEqual(judge([...sk, ...run, answer, edit('e')]).ranBeforeLastEdit, []);
+  // a shell write (sed -i) counts as an edit, same matcher as the Stop gate
+  assert.deepEqual(judge([...sk, ...run, call('w', "sed -i '' 's/a/b/' scripts/lib/q.js"), out('w', ''), answer]).ranBeforeLastEdit, [1]);
+  // not measured without editIndices
+  assert.equal(evaluateGapAnswers([...sk, ...run, edit('e'), answer], { firstIdx: 0, lastIdx: 0, reportText: report }).ranBeforeLastEdit, null);
+  assert.equal(ranBeforeLastEditAdvice(null), '');
+  // skepticStats carries the count into the retro row
+  assert.equal(skepticStats([...sk, ...run, edit('e'), answer], { isSkepticCall: isSkepticReviewCall, codeEditIndices }).gapsRanBeforeLastEdit, 1);
 });

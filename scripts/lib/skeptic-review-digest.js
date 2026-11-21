@@ -39,11 +39,12 @@ function skepticOutcomesFromRetro(retroRows, now, windowMs = WINDOW_MS) {
     const prev = latest.get(key);
     if (!prev || prev.t <= t) latest.set(key, { t, s: r.skeptic });
   });
-  const out = { sessions: 0, runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0, sessionsWithUnanswered: 0 };
+  // gapsRanBeforeLastEdit (BRO-7887): rows written before it existed read as 0.
+  const out = { sessions: 0, runs: 0, gapsFound: 0, gapsAnswered: 0, gapsRanBeforeLastEdit: 0, errors: 0, sessionsWithUnanswered: 0 };
   for (const { s } of latest.values()) {
     if (!s.runs) continue;
     out.sessions++;
-    for (const k of ['runs', 'gapsFound', 'gapsAnswered', 'errors']) out[k] += Number(s[k]) || 0;
+    for (const k of ['runs', 'gapsFound', 'gapsAnswered', 'gapsRanBeforeLastEdit', 'errors']) out[k] += Number(s[k]) || 0;
     if ((Number(s.gapsFound) || 0) > (Number(s.gapsAnswered) || 0)) out.sessionsWithUnanswered++;
   }
   return out;
@@ -52,7 +53,7 @@ function skepticOutcomesFromRetro(retroRows, now, windowMs = WINDOW_MS) {
 /** PURE. The digest sentence for skepticOutcomesFromRetro(). */
 function outcomeSentence(o) {
   return `ship-check skeptic runs: ${o.runs} runs in ${o.sessions} sessions, ${o.gapsFound} gaps found, ${o.gapsAnswered} answered`
-    + ` (${o.sessionsWithUnanswered} sessions left gaps unanswered), ${o.errors} errors`;
+    + ` (${o.sessionsWithUnanswered} sessions left gaps unanswered; ${o.gapsRanBeforeLastEdit || 0} "ran" answers older than a later code edit), ${o.errors} errors`;
 }
 
 /** PURE. Daily-digest row from the counts. Never 'error' (non-paging telemetry, same policy as infra-review).
