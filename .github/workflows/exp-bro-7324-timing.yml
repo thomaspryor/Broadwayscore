@@ -1,0 +1,65 @@
+# TEMPORARY experiment for BRO-7324 (never lands on main): measures the land
+# gauntlet's node unit batch under different parallelism on a real runner.
+# hygiene-notify-ok: throwaway experiment branch only
+name: exp-bro-7324-timing
+on:
+  push:
+    branches: ['exp/bro-7324-**']
+permissions:
+  contents: read
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [alone, conc6, conc8, with-libs, shards2]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci --prefer-offline --no-audit --no-fund
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
+          node scripts/compute-gold-lists.js > /dev/null 2>&1 || true
+      - name: measure
+        env:
+          MODE: ${{ matrix.mode }}
+          BSC_STAGE_LATENCY_MUTE: '1'
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          nproc; free -g | head -2
+          O=$RUNNER_TEMP/exp; mkdir -p $O
+          (while true; do echo "$(date +%s) $(head -1 /proc/stat)"; sleep 5; done) > $O/stat.log &
+          SP=$!
+          mapfile -t T < <(node scripts/lib/unit-test-collection.js --min)
+          mapfile -t L < <(ls scripts/lib/*.test.mjs)
+          echo "node files ${#T[@]} lib files ${#L[@]}"
+          run() { local n=$1; shift; local s=$(date +%s); node --test --test-reporter=tap --test-timeout 300000 "$@" > $O/$n.tap 2>&1; echo "$n rc=$? wall=$(( $(date +%s)-s ))s pass=$(grep -c '^ok ' $O/$n.tap) fail=$(grep -c '^not ok ' $O/$n.tap)"; }
+          S0=$(date +%s)
+          case "$MODE" in
+            alone) run node "${T[@]}" ;;
+            conc6) run node --test-concurrency=6 "${T[@]}" ;;
+            conc8) run node --test-concurrency=8 "${T[@]}" ;;
+            with-libs) run node "${T[@]}" & run libs "${L[@]}" & wait ;;
+            shards2)
+              A=(); B=(); i=0; for f in "${T[@]}"; do if [ $((i%2)) = 0 ]; then A+=("$f"); else B+=("$f"); fi; i=$((i+1)); done
+              run shardA "${A[@]}" & run shardB "${B[@]}" & wait ;;
+          esac
+          echo "TOTAL wall $(( $(date +%s)-S0 ))s"
+          kill $SP
+          node -e '
+            const l=require("fs").readFileSync(process.argv[1],"utf8").trim().split("\n").map(x=>x.split(/\s+/));
+            const f=r=>{const v=r.slice(2).map(Number);const idle=v[3]+v[4];const tot=v.reduce((a,b)=>a+b,0);return [idle,tot]};
+            const a=f(l[0]),b=f(l[l.length-1]);console.log("cpu busy %",(100*(1-(b[0]-a[0])/(b[1]-a[1]))).toFixed(1));
+            const iow=(r)=>+r[6]; console.log("iowait share %",(100*(iow(l[l.length-1])-iow(l[0]))/(f(l[l.length-1])[1]-f(l[0])[1])).toFixed(1));
+          ' $O/stat.log
+          grep '^not ok ' $O/*.tap | cut -c1-200 | head -40
