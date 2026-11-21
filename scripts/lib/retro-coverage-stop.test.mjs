@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { createHash } from 'node:crypto';
 import { stopHookDecision, shellEditsCode, transcriptHasTool, claimsClose } from './retro-coverage-stop.mjs';
 
@@ -139,7 +140,7 @@ test('hook entry: blocks up to 3 times (exit 2), then lets the same transcript t
       L({ type: 'assistant', message: { id: 'm2', content: [{ type: 'tool_use', id: 'p1', name: 'Bash', input: { command: 'git push origin HEAD:refs/heads/land/x' } }] } }),
       L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'p1', content: 'ok' }] } }),
     ].join('\n'));
-    const run = (input) => spawnSync('node', [path.join(import.meta.dirname, 'retro-coverage-stop.mjs'), '--stop-hook'], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+    const run = (input) => spawnSyncStdinFile('node', [path.join(import.meta.dirname, 'retro-coverage-stop.mjs'), '--stop-hook'], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
     const inp = JSON.stringify({ transcript_path: tp, session_id: 's', last_assistant_message: SAFE });
     const a = run(inp);
     assert.equal(a.status, 2);
@@ -253,17 +254,17 @@ test('BRO-7911: the retro gate still runs when the chain block cap is spent', ()
     L({ type: 'assistant', message: { id: 'm2', content: [{ type: 'tool_use', id: 'p1', name: 'Bash', input: { command: 'git push origin HEAD:refs/heads/land/x' } }] } }),
     L({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'p1', content: 'ok' }] } }),
   ].join('\n'));
-  const chain = `/tmp/verify-edits-chain-${spawnSync('sh', ['-c', `printf '%s' '${tp}' | cksum | cut -d' ' -f1`], { encoding: 'utf8' }).stdout.trim()}`;
+  const chain = `/tmp/verify-edits-chain-${spawnSyncStdinFile('sh', ['-c', `printf '%s' '${tp}' | cksum | cut -d' ' -f1`], { encoding: 'utf8' }).stdout.trim()}`;
   const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + 'landed code, no retro --record run').digest('hex').slice(0, 12)}`);
   try {
     fs.writeFileSync(chain, 'RCOV\nROOTCAUSE\nCLEARCLOSE\nEFFECTPENDING\n'); // 4 lines = the cap
     const hook = path.join(import.meta.dirname, '..', '..', '.claude', 'hooks', 'verify-edits.sh');
     const input = JSON.stringify({ transcript_path: tp, session_id: 's', stop_hook_active: true, last_assistant_message: 'ACTION NEEDED FROM YOU — read it' });
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-home-')); // defeats the Mac-master self-skip
-    const r = spawnSync('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+    const r = spawnSyncStdinFile('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
     assert.equal(r.status, 2, r.stderr);
     assert.match(r.stderr, /\[VE:RETROCOV\]/);
-    const off = spawnSync('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', RETRO_COVERAGE_STOP_DISABLE: '1' }, encoding: 'utf8' });
+    const off = spawnSyncStdinFile('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', RETRO_COVERAGE_STOP_DISABLE: '1' }, encoding: 'utf8' });
     assert.equal(off.status, 0, 'kill switch still lets the capped chain through');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(chain, { force: true }); fs.rmSync(counter, { force: true });
