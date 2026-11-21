@@ -28,6 +28,10 @@ const JUNK = [
   ['dog-day-afternoon-2026', 'https://deadline.com/2026/04/broadway-box-office-lost-boys-dog-day-afternoon-1236783387/'],
   ['the-heart-of-the-beast-2026', 'https://deadline.com/2026/09/box-office-avengers-endgame-primetime-heart-of-the-beast-1237111302/'],
   ['rock-of-ages-regional-2026', 'https://ew.com/article/2012/06/14/box-office-preview-rock-of-ages-thats-my-boy-madagascar-3/'],
+  // First local batch run promoted these three (2026-11-21); each is now settled before a fetch.
+  ['grace-pervades-west-end-2026', 'https://theatreweekly.com/production-images-released-for-grace-pervades-as-west-end-run-continues/'],
+  ['hamlet-off-broadway-2026', 'http://www.BAM.org/Hamlet'],
+  ['hamlet-off-broadway-2026', 'https://playbill.com/article/raymond-lee-in-hamlet-more-board-south-coast-repertory-2026-2027-season'],
   ['liberation-off-broadway-2025', 'https://www.hollywoodreporter.com/movies/movie-reviews/the-liberation-review-carrie-coon-guy-nattiv-lily-james-1236690996/'],
 ];
 
@@ -75,6 +79,18 @@ describe('triagePendingStub (BRO-8023)', () => {
     const url = 'https://www.thetimes.com/culture/theatre-dance/article/punch-review-abc';
     assert.equal(T.triagePendingStub({ url, publishDate: '2019-03-01' }, { showId: PUNCH.id, show: PUNCH }).verdict, 'junk');
     assert.equal(T.triagePendingStub({ url, publishDate: '2025-09-27' }, { showId: PUNCH.id, show: PUNCH }).verdict, 'candidate');
+  });
+
+  test('a venue-host rule never settles a host the corpus has scored a review from', () => {
+    const idx = T.buildHeldUrlIndex([{ showId: 'a-2024', url: 'https://www.bam.org/some-real-review' }]);
+    assert.equal(T.triagePendingStub({ url: 'http://www.BAM.org/Hamlet' }, { showId: 'hamlet-off-broadway-2026', heldIndex: idx }).verdict, 'candidate');
+  });
+
+  test('byline equal to a creative-team name is the show creator, not a critic', () => {
+    const show = { creativeTeam: [{ name: 'William Shakespeare', role: 'Playwright' }] };
+    assert.equal(T.bylineIsShowCreator('William Shakespeare', show), true);
+    assert.equal(T.bylineIsShowCreator('Gareth Carr', show), false);
+    assert.equal(T.bylineIsShowCreator('Unknown', show), false);
   });
 
   test('showEra buckets by id year suffix', () => {

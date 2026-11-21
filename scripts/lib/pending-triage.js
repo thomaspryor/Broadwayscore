@@ -14,7 +14,25 @@
  *
  * Every junk rule is a shared guard (intake uses the same ones), never a copy.
  */
-const { offTopicSectionReason, listingPageUrlReason } = require('./non-review-url-patterns');
+const { offTopicSectionReason, listingPageUrlReason, nonReviewHostMatch } = require('./non-review-url-patterns');
+
+// BRO-8023 (first batch promotions): Playbill /article/ pages are news (season
+// boards, casting); 0 of 49,374 scored review urls are Playbill articles.
+const PLAYBILL_ARTICLE_RE = /^https?:\/\/(?:www\.)?playbill\.com\/article\//i;
+// A photo-call announcement ("production-images-released-for-grace-pervades-...").
+// 0 scored urls match; a "first-look-theatre-..." review slug is left alone.
+const ANNOUNCEMENT_SLUG_RE = /(?:^|[-/])(?:production-(?:images|photos|shots)-(?:released|revealed)|first-look-(?:at|photos|images|pictures))(?:-|\/|$)/i;
+
+function hostKey(url) {
+  try { return new URL(String(url)).hostname.replace(/^www\./i, '').toLowerCase(); } catch { return null; }
+}
+const _heldHostsMemo = new WeakMap();
+/** Hosts with at least one scored review (from the held index's keys). */
+function heldHosts(heldIndex) {
+  if (!heldIndex) return new Set();
+  if (!_heldHostsMemo.has(heldIndex)) _heldHostsMemo.set(heldIndex, new Set([...heldIndex.keys()].map((k) => k.split('/')[0])));
+  return _heldHostsMemo.get(heldIndex);
+}
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { isArticleOutsideProductionWindow } = require('./date-guard');
 
@@ -63,6 +81,13 @@ function triagePendingStub(data, ctx = {}) {
   const listing = listingPageUrlReason(url);
   if (listing) return { verdict: 'junk', reason: `${listing} URL, not a review` };
   if (isBlockedReviewUrl(url)) return { verdict: 'junk', reason: 'aggregator/listing/feature URL, not an outlet review' };
+  if (PLAYBILL_ARTICLE_RE.test(url)) return { verdict: 'junk', reason: 'Playbill news article, not a review' };
+  if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
+  // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
+  // only settles a stub on a host the corpus has never scored a review from (venue sites such as bam.org).
+  if (ctx.heldIndex && nonReviewHostMatch(url) && !heldHosts(ctx.heldIndex).has(hostKey(url))) {
+    return { verdict: 'junk', reason: 'non-review host (venue/company site) with no scored review, not a review' };
+  }
   const held = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
   if (held && held.size) {
     if (held.has(ctx.showId)) return { verdict: 'duplicate', reason: 'url already scored for this show', heldBy: [ctx.showId] };
@@ -79,6 +104,18 @@ function triagePendingStub(data, ctx = {}) {
   return { verdict: 'candidate', reason: null };
 }
 
+/**
+ * A byline that is a member of the show's own creative team (the playwright on a
+ * venue page: "William Shakespeare" on bam.org/Hamlet) means the page is about
+ * the show, not a critic's review of it. Pure.
+ */
+function bylineIsShowCreator(byline, show) {
+  const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+  const b = norm(byline);
+  if (!b || b === 'unknown' || !show || !Array.isArray(show.creativeTeam)) return false;
+  return show.creativeTeam.some((m) => m && norm(m.name) === b);
+}
+
 /** Era bucket of a show id by its year suffix (the queue report's slices). Pure. */
 function showEra(showId) {
   const m = String(showId || '').match(/-(\d{4})$/);
@@ -88,4 +125,4 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
