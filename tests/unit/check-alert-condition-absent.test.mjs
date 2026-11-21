@@ -123,15 +123,41 @@ test('BRO-6435: a resolved row with no resolvedAt is absent by its lastSeen; wit
   assert.equal(classifyEntry({ status: 'resolved', lastSeen: iso(2), resolvedAt: iso(10) }, realNowMs()).verdict, 'unknown', 'seen after resolve stays unknown');
 });
 
-// BRO-7685: a resurfaced digest line is titled "<title> (still open — BRO-N)"
-// and its dispatch key carries that decorated title; it must still match the
-// undecorated ledger row's title, or the card's acceptance check can never pass.
-test('digest-needs-you key with a "(still open — BRO-N)" suffix matches the undecorated row', () => {
-  const key = 'digest-needs-you:LLM scoring daily spend over budget (still open — BRO-6732)';
-  const row = (status) => ({ status, title: 'LLM scoring daily spend over budget', lastSeen: iso(5), ...(status === 'resolved' ? { resolvedAt: iso(1) } : {}) });
-  assert.equal(run(writeLedger('so-res.json', { 'llm-scoring:daily-cost-breach': row('resolved') }), key).status, 0);
-  assert.equal(run(writeLedger('so-open.json', { 'llm-scoring:daily-cost-breach': { ...row('open'), lastSeen: iso(1) } }), key).status, 1);
-  const { stripStillOpenSuffix } = require('../../scripts/check-alert-condition-absent.js');
-  assert.equal(stripStillOpenSuffix('Foo (still open — BRO-12)'), 'Foo');
-  assert.equal(stripStillOpenSuffix('Foo (still open) bar'), 'Foo (still open) bar', 'only the trailing router suffix is stripped');
+// BRO-7685: the router decorates resurfaced/escalated digest lines
+// ("<title> (still open — BRO-N)", "<title> — escalated after N notifications",
+// "<title> — still happening after N days") and older digests built the dispatch
+// key from that decorated title. Keys go through alertAbsentCheckCmd (run()), so
+// long titles are clamped exactly as on a real card, often mid-decoration.
+test('digest-needs-you key matches its row through router decorations, clamped or not', () => {
+  const { undecoratedDigestTitle, digestKeyMatchesTitle } = require('../../scripts/check-alert-condition-absent.js');
+  const titles = [
+    'LLM scoring daily spend over budget',
+    'Opening night poller: SERP ledger backoff has kept Bright Data idle for 3 runs', // ~80 chars
+    'Coverage verdict: 4 Broadway shows have fewer reviews than the aggregators list for them after the opening window', // >103 chars
+  ];
+  const decorations = [' (still open — BRO-6732)', ' — escalated after 12 notifications', ' — still happening after 9 days', ''];
+  let n = 0;
+  for (const title of titles) {
+    for (const deco of decorations) {
+      const key = `digest-needs-you:${title}${deco}`;
+      const row = { status: 'resolved', title, lastSeen: iso(5), resolvedAt: iso(1) };
+      const res = run(writeLedger(`deco-res-${n}.json`, { 'some:condition': row }), key);
+      assert.equal(res.status, 0, `${JSON.stringify(key)} should PASS: ${res.stderr}`);
+      const open = run(writeLedger(`deco-open-${n}.json`, { 'some:condition': { status: 'open', title, lastSeen: iso(1) } }), key);
+      assert.equal(open.status, 1, `${JSON.stringify(key)} should FAIL while open`);
+      n++;
+    }
+  }
+  assert.equal(undecoratedDigestTitle('Foo (still open — BRO-12)'), 'Foo');
+  assert.equal(undecoratedDigestTitle('Foo — escalated after 3 notifications'), 'Foo');
+  assert.equal(undecoratedDigestTitle('Foo (still open) bar'), 'Foo (still open) bar', 'only a trailing router decoration is stripped');
+  // No false match: a different row, or the plain title as a prefix of another.
+  assert.equal(digestKeyMatchesTitle('digest-needs-you:Foo bar', 'Foo'), false);
+  assert.equal(digestKeyMatchesTitle('digest-needs-you:Foo', 'Foo bar'), false);
+});
+
+// The digest now keys the dispatch link on the undecorated title (send-morning-digest.js).
+test('send-morning-digest builds digest-needs-you keys from the undecorated title', () => {
+  const src = fs.readFileSync(path.join(path.dirname(SCRIPT), 'send-morning-digest.js'), 'utf8');
+  assert.match(src, /conditionKey: `digest-needs-you:\$\{undecoratedDigestTitle\(q\.title\)/);
 });
