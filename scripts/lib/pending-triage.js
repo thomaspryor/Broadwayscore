@@ -98,8 +98,10 @@ function triagePendingStub(data, ctx = {}) {
   // same-title earlier or later production without a fetch; the drain applies
   // the identical canonical window to the fetched date.
   const pd = data.publishDate;
-  if (ctx.show && pd && /^\d{4}-\d{2}-\d{2}/.test(String(pd)) && isArticleOutsideProductionWindow(ctx.show, pd)) {
-    return { verdict: 'junk', reason: `article published ${String(pd).slice(0, 10)} is outside this production's window (stub date, no fetch)` };
+  // Aggregator stubs store prose dates ("December 14, 2014"): any parseable date naming a 4-digit year counts.
+  const pdIso = stubDateIso(pd);
+  if (ctx.show && pdIso && isArticleOutsideProductionWindow(ctx.show, pdIso)) {
+    return { verdict: 'junk', reason: `article published ${pdIso} is outside this production's window (stub date, no fetch)` };
   }
   return { verdict: 'candidate', reason: null };
 }
@@ -116,6 +118,15 @@ function bylineIsShowCreator(byline, show) {
   return show.creativeTeam.some((m) => m && norm(m.name) === b);
 }
 
+/** A stub's stored date as YYYY-MM-DD, or null when it is absent, unparseable or names no 4-digit year. Pure. */
+function stubDateIso(pd) {
+  const str = String(pd || '').trim();
+  if (!str || !/(?:^|\D)(?:19|20)\d{2}(?:\D|$)/.test(str)) return null;
+  const t = Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(str) ? `${str}T12:00:00Z` : str);
+  if (!Number.isFinite(t)) return null;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
 /** Era bucket of a show id by its year suffix (the queue report's slices). Pure. */
 function showEra(showId) {
   const m = String(showId || '').match(/-(\d{4})$/);
@@ -125,4 +136,4 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
