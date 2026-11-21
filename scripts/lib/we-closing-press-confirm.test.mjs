@@ -103,3 +103,15 @@ test('host check is domain-bounded', () => {
   assert.equal(isCredibleUrl('https://evil.org/whatsonstage.com/a', cfg.hosts), false);
   assert.equal(isCredibleUrl('https://www.playbill.com/a'), true);
 });
+
+test('end to end on real helpers: parseExtraction -> clusterDates -> decideWeNewClosing', () => {
+  const now = new Date('2026-11-21T00:00:00Z');
+  const raw = '{"date":"2027-01-03","confidence":"high","quote":"Titanique will play its final performance on 3 January 2027."}';
+  const e = { ...parseExtraction(raw, { fieldType: 'closing-we', now }), sourceUrl: 'https://www.whatsonstage.com/t' };
+  const c = clusterDates([e], { fieldType: 'closing-we' });
+  const discovery = { date: c.centerDate, sources: c.cluster.map(x => ({ url: x.sourceUrl, quote: x.quote, date: x.date })) };
+  assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-01-03', discovery, todayStr: TODAY }).apply, true);
+  // booking-horizon style extraction: no explicit quote => clusterDates refuses a single source
+  const h = { ...parseExtraction('{"date":"2027-03-06","confidence":"high","quote":"Hadestown is booking until March."}', { fieldType: 'closing-we', now }), sourceUrl: 'https://www.whatsonstage.com/h' };
+  assert.equal(clusterDates([h], { fieldType: 'closing-we' }), null);
+});
