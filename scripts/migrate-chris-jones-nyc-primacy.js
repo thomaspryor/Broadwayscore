@@ -12,6 +12,8 @@ const path = require('path');
 const { marketPrimacyOverride } = require('./lib/syndication-pairs');
 const { trigramSimilarity } = require('./lib/trigram-similarity');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const USAGE = 'migrate-chris-jones-nyc-primacy.js [--apply] [--show=ID]  (BRO-7957; default dry run; -h prints this)';
 const SIM_MIN = 50;
 const _day = (d) => { const t = Date.parse(String(d || '')); return Number.isNaN(t) ? null : Math.floor(t / 864e5); };
 
@@ -34,6 +36,7 @@ function planPair(ny, tr, show, trFile) {
 
 function main() {
   const args = process.argv.slice(2);
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const apply = args.includes('--apply');
   const only = (args.find((a) => a.startsWith('--show=')) || '').split('=')[1];
   const root = path.join(__dirname, '..');
