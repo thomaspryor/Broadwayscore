@@ -143,6 +143,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       outlet: review.outlet, criticName: review.criticName, source: review.source, url: review.url || null,
       gapClass: row.gapClass, subclass: row.subclass, recency: row.recency,
       showDate: (show && (show.openingDate || show.previewsStartDate)) || null,
+      urlFindLastTryMs: L.liveRows(ledgerIndex.get(reviewKey) || []).filter((r) => r.strategy === 'URL_FIND').reduce((m, r) => Math.max(m, Date.parse(r.ts) || 0), 0),
       show, strategy: sel.strategy, skipped: sel.skipped, bytesBefore: (review.fullText || '').length, reselect: owned ? null : reselect,
     });
   }
