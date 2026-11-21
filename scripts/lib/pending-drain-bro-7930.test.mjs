@@ -12,7 +12,7 @@ const { urlsSameArticle, classifyTargetCollision, promotionBlockRule } = require
 const { evaluateDrainHealth, loadState, saveState } = require('./pending-drain-state.js');
 const { genericSingleWordTitle, passesGenericTitleIdentity } = require('./generic-title-guard.js');
 const { classifyLimbo, shortTitleEvidence, applyDecision, misattributedWetRoundup } = require('./limbo-gate.js');
-const { routeLimbo } = require('../route-limbo-reviews.js');
+const { routeLimbo } = require('./route-limbo.js');
 
 test('a file with no firstSeenAt/publishDate falls back to its mtime, not 0', () => {
   const day = 864e5 * 20000;
@@ -135,7 +135,7 @@ test('CLASS GUARD: routeLimbo finds every past-grace limbo file and respects the
 test('the sweep calls the gate and the rotation (a refactor back to newest-first/no gate fails here)', () => {
   const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../replay-pending-bylines.js'), 'utf8');
   assert.match(src, /rotateTiered\(/);
-  assert.match(src, /route-limbo-reviews/);
+  assert.match(src, /lib\/route-limbo/);
   assert.match(src, /raiseDrainHealthAlerts\(state\.history\)/);
 });
 
