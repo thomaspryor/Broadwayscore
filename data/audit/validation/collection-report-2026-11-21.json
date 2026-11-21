@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-21T19:06:04.105Z",
+  "runDate": "2026-11-21T19:16:10.077Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "hamlet-hail-to-the-thief-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -29,22 +29,22 @@
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,36 +54,42 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 1,
+    "failed": 2,
     "shows": [
-      "hamlet-hail-to-the-thief-off-west-end-2026"
+      "light-shining-in-buckinghamshire-west-end-2015",
+      "my-night-with-reg-west-end-2015",
+      "white-christmas-west-end-2014"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 0,
-      "failed": 0
+      "processed": 2,
+      "failed": 1
     }
   },
   "processed": [
-    "hamlet-hail-to-the-thief-off-west-end-2026/partially-obstructed-view--unknown.json",
-    "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json"
+    "my-night-with-reg-west-end-2015/britishtheatrecom--stephen-collins.json"
   ],
   "failed": [
-    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    "light-shining-in-buckinghamshire-west-end-2015/britishtheatrecom--stephen-collins.json",
+    "white-christmas-west-end-2014/britishtheatrecom--stephen-collins.json"
   ],
   "cumulativeResumedState": {
     "processed": [
       "hamlet-hail-to-the-thief-off-west-end-2026/partially-obstructed-view--unknown.json",
-      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json",
+      "my-night-with-reg-west-end-2015/britishtheatrecom--stephen-collins.json"
     ],
     "failed": [
-      "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+      "light-shining-in-buckinghamshire-west-end-2015/britishtheatrecom--stephen-collins.json",
+      "white-christmas-west-end-2014/britishtheatrecom--stephen-collins.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "hamlet-hail-to-the-thief-off-west-end-2026/partially-obstructed-view--unknown.json"
+      "hamlet-hail-to-the-thief-off-west-end-2026/partially-obstructed-view--unknown.json",
+      "my-night-with-reg-west-end-2015/britishtheatrecom--stephen-collins.json"
     ],
     "amp": [],
     "browserbase": [],
