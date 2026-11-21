@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T14:51:21.120Z",
+  "timestamp": "2026-11-21T15:08:48.132Z",
   "stats": {
     "totalReviews": 83622,
-    "alreadyFlagged": 22416,
+    "alreadyFlagged": 22412,
     "dateGuardCatches": 235,
-    "directorMismatch": 3843,
+    "directorMismatch": 3845,
     "tvFilmSignals": 2396,
-    "londonSignals": 3906,
+    "londonSignals": 3907,
     "offBroadwaySignals": 779,
-    "yearMismatch": 393,
-    "noPublishDate": 8247
+    "yearMismatch": 394,
+    "noPublishDate": 8248
   },
   "findings": [
     {
@@ -26194,6 +26194,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-07-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/girl-from-the-north-country-old-vic-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -62570,6 +62588,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "amny--matt-windman.json",
+      "score": 82,
+      "publishDate": "2023-11-19",
+      "url": "https://www.amny.com/news/review-spamalot-broadway-revival-2023/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2023 (0x). 2005 matches production: spamalot-2005"
         }
       ]
     },
