@@ -74,6 +74,17 @@ describe('runGateAlert exit code and blocked output', () => {
   test('isOwnerInformed treats missing/auto results as not informed', () => {
     assert.strictEqual(isOwnerInformed(null), false);
     assert.strictEqual(isOwnerInformed({ action: 'auto' }), false);
+    assert.strictEqual(isOwnerInformed({ action: 'auto', dispatchOk: false }), false);
+  });
+});
+
+describe('BRO-8005 promoted-to-auto alert', () => {
+  test('auto + dispatchOk (tracker filed) counts as informed, exit 0', async () => {
+    assert.strictEqual(isOwnerInformed({ action: 'auto', dispatchOk: true }), true);
+    const code = await runGateAlert('checklist', 'x', {
+      routeAlertFn: async () => ({ action: 'auto', dispatchOk: true }), log: { error() {} },
+    });
+    assert.strictEqual(code, 0);
   });
 });
 
