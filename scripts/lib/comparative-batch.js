@@ -58,7 +58,7 @@ function buildGeminiRequest(i, prompt) {
       generationConfig: {
         temperature: COMPARATIVE_PARAMS.temperature,
         maxOutputTokens: COMPARATIVE_PARAMS.maxTokens,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: require('./llm-batch').geminiThinkingOff(COMPARATIVE_PARAMS.geminiModel), // BRO-7511: 3.x rejects thinkingBudget
       },
     },
   };

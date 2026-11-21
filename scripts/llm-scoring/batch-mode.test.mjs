@@ -137,6 +137,11 @@ describe('buildGeminiBatchRequest', () => {
     assert.strictEqual(req.request.generationConfig.thinkingConfig.thinkingBudget, 0);
     assert.strictEqual(req.request.generationConfig.maxOutputTokens, 500);
   });
+
+  test('BRO-7511: Gemini 3.x lines get thinkingLevel, never thinkingBudget (3.5-flash-lite 400s on it)', () => {
+    const req = buildGeminiBatchRequest({ customId: 'r', ...SAMPLE, model: 'gemini-3.5-flash-lite' });
+    assert.deepStrictEqual(req.request.generationConfig.thinkingConfig, { thinkingLevel: 'minimal' });
+  });
 });
 
 // ========================================

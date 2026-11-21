@@ -51,6 +51,17 @@ function parseCustomIdIndex(customId) {
 // BRO-7527: claude-haiku-5-5 rejects temperature too and thinks by default;
 // disabled thinking keeps its short classifier answers in the first text block
 // and inside the 4.5-era max_tokens caps (scripts/lib/anthropic-request.js).
+/**
+ * Gemini "thinking off" config, per model (BRO-7511). Gemini 2.x takes
+ * thinkingBudget:0; gemini-3.5-flash-lite REJECTS it (HTTP 400 "Request
+ * contains an invalid argument", every call, smoke A/B 2026-11-21) and takes
+ * thinkingLevel:'minimal' instead (near-off; 0 thinking tokens on a short
+ * JSON reply). Google routes gemini-2.5-flash to 3.5-flash-lite on 2026-12-01.
+ */
+function geminiThinkingOff(model) {
+  return /^gemini-[3-9]/.test(String(model)) ? { thinkingLevel: 'minimal' } : { thinkingBudget: 0 };
+}
+
 function claudeSamplingParams(model, temperature = 0.3) {
   if (/^claude-sonnet-5/.test(String(model))) return { thinking: { type: 'between_tools' } };
   if (/^claude-haiku-5/.test(String(model))) return { thinking: { type: 'disabled' } };
@@ -223,7 +234,7 @@ function parseOpenAIBatchResult(line) {
 // constructor options. A future caller that builds a GeminiScorer with a
 // non-default temperature MUST pass that same value here explicitly, or
 // batch mode will silently score at a different temperature than sync.
-function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperature = 0.3, maxOutputTokens = 500 }) {
+function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperature = 0.3, maxOutputTokens = 500, model = 'gemini-2.5-flash' }) {
   if (!customId || !systemPrompt || !userPrompt) {
     throw new Error('buildGeminiBatchRequest: customId, systemPrompt, userPrompt are required');
   }
@@ -236,7 +247,7 @@ function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperatu
         temperature,
         topP: 0.8,
         maxOutputTokens,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: geminiThinkingOff(model), // the model is on the batch job, not the line; must match it (BRO-7511)
       },
     },
   };
@@ -342,6 +353,7 @@ function decideNextAction({ batchState, vendorStatuses, now }) {
 }
 
 module.exports = {
+  geminiThinkingOff,
   OPENAI_REQUEST_PROFILES,
   openaiScoringModels,
   openaiChatBody,

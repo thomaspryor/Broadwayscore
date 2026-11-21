@@ -171,7 +171,7 @@ const GEMINI_INLINE_MAX_BYTES = 15 * 1024 * 1024;
  */
 export function assembleRequests(
   items: PendingBatchItem[],
-  config: { geminiEnabled: boolean; claudeModel: string; openaiModel: string; geminiTemperature?: number }
+  config: { geminiEnabled: boolean; claudeModel: string; openaiModel: string; geminiTemperature?: number; geminiModel?: string }
 ): VendorRequests {
   const anthropic: any[] = [];
   const openai: any[] = [];
@@ -196,6 +196,7 @@ export function assembleRequests(
           // Claude/OpenAI, which hardcode 0.3), so it must be threaded
           // explicitly or batch would score at a different temperature.
           temperature: config.geminiTemperature ?? 0.3,
+          model: config.geminiModel, // thinking config differs by Gemini generation (BRO-7511)
         })
       );
     }
