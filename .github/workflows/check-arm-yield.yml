@@ -139,6 +139,8 @@ jobs:
           for f in data/audit/arm-yield-ledger.jsonl data/audit/pending-growth-ledger.jsonl data/audit/discovery-share-latest.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
+          # Literal paths so audit-orphaned-audit-writes.js sees what report-discovery-share.js writes (BRO-7934)
+          git add data/audit/pending-growth-ledger.jsonl data/audit/discovery-share-latest.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
