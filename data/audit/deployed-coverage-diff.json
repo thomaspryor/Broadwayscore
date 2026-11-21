@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T12:22:04.724Z",
+  "generatedAt": "2026-11-21T13:13:31.878Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,24 +7,26 @@
   "clean": 365,
   "defective": 1,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "paranormal-activity-2026",
-      "title": "Paranormal Activity",
-      "openingDate": "2026-08-25",
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 77.89 vs local 77.82 (Δ0.07)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: fashionmeetsfood"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 37,
-      "deployedCount": 37,
-      "firstDefectAt": "2026-11-21T12:21:54.097Z"
+      "missingFromProd": [
+        "fashionmeetsfood"
+      ],
+      "localCount": 62,
+      "deployedCount": 62,
+      "firstDefectAt": "2026-11-21T13:13:25.973Z"
     }
   ],
   "persistentDefective": 0,
