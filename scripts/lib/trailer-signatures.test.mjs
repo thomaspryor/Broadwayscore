@@ -561,3 +561,15 @@ test('Independent / Standard CMS widget footers are stripped for the tier check 
   const ws = BODY + ' '.repeat(20000) + 'x';
   const t0 = Date.now(); T.stripCmsWidgetFooters(ws); assert.ok(Date.now() - t0 < 200, 'whitespace run must stay fast');
 });
+
+test('CMS footer review fix: a punctuated topic tag never makes a cut review complete (BRO-7943)', () => {
+  const W = ' Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  for (const tag of ['Oklahoma!', 'Hello, Dolly!', 'Mamma Mia!', 'Mrs. Doubtfire', 'Musicals']) {
+    assert.equal(tier(BODY.slice(0, -40) + ' More about ' + tag + W, 'independent').contentTier, 'truncated', tag);
+    assert.equal(tier(BODY + ' More about ' + tag + W, 'independent').contentTier, 'complete', tag);
+  }
+  // a cut sentence that itself opens "More about" stays in and stays truncated
+  const cutMore = BODY + ' More about the supporting cast, whose performances never quite More about Musicals' + W;
+  assert.ok(T.stripCmsWidgetFooters(cutMore).endsWith('never quite'));
+  assert.equal(tier(cutMore, 'independent').contentTier, 'truncated');
+});

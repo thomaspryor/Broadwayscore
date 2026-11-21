@@ -158,22 +158,30 @@ function urlFindSliceExhausted(spentMs, env = process.env) {
  * re-ran the auth probe. Only browser items move, and only among the slots
  * browser items already held: non-browser items keep their places, and
  * within an adapter the priority order is kept. Adapters go in the order of
- * their first item. Apply after --limit, so the set of items run is unchanged.
+ * their first item, inside each (band, fresh/retry) partition. Apply after --limit.
  * @param {Array<{strategy:string}>} work
  * @param {(c:object)=>string|null} adapterNameOf
  * @returns {Array} a new array
  */
 function groupBrowserSessions(work, adapterNameOf) {
+  // Grouping stays inside a priority partition (band, fresh vs retry): a run
+  // that stops early on its time budget or ceiling must not have spent it on a
+  // historic retry pulled forward past a fresh band-1 gap (review).
+  const partOf = (c) => `${bandOf(c)}:${(c.attempts || 0) > 0 ? 'retry' : 'fresh'}`;
   const slots = [];
-  const groups = new Map();
+  const items = [];
+  const partFirst = new Map();
+  const groupFirst = new Map();
   work.forEach((c, i) => {
     if (c.strategy !== 'BROWSER_SESSION') return;
+    const p = partOf(c);
+    const g = `${p}|${adapterNameOf(c) || ''}`;
+    if (!partFirst.has(p)) partFirst.set(p, i);
+    if (!groupFirst.has(g)) groupFirst.set(g, i);
     slots.push(i);
-    const k = adapterNameOf(c) || '';
-    if (!groups.has(k)) groups.set(k, []);
-    groups.get(k).push(c);
+    items.push({ c, i, p: partFirst.get(p), g: groupFirst.get(g) });
   });
-  const ordered = [...groups.values()].flat();
+  const ordered = items.sort((x, y) => x.p - y.p || x.g - y.g || x.i - y.i).map((x) => x.c);
   const out = work.slice();
   slots.forEach((slot, j) => { out[slot] = ordered[j]; });
   return out;
