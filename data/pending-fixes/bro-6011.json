@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6011",
+  "planId": "1327d86f-b1c7-4c48-a63f-d2ab7b27737d",
+  "status": "applied",
+  "createdAt": "2026-10-23T10:21:14.209Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6011: mark Times (UK) Susannah Butter file as non-review (pre-opening magazine interview feature with Callie Khouri, not a review); the real review is times-uk--clive-davis.json",
+    "steps": [
+      "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json: isNonReviewReason",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BRO-6011 pre-opening Times culture-magazine interview feature (published 2026-08-25, before 2026-09-16 opening); The Times review of this show is Clive Davis (times-uk--clive-davis.json)",
+        "description": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T10:42:54.673Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json isNonReviewReason: null -> \"manual (not a review): BRO-6011 pre-opening Times culture-magazine interview feature (published 2026-08-25, before 2026-09-16 opening); The Times review of this show is Clive Davis (times-uk--clive-davis.json)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/times-uk--susannah-butter.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

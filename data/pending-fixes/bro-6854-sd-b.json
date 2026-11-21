@@ -1,0 +1,262 @@
+{
+  "issueNumber": "bro-6854-sd-b",
+  "planId": "78e57b5f-e347-47e8-9963-dda618229daf",
+  "status": "applied",
+  "createdAt": "2026-11-02T21:39:06.911Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6854: San Diego city hub, local productions since 2026-05-01 (part 2 of 2)",
+    "steps": [
+      "add mensa-regional-2026",
+      "add theatre-people-or-the-angel-next-door-regional-2026",
+      "add come-from-away-moonlight-regional-2026",
+      "add dear-evan-hansen-cygnet-regional-2026",
+      "add begin-again-old-regional-2026",
+      "add a-black-billed-cuckoo-regional-2026",
+      "add good-night-oscar-regional-2026",
+      "add ripcord-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add mensa-regional-2026",
+        "show": {
+          "id": "mensa-regional-2026",
+          "title": "Mensa",
+          "slug": "mensa-regional-2026",
+          "venue": "OnStage Playhouse, Chula Vista, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-08-23",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/onstangemensa",
+            "https://fromanother0.com/onstage-playhouses-last-production-in-chula-vista/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add theatre-people-or-the-angel-next-door-regional-2026",
+        "show": {
+          "id": "theatre-people-or-the-angel-next-door-regional-2026",
+          "title": "Theatre People, or The Angel Next Door",
+          "slug": "theatre-people-or-the-angel-next-door-regional-2026",
+          "venue": "Scripps Ranch Theatre, San Diego, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-01",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.sandiegouniontribune.com/2026/09/01/review-scripps-ranch-theatres-people-delivers-fast-paced-fun/",
+            "https://sandiegostory.com/plenty-of-laughter-at-scripps-ranch-theatre/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add come-from-away-moonlight-regional-2026",
+        "show": {
+          "id": "come-from-away-moonlight-regional-2026",
+          "title": "Come From Away",
+          "slug": "come-from-away-moonlight-regional-2026",
+          "venue": "Moonlight Stage Productions, Vista, CA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-10",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/moonlightcomefromaway",
+            "https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add dear-evan-hansen-cygnet-regional-2026",
+        "show": {
+          "id": "dear-evan-hansen-cygnet-regional-2026",
+          "title": "Dear Evan Hansen",
+          "slug": "dear-evan-hansen-cygnet-regional-2026",
+          "venue": "Cygnet Theatre, San Diego, CA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-13",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/cygnetdearevanhansen",
+            "https://www.broadwayworld.com/san-diego/article/Review-DEAR-EVAN-HANSEN-at-Cygnet-Theatre-20260913"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add begin-again-old-regional-2026",
+        "show": {
+          "id": "begin-again-old-regional-2026",
+          "title": "Begin Again",
+          "slug": "begin-again-old-regional-2026",
+          "venue": "The Old Globe, San Diego, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-18",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/oldglobebeginagain",
+            "https://www.sandiegouniontribune.com/2026/09/18/review-old-globes-magic-filled-begin-again-is-tuneful-and-touching/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add a-black-billed-cuckoo-regional-2026",
+        "show": {
+          "id": "a-black-billed-cuckoo-regional-2026",
+          "title": "A Black-billed Cuckoo",
+          "slug": "a-black-billed-cuckoo-regional-2026",
+          "venue": "La Jolla Playhouse, La Jolla, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-20",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.sandiegouniontribune.com/2026/09/20/review-la-jolla-playhouses-sweet-black-billed-cuckoo-packed-with-humor-surprises/",
+            "https://sandiegostory.com/emotional-growth-through-an-unexpected-activity/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add good-night-oscar-regional-2026",
+        "show": {
+          "id": "good-night-oscar-regional-2026",
+          "title": "Good Night, Oscar",
+          "slug": "good-night-oscar-regional-2026",
+          "venue": "North Coast Repertory Theatre, Solana Beach, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-09-20",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/ncrgoodnightoscar",
+            "https://www.broadwayworld.com/san-diego/article/Review-GOOD-NIGHT-OSCAR-at-North-Coast-Repertory-Theatre-20260920"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add ripcord-regional-2026",
+        "show": {
+          "id": "ripcord-regional-2026",
+          "title": "Ripcord",
+          "slug": "ripcord-regional-2026",
+          "venue": "The Roustabouts Theatre Co, San Diego, CA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-08",
+          "openingDateSource": "earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.sandiegouniontribune.com/2026/10/13/review-roustabouts-ripcord-a-laugh-filled-tale-about-aging-with-grace/",
+            "https://www.sdjewishworld.com/2026/10/15/191378/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T23:37:23.704Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mensa-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added theatre-people-or-the-angel-next-door-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-moonlight-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dear-evan-hansen-cygnet-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added begin-again-old-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-black-billed-cuckoo-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added good-night-oscar-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ripcord-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

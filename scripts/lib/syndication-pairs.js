@@ -1,0 +1,450 @@
+/**
+ * Known syndication pairs — shared across rebuild + gather-reviews.
+ *
+ * Same critic publishes at a primary outlet + one or more secondary outlets
+ * simultaneously (wire service, content-sharing agreement). Secondary copies
+ * are skipped at rebuild time even without an isSyndicatedDuplicate flag on file,
+ * and gather-reviews uses this map to avoid creating duplicate files.
+ *
+ * Keys are lowercase critic names. Values are { primary, secondary[] } where
+ * each entry is the outletId used in the review-texts filenames.
+ *
+ * Extracted per CLAUDE.md §15 so tests can require() the real data without
+ * copying it. Added via Pattern Card #6.
+ */
+const { foldDiacritics } = require('./title-match');
+
+const KNOWN_SYNDICATION_PAIRS = {
+  'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
+  'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
+  'tulis mccall': { primary: 'nytg', secondary: ['front-row-center'] },
+  'stanford friedman': { primary: 'nytg', secondary: ['front-row-center'] },
+  'david rooney': { primary: 'hollywood-reporter', secondary: ['reuters'] },
+  'alexandra lipari': { primary: 'newsday', secondary: ['entertainmenthour'] },
+  'zachary stewart': { primary: 'theatermania', secondary: ['whatsonstage'] },
+  'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
+  'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune',
+    // BRO-6054: AP wire reprints filed under the subscriber's outlet id
+    'washpost', 'sfgate', 'huffpost', 'seattle-post-intelligencer', 'news-tribune', 'npr', 'boston-com', 'abscbnnewscom'] },
+  // BRO-7272: Denver Post ran the AP wire review (same slug as the ABC News copy).
+  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune', 'denver-post'] },
+  'jocelyn noveck': { primary: 'ap', secondary: ['seattle-post-intelligencer'] },
+  // BRO-6054: critics who repost their own review at a second outlet.
+  // Mandell's New York Theater blog runs first; DC Theatre Scene and The Faster Times reprint it.
+  'jonathan mandell': { primary: 'nyt-theater', secondary: ['dctheatrescene', 'faster-times'] },
+  'simon jenner': { primary: 'fringereview', secondary: ['viewfromthegods'] },
+  'samantha genzer': { primary: 'boston-com', secondary: ['newsbreak'] },
+  'thom geier': { primary: 'thewrap', secondary: ['culturesauce'] },
+  // NY1 aired a broadcast version of Cote's Time Out New York review ("Contributing critic David Cote of Time Out New York").
+  'david cote': { primary: 'timeout', secondary: ['ny1'] },
+  // BRO-7080: Sheward's Theater Life review is reprinted (most sentences verbatim)
+  // on TotalTheater, whose body prints "Critic: David Sheward (Oct. 2026)."
+  'david sheward': { primary: 'theater-life', secondary: ['totaltheater1'] },
+};
+
+/**
+ * Returns the syndication config for a critic, or null if not a known syndicated critic.
+ * @param {string} criticName - Lowercased critic name
+ */
+function getSyndicationConfig(criticName) {
+  if (!criticName) return null;
+  return KNOWN_SYNDICATION_PAIRS[criticName.toLowerCase().trim()] || null;
+}
+
+/**
+ * Returns true if outletId is a secondary (syndicated copy) outlet for this critic.
+ * @param {string} criticName
+ * @param {string} outletId
+ */
+function isSecondaryOutlet(criticName, outletId) {
+  const config = getSyndicationConfig(criticName);
+  if (!config) return false;
+  return config.secondary.includes(outletId);
+}
+
+/**
+ * Publishing groups (BRO-2406): outlets under common ownership or a reprint partnership that reprint a
+ * staff critic's review. Order = primacy (first = original publisher). Applies
+ * to ANY critic with a real byline, not only critics hand-listed in
+ * KNOWN_SYNDICATION_PAIRS — the third Chris Jones/Chicago Tribune recurrence
+ * was a sibling of the same class (Tribune-group reprint) the per-critic map
+ * could not anticipate.
+ *
+ * Observer/Guardian (BRO-6046): The Observer prints on theguardian.com, so the
+ * Guardian API and web search file the Observer's weekly theatre column as
+ * "guardian" while Theatre Record files the same column as "observer". The
+ * observer copy holds the per-show section and is the primary; a same-critic
+ * guardian copy of the same show is the reprint. Known limit: Broadway files
+ * also use outletId "observer" for the New York Observer (observer.com), which
+ * is not Guardian-owned. A critic who reviewed one show for both the NY
+ * Observer and the Guardian would lose the guardian copy here; none existed
+ * when this group was added (47 same-critic pairs checked, BRO-6046).
+ */
+const PUBLISHING_GROUPS = [
+  ['chicagotribune', 'nydailynews', 'baltimoresun', 'hartford-courant', 'orlando-sentinel', 'south-florida-sun-sentinel'],
+  ['observer', 'guardian'],
+  // BRO-6054: SFGate is the San Francisco Chronicle's free site and reprints Chronicle reviews.
+  ['san-francisco-chronicle', 'sfgate'],
+  // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
+  ['artsdesk', 'i-paper'],
+  // BRO-7238: critic-owned sites that repost the review a publisher ran first (same date, same text). The outlet ids
+  // are specific to one critic each, so a group-wide rule cannot misfire on another critic.
+  ['dailybeast', 'timteeman'],          // Tim Teeman's own site reposts his Daily Beast pieces (13 shows)
+  ['observer', 'cote-notices'],         // David Cote's newsletter reposts his Observer reviews (7 shows)
+  ['allabouttheatreuk', 'sarahmonaghan'], // Sarah Monaghan's own site, three days after All About Theatre
+  ['vulture', 'vu'],                    // 'vu' is a second filing of the Vulture review (same score, no date)
+  ['theater-life', 'theatres-leiter-side', 'thedaviddesk2'], // Leiter's / Sheward's own blogs repost Theater Life
+  // BRO-7237: Yahoo Entertainment reprints TheWrap's reviews under a yahoo.com URL (Robert Hofler's Wanted review,
+  // 2026-11-08, ran at both). Yahoo is the reprint; TheWrap is the original.
+  ['thewrap', 'yahoo'],
+];
+
+// Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
+const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol', 'headtopics', 'newsbreak']); // BRO-7416: + the two aggregators
+
+// BRO-7416: aggregator portals. Head Topics and NewsBreak summarize another outlet's review: Head Topics prints the
+// source as the author ("DEADLINE", file headtopics--deadline.json) and NewsBreak files null/staff bylines. A real
+// byline goes through the same-critic portal rule (SYNDICATION_PORTAL_OUTLETS). A byline that names an outlet defers
+// to that outlet's live files only (bylinelessPortalPrimaryFiles): a portal copy of an outlet we hold no live copy of
+// stays (Phantom tour / Klein: no file at all; suffs-tour-2025: the clevescene original is a verified, flagged copy of
+// the Head Topics file per BRO-6759, so the portal is the surviving copy by that decision).
+const BYLINELESS_PORTAL_OUTLETS = Object.freeze(['headtopics', 'newsbreak']);
+
+/** 1 for an aggregator portal (yahoo/msn/aol/headtopics/newsbreak), else 0. Used to break cross-outlet primary ties. */
+function portalRank(outletId) { return SYNDICATION_PORTAL_OUTLETS.includes(String(outletId || '').toLowerCase()) ? 1 : 0; }
+
+function isBylinelessPortalOutlet(outletId) {
+  return BYLINELESS_PORTAL_OUTLETS.includes(String(outletId || '').toLowerCase());
+}
+
+const _slug = (v) => foldDiacritics(String(v || '')).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/**
+ * Files a byline-less portal copy defers to: other-outlet review files whose outlet prefix IS the outlet the portal
+ * names, by its byline ("DEADLINE") or by its own filename (`headtopics--deadline.json`). Portals and
+ * unknown/unnamed shadows never count.
+ * @param {string[]} fileNames show directory listing
+ * @param {{criticName?:string, fileName?:string}} portal the portal copy being judged
+ * @param {(o:string)=>string} [normalize] outlet normalizer
+ */
+function bylinelessPortalPrimaryFiles(fileNames, { criticName, fileName } = {}, normalize = (o) => o) {
+  const named = new Set();
+  const add = (v) => { const sl = _slug(v); if (sl) { named.add(sl); named.add(_slug(normalize(sl))); named.add(_slug(normalize(String(v).trim()))); } }; // display name first: 'Cleveland Scene' -> clevescene
+  add(criticName);
+  const m = /^[^-].*?--(.+?)(?:--on-.*|-\d+)?\.json$/.exec(fileName || '');
+  if (m) add(m[1]);
+  const out = [];
+  for (const f of fileNames || []) {
+    const mm = /^(.+?)--.+\.json$/.exec(f);
+    if (!mm || f === fileName || /^(unknown|unnamed)$/.test(mm[1])) continue;
+    const o = _slug(normalize(mm[1]));
+    if (SYNDICATION_PORTAL_OUTLETS.includes(o) || isBylinelessPortalOutlet(o)) continue;
+    if (named.has(o) || named.has(_slug(mm[1]))) out.push(f);
+  }
+  return out;
+}
+
+/**
+ * True when one of `primaryFiles` (bylinelessPortalPrimaryFiles) is live (isLiveSyndicationPrimary) and passes
+ * `extraCheck(parsed, path)` (callers pass their includability test).
+ */
+function hasLiveBylinelessPortalPrimary(showDir, primaryFiles, { extraCheck, portalDate } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  return (primaryFiles || []).some((f) => {
+    try {
+      const pPath = path.join(showDir, f);
+      const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      // The portal names an outlet, not a critic: a same-outlet review published days apart is a different article.
+      if (portalDate && p.publishDate) {
+        const { toDateMs } = require('./date-utils');
+        const gap = Math.abs(toDateMs(portalDate) - toDateMs(p.publishDate)) / 864e5;
+        if (Number.isFinite(gap) && gap > BYLINELESS_PORTAL_MAX_DAY_GAP) return false;
+      }
+      return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
+    } catch { return false; }
+  });
+}
+const BYLINELESS_PORTAL_MAX_DAY_GAP = 3;
+
+function _isRealByline(criticName) {
+  const c = String(criticName || '').toLowerCase().trim();
+  return !!c && !/^(unknown|staff|n\/a|none|anonymous)$/.test(c);
+}
+
+/**
+ * Outlet ids that, for this critic, are the primary publisher of a review that
+ * `outletId` would merely be reprinting. Empty array = outletId is not a
+ * syndicated secondary. Union of the per-critic map and publishing groups.
+ */
+function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets } = {}) {
+  if (!_isRealByline(criticName) || !outletId) return [];
+  const out = new Set();
+  const cfg = getSyndicationConfig(criticName);
+  if (cfg && cfg.secondary.includes(outletId)) out.add(cfg.primary);
+  for (const group of PUBLISHING_GROUPS) {
+    const i = group.indexOf(outletId);
+    if (i > 0) group.slice(0, i).forEach(o => out.add(o));
+  }
+  // BRO-7238: a portal carries other publishers' reviews, so a portal copy defers to ANY other outlet that holds the
+  // same critic's review of the same show. Only callers that know those outlets (a show dir scan) pass them.
+  if (SYNDICATION_PORTAL_OUTLETS.includes(outletId) && Array.isArray(sameCriticOutlets)) {
+    for (const o of sameCriticOutlets) if (o && o !== outletId && !SYNDICATION_PORTAL_OUTLETS.includes(o)) out.add(o);
+  }
+  return [...out];
+}
+
+/**
+ * Outlet prefixes of the same critic's files in a show directory
+ * (`<outlet>--<criticSlug>[-n].json`), for the portal rule above. Portal files
+ * (judged on the NORMALIZED prefix, so `yahoo-news--` counts) are left out: a
+ * portal copy never defers to another portal, or to itself.
+ * @param {string[]} fileNames
+ * @param {string} criticName
+ * @param {(o:string)=>string} [normalize] outlet normalizer (callers pass their own; default identity)
+ */
+function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
+  const slug = criticFileSlug(criticName);
+  if (!slug) return [];
+  const re = new RegExp(`^(.+?)--${slug}(?:-\\d+)?\\.json$`);
+  const out = new Set();
+  for (const f of fileNames || []) {
+    const m = re.exec(f);
+    // 'unknown'/'unnamed' files are shadows that defer to the named copy (dedup-survivor.unknownOutletShadowTargets);
+    // letting a portal defer to them back would drop both.
+    if (m && !/^(unknown|unnamed)$/.test(m[1]) && !SYNDICATION_PORTAL_OUTLETS.includes(normalize(m[1]))) out.add(m[1]);
+  }
+  return [...out];
+}
+
+/**
+ * THE one entry point for callers that can see the show directory (rebuild,
+ * explainExclusion, dedup-survivor): per-critic pairs + publishing groups + the
+ * portal rule. Callers without a directory (lane) keep getSyndicationPrimaries.
+ * @param {string} criticName
+ * @param {string} outletId normalized outlet id of the file being judged
+ * @param {string[]|(()=>string[])} fileNames the show directory listing, or a thunk returning it
+ * @param {(o:string)=>string} [normalize]
+ */
+function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize) {
+  if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId);
+  const names = typeof fileNames === 'function' ? fileNames() : fileNames; // a thunk: list the directory only for portal files
+  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(names, criticName, normalize) });
+}
+
+/**
+ * True when two review records are the same critic's article published at two
+ * different outlets under a known syndication relationship (per-critic pair,
+ * shared publishing group) or explicitly declared so by a human
+ * (duplicateReason /syndicat/). Their URLs differ BY DEFINITION, so a
+ * duplicateOf pointer between them must never be judged stale on URL mismatch.
+ * @param {{criticName?:string,outletId?:string,duplicateReason?:string}} a record holding the pointer
+ * @param {{criticName?:string,outletId?:string}} b pointer target
+ * @param {(o:string)=>string} [normalize] outlet normalizer
+ */
+function isCrossOutletSyndicationPair(a, b, normalize = (o) => o) {
+  if (!a || !b) return false;
+  const oa = normalize(a.outletId || a.outlet || '');
+  const ob = normalize(b.outletId || b.outlet || '');
+  if (!oa || !ob || oa === ob) return false;
+  const ca = String(a.criticName || '').toLowerCase().trim();
+  const cb = String(b.criticName || '').toLowerCase().trim();
+  if (!_isRealByline(ca) || ca !== cb) return false;
+  if (/(^|[^a-z])(syndicated|reprint(ed)?|repost(ed)?)([^a-z]|$)/i.test(String(a.duplicateReason || ''))
+      && !/\bnot\s+(syndicated|reprint|repost)/i.test(String(a.duplicateReason || ''))) return true;
+  return getSyndicationPrimaries(ca, oa).includes(ob) || getSyndicationPrimaries(ca, ob).includes(oa);
+}
+
+/**
+ * A rename-collision pair (BRO-5274): collect-review-texts renames a web-search file
+ * when its criticName is overridden (variety--aramide-tinubu.json -> the real critic).
+ * If the target filename already exists (an aggregator filed the same article under
+ * another url form) it stamps duplicateOf + duplicateReason 'criticName-override-
+ * collided-at-rename'. The write guard then cleared that pointer because the two url
+ * forms differ, leaving two live copies of one article (53 key duplicates, 2026-10-13).
+ * Same outlet, same real critic, same opening text = the same review: keep the pointer.
+ *
+ * @param {object} a the file carrying duplicateOf
+ * @param {object} b the pointer target
+ * @returns {boolean}
+ */
+function isRenameCollisionPair(a, b) {
+  if (!a || !b || a.duplicateReason !== 'criticName-override-collided-at-rename') return false;
+  // Same outlet, and the target must not point back (a mutual pair would loop).
+  if (String(a.outletId || a.outlet || '').toLowerCase() !== String(b.outletId || b.outlet || '').toLowerCase()) return false;
+  if (b.duplicateOf) return false;
+  const ca = String(a.criticName || '').toLowerCase().trim();
+  if (!_isRealByline(ca) || ca !== String(b.criticName || '').toLowerCase().trim()) return false;
+  const head = (d) => foldDiacritics(String(d.fullText || d.text || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 240);
+  const ha = head(a);
+  return ha.length >= 120 && ha === head(b);
+}
+
+/** Filename slug for a critic, matching review-texts naming (punctuation -> '-'). */
+function criticFileSlug(criticName) {
+  return foldDiacritics(String(criticName || '')).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+/**
+ * True when `fileName` is a primary-outlet file for this critic:
+ * `<primary>--<criticSlug>.json` (optionally `-<n>` collision suffix). Anchored,
+ * so `rob-weinert` never matches `rob-weinert-kendt`.
+ */
+function isPrimaryFileFor(fileName, primaries, criticName) {
+  const slug = criticFileSlug(criticName);
+  if (!slug) return false;
+  return primaries.some(p => fileName === `${p}--${slug}.json` || new RegExp(`^${p}--${slug}-\\d+\\.json$`).test(fileName));
+}
+
+/**
+ * A primary only shields its secondary if the primary will itself be scored.
+ * Otherwise (crossOutletDuplicate, isNonReview, invalid tier, ...) BOTH copies
+ * would be dropped and the critic's review vanishes from reviews.json.
+ */
+function isLiveSyndicationPrimary(d, filePath) {
+  if (!d) return false;
+  // BRO-7327: with a path, a self-pointing isSyndicatedDuplicate flag does not count (canonical predicate).
+  const syndActive = filePath ? isSyndicatedDuplicateActive(d, filePath) : d.isSyndicatedDuplicate;
+  // BRO-5245: a wrongShow file a person cleared in the rebuild gate ships, so it can be a primary.
+  const { wrongShowExplicitlyCleared } = require('./review-guards');
+  const wrongShowActive = d.wrongShow && !wrongShowExplicitlyCleared(d);
+  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || syndActive
+    || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf
+    || d.contentTier === 'invalid');
+}
+
+/**
+ * True when showDir holds a live primary file for this critic (the sibling
+ * scan every syndication-dedup site repeats, BRO-5352). Callers compute
+ * `primaries` themselves (getSyndicationPrimaries) so each keeps its own outlet
+ * normalisation. `fileNames` reuses a listing the caller already has;
+ * otherwise showDir is read, and an unreadable dir throws (callers decide).
+ * `extraCheck(parsedPrimary, fullPath)` adds a caller-specific condition.
+ * The match is by filename, so a primary file whose own byline names a
+ * different critic (a misnamed file, e.g. observer--jesse-green.json holding
+ * David Cote) never shields (BRO-6046).
+ */
+function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, extraCheck } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const names = fileNames || fs.readdirSync(showDir);
+  return names.some((f) => {
+    if (!isPrimaryFileFor(f, primaries, criticName)) return false;
+    try {
+      const pPath = path.join(showDir, f);
+      const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
+      // BRO-7327: a stub primary does not shield the complete secondary it only teases.
+      if (hasFullerSecondary(showDir, f, p)) return false;
+      return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
+    } catch { return false; }
+  });
+}
+
+/**
+ * BRO-7327 cousin (BRO-4891 class): true when the record's syndicatedPrimaryFile names the
+ * record itself. A file cannot be a syndicated copy of itself; the stale pointer is left
+ * behind when the real primary was renamed or merged onto this filename, and honouring it
+ * drops the outlet's only copy of the review (4 complete reviews recovered by this rule, e.g. Isherwood on
+ * a-little-night-music-2009, Rooney on catch-me-if-you-can-2011). Pointer forms seen in data:
+ * "<file>.json" (same show) and "<showId>/<file>.json". A pointer into ANOTHER show's folder
+ * is not a self-pointer (handled by heal-dangling-syndication.js).
+ * @param {object} data
+ * @param {string} filePath the record's own path (…/<showId>/<file>.json)
+ */
+function isSelfSyndicationPointer(data, filePath) {
+  const ptr = data && data.syndicatedPrimaryFile;
+  if (typeof ptr !== 'string' || !ptr || typeof filePath !== 'string' || !filePath) return false;
+  const path = require('path');
+  const own = path.basename(filePath);
+  const ownShow = path.basename(path.dirname(filePath));
+  const parts = ptr.split('/').filter(Boolean);
+  if (parts.length === 1) return parts[0] === own;
+  if (parts.length === 2) return parts[1] === own && parts[0] === ownShow;
+  return false;
+}
+
+/**
+ * Canonical "is the isSyndicatedDuplicate flag excluding this file" predicate. Every
+ * exclusion site (explainExclusion, the rebuild, scoring-delta, parity/composite mirrors)
+ * calls this instead of reading the raw flag, so a self-pointing flag is ignored everywhere
+ * at once. Without filePath the raw flag is honoured (conservative, previous behaviour).
+ */
+function isSyndicatedDuplicateActive(data, filePath) {
+  if (!data || data.isSyndicatedDuplicate !== true) return false;
+  return !isSelfSyndicationPointer(data, filePath);
+}
+
+const _fullerInFlight = new Set();
+let _showMap = null;
+/** Show record for show-dependent gates (closing-date guards); null map entry = unknown show (conservative: caller treats as excluded by explainExclusion). */
+function _showFor(id) {
+  if (!_showMap) {
+    _showMap = new Map();
+    try {
+      const j = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../../data/shows.json'), 'utf8'));
+      for (const sh of (j.shows || j)) _showMap.set(sh.id, sh);
+    } catch { /* no shows.json: undefined show, as before */ }
+  }
+  return _showMap.get(id);
+}
+const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
+
+/**
+ * BRO-7327: true when `primaryData` (a KNOWN_SYNDICATION_PAIRS primary file) is only a
+ * stub (truncated/excerpt/stub tier) and a sibling secondary file for the same critic
+ * is a live, scored, complete copy. Mandell's New York Theater post for grand-horizons-2020
+ * was a ~150-word teaser ("Posted in ... DC Theatre Scene") ingested from Show Score, yet it
+ * shielded the full 982-word DC Theatre Scene review, so the live site carried the stub (77)
+ * and lost the complete review (85). The stub then yields: it is the copy, the complete
+ * secondary is the review.
+ * @param {string} showDir
+ * @param {string} primaryFileName
+ * @param {object} primaryData parsed primary file
+ * @param {{fileNames?: string[]}} [opts]
+ */
+function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames } = {}) {
+  return findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames }) !== null;
+}
+
+/**
+ * The unique complete replacement for a stub primary, or null. BRO-7393:
+ * forScoring checks eligibility before a score exists; publishing callers keep
+ * requiring a valid score so a failed scoring attempt cannot drop the primary.
+ */
+function findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames, forScoring = false } = {}) {
+  if (!primaryData || !STUB_PRIMARY_TIERS.has(primaryData.contentTier) || primaryData.manualContentTier) return null;
+  const critic = primaryData.criticName;
+  const config = getSyndicationConfig(critic);
+  if (!config || !isPrimaryFileFor(primaryFileName, [config.primary], critic)) return null;
+  const fs = require('fs');
+  const path = require('path');
+  let names;
+  try { names = fileNames || fs.readdirSync(showDir); } catch { return null; }
+  // Conservative on purpose (BRO-7327 review): exactly ONE secondary file for this critic may exist
+  // (two complete secondaries would both ship once the primary stands aside = double count), and it
+  // must itself be includable by the full rebuild gate chain (else both copies would be dropped).
+  // Count EVERY other-outlet file for this critic (publishing-group siblings also ship), not only config.secondary.
+  const slug = criticFileSlug(critic);
+  const others = names.filter((f) => f.endsWith('.json') && (f.startsWith('') && new RegExp(`--${slug}(-\\d+)?\\.json$`).test(f)) && !isPrimaryFileFor(f, [config.primary], critic));
+  const secFiles = others.filter((f) => isPrimaryFileFor(f, config.secondary, critic));
+  if (others.length !== 1 || secFiles.length !== 1) return null;
+  const secPath = path.join(showDir, secFiles[0]);
+  if (_fullerInFlight.has(secPath)) return null; // explainExclusion(sec) -> hasLive... -> back here
+  _fullerInFlight.add(secPath);
+  try {
+    const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
+    if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return null;
+    if (!(sec.contentTier === 'complete' && isLiveSyndicationPrimary(sec, secPath))) return null;
+    const guards = require('./review-guards');
+    if (!forScoring && !(typeof sec.assignedScore === 'number' && guards.hasValidScore(sec))) return null;
+    return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true, forScoring }) === null ? secFiles[0] : null;
+  } catch { return null; } finally { _fullerInFlight.delete(secPath); }
+}
+
+module.exports = {
+  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary, findFullerSecondaryFile,
+  isSelfSyndicationPointer, isSyndicatedDuplicateActive,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, portalRank, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
+  getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
+};

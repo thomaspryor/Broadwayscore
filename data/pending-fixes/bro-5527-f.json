@@ -1,0 +1,114 @@
+{
+  "issueNumber": "bro-5527-f",
+  "planId": "556c6f3c-eb76-4d2c-ac75-cd7b7f3a4813",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 6 of 6: tina-2019)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 17500000,
+        "description": "tina-2019: the SEC Form D gives a $17.5 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Tina Turner Musical Ltd Liability Co, CIK 0001772156, filed May 10, 2019): total offering amount $17,500,000. Matched to the show by its related persons Stage Entertainment USA and Nederlander Alliances, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1772156/000177215619000001/xslFormDX01/primary_doc.xml",
+        "description": "tina-2019: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "tina-2019: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08",
+            "excerpt": "Tina: the Tina Turner Musical, which closed at a loss last summer"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08",
+            "excerpt": "Tina: the Tina Turner Musical, which closed at a loss last summer"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1772156/000177215619000001/xslFormDX01/primary_doc.xml",
+            "date": "2019-05-10"
+          }
+        ],
+        "description": "tina-2019: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "field": "notes",
+        "oldValue": "Tina Turner jukebox bio-musical produced with Stage Entertainment. Opened Nov 2019 and closed Aug 2022 after 482 performances, interrupted by the pandemic. No capitalization reported and no recoupment announced; the West End production and tours continued.",
+        "newValue": "Tina Turner jukebox bio-musical produced with Stage Entertainment. Opened Nov 2019 and closed Aug 2022 after 482 performances, interrupted by the pandemic. Its SEC Form D (May 2019) offered $17.5 million; no recoupment announced; the West End production and tours continued.",
+        "description": "tina-2019: the notes said no capitalization was reported; it was filed."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T08:53:47.817Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for tina-2019"
+    }
+  ]
+}

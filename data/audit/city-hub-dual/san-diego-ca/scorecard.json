@@ -1,0 +1,504 @@
+{
+ "city": "san-diego-ca",
+ "today": "2026-11-17",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5.6-terra"
+ },
+ "itemsChecked": {
+  "shows": 13,
+  "images": 0,
+  "publishedReviews": 65,
+  "excludedFiles": 0,
+  "reviewsWithoutText": 47,
+  "tourStops": 0,
+  "coverageShows": 6,
+  "totalShows": 48,
+  "totalPublished": 156
+ },
+ "flaggedByGemini": 16,
+ "flaggedByOpenAI": 14,
+ "flaggedLocalChecks": 2,
+ "flaggedAny": 18,
+ "flaggedByBoth": 14,
+ "triagedItems": 5,
+ "confirmed": 0,
+ "falsePositives": 5,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 18,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "a-room-in-the-castle-regional-2026",
+   "label": "A Room in the Castle",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-12, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-12, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"La Jolla Playhouse, La Jolla, CA\" / page \"Mandell Weiss Theatre\""
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"San Diego Musical Theatre, San Diego, CA\" / page \"SDMT Stage\""
+  },
+  {
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"San Diego Musical Theatre, San Diego, CA\" / page \"SDMT Stage\""
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "kims-convenience-regional-2026",
+   "label": "Kim's Convenience",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-31 / page 2026-05-28"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-06-28 / page 2026-06-14"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-21, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "rent-regional-2026",
+   "label": "Rent",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-21, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-hombres-regional-2026",
+   "label": "The Hombres",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-hombres-regional-2026",
+   "label": "The Hombres",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-monsters-regional-2026",
+   "label": "The Monsters",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-02, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-monsters-regional-2026",
+   "label": "The Monsters",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-02, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-monsters-regional-2026",
+   "label": "The Monsters",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"La Jolla Playhouse, La Jolla, CA\" / page \"Mandell Weiss Forum\""
+  },
+  {
+   "kind": "show",
+   "id": "the-spongebob-musical-regional-2026",
+   "label": "The SpongeBob Musical",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-spongebob-musical-regional-2026",
+   "label": "The SpongeBob Musical",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-16 / page 2026-06-13"
+  },
+  {
+   "kind": "show",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-05, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-16 / page 2026-06-13"
+  },
+  {
+   "kind": "show",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-05, ours empty"
+  },
+  {
+   "kind": "review",
+   "id": "arcadia-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/07/19/waltzing-through-time-in-arcadia-cygnet-theatres-arcadia|yuko kurahashi",
+   "label": "Arcadia | Theatre Reviews Kurahashi / Yuko Kurahashi",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "Cygnet Theatre's Arcadia is a superb, intellectually and aesthetically stimulating, and moving work that reflects on two periods."
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-cygnet-regional-2026|https://www.broadwayworld.com/san-diego/article/review-dear-evan-hansen-at-cygnet-theatre-20260913|erinmarie reiter",
+   "label": "Dear Evan Hansen | BroadwayWorld / ErinMarie Reiter",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads mixed, score 79"
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Cititour",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | Entertainment Weekly",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "the-cottage-regional-2026||",
+   "label": "the-cottage-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Theatre Critics Circle / Eli Ander-Biegelsen 2026-07-29 https://www.sdcriticscircle.org/reviewers-of-tomorrow-alumni-reviews/thezfamilyalbumljp"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Jewish World / Sandi Masori 2026-08-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFuJ_-uEx7Q6t3AGI7C18BQJigTIkXl5ZBOW_UhhlHKb1BkWhaWeH9gBvyBR8fL7dl43KrP471T5oh_YvShh8wNt6mqvC4HAzxg1l644cwH0XeUZgD2ADNa46X9GY1LljshCxJywwTvSDb9Za9Y17Sd2ptkf105QeXVEFbUcGAwzvXCXEaa6DLUPIwRci-hxiT8CPQ2WAkeoYxxwTKErlgUX18dwU="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The San Diego Voice & Viewpoint / Barbara Smith 2026-08-13 https://sdvoice.info/the-family-albums-focus-on-home/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-08-13 http://www.davidcoddon.com/theatre-reviews.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Behind's Substack / Behind The Encore 2026-08-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH-Cy8cvXPjpbinnL7nuOZq3kWRTPVrHLL1F_V38b0JUs-jM07kPnO37BtShrcbjIIv46bLxbHR0U-UZQBiArYbbxgLkJNHOz87H99F-5HmhjtsaHKaHpJ0CIdndjc3csFHCSnYG6Y11TSNPndUAqroRZMgQsVPoWaz5FiKp7KdIFrekyw="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Talk Theatre to Me / ErinMarie Reiter 2026-08-23 https://butterfly-hexagon-abdg.squarespace.com/theatre/tag/Review"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Music Connection Magazine / Andrea Beenham 2026-07-28 https://www.musicconnection.com/the-family-album-at-the-la-jolla-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Jewish World / Sandi Masori 2026-08-04 https://www.sdjewishworld.com/2026/08/04/asian-american-family-dynamics-resemble-those-of-jewish-americans/"
+  },
+  {
+   "kind": "coverage",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "From Another Zero / Alejandra Enciso 2026-09-20 https://fromanotherzero.com/2026/09/20/the-broadway-bound-begin-again-premieres-at-the-old-globe/"
+  },
+  {
+   "kind": "coverage",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "KR Headtopics (syndicated republish of San Diego Union-Tribune review) / Pam Kragen 2026-09-19 https://kr.headtopics.com/news/review-old-globe-s-magic-filled-begin-again-is-tuneful-87898550"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Carol's Theatre Reviews ~ It's Fun To Go Out /  2026-06-23 https://gilatwo.blogspot.com/2026/06/?m=0"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talk Theatre to Me / ErinMarie Reiter 2026-06-18 https://www.talktheatretome.com/theatre/nvahairspray"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West (David Coddon) / David Coddon 2026-06-19 https://www.davidcoddon.com/theatre-reviews/archives/06-2026"
+  },
+  {
+   "kind": "coverage",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "HeadTopics (mirror of San Diego Union-Tribune content) /  2026-06-16 https://us.headtopics.com/news/review-new-village-s-hairspray-is-fun-but-uneven-84577484"
+  },
+  {
+   "kind": "coverage",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Theatre Critics Circle / Eli Ander-Biegelsen 2026-07-22 https://sdcriticscircle.org/reviews/north-by-northwest-the-old-globe/"
+  },
+  {
+   "kind": "coverage",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "From Another Zero / Alejandra Enciso 2026-07-19 https://fromanotherzero.com/2026/07/19/the-uk-comes-to-san-diego-in-the-north-american-premiere-of-north-by-northwest/"
+  },
+  {
+   "kind": "coverage",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Vanguard Culture / Kristen Nevarez Schweizer 2026-07-16 https://vanguardculture.com/the-buzz-trading-cinematography-for-choreography-north-by-northwest-at-the-old-globe/"
+  },
+  {
+   "kind": "coverage",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-07-10 https://www.davidcoddon.com/theatre-reviews/category/all"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "San Diego Union-Tribune / Pam Kragen 2026-07-21 https://my.headtopics.com/news/review-cygnet-theatre-finds-the-romance-and-humor-in-85777342"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "STAGE WEST / David Coddon 2026-07-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHuxDV5y6MXbwmcaV9M73x_flSC5oSeuPpB1JZa-cUOKATEG5AEzvHySIIu86asYwGHtDDkRvNhSRWFD2OxCNJ-pWCzS3G7hJapbd3FjyV_KD2VUW_m538h7VNXa3PPtIaHddiqnSI7wCz3_qwXnBmo-dU9zGS0QvJgy3bC8BCLtKQ9jAqNarLxsPWM"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "SDTCC / Eli Ander-Biegelsen 2026-07-23 https://www.sdcriticscircle.org/reviewers-of-tomorrow-alumni-reviews/cygnettheatrearcadia"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "To See or Not to See / Makayla Hoppe 2026-07-24 https://toseeornottosee.com/arcadia-cygnet-theatre-review-makayla-hoppe/"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Theatre Reviews Kurahashi / Yuko Kurahashi 2026-07-20 https://www.theatrereviewskurahashi.com/arcadia-cygnet-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Carol's Theatre Reviews / Carol Davis 2026-07-20 https://gilatwo.blogspot.com/2026/07/?m=1"
+  },
+  {
+   "kind": "coverage",
+   "id": "arcadia-regional-2026",
+   "label": "Arcadia",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David L. Coddon 2026-07-25 https://www.davidcoddon.com/theatre-reviews/stage-west-arcadia-at-cygnet-theatre"
+  },
+  {
+   "kind": "coverage",
+   "id": "cyrano-regional-2026",
+   "label": "Cyrano",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-07-24 https://stagewest.wordpress.com/2026/08/13/stage-west-cyrano-at-old-globe-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "cyrano-regional-2026",
+   "label": "Cyrano",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-07-24 https://www.davidcoddon.com/theatre-reviews/category/all"
+  }
+ ]
+}

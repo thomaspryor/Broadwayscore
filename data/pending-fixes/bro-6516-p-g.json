@@ -1,0 +1,804 @@
+{
+  "issueNumber": "bro-6516-p-g",
+  "planId": "cbbd61d6-f499-46e0-bb04-0e27806e2aec",
+  "status": "applied",
+  "createdAt": "2026-10-29T15:13:36.050Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6516: add UK hub productions from the Guardian list (23 sheffield-uk,stratford-upon-avon-uk)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "king-lear-crucible-regional-2026",
+          "title": "King Lear",
+          "slug": "king-lear-crucible-regional-2026",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2026-09-06",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:10.310Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/sep/06/king-lear-review-ian-mcdiarmid-sheffield-crucible"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "little-shop-of-horrors-crucible-regional-2025",
+          "title": "Little Shop of Horrors",
+          "slug": "little-shop-of-horrors-crucible-regional-2025",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2025-01-06",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:33.504Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jan/06/little-shop-of-horrors-review-rock-musical-crucible-sheffield"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "living-sheffield-regional-2026",
+          "title": "Living",
+          "slug": "living-sheffield-regional-2026",
+          "venue": "Sheffield Playhouse, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2026-03-20",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:45.143Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/mar/20/living-review-playhouse-sheffield-leo-butler"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-brothers-a-genius-sheffield-regional-2026",
+          "title": "My Brother's a Genius",
+          "slug": "my-brothers-a-genius-sheffield-regional-2026",
+          "venue": "Sheffield Playhouse, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2026-02-01",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:54.421Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/feb/01/my-brothers-a-genius-review-my-brothers-a-genius-review-neurodivergent-twins-playhouse-sheffield"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-crucible-crucible-regional-2024",
+          "title": "The Crucible",
+          "slug": "the-crucible-crucible-regional-2024",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2024-03-10",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:02.507Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/mar/10/the-crucible-review-arthur-miller-crucible-sheffield"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-ladies-football-club-crucible-regional-2026",
+          "title": "The Ladies Football Club",
+          "slug": "the-ladies-football-club-crucible-regional-2026",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2026-03-07",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:48.909Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/mar/07/ladies-football-club-review-crucible-theatre-sheffield"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "twelfth-night-crucible-regional-2026",
+          "title": "Twelfth Night",
+          "slug": "twelfth-night-crucible-regional-2026",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2026-10-18",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:10.206Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/oct/18/twelfth-night-review-crucible-sheffield-mathew-horne"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wish-you-werent-here-sheffield-regional-2024",
+          "title": "Wish You Weren't Here",
+          "slug": "wish-you-werent-here-sheffield-regional-2024",
+          "venue": "Sheffield Playhouse, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2024-02-04",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:06.535Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/feb/04/wish-you-werent-here-review-playhouse-sheffield-katie-redford-lily-pargetter-the-archers"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-midsummer-nights-dream-royal-shakespeare-regional-2024",
+          "title": "A Midsummer Night's Dream",
+          "slug": "a-midsummer-nights-dream-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-02-14",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:04.677Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/feb/14/midsummer-nights-dream-review-rsc-latest-revival"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "all-is-but-fantasy-royal-shakespeare-regional-2026",
+          "title": "All Is But Fantasy",
+          "slug": "all-is-but-fantasy-royal-shakespeare-regional-2026",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2026-02-05",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:52.524Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/feb/05/all-is-but-fantasy-review-lady-macbeth-juliet-shakespeare-the-other-place-stratford-upon-avon"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ben-and-imo-royal-shakespeare-regional-2024",
+          "title": "Ben and Imo",
+          "slug": "ben-and-imo-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-03-10",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:13:02.429Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/mar/10/ben-and-imo-review-swan-theatre-stratford-upon-avon-mark-ravenhill-lively-ballad-of-benjamin-britten-and-imogen-holst"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "driftwood-royal-shakespeare-regional-2026",
+          "title": "Driftwood",
+          "slug": "driftwood-royal-shakespeare-regional-2026",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2026-04-29",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:43.241Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/apr/29/driftwood-review-other-place-stratford-upon-avon"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "edward-ii-royal-shakespeare-regional-2025",
+          "title": "Edward II",
+          "slug": "edward-ii-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-03-09",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:27.822Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/mar/09/edward-ii-marlowe-rsc-stratford-upon-avon-daniel-raggett-daniel-evans-review"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fat-ham-royal-shakespeare-regional-2025",
+          "title": "Fat Ham",
+          "slug": "fat-ham-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-08-21",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:09.523Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/aug/21/fat-ham-review-hamlet-james-ijames-shakespeare"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hamlet-royal-shakespeare-regional-2025",
+          "title": "Hamlet",
+          "slug": "hamlet-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-02-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:29.645Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/feb/19/hamlet-review-rsc-royal-shakespeare-theatre-stratford"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "henry-v-royal-shakespeare-regional-2026",
+          "title": "Henry V",
+          "slug": "henry-v-royal-shakespeare-regional-2026",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2026-03-25",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:47.151Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/mar/25/henry-v-review-rsc-alfred-enoch"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "loves-labours-lost-royal-shakespeare-regional-2024",
+          "title": "Love's Labour's Lost",
+          "slug": "loves-labours-lost-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-04-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:58.068Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/apr/19/loves-labours-lost-review-royal-shakespeare-theatre-stratford-upon-avon"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "macbeth-royal-shakespeare-regional-2025",
+          "title": "Macbeth",
+          "slug": "macbeth-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-10-22",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:01.982Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/oct/22/macbeth-review-daniel-raggett-stratford-rsc"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "measure-for-measure-royal-shakespeare-regional-2025",
+          "title": "Measure for Measure",
+          "slug": "measure-for-measure-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-09-24",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:02.019Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/sep/24/measure-for-measure-review-shakespeares-sleazy-sex-scandal-chimes-with-our-times"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "much-ado-about-nothing-royal-shakespeare-regional-2025",
+          "title": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-04-23",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:23.807Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/apr/23/much-ado-about-nothing-review-rsc-boots-the-action-to-elite-italian-football-in-a-play-of-two-halves"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "othello-royal-shakespeare-regional-2024",
+          "title": "Othello",
+          "slug": "othello-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-10-25",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:44.989Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/oct/25/othello-review-tim-caroll-rsc-stratford"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bfg-royal-shakespeare-regional-2025",
+          "title": "The BFG",
+          "slug": "the-bfg-royal-shakespeare-regional-2025",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2025-12-10",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:29.352Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/dec/10/the-bfg-review-royal-shakespeare-theatre-stratford-upon-avon"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
+          "title": "The Boy Who Harnessed the Wind",
+          "slug": "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2026-02-20",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:25.541Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/feb/20/the-boy-who-harnessed-the-wind-review-malawi-swan-theatre-stratford-upon-avon-william-kamkwamba"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T18:17:09.734Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added king-lear-crucible-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added living-sheffield-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-brothers-a-genius-sheffield-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-crucible-crucible-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ladies-football-club-crucible-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added twelfth-night-crucible-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wish-you-werent-here-sheffield-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-is-but-fantasy-royal-shakespeare-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ben-and-imo-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added driftwood-royal-shakespeare-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added edward-ii-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fat-ham-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hamlet-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added henry-v-royal-shakespeare-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added loves-labours-lost-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added macbeth-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added measure-for-measure-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added othello-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bfg-royal-shakespeare-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

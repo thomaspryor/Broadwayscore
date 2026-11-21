@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-5934",
+  "planId": "db47b5f5-26ac-40a8-a533-86a533ff4f9a",
+  "status": "applied",
+  "createdAt": "2026-10-29T00:59:59.330Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Resolve BRO-5934 review metadata: canonical Steven Ross and Brian Scott Lipton credits, Cititour date, and Samuel L. Leiter metadata. Source checks verify Cititour listing URL, Lincoln opera routing, and Knockturnal date as correct-as-is.",
+    "steps": [
+      "Use the established Steven Ross critic identity for the verified Ross byline on the T2C cross-post.",
+      "The article is a legitimate Steven Ross cross-post at Times Square Chronicles; preserve the review with its corrected critic.",
+      "Record the checked article byline and author-page evidence for the legitimate cross-post.",
+      "Persist the checked cross-post attribution after the evidence note.",
+      "Attribute the matching Front Mezz Junkies original to the established Steven Ross profile, not the split-off Ross profile.",
+      "Use the complete byline printed on the October 9 Cititour news review.",
+      "The listing contains the same full Brian Scott Lipton review as the dated October 9 news article; populate the date on the retained row.",
+      "Use the October 19 Theater Life article byline; existing stale-unknown cleanup merges its URL and full metadata into the named row.",
+      "Populate the named Theater Life row with the date printed on the article before its existing sibling merge."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+        "field": "criticName",
+        "oldValue": "Suzanna Bowling",
+        "newValue": "Steven Ross",
+        "description": "Use the established Steven Ross critic identity for the verified Ross byline on the T2C cross-post."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": false,
+        "description": "The article is a legitimate Steven Ross cross-post at Times Square Chronicles; preserve the review with its corrected critic."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-5934: checked Times Square Chronicles article dated October 17, 2026; byline Ross (Steven Ross, /author/steve-ross/), matching the October 16 Front Mezz Junkies article. Valid author cross-post on both outlets; Suzanna Bowling was the wrong credit.",
+        "description": "Record the checked article byline and author-page evidence for the legitimate cross-post."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Persist the checked cross-post attribution after the evidence note."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/frontmezzjunkies--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Steven Ross",
+        "description": "Attribute the matching Front Mezz Junkies original to the established Steven Ross profile, not the split-off Ross profile."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/cititour--brian-scott.json",
+        "field": "criticName",
+        "oldValue": "Brian Scott",
+        "newValue": "Brian Scott Lipton",
+        "description": "Use the complete byline printed on the October 9 Cititour news review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/cititour--brian-scott-lipton.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-09",
+        "description": "The listing contains the same full Brian Scott Lipton review as the dated October 9 news article; populate the date on the retained row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "copperfield-the-new-musical-off-broadway-2026/theater-life--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Samuel L. Leiter",
+        "description": "Use the October 19 Theater Life article byline; existing stale-unknown cleanup merges its URL and full metadata into the named row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-19",
+        "description": "Populate the named Theater Life row with the date printed on the article before its existing sibling merge."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T02:16:09.104Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json criticName: \"Suzanna Bowling\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json wrongAttribution: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json crossOutletVerifiedNote: null -> \"BRO-5934: checked Times Square Chronicles article dated October 17, 2026; byline Ross (Steven Ross, /author/steve-ross/), matching the October 16 Front Mezz Junkies article. Valid author cross-post on both outlets; Suzanna Bowling was the wrong credit.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/times-square-chronicles--suzanna-bowling.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/frontmezzjunkies--unknown.json criticName: \"Unknown\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/cititour--brian-scott.json criticName: \"Brian Scott\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/cititour--brian-scott-lipton.json publishDate: null -> \"2026-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "copperfield-the-new-musical-off-broadway-2026/theater-life--unknown.json criticName: \"Unknown\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json publishDate: null -> \"2026-10-19\""
+    }
+  ],
+  "executedIn": "ci"
+}

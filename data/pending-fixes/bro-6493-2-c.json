@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-6493-2-c",
+  "planId": "6c28155d-548c-4547-b7e8-be5daabfa3fc",
+  "status": "applied",
+  "createdAt": "2026-11-04T13:10:40.052Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: independently sourced opening and preview corrections, same-day confirmations, and Silver Manhattan venue correction (part 3 of 3)",
+    "steps": [
+      "BRO-6493: Producer press release explicitly dates both first of sixteen performances and opening night September 26, 2026 at 7 PM at the Gural Theatre. Actor site repeats that opening announcement. Sources: https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/ https://www.annemarierosano.com/",
+      "BRO-6493: 2026 SoHo Playhouse stand-up engagement listing explicitly identifies September 17 opening night; TDF independently dates the run September 17 to October 18. Sources: https://www.theatermania.com/shows/new-york-theater/conflicted_1849491/ https://www.tdf.org/shows/23526/conflicted/",
+      "BRO-6493: Official venue page labels the October 22 to 24, 2026 three-day engagement the North American premiere, with all performances at 7:30 PM. Local premiere coincides with first advertised public performance, with no separate preview period. Sources: https://nyuskirball.org/performance/four-walls-and-a-roof/",
+      "BRO-6493: Official Armory press release explicitly lists March 2 to 6, 2024 previews and March 7 opening at 7 PM. Contemporary Playbill report corroborates both dates. This is the Armory engagement, not the Broadway transfer. Sources: https://armoryonpark.org/downloads/Illinoise_Press_Release_Final.pdf https://playbill.com/article/sufjan-stevens-justin-peck-and-jackie-sibblies-drury-musical-illinoise-begins-march-2-at-park-avenue-armory",
+      "BRO-6493: Official Armory press release explicitly lists March 2 to 6, 2024 previews and March 7 opening at 7 PM. Contemporary Playbill report corroborates both dates. This is the Armory engagement, not the Broadway transfer. Sources: https://armoryonpark.org/downloads/Illinoise_Press_Release_Final.pdf https://playbill.com/article/sufjan-stevens-justin-peck-and-jackie-sibblies-drury-musical-illinoise-begins-march-2-at-park-avenue-armory",
+      "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/",
+      "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/",
+      "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/",
+      "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/",
+      "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/",
+      "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/",
+      "BRO-6493: Producer publicist announcement dates the 2023 Theatre 555 return first performance July 29. TheaterMania explicitly identifies July 29 opening for this return, distinct from the 2022 Theatre Row premiere with previews. Sources: https://omdkc.com/tickets-now-on-sale-for-sesame-street-the-musical/ https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sesame-street-the-musical_1706037/",
+      "BRO-6493: 2023 TFANA lecture-performance listing explicitly gives September 15 opening night, matching the start of this engagement; TDF and Playbill independently give that same opening and run start. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prometheus-firebringer_1711511/ https://www.tdf.org/shows/19487/prometheus-firebringer/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "burning-leaves-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "producer-release:tosos:no-previews",
+        "description": "BRO-6493: Producer press release explicitly dates both first of sixteen performances and opening night September 26, 2026 at 7 PM at the Gural Theatre. Actor site repeats that opening announcement. Sources: https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/ https://www.annemarierosano.com/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "conflicted-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "venue-page:soho-playhouse",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: 2026 SoHo Playhouse stand-up engagement listing explicitly identifies September 17 opening night; TDF independently dates the run September 17 to October 18. Sources: https://www.theatermania.com/shows/new-york-theater/conflicted_1849491/ https://www.tdf.org/shows/23526/conflicted/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "venue-page:nyu-skirball:no-previews",
+        "description": "BRO-6493: Official venue page labels the October 22 to 24, 2026 three-day engagement the North American premiere, with all performances at 7:30 PM. Local premiere coincides with first advertised public performance, with no separate preview period. Sources: https://nyuskirball.org/performance/four-walls-and-a-roof/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "illinoise-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": "2024-03-02",
+        "newValue": "2024-03-07",
+        "description": "BRO-6493: Official Armory press release explicitly lists March 2 to 6, 2024 previews and March 7 opening at 7 PM. Contemporary Playbill report corroborates both dates. This is the Armory engagement, not the Broadway transfer. Sources: https://armoryonpark.org/downloads/Illinoise_Press_Release_Final.pdf https://playbill.com/article/sufjan-stevens-justin-peck-and-jackie-sibblies-drury-musical-illinoise-begins-march-2-at-park-avenue-armory"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "illinoise-off-broadway-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-release:park-avenue-armory",
+        "description": "BRO-6493: Official Armory press release explicitly lists March 2 to 6, 2024 previews and March 7 opening at 7 PM. Contemporary Playbill report corroborates both dates. This is the Armory engagement, not the Broadway transfer. Sources: https://armoryonpark.org/downloads/Illinoise_Press_Release_Final.pdf https://playbill.com/article/sufjan-stevens-justin-peck-and-jackie-sibblies-drury-musical-illinoise-begins-march-2-at-park-avenue-armory"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-goodbye-girl-off-broadway-2023",
+        "field": "openingDate",
+        "oldValue": "2023-05-07",
+        "newValue": "2023-05-11",
+        "description": "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-goodbye-girl-off-broadway-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-05-07",
+        "newValue": "2023-05-11",
+        "description": "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-goodbye-girl-off-broadway-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "producer-page:j2-spotlight:no-previews",
+        "description": "BRO-6493: Official J2 Spotlight production page dates the 2023 Theatre Row engagement May 11 to 21, not May 7. TheaterMania explicitly identifies May 11 opening; TDF agrees. Both stored May 7 dates are corrected to this first public performance/opening. Sources: https://www.j2spotlightnyc.com/goodbye-girl https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-goodbye-girl_416316/ https://www.tdf.org/shows/19281/the-goodbye-girl/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "odd-man-out-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": "2024-06-27",
+        "newValue": "2024-07-02",
+        "description": "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "odd-man-out-off-broadway-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-06-27",
+        "newValue": "2024-06-28",
+        "description": "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "odd-man-out-off-broadway-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "tdf-stages",
+        "description": "BRO-6493: Contemporary May 30, 2024 TDF guide explicitly dates Sheen Center previews June 28 and opening July 2; TDF show listing agrees. Corrects both collapsed June 27 values. Sources: https://www.tdf.org/on-stage/tdf-stages/14-shows-to-see-off-broadway-this-june/ https://www.tdf.org/shows/21320/odd-man-out/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sesame-street-the-musical-off-broadway-2023",
+        "field": "openingDateSource",
+        "oldValue": "playbill-ob-historical",
+        "newValue": "producer-release:rockefeller:no-previews",
+        "description": "BRO-6493: Producer publicist announcement dates the 2023 Theatre 555 return first performance July 29. TheaterMania explicitly identifies July 29 opening for this return, distinct from the 2022 Theatre Row premiere with previews. Sources: https://omdkc.com/tickets-now-on-sale-for-sesame-street-the-musical/ https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sesame-street-the-musical_1706037/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prometheus-firebringer-off-broadway-2023",
+        "field": "openingDateSource",
+        "oldValue": "playbill-ob-historical",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: 2023 TFANA lecture-performance listing explicitly gives September 15 opening night, matching the start of this engagement; TDF and Playbill independently give that same opening and run start. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prometheus-firebringer_1711511/ https://www.tdf.org/shows/19487/prometheus-firebringer/"
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T10:55:35.104Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for burning-leaves-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for conflicted-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for illinoise-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for illinoise-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sesame-street-the-musical-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for prometheus-firebringer-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5780-b",
+  "planId": "85d8bfe0-ae22-4b16-b4e9-aa42356de542",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5780 part 2: clear the stale ensemble rejection stamp on the recovered NYTG Two Girls review so it gets scored.",
+    "steps": [
+      "clear rejectedAt/rejectedBy/rejectionReason/rejectionReasoning"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-01T20:05:24.249Z",
+        "newValue": null,
+        "description": "BRO-5780: clear the stale wrong_show ensemble rejection; the page text is now fetched (4391 chars) and is the NYTG Two Girls review, so the scorer must not skip it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-5780: clear the stale wrong_show ensemble rejection; the page text is now fetched (4391 chars) and is the NYTG Two Girls review, so the scorer must not skip it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_show",
+        "newValue": null,
+        "description": "BRO-5780: clear the stale wrong_show ensemble rejection; the page text is now fetched (4391 chars) and is the NYTG Two Girls review, so the scorer must not skip it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytg--allison-considine.json",
+        "field": "rejectionReasoning",
+        "oldValue": "openai: The review text discusses 'School Girls' rather than 'Two Girls at Cherry Lane Theatre'.; gemini: The review text is about 'School Girls', not 'Two Girls at Cherry Lane Theatre'. This is a different show.",
+        "newValue": null,
+        "description": "BRO-5780: clear the stale wrong_show ensemble rejection; the page text is now fetched (4391 chars) and is the NYTG Two Girls review, so the scorer must not skip it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T16:53:19.198Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json rejectedAt: \"2026-10-01T20:05:24.249Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json rejectionReason: \"wrong_show\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json rejectionReasoning: \"openai: The review text discusses 'School Girls' rather than 'Two Girls at Cherry Lane Theatre'.; gemini: The review text is about 'School Girls', not 'Two Girls at Cherry Lane Theatre'. This is a different show.\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

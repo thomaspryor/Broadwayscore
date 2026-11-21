@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5254-b",
+  "planId": "81dfeb15-f341-401e-a77d-59c62ec7441e",
+  "status": "applied",
+  "createdAt": "2026-10-13T22:31:18.826Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 A/B sample: strip the Variety promo modules from 27 more stored Variety review texts that count on the live site (isExcludedRow now also skips wrongAttribution), evenly spread over the remaining strippable rows. With the 3 live rows of the 5-row test (applied 2026-10-13, run 38476999057; its other 2 rows are wrongAttribution and are left out of the A/B) that makes 30 live rows. They are rescored with llm-ensemble (needs_rescore, reason variety-promo-bleed; the scorer skips excluded rows) and compared to their stamped pre-strip scores before any wider batch.",
+    "steps": [
+      "Run strip-variety-promo-bleed.js --apply --limit=27.",
+      "Dispatch llm-ensemble-score.yml needs_rescore=true rescore_reason=variety-promo-bleed limit=30, then run --ab."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=27",
+        "description": "BRO-5254: strip promo modules from 27 more live Variety review texts (A/B sample)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T23:25:51.445Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+{
+  "generatedAt": "2026-11-18",
+  "note": "Byline-only excerpts of real review pages (BRO-7780). Review text is removed; see scripts/lib/byline-fixture-strip.js.",
+  "fixtures": [
+    {
+      "file": "4columns.html.gz",
+      "outletId": "4columns",
+      "url": "https://4columns.org/cote-david/bug",
+      "expected": "David Cote"
+    },
+    {
+      "file": "amny.html.gz",
+      "outletId": "amny",
+      "url": "https://www.amny.com/news/review-memoirs-of-amorous-gentlemen/",
+      "expected": "Matt Windman"
+    },
+    {
+      "file": "ap.html.gz",
+      "outletId": "ap",
+      "url": "https://apnews.com/article/art-broadway-review-2025-cad36d5e3c340bcb0101604163c7f999",
+      "expected": "Mark Kennedy"
+    },
+    {
+      "file": "artsdesk.html.gz",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
+      "expected": "Aleks Sierz"
+    },
+    {
+      "file": "baltimoresun.html.gz",
+      "outletId": "baltimoresun",
+      "url": "https://www.baltimoresun.com/2026/09/17/maybe-happy-ending-review/",
+      "expected": "Luke Parker"
+    },
+    {
+      "file": "bloomberg.html.gz",
+      "outletId": "bloomberg",
+      "url": "https://www.bloomberg.com/news/articles/2023-03-27/sweeney-todd-josh-groban-and-annaleigh-ashford-broadway-review?utm_source=google&utm_medium=bd&cmpId=google",
+      "expected": "Mark Leydorf"
+    },
+    {
+      "file": "british-theatre.html.gz",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/hamlet-hail-to-barbican-theatr-26211",
+      "expected": "Vera Liber"
+    },
+    {
+      "file": "britishtheatrecom.html.gz",
+      "outletId": "britishtheatrecom",
+      "url": "https://www.britishtheatre.com/posts/high-society-review-a-joyous-champagne-soaked-revival-at-the-barbican",
+      "expected": "Susan Novak"
+    },
+    {
+      "file": "broadwaynews.html.gz",
+      "outletId": "broadwaynews",
+      "url": "https://www.broadwaynews.com/the-broadway-review-pirates-the-penzance-musical-needs-to-trust-in-stupid/",
+      "expected": "Brittani Samuel"
+    },
+    {
+      "file": "broadwayworld.html.gz",
+      "outletId": "broadwayworld",
+      "url": "https://www.broadwayworld.com/bwwopera/article/Review-Grigorian-and-Stemme-Are-Bold-Bookends-for-the-Mets-New-JENUFA-under-Hanus-20261117",
+      "expected": "Richard Sasanow"
+    },
+    {
+      "file": "cbsnews.html.gz",
+      "outletId": "cbsnews",
+      "url": "https://www.cbsnews.com/colorado/news/alicia-keys-hells-kitchen-vocally-talented-cast-denver-center/",
+      "expected": "Dillon Thomas"
+    },
+    {
+      "file": "chicago-sun-times.html.gz",
+      "outletId": "chicago-sun-times",
+      "url": "https://chicago.suntimes.com/theater/2026/11/11/review-heroes-of-the-fourth-turning-a-red-orchid-theatre",
+      "expected": "Mike Davis"
+    },
+    {
+      "file": "chicagotribune.html.gz",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+      "expected": "Chris Jones"
+    },
+    {
+      "file": "cititour.html.gz",
+      "outletId": "cititour",
+      "url": "https://cititour.com/NYC_Broadway/The-Fantasticks/1413",
+      "expected": "Brian Scott Lipton"
+    },
+    {
+      "file": "curtainup.html.gz",
+      "outletId": "curtainup",
+      "url": "http://www.curtainup.com/lucybarton20.html",
+      "expected": "Elyse Sommer"
+    },
+    {
+      "file": "daily-mail.html.gz",
+      "outletId": "daily-mail",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16222119/PATRICK-MARMION-reviews-Murder-Cathedral.html",
+      "expected": "Patrick Marmion"
+    },
+    {
+      "file": "dailybeast.html.gz",
+      "outletId": "dailybeast",
+      "url": "https://www.thedailybeast.com/obsessed/bug-broadway-review-carrie-coon-absolutely-loses-her-mind/",
+      "expected": "Tim Teeman"
+    },
+    {
+      "file": "dctheatrescene.html.gz",
+      "outletId": "dctheatrescene",
+      "url": "https://dctheatrescene.com/2020/02/07/review-gun-powder-a-groundbreaking-new-musical-debuts-at-signature-theatre/",
+      "expected": "Meaghan Hannan Davant"
+    },
+    {
+      "file": "deadline.html.gz",
+      "outletId": "deadline",
+      "url": "https://deadline.com/2026/11/the-fantasticks-broadway-review-1237223063/",
+      "expected": "Greg Evans"
+    },
+    {
+      "file": "ew.html.gz",
+      "outletId": "ew",
+      "url": "https://ew.com/wanted-review-gunslinging-sisters-take-broadway-by-storm-in-powerhouse-musical-12243698",
+      "expected": "Shania Russell"
+    },
+    {
+      "file": "exeunt-magazine.html.gz",
+      "outletId": "exeunt-magazine",
+      "url": "https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
+      "expected": "Lane Williamson"
+    },
+    {
+      "file": "financialtimes.html.gz",
+      "outletId": "financialtimes",
+      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e?syn-25a6b1a6=1",
+      "expected": "Sarah Hemming"
+    },
+    {
+      "file": "guardian.html.gz",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/16/the-fantasticks-musical-review-hayes-theatre-new-york",
+      "expected": "Richard Lawson"
+    },
+    {
+      "file": "hollywood-reporter.html.gz",
+      "outletId": "hollywood-reporter",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-lives-of-others-theater-review-keira-knightley-1236745815/",
+      "expected": "Demetrios Matheou"
+    },
+    {
+      "file": "huffpost.html.gz",
+      "outletId": "huffpost",
+      "url": "https://www.huffingtonpost.com/entry/met-opera-yoncheva-grigolo-lucic-mcvicar-save_us_5a4a99c1e4b0d86c803c78cd",
+      "expected": "Wilborn Hampton"
+    },
+    {
+      "file": "i-paper.html.gz",
+      "outletId": "i-paper",
+      "url": "https://inews.co.uk/culture/arts/sting-new-musical-heartfelt-baffling-shaggy-4727933",
+      "expected": "Fiona Mountford"
+    },
+    {
+      "file": "independent.html.gz",
+      "outletId": "independent",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/lives-of-others-review-keira-knightley-luke-thompson-b3077085.html?reloaded=1-restored",
+      "expected": "Alice Saville"
+    },
+    {
+      "file": "indiewire.html.gz",
+      "outletId": "indiewire",
+      "url": "https://www.indiewire.com/criticism/culture/back-to-the-future-musical-review-broadway-1234891185/",
+      "expected": "Erin Strecker"
+    },
+    {
+      "file": "latimes.html.gz",
+      "outletId": "latimes",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
+      "expected": "Charles McNulty"
+    },
+    {
+      "file": "lighting-and-sound-america.html.gz",
+      "outletId": "lighting-and-sound-america",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=2V15JJ",
+      "expected": "David Barbour"
+    },
+    {
+      "file": "london-box-office.html.gz",
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/relative-motion-southwark-playhouse-borough-review",
+      "expected": "Eve Jawara"
+    },
+    {
+      "file": "london-theatre.html.gz",
+      "outletId": "london-theatre",
+      "url": "https://www.londontheatre.co.uk/reviews/hamlet-hail-to-the-thief-review-shakespeare-radiohead-barbican",
+      "expected": "Theo Bosanquet"
+    },
+    {
+      "file": "londontheatre1.html.gz",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/cranford-orange-tree-theatre/",
+      "expected": "Chris Omaweng"
+    },
+    {
+      "file": "mail-on-sunday.html.gz",
+      "outletId": "mail-on-sunday",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15397945/PATRICK-MARMION-reviews-Woods-Bridge-Theatre-London-Subversive-enchanting-Sondheims-fairytale.html",
+      "expected": "Patrick Marmion"
+    },
+    {
+      "file": "nbcny.html.gz",
+      "outletId": "nbcny",
+      "url": "https://www.nbcnewyork.com/entertainment/entertainment-news/review-third-rail-lincoln-center-ghost-light/178211/",
+      "expected": "Robert Kahn"
+    },
+    {
+      "file": "new-york-sun.html.gz",
+      "outletId": "new-york-sun",
+      "url": "https://www.nysun.com/article/downstate-makes-a-masterly-case-for-the-unforgivable",
+      "expected": "ELYSA GARDNER"
+    },
+    {
+      "file": "newsday.html.gz",
+      "outletId": "newsday",
+      "url": "https://www.newsday.com/entertainment/theater/company-patti-lupone-review-m27798",
+      "expected": "Rafer Guzmán"
+    },
+    {
+      "file": "newyorker.html.gz",
+      "outletId": "newyorker",
+      "url": "https://www.newyorker.com/magazine/2026/11/16/the-heart-theatre-review-broadway-i-became-we",
+      "expected": "Emily Nussbaum"
+    },
+    {
+      "file": "njcom.html.gz",
+      "outletId": "njcom",
+      "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
+      "expected": "Patrick Maley"
+    },
+    {
+      "file": "northjerseycom.html.gz",
+      "outletId": "northjerseycom",
+      "url": "https://www.northjersey.com/story/entertainment/theater/2025/05/01/stranger-things-broadway-review-netflix-show/83349797007/",
+      "expected": "Bill Canacci"
+    },
+    {
+      "file": "nydailynews.html.gz",
+      "outletId": "nydailynews",
+      "url": "https://www.nydailynews.com/2026/05/19/broadway-review-celebrity-autobiography-shubert-theatre/",
+      "expected": "Chris Jones"
+    },
+    {
+      "file": "nypost.html.gz",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/11/17/entertainment/the-fantasticks-review-worlds-longest-running-musical-returns-with-a-twist/",
+      "expected": "Johnny Oleksinski"
+    },
+    {
+      "file": "nysr.html.gz",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/16/the-fantasticks-somehow-short-of-fantastick/",
+      "expected": "David Finkle"
+    },
+    {
+      "file": "nyt-theater.html.gz",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/16/the-fantasticks-broadway-review/",
+      "expected": "Jonathan Mandell"
+    },
+    {
+      "file": "nytg.html.gz",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/reviews/downstate-broadway-review",
+      "expected": "Gillian Russo"
+    },
+    {
+      "file": "nytimes.html.gz",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/11/17/arts/music/review-jenufa-metropolitan-opera-asmik-grigorian.html",
+      "expected": "Joshua Barone"
+    },
+    {
+      "file": "observer.html.gz",
+      "outletId": "observer",
+      "url": "https://observer.co.uk/culture/theatre/article/cloud-9-caryl-churchills-riotous-romp-is-still-radical",
+      "expected": "Susannah Clapp"
+    },
+    {
+      "file": "people.html.gz",
+      "outletId": "people",
+      "url": "https://people.com/billy-crystal-860-broadway-review-12187320",
+      "expected": "Dave Quinn"
+    },
+    {
+      "file": "philadelphia-inquirer.html.gz",
+      "outletId": "philadelphia-inquirer",
+      "url": "https://www.inquirer.com/arts/theater/back-to-the-future-musical-review-pgiladelphia-20251121.html",
+      "expected": "Gauri Mangala"
+    },
+    {
+      "file": "rollingstone.html.gz",
+      "outletId": "rollingstone",
+      "url": "https://www.rollingstone.com/music/music-news/working-girl-musical-cyndi-lauper-sisterhood-anthem-we-need-1235468482/",
+      "expected": "Charisma Madarang"
+    },
+    {
+      "file": "slantmagazine.html.gz",
+      "outletId": "slantmagazine",
+      "url": "https://www.slantmagazine.com/theater/the-fantasticks-review-broadway-musical/",
+      "expected": "Dan Rubins"
+    },
+    {
+      "file": "slate.html.gz",
+      "outletId": "slate",
+      "url": "https://slate.com/culture/2026/08/paranormal-activity-broadway-play-2026-horror-movie-review.html",
+      "expected": "Sam Adams"
+    },
+    {
+      "file": "standard.html.gz",
+      "outletId": "standard",
+      "url": "https://www.standard.co.uk/culture/theatre/cranford-review-tamsin-greig-b1304996.html",
+      "expected": "Nick Curtis"
+    },
+    {
+      "file": "sunday-times.html.gz",
+      "outletId": "sunday-times",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r",
+      "expected": "Clive Davis"
+    },
+    {
+      "file": "telegraph.html.gz",
+      "outletId": "telegraph",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cranford-starring-tamsin-greig-review-orange-tree-theatre/",
+      "expected": "Dominic Cavendish"
+    },
+    {
+      "file": "the-globe-and-mail.html.gz",
+      "outletId": "the-globe-and-mail",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-operation-mincemeat-review-musical-slice-of-the-second-world-war/",
+      "expected": "Aisling Murphy"
+    },
+    {
+      "file": "theater-life.html.gz",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/now-you-see-me-live",
+      "expected": "Ellis Nassour"
+    },
+    {
+      "file": "theater-scene.html.gz",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/a-few-good-men/joseph-pisano/",
+      "expected": "Joseph Pisano"
+    },
+    {
+      "file": "theatermania.html.gz",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-the-fantasticks-is-a-gay-old-time-on-broadway-but-not-gay-enough_1859835/",
+      "expected": "David Gordon"
+    },
+    {
+      "file": "theatrely.html.gz",
+      "outletId": "theatrely",
+      "url": "https://www.theatrely.com/post/an-excellent-downstate-has-moved-to-broadway-review",
+      "expected": "Joey Sims"
+    },
+    {
+      "file": "thereviewshub.html.gz",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/cranford-orange-tree-theatre-london/",
+      "expected": "Mike Wells"
+    },
+    {
+      "file": "thestage.html.gz",
+      "outletId": "thestage",
+      "url": "https://www.thestage.co.uk/reviews/cranford-review-orange-tree-theatre-london",
+      "expected": "Dave Fargnoli"
+    },
+    {
+      "file": "thewrap.html.gz",
+      "outletId": "thewrap",
+      "url": "https://www.thewrap.com/creative-content/theater/the-fantasticks-broadway-review-the-vintage-musical-successfully-moves-uptown-under-a-lavender-moon/",
+      "expected": "Robert Hofler"
+    },
+    {
+      "file": "time.html.gz",
+      "outletId": "time",
+      "url": "https://time.com/3732099/larry-david-fish-in-the-dark-broadway-review/",
+      "expected": "Richard Zoglin"
+    },
+    {
+      "file": "timeout.html.gz",
+      "outletId": "timeout",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-the-fantasticks-makes-new-magick-111726",
+      "expected": "Adam Feldman"
+    },
+    {
+      "file": "timeout-london.html.gz",
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/julius-caesar-26-review",
+      "expected": "Tim Bano"
+    },
+    {
+      "file": "times-uk.html.gz",
+      "outletId": "times-uk",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
+      "expected": "Clive Davis"
+    },
+    {
+      "file": "usatoday.html.gz",
+      "outletId": "usatoday",
+      "url": "https://www.usatoday.com/story/entertainment/music/2026/11/16/fantasticks-review-broadway-musicals/92811425007/",
+      "expected": "Patrick Ryan"
+    },
+    {
+      "file": "variety.html.gz",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/legit/reviews/wanted-broadway-review-1236941816/",
+      "expected": "Aramide Tinubu"
+    },
+    {
+      "file": "village-voice.html.gz",
+      "outletId": "village-voice",
+      "url": "https://www.villagevoice.com/review-the-picture-of-dorian-gray-is-not-a-pretty-picture-just-great-theater/",
+      "expected": "Michael Musto"
+    },
+    {
+      "file": "vulture.html.gz",
+      "outletId": "vulture",
+      "url": "https://www.vulture.com/article/theater-review-the-fantasticks-finally-on-broadway.html",
+      "expected": "Sara Holdren"
+    },
+    {
+      "file": "washpost.html.gz",
+      "outletId": "washpost",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/23/stars-are-shining-broadway-an-upstart-musical-upstages-them-all/",
+      "expected": "Thomas Floyd"
+    },
+    {
+      "file": "whatsonstage.html.gz",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/cranford-with-tamsin-greig-at-orange-tree-theatre-review_1737383/",
+      "expected": "Aliya Al-Hassan"
+    },
+    {
+      "file": "wnyc.html.gz",
+      "outletId": "wnyc",
+      "url": "https://www.wnyc.org/story/review-adam-driver-burn-this/",
+      "expected": "Jennifer Vanasco"
+    },
+    {
+      "file": "wsj.html.gz",
+      "outletId": "wsj",
+      "url": "https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68553e05",
+      "expected": "Charles Isherwood"
+    },
+    {
+      "file": "theatermania-jonas-schwartz.html.gz",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
+      "expected": "Jonas Schwartz"
+    }
+  ],
+  "missing": [
+    {
+      "outletId": "backstage",
+      "reason": "no page read (fetch failed: Direct fetch failed: 403; no archive.org capture; fetch failed: All scraping methods failed; no archive.or)"
+    },
+    {
+      "outletId": "broadway-blog",
+      "reason": "no page read (fetch failed: All scraping methods failed; no archive.org capture; fetch failed: Direct fetch failed: 503; no archive.or)"
+    },
+    {
+      "outletId": "ny1",
+      "reason": "no page read (fetch failed: All scraping methods failed; no archive.org capture; fetch failed: Direct fetch returned wrong page; no ar)"
+    },
+    {
+      "outletId": "playbill",
+      "reason": "no stored review to sample"
+    },
+    {
+      "outletId": "talkinbroadway",
+      "reason": "no page read (fetch failed: All scraping methods failed; no archive.org capture; fetch failed: Direct fetch failed: 403; no archive.or)"
+    },
+    {
+      "outletId": "tennessean",
+      "reason": "no page read (stored-missing)"
+    },
+    {
+      "outletId": "the-spectator-uk",
+      "reason": "no page read (fetch failed: All scraping methods failed; no archive.org capture; fetch failed: Direct fetch failed: 404; no archive.or)"
+    }
+  ]
+}

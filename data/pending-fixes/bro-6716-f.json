@@ -1,0 +1,90 @@
+{
+  "issueNumber": "bro-6716-f",
+  "planId": "a41b2679-413a-47a8-8f6c-136c68ebd568",
+  "status": "applied",
+  "createdAt": "2026-11-01T12:51:09.658Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: Dirty Dancing tour Around the Town Chicago review: correct the byline to Paul Lisnek, clear the byline-driven wrongProduction flag, drop the body-less duplicate",
+    "steps": [
+      "Read the article: the body and URL are Paul Lisnek's review (\"reviewed-by-paul-lisnek\", byline By: Paul Lisnek); Frank Meccia was a scraper attribution (BRO-6716).",
+      "Read the article: review of the Nederlander Chicago stop of this North American tour (same cast as the tour); the CV flag was about the byline, not the production.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Body-less duplicate of the same URL (bww excerpt only); the full review stays in the renamed file (BRO-6716).",
+      "File name follows the corrected critic (BRO-6716)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "field": "criticName",
+        "oldValue": "Frank Meccia",
+        "newValue": "Paul Lisnek",
+        "description": "Read the article: the body and URL are Paul Lisnek's review (\"reviewed-by-paul-lisnek\", byline By: Paul Lisnek); Frank Meccia was a scraper attribution (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: review of the Nederlander Chicago stop of this North American tour (same cast as the tour); the CV flag was about the byline, not the production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dirty-dancing-tour-2026/around-the-town-chicago--paul-lisnek-and-frank-meccia.json",
+        "description": "Body-less duplicate of the same URL (bww excerpt only); the full review stays in the renamed file (BRO-6716)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "destPath": "dirty-dancing-tour-2026/around-the-town-chicago--paul-lisnek.json",
+        "description": "File name follows the corrected critic (BRO-6716)."
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T13:31:18.410Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json criticName: \"Frank Meccia\" -> \"Paul Lisnek\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dirty-dancing-tour-2026/around-the-town-chicago--paul-lisnek-and-frank-meccia.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json → dirty-dancing-tour-2026/around-the-town-chicago--paul-lisnek.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

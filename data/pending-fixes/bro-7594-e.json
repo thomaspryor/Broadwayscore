@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-7594-e",
+  "planId": "16283236-0ba3-4197-9b74-dab0813e0967",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:02:10.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear or correct 78 runtimes copied from TodayTix filler runningTime values (4hrs inc two intervals, 1hr 35mins inc. interval, 1hr 35min no intermission); values from each show's TodayTix page, cleared where the page has none (part 5 of 5)",
+    "steps": [
+      "shows.json: full-gallop-off-broadway-2027.runtime",
+      "shows.json: nevermore-off-west-end-2027.runtime",
+      "shows.json: before-the-coffee-gets-cold-off-west-end-2027.runtime",
+      "shows.json: brocks-mill-off-west-end-2027.runtime",
+      "shows.json: once-upon-a-time-in-sokoto-off-west-end-2027.runtime",
+      "shows.json: the-book-thief-off-west-end-2027.runtime",
+      "shows.json: the-young-team-off-west-end-2027.runtime",
+      "shows.json: we-have-always-lived-in-the-castle-off-west-end-2027.runtime",
+      "shows.json: the-apology-west-end-2027.runtime",
+      "shows.json: afterbirth-west-end-2028.runtime",
+      "shows.json: the-briar-patch-west-end-2027.runtime",
+      "shows.json: working-men-west-end-2027.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "full-gallop-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: full-gallop-off-broadway-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevermore-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: nevermore-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "before-the-coffee-gets-cold-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: before-the-coffee-gets-cold-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brocks-mill-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: brocks-mill-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-upon-a-time-in-sokoto-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: once-upon-a-time-in-sokoto-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-book-thief-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-book-thief-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-young-team-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-young-team-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-have-always-lived-in-the-castle-off-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: we-have-always-lived-in-the-castle-off-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apology-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-apology-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "afterbirth-west-end-2028",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: afterbirth-west-end-2028.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-briar-patch-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-briar-patch-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "working-men-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: working-men-west-end-2027.runtime"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T16:04:53.093Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for full-gallop-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for nevermore-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for before-the-coffee-gets-cold-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for brocks-mill-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for once-upon-a-time-in-sokoto-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-book-thief-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-young-team-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for we-have-always-lived-in-the-castle-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-apology-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for afterbirth-west-end-2028"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-briar-patch-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for working-men-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

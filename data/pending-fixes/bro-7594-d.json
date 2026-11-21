@@ -1,0 +1,398 @@
+{
+  "issueNumber": "bro-7594-d",
+  "planId": "58be1208-1a3a-493e-a38e-10be659d3923",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:02:10.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear or correct 78 runtimes copied from TodayTix filler runningTime values (4hrs inc two intervals, 1hr 35mins inc. interval, 1hr 35min no intermission); values from each show's TodayTix page, cleared where the page has none (part 4 of 5)",
+    "steps": [
+      "shows.json: awake-and-sing-2026.runtime",
+      "shows.json: wild-about-you-off-west-end-2026.runtime",
+      "shows.json: vanya-off-broadway-2025.runtime",
+      "shows.json: vanya-off-broadway-2025.intermissions",
+      "shows.json: the-urmetazoan-off-west-end-2026.runtime",
+      "shows.json: the-urmetazoan-off-west-end-2026.intermissions",
+      "shows.json: nine-night-off-west-end-2026.runtime",
+      "shows.json: nine-night-off-west-end-2026.intermissions",
+      "shows.json: mother-russia-off-west-end-2026.runtime",
+      "shows.json: cinderella-buttons-undone-off-west-end-2026.runtime",
+      "shows.json: cinderella-buttons-undone-off-west-end-2026.intermissions",
+      "shows.json: youre-a-good-man-charlie-brown-off-broadway-2027.runtime",
+      "shows.json: youre-a-good-man-charlie-brown-off-broadway-2027.intermissions",
+      "shows.json: montauk-2026.runtime",
+      "shows.json: a-whistle-in-the-dark-west-end-2026.runtime",
+      "shows.json: death-of-a-salesman-west-end-2026.runtime",
+      "shows.json: mr-loverman-west-end-2026.runtime",
+      "shows.json: suddenly-last-summer-west-end-2027.runtime",
+      "shows.json: samira-west-end-2026.runtime",
+      "shows.json: west-side-story-west-end-2026.runtime",
+      "shows.json: rosencrantz-and-guildenstern-are-dead-west-end-2026.runtime",
+      "shows.json: the-great-indaba-west-end-2026.runtime",
+      "shows.json: plenty-west-end-2026.runtime",
+      "shows.json: glorious-madness-west-end-2026.runtime",
+      "shows.json: ghostlight-west-end-2026.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": null,
+        "description": "shows.json: awake-and-sing-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wild-about-you-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: wild-about-you-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vanya-off-broadway-2025",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": "1h 40m",
+        "description": "shows.json: vanya-off-broadway-2025.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vanya-off-broadway-2025",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: vanya-off-broadway-2025.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-urmetazoan-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 40m",
+        "description": "shows.json: the-urmetazoan-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-urmetazoan-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: the-urmetazoan-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nine-night-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 45m",
+        "description": "shows.json: nine-night-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nine-night-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: nine-night-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-russia-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: mother-russia-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-buttons-undone-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: cinderella-buttons-undone-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-buttons-undone-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: cinderella-buttons-undone-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 15m",
+        "description": "shows.json: youre-a-good-man-charlie-brown-off-broadway-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-off-broadway-2027",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: youre-a-good-man-charlie-brown-off-broadway-2027.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "montauk-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: montauk-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-whistle-in-the-dark-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: a-whistle-in-the-dark-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: death-of-a-salesman-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mr-loverman-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: mr-loverman-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "suddenly-last-summer-west-end-2027",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: suddenly-last-summer-west-end-2027.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "samira-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: samira-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "west-side-story-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: west-side-story-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: rosencrantz-and-guildenstern-are-dead-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-indaba-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-great-indaba-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "plenty-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: plenty-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "glorious-madness-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: glorious-madness-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghostlight-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: ghostlight-west-end-2026.runtime"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T16:00:35.231Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime already null, pins refreshed for awake-and-sing-2026",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for wild-about-you-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for vanya-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for vanya-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-urmetazoan-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-urmetazoan-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for nine-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for nine-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for mother-russia-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for cinderella-buttons-undone-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for cinderella-buttons-undone-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for youre-a-good-man-charlie-brown-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for youre-a-good-man-charlie-brown-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for montauk-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-whistle-in-the-dark-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for death-of-a-salesman-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for mr-loverman-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for suddenly-last-summer-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for samira-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for west-side-story-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for rosencrantz-and-guildenstern-are-dead-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-great-indaba-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for plenty-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for glorious-madness-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for ghostlight-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

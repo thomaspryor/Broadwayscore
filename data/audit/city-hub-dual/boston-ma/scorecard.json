@@ -1,0 +1,408 @@
+{
+ "city": "boston-ma",
+ "today": "2026-11-17",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5.6-terra"
+ },
+ "itemsChecked": {
+  "shows": 10,
+  "images": 0,
+  "publishedReviews": 61,
+  "excludedFiles": 0,
+  "reviewsWithoutText": 28,
+  "tourStops": 0,
+  "coverageShows": 6,
+  "totalShows": 35,
+  "totalPublished": 165
+ },
+ "flaggedByGemini": 11,
+ "flaggedByOpenAI": 12,
+ "flaggedLocalChecks": 6,
+ "flaggedAny": 21,
+ "flaggedByBoth": 8,
+ "triagedItems": 2,
+ "confirmed": 0,
+ "falsePositives": 2,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 21,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "black-swan-regional-2026",
+   "label": "Black Swan",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-11, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "something-rotten-regional-2026",
+   "label": "Something Rotten!",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-01 / page 2026-06-07"
+  },
+  {
+   "kind": "show",
+   "id": "eureka-day-regional-2026",
+   "label": "Eureka Day",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "eureka-day-regional-2026",
+   "label": "Eureka Day",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "delirium-regional-2026",
+   "label": "Delirium",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-18"
+  },
+  {
+   "kind": "show",
+   "id": "delirium-regional-2026",
+   "label": "Delirium",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"Arlekin Players Theatre, Boston, MA\" / page \"Calderwood Pavilion at the BCA\""
+  },
+  {
+   "kind": "show",
+   "id": "delirium-regional-2026",
+   "label": "Delirium",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-18"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972 | Musical Theatre Report / Ben West",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article reviews '1972' and mentions 'Wanted' as part of the report, but only provides detailed notes for '1972', which it judges as a 'very poor piece of theatre'."
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972 | Musical Theatre Report / Ben West",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "The piece calls 1972 'a very poor piece of theatre' but suggests it could improve with rewriting and restaging."
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.wbur.org/news/2026/11/06/women-who-fought-back-take-center-stage-in-the-wash-1972-and-the-getaway-driver|jacquinn sinclair",
+   "label": "1972 | WBUR / Jacquinn Sinclair",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article reviews two productions, 'The Wash' and '1972', with positive assessments for both."
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.broadwayworld.com/boston/article/review-a-riveting-all-my-sons-at-lyric-stage-boston-20260928|r scott reedy",
+   "label": "All My Sons | BroadwayWorld / R. Scott Reedy",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 78"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.bostonglobe.com/2026/06/11/arts/art-black-swan-melanie-moore|don aucoin",
+   "label": "Black Swan | Boston Globe / Don Aucoin",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "A frenzied attempt to conceal the musical's fundamental emptiness — but Melanie Moore gives a fearless, transfixing portrayal of Nina."
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.boston.com/community/entertainment/2026/06/14/theater-review-black-swan-dazzles-with-stunning-choreography-despite-a-forgettable-score|samantha genzer",
+   "label": "Black Swan | Boston.com / Samantha Genzer",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "Dazzles with stunning choreography despite a forgettable score; the cast is undeniably impressive."
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.metrmag.com/latest-reviews/black-swan-by-jen-silverman-and-dave-malloy-american-repertory-theater-cambridge-ma-review|kevin t baldwin",
+   "label": "Black Swan | Metrmag / Kevin T. Baldwin",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "How this A.R.T. story is told is storytelling at its best, though the show will have a limited, specific target audience."
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.wbur.org/news/2026/06/12/american-repertory-theater-black-swan-review|jacquinn sinclair",
+   "label": "Black Swan | WBUR / Jacquinn Sinclair",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "An exquisitely chilling world premiere musical."
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Broadway News",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheaterMania",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheWrap",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Time Out New York",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.bostonglobe.com/2026/07/16/arts/paranormal-activity-boston-review|don aucoin",
+   "label": "paranormal-activity-boston-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/07/16/arts/paranormal-activity-boston-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "WBUR / Jacquinn Sinclair 2026-07-17 https://www.wbur.org/news/2026/07/17/levi-holloway-paranormal-activity-boston-play-broadway"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Theater Mirror / Julie-Anne Whitney (Editor) 2026-08-22 https://www.thetheatermirror.com/2026/08/22/a-rousing-rhinoceros-opens-a-r-t-s-47th-season/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Theater Mirror / Shelley A. Sackett 2026-08-24 https://www.thetheatermirror.com/2026/08/24/a-r-t-s-rhinoceros-is-a-must-see-knockout/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The New England Theatre Geek / Kitty Drexel 2026-08-23 https://www.newenglandtheatreek.com/2026/08/23/an-infallible-system-of-interpretation-rhinoceros/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Bay State Banner / Celina Colby 2026-08-13 https://www.baystatebanner.com/2026/08/13/rhinoceros-an-absurdist-commentary-on-fascism-barrels-onto-the-stage-at-a-r-t/"
+  },
+  {
+   "kind": "coverage",
+   "id": "purpose-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "METRMAG / Kevin T. Baldwin 2026-09-16 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOYjJZiFgYKhdk34PoKvM5-9_OYHaNJCO5vv7rateT02MGHc7eOvvaRBx6cquKYFWW7XaLxIG_1QwG-wJ2D5X8qJFdwmseUMCval9Z8bIblYjKelXDf241NKbpWa2vgcV3_xCWAm08crLzyNzVr6oWhUcdFp3MgaZUzWYZq9FHCU5fcilmcdy_n1VAN3O9rmobD29fKobB7BybL_fRYiyBI7QBEWeN5tZ6Y3p7H_pX"
+  },
+  {
+   "kind": "coverage",
+   "id": "purpose-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / null 2026-09-29 https://broadwaystars.com/1524799"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-new-era-regional-2026",
+   "label": "A New Era",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The New England Theatre Geek / Kitty Drexel 2026-07-25 https://www.newenglandtheatregeek.com/2026/07/25/activism-and-elitism-are-kissing-cousins-a-new-era/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-new-era-regional-2026",
+   "label": "A New Era",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Boston Arts Diary / Charles Munitz 2026-07-23 https://bostonartsdiary.com/wordpress/2026/07/a-new-era/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-new-era-regional-2026",
+   "label": "A New Era",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Evening Transcript / Chris Ehlers 2026-08-04 https://chrisehlers.substack.com/p/at-company-one-glimpses-of-greatness"
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Sleepless Critic / The Sleepless Critic 2026-07-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEfWe89dcjiKYYNfz5n2VL4lqS8HMcUf4YICAI9su6Ugxp3FDDp2kCyuFOMWPalIjWt8AISoh10VQvxYKduMav1StlVNDv6-y7rO2BoMhOgxbCAlJpLarBJdis4gYPOP4Nx-gzHhm9C9RP-Gig5zVGR0BaEEiysNU2PXU6H0OYOXykpCFG98usEkrAD0FQ8a6LoGze7lsk9s2B-se0EcrWR898j3znogOxT6h4KxLmj9rGWpHM65iLNffKZdPEH_jRdXYd0snu1KG3rK6ua2DhlqXKq9g=="
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Boston Theatre Wings / Jules Becker 2026-08-02 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEXrBIJYHk8buileN0ZsyrXvSlh62zEJ7RuRd3s6HaNLhhA3NtnIMGAXKSwhoZZSL_2m37J-maw5ubEyqV7TdDgWsXcld2dIYkwLgfO4HxKOcRENkIDJPF5InzU6h5bCAA5fBOBjPjNcklA43uuwdj24sFnAz331X9C4EJENfDhrdYP0FLU8jr_tuA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "onbostonstages / onbostonstages 2026-07-30 https://onbostonstages.blog/tag/review/page/4/"
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Panorama of the Mountains / Liam 2026-07-26 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEgyMR7l3zTB_isM3SQqGlWo3lSSn_JdfZMqy-9qzAuKq5QQlHpV0Y8iEfxC8lXugrqFb98l7JE6XKYnXg3-Kb0Sg9Z9tBXvUBMprviZOMu-gjkuUIT3iOuFZFOFLumXGXpwvKXzlu1oaCgBspTvedKae3FdO6fgEoZaVGf4t_rMRiveIcodG5CaEDQnWxU6jhV6v5P1UmcdbAGl-Sd7YWhWzPUBA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / R. Scott Reedy 2026-07-22 https://www.broadwayworld.com/boston/article/Review-Hub-Theatre-Companys-BUYER-CELLAR-is-fun-look-at-a-funny-lady-20260722"
+  },
+  {
+   "kind": "coverage",
+   "id": "buyer-and-cellar-hub-regional-2026",
+   "label": "Buyer and Cellar",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "onbostonstages / Rich Fahey 2026-07-26 https://onbostonstages.blog/2026/07/26/buyer-and-cellar-takes-actor-and-icon-for-a-ride/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-midsummer-nights-dream-regional-2026",
+   "label": "A Midsummer Night's Dream",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Evening Transcript - Substack / null 2026-08-06 https://chrisehlers.substack.com/p/on-the-common-shadows-that-both-delight"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-midsummer-nights-dream-regional-2026",
+   "label": "A Midsummer Night's Dream",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Somerville Times / Michael Todd Steffen 2026-07-22 https://www.thesomervilletimes.com/archives/149280"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-midsummer-nights-dream-regional-2026",
+   "label": "A Midsummer Night's Dream",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Shakespeare Geek / duane 2026-07-31 https://www.shakespearegeek.com/category/review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-midsummer-nights-dream-regional-2026",
+   "label": "A Midsummer Night's Dream",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Panorama of the Mountains / Liam 2026-08-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEtLPMPRVpC45pWJknbfRTJG0Q3ZeyoTgXmcxZqiX9L8npWFppXmwEUENtaQHqXjotfnBsHq9Ohty8PIBaTNm09GxesO_X75KPlpIcBjn7l-V5Lzy3pgONpWquSeSODxfoEAy7JtXp2OaLF51WG_OKubg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-midsummer-nights-dream-regional-2026",
+   "label": "A Midsummer Night's Dream",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Boston Globe / Chris Vognar 2026-08-03 https://www.bostonglobe.com/2026/08/03/arts/commonwealth-shakespeare-company/"
+  }
+ ]
+}

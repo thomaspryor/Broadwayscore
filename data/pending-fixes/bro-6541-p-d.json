@@ -1,0 +1,897 @@
+{
+  "issueNumber": "bro-6541-p-d",
+  "planId": "40f7e1be-ad10-4708-b614-21cd67134b68",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:55:20.929Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: add vetted UK hub productions (outlet census + skipped venues) (part 4 of 5)",
+    "steps": [
+      "BRO-6541: add to-have-and-to-hold-hull-truck-regional-2025 (outlet census)",
+      "BRO-6541: add a-manchester-anthem-hope-mill-regional-2025 (outlet census)",
+      "BRO-6541: add my-romantic-history-tron-regional-2026 (outlet census)",
+      "BRO-6541: add return-to-the-forest-aviva-studios-regional-2026 (outlet census)",
+      "BRO-6541: add sense-and-sensibility-pitlochry-festival-regional-2024 (outlet census)",
+      "BRO-6541: add the-last-cabaret-on-earth-oran-mor-regional-2024 (outlet census)",
+      "BRO-6541: add figures-in-extinction-aviva-studios-regional-2025 (outlet census)",
+      "BRO-6541: add the-high-life-the-musical-dundee-rep-regional-2026 (outlet census)",
+      "BRO-6541: add the-merry-wives-of-windsor-royal-shakespeare-regional-2024 (outlet census)",
+      "BRO-6541: add little-shop-of-horrors-hope-mill-regional-2026 (outlet census)",
+      "BRO-6541: add a-streetcar-named-desire-crucible-regional-2025 (outlet census)",
+      "BRO-6541: add these-are-our-neighbours-citizens-regional-2026 (outlet census)",
+      "BRO-6541: add goodbye-dreamland-bowlarama-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add death-and-the-kings-horseman-crucible-regional-2025 (outlet census)",
+      "BRO-6541: add righ-iasgair-the-fisher-king-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add shaun-the-sheeps-circus-show-aviva-studios-regional-2025 (outlet census)",
+      "BRO-6541: add the-history-boys-20th-anniversary-royal-bath-regional-2024 (outlet census)",
+      "BRO-6541: add the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add mel-brooks-young-frankenstein-hope-mill-regional-2025 (outlet census)",
+      "BRO-6541: add snow-white-and-the-seven-dwarfs-royal-bath-regional-2024 (outlet census)",
+      "BRO-6541: add nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024 (outlet census)",
+      "BRO-6541: add studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 (outlet census)",
+      "BRO-6541: add snow-mice-egg-regional-2025 (skipped-venue Guardian review)",
+      "BRO-6541: add scraps-wardrobe-regional-2025 (skipped-venue Guardian review)",
+      "BRO-6541: add confessions-of-a-shinagawa-monkey-tramway-regional-2025 (skipped-venue Guardian review)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "to-have-and-to-hold-hull-truck-regional-2025",
+          "title": "To Have and to Hold",
+          "slug": "to-have-and-to-hold-hull-truck-regional-2025",
+          "venue": "Hull Truck Theatre, Hull",
+          "city": "hull-uk",
+          "openingDate": "2025-05-15",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:55.201Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/to-have-and-to-hold-review-hull-truck-theatre-terry-johnson-paula-wilcox-stephen-tompkinson"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add to-have-and-to-hold-hull-truck-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-manchester-anthem-hope-mill-regional-2025",
+          "title": "A Manchester Anthem",
+          "slug": "a-manchester-anthem-hope-mill-regional-2025",
+          "venue": "Hope Mill Theatre, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2025-08-03",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:55.295Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.westendbestfriend.co.uk/news/review-a-manchester-anthem-hope-mill-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add a-manchester-anthem-hope-mill-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-romantic-history-tron-regional-2026",
+          "title": "My Romantic History",
+          "slug": "my-romantic-history-tron-regional-2026",
+          "venue": "Tron Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2026-06-10",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:55.320Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/my-romantic-history-review-tron-theatre-glasgow"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add my-romantic-history-tron-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "return-to-the-forest-aviva-studios-regional-2026",
+          "title": "Return to the Forest",
+          "slug": "return-to-the-forest-aviva-studios-regional-2026",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2026-05-08",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:55.346Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.allthatdazzles.co.uk/post/review-return-to-the-forest-aviva-studios-manchester"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add return-to-the-forest-aviva-studios-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sense-and-sensibility-pitlochry-festival-regional-2024",
+          "title": "Sense and Sensibility",
+          "slug": "sense-and-sensibility-pitlochry-festival-regional-2024",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2024-06-27",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:58.175Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/sense-and-sensibility-review-pitlochry-festival-theatre-kirsty-findlay-adam-nichols-frances-poet"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add sense-and-sensibility-pitlochry-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-last-cabaret-on-earth-oran-mor-regional-2024",
+          "title": "The Last Cabaret on Earth",
+          "slug": "the-last-cabaret-on-earth-oran-mor-regional-2024",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2024-09-11",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:58.281Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-last-cabaret-on-earth-review-oran-mor-glasgow-brian-james-osullivan-mark-mackinnon-a-play-a-pie-and-a-pint"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-last-cabaret-on-earth-oran-mor-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "figures-in-extinction-aviva-studios-regional-2025",
+          "title": "Figures in Extinction",
+          "slug": "figures-in-extinction-aviva-studios-regional-2025",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2025-02-21",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:01.313Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/figures-in-extinction-review-factory-international-aviva-studios-manchester-simon-mcburney-crystal-pite"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add figures-in-extinction-aviva-studios-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-high-life-the-musical-dundee-rep-regional-2026",
+          "title": "The High Life the Musical",
+          "slug": "the-high-life-the-musical-dundee-rep-regional-2026",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2026-04-07",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:01.337Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-high-life-the-musical-review-dundee-rep-theatre-alan-cumming-forbes-masson"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-high-life-the-musical-dundee-rep-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+          "title": "The Merry Wives of Windsor",
+          "slug": "the-merry-wives-of-windsor-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-06-13",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:04.661Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.allthatdazzles.co.uk/post/review-merry-wives-of-windsor-royal-shakespeare-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-merry-wives-of-windsor-royal-shakespeare-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "little-shop-of-horrors-hope-mill-regional-2026",
+          "title": "Little Shop of Horrors",
+          "slug": "little-shop-of-horrors-hope-mill-regional-2026",
+          "venue": "Hope Mill Theatre, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2026-10-08",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:07.653Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.allthatdazzles.co.uk/post/review-little-shop-of-horrors-hope-mill-theatre-liverpool-playhouse"
+          ],
+          "statusSource": "census-review"
+        },
+        "description": "BRO-6541: add little-shop-of-horrors-hope-mill-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-streetcar-named-desire-crucible-regional-2025",
+          "title": "A Streetcar Named Desire",
+          "slug": "a-streetcar-named-desire-crucible-regional-2025",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2025-03-07",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:07.680Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.allthatdazzles.co.uk/post/review-a-streetcar-named-desire-crucible-theatre-sheffield"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add a-streetcar-named-desire-crucible-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "these-are-our-neighbours-citizens-regional-2026",
+          "title": "These Are Our Neighbours",
+          "slug": "these-are-our-neighbours-citizens-regional-2026",
+          "venue": "Citizens Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2026-10-16",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:07.710Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/these-are-our-neighbours-review-citizens-theatre-glasgow"
+          ],
+          "statusSource": "census-review"
+        },
+        "description": "BRO-6541: add these-are-our-neighbours-citizens-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "goodbye-dreamland-bowlarama-oran-mor-regional-2025",
+          "title": "Goodbye Dreamland Bowlarama",
+          "slug": "goodbye-dreamland-bowlarama-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-05-14",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:07.733Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/goodbye-dreamland-bowlarama-review-oran-mor-glasgow-a-play-a-pie-and-a-pint"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add goodbye-dreamland-bowlarama-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-and-the-kings-horseman-crucible-regional-2025",
+          "title": "Death and the King's Horseman",
+          "slug": "death-and-the-kings-horseman-crucible-regional-2025",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2025-02-05",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:07.754Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/death-and-the-kings-horseman-review-at-crucible-theatre-sheffield-by-wole-soyinka"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add death-and-the-kings-horseman-crucible-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "righ-iasgair-the-fisher-king-oran-mor-regional-2025",
+          "title": "Righ Iasgair the Fisher King",
+          "slug": "righ-iasgair-the-fisher-king-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-10-22",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:11.342Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/righ-iasgair-the-fisher-king-review-oran-mor-glasgow-a-play-a-pie-and-a-pint"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add righ-iasgair-the-fisher-king-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+          "title": "Shaun the Sheep's Circus Show",
+          "slug": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2025-12-17",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:14.366Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/shaun-the-sheeps-circus-show-review-aviva-studios-manchester-aardman-circa"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add shaun-the-sheeps-circus-show-aviva-studios-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-history-boys-20th-anniversary-royal-bath-regional-2024",
+          "title": "The History Boys 20th Anniversary",
+          "slug": "the-history-boys-20th-anniversary-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-08-29",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:17.135Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-history-boys-20th-anniversary-review-theatre-royal-bath-alan-bennett-sean-linnen"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-history-boys-20th-anniversary-royal-bath-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+          "title": "The Spy Who Came in From the Cold",
+          "slug": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-09-05",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:19.871Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.westendbestfriend.co.uk/news/review-the-spy-who-came-in-from-the-cold-chichester-festival-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mel-brooks-young-frankenstein-hope-mill-regional-2025",
+          "title": "Mel Brooks' Young Frankenstein",
+          "slug": "mel-brooks-young-frankenstein-hope-mill-regional-2025",
+          "venue": "Hope Mill Theatre, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2025-10-16",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:22.771Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/mel-brooks-young-frankenstein-review-hope-mill-theatre-manchester"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add mel-brooks-young-frankenstein-hope-mill-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "snow-white-and-the-seven-dwarfs-royal-bath-regional-2024",
+          "title": "Snow White and the Seven Dwarfs",
+          "slug": "snow-white-and-the-seven-dwarfs-royal-bath-regional-2024",
+          "venue": "Theatre Royal Bath, Bath",
+          "city": "bath-uk",
+          "openingDate": "2024-12-16",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:25.658Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/snow-white-and-the-seven-dwarfs-review-at-theatre-royal-bath-paul-milton"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add snow-white-and-the-seven-dwarfs-royal-bath-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+          "title": "Nan Shepherd Naked and Unashamed",
+          "slug": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2024-06-14",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:29.018Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/nan-shepherd-naked-and-unashamed-review-at-pitlochry-festival-theatre-by-richard-baron-and-ellie-zeegen"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+          "title": "Studio3: Alright Sunshine, Fleg and Fruitcake",
+          "slug": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+          "venue": "Tron Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-05-05",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:46:32.668Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/studio3-alright-sunshine-fleg-and-fruitcake-review-at-tron-theatre-glasgow-isla-cowan-meghan-tyler-and-frances-poet"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "snow-mice-egg-regional-2025",
+          "title": "Snow Mice!",
+          "slug": "snow-mice-egg-regional-2025",
+          "venue": "Egg Theatre, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-12-03",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T20:30:54.233Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/dec/03/snow-mice-review-egg-theatre-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        },
+        "description": "BRO-6541: add snow-mice-egg-regional-2025 (skipped-venue Guardian review)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "scraps-wardrobe-regional-2025",
+          "title": "Scraps",
+          "slug": "scraps-wardrobe-regional-2025",
+          "venue": "Wardrobe Theatre, Bristol",
+          "city": "bristol-uk",
+          "openingDate": "2025-04-01",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T20:30:54.665Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/apr/01/scraps-review-daisy-kennedy-mia-macleod-wardrobe-theatre-bristol"
+          ],
+          "statusSource": "guardian-review-age"
+        },
+        "description": "BRO-6541: add scraps-wardrobe-regional-2025 (skipped-venue Guardian review)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "confessions-of-a-shinagawa-monkey-tramway-regional-2025",
+          "title": "Confessions of a Shinagawa Monkey",
+          "slug": "confessions-of-a-shinagawa-monkey-tramway-regional-2025",
+          "venue": "Tramway, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-02-23",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T20:30:54.728Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/feb/23/confessions-of-a-shinagawa-monkey-review-haruki-murakami-tramway-glasgow"
+          ],
+          "statusSource": "guardian-review-age"
+        },
+        "description": "BRO-6541: add confessions-of-a-shinagawa-monkey-tramway-regional-2025 (skipped-venue Guardian review)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T00:53:40.818Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added to-have-and-to-hold-hull-truck-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-manchester-anthem-hope-mill-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-romantic-history-tron-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added return-to-the-forest-aviva-studios-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sense-and-sensibility-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-cabaret-on-earth-oran-mor-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added figures-in-extinction-aviva-studios-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-high-life-the-musical-dundee-rep-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-merry-wives-of-windsor-royal-shakespeare-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-shop-of-horrors-hope-mill-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-streetcar-named-desire-crucible-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added these-are-our-neighbours-citizens-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added goodbye-dreamland-bowlarama-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-and-the-kings-horseman-crucible-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added righ-iasgair-the-fisher-king-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shaun-the-sheeps-circus-show-aviva-studios-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-history-boys-20th-anniversary-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mel-brooks-young-frankenstein-hope-mill-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added snow-white-and-the-seven-dwarfs-royal-bath-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added snow-mice-egg-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added scraps-wardrobe-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added confessions-of-a-shinagawa-monkey-tramway-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

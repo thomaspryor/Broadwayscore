@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4504-2",
+  "planId": "70bae8e8-9d91-46e7-8298-5c7ad8e0d9d5",
+  "status": "applied",
+  "createdAt": "2026-10-29T17:51:10.289Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct the Prince Faggot Exeunt source byline so both the original run and its inherited review credit Lane Williamson.",
+    "steps": [
+      "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "criticName",
+        "oldValue": "Read more articles by Lane Williamson",
+        "newValue": "Lane Williamson",
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T19:05:29.411Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json criticName: \"Read more articles by Lane Williamson\" -> \"Lane Williamson\""
+    }
+  ],
+  "executedIn": "ci"
+}

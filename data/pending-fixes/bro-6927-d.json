@@ -1,0 +1,299 @@
+{
+  "issueNumber": "bro-6927-d",
+  "planId": "820674cf-21ab-49e2-b87e-3c40bc71e1a3",
+  "status": "partial",
+  "createdAt": "2026-11-03T22:44:29.693Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 4/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.timeout.com/newyork/theater/peer-gynt-2 --critic=\"Adam Feldman\" --publish-date=2016-05-25",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://bobs-theater-blog.blogspot.com/2016/05/peer-gynt.html --critic=\"Samuel L. Leiter\" --publish-date=2016-05-26",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=runboyrun-and-in-old-age-off-broadway-2019 --url=https://thebroadwayblog.com/runboyrun/ --critic=\"Samuel L. Leiter\" --publish-date=2019-09-28",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of runboyrun-and-in-old-age-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://nypost.com/2016/02/12/mike-birbiglias-hilarious-thank-god-for-jokes-is-a-must-see/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-02-13",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweetee-off-broadway-2017 --url=http://thebroadwayblog.com/2017/06/02/16608-sweetee-review --critic=\"Samuel L. Leiter\" --publish-date=2017-06-02",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of sweetee-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-glass-menagerie-2017 --url=http://dctheatrescene.com/2017/03/09/glass-menagerie-review-sally-field-no-glass-menagerie/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-09",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of the-glass-menagerie-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-glass-menagerie-2017 --url=http://www.chicagotribune.com/entertainment/theater/broadway/sc-glass-menagerie-broadway-review-ent-0309-20170309-column.html --critic=\"Chris Jones\" --publish-date=2017-03-09",
+        "description": "BRO-6927 gap: Chris Jones (Chicago Tribune) review of the-glass-menagerie-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/ --critic=\"Jonathan Mandell\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=titanique-off-broadway-2022 --url=http://www.theaterscene.net/musicals/offbway/titanique/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2022-08-22",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of titanique-off-broadway-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=vanity-fair-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-RLM4B2 --critic=\"David Barbour\" --publish-date=2017-04-06",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of vanity-fair-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=aint-done-bad-off-broadway-2024 --url=https://pagesonstages.wordpress.com/2024/07/10/aint-done-bad/ --critic=\"Mason Pilevsky\" --publish-date=2024-07-10",
+        "description": "BRO-6927 gap: Mason Pilevsky (Pages on Stages) review of aint-done-bad-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blood-of-the-lamb-off-broadway-2024 --url=https://pagesonstages.wordpress.com/2024/09/23/blood-of-the-lamb/ --critic=\"Mason Pilevsky\" --publish-date=2024-09-22",
+        "description": "BRO-6927 gap: Mason Pilevsky (Pages on Stages) review of blood-of-the-lamb-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-connector-off-broadway-2024 --url=https://pagesonstages.wordpress.com/2024/01/13/the-connector/ --critic=\"Mason Pilevsky\" --publish-date=2024-01-13",
+        "description": "BRO-6927 gap: Mason Pilevsky (Pages on Stages) review of the-connector-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=9-to-5-the-musical-west-end-2019 --url=https://www.timeout.com/london/theatre/9-to-5-the-musical-review --critic=\"Alice Saville\" --publish-date=2019-02-17",
+        "description": "BRO-6927 gap: Alice Saville (Time Out London) review of 9-to-5-the-musical-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=be-more-chill-west-end-2021 --url=https://www.timeout.com/london/theatre/be-more-chill-review --critic=\"Alice Saville\" --publish-date=2021-06-02",
+        "description": "BRO-6927 gap: Alice Saville (Time Out London) review of be-more-chill-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-christmas-carol-2019 --url=https://deadline.com/2019/11/a-christmas-carol-broadway-review-matthew-warchus-campbell-scott-andrea-martin-lachanze-1202789577/ --critic=\"Greg Evans\" --publish-date=2019-11-20",
+        "description": "BRO-6927 gap: Greg Evans (Deadline) review of a-christmas-carol-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-christmas-carol-2019 --url=https://www.timeout.com/newyork/theater/a-christmas-carol-broadway-review --critic=\"Adam Feldman\" --publish-date=2019-11-20",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of a-christmas-carol-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-christmas-carol-2019 --url=https://cititour.com/NYC_Broadway/A-Christmas-Carol/1010 --critic=\"Brian Scott Lipton\" --publish-date=2019-11-20",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of a-christmas-carol-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=celebrity-autobiography-2026 --url=https://www.talkinbroadway.com/page/world/index.html --critic=\"Howard Miller\" --publish-date=2026-05-19",
+        "description": "BRO-6927 gap: Howard Miller (Talkin' Broadway) review of celebrity-autobiography-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=heathers-the-musical-off-broadway-2025 --url=https://www.talkinbroadway.com/page/ob/07_10_25.html --critic=\"Howard Miller\" --publish-date=2025-07-10",
+        "description": "BRO-6927 gap: Howard Miller (Talkin' Broadway) review of heathers-the-musical-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=heathers-the-musical-off-broadway-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9 --critic=\"David Barbour\" --publish-date=2025-07-10",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of heathers-the-musical-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mlimas-tale-off-broadway-2018 --url=https://www.amny.com/entertainment/lynn-nottage-review-mlima-s-tale-1.18057963 --critic=\"Matt Windman\" --publish-date=2018-04-15",
+        "description": "BRO-6927 gap: Matt Windman (AM New York) review of mlimas-tale-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=soft-power-off-broadway-2019 --url=https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/ --critic=\"Jonathan Mandell\" --publish-date=2019-10-21",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of soft-power-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-portuguese-kid-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/The-Portuguese-Kid/336 --critic=\"Brian Scott Lipton\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of the-portuguese-kid-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-portuguese-kid-off-broadway-2017 --url=https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240 --critic=\"Steven Suskin\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of the-portuguese-kid-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T23:50:50.517Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=runboyrun-and-in-old-age-off-broadway-2019 --url=https://thebroadwayblog.com/runboyrun/ --critic=\"Samuel L. Leiter\" --publish-date=2019-09-28"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=smart-people-off-broadway-2016 --url=http://nypost.com/2016/02/12/mike-birbiglias-hilarious-thank-god-for-jokes-is-a-must-see/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-02-13"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=sweetee-off-broadway-2017 --url=http://thebroadwayblog.com/2017/06/02/16608-sweetee-review --critic=\"Samuel L. Leiter\" --publish-date=2017-06-02"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-glass-menagerie-2017 --url=http://dctheatrescene.com/2017/03/09/glass-menagerie-review-sally-field-no-glass-menagerie/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-09"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-glass-menagerie-2017 --url=http://www.chicagotribune.com/entertainment/theater/broadway/sc-glass-menagerie-broadway-review-ent-0309-20170309-column.html --critic=\"Chris Jones\" --publish-date=2017-03-09"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=titanique-off-broadway-2022 --url=http://www.theaterscene.net/musicals/offbway/titanique/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2022-08-22"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=celebrity-autobiography-2026 --url=https://www.talkinbroadway.com/page/world/index.html --critic=\"Howard Miller\" --publish-date=2026-05-19"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-broadway-2025 --url=https://www.talkinbroadway.com/page/ob/07_10_25.html --critic=\"Howard Miller\" --publish-date=2025-07-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-broadway-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9 --critic=\"David Barbour\" --publish-date=2025-07-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=mlimas-tale-off-broadway-2018 --url=https://www.amny.com/entertainment/lynn-nottage-review-mlima-s-tale-1.18057963 --critic=\"Matt Windman\" --publish-date=2018-04-15"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=soft-power-off-broadway-2019 --url=https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/ --critic=\"Jonathan Mandell\" --publish-date=2019-10-21"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

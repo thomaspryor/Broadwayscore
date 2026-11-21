@@ -1,0 +1,77 @@
+{
+  "issueNumber": "bro-5425-b",
+  "planId": "95c77d28-6d2f-4fcc-a76b-0a20cd8d9cc6",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5425: set Plaza Suite (2022) designation TBD -> Easy Winner. The entry already exists (bro-5229 added it recouped=true from the BroadwayWorld forum, owner decision 2026-10-13); the owner chose Easy Winner on the held-verdicts review page (BRO-5092). Also records the tax-credit-based capitalization estimate. Replaces plan bro-5425, which was refused because the entry already existed.",
+    "steps": [
+      "add-commercial-entry stamps humanReviewedDesignation so automation leaves the owner verdict alone."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "plaza-suite-2022: designation TBD -> Easy Winner (owner verdict, held-verdicts review page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8003548,
+        "description": "plaza-suite-2022: capitalization estimate from NYC tax credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate: $2,000,887 NYC theatrical tax credit to Suite 719 LLC (the Plaza Suite production company) at the 25% credit rate implies about $8.0M of production cost.",
+        "description": "plaza-suite-2022: capitalization source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "notes",
+        "oldValue": "Limited revival at the Hudson (Mar to Jul 2022) starring Sarah Jessica Parker and Matthew Broderick; broke the Hudson house record four times. Recoupment per forum report only; capitalization not reported.",
+        "newValue": "Limited revival at the Hudson (Mar to Jul 2022) starring Sarah Jessica Parker and Matthew Broderick; broke the Hudson house record four times. Recoupment per forum report only; capitalization is an estimate from the NYC tax credit (see capitalizationSource).",
+        "description": "plaza-suite-2022: notes no longer say capitalization unreported"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:26:24.306Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for plaza-suite-2022"
+    }
+  ]
+}

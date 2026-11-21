@@ -1,0 +1,68 @@
+// BRO-6858: the press-night preflight fails only on keys the night needs, never on warnings.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { preflightVerdict, REQUIRED } = require('../../scripts/lib/press-night-preflight.js');
+
+const all = (over = {}) => REQUIRED.map((name) => ({ name, status: 'pass', message: '', ...(over[name] || {}) }));
+
+test('all pass, warnings and unrelated failures: clean', () => {
+  const r = all({ 'Bright Data': { status: 'warn' } }).concat([{ name: 'Dispatch PAT (submit-review)', status: 'fail' }, { name: 'Sentry', status: 'fail' }]);
+  assert.equal(preflightVerdict({ results: r, sb: { ok: true, pctUsed: 50, remaining: 125000 } }).ok, true);
+});
+
+test('fail or skip on a needed key, missing results, low credits: problems', () => {
+  const v = preflightVerdict({ results: all({ Anthropic: { status: 'fail', message: '401' }, Resend: { status: 'skip' } }).filter((x) => x.name !== 'Vercel'), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
+  assert.equal(v.ok, false);
+  assert.deepEqual(v.problems.map((p) => p.key).sort(), ['Anthropic', 'Resend', 'ScrapingBee credits', 'Vercel']);
+  assert.equal(v.resendDown, true);
+});
+
+test('unknown credit status does not fail on its own', () => {
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: false, reason: 'no-key' } }).ok, true);
+});
+
+test('a crashed check is matched by its function name and counts as a problem', () => {
+  const r = all().filter((x) => x.name !== 'Bright Data' && x.name !== 'Private Repo PAT')
+    .concat([{ name: 'BrightData', status: 'warn', message: 'Check threw error: boom' }, { name: 'PrivateRepoPAT', status: 'pass', message: 'ok' }]);
+  const v = preflightVerdict({ results: r, sb: null });
+  assert.deepEqual(v.problems.map((p) => p.key), ['Bright Data']);
+  assert.match(v.problems[0].why, /check crashed/);
+});
+
+test('thin ScrapingBee balance never pages (ride-out policy, BRO-7854); exhausted does (2026-11-21 false page: 91% used, 23,738 left)', () => {
+  const today = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, usedCredits: 976262, maxCredits: 1000000, remaining: 23738 } });
+  assert.equal(today.ok, true);
+  assert.match(today.sbNote, /91% used/);
+  const thin = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 99, usedCredits: 995000, maxCredits: 1000000, remaining: 5000 } });
+  assert.equal(thin.ok, true);
+  assert.match(thin.sbNote, /5000 left/);
+  const empty = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
+  assert.deepEqual(empty.problems.map((p) => p.key), ['ScrapingBee credits']);
+  const noCount = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100 } });
+  assert.deepEqual(noCount.problems.map((p) => p.key), ['ScrapingBee credits']);
+});
+
+test('unreadable credit status: no page, but flagged so the run does not clear earlier pages', () => {
+  for (const sb of [null, { ok: false, reason: 'api-error', message: 'timeout' }]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.equal(v.ok, true);
+    assert.equal(v.sbUnknown, true);
+  }
+  assert.match(preflightVerdict({ results: all(), sb: { ok: false, reason: 'api-error', message: 'timeout' } }).sbNote, /Could not read/);
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 10, usedCredits: 1, maxCredits: 10, remaining: 9 } }).sbUnknown, false);
+});
+
+test('live-shaped ScrapingBee replies (captured 2026-11-21 from fetchSBCreditStatus)', () => {
+  const live401 = { ok: false, reason: 'api-error', status: 401, message: 'usage endpoint returned 401' };
+  const noKey = { ok: false, reason: 'no-key', message: 'SCRAPINGBEE_API_KEY not set' };
+  const missingCount = { ok: true, maxCredits: 250000, usedCredits: 250000, pctUsed: 100, pctRemaining: 0 };
+  for (const sb of [live401, noKey]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.deepEqual([v.ok, v.problems.length, v.sbUnknown], [true, 0, true]);
+    assert.ok(v.sbNote);
+  }
+  const m = preflightVerdict({ results: all(), sb: missingCount });
+  assert.deepEqual(m.problems.map((p) => p.key), ['ScrapingBee credits']);
+});

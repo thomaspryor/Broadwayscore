@@ -1,0 +1,93 @@
+{
+  "issueNumber": "bro-7250-d261116",
+  "planId": "90293abe-f6a8-4e2e-a14e-33e7104661fa",
+  "status": "partial",
+  "createdAt": "2026-11-16T20:51:24.239Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7250: 2 local productions from theatre season pages",
+    "steps": [
+      "add misalliance-regional-2027",
+      "add a-christmas-carol-north-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add misalliance-regional-2027",
+        "show": {
+          "id": "misalliance-regional-2027",
+          "title": "Misalliance",
+          "slug": "misalliance-regional-2027",
+          "venue": "North Coast Repertory Theatre, Solana Beach, CA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-02-24",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-03-21",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-16",
+          "evidenceUrls": [
+            "https://northcoastrep.org/production/misalliance/"
+          ],
+          "images": {
+            "poster": "/images/shows/misalliance-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/misalliance-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add a-christmas-carol-north-regional-2026",
+        "show": {
+          "id": "a-christmas-carol-north-regional-2026",
+          "title": "A CHRISTMAS CAROL",
+          "slug": "a-christmas-carol-north-regional-2026",
+          "venue": "North Shore Music Theatre, Beverly, MA",
+          "status": "upcoming",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-12-03",
+          "openingDateSource": "production page \"(https://nsmt.org/bill.html) December 3 - December 23, 2026 Don't mis\" (https://nsmt.org/achristmascarol.html)",
+          "closingDate": "2026-12-23",
+          "closingDateSource": "production page \"(https://nsmt.org/bill.html) December 3 - December 23, 2026 Don't mis\" (https://nsmt.org/achristmascarol.html)",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-16",
+          "evidenceUrls": [
+            "https://nsmt.org/achristmascarol.html"
+          ],
+          "images": {
+            "poster": "/images/shows/a-christmas-carol-north-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/a-christmas-carol-north-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T20:55:36.705Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added misalliance-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "duplicateOf": "a-christmas-carol-a-musical-ghost-story-regional-2026",
+      "reason": "add-show: \"a-christmas-carol-north-regional-2026\" duplicates existing \"a-christmas-carol-a-musical-ghost-story-regional-2026\" (\"a-christmas-carol-north-regional-2026\" and \"a-christmas-carol-a-musical-ghost-story-regional-2026\" share a venue + overlapping dates and one title is a fragment of the other); if it is a genuinely distinct production list \"a-christmas-carol-a-musical-ghost-story-regional-2026\" in the action's distinctFrom"
+    }
+  ],
+  "executedIn": "ci"
+}

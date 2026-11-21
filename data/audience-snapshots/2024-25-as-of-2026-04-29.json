@@ -1,0 +1,506 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.672Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2024-25",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 18,
+    "eligibleShowCount": 0,
+    "totalShows": 18,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "oh-mary-2024": {
+      "title": "Oh, Mary!",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 89.05,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 2389
+        },
+        "mezzanine": {
+          "score": 87,
+          "reviewCount": 4584
+        },
+        "theatr": {
+          "score": 92,
+          "reviewCount": 4265
+        },
+        "broadwayCom": {
+          "score": 86,
+          "reviewCount": 376
+        },
+        "reddit": {
+          "score": 73,
+          "reviewCount": 388
+        }
+      }
+    },
+    "our-town-2024": {
+      "title": "Our Town",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 68.48,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 863
+        },
+        "mezzanine": {
+          "score": 67,
+          "reviewCount": 753
+        },
+        "theatr": {
+          "score": 59,
+          "reviewCount": 880
+        },
+        "reddit": {
+          "score": 54,
+          "reviewCount": 325
+        }
+      }
+    },
+    "maybe-happy-ending-2024": {
+      "title": "Maybe Happy Ending",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 93.84,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 95,
+          "reviewCount": 3213
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 5493
+        },
+        "theatr": {
+          "score": 95,
+          "reviewCount": 5110
+        },
+        "broadwayCom": {
+          "score": 96,
+          "reviewCount": 476
+        },
+        "reddit": {
+          "score": 88,
+          "reviewCount": 649
+        }
+      }
+    },
+    "death-becomes-her-2024": {
+      "title": "Death Becomes Her",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 91.03,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 94,
+          "reviewCount": 4202
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 5818
+        },
+        "theatr": {
+          "score": 92,
+          "reviewCount": 4713
+        },
+        "broadwayCom": {
+          "score": 94,
+          "reviewCount": 617
+        },
+        "reddit": {
+          "score": 81,
+          "reviewCount": 248
+        }
+      }
+    },
+    "buena-vista-social-club-2025": {
+      "title": "Buena Vista Social Club",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 91.24,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 96,
+          "reviewCount": 2103
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 1267
+        },
+        "theatr": {
+          "score": 92,
+          "reviewCount": 1231
+        },
+        "broadwayCom": {
+          "score": 96,
+          "reviewCount": 851
+        },
+        "reddit": {
+          "score": 72,
+          "reviewCount": 411
+        }
+      }
+    },
+    "operation-mincemeat-2025": {
+      "title": "Operation Mincemeat",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 88.81,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 1023
+        },
+        "mezzanine": {
+          "score": 89,
+          "reviewCount": 3648
+        },
+        "theatr": {
+          "score": 88,
+          "reviewCount": 2466
+        },
+        "broadwayCom": {
+          "score": 92,
+          "reviewCount": 481
+        },
+        "reddit": {
+          "score": 83,
+          "reviewCount": 508
+        }
+      }
+    },
+    "purpose-2025": {
+      "title": "Purpose",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 89.64,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 95,
+          "reviewCount": 1425
+        },
+        "mezzanine": {
+          "score": 86,
+          "reviewCount": 755
+        },
+        "theatr": {
+          "score": 92,
+          "reviewCount": 672
+        },
+        "reddit": {
+          "score": 64,
+          "reviewCount": 314
+        }
+      }
+    },
+    "english-2025": {
+      "title": "English",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 81.15,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 366
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 505
+        },
+        "theatr": {
+          "score": 88,
+          "reviewCount": 442
+        },
+        "reddit": {
+          "score": 62,
+          "reviewCount": 389
+        }
+      }
+    },
+    "the-hills-of-california-2024": {
+      "title": "The Hills of California",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 81.96,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 467
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 835
+        },
+        "theatr": {
+          "score": 83,
+          "reviewCount": 1058
+        },
+        "reddit": {
+          "score": 67,
+          "reviewCount": 236
+        }
+      }
+    },
+    "john-proctor-is-the-villain-2025": {
+      "title": "John Proctor is the Villain",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 95.63,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 95,
+          "reviewCount": 1699
+        },
+        "mezzanine": {
+          "score": 95,
+          "reviewCount": 2844
+        },
+        "theatr": {
+          "score": 97,
+          "reviewCount": 2150
+        },
+        "broadwayCom": {
+          "score": 94,
+          "reviewCount": 59
+        }
+      }
+    },
+    "dead-outlaw-2025": {
+      "title": "Dead Outlaw",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 77.68,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 609
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 1870
+        },
+        "theatr": {
+          "score": 75,
+          "reviewCount": 1294
+        },
+        "reddit": {
+          "score": 65,
+          "reviewCount": 450
+        }
+      }
+    },
+    "eureka-day-2024": {
+      "title": "Eureka Day",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 78.88,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 87,
+          "reviewCount": 514
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 551
+        },
+        "theatr": {
+          "score": 83,
+          "reviewCount": 523
+        },
+        "reddit": {
+          "score": 63,
+          "reviewCount": 537
+        }
+      }
+    },
+    "romeo-juliet-2024": {
+      "title": "Romeo + Juliet",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 75.73,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 80,
+          "reviewCount": 538
+        },
+        "theatr": {
+          "score": 77,
+          "reviewCount": 1541
+        },
+        "reddit": {
+          "score": 63,
+          "reviewCount": 550
+        }
+      }
+    },
+    "yellow-face-2024": {
+      "title": "Yellow Face",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 73.29,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 335
+        },
+        "mezzanine": {
+          "score": 73,
+          "reviewCount": 423
+        },
+        "theatr": {
+          "score": 74,
+          "reviewCount": 506
+        },
+        "reddit": {
+          "score": 58,
+          "reviewCount": 371
+        }
+      }
+    },
+    "sunset-boulevard-2024": {
+      "title": "Sunset Boulevard",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 87.6,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 3495
+        },
+        "mezzanine": {
+          "score": 90,
+          "reviewCount": 6049
+        },
+        "theatr": {
+          "score": 85,
+          "reviewCount": 5159
+        },
+        "broadwayCom": {
+          "score": 88,
+          "reviewCount": 379
+        },
+        "reddit": {
+          "score": 65,
+          "reviewCount": 348
+        }
+      }
+    },
+    "floyd-collins-2025": {
+      "title": "Floyd Collins",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 65.3,
+      "designation": "Disliking",
+      "sources": {
+        "showScore": {
+          "score": 73,
+          "reviewCount": 428
+        },
+        "mezzanine": {
+          "score": 70,
+          "reviewCount": 1637
+        },
+        "theatr": {
+          "score": 56,
+          "reviewCount": 1123
+        },
+        "reddit": {
+          "score": 59,
+          "reviewCount": 429
+        }
+      }
+    },
+    "gypsy-2024": {
+      "title": "Gypsy",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 84.95,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 1878
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 3541
+        },
+        "theatr": {
+          "score": 83,
+          "reviewCount": 3189
+        },
+        "broadwayCom": {
+          "score": 94,
+          "reviewCount": 396
+        },
+        "reddit": {
+          "score": 75,
+          "reviewCount": 369
+        }
+      }
+    },
+    "pirates-the-penzance-musical-2025": {
+      "title": "Pirates! The Penzance Musical",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 78.17,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 87,
+          "reviewCount": 704
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 982
+        },
+        "theatr": {
+          "score": 77,
+          "reviewCount": 568
+        },
+        "reddit": {
+          "score": 67,
+          "reviewCount": 236
+        }
+      }
+    }
+  }
+}

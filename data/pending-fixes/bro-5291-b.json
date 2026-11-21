@@ -1,0 +1,210 @@
+{
+  "issueNumber": "bro-5291-b",
+  "planId": "104009a6-3edf-4795-a159-9d24f1cbb3ee",
+  "status": "applied",
+  "createdAt": "2026-10-22T12:07:00.401Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Commercial sources: replace the last 4 Wikipedia links with fetched articles that state the facts; correct Prince of Broadway note closing date to 2017-10-29",
+    "steps": [
+      "commercial.json: maybe-happy-ending.sources",
+      "commercial.json: the-balusters.sources",
+      "commercial.json: the-kite-runner-2022.sources",
+      "commercial.json: prince-of-broadway-2017.sources",
+      "commercial.json: prince-of-broadway-2017.notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "maybe-happy-ending",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/Maybe_Happy_Ending",
+            "date": "2026-10-01"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2021672/000202167225000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-01-22"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwayjournal.com/intimate-maybe-happy-ending-engineers-turnaround/",
+            "date": "2025-06-09"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2021672/000202167225000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-01-22"
+          }
+        ],
+        "description": "commercial.json: maybe-happy-ending.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-balusters",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://deadline.com/2026/05/balusters-broadway-closing-date-1236901278/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Manhattan_Theatre_Club",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://deadline.com/2026/05/balusters-broadway-closing-date-1236901278/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2025-26-season/the-balusters/",
+            "date": null
+          }
+        ],
+        "description": "commercial.json: the-balusters.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-kite-runner-broadway-helen-hayes-theatre-2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/10/17/with-the-kite-runner-one-theatrical-production-company-is-revolutionizing-traditional-business-models/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Kite_Runner_(play)",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1885850/000188585021000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-09-30"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-kite-runner-broadway-helen-hayes-theatre-2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/10/17/with-the-kite-runner-one-theatrical-production-company-is-revolutionizing-traditional-business-models/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/khaled-hosseinis-the-kite-runner-to-play-broadways-helen-hayes-theatre_93240/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1885850/000188585021000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-09-30"
+          }
+        ],
+        "description": "commercial.json: the-kite-runner-2022.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "prince-of-broadway-2017",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Prince_of_Broadway_(musical)",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2017-18-season/prince-of-broadway/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/prince-of-broadway-will-open-on-broadway-this-summer",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/shows/2017-18-season/prince-of-broadway/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/mtcs-prince-of-broadway-extends-through-to-october-29",
+            "date": "2017-10-19"
+          }
+        ],
+        "description": "commercial.json: prince-of-broadway-2017.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "prince-of-broadway-2017",
+        "field": "notes",
+        "oldValue": "MTC 2017-18 season at Friedman + Gorgeous Entertainment (Umeda Arts Theater, Japan commercial co-producer that originated the Tokyo/Osaka 2015 run). Hal Prince retrospective revue, 21-cast; his final Broadway credit. Closed 2017-10-22.",
+        "newValue": "MTC 2017-18 season at Friedman + Gorgeous Entertainment (Umeda Arts Theater, Japan commercial co-producer that originated the Tokyo/Osaka 2015 run). Hal Prince retrospective revue, 21-cast; his final Broadway credit. Closed 2017-10-29 (extended from 2017-10-22).",
+        "description": "commercial.json: prince-of-broadway-2017.notes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T13:07:00.646Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-balusters"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for prince-of-broadway-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for prince-of-broadway-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

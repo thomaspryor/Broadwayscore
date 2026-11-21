@@ -1,0 +1,579 @@
+/**
+ * Pure decision functions for the Off-Broadway closing-date detector.
+ *
+ * Two independent signals feed the same report:
+ *  1. Review-text sweep — regex-scan review fullText for closing-date
+ *     boilerplate ("runs through <date>", "closes <date>", etc), resolve
+ *     the year from the review's publishDate (never from URLs), and
+ *     corroborate across reviews for the same show.
+ *  2. TodayTix staleness diff — an OB show with a todaytixId that has
+ *     dropped out of the daily showtimes feed for several consecutive
+ *     checks is a candidate-closed signal.
+ *
+ * Exported so scripts/detect-ob-closings.js and the colocated test file
+ * both call the same functions (CLAUDE.md §15 — never copy logic into tests).
+ */
+
+const { foldDiacritics } = require('./title-match');
+
+const MONTH_NAMES = {
+  jan: 1, january: 1,
+  feb: 2, february: 2,
+  mar: 3, march: 3,
+  apr: 4, april: 4,
+  may: 5,
+  jun: 6, june: 6,
+  jul: 7, july: 7,
+  aug: 8, august: 8,
+  sep: 9, sept: 9, september: 9,
+  oct: 10, october: 10,
+  nov: 11, november: 11,
+  dec: 12, december: 12,
+};
+
+const MONTH_RE_FRAGMENT = '(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)';
+const DOW_RE_FRAGMENT = '(?:Sun|Mon|Tue(?:s)?|Wed(?:nesday)?|Thu(?:rs)?|Fri|Sat)(?:day)?';
+
+const TEXT_DATE_FRAGMENT = `(?:${DOW_RE_FRAGMENT}\\.?,?\\s+)?(?<month>${MONTH_RE_FRAGMENT})\\.?\\s+(?<day>\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s*(?<year>\\d{4}))?`;
+const NUMERIC_DATE_FRAGMENT = `(?<nmonth>\\d{1,2})\\/(?<nday>\\d{1,2})(?:\\/(?<nyear>\\d{2,4}))?`;
+
+// Anchor phrases that signal a closing-date boilerplate sentence. Order matters:
+// the longer "runs through/thru" and "limited run through" alternatives must be
+// tried before the bare "through"/"thru" so the anchor captured in the quote is
+// the fuller phrase when present.
+const ANCHOR_FRAGMENT = '(?:runs?\\s+(?:through|thru)|limited\\s+run\\s+through|through|thru|closes?|final\\s+performances?)';
+
+// A date must immediately follow the anchor (with only an optional connector
+// word like "on"/"is"/"are" in between) for a match. This is what rejects
+// "through the years" — "the" matches neither the month-name nor numeric
+// date fragment, so the whole alternation fails at that position.
+const MENTION_RE = new RegExp(
+  `\\b(?<anchor>${ANCHOR_FRAGMENT})\\b(?:\\s+(?:on|is|are))?\\s+(?:${TEXT_DATE_FRAGMENT}|${NUMERIC_DATE_FRAGMENT})`,
+  'gi'
+);
+
+/**
+ * Scans fullText for closing-date boilerplate mentions. Returns raw mentions
+ * with month/day parsed but year left unresolved (null) when the text omits it —
+ * resolveMentionDate() fills that in from review context, never from a URL.
+ */
+function extractClosingDateMentions(fullText) {
+  if (!fullText || typeof fullText !== 'string') return [];
+  const mentions = [];
+  const re = new RegExp(MENTION_RE.source, MENTION_RE.flags);
+  let m;
+  while ((m = re.exec(fullText)) !== null) {
+    const g = m.groups || {};
+    let month, day, year;
+    if (g.month) {
+      month = MONTH_NAMES[g.month.toLowerCase().replace(/\.$/, '')];
+      day = parseInt(g.day, 10);
+      year = g.year ? parseInt(g.year, 10) : null;
+    } else if (g.nmonth) {
+      month = parseInt(g.nmonth, 10);
+      day = parseInt(g.nday, 10);
+      year = g.nyear ? normalizeTwoDigitYear(g.nyear) : null;
+    } else {
+      continue;
+    }
+    if (!month || month < 1 || month > 12 || !day || day < 1 || day > 31) continue;
+    mentions.push({
+      anchor: g.anchor,
+      quote: m[0].trim(),
+      month,
+      day,
+      year,
+      index: m.index,
+    });
+    // Avoid zero-length-loop hazards; exec already advances past the match.
+  }
+  return mentions;
+}
+
+function normalizeTwoDigitYear(yearStr) {
+  if (yearStr.length === 4) return parseInt(yearStr, 10);
+  const twoDigit = parseInt(yearStr, 10);
+  return 2000 + twoDigit;
+}
+
+/**
+ * Resolves a mention's year using the review's publishDate when the mention
+ * text has no explicit year. If the resulting date falls more than a few days
+ * before the publish date, the boilerplate almost certainly refers to next
+ * year's date (e.g. a Dec-published review saying "through Jan 5").
+ *
+ * Returns an ISO date string ("YYYY-MM-DD") or null if unresolvable
+ * (no explicit year AND no publishDate to anchor against).
+ */
+function resolveMentionDate(mention, publishDateISO) {
+  let year = mention.year;
+  if (!year) {
+    if (!publishDateISO) return null;
+    const publishDate = new Date(`${publishDateISO}T00:00:00Z`);
+    if (isNaN(publishDate.getTime())) return null;
+    year = publishDate.getUTCFullYear();
+    const candidate = new Date(Date.UTC(year, mention.month - 1, mention.day));
+    const diffDays = (candidate.getTime() - publishDate.getTime()) / 86400000;
+    if (diffDays < -3) year += 1;
+  }
+  return `${year}-${String(mention.month).padStart(2, '0')}-${String(mention.day).padStart(2, '0')}`;
+}
+
+// Proximity thresholds for disambiguating a review that mentions several shows'
+// closing dates (roundup columns). Tuned against the real Times Square
+// Chronicles column that covers Spellbound alongside two other shows: the
+// Spellbound dates sit 22 and 43 chars from a title mention, the neighbours
+// 7220 and 38143 chars away.
+const TITLE_PROXIMITY_MAX_CHARS = 300;
+const TITLE_PROXIMITY_MARGIN_CHARS = 200;
+// Below this length a title matches too much ordinary prose to anchor on
+// ("Job", "SIX"). Those reviews keep the old all-mentions behaviour.
+const TITLE_PROXIMITY_MIN_TITLE_CHARS = 5;
+
+/**
+ * Character offsets of every occurrence of `title` in `fullText`, matched
+ * punctuation- and diacritic-insensitively ("Pied a Terre" finds "Pied à
+ * Terre"; "Marys Seacole" finds "Mary's Seacole").
+ *
+ * Diacritics are folded on a per-character basis so offsets stay aligned with
+ * the ORIGINAL string — normalizing the whole text first would shift every
+ * index after a multi-char fold and silently corrupt the distances.
+ */
+function findTitleOffsets(fullText, title) {
+  const tokens = foldDiacritics(String(title || ''))
+    .split(/[^A-Za-z0-9]+/)
+    .filter(Boolean);
+  if (tokens.length === 0) return [];
+  const pattern = tokens.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]+');
+  const folded = Array.from(fullText, (ch) => {
+    const f = foldDiacritics(ch);
+    // Keep a 1:1 char mapping; a fold that changes length would desync offsets.
+    return f.length === 1 ? f : ch;
+  }).join('');
+  const re = new RegExp(pattern, 'gi');
+  const offsets = [];
+  let m;
+  while ((m = re.exec(folded)) !== null) {
+    offsets.push(m.index);
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+  return offsets;
+}
+
+/** Smallest distance from `index` to any offset, or null when there are none. */
+function nearestTitleDistance(index, titleOffsets) {
+  if (!titleOffsets || titleOffsets.length === 0) return null;
+  return titleOffsets.reduce(
+    (best, off) => Math.min(best, Math.abs(index - off)),
+    Infinity
+  );
+}
+
+/**
+ * Picks the one date a multi-show review is stating about THIS show.
+ *
+ * A roundup column ("Suzanna Bowling's Times Square Chronicles") lists several
+ * productions with their own "through <date>" boilerplate. Aggregation across
+ * reviews cannot untangle that — by the time mentions from different shows are
+ * pooled they look like disagreement, and the show is dropped entirely. So the
+ * choice is made HERE, while the surrounding fullText is still available.
+ *
+ * Returns the winning mentions, or all of them unchanged when the title never
+ * appears, is too short to anchor on, or no date wins clearly enough.
+ */
+function disambiguateByTitleProximity(mentions, fullText, title) {
+  const distinctDates = new Set(mentions.map((m) => m.isoDate));
+  if (distinctDates.size < 2) return mentions;
+  if (!title || foldDiacritics(title).replace(/[^A-Za-z0-9]/g, '').length < TITLE_PROXIMITY_MIN_TITLE_CHARS) {
+    return mentions;
+  }
+
+  const titleOffsets = findTitleOffsets(fullText, title);
+  if (titleOffsets.length === 0) return mentions;
+
+  const byDate = new Map();
+  for (const mention of mentions) {
+    const distance = nearestTitleDistance(mention.index, titleOffsets);
+    if (distance === null) return mentions;
+    const prev = byDate.get(mention.isoDate);
+    if (prev === undefined || distance < prev) byDate.set(mention.isoDate, distance);
+  }
+
+  const ranked = [...byDate.entries()].sort((a, b) => a[1] - b[1]);
+  const [winnerDate, winnerDistance] = ranked[0];
+  const runnerUpDistance = ranked[1][1];
+  if (winnerDistance > TITLE_PROXIMITY_MAX_CHARS) return mentions;
+  if (runnerUpDistance - winnerDistance < TITLE_PROXIMITY_MARGIN_CHARS) return mentions;
+
+  return mentions
+    .filter((m) => m.isoDate === winnerDate)
+    .map((m) => ({ ...m, titleDistance: nearestTitleDistance(m.index, titleOffsets) }));
+}
+
+/**
+ * Convenience wrapper: extract + resolve in one call. Returns
+ * [{ isoDate, quote, anchor, index }] — mentions with an unresolvable year are
+ * dropped.
+ *
+ * Pass `{ title }` to enable title-proximity disambiguation for reviews that
+ * cover more than one show (see disambiguateByTitleProximity).
+ */
+function extractClosingDateCandidates(fullText, publishDateISO, options = {}) {
+  const mentions = extractClosingDateMentions(fullText)
+    .map((mention) => {
+      const isoDate = resolveMentionDate(mention, publishDateISO);
+      if (!isoDate) return null;
+      return { isoDate, quote: mention.quote, anchor: mention.anchor, index: mention.index };
+    })
+    .filter(Boolean);
+
+  return disambiguateByTitleProximity(mentions, fullText, options.title);
+}
+
+/**
+ * Run length in weeks between two ISO dates, or null if either is invalid
+ * or closing is not after opening.
+ */
+function runLengthWeeks(openingDateISO, closingDateISO) {
+  if (!openingDateISO || !closingDateISO) return null;
+  const opening = new Date(`${openingDateISO}T00:00:00Z`);
+  const closing = new Date(`${closingDateISO}T00:00:00Z`);
+  if (isNaN(opening.getTime()) || isNaN(closing.getTime())) return null;
+  const diffDays = (closing.getTime() - opening.getTime()) / 86400000;
+  if (diffDays <= 0) return null;
+  return diffDays / 7;
+}
+
+/**
+ * Corroborates closing-date candidates across a show's reviews and decides
+ * whether to propose a closingDate.
+ *
+ * reviewMentions: [{ reviewId, isoDate, quote }] — one entry per detected
+ * mention (a review can contribute 0, 1, or more).
+ *
+ * Proposes when:
+ *  - 2+ reviews (distinct reviewIds) agree on the same isoDate → confidence 'high'
+ *  - exactly 1 review contributes exactly 1 distinct isoDate, and the implied
+ *    run length (openingDate → isoDate) is 1–10 weeks → confidence 'medium'
+ * Otherwise returns null (including disagreement across reviews — that's
+ * ambiguous, not confident, and is surfaced separately for human review).
+ */
+function aggregateClosingDateCandidates(showId, openingDateISO, reviewMentions) {
+  if (!reviewMentions || reviewMentions.length === 0) return null;
+
+  const byDate = new Map();
+  for (const rm of reviewMentions) {
+    if (!byDate.has(rm.isoDate)) byDate.set(rm.isoDate, []);
+    byDate.get(rm.isoDate).push(rm);
+  }
+
+  let best = null;
+  for (const [isoDate, mentions] of byDate) {
+    const distinctReviews = new Set(mentions.map((m) => m.reviewId)).size;
+    if (!best || distinctReviews > best.distinctReviews) {
+      best = { isoDate, mentions, distinctReviews };
+    }
+  }
+
+  // The latest date ANY review mentions, which is not always the most-cited
+  // one: a run that gets extended keeps accumulating reviews quoting the
+  // original date, so the majority bucket can be the stale one. Carried here
+  // so the auto-apply gate can refuse exactly that shape.
+  const latestMentionedDate = [...byDate.keys()].sort().pop();
+
+  if (best.distinctReviews >= 2) {
+    return {
+      showId,
+      proposedClosingDate: best.isoDate,
+      latestMentionedDate,
+      confidence: 'high',
+      reason: `${best.distinctReviews} reviews agree`,
+      evidence: best.mentions,
+    };
+  }
+
+  if (byDate.size === 1 && best.distinctReviews === 1) {
+    const weeks = runLengthWeeks(openingDateISO, best.isoDate);
+    if (weeks !== null && weeks >= 1 && weeks <= 10) {
+      return {
+        showId,
+        proposedClosingDate: best.isoDate,
+        latestMentionedDate,
+        confidence: 'medium',
+        reason: `single review, ${weeks.toFixed(1)}wk implied run length`,
+        evidence: best.mentions,
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Updates the consecutive-missing-checks state for the TodayTix staleness
+ * diff. Called once per detector run (weekly cron).
+ *
+ * prevState: { [showId]: { consecutiveMissingChecks, firstMissingDate, lastCheckedDate } }
+ * candidateShowIds: ids of open OB shows that carry a todaytixId
+ * presentShowIds: Set of ids currently present in data/todaytix-showtimes.json
+ *
+ * Shows that reappear in the feed are dropped from the next state (reset).
+ */
+function updateTodayTixMissingState(prevState, candidateShowIds, presentShowIds, todayISO) {
+  const nextState = {};
+  for (const showId of candidateShowIds) {
+    if (presentShowIds.has(showId)) continue;
+    const prev = prevState[showId];
+    if (prev) {
+      nextState[showId] = {
+        consecutiveMissingChecks: prev.consecutiveMissingChecks + 1,
+        firstMissingDate: prev.firstMissingDate,
+        lastCheckedDate: todayISO,
+      };
+    } else {
+      nextState[showId] = {
+        consecutiveMissingChecks: 1,
+        firstMissingDate: todayISO,
+        lastCheckedDate: todayISO,
+      };
+    }
+  }
+  return nextState;
+}
+
+/**
+ * Decides which entries in the (updated) missing-state cross the
+ * consecutive-checks threshold and should be surfaced as candidate-closed.
+ * Default threshold is 2 consecutive weekly checks (~2 weeks stale) —
+ * tolerates a single feed hiccup without flagging.
+ */
+function decideTodayTixCandidates(state, thresholdChecks = 2) {
+  return Object.entries(state)
+    .filter(([, v]) => v.consecutiveMissingChecks >= thresholdChecks)
+    .map(([showId, v]) => ({
+      showId,
+      consecutiveMissingChecks: v.consecutiveMissingChecks,
+      firstMissingDate: v.firstMissingDate,
+    }));
+}
+
+// Reason code for shouldSuppressCandidate's future-dated branch — exported so
+// detect-ob-closings.js can pick these back out of the suppressed list to
+// auto-fill closingDate (see FUTURE_DATE_NOT_YET_CLOSED usage there).
+const FUTURE_DATE_NOT_YET_CLOSED = 'future-date-not-yet-closed';
+
+/**
+ * Suppression guard for proposals the weekly alert should NOT surface.
+ * Returns a reason string, or null when the candidate is actionable.
+ *
+ *  - 'already-has-closing-date': shows.json already carries a closingDate —
+ *    review-era dates are frequently superseded by extensions (Heathers was
+ *    extended Jan→Nov 2026; Dad Don't Read This Jul 11→18), so an existing
+ *    date always outranks review boilerplate. Never propose overwrites.
+ *  - 'future-date-not-yet-closed': the proposed date is still ahead of today.
+ *    The show hasn't closed — reviews are just quoting its announced end
+ *    date — so there is nothing to REVIEW here, only a closingDate to fill
+ *    in early. Card #799: america-who-hurt-you-off-broadway-2026 and
+ *    the-body-of-mary-... surfaced in the "awaiting review" backlog purely
+ *    because their announced (future) closing date wasn't in shows.json yet
+ *    — no human judgment was actually needed. See applyFutureClosingDateFills
+ *    in detect-ob-closings.js, which writes the date for exactly this reason
+ *    without touching status.
+ *  - 'stale-evidence': the proposed date is more than a year in the past for
+ *    a show still marked open. A truly stale-open show gets caught within
+ *    weeks; a year-old "runs through" quote on an open show means the run
+ *    extended or went open-ended (Little Shop of Horrors 2019 revival's
+ *    "through Jan 19" 2020 quotes).
+ */
+function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
+  if (show && show.closingDate) return 'already-has-closing-date';
+  if (proposedClosingDateISO && todayISO) {
+    if (proposedClosingDateISO > todayISO) return FUTURE_DATE_NOT_YET_CLOSED;
+    const proposed = new Date(`${proposedClosingDateISO}T00:00:00Z`);
+    const today = new Date(`${todayISO}T00:00:00Z`);
+    if ((today - proposed) / 86400000 > 365) return 'stale-evidence';
+  }
+  return null;
+}
+
+/**
+ * Decides whether a suppressed (future-dated) review-text proposal is safe
+ * to auto-fill into shows.json's closingDate, with no human review.
+ *
+ * Same evidence bar as selectAutoApplyClosures' closure path, minus the
+ * TodayTix corroboration (moot — the show hasn't closed, there's nothing to
+ * corroborate) and the past-date requirement (inverted — this only exists
+ * for FUTURE_DATE_NOT_YET_CLOSED suppressions), plus the SAME extension
+ * guard: a candidate's proposedClosingDate is its most-cited date, not
+ * necessarily its latest-mentioned one, so a run announced through Oct 4 and
+ * later extended to Oct 18 (with only one review yet reflecting that) must
+ * NOT auto-fill the stale Oct 4 date. Ship-check adversarial finding, card #799.
+ */
+function isEligibleForFutureClosingDateFill(candidate) {
+  if (!candidate || candidate.reason !== FUTURE_DATE_NOT_YET_CLOSED) return false;
+  if (candidate.confidence !== 'high') return false;
+  if (candidate.latestMentionedDate && candidate.latestMentionedDate > candidate.proposedClosingDate) return false;
+  return true;
+}
+
+/**
+ * Suppression guard for the TodayTix-staleness signal. Unlike the
+ * review-text sweep (shouldSuppressCandidate, above), this signal was
+ * missing an "already resolved" check entirely:
+ *
+ *  - A show that already carries a `closingDate` (set by this detector's
+ *    review-text sweep, by update-show-status.js, or by a human) has
+ *    nothing left to review — the run's end is known. Card #799: Shifters
+ *    (closingDate 2026-09-20, closing that same day) still surfaced as an
+ *    "awaiting review" candidate purely because status hadn't flipped to
+ *    'closed' yet — the same shape of false alarm as
+ *    shouldSuppressCandidate's 'already-has-closing-date' branch, just
+ *    never applied to this signal.
+ *  - An OB show confirmed STILL OPEN despite being delisted from TodayTix
+ *    has no field to record that resolution, so it re-flags every run
+ *    forever. Drunk Shakespeare is the documented case (see
+ *    selectAutoApplyClosures above): an open-ended immersive attraction
+ *    absent from TodayTix for 9+ checks while genuinely still running. A
+ *    session confirming that via web search had no way to make the finding
+ *    stick, so the same show re-litigated itself weekly.
+ *
+ * `todaytixStalenessIgnore: true` on the show record is that missing
+ * resolution — set once, by a human/session that has verified the show is
+ * still running through some other channel (official site, on-sale page,
+ * a review). `todaytixStalenessIgnoreReason` carries the audit trail.
+ */
+function shouldSuppressTodayTixCandidate(show) {
+  if (!show) return false;
+  if (show.todaytixStalenessIgnore === true) return true;
+  if (show.closingDate) return true;
+  return false;
+}
+
+/**
+ * Chooses which review-text proposals are safe to write to shows.json without
+ * a human in the loop.
+ *
+ * A digest line is not a fix. `my-joy-is-heavy-off-broadway-2025` was flagged
+ * high-confidence on five agreeing outlets, surfaced in the daily health digest
+ * for five consecutive months (escalating to `error` at 21 days), and was still
+ * status=open when a reader emailed in about a different stale show entirely.
+ * Anything that relies on someone hand-editing shows.json will rot the same way.
+ *
+ * So auto-apply, but only where two INDEPENDENT signals agree — matching the
+ * Broadway audit's two-signal rule in closing-audit-classify.js:
+ *   1. >=2 distinct reviews state the same closing date (confidence 'high'), and
+ *   2. the show has dropped out of the TodayTix feed for >=2 consecutive checks.
+ *
+ * Either signal alone produces false closures on real data: Drunk Shakespeare
+ * has been absent from TodayTix for 9 checks and is open-ended, while Little
+ * Shop of Horrors carries agreeing "through Jan 19" quotes from 2020 and is
+ * still running. Requiring both, plus a past date and no stored closingDate,
+ * selects exactly the genuinely-closed shows.
+ *
+ * Medium/low-confidence proposals stay alert-only.
+ */
+const AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS = 2;
+// A "check" is one invocation, so two workflow_dispatch runs an hour apart can
+// reach the count above without a day passing. Require the absence to span two
+// real weekly cycles as well (13d, not 14d, so a cron that drifts a few hours
+// earlier still qualifies).
+const AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS = 13;
+
+function daysBetween(fromISO, toISO) {
+  const from = new Date(`${fromISO}T00:00:00Z`);
+  const to = new Date(`${toISO}T00:00:00Z`);
+  if (isNaN(from.getTime()) || isNaN(to.getTime())) return null;
+  return (to.getTime() - from.getTime()) / 86400000;
+}
+
+function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, todayISO) {
+  const applied = [];
+  for (const candidate of candidates || []) {
+    if (candidate.confidence !== 'high') continue;
+
+    const show = showsById[candidate.showId];
+    if (!show || show.status !== 'open' || show.closingDate) continue;
+
+    // A show a human has confirmed still running despite TodayTix delisting
+    // (todaytixStalenessIgnore) must not let that same unreliable signal back
+    // in through this two-signal path — shouldSuppressTodayTixCandidate only
+    // filtered it out of the DISPLAYED todaytix candidates list, which this
+    // function never sees (it re-reads missingState directly). Ship-check
+    // adversarial finding, card #799.
+    if (shouldSuppressTodayTixCandidate(show)) continue;
+
+    // Never close a show on a date that has not happened yet.
+    if (!(candidate.proposedClosingDate < todayISO)) continue;
+
+    // Extension guard. Reviews keep quoting the originally announced date long
+    // after a run is extended, so the most-cited date is not the latest one.
+    // Verified against Shifters (2026): nine reviews agree on 2026-08-30 while
+    // the run actually went to 2026-09-20, with later reviews saying 09-13 —
+    // without this the show would have been closed three weeks early.
+    if (candidate.latestMentionedDate && candidate.latestMentionedDate > candidate.proposedClosingDate) {
+      continue;
+    }
+
+    const missing = todaytixMissingState && todaytixMissingState[candidate.showId];
+    const missingChecks = (missing && missing.consecutiveMissingChecks) || 0;
+    if (missingChecks < AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS) continue;
+
+    const missingDays = missing && missing.firstMissingDate ? daysBetween(missing.firstMissingDate, todayISO) : null;
+    if (missingDays === null || missingDays < AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS) continue;
+
+    applied.push({
+      showId: candidate.showId,
+      closingDate: candidate.proposedClosingDate,
+      reason: `${candidate.reason}; absent from TodayTix for ${missingChecks} consecutive checks over ${Math.round(missingDays)}d`,
+      evidence: candidate.evidence,
+    });
+  }
+  return applied;
+}
+
+/**
+ * Open OB shows neither closing signal can ever flag: no todaytixId (no
+ * staleness diff), no review-text dir (no boilerplate sweep), and no stored
+ * closingDate. Spellbound (SoHo Playhouse, OvationTix-only) sat `open` for two
+ * days past its 2026-09-06 close until a reader emailed in (BRO-3086). Reported
+ * so the blind spot is visible instead of silent; only shows past
+ * `graceDays` since opening are listed (brand-new shows have no reviews yet).
+ *
+ * @param {object[]} obShows open off-broadway shows
+ * @param {(showId: string) => boolean} hasReviewTexts
+ * @param {string} todayISO
+ * @param {number} [graceDays=10]
+ */
+function findUnmonitoredOpenShows(obShows, hasReviewTexts, todayISO, graceDays = 10) {
+  return (obShows || [])
+    .filter((s) => s.status === 'open' && !s.closingDate && (!s.todaytixId || s.todaytixStalenessIgnore === true))
+    .filter((s) => !hasReviewTexts(s.id))
+    .filter((s) => s.openingDate && daysBetween(s.openingDate, todayISO) >= graceDays)
+    .map((s) => ({
+      showId: s.id,
+      openingDate: s.openingDate,
+      daysOpen: daysBetween(s.openingDate, todayISO),
+      ticketPlatforms: (s.ticketLinks || []).map((l) => l.platform).filter(Boolean),
+    }));
+}
+
+module.exports = {
+  findUnmonitoredOpenShows,
+  MONTH_NAMES,
+  AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS,
+  AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS,
+  selectAutoApplyClosures,
+  extractClosingDateMentions,
+  resolveMentionDate,
+  extractClosingDateCandidates,
+  findTitleOffsets,
+  disambiguateByTitleProximity,
+  runLengthWeeks,
+  aggregateClosingDateCandidates,
+  shouldSuppressCandidate,
+  shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
+  FUTURE_DATE_NOT_YET_CLOSED,
+  updateTodayTixMissingState,
+  decideTodayTixCandidates,
+};

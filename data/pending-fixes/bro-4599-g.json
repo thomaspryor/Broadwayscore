@@ -1,0 +1,77 @@
+{
+  "issueNumber": "bro-4599-g",
+  "planId": "ccbf6d0e-6847-4cfa-8b59-76609e80a51d",
+  "status": "applied",
+  "createdAt": "2026-10-12T11:08:34.271Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Four reviews of another show kept live by a flag-combined-reviews.js joint-review override despite wrongShow:true. Re-assert the flag; the executor retracts the script override (BRO-4599).",
+    "steps": [
+      "becky-shaw-2026: NYT Monte Cristo review, the Monte Cristo dir holds it",
+      "the-play-that-goes-wrong-west-end-2021: Times review of Christmas Carol Goes Wrong",
+      "robin-hood-and-the-merry-mandem-off-west-end-2026: Palladium panto review",
+      "the-car-man-west-end-2026: Guardian review of I'm Every Woman"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "becky-shaw-2026/nytimes--elisabeth-vincentelli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "review of Monte Cristo, not Becky Shaw; retract the joint-review override"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "review of A Christmas Carol Goes Wrong; retract the joint-review override"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "robin-hood-and-the-merry-mandem-off-west-end-2026/london-theatre--olivia-rook.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the London Palladium Robin Hood panto; never names Robin Hood and the Merry Mandem"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/guardian--ammar-kalia.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of I'm Every Woman (Chaka Khan musical); never names The Car Man"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:51:28.737Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becky-shaw-2026/nytimes--elisabeth-vincentelli.json wrongShow: true -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/times-uk--clive-davis.json wrongShow: true -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "robin-hood-and-the-merry-mandem-off-west-end-2026/london-theatre--olivia-rook.json wrongShow: null -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/guardian--ammar-kalia.json wrongShow: null -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    }
+  ]
+}

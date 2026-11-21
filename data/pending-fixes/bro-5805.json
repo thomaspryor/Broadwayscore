@@ -1,0 +1,245 @@
+{
+  "issueNumber": "bro-5805",
+  "planId": "0083e17c-3350-4ee3-803e-60ad1fe43489",
+  "status": "applied",
+  "createdAt": "2026-10-25T22:30:13.360Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5805: seven Talkin' Broadway reviews wrongly excluded by automatic content checks. Cleared the flag on the six that read as real reviews of the right show (Dog Day Afternoon, Caroline MCC, My Joy Is Heavy, Marcel on the Train, Making a Show of Myself, The Dinosaurs), deleted the 2021 Caroline, or Change file that is a different show, and recorded why Public Charge stays excluded.",
+    "steps": [
+      "Read the stored text: a full 1,022-word review of Dog Day Afternoon (Stephen Adly Guirgis, August Wilson Theatre, opened 2026-03-30) that names all 15 cast members in the show record and ends on a verdict. The collector LLM called it a preview.",
+      "Read the stored text: a full 1,022-word review of Dog Day Afternoon (Stephen Adly Guirgis, August Wilson Theatre, opened 2026-03-30) that names all 15 cast members in the show record and ends on a verdict. The collector LLM called it a preview.",
+      "Read the stored text: a review of the MCC Theater play (opened 2025-10-01) about Maddie (Chloe Grace Moretz) and her daughter Caroline. Moretz is in the 2025 stage production; the content check mistook her for a film/TV cast.",
+      "Read the stored text: a review of the MCC Theater play (opened 2025-10-01) about Maddie (Chloe Grace Moretz) and her daughter Caroline. Moretz is in the 2025 stage production; the content check mistook her for a film/TV cast.",
+      "Read the stored text: after site navigation links, a review of the Bengsons' My Joy Is Heavy (New York Theatre Workshop, opened 2026-03-17) naming Abigail and Shaun Bengson and ending on the title. The content check judged the navigation prefix.",
+      "Read the stored text: after site navigation links, a review of the Bengsons' My Joy Is Heavy (New York Theatre Workshop, opened 2026-03-17) naming Abigail and Shaun Bengson and ending on the title. The content check judged the navigation prefix.",
+      "Same read: the review is of this show; the wrongShow verdict came from the navigation prefix.",
+      "Same read: the review is of this show; the wrongShow verdict came from the navigation prefix.",
+      "Read the stored text: after site navigation links, a review of Marcel on the Train naming 5 of the 6 cast in the show record. The content check judged the navigation prefix and called a full review truncated.",
+      "Read the stored text: after site navigation links, a review of Marcel on the Train naming 5 of the 6 cast in the show record. The content check judged the navigation prefix and called a full review truncated.",
+      "Read the stored text: after site navigation links, a review of Mary Kate O Flanagan's solo show at the Irish Repertory Studio Theatre (the one cast member in the show record).",
+      "Read the stored text: after site navigation links, a review of Mary Kate O Flanagan's solo show at the Irish Repertory Studio Theatre (the one cast member in the show record).",
+      "Read the stored text: a review of The Dinosaurs (Playwrights Horizons, opened 2026-02-04) naming 5 of the 6 cast in the show record, including April Matthis and Kathleen Chalfant, the actors the content check said did not match.",
+      "Read the stored text: a review of The Dinosaurs (Playwrights Horizons, opened 2026-02-04) naming 5 of the 6 cast in the show record, including April Matthis and Kathleen Chalfant, the actors the content check said did not match.",
+      "Not a duplicate of the Kimberly Ramirez review: it is Howard Miller's 2021 review of the Broadway musical Caroline, or Change (url CarolineorChange.html), a different show. Correctly excluded, and no other row carries it.",
+      "Record the deliberate exclusion on the file."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dog-day-afternoon-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: a full 1,022-word review of Dog Day Afternoon (Stephen Adly Guirgis, August Wilson Theatre, opened 2026-03-30) that names all 15 cast members in the show record and ends on a verdict. The collector LLM called it a preview."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-day-afternoon-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: a full 1,022-word review of Dog Day Afternoon (Stephen Adly Guirgis, August Wilson Theatre, opened 2026-03-30) that names all 15 cast members in the show record and ends on a verdict. The collector LLM called it a preview."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: a review of the MCC Theater play (opened 2025-10-01) about Maddie (Chloe Grace Moretz) and her daughter Caroline. Moretz is in the 2025 stage production; the content check mistook her for a film/TV cast."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: a review of the MCC Theater play (opened 2025-10-01) about Maddie (Chloe Grace Moretz) and her daughter Caroline. Moretz is in the 2025 stage production; the content check mistook her for a film/TV cast."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: after site navigation links, a review of the Bengsons' My Joy Is Heavy (New York Theatre Workshop, opened 2026-03-17) naming Abigail and Shaun Bengson and ending on the title. The content check judged the navigation prefix."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: after site navigation links, a review of the Bengsons' My Joy Is Heavy (New York Theatre Workshop, opened 2026-03-17) naming Abigail and Shaun Bengson and ending on the title. The content check judged the navigation prefix."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Same read: the review is of this show; the wrongShow verdict came from the navigation prefix."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Same read: the review is of this show; the wrongShow verdict came from the navigation prefix."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: after site navigation links, a review of Marcel on the Train naming 5 of the 6 cast in the show record. The content check judged the navigation prefix and called a full review truncated."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: after site navigation links, a review of Marcel on the Train naming 5 of the 6 cast in the show record. The content check judged the navigation prefix and called a full review truncated."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "making-a-show-of-myself-off-broadway-2026/talkinbroadway--marc-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: after site navigation links, a review of Mary Kate O Flanagan's solo show at the Irish Repertory Studio Theatre (the one cast member in the show record)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "making-a-show-of-myself-off-broadway-2026/talkinbroadway--marc-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: after site navigation links, a review of Mary Kate O Flanagan's solo show at the Irish Repertory Studio Theatre (the one cast member in the show record)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the stored text: a review of The Dinosaurs (Playwrights Horizons, opened 2026-02-04) naming 5 of the 6 cast in the show record, including April Matthis and Kathleen Chalfant, the actors the content check said did not match."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read the stored text: a review of The Dinosaurs (Playwrights Horizons, opened 2026-02-04) naming 5 of the 6 cast in the show record, including April Matthis and Kathleen Chalfant, the actors the content check said did not match."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "caroline-off-broadway-2026/talkinbroadway--unknown.json",
+        "description": "Not a duplicate of the Kimberly Ramirez review: it is Howard Miller's 2021 review of the Broadway musical Caroline, or Change (url CarolineorChange.html), a different show. Correctly excluded, and no other row carries it.",
+        "destinationPath": null
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/talkinbroadway--howard-miller.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This text is primarily website navigation elements, forum post headers, and technical data rather than a complete review. The actual review content is minimal and appears to be only an introductory paragraph with no critical evaluation.; openai: The text consists of navigation menus, links, and other non-article content, with no evaluative review of the show.",
+        "newValue": "claude: This text is primarily website navigation elements, forum post headers, and technical data rather than a complete review. The actual review content is minimal and appears to be only an introductory paragraph with no critical evaluation.; openai: The text consists of navigation menus, links, and other non-article content, with no evaluative review of the show. | BRO-5805 (2026-10-25): left excluded deliberately. The stored body is 1,274 characters of Talkin' Broadway message-board navigation with no review prose, and the live page cannot be read from a cloud session (Cloudflare 403), so no clean text is available. The daily collector (BRO-5679) re-fetches it.",
+        "description": "Record the deliberate exclusion on the file."
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T01:33:07.754Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-day-afternoon-2026/talkinbroadway--howard-miller.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-day-afternoon-2026/talkinbroadway--howard-miller.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-off-broadway-2026/talkinbroadway--kimberly-ramirez.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-off-broadway-2026/talkinbroadway--kimberly-ramirez.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-joy-is-heavy-off-broadway-2025/talkinbroadway--marc-miller.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marcel-on-the-train-off-broadway-2026/talkinbroadway--james-wilson.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "making-a-show-of-myself-off-broadway-2026/talkinbroadway--marc-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "making-a-show-of-myself-off-broadway-2026/talkinbroadway--marc-miller.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-dinosaurs-off-broadway-2026/talkinbroadway--marc-miller.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-off-broadway-2026/talkinbroadway--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "public-charge-off-broadway-2026/talkinbroadway--howard-miller.json rejectionReasoning: \"claude: This text is primarily website navigation elements, forum post headers, and technical data rather than a complete review. The actual review content is minimal and appears to be only an introductory paragraph with no critical evaluation.; openai: The text consists of navigation menus, links, and other non-article content, with no evaluative review of the show.\" -> \"claude: This text is primarily website navigation elements, forum post headers, and technical data rather than a complete review. The actual review content is minimal and appears to be only an introductory paragraph with no critical evaluation.; openai: The text consists of navigation menus, links, and other non-article content, with no evaluative review of the show. | BRO-5805 (2026-10-25): left excluded deliberately. The stored body is 1,274 characters of Talkin' Broadway message-board navigation with no review prose, and the live page cannot be read from a cloud session (Cloudflare 403), so no clean text is available. The daily collector (BRO-5679) re-fetches it.\""
+    }
+  ],
+  "executedIn": "ci"
+}

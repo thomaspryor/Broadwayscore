@@ -1,0 +1,51 @@
+name: Board Worker Wake
+
+# BRO-6715: the owner answered a card (email button, digest button or a Linear reply). The board
+# worker routine only fires every 2 hours, so this starts it now through the routine's API trigger.
+# The token lives only in this repo's secrets (BOARD_WORKER_FIRE_URL, BOARD_WORKER_FIRE_TOKEN): with
+# neither set, this logs "not-configured" and the 2-hourly schedule still takes the card.
+# Dispatched by src/app/api/owner-decision/route.ts (a recorded answer) and by
+# scripts/linear-decision-reply-drain.js's workflow (a Linear reply). Writes nothing.
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Card the owner answered (BRO-N)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read   # the debounce lists this workflow's recent runs
+
+concurrency:
+  # concurrency-queue-ok: a debounce. One wake starts one worker; a wake queued behind a running one adds nothing, so keeping only the newest pending run is correct.
+  group: board-worker-wake
+  cancel-in-progress: false
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Fire the board worker routine
+        env:
+          BOARD_WORKER_FIRE_URL: ${{ secrets.BOARD_WORKER_FIRE_URL }}
+          BOARD_WORKER_FIRE_TOKEN: ${{ secrets.BOARD_WORKER_FIRE_TOKEN }}
+          REASON: ${{ inputs.reason }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/wake-board-worker.js "$REASON"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Board Worker Wake Failed'
+          severity: 'warning'

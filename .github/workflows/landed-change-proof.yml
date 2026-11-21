@@ -1,0 +1,109 @@
+name: Landed-change proof audit
+# BRO-7790 (owner approved option A, 2026-11-18): every code commit on main (cloud, Mac, Codex, bots) is checked
+# against independent run evidence: an Actions run that contains the commit and runs the changed file, or the live
+# READY Vercel deploy. Appends data/audit/landed-change-proof.jsonl (append-only); the morning digest prints one
+# line from it; misses with a full day behind them go to ONE Linear card ("Landed changes without run proof").
+# Advisory (CLAUDE.md section 19): the audit step is continue-on-error. Own workflow, not a data-health-check job,
+# so it can be dispatched alone and does not share that workflow's push budget.
+# 04:10 UTC: GitHub fires this repo's crons hours late (BRO-4800); this keeps the row ahead of the 11:30 UTC digest.
+on:
+  schedule:
+    - cron: '10 4 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: landed-change-proof
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      dispatch_workflows: ${{ steps.audit.outputs.dispatch_workflows }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # Full history, no blobs: the audit reads 5 days of commit trees (git log --name-only), not file contents.
+          fetch-depth: 0
+          filter: blob:none
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Audit landed changes (advisory)
+        id: audit
+        # lint-allow-swallow: advisory first (CLAUDE.md section 19); a failed night leaves no ledger row for the day,
+        # and the digest line then says "not measured this morning".
+        continue-on-error: true
+        timeout-minutes: 20
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/landed-change-proof-audit.js
+
+      - name: Commit proof ledger
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '300'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/landed-change-proof.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No proof ledger changes"
+          else
+            git commit -m "data: Landed-change proof ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Notify on failure
+        # The audit step is continue-on-error (advisory), so failure() alone would never see it.
+        if: failure() || steps.audit.outcome == 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Landed-change proof audit failed'
+          severity: 'warning'
+
+  # BRO-7796: dispatch the vetted no-spend workflows that prove not-run changes. Its own job so `actions: write` (which
+  # could dispatch or cancel any workflow) never sits beside the audit's contents: write, npm install and repo scripts.
+  # No checkout, no npm. The names come from the audit job's output but are re-checked against this list, which must
+  # equal DISPATCH_ALLOWLIST in scripts/lib/landed-change-proof.mjs (pinned by tests/unit/landed-change-proof-allowlist.test.mjs).
+  dispatch:
+    needs: audit
+    if: always() && needs.audit.outputs.dispatch_workflows != ''
+    runs-on: ubuntu-latest
+    # No checkout, so no local notify-failure action here: a failed dispatch is a ::warning:: and the commit simply
+    # reads not_run again the next night (the audit job above carries the workflow's notify-failure).
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch allowlisted workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REQUESTED: ${{ needs.audit.outputs.dispatch_workflows }}
+        run: |
+          allow=" check-cutoff-freshness.yml "
+          n=0
+          for wf in ${REQUESTED//,/ }; do
+            case "$allow" in
+              *" $wf "*) ;;
+              *) echo "::warning::refusing to dispatch $wf: not on the allowlist"; continue ;;
+            esac
+            [ "$n" -ge 3 ] && { echo "::warning::dispatch cap reached"; break; }
+            n=$((n+1))
+            gh workflow run "$wf" --ref main && echo "dispatched $wf" || echo "::warning::dispatch of $wf failed"
+          done

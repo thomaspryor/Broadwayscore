@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-7660-p",
+  "planId": "28e3fa0f-bf3d-4b01-bd3d-39849cf8a590",
+  "status": "applied",
+  "createdAt": "2026-11-21T15:15:38.689Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows still excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears 8 wrongly flagged reviews (manual-clear breadcrumbs) and re-asserts 11 genuine non-review exclusions (junk or news bodies) so the audit counts them as human-held. (part 1 of 2)",
+    "steps": [
+      "BRO-7660 KEEP_NR: stored body is unrelated news snippets, not the review",
+      "BRO-7660 KEEP_NR: stored body is unrelated news snippets, not the review",
+      "BRO-7660 KEEP_NR: stored body is unrelated Philadelphia arts news, not the review",
+      "BRO-7660 KEEP_NR: stored body is unrelated Philadelphia arts news, not the review",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a travel advertorial, not the review",
+      "BRO-7660 KEEP_NR: stored body is a travel advertorial, not the review",
+      "BRO-7660 CLEAR_NR: body is the TheaterMania review of the Cats revival at the Neil Simon",
+      "BRO-7660 CLEAR_NR: body is the TheaterMania review of the Cats revival at the Neil Simon",
+      "BRO-7660 KEEP_NR: body is a news story about drones in the show, not a review",
+      "BRO-7660 KEEP_NR: body is a news story about drones in the show, not a review",
+      "BRO-7660 CLEAR_WS: body reviews Les Miserables at the Sondheim, not another play",
+      "BRO-7660 CLEAR_WS: body reviews Les Miserables at the Sondheim, not another play",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a jewelry shopping article, not the review",
+      "BRO-7660 KEEP_NR: stored body is a jewelry shopping article, not the review",
+      "BRO-7660 CLEAR_WS: body is a review of Mindplay at the Greenwich House Theater",
+      "BRO-7660 CLEAR_WP: body reviews the Neil Simon Broadway production at its opening",
+      "BRO-7660 CLEAR_WP: body reviews the Neil Simon Broadway production at its opening",
+      "BRO-7660 CLEAR_WS: body is the Standard review of MJ at the Prince Edward"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/nbcny--robert-kahn.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is unrelated news snippets, not the review",
+        "description": "BRO-7660 KEEP_NR: stored body is unrelated news snippets, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/nbcny--robert-kahn.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is unrelated news snippets, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/philadelphia-inquirer--toby-zinman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is unrelated Philadelphia arts news, not the review",
+        "description": "BRO-7660 KEEP_NR: stored body is unrelated Philadelphia arts news, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/philadelphia-inquirer--toby-zinman.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is unrelated Philadelphia arts news, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/theater-news-online--brian-scott-lipton.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a domain-for-sale page",
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/theater-news-online--brian-scott-lipton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/theater-news-online--robert-cashill.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a domain-for-sale page",
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/theater-news-online--robert-cashill.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burlesque-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a travel advertorial, not the review",
+        "description": "BRO-7660 KEEP_NR: stored body is a travel advertorial, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burlesque-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a travel advertorial, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/theatermania--zachary-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: body is the TheaterMania review of the Cats revival at the Neil Simon"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/theatermania--zachary-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: body is the TheaterMania review of the Cats revival at the Neil Simon"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): body is a news story about drones in the show, not a review",
+        "description": "BRO-7660 KEEP_NR: body is a news story about drones in the show, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: body is a news story about drones in the show, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-west-end-2021/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews Les Miserables at the Sondheim, not another play"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-west-end-2021/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews Les Miserables at the Sondheim, not another play"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a domain-for-sale page",
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/nytg--diandra-rivera.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a jewelry shopping article, not the review",
+        "description": "BRO-7660 KEEP_NR: stored body is a jewelry shopping article, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/nytg--diandra-rivera.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a jewelry shopping article, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body is a review of Mindplay at the Greenwich House Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/nyt-theater--jonathan-mandell.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Neil Simon Broadway production at its opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/nyt-theater--jonathan-mandell.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Neil Simon Broadway production at its opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body is the Standard review of MJ at the Prince Edward"
+      }
+    ]
+  },
+  "executedAt": "2026-11-21T16:34:22.016Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/nbcny--robert-kahn.json isNonReviewReason: null -> \"manual (not a review): stored body is unrelated news snippets, not the review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/nbcny--robert-kahn.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/philadelphia-inquirer--toby-zinman.json isNonReviewReason: null -> \"manual (not a review): stored body is unrelated Philadelphia arts news, not the review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/philadelphia-inquirer--toby-zinman.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bandstand-2017/theater-news-online--brian-scott-lipton.json isNonReviewReason: null -> \"manual (not a review): stored body is a domain-for-sale page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bandstand-2017/theater-news-online--brian-scott-lipton.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/theater-news-online--robert-cashill.json isNonReviewReason: null -> \"manual (not a review): stored body is a domain-for-sale page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/theater-news-online--robert-cashill.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-off-west-end-2026/standard--nick-curtis.json isNonReviewReason: null -> \"manual (not a review): stored body is a travel advertorial, not the review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burlesque-off-west-end-2026/standard--nick-curtis.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json isNonReviewReason: null -> \"manual (not a review): body is a news story about drones in the show, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-west-end-2021/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-west-end-2021/standard--nick-curtis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json isNonReviewReason: null -> \"manual (not a review): stored body is a domain-for-sale page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/nytg--diandra-rivera.json isNonReviewReason: null -> \"manual (not a review): stored body is a jewelry shopping article, not the review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/nytg--diandra-rivera.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-2022/nyt-theater--jonathan-mandell.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-2022/nyt-theater--jonathan-mandell.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongShow: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

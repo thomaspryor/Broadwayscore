@@ -1,0 +1,205 @@
+{
+  "issueNumber": "bro-4451-b",
+  "planId": "1123afa1-1f4b-466d-8e17-2bb3c40f9fdb",
+  "status": "applied",
+  "createdAt": "2026-10-20T07:03:16.592Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4451: Reviews Hub reviews filed under the house byline or Unknown; real critic read from each live page Reviewer line (dry run of scripts/fix-thereviewshub-bylines.js, CI run 39383252809, unanimous single Reviewer line per page). Skips files whose target filename already exists. (part 2 of 2)",
+    "steps": [
+      "Set criticName on each file to the page Reviewer name."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "tartuffe-remixed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Maryam Philpott",
+        "description": "Page sub-title: Reviewer: Maryam Philpott"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-boy-at-the-back-of-the-class-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Helen Jones",
+        "description": "Page sub-title: Reviewer: Helen Jones"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Phoebe Taplin",
+        "description": "Page sub-title: Reviewer: Phoebe Taplin"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heart-off-broadway-2026/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Steven Wang",
+        "description": "Page sub-title: Reviewer: Steven Wang"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-the-seven-deadly-sins-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Patrick Shorrock",
+        "description": "Page sub-title: Reviewer: Patrick Shorrock"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-importance-of-being-oscar-off-west-end-2026/thereviewshub--the-reviews-hub-yorkshire-and-north-east.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Yorkshire & North East",
+        "newValue": "Ron Simpson",
+        "description": "Page sub-title: Reviewer: Ron Simpson"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Harry Mayes",
+        "description": "Page sub-title: Reviewer: Harry Mayes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mousetrap-west-end-2021/thereviewshub--the-reviews-hub-central.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Central",
+        "newValue": "Skylar Mabry",
+        "description": "Page sub-title: Reviewer: Skylar Mabry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Scotland",
+        "newValue": "Kieran McMath",
+        "description": "Page sub-title: Reviewer: Kieran McMath"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Scott Matthewman",
+        "description": "Page sub-title: Reviewer: Scott Matthewman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/thereviewshub--the-reviews-hub-film.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Film",
+        "newValue": "Lucian Tion",
+        "description": "Page sub-title: Reviewer: Lucian Tion"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Richard Maguire",
+        "description": "Page sub-title: Reviewer: Richard Maguire"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Ireland",
+        "newValue": "Benedict Pignatelli",
+        "description": "Page sub-title: Reviewer: Benedict Pignatelli"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-bway-2025/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Maryam Philpott",
+        "description": "Page sub-title: Reviewer: Maryam Philpott"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T07:15:12.257Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tartuffe-remixed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-boy-at-the-back-of-the-class-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Helen Jones\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Phoebe Taplin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heart-off-broadway-2026/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Steven Wang\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-the-seven-deadly-sins-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Patrick Shorrock\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-importance-of-being-oscar-off-west-end-2026/thereviewshub--the-reviews-hub-yorkshire-and-north-east.json criticName: \"The Reviews Hub - Yorkshire & North East\" -> \"Ron Simpson\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Harry Mayes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mousetrap-west-end-2021/thereviewshub--the-reviews-hub-central.json criticName: \"The Reviews Hub - Central\" -> \"Skylar Mabry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thereviewshub--the-reviews-hub-scotland.json criticName: \"The Reviews Hub - Scotland\" -> \"Kieran McMath\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Scott Matthewman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/thereviewshub--the-reviews-hub-film.json criticName: \"The Reviews Hub - Film\" -> \"Lucian Tion\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Richard Maguire\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json criticName: \"The Reviews Hub - Ireland\" -> \"Benedict Pignatelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Maryam Philpott\""
+    }
+  ],
+  "executedIn": "ci"
+}

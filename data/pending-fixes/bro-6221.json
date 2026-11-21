@@ -1,0 +1,597 @@
+{
+  "issueNumber": "bro-6221",
+  "planId": "9893063c-b09a-41d0-98e0-60a4f7c6f60b",
+  "status": "applied",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 1 of 9)",
+    "steps": [
+      "shows.json: antigone-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: lenny-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: after-the-fall-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: passion-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: night-mother-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: doubt-2005.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: julius-caesar-2005.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: goldas-balcony-2003.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-retreat-from-moscow-2003.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-violet-hour-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: taboo-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: anna-in-the-tropics-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: oldest-living-confederate-widow-tells-all-2003.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: jackie-masons-laughing-room-only-2003.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: wonderful-town-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: i-am-my-own-wife-2003.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: never-gonna-dance-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: drowning-crow-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: twentieth-century-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: sly-fox-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: match-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: sixteen-wounded-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: assassins-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: jumpers-2004.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: bombay-dreams-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "antigone-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/antigone-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: antigone-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lenny-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/lenny-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: lenny-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "after-the-fall-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/after-the-fall-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: after-the-fall-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "passion-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/passion-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: passion-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-mother-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/night-mother-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: night-mother-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doubt-2005",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/doubt-2005/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: doubt-2005.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "julius-caesar-2005",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/julius-caesar-2005/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: julius-caesar-2005.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "goldas-balcony-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/goldas-balcony-2003/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: goldas-balcony-2003.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-retreat-from-moscow-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-retreat-from-moscow-2003/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-retreat-from-moscow-2003.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-violet-hour-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-violet-hour-2003/thumbnail.jpg",
+          "poster": "/images/shows/the-violet-hour-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-violet-hour-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "taboo-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/taboo-2003/thumbnail.jpg",
+          "poster": "/images/shows/taboo-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: taboo-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anna-in-the-tropics-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/anna-in-the-tropics-2003/thumbnail.jpg",
+          "poster": "/images/shows/anna-in-the-tropics-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: anna-in-the-tropics-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oldest-living-confederate-widow-tells-all-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oldest-living-confederate-widow-tells-all-2003/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: oldest-living-confederate-widow-tells-all-2003.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jackie-masons-laughing-room-only-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackie-masons-laughing-room-only-2003/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: jackie-masons-laughing-room-only-2003.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wonderful-town-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wonderful-town-2003/thumbnail.jpg",
+          "poster": "/images/shows/wonderful-town-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: wonderful-town-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-am-my-own-wife-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/i-am-my-own-wife-2003/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: i-am-my-own-wife-2003.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "never-gonna-dance-2003",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/never-gonna-dance-2003/thumbnail.jpg",
+          "poster": "/images/shows/never-gonna-dance-2003/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: never-gonna-dance-2003.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "drowning-crow-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/drowning-crow-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: drowning-crow-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twentieth-century-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/twentieth-century-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: twentieth-century-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sly-fox-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sly-fox-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: sly-fox-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "match-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/match-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: match-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sixteen-wounded-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sixteen-wounded-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: sixteen-wounded-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "assassins-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/assassins-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: assassins-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jumpers-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: jumpers-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bombay-dreams-2004",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bombay-dreams-2004/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: bombay-dreams-2004.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T16:13:50.317Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for antigone-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lenny-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for after-the-fall-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for passion-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for night-mother-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for doubt-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for julius-caesar-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for goldas-balcony-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-retreat-from-moscow-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-violet-hour-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for taboo-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for anna-in-the-tropics-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for oldest-living-confederate-widow-tells-all-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jackie-masons-laughing-room-only-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wonderful-town-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for i-am-my-own-wife-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for never-gonna-dance-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for drowning-crow-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for twentieth-century-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sly-fox-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for match-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sixteen-wounded-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for assassins-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jumpers-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bombay-dreams-2004"
+    }
+  ],
+  "executedIn": "ci"
+}

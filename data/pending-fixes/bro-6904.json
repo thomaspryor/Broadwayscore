@@ -1,0 +1,171 @@
+{
+  "issueNumber": "bro-6904",
+  "planId": "053f373c-5175-4924-b657-a733f0735114",
+  "status": "applied",
+  "createdAt": "2026-11-19T19:05:25.523Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Daily Mail files whose stored text is scrambled: replace with the page's own text and star (BRO-6904)",
+    "steps": [
+      "Ingest p-rn-play-west-end-2025 from handed-off HTML: https://www.dailymail.com/tvshowbiz/article-15292119/One-Day-star-Ambika-Mod-puts-astonishing-performance-Porn-Play-reviewed-GEORGINA-BROWN.html",
+      "Ingest the-red-barn-west-end-2016 from handed-off HTML: https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html",
+      "Ingest the-caretaker-west-end-2016 from handed-off HTML: https://www.dailymail.com/tvshowbiz/article-3527601/Theatre-review-Caretaker-Timothy-Spall-PATRICK-MARMION.html",
+      "Ingest hangmen-west-end-2015 from handed-off HTML: https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
+      "Ingest made-in-dagenham-west-end-2014 from handed-off HTML: https://www.dailymail.co.uk/tvshowbiz/article-2822881/Bond-girl-conveyor-belt-raucous-fun-Quentin-Letts-night-review-Dagenham-Musical.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-red-barn-west-end-2016/daily-mail--quentin-letts.json",
+        "description": "Stored Theatre Record text is scrambled (shingle overlap <0.4 against its own, correct url); replaced by the page text via handoff ingest (BRO-6904)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-caretaker-west-end-2016/daily-mail--patrick-marmion.json",
+        "description": "Stored Theatre Record text is scrambled (shingle overlap <0.4 against its own, correct url); replaced by the page text via handoff ingest (BRO-6904)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hangmen-west-end-2015/daily-mail--quentin-letts.json",
+        "description": "Stored Theatre Record text is scrambled (shingle overlap <0.4 against its own, correct url); replaced by the page text via handoff ingest (BRO-6904)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "made-in-dagenham-west-end-2014/daily-mail--quentin-letts.json",
+        "description": "Stored Theatre Record text is scrambled (shingle overlap <0.4 against its own, correct url); replaced by the page text via handoff ingest (BRO-6904)"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "p-rn-play-west-end-2025",
+        "url": "https://www.dailymail.com/tvshowbiz/article-15292119/One-Day-star-Ambika-Mod-puts-astonishing-performance-Porn-Play-reviewed-GEORGINA-BROWN.html",
+        "outlet": "daily-mail",
+        "critic": "Georgina Brown",
+        "publishDate": "2025-11-14",
+        "description": "BRO-5886 html handoff: ingest https://www.dailymail.com/tvshowbiz/article-15292119/One-Day-star-Ambika-Mod-puts-astonishing-performance-Porn-Play-reviewed-GEORGINA-BROWN.html from HTML fetched outside CI",
+        "htmlBytes": 865788,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "7aeea29ec169b68a3e24e7dc56ce306c35c72ae84502c839c1cd546208d9abbf",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "the-red-barn-west-end-2016",
+        "url": "https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html",
+        "outlet": "daily-mail",
+        "critic": "Quentin Letts",
+        "publishDate": "2016-10-18",
+        "description": "BRO-5886 html handoff: ingest https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html from HTML fetched outside CI",
+        "htmlBytes": 864509,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "ca4d0406b58fb18942a9599854af6bffd9cd48b08c94f55eee7886dde8fd85aa",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "the-caretaker-west-end-2016",
+        "url": "https://www.dailymail.com/tvshowbiz/article-3527601/Theatre-review-Caretaker-Timothy-Spall-PATRICK-MARMION.html",
+        "outlet": "daily-mail",
+        "critic": "Patrick Marmion",
+        "publishDate": "2016-04-08",
+        "description": "BRO-5886 html handoff: ingest https://www.dailymail.com/tvshowbiz/article-3527601/Theatre-review-Caretaker-Timothy-Spall-PATRICK-MARMION.html from HTML fetched outside CI",
+        "htmlBytes": 864145,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "f68b7b626d0a95ee1ca548b872857771d37df8be3a0d96196927633af0221cfa",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "hangmen-west-end-2015",
+        "url": "https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
+        "outlet": "daily-mail",
+        "critic": "Quentin Letts",
+        "publishDate": "2015-12-08",
+        "description": "BRO-5886 html handoff: ingest https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html from HTML fetched outside CI",
+        "htmlBytes": 867209,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "a179561e5aa36a0ec2fcc876edc8600bd127d7f9c193d4959adfb465301857df",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "made-in-dagenham-west-end-2014",
+        "url": "https://www.dailymail.co.uk/tvshowbiz/article-2822881/Bond-girl-conveyor-belt-raucous-fun-Quentin-Letts-night-review-Dagenham-Musical.html",
+        "outlet": "daily-mail",
+        "critic": "Quentin Letts",
+        "publishDate": "2014-11-06",
+        "description": "BRO-5886 html handoff: ingest https://www.dailymail.co.uk/tvshowbiz/article-2822881/Bond-girl-conveyor-belt-raucous-fun-Quentin-Letts-night-review-Dagenham-Musical.html from HTML fetched outside CI",
+        "htmlBytes": 868524,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "0252be4f4bebc1dc7fa5ff758a4d45ecf8ba6cd905a97e14c385bff2cc3a2ea4",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-19T19:56:19.236Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-red-barn-west-end-2016/daily-mail--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-caretaker-west-end-2016/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hangmen-west-end-2015/daily-mail--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted made-in-dagenham-west-end-2014/daily-mail--quentin-letts.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.com/tvshowbiz/article-15292119/One-Day-star-Ambika-Mod-puts-astonishing-performance-Porn-Play-reviewed-GEORGINA-BROWN.html for p-rn-play-west-end-2025 from handed-off HTML (865688 chars)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html for the-red-barn-west-end-2016 from handed-off HTML (864419 chars)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.com/tvshowbiz/article-3527601/Theatre-review-Caretaker-Timothy-Spall-PATRICK-MARMION.html for the-caretaker-west-end-2016 from handed-off HTML (864057 chars)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html for hangmen-west-end-2015 from handed-off HTML (867107 chars)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.co.uk/tvshowbiz/article-2822881/Bond-girl-conveyor-belt-raucous-fun-Quentin-Letts-night-review-Dagenham-Musical.html for made-in-dagenham-west-end-2014 from handed-off HTML (868413 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

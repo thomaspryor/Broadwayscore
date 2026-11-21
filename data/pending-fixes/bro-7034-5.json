@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7034-5",
+  "planId": "ee6e9639-95c7-4de2-92fb-314b7390fe6b",
+  "status": "applied",
+  "createdAt": "2026-11-15T14:08:35.877Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7034: exclude 2025 Old Vic Christmas Carol review (Theatre Weekly) from the 2026 run entry (audit class A hit)",
+    "steps": [
+      "theatre-weekly Christmas Carol: manual wrongProduction reason",
+      "theatre-weekly Christmas Carol: exclude 2025-run review from 2026 entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/theatre-weekly--greg-stewart.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7034: Theatre Record print review dated 2025-11-26 is the Old Vic 2025 run (opened Nov 2025), not this 2026 run (opens 2026-11-24). Every other 2025-11-26 sibling in this folder is already wrongProduction; this one stayed live only because a 2026-04-12 cross-market rescue set allowCrossMarket, whose rebuild bypass auto-cleared the flag. Audit class A_cross_market hit.",
+        "description": "theatre-weekly Christmas Carol: manual wrongProduction reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/theatre-weekly--greg-stewart.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "theatre-weekly Christmas Carol: exclude 2025-run review from 2026 entry"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T14:18:53.410Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2026/theatre-weekly--greg-stewart.json wrongProductionReason: null -> \"BRO-7034: Theatre Record print review dated 2025-11-26 is the Old Vic 2025 run (opened Nov 2025), not this 2026 run (opens 2026-11-24). Every other 2025-11-26 sibling in this folder is already wrongProduction; this one stayed live only because a 2026-04-12 cross-market rescue set allowCrossMarket, whose rebuild bypass auto-cleared the flag. Audit class A_cross_market hit.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2026/theatre-weekly--greg-stewart.json wrongProduction: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    }
+  ],
+  "executedIn": "ci"
+}

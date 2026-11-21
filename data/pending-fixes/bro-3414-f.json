@@ -1,0 +1,349 @@
+{
+  "issueNumber": "bro-3414-f",
+  "planId": "d069dfeb-4dce-4095-826a-33e318a920e5",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct placeholder bylines on live reviews (BRO-3414). \"Eric March\" is the theaterlife.com WordPress import account shown as post author on every Drupal-imported review; each live page names the real critic in a \"By X\" line, or carries no byline. theaterscene.net \"Archive\"/\"Unknown\" files take the JSON-LD author (matching the URL author slug); New Yorker \"Condé Nast\" files take the \"By X\" critic, or Unknown where only the house byline appears. Every page was fetched live on 2026-10-12 and its canonical URL matched the file URL. Also un-glues 9 theaterlife bylines fused to the first word of the article. (part 5 of 12, split for the 25-action cap)",
+    "steps": [
+      "Set criticName to the byline printed on each live page",
+      "Set Unknown where the page names no critic",
+      "Strip the article word glued onto 9 theaterlife bylines"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "jerusalem-2011/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Paulanne Simmons",
+        "description": "live page byline reads \"By Paulanne Simmons\" (https://theaterlife.com/jerusalem-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-2012/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/jesus-christ-superstar/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "journeys-end-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/journeys-end/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/kinky-boots-ig-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-2010/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Patrick Christiano",
+        "description": "live page byline reads \"By Patrick Christiano\" (https://theaterlife.com/la-cage-aux-folles-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "legally-blonde-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/legally-blonde-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/les-liaisons-dangereuses/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-1987/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/les-miserables-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2006/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/les-miserables/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/les-miserables-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "looped-2010/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Patrick Christiano",
+        "description": "live page byline reads \"By Patrick Christiano\" (https://theaterlife.com/looped/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "losing-louie-2006/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/losing-louie/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "love-letters-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/love-letters/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lovemusik-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/lovemusik/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lucky-guy-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/lucky-guy-ds/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "martin-short-fame-becomes-me-2006/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/martin-short-fame-becomes-me/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-poppins-2006/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/mary-poppins/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-stuart-2009/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/mary-stuart/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "master-class-2011/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Patrick Christiano",
+        "description": "live page byline reads \"By Patrick Christiano\" (https://theaterlife.com/master-class/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/matilda-the-musical-ig/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mauritius-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/mauritius/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memphis-2009/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/memphis/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mothers-and-sons-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/mothers-and-sons-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/motown-the-musical-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-warrens-profession-2010/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/mrs-warrens-profession/)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T18:34:22.999Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jerusalem-2011/theater-life--eric-march.json criticName: \"Eric March\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2012/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "journeys-end-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kinky-boots-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-cage-aux-folles-2010/theater-life--eric-march.json criticName: \"Eric March\" -> \"Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "legally-blonde-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-1987/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2006/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "looped-2010/theater-life--eric-march.json criticName: \"Eric March\" -> \"Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "losing-louie-2006/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "love-letters-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lovemusik-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lucky-guy-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "martin-short-fame-becomes-me-2006/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-poppins-2006/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-stuart-2009/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/theater-life--eric-march.json criticName: \"Eric March\" -> \"Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mauritius-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memphis-2009/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mothers-and-sons-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "motown-the-musical-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mrs-warrens-profession-2010/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    }
+  ]
+}

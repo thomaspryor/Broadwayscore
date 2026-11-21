@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-7291",
+  "planId": "19ed84b2-c54d-4188-9c86-7dcb202f0224",
+  "status": "applied",
+  "createdAt": "2026-11-10T14:50:06.478Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7291 class 3: three Chicago hub shows stored the wrong theatre (octet opened at Raven before its Goodman transfer; Relentless 2022 ran at Theater Wit; Twihard 2024 premiered at Otherworld). Class 6: five season-page shows (no reviews yet) carried the first preview as opening date; their production pages print the official opening night.",
+    "steps": [
+      "shows.json: octet-regional-2026.venue",
+      "shows.json: relentless-regional-2022.venue",
+      "shows.json: twihard-a-twilight-musical-parody-regional-2024.venue",
+      "shows.json: as-you-like-it-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)",
+      "shows.json: as-you-like-it-regional-2026.openingDateSource",
+      "shows.json: arrowhead-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)",
+      "shows.json: arrowhead-regional-2026.openingDateSource",
+      "shows.json: particle-fever-regional-2027.openingDate (official opening on the production page, BRO-7291 class 6)",
+      "shows.json: particle-fever-regional-2027.openingDateSource",
+      "shows.json: mexodus-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)",
+      "shows.json: mexodus-regional-2026.openingDateSource",
+      "shows.json: charles-dickens-a-christmas-carol-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)",
+      "shows.json: charles-dickens-a-christmas-carol-regional-2026.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "octet-regional-2026",
+        "field": "venue",
+        "oldValue": "Goodman Theatre, Chicago, IL",
+        "newValue": "Raven Theatre, Chicago, IL",
+        "description": "shows.json: octet-regional-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relentless-regional-2022",
+        "field": "venue",
+        "oldValue": "Goodman Theatre, Chicago, IL",
+        "newValue": "Theater Wit, Chicago, IL",
+        "description": "shows.json: relentless-regional-2022.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twihard-a-twilight-musical-parody-regional-2024",
+        "field": "venue",
+        "oldValue": "Apollo Theater, Chicago, IL",
+        "newValue": "Otherworld Theatre, Chicago, IL",
+        "description": "shows.json: twihard-a-twilight-musical-parody-regional-2024.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-24",
+        "description": "shows.json: as-you-like-it-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "production page opening (https://newvillagearts.org/as-you-like-it/)",
+        "description": "shows.json: as-you-like-it-regional-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arrowhead-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-12",
+        "newValue": "2026-11-21",
+        "description": "shows.json: arrowhead-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arrowhead-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "production page opening (https://www.diversionary.org/arrowhead)",
+        "description": "shows.json: arrowhead-regional-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "particle-fever-regional-2027",
+        "field": "openingDate",
+        "oldValue": "2027-02-17",
+        "newValue": "2027-02-21",
+        "description": "shows.json: particle-fever-regional-2027.openingDate (official opening on the production page, BRO-7291 class 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "particle-fever-regional-2027",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "production page opening (https://lajollaplayhouse.org/show/particle-fever/)",
+        "description": "shows.json: particle-fever-regional-2027.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mexodus-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-12-04",
+        "newValue": "2026-12-10",
+        "description": "shows.json: mexodus-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mexodus-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "production page opening (https://americanrepertorytheater.org/shows-events/mexodus/)",
+        "description": "shows.json: mexodus-regional-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charles-dickens-a-christmas-carol-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-12-11",
+        "newValue": "2026-12-13",
+        "description": "shows.json: charles-dickens-a-christmas-carol-regional-2026.openingDate (official opening on the production page, BRO-7291 class 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charles-dickens-a-christmas-carol-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "production page opening (https://commshakes.org/production/scrooge26/)",
+        "description": "shows.json: charles-dickens-a-christmas-carol-regional-2026.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T18:38:56.986Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for octet-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for relentless-regional-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for twihard-a-twilight-musical-parody-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for arrowhead-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for arrowhead-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for particle-fever-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for particle-fever-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mexodus-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mexodus-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for charles-dickens-a-christmas-carol-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for charles-dickens-a-christmas-carol-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

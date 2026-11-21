@@ -1,0 +1,175 @@
+{
+  "issueNumber": "bro-6306",
+  "planId": "edd2394f-af43-4fbb-b863-18f2b4763b7b",
+  "status": "superseded",
+  "createdAt": "2026-10-26T11:11:21.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6306: add commercial records for seven 2016-17 and 2017-18 shows whose outcome a published source confirms (fills the season coverage gap so both seasons show on /biz)",
+    "steps": [
+      "angels-in-america: add commercial entry (2018 revival closed without recouping)",
+      "the-terms-of-my-surrender-2017: add commercial entry (closed at a loss)",
+      "a-dolls-house-part-2-2017: add commercial entry (closed at a loss)",
+      "charlie-and-the-chocolate-factory-2017: add commercial entry ($17.5M capitalization, did not recoup, $850K weekly operating cost)",
+      "indecent-2017: add commercial entry ($3.8M SEC capitalization, a flop)",
+      "present-laughter-2017: add commercial entry (did not recoup)",
+      "amelie-a-new-musical-2017: add commercial entry (lost its $12M capitalization)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "description": "angels-in-america: add commercial entry (2018 revival closed without recouping)",
+        "slug": "angels-in-america",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": null,
+          "recoupedSource": "Broadway News (Dec 19, 2019), on two-part plays including the 2018 Angels in America revival: \"apart from 'Nicholas Nickleby,' none of the shows have recouped during their commercial runs.\" https://www.broadwaynews.com/the-risks-and-rewards-of-two-part-plays-on-broadway/",
+          "notes": "Two-part revival from the National Theatre at the Neil Simon (opened Mar 25, 2018, closed Jul 15, 2018). Won the Tony for Best Revival of a Play but did not recoup during its commercial run. No capitalization was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-risks-and-rewards-of-two-part-plays-on-broadway/",
+              "date": "2019-12-19"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "the-terms-of-my-surrender-2017: add commercial entry (closed at a loss)",
+        "slug": "the-terms-of-my-surrender-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": null,
+          "recoupedSource": "Forbes (Feb 6, 2018): Michael Moore's solo show \"grossed less than half its potential, and closed at a loss to investors.\" https://www.forbes.com/sites/leeseymour/2018/02/06/john-leguizamos-latin-history-for-morons-recoups-investment-on-broadway/",
+          "notes": "Michael Moore's limited-engagement solo show at the Belasco (opened Aug 10, 2017, closed Oct 22, 2017). No capitalization was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2018/02/06/john-leguizamos-latin-history-for-morons-recoups-investment-on-broadway/",
+              "date": "2018-02-06"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "a-dolls-house-part-2-2017: add commercial entry (closed at a loss)",
+        "slug": "a-dolls-house-part-2-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": null,
+          "recoupedSource": "Forbes (Oct 23, 2017), on the spring 2017 plays: \"The rest have shuttered, most ahead of their planned dates and at a financial loss, including A Doll's House, Part 2.\" https://www.forbes.com/sites/leeseymour/2017/10/23/the-state-of-plays-on-broadway/",
+          "notes": "Lucas Hnath's play at the John Golden (opened Apr 27, 2017, closed Sep 24, 2017). Laurie Metcalf won the Tony for Best Actress in a Play. No capitalization was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2017/10/23/the-state-of-plays-on-broadway/",
+              "date": "2017-10-23"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "charlie-and-the-chocolate-factory-2017: add commercial entry ($17.5M capitalization, did not recoup, $850K weekly operating cost)",
+        "slug": "charlie-and-the-chocolate-factory-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 17500000,
+          "capitalizationBasis": "reported",
+          "capitalizationSource": "Forbes (Apr 10, 2017): \"With a $17.5m capitalization, it's the most expensive new musical on the docket.\" https://www.forbes.com/sites/leeseymour/2017/04/10/broadway-box-office-points-to-awards-season-bloodbath/",
+          "weeklyRunningCost": 850000,
+          "weeklyRunningCostBasis": "running",
+          "costMethodology": "trade-reported",
+          "weeklyRunningCostSource": "Forbes (Mar 28, 2019): \"its weekly ticket sales soon slipped underneath its $850,000 weekly operating costs\" https://www.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/",
+          "recoupedSource": "Forbes (Mar 28, 2019): \"The show did not recoup its initial investment.\" https://www.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/",
+          "notes": "Warner Bros.' revised version of the London musical at the Lunt-Fontanne (opened Apr 23, 2017, closed Jan 14, 2018). Sold about $1M a week in its first four months, then fell below its weekly operating cost.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2017/04/10/broadway-box-office-points-to-awards-season-bloodbath/",
+              "date": "2017-04-10"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/",
+              "date": "2019-03-28"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "indecent-2017: add commercial entry ($3.8M SEC capitalization, a flop)",
+        "slug": "indecent-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 3800000,
+          "capitalizationBasis": "maximum",
+          "capitalizationSource": "Broadway Journal (Jun 19, 2017): \"it was capitalized at $3.8 million, according to a filing with the Securities and Exchange Commission.\" https://www.broadwayjournal.com/p/from-oslo-to-come-from-away-tonys-provide-bounce",
+          "recoupedSource": "Broadway Journal (Jun 19, 2017): \"One of several flops in a punishing season for plays.\" https://www.broadwayjournal.com/p/from-oslo-to-come-from-away-tonys-provide-bounce",
+          "notes": "Paula Vogel's play at the Cort (opened Apr 18, 2017). It posted a closing notice for Jun 25, won Tonys for direction and lighting, then extended and closed Aug 6, 2017. The $3.8M is the SEC filing figure.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/from-oslo-to-come-from-away-tonys-provide-bounce",
+              "date": "2017-06-19"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "present-laughter-2017: add commercial entry (did not recoup)",
+        "slug": "present-laughter-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": null,
+          "recoupedSource": "Forbes (Jul 6, 2017): \"And while Present Laughter didn't recoup its costs, it remained the highest-grossing play on Broadway each week save one.\" https://www.forbes.com/sites/leeseymour/2017/07/06/bette-midlers-absence-wallops-broadway-box-office/",
+          "notes": "Kevin Kline-led limited revival at the St. James (opened Apr 5, 2017, closed Jul 2, 2017). Kline won the Tony for Best Actor in a Play. No capitalization was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2017/07/06/bette-midlers-absence-wallops-broadway-box-office/",
+              "date": "2017-07-06"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "amelie-a-new-musical-2017: add commercial entry (lost its $12M capitalization)",
+        "slug": "amelie-a-new-musical-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 12000000,
+          "capitalizationBasis": "reported",
+          "capitalizationSource": "Forbes (May 8, 2017): Am\u00e9lie \"will close May 21st, losing its $12 million capitalization.\" https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
+          "recoupedSource": "Forbes (May 8, 2017): \"will close May 21st, losing its $12 million capitalization.\" https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
+          "notes": "Musical adaptation of the 2001 film at the Walter Kerr (opened Apr 3, 2017, closed May 21, 2017). Received no Tony nominations and closed weeks later.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
+              "date": "2017-05-08"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332)."
+}

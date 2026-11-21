@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-7251-d",
+  "planId": "5fc78c11-c330-4d46-ae49-0b0aa60f13a6",
+  "status": "applied",
+  "createdAt": "2026-11-09T23:52:27.339Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7251 correction: Schmigadoon back to 2027-04-04 (Broadway News second extension 2026-09-08, 13 weeks after Jan 3); plan b used the first extension",
+    "steps": [
+      "shows.json: schmigadoon-2026.closingDate",
+      "shows.json: schmigadoon-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDate",
+        "oldValue": "2027-01-03",
+        "newValue": "2027-04-04",
+        "description": "shows.json: schmigadoon-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDateSource",
+        "oldValue": "Broadway News extension announcement (BRO-7251)",
+        "newValue": "Broadway News second extension announcement 2026-09-08 (broadwaynews.com/exclusive-broadways-schmigadoon-announces-second-extension)",
+        "description": "shows.json: schmigadoon-2026.closingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T00:16:00.394Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for schmigadoon-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,250 @@
+{
+  "issueNumber": "bro-5873-c",
+  "planId": "2868e238-ff8d-4cc2-8d02-4b6a52577ba8",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5873: the Head Over Heels and Beetlejuice (2019) records were TBD model stubs with no sources, so the add plan was refused; fill them with the cited designation, capitalization and sources.",
+    "steps": [
+      "Head Over Heels: WRAL (2018-11-26) SEC filing up to $14.5M, reported not recouping: Did Not Recoup, reported-loss.",
+      "Beetlejuice 2019: Broadway News (2019-12-09) SEC filing up to $21M; no Broadway recoupment announced; closed 2020-03-10, over 183 days: Did Not Recoup, no-recoupment-announced."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "BRO-5873: fill designationBasis on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "BRO-5873: fill designation on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "BRO-5873: fill recouped on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 14500000,
+        "description": "BRO-5873: fill capitalization on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "WRAL (Nov 26, 2018), citing an SEC filing: up to $14.5M; Broadway Journal (Jul 2018) put it at least $11.6M",
+        "description": "BRO-5873: fill capitalizationSource on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Go-Go's jukebox musical at the Hudson, opened Jul 26, 2018 and closed Jan 6, 2019. Capitalized at up to $14.5M per SEC filing; weekly grosses peaked at $297,421 (34% of potential). Reported as not recouping its costs.",
+        "description": "BRO-5873: fill notes on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "showId": "head-over-heels-2018",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/archive/18022029/",
+            "date": "2018-11-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/head-over-heels-to-close-in-january/",
+            "date": "2018-11-26"
+          }
+        ],
+        "description": "BRO-5873: fill sources on auto-enrolled head-over-heels-2018 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "BRO-5873: fill designationBasis on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "BRO-5873: fill designation on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "BRO-5873: fill recouped on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 21000000,
+        "description": "BRO-5873: fill capitalization on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway News (Dec 9, 2019), citing an SEC filing: up to $21M",
+        "description": "BRO-5873: fill capitalizationSource on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Original Broadway run at the Winter Garden, opened Apr 25, 2019 and closed Mar 10, 2020 (shortened by the pandemic shutdown). Capitalized at up to $21M per SEC filing. No Broadway recoupment was announced; the national tour is a separate production.",
+        "description": "BRO-5873: fill notes on auto-enrolled beetlejuice-2019 stub"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2019",
+        "showId": "beetlejuice-2019",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/",
+            "date": "2019-12-09"
+          }
+        ],
+        "description": "BRO-5873: fill sources on auto-enrolled beetlejuice-2019 stub"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T05:44:19.066Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for beetlejuice-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for beetlejuice-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

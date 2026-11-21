@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-7213",
+  "planId": "93323f43-6d3b-4303-918c-c38a7b96f582",
+  "status": "applied",
+  "createdAt": "2026-11-15T17:09:20.789Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark 4 Juniper Blood (Donmar) reviews misfiled under Blood of My Blood as wrongShow (already excluded; bookkeeping only)",
+    "steps": [
+      "blood-of-my-blood-west-end-2026/guardian--arifa-akbar.json: wrongShow",
+      "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json: wrongShow",
+      "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json: wrongShow",
+      "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "blood-of-my-blood-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "blood-of-my-blood-west-end-2026/guardian--arifa-akbar.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json: wrongShow"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T20:10:08.903Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/guardian--arifa-akbar.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/financialtimes--sarah-hemming.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/thestage--sam-marlowe.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-7077",
+  "planId": "86df10e2-3500-4e26-823e-4420d81b9e9b",
+  "status": "applied",
+  "createdAt": "2026-11-07T15:45:21.150Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Twelfth Night (Theatre on Kew, Off-West End): flag two RSC Barbican reviews as wrong production",
+    "steps": [
+      "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json: wrongProduction",
+      "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json: wrongProductionReason",
+      "twelfth-night-off-west-end-2026/times-uk--clive-davis.json: wrongProduction",
+      "twelfth-night-off-west-end-2026/times-uk--clive-davis.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7077 (BRO-5386 replay): reviews the RSC Twelfth Night (Royal Shakespeare Company, Samuel West as Malvolio, Barbican transfer of the Stratford production), not the Theatre on Kew staging. The URL says rsc; the row had no date, so the date gates never fired.",
+        "description": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7077 (BRO-5386 replay): reviews the RSC Twelfth Night (Royal Shakespeare Company, Samuel West as Malvolio, Barbican transfer of the Stratford production), not the Theatre on Kew staging. The URL says rsc; the row had no date, so the date gates never fired.",
+        "description": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json: wrongProductionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-07T16:59:45.744Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/artsdesk--helen-hawkins-sitting.json wrongProductionReason: null -> \"BRO-7077 (BRO-5386 replay): reviews the RSC Twelfth Night (Royal Shakespeare Company, Samuel West as Malvolio, Barbican transfer of the Stratford production), not the Theatre on Kew staging. The URL says rsc; the row had no date, so the date gates never fired.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/times-uk--clive-davis.json wrongProductionReason: null -> \"BRO-7077 (BRO-5386 replay): reviews the RSC Twelfth Night (Royal Shakespeare Company, Samuel West as Malvolio, Barbican transfer of the Stratford production), not the Theatre on Kew staging. The URL says rsc; the row had no date, so the date gates never fired.\""
+    }
+  ],
+  "executedIn": "ci"
+}

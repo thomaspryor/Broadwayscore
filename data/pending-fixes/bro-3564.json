@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-3564",
+  "planId": "c03ef518-4ec2-4850-946d-20c9c8b86495",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove the Wendy & Peter Pan westendtheatre excerpts the archived round-up planted on 10 My Neighbour Totoro review files, queue the one rescore, delete that archive page.",
+    "steps": [
+      "Run clear-wrong-show-roundup-excerpts.js --apply"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "clear-wrong-show-roundup-excerpts.js",
+        "args": "--apply",
+        "description": "Dry run: 1 page rejected (my-neighbour-totoro-west-end-2025), 10 files to clear"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:55:07.864Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran clear-wrong-show-roundup-excerpts.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-10-29T05:07:13.252Z",
+  "season": "2011-2012",
+  "sources": [
+    "wos-listing",
+    "wos-review",
+    "olivier-2012",
+    "olivier-2013"
+  ],
+  "counts": {
+    "listings": 1,
+    "promotable": 0,
+    "notPromotable": {
+      "already in shows.json": 1
+    },
+    "unlistedReviews": 2
+  },
+  "candidates": [
+    {
+      "title": "Matilda the Musical",
+      "venue": "Cambridge Theatre",
+      "previewsStartDate": "2011-10-25",
+      "openingDate": "2011-11-25",
+      "openingDateSource": "whatsonstage",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2011-2012",
+      "signals": [
+        "wos-review",
+        "olivier-2012"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/matilda-the-musical_1388/",
+        "wosReview": "https://www.whatsonstage.com/news/matilda-the-musical_6129/"
+      },
+      "inShowsJson": "matilda-the-musical-west-end-2021",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: matilda-the-musical-west-end-2021"
+      }
+    }
+  ],
+  "unlistedReviews": [
+    {
+      "title": "Noises Off",
+      "venue": "Novello",
+      "date": "2012-04-04",
+      "url": "https://www.whatsonstage.com/news/noises-off-novello_4818/",
+      "rating": 5,
+      "market": [
+        98
+      ]
+    },
+    {
+      "title": "Real Dracula",
+      "venue": "Cambridge",
+      "date": "2011-09-22",
+      "url": "https://www.whatsonstage.com/news/real-dracula-cambridge_6897/",
+      "rating": 3,
+      "market": []
+    }
+  ]
+}

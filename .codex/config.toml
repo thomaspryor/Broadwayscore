@@ -1,0 +1,6 @@
+# BRO-4745: Codex runs in this repo get the same reach Claude has.
+# Live web search (Claude has WebSearch/WebFetch) and network inside the sandbox.
+web_search = "live"
+
+[sandbox_workspace_write]
+network_access = true

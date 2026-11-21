@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-4673",
+  "planId": "37c1816e-7278-4d52-84ae-df20b3b3b947",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:04:45.319Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Indian Princesses TB review: byline Thom Geier -> Howard Miller, date, drop truncated duplicate, rename file",
+    "steps": [
+      "BRO-4673: truncated duplicate of the same TB article (wrongShow, invalid, no score); its text is a superset of the scored file, which replaces it below.",
+      "BRO-4673: text is Howard Miller's TB article (url 05_19_26c.html) minus its first paragraph, not Thom Geier's; verified against talkinbroadway--howard-miller.json (Geier text is a contiguous substring of Miller's).",
+      "BRO-4673: Miller's byline line on the same TB page reads 'Theatre Review by Howard Miller - May 19, 2026'.",
+      "BRO-4673: filename follows the corrected byline."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json",
+        "description": "BRO-4673: truncated duplicate of the same TB article (wrongShow, invalid, no score); its text is a superset of the scored file, which replaces it below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json",
+        "field": "criticName",
+        "oldValue": "Thom Geier",
+        "newValue": "Howard Miller",
+        "description": "BRO-4673: text is Howard Miller's TB article (url 05_19_26c.html) minus its first paragraph, not Thom Geier's; verified against talkinbroadway--howard-miller.json (Geier text is a contiguous substring of Miller's)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-05-19",
+        "description": "BRO-4673: Miller's byline line on the same TB page reads 'Theatre Review by Howard Miller - May 19, 2026'."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json",
+        "destPath": "indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json",
+        "description": "BRO-4673: filename follows the corrected byline."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:52:00.239Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json criticName: \"Thom Geier\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json publishDate: null -> \"2026-05-19\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved indian-princesses-off-broadway-2025/talkinbroadway--thom-geier.json → indian-princesses-off-broadway-2025/talkinbroadway--howard-miller.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

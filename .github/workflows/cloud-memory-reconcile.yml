@@ -1,0 +1,128 @@
+name: Cloud Memory Reconcile
+
+# BRO-5074: keeps cloud-memory/ (what cloud sessions read as project memory)
+# current from the private claude-config repo, where the Mac's claude-sync
+# pushes the same memory dir. Until this existed the mirror was refreshed only
+# by the Mac's session-stop committing from its own local Broadwayscore
+# checkout; that silently stopped on 2026-10-01 and cloud sessions read a
+# stale mirror for 9+ days. This workflow does not depend on the Mac.
+#
+# Rules (scripts/lib/cloud-memory-reconcile.js header): claude-config wins only
+# over content the Mac already saw (blob id in claude-config's history); a
+# cloud session's edit is union-merged, never overwritten; a cloud-written note
+# is never deleted; MEMORY.md is never touched. What still differs from
+# claude-config is recorded in data/audit/cloud-memory-drift.json, and
+# health-check.js reports a note the Mac has not picked up in 48h.
+#
+# hygiene-push-ok: the push loop re-fetches, resets to origin/main and re-plans
+# before every attempt, then pushes with a plain fast-forward. push-with-retry.sh's
+# `rebase -X theirs` would keep this run's hunks over a cloud session's
+# concurrent edit to the same note without any history check (BRO-5074 review).
+
+on:
+  schedule:
+    # Every 6 hours at :23.
+    - cron: '23 */6 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: cloud-memory-reconcile
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      # Full history, no blobs: the history check reads commits and trees only.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      # REVIEW_TEXTS_TOKEN is the owner's classic PAT used for every private
+      # cross-repo read here. Blob-less, no checkout: notes are read with
+      # cat-file and fetched lazily, so the token stays in this clone's local
+      # http.extraheader (job-local, never in a URL or log).
+      - name: Clone claude-config (memory history)
+        id: source
+        env:
+          TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          dir="$RUNNER_TEMP/claude-config"
+          header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
+          # BRO-5972: git_net caps the clone so a hung transfer lands in the
+          # else branch below (exit 124) instead of eating the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          if git_net 120 -c "http.https://github.com/.extraheader=$header" clone -q --filter=blob:none --no-checkout \
+              https://github.com/thomaspryor/claude-config "$dir" 2> "$RUNNER_TEMP/clone.err"; then
+            git -C "$dir" config http.https://github.com/.extraheader "$header"
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            rc=$?
+            # -q plus a timeout leaves clone.err empty, so name the timeout.
+            detail=$(tail -1 "$RUNNER_TEMP/clone.err" | tr -d '\r' | cut -c1-200)
+            [ "$rc" -eq 124 ] && detail="timed out after 120s${detail:+ ($detail)}"
+            reason="could not clone thomaspryor/claude-config with REVIEW_TEXTS_TOKEN: ${detail:-exit $rc}"
+            echo "::error::$reason"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reconcile and push
+        env:
+          SOURCE_OK: ${{ steps.source.outputs.ok }}
+          SOURCE_ERROR: ${{ steps.source.outputs.reason }}
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # A refused or failed reconcile (unreadable claude-config, a mass
+          # removal, a crash) exits 1 after writing `error` into the report;
+          # that report is still committed so the digest names the reason,
+          # then the step fails so notify-failure fires.
+          for attempt in 1 2 3 4 5; do
+            git_net 180 fetch -q origin main || { sleep $((5 * attempt)); continue; }
+            git reset -q --hard origin/main
+            rc=0
+            if [ "$SOURCE_OK" = "true" ]; then
+              node scripts/lib/cloud-memory-reconcile.js \
+                --source-repo="$RUNNER_TEMP/claude-config" \
+                --source-dir=projects/-Users-tompryor-Broadwayscore/memory || rc=$?
+            else
+              node scripts/lib/cloud-memory-reconcile.js --error="$SOURCE_ERROR" || rc=$?
+            fi
+            # BRO-2556: refresh the uncapped note index cloud sessions grep.
+            node scripts/lib/cloud-memory-index.js cloud-memory || echo "::warning::cloud-memory INDEX.txt regeneration failed"
+            git add cloud-memory/ data/audit/cloud-memory-drift.json
+            if git diff --staged --quiet; then
+              echo "Nothing to commit"
+              exit $rc
+            fi
+            git commit -q -m "chore: reconcile cloud-memory from claude-config (BRO-5074) [skip ci]"
+            if git_net 180 push -q origin HEAD:main; then
+              echo "Pushed $(git rev-parse --short HEAD) on attempt $attempt"
+              exit $rc
+            fi
+            sleep $((RANDOM % 20 + 5 * attempt))
+          done
+          echo "::error::push to main failed 5 times"
+          exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Cloud Memory Reconcile Failed'
+          severity: 'warning'

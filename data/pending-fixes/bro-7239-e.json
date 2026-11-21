@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-7239-e",
+  "planId": "1ae360ea-4b82-4d21-b158-d6337d9828c8",
+  "status": "partial",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 5 of 6)",
+    "steps": [
+      "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.closingDate",
+      "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.closingDateSource",
+      "shows.json: paranormal-activity-regional-2026.closingDate",
+      "shows.json: paranormal-activity-regional-2026.closingDateSource",
+      "shows.json: a-new-era-regional-2026.closingDate",
+      "shows.json: a-new-era-regional-2026.closingDateSource",
+      "shows.json: buyer-and-cellar-hub-regional-2026.closingDate",
+      "shows.json: buyer-and-cellar-hub-regional-2026.closingDateSource",
+      "shows.json: a-midsummer-nights-dream-regional-2026.closingDate",
+      "shows.json: a-midsummer-nights-dream-regional-2026.closingDateSource",
+      "shows.json: m-refractions-from-an-evil-act-regional-2026.closingDate",
+      "shows.json: m-refractions-from-an-evil-act-regional-2026.closingDateSource",
+      "shows.json: rock-of-ages-north-regional-2026.closingDate",
+      "shows.json: rock-of-ages-north-regional-2026.closingDateSource",
+      "shows.json: rhinoceros-regional-2026.closingDate",
+      "shows.json: rhinoceros-regional-2026.closingDateSource",
+      "shows.json: eleanor-regional-2026.closingDate",
+      "shows.json: eleanor-regional-2026.closingDateSource",
+      "shows.json: purpose-huntington-regional-2026.closingDate",
+      "shows.json: purpose-huntington-regional-2026.closingDateSource",
+      "shows.json: come-from-away-north-regional-2026.closingDate",
+      "shows.json: come-from-away-north-regional-2026.closingDateSource",
+      "shows.json: all-my-sons-regional-2026.closingDate",
+      "shows.json: all-my-sons-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-19",
+        "description": "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 19\" (https://sleeplesscritic.com/2026/07/17/review-not-only-the-coat-dazzles-in-north-shore-music-theatres-inspiring-joseph-and-the-amazing-technicolor-dreamcoat/ ; https://www.theatermirror.net/?p=11420)",
+        "description": "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-30",
+        "description": "shows.json: paranormal-activity-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through July 30\" (https://www.bostonglobe.com/2026/07/16/arts/paranormal-activity-boston-review/ ; https://www.boston.com/culture/entertainment/2026/07/19/theater-review-paranormal-activity-proves-horror-can-work-beyond-the-screen/)",
+        "description": "shows.json: paranormal-activity-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-new-era-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-08",
+        "description": "shows.json: a-new-era-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-new-era-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 8\" (https://www.broadwayworld.com/article/Review-Company-One-Theatres-A-NEW-ERA-is-Fresh-Look-at-Boston-History-20260729 ; https://www.broadwayworld.com/boston/article/Review-Company-One-Theatres-A-NEW-ERA-is-Fresh-Look-at-Boston-History-20260729)",
+        "description": "shows.json: a-new-era-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "buyer-and-cellar-hub-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-01",
+        "description": "shows.json: buyer-and-cellar-hub-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "buyer-and-cellar-hub-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 1\" (https://sleeplesscritic.com/2026/07/29/review-retail-therapy-takes-on-new-meaning-in-hub-theatre-company-of-bostons-lighthearted-comedy-buyer-and-cellar/ ; https://www.theatermirror.net/?p=11439)",
+        "description": "shows.json: buyer-and-cellar-hub-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-09",
+        "description": "shows.json: a-midsummer-nights-dream-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Aug. 9\" (https://www.wbur.org/news/2026/08/04/commonwealth-shakespeare-company-a-midsummer-nights-dream-theater-review ; https://sleeplesscritic.com/2026/08/05/review-commonwealth-shakespeare-company-vividly-envisions-a-spirited-a-midsummer-nights-dream-on-boston-common/)",
+        "description": "shows.json: a-midsummer-nights-dream-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "m-refractions-from-an-evil-act-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-09",
+        "description": "shows.json: m-refractions-from-an-evil-act-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "m-refractions-from-an-evil-act-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 9\" (https://www.broadwayworld.com/article/Review-Murkiness-Mars-Exiled-Theatres-M-REFRACTIONS-FROM-AN-EVIL-ACT-20260803 ; https://www.broadwayworld.com/boston/article/Review-Murkiness-Mars-Exiled-Theatres-M-REFRACTIONS-FROM-AN-EVIL-ACT-20260803)",
+        "description": "shows.json: m-refractions-from-an-evil-act-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-of-ages-north-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-23",
+        "description": "shows.json: rock-of-ages-north-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-of-ages-north-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 23\" (https://sleeplesscritic.com/2026/08/21/review-north-shore-music-theatres-rock-of-ages-packs-big-dreams-and-spectacle-into-wry-rock-nostalgia/ ; https://www.broadwayworld.com/boston/article/Review-A-Formulaic-ROCK-OF-AGES-at-Bill-Hanneys-North-Shore-Music-Theatre-20260818)",
+        "description": "shows.json: rock-of-ages-north-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-27",
+        "description": "shows.json: rhinoceros-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Sept. 27\" (https://www.bostonglobe.com/2026/08/22/arts/turturro-giamatti-maslany-rhinoceros-review/ ; https://www.boston.com/community/entertainment/2026/08/22/theater-review-rhinoceros-explores-conformity-through-an-absurd-rhino-epidemic/)",
+        "description": "shows.json: rhinoceros-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eleanor-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: eleanor-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eleanor-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Oct. 11\" (https://www.wbur.org/news/2026/09/15/eleanor-central-square-theater-review ; https://www.cambridgeday.com/2026/09/15/central-squares-eleanor-plum-production/)",
+        "description": "shows.json: eleanor-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-huntington-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: purpose-huntington-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-huntington-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through October 11\" (https://www.broadwayworld.com/article/Review-A-Play-With-PURPOSE-20261004)",
+        "description": "shows.json: purpose-huntington-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-north-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-27",
+        "description": "shows.json: come-from-away-north-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-north-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through September 27\" (https://sleeplesscritic.com/2026/09/25/review-kindness-stirs-in-north-shore-music-theatres-uplifting-come-from-away/ ; https://www.broadwayworld.com/boston/article/Review-A-Life-Affirming-COME-FROM-AWAY-at-North-Shore-Music-Theatre-20260923)",
+        "description": "shows.json: come-from-away-north-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-sons-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-18",
+        "description": "shows.json: all-my-sons-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-sons-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Oct. 18\" (https://www.bostonglobe.com/2026/09/21/arts/lyric-all-my-sons/ ; https://www.metrmag.com/latest-reviews/all-my-sons-by-arthur-miller-lyric-stage-company-boston-ma-review)",
+        "description": "shows.json: all-my-sons-regional-2026.closingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T20:21:47.330Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"paranormal-activity-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"paranormal-activity-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for a-new-era-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for a-new-era-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for buyer-and-cellar-hub-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for buyer-and-cellar-hub-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for a-midsummer-nights-dream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for a-midsummer-nights-dream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for m-refractions-from-an-evil-act-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for m-refractions-from-an-evil-act-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rock-of-ages-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for rock-of-ages-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"rhinoceros-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"rhinoceros-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"purpose-huntington-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"purpose-huntington-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for come-from-away-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for come-from-away-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for all-my-sons-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for all-my-sons-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

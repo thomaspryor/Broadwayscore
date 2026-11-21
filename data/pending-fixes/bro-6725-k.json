@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6725-k",
+  "planId": "7bf65f28-1e58-4a05-8d3f-052d191e2b70",
+  "status": "applied",
+  "createdAt": "2026-10-31T16:46:14.493Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 11 of 14)",
+    "steps": [
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 3d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 5d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dark-noon-aviva-studios-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-03-09",
+        "newValue": "2024-03-08",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dark-noon-aviva-studios-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dark-noon-aviva-studios-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-03-08",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "footloose-pitlochry-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-06-17",
+        "newValue": "2024-06-16",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "footloose-pitlochry-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "footloose-pitlochry-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-06-16",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peak-stuff-chichester-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-02-19",
+        "newValue": "2024-02-16",
+        "description": "Earliest review is 3d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peak-stuff-chichester-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peak-stuff-chichester-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-02-16",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-pearl-tron-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-06-04",
+        "newValue": "2024-05-31",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-pearl-tron-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-pearl-tron-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-05-31",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oor-wullie-dundee-rep-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-06",
+        "newValue": "2024-12-05",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oor-wullie-dundee-rep-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oor-wullie-dundee-rep-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-12-05",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-chichester-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-21",
+        "newValue": "2024-12-20",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-chichester-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-chichester-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-12-20",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-inquisitor-oran-mor-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-06-30",
+        "newValue": "2025-06-25",
+        "description": "Earliest review is 5d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-inquisitor-oran-mor-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-inquisitor-oran-mor-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-06-25",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-house-party-chichester-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-05-13",
+        "newValue": "2024-05-12",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-house-party-chichester-festival-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-house-party-chichester-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-05-12",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T18:13:25.839Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dark-noon-aviva-studios-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for dark-noon-aviva-studios-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for dark-noon-aviva-studios-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for footloose-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for footloose-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for footloose-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for peak-stuff-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for peak-stuff-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for peak-stuff-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-last-pearl-tron-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-last-pearl-tron-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-last-pearl-tron-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for oor-wullie-dundee-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for oor-wullie-dundee-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for oor-wullie-dundee-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cinderella-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for cinderella-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for cinderella-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-inquisitor-oran-mor-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-inquisitor-oran-mor-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-inquisitor-oran-mor-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-house-party-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-house-party-chichester-festival-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-house-party-chichester-festival-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

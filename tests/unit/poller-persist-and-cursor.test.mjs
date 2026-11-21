@@ -1,0 +1,47 @@
+// BRO-7162 F06 + F08 class guards.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { advanceSerpOutletOffset, rotateMissingOutlets } = require('../../scripts/lib/opening-night-discovery-policy.js');
+const src = fs.readFileSync(new URL('../../scripts/opening-night-poller.js', import.meta.url), 'utf8');
+
+test('F08: cursor advances by outlets reached, not by the budget', () => {
+  assert.equal(advanceSerpOutletOffset(3, 0, 20), 3, 'nothing attempted leaves the cursor');
+  assert.equal(advanceSerpOutletOffset(3, 5, 20), 8);
+  assert.equal(advanceSerpOutletOffset(18, 5, 20), 3, 'wraps');
+  assert.equal(advanceSerpOutletOffset(0, 12, 0), 0, 'empty list is safe');
+  // An early-stopped pass resumes exactly where it left off
+  const list = Array.from({ length: 20 }, (_, i) => ({ id: 'o' + i }));
+  const first = rotateMissingOutlets(list, 0).slice(0, 4).map(o => o.id);
+  const next = rotateMissingOutlets(list, advanceSerpOutletOffset(0, 4, 20))[0].id;
+  assert.deepEqual(first, ['o0', 'o1', 'o2', 'o3']);
+  assert.equal(next, 'o4');
+});
+
+test('F08 source guard: poller no longer advances the cursor by SERP_BUDGET', () => {
+  assert.ok(!/nextSerpOutletOffset \+ SERP_BUDGET/.test(src));
+  assert.match(src, /advanceSerpOutletOffset\(nextSerpOutletOffset, serpStats\.consumed/);
+});
+
+test('F06 source guard: every parallel discovery layer is persisted as it settles', () => {
+  const block = src.slice(src.indexOf('Promise.allSettled(['), src.indexOf('Promise.allSettled([') + 1200);
+  for (const label of ['Layer 1', 'Layer 2', 'Layer 3 SSR', 'Layer 2b', 'google-news-rss']) {
+    assert.ok(block.includes(`persistLayerOnSettle('${label}'`), `${label} must be persisted on settle`);
+  }
+});
+
+test('F06: pre-SERP pass skips results already persisted at settle, and a persist failure keeps the layer (source guard)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/opening-night-poller.js', import.meta.url), 'utf8');
+  assert.match(src, /settledReviews\.add\(/);
+  assert.match(src, /settledReviews\.has\(r\)/);
+  assert.match(src, /persist-on-completion failed/);
+});
+
+test('BRO-7176: --dry-run leaves poller-backoff and roundup-miss ledgers untouched (source guard)', () => {
+  const fn = src.slice(src.indexOf('function saveBackoffState'), src.indexOf('function computeNextBackoffDelayMs'));
+  assert.match(fn, /if \(DRY_RUN\) return;/, 'saveBackoffState must no-op on dry run');
+  assert.match(src, /discovery\.via === 'not-found' && !DRY_RUN/, 'BWW roundup miss ledger gated');
+  assert.match(src, /if \(!DRY_RUN\) trMiss\.recordTrMiss/, 'TR miss ledger gated');
+});

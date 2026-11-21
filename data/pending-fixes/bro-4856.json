@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-4856",
+  "planId": "aeea078f-86f1-424c-aae6-9e5c82c854cf",
+  "status": "applied",
+  "createdAt": "2026-11-18T03:18:12.281Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Replace the short Expecting synopsis using Riverside Studios: https://riversidestudios.co.uk/whats-on/uUN-expecting/",
+    "steps": [
+      "shows.json: expecting-off-west-end-2026.synopsis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "expecting-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "“Baby, we need to talk…”",
+        "newValue": "Zoey and Ethan weigh whether to have a baby while her sister Trish balances raising two children with a new relationship.",
+        "description": "shows.json: expecting-off-west-end-2026.synopsis"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T04:30:28.147Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for expecting-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

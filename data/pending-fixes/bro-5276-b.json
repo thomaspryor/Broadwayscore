@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5276-b",
+  "planId": "d17c66e4-3142-49b6-8bb1-d605d11aa8d4",
+  "status": "applied",
+  "createdAt": "2026-10-14T01:40:38.501488Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5276 (re-run): the first run removed Theatr from 108 shows that closed before 2021, but the push reconcile refilled them from the remote copy. This run leaves a sourcesRemoved tombstone the reconcile now honours.",
+    "steps": [
+      "Run neutralize-stale-theatr-buzz.js --apply."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "neutralize-stale-theatr-buzz.js",
+        "args": "--apply",
+        "description": "BRO-5276: drop stale Theatr source on pre-2021 closures with a sourcesRemoved tombstone."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T03:29:09.452Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran neutralize-stale-theatr-buzz.js successfully"
+    }
+  ]
+}

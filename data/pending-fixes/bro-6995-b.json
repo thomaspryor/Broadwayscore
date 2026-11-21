@@ -1,0 +1,85 @@
+{
+  "issueNumber": "bro-6995-b",
+  "planId": "e40e2efc-e519-4d3f-a906-47862d9b58f9",
+  "status": "applied",
+  "createdAt": "2026-11-05T06:14:04.858Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Stop serving wrong posters and thumbnails found by the live-art sweep and the lookalike audit, Rope first (BRO-6995) (part 2 of 2)",
+    "steps": [
+      "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026: poster is the Chicago poster and the thumbnail is a Samson et Dalila production photo",
+      "michael-off-west-end-2026: poster and hero are the F. Michael Haynie at 54 Below photo and the thumbnail is a Michael Jackson musical still",
+      "michael-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026: poster is the Chicago poster and the thumbnail is a Samson et Dalila production photo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "michael-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/michael-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/michael-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/michael-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "michael-off-west-end-2026: poster and hero are the F. Michael Haynie at 54 Below photo and the thumbnail is a Michael Jackson musical still"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "michael-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5BJCtH5zCUtBzPkdzzNLiI/e5e7a95a147c73d79118f84ca2e9e55c/F._Michael_Haynie-_poster.png?fm=webp&q=90"
+        ],
+        "description": "michael-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T07:33:27.888Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for michael-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for michael-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

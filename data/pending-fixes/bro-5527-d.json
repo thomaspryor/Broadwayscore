@@ -1,0 +1,500 @@
+{
+  "issueNumber": "bro-5527-d",
+  "planId": "4e713326-9cf1-4f9d-8710-ff85734dbe11",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 4 of 6: patriots, spamalot, take-me-out-2022, the-cottage, the-hills-of-california-2024)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "patriots: the SEC Form D gives a $8 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Patriots Broadway Limited Partnership, CIK 0002011429, filed Feb 14, 2024): total offering amount $8,000,000. Matched to the show by its related person Sonia Friedman, the lead producer. https://www.sec.gov/Archives/edgar/data/2011429/000201142924000001/xslFormDX01/primary_doc.xml",
+        "description": "patriots: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "patriots: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/patriots-broadway-ethel-barrymore-theatre-2024",
+            "date": "2024-04-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/patriots-broadway-ethel-barrymore-theatre-2024",
+            "date": "2024-04-01"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2011429/000201142924000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-02-14"
+          }
+        ],
+        "description": "patriots: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "field": "notes",
+        "oldValue": "Commercial play produced by Sonia Friedman, 12-week limited engagement at the Ethel Barrymore (Apr to Jun 2024). Averaged about 74% capacity; total gross about $4.54M. Closed without extending. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial play produced by Sonia Friedman, 12-week limited engagement at the Ethel Barrymore (Apr to Jun 2024). Averaged about 74% capacity; total gross about $4.54M. Closed without extending. Its SEC Form D (Feb 2024) offered $8 million; no recoupment announced.",
+        "description": "patriots: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 12000000,
+        "description": "spamalot: the SEC Form D gives a $12 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Find Your Grail On Broadway LLC, CIK 0001989562, filed Aug 10, 2023): total offering amount $12,000,000 ($750,000 sold by then). Matched to the show by its related person Roy Furman, a lead producer with Jeffrey Finn. https://www.sec.gov/Archives/edgar/data/1989562/000198956223000001/xslFormDX01/primary_doc.xml",
+        "description": "spamalot: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "spamalot: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1bcm0xx/why_do_you_think_spamalot_is_closing_so_soon/",
+            "date": "2024-03-12"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/SPAMALOT",
+            "date": "2024-04-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1bcm0xx/why_do_you_think_spamalot_is_closing_so_soon/",
+            "date": "2024-03-12"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/SPAMALOT",
+            "date": "2024-04-01"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1989562/000198956223000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-08-10"
+          }
+        ],
+        "description": "spamalot: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "notes",
+        "oldValue": "Revival of the Monty Python musical (Kennedy Center transfer). Ran Nov 2023 to Apr 2024 (164 regular performances) and grossed about $20.4M. No capitalization reported and no recoupment announced. The original 2005 production recouped in about six months.",
+        "newValue": "Revival of the Monty Python musical (Kennedy Center transfer). Ran Nov 2023 to Apr 2024 (164 regular performances) and grossed about $20.4M. Its SEC Form D (Aug 2023) offered $12 million; no recoupment announced. The original 2005 production recouped in about six months.",
+        "description": "spamalot: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3850000,
+        "description": "take-me-out-2022: the SEC Form D gives a $3.85 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Not publicly verified in the sources checked.",
+        "newValue": "SEC Form D filing (Homerun Broadway LLC, CIK 0001944186, filed Aug 26, 2022): total offering amount $3,850,000 ($550,000 sold by then). Matched to the show by its related persons Barry and Fran Weissler (National Artists Management Company), the producers. https://www.sec.gov/Archives/edgar/data/1944186/000110465922095168/xslFormDX01/primary_doc.xml",
+        "description": "take-me-out-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "take-me-out-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.ibdb.com/broadway-production/take-me-out-535174",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/tony-award-winning-revival-of-take-me-out-to-return-to-broadway-this-fall/",
+            "date": "2022-08-18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossestheater/SCHOENFELD",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/broadway-grosses-analysis-take-me-out-hits-a-home-run-in-final-week-on-broadway",
+            "date": "2023-02-07"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.ibdb.com/broadway-production/take-me-out-535174",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/tony-award-winning-revival-of-take-me-out-to-return-to-broadway-this-fall/",
+            "date": "2022-08-18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossestheater/SCHOENFELD",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/broadway-grosses-analysis-take-me-out-hits-a-home-run-in-final-week-on-broadway",
+            "date": "2023-02-07"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1944186/000110465922095168/xslFormDX01/primary_doc.xml",
+            "date": "2022-08-26"
+          }
+        ],
+        "description": "take-me-out-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 6000000,
+        "description": "the-cottage: the SEC Form D/A gives a $6 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Cottage Play Ltd Liability Co, CIK 0001961857, filed Jul 26, 2023): total offering amount $6,000,000 ($4,108,500 sold by then). Matched to the show by its related persons Victoria Lang, Andrew Bogner and Tracey McFarland (Broadway & Beyond Theatricals) and Cornice Productions, the lead producers. https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/xslFormDX01/primary_doc.xml",
+        "description": "the-cottage: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-cottage: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Cottage_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-cottage-broadway-helen-hayes-theatre-2023",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Cottage_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-cottage-broadway-helen-hayes-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/xslFormDX01/primary_doc.xml",
+            "date": "2023-07-26"
+          }
+        ],
+        "description": "the-cottage: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7500000,
+        "description": "the-hills-of-california-2024: the SEC Form D/A gives a $7.5 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Hills of California Limited Partnership, CIK 0002026499, filed Nov 4, 2024): total offering amount $7,500,000 ($7,000,000 sold by then). Matched to the show by its related persons Sonia Friedman and Caro Newling, the lead producers. https://www.sec.gov/Archives/edgar/data/2026499/000202649924000002/xslFormDX01/primary_doc.xml",
+        "description": "the-hills-of-california-2024: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-hills-of-california-2024: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/manhattan-theatre-club-joins-producing-team-for-broadways-the-hills-of-california-adds-title-to-subscriber-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/manhattan-theatre-club-joins-producing-team-for-broadways-the-hills-of-california-adds-title-to-subscriber-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2026499/000202649924000002/xslFormDX01/primary_doc.xml",
+            "date": "2024-11-04"
+          }
+        ],
+        "description": "the-hills-of-california-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "notes",
+        "oldValue": "Commercial production (Sonia Friedman Productions lead; Manhattan Theatre Club joined as co-producer) at the Broadhurst, Sep 29 to Dec 22, 2024. Total gross about $6.6M. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial production (Sonia Friedman Productions lead; Manhattan Theatre Club joined as co-producer) at the Broadhurst, Sep 29 to Dec 22, 2024. Total gross about $6.6M. Its SEC Form D/A (Nov 2024) put the offering at $7.5 million; no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "description": "the-hills-of-california-2024: the notes said no capitalization was reported; it was filed."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T08:45:31.446Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-hills-of-california-2024"
+    }
+  ]
+}

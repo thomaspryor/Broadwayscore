@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6158-r02",
+  "planId": "671c21ed-eaad-4047-a043-666540e347d5",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:57:03.161Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Did Not Recoup shows get our estimate, Flop or Fizzle (owner 2026-10-24)",
+    "steps": [
+      "commercial.json: the-testament-of-mary-2013.designation",
+      "commercial.json: the-testament-of-mary-2013.designationBasis",
+      "commercial.json: the-anarchist-2012.designation",
+      "commercial.json: the-anarchist-2012.designationBasis",
+      "commercial.json: fela-2012.designation",
+      "commercial.json: fela-2012.designationBasis",
+      "commercial.json: the-lyons-2012.designation",
+      "commercial.json: the-lyons-2012.designationBasis",
+      "commercial.json: jerusalem-2011.designation",
+      "commercial.json: jerusalem-2011.designationBasis",
+      "commercial.json: job-2024.designation",
+      "commercial.json: job-2024.designationBasis",
+      "commercial.json: the-cottage.designation",
+      "commercial.json: the-cottage.designationBasis",
+      "commercial.json: fat-ham-2023.designation",
+      "commercial.json: fat-ham-2023.designationBasis",
+      "commercial.json: torch-song-2018.designation",
+      "commercial.json: torch-song-2018.designationBasis",
+      "commercial.json: the-great-society-2019.designation",
+      "commercial.json: the-great-society-2019.designationBasis",
+      "commercial.json: the-shark-is-broken.designation",
+      "commercial.json: the-shark-is-broken.designationBasis",
+      "commercial.json: grey-house.designation",
+      "commercial.json: grey-house.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-testament-of-mary-2013.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-testament-of-mary-2013.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-anarchist-2012.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-anarchist-2012.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: fela-2012.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "model-estimate",
+        "description": "commercial.json: fela-2012.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-lyons-2012.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-lyons-2012.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: jerusalem-2011.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: jerusalem-2011.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: job-2024.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: job-2024.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-cottage.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-cottage.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: fat-ham-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: fat-ham-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: torch-song-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: torch-song-2018.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-great-society-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-great-society-2019.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-shark-is-broken.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-shark-is-broken.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: grey-house.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: grey-house.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:01:40.715Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-shark-is-broken"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-shark-is-broken"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for grey-house"
+    }
+  ],
+  "executedIn": "ci"
+}

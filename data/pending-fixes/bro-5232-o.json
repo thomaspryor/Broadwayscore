@@ -1,0 +1,74 @@
+{
+  "planId": "b7e5a02e-fb91-4805-b32f-88c8a775d240",
+  "issueNumber": "bro-5232-o",
+  "createdAt": "2026-10-13T17:25:46.268Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "status": "applied",
+  "plan": {
+    "summary": "BRO-5232 o: a web-search row added today pairs Shania Russell and CBS News with the 2000 Broadway Full Monty; the page is a 2013 CBS Colorado review of a Boulder dinner-theatre production by another critic.",
+    "steps": [
+      "Flag wrongProduction and wrongAttribution with reasons on the-full-monty-2000/cbsnews--shania-russell.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-full-monty-2000/cbsnews--shania-russell.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2013 Boulder's Dinner Theatre production, not the 2000 Broadway production. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production.",
+        "description": "Reason for the production flag. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-full-monty-2000/cbsnews--shania-russell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Regional 2013 production. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-full-monty-2000/cbsnews--shania-russell.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "Page credits Moody (CBS4 Colorado), not Shania Russell; a web-search pairing. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production.",
+        "description": "Reason for the attribution flag. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-full-monty-2000/cbsnews--shania-russell.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Not by Shania Russell. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T18:52:51.316Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/cbsnews--shania-russell.json wrongProductionReason: null -> \"2013 Boulder's Dinner Theatre production, not the 2000 Broadway production. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/cbsnews--shania-russell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/cbsnews--shania-russell.json wrongAttributionReason: null -> \"Page credits Moody (CBS4 Colorado), not Shania Russell; a web-search pairing. Evidence: https://www.cbsnews.com/colorado/news/moody-the-full-monty-at-boulders-dinner-theatre-is-delightful/ (fetched 2026-10-13 via Scrapingdog): CBS Colorado (CBS4) piece dated October 4, 2013, headline credits Moody, dateline Boulder, reviewing the Boulder's Dinner Theatre production.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-full-monty-2000/cbsnews--shania-russell.json wrongAttribution: null -> true"
+    }
+  ]
+}

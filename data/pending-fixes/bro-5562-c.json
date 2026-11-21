@@ -1,0 +1,461 @@
+{
+  "issueNumber": "bro-5562-c",
+  "planId": "7c96facf-d7e3-4f50-803d-5afae61af698",
+  "status": "applied",
+  "createdAt": "2026-10-17T23:07:00.762Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part c): The Testament of Mary $2.5M (Sarasota Magazine; its Form D maximum was $3.5M); Beetlejuice’s $21M cited (Broadway News); A Beautiful Noise $20M Form D offering; enhancement for Caroline, or Change (ATG subsidy), Saint Joan (Eddie Marks/Ostar) and John Lithgow: Stories By Heart (Staci Levine).",
+    "steps": [
+      "Edits read every oldValue from live data; every quote was opened at its URL."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "capitalization",
+        "oldValue": 3500000,
+        "newValue": 2500000,
+        "description": "the-testament-of-mary-2013: an investor-side report gives the actual cost, $2.5M; the $3.5M was the Form D maximum, with $350,000 sold at filing."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Testament Broadway LLC, CIK 0001569779; managing member RudinPlay, Inc. (Scott Rudin); Feb 15, 2013): total offering amount $3,500,000. https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+        "newValue": "Sarasota Magazine (Nov 1, 2013): \"The Testament of Mary, which the Bartners backed, was a one-woman play that cost $2.5 million.\" https://www.sarasotamagazine.com/arts-and-entertainment/2013/11/how-to-invest-in-a-broadway-show Its SEC Form D (Testament Broadway LLC, Feb 15, 2013) allowed an offering of up to $3,500,000. https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+        "description": "the-testament-of-mary-2013: cite the reported cost and the filing maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.catholicleague.org/testament-of-mary-closes/",
+            "date": "2013-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thetimes.com/travel/destinations/north-america-travel/us-travel/new-york-city/testament-of-mary-closes-after-just-two-weeks-on-broadway-gmh72pjwn9t",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+            "date": "2013-02-15"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.catholicleague.org/testament-of-mary-closes/",
+            "date": "2013-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thetimes.com/travel/destinations/north-america-travel/us-travel/new-york-city/testament-of-mary-closes-after-just-two-weeks-on-broadway-gmh72pjwn9t",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1569779/000114420413009686/xslFormDX01/primary_doc.xml",
+            "date": "2013-02-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.sarasotamagazine.com/arts-and-entertainment/2013/11/how-to-invest-in-a-broadway-show",
+            "date": "2013-11-01"
+          }
+        ],
+        "description": "the-testament-of-mary-2013: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway News (Sep 6, 2018) reported the musical \"is capitalized at $21 million, according to documents filed with the Securities and Exchange Commission.\" The 2022 Marquis run continued that production. https://www.broadwaynews.com/beetlejuice-musical-to-open-at-broadways-winter-garden-theatre-in-april/",
+        "description": "beetlejuice-2022: cite the $21M (it had no source and showed as an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "beetlejuice-2022: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1739068/000114420418033436/xslFormDX08/primary_doc.xml",
+            "date": "2018-06-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/",
+            "date": "2019-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://artdaily.cc/news/150113/-Beetlejuice--to-close-on-Broadway",
+            "date": "2022-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/beetlejuicemarquis-theatre-2021-2022",
+            "date": "2023-01-08"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1739068/000114420418033436/xslFormDX08/primary_doc.xml",
+            "date": "2018-06-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/",
+            "date": "2019-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://artdaily.cc/news/150113/-Beetlejuice--to-close-on-Broadway",
+            "date": "2022-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/beetlejuicemarquis-theatre-2021-2022",
+            "date": "2023-01-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/beetlejuice-musical-to-open-at-broadways-winter-garden-theatre-in-april/",
+            "date": "2018-09-06"
+          }
+        ],
+        "description": "beetlejuice-2022: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 20000000,
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: the lead producer’s SEC Form D total offering amount."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Beautiful Noise LLC, CIK 0001897092; Ken Davenport, a lead producer, is principal of its manager; Dec 3, 2021): an offering of up to $20,000,000, of which $975,000 had been sold to 9 investors at filing. https://www.sec.gov/Archives/edgar/data/1897092/000189709221000001/xslFormDX01/primary_doc.xml",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1897092/000189709221000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-12-03"
+          }
+        ],
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "notes",
+        "oldValue": "Neil Diamond jukebox musical that opened Dec 2022 and closed Jun 2024 without announcing recoupment. Its Broadway capitalization was not reported.",
+        "newValue": "Neil Diamond jukebox musical that opened Dec 2022 and closed Jun 2024 without announcing recoupment. Its SEC Form D allowed an offering of up to $20 million.",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: the notes said no capitalization existed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "caroline-or-change-2021",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "caroline-or-change-2021: commercial money went in: ATG Productions subsidized the Roundabout revival (Broadway Journal)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "caroline-or-change-2021",
+        "field": "notes",
+        "oldValue": "Roundabout Theatre Company production at Studio 54 (Oct 2021 to Jan 2022).",
+        "newValue": "Roundabout Theatre Company production at Studio 54 (Oct 2021 to Jan 2022). Commercial money went into the revival: \"ATG Productions subsidized this season's acclaimed Roundabout Theatre revival\" (Broadway Journal, Jan 28, 2022).",
+        "description": "caroline-or-change-2021: record the enhancement in the notes."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "caroline-or-change-2021",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.roundabouttheatre.org/about/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/broadway-revival-of-caroline-or-change-completes-limited-run-january-9",
+            "date": "2022-01-09"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.roundabouttheatre.org/about/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/broadway-revival-of-caroline-or-change-completes-limited-run-january-9",
+            "date": "2022-01-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/pandemic-pummels-ambassador-theatre-group-exclusive",
+            "date": "2022-01-28"
+          }
+        ],
+        "description": "caroline-or-change-2021: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "saint-joan-2018",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "saint-joan-2018: produced in association with Eddie Marks/Ostar, a commercial producer (BroadwayWorld), the A Few Good Men / School Girls rule."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "saint-joan-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/saint-joan-starring-condola-rashad-opens-on-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/take-a-first-look-at-saint-joan-on-broadway",
+            "date": "2018-04-20",
+            "excerpt": "The Manhattan Theatre Club's Broadway revival of Saint Joan began previews April 3."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/saint-joan-starring-condola-rashad-opens-on-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/take-a-first-look-at-saint-joan-on-broadway",
+            "date": "2018-04-20",
+            "excerpt": "The Manhattan Theatre Club's Broadway revival of Saint Joan began previews April 3."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/MTCs-SAINT-JOAN-Enters-Final-Two-Weeks-20180530",
+            "date": "2018-05-30"
+          }
+        ],
+        "description": "saint-joan-2018: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-lithgow-stories-by-heart-2018",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "john-lithgow-stories-by-heart-2018: presented in association with producer Staci Levine (New York Theatre Guide)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-lithgow-stories-by-heart-2018",
+        "field": "notes",
+        "oldValue": "Roundabout 2017-18 season at American Airlines. John Lithgow solo show (touring 10 years); brought into Roundabout subscription season, Daniel Sullivan directing. Closed 2018-03-04.",
+        "newValue": "Roundabout 2017-18 season at American Airlines. John Lithgow solo show (touring 10 years); brought into Roundabout subscription season, Daniel Sullivan directing. Closed 2018-03-04. Presented by Roundabout in association with Staci Levine (New York Theatre Guide, Oct 19, 2017).",
+        "description": "john-lithgow-stories-by-heart-2018: record the co-producer."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-lithgow-stories-by-heart-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/john-lithgow-stories-by-heart-american-airlines-theatre-2017-2018",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/john-lithgow-stories-by-heart-515955",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/john-lithgow-stories-by-heart-american-airlines-theatre-2017-2018",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/john-lithgow-stories-by-heart-515955",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/roundabout-presents-john-lithgow-stories-by-heart",
+            "date": "2017-10-19"
+          }
+        ],
+        "description": "john-lithgow-stories-by-heart-2018: add the cited article(s) to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T00:33:05.893Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for caroline-or-change-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for caroline-or-change-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for caroline-or-change-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for saint-joan-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for saint-joan-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for john-lithgow-stories-by-heart-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for john-lithgow-stories-by-heart-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for john-lithgow-stories-by-heart-2018"
+    }
+  ]
+}
