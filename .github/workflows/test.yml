@@ -709,6 +709,8 @@ on:
       - 'scripts/discover-author-page-slugs.js' # BRO-6867: serp-step-has-scrapingdog-key.test.mjs
       - 'scripts/discover-regional-serp-reviews.js'
       - 'scripts/uk-regional-coverage.js'
+      - 'scripts/drain-unknown-outlets.js' # BRO-7934: ingest-caller-guard.test.mjs
+      - 'scripts/uk-regional-census-match.js' # BRO-7934: ingest-caller-guard.test.mjs
       - 'scripts/uk-regional-census-productions.js'
       - 'scripts/eval-v52.js'
       - 'scripts/extract-bww-reviews.js'

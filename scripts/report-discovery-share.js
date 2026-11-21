@@ -13,6 +13,8 @@
  */
 
 const fs = require('fs');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { exitFlushed } = require('./lib/exit-flushed');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { discoveryShare, pendingGrowthVerdict, pipelineOf } = require('./lib/discovery-share');
@@ -39,10 +41,10 @@ function scan(root) {
   const files = [];
   let pending = 0;
   let showDirs = 0;
-  for (const dir of fs.readdirSync(root)) {
+  for (const dir of listShowDirs(root, { silent: true })) {
     const p = path.join(root, dir);
     let entries;
-    try { if (!fs.statSync(p).isDirectory()) continue; entries = fs.readdirSync(p); } catch { continue; }
+    try { entries = fs.readdirSync(p); } catch { continue; }
     if (dir === '_pending') {
       // _pending/<show-id>/<file>.json: count the files, not the show folders.
       for (const sub of entries) {
@@ -100,8 +102,6 @@ async function main() {
   }
   if (args.dryRun) return 0;
 
-  fs.appendFileSync(PENDING_LEDGER, `${JSON.stringify({ date: today, pending })}\n`);
-  fs.writeFileSync(SNAPSHOT, `${JSON.stringify(report, null, 2)}\n`);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   if (growth.alert) {
     await routeAlert({
@@ -119,8 +119,11 @@ async function main() {
       hint: 'Find the writer that bypasses scripts/ingest-review-from-url.js --caller (scripts/ingest-caller-guard.test.mjs covers the ingest script spawners).',
     });
   } else resolveCondition('discovery-caller-missing', { reason: 'no uncalled ingests' });
+  // Record the day only after alerting succeeded (a throw above leaves no half-recorded day to skew growth).
+  fs.appendFileSync(PENDING_LEDGER, `${JSON.stringify({ date: today, pending })}\n`);
+  fs.writeFileSync(SNAPSHOT, `${JSON.stringify(report, null, 2)}\n`);
   return 0;
 }
 
-if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e); process.exit(2); });
+if (require.main === module) main().then((c) => exitFlushed(c), (e) => { console.error(e); exitFlushed(2); });
 module.exports = { parseArgs };

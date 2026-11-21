@@ -19,6 +19,7 @@
  */
 
 const fs = require('fs');
+const { exitFlushed } = require('./lib/exit-flushed');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -148,5 +149,5 @@ async function main() {
   return 0;
 }
 
-if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e); process.exit(2); });
+if (require.main === module) main().then((c) => exitFlushed(c), (e) => { console.error(e); exitFlushed(2); });
 module.exports = { parseArgs, scopeWorkflows };

@@ -99,6 +99,7 @@ jobs:
       # of cancelled scheduled runs (notify-failure never runs on cancel). Advisory: exit 2 means the
       # GitHub API was unusable, surfaced as a warning rather than a red run (the alert is the output).
       - name: Cron fire-rate + cancelled-run sweep
+        # lint-allow-swallow: advisory step (BRO-7934); a crash prints ::warning:: and the daily run must still commit the ledger
         if: always()
         continue-on-error: true
         env:
@@ -112,6 +113,7 @@ jobs:
       # BRO-7934: per-pipeline discovery share, files with no caller, and _pending growth. Daily so
       # the growth check has one row per day (a dropped weekly run would lose a week).
       - name: Discovery share + pending growth
+        # lint-allow-swallow: advisory step (BRO-7934); a crash prints ::warning:: and the daily run must still commit the ledger
         if: always()
         continue-on-error: true
         env:
