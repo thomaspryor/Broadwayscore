@@ -291,14 +291,12 @@ function defaultDeps() {
   return {
     fetchText: async (url, { timeoutMs = 90000 } = {}) => {
       const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) BroadwayScorecard/1.0' }, signal: AbortSignal.timeout(timeoutMs) });
-      if (!r.ok) {
-        // BRO-8000: the Internet Archive's CDX 403s without auth: a typed blocked route, not an outage or "no capture".
-        const AC = require('./archive-cdx');
-        const body = await r.text().catch(() => '');
-        if (AC.isArchiveIndexUrl(url) && AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(url);
-        const e = new Error(`HTTP ${r.status}`); e.status = r.status; throw e;
-      }
-      return r.text();
+      // BRO-8000: the Internet Archive's CDX 403s without auth (also as a 200 upstream_error envelope): a typed blocked route, not an outage or "no capture".
+      const AC = require('./archive-cdx');
+      const body = await r.text().catch(() => '');
+      if (AC.isArchiveIndexUrl(url) && AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(url);
+      if (!r.ok) { const e = new Error(`HTTP ${r.status}`); e.status = r.status; throw e; }
+      return body;
     },
     readFile: (p) => require('fs').readFileSync(p, 'utf8'),
     exists: (p) => require('fs').existsSync(p),
@@ -717,7 +715,7 @@ function urlFindMethodErrorRates(rows, { nowMs = Date.now(), hours = 24, thresho
       if (st === 'skipped_paid' || st === 'not_run') continue;
       const b = by[m] || (by[m] = { method: m, runs: 0, errored: 0, blocked: 0, lastError: null });
       b.runs++;
-      if (METHOD_FAIL_STATUS.has(st)) { b.errored++; if (st === 'archive_auth_required') b.blocked = (b.blocked || 0) + 1; b.lastError = errs[m] || st; }
+      if (METHOD_FAIL_STATUS.has(st) || (errs[m] && !METHOD_DONE.has(st))) { b.errored++; if (st === 'archive_auth_required' || /^archive_auth_required/.test(String(errs[m] || ''))) b.blocked = (b.blocked || 0) + 1; b.lastError = errs[m] || st; }
     }
   }
   return Object.values(by).map((b) => ({ ...b, rate: b.runs ? b.errored / b.runs : 0 }))

@@ -615,7 +615,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
           try { b = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession({ ...c, url: walled.url }, s); } finally { urlFindSpentMs += Date.now() - bStart; } // part of the URL_FIND slice
           await markSessionLost(ad, s, b);
           console.log(`  walled link ${walled.url} (${walled.code}) -> browser: ${b.ok ? `read ${b.rawText.length} chars` : `${b.outcome} (${b.reason})`}`);
-          if (b.ok) got = { ...b, url: walled.url, via: `url-find:${walled.method || '?'}:browser`, methods: { ...got.methods, [walled.method]: 'found' }, foundBy: walled.method || null, refusedCandidates: got.refusedCandidates, foundUnreadable: got.foundUnreadable };
+          if (b.ok) got = { ...b, url: walled.url, via: `url-find:${walled.method || '?'}:browser`, methods: { ...got.methods, [walled.method]: 'found' }, foundBy: walled.method || null, refusedCandidates: got.refusedCandidates, foundUnreadable: got.foundUnreadable, methodErrors: got.methodErrors };
           else got = require('./lib/gap-url-find').applyWalledBrowserResult(got, walled, b);
         }
       }

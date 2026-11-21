@@ -78,7 +78,9 @@ async function captureTimestamp(url, which, { fetchJson, onError } = {}) {
         if (AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(u);
         throw new Error(`CDX HTTP ${r.status}`);
       }
-      return await r.json();
+      const txt = await r.text();
+      if (require('./archive-cdx').classifyArchiveResponse(r.status, txt)) throw require('./archive-cdx').authRequiredError(u);
+      return JSON.parse(txt);
     } finally { clearTimeout(t); }
   });
   const limit = which === 'earliest' ? '1' : '-1';

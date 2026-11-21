@@ -298,3 +298,14 @@ test('BRO-8000: 5+ typed blocks in a day alert even when under 50% of all lookup
   assert.equal(out.length, 1);
   assert.equal(out[0].blocked, 6);
 });
+
+test('BRO-8000: a 200 upstream_error envelope from the archive is also the typed block; partial failures still count for the alert', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response('{"error":{"code":"upstream_error","message":"query failed with status_code=403"}}', { status: 200 });
+  try {
+    await assert.rejects(UF.defaultDeps().fetchText('https://archive.org/wayback/available?url=x'), (e) => e.kind === 'archive_auth_required');
+  } finally { globalThis.fetch = realFetch; }
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const rows = [0, 1, 2, 3, 4, 5].map((i) => ({ strategy: 'URL_FIND', ts: `2026-11-21T0${i}:00:00Z`, detail: { methods: { WAYBACK_CDX: 'found_unreadable' }, methodErrors: { WAYBACK_CDX: 'archive_auth_required' } } }));
+  assert.equal(UF.urlFindMethodErrorRates(rows, { nowMs: now }).length, 1);
+});
