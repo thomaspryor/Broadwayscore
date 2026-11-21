@@ -197,17 +197,17 @@ function ingest(showId, m, url, show) {
     return { outcome: r.status === 0 ? `skipped:${skip ? skip[1].trim() : 'no-file'}` : `refused:exit${r.status}`, detail: tail };
   }
   // Wrong-show guard: a full-body ingest checks the date window only, so require the show's title in every body written.
-  let kept = null, removed = 0, bodyChars = 0;
+  let kept = null, removed = 0, bodyChars = 0, lastBody = '';
   for (const name of added) {
     const f = path.join(reviewDir(showId), name);
     let body = '';
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
-    if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
+    if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     // BRO-6487: sitemap slugs often carry no venue; a same-title production elsewhere must not pass on the title alone.
     if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
-  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s)` };
+  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)}` };
   return { outcome: 'ingested', file: kept, bodyChars };
 }
 
@@ -273,7 +273,7 @@ async function cmdRun() {
     if (!done) { results.push({ ...rec, outcome: 'capped' }); continue; }
     results.push(done);
     refresh();
-    console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}`);
+    console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}${/^removed/.test(done.outcome) && done.detail ? ` (${done.detail})` : ''}`);
     if (results.length % 25 === 0) console.log(tally.line());
     await sleep(500);
   }
