@@ -1,14 +1,14 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-11-14T23:08:23.532Z",
+    "generatedAt": "2026-11-21T23:47:57.641Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 479,
-    "totalShowsInShowsJson": 5998,
+    "totalEntries": 481,
+    "totalShowsInShowsJson": 6129,
     "matchStats": {
-      "matchedBySlug": 479,
+      "matchedBySlug": 481,
       "matchedById": 0,
       "orphaned": 0
     },
@@ -19,7 +19,7 @@
       "Wait & See": 1,
       "Flop": 183,
       "Fizzle": 44,
-      "TBD": 41,
+      "TBD": 43,
       "Nonprofit": 96,
       "Tour Stop": 2,
       "Easy Winner": 30,
@@ -28,7 +28,7 @@
     },
     "recoupmentStats": {
       "recouped": 97,
-      "notRecouped": 229,
+      "notRecouped": 231,
       "nullOrMissing": 153
     },
     "modelFalseNegatives": {
@@ -54,24 +54,24 @@
       "hasCapitalization": 304,
       "hasWeeklyRunningCost": 118,
       "hasCostMethodology": 158,
-      "hasSources": 430,
+      "hasSources": 432,
       "hasDeepResearch": 161
     },
     "openShowCoverage": {
-      "totalTrackedStatusShows": 64,
-      "withCommercialData": 64,
+      "totalTrackedStatusShows": 65,
+      "withCommercialData": 65,
       "withoutCommercialData": 0,
       "coveragePct": 100
     },
     "issuesSummary": {
-      "total": 299,
+      "total": 305,
       "bySeverity": {
         "high": 0,
         "medium": 0,
-        "low": 299
+        "low": 305
       },
       "byType": {
-        "source-quality": 233,
+        "source-quality": 239,
         "financial-sanity": 1,
         "methodology": 23,
         "stale-data": 4,
@@ -141,6 +141,12 @@
       "severity": "low",
       "showId": "the-great-gatsby",
       "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-great-gatsby",
+      "detail": "sources[3] missing date."
     },
     {
       "type": "source-quality",
@@ -655,6 +661,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "small-mouth-sounds",
+      "detail": "sources[10] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "grey-house",
       "detail": "sources[0] missing date."
     },
@@ -1123,6 +1135,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "wanted",
+      "detail": "sources[10] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "let-the-good-times-roll",
       "detail": "sources[0] missing date."
     },
@@ -1481,6 +1499,24 @@
       "detail": "sources[1] missing date."
     },
     {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "lost-lear",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "lost-lear",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-odd-couple",
+      "detail": "sources[1] missing date."
+    },
+    {
       "type": "financial-sanity",
       "severity": "low",
       "showId": "call-me-izzy",
@@ -1628,37 +1664,37 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (290 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (297 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (284 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (291 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (269 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (276 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (290 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (297 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "low",
       "showId": "parade-2023",
-      "detail": "Show is closed (closed 1196 days ago on 2023-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
+      "detail": "Show is closed (closed 1203 days ago on 2023-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
     },
     {
       "type": "closed-show-tbd",
       "severity": "low",
       "showId": "indecent-2017",
-      "detail": "Show is closed (closed 3387 days ago on 2017-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
+      "detail": "Show is closed (closed 3394 days ago on 2017-08-06) and designated \"TBD\" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported."
     },
     {
       "type": "nonprofit-classification",
