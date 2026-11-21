@@ -82,7 +82,7 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
         reviewId: `${dir}/${f}`,
         filePath,
         url: data.url,
-        showId: data.showId || dir,
+        showId: dir,
         existingChars: (data.fullText || '').length,
         contentTier: data.contentTier || 'unknown',
       });

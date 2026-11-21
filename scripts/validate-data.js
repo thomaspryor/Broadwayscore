@@ -2456,7 +2456,8 @@ function validateReviewData(shows) {
   // trusted the field). wrongProduction:true records keep the field as their
   // true origin show and are excluded by the rebuild, so they are info only.
   const { findShowIdFolderMismatches } = require('./lib/review-showid-folder');
-  const mm = findShowIdFolderMismatches(reviewTextsDir);
+  let mm = [];
+  try { mm = findShowIdFolderMismatches(reviewTextsDir); } catch (e) { warn(`showId/folder scan failed (advisory): ${e.message}`); }
   const live = mm.filter(x => !x.wrongProduction);
   if (live.length > 0) {
     warn(`${live.length} live review-text files have showId != folder (BRO-7996): ${live.slice(0, 5).map(x => `${x.folder}/${x.file}<-${x.showId}`).join(', ')}${live.length > 5 ? '...' : ''}`);
