@@ -782,13 +782,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-20T10:29:03.674Z",
+      "lastSeen": "2026-11-21T10:47:14.530Z",
       "lastNotifiedAt": "2026-11-17T11:15:25.761Z",
       "lastSurfacedAt": "2026-11-17T11:15:25.761Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-7661",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -26113,7 +26113,7 @@
       "resolveReason": "finding cleared"
     },
     "aggregator-health:nyc-theatre:coverage-drop": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "NYC Theatre roundups: archive coverage 52% in 2025Q4+2026Q2 vs 76% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
@@ -26123,7 +26123,9 @@
       "lastSurfacedAt": "2026-11-14T09:39:55.725Z",
       "notifyCount": 27,
       "cardId": null,
-      "linearIdentifier": "BRO-7065"
+      "linearIdentifier": "BRO-7065",
+      "resolvedAt": "2026-11-21T10:44:15.178Z",
+      "resolveReason": "finding cleared"
     },
     "land:land/bro-6056-multiauthor": {
       "status": "resolved",
@@ -40320,16 +40322,16 @@
     },
     "aggregator-health:theatre-reviews:coverage-drop": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
       "firstSeen": "2026-11-09T10:44:27.716Z",
       "incidentOpenedAt": "2026-11-09T10:44:27.716Z",
-      "lastSeen": "2026-11-20T10:26:28.588Z",
-      "lastNotifiedAt": "2026-11-20T10:26:28.588Z",
-      "lastSurfacedAt": "2026-11-20T10:26:28.588Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-11-21T10:44:13.257Z",
+      "lastNotifiedAt": "2026-11-21T10:44:13.257Z",
+      "lastSurfacedAt": "2026-11-21T10:44:13.257Z",
+      "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-7961"
     },
     "land:land/job/linear-BRO-7080-mw93zp4s": {
       "status": "resolved",
@@ -42603,16 +42605,16 @@
     },
     "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml": {
       "status": "open",
-      "disposition": "digest",
-      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 32 days ago",
+      "disposition": "auto",
+      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 33 days ago",
       "firstSeen": "2026-11-12T00:19:02.490Z",
       "incidentOpenedAt": "2026-11-12T00:19:02.490Z",
-      "lastSeen": "2026-11-20T10:26:28.550Z",
-      "lastNotifiedAt": "2026-11-20T10:26:28.550Z",
-      "lastSurfacedAt": "2026-11-20T10:26:28.550Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-11-21T10:44:11.439Z",
+      "lastNotifiedAt": "2026-11-21T10:44:11.439Z",
+      "lastSurfacedAt": "2026-11-21T10:44:11.439Z",
+      "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-7960"
     },
     "land:land/job/linear-BRO-7327-mwcsrexe": {
       "status": "resolved",
@@ -45507,10 +45509,10 @@
       "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
       "firstSeen": "2026-11-18T11:07:31.074Z",
       "incidentOpenedAt": "2026-11-18T11:07:31.074Z",
-      "lastSeen": "2026-11-20T10:26:28.530Z",
-      "lastNotifiedAt": "2026-11-20T10:26:28.530Z",
-      "lastSurfacedAt": "2026-11-20T10:26:28.530Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-21T10:44:11.421Z",
+      "lastNotifiedAt": "2026-11-21T10:44:11.421Z",
+      "lastSurfacedAt": "2026-11-21T10:44:11.421Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },

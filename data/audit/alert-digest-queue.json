@@ -84,6 +84,48 @@
     "queuedAt": "2026-11-21T10:24:37.330Z"
   },
   {
+    "conditionKey": "aggregator-health:thestage-roundups:coverage-drop",
+    "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+    "description": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T10:44:11.422Z"
+  },
+  {
+    "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
+    "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 33 days ago — still happening after 7 days",
+    "description": "Filed BRO-7960: this has been happening for 7+ days without clearing.\n\nBroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 33 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7960",
+    "fields": [],
+    "queuedAt": "2026-11-21T10:44:13.226Z"
+  },
+  {
+    "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
+    "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1) — still happening after 7 days",
+    "description": "Filed BRO-7961: this has been happening for 7+ days without clearing.\n\ntheatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7961",
+    "fields": [],
+    "queuedAt": "2026-11-21T10:44:14.679Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-7891-mwq7ygq9",
     "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-7891-mwq7ygq9",
     "description": "land.yml did not land land/job/linear-BRO-7891-mwq7ygq9: the scripts-lib-tests gate went red at 971a967e25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44894333794",
