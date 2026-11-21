@@ -178,3 +178,29 @@ test('summarizeRun: real Checks minutes and the collect step seconds from the jo
   const u = R.summarizeRun(run, [{ name: 'Checks', started_at: '2026-11-21T00:00:00Z', completed_at: '2026-11-21T00:10:00Z', steps: [] }]);
   assert.equal(u.checksMinutes, 10); assert.equal(u.collectSecs, null);
 });
+
+// BRO-7324: the Land job runs every changed *.test.mjs (colocated-tests, no baseline), so the
+// red-by-design goal probe must SKIP until its RECHECK-AFTER date or it refuses its own landing
+// and every merge train it rides in (run 44952545959, CHECKABLE_FROM was the landing day).
+test('goal probe date is past the first possible pinned split row, and the probe skips before it', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const probe = path.join(root, 'scripts', 'verify-land-checks-goal.test.mjs');
+  const m = /CHECKABLE_FROM = Date\.parse\('([^']+)'\)/.exec(fs.readFileSync(probe, 'utf8'));
+  assert.ok(m, 'CHECKABLE_FROM not found in the probe');
+  const from = Date.parse(m[1]);
+  // Ten pinned split rows cannot exist before the first row that carries timing.checks.
+  const { readLandings } = require('./landings-ledger.js');
+  const led = readLandings(root);
+  const firsts = (led.rows || []).filter((r) => r && r.timing && r.timing.checks).map((r) => Date.parse(r.ts)).filter(Number.isFinite);
+  const floor = firsts.length ? Math.min(...firsts) : Date.now();
+  assert.ok(from > floor, `CHECKABLE_FROM ${m[1]} is not after ${new Date(floor).toISOString()}: the probe would be red on landing`);
+  if (Date.now() >= from) return; // past the recheck date the probe judges the goal for real
+  const env = { ...process.env };
+  delete env.NODE_TEST_CONTEXT; // or the child reports into this runner and prints nothing
+  const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', probe], { encoding: 'utf8', timeout: 60_000, env });
+  assert.equal(r.status, 0, `probe exited ${r.status} before ${m[1]}:\n${String(r.stdout).slice(-600)}`);
+  assert.match(r.stdout, /# skipped 1/);
+});

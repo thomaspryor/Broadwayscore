@@ -22,11 +22,14 @@ const { checksGoal, GOAL } = require('./lib/land-timing-report.js');
 const { readLandings } = require('./lib/landings-ledger.js');
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-// The first landing that can record a pinned split Checks wall (this probe's own landing).
-const CHECKABLE_FROM = Date.parse('2026-11-21T00:00:00Z');
+// RECHECK-AFTER date: ten pinned split landings need a few days to accumulate. Before it the
+// probe skips, because the Land job runs every changed *.test.mjs as colocated-tests and a red
+// probe would refuse its own landing (and every merge train it rides in).
+// land-timing-report.test.mjs pins that it skips today.
+const CHECKABLE_FROM = Date.parse('2026-11-28T00:00:00Z');
 
 test(`land.yml Checks median < ${GOAL.medianSecs / 60} min over the last ${GOAL.landings} pinned split landings, all ${GOAL.gates} gates`, {
-  skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-11-21',
+  skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-11-28 (RECHECK-AFTER)',
 }, () => {
   const led = readLandings(ROOT);
   assert.ok(led.available, 'data/audit/landings.jsonl not found');
