@@ -153,3 +153,13 @@ test('footer stars split by stripped tags still count (BRO-7928 audit)', () => {
   assert.equal(footerStars(strip('<p><strong><em>Water for Elephants ***</em></strong>*<br>MPERIAL THEATRE'), ['Water for Elephants']), '4/5 stars');
   assert.equal(footerStars('Home **** Todd Haimes Theatre', ['Home']), '4/5 stars');
 });
+
+test("combined column: the half-star rescue uses this show's title group, not the last one (BRO-7928)", () => {
+  // Live Sweat post: title "… Sweat ***1/2 – The Play That Goes Wrong ***", footer "Sweat ***".
+  const title = 'The Hairy Ape ***** &#8211; Sweat ***1/2 &#8211; The Play That Goes Wrong ***';
+  const text = 'x\nThe Hairy Ape *****\nMarch 30\nSweat ***\nOpened March 26\nThe Play That Goes Wrong ***\nOpened April 2';
+  const pick = (show) => resolveTheaterLifeStars({ title, text, showTitles: [show] });
+  assert.deepEqual(pick('Sweat'), { cleanTitle: 'The Hairy Ape ***** – Sweat ***1/2 – The Play That Goes Wrong', rating: '3.5/5 stars', source: 'wp-api-footer' });
+  assert.equal(pick('The Hairy Ape').rating, '5/5 stars');
+  assert.equal(pick('The Play That Goes Wrong').rating, '3/5 stars');
+});

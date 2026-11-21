@@ -100,20 +100,22 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   const titleIsThisShow = !/[*★]/.test(cleanTitle)
     && (shows.length === 0 || shows.some(t => sameTitle(t, cleanTitle)));
   const footer = footerStars(decodeHtmlEntities(String(text || '')), titleIsThisShow ? [cleanTitle, ...shows] : shows);
-  if (footer) {
-    // Same whole stars, half only in the title: the footer lost its fraction to
-    // a separate tag or a typo the pattern does not read, so keep the half.
-    const f = parseFloat(footer);
-    const t = titleRating ? parseFloat(titleRating) : NaN;
-    const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? titleRating : footer;
-    return { cleanTitle, rating, source: 'wp-api-footer' };
-  }
   // A combined column's title carries one star group per show ("Time and the
   // Conways ***1/2 – Measure for Measure**1/2 – A Clockwork Orange **"), and
   // the end-of-title match reads the LAST show's group. Use only the segment
   // naming this show (BRO-7928: the Conways review got A Clockwork Orange's 2).
-  const titleOnly = /[*★]/.test(cleanTitle) ? segmentTitleStars(title, shows) : titleRating;
-  if (titleOnly) return { cleanTitle, rating: titleOnly, source: 'wp-api-title' };
+  const thisTitleRating = /[*★]/.test(cleanTitle) ? segmentTitleStars(title, shows) : titleRating;
+  if (footer) {
+    // Same whole stars, half only in this show's title stars: the footer lost
+    // its fraction to a separate tag or a typo the pattern does not read, so
+    // keep the half. On a combined column that is this show's segment, not the
+    // last group (Sweat ***1/2 in the title, "Sweat ***" footer).
+    const f = parseFloat(footer);
+    const t = thisTitleRating ? parseFloat(thisTitleRating) : NaN;
+    const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? thisTitleRating : footer;
+    return { cleanTitle, rating, source: 'wp-api-footer' };
+  }
+  if (thisTitleRating) return { cleanTitle, rating: thisTitleRating, source: 'wp-api-title' };
   return { cleanTitle, rating: null, source: null };
 }
 
