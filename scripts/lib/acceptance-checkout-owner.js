@@ -32,7 +32,9 @@ function ownerState(dir) {
   } catch (error) {
     return error.code === 'ESRCH' ? 'dead' : 'unknown';
   }
-  try { return processStart(owner.pid) === owner.started ? 'live' : 'dead'; }
+  // A changed identity may be PID reuse or a different ps locale/timezone.
+  // Keep it while that PID exists; only ESRCH proves the owner is gone.
+  try { return processStart(owner.pid) === owner.started ? 'live' : 'unknown'; }
   catch { return 'unknown'; }
 }
 

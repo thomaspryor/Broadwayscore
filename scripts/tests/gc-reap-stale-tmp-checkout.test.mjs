@@ -13,7 +13,7 @@
  */
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -146,7 +146,7 @@ test('dead owners are reaped promptly while live, dirty, unmerged and locked tre
   const marker = (co, owner) => fs.writeFileSync(path.join(co.parent, '.acceptance-owner.json'), JSON.stringify(owner));
   // Fresh source mtimes are allowed once the recorded owner has died.
   fs.utimesSync(path.join(fx.leaked.wt, 'a.txt'), new Date(), new Date());
-  marker(fx.leaked, { pid: process.pid, started: 'a different process start' });
+  marker(fx.leaked, { pid: spawnSync(process.execPath, ['-e', '']).pid, started: 'finished child' });
   const twentyMinutesAgo = new Date(Date.now() - 20 * 60 * 1000);
   fs.utimesSync(fx.leaked.parent, twentyMinutesAgo, twentyMinutesAgo);
   marker(fx.fresh, { pid: process.pid, started: execFileSync('ps', ['-p', String(process.pid), '-o', 'lstart='], { encoding: 'utf8' }).trim() });

@@ -18,7 +18,7 @@ test('owner records distinguish live, dead, reused and unknown process identitie
   assert.equal(ownerState(dir), 'live');
   const file = path.join(dir, OWNER_FILE);
   fs.writeFileSync(file, JSON.stringify({ pid: process.pid, started: 'different process start' }));
-  assert.equal(ownerState(dir), 'dead');
+  assert.equal(ownerState(dir), 'unknown');
   const child = spawnSync(process.execPath, ['-e', ''], { encoding: 'utf8' });
   fs.writeFileSync(file, JSON.stringify({ pid: child.pid, started: 'finished child' }));
   assert.equal(ownerState(dir), 'dead');
@@ -46,7 +46,7 @@ test('cleanup preserves dirty, unmerged and locked work and removes a clean chec
   writeOwner(parent);
   const co = { dir: parent, wt, repo, sha };
   assert.equal(canReapCheckout(wt), false, 'live owner protects even a clean tree');
-  fs.writeFileSync(path.join(parent, OWNER_FILE), JSON.stringify({ pid: process.pid, started: 'reused pid' }));
+  fs.writeFileSync(path.join(parent, OWNER_FILE), JSON.stringify({ pid: spawnSync(process.execPath, ['-e', '']).pid, started: 'finished child' }));
   assert.equal(canReapCheckout(wt), true, 'a dead owner with no remaining process is reclaimable');
   const child = spawn(process.execPath, ['-e', 'process.stdout.write("ready"); setInterval(() => {}, 1000)'], { cwd: wt, stdio: ['ignore', 'pipe', 'pipe'] });
   t.after(() => child.kill());
