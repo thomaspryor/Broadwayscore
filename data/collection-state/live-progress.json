@@ -1,19 +1,84 @@
 {
-  "updatedAt": "2026-11-21T00:10:22.371Z",
-  "processed": 197,
-  "failed": 122,
-  "successRate": "61.8%",
+  "updatedAt": "2026-11-21T00:53:24.297Z",
+  "processed": 194,
+  "failed": 147,
+  "successRate": "56.9%",
   "tierBreakdown": {
-    "playwright": 111,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 113,
+    "amp": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 23,
-    "scrapingbee": 17,
-    "brightdata": 0,
+    "scrapingdog": 24,
+    "scrapingbee": 18,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 43
+    "archive": 37
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 9,
+  "recentActivity": [
+    {
+      "t": "2026-11-21T00:27:00.760Z",
+      "event": "bb-session",
+      "session": "00595575",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-11-21T00:28:52.452Z",
+      "event": "bb-session",
+      "session": "3d05789d",
+      "url": "https://matineemouse.substack.com/p/jane-krakowski-oh-mary-announcement"
+    },
+    {
+      "t": "2026-11-21T00:35:12.430Z",
+      "event": "bb-session",
+      "session": "10ab588a",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-21T00:35:12.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-21T00:36:33.620Z",
+      "event": "bb-session",
+      "session": "23c92ccb",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-21T00:36:55.766Z",
+      "event": "bb-session",
+      "session": "9381d099",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-21T00:37:03.679Z",
+      "event": "bb-session",
+      "session": "d5536562",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-21T00:38:14.305Z",
+      "event": "bb-session",
+      "session": "e64a9347",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-21T00:38:21.480Z",
+      "event": "bb-session",
+      "session": "9eb84ffe",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-21T00:42:33.931Z",
+      "event": "bb-session",
+      "session": "42c9e222",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-21T00:42:34.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
