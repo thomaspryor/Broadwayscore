@@ -4732,7 +4732,14 @@ showDirs.forEach(showId => {
             priorRuns: preWindowPriorRuns(showId),
             tourLegs: showById[showId]?.tourLegs,
           });
-          if (preWindow.exclude) {
+          // BRO-7945: the earlier pre-opening guard (above) already let a review through when contentVerification
+          // affirms THIS production ([PRE-OPENING-CV-OVERRIDE]); this second copy of the same predicate had no such
+          // carve-out and dropped it anyway (a-christmas-story timeout--david-cote). Same decision, one source.
+          const cvAffirmsPreWindow = preWindow.exclude && (() => {
+            const h = rebuildPreWindowHold({ review: data, show: showById[showId] });
+            return h.hold && h.corrob.signals.includes('cv-affirms-production');
+          })();
+          if (preWindow.exclude && !cvAffirmsPreWindow) {
             console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${preWindow.daysBefore}d before, threshold ${preWindow.threshold}d)`);
             if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
             stats.suspectedWrongProduction.push({
@@ -7846,3 +7853,11 @@ if (awaitingRefetchFlagSkipped > 0) {
   console.log(`\n#483 invariant: withheld ${awaitingRefetchFlagSkipped} exclusion-flag write(s) on records awaiting URL-correction refetch`);
 }
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);
+
+// BRO-7945 class guard (advisory, never fails the rebuild): scored+includable files whose outlet is absent from
+// the reviews.json just written must each carry a recorded drop reason in this run's per-show exclusion ledger.
+// Writes data/audit/scored-absent.json (staged with the other data/audit/*.json).
+if (process.env.SCORED_ABSENT_AUDIT_DISABLED !== 'true') {
+  try { require('./audit-scored-absent').run({ argv: ['--grace-hours=48'] }); }
+  catch (e) { process.stderr.write(`[scored-absent] advisory audit failed: ${e.message}\n`); }
+}

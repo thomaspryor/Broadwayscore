@@ -238,6 +238,19 @@ function loadShow(showId) {
   return (data.shows || data).find(s => s.id === showId);
 }
 
+// BRO-7945 Part B: one paid fetch per URL per run, shared by every show's copy of the article
+// (1,006 basenames sit under 2+ shows; the same ew article was fetched 4x at 4 credits each).
+const { makeFetchCache, siblingForArticle } = require('./lib/pending-sibling-productions');
+const runFetchCache = makeFetchCache((u) => fetchPage(u));
+let _allShowsMemo = null;
+function loadAllShows() {
+  if (!_allShowsMemo) {
+    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    _allShowsMemo = data.shows || data;
+  }
+  return _allShowsMemo;
+}
+
 const { NON_MET_OPERA_URL_MARKERS, hasNonMetOperaUrlMarker, operaHouseForVenue } = require('./lib/content-filters');
 
 // The byline extractor is non-deterministic on outlets whose article pages carry
@@ -341,7 +354,7 @@ function isDescriptiveNonReviewSlug(url) {
  */
 async function processShow(showId, deps = {}) {
   const root = deps.root || REVIEW_TEXTS_ROOT;
-  const fetchPageImpl = deps.fetch || fetchPage;
+  const fetchPageImpl = deps.fetch || runFetchCache;
   const alert = deps.alert || defaultRouteAlert;
   const emit = deps.emit || emitStage;
   const dry = deps.dryRun !== undefined ? deps.dryRun : dryRun;
@@ -359,6 +372,7 @@ async function processShow(showId, deps = {}) {
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
   let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0;
+  const redundantCopies = {}; // BRO-7945: settled out-of-window copies by kind (sibling | outside-all)
   // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
   // after the loop — never a silent "keep".
   const unrecoverable = [];
@@ -396,7 +410,7 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, redundantCopies, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -558,8 +572,21 @@ async function processShow(showId, deps = {}) {
         // slugs). Deleting was irreversible data loss (ship-check 2026-06-05). Annotate so
         // future cron runs skip it without re-fetching, and leave it in _pending for a
         // human / better tooling — promotion just doesn't happen.
-        console.log(`  [${file}] SKIP (kept in _pending): ${rejectReason}`);
-        data.promoteSkippedReason = rejectReason;
+        // BRO-7945: an out-of-window copy whose date sits inside a same-title sibling's window belongs to that
+        // sibling's copy (processed on its own turn from the cached fetch); settle this one so it is never
+        // re-judged. Outside every same-title window = settled junk. Both stay on disk (never delete).
+        let settle = null;
+        if (/is outside this production's window|date-out-of-window/.test(rejectReason)) {
+          const sib = siblingForArticle(show, deps.allShows || loadAllShows(), publishDate,
+            { hasCopy: (sid) => fs.existsSync(path.join(root, '_pending', sid, file)) });
+          settle = sib
+            ? { kind: 'sibling', reason: `article published ${String(publishDate).slice(0, 10)} belongs to same-title production ${sib.id}; its _pending copy carries it (BRO-7945)`, sibling: sib.id }
+            : { kind: 'outside-all', reason: rejectReason };
+          redundantCopies[settle.kind] = (redundantCopies[settle.kind] || 0) + 1;
+        }
+        console.log(`  [${file}] SKIP (kept in _pending): ${settle ? settle.reason : rejectReason}`);
+        data.promoteSkippedReason = settle ? settle.reason : rejectReason;
+        if (settle) { data.promoteSettled = settle.kind; if (settle.sibling) data.promoteSettledSibling = settle.sibling; }
         data.promoteSkippedAt = new Date().toISOString();
         if (!dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
         kept++;
