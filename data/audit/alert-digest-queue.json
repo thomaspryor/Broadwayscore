@@ -1387,18 +1387,35 @@
     "queuedAt": "2026-11-21T21:08:31.370Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "land:land/bro-7511-liverun-wrapper",
+    "title": "Landing blocked: deadline red on land/bro-7511-liverun-wrapper",
+    "description": "land.yml did not land land/bro-7511-liverun-wrapper: the deadline gate went red at 95004b3868. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7511-liverun-wrapper @ 95004b3868 (origin/land/bro-7511-liverun-wrapper) → origin/main @ dea68b2bdc [land] attempt 1/3: rebased onto dea68b2bdc, 4 file(s) changed — running checks [land] verified-base: main moved 9270e04890 → dea68b2bdc across 592 file(s), substantive — re-checking on the merged tree (+6 test file(s) changed on main since the verified base); full re-check: branch a Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44947873964",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T21:54:40.540Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7511-liverun-wrapper"
+      },
+      {
+        "name": "gate",
+        "value": "deadline"
+      },
+      {
+        "name": "tip",
+        "value": "95004b386896d9ddcc5134e311553b2f3a72aaa4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44947873964"
+      }
+    ],
+    "queuedAt": "2026-11-21T22:54:52.934Z"
   },
   {
     "conditionKey": "t1-gaps:needs-manual-recovery",
