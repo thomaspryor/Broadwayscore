@@ -12,6 +12,14 @@ inputs:
       Default 'false' keeps the full depth-1 clone.
     required: false
     default: 'false'
+  ref:
+    description: >-
+      A 40-hex commit sha of broadway-scorecard-data to check out after the clone (BRO-7324: land.yml's two Checks
+      runners pin one data revision so their halves judge the same data). Empty (default) = current main, exactly as
+      before; the pin step below is skipped. A malformed sha, or a fetch/checkout that fails, warns and stays on main
+      (never fails the step). The checkout is a detached HEAD, so a caller that pushes from the clone must not pass it.
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -172,6 +180,45 @@ runs:
               ;;
           esac
         done
+
+    # BRO-7324: pin a specific data revision. Skipped entirely when ref is
+    # empty, so every caller that does not pass it runs byte-for-byte as before.
+    # Fails open to main: land.yml's Checks compares its data rev with the
+    # shard's and runs part 2 itself on a mismatch, so a missed pin costs time,
+    # never a gate. Sparse/partial clones keep their sparse-checkout config and
+    # promisor filter across the fetch + checkout.
+    - name: Pin core data revision
+      if: inputs.ref != ''
+      shell: bash
+      env:
+        CORE_DATA_REF: ${{ inputs.ref }}
+      run: |
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        NET_SEC="${CHECKOUT_CORE_DATA_NET_TIMEOUT_SEC:-150}"
+        # Whole-value match (a grep would pass any one 40-hex line of a
+        # multiline value); never echo the raw value into the log.
+        if ! [[ "$CORE_DATA_REF" =~ ^[0-9a-f]{40}$ ]]; then
+          echo "::warning::checkout-core-data: ref input is not a 40-hex sha; staying on main @ $(git -C /tmp/core-data-checkout rev-parse --short HEAD 2>/dev/null || echo unknown)"
+          exit 0
+        fi
+        HEAD_NOW=$(git -C /tmp/core-data-checkout rev-parse HEAD 2>/dev/null || echo "")
+        if [ "$HEAD_NOW" = "$CORE_DATA_REF" ]; then
+          echo "core data already at the pinned ${CORE_DATA_REF:0:10}"
+          exit 0
+        fi
+        # Fetch stderr dropped: origin's URL carries the token.
+        if git_net "$NET_SEC" -C /tmp/core-data-checkout fetch -q --depth 1 origin "$CORE_DATA_REF" 2>/dev/null \
+          && git -C /tmp/core-data-checkout checkout -q --detach "$CORE_DATA_REF"; then
+          echo "core data pinned to ${CORE_DATA_REF:0:10} (main was @ ${HEAD_NOW:0:10})"
+        else
+          # A half-done checkout could leave a mixed tree: put main's back.
+          # If even that fails the tree is unknown: fail loudly, never test on it.
+          if ! git -C /tmp/core-data-checkout checkout -q -f main 2>/dev/null; then
+            echo "::error::checkout-core-data: pinned checkout failed and main could not be restored"
+            exit 1
+          fi
+          echo "::warning::checkout-core-data: could not fetch/checkout pinned ${CORE_DATA_REF:0:10}; staying on main @ ${HEAD_NOW:0:10}"
+        fi
 
     - name: Copy core data to data/
       shell: bash
