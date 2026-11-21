@@ -122,7 +122,9 @@ jobs:
     # variable read (1 min) and the gate (2 min); (7260+240+60)/0.85 = 8894s.
     # 150->152 (BRO-6987): the Reddit due-check dispatch step (2 min);
     # (7560+120)/0.85 = 9035s, so 152min = 9120s.
-    timeout-minutes: 152
+    # 152->160 (BRO-8010): readiness rebuild cap 10->15 (+300s) and a memo
+    # restore step; (9120*0.85+300+120)/0.85 = ~9610s, so 160min = 9600s+.
+    timeout-minutes: 160
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
