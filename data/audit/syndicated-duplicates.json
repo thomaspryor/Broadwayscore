@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-21T07:29:29.387Z",
+  "generatedAt": "2026-11-21T08:12:53.853Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 56,
+    "avgScoreDiff": 2
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Sheri Gross",
+      "showId": "wicked-tour-2021",
+      "primaryOutlet": "cleveland-jewish-news",
+      "secondaryOutlet": "the-news-herald",
+      "primaryFile": "cleveland-jewish-news--sheri-gross.json",
+      "secondaryFile": "the-news-herald--sheri-gross.json",
+      "similarity": 56,
+      "primaryScore": 90,
+      "secondaryScore": 92,
+      "scoreDiff": 2
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

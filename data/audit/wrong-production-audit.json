@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T07:39:49.720Z",
+  "timestamp": "2026-11-21T08:21:49.540Z",
   "stats": {
-    "totalReviews": 83606,
-    "alreadyFlagged": 22543,
+    "totalReviews": 83612,
+    "alreadyFlagged": 22548,
     "dateGuardCatches": 235,
     "directorMismatch": 3824,
     "tvFilmSignals": 2387,
-    "londonSignals": 3877,
+    "londonSignals": 3879,
     "offBroadwaySignals": 777,
     "yearMismatch": 390,
-    "noPublishDate": 8252
+    "noPublishDate": 8250
   },
   "findings": [
     {
@@ -91721,6 +91721,20 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 84,
+      "publishDate": "June 26th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/a-moon-for-the-misbegotten-at-almeida-theatre-b1235001.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 79,
       "publishDate": "2025-06-26",
@@ -112715,7 +112729,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -135098,6 +135112,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "revstanstheatreblog--rightrevstan.json",
+      "score": 58,
+      "publishDate": "2026-09-06",
+      "url": "https://revstanstheatreblog.co.uk/2026/09/06/video-review-the-children-lyric-hammersmith/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
