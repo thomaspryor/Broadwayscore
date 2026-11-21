@@ -46,12 +46,15 @@ test('missing roots and an empty job give an empty record, never a throw', () =>
 test('emit writes one timing= line that round-trips as JSON, and exits 0 on bad input', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'gt-'));
   outDir(root, 'branch', { finishedAt: '2026-11-21T12:20:00Z', wallMs: 1000, gates: ['tsc'], gateSecs: { tsc: 1 } });
+  outDir(root, 'base', { finishedAt: '2026-11-20T09:00:00Z', wallMs: 1000, gates: ['tsc'], gateSecs: { tsc: 2 } });
   const gho = path.join(root, 'gh-output');
   execFileSync('node', [CLI, 'emit', `--t0=${T0}`, `--root=${root}`, `--github-output=${gho}`]);
   const line = fs.readFileSync(gho, 'utf8').trim();
   assert.match(line, /^timing=\{/);
   assert.equal(line.split('\n').length, 1);
-  assert.equal(JSON.parse(line.slice('timing='.length)).runs[`${path.basename(root)}/branch`].gateSecs.tsc, 1);
+  const runs = JSON.parse(line.slice('timing='.length)).runs;
+  assert.equal(runs[`${path.basename(root)}/branch`].gateSecs.tsc, 1);
+  assert.deepEqual(Object.keys(runs), [`${path.basename(root)}/branch`], '--t0 must reach the CLI: the restored base is older');
   // unwritable output file: still exit 0
   execFileSync('node', [CLI, 'emit', `--t0=${T0}`, `--root=${root}`, '--github-output=/nonexistent/dir/x']);
 });

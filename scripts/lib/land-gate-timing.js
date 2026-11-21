@@ -67,7 +67,7 @@ function summaryLines(timing) {
 function parseArgs(argv) {
   const o = { cmd: argv[0], roots: [], t0: 0, githubOutput: null, summaryFile: null };
   for (const a of argv.slice(1)) {
-    const m = /^--([a-z-]+)=(.*)$/.exec(a);
+    const m = /^--([a-z0-9-]+)=(.*)$/.exec(a);
     if (!m) continue;
     if (m[1] === 'root') o.roots.push(m[2]);
     else if (m[1] === 't0') o.t0 = Number(m[2]) || 0;
