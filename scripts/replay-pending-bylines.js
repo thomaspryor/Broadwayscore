@@ -514,8 +514,8 @@ async function processShow(showId, deps = {}) {
     }
     // BRO-7930: a stub whose url names no identity for a numeric / 1-2 letter / generic bare title ("13", "G", "Da",
     // "The Story") is a discovery fluke (Daily Mail restaurant pages under 44-off-broadway-2025), never a stuck review.
-    if (show?.title && require('./lib/generic-title-guard').genericSingleWordTitle(show.title)
-        && !require('./lib/generic-title-guard').passesGenericTitleIdentity(data.url || '', show.title)
+    if (show?.title && require('./lib/generic-title-guard').genericSingleWordTitle(show.title, { shortNumeric: true })
+        && !require('./lib/generic-title-guard').passesGenericTitleIdentity(data.url || '', show.title, { shortNumeric: true })
         && !(data.source === 'submit-review-form' || data.source === 'manual-user-request')) {
       console.log(`  [${file}] url carries no identity for the bare title "${show.title}" — tagged, not a stuck review (BRO-7930)`);
       if (!dry) {

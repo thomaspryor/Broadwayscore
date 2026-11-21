@@ -57,10 +57,10 @@ test('collision: www / query / path-prefix / 1-char typo variants are the same a
 });
 
 test('bare-title guard: numeric and 1-2 letter titles need identity; ordinary titles are untouched', () => {
-  for (const t of ['13', 'G', 'Da', '44']) assert.ok(genericSingleWordTitle(t), t);
+  for (const t of ['13', 'G', 'Da', '44']) assert.ok(genericSingleWordTitle(t, { shortNumeric: true }), t);
   for (const t of ['Hamilton', 'Art', 'Red', 'Six', 'Wicked']) assert.equal(genericSingleWordTitle(t), null, t);
-  assert.equal(passesGenericTitleIdentity('https://www.dailymail.co.uk/travel/article-123/best-restaurants-44-street.html', '44'), false);
-  assert.equal(passesGenericTitleIdentity('https://www.timeout.com/newyork/theater/44-the-musical-off-broadway-review', '44'), true);
+  assert.equal(passesGenericTitleIdentity('https://www.dailymail.co.uk/travel/article-123/best-restaurants-44-street.html', '44', { shortNumeric: true }), false);
+  assert.equal(passesGenericTitleIdentity('https://www.timeout.com/newyork/theater/44-the-musical-off-broadway-review', '44', { shortNumeric: true }), true);
 });
 
 test('health: N zero runs fires, one resolved file clears it; sustained growth fires', () => {
@@ -228,5 +228,7 @@ test('scoring decision clears stale needsRefetch', async () => {
 test('4-digit numeric title (1984) is not a bare generic title; 3-digit still is', async () => {
   const g = (await import('node:module')).createRequire(import.meta.url)('./generic-title-guard.js');
   assert.equal(g.genericSingleWordTitle('1984'), null);
-  assert.equal(g.genericSingleWordTitle('13'), '13');
+  assert.equal(g.genericSingleWordTitle('13'), null, 'discovery keeps the narrow rule');
+  assert.equal(g.genericSingleWordTitle('13', { shortNumeric: true }), '13');
+  assert.equal(g.genericSingleWordTitle('1984', { shortNumeric: true }), null);
 });

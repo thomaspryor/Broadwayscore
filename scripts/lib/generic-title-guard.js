@@ -38,11 +38,11 @@ const norm = s => foldDiacritics(String(s || '')).toLowerCase()
  * @param {string} title - shows.json title
  * @returns {string|null} the lone generic word ("story") or null if the title is not a generic one-word title
  */
-function genericSingleWordTitle(title) {
+function genericSingleWordTitle(title, { shortNumeric = false } = {}) {
   const words = norm(title).split(' ').filter(Boolean);
-  // BRO-7930: a numeric or 1-2 letter bare title ("13", "G", "Da", "44") matches any year, price, initial or
+  // BRO-7930 (opt-in via {shortNumeric:true}, used only by the _pending drain; discovery matchers keep the narrow rule): a numeric or 1-2 letter bare title ("13", "G", "Da", "44") matches any year, price, initial or
   // fragment in a URL: 13-2008 held 70 junk _pending stubs, g-west-end-2024 106, da-1978 70. Same bare-context rule.
-  if (words.length === 1) return BARE_GENERIC_TITLE_WORDS.has(words[0]) || /^\d{1,3}$/.test(words[0]) || words[0].length <= 2 ? words[0] : null;
+  if (words.length === 1) return BARE_GENERIC_TITLE_WORDS.has(words[0]) || (shortNumeric && (/^\d{1,3}$/.test(words[0]) || words[0].length <= 2)) ? words[0] : null;
   if (words.length !== 2 || !ARTICLES.has(words[0])) return null;
   return GENERIC_SINGLE_TITLE_WORDS.has(words[1]) ? words[1] : null;
 }
@@ -53,8 +53,8 @@ function genericSingleWordTitle(title) {
  * @param {string} text - URL or headline
  * @param {string} title - shows.json title
  */
-function passesGenericTitleIdentity(text, title) {
-  const word = genericSingleWordTitle(title);
+function passesGenericTitleIdentity(text, title, opts) {
+  const word = genericSingleWordTitle(title, opts);
   if (!word) return true;
   const phrase = norm(title);
   const raw = String(text || '');
