@@ -1,5 +1,6 @@
 // Pins the compare-video framing rule (BRO-6412 / owner 2026-10-27): puzzle opener with computed gap and direction,
 // both scores, the like-for-like caveat, neutral maybes, and an open closing question in voice AND caption.
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const assert = require('assert');
 const { composeCompare, words } = require('./video-proto/compare-script');
 const side = (o) => ({ title: 'Show', place: 'London', city: 'London', label: 'London 2024', score: 85, count: 26, year: 2024, ...o });

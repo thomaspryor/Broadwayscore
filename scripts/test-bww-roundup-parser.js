@@ -15,6 +15,7 @@
  */
 
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 
 const fs = require('fs');
 const path = require('path');

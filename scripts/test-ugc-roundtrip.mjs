@@ -24,6 +24,7 @@
 // found"), and we need none of it: every call here is a GoTrue admin/verify or
 // a PostgREST request, all plain HTTP. Node 18+ has global fetch.
 
+import './lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
 import { runDiarySharesChecks } from './lib/diary-shares-roundtrip.mjs';
 import { runFantasyEntryChecks } from './lib/fantasy-entries-roundtrip.mjs';

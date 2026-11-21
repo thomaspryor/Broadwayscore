@@ -44,7 +44,9 @@ function meterProblem(src) {
   const lines = src.split('\n');
   const meterLine = lines.findIndex((l) => METER_RE.test(l) && !/^\s*(\/\/|\*)/.test(l));
   if (meterLine === -1) return 'mentions the meter only in a comment';
-  const firstImport = lines.findIndex((l) => /^import\s/.test(l));
+  // The BRO-7984 bare-`node --test` guard may precede the meter: it builds no
+  // client and touches no fetch, it only exits before anything else loads.
+  const firstImport = lines.findIndex((l) => /^import\s/.test(l) && !/refuse-under-bare-node-test/.test(l));
   if (firstImport !== -1 && firstImport < meterLine) return `an import (line ${firstImport + 1}) runs before the meter (line ${meterLine + 1}); make the meter the first import`;
   const firstClient = lines.findIndex((l) => CLIENT_RE.test(l) && !/^\s*(\/\/|\*)/.test(l));
   if (firstClient !== -1 && firstClient < meterLine) return `a client is built (line ${firstClient + 1}) before the meter (line ${meterLine + 1})`;
@@ -71,4 +73,5 @@ test('red-then-green: the rule flags a missing, late, or comment-only meter', ()
   assert.match(meterProblem("// require('./lib/llm-usage-install')\nconst c = new OpenAI();\n"), /only in a comment/);
   assert.equal(meterProblem("import './lib/llm-usage-install.js';\nimport OpenAI from 'openai';\nconst c = new OpenAI();\n"), null);
   assert.equal(meterProblem("'use strict';\nrequire('./lib/llm-usage-install');\nconst OpenAI = require('openai');\n"), null);
+  assert.equal(meterProblem("import './lib/refuse-under-bare-node-test.js';\nimport './lib/llm-usage-install.js';\nimport OpenAI from 'openai';\n"), null);
 });

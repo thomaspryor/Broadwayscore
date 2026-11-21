@@ -10,6 +10,7 @@
  */
 
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 
 const { validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 

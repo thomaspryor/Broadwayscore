@@ -6,6 +6,7 @@
  * Run: node scripts/test-title-normalization.js
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix } = require('./lib/title-normalization');
 
 let passed = 0;

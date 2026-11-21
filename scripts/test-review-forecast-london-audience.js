@@ -1,4 +1,5 @@
 // BRO-7380 guard: the London/out-of-town audience results stay aggregate-only and the summary reproduces.
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const { hasHelpFlag } = require('./lib/cli-help');
 if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/test-review-forecast-london-audience.js  (checks BRO-7380 results stay aggregate-only; no network, no writes)'); process.exit(0); }
 const fs = require('fs'); const { execFileSync } = require('child_process'); const assert = require('assert');

@@ -28,6 +28,7 @@
  *   node scripts/test-paywalled-access.js --browserbase  (use Browserbase cloud browser + CAPTCHA solving)
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const { chromium } = require('playwright');
 const { launchExtras } = require('./lib/playwright-exe'); // BRO-7448: cloud chromium build differs from the pinned one
 

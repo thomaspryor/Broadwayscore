@@ -8,6 +8,7 @@
 // fixture, and exits non-zero with file:line on a match. See task #1662.
 
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 
 // glob (not node:fs's globSync) — globSync was added in Node 22 and this
 // repo's CI pins Node 20 for the jobs that run this script (test.yml's

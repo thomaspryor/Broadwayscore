@@ -14,6 +14,7 @@
 // hygiene-help-flag-ok: test script; its only fs write is its own temp dir (BRO-2664)
 // BRO-2664: review-guards' exclusion logger appends to
 // data/audit/exclusions-<date>.jsonl; keep this run's rows in a temp dir.
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 if (!process.env.EXCLUSION_LOGGER_AUDIT_DIR) {
   const os = require('os');
   const fs = require('fs');

@@ -11,6 +11,7 @@
  * Run: node scripts/test-email-broadcast.js
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine } = require('./lib/email-templates');
 
 // Minimal show fixture matching the interface from send-opening-night-broadcast.js
