@@ -60,7 +60,7 @@ if [ "$stop_hook_active" = "true" ]; then
   # Unwritable ledger: nothing could be recorded, so blocking again could loop
   # forever. Fall back to the old let-it-through behavior.
   { : >> "$_ve_chain_file"; } 2>/dev/null || exit 0
-  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && exit 0
+  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && { if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then _rcv_err=$(printf '%s' "$input" | timeout 15 node "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); [ $? -eq 2 ] && { printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; } fi; exit 0; }
 else
   { : > "$_ve_chain_file"; } 2>/dev/null
 fi
@@ -1697,7 +1697,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
 # advise --minutes 3 (BRO-7378). CHILDSTALL: a REPORT-BACK child needs live
 # work or a report/question to @parent since its last message (BRO-7183).
 # Decisions: scripts/lib/child-session-wait-guard.js; switches <CODE>_GATE_DISABLE=1.
-_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'OPENCLAIM')
+_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'DEADWAIT', 'OPENCLAIM')
 _CW_CODES = [c for c in _CW_ALL if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
 if _CW_CODES:
     try:
@@ -1744,12 +1744,12 @@ if _CW_CODES:
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts + [t for t in _report_back_prompt if t][:1]), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
-                'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
+                'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES or (c == 'DEADWAIT' and not _stall_gate_blocks('DEADWAIT_GATE_MODE', '2026-11-21T00:00:00Z'))],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
                 'childCreatedAt': _live_work()['childCreatedAt'] if _cw_keep else {},
                 'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids, 'openClaim': _oc_on,
                 'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (_k == 'user_text' and _OC_RT.search(_p or ''))] or [-1]),
-                'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
+                'otherLive': bool((_cw_stall or _oc_on or _cw_keep) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
             for _cw_advisory in _cw_res.get('advisories', []):
@@ -1763,10 +1763,35 @@ if _CW_CODES:
                 os.makedirs(_pd, exist_ok=True)
                 with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
                     _pf.write(json.dumps({'at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'session': os.environ.get('CLAUDE_CODE_SESSION_ID', ''), 'cards': _cw_res.get('cards')}) + '\n')
+            elif _cw_res.get('code') == 'DEADWAIT' and not _stall_gate_blocks('DEADWAIT_GATE_MODE', '2026-11-21T00:00:00Z'):
+                # advisory mode (DEADWAIT_GATE_MODE=advisory): ledger row only
+                if os.environ.get('DEADWAIT_GATE_MODE') != 'off':
+                    _stall_advisory_post('DEADWAIT', _cw_res.get('target'))
             elif _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
                 if _cw_res.get('wrongTool'):
                     sys.stderr.write('   SendMessage was used for the report: it is the in-process teammate transport and never reaches the parent session.\n')
                 _ve_block(_cw_res.get('code') or 'CHILDWAIT')  # an older guard returns no code
+    except Exception:
+        pass  # fail-open
+
+# ─── New-session-ask gate (NEWSESSIONASK, BRO-7918, 2026-11-21) ─────────────
+# A closing that tells the owner to "start a new session" / "open a fresh session and
+# tell it ..." is blocked: the owner never starts sessions. The matcher is
+# scripts/lib/new-session-ask.js (negations and quoted mentions do not count).
+# Kill switch NEWSESSIONASK_GATE_DISABLE=1. Fail-open.
+if os.environ.get('NEWSESSIONASK_GATE_DISABLE', '0') != '1':
+    try:
+        _ns_text, _ns_last = _closing()
+        if 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('NEWSESSIONASK'):
+            import subprocess
+            _ns_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'new-session-ask.js')
+            if os.path.isfile(_ns_js):
+                _ns = json.loads(subprocess.run(['node', _ns_js], capture_output=True, text=True, timeout=10,
+                                                input=json.dumps({'text': _ns_text + '\n' + _ns_last})).stdout or '{}')
+                if _ns.get('block'):
+                    _ve_block('NEWSESSIONASK')
+    except SystemExit:
+        raise
     except Exception:
         pass  # fail-open
 
@@ -2794,6 +2819,16 @@ if [[ "$result" == "OPENCLAIM" ]]; then
 fi
 if [[ "$result" == "CHILDSTALL" ]]; then
   echo "🛑 BLOCKED: this is a child session with no human (its prompt has a REPORT-BACK: line). Ending a turn with nothing running and nothing sent to your parent stops the work for good (BRO-7183: BRO-6854 wrote 'I'm continuing with the Boston pipeline', ended the turn and sat idle 6 days). Pick one: keep working in this turn; or start what you wait on as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor, whose exit wakes you; or, if the card is finished, send the report: mcp__claude-code-remote__send_message with session_id \"@parent\" and a message starting \"REPORT-BACK BRO-N:\"; or, if you need an answer, send the question the same way (your parent's reply wakes you). SendMessage does NOT reach the parent, and text in your final message reaches nobody. Bypass: NO-VERIFY: <reason>. Kill switch CHILDSTALL_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "DEADWAIT" ]]; then
+  echo "🛑 BLOCKED: Nothing will wake this session. If the remaining work is owned by a card, a parent or another session, end SAFE TO ARCHIVE and name the owner; KEEP OPEN only with a running background wait. Your KEEP OPEN waits on a parent, another session, a fresh worker, a follow-up card, the board or a recheck date, and no background wait is running (four earlier workers each ended that way; the parent was often already ended, the board queue is weeks deep, a RECHECK-AFTER date wakes nobody, and every card was finished by someone else while the owner could not tell whether to archive). If the remaining work is owned by a card, a parent or another session, first check that card (node scripts/linear-brain.js show BRO-N, or its latest comment) and git log origin/main, hand the work to the card (node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=...; for a check on a date: linear-brain.js create ... --dispatch --not-before <ISO time>), send_message @parent a line starting REPORT-BACK BRO-N: if you have a parent, and end SAFE TO ARCHIVE naming the owner in plain words, for example: SAFE TO ARCHIVE — BRO-7820 owns the remaining reports and a board worker takes it, nothing here is left (that wording passes the LOOSEENDS gate). KEEP OPEN only with a running background wait: a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you. Never write that you are waiting on a parent, a fresh worker or a follow-up card without one. Bypass: NO-VERIFY: <reason>. Mode DEADWAIT_GATE_MODE (block|advisory|off). Kill switch DEADWAIT_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NEWSESSIONASK" ]]; then
+  echo "🛑 BLOCKED: your closing tells the owner to start a new or fresh session (or to open one and tell it something). Never: the owner is not technical, never starts sessions, and cannot do it from a closing message (BRO-7918: the BRO-7741 session told the owner to 'start a new session and tell it to finish and release BRO-7741' while that card was already Done and its commits were on main). First read the card's current state and git log origin/main; if the work is finished, say so and end SAFE TO ARCHIVE. If work remains: a worker with create_session starts the worker itself; a worker without it hands the work to its card (node scripts/linear-brain.js create ... --dispatch, or report --status=paused with the summary), sends @parent a REPORT-BACK BRO-N: line, and ends SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>. Kill switch NEWSESSIONASK_GATE_DISABLE=1." >&2
   exit 2
 fi
 

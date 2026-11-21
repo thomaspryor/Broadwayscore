@@ -167,6 +167,72 @@ function childJobsDecision(input) {
   return { block: true, reason: 'child session ends KEEP OPEN on running jobs with no live background task or Monitor' };
 }
 
+// ─── Dead wait on a person, a card or a date (DEADWAIT, BRO-7918) ───────────
+// 2026-11-18..20: BRO-7741, 7816, 7780 and 7817 each ended "KEEP OPEN: waiting
+// for the session that started me to start a fresh worker" / "waiting for the
+// follow-up card" / "card stays Paused until the recheck". Nothing was armed:
+// the parent was often ended (send_message -> session_inactive), the board
+// queue is weeks deep, a RECHECK-AFTER date wakes nobody. Every card was in
+// fact finished by someone else; the owner could not tell whether to archive.
+// Applies to ALL sessions. A KEEP OPEN whose stated wait is on a parent,
+// another session, a fresh worker, a follow-up card, the board or a recheck
+// date needs a running background wait (liveBackground) or another live wake;
+// otherwise the work belongs to the card or the parent and the session ends
+// SAFE TO ARCHIVE naming that owner.
+const DEAD_TARGET_RE = new RegExp([
+  '@parent\\b|\\b(?:the|my|its) parent\\b(?! (?:director|folder|path|class|node|commit|dir|element|object))|\\bparent (?:session|worker|agent|system)\\b',
+  '\\bsession that (?:started|created|spawned|launched|sent|dispatched|assigned|asked|tasked|gave)\\b',
+  '\\bstart(?:ed)? (?:a |the )?(?:new|fresh) one\\b',
+  '\\b(?:whoever|whatever session) (?:started|created|spawned) me\\b',
+  '\\b(?:a |the |another |next )?(?:fresh|new|follow-?up|next|another|separate|board|dedicated) (?:worker|session)s?\\b',
+  '\\bboard (?:worker|queue)\\b|\\bworker queue\\b|\\b(?:on|for|until) the board\\b',
+  '\\bfollow-?up (?:card|issue|ticket|task)\\b|\\bheld card\\b|\\bnot-before\\b',
+  '\\bcard (?:stays|remains|is|stay) (?:paused|parked|held|open|in progress)\\b',
+  '\\b(?:paused|parked|held) until\\b',
+  '\\bRECHECK-AFTER\\b|\\bre-?check(?:s|ed)?\\b',
+  '\\banother session\\b|\\bother session\\b',
+].join('|'), 'i');
+// "waiting for the parent's answer" after a real question to @parent is the flow CLOUD.md prescribes.
+// An interactive session waiting for the owner's next message is woken by that message (not dead).
+const OWNER_WAIT_RE = /\b(?:once|until|when|after) (?:you|the owner)\b|\byou (?:reply|answer|respond|message|say|decide)\b|\bkeep chatting\b/i;
+const ANSWER_WAIT_RE = /\b(?:answer|repl(?:y|ies)|response|decision|question|reply)\b/i;
+
+/** The KEEP OPEN verdict line(s) and "Still running" lines, whole (not clause-split). */
+function waitLines(closing) {
+  return String(closing || '').split('\n')
+    .filter((l) => /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running)\b/i.test(l))
+    .map((l) => l.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running:?)\s*[—–:,-]?\s*/i, '').trim())
+    .filter(Boolean);
+}
+
+const DEAD_NOTHING_RE = /^(?:nothing|no\b)/i;
+
+/**
+ * @returns {{block: boolean, reason: string, target?: string}}
+ * Input: { closing, tools, done, now, otherLive, anchor, parentIds, env, noVerify }
+ */
+function deadWaitDecision(input) {
+  const { closing = '', tools = [], done = [], now = null, otherLive = false, anchor = -1,
+    parentIds = [], env = {}, noVerify = false } = input || {};
+  const no = (reason) => ({ block: false, reason });
+  if (noVerify) return no('NO-VERIFY bypass');
+  if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
+  const hit = waitLines(closing).filter((l) => !DEAD_NOTHING_RE.test(l)).find((l) => DEAD_TARGET_RE.test(l));
+  if (!hit) return no('KEEP OPEN does not wait on a parent, session, card or date');
+  if (OWNER_WAIT_RE.test(hit)) return no('waiting on the owner next message, which wakes the session');
+  if (otherLive) return no('a background Agent, PR subscription or self-bound trigger will wake it');
+  if (liveBackground(tools, done, { now }).length) return no('a background task or Monitor is live');
+  if (ANSWER_WAIT_RE.test(hit)) {
+    const parents = new Set(['@parent', ...parentIds.map(String),
+      String((env || {}).CLAUDE_PARENT_SESSION_ID || ''), String((env || {}).PARENT_SESSION_ID || '')].filter(Boolean));
+    const asked = tools.some((t) => t && t.ok && t.idx > anchor && REMOTE_SEND_RE.test(String(t.name || ''))
+      && parents.has(String((t.input || {}).session_id || '')) && /\?(?=\s|$)|DECISION NEEDED|\bquestion\b/i.test(String((t.input || {}).message || '')));
+    if (asked) return no('waiting on the answer to a question already sent to @parent');
+  }
+  return { block: true, target: hit.slice(0, 120),
+    reason: 'KEEP OPEN waits on a parent, another session, a fresh worker, a follow-up card, the board or a recheck date, and nothing is running that would wake this session' };
+}
+
 // ─── Parent waiting on a child (CHILDWATCH, BRO-6717) ───────────────────────
 // The BRO-6518 parent ended KEEP OPEN on its child's report-back; an idle
 // child sends neither a report nor a failure event, so the parent never woke.
@@ -322,7 +388,7 @@ function decideAll(input) {
   // The older KEEP OPEN gates go first: their messages name the exact wait.
   // CHILDSTALL (BRO-7183) is the catch-all for any closing.
   if (!input || input.keepOpen !== false) {
-    gates.push(['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]);
+    gates.push(['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision], ['DEADWAIT', deadWaitDecision]);
   }
   if (input && input.stall) gates.push(['CHILDSTALL', childStallDecision]);
   if (input && input.openClaim) gates.push(['OPENCLAIM', openClaimDecision]);
@@ -330,7 +396,7 @@ function decideAll(input) {
     if (skip.has(code)) continue;
     const r = fn(input);
     advisories.push(...(r.advisories || []));
-    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards,
+    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards, target: r.target,
       ...(advisories.length ? { advisories } : {}) };
     reasons.push(code + ': ' + r.reason);
   }
@@ -338,7 +404,7 @@ function decideAll(input) {
 }
 
 module.exports = { BG_DEFAULT_MS,
-  childWaitDecision, childJobsDecision, parentWatchDecision, firstWatchAdvisories, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
+  childWaitDecision, childJobsDecision, parentWatchDecision, deadWaitDecision, DEAD_TARGET_RE, firstWatchAdvisories, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 

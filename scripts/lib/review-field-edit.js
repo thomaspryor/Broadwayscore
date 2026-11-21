@@ -468,7 +468,11 @@ function isScalar(v) {
  */
 function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (!record || typeof record !== 'object') return { ok: false, reason: 'record is not an object' };
-  const { field, oldValue, newValue } = action || {};
+  const { field, oldValue, oldValueHash, newValue } = action || {};
+  const hashedExcerpt = oldValueHash !== undefined;
+  if (hashedExcerpt && (!EXCERPT_FIELDS.includes(field) || newValue !== null || oldValue !== undefined || !/^[a-f0-9]{64}$/.test(oldValueHash))) {
+    return { ok: false, reason: 'oldValueHash is only allowed for excerpt clears' };
+  }
   if (!REVIEW_TEXT_EDITABLE_FIELDS.includes(field)) {
     return { ok: false, reason: `Field "${field}" not allowed for review-field-edit` };
   }
@@ -483,7 +487,10 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (record._locked === true && !lockedExclusion) return { ok: false, reason: 'record is _locked' };
   const current = record[field] === undefined ? null : record[field];
   const expected = oldValue === undefined ? null : oldValue;
-  if (JSON.stringify(current) !== JSON.stringify(expected)) {
+  const matches = hashedExcerpt
+    ? typeof current === 'string' && require('crypto').createHash('sha256').update(current).digest('hex') === oldValueHash
+    : JSON.stringify(current) === JSON.stringify(expected);
+  if (!matches) {
     return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
   }
   if (field === 'duplicateOf' && newValue === null && !record.duplicateClearReason) {
@@ -621,7 +628,7 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     if (retiered.length) sideEffectKeys = [...new Set([...sideEffectKeys, ...retiered])].sort();
   }
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
-  return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
+  return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${hashedExcerpt ? '[sha256 matched]' : JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
 
 // Moved to approved-fix-flag.js (write-free); re-exported below for callers.
@@ -807,6 +814,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   // attempt already stamped its breadcrumb. Only the requested field may
   // bypass that stale-payload check; collision and lock guards still run.
   const writeOptions = action.field === 'url' ? { approvedUrlRepair: true } : {};
+  if (action.field === 'aggregatorStars' && action.newValue === null) writeOptions.merge = false;
   if (record._locked === true) writeOptions.approvedLockedNonReviewField = action.field;
   if (action.field === 'duplicateOf' && action.newValue === null) {
     writeOptions.approvedFieldClear = action.field;
@@ -822,7 +830,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
   const got = after[action.field] === undefined ? null : after[action.field];
   if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
-    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
+    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${EXCERPT_FIELDS.includes(action.field) ? "an excerpt" : JSON.stringify(got)}` };
   }
   // A flag the rebuild still reads as cleared changes nothing (BRO-4599).
   if (action.field === 'wrongShow' && action.newValue === true && require('./review-guards').wrongShowCleared(after)) {

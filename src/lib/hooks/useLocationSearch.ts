@@ -30,6 +30,15 @@ export function useLocationSearch(): string {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
+/** True when `url` (relative or absolute) resolves to exactly `currentHref`. */
+export function isSameLocation(url: string, currentHref: string): boolean {
+  try {
+    return new URL(url, currentHref).href === currentHref;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Replace the current URL (no navigation) and notify useLocationSearch().
  * Pass a fresh state object: Next's patched replaceState skips its router sync
@@ -37,6 +46,9 @@ export function useLocationSearch(): string {
  * Next's HistoryUpdater rewrite this change away later.
  */
 export function replaceLocationSearch(url: string) {
+  // Browsers cap replaceState at 100 calls / 10s (SecurityError, BRO-7724);
+  // a write that would not change the address bar is skipped.
+  if (isSameLocation(url, window.location.href)) return;
   window.history.replaceState({}, '', url);
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }

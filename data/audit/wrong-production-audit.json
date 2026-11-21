@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T03:40:26.012Z",
+  "timestamp": "2026-11-21T04:48:13.881Z",
   "stats": {
     "totalReviews": 83573,
-    "alreadyFlagged": 22615,
+    "alreadyFlagged": 22627,
     "dateGuardCatches": 222,
-    "directorMismatch": 3803,
-    "tvFilmSignals": 2380,
-    "londonSignals": 3858,
-    "offBroadwaySignals": 775,
-    "yearMismatch": 388,
-    "noPublishDate": 8293
+    "directorMismatch": 3805,
+    "tvFilmSignals": 2385,
+    "londonSignals": 3860,
+    "offBroadwaySignals": 777,
+    "yearMismatch": 390,
+    "noPublishDate": 8250
   },
   "findings": [
     {
@@ -921,6 +921,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "700-sundays-2013",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2013/11/13/700-sundays-reviews-billy-crystal-back-on-broadway/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2004 (2x) more than 2013 (1x). 2004 matches production: 700-sundays-2004"
         }
       ]
     },
@@ -36994,6 +37008,20 @@
       ]
     },
     {
+      "showId": "jekyll-and-hyde-1997",
+      "file": "the-globe-and-mail--kelly-nestruck.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/theatre-reviews/a-jekyll-hyde-for-the-comic-book-set/article5342539/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeff calhoun\" from jekyll-and-hyde-2013"
+        }
+      ]
+    },
+    {
       "showId": "jekyll-and-hyde-2013",
       "file": "nyt-theater--unknown.json",
       "score": 41,
@@ -44774,6 +44802,20 @@
       "score": 83,
       "publishDate": "November 13, 2022",
       "url": "https://www.amny.com/entertainment/review-mike-birbiglia-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+      "file": "broadway-blog--billy-mcentee.json",
+      "score": 85,
+      "publishDate": "November 17th, 2022",
+      "url": "https://thebroadwayblog.com/review-mike-birbiglia-astounds-in-the-old-man-the-pool/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -58001,6 +58043,20 @@
       ]
     },
     {
+      "showId": "rock-of-ages-2009",
+      "file": "thewrap--unknown.json",
+      "score": null,
+      "publishDate": "2014-10-21",
+      "url": "https://www.thewrap.com/big-brothers-frankie-grande-heading-to-broadways-rock-of-ages/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2009 (1x). 2011 matches production: rock-of-ages-west-end-2011"
+        }
+      ]
+    },
+    {
       "showId": "rock-of-ages-off-broadway-2019",
       "file": "newsday--barbara-schuler.json",
       "score": 84,
@@ -70609,6 +70665,20 @@
       ]
     },
     {
+      "showId": "the-elephant-man-1979",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/the-elephant-man",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
       "showId": "the-elephant-man-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -78290,6 +78360,39 @@
       ]
     },
     {
+      "showId": "the-phantom-of-the-opera-1988",
+      "file": "slantmagazine--unknown.json",
+      "score": null,
+      "publishDate": "2004-12-06",
+      "url": "https://www.slantmagazine.com/film/the-phantom-of-the-opera-1274/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2020-11-17",
+      "url": "https://www.vulture.com/article/the-crown-diana-phantom-of-the-opera-performance-singing-real.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwaywithaj--aj-jaffari.json",
       "score": 92,
@@ -82358,6 +82461,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 47,
+      "publishDate": "2017-10-13",
+      "url": "https://newyorktheater.me/2017/10/13/time-and-the-conways-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "file": "reflections-in-the-light--lauren-yarger.json",
+      "score": 80,
+      "publishDate": "2017-10-19",
+      "url": "http://reflectionsinthelight.blogspot.com/2017/10/broadway-theater-review-time-and-conways.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -119366,6 +119497,20 @@
     },
     {
       "showId": "matilda-the-musical-2013",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "http://www.nypost.com/p/entertainment/theater/matilda_one_for_the_books_NkTbt6HPoEmm0lbz7uDVbK",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "matilda-the-musical-2013",
       "file": "village-voice--michael-feingold.json",
       "score": 44,
       "publishDate": "2013-04-10",
@@ -129088,6 +129233,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "file": "nydailynews--unknown.json",
+      "score": null,
+      "publishDate": "2022-01-27",
+      "url": "https://www.nydailynews.com/2022/01/27/broadway-review-skeleton-crew-with-phylicia-rashad-laments-the-decline-of-detroits-auto-industry/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -144811,6 +144970,20 @@
       "score": 52,
       "publishDate": "2017-10-10T19:50:19-04:00",
       "url": "https://www.thedailybeast.com/downton-abbey-just-landed-on-broadway-kind-of-time-and-the-conways-measure-for-measure-and-the-home-place",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "file": "theater-life--unknown.json",
+      "score": null,
+      "publishDate": "2017-10-18",
+      "url": "https://theaterlife.com/time-and-the-conways-12-measure-for-measure12-a-clockwork-orange/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",

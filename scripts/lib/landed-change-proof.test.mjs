@@ -286,6 +286,16 @@ test('retroCoverageGaps lists web sessions with no retro row; matches by webSess
   assert.deepEqual(g.missing, [{ session: 'session_01CCC', shas: ['cccccccccc'] }]);
   assert.equal(webSessionOf('Claude-Session: https://claude.ai/code/session_01XyZ'), 'session_01XyZ');
 });
+test('BRO-7911: a session whose own commit touched the retro ledger is covered even with no id or sha link', () => {
+  // The audit's rows are code commits only; the retro commit is a data commit with another sha but the same Claude-Session trailer.
+  const rows = [
+    { sha: 'aaaaaaaaaa11', landedDay: '2026-11-20', session: 'session_01AAA' },
+    { sha: 'bbbbbbbbbb22', landedDay: '2026-11-20', session: 'session_01BBB' },
+  ];
+  const g = retroCoverageGaps(rows, [{ sessionId: 'old', links: [] }], '2026-11-20', ['https://claude.ai/code/session_01AAA']);
+  assert.deepEqual(g.missing.map((m) => m.session), ['session_01BBB']);
+  assert.equal(retroCoverageGaps(rows, [], '2026-11-20').missing.length, 2, 'without the ledger sessions both read as missing');
+});
 test('noRunReason: says why a not-run file got no run; null when it was run or dispatched', () => {
   assert.match(noRunReason({ verdict: 'not_run', kind: 'lib', workflows: ['x.yml'] }), /not on the no-spend dispatch allowlist/);
   assert.match(noRunReason({ verdict: 'not_run', kind: 'workflow', workflows: ['x.yml'] }), /workflow file/);

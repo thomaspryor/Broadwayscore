@@ -142,3 +142,62 @@ test('BRO-7378: advisories reach the Stop decision and respect the existing CHIL
     assert.equal(decideAll({ ...input, ...extra }).advisories, undefined, JSON.stringify(extra));
   }
 });
+
+// ─── DEADWAIT (BRO-7918): KEEP OPEN on a parent / fresh worker / card / recheck date with nothing armed ───
+import { readFileSync } from 'node:fs';
+const { deadWaitDecision } = require('./child-session-wait-guard.js');
+const DEAD = JSON.parse(readFileSync(new URL('./fixtures/bro-7918-dead-keep-open/closings.json', import.meta.url), 'utf8'));
+const NOW = Date.parse('2026-11-21T04:00:00Z');
+const liveWait = { idx: 5, name: 'Bash', input: { command: 'node scripts/lib/wait-for-land.js land/x 60 --prod', run_in_background: true, timeout: 7200000 }, ok: true, taskId: 'live1', startedAt: NOW - 60000 };
+
+test('DEADWAIT: the four real dead KEEP OPEN finals are blocked, for any session (child or not)', () => {
+  for (const k of ['bro-7741-fresh-worker', 'bro-7816-follow-up-card', 'bro-7780-board-worker', 'bro-7817-recheck-date', 'bro-7817-card-paused']) {
+    for (const firstPrompt of ['BRO-1\nBUDGET: 4h\n', 'plain owner prompt']) {
+      const r = decideAll({ closing: DEAD[k], firstPrompt, env: {}, tools: [], done: [], now: NOW, keepOpen: true });
+      assert.equal(r.block, true, k);
+      // a child that also names a CI run is caught first by the older CHILDWAIT; either way it is blocked
+      assert.ok(r.code === 'DEADWAIT' || (firstPrompt.includes('BUDGET') && r.code === 'CHILDWAIT'), k + ' ' + r.code);
+      if (!firstPrompt.includes('BUDGET')) assert.equal(r.code, 'DEADWAIT', k);
+    }
+  }
+});
+test('DEADWAIT: the real KEEP OPEN with a live background wait passes', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7817-live-wait'], tools: [liveWait], now: NOW }).block, false);
+  assert.equal(decideAll({ closing: DEAD['bro-7817-live-wait'], firstPrompt: 'x', env: {}, tools: [liveWait], now: NOW, keepOpen: true }).block, false);
+});
+test('DEADWAIT: a live wait on the dead-wait wording also passes (the wait is what matters)', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [liveWait], now: NOW }).block, false);
+});
+test('DEADWAIT: a finished wait (completion notice) no longer counts', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [liveWait], done: ['live1'], now: NOW }).block, true);
+});
+test('DEADWAIT: SAFE TO ARCHIVE finals pass (the correct ending)', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7816-safe'], tools: [] }).block, false);
+});
+test('DEADWAIT: other live wakes (agent, PR watch, trigger), NO-VERIFY and a pending parent question pass', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [], otherLive: true }).block, false);
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [], noVerify: true }).block, false);
+  const ask = { idx: 4, name: 'mcp__claude-code-remote__send_message', ok: true, input: { session_id: '@parent', message: 'Question: which table should I use?' } };
+  const waitAns = 'Still running: nothing.\nKEEP OPEN: waiting for the parent answer to my question.';
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [ask], anchor: 1 }).block, false);
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [ask], anchor: 9 }).block, true, 'a question older than the parent latest message does not count');
+  const report = { ...ask, input: { session_id: '@parent', message: 'REPORT-BACK BRO-1: done' } };
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [report], anchor: 1 }).block, true, 'a report is not a question');
+});
+test('DEADWAIT: KEEP OPEN on unrelated work, or "Nothing" lines, is not this gate', () => {
+  assert.equal(deadWaitDecision({ closing: 'Still running: nothing.\nKEEP OPEN — the build is running in this session.', tools: [] }).block, false);
+  assert.equal(deadWaitDecision({ closing: 'Still running: nothing, no parent involved.\nSAFE TO ARCHIVE — done', tools: [] }).block, false);
+});
+test('DEADWAIT: the suggested SAFE TO ARCHIVE wording names the owner and has no wait phrase LOOSEENDS would catch', () => {
+  const ok = 'Still running: nothing.\nYou need to: nothing needed from you.\n\nSAFE TO ARCHIVE — BRO-7820 owns the remaining reports and a board worker takes it; nothing here is left.';
+  assert.equal(deadWaitDecision({ closing: ok, tools: [] }).block, false);
+  assert.ok(!/waiting (?:on|for)\b|I'll (?:re)?check|\bI will (?:re-?)?check/i.test(ok));
+});
+
+test('DEADWAIT BRO-7918 review: owner-reply waits and parent-directory wording are not dead waits', () => {
+  const run = (closing) => deadWaitDecision({ closing, tools: [], done: [], now: Date.now(), env: {} });
+  assert.equal(run('KEEP OPEN: you can keep chatting; I will recheck once you reply').block, false);
+  assert.equal(run('KEEP OPEN: the parent directory scan runs in the background').block, false);
+  assert.equal(run('KEEP OPEN: board layout render is running').block, false);
+  assert.equal(run('KEEP OPEN: waiting for the parent to start a fresh worker').block, true);
+});

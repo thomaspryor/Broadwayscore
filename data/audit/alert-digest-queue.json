@@ -1432,20 +1432,6 @@
     "queuedAt": "2026-11-21T02:41:53.083Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T03:27:18.235Z"
-  },
-  {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
     "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
     "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 83557 files scanned.\n  wrongProduction violations: 1\n    assassins-off-broadway-2021/stageandcinema--tony-frankel.json :: rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
@@ -1489,5 +1475,112 @@
       }
     ],
     "queuedAt": "2026-11-21T03:47:03.985Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T04:20:17.867Z"
+  },
+  {
+    "conditionKey": "land:land/wakeless-keepopen",
+    "title": "Landing blocked: unit-tests-node red on land/wakeless-keepopen",
+    "description": "land.yml did not land land/wakeless-keepopen: the unit-tests-node gate went red at ee0a509632. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44863319951",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/wakeless-keepopen"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ee0a5096329034351c03a28dd612cb51999c06e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44863319951"
+      }
+    ],
+    "queuedAt": "2026-11-21T03:59:38.434Z"
+  },
+  {
+    "conditionKey": "land:land/lazy-sharp-precommit",
+    "title": "Landing blocked: unit-tests-node red on land/lazy-sharp-precommit",
+    "description": "land.yml did not land land/lazy-sharp-precommit: the unit-tests-node gate went red at eaa87f67d3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44865684911",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/lazy-sharp-precommit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "eaa87f67d3802b2da63fed323eb42c88c726eb47"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44865684911"
+      }
+    ],
+    "queuedAt": "2026-11-21T04:28:15.743Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7921-landed-fallback",
+    "title": "Landing blocked: rebase red on land/bro-7921-landed-fallback",
+    "description": "land.yml did not land land/bro-7921-landed-fallback: the rebase gate went red at fa36000986. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7921-landed-fallback @ fa36000986 (origin/land/bro-7921-landed-fallback) → origin/main @ c567be28b3 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c567be28b3: Rebasing (1/2) error: could not apply 638ccbc2f1c... BRO-7921: landed check falls back to all shows; title match keeps covered-market production hint: Resolve all conflicts manually, mark them as resolved Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44863812530",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7921-landed-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fa36000986172063fb153907f5cb0e9be14c076b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44863812530"
+      }
+    ],
+    "queuedAt": "2026-11-21T04:38:08.161Z"
   }
 ]

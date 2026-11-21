@@ -366,7 +366,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 20 workflows using it) |
 | `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 20 workflows using it) |
 | `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 20 workflows using it) |
-| `DISCORD_WEBHOOK_ALERTS` | 109 cross-repo writers (of 200 workflows using it) |
+| `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 201 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |

@@ -19,6 +19,16 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+
+// BRO-7911: a board-workers firing (2026-11-20 14:48Z) landed code and closed `ACTION NEEDED FROM YOU` (a parked card needed the
+// owner), so a SAFE-TO-ARCHIVE-only check never looked at it. Any final verdict that ENDS the work counts: SAFE TO ARCHIVE/EXIT
+// or ACTION NEEDED FROM YOU. KEEP OPEN is a session still waiting, not a close.
+export function claimsClose(message) {
+  if (claimsSafeToArchive(message)) return true;
+  const text = String(message || '').replace(/```[\s\S]*?```/g, '');
+  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
+  return lines.length > 0 && /^ACTION NEEDED FROM YOU\b/.test(lines[lines.length - 1]);
+}
 import { isMainModule } from './is-main-module.mjs';
 
 const CODE_PATH_RE = /^(?:src|scripts|\.github|\.claude)\//;
@@ -191,7 +201,7 @@ const MSG = {
 export function stopHookDecision({ lastMessage = '', events = null, env = process.env, hasGetSession = false }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.RETRO_COVERAGE_STOP_DISABLE === '1') return { decision: 'allow', reason: 'RETRO_COVERAGE_STOP_DISABLE=1' };
-  if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
+  if (!claimsClose(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE or ACTION NEEDED' };
   if (/NO-RETRO:\s*\S.{8,}/.test(lastMessage)) return { decision: 'allow', reason: 'NO-RETRO bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   if (landedPushIndices(events).length === 0) return { decision: 'allow', reason: 'nothing landed' };

@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-21T03:30:29.610Z",
+  "generatedAt": "2026-11-21T04:20:42.734Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 363,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "now-you-see-me-live-2026",
-      "title": "Now You See Me Live",
-      "openingDate": "2026-11-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.27 vs local 60.94 (Δ0.67)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-21T03:30:18.341Z"
-    }
-  ],
+  "clean": 364,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -2768,6 +2768,26 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-7498: gather-reviews, the shared aggregator writer and excerpt backfills
+  // all reach this point. Check after merging so an existing URL, publication
+  // date or human clearance cannot be hidden by a sparse incoming payload.
+  if (!force) {
+    const { isExcerptCandidate, rejectedShowScoreExcerptReason } = require('./rejected-show-score-excerpt');
+    if (isExcerptCandidate(newData)) {
+      const show = _getShowById(path.basename(path.dirname(filePath)));
+      if (show && !laneBypasses(newData, 'wrongProduction', { openingDate: show.openingDate })) {
+        const reason = rejectedShowScoreExcerptReason(
+          newData, show, [..._showsByIdCache.values()], path.dirname(path.dirname(filePath))
+        );
+        if (reason) {
+          newData.wrongProduction = true;
+          newData.wrongProductionNote = reason;
+          invalidateWrongProductionAutoClear(newData);
+        }
+      }
+    }
+  }
+
   // BRO-5367: a cleared wrongShow/wrongProduction leaves the 'invalid' tier it
   // caused; reclassify it here, after every step that can set those flags
   // again, so the review does not drop off the site when an auto-clear stamp

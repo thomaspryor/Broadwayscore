@@ -48,6 +48,7 @@ const { discoverWestEndTheatreUrl } = require('./lib/westend-slug-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-we-closing-dates.js — Daily bidirectional audit of closingDate values for open West End shows.
@@ -173,7 +174,7 @@ async function auditOneShow(show) {
 async function notifyLinear(ambiguous, todayStr) {
   if (ambiguous.length === 0) return;
   if (!process.env.LINEAR_API_KEY) {
-    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
+    throw missingKeyError('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'linear-brain.js');
@@ -236,6 +237,8 @@ async function notifyLinear(ambiguous, todayStr) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-7920: a missing board key must fail before any data is written, not after.
+  if (!DRY_RUN) assertBoardConfigured();
   console.log('='.repeat(60));
   console.log('WE CLOSING DATE AUDIT (bidirectional)');
   console.log('='.repeat(60));
@@ -353,13 +356,10 @@ async function main() {
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.extracted} (+${e.delta}d) [${e.urlSource}]`);
   for (const n of newClosings) console.log(`  NEW  ${n.id}: null → ${n.extracted} [${n.urlSource}]`);
-  for (const a of ambiguous) {
-    if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
-      console.log(`  AMB  ${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`);
-    } else {
-      console.log(`  AMB  ${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
-    }
-  }
+  const describeAmbiguous = a => (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+    ? `${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`
+    : `${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
+  for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
   for (const e of errors) console.log(`  ERR  ${e.id}: ${e.reason}`);
 
   const changed = extensions.filter(e => !e.skipped).length;
@@ -369,7 +369,9 @@ async function main() {
   }
 
   if (ambiguous.length > 0) {
-    await notifyLinear(ambiguous, TODAY);
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates', {
+      summary: ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n'),
+    });
   }
 
   await cleanup();
