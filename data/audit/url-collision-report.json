@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-21T10:37:05.291Z",
+  "generatedAt": "2026-11-21T11:14:46.025Z",
   "summary": {
-    "total": 19,
-    "high": 10,
-    "medium": 6,
-    "low": 3
+    "total": 18,
+    "high": 9,
+    "medium": 7,
+    "low": 2
   },
   "collisions": [
     {
@@ -42,7 +42,7 @@
           "showId": "an-oak-tree-west-end-2025",
           "file": "daily-mail--veronica-lee.json",
           "publishDate": "2025-05-07",
-          "openingDate": null,
+          "openingDate": "2025-05-06",
           "hasScore": false,
           "hasFullText": false,
           "outletId": "daily-mail"
@@ -57,9 +57,9 @@
           "outletId": "daily-mail"
         }
       ],
-      "suggestedWinner": "here-we-are-west-end-2025",
-      "reason": "publishDate 2025-05-09 is 1 days from here-we-are-west-end-2025 opening (2025-05-08)",
-      "confidence": "high"
+      "suggestedWinner": "an-oak-tree-west-end-2025",
+      "reason": "publishDate 2025-05-07 is 1 days from an-oak-tree-west-end-2025 but also 1 days from here-we-are-west-end-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -386,33 +386,6 @@
       "confidence": "medium"
     },
     {
-      "url": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?ico=most_popular",
-      "normalizedUrl": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876",
-      "candidates": [
-        {
-          "showId": "the-seagull-west-end-2022",
-          "file": "i-paper--fiona-mountford.json",
-          "publishDate": null,
-          "openingDate": "2022-07-07",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "i-paper"
-        },
-        {
-          "showId": "the-seagull-west-end-2025",
-          "file": "i-paper--fiona-mountford.json",
-          "publishDate": "2025-03-07",
-          "openingDate": null,
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "i-paper"
-        }
-      ],
-      "suggestedWinner": "the-seagull-west-end-2022",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.thestage.co.uk/reviews/till-the-stars-come-down-review-dorfman-theatre-national-theatre-london-beth-steel-bijan-sheibani-sinead-matthews-marc-wootton-ruby-stokes",
       "normalizedUrl": "https://thestage.co.uk/reviews/till-the-stars-come-down-review-dorfman-theatre-national-theatre-london-beth-steel-bijan-sheibani-sinead-matthews-marc-wootton-ruby-stokes",
       "candidates": [
@@ -429,15 +402,15 @@
           "showId": "till-the-stars-come-down-west-end-2025",
           "file": "thestage--unknown.json",
           "publishDate": "July 10th, 2025",
-          "openingDate": null,
+          "openingDate": "2025-07-09",
           "hasScore": false,
           "hasFullText": false,
           "outletId": "thestage"
         }
       ],
       "suggestedWinner": "till-the-stars-come-down-west-end-2024",
-      "reason": "publishDate 2024-02-01 is 1 days from till-the-stars-come-down-west-end-2024 opening (2024-01-31)",
-      "confidence": "high"
+      "reason": "publishDate 2024-02-01 is 1 days from till-the-stars-come-down-west-end-2024 but also 1 days from till-the-stars-come-down-west-end-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://www.timeout.com/london/theatre/till-the-stars-come-down-review-1",
@@ -456,15 +429,15 @@
           "showId": "till-the-stars-come-down-west-end-2025",
           "file": "timeout-london--isobel-lewis.json",
           "publishDate": "2025-07-09",
-          "openingDate": null,
+          "openingDate": "2025-07-09",
           "hasScore": false,
           "hasFullText": false,
           "outletId": "timeout-london"
         }
       ],
-      "suggestedWinner": "till-the-stars-come-down-west-end-2024",
-      "reason": "Only one candidate has score/fullText",
-      "confidence": "medium"
+      "suggestedWinner": "till-the-stars-come-down-west-end-2025",
+      "reason": "publishDate 2025-07-09 is 0 days from till-the-stars-come-down-west-end-2025 opening (2025-07-09)",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/translations-review",
