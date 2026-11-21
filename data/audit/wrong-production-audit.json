@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T20:10:02.935Z",
+  "timestamp": "2026-11-21T20:44:21.789Z",
   "stats": {
-    "totalReviews": 83726,
+    "totalReviews": 83779,
     "alreadyFlagged": 22419,
     "dateGuardCatches": 235,
-    "directorMismatch": 3858,
+    "directorMismatch": 3866,
     "tvFilmSignals": 2401,
-    "londonSignals": 3936,
-    "offBroadwaySignals": 780,
+    "londonSignals": 3947,
+    "offBroadwaySignals": 781,
     "yearMismatch": 394,
-    "noPublishDate": 8242
+    "noPublishDate": 8241
   },
   "findings": [
     {
@@ -9448,10 +9448,41 @@
     },
     {
       "showId": "blithe-spirit-west-end-2014",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2014-03-19",
+      "url": "https://www.ft.com/content/68ac329c-af55-11e3-bea5-00144feab7de?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
       "file": "hampstead-highgate-express--emily-govan.json",
       "score": 96,
       "publishDate": "2014-04-10",
       "url": "https://www.hamhigh.co.uk/things-to-do/21376945.theatre-review-blithe-spirit-gielgud-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2014-03-23",
+      "url": "https://www.theguardian.com/stage/2014/mar/23/blithe-spirit-review-angela-lansbury-happy-medium",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68501,6 +68532,20 @@
     },
     {
       "showId": "the-audience-west-end-2013",
+      "file": "observer--susannah-clapp.json",
+      "score": 75,
+      "publishDate": "2013-03-10",
+      "url": "https://www.theguardian.com/stage/2013/mar/10/audience-helen-mirren-daldry-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from the-audience-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-audience-west-end-2013",
       "file": "standard--unknown.json",
       "score": 80,
       "publishDate": "2013-05-20",
@@ -70888,6 +70933,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cripple-of-inishmaan-west-end-2013",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 74,
+      "publishDate": "2013-06-19",
+      "url": "https://www.ft.com/content/39820098-d8d5-11e2-a6cf-00144feab7de",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from the-cripple-of-inishmaan-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-cripple-of-inishmaan-west-end-2013",
+      "file": "observer--susannah-clapp.json",
+      "score": 78,
+      "publishDate": "2013-06-23",
+      "url": "https://www.theguardian.com/stage/2013/jun/23/cripple-inishmaan-daniel-radcliffe-night-alive-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from the-cripple-of-inishmaan-2014"
         }
       ]
     },
@@ -82532,6 +82605,19 @@
     },
     {
       "showId": "the-weir-west-end-2014",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2014-01-22",
+      "url": "https://www.ft.com/content/09fec87c-8359-11e3-aa65-00144feab7de",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-west-end-2014",
       "file": "standard--conor-mcpherson.json",
       "publishDate": "2014-01-22",
       "url": "https://www.standard.co.uk/culture/theatre/the-weir-playwright-conor-mcpherson-on-the-art-of-acting-9043179.html",
@@ -83055,6 +83141,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winslow-boy-west-end-2013",
+      "file": "observer--kate-kellaway.json",
+      "score": 75,
+      "publishDate": "2013-03-24",
+      "url": "https://www.theguardian.com/stage/2013/mar/24/winslow-boy-old-vic-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lindsay posner\" from the-winslow-boy-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -85552,6 +85657,20 @@
       "score": 78,
       "publishDate": "2012-11-19",
       "url": "https://metro.co.uk/2012/11/19/twelfth-night-tim-carroll-stephen-fry-theatre-review-501324/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
+        }
+      ]
+    },
+    {
+      "showId": "twelfth-night-west-end-2012",
+      "file": "observer--susannah-clapp.json",
+      "score": 87,
+      "publishDate": "2012-11-25",
+      "url": "https://www.theguardian.com/stage/2012/nov/25/dark-earth-and-the-light-sky-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -97063,6 +97182,19 @@
       ]
     },
     {
+      "showId": "birdland-west-end-2014",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2014-04-13",
+      "url": "https://www.theguardian.com/stage/2014/apr/13/charles-iii-birdland-small-family-business-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "birthday-candles-2022",
       "file": "theater-scene--victor-gluck.json",
       "score": 63,
@@ -102194,6 +102326,20 @@
       ]
     },
     {
+      "showId": "damned-by-despair-west-end-2012",
+      "file": "observer--susannah-clapp.json",
+      "score": 36,
+      "publishDate": "2012-10-14",
+      "url": "https://www.theguardian.com/stage/2012/oct/14/this-house-scenes-execution-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "dana-h-2021",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -107277,6 +107423,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "from-here-to-eternity-west-end-2013",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2013-09-27",
+      "url": "https://www.ft.com/content/f78407f4-2523-11e3-9dcc-00144feab7de",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -121156,6 +121315,19 @@
       ]
     },
     {
+      "showId": "medea-west-end-2014",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2014-07-22",
+      "url": "https://www.ft.com/content/0bc57680-1182-11e4-b356-00144feabdc0?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "medea-west-end-2023",
       "file": "artsdesk--mert-dilek.json",
       "score": 72,
@@ -122558,6 +122730,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "my-english-persian-kitchen-regional-2026",
+      "file": "metro-weekly--unknown.json",
+      "score": 88,
+      "publishDate": "2026-11-20",
+      "url": "https://www.metroweekly.com/2026/11/my-english-persian-kitchen-review-solas-nua/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
@@ -125502,6 +125688,20 @@
       ]
     },
     {
+      "showId": "once-west-end-2013",
+      "file": "observer--susannah-clapp.json",
+      "score": 74,
+      "publishDate": "2013-04-14",
+      "url": "https://www.theguardian.com/stage/2013/apr/14/narrative-cannibals-once-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "one-day-the-musical-west-end-2026",
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "findings": [
@@ -126925,6 +127125,20 @@
       ]
     },
     {
+      "showId": "peter-and-alice-west-end-2013",
+      "file": "observer--susannah-clapp.json",
+      "score": 66,
+      "publishDate": "2013-03-31",
+      "url": "https://www.theguardian.com/stage/2013/mar/31/peter-alice-low-road-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "peter-and-the-starcatcher-2012",
       "file": "ew--melissa-rose-bernardo.json",
       "score": 74,
@@ -128243,6 +128457,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "privates-on-parade-west-end-2012",
+      "file": "observer--susannah-clapp.json",
+      "score": 87,
+      "publishDate": "2012-12-16",
+      "url": "https://www.theguardian.com/stage/2012/dec/16/privates-parade-review-russell-beale",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -129798,6 +130026,20 @@
       "score": 66,
       "publishDate": "2013-09-29",
       "url": "https://www.britishtheatreguide.info/reviews/routes-royal-court-the-9435",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "routes-west-end-2013",
+      "file": "observer--susannah-clapp.json",
+      "score": 80,
+      "publishDate": "2013-09-29",
+      "url": "https://www.theguardian.com/stage/2013/sep/29/routes-storm-flower-yankee-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -148437,6 +148679,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "uncle-vanya-west-end-2012",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2012-11-05",
+      "url": "https://www.whatsonstage.com/news/opening-russian-uncle-vanya-tommy-steele-in-scrooge-nts-people_2168/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
