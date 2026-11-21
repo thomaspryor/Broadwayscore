@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-21T18:17:40.436Z",
+  "timestamp": "2026-11-21T18:39:15.836Z",
   "stats": {
-    "totalReviews": 83712,
+    "totalReviews": 83719,
     "alreadyFlagged": 22419,
     "dateGuardCatches": 235,
     "directorMismatch": 3858,
     "tvFilmSignals": 2401,
-    "londonSignals": 3932,
+    "londonSignals": 3934,
     "offBroadwaySignals": 780,
     "yearMismatch": 394,
     "noPublishDate": 8244
@@ -103363,7 +103363,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 63,
+      "score": 64,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/desire-under-elms-almeida-theatre-review-dour-tragedy-recast-dynamic-musical-drama",
       "findings": [
@@ -103544,7 +103544,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
@@ -103558,7 +103558,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--unknown.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
@@ -103600,7 +103600,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "theatreandtonic--david.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-11-19",
       "url": "https://theatreandtonic.co.uk/blog/desire-under-the-elms-at-almeida-theatre-review",
       "findings": [
@@ -128639,6 +128639,19 @@
     },
     {
       "showId": "red-velvet-west-end-2016",
+      "file": "britishtheatrecom--matthew-lunn.json",
+      "publishDate": "2016-02-07",
+      "url": "https://www.britishtheatre.com/posts/review-red-velvet-garrick-theatre-3stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "red-velvet-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
       "score": 79,
       "publishDate": "2016-02-01",
@@ -137905,6 +137918,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-father-west-end-2015",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "publishDate": "2015-11-04",
+      "url": "https://www.britishtheatre.com/posts/review-the-father-wyndhams-theatre-5stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
