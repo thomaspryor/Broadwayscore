@@ -87,6 +87,8 @@ const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis
 const { synopsisSourceProblem } = require('./lib/synopsis-source');
 const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/opening-date-sources');
+const { needsOpeningDate, loadBaselineIds } = require('./lib/opening-date-required');
+const MISSING_OPENING_BASELINE = loadBaselineIds();
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
@@ -969,6 +971,15 @@ function validateDates(shows) {
     // want regardless of how it was discovered — doubly so if also provisional.
     if (show.status === 'open' && !show.openingDate) {
       warn(`Show "${show.title}" (${show.id}, ${show.category || 'no-category'}) is status:open with null openingDate — score shows but "Opened …" is blank and opening-night review discovery can't anchor. Backfill from ${openingDateSourceHint(show.category)}.`);
+    }
+
+    // BRO-7929: open/closed show with no openingDate. New offenders are errors; legacy ones
+    // are frozen in data/audit/missing-opening-date-baseline.json (scripts/lib/opening-date-required.js).
+    if (needsOpeningDate(show)) {
+      if (!MISSING_OPENING_BASELINE.has(show.id)) {
+        error(`Show "${show.title}" (${show.id}) is status:${show.status} with no openingDate — backfill from ${openingDateSourceHint(show.category)} (BRO-7929; reviews of a later same-title production get parked on it as wrongProduction).`);
+        issues++;
+      }
     }
 
     // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry

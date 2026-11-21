@@ -95,6 +95,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { slugify } = require('./lib/deduplication');
 
 const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
@@ -903,7 +904,7 @@ async function main() {
     const data = JSON.parse(fs.readFileSync(candidatesFile, 'utf8'));
     const list = Array.isArray(data) ? data : (data.candidates || []);
     targets = list.map(c => ({
-      id: c.id || foldDiacritics(c.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-off-broadway-pending',
+      id: c.id || slugify(c.title || '') + '-off-broadway-pending', // shows.json slug rule (BRO-7929 cousin)
       title: c.title,
       venue: c.venue,
       category: 'off-broadway',

@@ -522,6 +522,16 @@ const AUDITS = [
     crashCodes: [2],           // 0 under baseline / 1 = new un-baselined orphan / 2 = corpus missing or partial
   },
   {
+    name: 'orphan-production-clusters',
+    healPathRequired: true, // BRO-7929
+    label: 'wrongProduction reviews of a production missing from shows.json (cluster baseline-diff)',
+    // Heal path: add the validated show + scripts/apply-orphan-production.js --rehome
+    // (or priorRuns for a same-production return), then --update-baseline to shrink.
+    script: 'cluster-orphan-productions.js',
+    args: ['--gate'],
+    crashCodes: [2],           // 0 under baseline / 1 = new or grown cluster / 2 = corpus missing
+  },
+  {
     name: 'duplicate-shows',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'duplicate SHOW entries in shows.json (baseline-diff)',

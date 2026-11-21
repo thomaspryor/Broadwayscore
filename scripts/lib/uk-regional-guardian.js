@@ -24,6 +24,7 @@
 
 const UK_VENUES = require('../../data/uk-regional-venues.json');
 const { foldDiacritics } = require('./title-match');
+const { slugify } = require('./deduplication');
 
 const norm = (s) => foldDiacritics(String(s || ''))
   .toLowerCase()
@@ -191,7 +192,8 @@ function stageUkRegionalCandidates(candidates, nowIso = new Date().toISOString()
   for (const c of candidates || []) {
     if (!c || c.market !== 'uk-regional' || c.source !== 'guardian-review') continue;
     if (!c.title || !c.url || !c.venue || !isUkFlagshipVenue(c.venue)) continue;
-    const titleSlug = foldDiacritics(c.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    // shows.json slug rule (apostrophes dropped, & -> and): "Who’s ..." must not become who-s-... (BRO-7929 cousin).
+    const titleSlug = slugify(c.title);
     // The house key keeps ids apart when two flagship houses stage the same
     // title in one year (Hamlet at the RSC and at Bristol Old Vic).
     const slug = titleSlug && `${titleSlug}-${ukVenueEntry(c.venue).idKey}`;

@@ -17,6 +17,7 @@ require('./lib/llm-usage-install'); // LLM spend meter, before any client is bui
 
 const fs = require('fs');
 const path = require('path');
+const { slugify } = require('./lib/deduplication');
 
 // Load outlet configuration
 const outletsPath = path.join(__dirname, 'config', 'critic-outlets.json');
@@ -248,7 +249,7 @@ async function main() {
   } else {
     const showTitle = args[0];
     const year = args[1];
-    const showId = showTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + year;
+    const showId = slugify(showTitle) + '-' + year; // shows.json slug rule (BRO-7929 cousin)
 
     const result = await collectReviewsForShow(showTitle, year, showId);
 
