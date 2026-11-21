@@ -63,7 +63,10 @@ function collect() {
       let j;
       try { j = JSON.parse(fs.readFileSync(path.join(dir, id, f), 'utf8')); } catch { continue; }
       all.push([id, f, j]);
-      if (!j.wrongProduction && !j.wrongShow && !j.duplicateOf && j.url) live.add(L.urlKey(j.url));
+      if (!j.wrongProduction && !j.wrongShow && !j.duplicateOf) {
+        if (j.url) live.add(L.urlKey(j.url));
+        live.add(`${f}|${L.reviewDateMs(j)}`); // same outlet--critic file + date (URL may differ between scrapes)
+      }
     }
   }
   for (const [id, f, j] of all) {
@@ -71,7 +74,7 @@ function collect() {
     if (!show) continue;
     const c = L.orphanCandidate(j, show, ctx);
     if (!c) continue;
-    if (j.url && live.has(L.urlKey(j.url))) continue; // duplicate of a live review
+    if ((j.url && live.has(L.urlKey(j.url))) || live.has(`${f}|${c.ms}`)) continue; // duplicate of a live review
     orphans.push({ hostId: id, title: show.title, file: f, ms: c.ms, outletId: j.outletId, market: L.reviewMarket(j, outlets) });
   }
   return orphans;

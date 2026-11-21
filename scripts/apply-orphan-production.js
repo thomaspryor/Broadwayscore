@@ -74,6 +74,8 @@ function entryFrom(s, takenSlugs = new Set()) {
     discoveredAt: new Date().toISOString(),
     evidenceUrls: s.evidenceUrls || [],
     provisional: true,
+    // BRO-7959: a transfer of the same title (new venue, later dates) trips the duplicate-row guard; name the sibling run.
+    ...(s.distinctFrom && s.distinctFrom.length ? { distinctFrom: s.distinctFrom } : {}),
   };
 }
 
