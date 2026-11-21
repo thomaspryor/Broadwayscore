@@ -67,6 +67,13 @@
 // file merge=union) rather than assuming it's stale.
 const EXEMPT_LEDGERS = [
   {
+    file: 'data/audit/pending-growth-ledger.jsonl',
+    reason:
+      '2026-11-21 (BRO-8021): report-discovery-share.js appends one {date,pending} row per daily run and ' +
+      'pendingGrowthVerdict() reads the LAST 8 rows positionally (slice(-8)) with today = final row. A union ' +
+      'merge can reorder or duplicate day rows and skew the growth floor/alert. Single writer (check-arm-yield.yml).',
+  },
+  {
     file: 'data/aeo/history.jsonl',
     reason:
       '2026-11-02 (BRO-6841): aeo-visibility-tracker.js upserts by date (a same-day re-run replaces ' +
