@@ -7,7 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { pendingFileTimestamp, orderPendingWork, pathKey } = require('./pending-drain-order.js');
+const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./pending-drain-order.js');
 const { urlsSameArticle, classifyTargetCollision } = require('./pending-drain-collision.js');
 const { evaluateDrainHealth, loadState, saveState } = require('./pending-drain-state.js');
 const { genericSingleWordTitle, passesGenericTitleIdentity } = require('./generic-title-guard.js');
@@ -74,9 +74,10 @@ test('health: N zero runs fires, one resolved file clears it; sustained growth f
 
 test('state round-trips and a missing file is an empty state', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'drain-state-'));
-  assert.deepEqual(loadState(root), { cursor: null, history: [] });
-  saveState(root, { cursor: 'a/b.json', history: [{ at: 'x' }] });
-  assert.equal(loadState(root).cursor, 'a/b.json');
+  assert.deepEqual(loadState(root), { cursors: { recent: null, other: null }, turn: 0, history: [] });
+  saveState(root, { cursors: { recent: 'a/b.json', other: null }, turn: 3, history: [{ at: 'x' }] });
+  assert.equal(loadState(root).cursors.recent, 'a/b.json');
+  assert.equal(loadState(root).turn, 3);
 });
 
 // ---- limbo gate ----
@@ -139,7 +140,7 @@ test('CLASS GUARD: routeLimbo finds every past-grace limbo file and respects the
 
 test('the sweep calls the gate and the rotation (a refactor back to newest-first/no gate fails here)', () => {
   const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../replay-pending-bylines.js'), 'utf8');
-  assert.match(src, /mode: 'rotate'/);
+  assert.match(src, /rotateTiered\(/);
   assert.match(src, /route-limbo-reviews/);
   assert.match(src, /raiseDrainHealthAlerts\(state\.history\)/);
 });
@@ -149,4 +150,29 @@ test('URL-year reject: a year that is part of the show title is not a date (1984
   assert.equal(urlYearConflict('https://www.thetimes.com/culture/theatre-dance/article/1984-review-a-clever-take-on-orwells-classic-gjsnvnxjm', 2014, '1984'), null);
   assert.equal(urlYearConflict('https://deadline.com/2026/10/box-office-x-1237151001/', 2009, '9 to 5'), '2026');
   assert.equal(urlYearConflict('https://x.com/2025/review', 2026, 'Hamlet'), null);
+});
+
+test('tiered rotation: recent-show files first on even turns, older first on odd; each tier resumes from its own cursor; both are fully covered', () => {
+  const mk = (id, n) => ({ showId: id, files: Array.from({ length: n }, (_, i) => ({ file: `f${i}.json`, ts: 0 })) });
+  const shows = [mk('new-a', 4), mk('new-b', 4), mk('old-a', 6), mk('old-b', 6)];
+  const tierOf = id => (id.startsWith('new') ? 'recent' : 'other');
+  const first = rotateTiered(shows, { cursors: {}, tierOf, recentFirst: true });
+  assert.equal(first.work[0].showId, 'new-a');
+  assert.equal(rotateTiered(shows, { cursors: {}, tierOf, recentFirst: false }).work[0].showId, 'old-a');
+  assert.deepEqual(first.tierEnds, { recent: 'new-b/f3.json', other: 'old-b/f5.json' });
+  // resume: recent cursor mid-way skips what was done; other cursor null starts at its top
+  const resumed = rotateTiered(shows, { cursors: { recent: 'new-a/f3.json' }, tierOf, recentFirst: true }).work;
+  assert.deepEqual(resumed.slice(0, 2).map(w => w.showId), ['new-b', 'old-a']);
+  // coverage: 10 files per run walks every file in both tiers within ceil(total / K) runs when cursors persist
+  const K = 7, total = 20; const seen = new Set(); let cursors = {}; let turn = 0;
+  for (let run = 0; run < Math.ceil(total / K) + 2; run++) {
+    const t = rotateTiered(shows, { cursors, tierOf, recentFirst: turn++ % 2 === 0 });
+    const keys = t.work.flatMap(w => w.files.map(f => pathKey(w.showId, f))).slice(0, K);
+    keys.forEach(k => seen.add(k));
+    for (const tier of ['recent', 'other']) {
+      const mine = keys.filter(k => tierOf(k.split('/')[0]) === tier);
+      if (mine.length) cursors = { ...cursors, [tier]: mine[mine.length - 1] >= t.tierEnds[tier] ? null : mine[mine.length - 1] };
+    }
+  }
+  assert.equal(seen.size, total);
 });

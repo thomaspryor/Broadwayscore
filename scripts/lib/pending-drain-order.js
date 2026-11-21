@@ -36,7 +36,7 @@ const pathKey = (showId, file) => `${showId}/${file}`;
  * @returns {Array<{showId:string, files:string[]}>}
  */
 function orderPendingWork(shows, opts = {}) {
-  if (opts.mode === 'rotate') return rotateFromCursor(shows, opts.cursor || null);
+  if (opts.mode === 'rotate') return opts.tierOf ? rotateTiered(shows, opts).work : rotateFromCursor(shows, opts.cursor || null);
   const byTsDesc = (a, b) => b.ts - a.ts || a.file.localeCompare(b.file);
   return shows
     .map((s, i) => {
@@ -69,4 +69,37 @@ function rotateFromCursor(shows, cursor) {
   return out;
 }
 
-module.exports = { pendingFileTimestamp, orderPendingWork, rotateFromCursor, pathKey };
+/**
+ * Two-tier rotation (BRO-7930): files of RECENT shows (the owner's "no gaps in the last 2 years" scope) and the
+ * rest each keep their own cursor and walk their sorted list once per pass (no wrap inside a run: a finished
+ * tier restarts from its top NEXT run). `recentFirst` flips every run so neither tier starves; a tier that
+ * finishes early hands the leftover budget to the other.
+ * @returns {{work: Array<{showId:string, files:string[]}>, tierEnds: {recent:string|null, other:string|null}}}
+ *   tierEnds = the last key of each tier's list (reaching it means the pass is complete -> cursor resets to null).
+ */
+function rotateTiered(shows, { cursors = {}, tierOf, recentFirst = true }) {
+  const flat = { recent: [], other: [] };
+  for (const s of shows) for (const f of s.files) flat[tierOf(s.showId) === 'recent' ? 'recent' : 'other'].push(pathKey(s.showId, f.file));
+  const out = [];
+  const tierEnds = {};
+  const slice = (tier) => {
+    const keys = flat[tier].sort();
+    tierEnds[tier] = keys.length ? keys[keys.length - 1] : null;
+    const c = cursors[tier] || null;
+    const i = c ? keys.findIndex(k => k > c) : 0;
+    return i === -1 ? keys : keys.slice(i); // cursor at/after the end: a new pass starts at the top
+  };
+  const order = recentFirst ? ['recent', 'other'] : ['other', 'recent'];
+  for (const tier of order) {
+    for (const k of slice(tier)) {
+      const slash = k.indexOf('/');
+      const showId = k.slice(0, slash), file = k.slice(slash + 1);
+      const last = out[out.length - 1];
+      if (last && last.showId === showId) last.files.push(file);
+      else out.push({ showId, files: [file] });
+    }
+  }
+  return { work: out, tierEnds };
+}
+
+module.exports = { rotateTiered, pendingFileTimestamp, orderPendingWork, rotateFromCursor, pathKey };

@@ -176,7 +176,7 @@ function isPendingDrainEligible(show, closedWithin = 0, today = new Date()) {
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
 const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
-const { pendingFileTimestamp, orderPendingWork, pathKey } = require('./lib/pending-drain-order');
+const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./lib/pending-drain-order');
 const drainState = require('./lib/pending-drain-state');
 const { classifyTargetCollision } = require('./lib/pending-drain-collision');
 
@@ -804,9 +804,18 @@ if (require.main === module) {
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
     const sweep = allOpen || allPending;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
-    let cursor = state ? state.cursor : null;
-    const plan = planPendingWork(ids, sweep ? { mode: 'rotate', cursor } : {});
-    if (sweep) console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) in scope, resuming after ${cursor || '(start)'}`);
+    // Recent = opened in the last 2 years (the owner's no-gaps scope), through the shared show data.
+    const showById = new Map(shows.map(sh => [sh.id, sh]));
+    const RECENT_MS = 730 * 864e5;
+    const tierOf = id => { const o = Date.parse((showById.get(id) || {}).openingDate || ''); return Number.isFinite(o) && Date.now() - o <= RECENT_MS ? 'recent' : 'other'; };
+    let plan, tierEnds = {};
+    if (sweep) {
+      const recentFirst = state.turn % 2 === 0;
+      const t = rotateTiered(planPendingWork(ids), { cursors: state.cursors, tierOf, recentFirst });
+      plan = t.work; tierEnds = t.tierEnds;
+      console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) queued (${recentFirst ? 'recent-show files first' : 'older-show files first'}), cursors recent=${state.cursors.recent || '(top)'} other=${state.cursors.other || '(top)'}`);
+    } else plan = planPendingWork(ids);
+    const reached = { recent: null, other: null };
     let completedPass = true;
     for (const { showId: id, files } of plan) {
       const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, alertPromise } = await processShow(id, { files });
@@ -818,7 +827,7 @@ if (require.main === module) {
       totalRefetched += refetched || 0;
       totalTagged += tagged || 0;
       totalInspected += inspected || 0;
-      if (lastFile) cursor = pathKey(id, lastFile);
+      if (lastFile) reached[tierOf(id)] = pathKey(id, lastFile);
       if (alertPromise) alertPromises.push(alertPromise);
       if (budgetExceeded) { completedPass = false; break; }
     }
@@ -834,12 +843,17 @@ if (require.main === module) {
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
 
     if (sweep) {
-      // Finished a full pass: the next run starts over from the top. Otherwise it resumes after the last file reached.
-      const nextCursor = completedPass ? null : cursor;
+      // A tier that reached its last file finished its pass: its cursor resets so the next run starts at the top.
+      // Otherwise it resumes after the last file reached. A tier not reached this run keeps its cursor.
+      const nextCursors = { ...state.cursors };
+      for (const tier of ['recent', 'other']) {
+        if (reached[tier]) nextCursors[tier] = tierEnds[tier] && reached[tier] >= tierEnds[tier] ? null : reached[tier];
+      }
       const pending = countPendingFiles();
-      console.log(`Rotation: ${completedPass ? 'full pass complete — next run restarts at the top' : `budget hit — next run resumes after ${nextCursor}`}; _pending now holds ${pending} file(s)`);
+      console.log(`Rotation: ${completedPass ? 'every queued file reached' : 'budget hit'}; next cursors recent=${nextCursors.recent || '(top)'} other=${nextCursors.other || '(top)'}; _pending now holds ${pending} file(s)`);
       if (!dryRun) {
-        state.cursor = nextCursor;
+        state.cursors = nextCursors;
+        state.turn = (state.turn || 0) + 1;
         state.history.push({ at: new Date().toISOString(), scope: allPending ? 'all-pending' : 'all-open', promoted: totalPromoted, dropped: totalDropped, rejected: totalRejected, tagged: totalTagged, inspected: totalInspected, pending });
         drainState.saveState(REVIEW_TEXTS_ROOT, state);
         await raiseDrainHealthAlerts(state.history);

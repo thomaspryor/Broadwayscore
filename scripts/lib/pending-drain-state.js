@@ -21,12 +21,17 @@ function statePath(root) { return path.join(root, STATE_FILE); }
 function loadState(root) {
   try {
     const s = JSON.parse(fs.readFileSync(statePath(root), 'utf8'));
-    return { cursor: typeof s.cursor === 'string' ? s.cursor : null, history: Array.isArray(s.history) ? s.history : [] };
-  } catch { return { cursor: null, history: [] }; }
+    const c = s.cursors && typeof s.cursors === 'object' ? s.cursors : {};
+    return {
+      cursors: { recent: typeof c.recent === 'string' ? c.recent : null, other: typeof c.other === 'string' ? c.other : null },
+      turn: Number.isInteger(s.turn) ? s.turn : 0,
+      history: Array.isArray(s.history) ? s.history : [],
+    };
+  } catch { return { cursors: { recent: null, other: null }, turn: 0, history: [] }; }
 }
 
 function saveState(root, state) {
-  const out = { cursor: state.cursor || null, history: (state.history || []).slice(-MAX_HISTORY) };
+  const out = { cursors: state.cursors || { recent: null, other: null }, turn: state.turn || 0, history: (state.history || []).slice(-MAX_HISTORY) };
   fs.writeFileSync(statePath(root), JSON.stringify(out, null, 2) + '\n');
 }
 
