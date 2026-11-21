@@ -191,9 +191,24 @@ function routeLines(stdout) {
     .filter(l => /Success \(|→ Trying|No article-body|Cookie-plain|cookies-plain|Fetching:/.test(l)).slice(0, 6).join(' | ').slice(0, 300) || 'none';
 }
 
+// BRO-7998: the same article can already sit under a sibling outlet id (7+ West End Observer reviews are filed as
+// guardian). Ingest dedups by URL only within one outlet, so a second file would score the article twice.
+function urlHeldAnywhere(showId, url) {
+  const norm = u => String(u || '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+  const want = norm(url);
+  let names = [];
+  try { names = fs.readdirSync(reviewDir(showId)).filter(n => n.endsWith('.json')); } catch { return null; }
+  for (const n of names) {
+    try { if (norm(JSON.parse(fs.readFileSync(path.join(reviewDir(showId), n), 'utf8')).url) === want) return n; } catch { /* unreadable file: ignore */ }
+  }
+  return null;
+}
+
 function ingest(showId, m, url, show) {
   const win = lib.showWindow(show, m.outletId);
   if (!win) return { outcome: 'no-show-window' };
+  const heldBy = urlHeldAnywhere(showId, url);
+  if (heldBy) return { outcome: 'url-held-by-other-file', detail: heldBy };
   const before = new Set(heldFiles(showId, m.ids));
   const strayBefore = new Set(heldFiles(showId, ['guardian']));
   const args = [path.join(__dirname, 'ingest-review-from-url.js'), `--show=${showId}`, `--url=${url}`, `--outlet=${m.outletId}`,
@@ -205,7 +220,7 @@ function ingest(showId, m, url, show) {
   const added = heldFiles(showId, m.ids).filter(n => !before.has(n));
   // A file filed under another outlet id (URL-domain drift) would skip every guard below and still be committed.
   const strayPrefix = m.outletId === 'observer' ? 'guardian--' : null;
-  if (strayPrefix) { try { for (const n of fs.readdirSync(reviewDir(showId))) { if (n.startsWith(strayPrefix) && !strayBefore.has(n)) { fs.unlinkSync(path.join(reviewDir(showId), n)); } } } catch { /* dir missing: nothing filed */ } }
+  if (strayPrefix) { try { for (const n of fs.readdirSync(reviewDir(showId))) { if (n.startsWith(strayPrefix) && !strayBefore.has(n)) { console.log(`removed stray ${n} (Observer ingest filed under guardian)`); fs.unlinkSync(path.join(reviewDir(showId), n)); } } } catch { /* dir missing: nothing filed */ } }
   if (!added.length) {
     const skip = /Skipped: ([^—]+)/.exec(r.stdout || '');
     return { outcome: r.status === 0 ? `skipped:${skip ? skip[1].trim() : 'no-file'}` : `refused:exit${r.status}`, detail: tail };

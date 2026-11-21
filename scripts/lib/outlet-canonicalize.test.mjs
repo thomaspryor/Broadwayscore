@@ -302,3 +302,13 @@ test('resolveOutletForIngest: --trust-outlet keeps a registered observer arg on 
   assert.equal(t.source, 'trusted-arg');
   assert.equal(resolveOutletForIngest({ outletArg: 'not-a-real-outlet-zzz', url, trust: true }).outletId, 'guardian'); // unregistered arg never trusted
 });
+
+test('resolveOutletForIngest: --trust-outlet only for allowlisted outlet+host pairs (BRO-7998)', () => {
+  const { resolveOutletForIngest } = createRequire(import.meta.url)('./outlet-canonicalize.js');
+  const r = resolveOutletForIngest({ outletArg: 'nytimes', url: 'https://www.theguardian.com/stage/2015/jan/01/x', trust: true });
+  assert.equal(r.outletId, 'guardian');
+  const ok = resolveOutletForIngest({ outletArg: 'observer', url: 'https://www.theguardian.com/stage/2015/jan/01/x', trust: true });
+  assert.equal(ok.outletId, 'observer');
+  const bad = resolveOutletForIngest({ outletArg: 'observer', url: 'https://example.com/x', trust: true });
+  assert.notEqual(bad.outletId, 'observer');
+});

@@ -630,7 +630,11 @@ function platformOriginMirrorOf({ candidateUrl, heldUrls }) {
 // REGISTERED --outlet over the URL domain's outlet; otherwise the normal URL-wins rule applies.
 function resolveOutletForIngest({ outletArg, url, trust = false }) {
   const byUrl = resolveCanonicalOutletId({ outletArg, url });
-  if (trust && outletArg) {
+  // Only pairs the Content API can prove: Observer pieces are hosted on theguardian.com.
+  const TRUSTED_HOSTS = { observer: /(^|\.)(theguardian\.com|guardian\.co\.uk)$/i };
+  let host = '';
+  try { host = new URL(url).hostname; } catch { /* no usable url */ }
+  if (trust && outletArg && TRUSTED_HOSTS[outletArg] && TRUSTED_HOSTS[outletArg].test(host)) {
     const asserted = resolveCanonicalOutletId({ outletArg, url: null });
     if (asserted.outletId === outletArg && isRegisteredCanonical(outletArg)) {
       return { outletId: outletArg, displayName: getOutletDisplayName(outletArg), source: 'trusted-arg',
