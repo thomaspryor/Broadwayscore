@@ -295,6 +295,9 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       console.log(`   ⚠ venue SERP failed: ${e.message.slice(0, 60)}`);
     }
   }
+  // BRO-7878: city listing site (theatreWashington) after the venue's own page, before the roundup photo.
+  const listing = require('./lib/regional-image-venues').listingSource(show);
+  if (listing) for (const url of listing.pageUrls(show)) sources.push({ url, label: 'listing page', extract: listing.extractImage });
   const roundupArchive = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${show.id}.html`);
   if (fs.existsSync(roundupArchive)) sources.push({ archivePath: roundupArchive, label: 'BWW roundup archive' });
 
@@ -303,7 +306,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       const html = src.archivePath
         ? fs.readFileSync(src.archivePath, 'utf8')
         : await fetchPageWithFallback(src.url);
-      const ogImage = extractOgImage(html, src.url);
+      const ogImage = (src.extract ? src.extract(html, src.url) : null) || extractOgImage(html, src.url);
       if (!ogImage) { console.log(`   ⚠ no og:image on ${src.label}`); continue; }
       console.log(`   Regional source (${src.label}): ${ogImage.slice(0, 90)}`);
       if (venueEntry && venueEntry.genericImage && venueEntry.genericImage.test(ogImage)) { console.log(`   ⚠ ${src.label} og:image is the venue's generic photo`); continue; }
