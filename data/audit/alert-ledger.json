@@ -39643,7 +39643,7 @@
       "resolveReason": "live-data test green"
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Test Shard (1) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-11-08T22:03:17.171Z",
@@ -39660,7 +39660,8 @@
         "runId": "42736454915",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42736454915"
       },
-      "silentRefires": 1
+      "resolvedAt": "2026-11-21T21:22:52.562Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-7150-fast-land": {
       "status": "resolved",
@@ -47684,10 +47685,10 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/smoke.spec.ts › Post-deploy smoke tests › signed-out visitor can open the sign-in options at 1280px\"",
-      "firstSeen": "2026-11-21T20:38:49.251Z",
-      "incidentOpenedAt": "2026-11-21T20:38:49.251Z",
-      "lastSeen": "2026-11-21T21:09:57.059Z",
-      "lastNotifiedAt": "2026-11-21T20:38:49.251Z",
+      "firstSeen": "2026-11-21T20:48:11.700Z",
+      "incidentOpenedAt": "2026-11-21T20:48:11.700Z",
+      "lastSeen": "2026-11-21T21:22:52.596Z",
+      "lastNotifiedAt": "2026-11-21T20:48:11.700Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
@@ -47697,12 +47698,12 @@
     "land:land/bro-7324-data-pin-v2": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7324-data-pin-v2",
-      "firstSeen": "2026-11-21T20:37:47.044Z",
-      "incidentOpenedAt": "2026-11-21T20:37:47.044Z",
-      "lastSeen": "2026-11-21T20:37:47.044Z",
-      "lastNotifiedAt": "2026-11-21T20:37:47.044Z",
-      "lastSurfacedAt": "2026-11-21T20:37:47.044Z",
+      "title": "Unverified revival on The Ugly One",
+      "firstSeen": "2026-11-21T21:08:30.714Z",
+      "incidentOpenedAt": "2026-11-21T21:08:30.714Z",
+      "lastSeen": "2026-11-21T21:08:30.714Z",
+      "lastNotifiedAt": "2026-11-21T21:08:30.714Z",
+      "lastSurfacedAt": "2026-11-21T21:08:30.714Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
@@ -47785,19 +47786,6 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "opening-night-revival-unverified-the-ugly-one-off-west-end-2026": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Unverified revival on The Ugly One",
-      "firstSeen": "2026-11-21T21:08:30.714Z",
-      "incidentOpenedAt": "2026-11-21T21:08:30.714Z",
-      "lastSeen": "2026-11-21T21:08:30.714Z",
-      "lastNotifiedAt": "2026-11-21T21:08:30.714Z",
-      "lastSurfacedAt": "2026-11-21T21:08:30.714Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
     "opening-night-placeholder-synopsis-the-beauty-queen-of-leenane-regional-2026": {
       "status": "open",
       "disposition": "digest",
@@ -47807,6 +47795,19 @@
       "lastSeen": "2026-11-21T21:08:31.369Z",
       "lastNotifiedAt": "2026-11-21T21:08:31.369Z",
       "lastSurfacedAt": "2026-11-21T21:08:31.369Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-revival-unverified-the-ugly-one-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unverified revival on The Ugly One",
+      "firstSeen": "2026-11-21T21:08:30.714Z",
+      "incidentOpenedAt": "2026-11-21T21:08:30.714Z",
+      "lastSeen": "2026-11-21T21:08:30.714Z",
+      "lastNotifiedAt": "2026-11-21T21:08:30.714Z",
+      "lastSurfacedAt": "2026-11-21T21:08:30.714Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
