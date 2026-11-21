@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * BRO-7167 test bench, step 1: collect exact publish times for a past opening
  * night's reviews and work out its real embargo (scripts/lib/observed-embargo.js).

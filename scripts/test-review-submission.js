@@ -11,7 +11,7 @@
  */
 
 import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
-import './lib/refuse-under-bare-node-test.js'; // BRO-7984: skip under bare node --test
+import './lib/refuse-under-bare-node-runner.js'; // BRO-7984: skip under bare node --test
 import models from './lib/models.js';
 const { ADJUDICATE_SONNET } = models;
 import { Anthropic } from '@anthropic-ai/sdk';

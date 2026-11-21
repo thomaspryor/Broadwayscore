@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 // BRO-2836: ordinal publishDates ("April 11th, 2024") must behave exactly like ISO at
 // every date-window guard, and unparseable dates must be loud.
 const assert = require('assert');

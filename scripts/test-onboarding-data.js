@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Guards for the quiz-onboarding data files (BRO-6579): genre sidecar and the
  * generated cities/hits. Reads the real committed files; invents nothing.

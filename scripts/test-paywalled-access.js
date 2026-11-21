@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Test Paywalled Site Access
  *

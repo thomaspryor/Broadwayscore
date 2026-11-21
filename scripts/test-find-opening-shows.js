@@ -1,4 +1,4 @@
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 const assert = require('assert');
 const { findOpeningShows } = require('./lib/find-opening-shows');
 const now = new Date('2026-10-10T18:00:00');

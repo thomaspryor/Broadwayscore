@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Tests for opening night fixes #12, #13, #14
  * Run: node scripts/test-opening-night-fixes.js

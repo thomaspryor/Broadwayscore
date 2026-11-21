@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const GUARD = 'refuse-under-bare-node-test';
+const GUARD = 'refuse-under-bare-node-runner';
 
 // node's default patterns (v22+): *.test.*, *-test.*, *_test.*, test-*.*, test.*, test/**
 const EXT = '[cm]?js';

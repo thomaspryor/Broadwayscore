@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * Step 0: Verify existing star extractors work on real WE review pages.
  * Fetches one page per outlet and runs extractScore(). Reports pass/fail.

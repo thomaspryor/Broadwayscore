@@ -1,4 +1,4 @@
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 // BRO-7304 class guard: a URL-move wipe must not drop a live review from reviews.json.
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs'), os = require('os'), path = require('path'), assert = require('assert');

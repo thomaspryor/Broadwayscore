@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * The homepage headline ("N scored shows. N critic reviews.") is the site-wide
  * count from getSiteStats, published at /data/site-stats.json for the iOS Home

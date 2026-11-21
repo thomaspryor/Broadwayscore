@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 /**
  * BRO-7167 test bench, step 2: grade the last N openings as they actually ran
  * (the old path), timed from the OBSERVED embargo where step 1 found one.

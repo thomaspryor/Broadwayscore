@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: skip under bare `node --test`
+require('./lib/refuse-under-bare-node-runner.js'); // BRO-7984: skip under bare `node --test`
 // BRO-7382: card VERIFY entry point. Forecasts (v1, v2, v3) must never be in a public tracked file; the guard test fails if v3 leaks.
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv)) { console.log('usage: node scripts/test-review-forecast-privacy-guard.js (runs the forecast privacy guard and v3 unit tests)'); process.exit(0); }
