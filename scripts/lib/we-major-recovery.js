@@ -282,7 +282,11 @@ function urlSlugNamesTitle(url, title, venue) {
   const atAt = head.indexOf('at', titleEnd);
   if (atAt > 0 && atAt < head.length - 1) {
     const SKIP = new Set(['theatre', 'theater', 'london', 'royal', 'the', 'national', 'west', 'end']);
-    const sig = toks(venue).filter((w) => w.length >= 3 && !SKIP.has(w));
+    const vt = toks(venue);
+    let sig = vt.filter((w) => w.length >= 3 && !SKIP.has(w));
+    // A venue made only of generic words ("National Theatre") must still be named: drop just the/theatre, and let
+    // the National's three houses count for it.
+    if (!sig.length) sig = vt.filter((w) => !['the', 'theatre', 'theater'].includes(w)).concat(vt.includes('national') ? ['olivier', 'lyttelton', 'dorfman', 'cottesloe'] : []);
     const slugVenue = head.slice(atAt + 1);
     return !sig.length || sig.some((w) => slugVenue.includes(w));
   }

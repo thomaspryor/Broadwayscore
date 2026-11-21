@@ -219,6 +219,8 @@ test('urlSlugNamesTitle: other shows, other venues, roundups and long slugs do n
   assert.equal(lib.urlSlugNamesTitle(u('hangmen-review-at-wyndhams'), 'Hang', 'Duchess Theatre'), false);
   assert.equal(lib.urlSlugNamesTitle(u('hamlet-review-at-theatr-clwyd--bold'), 'Hamlet', 'Old Vic Theatre'), false);
   assert.equal(lib.urlSlugNamesTitle(u('cats-on-a-hot-tin-roof-review'), 'Cats', 'London Palladium'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('hamlet-review-at-theatr-clwyd--bold'), 'Hamlet', 'National Theatre'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('hamlet-review-at-the-olivier-national-theatre--bold'), 'Hamlet', 'National Theatre'), true);
   assert.equal(lib.urlSlugNamesTitle(u('review-roundup-hamlet-and-more'), 'Hamlet', 'Old Vic Theatre'), false);
   assert.equal(lib.urlSlugNamesTitle('not a url', 'Hamlet', 'Old Vic Theatre'), false);
 });
