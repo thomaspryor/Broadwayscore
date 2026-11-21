@@ -5,8 +5,8 @@
   "gapShows": [],
   "trendEntries": 15,
   "acceptance": {
-    "accepted": true,
-    "reason": "2 consecutive clean weekly run(s): 2026-11-09, 2026-11-16",
+    "accepted": false,
+    "reason": "2026-11-16 found 3 gap(s) (the-moth-off-west-end-2026, the-feel-good-story-america-needs-right-now-regional-2026, desire-under-the-elms-off-west-end-2026) — streak reset",
     "consideredRuns": [
       {
         "date": "2026-11-09",
@@ -22,10 +22,14 @@
         "date": "2026-11-16",
         "generatedAt": "2026-11-16T22:00:14.526Z",
         "sampleSize": 5,
-        "verdict": "clean",
+        "verdict": "gaps-found",
         "measured": 5,
-        "gapCount": 0,
-        "gapShows": [],
+        "gapCount": 3,
+        "gapShows": [
+          "the-moth-off-west-end-2026",
+          "the-feel-good-story-america-needs-right-now-regional-2026",
+          "desire-under-the-elms-off-west-end-2026"
+        ],
         "reason": null
       }
     ]
@@ -34,10 +38,15 @@
     "date": "2026-11-16",
     "generatedAt": "2026-11-16T22:00:14.526Z",
     "sampleSize": 5,
-    "verdict": "clean",
+    "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 0,
-    "gapShows": [],
+    "gapCount": 3,
+    "gapShows": [
+      "the-moth-off-west-end-2026",
+      "the-feel-good-story-america-needs-right-now-regional-2026",
+      "desire-under-the-elms-off-west-end-2026"
+    ],
     "reason": null
-  }
+  },
+  "reverifiedAt": "2026-11-21T13:13:12.177Z"
 }

@@ -218,7 +218,11 @@ async function main() {
     prev.summary = summary;
     fs.writeFileSync(OUT_PATH, JSON.stringify(prev, null, 2) + '\n');
     console.log(`reverified: ${summary.verdict}, ${summary.gapCount} gap(s)`);
-    recordTrendAndStatus({ generatedAt: prev.generatedAt, sampleSize: (prev.sample || []).length, summary });
+    // Deliberately does NOT touch the trend ledger or acceptance: a re-judged
+    // old report must not manufacture "2 consecutive clean weeks" (ship-check).
+    const status = JSON.parse(fs.readFileSync(STATUS_PATH, 'utf8'));
+    Object.assign(status, { verdict: summary.verdict, gapCount: summary.gapCount, gapShows: summary.gapShows, reverifiedAt: new Date().toISOString() });
+    fs.writeFileSync(STATUS_PATH, JSON.stringify(status, null, 2) + '\n');
     return 0;
   }
 

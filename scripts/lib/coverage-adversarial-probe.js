@@ -246,7 +246,11 @@ async function demoteDeadGaps(candidates, statusOf) {
   for (const c of Array.isArray(candidates) ? candidates : []) {
     if (c.state !== 'gap') { out.push(c); continue; }
     let status = null;
-    try { status = await statusOf(c.url); } catch { status = null; }
+    // Two consecutive 404/410s: one flaky/CDN-lag 404 must not hide a real review.
+    try {
+      status = await statusOf(c.url);
+      if (status === 404 || status === 410) { const again = await statusOf(c.url); if (again !== status) status = null; }
+    } catch { status = null; }
     out.push(status === 404 || status === 410
       ? { url: c.url, state: 'excluded', reason: `dead-url: HTTP ${status} (stale search result, nothing to ingest)` }
       : c);
