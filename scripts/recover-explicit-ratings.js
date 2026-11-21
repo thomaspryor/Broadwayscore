@@ -407,7 +407,8 @@ async function phase1ExtractLocal(reviews) {
     // Try rule-based extraction first (free, no LLM)
     // Theater Life's footer star is in the stored text; phase 2's WP API times
     // out from GitHub runners (BRO-7928), so read it locally first.
-    let result = footerRatingFromStoredText(review.data)
+    // No showTitle on the file (291 Theater Life files): use the shows.json title.
+    let result = footerRatingFromStoredText({ ...review.data, showTitle: review.data.showTitle || showFor(review.data)?.title })
       || extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
     // Fall back to LLM if rule-based didn't find anything
     if (!result) {

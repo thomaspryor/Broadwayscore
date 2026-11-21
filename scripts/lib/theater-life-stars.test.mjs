@@ -94,3 +94,8 @@ test('footerRatingFromStoredText reads the footer star of a stored review file',
   assert.equal(footerRatingFromStoredText({ outletId: 'theater-life', showTitle: 'Oedipus', fullText }), null, "another show's footer line");
   assert.equal(footerRatingFromStoredText({ outletId: 'theater-life', fullText }), null, 'no title, no guess');
 });
+
+test('footerStars treats straight and curly apostrophes as the same (BRO-7928)', () => {
+  assert.equal(footerStars("Photo credit.\nA Doll’s House, Part 2 *** 1/2 John Golden Theatre", ["A Doll's House, Part 2"]), '3.5/5 stars');
+  assert.equal(footerStars("Photo credit.\nA Doll's House, Part 2 ** Golden", ['A Doll’s House, Part 2']), '2/5 stars');
+});
