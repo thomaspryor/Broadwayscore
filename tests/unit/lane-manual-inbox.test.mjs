@@ -555,3 +555,110 @@ test('BRO-7891 ship-check 7: the retry command quotes the URL safely', () => {
   const p = inbox.inboxAlertFor({ id: 'x|1', status: 'failed', url: "https://x.com/it's-a-review", show: SHOW.id });
   assert.ok(p.description.includes("--url='https://x.com/it'\\''s-a-review'"), p.description);
 });
+
+// ---- BRO-7891 item 2: corrections while the lane holds the show ----
+const { laneHeldEditProblem } = require('../../scripts/lib/lane-inbox-routing.js');
+const { planCorrection, laneCardRow } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+
+test('BRO-7891 item 2: addCorrections takes only lane-correctable fields with valid values; a re-add replaces the first', () => {
+  const bad = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'criticName', value: 'X' }, { url: URL1, field: 'humanReviewScore', value: 150 }, { url: 'ftp://x', field: 'humanReviewScore', value: 80 }] });
+  assert.equal(bad.ok, false);
+  assert.equal(bad.invalid.length, 3, JSON.stringify(bad.invalid));
+  const a = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, field: 'humanReviewScore', value: 80 }], now: T0 });
+  assert.equal(a.ok, true);
+  const e = a.state.leases[a.added[0]];
+  assert.ok(inbox.isCorrection(e) && e.field === 'humanReviewScore' && e.value === 80 && !('expect' in e));
+  const b = inbox.addCorrections(inbox.markStatus(a.state, { updates: [{ id: a.added[0], status: 'published' }] }).state,
+    { show: SHOW.id, lines: [{ url: `${URL1}#x`, field: 'humanReviewScore', value: 82, expect: 80 }], now: T0 + 1000 });
+  assert.deepEqual(b.added, a.added, 'same URL + field = same entry');
+  const e2 = b.state.leases[b.added[0]];
+  assert.equal(e2.value, 82); assert.equal(e2.expect, 80); assert.equal(e2.status, undefined, 'the replacement is open again');
+  assert.notEqual(inbox.entryId(SHOW.id, URL1), a.added[0], 'a correction never collides with the URL entry');
+});
+
+test('BRO-7891 item 2: drain and sweep never send a correction to ingest-urls', () => {
+  const c = { id: `${SHOW.id}|fix|abc`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 80,
+    addedAt: new Date(Date.now() - STALE_OPEN_MS - 1000).toISOString() };
+  assert.equal(drainPlan([c, { ...c, status: 'failed' }]).open.length, 0);
+  assert.equal(sweepPlan({ leases: { [c.id]: c } }, { onSite: () => false, held: () => false }).length, 0);
+});
+
+test('BRO-7891 item 2: a rejected correction alerts with the regular fix path, not the --force re-add', () => {
+  const a = inbox.inboxAlertFor({ id: `${SHOW.id}|fix|abc`, addedAt: 't', status: 'rejected', kind: 'correction', field: 'humanReviewScore', url: URL1, show: SHOW.id, reason: 'not a review the lane published tonight' });
+  assert.match(a.title, /correction/);
+  assert.match(a.description, /new-fix-plan\.js --review-edit/);
+  assert.doesNotMatch(a.description, /--force/);
+});
+
+test('BRO-7891 item 2: new-fix-plan refuses a lane-correctable edit on a held show and prints the lane command', () => {
+  const act = { type: 'review-field-edit', file: `${SHOW.id}/theatermania--a-critic.json`, field: 'humanReviewScore', newValue: 85 };
+  const p = laneHeldEditProblem(act, { holder: 'opening-night-lane' }, { url: URL1 });
+  assert.equal(p.level, 'refuse');
+  assert.match(p.message, /opening-night-lane-inbox\.js correct --show=test-show-2026 --url='https:\/\/www\.theatermania\.com[^']*' --field=humanReviewScore --value='85'/);
+  assert.equal(laneHeldEditProblem({ ...act, field: 'criticName' }, { holder: 'x' }).level, 'warn');
+  assert.equal(laneHeldEditProblem(act, null), null, 'no lease: the regular plan');
+});
+
+test('BRO-7891 item 2: planCorrection honours expect and refuses a score the rebuild would not publish', () => {
+  const rec = { url: URL1, assignedScore: 72, criticName: 'A Critic', outletId: 'theatermania' };
+  assert.equal(planCorrection(rec, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').record.humanReviewScore, 85);
+  assert.match(planCorrection(rec, { id: 'x', field: 'humanReviewScore', value: 85, expect: 60 }, 't').reject, /not the 60/);
+  // A printed 2/5 caps the score at its band (31-50): an 85 would be clamped by the rebuild, so it is refused here.
+  assert.match(planCorrection({ ...rec, originalScore: '2/5' }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 40, not 85/);
+  // A provisional human score is ignored by the rebuild: refused too.
+  assert.match(planCorrection({ ...rec, humanReviewScoreProvisional: true }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 72/);
+  // The published row agrees with the rebuild even when a clamped human score is already on the file.
+  assert.equal(laneCardRow({ ...rec, originalScore: '2/5', humanReviewScore: 85 }, SHOW).assignedScore, 40);
+  assert.equal(laneCardRow({ ...rec, humanReviewScore: 90 }, SHOW).assignedScore, 90, 'the published row carries the human score');
+});
+
+function laneNightFiles({ entries, maxPasses = 2, scoreOf = () => 72 }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-fix-'));
+  const rt = path.join(dir, 'review-texts'); fs.mkdirSync(rt);
+  let doc = { reviews: [] };
+  const marks = []; const fetched = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 200, pollMs: 1,
+    reviewTextsDir: rt,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async (c) => { fetched.push(c.url); return { outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic', fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }; },
+    scoreReview: async () => scoreOf(),
+    readInbox: async () => (typeof entries === 'function' ? entries() : entries),
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url, s: r.assignedScore })) }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  const files = () => (fs.existsSync(path.join(rt, SHOW.id)) ? fs.readdirSync(path.join(rt, SHOW.id)) : []).map((f) => JSON.parse(fs.readFileSync(path.join(rt, SHOW.id, f), 'utf8')));
+  return run.then((res) => ({ res, doc, marks, fetched, files: files() })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+
+test('BRO-7891 item 2: the lane applies a score correction to its review file and republishes it, verified with the new score', async () => {
+  const urlEntry = entry();
+  const fix = { id: `${SHOW.id}|fix|abc`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { doc, marks, fetched, files } = await laneNightFiles({ entries: () => { reads += 1; return reads === 1 ? [urlEntry] : [{ ...urlEntry, status: 'published' }, fix]; } });
+  assert.equal(fetched.filter((u) => u === URL1).length, 1, 'the correction is never fetched as a review');
+  const fixMarks = marks.filter((m) => m.id === fix.id).map((m) => m.status);
+  assert.deepEqual(fixMarks, ['queued', 'published'], JSON.stringify(marks));
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.equal(row.assignedScore, 85, 'the site row carries the corrected score');
+  assert.equal(doc.reviews.filter((r) => r.url === URL1).length, 1, 'replaced, not added twice');
+  assert.equal(files[0].humanReviewScore, 85, 'the review file carries it, so the rebuild after the lane keeps it');
+  assert.ok(JSON.stringify(files[0]).includes(`lane-inbox:${fix.id}`), 'provenance stamp on the file');
+});
+
+test('BRO-7891 item 2: a correction for a review the lane did not publish tonight is rejected, never fetched', async () => {
+  const other = 'https://www.nytimes.com/2026/11/19/theater/other-review.html';
+  const fix = { id: `${SHOW.id}|fix|def`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: other, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  const { marks, fetched } = await laneNightFiles({ entries: [fix], maxPasses: 1 });
+  assert.equal(fetched.length, 0);
+  assert.deepEqual(marks.map((m) => [m.status, m.kind]), [['rejected', 'correction']]);
+  assert.match(marks[0].reason, /not a review the lane published tonight/);
+});
