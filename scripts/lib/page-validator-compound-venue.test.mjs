@@ -67,3 +67,11 @@ test('BRO-7381: backfill-cast-web.yml keeps a weekly schedule and a scheduled-ru
   assert.match(y, /\n {2}schedule:\n {4}- cron: '[^']+'/);
   assert.match(y, /github\.event_name \}\}" = "schedule"[\s\S]{0,80}INPUT_LIMIT=\d+/);
 });
+
+test('BRO-7381: every category the weekly schedule cycles is also a manual-dispatch option', async () => {
+  const { readFileSync } = await import('node:fs');
+  const y = readFileSync(new URL('../../.github/workflows/backfill-cast-web.yml', import.meta.url), 'utf8');
+  const cats = (y.match(/CATS=\(([^)]+)\)/) || [])[1];
+  assert.ok(cats, 'schedule category list present');
+  for (const c of cats.trim().split(/\s+/)) assert.match(y, new RegExp(`options:[\\s\\S]*?- ${c}\\n`), `dispatch option ${c}`);
+});
