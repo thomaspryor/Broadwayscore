@@ -90,7 +90,7 @@ function isSettledPendingStub(data) {
 
 /**
  * @param {object} data  the _pending stub
- * @param {{showId:string, show?:object, heldIndex?:Map<string,Set<string>>}} ctx
+ * @param {{showId:string, show?:object, heldIndex?:Map<string,Set<string>>, showTitleOf?:(id:string)=>string}} ctx
  * @returns {{verdict:'duplicate'|'junk'|'candidate', reason:string|null, heldBy?:string[]}}
  */
 function triagePendingStub(data, ctx = {}) {
@@ -124,7 +124,13 @@ function triagePendingStub(data, ctx = {}) {
     const others = [...held].sort();
     // 425 scored urls belong to 2+ shows (NYT double reviews, Times roundups): a url that names this show too is
     // a candidate, not another show's review.
-    if (urlNamesShow(url, ctx.show)) return { verdict: 'candidate', reason: null, heldBy: others };
+    // Only when the holder is a different WORK: a same-title holder is an earlier/later production of this show,
+    // which is exactly what this rule settles (a 2025 Streetcar review under a-streetcar-named-desire-1973).
+    const titleKey = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const mine = titleKey(ctx.show && ctx.show.title);
+    const holderTitles = others.map((id) => titleKey(ctx.showTitleOf ? ctx.showTitleOf(id) : ''));
+    const jointWithOtherWork = mine && holderTitles.every((t) => t && t !== mine);
+    if (jointWithOtherWork && urlNamesShow(url, ctx.show)) return { verdict: 'candidate', reason: null, heldBy: others };
     return { verdict: 'junk', reason: `url already scored under ${others.slice(0, 3).join(', ')}, not a review of this production`, heldBy: others };
   }
   // A date the stub already carries (site search / aggregator) settles a
