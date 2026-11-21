@@ -55,7 +55,7 @@ function run(root, url) {
   try {
     const out = execFileSync('node', [
       SCRIPT, `--show=${SHOW}`, `--url=${url}`,
-      '--outlet=lighting-and-sound-america', `--data-dir=${root}`,
+      '--outlet=lighting-and-sound-america', `--data-dir=${root}`, '--caller=test',
     ], { encoding: 'utf8', stdio: 'pipe', timeout: 60000 });
     return { code: 0, out };
   } catch (e) {

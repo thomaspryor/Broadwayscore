@@ -292,7 +292,7 @@ describe('BRO-4478: unresolvable /goto redirect URL is refused before fetch', ()
     test(`exit 1, no fetch attempted: ${url.slice(0, 40)}`, () => {
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4478-'));
       try {
-        const r = spawnSync('node', [script, `--show=${showId}`, `--url=${url}`, '--outlet=independent', `--data-dir=${dir}`],
+        const r = spawnSync('node', [script, `--show=${showId}`, `--url=${url}`, '--outlet=independent', '--caller=test', `--data-dir=${dir}`],
           { encoding: 'utf8', timeout: 30000 });
         assert.equal(r.status, 1);
         assert.match(r.stderr, /unresolvable redirect/);
@@ -301,4 +301,31 @@ describe('BRO-4478: unresolvable /goto redirect URL is refused before fetch', ()
       } finally { fs.rmSync(dir, { recursive: true, force: true }); }
     });
   }
+});
+
+// BRO-7934: no ingest without a named caller (provenance), dry runs exempt.
+describe('BRO-7934: --caller is required on every ingest', () => {
+  const { spawnSync } = require('node:child_process');
+  const script = path.join(path.dirname(fileURLToPath(import.meta.url)), 'ingest-review-from-url.js');
+  const showId = JSON.parse(fs.readFileSync(path.join(path.dirname(script), '..', 'data', 'shows.json'), 'utf8')).shows[0].id;
+  const run = (extra, env = {}) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7934-'));
+    try {
+      const r = spawnSync('node', [script, `--show=${showId}`, '--url=/goto?url=CAESZwHrOzAVCX', '--outlet=independent', `--data-dir=${dir}`, ...extra],
+        { encoding: 'utf8', timeout: 30000, env: { ...process.env, INGEST_CALLER: '', ...env } });
+      return { r, files: fs.readdirSync(dir) };
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  };
+  test('no caller: exit 2 with a clear message, before any fetch', () => {
+    const { r, files } = run([]);
+    assert.equal(r.status, 2);
+    assert.match(r.stderr, /--caller=<slug>.*required/);
+    assert.deepEqual(files, []);
+  });
+  test('an invalid caller slug counts as missing', () => assert.equal(run(['--caller=Not A Slug!']).r.status, 2));
+  test('--caller or INGEST_CALLER passes the gate (reaches the URL check, exit 1)', () => {
+    assert.equal(run(['--caller=manual']).r.status, 1);
+    assert.equal(run([], { INGEST_CALLER: 'manual' }).r.status, 1);
+  });
+  test('--dry-run is exempt', () => assert.notEqual(run(['--dry-run']).r.status, 2));
 });

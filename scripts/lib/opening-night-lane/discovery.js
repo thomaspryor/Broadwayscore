@@ -382,6 +382,19 @@ function extractPublishDate(html) {
     [/<meta[^>]+itemprop=["']datePublished["'][^>]*content=["']([^"']+)["']/i, s],
     [/<time\b[^>]*\bdatetime=["']([^"']+)["']/i, bodyScope(s)],
   ];
+  // Arc XP pages (Columbia Spectator) carry no structured data; the article itself is the Fusion.globalContent object and
+  // its top-level display_date is the date. Parsed as JSON, never regex-matched: the page also embeds related stories, each
+  // with its own display_date.
+  const arcAt = s.indexOf('Fusion.globalContent=');
+  if (arcAt >= 0) {
+    const start = arcAt + 'Fusion.globalContent='.length;
+    const end = s.indexOf(';Fusion.', start);
+    try {
+      const gc = end > start ? JSON.parse(s.slice(start, end)) : null;
+      const arcDate = gc && [gc.display_date, gc.first_publish_date, gc.publish_date].find((v) => typeof v === 'string' && v);
+      if (arcDate) tries.push([/^(.*)$/, arcDate]);
+    } catch { /* not the shape we know: no date from it */ }
+  }
   // Talkin' Broadway pages carry no structured data: the date is in the "Theatre Review by {Critic} - {Month D, YYYY}" byline.
   const tb = s.match(/Theatre Review by\s*(?:<[^>]*>\s*)*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019-]*){0,3}\s*(?:<[^>]*>\s*)*-\s*(?:<[^>]*>\s*)*([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})/u);
   if (tb) tries.push([/^(.*)$/, tb[1]]);

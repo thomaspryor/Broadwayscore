@@ -1,7 +1,16 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-11-20T07:51:02.912Z",
+  "updatedAt": "2026-11-21T07:38:21.913Z",
   "staged": [
+    {
+      "outletId": "fashionmeetsfood",
+      "reason": "name-unresolved",
+      "domainHint": "fashionmeetsfood.com",
+      "reviewCount": 1,
+      "exampleShowId": "the-lion-king-tour-2021",
+      "firstSeenAt": "2026-11-21T07:29:47.986Z",
+      "lastSeenAt": "2026-11-21T07:38:21.912Z"
+    },
     {
       "outletId": "guide4moms",
       "reason": "name-unresolved",
@@ -9,7 +18,7 @@
       "reviewCount": 2,
       "exampleShowId": "beetlejuice-tour-2022",
       "firstSeenAt": "2026-11-11T12:45:04.585Z",
-      "lastSeenAt": "2026-11-20T07:51:02.911Z"
+      "lastSeenAt": "2026-11-21T07:38:21.912Z"
     }
   ]
 }

@@ -270,6 +270,10 @@ jobs:
             # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
             # cushion + 12h; a run with no cards exits 0, so a success always means the lander ran.
             "visual-approval-land.yml|13|Visual Approval Land"
+            # BRO-7934: */15 drop detector for the opening-night window. GitHub fired the schedule 52 of
+            # 1,344 times (2026-11-06..19); cron-redispatch replaces a missing run after 0.5h (input +
+            # redispatch-after-hours in the workflow). 13h = 15min gap + 12h cushion.
+            "opening-night-completeness-check.yml|13|Opening Night Completeness Check"
             # BRO-6351: one email per owner decision (cron 7,27,47). GitHub ran it 4 times in 17h on
             # 2026-10-26 and 5 decisions waited hours; cron-redispatch replaces a missing run after 0.75h
             # (input + redispatch-after-hours in the workflow; a redispatch is the tick, never the roundup).

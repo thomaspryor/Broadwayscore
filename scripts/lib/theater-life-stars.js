@@ -70,7 +70,9 @@ function footerStars(text, titles) {
   for (const raw of titles || []) {
     const title = String(raw || '').trim();
     if (title.length < 3) continue;
-    const pat = escapeRe(title).replace(/\s+/g, '\\s+');
+    // Straight and curly apostrophes are the same letter ("A Doll's House"
+    // in shows.json, "A Doll’s House" on the footer line, BRO-7928).
+    const pat = escapeRe(title).replace(/\s+/g, '\\s+').replace(/['’‘]/g, "['’‘]");
     const re = new RegExp(`(?:^|[\\s"“”'‘’(])${pat}\\s+${STARS}(?![*★])${FOOTER_FRACTION}`, 'gi');
     let m;
     while ((m = re.exec(body)) !== null) {

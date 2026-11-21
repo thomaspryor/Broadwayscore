@@ -631214,5 +631214,56 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-21T07:09:55.495Z",
+    "completedAt": "2026-11-21T07:17:28.286Z",
+    "totalReviews": 83967,
+    "processed": 105,
+    "skipped": 83840,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 805997,
+      "output": 42687,
+      "cacheRead": 638809,
+      "cacheWrite": 37302,
+      "total": 2136957
+    },
+    "costUsd": 1.8007204,
+    "runId": "44878677189",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "mystic-pizza-tour-2026",
+        "outletId": "usmfreepress",
+        "error": "input_validation_failed:nav_chrome_majority"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-21T07:22:26.806Z",
+    "completedAt": "2026-11-21T07:23:06.594Z",
+    "totalReviews": 15,
+    "processed": 15,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 34232,
+      "output": 3550,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 37782
+    },
+    "costUsd": 0.0675314,
+    "runId": "44878677189",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
   }
 ]

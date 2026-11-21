@@ -1727,20 +1727,6 @@
     "queuedAt": "2026-11-21T05:41:45.987Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T06:15:21.737Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
     "title": "Live-data test failing: BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors (tests/unit/book-of-mormon-2011-criticname.test.mjs) — still happening after 3 days",
     "description": "Filed BRO-7939: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors\" in tests/unit/book-of-mormon-2011-criticname.test.mjs is red against the live corpus.\n\nENOENT: no such file or directory, open '<root>/data/review-texts/book-of-mormon-2011/guardian--david-cote.json'",
@@ -1829,5 +1815,81 @@
       }
     ],
     "queuedAt": "2026-11-21T06:33:59.310Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +18 more). Checked 2026-11-21.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T07:14:46.566Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-lane-outlets-refresh",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-lane-outlets-refresh",
+    "description": "land.yml did not land land/worktree-lane-outlets-refresh: the unit-tests-node gate went red at 5a631e51a4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44878725680",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-lane-outlets-refresh"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5a631e51a4167b4d18f27bfb9546bc378b5e7626"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44878725680"
+      }
+    ],
+    "queuedAt": "2026-11-21T07:12:11.107Z"
+  },
+  {
+    "conditionKey": "land:land/msg-undelivered",
+    "title": "Landing blocked: unit-tests-node red on land/msg-undelivered",
+    "description": "land.yml did not land land/msg-undelivered: the unit-tests-node gate went red at a952fb2078. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44877630705",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/msg-undelivered"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a952fb207825f768eef51a5901b5e9ac2f1480d1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44877630705"
+      }
+    ],
+    "queuedAt": "2026-11-21T07:41:02.457Z"
   }
 ]

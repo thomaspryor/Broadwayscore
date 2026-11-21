@@ -1085,6 +1085,8 @@ const LANE_SOURCE_SAMPLE_REVIEW = {
   forward: 'https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/',
   'reclining-standards': 'https://recliningstandards.com/2026/10/25/ck-reviews-other-desert-cities-at-broadways-hudson-theatre/',
   showmosexualsguide: 'https://www.showmosexualsguide.com/p/other-desert-cities',
+  columbiaspectator: 'https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare/',
+  theverdictnyc: 'https://theverdictnyc.wixsite.com/theverdict/post/review-much-ado-about-nothing',
 };
 test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
   const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
