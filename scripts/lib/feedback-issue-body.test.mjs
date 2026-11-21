@@ -86,6 +86,9 @@ __t('already-in-catalog ask (real router output) is closed; missing show is not'
   __assert.match(__body.buildAlreadyInCatalogComment(live), /show\/hamilton-2015/);
   const missing = __route.planContentRequestActions({ message: 'Please add "Some New Play"', show: 'Some New Play', shows });
   __assert.equal(__body.isAlreadyInCatalog(missing), false);
+  for (const m of ['The cast list for Hamilton is out of date', 'Please add the audience score for Hamilton', 'Add the West End production of Hamilton', 'Hamilton closing date is wrong']) {
+    __assert.equal(__body.isAlreadyInCatalog(__route.planContentRequestActions({ message: m, show: 'Hamilton', shows })), false, m);
+  }
   __assert.equal(__body.isAlreadyInCatalog([]), false);
   __assert.equal(__body.isAlreadyInCatalog([{ kind: 'unroutable', reason: 'ambiguous' }]), false);
 });

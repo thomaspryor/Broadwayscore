@@ -266,6 +266,9 @@ function inferMarketFromMessage(title, message) {
   return found.size === 1 ? [...found][0] : null;
 }
 
+// BRO-7919: wording that asks for a change to a show we already carry.
+const CHANGE_REQUEST_RE = /\b(missing|wrong|incorrect|outdated|out of date|updat\w*|fix\w*|error|mistake|closing|closed|cast|leads?|scores?|ratings?|reviews?|images?|photos?|pictures?|posters?|dates?|prices?|tickets?|runs?|production|tour|revival|remove|delete|duplicate|merge|add\w*)\b/i;
+
 /**
  * resolveShowInMarket, but an ambiguous unscoped match gets one more try scoped
  * to the market the message itself names (inferMarketFromMessage). Still "skip,
@@ -675,7 +678,10 @@ function planContentRequestActions({
             `ask is not a recognised image or review-gap request`,
           showId: existing.id,
           // BRO-7919: the workflow closes the issue on this (nothing left to do).
-          alreadyInCatalog: true,
+          // Only for a bare "is X on here / please add X" ask: any wording that
+          // asks for a change to the existing entry, or names another market,
+          // is real work and stays parked for a human.
+          alreadyInCatalog: !CHANGE_REQUEST_RE.test(String(message || '')) && marketsIn(String(message || '')).length === 0,
         });
       }
     }

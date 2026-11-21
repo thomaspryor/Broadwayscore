@@ -273,10 +273,11 @@ jobs:
                     await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, body: issueText.buildAlreadyInCatalogComment(contentActions) });
                     await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, state: 'closed', state_reason: 'completed' });
                     console.log(`  Closed #${issue.data.number}: already in catalog`);
+                    continue;
                   } catch (err) {
+                    // Close failed: fall through so the issue still gets the proposal flow.
                     console.log(`  Failed to close already-in-catalog #${issue.data.number}: ${err.message}`);
                   }
-                  continue;
                 }
                 if (!willAutoDispatch && String(process.env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() !== 'true' && process.env.STORE_PUSH_OUTCOME !== 'failure') {
                   try {
