@@ -20,6 +20,10 @@ const GARRICK = show('Garrick Theatre', 'west-end', '2025-05-01', '2025-09-30');
 const HP = show('Harold Pinter Theatre', 'west-end', '2026-06-01', '2026-09-30');
 
 // Undated reviews are cleared only for the touring / taxonomy objections (tour-stop-carveout.js).
+test('undated review citing the record\'s own years (opening and closing) still clears', () => {
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: 'the 2018-2019 production at the Old Vic is not a West End theatre production', reviewedVenue: 'Old Vic' }, OLDVIC, {}).wrongProduction, false);
+});
+
 test('undated: taxonomy and touring wording clear, an unrelated objection does not', () => {
   assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: 'a pre-West End Royal Court production, not a West End one', reviewedVenue: 'Royal Court' }, RC, {}).wrongProduction, false);
   assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: 'a touring production at the Garrick', reviewedVenue: 'Garrick Theatre' }, GARRICK, {}).wrongProduction, false);
@@ -42,6 +46,7 @@ const KNOWN_BAD = [
   ['no reported venue', RC, null, '2025-11-24', 'reviews a pre-West End production.'],
   ['own venue but years outside the run', RC, 'Royal Court Theatre', '2019-03-02', 'reviews the Royal Court production, not a West End theatre.'],
   ['undated review of another year\'s revival at the same house (A Christmas Carol 2018)', OLDVIC, 'Old Vic', null, 'a valid review at the Old Vic, but it reviews the 2025-2026 revival, not the West End production (a different West End run).'],
+  ['undated, objects to a different run but cites no year', OLDVIC, 'Old Vic', null, 'a valid review at the Old Vic, but of a different West End run than the one expected.'],
   ['Pride-record review placed at the Bridge', DORF, 'Bridge Theatre', '2026-09-05', 'reviews the production at the Bridge Theatre, not the Dorfman.'],
 ];
 

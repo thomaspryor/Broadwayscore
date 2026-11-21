@@ -4,6 +4,7 @@
  * "Collector LLM: wrong production" on a West End / Off-West End record, and
  * report how many flags survive. Re-run mode is READ-ONLY on review files (writes
  * only --out); only `--stored-audit --apply` heals review files.
+ * lane-exempt: read-only re-check plus a heal that only CLEARS wrongProduction; it never sets the flag, so it cannot hide a lane review.
  * venue-write-guard-ok: show.venue is copied into a /tmp results row and the verifier prompt, never written to shows.json
  *
  *   node scripts/lib/recheck-london-wrongprod.js --out=/tmp/x.json [--since=2024-11-20] [--limit=N] [--concurrency=4]
@@ -78,6 +79,8 @@ function applyOwnVenueHeal(items) {
       && typeof data.humanReviewedWrongProduction !== 'boolean' && !textNamesEarlierRun(data, show)
       && applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate }).tourStopCarveoutApplied;
     const field = String(data.fullText || '').length >= 800 ? 'fullText' : String(data.wrongFullText || '').length >= 800 ? 'wrongFullText' : null;
+    // The earlier-run guard reads fullText only, so test the text we are about to restore.
+    if (ok && field === 'wrongFullText' && textNamesEarlierRun({ ...data, fullText: data.wrongFullText }, show)) { console.log(`  skipped (restored text names an earlier run) ${show.id}/${file}`); continue; }
     if (!ok || !field) { console.log(`  skipped ${show.id}/${file}`); continue; }
     const note = `[${nowIso.slice(0, 10)} cleared collector wrongProduction: critic attended this record's own venue (${cv.reviewedVenue}); own-venue carve-out applied to the stored verdict${field === 'wrongFullText' ? '; text restored' : ''} (BRO-7932)]`;
     clearWrongProductionFlags(data, { source: 'recheck-london-wrongprod.js', reason: note });
@@ -91,7 +94,15 @@ function applyOwnVenueHeal(items) {
   console.log(`APPLIED: healed ${n}`);
 }
 
-function storedAudit(since, strict) {
+// Text a heal would restore (live fullText, else the quarantined copy); null when too short to judge.
+function healText(data) {
+  const live = String(data.fullText || '');
+  if (live.length >= 800) return live;
+  const q = String(data.wrongFullText || '');
+  return q.length >= 800 ? q : null;
+}
+
+function storedAudit(since, strict, rerun) {
   const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
   const { out } = listFlags(since);
   const bad = [];
@@ -102,14 +113,15 @@ function storedAudit(since, strict) {
     // Excluded for another reason too (duplicate, wrong show, feature/roundup, cut-off text): not a hidden real review.
     if (data.duplicateOf || data.wrongShow === true || data.isRoundupArticle === true || cv.truncated === true || (cv.articleType && cv.articleType !== 'review')) continue;
     const r = applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate });
-    if (r.tourStopCarveoutApplied) { bad.push(`${show.id}/${file}`); badItems.push({ show, file, data }); }
+    const text = healText(data);
+    if (r.tourStopCarveoutApplied && text && !require('./run-contamination').textNamesEarlierRun({ ...data, fullText: text }, show)) { bad.push(`${show.id}/${file}`); badItems.push({ show, file, data }); }
   }
   const noVenue = out.filter(o => !(o.data.contentVerification || {}).reviewedVenue).length;
   // noVenueStored flags predate the reviewedVenue field: the audit cannot judge them (--recheck can).
   console.log(JSON.stringify({ londonCollectorFlags: out.length, noVenueStored: noVenue, unhealedOwnVenueFlags: bad.length }));
   bad.forEach(b => console.log(`  ${b}`));
   // A corpus that yields no flags at all is a broken read, not a clean bill (the gate must not pass on missing data).
-  if (process.argv.includes('--apply')) applyOwnVenueHeal(badItems);
+  if (process.argv.includes('--apply') && !rerun) { applyOwnVenueHeal(badItems); return storedAudit(since, strict, true); }
   if (strict && out.length === 0) { console.error('stored-audit: no London collector flags found; corpus unreadable?'); process.exit(2); }
   if (strict && bad.length) process.exit(1);
 }

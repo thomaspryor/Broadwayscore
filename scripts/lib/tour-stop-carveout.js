@@ -102,9 +102,11 @@ function applyOwnVenueTourCarveout(cv, show, { publishDate } = {}) {
   // is describing another run at the same house (A Christmas Carol 2018 at the
   // Old Vic: "reviews the 2025-2026 revival"). Taxonomy wording alone must not clear it (BRO-7932).
   if (!dated) {
-    const ownYear = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+    const ownYears = new Set([show.openingDate, show.previewsStartDate, show.closingDate].map(d => String(d || '').slice(0, 4)).filter(Boolean));
     const cited = basis.match(/\b(?:19|20)\d{2}\b/g) || [];
-    if (cited.some(y => y !== ownYear)) return unchanged;
+    if (cited.some(y => !ownYears.has(y))) return unchanged;
+    // Or says outright it is another run, with no year to compare.
+    if (/\b(?:different|another|earlier|previous|prior|later|subsequent)\s+(?:west end\s+)?(?:run|production|revival|staging|season)\b|\brevival\b/i.test(basis)) return unchanged;
   }
   return { wrongProduction: false, tourStopCarveoutApplied: true };
 }
