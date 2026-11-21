@@ -62,7 +62,7 @@ test('CLI e2e: added error() fails, advisory env downgrades, warn() passes', () 
     writeFileSync(path.join(dir, V), 'function error(m){}\nfunction warn(m){}\nwarn("a");\nwarn(`bad`);\n');
     g('commit', '-qam', 'warn');
     assert.equal(cli().status, 0);
-  } finally { rmSync(dir, { recursive: true, force: true }); }
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('unrelated removed error() elsewhere does not cancel a new one (separate hunks)', () => {
