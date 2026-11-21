@@ -1,0 +1,480 @@
+{
+  "issueNumber": "bro-5527-e",
+  "planId": "ebd56831-27c6-4042-b006-dedaf7200414",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 5 of 6: the-kite-runner-2022, the-last-five-years-2025, the-roommate, the-sign-in-sidney-brusteins-window-2023, the-wiz)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5750000,
+        "description": "the-kite-runner-2022: the SEC Form D gives a $5.75 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Kite Runner North America Ltd Liability Co, CIK 0001885850, filed Sep 30, 2021): total offering amount $5,750,000. Matched to the show by its related persons Victoria Lang and Andrew Bogner (Broadway & Beyond Theatricals), the lead producers. https://www.sec.gov/Archives/edgar/data/1885850/000188585021000001/xslFormDX01/primary_doc.xml",
+        "description": "the-kite-runner-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-kite-runner-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-kite-runner-broadway-helen-hayes-theatre-2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/10/17/with-the-kite-runner-one-theatrical-production-company-is-revolutionizing-traditional-business-models/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Kite_Runner_(play)",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-kite-runner-broadway-helen-hayes-theatre-2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com/2022/10/17/with-the-kite-runner-one-theatrical-production-company-is-revolutionizing-traditional-business-models/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/The_Kite_Runner_(play)",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1885850/000188585021000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-09-30"
+          }
+        ],
+        "description": "the-kite-runner-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7750000,
+        "description": "the-last-five-years-2025: the SEC Form D gives a $7.75 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Summer in Ohio Ltd Liability Co, CIK 0002030381, filed Jul 29, 2024): total offering amount $7,750,000. Matched to the show by its related persons Greg Nobile (Seaview), Kristin Caskey, Mike Karns and John Rogers, the lead producers. https://www.sec.gov/Archives/edgar/data/2030381/000203038124000002/xslFormDX01/primary_doc.xml",
+        "description": "the-last-five-years-2025: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-last-five-years-2025: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-last-five-years-broadway-hudson-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-last-five-years-broadway-hudson-theatre-2025",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2030381/000203038124000002/xslFormDX01/primary_doc.xml",
+            "date": "2024-07-29"
+          }
+        ],
+        "description": "the-last-five-years-2025: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "notes",
+        "oldValue": "Commercial revival (Seaview) at the Hudson with Nick Jonas and Adrienne Warren, Apr 6 to Jun 22, 2025. Total gross about $8.9M. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial revival (Seaview) at the Hudson with Nick Jonas and Adrienne Warren, Apr 6 to Jun 22, 2025. Total gross about $8.9M. Its SEC Form D (Jul 2024) offered $7.75 million; no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "description": "the-last-five-years-2025: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5500000,
+        "description": "the-roommate: the SEC Form D gives a $5.5 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Two Ladies Broadway Ltd Liability Co, CIK 0002023970, filed May 30, 2024): total offering amount $5,500,000 ($400,000 sold by then). Matched to the show by its related person Christopher Harper, the producer. https://www.sec.gov/Archives/edgar/data/2023970/000202397024000001/xslFormDX01/primary_doc.xml",
+        "description": "the-roommate: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": true,
+          "capitalization": false
+        },
+        "description": "the-roommate: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-roommate-broadway-booth-theatre-2024",
+            "date": "2024-12-15",
+            "excerpt": "Total current gross: $6,974,678.64"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-roommate-broadway-booth-theatre-2024",
+            "date": "2024-12-15",
+            "excerpt": "Total current gross: $6,974,678.64"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2023970/000202397024000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-05-30"
+          }
+        ],
+        "description": "the-roommate: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "field": "notes",
+        "oldValue": "Star vehicle for Patti LuPone and Mia Farrow; limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). Total gross about $6.97M over 113 performances. No capitalization reported and no recoupment announced.",
+        "newValue": "Star vehicle for Patti LuPone and Mia Farrow; limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). Total gross about $6.97M over 113 performances. Its SEC Form D (May 2024) offered $5.5 million; no recoupment announced.",
+        "description": "the-roommate: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4000000,
+        "description": "the-sign-in-sidney-brusteins-window-2023: the SEC Form D gives a $4 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "capitalizationSource",
+        "oldValue": "No verified public capitalization figure found; the NYC tax-credit search did not surface this title, and TheaterMania noted a capitalization shortfall after a producer withdrawal. https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+        "newValue": "SEC Form D filing (Energy Can Move Things Ltd Liability Co, CIK 0001972590, filed Apr 6, 2023): total offering amount $4,000,000. Matched to the show by its related persons Greg Nobile (Seaview), Sue Wagner and John Johnson, the lead producers, filed three weeks before the Apr 2023 opening. https://www.sec.gov/Archives/edgar/data/1972590/000197259023000001/xslFormDX01/primary_doc.xml",
+        "description": "the-sign-in-sidney-brusteins-window-2023: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-sign-in-sidney-brusteins-window-2023: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-sign-in-sidney-brusteins-window-broadway-james-earl-jones-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossestheater/JAMES-EARL-JONES?orderby=asc&sortby=showname",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/story-of-the-week-a-last-minute-addition-to-the-broadway-season_1697047/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-sign-in-sidney-brusteins-window-broadway-james-earl-jones-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossestheater/JAMES-EARL-JONES?orderby=asc&sortby=showname",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/story-of-the-week-a-last-minute-addition-to-the-broadway-season_1697047/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1972590/000197259023000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-04-06"
+          }
+        ],
+        "description": "the-sign-in-sidney-brusteins-window-2023: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-wiz",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15000000,
+        "description": "the-wiz: the SEC Form D gives a $15 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-wiz",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Ease on Down LLC, CIK 0001955618, filed Nov 22, 2022): total offering amount $15,000,000. Matched to the show by its related persons Mike Isaacson, Kristin Caskey and Brian Moreland, the lead producers; its Ease on Down Production Services Corp received the NY tax credit. https://www.sec.gov/Archives/edgar/data/1955618/000195561822000001/xslFormDX01/primary_doc.xml",
+        "description": "the-wiz: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-wiz",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-wiz: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-wiz",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1955618/000195561822000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-11-22"
+          }
+        ],
+        "description": "the-wiz: add the Form D to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T08:49:23.108Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-wiz"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-wiz"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-wiz"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-wiz"
+    }
+  ]
+}

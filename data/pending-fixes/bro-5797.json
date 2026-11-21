@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5797",
+  "planId": "db22af82-e8cc-4640-ba90-34532e35ed0f",
+  "status": "applied",
+  "createdAt": "2026-10-20T19:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire the undated duplicate stub amaze-off-broadway-2026 (title AMAZE) into amaze-magic-off-broadway-2025: same house, same closing date, only ticket link is the kept row's TodayTix listing 44453. The old id and slug become aliases on the kept row so /show/amaze-off-broadway-2026 and /show/amaze-off-broadway redirect to it.",
+    "steps": [
+      "Retire amaze-off-broadway-2026 as a duplicate of amaze-magic-off-broadway-2025, id only"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "amaze-off-broadway-2026",
+        "expectTitle": "AMAZE",
+        "reason": "Duplicate stub of amaze-magic-off-broadway-2025 (shared TodayTix listing 44453, same New World Stages run, no dates, no reviews); BRO-5797",
+        "duplicateOf": "amaze-magic-off-broadway-2025",
+        "description": "Retire the undated AMAZE stub row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T21:08:03.245Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired amaze-off-broadway-2026 (\"AMAZE\" @ New World Stages); dropped its audience-buzz.json key"
+    }
+  ],
+  "executedIn": "ci"
+}

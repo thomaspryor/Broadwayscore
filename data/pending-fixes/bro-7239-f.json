@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-7239-f",
+  "planId": "400f41d7-141f-47cc-9589-732d8be5f15e",
+  "status": "applied",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 6 of 6)",
+    "steps": [
+      "shows.json: covenant-speakeasy-regional-2026.closingDate",
+      "shows.json: covenant-speakeasy-regional-2026.closingDateSource",
+      "shows.json: shear-madness-regional-2026.closingDate",
+      "shows.json: shear-madness-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "covenant-speakeasy-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-17",
+        "description": "shows.json: covenant-speakeasy-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "covenant-speakeasy-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Oct. 17\" (https://www.wbur.org/news/2026/09/29/covenant-speakeasy-theater-review ; https://www.broadwayworld.com/article/Review-SpeakEasy-Stages-COVENANT-Delivers-on-Promise-20261008)",
+        "description": "shows.json: covenant-speakeasy-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shear-madness-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: shear-madness-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shear-madness-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through October 11\" (https://www.metrmag.com/latest-reviews/shear-madness-by-paul-p%C3%B6rtner-greater-boston-stage-company-stoneham-ma-review)",
+        "description": "shows.json: shear-madness-regional-2026.closingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T20:26:43.025Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for covenant-speakeasy-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for covenant-speakeasy-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for shear-madness-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for shear-madness-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

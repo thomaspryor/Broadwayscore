@@ -1,0 +1,682 @@
+{
+  "issueNumber": "bro-6343-1415",
+  "planId": "a57a138d-5591-4a8f-bec2-9bf2d15fd810",
+  "status": "applied",
+  "createdAt": "2026-10-26T18:46:26.004Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 20 closed West End production(s) for 2014-2015 from the historical backfill (we-historical:olt; BRO-6343).",
+    "steps": [
+      "Append electra-west-end-2014 (The Old Vic, 2014-09-22 to 2014-12-20)",
+      "Append speed-the-plow-west-end-2014 (Playhouse Theatre, 2014-09-24 to 2014-11-29)",
+      "Append urinetown-the-musical-west-end-2014 (Apollo Theatre, 2014-09-29 to 2015-01-03)",
+      "Append memphis-the-musical-west-end-2014 (Shaftesbury Theatre, 2014-10-09 to 2015-10-31)",
+      "Append sunny-afternoon-west-end-2014 (Harold Pinter Theatre, 2014-10-04 to 2016-10-29)",
+      "Append made-in-dagenham-west-end-2014 (Adelphi Theatre, 2014-10-09 to 2015-04-11)",
+      "Append my-night-with-reg-west-end-2015 (Apollo Theatre, 2015-01-17 to 2015-04-11)",
+      "Append di-and-viv-and-rose-west-end-2015 (Vaudeville Theatre, 2015-01-22 to 2015-03-14)",
+      "Append the-nether-west-end-2015 (Duke of York's Theatre, 2015-01-30 to 2015-04-25)",
+      "Append clarence-darrow-west-end-2015 (The Old Vic, 2015-03-03 to 2015-04-11)",
+      "Append oppenheimer-west-end-2015 (Vaudeville Theatre, 2015-03-27 to 2015-05-23)",
+      "Append gypsy-west-end-2015 (Savoy Theatre, 2015-03-28 to 2015-11-28)",
+      "Append american-buffalo-west-end-2015 (Wyndham's Theatre, 2015-04-16 to 2015-06-27)",
+      "Append the-audience-west-end-2015 (Apollo Theatre, 2015-04-21 to 2015-07-25)",
+      "Append hay-fever-west-end-2015 (Duke of York's Theatre, 2015-04-29 to 2015-08-01)",
+      "Append death-of-a-salesman-west-end-2015 (Noël Coward Theatre, 2015-05-09 to 2015-07-18)",
+      "Append 1984-west-end-2015 (Playhouse Theatre, 2015-06-12 to 2015-09-05)",
+      "Append bend-it-like-beckham-the-musical-west-end-2015 (Phoenix Theatre, 2015-05-15 to 2016-03-05)",
+      "Append impossible-west-end-2015 (Noël Coward Theatre, 2015-07-25 to 2015-08-29)",
+      "Append dear-lupin-west-end-2015 (Apollo Theatre, 2015-07-30 to 2015-09-19)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "electra-west-end-2014",
+          "title": "Electra",
+          "slug": "electra-west-end-2014",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2014-09-22",
+          "openingDate": "2014-10-01",
+          "closingDate": "2014-12-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.569Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160113142355/http://www.officiallondontheatre.co.uk/london-shows/show/item223372/electra/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "speed-the-plow-west-end-2014",
+          "title": "Speed-The-Plow",
+          "slug": "speed-the-plow-west-end-2014",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2014-09-24",
+          "openingDate": "2014-10-02",
+          "closingDate": "2014-11-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.607Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160407050959/http://www.officiallondontheatre.co.uk/london-shows/show/item232435/speed-the-plow/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "urinetown-the-musical-west-end-2014",
+          "title": "Urinetown the Musical",
+          "slug": "urinetown-the-musical-west-end-2014",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2014-09-29",
+          "openingDate": "2014-10-08",
+          "closingDate": "2015-01-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.634Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20150705070007/http://www.officiallondontheatre.co.uk:80/london-shows/show/item233326/urinetown-the-musical/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "memphis-the-musical-west-end-2014",
+          "title": "Memphis the Musical",
+          "slug": "memphis-the-musical-west-end-2014",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2014-10-09",
+          "openingDate": "2014-10-23",
+          "closingDate": "2015-10-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.653Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171008042147/http://www.officiallondontheatre.co.uk:80/london-shows/show/item222910/memphis-the-musical"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sunny-afternoon-west-end-2014",
+          "title": "Sunny Afternoon",
+          "slug": "sunny-afternoon-west-end-2014",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2014-10-04",
+          "openingDate": "2014-10-28",
+          "closingDate": "2016-10-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.672Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170701212202/http://www.officiallondontheatre.co.uk/london-shows/show/item232024/sunny-afternoon/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "made-in-dagenham-west-end-2014",
+          "title": "Made in Dagenham",
+          "slug": "made-in-dagenham-west-end-2014",
+          "venue": "Adelphi Theatre",
+          "previewsStartDate": "2014-10-09",
+          "openingDate": "2014-11-05",
+          "closingDate": "2015-04-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.687Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171007220724/http://www.officiallondontheatre.co.uk:80/london-shows/show/item222221/made-in-dagenham"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-night-with-reg-west-end-2015",
+          "title": "My Night with Reg",
+          "slug": "my-night-with-reg-west-end-2015",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2015-01-17",
+          "openingDate": "2015-01-23",
+          "closingDate": "2015-04-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.707Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160206173621/http://www.officiallondontheatre.co.uk:80/london-shows/show/item259075/my-night-with-reg/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "di-and-viv-and-rose-west-end-2015",
+          "title": "Di and Viv and Rose",
+          "slug": "di-and-viv-and-rose-west-end-2015",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2015-01-22",
+          "openingDate": "2015-01-29",
+          "closingDate": "2015-03-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.725Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20150517052901/http://www.officiallondontheatre.co.uk:80/london-shows/show/item239630/di-and-viv-and-rose"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-nether-west-end-2015",
+          "title": "The Nether",
+          "slug": "the-nether-west-end-2015",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2015-01-30",
+          "openingDate": "2015-02-23",
+          "closingDate": "2015-04-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.742Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410153846/http://www.officiallondontheatre.co.uk/london-shows/show/item244178/the-nether/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "clarence-darrow-west-end-2015",
+          "title": "Clarence Darrow",
+          "slug": "clarence-darrow-west-end-2015",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2015-03-03",
+          "closingDate": "2015-04-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.798Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411171624/http://www.officiallondontheatre.co.uk/london-shows/show/item267574/clarence-darrow/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "oppenheimer-west-end-2015",
+          "title": "Oppenheimer",
+          "slug": "oppenheimer-west-end-2015",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2015-03-27",
+          "openingDate": "2015-03-31",
+          "closingDate": "2015-05-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.823Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151101083953/http://www.officiallondontheatre.co.uk/london-shows/show/item274342/oppenheimer/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "gypsy-west-end-2015",
+          "title": "Gypsy",
+          "slug": "gypsy-west-end-2015",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2015-03-28",
+          "openingDate": "2015-04-15",
+          "closingDate": "2015-11-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.843Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160305010132/http://www.officiallondontheatre.co.uk:80/london-shows/show/item262149/gypsy/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "american-buffalo-west-end-2015",
+          "title": "American Buffalo",
+          "slug": "american-buffalo-west-end-2015",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2015-04-16",
+          "openingDate": "2015-04-27",
+          "closingDate": "2015-06-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.859Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170330231004/http://www.officiallondontheatre.co.uk/london-shows/show/item263887/american-buffalo/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-audience-west-end-2015",
+          "title": "The Audience",
+          "slug": "the-audience-west-end-2015",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2015-04-21",
+          "openingDate": "2015-05-05",
+          "closingDate": "2015-07-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.874Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160924061929/http://www.officiallondontheatre.co.uk:80/london-shows/show/item247658/the-audience/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hay-fever-west-end-2015",
+          "title": "Hay Fever",
+          "slug": "hay-fever-west-end-2015",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2015-04-29",
+          "openingDate": "2015-05-11",
+          "closingDate": "2015-08-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.888Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151027025821/http://www.officiallondontheatre.co.uk:80/london-shows/show/item266957/hay-fever"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-of-a-salesman-west-end-2015",
+          "title": "Death of a Salesman",
+          "slug": "death-of-a-salesman-west-end-2015",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2015-05-09",
+          "openingDate": "2015-05-13",
+          "closingDate": "2015-07-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.903Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151208100751/http://www.officiallondontheatre.co.uk:80/london-shows/show/item279271/death-of-a-salesman/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "1984-west-end-2015",
+          "title": "1984",
+          "slug": "1984-west-end-2015",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2015-06-12",
+          "openingDate": "2015-06-18",
+          "closingDate": "2015-09-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.920Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151008063250/http://www.officiallondontheatre.co.uk:80/london-shows/show/item281768/1984"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bend-it-like-beckham-the-musical-west-end-2015",
+          "title": "Bend It Like Beckham the Musical",
+          "slug": "bend-it-like-beckham-the-musical-west-end-2015",
+          "venue": "Phoenix Theatre",
+          "previewsStartDate": "2015-05-15",
+          "openingDate": "2015-06-24",
+          "closingDate": "2016-03-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.935Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171006071522/http://www.officiallondontheatre.co.uk:80/london-shows/show/item257817/bend-it-like-beckham-the-musical"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "impossible-west-end-2015",
+          "title": "Impossible",
+          "slug": "impossible-west-end-2015",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2015-07-25",
+          "openingDate": "2015-07-30",
+          "closingDate": "2015-08-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "special",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.958Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160417052636/http://www.officiallondontheatre.co.uk/london-shows/show/item282315/impossible/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dear-lupin-west-end-2015",
+          "title": "Dear Lupin",
+          "slug": "dear-lupin-west-end-2015",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2015-07-30",
+          "openingDate": "2015-08-03",
+          "closingDate": "2015-09-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T18:46:25.976Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160507145803/http://www.officiallondontheatre.co.uk:80/london-shows/show/item287634/dear-lupin"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T19:15:50.990Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added electra-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added speed-the-plow-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added urinetown-the-musical-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added memphis-the-musical-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sunny-afternoon-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added made-in-dagenham-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-night-with-reg-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added di-and-viv-and-rose-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-nether-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added clarence-darrow-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added oppenheimer-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gypsy-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added american-buffalo-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-audience-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hay-fever-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-of-a-salesman-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 1984-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bend-it-like-beckham-the-musical-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added impossible-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dear-lupin-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,476 @@
+{
+  "issueNumber": "bro-5647-m",
+  "planId": "1282eae2-32a5-4547-bade-be319f4e4ce2",
+  "status": "applied",
+  "createdAt": "2026-10-21T15:29:59.035Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the final Oct 21 Gemini batch (12 docs, 795 claims, 81 usable items; most already in the data). Source upgrades, each re-read at its page except BroadwayWorld (blocked from cloud; Dots read it fresh): Cinderella 2013 to Playbill's closing report (nearly $13M, did not fully recoup; basis reported-loss), Hillary and Clinton to Broadway News (up to $4.2M, SEC), A Strange Loop to Broadway Journal ($9.5M per lead producer, now reported), & Juliet to TheaterMania, Bad Cinderella to Broadway Journal, All Out's loss to Broadway Journal ('which flopped'; basis reported-loss), Oedipus to BroadwayWorld's $6M reported capitalization (was the $6.5M filing maximum), Ragtime 2009 notes gain the Post's $8.5M cost and $500K+ weekly floor. Not applied: Dots' Beetlejuice reassignment (our NYT source ties the $21M to the 2022 closing of the same production), tax-credit amounts (kept in the tax-credit lists, not commercial.json), the Pretty Woman tour, Waitress 2016 (no entry). Old values from the private core data at 25bb04b.",
+    "steps": [
+      "Source upgrades",
+      "Oedipus reported budget",
+      "All Out and Cinderella loss bases"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rodgers-hammersteins-cinderella-2013",
+        "showId": "rodgers-hammersteins-cinderella-2013",
+        "field": "capitalizationSource",
+        "oldValue": "Trade report from Financing Broadway blog",
+        "newValue": "Playbill closing report (Jan 2015): \"Capitalized at nearly $13 million, the production did not fully recoup at the time of closing.\" https://playbill.com/article/broadway-theatres-clean-house-for-new-spring-arrivals-com-338290",
+        "description": "cinderella: cite Playbill"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rodgers-hammersteins-cinderella-2013",
+        "showId": "rodgers-hammersteins-cinderella-2013",
+        "field": "recoupedSource",
+        "oldValue": "Financing Broadway blog states 'No, it closed at a loss after 41 previews and 770 performances'",
+        "newValue": "Playbill closing report (Jan 2015): \"Capitalized at nearly $13 million, the production did not fully recoup at the time of closing.\" https://playbill.com/article/broadway-theatres-clean-house-for-new-spring-arrivals-com-338290",
+        "description": "cinderella: cite Playbill for the loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rodgers-hammersteins-cinderella-2013",
+        "showId": "rodgers-hammersteins-cinderella-2013",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "cinderella: the loss was reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rodgers-hammersteins-cinderella-2013",
+        "showId": "rodgers-hammersteins-cinderella-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadway-theatres-clean-house-for-new-spring-arrivals-com-338290",
+            "date": "2015-01-05"
+          }
+        ],
+        "description": "cinderella: add Playbill"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hillary-and-clinton-2019",
+        "showId": "hillary-and-clinton-2019",
+        "field": "capitalizationSource",
+        "oldValue": "Forbes report listing Hillary and Clinton capitalization as $4.2m",
+        "newValue": "Broadway News (Jun 17, 2019): \"'Hillary and Clinton' was capitalized for up to $4.2 million, according to documents filed with the Securities and Exchange Commission.\" Forbes also listed it at $4.2 million. https://www.broadwaynews.com/hillary-and-clinton-to-close-on-june-23/",
+        "description": "hillary-and-clinton: cite Broadway News"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hillary-and-clinton-2019",
+        "showId": "hillary-and-clinton-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2019/07/11/investors-set-to-lose-100-million-as-broadway-undergoes-huge-market-correction/",
+            "date": "2019-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.americantheatre.org/2019/07/29/what-the-constitution-means-to-me-is-setting-a-theatrical-precedent/",
+            "date": "2019-07-29"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2019/07/11/investors-set-to-lose-100-million-as-broadway-undergoes-huge-market-correction/",
+            "date": "2019-07-11"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.americantheatre.org/2019/07/29/what-the-constitution-means-to-me-is-setting-a-theatrical-precedent/",
+            "date": "2019-07-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/hillary-and-clinton-to-close-on-june-23/",
+            "date": "2019-06-17"
+          }
+        ],
+        "description": "hillary-and-clinton: add Broadway News"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalization",
+        "oldValue": 6500000,
+        "newValue": 6000000,
+        "description": "oedipus: reported capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Boyo Productions LP, CIK 0002073494, filed Jun 26, 2025): total offering amount $6,500,000 ($0 sold by then). An Actors' Equity notice for the Studio 54 production names Boyo Productions LP as its employer. https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+        "newValue": "BroadwayWorld (Cara Joy David, Sep 4, 2025) reported a $6 million capitalization for the Broadway Oedipus. Its earlier SEC Form D (Boyo Productions LP, CIK 0002073494, filed Jun 26, 2025) listed a $6.5 million offering with nothing yet sold; an Actors' Equity notice names Boyo Productions LP as the production's employer. https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904 https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+        "description": "oedipus: cite BroadwayWorld and the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "notes",
+        "oldValue": "Robert Icke's production with Mark Strong and Lesley Manville, transferred from London. Closed Feb 8, 2026, setting a Studio 54 house record of $1,212,949 in its final week (Playbill). Its SEC Form D (Jun 2025) offered up to $6.5 million, with nothing raised by then. No recoupment announced.",
+        "newValue": "Robert Icke's production with Mark Strong and Lesley Manville, transferred from London. Closed Feb 8, 2026, setting a Studio 54 house record of $1,212,949 in its final week (Playbill). Capitalized at $6 million (BroadwayWorld); its SEC Form D (Jun 2025) had offered $6.5 million. No recoupment announced.",
+        "description": "oedipus: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oedipus-sets-a-house-record-in-its-final-performances-and-more-from-last-weeks-broadway-grosses",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/02/oedipus-broadway-mark-strong-lesley-manville-1236713664/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-06-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/equity-audition/OEDIPUS-Broadway-Boyo-Productions-LP-2025-47184",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oedipus-sets-a-house-record-in-its-final-performances-and-more-from-last-weeks-broadway-grosses",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/02/oedipus-broadway-mark-strong-lesley-manville-1236713664/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-06-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/equity-audition/OEDIPUS-Broadway-Boyo-Productions-LP-2025-47184",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          }
+        ],
+        "description": "oedipus: add BroadwayWorld"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "showId": "a-strange-loop-2022",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Strange Loop Broadway LLC, CIK 0001909220, filed Feb 9, 2022): total offering amount $9,500,000 ($1,932,500 sold by then). Matched to the show by its related person Barbara Whitman, the lead producer. https://www.sec.gov/Archives/edgar/data/1909220/000190922022000001/xslFormDX01/primary_doc.xml",
+        "newValue": "Broadway Journal (May 9, 2022): \"Strange Loop lead producer Barbara Whitman capitalized it at $9.5 million, which is inexpensive for 2022.\" Its SEC Form D (Strange Loop Broadway LLC, CIK 0001909220, filed Feb 9, 2022) listed the same $9.5 million offering. https://www.broadwayjournal.com/p/tony-nominations-will-six-or-mj-rain-on-strange-loops-parade",
+        "description": "a-strange-loop: reported capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "showId": "a-strange-loop-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/articles/2025-06-06/costs-behind-tony-nominated-broadway-shows-starring-george-clooney-sarah-snook",
+            "date": "2025-06-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/10/11/theater/strange-loop-broadway-closing.html",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1909220/000190922022000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-02-09"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/articles/2025-06-06/costs-behind-tony-nominated-broadway-shows-starring-george-clooney-sarah-snook",
+            "date": "2025-06-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/10/11/theater/strange-loop-broadway-closing.html",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1909220/000190922022000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-02-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/tony-nominations-will-six-or-mj-rain-on-strange-loops-parade",
+            "date": "2022-05-09"
+          }
+        ],
+        "description": "a-strange-loop: add Broadway Journal"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "showId": "and-juliet",
+        "field": "capitalizationSource",
+        "oldValue": "Hollywood Reporter",
+        "newValue": "TheaterMania (Jun 11, 2024): \"The Broadway production of & Juliet has recouped its production costs as of April 14, 2024, producers announced today. Capitalized at $17 million...\" https://www.theatermania.com/news/juliet-announces-recoupment-of-17-million-broadway-production-cost_1742677/",
+        "description": "and-juliet: cite TheaterMania"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bad-cinderella-2023",
+        "showId": "bad-cinderella-2023",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal reported capitalized at $19 million",
+        "newValue": "Broadway Journal: \"Bad Cinderella (Christine Schwarzman and the Really Useful Group, $19 million).\" https://www.broadwayjournal.com/p/shubert-produced-some-like-it-hot-to-close",
+        "description": "bad-cinderella: cite Broadway Journal"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 6, 2026), on the season's recoupments: \"the Simon Rich comedy All In (as opposed to this season's All Out, which flopped).\" https://www.broadwayjournal.com/p/broadways-missing-mojo",
+        "description": "all-out: the press reported it failed"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "all-out: label rests on a reported loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          }
+        ],
+        "description": "all-out: add Broadway Journal"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "showId": "ragtime-2009",
+        "field": "notes",
+        "oldValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009–Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred.",
+        "newValue": "The 2009 Broadway revival of Ragtime at the Neil Simon Theatre ran only about two months (Nov 2009–Jan 2010) and lost its entire $8 million capitalization according to producer Kevin McCollum, as cited in a NYT article about Next to Normal's finances. No recoupment occurred. The Washington Post (Dec 29, 2009) reported an $8.5 million production cost and weekly running costs of more than $500,000 (CBC gave the same weekly floor).",
+        "description": "ragtime-2009: add the Post and CBC figures"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "showId": "ragtime-2009",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2010/03/29/theater/29normal.html",
+            "date": "2010-03-29"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2010/03/29/theater/29normal.html",
+            "date": "2010-03-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.washingtonpost.com/archive/style/2009/12/29/kennedy-centers-hobbled-ragtime-to-end-broadway-run-this-weekend/330893de-1860-487f-bc35-16470fb1838b/",
+            "date": "2009-12-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.cbc.ca/news/entertainment/broadway-s-ragtime-gets-one-week-reprieve-1.775419",
+            "date": null
+          }
+        ],
+        "description": "ragtime-2009: add sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T15:37:15.343Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for hillary-and-clinton-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for hillary-and-clinton-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for bad-cinderella-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for ragtime-2009"
+    }
+  ],
+  "executedIn": "ci"
+}

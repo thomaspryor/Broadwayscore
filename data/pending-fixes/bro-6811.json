@@ -1,0 +1,246 @@
+{
+  "issueNumber": "bro-6811",
+  "planId": "a2caa8fa-230f-4ba2-82c3-c62b30259b1a",
+  "status": "applied",
+  "createdAt": "2026-11-02T07:00:02.394Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6811: opera revivals stop inheriting the earlier Met run's reviews (inheritReviews:false on the seven links); flag two stray past-run review files",
+    "steps": [
+      "Set inheritReviews:false on tosca-off-broadway-2026 priorRuns",
+      "Set inheritReviews:false on samson-et-dalila-off-broadway-2026 priorRuns",
+      "Set inheritReviews:false on medea-off-broadway-2026 priorRuns",
+      "Set inheritReviews:false on maria-stuarda-off-broadway-2026 priorRuns",
+      "Set inheritReviews:false on otello-off-broadway-2027 priorRuns",
+      "Set inheritReviews:false on der-rosenkavalier-off-broadway-2027 priorRuns",
+      "Set inheritReviews:false on parsifal-off-broadway-2027 priorRuns",
+      "Flag samson-et-dalila-off-broadway-2026/operawire--david-salazar.json as another production",
+      "Flag tosca-off-broadway-2026/zeal-nyc--herman-spencer.json as another production"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "showId": "tosca-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "tosca-off-broadway-2017",
+            "openingDate": "2017-12-31",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "tosca-off-broadway-2017",
+            "openingDate": "2017-12-31",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "samson-et-dalila-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "samson-et-dalila-off-broadway-2018",
+            "openingDate": "2018-09-24",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "samson-et-dalila-off-broadway-2018",
+            "openingDate": "2018-09-24",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "medea-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "medea-off-broadway-2022",
+            "openingDate": "2022-09-27",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "medea-off-broadway-2022",
+            "openingDate": "2022-09-27",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "maria-stuarda-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "maria-stuarda-off-broadway-2012",
+            "openingDate": "2012-12-31",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "maria-stuarda-off-broadway-2012",
+            "openingDate": "2012-12-31",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "otello-off-broadway-2027",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "otello-off-broadway-2015",
+            "openingDate": "2015-09-21",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "otello-off-broadway-2015",
+            "openingDate": "2015-09-21",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "der-rosenkavalier-off-broadway-2027",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "der-rosenkavalier-off-broadway-2017",
+            "openingDate": "2017-04-13",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "der-rosenkavalier-off-broadway-2017",
+            "openingDate": "2017-04-13",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "parsifal-off-broadway-2027",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "parsifal-off-broadway-2013",
+            "openingDate": "2013-02-15",
+            "venue": "Metropolitan Opera House"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "parsifal-off-broadway-2013",
+            "openingDate": "2013-02-15",
+            "venue": "Metropolitan Opera House",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-6811: Operawire 2018-09-25 review of the 2018 Met run (Samson et Dalila); belongs to samson-et-dalila-off-broadway-2018, not the 2026 revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6811: Zeal NYC review has no publish date and was verified 2026-05-24, before the 2026-11-01 first preview; it reviews an earlier Met run of Tosca (Stikhina/Jagde cast), not the current revival"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T07:52:03.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for tosca-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for samson-et-dalila-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for medea-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for maria-stuarda-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for otello-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for der-rosenkavalier-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for parsifal-off-broadway-2027"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

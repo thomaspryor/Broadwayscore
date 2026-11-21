@@ -1,0 +1,112 @@
+{
+  "generatedAt": "2026-11-19T12:03:05.562Z",
+  "verdict": "ok",
+  "reason": "3 search method(s) within their noise-adjusted threshold (floor 0.15) of their 4-run median",
+  "regressions": [],
+  "comparedArms": 3,
+  "trendEntries": 14,
+  "latest": {
+    "date": "2026-11-19",
+    "generatedAt": "2026-11-19T10:18:17.353Z",
+    "naivePages": 2,
+    "shows": 5,
+    "informativeShows": 5,
+    "excluded": {
+      "settling": 3
+    },
+    "truthUrls": 46,
+    "onDiskUrls": 33,
+    "newFromNaive": 8,
+    "families": {
+      "naive": 0.196,
+      "onDisk": 0.717,
+      "scoped": 0.239
+    },
+    "arms": {
+      "naive-p0": 0.152,
+      "naive-p1": 0.043,
+      "onDisk": 0.717,
+      "scoped-q0": 0.13,
+      "scoped-q1": 0.174,
+      "scoped-q2": 0.043
+    },
+    "combinedRecall": 0.826,
+    "familyYield": {
+      "naive": 1.8,
+      "onDisk": 6.6,
+      "scoped": 2.2
+    },
+    "armYield": {
+      "naive-p0": 1.4,
+      "naive-p1": 0.4,
+      "onDisk": 6.6,
+      "scoped-q0": 1.2,
+      "scoped-q1": 1.6,
+      "scoped-q2": 0.4
+    },
+    "armsFailed": {
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 0,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
+    },
+    "unavailableArms": [],
+    "byCategory": {
+      "broadway": {
+        "shows": 1,
+        "truthUrls": 8,
+        "families": {
+          "naive": 0,
+          "onDisk": 1,
+          "scoped": 0.125
+        }
+      },
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 11,
+        "families": {
+          "naive": 0.182,
+          "onDisk": 0.727,
+          "scoped": 0.273
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 9,
+        "families": {
+          "naive": 0,
+          "onDisk": 1,
+          "scoped": 0.111
+        }
+      },
+      "regional": {
+        "shows": 1,
+        "truthUrls": 11,
+        "families": {
+          "naive": 0.182,
+          "onDisk": 0.545,
+          "scoped": 0.545
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 7,
+        "families": {
+          "naive": 0.714,
+          "onDisk": 0.286,
+          "scoped": 0
+        }
+      }
+    },
+    "sampleIds": [
+      "a-christmas-story-the-musical-tour-2026",
+      "top-gunchained-off-west-end-2026",
+      "blue-man-group-a-new-holiday-surprise-2026",
+      "the-good-thief-off-broadway-2026",
+      "destiny-of-desire-regional-2026"
+    ]
+  },
+  "skipped": []
+}

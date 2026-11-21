@@ -1,0 +1,35 @@
+# Allowlist for the reviews.json direct-write lint (test.yml).
+#
+# Format: one line per script: filename followed by `--` and a one-line reason.
+# Lines starting with `#` are comments. Trailing whitespace is trimmed.
+#
+# Background: the `data/reviews.json` file is a derived aggregate produced by
+# `scripts/rebuild-all-reviews.js`. New scripts MUST NOT write to it directly —
+# they should modify the source-of-truth files in `data/review-texts/<showId>/`
+# and let the rebuild produce the aggregate. Any script that writes
+# reviews.json raw bypasses the rebuild's audit trail (rebuild-score-drift,
+# rebuild-regression, opening-night-completeness) and ships data quality
+# issues with no breadcrumb.
+#
+# This allowlist exists for the historical violators that pre-date this gate
+# (mostly one-off fix scripts from 2024-2025). New scripts cannot join this
+# list — the lint blocks them. Each existing entry should eventually be
+# migrated (modify source review-texts files + trigger rebuild) and removed
+# from the list.
+
+# === Canonical writer (the rebuild itself) ===
+rebuild-all-reviews.js -- canonical writer for data/reviews.json (the rebuild target itself)
+
+# === Legacy one-off fix scripts (pre-Spark-2 lint, 2026-04-29) ===
+# These scripts write reviews.json directly, usually as part of one-off
+# data quality fixes. Each entry should eventually be migrated to the pattern
+# "modify data/review-texts/<showId>/*.json + trigger rebuild." Tracked in
+# Notion: card 351637c5-416f-81f8-a8fd-c3e0570f1454.
+assign-scores-from-quotes.js -- legacy: realpath-resolved write target; assigns LLM-extracted scores from quote phrases
+dedupe-reviews-json.js -- legacy: dedupes reviews.json after old gather-reviews bug; should target review-texts instead
+fix-critic-misattribution.js -- legacy: cross-show attribution fix; should write to review-texts and re-rebuild
+fix-critical-errors.js -- legacy: emergency fix runner; review per-call to determine migration path
+fix-harry-potter.js -- legacy: one-off Harry Potter manual fix from 2024; remove the script outright once verified obsolete
+fix-remaining-dupes.js -- legacy: dedup helper from a prior cleanup pass; subset of dedupe-reviews-json.js's logic
+reconcile-scores.js -- legacy: reconciles scores against external source; should run via review-texts + rebuild
+tune-stereophonic.js -- legacy: one-off tuning script for Stereophonic 2024 reviews; verify obsolete and remove

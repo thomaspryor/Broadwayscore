@@ -1,0 +1,47 @@
+{
+ "city": "boston-ma",
+ "week": "2026-W47",
+ "today": "2026-11-17",
+ "findings": 3,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 2,
+  "4": 0,
+  "6": 1
+ },
+ "newFindings": 1,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "6": 1
+ },
+ "provenance": 0,
+ "newProvenance": 0,
+ "plan": null,
+ "card": "BRO-7682",
+ "findingKeys": [
+  "review:1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west:non-review:roundup",
+  "show:delirium-regional-2026:opening-date",
+  "show:rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "show:delirium-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "delirium-regional-2026",
+   "label": "Delirium",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-18",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

@@ -1,0 +1,69 @@
+{
+  "issueNumber": "bro-6803",
+  "planId": "e78abe49-55bb-46bf-aeb3-4677567b4146",
+  "status": "applied",
+  "createdAt": "2026-11-02T17:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Finish the BRO-6799 retirement of The Monkey King (San Francisco Opera). Its three review files are one NYT review (same URL) filed three times: two unscraped stubs and one complete text the ensemble rejected. One review cannot reach the 3-scored-review bar for an SFO premiere, so delete the files and retire the provisional row.",
+    "steps": [
+      "Delete the three NYT review files for the-monkey-king-off-broadway-2025 (all the same nytimes.com URL, none scored)",
+      "Retire the-monkey-king-off-broadway-2025 (The Monkey King)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-monkey-king-off-broadway-2025/nytimes--jesse-green.json",
+        "description": "Unscraped stub (no text) for the NYT Joshua Barone review URL, misattributed to Jesse Green; never scored."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-monkey-king-off-broadway-2025/nytimes--unknown.json",
+        "description": "Unscraped stub (no text) duplicating the same NYT review URL; never scored."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-monkey-king-off-broadway-2025/nytimes--joshua-barone.json",
+        "description": "Only real review for the run (NYT, 2025-11-17); rejected by the ensemble and unscored. One review is below the 3-scored-review bar, so it goes with the row."
+      },
+      {
+        "type": "retire-show",
+        "id": "the-monkey-king-off-broadway-2025",
+        "expectTitle": "The Monkey King",
+        "reason": "Closed SFO run with one NYT review (zero scored) after gather; below the 3-review-per-premiere bar (BRO-6782 follow-up, BRO-6799 retry)",
+        "description": "Retire The Monkey King (SFO)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T17:31:09.052Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--joshua-barone.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-monkey-king-off-broadway-2025 (\"The Monkey King\" @ War Memorial Opera House)"
+    }
+  ],
+  "executedIn": "ci"
+}

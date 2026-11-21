@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#000;">
+<head><!-- HEAD -->
+<base href="https://audiblexminetta.com/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Event Calendar | Audible's Minetta Lane Theatre</title>
+
+<!-- DEFAULT META -->
+<meta name="description" content="See a calendar of events at Audible's Minetta Lane Theatre">
+<meta name="author" content="SpotCo">
+
+<!-- FACBOOK META-->
+<meta property="og:title" content="Event Calendar | Audible's Minetta Lane Theatre">
+<meta property="og:description" content="See a calendar of events at Audible's Minetta Lane Theatre">
+<meta property="og:url" content="https://audiblexminetta.com/event-calendar">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Audible's Minetta Lane Theatre | Audible Theater | Official Site">
+<meta property="fb:admins" content="">
+
+<!-- TWITTER META -->
+<meta name="twitter:creator" content="@author_handle">
+<meta name="twitter:site" content="@publisher_handle">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- GOOGLE+ META -->
+<meta itemprop="name" content="Event Calendar | Audible's Minetta Lane Theatre">
+<meta itemprop="description" content="See a calendar of events at Audible's Minetta Lane Theatre">
+
+
+  
+<meta property="og:image" content="https://audiblexminetta.com/_img/share-facebook.jpg?v=2">
+<meta property="twitter:image" content="https://audiblexminetta.com/_img/share-twitter.jpg?v=2">
+<meta itemprop="image" content="https://audiblexminetta.com/_img/share-square.jpg?v=2">
+
+  <!-- FAVICON -->
+<link rel="shortcut icon" href="_img/favicon.png" type="image/x-icon">
+<!-- END FAVICON -->
+<!-- critical javascript and styles -->
+ <style>
+  .slick-slider:not(.slick-initialized) .slick-slide {
+    display: none;
+  }
+ </style>
+<script>
+var utils = {}; // Namespace for utility functions
+  utils.triggerEventOnce = function (eventName, callback) {
+    if (sessionStorage.getItem(eventName) !== 'triggered') {
+      callback();
+      sessionStorage.setItem(eventName, 'triggered');
+    }
+  }
+  utils.currentPage = function() {"use strict"
+    let curPage = window.location.pathname.substring(
+      window.location.pathname.lastIndexOf ('/') + 1
+      ).split("?")[0];
+    if(!curPage){ curPage = "home" }
+    return curPage
+  };
+  utils.isTouchEnabled = function () {"use strict";
+    return ( 'ontouchstart' in window ) ||
+      ( navigator.maxTouchPoints > 0 ) ||
+      ( navigator.msMaxTouchPoints > 0 );
+  }
+  if (utils.isTouchEnabled()) {
+    document.documentElement.classList.add('touch');
+  }
+  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+  /* modernizr - adds webp class if webp compatible */
+  /*! modernizr 3.6.0 (Custom Build) | MIT *
+  * https://modernizr.com/download/?-webp-setclasses !*/
+  !function(e,n,A){function o(e,n){return typeof e===n}function t(){var e,n,A,t,a,i,l;for(var f in r)if(r.hasOwnProperty(f)){if(e=[],n=r[f],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(A=0;A<n.options.aliases.length;A++)e.push(n.options.aliases[A].toLowerCase());for(t=o(n.fn,"function")?n.fn():n.fn,a=0;a<e.length;a++)i=e[a],l=i.split("."),1===l.length?Modernizr[l[0]]=t:(!Modernizr[l[0]]||Modernizr[l[0]]instanceof Boolean||(Modernizr[l[0]]=new Boolean(Modernizr[l[0]])),Modernizr[l[0]][l[1]]=t),s.push((t?"":"no-")+l.join("-"))}}function a(e){var n=u.className,A=Modernizr._config.classPrefix||"";if(c&&(n=n.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+A+"no-js(\\s|$)");n=n.replace(o,"$1"+A+"js$2")}Modernizr._config.enableClasses&&(n+=" "+A+e.join(" "+A),c?u.className.baseVal=n:u.className=n)}function i(e,n){if("object"==typeof e)for(var A in e)f(e,A)&&i(A,e[A]);else{e=e.toLowerCase();var o=e.split("."),t=Modernizr[o[0]];if(2==o.length&&(t=t[o[1]]),"undefined"!=typeof t)return Modernizr;n="function"==typeof n?n():n,1==o.length?Modernizr[o[0]]=n:(!Modernizr[o[0]]||Modernizr[o[0]]instanceof Boolean||(Modernizr[o[0]]=new Boolean(Modernizr[o[0]])),Modernizr[o[0]][o[1]]=n),a([(n&&0!=n?"":"no-")+o.join("-")]),Modernizr._trigger(e,n)}return Modernizr}var s=[],r=[],l={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var A=this;setTimeout(function(){n(A[e])},0)},addTest:function(e,n,A){r.push({name:e,fn:n,options:A})},addAsyncTest:function(e){r.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=l,Modernizr=new Modernizr;var f,u=n.documentElement,c="svg"===u.nodeName.toLowerCase();!function(){var e={}.hasOwnProperty;f=o(e,"undefined")||o(e.call,"undefined")?function(e,n){return n in e&&o(e.constructor.prototype[n],"undefined")}:function(n,A){return e.call(n,A)}}(),l._l={},l.on=function(e,n){this._l[e]||(this._l[e]=[]),this._l[e].push(n),Modernizr.hasOwnProperty(e)&&setTimeout(function(){Modernizr._trigger(e,Modernizr[e])},0)},l._trigger=function(e,n){if(this._l[e]){var A=this._l[e];setTimeout(function(){var e,o;for(e=0;e<A.length;e++)(o=A[e])(n)},0),delete this._l[e]}},Modernizr._q.push(function(){l.addTest=i}),Modernizr.addAsyncTest(function(){function e(e,n,A){function o(n){var o=n&&"load"===n.type?1==t.width:!1,a="webp"===e;i(e,a&&o?new Boolean(o):o),A&&A(n)}var t=new Image;t.onerror=o,t.onload=o,t.src=n}var n=[{uri:"data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=",name:"webp"},{uri:"data:image/webp;base64,UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAABBxAR/Q9ERP8DAABWUDggGAAAADABAJ0BKgEAAQADADQlpAADcAD++/1QAA==",name:"webp.alpha"},{uri:"data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA",name:"webp.animation"},{uri:"data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=",name:"webp.lossless"}],A=n.shift();e(A.name,A.uri,function(A){if(A&&"load"===A.type)for(var o=0;o<n.length;o++)e(n[o].name,n[o].uri)})}),t(),a(s),delete l.addTest,delete l.addAsyncTest;for(var p=0;p<Modernizr._q.length;p++)Modernizr._q[p]();e.Modernizr=Modernizr}(window,document);
+  // calendar
+  var Calendar = {}
+  var MobileSchedule = {};
+  Calendar.days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  Calendar.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  MobileSchedule.shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  MobileSchedule.shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+</script>
+<style>
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } /* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; }/* base.css */
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+html {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html, body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+@media screen and (min-width: 533px) {
+  html {
+    font-size: 17px
+  }
+}
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 18px
+  }
+}
+@media screen and (min-width: 1024px) {
+  html {
+    font-size: 19px
+  }
+}
+
+body {
+  text-align: center;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 1.625em; }
+h3 { font-size: 1.375em; }
+h4 { font-size: .9375em; }
+h5 { font-size: 1em; }
+h6 { font-size: 0.875em; }
+
+main p, main ul, main ol {
+  line-height: 1.625;
+  margin: 0 auto 1.625em;
+  letter-spacing: normal;
+}
+
+.info {
+  text-align: left;
+}
+
+.info h3 {
+  font-size: 1.375em;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: .25em;
+}
+
+.info h3 + p {
+  margin-top: 0;
+}
+
+.container:first-child {
+  margin-top: 0;
+}
+
+.container:last-child {
+  margin-bottom: 0;
+}
+
+p.mice-type {
+  font-size: .5em;
+  line-height: 1.2;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 900px;
+}
+
+blockquote {
+  font-size: 2em;
+  line-height: 1;
+}
+
+cite {
+  display: block;
+  font-synthesis-style: auto;
+  font-style: italic;
+  font-size:.8125em;
+}
+
+.anchor {
+  padding-top: 6.5em;
+  margin-top: -6.5em;
+}
+
+em, i { font-style: italic; font-synthesis: style; margin-right: .0625em; }
+
+strong, b { font-weight: bold; }
+
+sup { font-size:50%; vertical-align: revert; line-height: 0; }
+
+svg { max-width: 100%; pointer-events: none; vertical-align: middle; }
+
+img { outline: none; border: 0; vertical-align: middle; }
+
+input, textarea, keygen, select, button { font-family: inherit; font-size: inherit; letter-spacing: inherit; }
+
+button { background: transparent; border: 0; }
+
+a { text-decoration: none; }
+a:hover { text-decoration: none; }
+
+.caps { text-transform: uppercase; }
+.smallcaps { text-transform: uppercase; font-size: .75em;letter-spacing: .0375em; padding: 0 0.0625em; }
+.sc { font-size: .75em; }
+
+.hidden { display: none !important; }
+
+.abs-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%,-50%)
+}
+
+.flex-center {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rel-center {
+  position: relative;
+  top: 0; left: 50%;
+  width: 100%;
+  height: auto;
+  transform: translateX(-50%)
+}
+
+.video-container {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+} @media (min-width: 1200px){
+  .video-container {
+    width: 1200px;
+    height: 674px;
+    padding: 0;
+    margin: 0 auto;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+}
+.video-container iframe {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+}
+
+.container *:not(.anchor):first-child {
+  margin-top: 0;
+}
+.container *:last-child {
+  margin-bottom: 0;
+}
+
+.img-rollover { position: relative; display: inline-block; margin: 0 auto; }
+.img-rollover img { transition: all .2s; }
+.img-rollover > *:first-child { position: relative; width: 100%; height: 100%; opacity: 1; }
+.img-rollover > *:last-child { position: absolute;top:0;left:50%;transform: translateX(-50%);width:100%;height:100%; opacity: 0; }
+.img-rollover:hover > *:first-child { opacity: 0; }
+.img-rollover:hover > *:last-child { opacity: 1; }
+
+.accordion { transition: all .4s; }
+.accordion > li { border-top: 6px double #927132;  }
+.accordion > li.open { height:auto; }
+.accordion > li:last-child { border-bottom: 6px double #927132; }
+.accordion > li * { cursor: pointer; }
+.accordion > li > h2 { margin: .625em auto .5em; padding-right: 1.5em; position: relative; }
+.accordion > li > h2:after { content: ''; display: block; background-image: url("data:image/svg+xml,%3Csvg id='ArrowDown' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 432 235'%3E%3Cdefs%3E%3Cstyle%3E.b%7Bfill:%23ffffff;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='b' points='216 164 0 0 0 72 216 235 432 72 432 0 216 164'/%3E%3C/svg%3E"); background-size: 80%; background-repeat: no-repeat; background-position: center; height: 1.5em; width:1em; position: absolute; top: -.375em; right: .375em; padding: .5em; }
+.accordion > li.open h2:after { transform: rotate(180deg); transition: transform .3s; }
+.accordion > li > *:not(h2) { margin: 0; opacity:0; height: 0; transition: margin .6s, height .6s; pointer-events: none; }
+.accordion > li.open > *:not(h2) { display: block; opacity:1; height:auto; margin: 1em auto; transition: margin .6s, height .6s, opacity .6s; pointer-events: none; }
+.accordion > li.open > * a { pointer-events: all; }
+
+.open-container.open .hidden-open,
+.open-container:not(.open) .visible-open {
+  display: none;
+}
+
+.rotate-left { transform: rotate(-1.5deg); }
+.rotate-right { transform: rotate(1.5deg); }
+
+.nowrap { white-space: nowrap; }
+.ib { display: inline-block; }
+.lc { text-transform: lowercase; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.container {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1.5em;
+  pointer-events: none;
+  z-index: 1;
+}
+.container > * {
+  pointer-events: all;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.flex .col-full {
+  flex: 0 0 100%;
+}
+.flex .col-1-2 {
+  flex: 0 0 calc(50% - 1em);
+}
+.flex .col-1-3 {
+  flex: 0 0 calc(33.333% - 1em);
+}
+.flex .col-1-4 {
+  flex: 0 0 calc(25% - 1em);
+}
+.flex .col-2-3 {
+  flex: 0 0 calc(66.666% - 1em);
+}
+.flex .col-2-4 {
+  flex: 0 0 calc(50% - 1em);
+}
+.flex .col-1-5 {
+  flex: 0 0 calc(20% - 1em);
+}
+.flex .col-2-5 {
+  flex: 0 0 calc(40% - 1em);
+}
+.flex .col-3-5 {
+  flex: 0 0 calc(60% - 1em);
+}
+.flex .col-3-4 {
+  flex: 0 0 calc(75% - 1em);
+}
+@media (max-width: 767px) {
+  .flex > div {
+    flex: 0 0 100% !important;
+  }
+}
+.w100 { width: 100%; height: auto; }
+.h100 { height: 100%; width: auto; }
+
+small, .small { display: block; font-size: .8em; margin-top: .2em; }
+
+@media only screen {
+  .screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+  }
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  opacity: .375;
+}
+
+iframe#mediaplxpxl { opacity: 0; }
+
+@-ms-viewport {
+  width: device-width;
+}
+@media screen and (max-width: 400px) {
+  @-ms-viewport {
+    width: 320px;
+  }
+}
+@media (min-width: 533px) {
+  .visible-xs {
+    display: none!important;
+  }
+}
+@media (max-width: 532px) {
+  .hidden-xs {
+    display: none!important;
+  }
+}
+@media (min-width: 768px) {
+  .visible-mobile {
+    display: none!important;
+  }
+}
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none!important;
+  }
+}
+@media (min-width: 1024px) {
+  .visible-tablet {
+    display: none!important;
+  }
+}
+@media (max-width: 1023px) {
+  .hidden-tablet {
+    display: none!important;
+  }
+}
+@media (min-width: 1240px) {
+  .hidden-desktop {
+    display: none!important;
+  }
+}
+@media (max-width: 1239px) {
+  .visible-desktop {
+    display: none!important;
+  }
+}
+
+.w-full {
+  width: 100%;
+}/* overlay.css */
+
+.overlay {
+  z-index: 2147483649!important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  background-color: #000000;
+  transition: transform .6s ease-out;
+  transform: translateX(-140%);
+}
+.exit-popup-open .overlay,
+.overlay-open .overlay {
+  transition: transform .4s ease-out;
+  transform: translateX(0);
+}
+html.exit-popup-open,
+html.overlay-open {
+  overflow:hidden;
+}
+.overlay nav {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 100%;
+  height: 100vh;
+  width: 54em;
+  margin: 0 auto;
+  z-index: 2;
+  pointer-events: none;
+}
+.home .overlay nav {
+  width: 100vw;
+}
+.overlay nav button,
+.overlay form {
+  pointer-events: all;
+}
+.overlay .container {
+  padding: 0;
+}
+.overlay .box {
+  margin: 0 auto;
+  max-width: 600px;
+  position: relative;
+  padding-top: 1.5em;
+}
+
+.scroll-window {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.overlay-inner {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: block;
+  z-index: 1;
+  padding: 5em 3em;
+  pointer-events: none;
+}
+#overlay.interstitial #overlay-inner {
+  height: 50vh;
+}
+
+.overlay button {
+  position: absolute;
+  display: block;
+  width: 1.875em;
+  height: auto;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.overlay button svg * {
+  fill: #ffa000;
+  transition: all .3s;
+}
+.overlay button:hover svg * {
+  fill: #ffffff;
+}
+.overlay button:hover img {
+  transform: scale(1.125);
+}
+.overlay button.close {
+  width: 1.3125em;
+  font-size: calc(1em + 1vh);
+  top: .625em;
+  right: .875em;
+  pointer-events: all;
+  right: .875em;
+}
+#mc-overlay button.close {
+  position: fixed;
+}
+
+.overlay button.next,
+.overlay button.prev {
+  top: 50%; transform: translateY(-50%);
+}
+.overlay button.next {
+  right: .875em;
+}
+.overlay button.prev {
+  left: .875em;
+}
+.overlay button.next:hover,
+.overlay button.prev:hover {
+  color: #d10000;
+}
+
+@media (max-width: 767px) {
+  .overlay button.next {
+    right: 2%;
+  }
+  .overlay button.prev {
+    left: 2%;
+  }
+}/* fonts.css */
+
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-Rg.woff2') format('woff2'),
+      url('_fonts/AudibleSans-Rg.woff') format('woff');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-Md.woff2') format('woff2'),
+      url('_fonts/AudibleSans-Md.woff') format('woff');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-Bd.woff2') format('woff2'),
+      url('_fonts/AudibleSans-Bd.woff') format('woff');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-Bl.woff2') format('woff2'),
+      url('_fonts/AudibleSans-Bl.woff') format('woff');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-Ul.woff2') format('woff2'),
+      url('_fonts/AudibleSans-Ul.woff') format('woff');
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-RgIt.woff2') format('woff2'),
+      url('_fonts/AudibleSans-RgIt.woff') format('woff');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-MdIt.woff2') format('woff2'),
+      url('_fonts/AudibleSans-MdIt.woff') format('woff');
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-BdIt.woff2') format('woff2'),
+      url('_fonts/AudibleSans-BdIt.woff') format('woff');
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-BlIt.woff2') format('woff2'),
+      url('_fonts/AudibleSans-BlIt.woff') format('woff');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Audible Sans';
+  src: url('_fonts/AudibleSans-UlIt.woff2') format('woff2'),
+      url('_fonts/AudibleSans-UlIt.woff') format('woff');
+  font-weight: 800; font-style: italic; font-display: swap;
+}/* typography.css */
+
+html {
+  font-family: 'Audible Sans', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1;
+  font-synthesis: none;
+  font-smooth: antialiased;
+  -webkit-font-smoothing: antialiased;
+  transition: font-size .2s ease-in-out;
+}
+@media (max-width:599px) {
+  #content section {
+  }
+}
+@media (min-width:1024px) {
+  html {
+    font-size: 18px;
+  }
+}
+@media (min-width:2200px) {
+  html {
+    font-size: 19px;
+  }
+}
+@media (min-width:2400px) {
+  body:not(.backpage) #content > * {
+    font-size: 20px;
+  }
+  #header, #footer  {
+    font-size: 19px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6, a.showlink, #upcoming .time {
+  font-family: termina, sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 800;
+  margin: 0 auto;
+}
+
+.btn {
+  font-family: termina, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+h1, h2, h3 {
+  font-size: 1.625em;
+  line-height: 1;
+  font-weight: bold;
+}
+
+h1 { font-size: 3em; margin: 2em auto; }
+h2, h1#title { font-size: 1.625em; }
+h3 { font-size: 1.25em; }
+h4 { font-size: .9375em; }
+h5 { font-size: 1em; }
+h6 { font-size: .875em; }
+
+h3 a.btn {
+  font-size: 1.25em;
+  line-height: .85;
+  margin: 0 .5em;
+  font-weight: 700;
+}
+
+h2 .alt {
+  margin-bottom: .175em;
+  font-weight: 900;
+  font-style: italic;
+}
+
+p{
+  text-transform: none;
+  line-height: 1.75em;
+}
+
+main p, main ul {
+  text-transform: none;
+  margin: 0 auto 1.375em;
+  line-height: 1.375em;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+em, i {
+  font-style: italic;
+}
+
+.mice-type {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2em;
+  font-size: .65rem;
+  line-height: 1.1;
+}/* colors.css */
+
+html {
+  background-color: #ffa000;
+  color: #000;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+body.home #content section {
+  position: relative;
+}
+body:not(.home) #outerwrapper,
+body.home #content section:after {
+  background-image: url(./_img/bg.jpg);
+  background-size: cover;
+  background-color: #000;
+  color: #fff;
+  background-attachment: fixed;
+}
+.webp body:not(.home) #outerwrapper,
+.webp body.home #content section:after {
+  background-image: url(./_img/bg.webp);
+}
+body.home #content section:after {
+  content: '';
+  position: fixed; top: 0; left: 50%; width: 100vw; height: calc(100% + 20em); transform: translateX(-50%);
+  pointer-events:none;
+  z-index:-1;
+}
+
+.bg-texture {
+  background-color: #000;
+  color: #fff;
+}
+
+#footer {
+  color: #fff;
+}
+#footer a:not(.btn) {
+  color: #fff;
+}
+#footer a:hover:not(.btn) {
+  color: #ffa000;
+}
+
+#nav {
+  background-color: #ffa000;
+  color: #000;
+}</style><link rel="stylesheet" href="https://use.typekit.net/rvv6gdf.css">
+<link rel="stylesheet" type="text/css" href="./_js/_slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="./_js/_slick/slick-theme.css"/>
+<style type="text/css">
+  #mc_embed_signup{ clear:left; }
+</style>
+<link href="./_css/themes.css?v=1.155" type="text/css" rel="stylesheet">
+<link href="./_css/core.css?v=1.155" type="text/css" rel="stylesheet">
+<link href="_css/signup.css?v=1.155" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="_css/calendar.css?v=1.155" rel="stylesheet" media="print" onload="this.media='all'">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WJTT39WL');</script>
+<!-- End Google Tag Manager -->
+<!-- END HEAD -->
+</head>
+
+<body class="event-calendar full  blank " data-show="blank">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJTT39WL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<!-- OUTERWRAPPER array(2) {
+  [0]=>
+  string(0) ""
+  [1]=>
+  string(14) "event-calendar"
+}
+event-calendar -->
+<div id="outerwrapper" onclick="void(0);">
+<!-- HEADER -->
+<header id="header">
+  <div class="container">
+    <div id="header-logo" style="text-align: left;padding: .25rem 0 .25rem .5rem;cursor:default;display:inline-block;"> <a href="./" style="display:block;"><strong style="font-family: termina;
+    color: #bf49a2;
+    font-size: 1.3125em;
+    pointer-events:none;"><span class="white">Audible&rsquo;s</span><br> Minetta&nbsp;Lane<br> Theatre</strong></a></div>
+    
+
+  <div id="audible" style="text-align:right">
+    <a href="./signup" class="btn btn-primary" style="font-size:1em;padding: .25em .4375em .125em;margin: .5em;">Sign Up</a><br>
+    <a href="https://www.audible.com/theater" target="_blank"><img src="_img/audible-theater.png" class="w100" style="height: 2.25em;width: auto;"></a>
+  </div>
+    </div>
+  <!-- NAV -->
+<nav id="nav">
+  <div class="container" style="display:block">
+    <a id="nav-home" href="./">Home</a>
+    <a id="nav-event-calendar" href="./event-calendar">Event Calendar</a>
+      </div>
+</nav>
+<!-- END NAV --></header>
+<!-- END HEADER -->
+<!-- PAGE CONTENT -->
+<main id="content">
+  <section id="event-calendar">
+  <style>
+    #event-calendar #calendar {
+    }
+  </style>
+  <div class="container">
+  <div id="calendar" class="cal">
+  <style>
+    a.creditors {
+      color: #99a6f6;
+    }
+    a.creditors:hover {
+      background-color: #99a6f6;
+    }
+    a.readings {
+      color: #78c659;
+    }
+    a.readings:hover {
+      background-color: #78c659;
+    }
+    a.energy-curfew-music-hour:hover {
+      background-color: #99f6f3;
+    }
+    a.energy-curfew-music-hour {
+      color: #36c2ba;
+    }
+    .the-pansy-craze p strong,
+    a.the-pansy-craze {
+      color: #f78bf5;
+    }
+    a.the-pansy-craze:hover {
+      background-color: #f78bf5;
+    }
+    .the-laramie-project p strong,
+    a.the-laramie-project {
+      color: #5d99ff;
+    }
+    a.the-laramie-project:hover {
+      background-color: #5d99ff;
+    }
+    .the-disappear p strong,
+    a.the-disappear {
+      color: #e797bd;
+    }
+    a.the-disappear:hover {
+      background-color: #e797bd;
+    }
+    .what-else-what-else p strong {
+      color: #53bbc0;
+    }
+    .patton-oswalt p strong,
+    a.patton-oswalt {
+      color: #40f21b;
+    }
+    a.patton-oswalt:hover {
+      background-color: #40f21b;
+    }
+    .devon-franklin p strong,
+    a.devon-franklin {
+      color: #f49287;
+    }
+    a.devon-franklin:hover {
+      background-color: #f49287;
+    }
+    .mexodus p strong,
+    a.mexodus {
+      color: #f00;
+    }
+    a.mexodus:hover {
+      background-color: #f00;
+    }
+    @media (max-width: 767px) {
+      .disclaimer {
+        text-align: center;
+      }
+    }
+  </style>
+  <div id="selected-date" style="color:#ffa000;font-weight:800;"></div>
+  <div id="cal" class="calendar cf">
+    <!-- <img src="_img/preload.gif" class="preload" style="top:-4em;"> -->
+  </div>
+  <style>
+  .legend {
+    position: relative;
+    text-align: left;
+    width: calc(100% - .5em);
+    text-transform: uppercase;
+    margin: .375em auto;
+    min-height: 2.875em;
+    font-size: .8125em;
+    width: 100%;
+    max-width: 38em;
+    display: none;
+  }
+  @media (min-width:768px) {
+    .legend {
+      max-width: 64em;
+    }
+  }
+
+  [data-show="blank"] .legend {
+    display: block;
+  }
+  
+  #upcoming .legend {
+    max-width: 100%;
+  }
+  .event-calendar .legend {
+    margin-bottom: 0;
+  }
+
+  .legend:has(~ .calendar-events) {
+    padding-bottom: 1em;
+  }
+
+  @media (min-width: 768px) {
+    .legend:has(~ .calendar-events) {
+      padding-bottom: .5em;
+    }
+  }
+  
+  .legend li {
+    display: inline-block;
+    line-height: 1;
+    margin: .5em;
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+  .legend li:not(.active) a {
+    pointer-events: none!important;
+  }
+  .legend li.active a {
+    pointer-events: all!important;
+  }
+  .legend li.active {
+    position: relative;
+    width: auto;
+    opacity: 1;
+    pointer-events: all;
+    transition: opacity .5s ease-in-out;
+  }
+  .legend li span {
+    font-weight: 700;
+    vertical-align: middle;
+    margin-top: .25em;
+  }
+  .legend-link {
+    min-height: 2em;
+    display: inline-block;
+    color: var(--clr-legend, var(--clr-show-theme));
+  }
+  
+  li.energy-curfew-music-hour a {
+    color: #36c2ba;
+  }
+  li.the-pansy-craze a {
+    color: #f78bf5;
+  }
+
+  li.patton-oswalt a {
+    color: #40f21b;
+  }
+  li.devon-franklin a {
+    color: #f49287;
+  }
+  li.mexodus a {
+    color: #f00;
+  }
+  li a:hover {
+    color: #fff;
+  }
+  li.sold-out {
+    float: right;
+    margin-left: 3em;
+    color: white;
+    width: auto;
+    font-size: .75em;
+  }
+  li.info {
+    float: right;
+    margin-left: 3em;
+    width: auto;
+    font-size: .75em;
+  }
+  .legend li.sold-out span.sold-out-icon {
+    display: inline-block;
+    width: .5em;
+    height: 1em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+  }
+  .sold-out-icon:after {
+    color: #fff;
+    font-size: 1.25em;
+    left: -.875em;
+    top: .625em;
+  }
+  ul.legend li.info a {
+    pointer-events: none!important;
+  }
+
+  .audible-x-together .legend {
+    padding-bottom: 4em;
+  }
+</style>
+<ul class="legend">
+  <li class="info"><a><span style="font-size: 1.75em">*</span> <span class="ib">POST-SHOW PANEL TO FOLLOW</span></a></li>
+  <li class="sold-out"><span class="sold-out-icon"></span> Tickets available<br> at box office or<br> Today Tix only</li>
+    <!-- <li class="what-happened-was" data-show="what-happened-was"><a href="./shows/what-happened-was" class="legend-link"><span style="font-size: 1.75em">&#x2B24;</span> <span class="ib">What Happened Was...</span></a></li>
+  <li class="new-born" data-show="new-born"><a href="./shows/new-born" class="legend-link"><span style="font-size: 1.75em">&#x2B24;</span> <span class="ib">New Born</span></a></li> -->
+  <li class="gloria-steinem" data-show="gloria-steinem"><a href="./shows/gloria-steinem" class="legend-link"><span style="font-size: 1.75em">&#x2B24;</span> <span class="ib">Gloria Steinem</span></a></li>
+  <li class="what-else-what-else" data-show="what-else-what-else"><a href="./shows/what-else-what-else" class="legend-link"><span style="font-size: 1.75em">&#x2B24;</span> <span class="ib">What Else What Else</span></a></li>
+  <li class="maria-bamford" data-show="maria-bamford"><a href="./shows/maria-bamford" class="legend-link"><span style="font-size: 1.75em">&#x2B24;</span> <span class="ib">Maria Bamford</span></a></li>
+</ul>    </div>
+</section></main>
+<!-- END PAGE CONTENT -->
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+     
+    <h3 style="margin-bottom: .5em;">FOLLOW US</h3>
+    <div class="social">
+  <div class="facebook icon"><a id="social-facebook" href="https://www.facebook.com/AudibleTheater" target="_blank" aria-label="Facebook"><svg id="icon-facebook" height="1792" viewBox="0 0 1792 1792" width="1792" xmlns="http://www.w3.org/2000/svg"><path d="m1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z" fill="#fff"/></svg></a></div>
+  <div class="twitter icon"><a id="social-twitter" href="https://x.com/AudibleTheater" target="_blank" aria-label="Twitter" style="padding-right: 0.25em;
+    margin-right: -0.1em;
+    height: 1.7em;
+    top: -.05em;
+    position: relative;"><svg id="icon-twitter" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 482.67 436.29" style="padding:.125em;"><defs><style>.cls-1 {fill: #ffffff;}</style></defs><path class="cls-1" d="m354.15,391.99h41.01L130.44,41.97h-44.01l267.72,350.02ZM380.13,0h74.01l-161.7,184.81,190.22,251.48h-148.94l-116.66-152.52-133.48,152.52H9.53l172.95-197.67L0,0h152.72l105.45,139.41L380.13,0Z"/></svg></a></div>
+  <div class="instagram icon"><a id="social-instagram" href="https://www.instagram.com/audibletheater" target="_blank" aria-label="Instagram"><svg id="icon-instagram" height="1792" viewBox="0 0 1792 1792" width="1792" xmlns="http://www.w3.org/2000/svg"><path d="m1152 896q0-106-75-181t-181-75-181 75-75 181 75 181 181 75 181-75 75-181zm138 0q0 164-115 279t-279 115-279-115-115-279 115-279 279-115 279 115 115 279zm108-410q0 38-27 65t-65 27-65-27-27-65 27-65 65-27 65 27 27 65zm-502-220q-7 0-76.5-.5t-105.5 0-96.5 3-103 10-71.5 18.5q-50 20-88 58t-58 88q-11 29-18.5 71.5t-10 103-3 96.5 0 105.5.5 76.5-.5 76.5 0 105.5 3 96.5 10 103 18.5 71.5q20 50 58 88t88 58q29 11 71.5 18.5t103 10 96.5 3 105.5 0 76.5-.5 76.5.5 105.5 0 96.5-3 103-10 71.5-18.5q50-20 88-58t58-88q11-29 18.5-71.5t10-103 3-96.5 0-105.5-.5-76.5.5-76.5 0-105.5-3-96.5-10-103-18.5-71.5q-20-50-58-88t-88-58q-29-11-71.5-18.5t-103-10-96.5-3-105.5 0-76.5.5zm768 630q0 229-5 317-10 208-124 322t-322 124q-88 5-317 5t-317-5q-208-10-322-124t-124-322q-5-88-5-317t5-317q10-208 124-322t322-124q88-5 317-5t317 5q208 10 322 124t124 322q5 88 5 317z" fill="#fff"/></svg></a></div></div>  </div>
+
+  <div id="footer-address" class="footer-address">
+    <a href="https://goo.gl/maps/fHZGLVv3yPccVT7D9" target="_blank" style="font-size: .875em;display:block;">
+      <strong style="font-family: termina;
+      color: #bf49a2;
+      font-size: 1.75em;
+      line-height: .9;
+      pointer-events:none;"><span class="white">Audible&rsquo;s</span><br> Minetta&nbsp;Lane Theatre</strong>
+      <span style="display: block;margin-top:.25em;">18 Minetta Lane &bull; Between 6th Ave <span class="ib">&amp; MacDougal St</span></span>
+    </a>
+  </div>
+  <div class="box-office-hours">
+    <h3 class="box-office-heading">Box Office Hours</h3>
+    <p>
+      Tuesdays–Fridays: 12–6pm<br />
+      Show Days: 12pm–Through Curtain
+    </p>
+  </div>
+
+  <div id="footer-copyright">&copy; 2026 Audible Theater | <a id="btn-privacy" href="./privacy" onclick="ga('send', 'event', 'site event', 'footer click', 'Privacy Policy');">Privacy Policy</a><br>
+Designed, built, and managed by <a href="https://www.spotnyc.com/" target="_blank">SpotCo</a></div>
+    <div class="mice-type">
+      By entering Audible’s Minetta Lane Theatre you consent to being photographed, recorded, and/or televised by means of a tape, audio, or video recording that may be used at a later date. To the fullest extent allowed by law, you hereby release AO Media, LLC (“Producer”) and its affiliates of any liability for any loss, damage, or injury to person or property during or in connection with such filming or photography. You also hereby grant Producer, its successors or assigns the right to use and to permit others to use your name, voice and likeness and all or any part of the photographs and/or recordings of any type made of your appearance by Producer in all media worldwide in perpetuity. If you are under 18, you promise that you have obtained your parent’s or legal guardian's permission before entering these premises and agreeing to the above terms.</div>
+
+</footer>
+
+<div id="gallery-overlay">
+  <div id="gallery-overlay-inner"></div>
+</div>
+<!-- END FOOTER -->
+</div>
+<!-- END OUTERWRAPPER -->
+<!-- SCRIPTS -->
+<script src="https://spotcointeractive.com/cdn/websites/global/_js/LAB.min.js"></script>
+<script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+<script>
+   $LAB
+   .script('https://code.jquery.com/jquery-latest.js').wait()
+   .script('https://spotcointeractive.com/cdn/websites/global/_js/ie10-viewport-bug-workaround.js')
+   .script('https://spotcointeractive.com/cdn/websites/global/_js/jquery.validate.min.js')
+    .script("https://audiblexminetta.com/_js/_slick/slick.js").wait()
+     //  .script("https://audiblexminetta.com/_js/calendar.js?v=1.155").wait()
+      .script("https://audiblexminetta.com/_js/core.js?v=1.155").wait()
+   .wait(function(){
+      console.log('JS CODE/LIB LOADED!!!!');
+      const script = document.createElement("script");
+        script.type = "module";
+        script.src = "https://audiblexminetta.com/_js/calendar.js?v=1.155";
+
+        document.head.appendChild(script);
+   }); 
+</script><!-- END SCRIPTS -->
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+  <script>
+  window.addEventListener("load", function(){
+  window.cookieconsent.initialise({
+    "palette": {
+      "popup": {
+        "background": "#faf000",
+        "color": "#024357"
+      },
+      "button": {
+        "background": "#000000",
+        "text": "#ffffff"
+      }
+    },
+    "content": {
+      "message": "We use cookies to help make this website better. For more information on cookies and how we use them, please see our Cookies Policy. Otherwise, we’ll assume you’re OK to continue.",
+      "dismiss": "I am fine with this",
+      "href": "./cookies"
+    }
+  })});
+  </script></body>
+</html>

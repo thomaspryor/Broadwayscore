@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5386-b",
+  "planId": "ced317a2-0184-4199-8e12-7396f0922d94",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5386 (b): clear the stale non-review verdict on The Stage RSC As You Like It review so it shows on the RSC page.",
+    "steps": [
+      "clear isNonReview",
+      "stamp nonReviewManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5386: The Stage review of the RSC production (Dave Fargnoli, 2026-10-07, 4/5 stars, 3,465 chars of full text, url is the real thestage.co.uk review) carries a stale CV non-review verdict (\"CV-promoted (not a review)\", rejectionReason not_a_review) left over from when its url was a Playbill Verdict page. It is a genuine review, so it was missing from the RSC page while a copy sat on the Globe page. Clears isNonReview."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5386: The Stage review of the RSC production (Dave Fargnoli, 2026-10-07, 4/5 stars, 3,465 chars of full text, url is the real thestage.co.uk review) carries a stale CV non-review verdict (\"CV-promoted (not a review)\", rejectionReason not_a_review) left over from when its url was a Playbill Verdict page. It is a genuine review, so it was missing from the RSC page while a copy sat on the Globe page. Stamps the manual-clear breadcrumb so the classifier does not re-flag it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T07:23:29.070Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json nonReviewManualClear: null -> true"
+    }
+  ]
+}

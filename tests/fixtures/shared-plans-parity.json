@@ -1,0 +1,108 @@
+{
+  "description": "Shared Plans bucket rules (BRO-4481, docs/specs/shared-plans.md §2.2). One source of truth for three implementations: the get_shared_plans() SQL (tests/sql/plan-shares.test.sql), web selectSharedPlans (src/lib/shared-plans/select.ts) and the iOS port (lib/shared-plans-select.ts). Dates are DAY OFFSETS, not absolute dates, so the SQL test can anchor them to current_date and the JS tests to the venue-local date of `now`. Offsets are relative to the show's VENUE date at `now` (category -> zone via src/lib/calendar/timezone.ts; unmapped categories fall back to America/New_York).",
+  "fields": {
+    "now": "ISO instant the JS tests treat as now (defaults.now when absent)",
+    "show": "{ id, category, status } as the resolver would return it",
+    "plannedOffset": "watchlist.planned_date as days from venue-local today; null = no date",
+    "reviews": "[{ seenOffset }] — seenOffset null = undated review (diary import)",
+    "expected": "final bucket: booked | unbooked | excluded",
+    "sqlIncluded": "true when get_shared_plans() must return the row (the client then decides); false when it must never leave the database",
+    "sqlLogged": "expected value of the row's `logged` flag when sqlIncluded"
+  },
+  "defaults": { "now": "2026-10-10T16:00:00Z" },
+  "cases": [
+    {
+      "name": "future date is booked",
+      "show": { "id": "fixture-future", "category": "broadway", "status": "open" },
+      "plannedOffset": 8, "reviews": [],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "today is booked",
+      "show": { "id": "fixture-today", "category": "broadway", "status": "open" },
+      "plannedOffset": 0, "reviews": [],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "no date is want-to-see",
+      "show": { "id": "fixture-undated", "category": "broadway", "status": "open" },
+      "plannedOffset": null, "reviews": [],
+      "expected": "unbooked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "past date not yet logged stays private (to-be-rated)",
+      "show": { "id": "fixture-past-unlogged", "category": "broadway", "status": "open" },
+      "plannedOffset": -10, "reviews": [],
+      "expected": "excluded", "sqlIncluded": false
+    },
+    {
+      "name": "yesterday not logged: database returns it (timezone slack), client excludes it",
+      "show": { "id": "fixture-yesterday", "category": "broadway", "status": "open" },
+      "plannedOffset": -1, "reviews": [],
+      "expected": "excluded", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "two days ago, not logged: last day of the database's slack window",
+      "show": { "id": "fixture-two-days-ago", "category": "broadway", "status": "open" },
+      "plannedOffset": -2, "reviews": [],
+      "expected": "excluded", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "three days ago, not logged: outside the slack, never leaves the database",
+      "show": { "id": "fixture-three-days-ago", "category": "broadway", "status": "open" },
+      "plannedOffset": -3, "reviews": [],
+      "expected": "excluded", "sqlIncluded": false
+    },
+    {
+      "name": "past date logged on the planned day is want-to-see (app's not-booked rule)",
+      "show": { "id": "fixture-past-logged", "category": "broadway", "status": "open" },
+      "plannedOffset": -10, "reviews": [{ "seenOffset": -10 }],
+      "expected": "unbooked", "sqlIncluded": true, "sqlLogged": true
+    },
+    {
+      "name": "past date with only an older review is still unlogged",
+      "show": { "id": "fixture-past-older-review", "category": "broadway", "status": "open" },
+      "plannedOffset": -10, "reviews": [{ "seenOffset": -40 }],
+      "expected": "excluded", "sqlIncluded": false
+    },
+    {
+      "name": "undated review (diary import) counts as logged for a past date",
+      "show": { "id": "fixture-past-undated-review", "category": "broadway", "status": "open" },
+      "plannedOffset": -10, "reviews": [{ "seenOffset": null }],
+      "expected": "unbooked", "sqlIncluded": true, "sqlLogged": true
+    },
+    {
+      "name": "re-booked after an earlier viewing is booked",
+      "show": { "id": "fixture-rebooked", "category": "broadway", "status": "open" },
+      "plannedOffset": 5, "reviews": [{ "seenOffset": -100 }],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "closed show with no date is left out (client-side rule)",
+      "show": { "id": "fixture-closed", "category": "broadway", "status": "closed" },
+      "plannedOffset": null, "reviews": [],
+      "expected": "excluded", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "tonight's NYC show viewed late at night from Tokyo is still booked",
+      "now": "2026-10-11T03:30:00Z",
+      "show": { "id": "fixture-ny-late", "category": "broadway", "status": "open" },
+      "plannedOffset": 0, "reviews": [],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "West End show on the UK clock-change night is booked for the London date",
+      "now": "2026-10-25T00:30:00Z",
+      "show": { "id": "fixture-we-dst", "category": "west-end", "status": "open" },
+      "plannedOffset": 0, "reviews": [],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    },
+    {
+      "name": "unmapped category falls back to New York for 'today'",
+      "now": "2026-10-11T02:00:00Z",
+      "show": { "id": "fixture-regional", "category": "regional", "status": "open" },
+      "plannedOffset": 0, "reviews": [],
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
+    }
+  ]
+}

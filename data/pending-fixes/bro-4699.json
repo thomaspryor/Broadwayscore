@@ -1,0 +1,36 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-4699",
+  "planId": "9c21d511-ca88-40b9-9711-3fd4448aca6d",
+  "createdAt": "2026-10-12T13:35:31Z",
+  "plan": {
+    "summary": "Record Pied à Terre's closing date (already status closed, closingDate missing)",
+    "steps": [
+      "Set closingDate 2026-08-25 on pied-a-terre-off-broadway-2026 from two independent sources that agree"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pied-a-terre-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-25",
+        "description": "TDF Show Finder (https://www.tdf.org/shows/23077/pied-a-terre): \"Closing Date: Aug 25, 2026\"; TheaterScene review header (https://www.theaterscene.net/plays/offbway-plays/pied-a-terre/victor-gluck/, posted 2026-07-12): \"Pied À Terre (through August 25, 2026)\". Older listings (Playbill Apr 29, BWW Jun 24, Broadway.com inventory to Jul 29) predate the extensions. TodayTix dropped it after 2026-09-14."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:14:47.290Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for pied-a-terre-off-broadway-2026"
+    }
+  ]
+}

@@ -1,0 +1,906 @@
+{
+  "generatedAt": "2026-05-18T03:58:32.025Z",
+  "generatorScript": "one-shot — see plan task S3-T2",
+  "totalSamples": 95,
+  "composition": {
+    "known-bad": 11,
+    "same-title-sibling": 47,
+    "west-end": 10,
+    "general": 27
+  },
+  "decisionDistribution": {
+    "reroute": 15,
+    "reject": 3,
+    "accept": 77
+  },
+  "samples": [
+    {
+      "showId": "death-of-a-salesman-2026",
+      "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+      "outletId": "latimes",
+      "publishDate": "March 15, 2012",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "death-of-a-salesman-2012",
+        "reason": "sibling opening 0d from publishDate vs current 5138d"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-1984",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-glengarry-glen-ross-2-5-stars-1.4312143",
+      "outletId": "amny",
+      "publishDate": "December 9, 2012",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "glengarry-glen-ross-2012",
+        "reason": "sibling opening 1d from publishDate vs current 10486d"
+      }
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/",
+      "outletId": "variety",
+      "publishDate": "2018-11-15",
+      "decision": {
+        "action": "reject",
+        "reason": "cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i"
+      }
+    },
+    {
+      "showId": "lend-me-a-tenor-1989",
+      "url": "http://www.google.com/hostednews/ap/article/ALeqM5gRuqi4htnnCPD0wgmC3WFDiiuxOAD9ESHPUO0",
+      "outletId": "ap",
+      "publishDate": "April 4, 2010",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "lend-me-a-tenor-2010",
+        "reason": "sibling opening 0d from publishDate vs current 7703d"
+      }
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "url": "https://www.attitude.co.uk/culture/mamma-mia-london-best-west-end-musical-504274/",
+      "outletId": "attitude",
+      "publishDate": "2025-12-05",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
+      "outletId": "telegraph",
+      "publishDate": "2026-01-15",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "oh-mary-2024",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
+      "outletId": "broadwayworld",
+      "publishDate": "2025-12-19",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "oh-mary-west-end-2025",
+        "reason": "sibling opening 1d from publishDate vs current 526d"
+      }
+    },
+    {
+      "showId": "oh-mary-2024",
+      "url": "https://1minutecritic.com/oh-mary-broadway-review/",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-01-19",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "url": "https://www.westendtheatre.com/335071/news/reviews/american-psycho-reviews-2026/",
+      "outletId": "timeout",
+      "publishDate": "March 20, 2025",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "operation-mincemeat-2025",
+        "reason": "sibling opening 0d from publishDate vs current 681d"
+      }
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-land-of-the-living-review-national-theatre/",
+      "outletId": "telegraph",
+      "publishDate": "2025-09-19",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-price-2017",
+      "url": "https://www.womanaroundtown.com/sections/playing-around/arthur-millers-the-price-pithy-and-well-manifest",
+      "outletId": "woman-around-town",
+      "publishDate": "2026-03-31",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "the-price-off-west-end-2026",
+        "reason": "sibling opening 23d from publishDate vs current 3302d"
+      }
+    },
+    {
+      "showId": "titanique-2026",
+      "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/",
+      "outletId": "amny",
+      "publishDate": "2026-04-12",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "titanique-2026",
+      "url": "https://www.billboard.com/music/pop/deborah-cox-celine-dion-titanique-broadway-1236216320/",
+      "outletId": "billboard",
+      "publishDate": "2026-04-07",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "url": "https://www.allthatdazzles.co.uk/post/review-titanique-criterion-theatre",
+      "outletId": "all-that-dazzles-uk",
+      "publishDate": "2025-01-10",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "url": "https://theartsdesk.com/theatre/titanique-criterion-theatre-review-musical-parody-sinks-despite-super-singing",
+      "outletId": "artsdesk",
+      "publishDate": "2025-01-09",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "titanique-off-broadway-2022",
+      "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+      "outletId": "cititour",
+      "publishDate": "February 9, 2023",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "titanique-off-broadway-2022",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=HFY1K1",
+      "outletId": "lighting-and-sound-america",
+      "publishDate": "June 28th, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "oh-mary-2024",
+      "url": "https://www.amny.com/entertainment/broadway/oh-mary-broadway-cole-escola/",
+      "outletId": "amny",
+      "publishDate": "2024-12-08",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "url": "https://theartsdesk.com/theatre/oh-mary-trafalgar-theatre-review-uproarious-farce",
+      "outletId": "artsdesk",
+      "publishDate": "2025-12-19",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+      "outletId": "broadwaynews",
+      "publishDate": "July 11, 2024",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "oh-mary-2024",
+        "reason": "sibling opening 0d from publishDate vs current 525d"
+      }
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "url": "https://www.amny.com/entertainment/review-rocky-horror-time-warps-studio-54s/",
+      "outletId": "amny",
+      "publishDate": "2026-04-23",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "url": "https://www.chicagotribune.com/2026/04/23/review-rocky-horror-broadway/",
+      "outletId": "chicagotribune",
+      "publishDate": "2026-04-23",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "url": "https://www.chicagotribune.com/2025/08/14/review-mamma-mia-broadway/",
+      "outletId": "chicagotribune",
+      "publishDate": "2025-08-14",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "url": "https://cititour.com/NYC_Broadway/MAMMA-MIA/1318",
+      "outletId": "cititour",
+      "publishDate": "August 14, 2025",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "url": "http://bwayvoice.com/mamma-mia/",
+      "outletId": "broadway-voice",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "url": "http://www.celebrityradio.biz/2013/01/mamma-mia-on-broadway-review/",
+      "outletId": "celebrityradio",
+      "publishDate": "2001-10-18",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "url": "https://www.broadwayworld.com/translate/de/MAMMA-MIA-Extends-Booking-Period-in-London-to-March-2027-20260402",
+      "outletId": "broadwayworld",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "hadestown-2019",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1-29924932/",
+      "outletId": "amny",
+      "publishDate": "2019-04-17T20:11:26-04:00",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "url": "https://www.allthatdazzles.co.uk/post/review-hadestown-lyric-theatre",
+      "outletId": "all-that-dazzles-uk",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "url": "https://www.amny.com/entertainment/hadestown-review-1.29924932",
+      "outletId": "amny",
+      "publishDate": "April 17th, 2019",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "hadestown-2019",
+        "reason": "sibling opening 0d from publishDate vs current 1772d"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "url": "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
+      "outletId": "amny",
+      "publishDate": "2026-04-09",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-death-of-a-salesman-1006478352.story",
+      "outletId": "backstage",
+      "publishDate": "March 15, 2012",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "death-of-a-salesman-2012",
+        "reason": "sibling opening 0d from publishDate vs current 5138d"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "url": "https://www.amny.com/entertainment/broadway/review-death-of-a-salesman-2022/",
+      "outletId": "amny",
+      "publishDate": "October 3, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "url": "https://broadwaynews.com/2022/10/09/director-miranda-cromwell-breathes-stunning-black-life-into-death-of-a-salesman/",
+      "outletId": "broadwaynews",
+      "publishDate": "October 3, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-death-of-a-salesman-3-5-stars-1.3605883",
+      "outletId": "amny",
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "url": "https://artsfuse.org/101403/fuse-theater-review-a-moderately-powerful-death-of-a-salesman-from-the-lyric-stage-company/",
+      "outletId": "artsfuse",
+      "publishDate": "April 6, 2012",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/",
+      "outletId": "amny",
+      "publishDate": "March 31, 2025",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "url": "https://apnews.com/article/glengarry-glen-ross-broadway-review-985f8ea79f288d15b085de7e6fc42c68",
+      "outletId": "ap",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2012",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-glengarry-glen-ross-2-5-stars-1.4312143",
+      "outletId": "amny",
+      "publishDate": "December 9, 2012",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2012",
+      "url": "https://www.backstage.com/review/ny-theater/broadway/david-mamet-glengarry-glen-ross-al-pacino-bobby-cannavale/",
+      "outletId": "backstage",
+      "publishDate": "2012-12-09",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2005",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-glengarry-glen-ross-2-5-stars-1.4312143",
+      "outletId": "amny",
+      "publishDate": "December 9, 2012",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "glengarry-glen-ross-2012",
+        "reason": "sibling opening 1d from publishDate vs current 2779d"
+      }
+    },
+    {
+      "showId": "glengarry-glen-ross-2005",
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "cats-2016",
+      "url": "https://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-but-not-better-1.12116008",
+      "outletId": "amny",
+      "publishDate": "2016-07-31",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "cats-2016",
+      "url": "https://thebroadwayblog.com/2016/07/31/15081-cats-broadway-revival-review",
+      "outletId": "broadway-blog",
+      "publishDate": "2016-07-31",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "cats-1982",
+      "url": "http://www.amny.com/entertainment/cats-broadway-revival-classic-musical-is-back-but-not-better-1.12116008",
+      "outletId": "amny",
+      "publishDate": "July 31st, 2016",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "cats-2016",
+        "reason": "sibling opening 0d from publishDate vs current 12351d"
+      }
+    },
+    {
+      "showId": "cats-1982",
+      "url": "http://www.washingtontimes.com/news/2016/jul/31/review-the-hairball-that-is-cats-returns-to-broadw/",
+      "outletId": "ap",
+      "publishDate": "July 31st, 2016",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "cats-2016",
+        "reason": "sibling opening 0d from publishDate vs current 12351d"
+      }
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "url": "https://www.broadwayworld.com/article/BWW-Review-Charming-CATS-Revival-Is-Packed-With-Terrific-Performances-20160731",
+      "outletId": "broadwayworld",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "url": "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+      "outletId": "chicagotribune",
+      "publishDate": null,
+      "decision": {
+        "action": "reject",
+        "reason": "cross-market: US-only outlet \"chicagotribune\" reviewing WE show"
+      }
+    },
+    {
+      "showId": "company-2021",
+      "url": "https://www.amny.com/entertainment/theater/review-company-sondheim-revival/",
+      "outletId": "amny",
+      "publishDate": "December 9, 2021",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "company-2021",
+      "url": "https://broadwayandme.blogspot.com/2021/12/sizing-up-uneven-and-uneasy-fall-season.html",
+      "outletId": "broadway-and-me",
+      "publishDate": "2021-12-18",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "company-2006",
+      "url": "https://www.amny.com/entertainment/theater/review-company-sondheim-revival/",
+      "outletId": "amny",
+      "publishDate": "December 9th, 2021",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "company-2021",
+        "reason": "sibling opening 0d from publishDate vs current 5489d"
+      }
+    },
+    {
+      "showId": "company-2006",
+      "url": "https://broadwaynews.com/2021/12/09/review-company-delivers-a-near-perfect-revival/",
+      "outletId": "broadwaynews",
+      "publishDate": "December 10th, 2021",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "company-2021",
+        "reason": "sibling opening 1d from publishDate vs current 5490d"
+      }
+    },
+    {
+      "showId": "company-1993",
+      "url": "https://broadwaynews.com/2021/12/09/review-company-delivers-a-near-perfect-revival/",
+      "outletId": "broadwaynews",
+      "publishDate": "2021-12-09",
+      "decision": {
+        "action": "reroute",
+        "targetShowId": "company-2021",
+        "reason": "sibling opening 0d from publishDate vs current 10469d"
+      }
+    },
+    {
+      "showId": "company-1993",
+      "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-company-review-20211210-nlzpcv7br5bgtjbmp4n7jy732y-story.html",
+      "outletId": "chicagotribune",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "pippin-2013",
+      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html?ref=theater&amp;_r=0",
+      "outletId": "about-entertainment",
+      "publishDate": "April 25, 2013",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "pippin-2013",
+      "url": "https://www.amny.com/urbanite-1.812039/theater-review-pippin-3-5-stars-1.5142492",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "pippin-1972",
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-pippin-3-5-stars-1.5142492",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "pippin-1972",
+      "url": "http://online.wsj.com/article/APfaedcde8df674391ae1edbf18ea9ac33.html",
+      "outletId": "ap",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "url": "http://www.amny.com/entertainment/hamilton-review-lin-manuel-miranda-alexander-hamilton-musical-inventive-1.10715576",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "hamilton-west-end-2021",
+      "url": "http://www.bnd.com/entertainment/article30362823.html",
+      "outletId": "ap",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "url": "/people/Matt-Windman/",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "magic-mike-live-west-end-2021",
+      "url": "https://www.broadwayworld.com/westend/article/MAGIC-MIKE-LIVE-Extends-Booking-in-the-West-End-20210817",
+      "outletId": "broadwayworld",
+      "publishDate": "2021-08-17",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-devil-wears-prada-dominion-theatre",
+      "outletId": "all-that-dazzles-uk",
+      "publishDate": "2024-12-06",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "url": "https://theartsdesk.com/theatre/devil-wears-prada-dominion-theatre-review-efficient-rarely-inspired",
+      "outletId": "artsdesk",
+      "publishDate": "2024-12-13",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "url": "https://theartsdesk.com/theatre/mj-musical-prince-edward-theatre-review-glitzy-jukebox-musical-superb-star-void-inside",
+      "outletId": "artsdesk",
+      "publishDate": "2024-03-29",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "url": "https://www.chicagotribune.com/2023/08/10/review-mj-the-musical-in-chicago-is-a-fabulous-launch-of-the-national-tour/",
+      "outletId": "chicagotribune",
+      "publishDate": "August 10, 2023",
+      "decision": {
+        "action": "reject",
+        "reason": "cross-market: US-only outlet \"chicagotribune\" reviewing WE show"
+      }
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
+      "outletId": "all-that-dazzles-uk",
+      "publishDate": "October 20th, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "url": "https://theartsdesk.com/theatre/my-neighbour-totoro-barbican-review-dazzling-stage-adaptation-japanese-classic",
+      "outletId": "artsdesk",
+      "publishDate": "October 20th, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "url": "https://www.amny.com/entertainment/theater/review-the-shark-is-broken/",
+      "outletId": "amny",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "url": "http://theartsdesk.com/theatre/grace-pervades-theatre-royal-haymarket-review-ralph-fiennes-starrer-seems-old-times",
+      "outletId": "artsdesk",
+      "publishDate": "2026-05-07",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-kite-runner-2022",
+      "url": "https://www.broadwaynews.com/2022/07/21/review-a-distilled-kite-runner-struggles-to-fly-on-broadway/",
+      "outletId": "broadwaynews",
+      "publishDate": "July 21, 2022",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "kramerfauci-off-broadway-2026",
+      "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-02-15",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "south-pacific-2008",
+      "url": "https://apnews.com/article/mitzi-gaynor-dead-south-pacific-320eb99fe0824091babafac794dc2320",
+      "outletId": "ap",
+      "publishDate": "2008-04-03",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-girls",
+      "outletId": "london-box-office",
+      "publishDate": "2017-02-26",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-man-who-had-all-the-luck-2002",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e7da1531f931a35756c0a9649c8b63",
+      "outletId": "nytimes",
+      "publishDate": "May 2, 2002",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "innocence-off-broadway-2026",
+      "url": "https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026",
+      "outletId": "bachtrack",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "gigi-2015",
+      "url": "https://www.amny.com/entertainment/gigi-theater-review-2-stars-1.10224881",
+      "outletId": "amny",
+      "publishDate": "2015-04-08",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "url": "https://www.abqjournal.com/lifestyle/national-tour-of-broadways-beetlejuice-takes-popejoy-audience-on-a-roller-coaster-of-emotions/article_dcaaf37c-0d00-11ef-8904-033a710ec94e.html",
+      "outletId": "albuquerque-journal",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "url": "https://www.amny.com/entertainment/escape-to-margaritaville-review-1.17408126/",
+      "outletId": "amny",
+      "publishDate": "2018-03-15T19:00:14-04:00",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "url": "https://www.afridiziak.com/reviews/john-proctor-is-the-villain/",
+      "outletId": "afridiziak-theatre-news",
+      "publishDate": "2026-03-28",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-producers-garrick-theatre",
+      "outletId": "all-that-dazzles-uk",
+      "publishDate": "2025-09-15",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "disaster-2016",
+      "url": "https://www.amny.com/entertainment/disaster-pokes-fun-at-the-poseidon-adventure-airport-1975-1.11552252",
+      "outletId": "amny",
+      "publishDate": "2016-03-08",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "bonnie-and-clyde-2011",
+      "url": "http://theater.nytimes.com/2011/12/02/theater/reviews/bonnie-clyde-with-laura-osnes-and-jeremy-jordan-review.html",
+      "outletId": "about-entertainment",
+      "publishDate": "December 1, 2011",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "scorched-earth-off-broadway-2026",
+      "url": "https://exeuntnyc.com/reviews/review-scorched-earth-at-st-anns-warehouse/",
+      "outletId": "exeunt-magazine",
+      "publishDate": "2026-04-09",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "mercury-off-broadway-2026",
+      "url": "http://www.nytimes.com/2015/08/20/theater/in-philip-ridleys-mercury-fur-its-the-worlds-end-and-the-partys-here.html",
+      "outletId": "nytimes",
+      "publishDate": "August 19, 2015",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "url": "https://4columns.org/cote-david/a-streetcar-named-desire-2025",
+      "outletId": "4columns",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "all-the-way-2014",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-bryan-cranston-superb-22811530",
+      "outletId": "abc-news",
+      "publishDate": "March 6, 2014",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "after-miss-julie-2009",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater",
+      "outletId": "about-entertainment",
+      "publishDate": "April 22, 2014",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "lady-day-at-emersons-bar-and-grill-2014",
+      "url": "https://www.avclub.com/",
+      "outletId": "av-club",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "kpop-2022",
+      "url": "https://broadwayandme.blogspot.com/2022/12/how-broadways-kpop-lost-its-mojo.html",
+      "outletId": "broadway-and-me",
+      "publishDate": "2022-12-03",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "the-real-thing-2014",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-real-thing-excellent-26587961",
+      "outletId": "abc-news",
+      "publishDate": "October 30, 2014",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "assassins-2004",
+      "url": "https://www.newspapers.com/image/535462359/",
+      "outletId": "ap",
+      "publishDate": "2004-05-30",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "url": "http://www.huffingtonpost.com/huff-wires/20121014/us-theater-review-who-s-afraid-of-virginia-woolf/",
+      "outletId": "ap",
+      "publishDate": "October 14, 2012",
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "url": "https://theartsdesk.com/theatre/broken-glass-young-vic-review-exaggerated-version-modern-classic",
+      "outletId": "artsdesk",
+      "publishDate": null,
+      "decision": {
+        "action": "accept"
+      }
+    },
+    {
+      "showId": "romeo-and-juliet-suite-off-broadway-2026",
+      "url": "https://www.wsj.com/arts-culture/theater/romeo-juliet-suite-review-tragedy-reinterpreted-d6bcc704",
+      "outletId": "wsj",
+      "publishDate": "2026-03-09",
+      "decision": {
+        "action": "accept"
+      }
+    }
+  ]
+}

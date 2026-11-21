@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6187-2",
+  "planId": "7d7bf490-0775-4291-85b5-35141969efc1",
+  "status": "applied",
+  "createdAt": "2026-10-28T15:01:35.422Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude the misfiled ArtsHub visual-arts opinion article from Art (Old Vic, 2016). The stored article discusses Singapore museums and cultural policy, not the play; its January 2016 publication predates this production. Repair the source record through the approved field executor without changing any review text or dates.",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: isNonReviewReason",
+      "art-west-end-2016/artshub--gina-fairley.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Stored article concerns Singapore museums, visual-art fairs and cultural policy, rather than the Old Vic production of Art. BRO-6187 source-content verification.",
+        "description": "art-west-end-2016/artshub--gina-fairley.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "isNonReview",
+        "oldValue": false,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T15:56:22.018Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/artshub--gina-fairley.json isNonReviewReason: null -> \"manual (not a review): Stored article concerns Singapore museums, visual-art fairs and cultural policy, rather than the Old Vic production of Art. BRO-6187 source-content verification.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/artshub--gina-fairley.json isNonReview: false -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

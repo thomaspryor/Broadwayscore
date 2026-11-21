@@ -1,0 +1,120 @@
+{
+  "issueNumber": "bro-5063-d",
+  "planId": "733c70b8-cd45-4e25-a84f-b2a71b8b3247",
+  "status": "applied",
+  "createdAt": "2026-10-11T17:02:15.253Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 4 of 4. Synopsis cleanup (BRO-5063). Backfill run 38156863782 refilled 22 of the 29 cleared synopses. For these 7 the model answered UNKNOWN and the TodayTix cleaner kept no usable plot. Each synopsis here is written only from that production's own page text (Queen of Hearts: from its previous synopsis, minus the sales framing).",
+    "steps": [
+      "Write the 7 synopses from each production's own page text"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tender-by-dave-harris-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "The Dancing Bears strip club is failing: ten covers on a Saturday night, one booking next week, while the new club down the street packs in fifty women a night. When the boss's daughter shows up, she realises the club needs a bigger show, in Dave Harris's story about men breaking free from masculinity's seductive cage.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "insane-asylum-seekers-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Laith, 27, has been keeping a secret for years, and it is catching up with him. He believes the reason lies with his parents leaving Iraq 30 years earlier, and his story becomes a multi-generational tale spanning a century of the British-Iraqi experience.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ceilidh-the-musical-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Led by a lively caller, a traditional Scottish ceilidh sweeps its guests into a night of music and memories. As the music builds and the night takes hold, a story of love and legacy unfolds, about why tonight's ceilidh matters more than most.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pinocchio-globe-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Geppetto, a lonely man with a great imagination, carves an intricate puppet from a log of wood and watches it spring to life, in this musical reimagining of the classic tale about family and what it means to be your most honest self.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-greatest-showman-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "P.T. Barnum refuses to settle for the status quo. Driven by creative ambition, he assembles an unconventional group of performers to create an entertainment unlike anything audiences have seen, in a stage musical, based on the 2017 film, that celebrates difference and the pay-off of hard work.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2027",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Florian Zeller's comedy peels back the lies people tell the ones they love, and the ones they tell themselves, in a story where trust is fragile, loyalty is negotiable and everyone has something to hide.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the production's own TodayTix page text (fetched 2026-10-11); the verified writer answered UNKNOWN because the page text was mostly sales copy."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Company XIV's adaptation of Lewis Carroll's Alice's Adventures in Wonderland follows Alice down the rabbit hole into a Wonderland staged with circus, opera, magic, baroque dance and burlesque.",
+        "description": "Refill after BRO-5063 cleared this row: written only from the facts in its previous Company XIV synopsis (which adaptation, which staging forms), with the second-person sales framing removed."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T17:37:57.426Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for tender-by-dave-harris-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for insane-asylum-seekers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ceilidh-the-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pinocchio-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-greatest-showman-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-truth-a-comedy-by-florian-zeller-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for queen-of-hearts-off-broadway-2026"
+    }
+  ]
+}

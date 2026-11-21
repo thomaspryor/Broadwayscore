@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-7130",
+  "planId": "904cba6c-e562-44e8-8ddb-3378b9fc007d",
+  "status": "applied",
+  "createdAt": "2026-11-08T16:18:03.106Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Set type=play on two Off-West End rows a status writer moved past announced untyped (validate-market-expansion red). Jerker: Robert Chesley's 1986 two-hander (BroadwayWorld review 2026-09-29). Big Man Little Man: The Other Palace page bills it 'A powerful new play about masculinity, SEND'.",
+    "steps": [
+      "shows.json: big-man-little-man-off-west-end-2026.type",
+      "shows.json: jerker-off-west-end-2026.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-man-little-man-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: big-man-little-man-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerker-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: jerker-off-west-end-2026.type"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T17:36:42.682Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for big-man-little-man-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for jerker-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

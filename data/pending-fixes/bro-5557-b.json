@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5557-b",
+  "planId": "7e101cbe-3cff-4166-92c8-d8e979cff7f3",
+  "status": "applied",
+  "createdAt": "2026-10-17T18:08:10.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5557: (1) remove the De Keersmaeker & Mriziga Il Cimento row that the NYU Skirball venue-page promoter re-minted on 2026-10-16 although its id was retired on 2026-10-13 (the promoter now consults the retired registry; reMinted removes just the row); (2) point TheaterMania's A Ghost in Your Ear review at its real url (the stored url is a /tags/ index the rebuild drops) so the collector refetches and the review is scored. Both need code from the same change, so this plan runs after it lands.",
+    "steps": [
+      "Remove anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (provisional, id already in the retired registry since 2026-10-13, zero reviews)",
+      "theatermania--zachary-stewart.json holds the review text but a /tags/ index url (auto-pinned by the flip-flop breaker); the real review url is the Playbill Verdict link"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "expectTitle": "Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione",
+        "reason": "Provisional NYU Skirball duplicate of the TodayTix Il Cimento row; retired 2026-10-13 (BRO-5001) then re-minted 2026-10-16 by the OB venue-page promoter, which ignored the retired registry (BRO-5557)",
+        "reMinted": true,
+        "description": "Remove the re-minted duplicate Il Cimento row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "url",
+        "oldValue": "https://www.theatermania.com/tags/a-ghost-in-your-ear/",
+        "newValue": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+        "description": "The stored url is a TheaterMania tag index; Playbill Verdict names the real review url"
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T20:56:14.508Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "removed re-minted anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (\"Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione\" @ NYU Skirball); the registry already held the id"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json url: \"https://www.theatermania.com/tags/a-ghost-in-your-ear/\" -> \"https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/\""
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "description": "Definitions for cost calculation methodologies used in commercial data",
+    "lastUpdated": "2026-01-28",
+    "notes": "Methodologies describe HOW weekly running costs and other figures are calculated"
+  },
+  "methodologies": {
+    "reddit-standard": {
+      "name": "Reddit Grosses Analysis",
+      "description": "Standard methodology used by Reddit r/Broadway Grosses Analysis posts",
+      "calculation": "Weekly gross minus estimated operating expenses, which may or may not include theater's ~9% cut",
+      "reliability": "medium",
+      "notes": "Estimates can vary based on whether analyst includes theater cut (~9%), producer's fee, royalty pools, or marketing costs"
+    },
+    "trade-reported": {
+      "name": "Trade Press Reported",
+      "description": "Figures reported by trade publications (Deadline, Variety, Broadway News)",
+      "calculation": "Typically based on producer statements or industry sources",
+      "reliability": "high",
+      "notes": "Usually more accurate than estimates but may be selective (e.g., only reported when favorable)"
+    },
+    "sec-filing": {
+      "name": "SEC Form D Filing",
+      "description": "Official capitalization from SEC Form D securities filings",
+      "calculation": "Total amount of securities offered to investors",
+      "reliability": "very-high",
+      "notes": "Most reliable source for capitalization figures. Required for securities offerings over $1M"
+    },
+    "producer-confirmed": {
+      "name": "Producer Confirmed",
+      "description": "Figures directly confirmed by producers or lead producers",
+      "calculation": "Direct statement from production",
+      "reliability": "very-high",
+      "notes": "Rare but most authoritative when available"
+    },
+    "deep-research": {
+      "name": "Deep Research Verified",
+      "description": "Extensively researched and cross-referenced from multiple authoritative sources",
+      "calculation": "Multi-source verification with primary sources",
+      "reliability": "very-high",
+      "notes": "Reserved for data that has been manually verified through extensive research"
+    },
+    "industry-estimate": {
+      "name": "Industry Estimate",
+      "description": "General industry estimate based on comparable shows",
+      "calculation": "Based on theater size, cast size, production complexity",
+      "reliability": "low",
+      "notes": "Use only when no other data available"
+    }
+  },
+  "compatibility": {
+    "_description": "Which methodologies can be meaningfully compared for contradiction detection",
+    "reddit-standard": ["reddit-standard"],
+    "trade-reported": ["trade-reported", "sec-filing", "producer-confirmed", "deep-research"],
+    "sec-filing": ["sec-filing", "trade-reported", "producer-confirmed", "deep-research"],
+    "producer-confirmed": ["producer-confirmed", "sec-filing", "trade-reported", "deep-research"],
+    "deep-research": ["all"],
+    "industry-estimate": ["industry-estimate"]
+  }
+}

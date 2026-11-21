@@ -1,0 +1,241 @@
+{
+  "issueNumber": "bro-7642",
+  "planId": "f22f0da9-5bf6-43a8-9403-60255a776404",
+  "status": "applied",
+  "createdAt": "2026-11-17T03:17:52.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 13 Going on 30 (musical): the upcoming Toronto run at the Princess of Wales Theatre (Dec 1 2026 to Jan 24 2027, Lucie Jones) and its reviewed world premiere at Manchester Opera House (Sep 21 to Oct 12 2025), linked as prior run.",
+    "steps": [
+      "Append 13-going-on-30-toronto-regional-2026 (upcoming)",
+      "Append 13-going-on-30-manchester-regional-2025 (closed) and add its priorRuns link on the Toronto entry"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "13-going-on-30-toronto-regional-2026",
+          "title": "13 Going on 30",
+          "slug": "13-going-on-30-toronto-regional-2026",
+          "venue": "Princess of Wales Theatre, Toronto, ON",
+          "openingDate": "2026-12-01",
+          "openingDateSource": "first-performance-no-press-night-found",
+          "previewsStartDate": null,
+          "closingDate": "2027-01-24",
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "runtime": "2h 26m",
+          "intermissions": 1,
+          "ageRecommendation": "Ages 7+",
+          "synopsis": "Jenna Rink, an awkward 13-year-old, wishes she could skip the misery of adolescence. She wakes up as a thirty-year-old fashion magazine editor and has to work out who she became, and what matters to her. A stage musical based on the 2004 film, with Jennifer Garner as executive producer.",
+          "city": "toronto-on",
+          "cast": [
+            {
+              "name": "Lucie Jones",
+              "role": "Jenna Rink"
+            },
+            {
+              "name": "Dom Simpson",
+              "role": "Matt Flamhaff"
+            },
+            {
+              "name": "Grace Mouat",
+              "role": "Lucy Wyman"
+            },
+            {
+              "name": "Caleb Roberts",
+              "role": "Richard"
+            },
+            {
+              "name": "Andrew Berlin",
+              "role": "Kyle Grandy"
+            },
+            {
+              "name": "Morgan Scott",
+              "role": "Wayne"
+            },
+            {
+              "name": "Katharine Pearson",
+              "role": "Bev"
+            },
+            {
+              "name": "Iván Fernández González",
+              "role": "Darius Mark"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Josh Goldsmith",
+              "role": "Book"
+            },
+            {
+              "name": "Cathy Yuspa",
+              "role": "Book"
+            },
+            {
+              "name": "Alan Zachary",
+              "role": "Music & Lyrics"
+            },
+            {
+              "name": "Michael Weiner",
+              "role": "Music & Lyrics"
+            },
+            {
+              "name": "Andy Fickman",
+              "role": "Director"
+            },
+            {
+              "name": "Jennifer Weber",
+              "role": "Choreographer"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "Mirvish",
+              "url": "https://tickets.mirvish.com/events/tgot?view=calendar&startdate=2026-12-01"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.mirvish.com/shows/13-going-on-30",
+            "https://www.theatermania.com/news/lucie-jones-to-star-in-13-going-on-30-the-musical-in-toronto_1854502/"
+          ]
+        },
+        "description": "Add the Toronto run (North American premiere), Mirvish 2026/27 season."
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "13-going-on-30-manchester-regional-2025",
+          "title": "13 Going on 30",
+          "slug": "13-going-on-30-manchester-regional-2025",
+          "venue": "Manchester Opera House, Manchester",
+          "openingDate": "2025-09-21",
+          "openingDateSource": "first-performance-no-press-night-found",
+          "previewsStartDate": null,
+          "closingDate": "2025-10-12",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "synopsis": "Jenna Rink, an awkward 13-year-old, wishes she could skip the misery of adolescence. She wakes up as a thirty-year-old fashion magazine editor and has to work out who she became, and what matters to her. A stage musical based on the 2004 film, with Jennifer Garner as executive producer.",
+          "city": "manchester-uk",
+          "cast": [
+            {
+              "name": "Lucie Jones",
+              "role": "Jenna Rink"
+            },
+            {
+              "name": "David Hunter",
+              "role": "Matt Flamhaff"
+            },
+            {
+              "name": "Grace Mouat",
+              "role": "Lucy"
+            },
+            {
+              "name": "Caleb Roberts",
+              "role": "Richard"
+            },
+            {
+              "name": "Andrew Berlin",
+              "role": "Kyle Grandy"
+            },
+            {
+              "name": "Dominic Andersen",
+              "role": "Alex"
+            },
+            {
+              "name": "Suzie McAdam",
+              "role": "Bev"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Josh Goldsmith",
+              "role": "Book"
+            },
+            {
+              "name": "Cathy Yuspa",
+              "role": "Book"
+            },
+            {
+              "name": "Alan Zachary",
+              "role": "Music & Lyrics"
+            },
+            {
+              "name": "Michael Weiner",
+              "role": "Music & Lyrics"
+            },
+            {
+              "name": "Andy Fickman",
+              "role": "Director"
+            },
+            {
+              "name": "Jennifer Weber",
+              "role": "Choreographer"
+            },
+            {
+              "name": "Colin Richmond",
+              "role": "Set Designer"
+            },
+            {
+              "name": "Gabriela Tylesova",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "Howard Hudson",
+              "role": "Lighting Designer"
+            },
+            {
+              "name": "Adam Fisher",
+              "role": "Sound Designer"
+            },
+            {
+              "name": "George Reeve",
+              "role": "Video Designer"
+            },
+            {
+              "name": "Amy Shackcloth",
+              "role": "Music Director"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/article/Review-Roundup-13-GOING-ON-30-THE-MUSICAL-in-the-West-End-20251007",
+            "https://www.westendbestfriend.co.uk/news/review-13-going-on-30-the-musical-manchester-opera-house"
+          ]
+        },
+        "crossLinkFrom": "13-going-on-30-toronto-regional-2026",
+        "inheritReviews": false,
+        "description": "Add the Manchester Opera House world premiere (reviewed by Guardian, Times, The Stage) and link it from Toronto as a separate past run."
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T03:36:41.580Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 13-going-on-30-toronto-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 13-going-on-30-manchester-regional-2025 (priorRuns link on 13-going-on-30-toronto-regional-2026)"
+    }
+  ],
+  "executedIn": "ci"
+}

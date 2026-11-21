@@ -1,0 +1,247 @@
+{
+  "issueNumber": "bro-6697",
+  "planId": "d5283210-4509-44aa-baf2-e0dfd7e7ae49",
+  "status": "applied",
+  "createdAt": "2026-11-01T12:50:16.512Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6697: correct stored opening dates later than their review cluster. An American in Paris West End (Wikipedia: previews 2017-03-04, press night 2017-03-21), Pen Pals off-Broadway (Playbill: previews 2024-12-05, opened 2024-12-11), and three review-seeded regional rows whose earlier reviews sit only in review-texts (Little Shop Crucible, Sister Act Mercury, Brigadoon MTW) moved to their earliest review. The other eleven flagged theatreinchicago rows move via the daily reconcile (code change in this commit); Silver Manhattan is acked (official opening really was 2026-03-04, critics reviewed in previews).",
+    "steps": [
+      "West End previews began 2017-03-04 at the Dominion (Wikipedia, An American in Paris (musical))",
+      "West End press night 2017-03-21 (Wikipedia); Daily Mail and FT reviews dated 2017-03-22",
+      "Press night now sourced (was the Theatricalia first performance)",
+      "Performances began 2024-12-05 (Playbill: Pen Pals off-Broadway, opening December 11)",
+      "Opened 2024-12-11 (https://playbill.com/article/johanna-day-and-nancy-mckeon-are-pen-pals-off-broadway-opening-december-11; BroadwayWorld opening photos 2024-12-12)",
+      "Press night sourced from Playbill (was IBDB, collapsed onto the 2025 return engagement)",
+      "Earliest review 2024-12-13 (WhatsOnStage, The Stage, BTG and 5 more); the Guardian review that seeded 2025-01-06 came 3 weeks later",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so a press-night source can still refine this date",
+      "Earliest review 2021-11-12 (Chicago Sun-Times, Chicago Theatre Review, PicksInSix)",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so a press-night source can still refine this date",
+      "Earliest clean review 2023-10-21 (Splash Magazines); Sun-Times, Chicago Theatre Review, PicksInSix 2023-10-23",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so a press-night source can still refine this date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-west-end-2017",
+        "field": "previewsStartDate",
+        "oldValue": "2017-04-01",
+        "newValue": "2017-03-04",
+        "description": "West End previews began 2017-03-04 at the Dominion (Wikipedia, An American in Paris (musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-west-end-2017",
+        "field": "openingDate",
+        "oldValue": "2017-04-01",
+        "newValue": "2017-03-21",
+        "description": "West End press night 2017-03-21 (Wikipedia); Daily Mail and FT reviews dated 2017-03-22"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-west-end-2017",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "wikipedia",
+        "description": "Press night now sourced (was the Theatricalia first performance)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pen-pals-off-broadway-2025",
+        "field": "previewsStartDate",
+        "oldValue": "2025-01-06",
+        "newValue": "2024-12-05",
+        "description": "Performances began 2024-12-05 (Playbill: Pen Pals off-Broadway, opening December 11)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pen-pals-off-broadway-2025",
+        "field": "openingDate",
+        "oldValue": "2025-01-06",
+        "newValue": "2024-12-11",
+        "description": "Opened 2024-12-11 (https://playbill.com/article/johanna-day-and-nancy-mckeon-are-pen-pals-off-broadway-opening-december-11; BroadwayWorld opening photos 2024-12-12)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pen-pals-off-broadway-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "playbill",
+        "description": "Press night sourced from Playbill (was IBDB, collapsed onto the 2025 return engagement)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-shop-of-horrors-crucible-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-01-06",
+        "newValue": "2024-12-13",
+        "description": "Earliest review 2024-12-13 (WhatsOnStage, The Stage, BTG and 5 more); the Guardian review that seeded 2025-01-06 came 3 weeks later"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-shop-of-horrors-crucible-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-shop-of-horrors-crucible-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-12-13",
+        "newValue": null,
+        "description": "Clear the pin so a press-night source can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sister-act-regional-2021",
+        "field": "openingDate",
+        "oldValue": "2021-11-16",
+        "newValue": "2021-11-12",
+        "description": "Earliest review 2021-11-12 (Chicago Sun-Times, Chicago Theatre Review, PicksInSix)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sister-act-regional-2021",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sister-act-regional-2021",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2021-11-12",
+        "newValue": null,
+        "description": "Clear the pin so a press-night source can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brigadoon-regional-2023",
+        "field": "openingDate",
+        "oldValue": "2023-10-26",
+        "newValue": "2023-10-21",
+        "description": "Earliest clean review 2023-10-21 (Splash Magazines); Sun-Times, Chicago Theatre Review, PicksInSix 2023-10-23"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brigadoon-regional-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brigadoon-regional-2023",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2023-10-21",
+        "newValue": null,
+        "description": "Clear the pin so a press-night source can still refine this date"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T13:43:59.027Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for brigadoon-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for brigadoon-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for brigadoon-regional-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

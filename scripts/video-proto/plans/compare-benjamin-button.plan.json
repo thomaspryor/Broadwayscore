@@ -1,0 +1,67 @@
+{
+ "fmt": "compare",
+ "key": "compare-benjamin-button",
+ "shows": [
+  {
+   "id": "the-curious-case-of-benjamin-button-west-end-2024",
+   "label": "London 2024",
+   "place": "London",
+   "city": "London"
+  },
+  {
+   "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
+   "label": "Off-Broadway 2026",
+   "place": "Off-Broadway",
+   "city": "New York",
+   "soFar": true
+  }
+ ],
+ "caveat": "Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison.",
+ "screen": {
+  "gap": 8,
+  "l1": "Same show. Two cities.",
+  "l2": "London scored it 8 points higher.",
+  "poss": "Maybe the production changed, or maybe London and New York critics just see it differently.",
+  "question": "Why do you think the critics split? Tell us below."
+ },
+ "cue": {
+  "end": "Why do you think"
+ },
+ "prompt": "[curious] Same show, two cities, and London's critics scored it eight points higher. That's The Curious Case of Benjamin Button, which was also reviewed in London. Eighty-five, from twenty-six reviews. Now Off-Broadway: seventy-seven, from twenty-four reviews so far. Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison. Maybe the production changed, or maybe London and New York critics just see it differently. Why do you think the critics split? Tell us below.",
+ "caption": "Same show, two cities. London's critics scored The Curious Case of Benjamin Button 8 points higher. London 2024: Critic Score 85 from 26 critics. Off-Broadway 2026: 77 from 24 critics so far. Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison. Maybe the production changed, or maybe London and New York critics just see it differently. Why do you think the critics split? Tell us below.\n\nSee every review at broadwayscorecard.com\n\n#OffBroadway #WestEnd #BenjaminButton #Theater #London #NYC",
+ "keep": {
+  "prompt": [
+   "was also reviewed in London",
+   "eighty-five",
+   "twenty-six",
+   "Off-Broadway",
+   "seventy-seven",
+   "twenty-four",
+   "Two years apart",
+   "Maybe the production changed",
+   "Why do you think the critics split"
+  ],
+  "caption": [
+   "85",
+   "26",
+   "77",
+   "24",
+   "like-for-like",
+   "Why do you think the critics split? Tell us below."
+  ]
+ },
+ "review": {
+  "pass": true,
+  "notes": [
+   "gpt: \"Same show, two cities, and London's critics scored it eight points higher.\" feels a little stiff and report-like for a quick vertical video.",
+   "gpt: \"Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison.\" is awkwardly formal and a bit over-explained out loud."
+  ],
+  "of": "97c0ec247c90",
+  "rounds": 1,
+  "by": [
+   "gpt",
+   "gemini"
+  ],
+  "at": "2026-10-27T02:14:42.476Z"
+ }
+}

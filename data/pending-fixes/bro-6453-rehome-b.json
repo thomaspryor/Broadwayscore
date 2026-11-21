@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-6453-rehome-b",
+  "planId": "5ae3740b-bc8a-4e3f-9e2b-1fffd671af9e",
+  "status": "applied",
+  "createdAt": "2026-11-15T18:12:06.584Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6453: restore the 2016 National Theatre Hedda Gabler Spectator review (Lloyd Evans), one of the 13 2016 texts misfiled under 2012, which the ensemble wrongly rejected as wrong production in hedda-gabler-west-end-2016",
+    "steps": [
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house",
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house",
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house",
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house",
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house",
+      "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-28T10:11:15.857Z",
+        "newValue": null,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: The review is of the Ivo van Hove production at the National Theatre (Lyttelton/Dorfman), not a West End production at the Lyttelton Theatre as specified in the Show context. The review explicitly states 'NATIONAL, DORFMAN' indicating this is a National Theatre production, not a West End production.; openai: The review discusses a production at the National Theatre, not the Lyttelton Theatre (West End) as specified in the context.",
+        "newValue": null,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text is Lloyd Evans on Ivo van Hove's 2016 National Theatre Hedda Gabler, the production this folder holds; the ensemble rejected it only because the NT Lyttelton is not a commercial West End house"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T18:51:39.235Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json rejectedAt: \"2026-10-28T10:11:15.857Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json rejectionReasoning: \"claude: The review is of the Ivo van Hove production at the National Theatre (Lyttelton/Dorfman), not a West End production at the Lyttelton Theatre as specified in the Show context. The review explicitly states 'NATIONAL, DORFMAN' indicating this is a National Theatre production, not a West End production.; openai: The review discusses a production at the National Theatre, not the Lyttelton Theatre (West End) as specified in the context.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2016/the-spectator-uk--lloyd-evans.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

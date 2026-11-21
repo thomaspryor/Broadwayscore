@@ -1,0 +1,78 @@
+{
+ "city": "washington-dc",
+ "week": "2026-W47",
+ "today": "2026-11-17",
+ "findings": 20,
+ "byClass": {
+  "1": 2,
+  "2": 0,
+  "3": 9,
+  "4": 0,
+  "6": 9
+ },
+ "newFindings": 2,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 1,
+  "4": 0,
+  "6": 1
+ },
+ "provenance": 0,
+ "newProvenance": 0,
+ "plan": null,
+ "card": "BRO-7678",
+ "findingKeys": [
+  "review:bronte-sister-house-party-regional-2026|https://dctheaterarts.org/2026/08/16/sibling-revelry-comes-to-afterlife-in-bronte-sister-house-party-by-nu-sass|john stoltenberg:wrong-production",
+  "review:frida-a-self-portrait-regional-2026|https://www.hillrag.com/2026/10/20/the-shakespeare-theatres-frida-delights|gregory ford:wrong-production",
+  "review:ghost-limb-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-ghost-limb-at-avant-bard-theatre-20260515|jackson malmgren:wrong-production",
+  "review:or-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-or-at-constellation-theatre-company-20260521|laurie sara oliver:wrong-production",
+  "review:sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd:non-review:roundup",
+  "review:somewhere-over-the-border-regional-2026|https://morristheatredc.com/reviews/somewhere-over-the-border-mosaic|drew morris:wrong-production",
+  "review:somewhere-over-the-border-regional-2026|https://www.metroweekly.com/2026/09/somewhere-over-the-border-review|andre hereford:wrong-production",
+  "review:where-dead-women-go-to-dance-regional-2026|https://www.broadwayworld.com/article/review-where-dead-women-go-to-dance-at-theatre-prometheus-20261010|jackson malmgren:wrong-production",
+  "show:a-gentlemans-guide-to-love-and-murder-regional-2026:opening-date",
+  "show:carla-hall-please-underestimate-me-regional-2026:closing-date",
+  "show:carla-hall-please-underestimate-me-regional-2026:opening-date",
+  "show:ghost-limb-regional-2026:opening-date",
+  "show:les-miserables-regional-2026:opening-date",
+  "show:ma-raineys-black-bottom-regional-2026-round-house-theatre:opening-date",
+  "show:sally-and-tom-regional-2026:opening-date",
+  "show:the-motion-regional-2026:opening-date",
+  "show:the-play-that-goes-wrong-regional-2026:closing-date",
+  "show:the-play-that-goes-wrong-regional-2026:opening-date",
+  "show:what-became-of-us-regional-2026:opening-date",
+  "show:woody-guthries-american-song-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "show:les-miserables-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "code": "opening-date",
+   "detail": "ours 2026-11-10 / page 2026-10-30",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "review:sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd:non-review:roundup",
+   "cls": 3,
+   "kind": "review",
+   "id": "sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd",
+   "label": "Sally & Tom | The Washington Post / Thomas Floyd",
+   "code": "non-review:roundup",
+   "detail": "The review for 'Sally & Tom' is generally positive, highlighting strong performances despite some narrative meandering.",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

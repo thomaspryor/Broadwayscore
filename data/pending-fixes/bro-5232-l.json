@@ -1,0 +1,128 @@
+{
+  "planId": "2af01d3c-0a10-4b4f-984c-ebb336e66adb",
+  "issueNumber": "bro-5232-l",
+  "createdAt": "2026-10-13T13:10:54.147Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "status": "applied",
+  "plan": {
+    "summary": "BRO-5232 l: two more made-up USA Today rows credited to Isherwood (exposed once plan k removed their tenure support), and the Patriots Talkin Broadway copy whose duplicate pointer was healed away because the canonical row carried a stale rejection.",
+    "steps": [
+      "wrongAttribution on 2 made-up USA Today urls",
+      "clear stale not_a_review rejection on Howard Miller Patriots row",
+      "re-point Murray copy at it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed Funny Girl for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/25/funny-girl-broadway-review-beanie-feldstein/7434599001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed Funny Girl for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/25/funny-girl-broadway-review-beanie-feldstein/7434599001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row.",
+        "description": "BRO-5232: Charles Isherwood reviewed Funny Girl for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/25/funny-girl-broadway-review-beanie-feldstein/7434599001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed Take Me Out for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/take-me-out-review-jesse-tyler-ferguson-in-a-major-league-hit-take-me-out-jesse-tyler-ferguson-richard-greenberg-scott-ellis-jesse-wiliams-patrick-j-adams-carl-lundstedt-michael-oberholtzer-11649363294). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broadway-review-jesse-tyler-ferguson/7382847001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed Take Me Out for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/take-me-out-review-jesse-tyler-ferguson-in-a-major-league-hit-take-me-out-jesse-tyler-ferguson-richard-greenberg-scott-ellis-jesse-wiliams-patrick-j-adams-carl-lundstedt-michael-oberholtzer-11649363294). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broadway-review-jesse-tyler-ferguson/7382847001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row.",
+        "description": "BRO-5232: Charles Isherwood reviewed Take Me Out for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/take-me-out-review-jesse-tyler-ferguson-in-a-major-league-hit-take-me-out-jesse-tyler-ferguson-richard-greenberg-scott-ellis-jesse-wiliams-patrick-j-adams-carl-lundstedt-michael-oberholtzer-11649363294). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broadway-review-jesse-tyler-ferguson/7382847001/ does not exist: Scrapingdog returns \"URL does not exist\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--howard-miller.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "BRO-5232: the Feb 2026 not_a_review rejection judged a teaser fragment; the row now stores Howard Miller's full review (complete tier, https://www.talkinbroadway.com/page/world/Patriots.html). Stale rejection cleared so the review counts under its real critic."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--howard-miller.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-5232: the Feb 2026 not_a_review rejection judged a teaser fragment; the row now stores Howard Miller's full review (complete tier, https://www.talkinbroadway.com/page/world/Patriots.html). Stale rejection cleared so the review counts under its real critic."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--howard-miller.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-02-15T16:13:32.271Z",
+        "newValue": null,
+        "description": "BRO-5232: the Feb 2026 not_a_review rejection judged a teaser fragment; the row now stores Howard Miller's full review (complete tier, https://www.talkinbroadway.com/page/world/Patriots.html). Stale rejection cleared so the review counts under its real critic."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "BRO-5232: same review as talkinbroadway--howard-miller.json (same url https://www.talkinbroadway.com/page/world/Patriots.html; the page byline is Howard Miller, not Matthew Murray)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T14:16:47.856Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "funny-girl-2022/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "funny-girl-2022/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed Funny Girl for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/funny-girl-review-beanie-feldstein-barbra-streisand-michael-mayer-lea-michele-ramin-karimloo-tovah-feldshuh-11664832655). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/25/funny-girl-broadway-review-beanie-feldstein/7434599001/ does not exist: Scrapingdog returns \\\"URL does not exist\\\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "take-me-out-2022/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "take-me-out-2022/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed Take Me Out for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/take-me-out-review-jesse-tyler-ferguson-in-a-major-league-hit-take-me-out-jesse-tyler-ferguson-richard-greenberg-scott-ellis-jesse-wiliams-patrick-j-adams-carl-lundstedt-michael-oberholtzer-11649363294). This web-search row's USA Today url https://www.usatoday.com/story/entertainment/theater/2022/04/21/take-me-out-broadway-review-jesse-tyler-ferguson/7382847001/ does not exist: Scrapingdog returns \\\"URL does not exist\\\" and Bright Data gets a generic USA Today page with no author (cloud run 2026-10-13 13:09Z). Made-up row.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--howard-miller.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--howard-miller.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--howard-miller.json rejectedAt: \"2026-02-15T16:13:32.271Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--matthew-murray.json duplicateOf: null -> \"talkinbroadway--howard-miller.json\""
+    }
+  ]
+}

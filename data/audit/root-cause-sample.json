@@ -1,0 +1,209 @@
+{
+  "generatedAt": "2026-11-20T10:01:13.278Z",
+  "grader": "gpt-5.4-mini (diff only, majority of 3)",
+  "poolSize": 134,
+  "noDiff": 1,
+  "landingsWithoutId": 115,
+  "graded": 8,
+  "rootCause": 8,
+  "spot": 0,
+  "unclear": 0,
+  "share": 100,
+  "calibrationOk": true,
+  "calibration": [
+    {
+      "card": "BRO-7066",
+      "expect": "spot-fix",
+      "got": "spot-fix"
+    },
+    {
+      "card": "BRO-7098",
+      "expect": "root-cause",
+      "got": "root-cause"
+    }
+  ],
+  "items": [
+    {
+      "card": "BRO-7722",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The change adds a regression-detection path plus tests that cover closed-card refile behavior and the worker-safe VERIFY/CREATES contract, making the defect class caught rather than patching one instance.",
+      "guardFile": "scripts/tests/triage-sentry-linear.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "19e9c2394b6a",
+      "truncated": false,
+      "files": [
+        "data/audit/session-retro.jsonl",
+        "scripts/lib/sentry-linear-filing.js",
+        "scripts/tests/triage-sentry-linear.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7739",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The fix adds a generalized main-title matching path with uniqueness gating, shared across all relevant discovery call sites, plus regression tests that would fail for the whole quoted-subtitle class if reverted.",
+      "guardFile": "scripts/test-subtitle-main-title-match.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8d2efb921696",
+      "truncated": false,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "data/audit/session-retro.jsonl",
+        "scripts/lib/opening-night-lane/discovery.js",
+        "scripts/lib/rss-discovery.js",
+        "scripts/test-subtitle-main-title-match.js"
+      ]
+    },
+    {
+      "card": "BRO-6762",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "The patch adds shared fallback-date provenance handling and excludes those dates from plausibility/contradiction logic, which prevents the whole class of borrowed-date misclassification rather than fixing one review.",
+      "guardFile": "scripts/lib/fallback-date-source.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "635a0eae4d87",
+      "truncated": true,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "scripts/audit-show-review-gap.js",
+        "scripts/gather-reviews.js",
+        "scripts/ingest-review-from-url.js",
+        "scripts/lib/contradicted-flag-basis.js",
+        "scripts/lib/date-plausibility.js",
+        "scripts/lib/fallback-date-source.js",
+        "scripts/lib/fallback-publish-date.js",
+        "scripts/lib/fetch-archive-fallback.js",
+        "scripts/lib/outlet-coverage-claim.js",
+        "scripts/lib/outlet-registry-proposals.js",
+        "scripts/lib/press-window-serp.js",
+        "scripts/lib/publish-date-provenance.js",
+        "scripts/lib/reroute-stamp-policy.js",
+        "scripts/opening-night-poller.js",
+        "tests/unit/fallback-publish-date.test.mjs",
+        "tests/unit/fetch-archive-fallback.test.mjs",
+        "tests/unit/outlet-coverage-claim.test.mjs",
+        "tests/unit/outlet-registry-proposals.test.mjs",
+        "tests/unit/press-window-serp.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7604",
+      "grade": "root-cause",
+      "confidence": 0.96,
+      "reason": "The fix adds a centralized validator tombstone keyed by show and normalized URL plus tests that prove the wrong-production URL is rejected across variants and discovery cannot reattach it, making this class of resurrection impossible for the known case.",
+      "guardFile": "scripts/lib/serp-candidate-validator.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "ebed9658daca",
+      "truncated": false,
+      "files": [
+        "scripts/lib/serp-candidate-validator.js",
+        "tests/unit/serp-known-wrong-production.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7605",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The fix adds a guarded exception in both the field editor and write guard plus a regression test, making the locked-record non-review exclusion path the only allowed locked mutation rather than patching a single call site.",
+      "guardFile": "scripts/lib/review-field-edit.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "2b78154abf95",
+      "truncated": false,
+      "files": [
+        ".gitignore",
+        "data/pending-fixes/bro-7605.json",
+        "scripts/lib/review-field-edit.js",
+        "scripts/lib/review-field-edit.test.mjs",
+        "scripts/lib/review-write-guard.js"
+      ]
+    },
+    {
+      "card": "BRO-7607",
+      "grade": "root-cause",
+      "confidence": 0.92,
+      "reason": "The change moves blocked/refresh_blocked writes into a shared scope helper and adds tests asserting all gate paths fail closed on scope crashes and preserve overridden before alert exit, which addresses the whole class rather than one instance.",
+      "guardFile": "tests/unit/opening-night-broadcast-gates.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "c2684bbdb103",
+      "truncated": true,
+      "files": [
+        ".github/workflows/opening-night-broadcast.yml",
+        "scripts/lib/broadcast-gate-alert.js",
+        "scripts/lib/broadcast-gate-scope.js",
+        "scripts/lib/broadcast-gate-scope.test.mjs",
+        "tests/unit/opening-night-broadcast-gates.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7600",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The change moves card filing out of the planner into a dedicated workflow step, adds help/flush guards for the new script, and adds a test covering the real JSON parsing failure mode, making the class of missed/incorrect dispatch-card filing much harder to recur.",
+      "guardFile": "scripts/lib/plan-refusal-escalation.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "2d0cd6048782",
+      "truncated": true,
+      "files": [
+        ".github/workflows/DEPENDENCIES.md",
+        ".github/workflows/auto-fix-feedback-bug.yml",
+        "data/pending-fixes/bro-7600-awake.json",
+        "scripts/file-feedback-card.js",
+        "scripts/generate-remediation-plan.js",
+        "scripts/lib/plan-refusal-escalation.js",
+        "scripts/lib/plan-refusal-escalation.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7603",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds reusable ingest/census predicates and tests that broadly classify dated prior-production URLs and news patterns as non-missing reviews, preventing the defect class rather than patching one URL.",
+      "guardFile": "scripts/lib/gap-ingest-policy.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8246e933ef03",
+      "truncated": false,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "scripts/audit-show-review-gap.js",
+        "scripts/lib/gap-audit-merge.js",
+        "scripts/lib/gap-census-noise.js",
+        "scripts/lib/gap-census-noise.test.mjs",
+        "scripts/lib/gap-ingest-policy.js",
+        "scripts/lib/non-review-url-patterns.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-5641",
+  "planId": "2d8674cb-105a-4589-a97b-2418b053f5e7",
+  "status": "applied",
+  "createdAt": "2026-11-01T03:30:42.522Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Relabel recouped open-ended runs with no reported investor multiple as Recouped (owner Option B, 2026-10-31; humanReviewedDesignation locks kept as they are) (part 1 of 2)",
+    "steps": [
+      "commercial.json: hadestown.designation",
+      "commercial.json: mj.designation",
+      "commercial.json: six.designation",
+      "commercial.json: moulin-rouge.designation",
+      "commercial.json: and-juliet.designation",
+      "commercial.json: stereophonic.designation",
+      "commercial.json: oh-mary.designation",
+      "commercial.json: the-outsiders.designation",
+      "commercial.json: just-in-time.designation",
+      "commercial.json: kinky-boots-2013.designation",
+      "commercial.json: beautiful-the-carole-king-musical-2014.designation",
+      "commercial.json: dear-evan-hansen-2016.designation",
+      "commercial.json: hairspray-2002.designation",
+      "commercial.json: come-from-away-2017.designation",
+      "commercial.json: matilda-the-musical-2013.designation",
+      "commercial.json: billy-elliot-the-musical-2008.designation",
+      "commercial.json: funny-girl-2022.designation",
+      "commercial.json: sweeney-todd-2023.designation",
+      "commercial.json: kimberly-akimbo-2022.designation",
+      "commercial.json: aint-too-proud-2019.designation",
+      "commercial.json: mean-girls-2018.designation",
+      "commercial.json: what-the-constitution-means-to-me-2019.designation",
+      "commercial.json: the-bands-visit-2017.designation",
+      "commercial.json: the-play-that-goes-wrong-2017.designation",
+      "commercial.json: to-kill-a-mockingbird-2018.designation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hadestown",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: hadestown.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mj",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: mj.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: six.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: moulin-rouge.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: and-juliet.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stereophonic",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: stereophonic.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-mary",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: oh-mary.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-outsiders.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-in-time",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: just-in-time.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kinky-boots-2013",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: kinky-boots-2013.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beautiful-the-carole-king-musical-2014",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: beautiful-the-carole-king-musical-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dear-evan-hansen-2016",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: dear-evan-hansen-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hairspray-2002",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: hairspray-2002.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "come-from-away-2017",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: come-from-away-2017.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: matilda-the-musical-2013.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "billy-elliot-the-musical-2008",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: billy-elliot-the-musical-2008.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "funny-girl-2022",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: funny-girl-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: sweeney-todd-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: kimberly-akimbo-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: aint-too-proud-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mean-girls-2018",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: mean-girls-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: what-the-constitution-means-to-me-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bands-visit-2017",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-bands-visit-2017.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-play-that-goes-wrong-2017",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-play-that-goes-wrong-2017.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "to-kill-a-mockingbird-2018",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Recouped",
+        "description": "commercial.json: to-kill-a-mockingbird-2018.designation"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T05:47:07.630Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hadestown"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for mj"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for moulin-rouge"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for stereophonic"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oh-mary"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for just-in-time"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for kinky-boots-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beautiful-the-carole-king-musical-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for dear-evan-hansen-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hairspray-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for come-from-away-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for matilda-the-musical-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for billy-elliot-the-musical-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for funny-girl-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for mean-girls-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-play-that-goes-wrong-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for to-kill-a-mockingbird-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

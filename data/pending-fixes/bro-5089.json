@@ -1,0 +1,519 @@
+{
+  "issueNumber": "bro-5089",
+  "planId": "dde386ef-9041-4d63-b63d-5efdb22c46df",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 1/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/macbeth-2022/hero.webp",
+          "thumbnail": "/images/shows/macbeth-2022/thumbnail.webp",
+          "poster": "/images/shows/macbeth-2022/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "macbeth-2022: poster, thumbnail and hero cleared, other-production: The poster reads 'AT CLASSIC STAGE COMPANY' and shows the CSC logo, indicating Classic Stage Company rather than the Longacre Theatre production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1y61xblaFHmADzuK3fryDz/14d99999d8c65f4ab3958a013be1a80c/prod_1566838865452_MacbethPoster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1y61xblaFHmADzuK3fryDz/14d99999d8c65f4ab3958a013be1a80c/prod_1566838865452_MacbethPoster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1y61xblaFHmADzuK3fryDz/14d99999d8c65f4ab3958a013be1a80c/prod_1566838865452_MacbethPoster.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "macbeth-2022: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-2016",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-cherry-orchard-2016/hero.webp",
+          "thumbnail": "/images/shows/the-cherry-orchard-2016/thumbnail.webp",
+          "poster": "/images/shows/the-cherry-orchard-2016/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "the-cherry-orchard-2016: poster, thumbnail and hero cleared, other-production: The poster clearly reads 'ST. ANN'S WAREHOUSE' at the bottom, indicating a different venue than the Todd Haimes/American Airlines/Selwyn Theatre for the 2016 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-2016",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7zMIw4zemJVSy8joqYY3GG/eaed1681f1e58e8fc153f0a7bc589bb4/SAW_The_Cherry_Orchard_TodayTix__480x720_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7zMIw4zemJVSy8joqYY3GG/eaed1681f1e58e8fc153f0a7bc589bb4/SAW_The_Cherry_Orchard_TodayTix__480x720_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7zMIw4zemJVSy8joqYY3GG/eaed1681f1e58e8fc153f0a7bc589bb4/SAW_The_Cherry_Orchard_TodayTix__480x720_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-cherry-orchard-2016: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2021",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/company-2021/hero.webp",
+          "thumbnail": "/images/shows/company-2021/thumbnail.webp",
+          "poster": "/images/shows/company-2021/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/company-2021/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "company-2021: poster and thumbnail cleared, wrong-show: The poster title reads \"COCKTAIL MAGIQUE\" (and features imagery unrelated to Company), not the musical \"Company\". (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "company-2021: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ink-2019",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ink-2019/thumbnail.jpg",
+          "poster": "/images/shows/ink-2019/poster.webp",
+          "hero": "/images/shows/ink-2019/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/ink-2019/hero.webp"
+        },
+        "description": "ink-2019: poster and thumbnail cleared, other-production: The poster text reads 'SYMPHONY SPACE' and 'Mandy Patinkin In Concert Being Alive with Adam Ben-David on Piano' (dates WED, FEB 18 & SAT, FEB 21) — not the play Ink at the Samuel J. Friedman/Biltmore Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ink-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/68WWADf8FE1agwpZs1PcWn/d5fe11e71d5c5ec0a5a6b2ba05d488d5/Patinkin_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1SvCmmsjbftzmQZN9lELhu/aed9a58126222afc73549ab5ac2d2430/Patinkin_TodayTix_1080x1080_carousel.png?fm=webp&q=90"
+        ],
+        "description": "ink-2019: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/thumbnail.jpg",
+          "poster": "/images/shows/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: poster and thumbnail cleared, other-production: Poster reads 'Directed by Hannah Wolf' (not Susan Stroman) indicating a different staging/creative team of POTUS; also shows local run dates/credits inconsistent with the Shubert/Susan Stroman Broadway production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "misery-2015",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/misery-2015/thumbnail.jpg",
+          "poster": "/images/shows/misery-2015/poster.webp",
+          "hero": "/images/shows/misery-2015/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/misery-2015/hero.webp"
+        },
+        "description": "misery-2015: poster and thumbnail cleared, other-production: The image reads \"SHINING IN MISERY A KING-SIZE PARODY\" and features the venue name \"54 BELOW\", indicating a parody event at 54 Below rather than the Broadhurst Theatre Broadway production of Misery. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "misery-2015",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "misery-2015: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-2015",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/an-american-in-paris-2015/thumbnail.jpg",
+          "poster": "/images/shows/an-american-in-paris-2015/poster.webp",
+          "hero": "/images/shows/an-american-in-paris-2015/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/an-american-in-paris-2015/hero.webp"
+        },
+        "description": "an-american-in-paris-2015: poster and thumbnail cleared, wrong-show: Poster text: 'Matthew Scott' and 'The Jesus Year' with venue '54 BELOW' — identifies a Matthew Scott/54 Below cabaret, not the Broadway production An American in Paris. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-2015",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "an-american-in-paris-2015: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "side-show-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/side-show-2014/hero.webp",
+          "thumbnail": "/images/shows/side-show-2014/thumbnail.webp",
+          "poster": "/images/shows/side-show-2014/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "side-show-2014: poster, thumbnail and hero cleared, other-production: \"white plains performing arts center\" header and the run dates shown as \"April 22 - May 8\" (indicates a White Plains engagement, not the St. James Broadway run) (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "side-show-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5elrnHcC9hSJiuvmlTTXg0/19b124451a15bc6ee95a9423762dd621/SS_POSTER_copy.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5elrnHcC9hSJiuvmlTTXg0/19b124451a15bc6ee95a9423762dd621/SS_POSTER_copy.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5elrnHcC9hSJiuvmlTTXg0/19b124451a15bc6ee95a9423762dd621/SS_POSTER_copy.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "side-show-2014: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "long-days-journey-into-night-2016",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/long-days-journey-into-night-2016/hero.webp",
+          "thumbnail": "/images/shows/long-days-journey-into-night-2016/thumbnail.webp",
+          "poster": "/images/shows/long-days-journey-into-night-2016/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/long-days-journey-into-night-2016/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "long-days-journey-into-night-2016: poster and thumbnail cleared, other-production: Poster text reads 'DIRECTED BY ROBERT O'HARA' (and lists cast names Bill Camp, Ato Blankson-Wood, Elizabeth Marvel, Jason Bowen), which does not match the credited director Jonathan Kent for the Todd Haimes/American Airl (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "long-days-journey-into-night-2016",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "long-days-journey-into-night-2016: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spring-awakening-2015",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/spring-awakening-2015/hero.webp",
+          "thumbnail": "/images/shows/spring-awakening-2015/thumbnail.webp",
+          "poster": "/images/shows/spring-awakening-2015/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "spring-awakening-2015: poster, thumbnail and hero cleared, other-production: Poster text reads \"GALLERY PLAYERS PRESENTS\" and shows run dates \"May 18 - Jun 09\", the URL \"GALLERYPLAYERS.COM\" and phone \"TICKETS 212-352-3101\" — indicating a Gallery Players staging, not the 2015-2016 Lena Horne/Brook (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spring-awakening-2015",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2W4j71ygXGgRo3e35MGJZq/189d0781e1942f48838540b9c0596839/prod_1551466091270_TT-Spring-poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2W4j71ygXGgRo3e35MGJZq/189d0781e1942f48838540b9c0596839/prod_1551466091270_TT-Spring-poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2W4j71ygXGgRo3e35MGJZq/189d0781e1942f48838540b9c0596839/prod_1551466091270_TT-Spring-poster.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "spring-awakening-2015: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "disgraced-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/disgraced-2014/hero.webp",
+          "thumbnail": "/images/shows/disgraced-2014/thumbnail.webp",
+          "poster": "/images/shows/disgraced-2014/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "disgraced-2014: poster, thumbnail and hero cleared, other-production: Poster reads 'Directed by Marcela Lorca' and prominently shows 'McCARTER THEATRE CENTER October 11-30' — different director and theatre than the Lyceum Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "disgraced-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4UrMRVLkZ8L7Lkv9gBFBhy/dfcda18b2c51ef61a7fc3cc45568eb24/1476988579505_Disgraced-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4UrMRVLkZ8L7Lkv9gBFBhy/dfcda18b2c51ef61a7fc3cc45568eb24/1476988579505_Disgraced-TodayTix-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4UrMRVLkZ8L7Lkv9gBFBhy/dfcda18b2c51ef61a7fc3cc45568eb24/1476988579505_Disgraced-TodayTix-480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "disgraced-2014: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "its-only-a-play-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/its-only-a-play-2014/hero.webp",
+          "thumbnail": "/images/shows/its-only-a-play-2014/thumbnail.webp",
+          "poster": "/images/shows/its-only-a-play-2014/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "its-only-a-play-2014: poster, thumbnail and hero cleared, other-production: Poster text shows 'Directed by Kevin Cahoon' whereas the 2014–2015 Broadway production at the Gerald Schoenfeld Theatre was directed by Jack O'Brien — indicates a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "its-only-a-play-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2uxI4CSXXEXlodxACqUdhT/b4dd097b702228496054ccb31110cd6a/TodayTix_IOAPPoster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2uxI4CSXXEXlodxACqUdhT/b4dd097b702228496054ccb31110cd6a/TodayTix_IOAPPoster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2uxI4CSXXEXlodxACqUdhT/b4dd097b702228496054ccb31110cd6a/TodayTix_IOAPPoster.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "its-only-a-play-2014: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-bridges-of-madison-county-2014/thumbnail.jpg",
+          "poster": "/images/shows/the-bridges-of-madison-county-2014/poster.webp",
+          "hero": "/images/shows/the-bridges-of-madison-county-2014/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-bridges-of-madison-county-2014/hero.webp"
+        },
+        "description": "the-bridges-of-madison-county-2014: poster and thumbnail cleared, other-production: Poster reads \"Kate Baldwin & Aaron Lazar AT 54 BELOW\" — shows 54 Below cabaret and different stars, not the Gerald Schoenfeld Theatre production of The Bridges of Madison County. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "description": "the-bridges-of-madison-county-2014: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:51:35.661Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ink-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for ink-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-american-in-paris-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for an-american-in-paris-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for side-show-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for side-show-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for spring-awakening-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for spring-awakening-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for disgraced-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for disgraced-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for its-only-a-play-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for its-only-a-play-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-bridges-of-madison-county-2014"
+    }
+  ]
+}

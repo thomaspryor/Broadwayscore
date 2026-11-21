@@ -1,0 +1,222 @@
+{
+  "issueNumber": "bro-5942-b",
+  "planId": "a00fdf5c-0733-4272-9780-fba6bd9ca189",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:44:56.952Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5942 batch 2: split older critic articles that review two or more shows, so each reviewed show gets its own section scored on its own text (joint fan-out backfill; every hit read in full on the main-branch dry run).",
+    "steps": [
+      "Run the joint multi-show splitter on each parent file (parent trimmed to its own section, a child row written or held for each sibling show); marker cuts where the automatic split would keep another show in a section",
+      "Scoring and rebuild then pick up the trimmed parents and the new child rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=america-who-hurt-you-off-broadway-2026 --file=vulture--jackson-mchenry.json",
+        "description": "Joint split of america-who-hurt-you-off-broadway-2026/vulture--jackson-mchenry.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=birthright-off-broadway-2026 --file=theater-life--david-sheward.json",
+        "description": "Joint split of birthright-off-broadway-2026/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=birthright-off-broadway-2026 --file=vulture--sara-holdren.json",
+        "description": "Joint split of birthright-off-broadway-2026/vulture--sara-holdren.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=bloody-bloody-andrew-jackson-2010 --file=wsj--terry-teachout.json",
+        "description": "Joint split of bloody-bloody-andrew-jackson-2010/wsj--terry-teachout.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=buena-vista-social-club-2025 --file=washpost--naveen-kumar.json",
+        "description": "Joint split of buena-vista-social-club-2025/washpost--naveen-kumar.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=camping-off-broadway-2026 --file=vulture--sara-holdren.json",
+        "description": "Joint split of camping-off-broadway-2026/vulture--sara-holdren.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=charlie-and-the-chocolate-factory-2017 --file=njcom--christopher-kelly.json",
+        "description": "Joint split of charlie-and-the-chocolate-factory-2017/njcom--christopher-kelly.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=disruption-off-broadway-2026 --file=theater-life--david-sheward.json",
+        "description": "Joint split of disruption-off-broadway-2026/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=exit-the-king-west-end-2018 --file=guardian--susannah-clapp.json",
+        "description": "Joint split of exit-the-king-west-end-2018/guardian--susannah-clapp.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024 --file=nytimes--houman-barekat.json",
+        "description": "Joint split of for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024/nytimes--houman-barekat.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=is-this-a-room-2021 --file=newyorker--naomi-fry.json",
+        "description": "Joint split of is-this-a-room-2021/newyorker--naomi-fry.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=king-charles-iii-2015 --file=flipsidereviews--kevin-filipski.json",
+        "description": "Joint split of king-charles-iii-2015/flipsidereviews--kevin-filipski.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=king-kong-2018 --file=newyorker--vinson-cunningham.json",
+        "description": "Joint split of king-kong-2018/newyorker--vinson-cunningham.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=kiss-me-kate-2019 --file=njcom--christopher-kelly.json",
+        "description": "Joint split of kiss-me-kate-2019/njcom--christopher-kelly.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=kiss-me-kate-2019 --file=theater-life--david-sheward.json",
+        "description": "Joint split of kiss-me-kate-2019/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=little-shop-of-horrors-off-broadway-2019 --file=theater-life--david-sheward.json",
+        "description": "Joint split of little-shop-of-horrors-off-broadway-2019/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=manor-west-end-2021 --file=guardian--susannah-clapp.json",
+        "description": "Joint split of manor-west-end-2021/guardian--susannah-clapp.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=network-2018 --file=wsj--terry-teachout.json",
+        "description": "Joint split of network-2018/wsj--terry-teachout.json (read in full on the BRO-5942 main-branch dry run)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T20:15:27.969Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

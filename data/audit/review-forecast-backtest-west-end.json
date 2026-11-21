@@ -1,0 +1,2925 @@
+{
+  "generatedAt": "2026-11-10T19:22:07.926Z",
+  "card": "BRO-7314",
+  "market": "west-end",
+  "floor": 10,
+  "settleDays": 21,
+  "today": "2026-11-10",
+  "target": "getCriticScore(showId) from scripts/lib/canonical-critic-scores.ts (integer, as displayed)",
+  "preDeclaredBar": {
+    "text": "Publish-worthy only if, walk-forward, (1) model MAE is at least 15% lower than the category-mean baseline with a season-clustered 95% bootstrap interval that excludes zero, and (2) the stated 80% range holds between 72% and 88% of outcomes.",
+    "minRelativeMaeGain": 0.15,
+    "coverageLow": 0.72,
+    "coverageHigh": 0.88
+  },
+  "caveats": [
+    "Population: targets need a settled review count at or above the floor, measured today. That is not knowable before opening, so results describe well-reviewed shows only.",
+    "Earlier shows enter the model with today's settled score and review count, dated by opening day. A show that opened a few days before the target may carry reviews published after the target opened. Thin on Broadway, larger on Off-Broadway and West End.",
+    "Creative team, venue and show-origins are current snapshots, not as-of-opening records.",
+    "Leave-one-season-out trains on later seasons and so is optimistic. Walk-forward and the fixed split are the forward-in-time numbers. Ablations use leave-one-season-out only.",
+    "Floors 5, 10 and 15 were all run. Every run misses the pre-declared bar, so this does not inflate the verdict."
+  ],
+  "population": {
+    "scoredShowsAtFloor": 494,
+    "evaluated": 456,
+    "minEarlierSeasonShows": 30,
+    "firstSeason": 2016,
+    "lastSeason": 2026,
+    "withEarlierProduction": 138,
+    "withPreviewGrosses": 0
+  },
+  "leakage": {
+    "rowsChecked": 494,
+    "lagDays": 3,
+    "perturbation": {
+      "checked": 40,
+      "moved": 0
+    }
+  },
+  "notUsed": [
+    "audience grades (no dated history; data/audience-snapshots begins 2026-04 and live scores postdate openings)",
+    "cast (shows.json cast is a later snapshot incl. replacements)",
+    "producers (not in the data)"
+  ],
+  "loso": {
+    "n": 456,
+    "seasons": 11,
+    "maeModel": 7.8,
+    "maeCategoryMean": 8.4,
+    "maeGainPct": 6.8,
+    "maeDiffCI95": [
+      -0.9,
+      -0.3
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -0.6,
+      -0.1
+    ],
+    "rmseModel": 10.2,
+    "rmseCategoryMean": 10.8,
+    "scoreSd": 10.7,
+    "maePriorElseMean": 8.2,
+    "bandHitModel": 0.384,
+    "bandHitCategoryMean": 0.362,
+    "bandHitPriorElseMean": 0.379,
+    "coverage80": 0.796,
+    "coverage50": 0.5,
+    "avgWidth80": 24.5,
+    "baselineIntervalCoverage80": 0.796,
+    "baselineIntervalWidth80": 25.8,
+    "priorRunSubset": {
+      "n": 138,
+      "maePriorRunAlone": 7.7,
+      "maeModel": 6.9,
+      "maeCategoryMean": 8.5
+    }
+  },
+  "walkForward": {
+    "n": 270,
+    "seasons": 5,
+    "maeModel": 7.8,
+    "maeCategoryMean": 8.4,
+    "maeGainPct": 7.1,
+    "maeDiffCI95": [
+      -1.2,
+      -0.3
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -0.9,
+      0.1
+    ],
+    "rmseModel": 10.1,
+    "rmseCategoryMean": 10.7,
+    "scoreSd": 10.7,
+    "maePriorElseMean": 8.2,
+    "bandHitModel": 0.367,
+    "bandHitCategoryMean": 0.356,
+    "bandHitPriorElseMean": 0.352,
+    "coverage80": 0.815,
+    "coverage50": 0.5,
+    "avgWidth80": 25.9,
+    "baselineIntervalCoverage80": 0.789,
+    "baselineIntervalWidth80": 26.5,
+    "priorRunSubset": {
+      "n": 94,
+      "maePriorRunAlone": 7.8,
+      "maeModel": 7.1,
+      "maeCategoryMean": 8.4
+    }
+  },
+  "fixedSplit": {
+    "n": 0,
+    "window": "train through 2019-20, test 2021-22 onward"
+  },
+  "ablationsLoso": {
+    "all": {
+      "n": 456,
+      "maeModel": 7.8,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.384
+    },
+    "people only": {
+      "n": 456,
+      "maeModel": 8.2,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.375
+    },
+    "prior run only": {
+      "n": 456,
+      "maeModel": 8,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.375
+    },
+    "preview grosses only": {
+      "n": 456,
+      "maeModel": 8.4,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.362
+    },
+    "route and source only": {
+      "n": 456,
+      "maeModel": 8.4,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.362
+    },
+    "everything but grosses": {
+      "n": 456,
+      "maeModel": 7.8,
+      "maeCategoryMean": 8.4,
+      "bandHitModel": 0.384
+    }
+  },
+  "failuresWalkForward": {
+    "musical new": {
+      "n": 47,
+      "mae": 9.6,
+      "maeCategoryMean": 10.3,
+      "meanSigned": 1
+    },
+    "actual tier: must-see": {
+      "n": 32,
+      "mae": 12.9,
+      "maeCategoryMean": 16,
+      "meanSigned": -12.9
+    },
+    "no earlier production": {
+      "n": 176,
+      "mae": 8.2,
+      "maeCategoryMean": 8.4,
+      "meanSigned": 0.4
+    },
+    "no preview grosses": {
+      "n": 270,
+      "mae": 7.8,
+      "maeCategoryMean": 8.4,
+      "meanSigned": -0.3
+    },
+    "25+ reviews": {
+      "n": 86,
+      "mae": 8.1,
+      "maeCategoryMean": 9.3,
+      "meanSigned": 0.2
+    },
+    "actual tier: worth-seeing": {
+      "n": 96,
+      "mae": 3.7,
+      "maeCategoryMean": 2.9,
+      "meanSigned": 0.9
+    },
+    "has earlier production": {
+      "n": 94,
+      "mae": 7.1,
+      "maeCategoryMean": 8.4,
+      "meanSigned": -1.6
+    },
+    "10-24 reviews": {
+      "n": 184,
+      "mae": 7.7,
+      "maeCategoryMean": 8,
+      "meanSigned": -0.6
+    },
+    "play new": {
+      "n": 196,
+      "mae": 7.8,
+      "maeCategoryMean": 8.1,
+      "meanSigned": -0.2
+    },
+    "actual tier: recommended": {
+      "n": 82,
+      "mae": 6.9,
+      "maeCategoryMean": 7.5,
+      "meanSigned": -6.7
+    },
+    "actual tier: skippable": {
+      "n": 46,
+      "mae": 9.4,
+      "maeCategoryMean": 10.8,
+      "meanSigned": 9.4
+    },
+    "actual tier: stay-away": {
+      "n": 14,
+      "mae": 25.3,
+      "maeCategoryMean": 26.6,
+      "meanSigned": 25.3
+    },
+    "musical revival": {
+      "n": 10,
+      "mae": 6.2,
+      "maeCategoryMean": 8.4,
+      "meanSigned": -3.3
+    },
+    "play revival": {
+      "n": 17,
+      "mae": 4.6,
+      "maeCategoryMean": 7,
+      "meanSigned": -4
+    }
+  },
+  "failuresLoso": {
+    "play new": {
+      "n": 333,
+      "mae": 7.8,
+      "maeCategoryMean": 8.2,
+      "meanSigned": 0
+    },
+    "actual tier: must-see": {
+      "n": 45,
+      "mae": 12.8,
+      "maeCategoryMean": 15.8,
+      "meanSigned": -12.8
+    },
+    "no earlier production": {
+      "n": 318,
+      "mae": 8.2,
+      "maeCategoryMean": 8.4,
+      "meanSigned": 0.7
+    },
+    "no preview grosses": {
+      "n": 456,
+      "mae": 7.8,
+      "maeCategoryMean": 8.4,
+      "meanSigned": 0
+    },
+    "10-24 reviews": {
+      "n": 362,
+      "mae": 7.7,
+      "maeCategoryMean": 8.2,
+      "meanSigned": 0
+    },
+    "actual tier: worth-seeing": {
+      "n": 158,
+      "mae": 3.4,
+      "maeCategoryMean": 3,
+      "meanSigned": 1.1
+    },
+    "25+ reviews": {
+      "n": 94,
+      "mae": 8.3,
+      "maeCategoryMean": 9.2,
+      "meanSigned": 0
+    },
+    "musical new": {
+      "n": 95,
+      "mae": 8.6,
+      "maeCategoryMean": 9.2,
+      "meanSigned": 1.4
+    },
+    "actual tier: recommended": {
+      "n": 153,
+      "mae": 6.9,
+      "maeCategoryMean": 7.2,
+      "meanSigned": -6.5
+    },
+    "actual tier: skippable": {
+      "n": 72,
+      "mae": 10.1,
+      "maeCategoryMean": 11.4,
+      "meanSigned": 10.1
+    },
+    "has earlier production": {
+      "n": 138,
+      "mae": 6.9,
+      "maeCategoryMean": 8.5,
+      "meanSigned": -1.5
+    },
+    "actual tier: stay-away": {
+      "n": 28,
+      "mae": 24.2,
+      "maeCategoryMean": 26.1,
+      "meanSigned": 24.2
+    },
+    "musical revival": {
+      "n": 11,
+      "mae": 6.4,
+      "maeCategoryMean": 8.9,
+      "meanSigned": -3.7
+    },
+    "play revival": {
+      "n": 17,
+      "mae": 4.7,
+      "maeCategoryMean": 7,
+      "meanSigned": -4.1
+    }
+  },
+  "fullModelWeights": {
+    "dir": 0.488,
+    "chor": 1.451,
+    "writer": 0.678,
+    "priorRun": 0.423,
+    "venue": 0.359,
+    "grossCap": 0,
+    "grossAtp": 0,
+    "srcFilm": 0,
+    "srcTv": 0,
+    "srcBook": 0,
+    "srcMusic": 0,
+    "srcPlay": 0,
+    "pathLondon": 0,
+    "pathOffB": 0,
+    "pathRegional": 0
+  },
+  "examples": {
+    "rule": "5 most recent evaluated openings (walk-forward forecasts) plus the 4 largest misses overall; no other selection",
+    "recent": [
+      {
+        "id": "martin-guerre-west-end-2026",
+        "title": "Martin Guerre",
+        "opened": "2026-10-20",
+        "type": "play revival",
+        "forecast": 71,
+        "range80": [
+          58,
+          83
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 71,
+        "error": 0
+      },
+      {
+        "id": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+        "title": "Jesus Christ Superstar",
+        "opened": "2026-10-16",
+        "type": "musical revival",
+        "forecast": 74,
+        "range80": [
+          60,
+          85
+        ],
+        "categoryMean": 73,
+        "earlierProduction": 74,
+        "actual": 76,
+        "error": -2
+      },
+      {
+        "id": "some-woman-west-end-2026",
+        "title": "Some Woman",
+        "opened": "2026-10-15",
+        "type": "play",
+        "forecast": 70,
+        "range80": [
+          57,
+          82
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 69,
+        "error": 1
+      },
+      {
+        "id": "the-cherry-orchard-west-end-2026",
+        "title": "The Cherry Orchard",
+        "opened": "2026-10-13",
+        "type": "play revival",
+        "forecast": 74,
+        "range80": [
+          61,
+          86
+        ],
+        "categoryMean": 71,
+        "earlierProduction": 75,
+        "actual": 74,
+        "error": 0
+      },
+      {
+        "id": "rent-west-end-2026",
+        "title": "Rent",
+        "opened": "2026-10-08",
+        "type": "musical revival",
+        "forecast": 74,
+        "range80": [
+          61,
+          86
+        ],
+        "categoryMean": 73,
+        "earlierProduction": 81,
+        "actual": 77,
+        "error": -3
+      }
+    ],
+    "largestMisses": [
+      {
+        "id": "the-enfield-haunting-west-end-2023",
+        "title": "The Enfield Haunting",
+        "opened": "2024-01-10",
+        "type": "play",
+        "forecast": 71,
+        "range80": [
+          57,
+          82
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 32,
+        "error": 39
+      },
+      {
+        "id": "trainspotting-the-musical-west-end-2026",
+        "title": "Trainspotting the musical",
+        "opened": "2026-07-22",
+        "type": "musical",
+        "forecast": 71,
+        "range80": [
+          58,
+          83
+        ],
+        "categoryMean": 72,
+        "earlierProduction": null,
+        "actual": 33,
+        "error": 38
+      },
+      {
+        "id": "the-crown-jewels-west-end-2023",
+        "title": "The Crown Jewels",
+        "opened": "2023-07-19",
+        "type": "play",
+        "forecast": 70,
+        "range80": [
+          56,
+          81
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 39,
+        "error": 31
+      },
+      {
+        "id": "we-will-rock-you-west-end-2023",
+        "title": "We Will Rock You",
+        "opened": "2023-06-07",
+        "type": "musical",
+        "forecast": 70,
+        "range80": [
+          57,
+          81
+        ],
+        "categoryMean": 72,
+        "earlierProduction": null,
+        "actual": 42,
+        "error": 28
+      }
+    ]
+  },
+  "predictionsWalkForward": [
+    {
+      "id": "operation-mincemeat-west-end-2024",
+      "opened": "2023-05-09",
+      "forecast": 72.7,
+      "lo80": 57.1,
+      "hi80": 83.9,
+      "categoryMean": 72.9,
+      "actual": 89
+    },
+    {
+      "id": "sylvia-west-end-2023",
+      "opened": "2023-02-15",
+      "forecast": 71.5,
+      "lo80": 55.9,
+      "hi80": 82.7,
+      "categoryMean": 72.9,
+      "actual": 66
+    },
+    {
+      "id": "eureka-day-west-end-2022",
+      "opened": "2022-09-25",
+      "forecast": 70.8,
+      "lo80": 55.2,
+      "hi80": 82,
+      "categoryMean": 70.9,
+      "actual": 72
+    },
+    {
+      "id": "the-crucible-west-end-2022",
+      "opened": "2022-09-28",
+      "forecast": 73.5,
+      "lo80": 57.9,
+      "hi80": 84.7,
+      "categoryMean": 70.9,
+      "actual": 80
+    },
+    {
+      "id": "jews-in-their-own-words-west-end-2022",
+      "opened": "2022-09-28",
+      "forecast": 68.9,
+      "lo80": 53.2,
+      "hi80": 80,
+      "categoryMean": 70.9,
+      "actual": 62
+    },
+    {
+      "id": "blues-for-an-alabama-sky-west-end-2022",
+      "opened": "2022-09-27",
+      "forecast": 69.2,
+      "lo80": 53.6,
+      "hi80": 80.4,
+      "categoryMean": 70.9,
+      "actual": 80
+    },
+    {
+      "id": "the-doctor-west-end-2022",
+      "opened": "2022-10-07",
+      "forecast": 71,
+      "lo80": 55.4,
+      "hi80": 82.2,
+      "categoryMean": 70.9,
+      "actual": 84
+    },
+    {
+      "id": "the-boy-with-two-hearts-west-end-2022",
+      "opened": "2022-10-05",
+      "forecast": 69.2,
+      "lo80": 53.6,
+      "hi80": 80.3,
+      "categoryMean": 70.9,
+      "actual": 60
+    },
+    {
+      "id": "good-west-end-2022",
+      "opened": "2022-10-12",
+      "forecast": 74.5,
+      "lo80": 58.9,
+      "hi80": 85.7,
+      "categoryMean": 70.9,
+      "actual": 73
+    },
+    {
+      "id": "marvellous-west-end-2022",
+      "opened": "2022-10-20",
+      "forecast": 69.7,
+      "lo80": 54.1,
+      "hi80": 80.9,
+      "categoryMean": 70.9,
+      "actual": 71
+    },
+    {
+      "id": "best-of-enemies-west-end-2022",
+      "opened": "2022-11-28",
+      "forecast": 72.3,
+      "lo80": 56.7,
+      "hi80": 83.5,
+      "categoryMean": 70.9,
+      "actual": 87
+    },
+    {
+      "id": "baghdaddy-west-end-2022",
+      "opened": "2022-11-24",
+      "forecast": 68.8,
+      "lo80": 53.2,
+      "hi80": 79.9,
+      "categoryMean": 70.9,
+      "actual": 65
+    },
+    {
+      "id": "othello-west-end-2022",
+      "opened": "2022-11-30",
+      "forecast": 71.4,
+      "lo80": 55.7,
+      "hi80": 82.5,
+      "categoryMean": 70.9,
+      "actual": 74
+    },
+    {
+      "id": "orlando-west-end-2022",
+      "opened": "2022-12-05",
+      "forecast": 68.9,
+      "lo80": 53.2,
+      "hi80": 80,
+      "categoryMean": 70.9,
+      "actual": 77
+    },
+    {
+      "id": "hex-west-end-2022",
+      "opened": "2022-12-06",
+      "forecast": 72.6,
+      "lo80": 57,
+      "hi80": 83.7,
+      "categoryMean": 72.9,
+      "actual": 65
+    },
+    {
+      "id": "kerry-jackson-west-end-2022",
+      "opened": "2022-12-07",
+      "forecast": 69.1,
+      "lo80": 53.5,
+      "hi80": 80.2,
+      "categoryMean": 70.9,
+      "actual": 49
+    },
+    {
+      "id": "as-you-like-it-west-end-2022",
+      "opened": "2022-12-14",
+      "forecast": 75.5,
+      "lo80": 59.9,
+      "hi80": 86.6,
+      "categoryMean": 70.9,
+      "actual": 76
+    },
+    {
+      "id": "the-unfriend-west-end-2023",
+      "opened": "2023-01-19",
+      "forecast": 70,
+      "lo80": 54.4,
+      "hi80": 81.1,
+      "categoryMean": 70.9,
+      "actual": 69
+    },
+    {
+      "id": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
+      "opened": "2023-01-31",
+      "forecast": 69.9,
+      "lo80": 54.3,
+      "hi80": 81,
+      "categoryMean": 70.9,
+      "actual": 59
+    },
+    {
+      "id": "noises-off-west-end-2023",
+      "opened": "2023-01-25",
+      "forecast": 77.8,
+      "lo80": 62.1,
+      "hi80": 88.9,
+      "categoryMean": 70.9,
+      "actual": 79
+    },
+    {
+      "id": "2-22-a-ghost-story-west-end-2023",
+      "opened": "2023-02-01",
+      "forecast": 73,
+      "lo80": 57.4,
+      "hi80": 84.1,
+      "categoryMean": 70.9,
+      "actual": 71
+    },
+    {
+      "id": "the-lehman-trilogy-west-end-2023",
+      "opened": "2023-02-08",
+      "forecast": 82.4,
+      "lo80": 66.7,
+      "hi80": 93.5,
+      "categoryMean": 70.9,
+      "actual": 84
+    },
+    {
+      "id": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
+      "opened": "2023-01-25",
+      "forecast": 68.9,
+      "lo80": 53.3,
+      "hi80": 80.1,
+      "categoryMean": 70.9,
+      "actual": 88
+    },
+    {
+      "id": "phaedra-west-end-2023",
+      "opened": "2023-02-09",
+      "forecast": 69.4,
+      "lo80": 53.8,
+      "hi80": 80.5,
+      "categoryMean": 70.9,
+      "actual": 74
+    },
+    {
+      "id": "standing-at-the-skys-edge-west-end-2023",
+      "opened": "2023-02-13",
+      "forecast": 72.4,
+      "lo80": 56.8,
+      "hi80": 83.6,
+      "categoryMean": 72.9,
+      "actual": 76
+    },
+    {
+      "id": "medea-west-end-2023",
+      "opened": "2023-02-17",
+      "forecast": 76.3,
+      "lo80": 60.7,
+      "hi80": 87.4,
+      "categoryMean": 70.9,
+      "actual": 81
+    },
+    {
+      "id": "romeo-and-julie-west-end-2023",
+      "opened": "2023-02-21",
+      "forecast": 68.8,
+      "lo80": 53.2,
+      "hi80": 80,
+      "categoryMean": 70.9,
+      "actual": 76
+    },
+    {
+      "id": "shirley-valentine-west-end-2023",
+      "opened": "2023-03-01",
+      "forecast": 69.6,
+      "lo80": 54,
+      "hi80": 80.8,
+      "categoryMean": 70.9,
+      "actual": 84
+    },
+    {
+      "id": "the-great-british-bake-off-musical-west-end-2023",
+      "opened": "2023-03-06",
+      "forecast": 72.3,
+      "lo80": 56.7,
+      "hi80": 83.5,
+      "categoryMean": 72.9,
+      "actual": 69
+    },
+    {
+      "id": "oklahoma-west-end-2023",
+      "opened": "2023-02-28",
+      "forecast": 74.7,
+      "lo80": 59.1,
+      "hi80": 85.8,
+      "categoryMean": 72.9,
+      "actual": 73
+    },
+    {
+      "id": "bonnie-and-clyde-west-end-2023",
+      "opened": "2023-03-08",
+      "forecast": 63.6,
+      "lo80": 48,
+      "hi80": 74.8,
+      "categoryMean": 72.9,
+      "actual": 57
+    },
+    {
+      "id": "black-superhero-west-end-2023",
+      "opened": "2023-03-21",
+      "forecast": 68.7,
+      "lo80": 53.1,
+      "hi80": 79.9,
+      "categoryMean": 70.9,
+      "actual": 61
+    },
+    {
+      "id": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023",
+      "opened": "2023-03-31",
+      "forecast": 79.6,
+      "lo80": 64,
+      "hi80": 90.8,
+      "categoryMean": 70.9,
+      "actual": 87
+    },
+    {
+      "id": "a-little-life-west-end-2023",
+      "opened": "2023-04-01",
+      "forecast": 71.5,
+      "lo80": 55.9,
+      "hi80": 82.6,
+      "categoryMean": 70.9,
+      "actual": 63
+    },
+    {
+      "id": "aint-too-proud-west-end-2023",
+      "opened": "2023-04-20",
+      "forecast": 65.1,
+      "lo80": 49.5,
+      "hi80": 76.3,
+      "categoryMean": 72.9,
+      "actual": 65
+    },
+    {
+      "id": "dancing-at-lughnasa-west-end-2023",
+      "opened": "2023-04-18",
+      "forecast": 72.6,
+      "lo80": 57,
+      "hi80": 83.8,
+      "categoryMean": 70.9,
+      "actual": 76
+    },
+    {
+      "id": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023",
+      "opened": "2023-04-12",
+      "forecast": 69.4,
+      "lo80": 53.8,
+      "hi80": 80.6,
+      "categoryMean": 70.9,
+      "actual": 80
+    },
+    {
+      "id": "dixon-and-daughters-west-end-2023",
+      "opened": "2023-04-25",
+      "forecast": 68.9,
+      "lo80": 53.3,
+      "hi80": 80,
+      "categoryMean": 70.9,
+      "actual": 73
+    },
+    {
+      "id": "bleak-expectations-west-end-2023",
+      "opened": "2023-05-18",
+      "forecast": 69.8,
+      "lo80": 54.2,
+      "hi80": 81,
+      "categoryMean": 70.9,
+      "actual": 61
+    },
+    {
+      "id": "brokeback-mountain-west-end-2023",
+      "opened": "2023-05-18",
+      "forecast": 70.2,
+      "lo80": 54.6,
+      "hi80": 81.3,
+      "categoryMean": 70.9,
+      "actual": 72
+    },
+    {
+      "id": "rose-west-end-2023",
+      "opened": "2023-05-26",
+      "forecast": 69.6,
+      "lo80": 54,
+      "hi80": 80.8,
+      "categoryMean": 70.9,
+      "actual": 78
+    },
+    {
+      "id": "great-expectations-west-end-2023",
+      "opened": "2023-05-29",
+      "forecast": 68.8,
+      "lo80": 53.2,
+      "hi80": 79.9,
+      "categoryMean": 70.9,
+      "actual": 72
+    },
+    {
+      "id": "aspects-of-love-west-end-2023",
+      "opened": "2023-05-25",
+      "forecast": 69.4,
+      "lo80": 53.8,
+      "hi80": 80.5,
+      "categoryMean": 72.9,
+      "actual": 52
+    },
+    {
+      "id": "jitney-west-end-2022",
+      "opened": "2022-06-15",
+      "forecast": 81.2,
+      "lo80": 65.5,
+      "hi80": 92.3,
+      "categoryMean": 70.9,
+      "actual": 74
+    },
+    {
+      "id": "that-is-not-who-i-am-west-end-2022",
+      "opened": "2022-06-18",
+      "forecast": 69.3,
+      "lo80": 53.7,
+      "hi80": 80.5,
+      "categoryMean": 70.9,
+      "actual": 67
+    },
+    {
+      "id": "mad-house-west-end-2022",
+      "opened": "2022-06-26",
+      "forecast": 69,
+      "lo80": 53.3,
+      "hi80": 80.1,
+      "categoryMean": 70.9,
+      "actual": 68
+    },
+    {
+      "id": "the-seagull-west-end-2022",
+      "opened": "2022-07-07",
+      "forecast": 81.8,
+      "lo80": 66.2,
+      "hi80": 92.9,
+      "categoryMean": 70.9,
+      "actual": 65
+    },
+    {
+      "id": "jack-absolute-flies-again-west-end-2022",
+      "opened": "2022-07-14",
+      "forecast": 70.7,
+      "lo80": 55.1,
+      "hi80": 81.9,
+      "categoryMean": 70.9,
+      "actual": 75
+    },
+    {
+      "id": "much-ado-about-nothing-west-end-2022",
+      "opened": "2022-07-18",
+      "forecast": 44.1,
+      "lo80": 28.5,
+      "hi80": 55.3,
+      "categoryMean": 70.9,
+      "actual": 70
+    },
+    {
+      "id": "all-of-us-west-end-2022",
+      "opened": "2022-08-04",
+      "forecast": 69.3,
+      "lo80": 53.7,
+      "hi80": 80.4,
+      "categoryMean": 70.9,
+      "actual": 66
+    },
+    {
+      "id": "cruise-west-end-2022",
+      "opened": "2022-08-17",
+      "forecast": 75.3,
+      "lo80": 59.7,
+      "hi80": 86.4,
+      "categoryMean": 70.9,
+      "actual": 92
+    },
+    {
+      "id": "hadestown-west-end-2024",
+      "opened": "2024-02-22",
+      "forecast": 78.8,
+      "lo80": 65.4,
+      "hi80": 90,
+      "categoryMean": 72.4,
+      "actual": 75
+    },
+    {
+      "id": "mj-the-musical-west-end-2024",
+      "opened": "2024-03-26",
+      "forecast": 72,
+      "lo80": 58.6,
+      "hi80": 83.2,
+      "categoryMean": 72.4,
+      "actual": 63
+    },
+    {
+      "id": "stranger-things-the-first-shadow-west-end-2023",
+      "opened": "2023-12-14",
+      "forecast": 74.7,
+      "lo80": 61.3,
+      "hi80": 86,
+      "categoryMean": 71.4,
+      "actual": 83
+    },
+    {
+      "id": "the-little-big-things-west-end-2023",
+      "opened": "2023-09-14",
+      "forecast": 72.7,
+      "lo80": 59.3,
+      "hi80": 83.9,
+      "categoryMean": 72.4,
+      "actual": 73
+    },
+    {
+      "id": "pygmalion-west-end-2023",
+      "opened": "2023-09-19",
+      "forecast": 67.2,
+      "lo80": 53.8,
+      "hi80": 78.4,
+      "categoryMean": 71.4,
+      "actual": 67
+    },
+    {
+      "id": "private-lives-west-end-2023",
+      "opened": "2023-09-13",
+      "forecast": 74.6,
+      "lo80": 61.2,
+      "hi80": 85.8,
+      "categoryMean": 71.4,
+      "actual": 71
+    },
+    {
+      "id": "vanya-west-end-2023",
+      "opened": "2023-09-21",
+      "forecast": 70.1,
+      "lo80": 56.7,
+      "hi80": 81.3,
+      "categoryMean": 71.4,
+      "actual": 78
+    },
+    {
+      "id": "the-old-man-and-the-pool-west-end-2023",
+      "opened": "2023-09-15",
+      "forecast": 79.8,
+      "lo80": 66.4,
+      "hi80": 91,
+      "categoryMean": 71.4,
+      "actual": 82
+    },
+    {
+      "id": "death-of-england-closing-time-west-end-2023",
+      "opened": "2023-09-20",
+      "forecast": 69.8,
+      "lo80": 56.4,
+      "hi80": 81.1,
+      "categoryMean": 71.4,
+      "actual": 77
+    },
+    {
+      "id": "sunset-boulevard-west-end-2023",
+      "opened": "2023-10-12",
+      "forecast": 70.5,
+      "lo80": 57.1,
+      "hi80": 81.7,
+      "categoryMean": 72.4,
+      "actual": 83
+    },
+    {
+      "id": "old-friends-west-end-2023",
+      "opened": "2023-10-03",
+      "forecast": 71.3,
+      "lo80": 57.9,
+      "hi80": 82.6,
+      "categoryMean": 72.4,
+      "actual": 85
+    },
+    {
+      "id": "dear-england-west-end-2023",
+      "opened": "2023-10-19",
+      "forecast": 73.1,
+      "lo80": 59.7,
+      "hi80": 84.3,
+      "categoryMean": 71.4,
+      "actual": 89
+    },
+    {
+      "id": "blue-mist-west-end-2023",
+      "opened": "2023-10-11",
+      "forecast": 69.2,
+      "lo80": 55.8,
+      "hi80": 80.4,
+      "categoryMean": 71.4,
+      "actual": 72
+    },
+    {
+      "id": "hamnet-west-end-2023",
+      "opened": "2023-10-12",
+      "forecast": 68.9,
+      "lo80": 55.5,
+      "hi80": 80.1,
+      "categoryMean": 71.4,
+      "actual": 58
+    },
+    {
+      "id": "lyonesse-west-end-2023",
+      "opened": "2023-10-25",
+      "forecast": 71.9,
+      "lo80": 58.5,
+      "hi80": 83.1,
+      "categoryMean": 71.4,
+      "actual": 50
+    },
+    {
+      "id": "the-confessions-west-end-2023",
+      "opened": "2023-10-20",
+      "forecast": 70.3,
+      "lo80": 56.9,
+      "hi80": 81.5,
+      "categoryMean": 71.4,
+      "actual": 76
+    },
+    {
+      "id": "king-lear-west-end-2023",
+      "opened": "2023-10-31",
+      "forecast": 69.2,
+      "lo80": 55.8,
+      "hi80": 80.4,
+      "categoryMean": 71.4,
+      "actual": 48
+    },
+    {
+      "id": "the-time-travellers-wife-west-end-2023",
+      "opened": "2023-11-01",
+      "forecast": 73.7,
+      "lo80": 60.3,
+      "hi80": 85,
+      "categoryMean": 72.4,
+      "actual": 59
+    },
+    {
+      "id": "mates-in-chelsea-west-end-2023",
+      "opened": "2023-11-09",
+      "forecast": 69.3,
+      "lo80": 55.9,
+      "hi80": 80.5,
+      "categoryMean": 71.4,
+      "actual": 45
+    },
+    {
+      "id": "backstairs-billy-west-end-2023",
+      "opened": "2023-11-07",
+      "forecast": 70.7,
+      "lo80": 57.3,
+      "hi80": 81.9,
+      "categoryMean": 71.4,
+      "actual": 74
+    },
+    {
+      "id": "the-mongol-khan-west-end-2023",
+      "opened": "2023-11-20",
+      "forecast": 68.4,
+      "lo80": 55,
+      "hi80": 79.6,
+      "categoryMean": 71.4,
+      "actual": 60
+    },
+    {
+      "id": "the-witches-west-end-2023",
+      "opened": "2023-11-21",
+      "forecast": 72.4,
+      "lo80": 59,
+      "hi80": 83.7,
+      "categoryMean": 72.4,
+      "actual": 83
+    },
+    {
+      "id": "the-house-of-bernarda-alba-west-end-2023",
+      "opened": "2023-11-28",
+      "forecast": 72.8,
+      "lo80": 59.4,
+      "hi80": 84.1,
+      "categoryMean": 71.4,
+      "actual": 69
+    },
+    {
+      "id": "infinite-life-west-end-2023",
+      "opened": "2023-11-30",
+      "forecast": 70.4,
+      "lo80": 57,
+      "hi80": 81.7,
+      "categoryMean": 71.4,
+      "actual": 80
+    },
+    {
+      "id": "the-enfield-haunting-west-end-2023",
+      "opened": "2024-01-10",
+      "forecast": 70.6,
+      "lo80": 57.2,
+      "hi80": 81.8,
+      "categoryMean": 71.4,
+      "actual": 32
+    },
+    {
+      "id": "the-motive-and-the-cue-west-end-2023",
+      "opened": "2023-12-18",
+      "forecast": 74.4,
+      "lo80": 61,
+      "hi80": 85.6,
+      "categoryMean": 71.4,
+      "actual": 87
+    },
+    {
+      "id": "plaza-suite-west-end-2024",
+      "opened": "2024-01-28",
+      "forecast": 67,
+      "lo80": 53.6,
+      "hi80": 78.3,
+      "categoryMean": 71.4,
+      "actual": 58
+    },
+    {
+      "id": "the-king-and-i-west-end-2024",
+      "opened": "2024-01-31",
+      "forecast": 78.1,
+      "lo80": 64.7,
+      "hi80": 89.3,
+      "categoryMean": 72.4,
+      "actual": 65
+    },
+    {
+      "id": "the-picture-of-dorian-gray-west-end-2024",
+      "opened": "2024-02-15",
+      "forecast": 70.4,
+      "lo80": 57,
+      "hi80": 81.6,
+      "categoryMean": 71.4,
+      "actual": 79
+    },
+    {
+      "id": "till-the-stars-come-down-west-end-2024",
+      "opened": "2024-01-31",
+      "forecast": 70.1,
+      "lo80": 56.7,
+      "hi80": 81.3,
+      "categoryMean": 71.4,
+      "actual": 85
+    },
+    {
+      "id": "just-for-one-day-west-end-2024",
+      "opened": "2024-02-13",
+      "forecast": 72.4,
+      "lo80": 59,
+      "hi80": 83.7,
+      "categoryMean": 72.4,
+      "actual": 65
+    },
+    {
+      "id": "the-hills-of-california-west-end-2024",
+      "opened": "2024-02-06",
+      "forecast": 75.3,
+      "lo80": 61.9,
+      "hi80": 86.5,
+      "categoryMean": 71.4,
+      "actual": 76
+    },
+    {
+      "id": "dear-octopus-west-end-2024",
+      "opened": "2024-02-14",
+      "forecast": 70.4,
+      "lo80": 57,
+      "hi80": 81.6,
+      "categoryMean": 71.4,
+      "actual": 78
+    },
+    {
+      "id": "an-enemy-of-the-people-west-end-2024",
+      "opened": "2024-02-20",
+      "forecast": 67.8,
+      "lo80": 54.4,
+      "hi80": 79,
+      "categoryMean": 71.4,
+      "actual": 61
+    },
+    {
+      "id": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
+      "opened": "2024-03-07",
+      "forecast": 74.9,
+      "lo80": 61.5,
+      "hi80": 86.1,
+      "categoryMean": 71.4,
+      "actual": 89
+    },
+    {
+      "id": "opening-night-west-end-2024",
+      "opened": "2024-03-26",
+      "forecast": 72.8,
+      "lo80": 59.4,
+      "hi80": 84,
+      "categoryMean": 72.4,
+      "actual": 48
+    },
+    {
+      "id": "nye-west-end-2024",
+      "opened": "2024-03-06",
+      "forecast": 71.6,
+      "lo80": 58.2,
+      "hi80": 82.9,
+      "categoryMean": 71.4,
+      "actual": 69
+    },
+    {
+      "id": "harry-clarke-west-end-2024",
+      "opened": "2024-03-13",
+      "forecast": 69.7,
+      "lo80": 56.3,
+      "hi80": 80.9,
+      "categoryMean": 71.4,
+      "actual": 66
+    },
+    {
+      "id": "red-pitch-west-end-2024",
+      "opened": "2024-03-21",
+      "forecast": 71.1,
+      "lo80": 57.7,
+      "hi80": 82.3,
+      "categoryMean": 71.4,
+      "actual": 85
+    },
+    {
+      "id": "instructions-for-a-teenage-armageddon-west-end-2024",
+      "opened": "2024-03-17",
+      "forecast": 69.2,
+      "lo80": 55.8,
+      "hi80": 80.4,
+      "categoryMean": 71.4,
+      "actual": 67
+    },
+    {
+      "id": "long-days-journey-into-night-west-end-2024",
+      "opened": "2024-03-30",
+      "forecast": 72.6,
+      "lo80": 59.2,
+      "hi80": 83.9,
+      "categoryMean": 71.4,
+      "actual": 68
+    },
+    {
+      "id": "player-kings-west-end-2024",
+      "opened": "2024-04-11",
+      "forecast": 72.9,
+      "lo80": 59.5,
+      "hi80": 84.1,
+      "categoryMean": 71.4,
+      "actual": 80
+    },
+    {
+      "id": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "opened": "2024-04-23",
+      "forecast": 71.2,
+      "lo80": 57.8,
+      "hi80": 82.4,
+      "categoryMean": 72.4,
+      "actual": 85
+    },
+    {
+      "id": "underdog-the-other-other-bronte-west-end-2024",
+      "opened": "2024-04-04",
+      "forecast": 70.3,
+      "lo80": 56.9,
+      "hi80": 81.5,
+      "categoryMean": 71.4,
+      "actual": 68
+    },
+    {
+      "id": "machinal-west-end-2024",
+      "opened": "2024-04-18",
+      "forecast": 74.7,
+      "lo80": 61.2,
+      "hi80": 85.9,
+      "categoryMean": 71.4,
+      "actual": 77
+    },
+    {
+      "id": "london-tide-west-end-2024",
+      "opened": "2024-04-17",
+      "forecast": 70.5,
+      "lo80": 57,
+      "hi80": 81.7,
+      "categoryMean": 71.4,
+      "actual": 63
+    },
+    {
+      "id": "spirited-away-west-end-2024",
+      "opened": "2024-05-07",
+      "forecast": 68.2,
+      "lo80": 54.8,
+      "hi80": 79.4,
+      "categoryMean": 71.4,
+      "actual": 75
+    },
+    {
+      "id": "people-places-and-things-west-end-2024",
+      "opened": "2024-05-14",
+      "forecast": 76.6,
+      "lo80": 63.2,
+      "hi80": 87.8,
+      "categoryMean": 71.4,
+      "actual": 90
+    },
+    {
+      "id": "romeo-and-juliet-west-end-2024",
+      "opened": "2024-05-23",
+      "forecast": 62.1,
+      "lo80": 48.6,
+      "hi80": 73.3,
+      "categoryMean": 71.4,
+      "actual": 69
+    },
+    {
+      "id": "fawlty-towers-west-end-2024",
+      "opened": "2024-05-15",
+      "forecast": 72.3,
+      "lo80": 58.9,
+      "hi80": 83.5,
+      "categoryMean": 71.4,
+      "actual": 74
+    },
+    {
+      "id": "bluets-west-end-2024",
+      "opened": "2024-05-24",
+      "forecast": 69.1,
+      "lo80": 55.7,
+      "hi80": 80.3,
+      "categoryMean": 71.4,
+      "actual": 64
+    },
+    {
+      "id": "boys-from-the-blackstuff-west-end-2024",
+      "opened": "2024-05-29",
+      "forecast": 71.5,
+      "lo80": 58.1,
+      "hi80": 82.8,
+      "categoryMean": 71.4,
+      "actual": 75
+    },
+    {
+      "id": "mrs-doubtfire-west-end-2023",
+      "opened": "2023-06-22",
+      "forecast": 61.5,
+      "lo80": 48.1,
+      "hi80": 72.7,
+      "categoryMean": 72.4,
+      "actual": 74
+    },
+    {
+      "id": "groundhog-day-west-end-2023",
+      "opened": "2023-06-08",
+      "forecast": 76.1,
+      "lo80": 62.7,
+      "hi80": 87.3,
+      "categoryMean": 72.4,
+      "actual": 89
+    },
+    {
+      "id": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "opened": "2023-06-14",
+      "forecast": 72.5,
+      "lo80": 59.1,
+      "hi80": 83.7,
+      "categoryMean": 72.4,
+      "actual": 61
+    },
+    {
+      "id": "we-will-rock-you-west-end-2023",
+      "opened": "2023-06-07",
+      "forecast": 70.1,
+      "lo80": 56.7,
+      "hi80": 81.3,
+      "categoryMean": 72.4,
+      "actual": 42
+    },
+    {
+      "id": "hope-has-a-happy-meal-west-end-2023",
+      "opened": "2023-06-09",
+      "forecast": 69.3,
+      "lo80": 55.9,
+      "hi80": 80.5,
+      "categoryMean": 71.4,
+      "actual": 67
+    },
+    {
+      "id": "accidental-death-of-an-anarchist-west-end-2023",
+      "opened": "2023-06-26",
+      "forecast": 69.9,
+      "lo80": 56.5,
+      "hi80": 81.1,
+      "categoryMean": 71.4,
+      "actual": 81
+    },
+    {
+      "id": "the-crucible-west-end-2023",
+      "opened": "2023-06-15",
+      "forecast": 77.7,
+      "lo80": 64.3,
+      "hi80": 88.9,
+      "categoryMean": 71.4,
+      "actual": 80
+    },
+    {
+      "id": "the-pillowman-west-end-2023",
+      "opened": "2023-06-21",
+      "forecast": 75,
+      "lo80": 61.6,
+      "hi80": 86.3,
+      "categoryMean": 71.4,
+      "actual": 62
+    },
+    {
+      "id": "the-wizard-of-oz-west-end-2023",
+      "opened": "2023-07-06",
+      "forecast": 71.1,
+      "lo80": 57.7,
+      "hi80": 82.3,
+      "categoryMean": 72.4,
+      "actual": 62
+    },
+    {
+      "id": "crazy-for-you-west-end-2023",
+      "opened": "2023-07-03",
+      "forecast": 73.3,
+      "lo80": 59.9,
+      "hi80": 84.6,
+      "categoryMean": 72.4,
+      "actual": 90
+    },
+    {
+      "id": "dr-semmelweis-west-end-2023",
+      "opened": "2023-07-11",
+      "forecast": 70.3,
+      "lo80": 56.9,
+      "hi80": 81.6,
+      "categoryMean": 71.4,
+      "actual": 76
+    },
+    {
+      "id": "cuckoo-west-end-2023",
+      "opened": "2023-07-12",
+      "forecast": 69.3,
+      "lo80": 55.9,
+      "hi80": 80.5,
+      "categoryMean": 71.4,
+      "actual": 64
+    },
+    {
+      "id": "grenfell-in-the-words-of-survivors-west-end-2023",
+      "opened": "2023-07-20",
+      "forecast": 69.6,
+      "lo80": 56.2,
+      "hi80": 80.9,
+      "categoryMean": 71.4,
+      "actual": 84
+    },
+    {
+      "id": "the-crown-jewels-west-end-2023",
+      "opened": "2023-07-19",
+      "forecast": 69.5,
+      "lo80": 56.1,
+      "hi80": 80.7,
+      "categoryMean": 71.4,
+      "actual": 39
+    },
+    {
+      "id": "the-effect-west-end-2023",
+      "opened": "2023-08-09",
+      "forecast": 72.8,
+      "lo80": 59.3,
+      "hi80": 84,
+      "categoryMean": 71.4,
+      "actual": 78
+    },
+    {
+      "id": "the-devil-wears-prada-west-end-2024",
+      "opened": "2024-12-05",
+      "forecast": 64.1,
+      "lo80": 50.2,
+      "hi80": 76.6,
+      "categoryMean": 72.1,
+      "actual": 58
+    },
+    {
+      "id": "my-neighbour-totoro-west-end-2025",
+      "opened": "2025-03-20",
+      "forecast": 72.4,
+      "lo80": 58.5,
+      "hi80": 84.9,
+      "categoryMean": 71.3,
+      "actual": 84
+    },
+    {
+      "id": "oliver-west-end-2024",
+      "opened": "2025-01-14",
+      "forecast": 72.2,
+      "lo80": 58.4,
+      "hi80": 84.8,
+      "categoryMean": 72.4,
+      "actual": 84
+    },
+    {
+      "id": "titanique-west-end-2024",
+      "opened": "2025-01-08",
+      "forecast": 73.8,
+      "lo80": 60,
+      "hi80": 86.4,
+      "categoryMean": 72.1,
+      "actual": 79
+    },
+    {
+      "id": "giant-royal-court-off-west-end-2024",
+      "opened": "2024-09-25",
+      "forecast": 70.4,
+      "lo80": 56.6,
+      "hi80": 82.9,
+      "categoryMean": 71.3,
+      "actual": 78
+    },
+    {
+      "id": "giant-west-end-2025",
+      "opened": "2025-04-30",
+      "forecast": 72.9,
+      "lo80": 59.1,
+      "hi80": 85.5,
+      "categoryMean": 71.3,
+      "actual": 94
+    },
+    {
+      "id": "juno-and-the-paycock-west-end-2024",
+      "opened": "2024-10-03",
+      "forecast": 70.4,
+      "lo80": 56.5,
+      "hi80": 82.9,
+      "categoryMean": 71.3,
+      "actual": 57
+    },
+    {
+      "id": "barcelona-west-end-2024",
+      "opened": "2024-10-30",
+      "forecast": 70.2,
+      "lo80": 56.4,
+      "hi80": 82.8,
+      "categoryMean": 71.3,
+      "actual": 55
+    },
+    {
+      "id": "oedipus-west-end-2024",
+      "opened": "2024-10-15",
+      "forecast": 73.8,
+      "lo80": 59.9,
+      "hi80": 86.3,
+      "categoryMean": 71.3,
+      "actual": 82
+    },
+    {
+      "id": "dr-strangelove-west-end-2024",
+      "opened": "2024-10-29",
+      "forecast": 71.4,
+      "lo80": 57.5,
+      "hi80": 83.9,
+      "categoryMean": 71.3,
+      "actual": 67
+    },
+    {
+      "id": "the-legends-of-them-west-end-2024",
+      "opened": "2024-12-10",
+      "forecast": 68.6,
+      "lo80": 54.7,
+      "hi80": 81.1,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "oedipus-west-end-2025",
+      "opened": "2025-02-04",
+      "forecast": 78.7,
+      "lo80": 64.9,
+      "hi80": 91.2,
+      "categoryMean": 71.3,
+      "actual": 59
+    },
+    {
+      "id": "here-we-are-west-end-2025",
+      "opened": "2025-05-08",
+      "forecast": 70.9,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 72.1,
+      "actual": 63
+    },
+    {
+      "id": "waiting-for-godot-west-end-2024",
+      "opened": "2024-09-19",
+      "forecast": 72.9,
+      "lo80": 59,
+      "hi80": 85.4,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "white-rabbit-red-rabbit-west-end-2024",
+      "opened": "2024-10-01",
+      "forecast": 71.2,
+      "lo80": 57.3,
+      "hi80": 83.7,
+      "categoryMean": 71.3,
+      "actual": 76
+    },
+    {
+      "id": "brace-brace-west-end-2024",
+      "opened": "2024-10-09",
+      "forecast": 68.6,
+      "lo80": 54.7,
+      "hi80": 81.1,
+      "categoryMean": 71.3,
+      "actual": 65
+    },
+    {
+      "id": "the-curious-case-of-benjamin-button-west-end-2024",
+      "opened": "2024-11-06",
+      "forecast": 70.2,
+      "lo80": 56.3,
+      "hi80": 82.7,
+      "categoryMean": 72.1,
+      "actual": 85
+    },
+    {
+      "id": "the-duchess-of-malfi-west-end-2024",
+      "opened": "2024-10-16",
+      "forecast": 69.6,
+      "lo80": 55.7,
+      "hi80": 82.1,
+      "categoryMean": 71.3,
+      "actual": 43
+    },
+    {
+      "id": "expendable-west-end-2024",
+      "opened": "2024-11-27",
+      "forecast": 68.6,
+      "lo80": 54.7,
+      "hi80": 81.1,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "the-tempest-west-end-2024",
+      "opened": "2024-12-19",
+      "forecast": 71.4,
+      "lo80": 57.6,
+      "hi80": 83.9,
+      "categoryMean": 71.3,
+      "actual": 50
+    },
+    {
+      "id": "kyoto-west-end-2025",
+      "opened": "2025-01-17",
+      "forecast": 71.5,
+      "lo80": 57.6,
+      "hi80": 84,
+      "categoryMean": 71.3,
+      "actual": 78
+    },
+    {
+      "id": "a-good-house-west-end-2025",
+      "opened": "2025-01-17",
+      "forecast": 68.7,
+      "lo80": 54.8,
+      "hi80": 81.2,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "the-years-west-end-2025",
+      "opened": "2025-02-04",
+      "forecast": 69.9,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 84
+    },
+    {
+      "id": "unicorn-west-end-2025",
+      "opened": "2025-02-13",
+      "forecast": 70.6,
+      "lo80": 56.7,
+      "hi80": 83.1,
+      "categoryMean": 71.3,
+      "actual": 61
+    },
+    {
+      "id": "more-life-west-end-2025",
+      "opened": "2025-02-12",
+      "forecast": 68.8,
+      "lo80": 54.9,
+      "hi80": 81.3,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "much-ado-about-nothing-west-end-2025",
+      "opened": "2025-02-19",
+      "forecast": 69.1,
+      "lo80": 55.2,
+      "hi80": 81.6,
+      "categoryMean": 71.3,
+      "actual": 87
+    },
+    {
+      "id": "clueless-west-end-2025",
+      "opened": "2025-03-13",
+      "forecast": 61.5,
+      "lo80": 47.7,
+      "hi80": 74,
+      "categoryMean": 72.1,
+      "actual": 69
+    },
+    {
+      "id": "the-score-west-end-2025",
+      "opened": "2025-02-27",
+      "forecast": 70.8,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 71.3,
+      "actual": 61
+    },
+    {
+      "id": "alterations-west-end-2025",
+      "opened": "2025-02-27",
+      "forecast": 70.2,
+      "lo80": 56.3,
+      "hi80": 82.7,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "dear-england-west-end-2025",
+      "opened": "2025-03-18",
+      "forecast": 79.9,
+      "lo80": 66,
+      "hi80": 92.4,
+      "categoryMean": 71.3,
+      "actual": 83
+    },
+    {
+      "id": "retrograde-west-end-2025",
+      "opened": "2025-03-19",
+      "forecast": 72.4,
+      "lo80": 58.5,
+      "hi80": 84.9,
+      "categoryMean": 71.3,
+      "actual": 85
+    },
+    {
+      "id": "manhunt-west-end-2025",
+      "opened": "2025-04-08",
+      "forecast": 68.8,
+      "lo80": 54.9,
+      "hi80": 81.3,
+      "categoryMean": 71.3,
+      "actual": 68
+    },
+    {
+      "id": "the-great-gatsby-west-end-2025",
+      "opened": "2025-04-24",
+      "forecast": 61.9,
+      "lo80": 48,
+      "hi80": 74.4,
+      "categoryMean": 72.1,
+      "actual": 56
+    },
+    {
+      "id": "the-brightening-air-west-end-2025",
+      "opened": "2025-04-24",
+      "forecast": 74.6,
+      "lo80": 60.8,
+      "hi80": 87.1,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "scenes-from-a-repatriation-west-end-2025",
+      "opened": "2025-04-30",
+      "forecast": 68.8,
+      "lo80": 55,
+      "hi80": 81.3,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "my-master-builder-west-end-2025",
+      "opened": "2025-04-29",
+      "forecast": 70.9,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 71.3,
+      "actual": 52
+    },
+    {
+      "id": "the-comedy-about-spies-west-end-2025",
+      "opened": "2025-05-06",
+      "forecast": 71.2,
+      "lo80": 57.4,
+      "hi80": 83.7,
+      "categoryMean": 71.3,
+      "actual": 84
+    },
+    {
+      "id": "the-deep-blue-sea-west-end-2025",
+      "opened": "2025-05-14",
+      "forecast": 69.6,
+      "lo80": 55.7,
+      "hi80": 82.1,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "the-fifth-step-west-end-2025",
+      "opened": "2025-05-19",
+      "forecast": 71.6,
+      "lo80": 57.7,
+      "hi80": 84.1,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "mrs-warrens-profession-west-end-2025",
+      "opened": "2025-05-22",
+      "forecast": 65.7,
+      "lo80": 51.8,
+      "hi80": 78.2,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "after-the-act-west-end-2025",
+      "opened": "2025-05-23",
+      "forecast": 69.7,
+      "lo80": 55.8,
+      "hi80": 82.2,
+      "categoryMean": 72.1,
+      "actual": 68
+    },
+    {
+      "id": "kathy-and-stella-solve-a-murder-west-end-2024",
+      "opened": "2024-06-05",
+      "forecast": 70,
+      "lo80": 56.1,
+      "hi80": 82.5,
+      "categoryMean": 72.1,
+      "actual": 77
+    },
+    {
+      "id": "a-view-from-the-bridge-west-end-2024",
+      "opened": "2024-06-04",
+      "forecast": 80,
+      "lo80": 66.2,
+      "hi80": 92.5,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "the-bounds-west-end-2024",
+      "opened": "2024-06-17",
+      "forecast": 68.5,
+      "lo80": 54.6,
+      "hi80": 81,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "mean-girls-west-end-2024",
+      "opened": "2024-06-19",
+      "forecast": 76,
+      "lo80": 62.1,
+      "hi80": 88.5,
+      "categoryMean": 72.1,
+      "actual": 71
+    },
+    {
+      "id": "next-to-normal-west-end-2024",
+      "opened": "2024-06-26",
+      "forecast": 78.5,
+      "lo80": 64.7,
+      "hi80": 91,
+      "categoryMean": 72.1,
+      "actual": 79
+    },
+    {
+      "id": "slave-play-west-end-2024",
+      "opened": "2024-07-10",
+      "forecast": 71.6,
+      "lo80": 57.7,
+      "hi80": 84.1,
+      "categoryMean": 71.3,
+      "actual": 65
+    },
+    {
+      "id": "mnemonic-west-end-2024",
+      "opened": "2024-07-02",
+      "forecast": 70.6,
+      "lo80": 56.7,
+      "hi80": 83.1,
+      "categoryMean": 71.3,
+      "actual": 79
+    },
+    {
+      "id": "echo-every-cold-hearted-oxygen-west-end-2024",
+      "opened": "2024-07-14",
+      "forecast": 68.5,
+      "lo80": 54.6,
+      "hi80": 81,
+      "categoryMean": 71.3,
+      "actual": 70
+    },
+    {
+      "id": "the-hot-wing-king-west-end-2024",
+      "opened": "2024-07-18",
+      "forecast": 69.9,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 67
+    },
+    {
+      "id": "hello-dolly-west-end-2024",
+      "opened": "2024-07-18",
+      "forecast": 76.5,
+      "lo80": 62.6,
+      "hi80": 89,
+      "categoryMean": 72.1,
+      "actual": 88
+    },
+    {
+      "id": "the-grapes-of-wrath-west-end-2024",
+      "opened": "2024-07-31",
+      "forecast": 70.6,
+      "lo80": 56.7,
+      "hi80": 83.1,
+      "categoryMean": 71.3,
+      "actual": 66
+    },
+    {
+      "id": "why-am-i-so-single-west-end-2024",
+      "opened": "2024-09-11",
+      "forecast": 69.4,
+      "lo80": 55.5,
+      "hi80": 81.9,
+      "categoryMean": 72.1,
+      "actual": 70
+    },
+    {
+      "id": "elektra-west-end-2025",
+      "opened": "2025-02-05",
+      "forecast": 69.8,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 48
+    },
+    {
+      "id": "inside-no-9-stage-fright-west-end-2025",
+      "opened": "2025-01-28",
+      "forecast": 70.9,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 71.3,
+      "actual": 74
+    },
+    {
+      "id": "the-importance-of-being-earnest-west-end-2024",
+      "opened": "2024-11-28",
+      "forecast": 73.8,
+      "lo80": 59.9,
+      "hi80": 86.3,
+      "categoryMean": 71.3,
+      "actual": 82
+    },
+    {
+      "id": "the-other-place-west-end-2024",
+      "opened": "2024-10-08",
+      "forecast": 72.8,
+      "lo80": 58.9,
+      "hi80": 85.3,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "a-tupperware-of-ashes-west-end-2024",
+      "opened": "2024-10-02",
+      "forecast": 69.9,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 75
+    },
+    {
+      "id": "coriolanus-west-end-2024",
+      "opened": "2024-09-24",
+      "forecast": 71.1,
+      "lo80": 57.2,
+      "hi80": 83.6,
+      "categoryMean": 71.3,
+      "actual": 71
+    },
+    {
+      "id": "the-real-thing-west-end-2024",
+      "opened": "2024-09-03",
+      "forecast": 70.6,
+      "lo80": 56.7,
+      "hi80": 83.1,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "the-constituent-west-end-2024",
+      "opened": "2024-06-25",
+      "forecast": 71.4,
+      "lo80": 57.5,
+      "hi80": 83.9,
+      "categoryMean": 71.3,
+      "actual": 71
+    },
+    {
+      "id": "oh-mary-west-end-2025",
+      "opened": "2025-12-18",
+      "forecast": 81.7,
+      "lo80": 67.7,
+      "hi80": 94.1,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "kinky-boots-the-musical-west-end-2026",
+      "opened": "2026-03-17",
+      "forecast": 66.4,
+      "lo80": 52.4,
+      "hi80": 78.8,
+      "categoryMean": 72,
+      "actual": 69
+    },
+    {
+      "id": "paddington-the-musical-west-end-2025",
+      "opened": "2025-11-30",
+      "forecast": 74.5,
+      "lo80": 60.5,
+      "hi80": 86.9,
+      "categoryMean": 72,
+      "actual": 89
+    },
+    {
+      "id": "beetlejuice-west-end-2026",
+      "opened": "2026-05-28",
+      "forecast": 72.4,
+      "lo80": 58.4,
+      "hi80": 84.8,
+      "categoryMean": 72.4,
+      "actual": 66
+    },
+    {
+      "id": "marie-and-rosetta-west-end-2026",
+      "opened": "2026-03-06",
+      "forecast": 76.5,
+      "lo80": 62.5,
+      "hi80": 88.9,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "avenue-q-west-end-2026",
+      "opened": "2026-04-16",
+      "forecast": 76.6,
+      "lo80": 62.6,
+      "hi80": 89,
+      "categoryMean": 72.4,
+      "actual": 82
+    },
+    {
+      "id": "teeth-n-smiles-west-end-2026",
+      "opened": "2026-03-25",
+      "forecast": 67.7,
+      "lo80": 53.7,
+      "hi80": 80.1,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "im-sorry-prime-minister-west-end-2026",
+      "opened": "2026-02-12",
+      "forecast": 72.9,
+      "lo80": 58.9,
+      "hi80": 85.3,
+      "categoryMean": 71.3,
+      "actual": 63
+    },
+    {
+      "id": "grace-pervades-west-end-2026",
+      "opened": "2026-04-30",
+      "forecast": 71,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "woman-in-mind-west-end-2025",
+      "opened": "2026-01-05",
+      "forecast": 67.9,
+      "lo80": 53.8,
+      "hi80": 80.2,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "romeo-and-juliet-west-end-2026",
+      "opened": "2026-03-31",
+      "forecast": 71.8,
+      "lo80": 57.8,
+      "hi80": 84.2,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "1536-west-end-2026",
+      "opened": "2026-05-12",
+      "forecast": 74.2,
+      "lo80": 60.2,
+      "hi80": 86.6,
+      "categoryMean": 71.3,
+      "actual": 91
+    },
+    {
+      "id": "paranormal-activity-west-end-2025",
+      "opened": "2025-12-14",
+      "forecast": 72.4,
+      "lo80": 58.4,
+      "hi80": 84.8,
+      "categoryMean": 71.3,
+      "actual": 74
+    },
+    {
+      "id": "shadowlands-west-end-2026",
+      "opened": "2026-02-12",
+      "forecast": 66.9,
+      "lo80": 52.8,
+      "hi80": 79.2,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "all-my-sons-west-end-2025",
+      "opened": "2025-11-17",
+      "forecast": 75.3,
+      "lo80": 61.2,
+      "hi80": 87.6,
+      "categoryMean": 71.3,
+      "actual": 88
+    },
+    {
+      "id": "the-producers-west-end-2025",
+      "opened": "2025-09-13",
+      "forecast": 74.4,
+      "lo80": 60.4,
+      "hi80": 86.8,
+      "categoryMean": 72.4,
+      "actual": 85
+    },
+    {
+      "id": "the-spy-who-came-in-from-the-cold-west-end-2025",
+      "opened": "2025-11-25",
+      "forecast": 76.1,
+      "lo80": 62.1,
+      "hi80": 88.5,
+      "categoryMean": 71.3,
+      "actual": 68
+    },
+    {
+      "id": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "opened": "2026-02-10",
+      "forecast": 75.6,
+      "lo80": 61.6,
+      "hi80": 88,
+      "categoryMean": 72,
+      "actual": 78
+    },
+    {
+      "id": "the-boy-who-harnessed-the-wind-west-end-2026",
+      "opened": "2026-05-14",
+      "forecast": 70.2,
+      "lo80": 56.1,
+      "hi80": 82.5,
+      "categoryMean": 72,
+      "actual": 76
+    },
+    {
+      "id": "high-noon-west-end-2025",
+      "opened": "2026-01-09",
+      "forecast": 70.9,
+      "lo80": 56.9,
+      "hi80": 83.3,
+      "categoryMean": 71.3,
+      "actual": 60
+    },
+    {
+      "id": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "opened": "2026-04-15",
+      "forecast": 68.8,
+      "lo80": 54.8,
+      "hi80": 81.2,
+      "categoryMean": 71.3,
+      "actual": 75
+    },
+    {
+      "id": "the-playboy-of-the-western-world-west-end-2025",
+      "opened": "2025-12-11",
+      "forecast": 73.4,
+      "lo80": 59.4,
+      "hi80": 85.8,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "les-liaisons-dangereuses-west-end-2026",
+      "opened": "2026-04-01",
+      "forecast": 66.5,
+      "lo80": 52.5,
+      "hi80": 78.9,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "between-the-river-and-the-sea-west-end-2026",
+      "opened": "2026-04-20",
+      "forecast": 69.4,
+      "lo80": 55.3,
+      "hi80": 81.7,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "man-and-boy-west-end-2026",
+      "opened": "2026-02-09",
+      "forecast": 69,
+      "lo80": 55,
+      "hi80": 81.4,
+      "categoryMean": 71.3,
+      "actual": 66
+    },
+    {
+      "id": "summerfolk-west-end-2026",
+      "opened": "2026-03-17",
+      "forecast": 71.5,
+      "lo80": 57.5,
+      "hi80": 83.9,
+      "categoryMean": 71.3,
+      "actual": 74
+    },
+    {
+      "id": "john-proctor-is-the-villain-west-end-2026",
+      "opened": "2026-03-26",
+      "forecast": 74.4,
+      "lo80": 60.4,
+      "hi80": 86.8,
+      "categoryMean": 71.3,
+      "actual": 84
+    },
+    {
+      "id": "krapps-last-tape-godots-todo-list-west-end-2026",
+      "opened": "2026-05-11",
+      "forecast": 69.4,
+      "lo80": 55.4,
+      "hi80": 81.8,
+      "categoryMean": 71.3,
+      "actual": 75
+    },
+    {
+      "id": "arcadia-west-end-2026",
+      "opened": "2026-02-04",
+      "forecast": 68.7,
+      "lo80": 54.7,
+      "hi80": 81.1,
+      "categoryMean": 71.3,
+      "actual": 76
+    },
+    {
+      "id": "dracula-west-end-2025",
+      "opened": "2026-02-17",
+      "forecast": 79,
+      "lo80": 64.9,
+      "hi80": 91.4,
+      "categoryMean": 71.3,
+      "actual": 59
+    },
+    {
+      "id": "hercules-west-end-2025",
+      "opened": "2025-06-24",
+      "forecast": 71.4,
+      "lo80": 57.4,
+      "hi80": 83.8,
+      "categoryMean": 72,
+      "actual": 59
+    },
+    {
+      "id": "inter-alia-west-end-2026",
+      "opened": "2026-04-07",
+      "forecast": 75.8,
+      "lo80": 61.7,
+      "hi80": 88.1,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "the-authenticator-west-end-2026",
+      "opened": "2026-04-02",
+      "forecast": 72.6,
+      "lo80": 58.6,
+      "hi80": 85,
+      "categoryMean": 71.3,
+      "actual": 61
+    },
+    {
+      "id": "evita-west-end-2025",
+      "opened": "2025-07-01",
+      "forecast": 72.3,
+      "lo80": 58.3,
+      "hi80": 84.7,
+      "categoryMean": 72.4,
+      "actual": 80
+    },
+    {
+      "id": "guess-how-much-i-love-you-west-end-2026",
+      "opened": "2026-01-22",
+      "forecast": 69.2,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 79
+    },
+    {
+      "id": "christmas-carol-goes-wrong-apollo-west-end-2025",
+      "opened": "2025-12-14",
+      "forecast": 72.8,
+      "lo80": 58.8,
+      "hi80": 85.2,
+      "categoryMean": 71.3,
+      "actual": 82
+    },
+    {
+      "id": "just-for-one-day-the-live-aid-musical-west-end-2025",
+      "opened": "2025-06-11",
+      "forecast": 71.1,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 72,
+      "actual": 69
+    },
+    {
+      "id": "stereophonic-west-end-2025",
+      "opened": "2025-06-12",
+      "forecast": 81.5,
+      "lo80": 67.5,
+      "hi80": 93.9,
+      "categoryMean": 71.3,
+      "actual": 81
+    },
+    {
+      "id": "the-estate-west-end-2025",
+      "opened": "2025-07-17",
+      "forecast": 70.1,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "inter-alia-west-end-2025",
+      "opened": "2025-07-23",
+      "forecast": 72.6,
+      "lo80": 58.5,
+      "hi80": 84.9,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "every-brilliant-thing-west-end-2025",
+      "opened": "2025-08-07",
+      "forecast": 78.8,
+      "lo80": 64.7,
+      "hi80": 91.1,
+      "categoryMean": 71.3,
+      "actual": 75
+    },
+    {
+      "id": "born-with-teeth-west-end-2025",
+      "opened": "2025-09-02",
+      "forecast": 70.6,
+      "lo80": 56.6,
+      "hi80": 83,
+      "categoryMean": 71.3,
+      "actual": 67
+    },
+    {
+      "id": "deaf-republic-west-end-2025",
+      "opened": "2025-09-04",
+      "forecast": 69.1,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "cow-deer-west-end-2025",
+      "opened": "2025-09-10",
+      "forecast": 69.2,
+      "lo80": 55.2,
+      "hi80": 81.6,
+      "categoryMean": 71.3,
+      "actual": 62
+    },
+    {
+      "id": "the-weir-west-end-2025",
+      "opened": "2025-09-19",
+      "forecast": 81.6,
+      "lo80": 67.5,
+      "hi80": 93.9,
+      "categoryMean": 71.3,
+      "actual": 85
+    },
+    {
+      "id": "the-importance-of-being-earnest-west-end-2025",
+      "opened": "2025-09-20",
+      "forecast": 79.2,
+      "lo80": 65.2,
+      "hi80": 91.6,
+      "categoryMean": 71.3,
+      "actual": 74
+    },
+    {
+      "id": "bacchae-west-end-2025",
+      "opened": "2025-09-24",
+      "forecast": 71.8,
+      "lo80": 57.7,
+      "hi80": 84.1,
+      "categoryMean": 71.3,
+      "actual": 56
+    },
+    {
+      "id": "clarkston-west-end-2025",
+      "opened": "2025-09-25",
+      "forecast": 68.9,
+      "lo80": 54.9,
+      "hi80": 81.3,
+      "categoryMean": 71.3,
+      "actual": 65
+    },
+    {
+      "id": "punch-west-end-2025",
+      "opened": "2025-09-26",
+      "forecast": 72.7,
+      "lo80": 58.7,
+      "hi80": 85.1,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "hamlet-west-end-2025",
+      "opened": "2025-10-02",
+      "forecast": 72.6,
+      "lo80": 58.6,
+      "hi80": 85,
+      "categoryMean": 71.3,
+      "actual": 59
+    },
+    {
+      "id": "mary-page-marlowe-west-end-2025",
+      "opened": "2025-10-08",
+      "forecast": 72.4,
+      "lo80": 58.4,
+      "hi80": 84.8,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "the-unbelievers-west-end-2025",
+      "opened": "2025-10-16",
+      "forecast": 69.2,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 68
+    },
+    {
+      "id": "othello-west-end-2025",
+      "opened": "2025-11-04",
+      "forecast": 61.3,
+      "lo80": 47.2,
+      "hi80": 73.6,
+      "categoryMean": 71.3,
+      "actual": 70
+    },
+    {
+      "id": "p-rn-play-west-end-2025",
+      "opened": "2025-11-13",
+      "forecast": 69.2,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 71
+    },
+    {
+      "id": "end-west-end-2025",
+      "opened": "2025-11-20",
+      "forecast": 70,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 71
+    },
+    {
+      "id": "the-shitheads-west-end-2026",
+      "opened": "2026-02-12",
+      "forecast": 69.2,
+      "lo80": 55.2,
+      "hi80": 81.6,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "4-48-psychosis-west-end-2025",
+      "opened": "2025-06-18",
+      "forecast": 69.1,
+      "lo80": 55,
+      "hi80": 81.4,
+      "categoryMean": 71.3,
+      "actual": 75
+    },
+    {
+      "id": "the-land-of-the-living-west-end-2025",
+      "opened": "2025-09-18",
+      "forecast": 70,
+      "lo80": 56,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 66
+    },
+    {
+      "id": "sinatra-the-musical-west-end-2026",
+      "opened": "2026-06-24",
+      "forecast": 70.6,
+      "lo80": 57.3,
+      "hi80": 82.5,
+      "categoryMean": 72.1,
+      "actual": 65
+    },
+    {
+      "id": "cyrano-de-bergerac-west-end-2026",
+      "opened": "2026-06-25",
+      "forecast": 83,
+      "lo80": 69.7,
+      "hi80": 94.9,
+      "categoryMean": 71.4,
+      "actual": 90
+    },
+    {
+      "id": "pride-west-end-2026",
+      "opened": "2026-06-25",
+      "forecast": 70.9,
+      "lo80": 57.6,
+      "hi80": 82.8,
+      "categoryMean": 72.1,
+      "actual": 86
+    },
+    {
+      "id": "are-you-watching-west-end-2026",
+      "opened": "2026-06-04",
+      "forecast": 69.6,
+      "lo80": 56.3,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "blood-of-my-blood-west-end-2026",
+      "opened": "2026-10-07",
+      "forecast": 69.6,
+      "lo80": 56.3,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "archduke-west-end-2026",
+      "opened": "2026-06-26",
+      "forecast": 71.6,
+      "lo80": 58.3,
+      "hi80": 83.5,
+      "categoryMean": 71.3,
+      "actual": 65
+    },
+    {
+      "id": "man-to-man-west-end-2026",
+      "opened": "2026-09-11",
+      "forecast": 69.6,
+      "lo80": 56.2,
+      "hi80": 81.5,
+      "categoryMean": 71.3,
+      "actual": 77
+    },
+    {
+      "id": "to-kill-a-mockingbird-west-end-2026",
+      "opened": "2026-06-30",
+      "forecast": 74.5,
+      "lo80": 61.2,
+      "hi80": 86.4,
+      "categoryMean": 71.3,
+      "actual": 86
+    },
+    {
+      "id": "tao-of-glass-west-end-2026",
+      "opened": "2026-07-30",
+      "forecast": 71.5,
+      "lo80": 58.1,
+      "hi80": 83.4,
+      "categoryMean": 71.3,
+      "actual": 83
+    },
+    {
+      "id": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "opened": "2026-06-24",
+      "forecast": 72.3,
+      "lo80": 58.9,
+      "hi80": 84.2,
+      "categoryMean": 71.4,
+      "actual": 77
+    },
+    {
+      "id": "jesus-christ-superstar-west-end-2026",
+      "opened": "2026-07-07",
+      "forecast": 74.5,
+      "lo80": 61.1,
+      "hi80": 86.4,
+      "categoryMean": 72.7,
+      "actual": 74
+    },
+    {
+      "id": "the-misanthrope-west-end-2026",
+      "opened": "2026-06-23",
+      "forecast": 68.9,
+      "lo80": 55.5,
+      "hi80": 80.8,
+      "categoryMean": 71.3,
+      "actual": 59
+    },
+    {
+      "id": "the-story-west-end-2026",
+      "opened": "2026-09-03",
+      "forecast": 72.8,
+      "lo80": 59.5,
+      "hi80": 84.7,
+      "categoryMean": 71.3,
+      "actual": 61
+    },
+    {
+      "id": "war-horse-west-end-2026",
+      "opened": "2026-06-02",
+      "forecast": 84,
+      "lo80": 70.7,
+      "hi80": 95.9,
+      "categoryMean": 71.4,
+      "actual": 89
+    },
+    {
+      "id": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "opened": "2026-09-30",
+      "forecast": 80,
+      "lo80": 66.7,
+      "hi80": 91.9,
+      "categoryMean": 71.4,
+      "actual": 86
+    },
+    {
+      "id": "the-comedy-about-spies-west-end-2026",
+      "opened": "2026-08-06",
+      "forecast": 76.4,
+      "lo80": 63.1,
+      "hi80": 88.3,
+      "categoryMean": 71.3,
+      "actual": 86
+    },
+    {
+      "id": "trainspotting-the-musical-west-end-2026",
+      "opened": "2026-07-22",
+      "forecast": 71.4,
+      "lo80": 58.1,
+      "hi80": 83.3,
+      "categoryMean": 72.1,
+      "actual": 33
+    },
+    {
+      "id": "the-cherry-orchard-west-end-2026",
+      "opened": "2026-10-13",
+      "forecast": 74.4,
+      "lo80": 61.1,
+      "hi80": 86.3,
+      "categoryMean": 71.4,
+      "actual": 74
+    },
+    {
+      "id": "glengarry-glen-ross-west-end-2026",
+      "opened": "2026-06-17",
+      "forecast": 64.2,
+      "lo80": 50.9,
+      "hi80": 76.1,
+      "categoryMean": 71.4,
+      "actual": 63
+    },
+    {
+      "id": "hay-fever-west-end-2026",
+      "opened": "2026-10-01",
+      "forecast": 68.2,
+      "lo80": 54.8,
+      "hi80": 80.1,
+      "categoryMean": 71.4,
+      "actual": 69
+    },
+    {
+      "id": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "opened": "2026-10-16",
+      "forecast": 73.5,
+      "lo80": 60.2,
+      "hi80": 85.4,
+      "categoryMean": 72.7,
+      "actual": 76
+    },
+    {
+      "id": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "opened": "2026-09-21",
+      "forecast": 70.2,
+      "lo80": 56.9,
+      "hi80": 82.1,
+      "categoryMean": 71.3,
+      "actual": 64
+    },
+    {
+      "id": "electra-persona-west-end-2026",
+      "opened": "2026-09-01",
+      "forecast": 70.5,
+      "lo80": 57.2,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 67
+    },
+    {
+      "id": "some-woman-west-end-2026",
+      "opened": "2026-10-15",
+      "forecast": 70.5,
+      "lo80": 57.2,
+      "hi80": 82.4,
+      "categoryMean": 71.3,
+      "actual": 69
+    },
+    {
+      "id": "allegra-west-end-2026",
+      "opened": "2026-07-09",
+      "forecast": 70.2,
+      "lo80": 56.9,
+      "hi80": 82.1,
+      "categoryMean": 71.3,
+      "actual": 58
+    },
+    {
+      "id": "rent-west-end-2026",
+      "opened": "2026-10-08",
+      "forecast": 74.3,
+      "lo80": 61,
+      "hi80": 86.2,
+      "categoryMean": 72.7,
+      "actual": 77
+    },
+    {
+      "id": "abigails-party-west-end-2026",
+      "opened": "2026-08-19",
+      "forecast": 73.5,
+      "lo80": 60.1,
+      "hi80": 85.4,
+      "categoryMean": 71.3,
+      "actual": 79
+    },
+    {
+      "id": "the-last-ship-west-end-2026",
+      "opened": "2026-09-23",
+      "forecast": 68.9,
+      "lo80": 55.5,
+      "hi80": 80.8,
+      "categoryMean": 72.7,
+      "actual": 61
+    },
+    {
+      "id": "how-the-other-half-loves-west-end-2026",
+      "opened": "2026-08-12",
+      "forecast": 68.3,
+      "lo80": 55,
+      "hi80": 80.2,
+      "categoryMean": 71.4,
+      "actual": 78
+    },
+    {
+      "id": "the-standard-of-living-west-end-2026",
+      "opened": "2026-09-29",
+      "forecast": 72.3,
+      "lo80": 59,
+      "hi80": 84.2,
+      "categoryMean": 71.3,
+      "actual": 70
+    },
+    {
+      "id": "martin-guerre-west-end-2026",
+      "opened": "2026-10-20",
+      "forecast": 71.1,
+      "lo80": 57.8,
+      "hi80": 83,
+      "categoryMean": 71.4,
+      "actual": 71
+    },
+    {
+      "id": "into-the-woods-noel-coward-west-end-2026",
+      "opened": "2026-10-07",
+      "forecast": 81.2,
+      "lo80": 67.9,
+      "hi80": 93.1,
+      "categoryMean": 72.7,
+      "actual": 88
+    },
+    {
+      "id": "arcadia-duke-of-yorks-west-end-2026",
+      "opened": "2026-07-01",
+      "forecast": 74.4,
+      "lo80": 61.1,
+      "hi80": 86.3,
+      "categoryMean": 71.4,
+      "actual": 74
+    }
+  ],
+  "verdictFlags": {
+    "walkForwardMaeGainPct": 7.1,
+    "maeDiffCI95": [
+      -1.2,
+      -0.3
+    ],
+    "beatsBaselineByBar": false,
+    "coverage80InBand": true,
+    "meetsPublishBar": false
+  }
+}

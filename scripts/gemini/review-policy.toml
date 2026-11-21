@@ -1,0 +1,23 @@
+# scripts/gemini/review-policy.toml: the Gemini CLI policy for code reviews (BRO-7987).
+#
+# `--approval-mode plan` alone is NOT read-only in a headless run: the CLI's
+# built-in non-interactive policy auto-allows `exit_plan_mode`, and after that
+# `write_file` and `run_shell_command` ran (a probe on 0.70.0 created two files).
+# This file is loaded with `--policy` by scripts/gemini/review.js. It allows the
+# read tools only and denies every other tool, MCP tools included, in every mode.
+# Gemini CLI ranks a rule by tier + priority/1000, and `--policy` files load in
+# the user tier (4), above the built-in default tier (1) and any repo workspace
+# policy (3), so these rules win over every built-in one. Within this file the
+# allow-list (999) beats the deny-all (998).
+# tests/unit/gemini-review.test.mjs pins this file's shape.
+
+[[rule]]
+toolName = ["glob", "grep_search", "list_directory", "read_file", "read_many_files", "update_topic"]
+decision = "allow"
+priority = 999
+
+[[rule]]
+toolName = "*"
+decision = "deny"
+priority = 998
+denyMessage = "Read-only code review: only glob, grep_search, list_directory and read_file are allowed."

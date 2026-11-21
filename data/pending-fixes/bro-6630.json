@@ -1,0 +1,872 @@
+{
+  "issueNumber": "bro-6630",
+  "planId": "79d935ac-97d6-47bb-b7d8-3be3bd1d85d1",
+  "status": "applied",
+  "createdAt": "2026-10-30T16:23:31.554Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6630 season 2017-18: add 28 Off-Broadway shows (opening 2017-06..2018-05) found by the outlet-first census (2+ T1/T2 outlets). Dates from a Playbill production page, or two sources agreeing: BroadwayWorld show page with closing matched by TheaterMania or Broadway.com, opening corroborated by the second source and within -3..+7 days of the first write-up, venues agreeing (part 1 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-traveling-lady-off-broadway-2017",
+          "title": "The Traveling Lady",
+          "slug": "the-traveling-lady-off-broadway-2017",
+          "venue": "Cherry Lane Theatre",
+          "previewsStartDate": "2017-06-06",
+          "openingDate": "2017-06-21",
+          "closingDate": "2017-07-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-traveling-lady-cherry-lane-theatre-2017-2018",
+            "https://www.theatermania.com/news/the-traveling-lady_81535/",
+            "https://www.theaterscene.net/plays/the-traveling-lady/archive/",
+            "https://www.newyorktheatreguide.com/reviews/the-traveling-lady"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-last-match-off-broadway-2017",
+          "title": "The Last Match",
+          "slug": "the-last-match-off-broadway-2017",
+          "venue": "Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "previewsStartDate": "2017-09-28",
+          "openingDate": "2017-10-24",
+          "closingDate": "2017-12-24",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Last-Match-331820.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-last-match_318233/",
+            "https://www.theatermania.com/news/the-last-match_82873/",
+            "https://variety.com/2017/legit/reviews/the-last-match-review-1202599913/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-roundabout-theatre-companys-the-last-match-by-anna-ziegler",
+            "https://newyorktheater.me/2017/10/28/the-last-match-review-awkward-tennis-appealing-love/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "on-the-shore-of-the-wide-world-off-broadway-2017",
+          "title": "On the Shore of the Wide World",
+          "slug": "on-the-shore-of-the-wide-world-off-broadway-2017",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2017-08-23",
+          "openingDate": "2017-09-12",
+          "closingDate": "2017-10-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/On-the-Shore-of-the-Wide-World-332067.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/on-the-shore-of-the-wide-world_319887/",
+            "https://www.theatermania.com/news/on-the-shore-of-the-wide-world_82375/",
+            "https://variety.com/2017/legit/reviews/on-the-shore-of-the-wide-world-review-play-1202558925/",
+            "https://theaterlife.com/on-the-shore-of-the-wide-world-2/",
+            "https://www.theaterscene.net/plays/offbway-plays/shore-wide-world/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-midsummer-nights-dream-off-broadway-2017",
+          "title": "A Midsummer Night's Dream",
+          "slug": "a-midsummer-nights-dream-off-broadway-2017",
+          "venue": "Delacorte Theater",
+          "previewsStartDate": "2017-07-11",
+          "openingDate": "2017-07-31",
+          "closingDate": "2017-08-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/A-Midsummer-Nights-Dream-331909.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/a-midsummer-nights-dream_318347/",
+            "https://www.theatermania.com/news/a-midsummer-nights-dream_81899/",
+            "https://variety.com/2017/legit/reviews/a-midsummer-nights-dream-review-shakespeare-in-the-park-1202512152/",
+            "https://www.theaterscene.net/plays/offbway-plays/midsummer-nights-dream-shakespeare-park/victor-gluck/",
+            "https://www.newyorktheatreguide.com/reviews/a-midsummer-nights-dream"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "in-the-body-of-the-world-off-broadway-2018",
+          "title": "In the Body of the World",
+          "slug": "in-the-body-of-the-world-off-broadway-2018",
+          "venue": "New York City Center – Stage I",
+          "previewsStartDate": "2018-01-16",
+          "openingDate": "2018-02-06",
+          "closingDate": "2018-03-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/In-the-Body-of-the-World-332449.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/in-the-body-of-the-world_318802/",
+            "https://www.theatermania.com/news/eve-ensler-relives-personal-and-global-crisis-in-the-body-of-the-world_83983/",
+            "https://variety.com/2018/legit/reviews/in-the-body-of-the-world-review-eve-ensler-1202689740/",
+            "https://theaterlife.com/in-the-body-of-the-world-1-2/",
+            "https://www.theaterscene.net/plays/solo-plays/in-the-body-of-the-world/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jesus-hopped-the-a-train-off-broadway-2017",
+          "title": "Jesus Hopped the ‘A’ Train",
+          "slug": "jesus-hopped-the-a-train-off-broadway-2017",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2017-10-14",
+          "openingDate": "2017-10-23",
+          "closingDate": "2017-12-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Jesus-Hopped-the-A-Train-332415.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/jesus-hopped-the-a-train_319174/",
+            "https://newyorktheater.me/2017/10/23/jesus-hopped-the-a-train-review-and-pics-stephen-adly-guirgis-spiritual-killers/",
+            "https://www.theatermania.com/news/jesus-hopped-the-a-train_82856/",
+            "https://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+            "https://www.theaterscene.net/plays/offbway-plays/jesus-hopped-train/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "julius-caesar-off-broadway-2017",
+          "title": "Julius Caesar",
+          "slug": "julius-caesar-off-broadway-2017",
+          "venue": "Delacorte Theater",
+          "previewsStartDate": "2017-05-23",
+          "openingDate": "2017-06-12",
+          "closingDate": "2017-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Julius-Caesar-331908.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/julius-caesar_318346/",
+            "https://theaterlife.com/julius-caesar/",
+            "https://www.newyorktheatreguide.com/reviews/julius-caesar",
+            "https://www.theatermania.com/news/julius-caesar_83377/",
+            "https://variety.com/2018/legit/reviews/julius-caesar-review-bridge-theatre-1202687269/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "office-hour-off-broadway-2017",
+          "title": "Office Hour",
+          "slug": "office-hour-off-broadway-2017",
+          "venue": "Martinson Theater at Joseph Papp Public Theater",
+          "previewsStartDate": "2017-10-17",
+          "openingDate": "2017-11-08",
+          "closingDate": "2017-12-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Office-Hour-332151.html",
+            "https://www.broadway.com/shows/office-hour/",
+            "https://www.theatermania.com/news/office-hour_83054/",
+            "https://variety.com/2017/legit/reviews/office-hour-play-review-1202610843/",
+            "https://theaterlife.com/office-hour-1-2/",
+            "https://www.theaterscene.net/plays/offbway-plays/office-hour/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "amy-and-the-orphans-off-broadway-2018",
+          "title": "Amy and the Orphans",
+          "slug": "amy-and-the-orphans-off-broadway-2018",
+          "venue": "Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "previewsStartDate": "2018-02-01",
+          "openingDate": "2018-03-01",
+          "closingDate": "2018-04-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Amy-and-the-Orphans-331827.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/amy-and-the-orphans_318232/",
+            "https://www.theatermania.com/news/a-trip-down-the-l-i-e-connects-three-estranged-siblings-in-amy-and-the-orphans_84280/",
+            "https://newyorktheater.me/2018/03/06/amy-and-the-orphans-review-the-truth-about-down-syndrome-packaged-in-a-familiar-comedy/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-amy-and-the-orphans-starring-jamie-brewer-at-roundabout-theatre-company",
+            "https://www.theaterscene.net/plays/offbway-plays/amy-and-the-orphans/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "napoli-brooklyn-off-broadway-2017",
+          "title": "Napoli, Brooklyn",
+          "slug": "napoli-brooklyn-off-broadway-2017",
+          "venue": "Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "previewsStartDate": "2017-06-09",
+          "openingDate": "2017-06-27",
+          "closingDate": "2017-08-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Napoli,-Brooklyn-331819.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/napoli-brooklyn_312789/",
+            "https://www.theatermania.com/news/napoli-brooklyn_81574/",
+            "https://theaterlife.com/napoli-brooklyn/",
+            "https://www.theaterscene.net/plays/offbway-plays/napoli-brooklyn/victor-gluck/",
+            "https://www.newyorktheatreguide.com/reviews/napoli-brooklyn"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hangmen-off-broadway-2018",
+          "title": "Hangmen",
+          "slug": "hangmen-off-broadway-2018",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2018-01-18",
+          "openingDate": "2018-02-05",
+          "closingDate": "2018-03-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Hangmen-332070.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hangmen_319891/",
+            "https://variety.com/2018/legit/reviews/hangmen-review-martin-mcdonagh-atlantic-theater-1202688066/",
+            "https://www.theaterscene.net/plays/offbway-plays/hangmen/archive/",
+            "https://newyorktheater.me/2018/03/07/hangmen-review/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "paradise-blue-off-broadway-2018",
+          "title": "Paradise Blue",
+          "slug": "paradise-blue-off-broadway-2018",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2018-04-24",
+          "openingDate": "2018-05-14",
+          "closingDate": "2018-06-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Paradise-Blue-332455.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/paradise-blue_319173/",
+            "https://www.theatermania.com/news/paradise-blue-examines-a-black-community-on-the-brink-in-1949-detroit_85193/",
+            "https://variety.com/2018/legit/reviews/paradise-blue-review-play-dominique-morisseau-1202810217/",
+            "https://www.theaterscene.net/plays/offbway-plays/paradise-blue/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fulfillment-center-off-broadway-2017",
+          "title": "Fulfillment Center",
+          "slug": "fulfillment-center-off-broadway-2017",
+          "venue": "New York City Center – Stage II",
+          "previewsStartDate": "2017-06-06",
+          "openingDate": "2017-06-20",
+          "closingDate": "2017-07-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Fulfillment-Center-331635.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/fulfillment-center_315911/",
+            "https://www.theatermania.com/news/fulfillment-center_81496/",
+            "https://theaterlife.com/fulfillment-center/",
+            "https://www.newyorktheatreguide.com/reviews/fulfillment-center"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ghost-light-off-broadway-2017",
+          "title": "Ghost Light",
+          "slug": "ghost-light-off-broadway-2017",
+          "venue": "Claire Tow Theater",
+          "previewsStartDate": "2017-06-03",
+          "openingDate": "2017-06-19",
+          "closingDate": "2017-07-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Ghost-Light-332116.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/ghost-light_319190/",
+            "https://www.theatermania.com/news/ghost-light_81474/",
+            "https://newyorktheater.me/2017/07/01/ghost-light-review-immersive-theater-about-theater/",
+            "https://www.newyorktheatreguide.com/reviews/ghost-light"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "people-places-and-things-off-broadway-2017",
+          "title": "People, Places & Things",
+          "slug": "people-places-and-things-off-broadway-2017",
+          "venue": "St. Ann's Warehouse",
+          "previewsStartDate": null,
+          "openingDate": "2017-10-19",
+          "closingDate": "2017-12-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/People,-Places-Things-331817.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/people-places-things_318223/",
+            "https://www.theatermania.com/news/people-places-things_82900/",
+            "https://theaterlife.com/people-places-things/",
+            "https://www.theaterscene.net/plays/offbway-plays/people-places-things/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "red-roses-green-gold-off-broadway-2017",
+          "title": "Red Roses, Green Gold",
+          "slug": "red-roses-green-gold-off-broadway-2017",
+          "venue": "Minetta Lane Theatre",
+          "previewsStartDate": "2017-10-11",
+          "openingDate": "2017-10-29",
+          "closingDate": "2018-02-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Red-Roses,-Green-Gold-332338.html",
+            "https://www.broadway.com/shows/red-roses-green-gold/",
+            "https://www.theatermania.com/news/red-roses-green-gold_82936/",
+            "https://www.theaterscene.net/musicals/offbway/red-roses-green-gold/archive/",
+            "https://theaterlife.com/red-roses-green-gold/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-treasurer-off-broadway-2017",
+          "title": "The Treasurer",
+          "slug": "the-treasurer-off-broadway-2017",
+          "venue": "Playwrights Horizons",
+          "previewsStartDate": "2017-09-06",
+          "openingDate": "2017-09-26",
+          "closingDate": "2017-11-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Treasurer-332256.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-treasurer_320461/",
+            "https://www.theatermania.com/news/the-treasurer_82555/",
+            "https://www.theaterscene.net/plays/offbway-plays/the-treasurer/archive/",
+            "https://theaterlife.com/the-treasurer/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-portuguese-kid-off-broadway-2017",
+          "title": "The Portuguese Kid",
+          "slug": "the-portuguese-kid-off-broadway-2017",
+          "venue": "New York City Center – Stage I",
+          "previewsStartDate": "2017-09-19",
+          "openingDate": "2017-10-24",
+          "closingDate": "2017-12-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/The-Portuguese-Kid-332173.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-portuguese-kid_319905/",
+            "https://www.theatermania.com/news/the-portuguese-kid_82865/",
+            "https://variety.com/2017/legit/reviews/the-portuguese-kid-review-1202598228/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "afterglow-off-broadway-2017",
+          "title": "Afterglow",
+          "slug": "afterglow-off-broadway-2017",
+          "venue": "Davenport Theatre",
+          "previewsStartDate": "2017-06-12",
+          "openingDate": "2017-06-23",
+          "closingDate": "2018-08-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Afterglow-332184.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/afterglow_319842/",
+            "https://www.theatermania.com/news/afterglow_81543/",
+            "https://www.theaterscene.net/plays/offbway-plays/afterglow/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "attack-of-the-elvis-impersonators-off-broadway-2017",
+          "title": "Attack of the Elvis Impersonators",
+          "slug": "attack-of-the-elvis-impersonators-off-broadway-2017",
+          "venue": "The Lion Theatre at Theatre Row",
+          "previewsStartDate": "2017-06-01",
+          "openingDate": "2017-06-15",
+          "closingDate": "2017-07-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Attack-of-the-Elvis-Impersonators-332014.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/attack-of-the-elvis-impersonators_318791/",
+            "https://www.theaterscene.net/musicals/offbway/attack-of-the-elvis-impesonators/archive/",
+            "https://www.newyorktheatreguide.com/reviews/attack-of-the-elvis-impersonators"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cardinal-off-broadway-2018",
+          "title": "Cardinal",
+          "slug": "cardinal-off-broadway-2018",
+          "venue": "Tony Kiser Theatre",
+          "previewsStartDate": "2018-01-09",
+          "openingDate": "2018-01-30",
+          "closingDate": "2018-02-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Cardinal-332254.html",
+            "https://www.broadway.com/shows/cardinal/",
+            "https://www.theatermania.com/news/cardinal_83874/",
+            "https://www.theaterscene.net/plays/offbway-plays/cardinal/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "charm-off-broadway-2017",
+          "title": "Charm",
+          "slug": "charm-off-broadway-2017",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2017-08-31",
+          "openingDate": "2017-09-18",
+          "closingDate": "2017-10-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Charm-332007.html",
+            "https://www.broadway.com/shows/charm/",
+            "https://www.theatermania.com/news/charm_82456/",
+            "https://www.theaterscene.net/plays/offbway-plays/charm/victor-gluck/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fire-and-air-off-broadway-2018",
+          "title": "Fire and Air",
+          "slug": "fire-and-air-off-broadway-2018",
+          "venue": "Classic Stage Company",
+          "previewsStartDate": "2018-01-17",
+          "openingDate": "2018-02-01",
+          "closingDate": "2018-03-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Fire-and-Air-332092.html",
+            "https://www.broadway.com/shows/fire-and-air/",
+            "https://www.theatermania.com/news/fire-and-air_83920/",
+            "https://www.theaterscene.net/plays/offbway-plays/fire-and-air/archive/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mary-shelleys-frankenstein-off-broadway-2017",
+          "title": "Mary Shelley's Frankenstein",
+          "slug": "mary-shelleys-frankenstein-off-broadway-2017",
+          "venue": "Pershing Square Signature Center",
+          "previewsStartDate": "2017-12-21",
+          "openingDate": "2017-12-27",
+          "closingDate": "2018-01-07",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+theatermania",
+          "closingDateSource": "two-source:bww+theatermania",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Mary-Shelleys-Frankenstein-332345.html",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/mary-shelleys-frankenstein_320545/",
+            "https://www.theatermania.com/news/mary-shelleys-frankenstein_83590/",
+            "https://www.theaterscene.net/dance/mary-shelleys-frankenstein/joel-benjamin/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mlimas-tale-off-broadway-2018",
+          "title": "Mlima’s Tale",
+          "slug": "mlimas-tale-off-broadway-2018",
+          "venue": "Martinson Theater at Joseph Papp Public Theater",
+          "previewsStartDate": "2018-03-27",
+          "openingDate": "2018-04-15",
+          "closingDate": "2018-06-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-30T00:00:00.000Z",
+          "openingDateSource": "two-source:bww+broadway.com",
+          "closingDateSource": "two-source:bww+broadway.com",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/shows/Mlimas-Tale-332156.html",
+            "https://www.broadway.com/shows/mlimas-tale/",
+            "https://www.theatermania.com/news/mlimas-tale-navigates-the-illicit-ivory-trade_84813/",
+            "https://www.theaterscene.net/plays/offbway-plays/mlimas-tale/joel-benjamin/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T17:43:23.761Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-traveling-lady-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-match-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added on-the-shore-of-the-wide-world-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added in-the-body-of-the-world-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jesus-hopped-the-a-train-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added julius-caesar-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added office-hour-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added amy-and-the-orphans-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added napoli-brooklyn-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hangmen-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added paradise-blue-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fulfillment-center-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ghost-light-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added people-places-and-things-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added red-roses-green-gold-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-treasurer-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-portuguese-kid-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added afterglow-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added attack-of-the-elvis-impersonators-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cardinal-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added charm-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fire-and-air-off-broadway-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mary-shelleys-frankenstein-off-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mlimas-tale-off-broadway-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

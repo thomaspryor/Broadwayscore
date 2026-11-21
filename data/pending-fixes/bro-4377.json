@@ -1,0 +1,1002 @@
+{
+  "issueNumber": "bro-4377",
+  "planId": "f1f45a01-2402-4d8b-af7f-730a131de025",
+  "status": "applied",
+  "createdAt": "2026-09-29T20:07:06.351Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct PHYL dates (first preview was stored as opening night) and add missing Off-Broadway productions: Machine Learning (MNN), three SoHo Playhouse runs, and other fall shows absent from every discovery source.",
+    "steps": [
+      "Set phyl-off-broadway-2026.previewsStartDate null -> \"2026-10-03\"",
+      "Set phyl-off-broadway-2026.openingDate \"2026-10-03\" -> \"2026-10-22\"",
+      "Set phyl-off-broadway-2026.closingDate null -> \"2026-11-07\"",
+      "Add machine-learning-off-broadway-2026",
+      "Add diana-the-untold-and-untrue-story-off-broadway-2026",
+      "Add the-very-gay-christmas-prince-off-broadway-2026",
+      "Add the-second-best-school-shooting-off-broadway-2026",
+      "Add arias-with-a-twist-off-broadway-2026",
+      "Add big-feelings-off-broadway-2026",
+      "Add fantasma-off-broadway-2026",
+      "Add les-enfants-terribles-off-broadway-2026",
+      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.previewsStartDate null -> \"2026-01-08\"",
+      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.openingDate \"2026-01-08\" -> \"2026-01-12\"",
+      "Add going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "Add two-girls-off-broadway-2026",
+      "Add hospital-hour-off-broadway-2026",
+      "Add queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "Add the-morbs-off-broadway-2026",
+      "Add the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "Add specimen-off-broadway-2026",
+      "Add beyond-the-stardust-off-broadway-2026",
+      "Add alice-in-wonderland-off-broadway-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-10-03",
+        "description": "Mint Theater (https://minttheater.org/): PHYL runs October 3 through November 7 at Theatre Row; Oct 3 is the first preview"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-03",
+        "newValue": "2026-10-22",
+        "description": "Mint press release (https://natlawreview.com/press-releases/complete-cast-and-creative-team-announced-mint-theater-companys-new-york): opening night October 22; Oct 3 was ShowScore's first-performance date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-11-07",
+        "description": "Mint Theater (https://minttheater.org/): runs through November 7"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "status": "upcoming",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [
+            {
+              "name": "Douglas Smith",
+              "role": "Performer"
+            },
+            {
+              "name": "Emma Ramos",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Kate Vozella",
+              "role": "Playwright"
+            },
+            {
+              "name": "Colm Summers",
+              "role": "Director"
+            },
+            {
+              "name": "Tyler Herald",
+              "role": "Scenic Designer"
+            },
+            {
+              "name": "Karen Boyer",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "Christopher Wong",
+              "role": "Lighting Designer"
+            },
+            {
+              "name": "Liam Bellman-Sharpe",
+              "role": "Sound Designer"
+            }
+          ],
+          "ticketLinks": [],
+          "id": "machine-learning-off-broadway-2026",
+          "title": "Machine Learning",
+          "slug": "machine-learning-off-broadway",
+          "venue": "Manhattan Neighborhood Network",
+          "theaterAddress": "509 West 38th Street, New York, NY",
+          "previewsStartDate": "2026-10-06",
+          "openingDate": "2026-10-20",
+          "closingDate": "2026-10-30",
+          "openingDateSource": "manual:theatermania",
+          "synopsis": "World premiere dark comedy by Kate Vozella, produced by Little Engine Theater. Two couples enter a research program at a remote facility, believing their interactions will help train humanoid companions in human intimacy, and are forced to confront their own patterns, secrets and vulnerabilities."
+        },
+        "description": "TheaterMania (https://www.theatermania.com/news/douglas-smith-and-emma-ramos-to-star-in-off-broadway-premiere-of-machine-learning_1852274/) + BroadwayWorld: previews Oct 6, opens Oct 20, closes Oct 30 at MNN, 509 W 38th St"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "status": "upcoming",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [
+            {
+              "name": "Linus Karp",
+              "role": "Diana"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Linus Karp",
+              "role": "Writer"
+            },
+            {
+              "name": "Joseph Martin",
+              "role": "Writer"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "OvationTix",
+              "url": "https://ci.ovationtix.com/35583/production/1289833",
+              "priceFrom": null
+            }
+          ],
+          "id": "diana-the-untold-and-untrue-story-off-broadway-2026",
+          "title": "Diana: The Untold and Untrue Story",
+          "slug": "diana-the-untold-and-untrue-story-off-broadway",
+          "venue": "SoHo Playhouse",
+          "previewsStartDate": "2026-12-02",
+          "openingDate": "2026-12-02",
+          "closingDate": "2026-12-13",
+          "openingDateSource": "first-performance-no-press-night",
+          "runtime": "1h 15m",
+          "ageRecommendation": "Ages 16+",
+          "synopsis": "Linus Karp plays Princess Diana, telling the untold and untrue story of her life from heaven, in an award-winning comedy that combines drag, multimedia, puppetry and audience interaction. From Awkward Productions, the company behind Gwyneth Goes Skiing."
+        },
+        "description": "SoHo Playhouse (https://www.sohoplayhouse.com/see-a-show/diana-the-untold-and-untrue-story): December 2 - 13, 75 minutes, 16+"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "status": "upcoming",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [
+            {
+              "name": "Linus Karp",
+              "role": "Performer"
+            },
+            {
+              "name": "Joseph Martin",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Linus Karp",
+              "role": "Writer"
+            },
+            {
+              "name": "Joseph Martin",
+              "role": "Writer"
+            },
+            {
+              "name": "Leland",
+              "role": "Composer"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "OvationTix",
+              "url": "https://ci.ovationtix.com/35583/production/1289836",
+              "priceFrom": null
+            }
+          ],
+          "id": "the-very-gay-christmas-prince-off-broadway-2026",
+          "title": "The (Very Gay) Christmas Prince",
+          "slug": "the-very-gay-christmas-prince-off-broadway",
+          "venue": "SoHo Playhouse",
+          "previewsStartDate": "2026-12-16",
+          "openingDate": "2026-12-16",
+          "closingDate": "2027-01-03",
+          "openingDateSource": "first-performance-no-press-night",
+          "runtime": "1h 15m",
+          "ageRecommendation": "Ages 16+",
+          "synopsis": "A queer parody of Hallmark-style holiday romcoms from Awkward Productions: a New York baker takes a commission in the kingdom of Swedonia, whose unmarried prince must find a partner or forfeit the crown. Written by and starring Linus Karp and Joseph Martin, with original music by Leland."
+        },
+        "description": "SoHo Playhouse (https://www.sohoplayhouse.com/see-a-show/fit-prince): December 16 - January 3, 75 minutes, 16+"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "status": "upcoming",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [
+            {
+              "name": "Rachael DeBoer",
+              "role": "Performer"
+            },
+            {
+              "name": "Shaylaren Hilton",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Alice Stanley Jr.",
+              "role": "Playwright"
+            },
+            {
+              "name": "Riley Rose Critchlow",
+              "role": "Director"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "OvationTix",
+              "url": "https://ci.ovationtix.com/35583/production/1292163",
+              "priceFrom": null
+            }
+          ],
+          "id": "the-second-best-school-shooting-off-broadway-2026",
+          "title": "The Second Best School Shooting",
+          "slug": "the-second-best-school-shooting-off-broadway",
+          "venue": "SoHo Playhouse",
+          "previewsStartDate": "2026-10-17",
+          "openingDate": "2026-10-17",
+          "closingDate": "2026-10-20",
+          "openingDateSource": "first-performance-no-press-night",
+          "runtime": "1h",
+          "ageRecommendation": "Ages 14+",
+          "synopsis": "A dark comedy by Alice Stanley Jr. about how young people process gun violence and grief. Each performance is followed by a community talkback."
+        },
+        "description": "SoHo Playhouse (https://www.sohoplayhouse.com/see-a-show/the-second-best-school-shooting): October 17 - 20, 60 min + talkback, 14+"
+      },
+      {
+        "type": "add-show",
+        "description": "HERE (https://here.org/shows/arias-with-a-twist-2026/) + Playbill production page: previews Sep 17, opening Sep 23, closing Nov 1, 2026. Remount of the 2008 HERE production.",
+        "show": {
+          "id": "arias-with-a-twist-off-broadway-2026",
+          "title": "Arias with a Twist",
+          "slug": "arias-with-a-twist-off-broadway",
+          "venue": "HERE Arts Center",
+          "theaterAddress": "145 Sixth Avenue, New York, NY 10013",
+          "status": "open",
+          "type": "play",
+          "isRevival": true,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-09-17",
+          "openingDate": "2026-09-23",
+          "closingDate": "2026-11-01",
+          "openingDateSource": "playbill-production-page",
+          "runtime": "1h 20m",
+          "synopsis": "Joey Arias and Basil Twist revive their 2008 cult hit, in which the drag performance artist sings through a puppet world of life-sized figures, a jungle and a New York cityscape, with songs ranging from Billie Holiday to Led Zeppelin.",
+          "creativeTeam": [
+            {
+              "name": "Basil Twist",
+              "role": "Writer & Director"
+            },
+            {
+              "name": "Joey Arias",
+              "role": "Writer"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Joey Arias",
+              "role": "Performer"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "Venue Box Office",
+              "url": "https://here.org/shows/arias-with-a-twist-2026/",
+              "priceFrom": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "Show site (https://www.bigfeelingstheplay.com/) + Ticket Tailor: return engagement Sep 13 - Oct 9, 2026 at The Cell (first run June 29 - July 23, 2026). No separate press night for the return, so the first performance stands in as opening.",
+        "show": {
+          "id": "big-feelings-off-broadway-2026",
+          "title": "Big Feelings",
+          "slug": "big-feelings-off-broadway",
+          "venue": "The Cell Theatre",
+          "theaterAddress": "338 W 23rd St, New York, NY 10011",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-09-13",
+          "openingDate": "2026-09-13",
+          "closingDate": "2026-10-09",
+          "openingDateSource": "first-performance-no-press-night",
+          "runtime": "1h 25m",
+          "synopsis": "An immersive solo play by Ryan Drake in which Ms. Joy, a first-grade teacher on her last day, speaks to the audience as her class about something that hurt her feelings. Staged in a classroom for 20 audience members.",
+          "creativeTeam": [
+            {
+              "name": "Ryan Drake",
+              "role": "Playwright"
+            },
+            {
+              "name": "Sammy Zeisel",
+              "role": "Director"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Julia Greer",
+              "role": "Ms. Joy"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "Ticket Tailor",
+              "url": "https://www.tickettailor.com/events/bigfeelingstheplay/2361498",
+              "priceFrom": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "59E59 (https://www.59e59.org/shows/show-detail/fantasma/) + Primary Stages: Nov 7 - Dec 20, 2026; opening night Nov 22 per TheaterMania (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/fantasma_1855484/) and TDF.",
+        "show": {
+          "id": "fantasma-off-broadway-2026",
+          "title": "Fantasma",
+          "slug": "fantasma-off-broadway",
+          "venue": "59E59 Theaters",
+          "theaterAddress": "59 East 59th Street, New York, NY 10022",
+          "status": "upcoming",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-11-07",
+          "openingDate": "2026-11-22",
+          "closingDate": "2026-12-20",
+          "openingDateSource": "manual:theatermania",
+          "runtime": "1h 30m",
+          "synopsis": "World premiere by Benjamin Benne, presented by Primary Stages. On Christmas Eve, three generations of women make chuchitos, a traditional Guatemalan dish, and as the granddaughters try to write the recipe down, the play moves across nearly two decades of family memory.",
+          "creativeTeam": [
+            {
+              "name": "Benjamin Benne",
+              "role": "Playwright"
+            },
+            {
+              "name": "Laurie Woolery",
+              "role": "Director"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Zabryna Guevara",
+              "role": "Carmen"
+            },
+            {
+              "name": "Alma Martinez",
+              "role": "Rosie"
+            },
+            {
+              "name": "Camila Moreno",
+              "role": "Celeste"
+            },
+            {
+              "name": "Elizabeth Ramos",
+              "role": "Lizzy"
+            },
+            {
+              "name": "Nancy Rodriguez",
+              "role": "Patty"
+            },
+            {
+              "name": "Adriana Sevan",
+              "role": "Ramona"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "Venue Box Office",
+              "url": "https://www.59e59.org/shows/show-detail/fantasma/",
+              "priceFrom": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "Playbill (https://playbill.com/article/les-enfants-terribles-will-play-limited-run-at-off-broadways-east-village-basement) + SimpleTix: previews Sep 10, opening Sep 12, closing Oct 4, 2026.",
+        "show": {
+          "id": "les-enfants-terribles-off-broadway-2026",
+          "title": "Les Enfants Terribles",
+          "slug": "les-enfants-terribles-off-broadway",
+          "venue": "East Village Basement",
+          "theaterAddress": "321 East 9th Street, New York, NY 10003",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "new"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-09-10",
+          "openingDate": "2026-09-12",
+          "closingDate": "2026-10-04",
+          "openingDateSource": "playbill",
+          "runtime": "1h 40m",
+          "synopsis": "World premiere stage adaptation of Jean Cocteau's novella. Sheltered teenage siblings Paul and Elisabeth retreat into a private world of rules and rituals, playing cruel games with each other and their companions Gerard and Agatha.",
+          "creativeTeam": [
+            {
+              "name": "Michael Gardner",
+              "role": "Writer & Director"
+            },
+            {
+              "name": "Jean Cocteau",
+              "role": "Source Material"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Caroline DeFazio",
+              "role": "Performer"
+            },
+            {
+              "name": "Victor Gao",
+              "role": "Performer"
+            },
+            {
+              "name": "Maysie Jane Kilgore",
+              "role": "Performer"
+            },
+            {
+              "name": "Rutger Scott",
+              "role": "Performer"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "SimpleTix",
+              "url": "https://www.simpletix.com/e/les-enfants-terribles-tickets-284664",
+              "priceFrom": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-01-08",
+        "description": "Playbill production page (https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026): first preview Jan 8 2026 (was stored as the opening date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-01-08",
+        "newValue": "2026-01-12",
+        "description": "Playbill production page (https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026): opening date Jan 12 2026"
+      },
+      {
+        "type": "add-show",
+        "priorRunOf": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "description": "Return engagement, same pattern as lost-in-del-valle-return-off-broadway-2026. Playbill (https://playbill.com/article/going-bacharach-will-return-off-broadway-this-fall): begins Sep 9, officially opens Sep 16; closing Nov 29 per https://www.goingbacharach.com/ and Playbill casting article.",
+        "show": {
+          "id": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+          "title": "Going Bacharach: The Songs of an Icon",
+          "slug": "going-bacharach-the-songs-of-an-icon-return-off-broadway",
+          "venue": "The Marjorie S. Deane Little Theater",
+          "theaterAddress": "10 West 64th Street, New York, NY 10023",
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "return-engagement"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-09-09",
+          "openingDate": "2026-09-16",
+          "closingDate": "2026-11-29",
+          "openingDateSource": "playbill",
+          "runtime": "2h 15m",
+          "synopsis": "A musical revue of Burt Bacharach's songbook, sung by a rotating trio of vocalists with a five-piece band, returning for a 12-week encore engagement.",
+          "creativeTeam": [
+            {
+              "name": "David Zippel",
+              "role": "Director"
+            },
+            {
+              "name": "Will Friedwald",
+              "role": "Co-creator"
+            },
+            {
+              "name": "Adrian Galante",
+              "role": "Music Director"
+            },
+            {
+              "name": "Tedd Firth",
+              "role": "Music Supervisor"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Hilary Kole",
+              "role": "Vocalist"
+            },
+            {
+              "name": "John Pagano",
+              "role": "Vocalist"
+            },
+            {
+              "name": "Alyssa Wray",
+              "role": "Vocalist"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "OvationTix",
+              "url": "https://ci.ovationtix.com/37106/production/1285497",
+              "priceFrom": null
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/two-girls_1851013/): previews Oct 7, opens Oct 18, closes Nov 8, 2026",
+        "show": {
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "manual:theatermania",
+          "id": "two-girls-off-broadway-2026",
+          "title": "Two Girls",
+          "slug": "two-girls-off-broadway",
+          "venue": "Cherry Lane Theatre",
+          "theaterAddress": "38 Commerce St, New York, NY",
+          "previewsStartDate": "2026-10-07",
+          "openingDate": "2026-10-18",
+          "closingDate": "2026-11-08",
+          "synopsis": "A verbatim-dialogue play that revisits one of the most notorious viral shock videos of the 2000s to examine sex, disgust and the body."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hospital-hour_1853991/): previews Oct 16, opens Oct 26, closes Nov 23, 2026",
+        "show": {
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [
+            {
+              "name": "Rachel Kaly",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Rachel Kaly",
+              "role": "Writer"
+            }
+          ],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "manual:theatermania",
+          "id": "hospital-hour-off-broadway-2026",
+          "title": "Hospital Hour",
+          "slug": "hospital-hour-off-broadway",
+          "venue": "The Culture Club",
+          "theaterAddress": "530 West 27th St, Sixth Floor, New York, NY",
+          "previewsStartDate": "2026-10-16",
+          "openingDate": "2026-10-26",
+          "closingDate": "2026-11-23",
+          "synopsis": "Comedian Rachel Kaly's one-woman show about the 300-plus hospital visits for psychological treatment that followed her first period (the same day Saddam Hussein was hanged), after sold-out runs at London's Soho Theatre and the Edinburgh Fringe."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/queeney-todd-the-demon-bottom-of-fleet-street_1855164/): runs Oct 22 - 31, 2026 (no separate press night listed; first performance used as opening)",
+        "show": {
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "first-performance-no-press-night",
+          "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+          "title": "Queeney Todd: The Demon Bottom of Fleet Street",
+          "slug": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway",
+          "venue": "Judson Memorial Church",
+          "theaterAddress": "55 Washington Square S, New York, NY",
+          "previewsStartDate": "2026-10-22",
+          "openingDate": "2026-10-22",
+          "closingDate": "2026-10-31",
+          "synopsis": "A camp opera-drag parody of Sweeney Todd: Queeney Todd returns to London hellbent on revenge, and opera's greatest divas and villains collide in a whirlwind of couture and carnage."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-morbs_1847301/): runs Oct 27 - Nov 21, 2026 (no separate press night listed; first performance used as opening)",
+        "show": {
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "first-performance-no-press-night",
+          "id": "the-morbs-off-broadway-2026",
+          "title": "The Morbs",
+          "slug": "the-morbs-off-broadway",
+          "venue": "Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres",
+          "previewsStartDate": "2026-10-27",
+          "openingDate": "2026-10-27",
+          "closingDate": "2026-11-21",
+          "synopsis": "A comedy thriller about three best friends from college who are trapped in a cabin during an outbreak of a terrifying illness known as the Morbs."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-blue-violinist-over-west-end-avenue_1850263/): previews Oct 28, opens Nov 1, closes Dec 5, 2026",
+        "show": {
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "manual:theatermania",
+          "id": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+          "title": "The Blue Violinist Over West End Avenue",
+          "slug": "the-blue-violinist-over-west-end-avenue-off-broadway",
+          "venue": "Theatre Row",
+          "theaterAddress": "410 W 42nd St, New York, NY",
+          "previewsStartDate": "2026-10-28",
+          "openingDate": "2026-11-01",
+          "closingDate": "2026-12-05",
+          "synopsis": "The Stein family gathers on Manhattan's Upper West Side to celebrate an engagement, but an unexpected guest exposes old wounds and divisions across three generations. Inspired by Sholem Aleichem's Tevye stories."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/specimen_1847186/): previews Oct 28, opens Oct 30, closes Nov 21, 2026",
+        "show": {
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [],
+          "ticketLinks": [],
+          "status": "upcoming",
+          "tags": [
+            "upcoming",
+            "new"
+          ],
+          "openingDateSource": "manual:theatermania",
+          "id": "specimen-off-broadway-2026",
+          "title": "Specimen",
+          "slug": "specimen-off-broadway",
+          "venue": "Axis Theatre",
+          "previewsStartDate": "2026-10-28",
+          "openingDate": "2026-10-30",
+          "closingDate": "2026-11-21",
+          "synopsis": "Aboard a failing corporate research vessel nearing Earth, the crew discovers a docked pod holding what appears to be a rare and valuable lifeform, or perhaps just a man."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/beyond-the-stardust_1845506/): runs Sep 10 - Oct 18, 2026 (first performance used as opening; no press night listed)",
+        "show": {
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Niegel Smith",
+              "role": "Conceived by"
+            }
+          ],
+          "ticketLinks": [],
+          "status": "open",
+          "tags": [
+            "new"
+          ],
+          "openingDateSource": "first-performance-no-press-night",
+          "id": "beyond-the-stardust-off-broadway-2026",
+          "title": "Beyond the Stardust",
+          "slug": "beyond-the-stardust-off-broadway",
+          "venue": "The Flea Theater",
+          "previewsStartDate": "2026-09-10",
+          "openingDate": "2026-09-10",
+          "closingDate": "2026-10-18",
+          "synopsis": "An Afro-disco space-punk musical extravaganza with 12 original songs, aerialists and dancers, conceived by Flea artistic director Niegel Smith and The Illustrious Blacks."
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "TheaterMania listing (https://www.theatermania.com/shows/new-york-city-theater/off-broadway/alice-in-wonderland_1840832/): runs Sep 26 - Nov 8, 2026 (first performance used as opening; no press night listed)",
+        "show": {
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Michael Sgouros",
+              "role": "Book"
+            },
+            {
+              "name": "Brenda Bell",
+              "role": "Book"
+            }
+          ],
+          "ticketLinks": [],
+          "status": "open",
+          "tags": [
+            "new"
+          ],
+          "openingDateSource": "first-performance-no-press-night",
+          "id": "alice-in-wonderland-off-broadway-2026",
+          "title": "Alice in Wonderland",
+          "slug": "alice-in-wonderland-off-broadway",
+          "venue": "The Players Theatre",
+          "previewsStartDate": "2026-09-26",
+          "openingDate": "2026-09-26",
+          "closingDate": "2026-11-08",
+          "synopsis": "An original family musical adaptation of Lewis Carroll's tale by Michael Sgouros and Brenda Bell."
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T21:38:48.063Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for phyl-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for phyl-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for phyl-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added machine-learning-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added diana-the-untold-and-untrue-story-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-very-gay-christmas-prince-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-second-best-school-shooting-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added arias-with-a-twist-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added big-feelings-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fantasma-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added les-enfants-terribles-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for going-bacharach-the-songs-of-an-icon-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for going-bacharach-the-songs-of-an-icon-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added going-bacharach-the-songs-of-an-icon-return-off-broadway-2026 (priorRuns -> going-bacharach-the-songs-of-an-icon-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added two-girls-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hospital-hour-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-blue-violinist-over-west-end-avenue-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added specimen-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added beyond-the-stardust-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added alice-in-wonderland-off-broadway-2026"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "issueNumber": "bro-6349",
+  "planId": "3e5395de-eb6b-467e-8241-4b612507d7a9",
+  "status": "applied",
+  "createdAt": "2026-10-28T15:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the Met Opera 2019 premiere run and 2022 revival of Akhnaten as closed shows, linked as prior runs.",
+    "steps": [
+      "Append akhnaten-off-broadway-2019",
+      "Append akhnaten-off-broadway-2022 with priorRunOf"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "akhnaten-off-broadway-2019",
+          "title": "Akhnaten",
+          "slug": "akhnaten-off-broadway-2019",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2019-11-08",
+          "closingDate": "2019-12-07",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Philip Glass's opera about the Egyptian pharaoh Akhnaten, who tried to replace the old gods with the worship of a single sun god, in the Met's staging by Phelim McDermott with juggling choreography by Sean Gandini.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Anthony Roth Costanzo",
+              "role": "Akhnaten"
+            },
+            {
+              "name": "J'Nai Bridges",
+              "role": "Nefertiti"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Philip Glass",
+              "role": "Composer"
+            },
+            {
+              "name": "Phelim McDermott",
+              "role": "Director"
+            }
+          ]
+        },
+        "description": "Add the 2019 Met run"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "akhnaten-off-broadway-2022",
+          "title": "Akhnaten",
+          "slug": "akhnaten-off-broadway-2022",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2022-05-19",
+          "closingDate": "2022-06-10",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": true,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Philip Glass's opera about the Egyptian pharaoh Akhnaten, who tried to replace the old gods with the worship of a single sun god, in the Met's staging by Phelim McDermott with juggling choreography by Sean Gandini.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Anthony Roth Costanzo",
+              "role": "Akhnaten"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Philip Glass",
+              "role": "Composer"
+            },
+            {
+              "name": "Phelim McDermott",
+              "role": "Director"
+            }
+          ]
+        },
+        "priorRunOf": "akhnaten-off-broadway-2019",
+        "description": "Add the 2022 Met revival"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T15:16:01.403Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added akhnaten-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added akhnaten-off-broadway-2022 (priorRuns -> akhnaten-off-broadway-2019)"
+    }
+  ],
+  "executedIn": "ci"
+}

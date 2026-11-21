@@ -1,0 +1,15 @@
+{
+  "_comment": "Data sources retired on purpose. scripts/lib/reddit-status.js reads this; scripts/lib/reddit-api.js refuses every Reddit fetch (before any network call) while the reddit entry exists. Stored data is frozen in place and keeps feeding existing audience grades. To turn Reddit back on: delete the reddit entry and land (see _rollback). Every entry must name its watchers: the checks, digests and alerts that watched the source, updated in the same change so retiring it does not page.",
+  "_rollback": "Delete the reddit entry; restore the schedule: blocks removed from update-reddit-sentiment.yml, bulk-reddit-sentiment.yml (if any) and reddit-engagement-digest.yml (git log -p on those files shows the crons); restore the reddit-digest-snapshot entry in scripts/lib/digest-snapshots.js and the cron-health row; add REDDIT_CLIENT_ID/SECRET or a paid provider first, or every run fails.",
+  "reddit": {
+    "retiredAt": "2026-11-11",
+    "reason": "Reddit closed free access (unauthenticated JSON 403, RSS ends 2026-11-13, new API approvals closed) and every paid route is too expensive. Owner decision 2026-11-11, BRO-7337.",
+    "frozenData": "data/audience-buzz.json sources.reddit stays as is and keeps weighting existing audience grades",
+    "watchers": [
+      { "file": "scripts/check-reddit-freshness.js", "note": "returns early and resolves condition reddit-sentiment:stale while retired" },
+      { "file": "scripts/lib/digest-snapshots.js", "note": "redditDigest snapshot entry removed so the morning digest shows no stale banner" },
+      { "file": ".github/workflows/check-cron-health.yml", "note": "reddit-engagement-digest.yml row kept, resized to 13h for the hourly drafter only" },
+      { "file": "scripts/fetch-social-pulse.js", "note": "Guard 6b degraded mode is expected while retired, not a warning" }
+    ]
+  }
+}

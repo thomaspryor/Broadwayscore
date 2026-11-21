@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-3414-n",
+  "planId": "ec51dba1-ff4d-4bd7-b4f0-9f99c80f3b49",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3414 residue: 3 New Yorker files whose filename names the critic but criticName is still the publisher Condé Nast",
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "grey-house-2023/newyorker--dan-stahl.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Dan Stahl",
+        "reason": "live page byline reads Dan Stahl (https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pictures-from-home-2023/newyorker--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Helen Shaw",
+        "reason": "live page byline reads Helen Shaw (https://www.newyorker.com/goings-on-about-town/theatre/pictures-from-home-03-06-23)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/newyorker--vinson-cunningham.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "reason": "page now 404s and has no archive snapshot; the publisher is never the critic, so Unknown rather than a guess"
+      }
+    ],
+    "steps": [
+      "Apply 3 criticName edits"
+    ]
+  },
+  "executedAt": "2026-10-12T20:37:25.900Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grey-house-2023/newyorker--dan-stahl.json criticName: \"Condé Nast\" -> \"Dan Stahl\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pictures-from-home-2023/newyorker--helen-shaw.json criticName: \"Condé Nast\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/newyorker--vinson-cunningham.json criticName: \"Condé Nast\" -> \"Unknown\""
+    }
+  ]
+}

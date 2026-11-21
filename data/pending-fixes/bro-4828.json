@@ -1,0 +1,69 @@
+{
+  "issueNumber": "bro-4828",
+  "planId": "3ade368c-9ee7-4e2c-9225-893ce30f0b70",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4828: delete the four The Hunger Games On Stage rows attached to The Hungry Ghost by the wrong-show theatre.reviews match (discovery fixed in the same change).",
+    "steps": [
+      "Excerpt is The Hunger Games On Stage, flagged wrongProduction.",
+      "Excerpt is The Hunger Games On Stage, flagged wrongProduction.",
+      "Excerpt is The Hunger Games On Stage, flagged wrongProduction.",
+      "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hungry-ghost-off-west-end-2026/guardian--arifa-akbar.json",
+        "description": "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hungry-ghost-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "description": "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hungry-ghost-off-west-end-2026/independent--unknown.json",
+        "description": "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hungry-ghost-off-west-end-2026/whatsonstage--unknown.json",
+        "description": "Excerpt is The Hunger Games On Stage, flagged wrongProduction."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:47:51.155Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/independent--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hungry-ghost-off-west-end-2026/whatsonstage--unknown.json"
+    }
+  ]
+}

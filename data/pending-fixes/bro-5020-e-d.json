@@ -1,0 +1,388 @@
+{
+  "issueNumber": "bro-5020-e-d",
+  "planId": "165e95b0-8d44-42b4-a8c1-a3095a511427",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 owner policy B backfill, part 4 of 5 (23 shows): every Fizzle/Flop gets designationBasis; silence-based labels on shows closed under 6 months return to TBD with needsLossEvidence; grey-house regains its label on the silence basis (unlocked). Supersedes bro-5020-d, which never executed. Old values read from live commercial.json at 2026-10-11T11:51:28.223Z.",
+    "steps": [
+      "the-last-ship-2014: designationBasis",
+      "on-the-town-2014: designationBasis",
+      "holler-if-ya-hear-me-2014: designationBasis",
+      "bullets-over-broadway-2014: designationBasis",
+      "the-bridges-of-madison-county-2014: designationBasis",
+      "a-night-with-janis-joplin-2013: designationBasis",
+      "the-testament-of-mary-2013: designationBasis",
+      "breakfast-at-tiffanys-2013: designationBasis",
+      "rodgers-hammersteins-cinderella-2013: designationBasis",
+      "the-anarchist-2012: designationBasis",
+      "fela-2012: designationBasis",
+      "leap-of-faith-2012: designationBasis",
+      "the-lyons-2012: designationBasis",
+      "godspell-2011: designationBasis",
+      "jerusalem-2011: designationBasis",
+      "wonderland-2011: designationBasis",
+      "bloody-bloody-andrew-jackson-2010: designationBasis",
+      "ragtime-2009: designationBasis",
+      "job-2024: designationBasis",
+      "the-cottage: designationBasis",
+      "fat-ham-2023: designationBasis",
+      "the-kite-runner-2022: designationBasis",
+      "torch-song-2018: designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-ship-2014",
+        "showId": "the-last-ship-2014",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "the-last-ship-2014: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "showId": "on-the-town-2014",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "on-the-town-2014: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "showId": "holler-if-ya-hear-me-2014",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "holler-if-ya-hear-me-2014: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "showId": "bullets-over-broadway-2014",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "bullets-over-broadway-2014: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-bridges-of-madison-county-2014: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-night-with-janis-joplin-2013",
+        "showId": "a-night-with-janis-joplin-2013",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "a-night-with-janis-joplin-2013: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "showId": "the-testament-of-mary-2013",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-testament-of-mary-2013: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "breakfast-at-tiffanys-2013",
+        "showId": "breakfast-at-tiffanys-2013",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "breakfast-at-tiffanys-2013: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rodgers-hammersteins-cinderella-2013",
+        "showId": "rodgers-hammersteins-cinderella-2013",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "rodgers-hammersteins-cinderella-2013: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-anarchist-2012: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "fela-2012: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "showId": "leap-of-faith-2012",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "leap-of-faith-2012: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lyons-2012",
+        "showId": "the-lyons-2012",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-lyons-2012: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "showId": "godspell-2011",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "godspell-2011: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "showId": "jerusalem-2011",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "jerusalem-2011: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wonderland-2011",
+        "showId": "wonderland-2011",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "wonderland-2011: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bloody-bloody-andrew-jackson-2010",
+        "showId": "bloody-bloody-andrew-jackson-2010",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "bloody-bloody-andrew-jackson-2010: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "showId": "ragtime-2009",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "ragtime-2009: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "showId": "job-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "job-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "showId": "the-cottage",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-cottage: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "showId": "fat-ham-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "fat-ham-2023: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-kite-runner-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "showId": "torch-song-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "torch-song-2018: designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T12:55:26.139Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-last-ship-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-night-with-janis-joplin-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for breakfast-at-tiffanys-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for rodgers-hammersteins-cinderella-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-lyons-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for wonderland-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bloody-bloody-andrew-jackson-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for torch-song-2018"
+    }
+  ]
+}

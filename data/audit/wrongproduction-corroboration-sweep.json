@@ -1,0 +1,2498 @@
+{
+  "_readme": "Card #1572 sweep. investigatedVerdicts below records the manual live-page verification for every STRONG (theatre-record-month, before_preview) candidate found on the 2026-08-16 run, before this file's regeneration removed the corrected ones from the strong[] list. See broadway-review-texts commit bf2bd6886d4 for the 3 files corrected (2 misparse incidents: cats-west-end-2026 x2 sharing one URL, hadestown-west-end-2024 x1).",
+  "investigatedVerdicts": [
+    {
+      "showId": "cats-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "verdict": "corrected",
+      "detail": "publishDate 2025-07-14 was a misparse. Guardian URL /2026/aug/07/ + web search confirm the review is part of the Aug 2026 Regent's Park Cats coverage. Corrected to 2026-08-07, wrongProduction cleared with full manual-clear field set. broadway-review-texts bf2bd6886d4."
+    },
+    {
+      "showId": "cats-west-end-2026",
+      "file": "guardian--richard-lawson.json",
+      "verdict": "corrected",
+      "detail": "Same underlying Guardian URL as arifa-akbar.json (a stale duplicate-of-record with its own bad date, 'April 7, 2026'). Corrected to 2026-08-07 for consistency, wrongProduction cleared. Not found by the automated sweep (only 1 corroboration signal search per show/file is run, and this file's duplicateOf relationship isn't scanned) — found by manually inspecting the duplicateOf pointer on the arifa-akbar hit. broadway-review-texts bf2bd6886d4."
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "file": "thereviewshub--monica-cox.json",
+      "verdict": "corrected",
+      "detail": "publishDate 2023-02-22 was a misparse (year off by one). TheReviewsHub live page (thereviewshub.com/hadestown-lyric-theatre-london) confirms 'February 22, 2024', matching Theatre Record's 2024/2 archive month and the show's 2024-02-10 opening. Corrected to 2024-02-22, wrongProduction cleared. broadway-review-texts bf2bd6886d4."
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "verdict": "rejected-not-cleared",
+      "detail": "The stored url is https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-... — a Richard II review at the Bridge Theatre, not The Tempest. The theatreRecordUrl (2026/1/37280-the-tempest) is a mis-attached cross-reference, not real corroboration. Correctly flagged wrong-content; left as-is. Demonstrates the sweep's theatre-record-month signal can itself be wrong and every hit needs live-page/content verification, not just date math."
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "broadwayworld--louise-penn.json / everything-theatre--sara-west.json / thereviewshub--stephen-bates.json",
+      "verdict": "rejected-not-cleared",
+      "detail": "CORRECTED 2026-08-17 after ship-check caught the original verdict here was wrong: this is NOT a grace-window-sizing question. Reading fullText directly (everything-theatre--sara-west.json) confirms these are reviews of a National Youth Music Theatre AMATEUR production at Southwark Playhouse ('Was it wise then, to choose to go to an amateur production of the same?... This production was courtesy of the National Youth Music Theatre'), not the professional Groff/Radcliffe/Mendez Broadway revival (merrily-we-roll-along-2023, category:broadway). Correctly flagged wrongProduction on content grounds; the near-matching dates and theatre-record-month signal are coincidental — Theatre Record's archive apparently cross-references multiple unrelated productions sharing this title around the same period. Left flagged. Demonstrates the theatre-record-month signal needs a same-production check (venue/cast/category), not just same-month, to avoid this class of false corroboration in a future sweep."
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "file": "the-herald--neil-cooper.json",
+      "verdict": "excluded-by-design-not-cleared",
+      "detail": "after_close date-guard flag with a theatre-record-month match — deliberately excluded from the strong-signal sweep because an after_close TR-month match is more likely a successor production mislinked back than a misparse (wrong-production-corroboration.js header comment). Left flagged."
+    }
+  ],
+  "generatedAt": "2026-08-17T01:20:55.222Z",
+  "scanned": 42368,
+  "flaggedTotal": 16524,
+  "dateGuardFlagged": 4475,
+  "strongCount": 4,
+  "weakCount": 21,
+  "cvOnlyInformationalCount": 163,
+  "strong": [
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "title": "Merrily We Roll Along",
+      "file": "broadwayworld--louise-penn.json",
+      "publishDate": "2023-08-25",
+      "outlet": "BroadwayWorld",
+      "url": null,
+      "wrongProductionNote": "Date guard: review 2023-08-25 is 4d before 2023-09-19 (preview/open) — likely different production",
+      "signals": [
+        "theatre-record-month:2023/8"
+      ],
+      "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/8/5278-merrily-we-roll-along"
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "title": "Merrily We Roll Along",
+      "file": "everything-theatre--sara-west.json",
+      "publishDate": "2023-08-26",
+      "outlet": "Everything Theatre",
+      "url": null,
+      "wrongProductionNote": "Date guard: review 2023-08-26 is 3d before 2023-09-19 (preview/open) — likely different production",
+      "signals": [
+        "theatre-record-month:2023/8"
+      ],
+      "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/8/5278-merrily-we-roll-along"
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "title": "Merrily We Roll Along",
+      "file": "thereviewshub--stephen-bates.json",
+      "publishDate": "2023-08-25",
+      "outlet": "The Reviews Hub",
+      "url": null,
+      "wrongProductionNote": "Date guard: review 2023-08-25 is 4d before 2023-09-19 (preview/open) — likely different production",
+      "signals": [
+        "theatre-record-month:2023/8"
+      ],
+      "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/8/5278-merrily-we-roll-along"
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "title": "The Tempest - Globe",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2025-02-19",
+      "outlet": "Evening Standard",
+      "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+      "wrongProductionNote": "Date guard: review 2025-02-19 is 311d before 2026-01-17 (preview/open) — likely different production",
+      "signals": [
+        "theatre-record-month:2026/1"
+      ],
+      "theatreRecordUrl": "https://www.theatrerecord.com/archive/2026/1/37280-the-tempest"
+    }
+  ],
+  "weak": [
+    {
+      "showId": "1536-west-end-2026",
+      "title": "1536",
+      "file": "timeout-london--andrjez-lukowski.json",
+      "publishDate": "2025-05-20",
+      "outlet": "Time Out",
+      "url": "https://www.timeout.com/london/theatre/shucked-review",
+      "wrongProductionNote": "Date guard: review 2025-05-20 is 326d before 2026-05-02 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream - Globe",
+      "file": "standard--nick-curtissurprised.json",
+      "publishDate": "2024-05-24",
+      "outlet": "The Standard",
+      "url": "https://www.standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html",
+      "wrongProductionNote": "Date guard: review 2024-05-24 is 664d before 2026-04-23 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream - Globe",
+      "file": "whatsonstage--judi-herman.json",
+      "publishDate": "2020-02-21",
+      "outlet": "WhatsOnStage",
+      "url": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-watermill-theatre_51009/",
+      "wrongProductionNote": "Date guard: review 2020-02-21 is 2218d before 2026-04-23 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "title": "A Midsummer Night's Dream",
+      "file": "london-theatre--mark-shenton.json",
+      "publishDate": "2019-06-12",
+      "outlet": "London Theatre",
+      "url": "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+      "wrongProductionNote": "Date guard: review 2019-06-12 is 2544d before 2026-06-20 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "title": "A Midsummer Night's Dream",
+      "file": "timeout--andrzej-lukowski.json",
+      "publishDate": "2026-05-05",
+      "outlet": "Time Out London",
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-100-review",
+      "wrongProductionNote": "Date guard: review 2013-11-04 is 4590d before 2026-06-20 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "black-is-the-color-of-my-voice-west-end-2026",
+      "title": "Black Is The Color Of My Voice",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2024-05-30",
+      "outlet": "The Financial Times",
+      "url": "https://www.ft.com/content/a689dcfd-65f5-4a11-b262-1b961137cbb0",
+      "wrongProductionNote": "Date guard: review 2024-05-30 is 557d before 2026-01-12 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "black-is-the-color-of-my-voice-west-end-2026",
+      "title": "Black Is The Color Of My Voice",
+      "file": "thestage--siobhan-murphy.json",
+      "publishDate": "2023-09-28",
+      "outlet": "Stage",
+      "url": "https://www.thestage.co.uk/reviews/black-sabbath-the-ballet-review-birmingham-hippodrome-lidberg-reinoso-osbourne-iommi",
+      "wrongProductionNote": "Date guard: review 2023-09-28 is 802d before 2026-01-12 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "title": "Blood of my Blood",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": "2025-08-27",
+      "outlet": "The Stage",
+      "url": "https://www.thestage.co.uk/reviews/juniper-blood-review-donmar-warehouse-london-mike-bartlett-james-macdonald",
+      "wrongProductionNote": "Date guard: review 2025-08-27 is 379d before 2026-10-01 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "title": "Blood of my Blood",
+      "file": "timeout-london--holly-omahony.json",
+      "publishDate": "2025-08-26",
+      "outlet": "Time Out London",
+      "url": "https://www.timeout.com/london/theatre/juniper-blood-review",
+      "wrongProductionNote": "Date guard: review 2025-08-26 is 380d before 2026-10-01 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "file": "london-theatre--julia-rank.json",
+      "publishDate": "2018-11-14",
+      "outlet": "London Theatre",
+      "url": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
+      "wrongProductionNote": "Date guard: review 2018-11-14 is 1893d before 2024-02-10 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "title": "Here There Are Blueberries (Theatre Royal Stratford East)",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2025-05-07",
+      "outlet": "Time Out London",
+      "url": "https://www.timeout.com/london/theatre/here-we-are-review",
+      "wrongProductionNote": "Date guard: review 2025-05-07 is 248d before 2026-01-31 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "title": "Inter Alia",
+      "file": "he-mail--patrick-marmion.json",
+      "publishDate": "2025-07-23",
+      "outlet": "he Mail",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14934517/PATRICK-MARMION-Inter-Alia-Lyttelton-National-Theatre.html",
+      "wrongProductionNote": "Date guard: review 2025-07-23 is 218d before 2026-03-19 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "title": "John Proctor Is the Villain",
+      "file": "guardian--emma-john.json",
+      "publishDate": "2024-11-07",
+      "outlet": "Guardian",
+      "url": "https://www.theguardian.com/stage/2024/nov/07/the-curious-case-of-benjamin-button-review-musical-ambassadors-theatre",
+      "wrongProductionNote": "Date guard: review 2024-11-07 is 477d before 2026-03-20 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "title": "John Proctor Is the Villain",
+      "file": "telegraph--tim-robey.json",
+      "publishDate": "2024-11-07",
+      "outlet": "Telegraph",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+      "wrongProductionNote": "Date guard: review 2024-11-07 is 477d before 2026-03-20 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "file": "financialtimes--luke-dillon.json",
+      "publishDate": "2022-10-19",
+      "outlet": "Financial Times",
+      "url": "https://www.westendtheatre.com/138268/news/reviews/my-neighbour-totoro-reviews/",
+      "wrongProductionNote": "Date guard: review 2022-10-19 is 555d before 2024-05-17 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "title": "Romeo and Juliet",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2023-06-15",
+      "outlet": "iNews",
+      "url": "https://inews.co.uk/culture/arts/romeo-and-juliet-almeida-theatre-review-rebecca-frecknalls-tragedy-casts-an-exquisite-magic-spell-2414001",
+      "wrongProductionNote": "Date guard: review 2023-06-15 is 984d before 2026-03-16 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "title": "The Producers",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-12-11",
+      "outlet": "The Financial Times",
+      "url": "https://www.ft.com/content/c800b4fb-d3c2-4725-8401-a6489048ab96",
+      "wrongProductionNote": "Date guard: review 2024-12-11 is 241d before 2025-08-30 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "title": "The Producers",
+      "file": "independent--louis-chilton.json",
+      "publishDate": "2024-12-11",
+      "outlet": "The Independent",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-producers-musical-menier-chocolate-factory-mel-brooks-b2661942.html",
+      "wrongProductionNote": "Date guard: review 2024-12-11 is 241d before 2025-08-30 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "title": "The Producers",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2024-12-10",
+      "outlet": "What's On Stage",
+      "url": "https://www.whatsonstage.com/news/the-producers-revival-review-where-did-they-go-right_1657052/",
+      "wrongProductionNote": "Date guard: review 2024-12-10 is 242d before 2025-08-30 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theatreReviewsExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "title": "The Unlikely Pilgrimage of Harold Fry",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-02-08",
+      "outlet": "iNews",
+      "url": "https://inews.co.uk/culture/arts/hills-of-california-review-harold-pinter-theatre-2896068",
+      "wrongProductionNote": "Date guard: review 2024-02-08 is 700d before 2026-01-29 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "title": "The Unlikely Pilgrimage of Harold Fry",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2024-02-08",
+      "outlet": "WhatsOnStage",
+      "url": "https://www.whatsonstage.com/news/the-hills-of-california-review-four-sisters-soar-in-new-jez-butterworth-play_1570271/",
+      "wrongProductionNote": "Date guard: review 2024-02-08 is 700d before 2026-01-29 (preview/open) — likely different production",
+      "signals": [
+        "roundup-excerpt:theStageExcerpt"
+      ],
+      "theatreRecordUrl": null
+    }
+  ],
+  "cvOnlyInformational": [
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "file": "broadwayworld--jarrod-michael.json",
+      "publishDate": "2025-04-30",
+      "outlet": "BroadwayWorld",
+      "url": "https://www.broadwayworld.com/appleton/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Fox-Cities-Performing-Arts-Center-20250430",
+      "wrongProductionNote": "Date guard: review 2025-04-30 is 297d after 2024-06-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "file": "orlando-weekly--seth-kubersky.json",
+      "publishDate": "2025-02-05",
+      "outlet": "Orlando Weekly",
+      "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-review-a-beautiful-noise-the-neil-diamond-musical-38796010/",
+      "wrongProductionNote": "Date guard: review 2025-02-05 is 213d after 2024-06-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "financialtimes--max-mcguinness.json",
+      "publishDate": "2016-12-02",
+      "outlet": "Financial Times",
+      "url": "https://www.ft.com/content/49581a54-b7c8-11e6-961e-a1acd97f622d",
+      "wrongProductionNote": "Date guard: review 2016-12-02 is 3197d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "ny1--roma-torre.json",
+      "publishDate": "December 2nd, 2016",
+      "outlet": "NY1",
+      "url": "https://www.ny1.com/nyc/all-boroughs/on-stage/2016/12/1/theater-review---a-bronx-tale-.html",
+      "wrongProductionNote": "Date guard: review December 2nd, 2016 is 3197d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "reflections-in-the-light--lauren-yarger.json",
+      "publishDate": "December 13th, 2016",
+      "outlet": "Reflections in the Light",
+      "url": "http://reflectionsinthelight.blogspot.com/2016/12/broadway-theater-review-bronx-tale.html",
+      "wrongProductionNote": "Date guard: review December 13th, 2016 is 3208d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "thestage--mark-shenton.json",
+      "publishDate": "December 1st, 2016",
+      "outlet": "The Stage",
+      "url": "https://www.thestage.co.uk/reviews/2016/a-bronx-tale-the-musical-opens-at-the-longacre-theatre-new-york/",
+      "wrongProductionNote": "Date guard: review December 1st, 2016 is 3196d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "December 10th, 2016",
+      "outlet": "Times Square Chronicles",
+      "url": "https://t2conline.com/a-bronx-tale-a-tuneful-show-that-deserves-the-standing-ovations-it-receives/",
+      "wrongProductionNote": "Date guard: review December 10th, 2016 is 3205d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": "December 1st, 2016",
+      "outlet": "Variety",
+      "url": "http://variety.com/2016/legit/reviews/a-bronx-tale-review-musical-broadway-1201931204/",
+      "wrongProductionNote": "Date guard: review December 1st, 2016 is 3196d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "vox--aja-romano.json",
+      "publishDate": "December 6th, 2016",
+      "outlet": "Vox",
+      "url": "http://www.vox.com/culture/2016/12/6/13805528/a-bronx-tale-review-us-election",
+      "wrongProductionNote": "Date guard: review December 6th, 2016 is 3201d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-bronx-tale-2007",
+      "title": "A Bronx Tale",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "December 1st, 2016",
+      "outlet": "The Wall Street Journal",
+      "url": "http://www.wsj.com/articles/a-bronx-tale-review-the-red-sauce-is-watered-down-1480642202",
+      "wrongProductionNote": "Date guard: review 2016-12-02 is 3197d after 2008-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-man-for-all-seasons-2008",
+      "title": "A Man for All Seasons",
+      "file": "theatermania--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "TheaterMania",
+      "url": "http://www.theatermania.com/content/news.cfm/story/15450",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1948d after 2008-12-14 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-streetcar-named-desire-1973",
+      "title": "A Streetcar Named Desire",
+      "file": "backstage--erik-haagensen.json",
+      "publishDate": "2012-04-22",
+      "outlet": "Backstage",
+      "url": "https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-a-streetcar-named-desire-1006840552.story",
+      "wrongProductionNote": "Date guard: review 2012-04-22 is 14028d after 1973-11-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-streetcar-named-desire-1973",
+      "title": "A Streetcar Named Desire",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "publishDate": "2012-04-23",
+      "outlet": "NY Post",
+      "url": "http://www.nypost.com/p/entertainment/theater/substandard_stanley_MSiCly5m92C8E52H042LVP",
+      "wrongProductionNote": "Date guard: review 2012-04-23 is 14029d after 1973-11-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "title": "A View From the Bridge",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-06-05",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/article/2024/jun/04/a-view-from-the-bridge-review-dominic-west-theatre-royal-haymarket",
+      "wrongProductionNote": "Date guard: review 2024-06-05 is 3020d after 2016-02-21 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "after-miss-julie-2009",
+      "title": "After Miss Julie",
+      "file": "theatermania--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "TheaterMania",
+      "url": "http://www.theatermania.com/broadway/reviews/10-2009/after-miss-julie_22120.html",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1591d after 2009-12-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "all-my-sons-1987",
+      "title": "All My Sons",
+      "file": "exeunt-magazine--nicole-serratore.json",
+      "publishDate": "2019-05-28",
+      "outlet": "Exeunt Magazine",
+      "url": "http://exeuntnyc.com/reviews/review-all-my-sons-at-american-airlines-theatre/",
+      "wrongProductionNote": "Date guard: review 2019-05-28 is 11692d after 1987-05-17 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "all-my-sons-2008",
+      "title": "All My Sons",
+      "file": "exeunt-magazine--nicole-serratore.json",
+      "publishDate": "2019-05-28",
+      "outlet": "Exeunt Magazine",
+      "url": "https://exeuntnyc.com/reviews/review-all-my-sons-at-american-airlines-theatre/",
+      "wrongProductionNote": "Date guard: review 2019-05-28 is 3782d after 2009-01-11 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "all-nighter-off-broadway-2025",
+      "title": "All Nighter",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "publishDate": "May 15th, 2025",
+      "outlet": "This Week in New York",
+      "url": "https://twi-ny.com/2025/05/15/all-nighter-natalie-margolin-robert-w-wilson-mcc-theater-space/",
+      "wrongProductionNote": "Date guard: review 2025-05-15 is 172d after 2024-11-17 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "an-american-in-paris-2015",
+      "title": "An American in Paris",
+      "file": "financialtimes--francis-carlin.json",
+      "publishDate": "December 15th, 2014",
+      "outlet": "Financial Times",
+      "url": "http://www.ft.com/cms/s/0/92c0cf4c-8444-11e4-bae9-00144feabdc0.html#ixzz3VfJai0Fg",
+      "wrongProductionNote": "Date guard: review December 15th, 2014 is 67d before 2015-03-13 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "an-enemy-of-the-people-1971",
+      "title": "An Enemy of the People",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "publishDate": "2012-09-28",
+      "outlet": "NY Post",
+      "url": "http://www.nypost.com/p/entertainment/theater/toxic_tale_more_relevant_punchy_CDdDc1Qq1lsc7ZZaTpGp1N",
+      "wrongProductionNote": "Date guard: review 2012-09-28 is 15125d after 1971-04-25 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "an-enemy-of-the-people-2012",
+      "title": "An Enemy of the People",
+      "file": "usatoday--elysa-gardner.json",
+      "publishDate": "2013-03-26",
+      "outlet": "USA Today",
+      "url": "https://www.usatoday.com/story/life/people/2013/03/26/enemy-of-the-people-review/1595353/",
+      "wrongProductionNote": "Date guard: review 2013-03-26 is 121d after 2012-11-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "annie-1977",
+      "title": "Annie",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2012-11-08",
+      "outlet": "Hollywood Reporter",
+      "url": "http://www.hollywoodreporter.com/review/annie-theater-review-387835",
+      "wrongProductionNote": "Date guard: review 2012-11-08 is 10896d after 1983-01-02 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "title": "As You Like It - Globe",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2022-12-15",
+      "outlet": "WhatsOnStage",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/as-you-like-it-with-leah-harvey-alfred-enoch_58026.html",
+      "wrongProductionNote": "Date guard: review 2022-12-15 is 1303d before 2026-08-14 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "august-osage-county-2007",
+      "title": "August: Osage County",
+      "file": "theatermania--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "TheaterMania",
+      "url": "http://www.theatermania.com/content/news.cfm/story/12206",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1752d after 2009-06-28 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "beetlejuice-2022",
+      "title": "Beetlejuice",
+      "file": "memphis-flyer--chris-mccoy.json",
+      "publishDate": "2023-11-02",
+      "outlet": "Memphis Flyer",
+      "url": "https://www.memphisflyer.com/beetlejuice-the-musical/",
+      "wrongProductionNote": "Date guard: review 2023-11-02 is 291d after 2023-01-08 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "beetlejuice-2025",
+      "title": "Beetlejuice",
+      "file": "newsweek--joe-westerfield.json",
+      "publishDate": "April 26th, 2019",
+      "outlet": "Newsweek",
+      "url": "https://www.newsweek.com/beetlejuice-guy-busting-broadway-musical-1406604",
+      "wrongProductionNote": "Date guard: review April 26th, 2019 is 2336d before 2025-10-08 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "beetlejuice-2025",
+      "title": "Beetlejuice",
+      "file": "off-script-with-dan-dwyer--dan-dwyer.json",
+      "publishDate": "June 11th, 2019",
+      "outlet": "Off Script with Dan Dwyer",
+      "url": "https://www.offscriptdandwyer.com/single-post/2019/06/11/BEETLEJUICE-%E2%80%93-Winter-Garden-Theatre",
+      "wrongProductionNote": "Date guard: review June 11th, 2019 is 2290d before 2025-10-08 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "beetlejuice-2025",
+      "title": "Beetlejuice",
+      "file": "stage-left--robert-russo.json",
+      "publishDate": "June 8th, 2019",
+      "outlet": "Stage Left",
+      "url": "https://www.stageleft.nyc/blog/2019/6/8/review-beetlejuice-is-a-ghoulishly-good-time",
+      "wrongProductionNote": "Date guard: review June 8th, 2019 is 2293d before 2025-10-08 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "bloody-bloody-andrew-jackson-2010",
+      "title": "Bloody Bloody Andrew Jackson",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/89922/bloody-bloody-andrew-jackson-at-bernard-b-jacobs-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5411d after 2011-01-02 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "title": "Brighton Beach Memoirs",
+      "file": "ny1--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "NY1",
+      "url": "http://ny1.com/6-bronx-news-content/ny1_living/107892/ny1-theater-review---brighton-beach-memoirs-",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1626d after 2009-11-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "title": "Brighton Beach Memoirs",
+      "file": "usatoday--elysa-gardner.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "USA Today",
+      "url": "http://www.usatoday.com/life/theater/reviews/2009-10-25-brighton-beach-memiors_N.htm",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1626d after 2009-11-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "bring-it-on-the-musical-2012",
+      "title": "Bring It On The Musical",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "2026-04-09",
+      "outlet": "Newsday",
+      "url": "https://www.newsday.com/entertainment/theater/bring-it-on-review-musical-leaps-high-1.3873686",
+      "wrongProductionNote": "Date guard: review 2026-04-09 is 4841d after 2012-12-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "bring-it-on-the-musical-2012",
+      "title": "Bring It On The Musical",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-07-25",
+      "outlet": "Vuture",
+      "url": "https://www.vulture.com/2012/08/theater-review-bring-it-on-the-musical.html",
+      "wrongProductionNote": "Date guard: review 2018-07-25 is 2026d after 2012-12-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "bye-bye-birdie-2009",
+      "title": "Bye Bye Birdie",
+      "file": "amny--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "amNewYork",
+      "url": "http://www.onoffbroadway.com/2009/10/bye-bye-birdie.html",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1542d after 2010-01-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "cabaret-1987",
+      "title": "Cabaret",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "2014-04-24",
+      "outlet": "Newsday",
+      "url": "https://www.newsday.com/entertainment/theater/cabaret-review-alan-cumming-is-still-dangerous-1.7804391",
+      "wrongProductionNote": "Date guard: review 2014-04-24 is 9448d after 1988-06-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "title": "Cat on a Hot Tin Roof",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-12-18",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london",
+      "wrongProductionNote": "Date guard: review 2024-12-18 is 4274d after 2013-03-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "title": "Cat on a Hot Tin Roof",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2024-12-18",
+      "outlet": "The Independent",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cat-on-a-hot-tin-roof-daisy-edgar-jones-b2666317.html",
+      "wrongProductionNote": "Date guard: review 2024-12-18 is 4274d after 2013-03-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "children-of-a-lesser-god-1980",
+      "title": "Children of a Lesser God",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "April 12th, 2018",
+      "outlet": "The Wall Street Journal",
+      "url": "https://www.wsj.com/articles/children-of-a-lesser-god-review-communication-breakdown-1523561899",
+      "wrongProductionNote": "Date guard: review April 12th, 2018 is 13108d after 1982-05-16 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "title": "Clybourne Park",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "March 24th, 2022",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/2022/mar/24/clybourne-park-review-bruce-norris",
+      "wrongProductionNote": "Date guard: review March 24th, 2022 is 3483d after 2012-09-02 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "collected-stories-2010",
+      "title": "Collected Stories",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/85231/collected-stories-at-samuel-j-friedman-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5614d after 2010-06-13 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "come-fly-away-2010",
+      "title": "Come Fly Away",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/84157/come-fly-away-at-marquis-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5530d after 2010-09-05 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "cyrano-de-bergerac-1984",
+      "title": "Cyrano de Bergerac",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2012-10-11",
+      "outlet": "Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/news/general-news/cyrano-de-bergerac-broadway-theater-review-378215/",
+      "wrongProductionNote": "Date guard: review 2012-10-11 is 10120d after 1985-01-19 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "title": "Cyrano de Bergerac",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "May 10, 2011",
+      "outlet": "The New York Times",
+      "url": "http://theater.nytimes.com/2007/11/02/theater/reviews/02cyra.html",
+      "wrongProductionNote": "Date guard: review May 10, 2011 is 1213d after 2008-01-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "elf-2012",
+      "title": "Elf",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "November 17, 2024",
+      "outlet": "Deadline",
+      "url": "https://deadline.com/2024/11/elf-the-musical-broadway-review-ho-ho-etc-1236178027/",
+      "wrongProductionNote": "Date guard: review November 17, 2024 is 4326d after 2013-01-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "title": "Equus",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "February 22nd, 2019",
+      "outlet": "The Stage",
+      "url": "https://www.thestage.co.uk/reviews/60834",
+      "wrongProductionNote": "Date guard: review February 22nd, 2019 is 2597d before 2026-05-08 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "title": "Escape to Margaritaville",
+      "file": "nytg--stanford-friedman.json",
+      "publishDate": "2022-01-25",
+      "outlet": "New York Theatre Guide",
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-jimmy-buffett-musical-escape-to-margaritaville-on-broadway",
+      "wrongProductionNote": "Date guard: review 2022-01-25 is 1297d after 2018-07-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "title": "Everyday Rapture",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2019-04-10",
+      "outlet": "New York",
+      "url": "https://nymag.com/arts/theater/reviews/65727/",
+      "wrongProductionNote": "Date guard: review 2019-04-10 is 3188d after 2010-07-11 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "falsettos-1992",
+      "title": "Falsettos",
+      "file": "nytg--unknown.json",
+      "publishDate": "2017-09-22",
+      "outlet": "New York Theatre Guide",
+      "url": "https://www.newyorktheatreguide.com/reviews/falsettos",
+      "wrongProductionNote": "Date guard: review 2017-09-22 is 8846d after 1993-06-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026",
+      "title": "Feeling Afraid As If Something Terrible Is Going To Happen",
+      "file": "standard--nick-clark.json",
+      "publishDate": "2023-11-16",
+      "outlet": "Evening Standard",
+      "url": "https://www.standard.co.uk/culture/theatre/feeling-afraid-as-if-something-terrible-is-going-to-happen-bush-theatre-review-marcelo-dos-santos-b1120712.html",
+      "wrongProductionNote": "Date guard: review 2023-11-16 is 1064d before 2026-11-19 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "fool-for-love-2015",
+      "title": "Fool for Love",
+      "file": "huffpost--michael-glitz.json",
+      "publishDate": "2016-03-08",
+      "outlet": "HuffPost",
+      "url": "https://www.huffpost.com/michael-giltz/theater-solid-shepard-hal_b_8272662.html",
+      "wrongProductionNote": "Date guard: review 2016-03-08 is 79d after 2015-12-13 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "frozen-2004",
+      "title": "Frozen",
+      "file": "nypost--johnny-oleksinski.json",
+      "publishDate": "2018-03-22",
+      "outlet": "New York Post",
+      "url": "https://nypost.com/2018/03/22/broadway-has-robbed-frozen-of-its-heart-and-fun/",
+      "wrongProductionNote": "Date guard: review 2018-03-22 is 4953d after 2004-08-22 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "gigi-1973",
+      "title": "Gigi",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2015-04-08",
+      "outlet": "Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/news/general-news/vanessa-hudgens-gigi-theater-review-787334/",
+      "wrongProductionNote": "Date guard: review 2015-04-08 is 15025d after 1974-02-10 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "glengarry-glen-ross-2005",
+      "title": "Glengarry Glen Ross",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2012-12-17",
+      "outlet": "Time Out NY",
+      "url": "http://www.timeout.com/newyork/theater/glengarry-glen-ross",
+      "wrongProductionNote": "Date guard: review 2012-12-17 is 2661d after 2005-08-28 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "glengarry-glen-ross-2012",
+      "title": "Glengarry Glen Ross",
+      "file": "theatermania--kenji-fujishima.json",
+      "publishDate": "March 31st, 2025",
+      "outlet": "Theatermania",
+      "url": "https://www.theatermania.com/news/glengarry-glen-ross_63906/",
+      "wrongProductionNote": "Date guard: review March 31st, 2025 is 4446d after 2013-01-20 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "god-of-carnage-2009",
+      "title": "God of Carnage",
+      "file": "ap--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "Associated Press",
+      "url": "http://www.google.com/hostednews/ap/article/ALeqM5iom6xZJwRRgfkdREzOoDl3qqjeQwD973BAB81",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1409d after 2010-06-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "godspell-2011",
+      "title": "Godspell",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out NY",
+      "url": "https://newyork.timeout.com/arts-culture/theater/2190815/review-godspell",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 4872d after 2012-06-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "title": "Good Night, Oscar",
+      "file": "oscar-review--good-night.json",
+      "publishDate": "2025-08-09",
+      "outlet": "oscar-review",
+      "url": "https://liamodell.com/2025/08/09/good-night-oscar-review-barbican-theatre-sean-hayes-will-and-grace-oscar-levant-play-what-is-good-night-oscar-about/",
+      "wrongProductionNote": "Date guard: review 2025-08-09 is 706d after 2023-08-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "good-people-2011",
+      "title": "Good People",
+      "file": "ny1--roma-torre.json",
+      "publishDate": "2012-03-08",
+      "outlet": "NY1",
+      "url": "https://www.ny1.com/content/ny1_living/theater_reviews/134957/ny1-theater-review---good-people-",
+      "wrongProductionNote": "Date guard: review 2012-03-08 is 277d after 2011-05-29 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "gore-vidals-the-best-man-2012",
+      "title": "Gore Vidal's The Best Man",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "December 10, 2012",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/news/general-news/gore-vidals-best-man-theater-306672/",
+      "wrongProductionNote": "Date guard: review December 10, 2012 is 85d after 2012-09-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "grease-2007",
+      "title": "Grease",
+      "file": "newsday--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "Newsday",
+      "url": "http://www.newsday.com/entertainment/stage/ny-etgrease0820,0,4458957.story",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1927d after 2009-01-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "grease-2007",
+      "title": "Grease",
+      "file": "the-journal-news--jacques-le-sourd.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "The Journal News (LoHud)",
+      "url": "https://www.lohud.com/apps/pbcs.dll/article?AID=2007708200313",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1927d after 2009-01-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "grease-2007",
+      "title": "Grease",
+      "file": "the-journal-news--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "The Journal News",
+      "url": "http://www.lohud.com/apps/pbcs.dll/article?AID=2007708200313",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1927d after 2009-01-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "gypsy-2003",
+      "title": "Gypsy",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": "2024-12-20",
+      "outlet": "Culture Sauce",
+      "url": "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/",
+      "wrongProductionNote": "Date guard: review 2024-12-20 is 7502d after 2004-05-30 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "gypsy-2024",
+      "title": "Gypsy",
+      "file": "artsfuse--christopher-caggiano.json",
+      "publishDate": "2026-05-16",
+      "outlet": "The Arts Fuse",
+      "url": "https://artsfuse.org/304185/theater-review-audra-mcdonald-dazzles-as-mama-rose-in-a-star-powered-gypsy-revival/",
+      "wrongProductionNote": "Date guard: review 2026-05-16 is 265d after 2025-08-17 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "hello-dolly-1995",
+      "title": "Hello, Dolly!",
+      "file": "village-voice--michael-feingold.json",
+      "publishDate": "2017-05-09",
+      "outlet": "Village Voice",
+      "url": "http://www.villagevoice.com/arts/with-hello-dolly-bette-midler-midler-brings-back-the-show-thatll-never-go-away-9970559",
+      "wrongProductionNote": "Date guard: review 2017-05-09 is 7765d after 1996-01-28 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "how-to-succeed-in-business-without-really-trying-2011",
+      "title": "How to Succeed in Business Without Really Trying",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-08-19",
+      "outlet": "New York Magazine",
+      "url": "https://nymag.com/daily/entertainment/2011/03/stage_dive_how_daniel_radcliff.html",
+      "wrongProductionNote": "Date guard: review 2018-08-19 is 2275d after 2012-05-20 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "hughie-2016",
+      "title": "Hughie",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "October 26, 2016",
+      "outlet": "The Hollywood Reporter",
+      "url": "http://www.hollywoodreporter.com/review/forest-whitaker-hughie-theater-review-869244",
+      "wrongProductionNote": "Date guard: review October 26, 2016 is 206d after 2016-03-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "ill-eat-you-last-a-chat-with-sue-mengers-2013",
+      "title": "I'll Eat You Last: A Chat With Sue Mengers",
+      "file": "newsday--linda-winer.json",
+      "publishDate": "2013-03-04",
+      "outlet": "Newsday",
+      "url": "http://www.newsday.com/entertainment/theater/i-ll-eat-you-last-review-bette-midler-is-back-1.5127889",
+      "wrongProductionNote": "Date guard: review 2013-03-04 is 11d before 2013-04-05 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "in-the-heights-2008",
+      "title": "In the Heights",
+      "file": "new-york-sun--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "The New York Sun",
+      "url": "http://www2.nysun.com/article/72594",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1192d after 2011-01-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "in-the-heights-2008",
+      "title": "In the Heights",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/27448/in-the-heights",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5404d after 2011-01-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "indecent-2017",
+      "title": "Indecent",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "May 17th, 2016",
+      "outlet": "The Wrap",
+      "url": "http://www.thewrap.com/indecent-theater-review-who-knew-yiddish-theater-was-so-gay-friendly/",
+      "wrongProductionNote": "Date guard: review May 17th, 2016 is 301d before 2017-04-04 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "jersey-boys-2005",
+      "title": "Jersey Boys",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/7498/jersey-boys",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 3206d after 2017-01-15 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "king-lear-2004",
+      "title": "King Lear",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "April 4th, 2019",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+      "wrongProductionNote": "Date guard: review April 4th, 2019 is 5457d after 2004-04-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "king-lear-2019",
+      "title": "King Lear",
+      "file": "guardian--susannah-clapp.json",
+      "publishDate": "2023-11-01",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/2023/nov/05/the-week-in-theatre-king-lear-lyonesse-pied-piper-review-kenneth-branagh-kristin-scott-thomas-lily-james",
+      "wrongProductionNote": "Date guard: review 2023-11-01 is 1599d after 2019-06-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "title": "Kinky Boots The Musical",
+      "file": "times-uk--alex-oconnell.json",
+      "publishDate": "2015-09-05",
+      "outlet": "The Times (UK)",
+      "url": "https://www.thetimes.com/travel/destinations/uk-travel/england/london-travel/cyndi-lauper-on-kinky-boots-the-broadway-must-see-musical-hitting-the-west-end-hqcbv2kx0gn",
+      "wrongProductionNote": "Date guard: review 2015-09-05 is 3825d before 2026-03-17 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "la-bete-2010",
+      "title": "La Bête",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-08-19",
+      "outlet": "Vulture",
+      "url": "https://www.vulture.com/2010/10/theater_review_your_comp-lit_t.html",
+      "wrongProductionNote": "Date guard: review 2018-08-19 is 2772d after 2011-01-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "title": "La Cage aux Folles",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time  Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/84810/la-cage-aux-folles-at-longacre-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5292d after 2011-05-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "lend-me-a-tenor-1989",
+      "title": "Lend Me a Tenor",
+      "file": "slantmagazine--jason-clark.json",
+      "publishDate": "2010-04-05",
+      "outlet": "Slant Magazine",
+      "url": "https://www.slantmagazine.com/theater/silly-boys-and-girls-and-puppets-lend-me-a-tenor-and-stuffed-and-unstrung/",
+      "wrongProductionNote": "Date guard: review 2010-04-05 is 7281d after 1990-04-22 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "lend-me-a-tenor-1989",
+      "title": "Lend Me a Tenor",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2013-02-20",
+      "outlet": "TheaterMania",
+      "url": "https://www.theatermania.com/news/lend-me-a-tenor_64393/",
+      "wrongProductionNote": "Date guard: review 2013-02-20 is 8333d after 1990-04-22 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "title": "Lend Me a Tenor",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "publishDate": "2010-10-14",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/lend-me-tenor-theater-review-29462/",
+      "wrongProductionNote": "Date guard: review 2010-10-14 is 53d after 2010-08-15 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "title": "Lend Me a Tenor",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/84411/lend-me-a-tenor-at-music-box-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5551d after 2010-08-15 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2008",
+      "title": "Les Liaisons Dangereuses",
+      "file": "theater-life--eric-march.json",
+      "publishDate": "2008-07-20T23:41:00",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/les-liaisons-dangereuses/",
+      "wrongProductionNote": "Date guard: review 2008-07-20T23:41:00 is 8d after 2008-07-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2008",
+      "title": "Les Liaisons Dangereuses",
+      "file": "variety--matt-trueman.json",
+      "publishDate": "December 21st, 2015",
+      "outlet": "Variety",
+      "url": "http://variety.com/2015/legit/reviews/les-liaisons-dangereuses-review-dominic-west-1201665155/",
+      "wrongProductionNote": "Date guard: review December 21st, 2015 is 2717d after 2008-07-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "title": "Les Liaisons Dangereuses",
+      "file": "theatreandtonic--penny-walshe.json",
+      "publishDate": "2026-06-21",
+      "outlet": "Theatre and Tonic",
+      "url": "https://theatreandtonic.co.uk/blog/les-liaisons-dangereuses-nt-live-review",
+      "wrongProductionNote": "Date guard: review 2026-06-21 is 8d after 2026-06-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "les-miserables-1987",
+      "title": "Les Miserables",
+      "file": "reflections-in-the-light--lauren-yarger.json",
+      "publishDate": "April 4th, 2014",
+      "outlet": "Reflections in the Light",
+      "url": "http://reflectionsinthelight.blogspot.com/2014/04/broadway-theater-review-les-miserables.html#.VPsJkuFk46s",
+      "wrongProductionNote": "Date guard: review April 4th, 2014 is 3967d after 2003-05-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "long-days-journey-into-night-2003",
+      "title": "Long Day's Journey Into Night",
+      "file": "theater-scene--darryl-reilly.json",
+      "publishDate": "2016-05-04",
+      "outlet": "Theater Scene",
+      "url": "http://www.theaterscene.net/plays/long-days-journey-night/darryl-reilly/",
+      "wrongProductionNote": "Date guard: review 2016-05-04 is 4623d after 2003-08-31 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "long-days-journey-into-night-2003",
+      "title": "Long Day's Journey Into Night",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2016-04-27",
+      "outlet": "Time Out New York",
+      "url": "http://www.timeout.com/newyork/theater/long-days-journey-into-night",
+      "wrongProductionNote": "Date guard: review 2016-04-27 is 4616d after 2003-08-31 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "long-days-journey-into-night-2003",
+      "title": "Long Day's Journey Into Night",
+      "file": "towleroad--naveen-kumar.json",
+      "publishDate": "2016-04-28",
+      "outlet": "Towleroad",
+      "url": "http://www.towleroad.com/2016/04/jessica-lange-is-astonishing-in-long-days-journey-into-night-on-broadway-review/",
+      "wrongProductionNote": "Date guard: review 2016-04-28 is 4617d after 2003-08-31 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "title": "Long Day's Journey Into Night",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-04-03",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/2024/apr/03/long-days-journey-into-night-review-brian-cox-patricia-clarkson-eugene-oneill-wyndham-london",
+      "wrongProductionNote": "Date guard: review 2024-04-03 is 2831d after 2016-06-26 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "title": "Long Day's Journey Into Night",
+      "file": "independent--tim-bano.json",
+      "publishDate": "2024-04-03",
+      "outlet": "The Independent",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/long-day-s-journey-into-night-review-brian-cox-b2522536.html",
+      "wrongProductionNote": "Date guard: review 2024-04-03 is 2831d after 2016-06-26 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "losing-louie-2006",
+      "title": "Losing Louie",
+      "file": "theater-life--eric-march.json",
+      "publishDate": "2007-01-18T21:41:00",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/losing-louie/",
+      "wrongProductionNote": "Date guard: review 2007-01-18T21:41:00 is 47d after 2006-11-26 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "macbeth-2008",
+      "title": "Macbeth",
+      "file": "newsday--updated-november.json",
+      "publishDate": "2013-11-21",
+      "outlet": "Newsday",
+      "url": "http://www.newsday.com/entertainment/theater/macbeth-review-witches-outshine-ethan-hawke-1.6470795",
+      "wrongProductionNote": "Date guard: review 2013-11-21 is 2000d after 2008-05-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-10-09",
+      "outlet": "Evening Standard",
+      "url": "https://www.standard.co.uk/culture/theatre/the-tragedy-of-macbeth-review-almeida-theatre-saoirse-ronan-london-b960539.html",
+      "wrongProductionNote": "Date guard: review 2024-10-09 is 692d before 2026-09-22 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "magicbird-2012",
+      "title": "Magic/Bird",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-07-25",
+      "outlet": "Vulture",
+      "url": "https://www.vulture.com/2012/04/theater-review-magicbird-has-no-inside-game.html",
+      "wrongProductionNote": "Date guard: review 2018-07-25 is 2258d after 2012-05-12 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "title": "Mamma Mia!",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "October 19th, 2001",
+      "outlet": "The New York Times",
+      "url": "http://www.nytimes.com/2001/10/19/movies/theater-review-mom-had-a-trio-and-a-band-too.html",
+      "wrongProductionNote": "Date guard: review October 19th, 2001 is 8667d before 2025-08-02 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "title": "Mamma Mia!",
+      "file": "vulture--john-simon.json",
+      "publishDate": "October 29th, 2001",
+      "outlet": "New York Magazine / Vulture",
+      "url": "http://nymag.com/nymetro/arts/theater/reviews/5312/",
+      "wrongProductionNote": "Date guard: review October 29th, 2001 is 8657d before 2025-08-02 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "marvins-room-2017",
+      "title": "Marvin's Room",
+      "file": "vulture--christopher-bonanos.json",
+      "publishDate": "December 11, 2017",
+      "outlet": "Vulture",
+      "url": "http://www.vulture.com/2017/06/theater-review-going-back-in-time-in-marvins-room.html",
+      "wrongProductionNote": "Date guard: review December 11, 2017 is 99d after 2017-08-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "marvins-room-2017",
+      "title": "Marvin's Room",
+      "file": "vulture--jesse-green.json",
+      "publishDate": "December 11, 2017",
+      "outlet": "Vulture",
+      "url": "https://www.vulture.com/2017/06/theater-review-going-back-in-time-in-marvins-room.html",
+      "wrongProductionNote": "Date guard: review December 11, 2017 is 99d after 2017-08-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "memphis-2009",
+      "title": "Memphis",
+      "file": "ap--elisabeth-vincentelli.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "Associated Press",
+      "url": "http://www.newsok.com/memphis-exuberantly-chronicles-the-rise-of-rb/article/feed/94775?custom_click=headlines_widget",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 618d after 2012-08-05 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "million-dollar-quartet-2010",
+      "title": "Million Dollar Quartet",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/84651/million-dollar-quartet-at-nederlander-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5250d after 2011-06-12 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "miss-saigon-1991",
+      "title": "Miss Saigon",
+      "file": "huffpost--david-finkle.json",
+      "publishDate": "2017-03-23",
+      "outlet": "HuffPost",
+      "url": "http://www.huffingtonpost.com/entry/miss-saigon-is-back-and-weirdly-imposing-as-ever_us_58d45072e4b06c3d3d3e6c14",
+      "wrongProductionNote": "Date guard: review 2017-03-23 is 5891d after 2001-01-28 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "next-to-normal-2009",
+      "title": "Next To Normal",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "TimeOut",
+      "url": "https://newyork.timeout.com/articles/theater/88213/next-to-normal-at-booth-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5397d after 2011-01-16 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "title": "Nice Work If You Can Get It",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-07-25",
+      "outlet": "NY Magazine",
+      "url": "https://www.vulture.com/2012/04/gershwinmania-nice-work-if-you-can-get-it.html",
+      "wrongProductionNote": "Date guard: review 2018-07-25 is 1859d after 2013-06-15 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "noughts-and-crosses-off-west-end-2026",
+      "title": "Noughts and Crosses",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-07-09",
+      "outlet": "London Box Office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/noughts-and-crosses-review",
+      "wrongProductionNote": "Date guard: review 2025-07-09 is 286d before 2026-05-12 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "oklahoma-2019",
+      "title": "Oklahoma!",
+      "file": "independent--nicole-vassell.json",
+      "publishDate": "2022-05-06",
+      "outlet": "The Independent",
+      "url": "https://www.independent.co.uk/arts-entertainment/oklahoma-review-young-vic-b2073085.html",
+      "wrongProductionNote": "Date guard: review 2022-05-06 is 831d after 2020-01-19 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "once-on-this-island-2017",
+      "title": "Once on This Island",
+      "file": "parade--janice-kaplan.json",
+      "publishDate": "2022-09-29",
+      "outlet": "Parade",
+      "url": "https://parade.com/627803/janicekaplan/review-a-dont-miss-island-of-love-and-hope/",
+      "wrongProductionNote": "Date guard: review 2022-09-29 is 1355d after 2019-01-06 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "pal-joey-2008",
+      "title": "Pal Joey",
+      "file": "theater-life--eric-march.json",
+      "publishDate": "2009-03-29T05:11:00",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/pal-joey/",
+      "wrongProductionNote": "Date guard: review 2009-03-29T05:11:00 is 21d after 2009-03-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "picnic-2013",
+      "title": "Picnic",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-08-20",
+      "outlet": "Vulture",
+      "url": "https://www.vulture.com/2013/01/theater-review-picnic.html",
+      "wrongProductionNote": "Date guard: review 2018-08-20 is 1996d after 2013-02-24 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "present-laughter-2010",
+      "title": "Present Laughter",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2010-10-14",
+      "outlet": "Hollywood Reporter",
+      "url": "http://www.hollywoodreporter.com/review/present-laughter-theater-review-991396",
+      "wrongProductionNote": "Date guard: review 2010-10-14 is 200d after 2010-03-21 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "present-laughter-2010",
+      "title": "Present Laughter",
+      "file": "magical-misstari-tour--tari-stratton.json",
+      "publishDate": "May 14th, 2017",
+      "outlet": "Magical Misstari Tour",
+      "url": "https://magicalmisstaritour.blogspot.com/2017/05/thoughts-on-hamlet-present-laughter-and.html",
+      "wrongProductionNote": "Date guard: review May 14th, 2017 is 2604d after 2010-03-21 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "pretty-woman-the-musical-2018",
+      "title": "Pretty Woman: The Musical",
+      "file": "njcom--christopher-kelly.json",
+      "publishDate": "2026-02-14",
+      "outlet": "NJ.com",
+      "url": "https://www.nj.com/entertainment/2018/08/pretty_woman_broadway_review_tickets_info_andy_kar.html",
+      "wrongProductionNote": "Date guard: review 2026-02-14 is 2365d after 2019-08-18 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "title": "Pride",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2021-11-04",
+      "outlet": "Time Out London",
+      "url": "https://www.timeout.com/london/theatre/pride-prejudice-sort-of-review",
+      "wrongProductionNote": "Date guard: review 2021-11-04 is 1659d before 2026-06-11 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "promises-promises-2010",
+      "title": "Promises, Promises",
+      "file": "vulture--stephanie-zacharek.json",
+      "publishDate": "2019-04-10",
+      "outlet": "New York",
+      "url": "http://nymag.com/arts/theater/reviews/65640/",
+      "wrongProductionNote": "Date guard: review 2019-04-10 is 3013d after 2011-01-02 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "proof-2026",
+      "title": "Proof",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "April 16, 2026",
+      "outlet": "Deadline",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306/",
+      "wrongProductionNote": "Date guard: review 2024-07-19 is 599d before 2026-03-31 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "race-2009",
+      "title": "Race",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2019-04-11",
+      "outlet": "New York",
+      "url": "https://nymag.com/arts/theater/62531/#ixzz0Z0tJTuWu",
+      "wrongProductionNote": "Date guard: review 2019-04-11 is 3148d after 2010-08-21 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "relatively-speaking-2011",
+      "title": "Relatively Speaking",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time OUt NY",
+      "url": "https://newyork.timeout.com/arts-culture/theater/2116985/review-relatively-speaking",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5019d after 2012-01-29 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "school-of-rock-the-musical-2015",
+      "title": "School of Rock – The Musical",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2015-08-17",
+      "outlet": "TimeOut NY",
+      "url": "https://www.timeout.com/newyork/theater/school-of-rock",
+      "wrongProductionNote": "Date guard: review 2015-08-17 is 63d before 2015-11-09 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "significant-other-2017",
+      "title": "Significant Other",
+      "file": "njcom--christopher-kelly.json",
+      "publishDate": "2026-02-13",
+      "outlet": "NJ.com",
+      "url": "https://www.nj.com/entertainment/index.ssf/2017/03/significant_other_broadway_review_joshua_harmon_gi.html",
+      "wrongProductionNote": "Date guard: review 2026-02-13 is 3211d after 2017-04-23 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "significant-other-2017",
+      "title": "Significant Other",
+      "file": "theater-life--lauren-yarger.json",
+      "publishDate": "2017-05-05T15:16:33",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/significant-other/",
+      "wrongProductionNote": "Date guard: review 2017-05-05T15:16:33 is 6d after 2017-04-23 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sister-act-2011",
+      "title": "Sister Act",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/arts-culture/theater/1228219/review-sister-act",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 4809d after 2012-08-26 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sister-act-2011",
+      "title": "Sister Act",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2018-08-19",
+      "outlet": "New York Magazine",
+      "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_sister_acts_cha.html",
+      "wrongProductionNote": "Date guard: review 2018-08-19 is 2177d after 2012-08-26 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sondheim-on-sondheim-2010",
+      "title": "Sondheim on Sondheim",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "publishDate": "2010-10-14",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/sondheim-sondheim-theater-review-29512/",
+      "wrongProductionNote": "Date guard: review 2010-10-14 is 102d after 2010-06-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sondheim-on-sondheim-2010",
+      "title": "Sondheim on Sondheim",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/85031/sondheim-on-sondheim-at-studio-54-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5600d after 2010-06-27 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "south-pacific-2008",
+      "title": "South Pacific",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/28301/south-pacific",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5544d after 2010-08-22 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "south-pacific-2008",
+      "title": "South Pacific",
+      "file": "vulture--jeremy-mccarter.json",
+      "publishDate": "2019-04-11",
+      "outlet": "New York",
+      "url": "https://nymag.com/arts/theater/reviews/45983/",
+      "wrongProductionNote": "Date guard: review 2019-04-11 is 3147d after 2010-08-22 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sticks-and-bones-1972",
+      "title": "Sticks and Bones",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "November 6, 2014",
+      "outlet": "The Hollywood Reporter",
+      "url": "http://www.hollywoodreporter.com/review/sticks-bones-theater-review-746857",
+      "wrongProductionNote": "Date guard: review November 6, 2014 is 15369d after 1972-10-01 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "straight-white-men-2018",
+      "title": "Straight White Men",
+      "file": "njcom--christopher-kelly.json",
+      "publishDate": "2026-02-12",
+      "outlet": "NJ.com",
+      "url": "https://www.nj.com/entertainment/index.ssf/2018/07/straight_white_men_armie_hammer_broadway_review_ti.html",
+      "wrongProductionNote": "Date guard: review 2026-02-12 is 2706d after 2018-09-09 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-2017",
+      "title": "Sunday in the Park with George",
+      "file": "njcom--christopher-kelly.json",
+      "publishDate": "2026-02-16",
+      "outlet": "NJ.com",
+      "url": "https://www.nj.com/entertainment/index.ssf/2017/02/sunday_in_the_park_jake_gyllenhaal_broadway_review.html",
+      "wrongProductionNote": "Date guard: review 2026-02-16 is 3214d after 2017-04-23 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "sweat-2017",
+      "title": "Sweat",
+      "file": "reviewing-the-drama--robin-riegelhaupt.json",
+      "publishDate": "November 3rd, 2016",
+      "outlet": "Reviewing The Drama",
+      "url": "http://www.reviewingthedrama.com/2016/11/sweat.html",
+      "wrongProductionNote": "Date guard: review November 3rd, 2016 is 100d before 2017-03-04 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "take-me-out-2003",
+      "title": "Take Me Out",
+      "file": "amny--matt-windman.json",
+      "publishDate": "2022-04-04",
+      "outlet": "AMNY",
+      "url": "https://www.amny.com/entertainment/theater/review-take-me-out-hits-a-home-run/",
+      "wrongProductionNote": "Date guard: review 2022-04-04 is 6658d after 2004-01-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-39-steps-2008",
+      "title": "The 39 Steps",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "April 5th, 2024",
+      "outlet": "BroadwayWorld",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-39-STEPS-Richmond-Theatre-20240405",
+      "wrongProductionNote": "Date guard: review April 5th, 2024 is 5192d after 2010-01-10 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-39-steps-2008",
+      "title": "The 39 Steps",
+      "file": "theater-life--eric-march.json",
+      "publishDate": "2016-11-07T16:44:00",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/39-steps/",
+      "wrongProductionNote": "Date guard: review 2016-11-07T16:44:00 is 2487d after 2010-01-10 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "title": "The Addams Family",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/84586/the-addams-family-at-lunt-fontanne-theatre-theater-review#ixzz0kd04Jy7L",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5048d after 2011-12-31 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "title": "The Addams Family",
+      "file": "vulture--scott-brown.json",
+      "publishDate": "2019-04-10",
+      "outlet": "New York",
+      "url": "https://nymag.com/arts/theater/reviews/65353/",
+      "wrongProductionNote": "Date guard: review 2019-04-10 is 2650d after 2011-12-31 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-big-knife-2013",
+      "title": "The Big Knife",
+      "file": "philly-stage--toby-zinman.json",
+      "publishDate": "2026-04-09",
+      "outlet": "Philly Stage",
+      "url": "https://www.philly.com/philly/blogs/phillystage/203318346.html",
+      "wrongProductionNote": "Date guard: review 2026-04-09 is 4687d after 2013-06-02 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-cherry-orchard-1977",
+      "title": "The Cherry Orchard",
+      "file": "amny--matt-windman.json",
+      "publishDate": "2016-10-16",
+      "outlet": "amNY",
+      "url": "http://www.amny.com/entertainment/the-cherry-orchard-review-diane-lane-stars-in-disjointed-revival-1.12462906",
+      "wrongProductionNote": "Date guard: review 2016-10-16 is 14308d after 1977-08-07 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-cherry-orchard-1977",
+      "title": "The Cherry Orchard",
+      "file": "timeout--david-cote.json",
+      "publishDate": "2016-10-17",
+      "outlet": "TimeOut NY",
+      "url": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
+      "wrongProductionNote": "Date guard: review 2016-10-17 is 14309d after 1977-08-07 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-glass-menagerie-2013",
+      "title": "The Glass Menagerie",
+      "file": "ap--mark-kennedy.json",
+      "publishDate": null,
+      "outlet": "Associated Press",
+      "url": "https://abcnews.go.com/Entertainment/wireStory/review-bways-glass-menagerie-thrilling-20390527",
+      "wrongProductionNote": "Date guard: review undefined is 9217d after 2014-02-23 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-gruffalo-west-end-2026",
+      "title": "The Gruffalo",
+      "file": "timeout-london--alex-plim.json",
+      "publishDate": "2024-08-06",
+      "outlet": "Time Out London",
+      "url": "https://www.timeout.com/london/theatre/the-gruffalo-review-1",
+      "wrongProductionNote": "Date guard: review 2024-08-06 is 689d before 2026-07-17 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-homecoming-2007",
+      "title": "The Homecoming",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "December 6th, 2023",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/2023/dec/06/the-homecoming-review-young-vic-jared-harris-harold-pinter-toxic-masculinity",
+      "wrongProductionNote": "Date guard: review December 6th, 2023 is 5708d after 2008-04-13 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "title": "The House of Blue Leaves",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "publishDate": "2026-04-09",
+      "outlet": "The Philadelphia Inquirer",
+      "url": "https://www.philly.com/philly/columnists/howard_shapiro/120623779.html",
+      "wrongProductionNote": "Date guard: review 2026-04-09 is 5395d after 2011-06-25 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "title": "The Importance of Being Oscar",
+      "file": "artsdesk--gary-naylor.json",
+      "publishDate": "April 3rd, 2025",
+      "outlet": "The Arts Desk",
+      "url": "https://theartsdesk.com/theatre/importance-being-oscar-jermyn-street-theatre-review-wilde-still-burning-bright",
+      "wrongProductionNote": "Date guard: review dated April 3rd, 2025 is of the Jermyn Street Theatre 2025 production (URL slug: jermyn-street-theatre) — predates the 2026 Park Theatre run (previews 2026-07-22)",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-merchant-of-venice-2010",
+      "title": "The Merchant of Venice",
+      "file": "reuters--david-rooney.json",
+      "publishDate": "2026-02-28",
+      "outlet": "Reuters/Hollywood Reporter",
+      "url": "https://www.reuters.com/article/idUSTRE6AE05620101115",
+      "wrongProductionNote": "Date guard: review 2026-02-28 is 5480d after 2011-02-20 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-miracle-worker-2010",
+      "title": "The Miracle Worker",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "publishDate": "2010-10-14",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/miracle-worker-theater-review-29367/",
+      "wrongProductionNote": "Date guard: review 2010-10-14 is 186d after 2010-04-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "title": "The Mystery of Edwin Drood",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2012-11-13",
+      "outlet": "Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/news/general-news/mystery-edwin-drood-theater-review-389912/",
+      "wrongProductionNote": "Date guard: review 2012-11-13 is 9306d after 1987-05-16 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-normal-heart-2011",
+      "title": "The Normal Heart",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/arts-culture/theater/1269691/review-the-normal-heart",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5222d after 2011-07-10 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-pitmen-painters-2010",
+      "title": "The Pitmen Painters",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-11-02",
+      "outlet": "Time Out New York",
+      "url": "https://newyork.timeout.com/articles/theater/89601/the-pitmen-painters-at-samuel-j-friedman-theatre-theater-review",
+      "wrongProductionNote": "Date guard: review 2025-11-02 is 5432d after 2010-12-12 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-price-2017",
+      "title": "The Price",
+      "file": "nytg--unknown.json",
+      "publishDate": "2017-09-22",
+      "outlet": "New York Theatre Guide",
+      "url": "https://www.newyorktheatreguide.com/reviews/arthur-millers-the-price",
+      "wrongProductionNote": "Date guard: review 2017-09-22 is 124d after 2017-05-14 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-real-thing-2014",
+      "title": "The Real Thing",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-09-04",
+      "outlet": "The Guardian",
+      "url": "https://www.theguardian.com/stage/article/2024/sep/04/the-real-thing-review-tom-stoppard-old-vic-london",
+      "wrongProductionNote": "Date guard: review 2024-09-04 is 3524d after 2015-01-04 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-scottsboro-boys-2010",
+      "title": "The Scottsboro Boys",
+      "file": "time--richard-zoglin.json",
+      "publishDate": "2023-10-24",
+      "outlet": "Time",
+      "url": "https://www.time.com/time/specials/packages/article/0,28804,2023893_2023892_2028814,00.html",
+      "wrongProductionNote": "Date guard: review 2023-10-24 is 4692d after 2010-12-12 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-tap-dance-kid-1983",
+      "title": "The Tap Dance Kid",
+      "file": "nytimes--jesse-green.json",
+      "publishDate": "2022-02-03",
+      "outlet": "The New York Times",
+      "url": "https://www.nytimes.com/2022/02/03/theater/the-tap-dance-kid-review.html",
+      "wrongProductionNote": "Date guard: review 2022-02-03 is 13318d after 1985-08-11 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "the-visit-1973",
+      "title": "The Visit",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "April 23rd, 2015",
+      "outlet": "The Hollywood Reporter",
+      "url": "http://www.hollywoodreporter.com/review/chita-rivera-visit-theater-review-791063",
+      "wrongProductionNote": "Date guard: review April 23rd, 2015 is 15034d after 1974-02-16 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "to-be-or-not-to-be-2008",
+      "title": "To Be Or Not To Be",
+      "file": "theatermania--unknown.json",
+      "publishDate": "April 22, 2014",
+      "outlet": "TheaterMania",
+      "url": "http://www.theatermania.com/content/news.cfm/story/15589",
+      "wrongProductionNote": "Date guard: review April 22, 2014 is 1976d after 2008-11-16 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "tootsie-2019",
+      "title": "Tootsie",
+      "file": "rollingstone--peter-travers.json",
+      "publishDate": "2026-02-24",
+      "outlet": "Rolling Stone",
+      "url": "https://www.rollingstone.com/culture/culture-news/tootsie-a-fun-time-musical-for-turbulent-times-826419/",
+      "wrongProductionNote": "Date guard: review 2026-02-24 is 2235d after 2020-01-05 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "top-girls-2008",
+      "title": "Top Girls",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "December 8, 2008",
+      "outlet": "The New York Times",
+      "url": "https://www.nytimes.com/2008/05/08/theater/reviews/08girl.html",
+      "wrongProductionNote": "Date guard: review December 8, 2008 is 155d after 2008-06-29 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "top-girls-2008",
+      "title": "Top Girls",
+      "file": "theater-life--eric-march.json",
+      "publishDate": "2009-08-17T11:37:00",
+      "outlet": "Theater Life",
+      "url": "https://theaterlife.com/top-girls/",
+      "wrongProductionNote": "Date guard: review 2009-08-17T11:37:00 is 408d after 2008-06-29 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "torch-song-2018",
+      "title": "Torch Song",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2018-03-27",
+      "outlet": "TheaterMania",
+      "url": "https://www.theatermania.com/broadway/news/harvey-fiersteins-torch-song-returns-to-broadway_86916.html",
+      "wrongProductionNote": "Date guard: review 2018-03-27 is 175d before 2018-10-09 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "travesties-1975",
+      "title": "Travesties",
+      "file": "hollywood-reporter--frank-scheck.json",
+      "publishDate": "2018-04-24",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/review/travesties-theater-1104956",
+      "wrongProductionNote": "Date guard: review 2018-04-24 is 15375d after 1976-03-13 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+      "title": "Unfortunate: The Untold Story of Ursula the Sea Witch",
+      "file": "times-uk--donald-hutera.json",
+      "publishDate": "2024-01-02",
+      "outlet": "The Times",
+      "url": "https://www.thetimes.co.uk/article/unfortunate-review-a-vampish-squid-commands-this-disney-parody-j6lggll6s",
+      "wrongProductionNote": "Date guard: review 2024-01-02 is 745d before 2026-02-06 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "waitress-2021",
+      "title": "Waitress",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "April 24th, 2016",
+      "outlet": "TheWrap",
+      "url": "https://www.thewrap.com/waitress-broadway-review-sara-bareilles-jessie-mueller-bake-up-a-musical-storm/",
+      "wrongProductionNote": "Date guard: review April 24th, 2016 is 1936d before 2021-09-02 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "title": "Woman in Mind",
+      "file": "the-herald--neil-cooper.json",
+      "publishDate": "2026-03-11",
+      "outlet": "The Herald",
+      "url": null,
+      "wrongProductionNote": "Date guard: review 2026-03-11 is 4d after 2026-02-28 (close+7d) — likely different production",
+      "signals": [
+        "theatre-record-month:2026/1"
+      ],
+      "theatreRecordUrl": "https://www.theatrerecord.com/archive/2026/1/37040-woman-in-mind"
+    },
+    {
+      "showId": "wonderland-2011",
+      "title": "Wonderland",
+      "file": "nytg--unknown.json",
+      "publishDate": "2017-09-22",
+      "outlet": "New York Theatre Guide",
+      "url": "https://www.newyorktheatreguide.com/reviews/wonderland-a-new-alice",
+      "wrongProductionNote": "Date guard: review 2017-09-22 is 2315d after 2011-05-15 (close+7d) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    },
+    {
+      "showId": "you-got-older-off-broadway-2026",
+      "title": "You Got Older",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "publishDate": "2025-12-08",
+      "outlet": "The Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/alia-shawkat-star-you-got-older-off-broadway-1236444331/",
+      "wrongProductionNote": "Date guard: review 2025-12-08 is 45d before 2026-02-12 (preview/open) — likely different production",
+      "signals": [
+        "cv-affirms-production"
+      ],
+      "theatreRecordUrl": null
+    }
+  ]
+}

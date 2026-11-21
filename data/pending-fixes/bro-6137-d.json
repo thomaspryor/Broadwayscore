@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6137-d",
+  "planId": "7370af26-c088-403f-b9ec-86056788454d",
+  "status": "applied",
+  "createdAt": "2026-10-24T14:26:22.323Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137: Money Scorecard launch data cleanup. Drop orphan key 860, record 8 announced recoupments with citations, Did Not Recoup for silent closures per BRO-5645, Once On This Island capitalization. (part 4 of 5)",
+    "steps": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "frankie-and-johnny-in-the-clair-de-lune-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-new-one-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-new-one-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-waverly-gallery-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-waverly-gallery-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "cirque-du-soleil-paramour-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "cirque-du-soleil-paramour-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "fully-committed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "fully-committed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "blackbird-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "blackbird-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "hughie-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "hughie-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "fiddler-on-the-roof-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "fiddler-on-the-roof-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "misery-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "misery-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "a-view-from-the-bridge-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "a-view-from-the-bridge-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "king-charles-iii-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "king-charles-iii-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "sylvia-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "sylvia-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "dames-at-sea-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-new-one-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-new-one-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-new-one-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-new-one-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-waverly-gallery-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-waverly-gallery-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-waverly-gallery-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-waverly-gallery-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cirque-du-soleil-paramour-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "cirque-du-soleil-paramour-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cirque-du-soleil-paramour-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "cirque-du-soleil-paramour-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fully-committed-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "fully-committed-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fully-committed-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "fully-committed-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "blackbird-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "blackbird-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "blackbird-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "blackbird-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hughie-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "hughie-2016: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hughie-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "hughie-2016: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fiddler-on-the-roof-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "fiddler-on-the-roof-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fiddler-on-the-roof-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "fiddler-on-the-roof-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "misery-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "misery-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "misery-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "misery-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-view-from-the-bridge-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "a-view-from-the-bridge-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-view-from-the-bridge-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "a-view-from-the-bridge-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-charles-iii-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "king-charles-iii-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-charles-iii-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "king-charles-iii-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sylvia-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "sylvia-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sylvia-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "sylvia-2015: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dames-at-sea-2015",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "dames-at-sea-2015: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T14:52:58.004Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-new-one-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-new-one-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-waverly-gallery-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-waverly-gallery-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for cirque-du-soleil-paramour-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for cirque-du-soleil-paramour-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for fully-committed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fully-committed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for blackbird-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for blackbird-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for hughie-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hughie-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for fiddler-on-the-roof-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fiddler-on-the-roof-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for a-view-from-the-bridge-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-view-from-the-bridge-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for king-charles-iii-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for king-charles-iii-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for dames-at-sea-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

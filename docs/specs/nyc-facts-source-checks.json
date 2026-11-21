@@ -1,0 +1,244 @@
+{
+  "issue": "BRO-6548",
+  "checkedAt": "2026-11-01",
+  "scope": "Eight BRO-6489 leftovers only. Source-check statuses document evidence limits, not proof that disputed stored values are correct.",
+  "planApplication": "Pending runner after landing; no private data was written.",
+  "cost": {
+    "newRecurringPaidFetches": 0,
+    "newRecurringLLMCalls": 0,
+    "newRecurringAPICalls": 0,
+    "cron": false,
+    "sourceChecks": {
+      "directFetchPage": 8,
+      "paidProviderRequests": 0,
+      "llmCalls": 0
+    }
+  },
+  "rows": [
+    {
+      "showId": "peter-panto-off-broadway-2026",
+      "field": "type",
+      "storedAtAudit": "play",
+      "status": "retired",
+      "decision": "No field edit or resurrection. Already removed from the active catalog under BRO-6531 as an Off-Off-Broadway Parkside Lounge production. The similarly titled 2024 People's Light musical cited by one checker is a different production.",
+      "sources": [
+        {
+          "url": "https://www.nycpanto.com/",
+          "checkedAt": "2026-11-01T14:59:12.808Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "Producer describes its adults-only cabaret and pantomime format; the home page does not explicitly classify the Peter Panto production as a musical.",
+          "bytes": 2426412,
+          "sha256": "65aefcea5530a2cc9ded50f487b27a3bfc40b2e6ef6b6d1696052be889813334"
+        }
+      ],
+      "retirement": {
+        "file": "data/retired-show-ids.json",
+        "retiredAt": "2026-10-31T05:19:17.466Z",
+        "issue": "BRO-6531",
+        "source": "https://www.tdf.org/shows/23550/peter-panto/"
+      }
+    },
+    {
+      "showId": "nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027",
+      "field": "type",
+      "storedValue": "special",
+      "proposedValue": "opera",
+      "status": "correction-planned",
+      "decision": "Use the presenting theatre's explicit genre classification.",
+      "sources": [
+        {
+          "url": "https://nyuskirball.org/performance/pizza/",
+          "checkedAt": "2026-11-01T14:59:12.847Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "NYU Skirball labels the production Chamber Opera and describes it as a chamber opera.",
+          "bytes": 202706,
+          "sha256": "c5545192ef80a4ecd8d0b30c58d5b5b617b5380dcb18ab447ca23526eeb342fc"
+        }
+      ],
+      "plan": "data/pending-fixes/bro-6548.json",
+      "applicationStatus": "pending-runner"
+    },
+    {
+      "showId": "the-unsinkable-off-broadway-2026",
+      "field": "type",
+      "storedValue": "musical",
+      "disputedValue": "play",
+      "status": "source-unreadable",
+      "decision": "Keep stored value. Secondary pages saying play do not satisfy this card's authoritative-source requirement.",
+      "sources": [
+        {
+          "url": "https://pacnyc.org/whats-on/the-unsinkable/",
+          "checkedAt": "2026-11-01T14:59:12.849Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "unreadable",
+          "observation": "PAC NYC production page returned HTTP 403; the page body could not be read.",
+          "error": "Direct fetch failed: 403"
+        }
+      ],
+      "retry": "fetchPage with Bright Data / ScrapingBee tiers returned All scraping methods failed. Both provider credentials are absent; zero paid requests. Playwright-only retry also returned All scraping methods failed with zero browser attempts."
+    },
+    {
+      "showId": "isla-off-broadway-2026",
+      "field": "openingDate",
+      "storedValue": "2026-08-08",
+      "disputedValue": "2026-08-13",
+      "status": "source-silent",
+      "decision": "Keep stored value. A performance range does not establish a press opening; no opening date is inferred from review publication.",
+      "sources": [
+        {
+          "url": "https://www.hitthelights.org/isla",
+          "checkedAt": "2026-11-01T14:59:12.851Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "Producer identifies the WP Theater run as August 8-29 but does not distinguish the opening night from the first performance.",
+          "bytes": 168095,
+          "sha256": "1be544b4d215e029559c8c24a7457141987ac41f3f6c0fbf92a9cf335be64054"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2026",
+      "field": "openingDate",
+      "storedValue": "2026-07-15",
+      "disputedValue": "2026-07-20",
+      "status": "source-silent",
+      "decision": "Keep stored value pending an authoritative opening-night statement. The producer's changed run range is not an opening-night date; the July 20 date in NY Stage Review alone is outside this card's allowed correction sources.",
+      "sources": [
+        {
+          "url": "https://www.thegingameplay.com/",
+          "checkedAt": "2026-11-01T14:59:14.236Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "Producer identifies Housing Works Bookstore, the correct cast and a July 18-August 14, 2026 run; no separate opening-night date is stated.",
+          "bytes": 176043,
+          "sha256": "62fb6ae040ec04db889d61dca95dc3e8523172fcb3bccd065b0efbc18c27c44d"
+        }
+      ],
+      "additionalCheck": {
+        "url": "https://playbill.com/article/debra-winger-arliss-howard-to-star-in-nyc-the-gin-game",
+        "method": "web.open",
+        "outcome": "unreadable",
+        "error": "403 Forbidden"
+      }
+    },
+    {
+      "showId": "el-quijote-off-broadway-2026",
+      "field": "closingDate",
+      "storedValue": "2027-05-31",
+      "disputedValue": "2027-05-26",
+      "status": "source-unreadable",
+      "decision": "Keep stored closing date. No terminal performance date can be established from an unrendered booking shell.",
+      "sources": [
+        {
+          "url": "https://repertorio.nyc/show/293/el-quijote",
+          "checkedAt": "2026-11-01T14:59:14.239Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "shell",
+          "observation": "Venue returned a 10,057-byte JavaScript application shell. Its noscript message says JavaScript is required; no production dates are exposed in the fetched body.",
+          "bytes": 10057,
+          "sha256": "34869b0a3b1e9250177c55d3346b5a1ee55f111590a3d62a00e303a08722b2e1"
+        }
+      ],
+      "retry": "fetchPage with Bright Data / ScrapingBee tiers returned All scraping methods failed with credentials absent; Playwright-only retry also failed with zero browser attempts."
+    },
+    {
+      "showId": "that-math-show-off-broadway-2026",
+      "field": "openingDate",
+      "storedValue": "2026-06-30",
+      "disputedValue": "2026-06-21",
+      "status": "source-silent",
+      "decision": "Keep stored value. TDF identifies June 21 as opening, but the official page's fetched text exposes no dates. A MoMath program lists a June 21 performance without explicitly calling it opening night. Neither is used to infer an authoritative opening.",
+      "sources": [
+        {
+          "url": "https://www.thatmathshow.com/",
+          "checkedAt": "2026-11-01T14:59:14.240Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "Official home page has navigation, promotional images and a testimonial, but no opening date in readable text. An image has alt text dates that math show; the web image fetch failed, so the image was not verified.",
+          "bytes": 406444,
+          "sha256": "a143289de88825d811066a51f4620a30109c1d6a5e289a7898a9a70d02e5f82c"
+        }
+      ],
+      "additionalCheck": {
+        "url": "https://www.tdf.org/shows/23294/that-math-show/",
+        "outcome": "secondary-disagreement",
+        "observation": "Lists June 21, 2026 as opening; retained as disputed evidence, not authority for a correction."
+      }
+    },
+    {
+      "showId": "whats-eating-gilbert-grape-off-broadway-2026",
+      "field": "id",
+      "storedValue": "whats-eating-gilbert-grape-off-broadway-2026",
+      "proposedValue": "whats-eating-gilbert-grape-off-broadway-2027",
+      "status": "rename-decision",
+      "decision": "Rename to the 2027 id through the existing show-id rename path, preserving the old id as an alias and the stable yearless slug. Never edit id through a pending-fix data action. Application is deferred because this worker cannot write the private repositories or perform file moves.",
+      "sources": [
+        {
+          "url": "https://mcctheater.org/tix/wegg/",
+          "checkedAt": "2026-11-01T14:59:14.242Z",
+          "method": "fetchPage(directOnly)",
+          "outcome": "readable",
+          "observation": "MCC states PERFORMANCES BEGIN JUN 2027 for the musical at the Newman Mills Theater.",
+          "bytes": 74385,
+          "sha256": "1b85e07518e2a9e20e552ab1f76aba02e83b548c2c937af68760025cb294760a"
+        }
+      ],
+      "rename": {
+        "command": "node scripts/rename-show-id.js whats-eating-gilbert-grape-off-broadway-2026 whats-eating-gilbert-grape-off-broadway-2027",
+        "mode": "dry-run",
+        "ok": true,
+        "refusals": 0,
+        "summary": {
+          "filesRewritten": 7,
+          "keysRenamed": 3,
+          "orphansDropped": 0,
+          "fieldsSet": 4,
+          "refsRewritten": 5,
+          "dirsMoved": 1,
+          "filesMoved": 1,
+          "innerFilesRewritten": 1,
+          "residualFiles": 9,
+          "codeRefs": 1,
+          "refusals": 0
+        },
+        "codeReferences": [
+          "scripts/audit-type-todaytix-category-drift.test.mjs"
+        ],
+        "applicationStatus": "deferred-private-repo-write"
+      }
+    }
+  ],
+  "realDataReplay": {
+    "recordsChecked": 5744,
+    "recordsChanged": 1,
+    "privateWrites": 0,
+    "examples": [
+      {
+        "showId": "nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027",
+        "field": "type",
+        "before": "special",
+        "after": "opera"
+      },
+      {
+        "showId": "isla-off-broadway-2026",
+        "field": "openingDate",
+        "before": "2026-08-08",
+        "after": "2026-08-08"
+      },
+      {
+        "showId": "the-gin-game-2026",
+        "field": "openingDate",
+        "before": "2026-07-15",
+        "after": "2026-07-15"
+      },
+      {
+        "showId": "that-math-show-off-broadway-2026",
+        "field": "openingDate",
+        "before": "2026-06-30",
+        "after": "2026-06-30"
+      }
+    ]
+  }
+}

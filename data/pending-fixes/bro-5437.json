@@ -1,0 +1,125 @@
+{
+  "issueNumber": "bro-5437",
+  "planId": "896a23c9-e550-4fb1-8993-b466483ca42f",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5437: curator-clear 8 shipped reviews whose CV.wrongProduction verdict is a demonstrable false positive (renamed venue or wrong market assumption), so the cv-wrongproduction lifetime sweep stops listing them. These reviews already ship; no score changes.",
+    "steps": [
+      "Set wrongProductionManualClear on 8 review-texts files (compare-and-set from absent)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-2016/njcom--christopher-kelly.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV objected that the American Airlines Theatre is not the Todd Haimes Theatre; they are the same house (renamed 2022). URL is the Oct 2016 nj.com review of this revival (opened 2016-10-16)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-big-knife-2013/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV objected to American Airlines Theatre vs Todd Haimes Theatre (same house, renamed 2022) and to a stale 2026 date; stored publishDate is April 16, 2013, opening night of this revival."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV objected that the review names the Cort Theatre; the Cort was renamed the James Earl Jones Theatre in 2022, and this 2011 revival played the Cort."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "to-kill-a-mockingbird-west-end-2022/i-paper--sam-marlowe.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV called it the Broadway production; the review body names Rafe Spall, who plays Atticus in this West End production at the Gielgud, and the stored date 2022-04-01 is the day after the West End opening."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-off-broadway-2022/nypost--johnny-oleksinski.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV assumed a Broadway St. James run; this show is the Off-Broadway production, which the review body places at Asylum NYC, its 2022 home before the move to the Daryl Roth. The 2022-08-05 review is of this run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV called the National Theatre Dorfman run \"not a West End production\"; shows.json lists this show at the Dorfman Theatre (opened 2026-06-25) and the review header names National Theatre, The Dorfman, 11 June-12 September 2026, published 2026-06-28. The OVERRIDE reasoning was overwritten by a wrongShow-only clear (helper fixed in the same change)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV objected that the Dorfman is not a West End venue; shows.json lists this show at the Dorfman Theatre and the review names Pride at the Dorfman, National Theatre, until 12 September 2026 (this run). Kept the temporal OVERRIDE but publishDate is null, so the sweep cannot re-check the window."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--sonny-waheed.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV (native low confidence) assumed the review belongs to the declared 2024 prior run; it was published 2026-10-16, the opening date of this 2026 Peacock Theatre return engagement, and its URL slug is the 2026 (\"26-\") Peacock listing."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T13:51:22.426Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-2016/njcom--christopher-kelly.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-big-knife-2013/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "to-kill-a-mockingbird-west-end-2022/i-paper--sam-marlowe.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-off-broadway-2022/nypost--johnny-oleksinski.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-west-end-2026/british-theatre--keith-mckenna.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-west-end-2026/musical-theatre-review--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--sonny-waheed.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

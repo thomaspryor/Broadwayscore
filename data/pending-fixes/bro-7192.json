@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-7192",
+  "planId": "c1985013-addf-49f9-b79c-6e0b1c325b7a",
+  "status": "applied",
+  "createdAt": "2026-11-09T04:39:33.202Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Gun & Powder was shown as a 'national tour' that merged two separate productions (Signature Theatre 2020, Paper Mill 2024) and repeated 12 of their reviews on a third page. Remove the roll-up, keep each production's own reviews and score, link the Broadway show Wanted to the Paper Mill production it grew from.",
+    "steps": [
+      "shows.json: gun-and-powder-signature-regional-2020.synopsis",
+      "Take the fake Gun & Powder tour roll-up apart: drop its 12 copied review rows (each has a twin on the Signature or Paper Mill page), clear tourParent on both runs, link Wanted to the Paper Mill production, alias the old URL to it",
+      "Retire the aggregate row (provisional, zero reviews after the unlink step)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gun-and-powder-signature-regional-2020",
+        "field": "synopsis",
+        "oldValue": "A new musical based on the real-life story of Mary and Martha Clarke, twin sisters who take up arms to save their family from ruin in 1893 Texas. World premiere at Signature Theatre; later retitled *Wanted* for its 2024 Paper Mill Playhouse engagement and 2026 Broadway transfer.",
+        "newValue": "A new musical based on the real-life story of Mary and Martha Clarke, twin sisters who take up arms to save their family from ruin in 1893 Texas. World premiere at Signature Theatre in 2020. A separate production followed at Paper Mill Playhouse in 2024, and the musical reached Broadway in 2026 as *Wanted*.",
+        "description": "shows.json: gun-and-powder-signature-regional-2020.synopsis"
+      },
+      {
+        "type": "run-script",
+        "description": "Take the fake Gun & Powder tour roll-up apart: drop its 12 copied review rows (each has a twin on the Signature or Paper Mill page), clear tourParent on both runs, link Wanted to the Paper Mill production, alias the old URL to it",
+        "script": "unlink-tour-aggregate.js",
+        "args": "--aggregate=gun-and-powder-regional-2020 --transfer-leg=gun-and-powder-paper-mill-regional-2024 --apply --expect=12"
+      },
+      {
+        "type": "retire-show",
+        "description": "Retire the aggregate row (provisional, zero reviews after the unlink step)",
+        "id": "gun-and-powder-regional-2020",
+        "expectTitle": "Gun & Powder",
+        "reason": "Not a tour: the 2020 Signature Theatre premiere and the 2024 Paper Mill Playhouse production were different productions (different director and cast, four years apart). The roll-up copied both runs' reviews onto a third page (BRO-7192)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T07:26:49.533Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for gun-and-powder-signature-regional-2020"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran unlink-tour-aggregate.js successfully"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired gun-and-powder-regional-2020 (\"Gun & Powder\" @ Regional Tryouts (Arlington, VA 2020; Millburn, NJ 2024))"
+    }
+  ],
+  "executedIn": "ci"
+}

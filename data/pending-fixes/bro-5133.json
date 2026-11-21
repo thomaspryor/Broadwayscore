@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-5133",
+  "planId": "5ab7574b-6b94-43a1-8d2e-00fe456c279e",
+  "status": "applied",
+  "createdAt": "2026-10-12T14:07:36.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5133: the New York Social Diary review of Lost in Del Valle (April 2026 SoHo Playhouse run) was filed under outletId vulture, so the domain guard marked it domainUnvalidated and the rebuild excluded it. Delete that file and re-ingest the review under the newly registered newyorksocialdiary outlet. Block two urls the gap audit keeps citing for the September 2026 return run: an indiependent.co.uk review of the Edinburgh Fringe 2025 production and a February 2026 ticketnews premiere announcement.",
+    "steps": [
+      "Delete the vulture-labelled NYSD file and re-ingest the review from its url.",
+      "Add the two non-review urls to the return run's blocklist."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json",
+        "description": "BRO-5133: New York Social Diary review filed under outletId vulture (url host newyorksocialdiary.com); excluded as outletDomainUnvalidated. Re-ingested next under newyorksocialdiary."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lost-in-del-valle-off-broadway-2026 --url=https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/ --outlet=newyorksocialdiary --critic=\"Kendall DuPre\" --publish-date=2026-04-15 --stub-on-failure",
+        "description": "BRO-5133: re-ingest the New York Social Diary review (Kendall DuPre, 2026-04-15) under its own outlet."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=lost-in-del-valle-return-off-broadway-2026 --url=https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/ --reason=edinburgh-fringe-2025-production-review",
+        "description": "BRO-5133: review of the Edinburgh Fringe 2025 production, not the September 2026 New York return."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": "--show=lost-in-del-valle-return-off-broadway-2026 --url=https://www.ticketnews.com/2026/02/lost-in-del-valle-sets-u-s-premiere-at-soho-playhouse/ --reason=feb-2026-premiere-announcement-not-a-review",
+        "description": "BRO-5133: February 2026 news item announcing the US premiere, not a review."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T15:13:09.689Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ]
+}

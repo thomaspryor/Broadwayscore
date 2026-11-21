@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-6854-crit",
+  "planId": "dc832b23-d657-4859-bb73-da3d8f4d1eed",
+  "status": "applied",
+  "createdAt": "2026-11-09T15:46:28.698Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct six critic names on Boston reviews to the article bylines (audit findings)",
+    "steps": [
+      "BRO-6854 audit: article byline is Michele Markarian",
+      "BRO-6854 audit: article byline is Michele Markarian",
+      "BRO-6854 audit: article byline is Shelley A. Sackett",
+      "BRO-6854 audit: full byline",
+      "BRO-6854 audit: full byline",
+      "BRO-6854 audit: article byline is Jonas Schwartz"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "black-swan-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Michele Markarian",
+        "description": "BRO-6854 audit: article byline is Michele Markarian"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Michele Markarian",
+        "description": "BRO-6854 audit: article byline is Michele Markarian"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "criticName",
+        "oldValue": "Mike Hoban",
+        "newValue": "Shelley A. Sackett",
+        "description": "BRO-6854 audit: article byline is Shelley A. Sackett"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/metrmag--kevin-t.json",
+        "field": "criticName",
+        "oldValue": "Kevin T.",
+        "newValue": "Kevin T. Baldwin",
+        "description": "BRO-6854 audit: full byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/metrmag--kevin-t.json",
+        "field": "criticName",
+        "oldValue": "Kevin T.",
+        "newValue": "Kevin T. Baldwin",
+        "description": "BRO-6854 audit: full byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angry-raucous-and-shamelessly-gorgeous-regional-2026/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Jonas Schwartz",
+        "description": "BRO-6854 audit: article byline is Jonas Schwartz"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T15:57:39.728Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-swan-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Michele Markarian\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json criticName: \"Mike Hoban\" -> \"Michele Markarian\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theater-mirror--mike-hoban.json criticName: \"Mike Hoban\" -> \"Shelley A. Sackett\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/metrmag--kevin-t.json criticName: \"Kevin T.\" -> \"Kevin T. Baldwin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/metrmag--kevin-t.json criticName: \"Kevin T.\" -> \"Kevin T. Baldwin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angry-raucous-and-shamelessly-gorgeous-regional-2026/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"Jonas Schwartz\""
+    }
+  ],
+  "executedIn": "ci"
+}

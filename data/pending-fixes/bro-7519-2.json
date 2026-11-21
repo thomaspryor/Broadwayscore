@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7519-2",
+  "planId": "76276c84-a89d-4f10-8bd3-a8d60f1ca3b7",
+  "status": "partial",
+  "createdAt": "2026-11-16T17:06:41.174Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear Sting Guardian rating copied from a different article; retain wrong-show exclusion and rebuild published reviews",
+    "steps": [
+      "sting-off-west-end-2026/guardian--anya-ryan.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sting-off-west-end-2026/guardian--anya-ryan.json",
+        "field": "originalScore",
+        "oldValue": "2/5 stars",
+        "newValue": null,
+        "description": "sting-off-west-end-2026/guardian--anya-ryan.json: originalScore"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T18:35:31.405Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "originalScore: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

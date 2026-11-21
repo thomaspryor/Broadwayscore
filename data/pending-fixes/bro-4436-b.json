@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4436-b",
+  "planId": "5b0f3c1e-8d2a-4f6b-9e71-2c4a6d8f0b13",
+  "status": "applied",
+  "createdAt": "2026-09-30T17:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Follow-up to bro-4436. Degenerates 2026 is a world premiere; the bro-4436 plan set isRevival=false but tags still hold 'revival', and the site treats either as a revival (src/lib/engine.ts). Re-assert isRevival=false with the executor that now keeps tags in step (scripts/lib/revival-tags.js), which removes the stale 'revival' tag.",
+    "steps": [
+      "Re-assert isRevival false so the executor syncs tags"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "degenerates-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": false,
+        "description": "World premiere; tags follow the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T18:08:48.945Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for degenerates-off-broadway-2026 (tags: [])"
+    }
+  ]
+}

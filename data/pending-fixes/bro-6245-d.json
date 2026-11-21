@@ -1,0 +1,291 @@
+{
+  "issueNumber": "bro-6245-d",
+  "planId": "d92a7ce7-c344-4421-aa85-9d8a2f68a228",
+  "status": "superseded",
+  "createdAt": "2026-10-26T11:51:30.169Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Our estimate updates for recouped and closed shows. (part 1 of 2)",
+    "steps": [
+      "commercial.json: sweeney-todd-2023.designation",
+      "commercial.json: moulin-rouge.designation",
+      "commercial.json: matilda-the-musical-2013.designation",
+      "commercial.json: and-juliet.designation",
+      "commercial.json: the-outsiders.designation",
+      "commercial.json: just-in-time.designation",
+      "commercial.json: moulin-rouge.humanReviewedDesignation",
+      "commercial.json: matilda-the-musical-2013.humanReviewedDesignation",
+      "commercial.json: and-juliet.humanReviewedDesignation",
+      "commercial.json: the-outsiders.humanReviewedDesignation",
+      "commercial.json: just-in-time.humanReviewedDesignation",
+      "commercial.json: back-to-the-future.estimatedRecoupmentPct",
+      "commercial.json: back-to-the-future.estimatedRecoupmentSource",
+      "commercial.json: back-to-the-future.ourEstimateRangePct",
+      "commercial.json: back-to-the-future.designation",
+      "commercial.json: call-me-izzy.estimatedRecoupmentPct",
+      "commercial.json: call-me-izzy.ourEstimateRangePct",
+      "commercial.json: call-me-izzy.designation",
+      "commercial.json: the-notebook.estimatedRecoupmentPct",
+      "commercial.json: the-notebook.estimatedRecoupmentSource",
+      "commercial.json: the-notebook.ourEstimateRangePct",
+      "commercial.json: the-notebook.designation",
+      "commercial.json: parade-2023.designation",
+      "commercial.json: parade-2023.recouped",
+      "commercial.json: parade-2023.estimatedRecoupmentPct"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: sweeney-todd-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: moulin-rouge.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: matilda-the-musical-2013.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: and-juliet.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: the-outsiders.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-in-time",
+        "field": "designation",
+        "oldValue": "Windfall",
+        "newValue": "Trickle",
+        "description": "commercial.json: just-in-time.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: moulin-rouge.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: matilda-the-musical-2013.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: and-juliet.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: the-outsiders.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-in-time",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: just-in-time.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          10,
+          20
+        ],
+        "newValue": null,
+        "description": "commercial.json: back-to-the-future.estimatedRecoupmentPct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "Inferred: $80M+ gross over 500+ performances but high weekly nut ate most revenue. $3M tax credit helps.",
+        "newValue": null,
+        "description": "commercial.json: back-to-the-future.estimatedRecoupmentSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          15,
+          50
+        ],
+        "description": "commercial.json: back-to-the-future.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: back-to-the-future.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          20,
+          30
+        ],
+        "newValue": null,
+        "description": "commercial.json: call-me-izzy.estimatedRecoupmentPct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          25,
+          40
+        ],
+        "description": "commercial.json: call-me-izzy.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: call-me-izzy.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          60,
+          80
+        ],
+        "newValue": null,
+        "description": "commercial.json: the-notebook.estimatedRecoupmentPct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "GPT DR Batch 1: 'Estimated 60-80% of cap recovered.' Eligible for $3M tax credit.",
+        "newValue": null,
+        "description": "commercial.json: the-notebook.estimatedRecoupmentSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          5
+        ],
+        "description": "commercial.json: the-notebook.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "commercial.json: the-notebook.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "commercial.json: parade-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "commercial.json: parade-2023.recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          40,
+          60
+        ],
+        "newValue": null,
+        "description": "commercial.json: parade-2023.estimatedRecoupmentPct"
+      }
+    ]
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332; same applied-locally state as this plan's siblings)."
+}
