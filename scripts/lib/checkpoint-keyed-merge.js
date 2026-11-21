@@ -79,7 +79,7 @@ function serializeLike(value, text) {
 }
 
 function main(argv) {
-  const [side, basePath, curPath, otherPath] = argv;
+  const [side, basePath, curPath, otherPath, format] = argv;
   if (!['ours', 'theirs'].includes(side) || !curPath || !otherPath) {
     console.error('usage: checkpoint-keyed-merge.js <ours|theirs> <base> <cur> <other>');
     return 1;
@@ -89,7 +89,13 @@ function main(argv) {
     const cur = readJson(curPath);
     const other = readJson(otherPath);
     if (!isPlainObject(cur.value) || !isPlainObject(other.value)) return 1;
-    const merged = mergeKeyedEntries(base, cur.value, other.value, { prefer: side });
+    let merged;
+    if (format === 'proposal-ledger') {
+      if (!isPlainObject(cur.value.entries) || !isPlainObject(other.value.entries)) throw new Error('invalid proposal ledger');
+      merged = { ...cur.value, entries: mergeKeyedEntries({}, cur.value.entries, other.value.entries, { prefer: side }) };
+    } else {
+      merged = mergeKeyedEntries(base, cur.value, other.value, { prefer: side });
+    }
     fs.writeFileSync(curPath, serializeLike(merged, cur.text));
     return 0;
   } catch (e) {

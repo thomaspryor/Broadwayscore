@@ -187,20 +187,20 @@ function isContentAdditionBody(issueBody) {
 }
 
 /**
- * A needs-review issue has the submission id and a public summary only. Build
- * a diagnosis-shaped object from them plus the reader's words from the private
- * store. The submission id is the Formspree timestamp, which is also the
- * submission time used for the SLA.
+ * New issues use the submission id to look up private reader details. Legacy
+ * needs-review issues may instead contain the original message in the body;
+ * their submission time is unknown. The id, when present, is a timestamp.
  */
 function buildNeedsReviewDiagnosis(issueBody, store) {
   const id = (String(issueBody || '').match(SUBMISSION_RE) || [])[1];
-  if (!id) return null;
+  if (!id && !/^(?:Content-addition request from user feedback|Auto-diagnosis failed for this feedback submission)/.test(String(issueBody || '').trim())) return null;
   const e = (store && store.entries && store.entries[id]) || {};
   const summary = (String(issueBody).match(/\*\*Summary:\*\*\s*(.+)/) || [])[1] || 'Reader report, not yet diagnosed';
   const showLine = (String(issueBody).match(/\*\*Show:\*\*\s*([^|\n]+)/) || [])[1];
+  const message = !id && (String(issueBody).match(/\*\*Original message:\*\*\s*([\s\S]*?)(?=\n\s*\n\s*\*\*|$)/) || [])[1];
   return {
-    submissionId: id,
-    submittedAt: id,
+    submissionId: id || null,
+    submittedAt: id || null,
     summary,
     whatsHappening: summary,
     findings: [],
@@ -210,7 +210,7 @@ function buildNeedsReviewDiagnosis(issueBody, store) {
     submitterName: e.name || null,
     submitterEmail: e.email || null,
     submitterShow: e.show || (showLine ? showLine.trim() : null),
-    originalMessage: e.message || null,
+    originalMessage: e.message || (message && message.trim()) || null,
     needsReview: true,
   };
 }

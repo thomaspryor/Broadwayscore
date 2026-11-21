@@ -37,6 +37,11 @@ if [ -n "$path" ]; then
       ;;
   esac
   case "$(git check-attr merge-keyed -- "$path" 2>/dev/null)" in
+    *": merge-keyed: proposal-ledger")
+      if [ "$side" = "B" ]; then run=theirs; else run=ours; fi
+      node "$(dirname "$0")/checkpoint-keyed-merge.js" "$run" "$base" "$cur" "$other" proposal-ledger
+      exit $?
+      ;;
     *": merge-keyed: entries")
       if [ "$side" = "B" ]; then run=theirs; else run=ours; fi
       if node "$(dirname "$0")/checkpoint-keyed-merge.js" "$run" "$base" "$cur" "$other"; then exit 0; fi
