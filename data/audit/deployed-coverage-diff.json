@@ -1,64 +1,13 @@
 {
-  "generatedAt": "2026-11-21T20:19:08.963Z",
+  "generatedAt": "2026-11-21T21:35:48.427Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 371,
-  "clean": 368,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
-      "openingDate": "2026-11-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.64 vs local 68.24 (Δ1.4)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-21T20:19:01.497Z"
-    },
-    {
-      "showId": "well-see-off-broadway-2026",
-      "title": "We'll See",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.81 vs local 76.44 (Δ0.63)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-21T20:19:01.497Z"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.09 vs local 62.88 (Δ2.79)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-21T20:19:01.497Z"
-    }
-  ],
+  "checked": 374,
+  "clean": 374,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

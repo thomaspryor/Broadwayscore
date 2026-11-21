@@ -369,13 +369,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-21T20:19:09.163Z",
+      "lastSeen": "2026-11-21T21:35:48.624Z",
       "lastNotifiedAt": "2026-11-21T05:52:46.849Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 87,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19489,7 +19489,7 @@
       "title": "Roundup gaps: 8 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-21T20:18:26.551Z",
+      "lastSeen": "2026-11-21T21:34:56.251Z",
       "lastNotifiedAt": "2026-11-21T12:21:28.939Z",
       "lastSurfacedAt": null,
       "notifyCount": 66,
@@ -19506,7 +19506,7 @@
         "la-distance-bam-off-broadway-2026",
         "much-ado-about-nothing-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38721,7 +38721,7 @@
       "resolveReason": "absent"
     },
     "review-gap:opening-window:othello-bedlam-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
@@ -38732,7 +38732,9 @@
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-11-21T21:34:56.109Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
