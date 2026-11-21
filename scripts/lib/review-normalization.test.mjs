@@ -158,3 +158,33 @@ test('BWW headline fragment starting with "Is" is junk, not a missing outlet (BR
   assert.equal(isJunkOutlet('Theater Pizzazz'), false);
   assert.equal(isJunkOutlet('Island Packet'), false);
 });
+
+// BRO-7769: a url swap onto a slot must not accept an article that never names the show.
+const { mergeReviews } = require('./review-normalization.js');
+const GT_TITLE = 'The Good Thief';
+const goodThiefText = (n) => `${'The Good Thief opens at the theater and the cast delivers. '.repeat(n)}`;
+const unrelatedText = 'Zach Grenier joins the cast of a new play this season, the company announced on Tuesday. '.repeat(12);
+const slot = () => ({
+  outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'Linda Buchwald',
+  url: 'https://www.theatermania.com/news/irish-rep-season-casting_1850000/', fullText: '',
+});
+
+test('BRO-7769: same-outlet url swap to an article that never mentions the show is refused', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  const merged = mergeReviews(slot(), incoming, {}, { show: { title: GT_TITLE }, showId: 'the-good-thief-off-broadway-2026', script: 'test' });
+  assert.equal(merged.url, slot().url);
+  assert.ok(!merged.fullText || !merged.fullText.includes('Zach Grenier'));
+});
+
+test('BRO-7769: url swap to an article that names the show still goes through', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/off-broadway/reviews/the-good-thief_1861000/', fullText: goodThiefText(20) };
+  const merged = mergeReviews(slot(), incoming, {}, { show: { title: GT_TITLE }, showId: 'the-good-thief-off-broadway-2026', script: 'test' });
+  assert.equal(merged.url, incoming.url);
+});
+
+test('BRO-7769: guard fails open without a show title or with short incoming text', () => {
+  const unrelated = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), unrelated, {}, { script: 'test' }).url, unrelated.url);
+  const short = { ...unrelated, fullText: 'Paywalled teaser.' };
+  assert.equal(mergeReviews(slot(), short, {}, { show: { title: GT_TITLE }, script: 'test' }).url, short.url);
+});
