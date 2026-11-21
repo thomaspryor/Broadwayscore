@@ -31,6 +31,24 @@ const CREDIBLE_HOSTS = [
   'newyorktheatreguide.com',
 ];
 
+// West End press (BRO-7993). Official London theatre trade + national press that
+// name explicit final performances. westendtheatre.com is deliberately absent:
+// it is the booking-page source whose "Booking until" date is being verified.
+const WEST_END_CREDIBLE_HOSTS = [
+  'whatsonstage.com',
+  'broadwayworld.com',
+  'variety.com',
+  'deadline.com',
+  'theatreweekly.com',
+  'thestage.co.uk',
+  'timeout.com',
+  'standard.co.uk',
+  'theguardian.com',
+  'telegraph.co.uk',
+  'officiallondontheatre.com',
+  'londontheatre.co.uk',
+];
+
 const CLUSTER_TOLERANCE_DAYS = 3;
 const MAX_CANDIDATES_PER_SHOW = 5;
 
@@ -69,9 +87,9 @@ function callClaudeSonnet(prompt) {
   });
 }
 
-function isCredibleUrl(url) {
+function isCredibleUrl(url, hosts = CREDIBLE_HOSTS) {
   if (!url) return false;
-  return CREDIBLE_HOSTS.some(h => url.includes(h));
+  return hosts.some(h => url.includes(h));
 }
 
 // Per-field configuration. fieldType determines: the SERP query phrasing,
@@ -93,6 +111,21 @@ const FIELD_CONFIGS = {
     sanityWindowDaysFuture: 1095,
     // Phrases acceptable for single-source acceptance.
     quoteAcceptanceRegex: /final performance|closing on|last performance|ends? its run on|ends? on|wraps? (?:its run )?on|shutters? on|will close on|to close on|last show on/,
+  },
+  // West End closing (BRO-7993): same extraction contract as 'closing', but the
+  // market rule is inverted (a London run is wanted, a Broadway/tour one is not)
+  // and the host list is West End press.
+  'closing-we': {
+    serpQuery: title => `"${title}" West End closing OR "final performance" OR "last performance" OR "closes on"`,
+    promptMarket: 'West End (London)',
+    promptDateRole: 'FINAL West End performance',
+    promptHighConfidenceCriteria: 'the article explicitly states a closing OR final-performance date for the named show\'s London West End run. A "booking until" or "tickets on sale until" date is NOT a closing date',
+    promptExclusions: 'Not opening, not previews, not a booking period or on-sale window, not a Broadway, UK tour or regional stop, not a past extension if a newer date has been announced.',
+    offMarketRule: 'If the article is about Broadway, a tour, a regional production or an off-West-End run, or only says tickets are on sale until a date, return {"date": null, "confidence": "low", "quote": null}.',
+    hosts: WEST_END_CREDIBLE_HOSTS,
+    sanityWindowDaysPast: 30,
+    sanityWindowDaysFuture: 1095,
+    quoteAcceptanceRegex: /final performance|closing on|last performance|ends? its run on|will close on|to close on|closes? on|last show on|final show/,
   },
   opening: {
     serpQuery: title => `"${title}" broadway opening night OR delayed OR pushed OR postponed`,
@@ -130,7 +163,7 @@ function getFieldConfig(fieldType) {
 
 function buildExtractionPrompt(showTitle, text, url, fieldType = 'closing') {
   const cfg = getFieldConfig(fieldType);
-  return `You are extracting the announced ${cfg.promptDateRole} date for a Broadway show from a press article.
+  return `You are extracting the announced ${cfg.promptDateRole} date for a ${cfg.promptMarket || 'Broadway'} show from a press article.
 
 Show: ${showTitle}
 Article URL: ${url}
@@ -145,7 +178,7 @@ Return ONLY JSON in this exact form (no markdown, no commentary):
 Rules:
 - date = the ${cfg.promptDateRole} announced in this article. ${cfg.promptExclusions}
 - confidence "high" ONLY if ${cfg.promptHighConfidenceCriteria}.
-- If the article is about a tour, regional production, off-Broadway run, or West End run, return {"date": null, "confidence": "low", "quote": null}.
+- ${cfg.offMarketRule || 'If the article is about a tour, regional production, off-Broadway run, or West End run, return {"date": null, "confidence": "low", "quote": null}.'}
 - If the date is ambiguous, a range, conditional, or not present, return {"date": null, "confidence": "low", "quote": null}.`;
 }
 
@@ -278,7 +311,7 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   if (!results || results.length === 0) return null;
 
   const candidates = results
-    .filter(r => isCredibleUrl(r.url))
+    .filter(r => isCredibleUrl(r.url, cfg.hosts || CREDIBLE_HOSTS))
     .slice(0, MAX_CANDIDATES_PER_SHOW);
   if (candidates.length === 0) {
     log(`  [discovery:${fieldType}] no credible-host results`);
@@ -332,9 +365,16 @@ async function discoverAnnouncedClosingDate(showTitle, opts = {}, budget = null)
   return discoverAnnouncedDate(showTitle, 'closing', opts, budget);
 }
 
+// West End analogue (BRO-7993): press-confirm a closing date. Pure discovery,
+// the apply decision lives in we-closing-press-confirm.js.
+async function discoverWestEndClosingDate(showTitle, opts = {}, budget = null, minRemainingMs = 0) {
+  return discoverAnnouncedDate(showTitle, 'closing-we', opts, budget, minRemainingMs);
+}
+
 module.exports = {
   discoverAnnouncedDate,
   discoverAnnouncedClosingDate,
+  discoverWestEndClosingDate,
   // exported for tests
   parseExtraction,
   clusterDates,
@@ -342,5 +382,6 @@ module.exports = {
   pageMatchesShowTitle,
   getFieldConfig,
   CREDIBLE_HOSTS,
+  WEST_END_CREDIBLE_HOSTS,
   FIELD_CONFIGS,
 };

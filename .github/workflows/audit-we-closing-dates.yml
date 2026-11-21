@@ -91,6 +91,7 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           INPUT_TIME_BUDGET_MIN: ${{ github.event.inputs.time_budget_min }}
           INPUT_SHOWS: ${{ github.event.inputs.shows }}
@@ -178,6 +179,7 @@ jobs:
                 '**Matches:** ' + s.matches,
                 '**Ambiguous (need review):** ' + s.ambiguous,
                 '**New-closing candidates:** ' + s.newClosings,
+                '**Press-confirmed + applied:** ' + (s.pressConfirmed || 0),
                 '**Errors:** ' + s.errors,
               ];
               if (s.budgetExit) lines.push('**⏱ Time budget hit — deferred:** ' + s.deferred);

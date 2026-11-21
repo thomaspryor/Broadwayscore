@@ -44,15 +44,24 @@ test('every classifier output routes to a non-writing bucket unless EXTENSION', 
   }
 });
 
-// Orchestrator guard: the audit script has exactly one writeClosingDate call and it
-// sits behind routeWeAuditResult's `route.write`. A new `case`/call elsewhere fails here.
+// Orchestrator guard: the audit script has exactly TWO writeClosingDate calls.
+// 1) the extension write, behind routeWeAuditResult's `route.write`;
+// 2) the BRO-7993 press-confirmed new-closing write, which is reachable only after
+//    decideWeNewClosing(...).apply and a canWriteClosingDate check. A third call,
+//    or a write that skips the decision, fails here.
 import fs from 'node:fs';
-test('audit-we-closing-dates.js: single writeClosingDate call, gated by route.write', () => {
+test('audit-we-closing-dates.js: writeClosingDate only behind route.write or a press-confirmed decision', () => {
   const src = fs.readFileSync(new URL('../audit-we-closing-dates.js', import.meta.url), 'utf8');
   const calls = src.match(/writeClosingDate\(/g) || [];
-  assert.equal(calls.length, 1);
+  assert.equal(calls.length, 2);
   assert.match(src, /routeWeAuditResult\(result\.action, canWriteClosingDate\(show\)\)/);
-  const i = src.indexOf('writeClosingDate(show');
-  const window = src.slice(Math.max(0, i - 400), i);
-  assert.match(window, /if \(!route\.write\)[\s\S]*else \{/);
+  const i = src.indexOf('writeClosingDate(show, result.extracted');
+  assert.ok(i > 0);
+  assert.match(src.slice(Math.max(0, i - 400), i), /if \(!route\.write\)[\s\S]*else \{/);
+  const j = src.indexOf('writeClosingDate(show, decision.date');
+  assert.ok(j > 0);
+  const before = src.slice(Math.max(0, j - 700), j);
+  assert.match(before, /if \(!decision\.apply\)/);
+  assert.match(before, /canWriteClosingDate\(show\)/);
+  assert.match(src, /decideWeNewClosing\(\{ stored: show\.closingDate \|\| null/);
 });
