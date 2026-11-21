@@ -41,6 +41,11 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // Known syndication pairs — single source of truth shared with rebuild-all-reviews.js
 const { KNOWN_SYNDICATION_PAIRS: KNOWN_SYNDICATION } = require('./lib/syndication-pairs');
 
+// BRO-7957: market-aware primacy needs the show (market + openingDate).
+const showById = (() => {
+  try { const j = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8')); return Object.fromEntries((j.shows || j).map((x) => [x.id, x])); } catch { return {}; }
+})();
+
 // --- Known outlet pairs (derived from KNOWN_SYNDICATION) ---
 // Maps "outletA|outletB" (sorted) → { primary, secondary, critic }
 // Used to detect syndication when critic is "Unknown" — we match by outlet pair instead.
@@ -164,8 +169,13 @@ function findSourceFile(showId, outletId, criticName) {
 }
 
 // Determine which outlet to keep for a given pair
-function choosePrimary(critic, outlet1, outlet2) {
+function choosePrimary(critic, outlet1, outlet2, show) {
   const normCritic = critic.toLowerCase();
+  // BRO-7957: market-aware primacy (Chris Jones on a NYC show: the Daily News copy is the original). Must agree with
+  // the rebuild, or the detector flags the copy the rebuild keeps.
+  const { getSyndicationPrimaries } = require('./lib/syndication-pairs');
+  if (getSyndicationPrimaries(critic, outlet1, { show }).includes(outlet2)) return outlet2;
+  if (getSyndicationPrimaries(critic, outlet2, { show }).includes(outlet1)) return outlet1;
   const known = KNOWN_SYNDICATION[normCritic];
   if (known) {
     if (known.secondary.includes(outlet1)) return outlet2;
@@ -210,7 +220,7 @@ for (const [key, revs] of multiOutlet) {
       if (sim < THRESHOLD) continue;
 
       // This is syndication
-      const primaryOutlet = choosePrimary(critic, o1, o2);
+      const primaryOutlet = choosePrimary(critic, o1, o2, showById[revs[0].showId]);
       const secondaryOutlet = primaryOutlet === o1 ? o2 : o1;
       const primaryFile = primaryOutlet === o1 ? f1 : f2;
       const secondaryFile = primaryOutlet === o1 ? f2 : f1;

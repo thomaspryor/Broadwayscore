@@ -2917,7 +2917,7 @@ showDirs.forEach(showId => {
   // really emitted instead of guessing from the file on disk.
   const dedupMetaByFile = new Map(bylineRecoveryRecords.map(r => [r.file, { criticName: r.criticName, outletKey: r.outletId }]));
   const files = orderAfterDependencies(allJsonFiles, (f, list) => [
-    ...primaryFilesFor(f, dedupMetaByFile.get(f), list),
+    ...primaryFilesFor(f, dedupMetaByFile.get(f), list, { show: showById[showId] }),
     ...unknownOutletShadowTargets(f, list),
   ]);
 
@@ -4566,7 +4566,7 @@ showDirs.forEach(showId => {
       {
         const criticSynd = (data.criticName || '').toLowerCase().trim();
         const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
-        const syndPrimaries = getSyndicationPrimariesInDir(criticSynd, outletSynd, files, normalizeOutletCanonical);
+        const syndPrimaries = getSyndicationPrimariesInDir(criticSynd, outletSynd, files, normalizeOutletCanonical, { show: showById[showId] });
         if (syndPrimaries.length) {
           // Skip the secondary only if a primary copy actually ships. Primaries
           // are processed first (orderAfterDependencies above), so this is
@@ -4575,7 +4575,7 @@ showDirs.forEach(showId => {
           // later gate such as skippedNoScore (BRO-5901, paranormal-activity-2026
           // Tribune/NYDN) no longer takes the secondary down with it.
           const shield = syndicationShieldDecision({
-            primaryFiles: primaryFilesFor(file, { criticName: criticSynd, outletKey: outletSynd }, files),
+            primaryFiles: primaryFilesFor(file, { criticName: criticSynd, outletKey: outletSynd }, files, { show: showById[showId] }),
             processed: processedFiles,
             emitted: emittedFiles,
             released: releasedFiles,
@@ -6340,7 +6340,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                 if (!wouldBeExcluded) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
-                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, () => fs.readdirSync(showDir), normalizeOutletCanonical);
+                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, () => fs.readdirSync(showDir), normalizeOutletCanonical, { show: showById[showId] });
                   if (prims.length && hasIncludableSyndicationPrimary(d, showById[showId], path.join(showDir, f), { primaries: prims })) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {

@@ -503,7 +503,7 @@ async function runLaneNight({
   // A row that may be a syndicated copy (its critic has a primary outlet) is held until the end of the pass: its primary
   // can still be scored later in the same pass, and then the copy must be pulled from the queue, not already published
   // (the Oct 22 shadow run). Every other row may go out the moment it is scored.
-  const mayBeCopy = (r) => getSyndicationPrimaries(r.row.criticName, r.row.outletId).length > 0;
+  const mayBeCopy = (r) => getSyndicationPrimaries(r.row.criticName, r.row.outletId, { show }).length > 0;
   const takeBatch = (midPass) => {
     if (!midPass) return pending.splice(0);
     const batch = pending.filter((r) => !mayBeCopy(r));
@@ -657,7 +657,7 @@ async function runLaneNight({
         // A syndicated copy (Chris Jones's Chicago Tribune review in the NY Daily News) is the rebuild's to drop only
         // when the primary is present (syndication-pairs.js). Mirror that: skip a copy whose primary is already
         // scored, and pull a queued copy when its primary arrives. The Oct 22 shadow run would have published one.
-        const copyOf = getSyndicationPrimaries(row.criticName, row.outletId).find((o) => taken.has(`${criticKey(row.criticName)}|${o}`));
+        const copyOf = getSyndicationPrimaries(row.criticName, row.outletId, { show }).find((o) => taken.has(`${criticKey(row.criticName)}|${o}`));
         if (copyOf) {
           seen.add(a.key);
           awaiting.delete(a.key);
@@ -721,7 +721,7 @@ async function runLaneNight({
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
         for (let i = pending.length - 1; i >= 0; i--) {
           const q = pending.at(i).row;
-          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
+          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId, { show }).includes(row.outletId)) continue;
           const pulled = pending.at(i);
           skipped.push({ key: pulled.key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
           pending.splice(i, 1);
@@ -731,7 +731,7 @@ async function runLaneNight({
         }
         for (const [k, live] of livePublished) {
           const q = live.row;
-          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
+          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId, { show }).includes(row.outletId)) continue;
           if (!stagedRemovals.some((x) => x.key === live.key)) stagedRemovals.push({ key: live.key, criticName: q.criticName, outletId: q.outletId, primaryKey: a.key, primaryOutlet: row.outletId });
         }
         pending.push({ key: a.key, row, scoredAt: now() });

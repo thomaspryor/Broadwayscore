@@ -43,6 +43,28 @@ const KNOWN_SYNDICATION_PAIRS = {
 };
 
 /**
+ * BRO-7957: market-aware primacy. Chris Jones writes for the Chicago Tribune and, from 2024, the NY Daily News. On a
+ * NYC show the Daily News copy is the home-market original and the Tribune copy is the reprint; elsewhere the Tribune
+ * stays primary. Explicit per critic (no region inference). Gated on the SHOW (market + openingDate >= fromDate)
+ * because pre-2024 nydailynews--chris-jones files often hold a different review (cats-1982, diana): flipping those
+ * would ship a misattributed review. Without a show (no context) the default primacy above applies.
+ */
+const MARKET_PRIMACY_OVERRIDES = Object.freeze({
+  'chris jones': Object.freeze({ markets: Object.freeze(['broadway', 'off-broadway']), fromDate: '2024-01-01', primary: 'nydailynews', secondary: Object.freeze(['chicagotribune']) }),
+});
+
+/** The override for this critic that applies to `show`, or null. */
+function marketPrimacyOverride(criticName, show) {
+  if (!criticName || !show) return null;
+  const o = MARKET_PRIMACY_OVERRIDES[String(criticName).toLowerCase().trim()];
+  if (!o) return null;
+  const market = String(show.category || show.market || '').toLowerCase();
+  const opening = String(show.openingDate || '').slice(0, 10);
+  if (!o.markets.includes(market) || !opening || opening < o.fromDate) return null;
+  return o;
+}
+
+/**
  * Returns the syndication config for a critic, or null if not a known syndicated critic.
  * @param {string} criticName - Lowercased critic name
  */
@@ -177,14 +199,20 @@ function _isRealByline(criticName) {
  * `outletId` would merely be reprinting. Empty array = outletId is not a
  * syndicated secondary. Union of the per-critic map and publishing groups.
  */
-function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets } = {}) {
+function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets, show } = {}) {
   if (!_isRealByline(criticName) || !outletId) return [];
   const out = new Set();
   const cfg = getSyndicationConfig(criticName);
-  if (cfg && cfg.secondary.includes(outletId)) out.add(cfg.primary);
+  const ovr = marketPrimacyOverride(criticName, show); // BRO-7957
+  if (cfg && cfg.secondary.includes(outletId) && !ovr) out.add(cfg.primary);
   for (const group of PUBLISHING_GROUPS) {
     const i = group.indexOf(outletId);
     if (i > 0) group.slice(0, i).forEach(o => out.add(o));
+  }
+  if (ovr) {
+    // The group order puts the Tribune ahead of the Daily News; for this critic on this show the two swap.
+    if (outletId === ovr.primary) for (const o of ovr.secondary) out.delete(o);
+    if (ovr.secondary.includes(outletId)) out.add(ovr.primary);
   }
   // BRO-7238: a portal carries other publishers' reviews, so a portal copy defers to ANY other outlet that holds the
   // same critic's review of the same show. Only callers that know those outlets (a show dir scan) pass them.
@@ -226,10 +254,10 @@ function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
  * @param {string[]|(()=>string[])} fileNames the show directory listing, or a thunk returning it
  * @param {(o:string)=>string} [normalize]
  */
-function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize) {
-  if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId);
+function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize, { show } = {}) {
+  if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId, { show });
   const names = typeof fileNames === 'function' ? fileNames() : fileNames; // a thunk: list the directory only for portal files
-  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(names, criticName, normalize) });
+  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(names, criticName, normalize), show });
 }
 
 /**
@@ -445,6 +473,6 @@ function findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNa
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary, findFullerSecondaryFile,
   isSelfSyndicationPointer, isSyndicatedDuplicateActive,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, portalRank, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, MARKET_PRIMACY_OVERRIDES, marketPrimacyOverride, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, BYLINELESS_PORTAL_OUTLETS, isBylinelessPortalOutlet, portalRank, bylinelessPortalPrimaryFiles, hasLiveBylinelessPortalPrimary, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

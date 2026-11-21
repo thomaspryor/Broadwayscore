@@ -78,12 +78,12 @@ function createClaimLedger() {
  * @param {{criticName?:string, outletKey?:string}|undefined} meta outletKey already canonicalized by the caller
  * @param {string[]} files
  */
-function primaryFilesFor(file, meta, files) {
+function primaryFilesFor(file, meta, files, { show } = {}) {
   if (!meta || !meta.outletKey) return [];
   const critic = String(meta.criticName || '').toLowerCase().trim();
   if (!critic && !isBylinelessPortalOutlet(meta.outletKey)) return []; // a byline-less portal still names its outlet
   const norm = require('./review-normalization').normalizeOutlet;
-  const primaries = getSyndicationPrimariesInDir(critic, meta.outletKey, files, norm);
+  const primaries = getSyndicationPrimariesInDir(critic, meta.outletKey, files, norm, { show });
   const byCritic = primaries.length ? files.filter(f => f !== file && isPrimaryFileFor(f, primaries, critic)) : [];
   // BRO-7416: headtopics/newsbreak copy whose byline/filename names an outlet defers to that outlet's files
   const named = isBylinelessPortalOutlet(meta.outletKey)

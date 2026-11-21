@@ -72,7 +72,7 @@ function isScoreableFile(data, show, filePath) {
 function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir, show) {
   const criticName = (data.criticName || '').toLowerCase().trim();
   const outletId = normalizeOutlet(data.outletId || data.outlet || '');
-  const primaries = getSyndicationPrimariesInDir(criticName, outletId, allFiles, normalizeOutlet);
+  const primaries = getSyndicationPrimariesInDir(criticName, outletId, allFiles, normalizeOutlet, { show });
   if (!primaries.length) return false;
   return hasLiveSyndicationPrimary(showDir, primaries, criticName,
     { fileNames: allFiles.filter((f) => f !== currentFile), extraCheck: (p, fp) => isScoreableFile(p, show, fp) });
