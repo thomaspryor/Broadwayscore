@@ -220,7 +220,7 @@ function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsB
       const r = readJson(path.join(pend, s, f));
       const o = r && (r.outletId || f.split('--')[0]);
       if (!r || !want.has(o) || T.isSettledPendingStub(r)) continue;
-      const v = T.triagePendingStub(r, { showId: s, show: showsById.get(s), heldIndex });
+      const v = T.triagePendingStub(r, { showId: s, show: showsById.get(s), heldIndex, showTitleOf: (id) => (showsById.get(id) || {}).title });
       if (v.verdict !== 'candidate') continue;
       const b = byOutlet[o] || (byOutlet[o] = { n: 0, attempted: 0 });
       b.n++;

@@ -122,7 +122,15 @@ describe('triagePendingStub (BRO-8023)', () => {
     const url = 'https://www.thetimes.com/culture/theatre-dance/article/theatre-review-faith-hope-and-charity-big-the-musical-abc';
     const idx = T.buildHeldUrlIndex([{ showId: 'faith-hope-and-charity-west-end-2019', url }]);
     const big = { id: 'big-the-musical-west-end-2019', title: 'Big the Musical' };
-    assert.equal(T.triagePendingStub({ url }, { showId: big.id, show: big, heldIndex: idx }).verdict, 'candidate');
+    const titles = { 'faith-hope-and-charity-west-end-2019': 'Faith, Hope and Charity' };
+    assert.equal(T.triagePendingStub({ url }, { showId: big.id, show: big, heldIndex: idx, showTitleOf: (id) => titles[id] }).verdict, 'candidate');
+  });
+
+  test('a same-title holder is another production of this show: still junk even though the url names the title', () => {
+    const url = 'https://nypost.com/2025/03/11/entertainment/a-streetcar-named-desire-review-paul-mescal-sizzles/';
+    const idx = T.buildHeldUrlIndex([{ showId: 'a-streetcar-named-desire-west-end-2025', url }]);
+    const old = { id: 'a-streetcar-named-desire-1973', title: 'A Streetcar Named Desire' };
+    assert.equal(T.triagePendingStub({ url }, { showId: old.id, show: old, heldIndex: idx, showTitleOf: () => 'A Streetcar Named Desire' }).verdict, 'junk');
   });
 
   test('ordinal dates parse', () => { assert.equal(T.stubDateIso('August 12th, 2021'), '2021-08-12'); });
