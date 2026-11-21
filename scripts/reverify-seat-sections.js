@@ -269,6 +269,11 @@ function cmdApply() {
 const cmd = process.argv[2];
 const table = { fetch: cmdFetch, run: cmdRun, report: cmdReport, apply: cmdApply };
 if (require.main === module) {
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 20).filter((l) => l.startsWith(' *')).map((l) => l.slice(3)).join('\n'));
+    process.exit(0);
+  }
   if (!table[cmd]) { console.error('usage: reverify-seat-sections.js fetch|run|report|apply --snapshot=FILE'); process.exit(2); }
   Promise.resolve(table[cmd]()).catch((e) => { console.error(`error: ${e.message}`); process.exit(1); });
 }
