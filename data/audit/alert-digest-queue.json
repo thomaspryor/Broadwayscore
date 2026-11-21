@@ -1216,20 +1216,6 @@
     "queuedAt": "2026-11-20T14:41:13.636Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T02:41:53.564Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
     "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Charles Isherwood',\n+     outletId: 'broadwaynews',\n+     showId: 'time-and-the-conways-2017'\n+   }\n+ ]\n- []\n",
@@ -1615,6 +1601,20 @@
     "queuedAt": "2026-11-21T05:00:08.208Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-21.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T05:32:22.360Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-7922-mwpvjukl",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7922-mwpvjukl",
     "description": "land.yml did not land land/job/linear-BRO-7922-mwpvjukl: the rebase gate went red at 1e1bf92f3a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44869508753",
@@ -1644,5 +1644,67 @@
       }
     ],
     "queuedAt": "2026-11-21T05:17:59.505Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7929-mwpx689a",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7929-mwpx689a",
+    "description": "land.yml did not land land/job/linear-BRO-7929-mwpx689a: the unit-tests-node gate went red at ac4cb05f9f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44870307661",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7929-mwpx689a"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ac4cb05f9fea6b154f8fa0aa881acf30b26f4a6f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44870307661"
+      }
+    ],
+    "queuedAt": "2026-11-21T05:29:40.316Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7932-mwpxi1sy",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7932-mwpxi1sy",
+    "description": "land.yml did not land land/job/linear-BRO-7932-mwpxi1sy: the unit-tests-node gate went red at e4fa689789. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44870361039",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7932-mwpxi1sy"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e4fa689789d85c9eed327e706b5258796f0d024f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44870361039"
+      }
+    ],
+    "queuedAt": "2026-11-21T05:31:34.512Z"
   }
 ]
