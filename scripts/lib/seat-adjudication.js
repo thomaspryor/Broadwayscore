@@ -17,6 +17,7 @@
  */
 
 const crypto = require('crypto');
+const { foldDiacritics } = require('./title-match');
 
 const VERDICTS = new Set(['sweet-spot', 'solid', 'skip']);
 const PRICE_TIERS = new Set(['budget', 'mid', 'premium', 'top']);
@@ -53,7 +54,7 @@ const FORMER_NAMES = {
 
 /** Lowercase, unify quotes/dashes, collapse punctuation and spaces. Used for every comparison. */
 function normalizeText(t) {
-  return String(t || '')
+  return foldDiacritics(String(t || ''))
     .toLowerCase()
     .replace(/[‘’‛`´]/g, "'")
     .replace(/[“”„]/g, '"')

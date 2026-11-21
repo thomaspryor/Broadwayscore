@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/check-prod-deploy.js'
+      - 'scripts/generate-theater-tips.js'
+      - 'scripts/reverify-seat-sections.js'
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'
       - 'src/**'

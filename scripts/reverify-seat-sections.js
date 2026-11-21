@@ -22,6 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const A = require('./lib/seat-adjudication');
+const { foldDiacritics } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
 const CACHE = path.join(ROOT, '.cache', 'seat-evidence');
@@ -36,7 +37,7 @@ function arg(name, dflt) {
   return hit.includes('=') ? hit.slice(hit.indexOf('=') + 1) : true;
 }
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
-const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slug = (t) => foldDiacritics(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function loadSnapshot() {
   const f = arg('snapshot');
