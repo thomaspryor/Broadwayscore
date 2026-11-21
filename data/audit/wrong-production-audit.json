@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-21T19:11:33.486Z",
+  "timestamp": "2026-11-21T19:51:17.886Z",
   "stats": {
-    "totalReviews": 83723,
-    "alreadyFlagged": 22420,
+    "totalReviews": 83726,
+    "alreadyFlagged": 22419,
     "dateGuardCatches": 235,
     "directorMismatch": 3858,
     "tvFilmSignals": 2401,
-    "londonSignals": 3934,
+    "londonSignals": 3936,
     "offBroadwaySignals": 780,
     "yearMismatch": 394,
     "noPublishDate": 8242
@@ -110430,6 +110430,20 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 71,
+      "publishDate": "2026-11-19",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-hamlet-hail-to-thief.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
       "file": "plays-international--franco-milazzo.json",
       "score": 83,
       "publishDate": "2026-11-15",
@@ -122891,7 +122905,7 @@
     {
       "showId": "my-night-with-reg-west-end-2015",
       "file": "britishtheatrecom--stephen-collins.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2015-01-24",
       "url": "https://www.britishtheatre.com/ar/posts/review-my-night-with-reg-apollo-theatre-4stars",
       "findings": [
@@ -141690,7 +141704,7 @@
     {
       "showId": "the-mentalists-west-end-2015",
       "file": "observer--susannah-clapp.json",
-      "score": 38,
+      "score": 39,
       "publishDate": "2015-07-19",
       "url": "https://www.theguardian.com/stage/2015/jul/19/the-mentalists-review-stephen-merchant-richard-bean",
       "findings": [
@@ -150342,6 +150356,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "wonder-land-west-end-2015",
+      "file": "thestage--mark-shenton.json",
+      "score": 35,
+      "publishDate": "2015-12-11",
+      "url": "https://www.thestage.co.uk/reviews/damon-albarns-wonderland-review-at-the-olivier-national-theatre--disappointing",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
