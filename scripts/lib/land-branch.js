@@ -1057,8 +1057,9 @@ function landBranch(o) {
         if (trainFailed) {
           // Degenerate bisect: the holder alone, exactly as without a train.
           // The riders stay queued and land on their own turn.
-          log(`[land] train: ${trainFailed.name} failed on the combined tree — dropping ${train.length} rider(s), re-checking ${branch} alone`);
-          for (const r of train) trainDropped.push({ branch: r.branch, reason: `train red (${trainFailed.name})` });
+          // BRO-8024: name the failing test (same first-failure text the REFUSED line carries), not only the check.
+          log(`[land] train: ${trainFailed.name} failed on the combined tree${trainFailed.detail ? ` (${String(trainFailed.detail).replace(/\s+/g, ' ').slice(0, 500)})` : ''} — dropping ${train.length} rider(s), re-checking ${branch} alone`);
+          for (const r of train) trainDropped.push({ branch: r.branch, tip: r.tip, reason: `train red (${trainFailed.name})` });
           train = [];
           discardResidue('train red');
           git(['reset', '-q', '--hard', holderHead], workdir);

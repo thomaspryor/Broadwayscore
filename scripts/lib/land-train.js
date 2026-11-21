@@ -30,6 +30,11 @@
 const { isMainRedBranch } = require('./land-main-red');
 
 const MARKER_PREFIX = 'refs/land-mutex/landed/';
+// BRO-8024: a rider that was dropped from a red merge train (the holder then
+// passed alone) is remembered as refs/land-mutex/red/<rider tip> -> the holder's
+// landed commit on main (its commit date is the mark time, for ageing). Same
+// store and same ls-remote as the landed markers; no ticket/lock parser reads it.
+const RED_PREFIX = 'refs/land-mutex/red/';
 // Holder + 3 riders. The park depth (land-mutex PARK_DEPTH = 4) keeps about
 // that many live tickets, so a larger cap would rarely fill.
 const DEFAULT_TRAIN_MAX = 4;
@@ -50,6 +55,43 @@ function parseMarkers(text) {
     if (SHA_RE.test(tip) && SHA_RE.test(sha)) out[tip] = sha;
   }
   return out;
+}
+
+/** `git ls-remote origin 'refs/land-mutex/*'` text → { <tip>: <sha the mark points at> } for red-train marks. Never throws. */
+function parseRedMarkers(text) {
+  const out = {};
+  for (const line of String(text || '').split('\n')) {
+    const [sha, ref] = line.trim().split(/\s+/);
+    if (!sha || !ref || !ref.startsWith(RED_PREFIX)) continue;
+    const tip = ref.slice(RED_PREFIX.length);
+    if (SHA_RE.test(tip) && SHA_RE.test(sha)) out[tip] = sha;
+  }
+  return out;
+}
+
+const redMarkerRef = (tip) => {
+  if (!SHA_RE.test(String(tip || ''))) throw new Error(`redMarkerRef: tip must be a 40-hex sha (got ${JSON.stringify(tip)})`);
+  return `${RED_PREFIX}${tip}`;
+};
+
+/**
+ * land-branch result → the riders to remember as red-train riders:
+ * [{branch, tip, sha}]. Only when the holder itself landed (it passed a forced
+ * full re-check alone, so the combination was red, not the holder) and only
+ * for drops whose reason is `train red (...)` with a usable tip. `sha` is the
+ * commit the mark points at (pushedSha: the head this run just pushed, so its date is now). Anything malformed → [].
+ */
+function redRidersFromResult(result) {
+  try {
+    if (!result || result.landed !== true) return [];
+    const sha = SHA_RE.test(String(result.pushedSha || '')) ? result.pushedSha : null; // sha alone can be an old commit (rebased to empty): an instantly stale mark
+    if (!sha || !Array.isArray(result.trainDropped)) return [];
+    const out = [];
+    for (const d of result.trainDropped) {
+      if (d && typeof d.reason === 'string' && d.reason.startsWith('train red (') && SHA_RE.test(String(d.tip || '')) && !out.some((o) => o.tip === d.tip)) out.push({ branch: d.branch, tip: d.tip, sha });
+    }
+    return out;
+  } catch { return []; }
 }
 
 /** Trailers a ticket commit carries (scripts/land-mutex.js newTicketCommit). */
@@ -91,11 +133,12 @@ function trainMax(env = process.env) {
  *                 remoteTip (the land/** ref's sha now, or null) and
  *                 liveness ('live' | 'gone' | undefined when unreadable)
  *   markers       parseMarkers() — a tip that already has one is not taken again
+ *   redMarkers    parseRedMarkers() — BRO-8024: a tip that rode a red train stays queued for its own turn
  *   max           trainMax()
  * Returns {riders:[{branch, tip, base, runId, attempt}], skipped:[{ref, reason}], reason}.
  * Fails closed: anything not proven eligible stays in the queue for its own turn.
  */
-function selectRiders({ holderBranch, self, tickets = [], markers = {}, max = DEFAULT_TRAIN_MAX } = {}) {
+function selectRiders({ holderBranch, self, tickets = [], markers = {}, redMarkers = {}, max = DEFAULT_TRAIN_MAX } = {}) {
   const none = (reason) => ({ riders: [], skipped: [], reason });
   if (!(max >= 2)) return none(`trains off (max ${max})`);
   if (isMainRedBranch(holderBranch)) return none('holder is a main-red lane: it lands alone');
@@ -115,6 +158,7 @@ function selectRiders({ holderBranch, self, tickets = [], markers = {}, max = DE
     if (seen.has(info.branch)) { skip('branch already in the train'); continue; }
     if (info.tip !== t.remoteTip) { skip(`land ref moved (${String(t.remoteTip || 'gone').slice(0, 10)} ≠ verified ${info.tip.slice(0, 10)})`); continue; }
     if (markers[info.tip]) { skip('already landed by an earlier train'); continue; }
+    if (redMarkers && typeof redMarkers === 'object' && redMarkers[info.tip]) { skip('rode a red train at this tip, lands on its own turn'); continue; }
     if (t.liveness !== 'live') { skip(`run not confirmed live (${t.liveness || 'unreadable'})`); continue; }
     seen.add(info.branch);
     riders.push({ branch: info.branch, tip: info.tip, base: info.base, runId: t.runId, attempt: t.attempt });
@@ -198,6 +242,6 @@ function staleMarkers(markers, landTips, ageSec = {}) {
 }
 
 module.exports = {
-  MARKER_PREFIX, DEFAULT_TRAIN_MAX, MARKER_MAX_AGE_SEC, markerRef, parseMarkers, ticketTrailers, parseTicketMessage, trainMax,
+  MARKER_PREFIX, RED_PREFIX, DEFAULT_TRAIN_MAX, MARKER_MAX_AGE_SEC, markerRef, redMarkerRef, parseMarkers, parseRedMarkers, redRidersFromResult, ticketTrailers, parseTicketMessage, trainMax,
   selectRiders, segmentHeads, tipFromRun, holdsLock, trainsFromLandings, decideFollower, staleMarkers,
 };

@@ -292,10 +292,11 @@ test('train: a red combined check lands the holder alone (its own checks) and le
     const tipA = w.pushBranch('land/a', { 'a.txt': 'a\n' });
     const repo = w.clone('runner');
     const soloSeen = [];
+    const logs = [];
     const r = landBranch({
-      branch: 'land/h', source: 'origin', repoDir: repo,
+      branch: 'land/h', source: 'origin', repoDir: repo, log: (l) => logs.push(l),
       riders: [{ branch: 'land/a', tip: tipA }],
-      trainChecks: () => [{ name: 'merged-tree-tests', pass: false, detail: 'boom' }],
+      trainChecks: () => [{ name: 'merged-tree-tests', pass: false, detail: 'boom\n  not ok 7 - the failing test' }],
       checks: (o) => { soloSeen.push(o.changedFiles); return green(); },
       pushMain: plainPush,
     });
@@ -303,6 +304,9 @@ test('train: a red combined check lands the holder alone (its own checks) and le
     assert.deepEqual(r.riders, []);
     assert.deepEqual(soloSeen, [['h.txt']]);
     assert.match(r.trainDropped[0].reason, /train red \(merged-tree-tests\)/);
+    assert.equal(r.trainDropped[0].tip, tipA, 'BRO-8024: the drop carries the rider tip so it can be remembered');
+    assert.ok(logs.some((l) => /merged-tree-tests failed on the combined tree \(boom not ok 7 - the failing test\)/.test(l)), 'BRO-8024: the red-train line names the failing test');
+    assert.deepEqual(t.redRidersFromResult(r).map((x) => [x.branch, x.tip]), [['land/a', tipA]]);
     assert.equal(w.onMain('h.txt'), 'h');
     assert.equal(w.onMain('a.txt'), null, 'the rider did NOT land on a red train');
     assert.equal(w.isAnc(tipA), false);
@@ -395,6 +399,159 @@ test('staleMarkers: an old marker is pruned even while a land ref still points a
   assert.deepEqual(t.staleMarkers({ [A]: B }, [A], { [A]: t.MARKER_MAX_AGE_SEC + 1 }), [A]);
   assert.deepEqual(t.staleMarkers({ [A]: B }, [A], { [A]: 60 }), []);
   assert.deepEqual(t.staleMarkers({ [A]: B }, [A]), [], 'unknown age keeps it');
+});
+
+// ── BRO-8024: red-train memory ──────────────────────────────────────────────
+
+test('selectRiders: a tip that rode a red train is skipped (lands on its own turn); a new tip rides again', () => {
+  const self = { runId: '1', attempt: 1 };
+  const E = 'e'.repeat(40);
+  const tickets = [
+    tk(1, { branch: 'land/holder', tip: A, base: B }),
+    tk(2, { branch: 'land/bad', tip: B, base: A }),
+    tk(3, { branch: 'land/ok', tip: C, base: A }),
+  ];
+  const red = { [B]: D };
+  const r = t.selectRiders({ holderBranch: 'land/holder', self, tickets, max: 4, redMarkers: red });
+  assert.deepEqual(r.riders.map((x) => x.branch), ['land/ok']);
+  assert.deepEqual(r.skipped.map((s) => s.reason), ['rode a red train at this tip, lands on its own turn']);
+  // Same branch, new push (different tip): the old mark does not apply.
+  const pushed = tickets.map((x) => (x.info.branch === 'land/bad' ? { ...x, info: { ...x.info, tip: E }, remoteTip: E } : x));
+  assert.deepEqual(t.selectRiders({ holderBranch: 'land/holder', self, tickets: pushed, max: 4, redMarkers: red }).riders.map((x) => x.branch), ['land/bad', 'land/ok']);
+  // No marks / corrupt marks: today's behavior.
+  for (const bad of [undefined, null, {}, 'junk', 7, []]) {
+    assert.deepEqual(t.selectRiders({ holderBranch: 'land/holder', self, tickets, max: 4, redMarkers: bad }).riders.map((x) => x.branch), ['land/bad', 'land/ok'], String(bad));
+  }
+  // A skipped rider frees its slot for the next one in the queue.
+  assert.deepEqual(t.selectRiders({ holderBranch: 'land/holder', self, tickets, max: 2, redMarkers: red }).riders.map((x) => x.branch), ['land/ok']);
+});
+
+test('redRidersFromResult: only `train red` drops, only when the holder landed, malformed input is empty', () => {
+  const dropped = [
+    { branch: 'land/a', tip: A, reason: 'train red (colocated-tests)' },
+    { branch: 'land/b', tip: B, reason: 'main moved substantively: the retry re-checks the holder alone' },
+    { branch: 'land/c', reason: 'train red (colocated-tests)' },
+    { branch: 'land/d', tip: 'nope', reason: 'train red (x)' },
+    { branch: 'land/a', tip: A, reason: 'train red (colocated-tests)' },
+    null,
+  ];
+  assert.deepEqual(t.redRidersFromResult({ landed: true, pushedSha: D, trainDropped: dropped }), [{ branch: 'land/a', tip: A, sha: D }]);
+  assert.deepEqual(t.redRidersFromResult({ landed: true, sha: C, trainDropped: dropped }), [], 'no pushedSha (rebased to empty): sha may be an old commit, so no mark');
+  assert.deepEqual(t.redRidersFromResult({ landed: false, pushedSha: D, trainDropped: dropped }), [], 'holder red alone: the holder may be the culprit, mark nothing');
+  assert.deepEqual(t.redRidersFromResult({ landed: true, trainDropped: dropped }), [], 'no commit to point the mark at');
+  for (const bad of [null, undefined, 'x', {}, { landed: true, pushedSha: D }, { landed: true, pushedSha: D, trainDropped: 'x' }]) assert.deepEqual(t.redRidersFromResult(bad), []);
+});
+
+test('red marks: parsed from ls-remote, never mistaken for tickets or landed markers, aged out like the others', () => {
+  const ls = [`${D} refs/land-mutex/red/${A}`, `${C} refs/land-mutex/red/zzz`, `${B} refs/land-mutex/landed/${C}`, `${C} refs/land-mutex/queue/1-0000000000001-77-1`, `${C} refs/land-mutex/lock`].join('\n');
+  assert.deepEqual(t.parseRedMarkers(ls), { [A]: D });
+  assert.deepEqual(t.parseRedMarkers(undefined), {});
+  assert.deepEqual(t.parseRedMarkers('garbage\n\n'), {});
+  const st = m.parseLsRemote(ls);
+  assert.equal(st.tickets.length, 1, 'a red mark is not a ticket');
+  assert.deepEqual(st.landed, { [C]: B }, 'a red mark is not a landed marker');
+  assert.equal(t.redMarkerRef(A), `refs/land-mutex/red/${A}`);
+  assert.throws(() => t.redMarkerRef('abc'));
+  // Ageing: gone once no land/** ref has the tip, or after MARKER_MAX_AGE_SEC; kept while live and fresh.
+  assert.deepEqual(t.staleMarkers({ [A]: D }, [A], { [A]: 60 }), []);
+  assert.deepEqual(t.staleMarkers({ [A]: D }, [B]), [A]);
+  assert.deepEqual(t.staleMarkers({ [A]: D }, [A], { [A]: t.MARKER_MAX_AGE_SEC + 1 }), [A]);
+});
+
+test('land-train.js mark: a red train where the holder landed alone records red marks (empty riders no longer returns first), tolerates reruns and bad input', () => {
+  const w = makeWorld();
+  try {
+    w.pushBranch('land/h', { 'h.txt': 'h\n' });
+    const tipA = w.pushBranch('land/a', { 'a.txt': 'a\n' });
+    const runner = w.clone('runner');
+    const logs = [];
+    const r = landBranch({ branch: 'land/h', source: 'origin', repoDir: runner, log: (l) => logs.push(l), riders: [{ branch: 'land/a', tip: tipA }], trainChecks: () => [{ name: 'colocated-tests', pass: false, detail: 'x' }], checks: green, pushMain: plainPush });
+    assert.equal(r.landed, true);
+    assert.deepEqual(r.riders, []);
+    const resFile = path.join(w.root, 'result.json');
+    fs.writeFileSync(resFile, JSON.stringify(r));
+    const run = (args, env = {}) => execFileSync(process.execPath, [path.join(SCRIPTS, 'land-train.js'), ...args], { cwd: runner, encoding: 'utf8', env: { ...process.env, GITHUB_RUN_ID: '1', GITHUB_RUN_ATTEMPT: '1', ...env } });
+    const out = run(['mark', '--result-file', resFile]);
+    assert.match(out, /red-train mark for land\/a/);
+    const marks = t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*']));
+    assert.deepEqual(Object.keys(marks), [tipA]);
+    assert.match(out, /lands on its own turn/);
+    const parent = sh(runner, ['rev-parse', `${marks[tipA]}^`]).trim();
+    assert.ok(w.isAnc(parent), 'the mark is a child of a commit on main');
+    const ageSec = Date.now() / 1000 - Number(sh(runner, ['log', '-1', '--format=%ct', marks[tipA]]).trim());
+    assert.ok(ageSec >= -5 && ageSec < 120, `the mark is dated now, not with the holder commit (age ${ageSec}s)`);
+    // Running mark again (same tip already marked) is quiet and harmless.
+    assert.match(run(['mark', '--result-file', resFile]), /red-train mark for land\/a/);
+    // A corrupt result file never throws and writes nothing new.
+    fs.writeFileSync(resFile, '{not json');
+    assert.match(run(['mark', '--result-file', resFile]), /no result to mark/);
+    // unmark (the rider landed on its own turn) drops its red mark; a missing mark is a no-op.
+    run(['mark', '--result-file', (fs.writeFileSync(resFile, JSON.stringify(r)), resFile)]);
+    assert.deepEqual(Object.keys(t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*']))), [tipA]);
+    assert.match(run(['unmark', '--tip', tipA]), /no train marker/);
+    assert.deepEqual(t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*'])), {}, 'unmark removed the red mark');
+    assert.match(run(['unmark', '--tip', tipA]), /no train marker/);
+    // A holder that did NOT land marks nothing.
+    fs.writeFileSync(resFile, JSON.stringify({ ...r, landed: false }));
+    sh(runner, ['push', '-q', 'origin', `:${t.redMarkerRef(tipA)}`]);
+    run(['mark', '--result-file', resFile]);
+    assert.deepEqual(t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*'])), {});
+  } finally { w.cleanup(); }
+});
+
+test('land-train.js collect: a rider whose tip carries a red-train mark stays queued, a clean one rides, stale marks are pruned', () => {
+  const w = makeWorld();
+  try {
+    const tipBad = w.pushBranch('land/bad', { 'bad.txt': 'x\n' });
+    const tipOk = w.pushBranch('land/ok', { 'ok.txt': 'x\n' });
+    const holderTip = w.pushBranch('land/h', { 'h.txt': 'x\n' });
+    const runner = w.clone('runner');
+    sh(runner, ['fetch', '-q', 'origin', 'main']);
+    const tree = sh(runner, ['rev-parse', 'origin/main^{tree}']);
+    const ticket = (run, branch, tip) => {
+      const msg = `land-mutex ticket run ${run} attempt 1 ${branch}\n\n${t.ticketTrailers({ branch, tip }).join('\n')}\n`;
+      const sha = execFileSync('git', ['commit-tree', tree, '-m', msg], { cwd: runner, encoding: 'utf8' }).trim();
+      sh(runner, ['push', '-q', 'origin', `${sha}:${m.ticketName({ mainRed: false, enqueuedAt: Date.now() + Number(run), runId: run, attempt: 1 })}`]);
+    };
+    ticket('1', 'land/h', holderTip);
+    ticket('2', 'land/bad', tipBad);
+    ticket('3', 'land/ok', tipOk);
+    const main = w.mainSha();
+    sh(runner, ['push', '-q', 'origin', `${main}:${t.redMarkerRef(tipBad)}`]);
+    const gone = 'f'.repeat(40); // a mark whose tip no land/** ref points at: stale, pruned
+    sh(runner, ['push', '-q', 'origin', `${main}:${t.redMarkerRef(gone)}`]);
+    const collect = (out) => execFileSync(process.execPath, [path.join(SCRIPTS, 'land-train.js'), 'collect', '--branch', 'land/h', '--out', out], { cwd: runner, encoding: 'utf8', env: { ...process.env, GITHUB_RUN_ID: '1', GITHUB_RUN_ATTEMPT: '1', LAND_TRAIN_NO_API: '1', LAND_TRAIN_MAX: '4' } });
+    const out = path.join(w.root, 'riders.json');
+    const log1 = collect(out);
+    assert.deepEqual(JSON.parse(fs.readFileSync(out, 'utf8')).map((r) => r.branch), ['land/ok']);
+    assert.match(log1, /skip refs\/land-mutex\/queue\/\S+: rode a red train at this tip, lands on its own turn/);
+    assert.match(log1, /pruned stale red-train mark for ffffffffff/);
+    assert.deepEqual(Object.keys(t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*']))), [tipBad], 'only the live mark stays');
+  } finally { w.cleanup(); }
+});
+
+test('land.js (older land.yml path): a landed red train with riders: [] still runs `land-train.js mark`, which writes the red marks', () => {
+  const w = makeWorld();
+  try {
+    w.pushBranch('land/h', { 'h.txt': 'h\n' });
+    const tipA = w.pushBranch('land/a', { 'a.txt': 'a\n' });
+    const runner = w.clone('runner');
+    const mainSha = w.mainSha();
+    const landed = { landed: true, sha: mainSha, pushedSha: mainSha, attempts: 1, wallMs: 1, failedCheck: null, reason: null, pushed: true, files: [], verified: 'LANDED', contentNote: null, baseSha: null, verifiedBase: null, churnSkips: 0, riders: [], trainDropped: [{ branch: 'land/a', tip: tipA, reason: 'train red (colocated-tests)' }] };
+    const out = path.join(w.root, 'res.json');
+    const env = { GITHUB_ACTIONS: process.env.GITHUB_ACTIONS, GITHUB_RUN_ID: process.env.GITHUB_RUN_ID };
+    process.env.GITHUB_ACTIONS = 'true'; process.env.GITHUB_RUN_ID = '1';
+    const silence = console.log; console.log = () => {};
+    const savedErr = console.error; console.error = () => {};
+    try {
+      const rc = landMain(['--branch', 'land/h', '--expect-tip', 'a'.repeat(40), '--repo', runner, '--result-file', out], () => landed, () => ({ landed: false, markerSha: null, reason: 'no marker' }), () => [{ branch: 'land/a', tip: tipA }]);
+      assert.equal(rc, 0);
+    } finally {
+      console.log = silence; console.error = savedErr;
+      for (const [k, v] of Object.entries(env)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    }
+    assert.deepEqual(Object.keys(t.parseRedMarkers(sh(runner, ['ls-remote', 'origin', 'refs/land-mutex/*']))), [tipA]);
+  } finally { w.cleanup(); }
 });
 
 test('land.js: a rider of an earlier train finishes from its marker; --train-landed-only never lands unlocked', () => {

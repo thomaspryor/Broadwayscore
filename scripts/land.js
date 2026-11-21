@@ -203,7 +203,8 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
     holderBase: args['verified-base'] || null,
     log: (m) => console.error(m),
   });
-  if (autoTrain && result.landed && (result.riders || []).length) {
+  // BRO-8024: a red train lands the holder alone with riders: [] but its dropped riders still need their red marks.
+  if (autoTrain && result.landed && ((result.riders || []).length || require('./lib/land-train.js').redRidersFromResult(result).length)) {
     const tmp = path.join(require('os').tmpdir(), `land-result-${process.pid}.json`);
     try {
       fs.writeFileSync(tmp, JSON.stringify({ branch: args.branch, ...result }));

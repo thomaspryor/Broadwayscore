@@ -49,6 +49,10 @@ const env = process.env;
 const remote = env.LAND_TRAIN_REMOTE || 'origin';
 const repo = env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const self = { runId: String(env.GITHUB_RUN_ID || '0'), attempt: Number(env.GITHUB_RUN_ATTEMPT || 1) };
+// BRO-8024: the red-train memory runs under the landing mutex, so its git calls are short and few.
+const RED_GIT_TIMEOUT_MS = 20000;
+const RED_PRUNE_MAX = 5;
+const RED_MARK_BUDGET_MS = 45000;
 const log = (s) => console.log(`land-train: ${s}`);
 
 function git(args, timeout = 90000) {
@@ -101,6 +105,24 @@ function collect() {
     log(r.ok ? `pruned stale marker for ${tip.slice(0, 10)}` : `stale marker prune failed for ${tip.slice(0, 10)}`);
   }
 
+  // BRO-8024: red-train riders (same housekeeping, own lease). Best effort with a short git timeout and a small
+  // prune cap (it runs under the landing mutex). Any error → no memory → ride as before.
+  let redMarkers = {};
+  try {
+    redMarkers = t.parseRedMarkers(ls.out);
+    const redAgeSec = {};
+    for (const [tip, sha] of Object.entries(redMarkers)) {
+      const ct = git(['log', '-1', '--format=%ct', sha], RED_GIT_TIMEOUT_MS);
+      if (ct.ok && /^\d+$/.test(ct.out)) redAgeSec[tip] = Date.now() / 1000 - Number(ct.out);
+    }
+    const stale = t.staleMarkers(redMarkers, Object.values(landTips), redAgeSec);
+    for (const tip of stale.slice(0, RED_PRUNE_MAX)) {
+      const r = git(['push', '--no-verify', remote, `:${t.redMarkerRef(tip)}`, `--force-with-lease=${t.redMarkerRef(tip)}:${redMarkers[tip]}`], RED_GIT_TIMEOUT_MS);
+      log(r.ok ? `pruned stale red-train mark for ${tip.slice(0, 10)}` : `stale red-train mark prune failed for ${tip.slice(0, 10)}`);
+    }
+    for (const tip of stale) delete redMarkers[tip]; // a stale mark never suppresses a rider, pruned or not
+  } catch (err) { log(`red-train marks unreadable (${String(err.message).split('\n')[0]}); riding as before`); redMarkers = {}; }
+
   const others = state.tickets.filter((x) => !(x.runId === self.runId && x.attempt === self.attempt));
   if (!others.length) { log('no other landing is queued'); return; }
   // The ticket commits carry each run's verified tip/base (land-mutex.js).
@@ -119,22 +141,42 @@ function collect() {
   let sel;
   for (let round = 0; round < 3; round += 1) {
     const assume = tickets.map((x) => ({ ...x, liveness: looked.has(key(x)) ? looked.get(key(x)) : 'live' }));
-    const pre = t.selectRiders({ holderBranch: branch, self, tickets: assume, markers: state.landed, max });
+    const pre = t.selectRiders({ holderBranch: branch, self, tickets: assume, markers: state.landed, redMarkers, max });
     const todo = pre.riders.filter((r) => !looked.has(key(r)));
     if (!todo.length) break;
     for (const r of todo) looked.set(key(r), runLiveness(tickets.find((x) => key(x) === key(r))));
   }
   for (const x of tickets) x.liveness = looked.get(key(x));
-  sel = t.selectRiders({ holderBranch: branch, self, tickets, markers: state.landed, max });
+  sel = t.selectRiders({ holderBranch: branch, self, tickets, markers: state.landed, redMarkers, max });
   for (const s of sel.skipped) log(`skip ${s.ref}: ${s.reason}`);
   log(`${sel.reason}${sel.riders.length ? `: ${sel.riders.map((r) => `${r.branch}@${r.tip.slice(0, 10)}`).join(', ')}` : ''}`);
   write(sel.riders);
+}
+
+// BRO-8024: riders dropped from a red train (the holder then landed alone) must not ride the next
+// train at the same tip. Best effort and self-contained: it never throws and never blocks the rider markers.
+function markRedRiders(result) {
+  try {
+    const deadline = Date.now() + RED_MARK_BUDGET_MS;
+    for (const r of t.redRidersFromResult(result)) {
+      if (Date.now() > deadline) { log('red-train marks: time budget used up; the rest ride as before'); break; }
+      const ref = t.redMarkerRef(r.tip);
+      // The holder commit can be old (a rebase onto an unchanged main keeps its date), and the mark's age is its commit date.
+      // So the mark is a fresh child commit (same tree, dated now). If that cannot be made, the holder commit itself is used.
+      const fresh = spawnSync('git', ['commit-tree', `${r.sha}^{tree}`, '-p', r.sha, '-m', `red-train mark ${r.tip}`], { encoding: 'utf8', timeout: RED_GIT_TIMEOUT_MS, env: { ...env, GIT_AUTHOR_NAME: 'land-train', GIT_AUTHOR_EMAIL: 'land-train@users.noreply.github.com', GIT_COMMITTER_NAME: 'land-train', GIT_COMMITTER_EMAIL: 'land-train@users.noreply.github.com', GIT_COMMITTER_DATE: `${Math.floor(Date.now() / 1000)} +0000` } });
+      const markSha = fresh.status === 0 && /^[0-9a-f]{40}$/.test(String(fresh.stdout).trim()) ? String(fresh.stdout).trim() : r.sha;
+      const p = git(['push', '--no-verify', remote, `${markSha}:${ref}`, `--force-with-lease=${ref}:`], RED_GIT_TIMEOUT_MS);
+      const ok = p.ok || git(['ls-remote', remote, ref], RED_GIT_TIMEOUT_MS).out.startsWith(markSha); // only OUR mark counts, not an older one that is still on the remote
+      log(ok ? `red-train mark for ${r.branch} @ ${r.tip.slice(0, 10)}: it lands on its own turn, not in the next train at this tip` : `could not record the red-train mark for ${r.branch} (it may ride again; harmless)`);
+    }
+  } catch (err) { log(`red-train marks not recorded (${String(err.message).split('\n')[0]})`); }
 }
 
 function mark() {
   const file = arg('result-file');
   let result;
   try { result = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (err) { log(`no result to mark (${err.message})`); return; }
+  markRedRiders(result);
   const riders = (result && result.landed && Array.isArray(result.riders)) ? result.riders : [];
   if (!riders.length) { log('no riders landed'); return; }
   let appendLanding = null;
@@ -157,9 +199,19 @@ function mark() {
   }
 }
 
+// BRO-8024: a rider that landed (on its own turn) no longer needs its red-train mark. Best effort, never throws.
+function unmarkRed(tip) {
+  try {
+    const rref = t.redMarkerRef(tip);
+    const sha = t.parseRedMarkers(git(['ls-remote', remote, rref], RED_GIT_TIMEOUT_MS).out)[tip];
+    if (sha) git(['push', '--no-verify', remote, `:${rref}`, `--force-with-lease=${rref}:${sha}`], RED_GIT_TIMEOUT_MS);
+  } catch { /* the next collect prunes it */ }
+}
+
 function unmark() {
   const tip = arg('tip');
   const ref = t.markerRef(tip);
+  unmarkRed(tip);
   const seen = git(['ls-remote', remote, ref]);
   const sha = seen.ok ? t.parseMarkers(seen.out)[tip] : null;
   if (!sha) { log(`no train marker for ${tip.slice(0, 10)}`); return; }
