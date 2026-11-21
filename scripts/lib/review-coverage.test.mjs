@@ -753,3 +753,15 @@ test('the Gemini review wrapper counts only when its last status line is GEMINI-
   assert.equal(withRun('grep -n caller scripts/gemini/review.js', okLine).complete, false, 'grep of the path');
   assert.equal(withRun('node --check scripts/gemini/review.js', okLine).complete, false, 'node --check');
 });
+
+test('review.js still prints the success status line geminiReviewOk() parses', () => {
+  // geminiReviewOk() takes the first token after "GEMINI-REVIEW: " on the last status line and
+  // needs it to be exactly "ok". If review.js's done(0, ...) line changes shape, every real Gemini
+  // review would silently stop counting (a wrongful land block), so pin the producer side here.
+  const src = fs.readFileSync(new URL('../gemini/review.js', import.meta.url), 'utf8');
+  assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{parsed\.reads === 0 \? 'no-reads' : 'ok'\} /,
+    'review.js success line must stay `GEMINI-REVIEW: <ok|no-reads> <fields>` (update geminiReviewOk() with it)');
+  for (const prefix of ['MISSING: ', 'FAILED: ', 'UNSAFE: ']) {
+    assert.ok(src.includes(`done(`) && src.includes(prefix), `review.js still uses the ${prefix.trim()} prefix`);
+  }
+});
