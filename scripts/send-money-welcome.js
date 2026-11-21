@@ -30,13 +30,13 @@ const hdr = (prefer) => {
 const enc = encodeURIComponent;
 
 async function resendSend(row, apiKey, { preview = false } = {}) {
-  const { subject, text, html, headers } = w.buildWelcomeEmail(row);
+  const { subject, text, headers } = w.buildWelcomeEmail(row);
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}`,
       ...(preview ? {} : { 'Idempotency-Key': w.idempotencyKey(row.email, process.env.SUPABASE_SERVICE_ROLE_KEY) }) },
     body: JSON.stringify({ from: w.FROM, reply_to: w.REPLY_TO, to: [row.email], subject: preview ? `[PREVIEW] ${subject}` : subject,
-      text, html, headers, tags: [{ name: 'category', value: 'money-welcome' }] }),
+      text, headers, tags: [{ name: 'category', value: 'money-welcome' }] }),
     signal: AbortSignal.timeout(30000),
   });
   return { statusCode: res.status };
