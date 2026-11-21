@@ -91,6 +91,14 @@ describe('groundRewrite + decideSection', () => {
     const acc = new Map(claims.map((c, i) => [i + 1, c.kind !== 'name']));
     assert.strictEqual(A.decideSection(section, claims, acc).dropped, 'section name not supported');
   });
+  test('rewriter can strip unsupported qualifiers from the name; verifier checks the cleaned name', () => {
+    const rep = { ...reply, name: { text: 'Orchestra Center — Sweet Spot', keep: true, evidence: [{ src: 1, quote: 'Orchestra Center, rows F to L' }] } };
+    const g = A.groundRewrite({ ...section, name: 'Center Orchestra Sweet Spot (Rows B-D)' }, rep, sources);
+    const nc = g.claims.find((c) => c.kind === 'name');
+    assert.match(nc.text, /"Orchestra Center, Sweet Spot"/);
+    const { section: out } = A.decideSection(section, g.claims, new Map(g.claims.map((c, i) => [i + 1, true])));
+    assert.strictEqual(out.name, 'Orchestra Center, Sweet Spot');
+  });
   test('verifier sees the paragraph around each quote', () => {
     const v = A.buildVerifyPrompt({ theaterName: 'Gershwin Theatre', sectionName: 'Orchestra Center', claims });
     assert.match(v, /SURROUNDING TEXT: \.\.\.gershwin theatre seating chart/);

@@ -249,7 +249,7 @@ RULES
 - Every kept item needs evidence: {"src": <source number>, "quote": "<exact words copied from that source, 12 to 300 characters>"}.
   Copy quotes character for character from the source text. Do not paraphrase inside "quote". A quote that is not on the page is discarded by a program.
 - The quote must be about this theater and this section (or the rows it covers), not another theater or level.
-- name: keep only if the sources describe this area, including every qualifier in the name (row letters, front/rear, side, value). Copy rows exactly as the source writes them.
+- name: "text" is the section name, corrected so every detail in it is backed by the sources (remove unsupported row letters or words like front, value; keep it short, e.g. "Rear Orchestra" or "Center Mezzanine (Rows A-D)"). keep=true if the sources talk about these seats.
 - verdict: supported only if the sources say it about the WHOLE area named, not just part of it, and a source says this section is among the best (sweet-spot), fine/good (solid), or poor/to avoid (skip).
 - rowRange/bestRow: only if a source names those rows for this section.
 - isValuePick: only if a source says this section is good value / a deal / cheaper for what you get.
@@ -262,7 +262,7 @@ RULES
 - label: a 1 to 4 word label for the verdict that the evidence supports (e.g. "Best overall", "Good value", "Too far back"), no punctuation except hyphens.
 
 Reply with ONLY this JSON:
-{"name":{"keep":true|false,"evidence":[...]},
+{"name":{"text":"...","keep":true|false,"evidence":[...]},
  "verdict":{"supported":true|false,"evidence":[...]},
  "label":"...",
  "rowRange":{"keep":true|false,"evidence":[...]},
@@ -284,7 +284,7 @@ For each claim, decide if the EVIDENCE quotes, read literally, support the claim
 Say false if the evidence is about a different section, a different theater, is vaguer than the claim, or only partly supports it.
 Use the SURROUNDING TEXT to check which theater, level and side a quote is about: a quote from a paragraph about another area does not support this section.
 The evidence must cover the WHOLE area the claim names. If the section is "Rear Mezzanine and Far Sides" and the evidence only says to avoid the far sides, a claim that the whole section is to avoid is false.
-A [name] claim is supported only if every qualifier in the name (rows, front/rear, side, value, etc.) is backed by the evidence.
+A [name] claim does NOT need the source to use the name or call it an official section. It is supported when the evidence talks about seats in that position, and is false only if a specific detail in the name (row letters, seat numbers, front/rear/side/center, value) is contradicted or not backed.
 A [hazard] claim must match its TYPE label as well as its note (e.g. "steep rake" is false if the evidence is about stairs or a shallow rake).
 A [verdict] claim of "good, reasonable seats" is supported by evidence that the seats are good, decent or worth buying; it does not need to say they are the best.
 
@@ -317,16 +317,20 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
   const r = reply || {};
   const v = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' }[section.verdict];
   // The section name is shown as a heading, so every qualifier in it is a claim (audit: "front", "rows 1-11", "value band").
-  if (r.name && r.name.keep) add('name', `The area called "${section.name}" is a real, distinct seating area at this theater, and each detail in that name (rows, position, value) is accurate.`, r.name.evidence);
-  if (r.verdict && r.verdict.supported) add('verdict', `The ${section.name} seats ${v}.`, r.verdict.evidence);
+  // The rewriter may drop unsupported qualifiers ("front", "value band", made-up rows); the verifier checks the result.
+  let name = section.name;
+  const proposed = r.name && typeof r.name.text === 'string' ? cleanName(r.name.text.trim()) : '';
+  if (proposed && proposed.length <= 70 && !copyProblems(proposed, { forbiddenTitles }).length) name = proposed;
+  if (r.name && r.name.keep) add('name', `The evidence describes the seats named "${name}", and every specific detail in that name (row letters, seat numbers, words like front, rear, side, center, value) matches the evidence.`, r.name.evidence, { name });
+  if (r.verdict && r.verdict.supported) add('verdict', `The ${name} seats ${v}.`, r.verdict.evidence);
   // The row quote often only names the rows; the verdict quote says how good they are. The verifier sees both.
-  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${section.name}, rows ${section.rowRange} ${v}.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
-  if (section.bestRow && r.bestRow && r.bestRow.keep) add('bestRow', `${section.bestRow} is the single best row in ${section.name}.`, r.bestRow.evidence);
-  if (section.priceTier && r.priceTier && r.priceTier.keep) add('priceTier', `${section.name} seats are ${section.priceTier === 'premium' || section.priceTier === 'top' ? 'among the most expensive' : section.priceTier === 'budget' ? 'among the cheapest' : 'mid-priced'} at this theater.`, r.priceTier.evidence);
-  if (section.isValuePick && r.isValuePick && r.isValuePick.keep) add('isValuePick', `${section.name} is good value for the money at this theater.`, r.isValuePick.evidence);
+  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${name}, rows ${section.rowRange} ${v}.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
+  if (section.bestRow && r.bestRow && r.bestRow.keep) add('bestRow', `${section.bestRow} is the single best row in ${name}.`, r.bestRow.evidence);
+  if (section.priceTier && r.priceTier && r.priceTier.keep) add('priceTier', `${name} seats are ${section.priceTier === 'premium' || section.priceTier === 'top' ? 'among the most expensive' : section.priceTier === 'budget' ? 'among the cheapest' : 'mid-priced'} at this theater.`, r.priceTier.evidence);
+  if (section.isValuePick && r.isValuePick && r.isValuePick.keep) add('isValuePick', `${name} is good value for the money at this theater.`, r.isValuePick.evidence);
   for (const key of ['bestFor', 'worstFor']) {
     const tags = ((r[key] && r[key].keep) || []).filter((t) => SHOW_TAGS.has(t) && (section[key] || []).includes(t));
-    if (tags.length) add(key, `${section.name} is ${key === 'bestFor' ? 'especially good' : 'a poor choice'} for ${tags.join(', ')} shows.`, r[key].evidence, { tags });
+    if (tags.length) add(key, `${name} is ${key === 'bestFor' ? 'especially good' : 'a poor choice'} for ${tags.join(', ')} shows.`, r[key].evidence, { tags });
   }
   for (const h of r.hazards || []) {
     const orig = (section.hazards || [])[h.i];
@@ -334,7 +338,7 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
     const note = String(h.note || orig.note || '').trim();
     if (!note || copyProblems(note, { forbiddenTitles }).length) continue;
     const type = hazardType(orig.type);
-    add('hazard', `${section.name} has a ${type.replace(/-/g, ' ')} problem: ${note}`, h.evidence, { hazard: { type, note } });
+    add('hazard', `${name} has a ${type.replace(/-/g, ' ')} problem: ${note}`, h.evidence, { hazard: { type, note } });
   }
   (r.rationale || []).forEach((s) => {
     const text = String((s && s.text) || '').trim();
@@ -364,7 +368,8 @@ function decideSection(original, claims, accepted) {
   if (!sentences.length) sentences = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard.note.replace(/([^.!?])$/, '$1.'));
   if (!sentences.length) return { dropped: 'no supported rationale' };
   const has = (k) => ok.find((c) => c.kind === k);
-  const out = { name: cleanName(original.name) };
+  const nameClaim = ok.find((c) => c.kind === 'name');
+  const out = { name: cleanName((nameClaim && nameClaim.name) || original.name) };
   if (original.rowRange && has('rowRange')) out.rowRange = original.rowRange;
   if (original.bestRow && out.rowRange && has('bestRow')) out.bestRow = original.bestRow;
   out.verdict = original.verdict;
