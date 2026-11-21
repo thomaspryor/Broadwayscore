@@ -1413,5 +1413,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T01:46:08.613Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7874-news-post-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7874-news-post-guard",
+    "description": "land.yml did not land land/bro-7874-news-post-guard: the unit-tests-node gate went red at 885ac2507d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44853177135",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7874-news-post-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "885ac2507dfb30559f689802e2c35be8b4096aac"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44853177135"
+      }
+    ],
+    "queuedAt": "2026-11-21T02:24:12.840Z"
   }
 ]
