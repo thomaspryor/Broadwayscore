@@ -70,6 +70,9 @@ Options:
                              land otherwise never drains — audit S7-T7)
   --time-budget-min=N        stop cleanly after N minutes (remaining shows deferred)
   --dry-run                  report what would be promoted, write nothing
+  --triage-only              (BRO-8023) settle every stub a URL/date rule can judge,
+                             fetch nothing; report the fetch candidates left
+  --era=2025-26|2015-24|pre-2015  restrict the scope to shows of that era
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -134,6 +137,9 @@ const allOpera = args.includes('--all-opera');
 const allOpen = args.includes('--all-open');
 const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
+const triageOnly = args.includes('--triage-only');
+const eraArg = args.find(a => a.startsWith('--era='))?.split('=')[1] || null;
+const pendingTriage = require('./lib/pending-triage');
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 /**
@@ -229,6 +235,11 @@ function listOpenShowIdsWithPending() {
 }
 
 function showIds() {
+  const ids = scopeShowIds();
+  return eraArg ? ids.filter(id => pendingTriage.showEra(id) === eraArg) : ids;
+}
+
+function scopeShowIds() {
   if (showArg) return [showArg];
   if (showsArg) return showsArg.split(',').map(s => s.trim()).filter(Boolean);
   if (allOpera) return listOperaShowIds();
@@ -279,6 +290,18 @@ function findExistingFileForUrl(showId, outletId, url, root = REVIEW_TEXTS_ROOT)
 }
 
 const PENDING_UNRECOVERABLE_STAGE = 'pending-unrecoverable';
+
+// BRO-8023: scored urls by show, for the no-fetch triage (a stub whose url another show already scores).
+let _heldIndexMemo = null;
+function loadHeldIndex() {
+  if (!_heldIndexMemo) {
+    try {
+      const r = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/reviews.json'), 'utf8'));
+      _heldIndexMemo = pendingTriage.buildHeldUrlIndex(r.reviews || r);
+    } catch (e) { console.log(`  held-url index unavailable (${e.message}) — cross-show check skipped`); _heldIndexMemo = new Map(); }
+  }
+  return _heldIndexMemo;
+}
 
 // Lazy: the router pulls in Resend/Linear plumbing; tests inject a fake.
 async function defaultRouteAlert(opts) {
@@ -367,10 +390,13 @@ async function processShow(showId, deps = {}) {
   const budget = deps.budget || timeBudget;
   const explicitScope = deps.explicitScope !== undefined ? deps.explicitScope : !!(showArg || showsArg);
   const now = deps.now || (() => new Date());
+  const triageOnlyRun = deps.triageOnly !== undefined ? deps.triageOnly : triageOnly;
+  // Tests that inject a root also inject (or skip) the index; never read the live reviews.json for them.
+  const heldIndex = deps.heldIndex !== undefined ? deps.heldIndex : (deps.root ? null : loadHeldIndex());
   const pendingDir = path.join(root, '_pending', showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
-    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0, tagged: 0, inspected: 0, lastFile: null };
+    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0, tagged: 0, inspected: 0, candidates: 0, lastFile: null };
   }
   const show = deps.show !== undefined ? deps.show : loadShow(showId);
   const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
@@ -381,6 +407,7 @@ async function processShow(showId, deps = {}) {
   // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
   // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
   let tagged = 0, inspected = 0, lastFile = null;
+  let candidates = 0; // BRO-8023: stubs only a fetch can judge (left untouched by --triage-only)
   const redundantCopies = {}; // BRO-7945: settled out-of-window copies by kind (sibling | outside-all)
   // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
   // after the loop — never a silent "keep".
@@ -419,7 +446,7 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -562,6 +589,21 @@ async function processShow(showId, deps = {}) {
       continue;
     }
 
+    // BRO-8023: the no-fetch triage. A url another show already scores, a non-review section/listing, or a
+    // stub date outside the production window is settled here (tagged, KEPT), never fetched.
+    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex });
+    if (tri.verdict === 'junk') {
+      console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
+      if (!dry) {
+        data.promoteSkippedReason = `${tri.reason} (BRO-8023 triage)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
+    }
+
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
     if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((loadShow(showId) || {}).venue)).rejected) {
       console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
@@ -578,6 +620,8 @@ async function processShow(showId, deps = {}) {
         continue;
       }
     }
+
+    if (triageOnlyRun) { candidates++; kept++; continue; } // BRO-8023: a fetch candidate, left for the fetching drain
 
     let byline = null;
     let html = null;
@@ -842,17 +886,19 @@ if (require.main === module) {
       : ids;
     // --skip-empty-body-retry (BRO-7004): the poller's per-show press-night drain shares timeBudget
     // with this phase, so a retry pass could spend the whole budget before the first _pending stub.
-    if (!args.includes('--skip-empty-body-retry')) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
+    if (!args.includes('--skip-empty-body-retry') && !triageOnly) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
       cooldownHours: showArg || showsArg ? 1 : 6,
       budget: createRunBudget(Math.min(2, timeBudget.minutes || 2)) });
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0;
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0, totalCandidates = 0;
     const alertPromises = [];
     const settledTotals = {}; // BRO-7945: out-of-window copies settled this run (sibling | outside-all)
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
-    const sweep = allOpen || allPending;
+    // BRO-8023: a triage-only or era-scoped batch is not a sweep: it must not move the rotation cursors or
+    // write a drain-health history row (a no-fetch run would read as a zero-promote sweep).
+    const sweep = (allOpen || allPending) && !triageOnly && !eraArg;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
     const cursorPrefix = allPending ? '' : 'open_';
     // Recent = opened in the last 2 years (the owner's no-gaps scope), through the shared show data.
@@ -870,7 +916,8 @@ if (require.main === module) {
     const reached = { recent: null, other: null };
     let completedPass = true;
     for (const { showId: id, files } of plan) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise } = await processShow(id, { files });
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise, candidates } = await processShow(id, { files });
+      totalCandidates += candidates || 0;
       for (const [k, n] of Object.entries(redundantCopies || {})) settledTotals[k] = (settledTotals[k] || 0) + n;
       totalPromoted += promoted;
       totalKept += kept;
@@ -895,6 +942,7 @@ if (require.main === module) {
     console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
     console.log(`  out-of-window copies settled (BRO-7945): ${JSON.stringify(settledTotals)}; fetch requests ${runFetchCache.stats().calls}, unique URLs fetched ${runFetchCache.stats().unique} (cache hits ${runFetchCache.stats().cacheHits})`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
+    if (triageOnly) console.log(`  of which fetch candidates (triage-only, not fetched): ${totalCandidates}`);
 
     if (sweep) {
       // A tier that reached its last file finished its pass: its cursor resets so the next run starts at the top.
