@@ -181,3 +181,25 @@ test('corpus: 0 files where an auto-clear overrode a live unanimous ensemble ver
     `${wsViolations.length} wrongShow auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix`
   );
 });
+
+// BRO-7906: the self-release predicates (not named shouldAutoClear*) cleared
+// wrongProduction under a live ensemble verdict because the meta-test above
+// only covers the shouldAutoClear* family. Every wrongProduction-releasing
+// predicate must refuse a unanimous ensemble verdict.
+test('shouldRelease* wrongProduction self-release predicates refuse a unanimous ensemble verdict (BRO-7906)', () => {
+  const { shouldReleaseOtherProductionUrl } = require('./other-production-signal.js');
+  const { shouldReleasePriorRunRepublish } = require('./prior-run-republish-guard.js');
+  const ensemble = {
+    rejectionReason: 'wrong_production',
+    rejectedBy: 'ensemble-scoreability-check',
+    rejectionAgreeCount: 3,
+    rejectionReasoning: 'claude: other production; openai: other production',
+  };
+  const show = { id: 'x', openingDate: '2021-11-14', closingDate: '2022-01-25' };
+  const url = { wrongProduction: true, wrongProductionReason: 'other-production-url', url: 'https://example.com/2022/03/16/x/', publishDate: '2022-03-16' };
+  assert.strictEqual(shouldReleaseOtherProductionUrl({ ...url, ...ensemble }, show), false);
+  assert.strictEqual(shouldReleaseOtherProductionUrl(url, show), true, 'control: releases without a verdict');
+  const rep = { wrongProduction: true, wrongProductionReason: 'prior-run-republish', fullText: 'x' };
+  assert.strictEqual(shouldReleasePriorRunRepublish({ ...rep, ...ensemble }, show), false);
+  assert.strictEqual(shouldReleasePriorRunRepublish(rep, show), true, 'control: releases without a verdict');
+});

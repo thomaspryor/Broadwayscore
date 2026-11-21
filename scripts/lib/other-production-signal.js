@@ -284,6 +284,9 @@ function detectOtherProductionUrl(review, show, opts = {}) {
 function shouldReleaseOtherProductionUrl(d, show, opts = {}) {
   if (!d || d.wrongProduction !== true || d.wrongProductionReason !== OTHER_PRODUCTION_URL_REASON) return false;
   if (d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction !== undefined || d.allowEarlyDate) return false;
+  // A unanimous LLM ensemble wrong_production verdict on this text outranks a
+  // detector that merely stopped matching (BRO-7906; autoclear-vs-ensemble class).
+  if (require('./wrong-production-autoclear').hasEnsembleConsensus(d, 'wrong_production')) return false;
   return !detectOtherProductionUrl(d, show, opts);
 }
 
