@@ -18,7 +18,9 @@ const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 function run({ root = path.join(__dirname, '..'), argv = process.argv.slice(2), log = console.log } = {}) {
   const strict = argv.includes('--strict');
   const noWrite = argv.includes('--no-write');
-  const graceHours = Number((argv.find((a) => a.startsWith('--grace-hours=')) || '').split('=')[1]) || 48;
+  const graceArg = Number((argv.find((a) => a.startsWith('--grace-hours=')) || '').split('=')[1]);
+  const graceHours = Number.isFinite(graceArg) && graceArg >= 0 && argv.some((a) => a.startsWith('--grace-hours=')) ? graceArg : 48;
+  const reviewsMtime = fs.statSync(path.join(root, 'data', 'reviews.json')).mtimeMs;
   const auditDir = path.join(root, 'data', 'audit');
   const shows = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
   const byId = new Map((Array.isArray(shows) ? shows : shows.shows || []).map((s) => [s.id, s]));
@@ -46,7 +48,9 @@ function run({ root = path.join(__dirname, '..'), argv = process.argv.slice(2), 
     }
     const ledger = new Map();
     try {
-      for (const e of JSON.parse(fs.readFileSync(path.join(auditDir, `rebuild-exclusions-${showId}.json`), 'utf8')).exclusions || []) ledger.set(e.file, e.reason);
+      // A ledger from a different run is not evidence for this reviews.json (rebuild never deletes a stale one).
+      const led = JSON.parse(fs.readFileSync(path.join(auditDir, `rebuild-exclusions-${showId}.json`), 'utf8'));
+      if (Math.abs(Date.parse(led.generatedAt) - reviewsMtime) < 6 * 3600e3) for (const e of led.exclusions || []) ledger.set(e.file, e.reason);
     } catch { /* no ledger for this show */ }
     rows.push(...findScoredAbsent({ showId, show, files, presentOutlets: present.get(showId) || new Set(), ledger, explain, scoreable: isScoreable, normalize: normalizeOutlet, graceHours }));
   }

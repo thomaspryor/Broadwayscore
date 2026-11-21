@@ -101,3 +101,8 @@ test('recovery predicate: relative profile URL and evergreen ticket page stop lo
   assert.equal(explainRecoveryExclusion({ ...base, url: '/people/Steve-Barnes/' }, SHOW, 'a.json', ctx), 'invalidUrl');
   assert.equal(explainRecoveryExclusion({ ...base, url: 'http://www.theatrereviews.com/allegiance-at-the-longacre-theatre-tickets/' }, SHOW, 'a.json', ctx), 'listingPageUrl');
 });
+
+test('scored-absent: grace comes from the record stamps, not a fresh checkout mtime', () => {
+  const old = { ...file({ rescoreCompletedAt: '2020-01-01T00:00:00Z' }), mtimeMs: 1e12 - 1000 };
+  assert.equal(find([old], new Map(), { nowMs: Date.parse('2026-11-21T00:00:00Z') })[0].status, 'silent');
+});

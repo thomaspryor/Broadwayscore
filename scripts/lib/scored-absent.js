@@ -9,6 +9,13 @@
 const DECIDED_FLAGS = ['wrongProduction', 'wrongShow', 'isRoundupArticle', 'duplicateOf', 'duplicateTextOf', 'notAReview', 'excluded'];
 const INCLUDABLE_TIERS = new Set(['complete', 'truncated', 'excerpt']);
 
+// Latest scoring/fetch stamp the record carries; mtime only when it carries none.
+function recordedAt(data, mtimeMs) {
+  const ts = ['rescoreCompletedAt', 'classifiedAt', 'textFetchedAt', 'firstSeenAt']
+    .map((k) => Date.parse(data[k])).filter((n) => Number.isFinite(n));
+  return ts.length ? Math.max(...ts) : (typeof mtimeMs === 'number' ? mtimeMs : null);
+}
+
 /**
  * @param {object} p
  * @param {string} p.showId
@@ -33,7 +40,8 @@ function findScoredAbsent({ showId, show, files, presentOutlets, ledger, explain
     try { ok = explain(data, show, file) === null && scoreable(data, show, file) === true; } catch { ok = false; }
     if (!ok) continue;
     const reason = (ledger && ledger.get(file)) || null;
-    const young = typeof mtimeMs === 'number' && nowMs - mtimeMs < graceHours * 3600e3;
+    const stamp = recordedAt(data, mtimeMs); // a fresh CI checkout gives every file a new mtime; the record's own stamps win
+    const young = stamp !== null && nowMs - stamp < graceHours * 3600e3;
     rows.push({ showId, file, outletId: data.outletId || null, reason, status: reason ? 'explained' : young ? 'grace' : 'silent' });
   }
   return rows;
