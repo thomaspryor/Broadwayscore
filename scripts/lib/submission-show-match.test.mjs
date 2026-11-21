@@ -92,3 +92,11 @@ test('empty input matches nothing', () => {
     assert.equal(preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, offB, offB2], reviewDate: '2026-11-02' }).id, regional.id);
   });
 }
+
+test('reviewDateFitsShow: previews start counts, closed show without closingDate is unknown', () => {
+  const { reviewDateFitsShow } = require('./submission-show-match.js');
+  assert.equal(reviewDateFitsShow({ openingDate: '2026-06-01', previewsStartDate: '2026-02-01' }, '2026-03-01'), true);
+  assert.equal(reviewDateFitsShow({ openingDate: '2026-06-01' }, '2026-03-01'), false);
+  assert.equal(reviewDateFitsShow({ openingDate: '2024-01-01', status: 'closed' }, '2026-03-01'), null);
+  assert.equal(reviewDateFitsShow({ openingDate: '2024-01-01', status: 'open' }, '2026-03-01'), true);
+});
