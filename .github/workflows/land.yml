@@ -494,6 +494,9 @@ jobs:
           # BRO-5688: bash-integration + lint-workflows in a background lane.
           # Rollback: repo variable LAND_GAUNTLET_PARALLEL_DISABLED=true.
           GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
+          # BRO-7324: node batch --test-concurrency (land-gauntlet.sh node_batch_concurrency).
+          # Rollback: repo variable LAND_GAUNTLET_TEST_CONCURRENCY=0 (node's default, as before).
+          GAUNTLET_TEST_CONCURRENCY: ${{ vars.LAND_GAUNTLET_TEST_CONCURRENCY || '6' }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
         run: |
@@ -608,6 +611,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
+          GAUNTLET_TEST_CONCURRENCY: ${{ vars.LAND_GAUNTLET_TEST_CONCURRENCY || '6' }}
           # Empty = every gate (LAND_LAZY_BASE_DISABLED=true); else the branch's red gates.
           GAUNTLET_GATES: ${{ steps.need.outputs.gates }}
           # Set only with gates (lazy base on): the failing files per TAP gate.
@@ -682,6 +686,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
+          GAUNTLET_TEST_CONCURRENCY: ${{ vars.LAND_GAUNTLET_TEST_CONCURRENCY || '6' }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}

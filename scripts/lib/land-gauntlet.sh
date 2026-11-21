@@ -237,6 +237,17 @@ unit_tests_node_list() {
     grep -v -e '^[[:space:]]*#' -e '^[[:space:]]*$' tests/unit-test-manifest.txt 2>/dev/null
   fi
 }
+# BRO-7324: GAUNTLET_TEST_CONCURRENCY=<n> (land.yml sets 6) runs the node batch with
+# --test-concurrency=<n>. At node's default (cores-1 = 3 on the 4-vCPU runner) the
+# batch left ~28% of the CPU idle (its tests wait on child processes): 832s at 72%
+# busy vs 544s at 98% with 6, same failures (experiment run 44864681076). Unset, 0
+# or not a number -> no flag, node's default (local runs, rollback). Same files,
+# same gate; only how many run at once changes.
+node_batch_concurrency() {
+  local n="${GAUNTLET_TEST_CONCURRENCY:-}"
+  [[ "$n" =~ ^[1-9][0-9]*$ ]] && echo "--test-concurrency=$n"
+  return 0
+}
 unit_tests_node() {
   local -a tests
   local src
@@ -247,8 +258,9 @@ unit_tests_node() {
   if [ -z "$list" ] || [ ${#tests[@]} -eq 0 ]; then echo "::error::node unit batch ($src) is empty or missing"; return 1; fi
   scope_list unit-tests-node tests
   [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
-  echo "# node batch ($src): ${#tests[@]} files"
-  node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
+  local -a conc=(); mapfile -t conc < <(node_batch_concurrency)
+  echo "# node batch ($src): ${#tests[@]} files${conc[0]:+, ${conc[0]}}"
+  node --test --test-reporter=tap --test-timeout 300000 ${conc[@]+"${conc[@]}"} ${tests[@]+"${tests[@]}"}
 }
 gate unit-tests-node unit_tests_node
 
