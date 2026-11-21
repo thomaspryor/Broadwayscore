@@ -292,6 +292,8 @@ function buildRealLaneDeps({
         settleComparative: settleFor ? settleFor({ show, reviewTextsDir: path.join(repoDir, 'data', 'review-texts') }) : null,
         // BRO-7748: built by the CLI (Discord + coordinator-card comment) so its Linear/notify files stay out of laneCodeHash.
         onPressSignals: notifyPressSignals,
+        claimSourceAlarm: (url) => store.casTransition({ repoDir, branch: 'opening-night-source-alarms', message: `source health ${night}` },
+          (state) => require('./source-health').claimSource(state, { night, url, now: Date.now() })),
         onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
         showScoreGuards: showScoreGuards(repoDir),
         // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
@@ -327,7 +329,7 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
   now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
-  onPressSignals = null,
+  onPressSignals = null, claimSourceAlarm = null,
   manualInbox = null,
 } = {}) {
   const search = rawSearch;
@@ -369,6 +371,7 @@ function wireLaneNight({
       reviewTextsDir,
       ...(settleComparative ? { settleComparative } : {}),
       ...(onPressSignals ? { onPressSignals } : {}),
+      claimSourceAlarm, allShows: guards.allShows, adaptersConfig: guardedAdaptersConfig,
       ...(manualInbox ? { readInbox: manualInbox.readInbox, markInbox: manualInbox.markInbox } : {}),
       adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.

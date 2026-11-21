@@ -220,6 +220,7 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
       // One in-memory manual inbox for the night (the git-backed store's pure transitions).
       let inboxState = { leases: {} };
 
+      let sourceClaims = { leases: {} };
       for (const show of gd.shows.filter((x) => !only || only.includes(x.id))) {
         const night = gd.night;
         const mode = autoFallback.laneGuardMode(show, night, false); // LANE_PREEMBARGO_DIRECT_ONLY off: guard only for an assumed embargo
@@ -316,6 +317,11 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
           windowMs: times.watchEndMs - times.laneStartMs,
           tuning: { startedAt: times.laneStartMs, passIntervalMs: LATENCY.passIntervalMs, pollMs: LATENCY.pollMs, publishTimeoutMs: 60 * 60 * 1000 },
           preembargo, onPressSignals, manualInbox: inbox,
+          claimSourceAlarm: (url) => {
+            const result = require('../opening-night-lane/source-health').claimSource(sourceClaims, { night, url, now: t });
+            sourceClaims = result.state;
+            return result;
+          },
         });
         // The night ends 60 virtual minutes after the show's last scripted event (a page, a roundup, an inbox drop):
         // the rest of the production window only re-reads quiet pages, and cutting it keeps the run to minutes.
@@ -406,10 +412,11 @@ function evaluate(report, gd, { canonicalUrl }) {
     const med = ms.length ? ms[Math.floor(ms.length / 2)] : Infinity;
     check(report, `found-to-live (runtime score path, BRO-7803): median under ${FOUND_TO_LIVE_RUNTIME_BAR_MS / 60000} min`, med <= FOUND_TO_LIVE_RUNTIME_BAR_MS, { medianMin: Math.round(med / 600) / 100, n: ms.length });
   }
-  // The deliberately dead feed: the source-health alarm names it exactly once per show (one lane run per show).
+  // One feed shared by the whole night must produce one line naming every affected show.
   if (report.deadSource) {
-    const perShow = Object.keys(report.shows).map((id) => [id, report.alerts.filter((a) => a.show === id).map((a) => String(a.content || '')).reduce((n, t) => n + t.split('\n').filter((l) => /^SOURCE FAILING \(/.test(l) && l.endsWith(report.deadSource)).length, 0)]);
-    check(report, `source-health: the dead feed alarms exactly once per show (${report.deadSource})`, perShow.length > 0 && perShow.every(([, n]) => n === 1), Object.fromEntries(perShow));
+    const lines = alertUrls.flatMap((t) => t.split('\n')).filter((l) => /^SOURCE FAILING \(/.test(l) && l.includes(report.deadSource));
+    const shows = Object.keys(report.shows);
+    check(report, `source-health: the dead feed alarms exactly once per night (${report.deadSource})`, lines.length === 1 && shows.length > 0 && shows.every((id) => lines[0].includes(id)), lines);
   }
   // No stray alarms: every alert item names the dead feed or a review in the fixture. A quiet source that alerts, or an
   // alarm about nothing the night staged, is noise the owner would get on a real night.

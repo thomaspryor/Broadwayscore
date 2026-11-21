@@ -90,7 +90,7 @@ async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
   startedAt, serpClockStartMs, onAdmitted, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
-  onPressSignals = null,
+  onPressSignals = null, claimSourceAlarm = null, allShows = [], adaptersConfig = {},
   readInbox = null, markInbox = null,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
@@ -346,7 +346,19 @@ async function runLaneNight({
     try {
       const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
       const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
-      const health = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: sourceHealth.alerts(stamp), now: stamp });
+      const healthCandidates = sourceHealth.alerts(stamp);
+      const health = [];
+      for (const item of healthCandidates) {
+        if (item.kind === 'fetch-failing' && ['rss', 'section-index'].includes(item.adapter) && claimSourceAlarm && onPressSignals) {
+          const claim = await claimSourceAlarm(item.url);
+          if (!claim.ok && claim.reason === 'already-claimed') continue;
+          // If coordination fails, preserve the alarm rather than silently hiding a dead source.
+          if (!claim.ok) errors.push({ adapter: 'source-health-claim', error: claim.reason });
+          const affected = require('./source-health').affectedShows(allShows, night, item, adaptersConfig);
+          item.affectedShows = [...new Set([...affected, show.id])].sort();
+        }
+        health.push(...nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: [item], now: stamp }));
+      }
       // BRO-7891 item 3: aggregators ahead of the site. Every review a roundup cites tonight (admitted or not), timed from
       // its first sighting; a copy held against a live original counts as live. Rides with the source-health alerts.
       for (const s of pass.sightings || []) {

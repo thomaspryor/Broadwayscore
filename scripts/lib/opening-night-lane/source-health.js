@@ -64,6 +64,24 @@ function createSourceHealth({ failAlertAfter = FAIL_ALERT_AFTER, staleAfterMs = 
   };
 }
 
+// A CAS transition on a dedicated branch gives all lane machines one claim per night and source.
+function claimSource(state, { night, url, now }) {
+  const hash = require('crypto').createHash('sha256').update(url).digest('hex');
+  const key = `source-failing-${hash}|${night}`;
+  const leases = { ...((state && state.leases) || {}) };
+  if (leases[key]) return { ok: false, reason: 'already-claimed', state };
+  leases[key] = { expiresAt: new Date(Math.max(now, Date.parse(`${night}T00:00:00Z`)) + 7 * 86400000).toISOString() };
+  return { ok: true, state: { ...state, leases } };
+}
+
+function affectedShows(shows, night, health, config = {}) {
+  const discovery = require('./discovery');
+  return shows.filter((show) => show.openingDate === night && show.status !== 'closed' && require('../press-night-clock').DEFAULT_CATEGORIES.includes(show.category) && (health.adapter === 'rss'
+    ? (config.feeds || discovery.defaultLaneFeeds(show)).some((f) => f.url === health.url)
+    : health.adapter === 'section-index' && (config.outlets ?? discovery.defaultLaneSectionIndexes(show)).some((o) => o.indexUrl === health.url)))
+    .map((show) => show.id).sort();
+}
+
 // A page that loaded but holds no content: a bot wall or an error page. Read as a failed read, never as "nothing new".
 const BLOCKED_TITLE_RE = /<title[^>]*>\s*(?:Just a moment|Attention Required|Verifying Device|Security Verification|Access Denied|Request Rejected|Too Many Requests)/i;
 
@@ -87,4 +105,4 @@ function feedBodyProblem(body, items) {
 /** A tracker that records nothing: the default when a caller (tests, old replays) passes none. */
 const NOOP_HEALTH = { expect() {}, record() {}, alerts() { return []; }, snapshot() { return []; } };
 
-module.exports = { createSourceHealth, NOOP_HEALTH, indexBodyProblem, feedBodyProblem, BLOCKED_TITLE_RE, FAIL_ALERT_AFTER, STALE_AFTER_MS };
+module.exports = { claimSource, affectedShows, createSourceHealth, NOOP_HEALTH, indexBodyProblem, feedBodyProblem, BLOCKED_TITLE_RE, FAIL_ALERT_AFTER, STALE_AFTER_MS };

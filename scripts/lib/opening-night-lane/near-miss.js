@@ -278,7 +278,7 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
         ...(h.missing || []).slice(0, 8).map((m) => `  not live (${m.outletId || 'outlet?'}${m.via ? `, cited by ${m.via}` : ''}, ${m.ageMin} min): ${m.url}\n    ${ingestCommand(show.id, m).primary ? `add it: \`${ingestCommand(show.id, m).primary}\`` : 'open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'}`));
       continue;
     }
-    if (h.kind === 'fetch-failing') lines.push(`SOURCE FAILING (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  ${h.fails} reads in a row failed (last: ${h.lastError || 'unknown'}); last good read ${h.lastOkAt || 'never tonight'}. Reviews it lists are not being seen.`);
+    if (h.kind === 'fetch-failing') lines.push(`SOURCE FAILING (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}${h.affectedShows ? `; affected shows: ${h.affectedShows.join(', ')}` : ''}`, `  ${h.fails} reads in a row failed (last: ${h.lastError || 'unknown'}); last good read ${h.lastOkAt || 'never tonight'}. Reviews it lists are not being seen.`);
     else lines.push(`SOURCE NOT READ (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  not read for ${h.idleMin} min (last try ${h.lastAttemptAt || 'never tonight'}). Reviews it lists are not being seen.`);
   }
   const parity = sourceHealth.filter((h) => h.kind === 'aggregator-parity');

@@ -181,3 +181,14 @@ test('ship-check: a direct-only feed served by its paid read every 5th pass neve
 test('ship-check: a feed resting after failures is reported failing before it rests (alert threshold <= rest threshold)', () => {
   assert.ok(sh.FAIL_ALERT_AFTER <= d.CHAIN_FEED_MAX_FAILS);
 });
+
+ test('night and URL claims dedupe across lanes, while other feeds and nights remain independent', () => {
+  const at = Date.parse(`${NIGHT}T20:00:00Z`);
+  const first = sh.claimSource({ leases: {} }, { night: NIGHT, url: DEAD_FEED, now: at });
+  assert.equal(first.ok, true);
+  assert.equal(sh.claimSource(first.state, { night: NIGHT, url: DEAD_FEED, now: at }).reason, 'already-claimed');
+  assert.equal(sh.claimSource(first.state, { night: NIGHT, url: WALL_FEED, now: at }).ok, true);
+  assert.equal(sh.claimSource(first.state, { night: '2026-11-18', url: DEAD_FEED, now: at }).ok, true);
+  const shows = [SHOW, { ...SHOW, id: 'second' }, { ...SHOW, id: 'tomorrow', openingDate: '2026-11-18' }];
+  assert.deepEqual(sh.affectedShows(shows, NIGHT, { adapter: 'rss', url: DEAD_FEED }, { feeds: [{ url: DEAD_FEED }] }), ['second', SHOW.id]);
+});
