@@ -102,7 +102,35 @@ function findShowForSubmission(url, shows, reviewTextsDir) {
   return shows.find((s) => findSubmissionFile(path.join(reviewTextsDir, s.id), url)) || null;
 }
 
+/**
+ * checkSubmissionLanded for the show the submission NAMED, falling back to the
+ * show that actually holds the review file. The validator can pick the wrong
+ * production of a title (issue #1178: submitted against
+ * waiting-for-lefty-regional-2024, ingested under
+ * clifford-odets-waiting-for-lefty-off-broadway-2026); the sweep already
+ * resolves by URL across all shows, so the per-submission check must too, or
+ * it sends a false "not on the site" email and files a card for a live review.
+ *
+ * Falls back only when the named show has NO file for the URL. If it has one,
+ * that verdict stands (a real exclusion there must not be masked by another
+ * show's copy).
+ * @returns {{ landed: boolean, reason: string|null, file: string|null, pendingScore?: boolean, actualShowId?: string }}
+ *   actualShowId is set only when the review was found under a different show.
+ */
+function checkSubmissionLandedAnywhere({ showId, url, reviews, reviewTextsDir, show, shows }) {
+  const named = checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show });
+  if (named.file) return named;
+  // Several other shows can hold a copy of the same URL; prefer one that is
+  // actually live in reviews.json, else the first.
+  const holders = (shows || []).filter((s) => s.id !== showId
+    && findSubmissionFile(path.join(reviewTextsDir, s.id), url));
+  if (!holders.length) return named;
+  const results = holders.map((s) => ({ s, res: checkSubmissionLanded({ showId: s.id, url, reviews, reviewTextsDir, show: s }) }));
+  const pick = results.find((r) => r.res.landed) || results[0];
+  return { ...pick.res, actualShowId: pick.s.id };
+}
+
 module.exports = {
-  checkSubmissionLanded, findSubmissionFile, submissionUrlKey, decideAwaitingSubmission, findShowForSubmission,
+  checkSubmissionLanded, checkSubmissionLandedAnywhere, findSubmissionFile, submissionUrlKey, decideAwaitingSubmission, findShowForSubmission,
   AWAITING_SCORE_MAX_HOURS,
 };

@@ -201,3 +201,23 @@ test('file-review-submission-card CLI: env mode files and labels; sweep caps and
   assert.equal(fileReviewSubmissionCardCli([], { ISSUE_NUMBER: '' }, deps), 0);
   assert.equal(calls.length, 0);
 });
+
+test('closeReviewSubmissionCard: finds the open card by exact title and moves it to Done', () => {
+  const { closeReviewSubmissionCard } = require('./plan-refusal-escalation.js');
+  const calls = [];
+  const run = (args) => {
+    calls.push(args);
+    return args[0] === 'find' ? JSON.stringify({ identifier: 'BRO-9001', title: 'Review submission #1178: needs a manual check' }) : '';
+  };
+  const r = closeReviewSubmissionCard({ issueNumber: '1178' }, { run });
+  assert.deepEqual(r, { closed: true, identifier: 'BRO-9001' });
+  assert.deepEqual(calls[1].slice(0, 4), ['update', 'BRO-9001', '--state', 'Done']);
+});
+
+test('closeReviewSubmissionCard: no open card, or a find/update failure, never throws', () => {
+  const { closeReviewSubmissionCard } = require('./plan-refusal-escalation.js');
+  assert.equal(closeReviewSubmissionCard({ issueNumber: '1' }, { run: () => 'null' }).closed, false);
+  assert.equal(closeReviewSubmissionCard({ issueNumber: '1' }, { run: () => { throw new Error('boom'); } }).closed, false);
+  const run = (a) => { if (a[0] === 'update') { const e = new Error('x'); e.status = 5; throw e; } return JSON.stringify({ identifier: 'BRO-2', title: 'Review submission #1: needs a manual check' }); };
+  assert.match(closeReviewSubmissionCard({ issueNumber: '1' }, { run }).reason, /update exited 5/);
+});

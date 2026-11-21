@@ -19,7 +19,7 @@ function gh(args) {
   return execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
 
-function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirname, '..', '..', 'data') } = {}) {
+function sweepSubmissions({ runGh = gh, closeCard = null, dryRun = false, root = path.join(__dirname, '..', '..', 'data') } = {}) {
   let issues;
   try {
     const byNumber = new Map();
@@ -69,6 +69,13 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
         runGh(['issue', 'close', n, '--reason', 'completed']);
         const labels = issue.labels.filter(l => QUEUE_LABELS.includes(l.name));
         if (labels.length) runGh(['issue', 'edit', n, ...labels.flatMap(l => ['--remove-label', l.name])]);
+        // The parked-submission card (file-review-submission-card.js) would
+        // otherwise stay open on the board after the issue is closed.
+        if (closeCard) {
+          const res = closeCard({ issueNumber: n });
+          if (res.closed) console.log(`#${n} card ${res.identifier} closed`);
+          else if (res.reason !== 'no open card') console.log(`::warning::#${n} card not closed (${res.reason})`);
+        }
       } else {
         runGh(['issue', 'comment', n, '--body', `Still not on the site after ${AWAITING_SCORE_MAX_HOURS}h: the review was never scored. Flagged for a maintainer.`]);
         runGh(['issue', 'edit', n, '--remove-label', 'awaiting-score', '--add-label', 'needs-manual-review']);
