@@ -62,7 +62,7 @@ test('alert: empty scan returns [], rows route, clean scan resolves, rows never 
   assert.doesNotMatch(JSON.stringify(d), /SECRET REVIEW TEXT/);
   assert.match(d.alert.description, /s\/f\.json: held out by nonReview/);
   assert.equal(decideHeldOutQueueAlert({ scanned: 100, rows: [] })[0].action, 'resolve');
-  assert.equal(d.alert.conditionKey || d.conditionKey || KEYS.heldOutQueue, KEYS.heldOutQueue);
+  assert.equal(d.alert.conditionKey, KEYS.heldOutQueue);
 });
 
 // Root cause 1: obituary "aged N" beside a death sat deep in a review that recalls a composer's death.
@@ -92,4 +92,19 @@ test('content verifier: a curly-apostrophe title in the body counts as present',
   assert.ok(!r.issues.some((i) => /not found in content/.test(i)), JSON.stringify(r.issues));
   const miss = heuristicVerify({ scrapedText: body, excerpt: '', showTitle: 'Totally Other Show', akaTitles: [] });
   assert.ok(miss.issues.some((i) => /not found in content/.test(i)));
+});
+
+test('humanRuled: every human clear marker and the flag-stands marker take a file out of the queue', () => {
+  for (const f of ['nonReviewManualClear', 'wrongArticleManualClear', 'isNotReviewManualClear', 'heldOutFlagStands', 'wrongShowManualClear']) {
+    assert.equal(humanRuled({ [f]: true }), true, f);
+  }
+  assert.equal(humanRuled({ humanReviewedWrongArticle: false }), true);
+  assert.equal(humanRuled({}), false);
+});
+
+test('non-review patterns: "first look at" exception tolerates whitespace and still flags a bare preview phrase', () => {
+  const { heuristicClassify } = require('../../scripts/lib/non-review-patterns.js');
+  const pad = ' A long enough body of text about the production and its cast. '.repeat(8);
+  assert.equal(heuristicClassify(`Review.${pad} The critic goes back to  first look at what came before.${pad}`, {})?.type, undefined);
+  assert.equal(heuristicClassify(`A first look at the new musical.${pad}`, {})?.type, 'preview_article');
 });

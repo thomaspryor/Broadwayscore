@@ -159,7 +159,7 @@ function decideHeldOutQueueAlert(out) {
     rows: (out.rows || []).map((r) => `${r.showId}/${r.file}: held out by ${r.rule}, ${r.signalCount} of 3 real-review signals`),
     title: (n) => `${plural(n, 'recent review is', 'recent reviews are')} held off the site by an automated rule and nobody has read ${n === 1 ? 'it' : 'them'}`,
     intro: 'The daily corpus-drift run found recent reviews that an automated rule excludes but whose stored text is a complete, scored review naming the show\'s own cast. Sampling (BRO-7999) found real reviews held out this way.',
-    hint: 'Read each text. If the flag is wrong, clear that one flag with node scripts/new-fix-plan.js --review-edit=<file>:<field>=false, run node scripts/scoring-delta.js, then run execute-approved-fix.yml. If the flag is right, mark the file with the matching manual-clear or manual-reason field so it leaves this queue. Never bulk-clear. Done when node scripts/audit-excluded-with-own-show-evidence.js --queue shows no rows.',
+    hint: 'Read each text. If the flag is wrong, clear that one flag with node scripts/new-fix-plan.js --review-edit=<file>:<field>=false, run node scripts/scoring-delta.js, then run execute-approved-fix.yml. If the flag is right, set heldOutFlagStands=true on that file through a fix plan so it leaves this queue (a manual-clear field would release the exclusion, so never use one for that). Never bulk-clear. Done when node scripts/audit-excluded-with-own-show-evidence.js --queue shows no rows.',
     resolveReason: 'no unread held-out review looks like a real one',
   })];
 }

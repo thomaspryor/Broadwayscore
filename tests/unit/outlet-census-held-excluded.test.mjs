@@ -72,3 +72,19 @@ test('leak guard: no committed census report or manifest carries a held-excluded
     assert.doesNotThrow(() => census.assertNoHeldExcludedRows(doc), f);
   }
 });
+
+test('bucket: an excluded file filed under another market show is still held-excluded, and its URL never reaches alt-url output', () => {
+  const other = { id: 'other-west-end-2026', title: 'Other', market: 'west-end', venue: 'Apollo', openingDate: '2026-03-01', cast: [], creativeTeam: [] };
+  const rs = [{ showId: other.id, outletId: 'theatermania', url: URL_HIDDEN, excludedRule: 'wrongProduction' }];
+  const idx = census.buildCorpusIndexes(rs);
+  const c = { shows: [giant], nycIds: new Set([giant.id]), corpus: idx.live, corpusExcluded: idx.excludedOnly, outletShowUrls: census.buildOutletShowIndex(rs.filter((r) => !r.excludedRule)), nycVenues: census.nycVenuePhrases([giant]) };
+  assert.equal(census.bucketItem(item(URL_HIDDEN), c).bucket, 'held-excluded');
+  assert.equal(c.outletShowUrls.size, 0, 'excluded URLs stay out of the outlet index');
+});
+
+test('leak guard: an excluded URL or filename anywhere in a nested value throws', () => {
+  const ex = new Set([URL_HIDDEN, 'giant-2026/theatermania--critic.json']);
+  assert.doesNotThrow(() => census.assertNoHeldExcludedRows({ items: [{ url: URL_LIVE }] }, ex));
+  assert.throws(() => census.assertNoHeldExcludedRows({ gaps: [{ heldUrls: [URL_HIDDEN] }] }, ex), /excluded review URL/);
+  assert.throws(() => census.assertNoHeldExcludedRows({ misfiles: [{ file: 'giant-2026/theatermania--critic.json' }] }, ex), /excluded review URL/);
+});

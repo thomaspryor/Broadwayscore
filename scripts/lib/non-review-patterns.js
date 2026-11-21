@@ -26,7 +26,7 @@ const NON_REVIEW_PATTERNS = [
   // Previews / anticipation articles
   // "to first look at what preceded it" is a critic's verb phrase (Leiter on Rope, BRO-7999), not a
   // "First Look at ..." preview headline, so a preceding "to " is not a match.
-  { pattern: /(?:what to expect|(?<!\bto )first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
+  { pattern: /(?:what to expect|(?<!\bto\s)first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
   // News/closings
   { pattern: /(?:closes? (?:early|unexpectedly|on)|final performance|closing notice|has been (?:cancelled|postponed|delayed))/i, type: 'news_article' },
   // Interviews

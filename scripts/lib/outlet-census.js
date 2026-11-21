@@ -166,7 +166,12 @@ function publicResults(results) {
 }
 
 /** Throws when a report or manifest about to be committed carries a held-excluded row. */
-function assertNoHeldExcludedRows(doc) {
+function assertNoHeldExcludedRows(doc, excludedStrings) {
+  // Value check: no excluded URL or filename may appear anywhere in the serialized document (nested values included).
+  if (excludedStrings && excludedStrings.size) {
+    const blob = JSON.stringify(doc || {});
+    for (const x of excludedStrings) if (x && blob.includes(JSON.stringify(x).slice(1, -1))) throw new Error('an excluded review URL or filename would be written: only the count is public');
+  }
   const bad = (v) => Array.isArray(v) && v.some((r) => r && typeof r === 'object' && r.bucket === 'held-excluded');
   for (const [k, v] of Object.entries(doc || {})) {
     if (bad(v)) throw new Error(`held-excluded rows must not be written (${k}): only the count is public`);
@@ -580,7 +585,7 @@ function bucketItem(item, ctx) {
   // bucket is a count and nothing else.
   if (held.length === 0 && ctx.corpusExcluded) {
     const exIds = ctx.corpusExcluded.get(urlKey(item.url)) || (item.aliasKey && ctx.corpusExcluded.get(item.aliasKey));
-    if (exIds && [...exIds].some((id) => ctx.nycIds.has(id))) return { bucket: 'held-excluded', classifyReason: cls.reason, matchVia: null, held: [], matchedIds: [], outOfWindowIds: [] };
+    if (exIds && exIds.size) return { bucket: 'held-excluded', classifyReason: cls.reason, matchVia: null, held: [], matchedIds: [], outOfWindowIds: [] };
   }
 
   if (held.length > 0) {

@@ -22,14 +22,14 @@ const QUEUE_RULES = Object.freeze([
 
 // Fields a person sets when they rule on a flag.
 const HUMAN_MARKERS = Object.freeze([
-  'wrongProductionManualClear', 'wrongShowManualClear', 'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
+  'wrongProductionManualClear', 'wrongShowManualClear', 'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate', 'nonReviewManualClear', 'wrongArticleManualClear', 'isNotReviewManualClear', 'heldOutFlagStands',
 ]);
 // Reason fields where a leading "manual" records a human verdict.
 const HUMAN_REASON_FIELDS = Object.freeze(['rejectionReasoning', 'isNonReviewReason', 'wrongProductionReason', 'wrongShowReason']);
 
 function humanRuled(data) {
   if (!data || typeof data !== 'object') return false;
-  if (HUMAN_MARKERS.some((f) => data[f] === true)) return true;
+  if (HUMAN_MARKERS.some((f) => data[f] === true) || data.humanReviewedWrongArticle === false) return true;
   return HUMAN_REASON_FIELDS.some((f) => typeof data[f] === 'string' && /^\s*manual/i.test(data[f]));
 }
 

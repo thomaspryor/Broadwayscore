@@ -416,6 +416,9 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
 
 // ── corpus ─────────────────────────────────────────────────────────────────────
 
+// BRO-7999 R2: URLs and filenames only excluded files hold; set by main, checked against every file written.
+const EXCLUDED_STRINGS = new Set();
+
 function loadCorpus(showsById = {}) {
   const { explainExclusion } = require('./lib/review-guards');
   const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews;
@@ -433,7 +436,7 @@ function loadCorpus(showsById = {}) {
           const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
           // BRO-7999 R2: the rule keeping this file off the site (null = live). Private: never written to a report.
           let excludedRule = null;
-          if (showsById[showId]) { try { excludedRule = explainExclusion(d, showsById[showId], path.join(dir, f)) || null; } catch { excludedRule = null; } }
+          if (showsById[showId]) { try { excludedRule = explainExclusion(d, showsById[showId], path.join(dir, f)) || null; } catch { excludedRule = 'explain-error'; } } // fail closed: an unreadable verdict hides the row
           rows.push({ showId, outletId: d.outletId, url: d.url, altUrls: d.altUrls, publishDate: d.publishDate, source: 'review-texts', file: `${showId}/${f}`,
             flags: ['wrongProduction', 'wrongShow', 'isRoundupArticle'].filter((k) => d[k]), excludedRule });
         } catch { /* unreadable file vouches for nothing */ }
@@ -618,8 +621,8 @@ async function runOutlet(outletId, o, shared) {
     items: census.publicResults(results).map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
       matched: r.matchedIds && r.matchedIds.length ? r.matchedIds : undefined, itemMarket: r.itemMarket, venueHint: r.venueHint || undefined })) };
   // BRO-7820: a timestamp-only difference leaves the file alone, so the weekly CI run commits only real changes.
-  census.assertNoHeldExcludedRows(report);
-  census.assertNoHeldExcludedRows(manifest);
+  census.assertNoHeldExcludedRows(report, EXCLUDED_STRINGS);
+  census.assertNoHeldExcludedRows(manifest, EXCLUDED_STRINGS);
   const reportPath = path.join(OUT_DIR, `${outletId}.report.json`);
   let prevReport = null;
   try { prevReport = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
@@ -749,7 +752,12 @@ async function main() {
     const shows = allShows.filter((s) => census.isMarketShow(s, o.market));
     corpus = loadCorpus(Object.fromEntries(allShows.map((s) => [s.id, s])));
     const idx = census.buildCorpusIndexes(corpus.rows);
-    ctx = { market: o.market, shows, nycIds: new Set(shows.map((s) => s.id)), corpus: idx.live, corpusExcluded: idx.excludedOnly, outletShowUrls: census.buildOutletShowIndex(corpus.rows), nycVenues: census.nycVenuePhrases(allShows, o.market) };
+    for (const r of corpus.rows) {
+      if (!r.excludedRule) continue;
+      for (const u of [r.url, ...(r.altUrls || [])]) if (u && !idx.live.has(census.urlKey(u))) EXCLUDED_STRINGS.add(u);
+      if (r.file) EXCLUDED_STRINGS.add(r.file);
+    }
+    ctx = { market: o.market, shows, nycIds: new Set(shows.map((s) => s.id)), corpus: idx.live, corpusExcluded: idx.excludedOnly, outletShowUrls: census.buildOutletShowIndex(corpus.rows.filter((r) => !r.excludedRule)), nycVenues: census.nycVenuePhrases(allShows, o.market) };
     console.log(`corpus: ${corpus.kind} (${corpus.rows.length} rows), ${shows.length} ${o.market} shows`);
   }
   let failed = 0;
