@@ -247,6 +247,7 @@ const EW_SCREEN_SECTION_RE = /^\/(?:movies|tv|music|books|movie-reviews-recommen
 const THR_TAG_INDEX_RE = /^\/t\/[^/]+\/?$/i;
 const DEADLINE_HOST_RE = /(^|\.)deadline\.com$/i;
 const FILM_FESTIVAL_SLUG_RE = /-review-[a-z0-9-]*?(?:^|-)(?:sxsw|sundance|cannes|venice|tiff|toronto-film|berlinale|tribeca|telluride)(?:-|$)/i;
+const SCREEN_TRADE_HOST_RE = /(^|\.)(deadline\.com|hollywoodreporter\.com|variety\.com|indiewire\.com|thewrap\.com|ew\.com|collider\.com|screenrant\.com)$/i;
 const SCREEN_BOX_OFFICE_HOST_RE = /(^|\.)(deadline\.com|ew\.com|hollywoodreporter\.com|variety\.com)$/i;
 
 function screenSectionHit(u) {
@@ -255,6 +256,8 @@ function screenSectionHit(u) {
   if (EW_HOST_RE.test(u.hostname) && EW_SCREEN_SECTION_RE.test(u.pathname)) return !THEATRE_SLUG_CUE_RE.test(slug);
   if (/(^|\.)hollywoodreporter\.com$/i.test(u.hostname) && THR_TAG_INDEX_RE.test(u.pathname)) return true;
   if (DEADLINE_HOST_RE.test(u.hostname) && FILM_FESTIVAL_SLUG_RE.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
+  // A screen-trade slug that says what it is ("spellbound-film-review"): the play "Midnight Movie" is why this is host-scoped.
+  if (SCREEN_TRADE_HOST_RE.test(u.hostname) && /(?:^|-)(?:film|movie|tv|series)-review(?:-|$)/i.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
   // Box-office grosses stories are news, never a review (deadline broadway-box-office-..., ew box-office-preview-...).
   if (SCREEN_BOX_OFFICE_HOST_RE.test(u.hostname) && /(?:^|-)box-office(?:-|$)/i.test(slug) && !/(?:^|-)review(?:-|$)/i.test(slug)) return true;
   return false;
