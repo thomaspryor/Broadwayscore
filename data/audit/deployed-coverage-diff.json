@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-21T07:02:05.032Z",
+  "generatedAt": "2026-11-21T08:07:01.046Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 366,
-  "clean": 365,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "openingDate": "2026-11-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.94 vs local 76.53 (Δ0.59)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-21T07:01:53.869Z"
-    }
-  ],
+  "clean": 366,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
