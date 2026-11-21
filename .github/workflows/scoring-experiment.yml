@@ -37,6 +37,18 @@ on:
         description: 'openai-leg-shadow: Claude shadow leg, e.g. claude-sonnet-5-5 (blank = none). Sonnet 5.5 runs without temperature (API rejects it), see BRO-7529'
         required: false
         default: ''
+      control_openai_model:
+        description: 'openai-leg-shadow: pin the CONTROL OpenAI leg, e.g. gpt-4o for a combined old-vs-new A/B (blank = the production pin)'
+        required: false
+        default: ''
+      control_claude_model:
+        description: 'openai-leg-shadow: pin the CONTROL Claude leg, e.g. claude-sonnet-4-6 (blank = the production pin)'
+        required: false
+        default: ''
+      shadow_gemini_model:
+        description: 'openai-leg-shadow: Gemini shadow leg, e.g. gemini-3.5-flash-lite (BRO-7511, 2.5-flash shuts down 2026-12-01; blank = none)'
+        required: false
+        default: ''
       max_cost_usd:
         description: 'openai-leg-shadow: spend cap in USD for THIS dispatch across the 4 shards (each gets a quarter; resumes of the same label count prior spend; the 80 USD owner cap is across all dispatches, so budget accordingly). Owner hard cap is 80.'
         required: false
@@ -183,13 +195,16 @@ jobs:
           case "$INPUT_LABEL" in ''|*[!a-z0-9-]*) [ -z "$INPUT_LABEL" ] || { echo "::error::label must be [a-z0-9-]"; exit 1; } ;; esac
           echo "file=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.jsonl" >> "$GITHUB_OUTPUT"
           echo "cost=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.cost.json" >> "$GITHUB_OUTPUT"
-      - name: Score shard ${{ matrix.shard }} (control gpt-4o vs shadow ${{ github.event.inputs.shadow_model || 'gpt-5.4-mini' }})
+      - name: Score shard ${{ matrix.shard }} (control ${{ github.event.inputs.control_openai_model || 'pin' }}+${{ github.event.inputs.control_claude_model || 'pin' }} vs shadow ${{ github.event.inputs.shadow_model || 'gpt-5.4-mini' }})
         env:
           INPUT_SAMPLE: ${{ github.event.inputs.sample }}
           INPUT_LIMIT: ${{ github.event.inputs.limit }}
           INPUT_SHADOW: ${{ github.event.inputs.shadow_model }}
           INPUT_OPEN_SHOWS: ${{ github.event.inputs.open_shows }}
           INPUT_CLAUDE: ${{ github.event.inputs.shadow_claude_model }}
+          INPUT_CTRL_OPENAI: ${{ github.event.inputs.control_openai_model }}
+          INPUT_CTRL_CLAUDE: ${{ github.event.inputs.control_claude_model }}
+          INPUT_GEMINI: ${{ github.event.inputs.shadow_gemini_model }}
           INPUT_MAXCOST: ${{ github.event.inputs.max_cost_usd }}
           OUT_FILE: ${{ steps.dir.outputs.file }}
         run: |
@@ -197,6 +212,11 @@ jobs:
           if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT --shuffle"; fi
           if [ -n "$INPUT_OPEN_SHOWS" ]; then EXTRA="$EXTRA --open-shows=$INPUT_OPEN_SHOWS"; fi
           if [ -n "$INPUT_CLAUDE" ]; then EXTRA="$EXTRA --shadow-claude-model=$INPUT_CLAUDE"; fi
+          # The script validates every model id (unknown ids throw before any API call).
+          for v in "$INPUT_CTRL_OPENAI" "$INPUT_CTRL_CLAUDE" "$INPUT_GEMINI"; do case "$v" in *[!a-z0-9.-]*) echo "::error::model ids must be [a-z0-9.-]"; exit 1;; esac; done
+          if [ -n "$INPUT_CTRL_OPENAI" ]; then EXTRA="$EXTRA --control-openai-model=$INPUT_CTRL_OPENAI"; fi
+          if [ -n "$INPUT_CTRL_CLAUDE" ]; then EXTRA="$EXTRA --control-claude-model=$INPUT_CTRL_CLAUDE"; fi
+          if [ -n "$INPUT_GEMINI" ]; then EXTRA="$EXTRA --shadow-gemini-model=$INPUT_GEMINI"; fi
           CAP="${INPUT_MAXCOST:-75}"
           node -e 'const c=Number(process.argv[1]);if(!(c>0&&c<=80)){console.error("::error::max_cost_usd must be a number in (0, 80]");process.exit(1)}' "$CAP"
           SHARD_CAP=$(node -e 'console.log((Number(process.argv[1])/4).toFixed(2))' "$CAP")
