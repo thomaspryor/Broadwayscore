@@ -5,7 +5,7 @@
  * already-fixed checks, against real catalog data. Exit 0 = pass.
  */
 'use strict';
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 require('./lib/cli-help').exitOnHelp(module);
 const { spawnSync } = require('child_process');
 const path = require('path');

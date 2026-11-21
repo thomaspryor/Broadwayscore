@@ -18,7 +18,7 @@
 //
 // Exit codes: 0 pass · 1 baseline mismatch · 2 missing fixture / I/O failure.
 
-import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';

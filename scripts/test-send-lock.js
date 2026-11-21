@@ -17,7 +17,7 @@
  * Run: node scripts/test-send-lock.js
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const { execSync } = require('child_process');
 
 process.env.SEND_LOCK_BRANCH = process.env.SEND_LOCK_BRANCH || `test/send-lock-scratch-${process.pid}`;

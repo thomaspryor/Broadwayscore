@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // BRO-2836: ordinal publishDates ("April 11th, 2024") must behave exactly like ISO at
 // every date-window guard, and unparseable dates must be loud.
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const assert = require('assert');
 const { toDateMs } = require('./lib/date-utils');
 const g = require('./lib/review-guards');

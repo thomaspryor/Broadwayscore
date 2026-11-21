@@ -17,7 +17,7 @@
  *   --verbose    print model-by-model scores
  */
 
-import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';

@@ -4,7 +4,7 @@
  * Fetches one page per outlet and runs extractScore(). Reports pass/fail.
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractScore } = require('./lib/score-extractors');
 

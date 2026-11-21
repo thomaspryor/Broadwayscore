@@ -15,7 +15,7 @@
  *   SCRAPINGBEE_API_KEY - Fallback for Reddit API
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts } = require('./lib/reddit-api');
 const { classifyAllComments } = require('./lib/buzz-classifier');

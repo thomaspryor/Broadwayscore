@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 /**
  * BRO-7167 test bench, step 1: collect exact publish times for a past opening
  * night's reviews and work out its real embargo (scripts/lib/observed-embargo.js).

@@ -10,7 +10,7 @@
  *   node scripts/test-review-submission.js "https://variety.com/review/hamilton" "Hamilton" "Variety"
  */
 
-import './lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import './lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
 const { ADJUDICATE_SONNET } = models;
