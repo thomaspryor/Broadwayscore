@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "ok",
-    "postedDetectionFailingSince": null,
+    "postedDetection": "skipped",
+    "postedDetectionFailingSince": "2026-11-21T03:51:24.811Z",
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-21T02:58:22.169Z"
+    "lastRun": "2026-11-21T03:51:48.842Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3896,23 +3896,26 @@
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "5 reviews are in for Elektra at Polonsky Shakespeare Center. 60/100, with most of the praise going to the music and Benko",
-      "body": "I found 5 reviews: 3 positive, 1 mixed, 1 negative.\n\nDan Rubins at TheaterMania called out the \"harshly beautiful, straight-tone Balkan belt\" of the vocal ensemble. Meanwhile David Finkle at New York Stage Review wrote \"This, however, is Benko’s showcase.\"\n\nSmall sample so far, so that 60 could still move if more reviews come in.\n\nhttps://broadwayscorecard.com/show/elektra\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites. I haven't seen this one yet, but a Greek tragedy sung like that has me curious. Anyone seen it?",
-      "why": "With only 5 reviews and no audience grade, the hook is what both positive critics singled out (the vocal ensemble and Benko), told through two short quotes in Tom's casual first-person style.",
-      "expectedPushback": "Someone will say five reviews is too few to put a number on a show, especially a small Off-Broadway production.",
-      "suggestedReply": "Totally fair, five is a small pile and I'd take the 60 with a big grain of salt. I mostly wanted to share what the critics said about the music, since that's the part that stood out.",
+      "title": "5 reviews are in for Elektra at Polonsky Shakespeare Center. 60/100, with the singing getting the praise and the modernizing getting the side-eye",
+      "body": "I found 5 reviews: 3 positive, 1 mixed, 1 negative.\n\nhttps://broadwayscorecard.com/show/elektra\n\nDan Rubins at TheaterMania wrote that \"Elektra draws its centrifugal power from the harmony at its core.\" Meanwhile David Finkle at New York Stage Review wrote \"The acting ensemble is uniformly dynamic.\" Benko's fierce performance gets a lot of love too.\n\nThe pushback is mostly about the updating. A few reviews felt the modernization was heavy-handed and got in the way of the Sophocles. Which I can see being a risk with a Greek tragedy.\n\nNo audience grade yet, since hardly any users have reviewed it on Mezzanine.\n\nI haven't seen this one yet, but the a cappella chorus has me curious. Anyone seen it?",
+      "why": "It leads with the show and the number, then gives the score meaning through the split between praised singing and a modernization some reviews found heavy-handed, with two plain quotes and a real question.",
+      "expectedPushback": "Five reviews isn't enough to mean anything, and a number can't tell you whether a Greek tragedy will work for you.",
+      "suggestedReply": "Fair, five is a small pile, which is why I'd rather quote what the reviews actually said than lean on the number. Curious if you've seen it.",
       "personalLines": [
-        "I haven't seen this one yet, and I'm leaning toward going.",
-        "Still undecided on this one, but the singing has my attention.",
-        "I haven't seen it yet. Would you go based on these?"
+        "I haven't seen this one yet, and I'm still undecided on going.",
+        "I haven't seen this one yet, but that chorus has me wanting to go.",
+        "I haven't seen this one yet, and I'm not sure the modernized take is for me."
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+most+of+the+praise+going+to+the+music+and+Benko&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0ADan+Rubins+at+TheaterMania+called+out+the+%22harshly+beautiful%2C+straight-tone+Balkan+belt%22+of+the+vocal+ensemble.+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22This%2C+however%2C+is+Benko%E2%80%99s+showcase.%22%0A%0ASmall+sample+so+far%2C+so+that+60+could+still+move+if+more+reviews+come+in.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.+I+haven%27t+seen+this+one+yet%2C+but+a+Greek+tragedy+sung+like+that+has+me+curious.+Anyone+seen+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+most+of+the+praise+going+to+the+music+and+Benko&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0ADan+Rubins+at+TheaterMania+called+out+the+%22harshly+beautiful%2C+straight-tone+Balkan+belt%22+of+the+vocal+ensemble.+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22This%2C+however%2C+is+Benko%E2%80%99s+showcase.%22%0A%0ASmall+sample+so+far%2C+so+that+60+could+still+move+if+more+reviews+come+in.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.+I+haven%27t+seen+this+one+yet%2C+but+a+Greek+tragedy+sung+like+that+has+me+curious.+Anyone+seen+it%3F",
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+the+singing+getting+the+praise+and+the+modernizing+getting+the+side-eye&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ADan+Rubins+at+TheaterMania+wrote+that+%22Elektra+draws+its+centrifugal+power+from+the+harmony+at+its+core.%22+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22The+acting+ensemble+is+uniformly+dynamic.%22+Benko%27s+fierce+performance+gets+a+lot+of+love+too.%0A%0AThe+pushback+is+mostly+about+the+updating.+A+few+reviews+felt+the+modernization+was+heavy-handed+and+got+in+the+way+of+the+Sophocles.+Which+I+can+see+being+a+risk+with+a+Greek+tragedy.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+Mezzanine.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+the+a+cappella+chorus+has+me+curious.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+the+singing+getting+the+praise+and+the+modernizing+getting+the+side-eye&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ADan+Rubins+at+TheaterMania+wrote+that+%22Elektra+draws+its+centrifugal+power+from+the+harmony+at+its+core.%22+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22The+acting+ensemble+is+uniformly+dynamic.%22+Benko%27s+fierce+performance+gets+a+lot+of+love+too.%0A%0AThe+pushback+is+mostly+about+the+updating.+A+few+reviews+felt+the+modernization+was+heavy-handed+and+got+in+the+way+of+the+Sophocles.+Which+I+can+see+being+a+risk+with+a+Greek+tragedy.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+Mezzanine.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+the+a+cappella+chorus+has+me+curious.+Anyone+seen+it%3F",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+most+of+the+praise+going+to+the+music+and+Benko&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0ADan+Rubins+at+TheaterMania+called+out+the+%22harshly+beautiful%2C+straight-tone+Balkan+belt%22+of+the+vocal+ensemble.+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22This%2C+however%2C+is+Benko%E2%80%99s+showcase.%22%0A%0ASmall+sample+so+far%2C+so+that+60+could+still+move+if+more+reviews+come+in.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.+I+haven%27t+seen+this+one+yet%2C+but+a+Greek+tragedy+sung+like+that+has+me+curious.+Anyone+seen+it%3F",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=5+reviews+are+in+for+Elektra+at+Polonsky+Shakespeare+Center.+60%2F100%2C+with+the+singing+getting+the+praise+and+the+modernizing+getting+the+side-eye&text=I+found+5+reviews%3A+3+positive%2C+1+mixed%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Felektra%0A%0ADan+Rubins+at+TheaterMania+wrote+that+%22Elektra+draws+its+centrifugal+power+from+the+harmony+at+its+core.%22+Meanwhile+David+Finkle+at+New+York+Stage+Review+wrote+%22The+acting+ensemble+is+uniformly+dynamic.%22+Benko%27s+fierce+performance+gets+a+lot+of+love+too.%0A%0AThe+pushback+is+mostly+about+the+updating.+A+few+reviews+felt+the+modernization+was+heavy-handed+and+got+in+the+way+of+the+Sophocles.+Which+I+can+see+being+a+risk+with+a+Greek+tragedy.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+Mezzanine.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+the+a+cappella+chorus+has+me+curious.+Anyone+seen+it%3F",
       "emailedAt": "2026-11-21T02:59:42.511Z",
       "emailedScore": 60,
-      "emailedReviewCount": 5
+      "emailedReviewCount": 5,
+      "refreshedAt": "2026-11-21T03:51:48.842Z",
+      "previousScore": 60,
+      "previousReviewCount": 5
     }
   }
 }
