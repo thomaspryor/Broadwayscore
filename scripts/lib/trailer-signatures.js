@@ -169,6 +169,33 @@ function stripGuardianTopicsFooter(text) {
 }
 
 // ---------------------------------------------------------------------------
+// Independent + Evening Standard CMS footers (BRO-7943). The Wayback copies the
+// gap engine recovers keep the page's topic-tag and shopping/comment widgets
+// after the review's run line, so a complete review reads as truncated:
+//   Independent: "... tickets here More about Musicals Regent's Park Join our
+//     commenting forum Join thought-provoking conversations, follow other
+//     Independent readers and see their replies Comments"
+//   Standard: "... donmarwarehouse.com . MORE ABOUT The Maids Donmar Warehouse
+//     Shopping Best Buys What I'm buying from ... Best toy advent calendars"
+// Both widget strings are unique to those CMSs, so they are safe for any
+// outlet id (cross-posted rows). Corpus 2026-11-21: 57 Independent-shaped and
+// 116 Standard-shaped tails. Classifier-only, like the Guardian footer.
+// ---------------------------------------------------------------------------
+const INDEPENDENT_COMMENTS_FOOTER_RE = /\s*(?:More about\b[^\n]{0,200}?)?\s*Join our commenting forum\b[^\n]{0,200}$/;
+const STANDARD_SHOPPING_FOOTER_RE = /\s*MORE ABOUT\b[^\n]{0,300}?\bShopping Best Buys\b[^\n]{0,900}$/;
+
+function stripCmsWidgetFooters(text) {
+  if (!text || typeof text !== 'string') return text;
+  let out = text;
+  for (const re of [INDEPENDENT_COMMENTS_FOOTER_RE, STANDARD_SHOPPING_FOOTER_RE]) {
+    const m = re.exec(out);
+    // never leave less than a review-length body (a widget string near the top is not a footer)
+    if (m && m.index >= 600) out = out.slice(0, m.index);
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
 // The Stage: the subscriber page ends with the critic's bio, one short
 // paragraph with no final full stop ("Dave is a playwright and critic. He was
 // the winner of The Stage's Critic Search 2015"). BRO-7171 Stage 4: 21
@@ -588,7 +615,7 @@ function trailerFixesEnabled() {
 /** Every known trailer, for the ending-punctuation check. */
 function stripKnownTrailers(text, outletId) {
   if (!trailerFixesEnabled()) return text;
-  return stripFurnitureTail(stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId, { forClassify: true })));
+  return stripFurnitureTail(stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(stripCmsWidgetFooters(text))), outletId, { forClassify: true })));
 }
 
 module.exports = {
@@ -602,6 +629,7 @@ module.exports = {
   stripRunInfoTrailer,
   stripFurnitureTail,
   stripGuardianTopicsFooter,
+  stripCmsWidgetFooters,
   stripOutletTrailer,
   stripKnownTrailers,
   trailerFixesEnabled,
