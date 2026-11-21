@@ -167,7 +167,7 @@ scope_list() {
 }
 gate() {
   local name="$1"; shift
-  if ! want_gate "$name"; then echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
+  if ! want_gate "$name"; then rm -f "$OUT/$name.secs"; echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
   if [[ ",${BG_GATES:-}," == *",$name,"* ]]; then echo "gate $name: running in the background lane"; return 0; fi
   rm -f "$OUT/$name.secs"  # BRO-7324: a reused out-dir must not keep an old time
   echo "::group::gate $name — $*"

@@ -116,4 +116,9 @@ test('gateReport: per-gate stats per run kind, scoped and untimed rows left out 
   assert.equal(rep.kinds['land-gauntlet/confirm'].wallSecs.n, 0);
   assert.equal(R.gateReport([], { nowMs: now }).landings, 0);
   assert.equal(R.parseArgs(['--gates', '--days=3']).gates, true);
+  assert.ok(R.parseArgs(['--gates', '--check-targets']).error);
+  // a GAUNTLET_GATES-limited run of the same kind is left out of the wall stat, kept per gate
+  const lim = R.gateReport([...rows, { ts: '2026-11-21T11:50:00Z', sha: 'f', timing: { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 30, gateSecs: { tsc: 20 }, gates: ['tsc'], scoped: false } } } }], { days: 7, nowMs: now });
+  assert.deepEqual(lim.kinds['land-gauntlet/branch'].wallSecs, { n: 3, median: 1000, min: 900, max: 1100 });
+  assert.equal(lim.kinds['land-gauntlet/branch'].gates.tsc.n, 4);
 });

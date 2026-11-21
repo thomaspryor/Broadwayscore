@@ -789,7 +789,8 @@ jobs:
       # to the verdict above, runs after it, continue-on-error, and the CLI exits 0.
       - name: Record gate timing (advisory)
         id: gatetiming
-        if: always()
+        # Kill switch: repo variable LAND_GATE_TIMING_DISABLED=1 (the .secs files stay; nothing reads them).
+        if: always() && vars.LAND_GATE_TIMING_DISABLED != '1'
         continue-on-error: true
         env:
           T0: ${{ steps.gitcfg.outputs.t0 }}

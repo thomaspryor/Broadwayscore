@@ -176,14 +176,16 @@ function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
       const k = kinds[kind] || (kinds[kind] = { runs: 0, scoped: 0, wall: [], gates: {} });
       k.runs += 1;
       if (run.scoped) { k.scoped += 1; continue; }
-      if (Number.isFinite(run.wallSecs)) k.wall.push(run.wallSecs);
+      // Wall time only compares like with like: a GAUNTLET_GATES-limited run (lazy base) is not a full run.
+      if (Number.isFinite(run.wallSecs)) k.wall.push({ s: run.wallSecs, n: (run.gates || []).length });
       for (const [g, v] of Object.entries(run.gateSecs || {})) if (Number.isFinite(v)) (k.gates[g] || (k.gates[g] = [])).push(v);
     }
   }
   const stat = (xs) => ({ n: xs.length, median: median(xs), min: xs.length ? Math.min(...xs) : null, max: xs.length ? Math.max(...xs) : null });
   const out = {};
   for (const [kind, k] of Object.entries(kinds)) {
-    out[kind] = { runs: k.runs, scoped: k.scoped, wallSecs: stat(k.wall), gates: Object.fromEntries(Object.entries(k.gates).map(([g, xs]) => [g, stat(xs)]).sort((a, b) => (b[1].median || 0) - (a[1].median || 0))) };
+    const full = Math.max(0, ...k.wall.map(w => w.n));
+    out[kind] = { runs: k.runs, scoped: k.scoped, fullGateCount: full, wallSecs: stat(k.wall.filter(w => w.n === full).map(w => w.s)), gates: Object.fromEntries(Object.entries(k.gates).map(([g, xs]) => [g, stat(xs)]).sort((a, b) => (b[1].median || 0) - (a[1].median || 0))) };
   }
   return { days, landings: timed.length, kinds: out };
 }
@@ -191,9 +193,10 @@ function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
 function printGates(rep) {
   console.log(`Gate timing from data/audit/landings.jsonl, last ${rep.days} day(s): ${rep.landings} landing(s) carry timing.`);
   if (!rep.landings) { console.log('No timed landings yet (the record starts with the second landing after BRO-7324 step 1).'); return; }
+  console.log('Merge-train riders carry no timing (the holder writes their rows).');
   for (const [kind, k] of Object.entries(rep.kinds)) {
     const w = k.wallSecs;
-    console.log(`\n${kind}: ${k.runs} run(s), ${k.scoped} scoped (left out). Wall median ${w.median}s (min ${w.min}, max ${w.max}, n=${w.n})`);
+    console.log(`\n${kind}: ${k.runs} run(s), ${k.scoped} scoped (left out). Wall over runs of all ${k.fullGateCount} gates: median ${w.median}s (min ${w.min}, max ${w.max}, n=${w.n})`);
     for (const [g, s] of Object.entries(k.gates)) console.log(`  ${g.padEnd(22)} median ${String(s.median).padStart(5)}s  min ${s.min}  max ${s.max}  n=${s.n}`);
   }
 }
@@ -212,6 +215,7 @@ function parseArgs(argv) {
     else return { error: `unknown or malformed argument: ${a}` };
   }
   if (!(o.days > 0)) return { error: '--days must be positive' };
+  if (o.gates && (o.check || o.split)) return { error: '--gates reads the ledger only; it takes no --check-targets or --split' };
   return o;
 }
 
@@ -263,7 +267,9 @@ async function main(argv = process.argv.slice(2)) {
   if (o.error) { console.error(`land-timing-report: ${o.error}`); return 2; }
   if (o.gates) {
     const { readLandings } = require('./landings-ledger.js');
-    const rep = gateReport(readLandings(process.cwd()).rows, { days: o.days });
+    const led = readLandings(process.cwd());
+    if (!led.available) { console.error('land-timing-report: data/audit/landings.jsonl not found (run from the repo root)'); return 1; }
+    const rep = gateReport(led.rows, { days: o.days });
     if (o.json) console.log(JSON.stringify(rep, null, 2)); else printGates(rep);
     return 0;
   }
