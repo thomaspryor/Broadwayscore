@@ -43,3 +43,23 @@ test('rebuild threads the show to every primacy call (class guard: no show-less 
     }
   }
 });
+
+test('review-field-edit: the flip clears a Daily News flag only on a NYC-era show, never the Tribune side', () => {
+  const { syndicationPrimacyFlipApplies } = require('../../scripts/lib/review-field-edit.js');
+  const ny = { criticName: 'Chris Jones', outletId: 'nydailynews', isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'x/chicagotribune--chris-jones.json' };
+  assert.equal(syndicationPrimacyFlipApplies(ny, { folder: 'x' }, NYC), true);
+  assert.equal(syndicationPrimacyFlipApplies(ny, { folder: 'x' }, OLD), false);
+  assert.equal(syndicationPrimacyFlipApplies(ny, { folder: 'x' }, WE), false);
+  assert.equal(syndicationPrimacyFlipApplies({ ...ny, syndicatedPrimaryFile: 'y/chicagotribune--chris-jones.json' }, { folder: 'x' }, NYC), false);
+  assert.equal(syndicationPrimacyFlipApplies({ ...ny, outletId: 'chicagotribune', syndicatedPrimaryFile: 'x/nydailynews--chris-jones.json' }, { folder: 'x' }, NYC), false);
+  assert.equal(syndicationPrimacyFlipApplies({ ...ny, syndicatedPrimaryFile: undefined }, { folder: 'x' }, NYC), true);
+});
+test('migration planPair: same text flips; different text or dates stays', () => {
+  const { planPair } = require('../../scripts/migrate-chris-jones-nyc-primacy.js');
+  const text = Array.from({ length: 60 }, (_, i) => `word${i}x`).join(' ');
+  const a = { fullText: text, publishDate: '2026-11-19' };
+  assert.equal(planPair(a, { fullText: text, publishDate: '2026-11-19' }, NYC, 't.json').action, 'flip');
+  assert.equal(planPair(a, { fullText: 'something else entirely '.repeat(30), publishDate: '2026-11-19' }, NYC, 't.json').action, 'skip');
+  assert.equal(planPair(a, { fullText: text, publishDate: '2018-09-30' }, NYC, 't.json').action, 'skip');
+  assert.equal(planPair(a, { fullText: text, publishDate: '2026-11-19' }, OLD, 't.json').action, 'skip');
+});
