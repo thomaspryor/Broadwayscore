@@ -20,7 +20,7 @@ const MAX_AGE_DAYS = 14; // a late switch-on never mails a stale backlog
 const MAX_CONSECUTIVE_REJECTS = 2; // 2 in a row is our payload, not the recipients
 const SITE = 'https://broadwayscorecard.com';
 const REPLY_TO = 'hi@broadwayscorecard.com';
-const FROM = 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>';
+const FROM = 'Tom Pryor <updates@broadwayscorecard.com>';
 
 function isProbeEmail(email) {
   const e = String(email).trim().toLowerCase();
@@ -50,23 +50,23 @@ function unsubscribeUrl(email) {
 
 function buildWelcomeEmail(row) {
   const unsub = unsubscribeUrl(row.email);
-  const subject = 'Welcome to the Profitability Scorecard';
+  // BRO-7995: owner wants this to read like a note from Tom, not a marketing email. Plain text only
+  // (no HTML part, no styling, no banner), one specific question, a one-line footer.
+  const subject = 'Thanks for signing up';
   const lines = [
     'Hi,',
-    'Thanks for signing up. You now have full access to the Broadway Profitability Scorecard.',
-    "I built it because there's no public record of which Broadway shows pay back their investors, and I wanted one place to see it.",
-    'If you have a minute, tell me what you were hoping to find and what would make it more useful. Just hit reply. It comes straight to me.',
+    "Thanks for signing up for the Profitability Scorecard. I'm Tom, I built it.",
+    'Nobody publishes which Broadway shows pay back their investors, so I wanted one place to see it.',
+    'What were you hoping to find? Reply with a line or two. It comes straight to me and I read every one.',
     'Tom',
   ];
-  const footer = 'You are getting this because you signed up at broadwayscorecard.com/biz.';
-  const text = `${lines.join('\n\n')}\n\n${footer}\nUnsubscribe: ${unsub}\n`;
-  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;color:#222">${lines
-    .map((l) => `<p>${l}</p>`).join('')}<p style="font-size:12px;color:#777">${footer} <a href="${unsub}">Unsubscribe</a></p></div>`;
+  const footer = `You signed up at broadwayscorecard.com/biz. Unsubscribe: ${unsub}`;
+  const text = `${lines.join('\n\n')}\n\n--\n${footer}\n`;
   const headers = {
     'List-Unsubscribe': `<mailto:${REPLY_TO}?subject=unsubscribe>, <${unsub}>`,
     'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
   };
-  return { subject, text, html, headers };
+  return { subject, text, headers };
 }
 
 function idempotencyKey(email, secret) {
