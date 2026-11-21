@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7978",
   "planId": "819f5d68-e893-48bf-9b7b-94e60be4208f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-21T14:29:11.067Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json: wrongShow"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-21T15:06:18.202Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
