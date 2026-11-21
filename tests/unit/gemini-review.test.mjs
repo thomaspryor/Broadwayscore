@@ -98,7 +98,7 @@ test('review-policy.toml allows only read tools and denies everything else', () 
 
 // ---------- the wrapper, against a fake gemini/npm ----------
 
-function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeExit = 0, writeFile = false, installTo = null } = {}) {
+function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeJson2 = null, fakeExit = 0, writeFile = false, installTo = null } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-review-'));
   const bin = path.join(dir, 'bin');
   const repo = path.join(dir, 'repo');
@@ -107,14 +107,16 @@ function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeExit = 0,
   const ver = path.join(dir, 'version');
   if (geminiVersion) fs.writeFileSync(ver, geminiVersion);
   fs.writeFileSync(path.join(dir, 'out.json'), fakeJson);
+  if (fakeJson2) fs.writeFileSync(path.join(dir, 'out2.json'), fakeJson2);
   const geminiPath = path.join(bin, 'gemini');
   fs.writeFileSync(geminiPath, `#!/usr/bin/env bash
 if [ "$1" = "--version" ]; then [ -s "${ver}" ] || exit 127; cat "${ver}"; exit 0; fi
-printf '%s\\n' "$*" > "${dir}/argv"
+printf '%s\\n' "$*" >> "${dir}/argv"
 cat > "${dir}/stdin"
 ${writeFile ? 'echo x > leaked.txt' : ''}
 echo "Warning: 256-color support not detected." >&2
-cat "${dir}/out.json"
+if [ -s "${dir}/calls" ] && [ -s "${dir}/out2.json" ]; then cat "${dir}/out2.json"; else cat "${dir}/out.json"; fi
+echo 1 >> "${dir}/calls"
 exit ${fakeExit}
 `, { mode: 0o755 });
   fs.writeFileSync(path.join(bin, 'npm'), `#!/usr/bin/env bash
@@ -139,7 +141,7 @@ test('wrapper: a good run prints the review, passes the policy, and logs spend',
   const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
   assert.equal(r.code, 0, r.err);
   assert.equal(r.out.trim(), 'Finding at a.js:1');
-  assert.match(r.err, /GEMINI-REVIEW: ok model=gemini-2\.5-pro reads=2/);
+  assert.match(r.err, /GEMINI-REVIEW: ok model=gemini-2\.5-flash reads=2$/m, 'default model is Flash, no retry when it read files');
   const argv = fs.readFileSync(path.join(sb.dir, 'argv'), 'utf8');
   assert.match(argv, /--approval-mode plan --policy \S+review-policy\.toml/);
   assert.equal(fs.readFileSync(path.join(sb.dir, 'stdin'), 'utf8'), 'Review this diff.');
@@ -167,12 +169,24 @@ test('wrapper: a run that changes the working tree is UNSAFE (exit 4), no review
   assert.equal(r.out, '');
 });
 
-test('wrapper: a review that opened no files is labelled unverified', () => {
+test('wrapper: a review that opened no files is retried once, then labelled unverified', () => {
   const sb = sandbox({ fakeJson: cliJson({ reads: 0 }) });
   const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
   assert.equal(r.code, 0);
   assert.ok(r.out.startsWith(lib.NO_READS_HEADER), r.out);
-  assert.match(r.err, /GEMINI-REVIEW: no-reads/);
+  assert.match(r.err, /GEMINI-REVIEW: no-reads .*retried=1/);
+  const argv = fs.readFileSync(path.join(sb.dir, 'argv'), 'utf8');
+  assert.equal(argv.trim().split('\n').length, 2, 'exactly one retry');
+  assert.ok(argv.includes('previous answer was rejected'), 'the retry says why');
+});
+
+test('wrapper: a retry that reads files is a normal review', () => {
+  const sb = sandbox({ fakeJson: cliJson({ reads: 0, response: 'unverified' }), fakeJson2: cliJson({ reads: 3, response: 'read it' }) });
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 0);
+  assert.equal(r.out.trim(), 'read it');
+  assert.match(r.err, /GEMINI-REVIEW: ok .*reads=3 retried=1/);
+  assert.equal(fs.readFileSync(sb.ledger, 'utf8').trim().split('\n').length, 2, 'both attempts are logged as spend');
 });
 
 test('wrapper: CLI failure and empty response are FAILED/EMPTY (exit 1), never a pass', () => {
