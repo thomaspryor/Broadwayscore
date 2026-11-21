@@ -98,7 +98,7 @@ test('percentile, refusal rate and the target check', () => {
 
 test('gateReport: per-gate stats per run kind, scoped and untimed rows left out (BRO-7324)', () => {
   const now = Date.parse('2026-11-21T12:00:00Z');
-  const run = (wall, tsc, extra = {}) => ({ wallSecs: wall, gateSecs: { tsc, 'unit-tests-node': wall - 60 }, gates: ['tsc', 'unit-tests-node'], scoped: false, ...extra });
+  const run = (wall, tsc, extra = {}) => ({ wallSecs: wall, gateSecs: { tsc, 'unit-tests-node': wall - 60 }, gateCount: 2, scoped: false, ...extra });
   const rows = [
     { ts: '2026-11-21T10:00:00Z', sha: 'a', timing: { v: 1, runs: { 'land-gauntlet/branch': run(900, 80), 'land-gauntlet/base': run(950, 90) } } },
     { ts: '2026-11-21T11:00:00Z', sha: 'b', timing: { v: 1, runs: { 'land-gauntlet/branch': run(1000, 100), 'land-gauntlet/confirm': run(200, 10, { scoped: true }) } } },
@@ -118,7 +118,7 @@ test('gateReport: per-gate stats per run kind, scoped and untimed rows left out 
   assert.equal(R.parseArgs(['--gates', '--days=3']).gates, true);
   assert.ok(R.parseArgs(['--gates', '--check-targets']).error);
   // a GAUNTLET_GATES-limited run of the same kind is left out of the wall stat, kept per gate
-  const lim = R.gateReport([...rows, { ts: '2026-11-21T11:50:00Z', sha: 'f', timing: { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 30, gateSecs: { tsc: 20 }, gates: ['tsc'], scoped: false } } } }], { days: 7, nowMs: now });
+  const lim = R.gateReport([...rows, { ts: '2026-11-21T11:50:00Z', sha: 'f', timing: { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 30, gateSecs: { tsc: 20 }, gateCount: 1, scoped: false } } } }], { days: 7, nowMs: now });
   assert.deepEqual(lim.kinds['land-gauntlet/branch'].wallSecs, { n: 3, median: 1000, min: 900, max: 1100 });
   assert.equal(lim.kinds['land-gauntlet/branch'].gates.tsc.n, 4);
 });

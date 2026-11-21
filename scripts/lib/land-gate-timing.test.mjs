@@ -31,7 +31,7 @@ test('keeps runs finished in this job, drops a restored base with an old meta.js
   const t = collectTiming({ roots: [root], t0Ms: T0 });
   const k = path.basename(root);
   assert.deepEqual(Object.keys(t.runs).sort(), [`${k}/branch`, `${k}/confirm`]);
-  assert.deepEqual(t.runs[`${k}/branch`], { wallSecs: 960, gateSecs: { tsc: 82, 'next-lint': 120 }, gates: ['tsc', 'next-lint'], scoped: false });
+  assert.deepEqual(t.runs[`${k}/branch`], { wallSecs: 960, gateSecs: { tsc: 82, 'next-lint': 120 }, gateCount: 2, scoped: false });
   assert.equal(t.runs[`${k}/confirm`].scoped, true);
   assert.deepEqual(t.runs[`${k}/confirm`].gateSecs, { tsc: 75 });
   assert.match(summaryLines(t).join('\n'), /next-lint 120s, tsc 82s/);

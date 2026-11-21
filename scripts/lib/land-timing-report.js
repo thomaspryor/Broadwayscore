@@ -165,7 +165,8 @@ function report(records, { split = null } = {}) {
 
 /**
  * BRO-7324: per-gate seconds from landings.jsonl rows carrying `timing` (land-gate-timing.js).
- * Only full runs (not scoped, every gate the run kind usually has) are aggregated per gate.
+ * Scoped runs are left out. Per-gate stats use every other run; wall stats only the runs
+ * with the largest gateCount seen for that kind (a GAUNTLET_GATES-limited run is not full).
  */
 function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
   const since = nowMs - days * 86400000;
@@ -177,7 +178,7 @@ function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
       k.runs += 1;
       if (run.scoped) { k.scoped += 1; continue; }
       // Wall time only compares like with like: a GAUNTLET_GATES-limited run (lazy base) is not a full run.
-      if (Number.isFinite(run.wallSecs)) k.wall.push({ s: run.wallSecs, n: (run.gates || []).length });
+      if (Number.isFinite(run.wallSecs)) k.wall.push({ s: run.wallSecs, n: Number(run.gateCount) || 0 });
       for (const [g, v] of Object.entries(run.gateSecs || {})) if (Number.isFinite(v)) (k.gates[g] || (k.gates[g] = [])).push(v);
     }
   }

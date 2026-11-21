@@ -14,9 +14,9 @@
  *
  *   node scripts/lib/land-gate-timing.js emit --t0=<epoch ms> --root=<dir> [--root=<dir>] [--github-output=<file>] [--summary-file=<file>]
  *
- * Shape: { v: 1, runs: { <root-name>/<dir>: { wallSecs, gateSecs: {gate: s}, gates: [..], scoped } } }
+ * Shape: { v: 1, runs: { <root-name>/<dir>: { wallSecs, gateSecs: {gate: s}, gateCount, scoped } } }
  * A scoped run (land-gate-delta.js --rerun-scope, $OUT/SCOPED) or one limited by
- * GAUNTLET_GATES covers only some gates: compare `gates` before mixing runs.
+ * GAUNTLET_GATES covers only some gates: compare gateCount before mixing wall times.
  */
 'use strict';
 
@@ -45,7 +45,7 @@ function collectTiming({ roots = [], t0Ms = 0 } = {}) {
       runs[`${path.basename(root)}/${e.name}`] = {
         wallSecs: Number.isFinite(meta.wallMs) ? Math.round(meta.wallMs / 1000) : null,
         gateSecs,
-        gates: Array.isArray(meta.gates) ? meta.gates : [],
+        gateCount: Array.isArray(meta.gates) ? meta.gates.length : 0,
         scoped: fs.existsSync(path.join(dir, 'SCOPED')),
       };
     }
@@ -81,6 +81,7 @@ function main(argv = process.argv.slice(2)) {
   try {
     const o = parseArgs(argv);
     if (o.cmd !== 'emit') { console.log('usage: land-gate-timing.js emit --t0=<ms> --root=<dir> [...]'); return 0; }
+    if (!o.t0) console.log('::warning::gate timing: no --t0, so a restored base result may be counted as run here');
     const timing = collectTiming({ roots: o.roots, t0Ms: o.t0 });
     const json = JSON.stringify(timing);
     console.log(json);
