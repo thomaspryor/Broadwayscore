@@ -20,3 +20,9 @@ test('rules, negations and quotes are not asks', () => {
     assert.equal(newSessionAsk(t).block, false, t);
   }
 });
+
+test('BRO-7918 review: new tab and a worker describing its own create_session are not asks', () => {
+  assert.equal(newSessionAsk('Open a new tab to see the preview.').block, false);
+  assert.equal(newSessionAsk('I will start a new worker session for BRO-9 now.').block, false);
+  assert.equal(newSessionAsk('You should start a new session and tell it to finish this.').block, true);
+});

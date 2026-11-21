@@ -21,10 +21,14 @@ const TAIL_BYTES = 400000;
 
 function extractCardIds(texts, max = MAX_CARDS) {
   const counts = new Map();
+  const last = new Map();
+  let pos = 0;
   for (const t of texts) {
-    for (const m of String(t || '').matchAll(/\bBRO-(\d{2,6})\b/g)) counts.set(m[0], (counts.get(m[0]) || 0) + 1);
+    for (const m of String(t || '').matchAll(/\bBRO-(\d{2,6})\b/g)) { counts.set(m[0], (counts.get(m[0]) || 0) + 1); last.set(m[0], pos + m.index); }
+    pos += String(t || '').length + 1;
   }
-  return [...counts.entries()].sort((a, b) => b[1] - a[1] || Number(b[0].slice(4)) - Number(a[0].slice(4))).slice(0, max).map(([id]) => id);
+  // Most-mentioned first; ties go to the most recent mention (not the highest id).
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || last.get(b[0]) - last.get(a[0])).slice(0, max).map(([id]) => id);
 }
 
 function latestComment(issue) {
