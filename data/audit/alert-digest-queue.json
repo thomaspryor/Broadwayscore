@@ -1860,5 +1860,36 @@
       }
     ],
     "queuedAt": "2026-11-21T07:12:11.107Z"
+  },
+  {
+    "conditionKey": "land:land/msg-undelivered",
+    "title": "Landing blocked: unit-tests-node red on land/msg-undelivered",
+    "description": "land.yml did not land land/msg-undelivered: the unit-tests-node gate went red at a952fb2078. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44877630705",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/msg-undelivered"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a952fb207825f768eef51a5901b5e9ac2f1480d1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44877630705"
+      }
+    ],
+    "queuedAt": "2026-11-21T07:41:02.457Z"
   }
 ]
