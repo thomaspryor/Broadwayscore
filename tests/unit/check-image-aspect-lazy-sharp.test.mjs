@@ -26,16 +26,19 @@ Module._load = function (req, ...rest) {
   return orig.call(this, req, ...rest);
 };
 `);
-  // An index equal to HEAD: nothing staged, whatever the working tree holds.
-  const index = path.join(dir, 'index');
-  const env = { ...process.env, GIT_INDEX_FILE: index };
-  const rt = spawnSync('git', ['read-tree', 'HEAD'], { cwd: ROOT, env, encoding: 'utf8' });
-  assert.equal(rt.status, 0, rt.stderr);
+  try {
+    // An index equal to HEAD: nothing staged, whatever the working tree holds.
+    const index = path.join(dir, 'index');
+    const env = { ...process.env, GIT_INDEX_FILE: index };
+    const rt = spawnSync('git', ['read-tree', 'HEAD'], { cwd: ROOT, env, encoding: 'utf8' });
+    assert.equal(rt.status, 0, rt.stderr);
 
-  const r = spawnSync(process.execPath, ['--require', preload, SCRIPT, '--staged'], {
-    cwd: ROOT, env, encoding: 'utf8',
-  });
-  fs.rmSync(dir, { recursive: true, force: true });
-  assert.equal(r.signal, null, `script loaded sharp at startup (killed by ${r.signal})`);
-  assert.equal(r.status, 0, r.stderr);
+    const r = spawnSync(process.execPath, ['--require', preload, SCRIPT, '--staged'], {
+      cwd: ROOT, env, encoding: 'utf8',
+    });
+    assert.equal(r.signal, null, `script loaded sharp at startup (killed by ${r.signal})`);
+    assert.equal(r.status, 0, r.stderr);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
