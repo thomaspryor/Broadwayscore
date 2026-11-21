@@ -266,6 +266,23 @@ const ADAPTERS = Object.freeze({
       contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (gap-recovery driver)',
     },
   }),
+  // BRO-7943: financialtimes had no adapter (67 gaps, "no_adapter"), though the
+  // ft profile + cookies are kept logged in by renew-cookies.js. Probed live
+  // 2026-11-21: a subscriber page renders the review in #article-body (3,416
+  // chars on the Rent review; <article> adds the standfirst/byline chrome).
+  ft: Object.freeze({
+    nightly: true,
+    outletIds: ['financialtimes'],
+    cookieDomain: 'ft.com',
+    testUrl: 'https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa',
+    minAuthChars: 2000,
+    extract: domExtractor({ selectors: ['#article-body', '[data-trackable="article-body"]', 'article'], waitForSelector: '#article-body', botRe: /verify you.re not a robot|access denied|unusual activity/ }),
+    labels: {
+      fetchMethod: 'ft-subscriber-browser-session',
+      sourceMethod: 'ft-subscriber-recovery-login',
+      contentTierReasonFallback: 'Recovered via authenticated FT browser session (gap-recovery driver)',
+    },
+  }),
   telegraph: Object.freeze({
     // BRO-7171: 96 open PAYWALL_TRUNCATED rows. The subscription was
     // cancelled but stays active to the end of the billing month; the owner

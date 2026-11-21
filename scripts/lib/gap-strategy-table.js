@@ -12,11 +12,13 @@
 const STRATEGY_FLAGS = Object.freeze({
   REFETCH_FREE: Object.freeze({ enabled: true, cost: 'F', note: 'fetchPage free tiers only (cookies-plain, playwright)' }),
   BROWSER_SESSION: Object.freeze({ enabled: true, cost: 'B', note: 'headed subscriber Chrome via browser-outlet-adapters' }),
-  // Stage 3 live pilots 2026-11-09 (30% bar applied per recency band):
-  // recent shows 0/20 accepted (17 archive_empty: Wayback has no capture of a
-  // review this new; 3 not_longer) -> OFF for recent shows; historic shows
-  // (--historic-only) 9/20 = 45% accepted -> stays ON for historic shows.
-  ARCHIVE: Object.freeze({ enabled: true, historicOnly: true, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); historic shows only' }),
+  // Stage 3 live pilots 2026-11-09: shows opened within ~a month had 0/20
+  // accepted (17 archive_empty: Wayback has no capture of a review this new);
+  // historic shows 9/20 = 45%. BRO-7943: that pilot measured brand-new reviews
+  // but the flag switched ARCHIVE off for the whole 730-day "recent" window
+  // (604 gaps, disabled_recent). Now a minimum show age instead.
+  // PILOT_RESULT_PLACEHOLDER
+  ARCHIVE: Object.freeze({ enabled: true, minShowAgeDays: 60, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); shows opened >= minShowAgeDays ago' }),
   // DISABLED 2026-11-09 by the Stage 2 decision rule: the NO_URL pilot (20
   // daily-mail / mail-on-sunday files) accepted 0/20, and The Stage
   // URL_WRONG_PAGE run 0/14, all no_serp_match. Part of that is a provider
@@ -72,6 +74,9 @@ const CLASS_STRATEGIES = Object.freeze({
   UNCLASSIFIED: [],
 });
 
+// REFETCH_FREE skip reasons that mean the free route is done for this review (not a cooldown).
+const REFETCH_SPENT = /^(?:abandoned|max_retries_reached|superseded_at_url|lost_loop_at_url|no_free_tier)$/;
+
 const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
 
 /**
@@ -89,7 +94,7 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'P
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, showAgeDays = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
   let order = CLASS_STRATEGIES[gapClass] || [];
   // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
   // returns the teaser, so the browser goes first; the free refetch stays as
@@ -102,7 +107,13 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   // free refetch makes zero requests and its "fetch_error" says nothing about
   // the page (BRO-7171, 31 such rows on 2026-11-16). Skip it, and keep the
   // capped paid fetch (BD_REQ_BUDGET) as this url's last route.
-  if (!freeTierOk && paidTierOk && order.includes('REFETCH_FREE') && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // BRO-7943: PAID_FETCH goes last in EVERY url-class order, not only for urls
+  // with no free tier (346 rows, 323 recent, dead-ended once REFETCH_FREE was
+  // abandoned). Spend stays capped by BD_REQ_BUDGET + the ledger cooldown.
+  if (hasUrl && order.some((x) => URL_STRATEGIES.has(x)) && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // Free sites with no route (broadwayworld, timeout, chicago-reader, blogs):
+  // once the free refetch is spent for good, look for the real url (BRO-7943).
+  if (hasUrl && order.includes('REFETCH_FREE') && !order.includes('URL_FIND')) order = [...order, 'URL_FIND'];
   // No stored url: every url-based route skips, so a row of any routed class
   // would sit unattempted forever (BRO-7702: 2 floor gaps older than 7 days had
   // no route at all). URL_FIND needs no url; it is the last route for such rows.
@@ -113,6 +124,8 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
     const f = flags[s];
     if (!f || !f.enabled) { skipped.push({ strategy: s, reason: 'disabled' }); continue; }
     if (f.historicOnly && recency === 'recent') { skipped.push({ strategy: s, reason: 'disabled_recent' }); continue; }
+    // A capture needs time to exist: waiting, not permanent (show_too_new is not in gap-terminal PERMANENT_SKIPS).
+    if (f.minShowAgeDays && showAgeDays != null && showAgeDays < f.minShowAgeDays) { skipped.push({ strategy: s, reason: 'show_too_new' }); continue; }
     if (URL_STRATEGIES.has(s) && !hasUrl) { skipped.push({ strategy: s, reason: 'no_url' }); continue; }
     if (gapClass === 'URL_WRONG_PAGE' && URL_STRATEGIES.has(s) && storedUrlOk && !storedUrlOk.ok) {
       skipped.push({ strategy: s, reason: storedUrlOk.reason }); continue;
@@ -121,6 +134,10 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
     if (s === 'REFETCH_FREE' && !freeTierOk) { skipped.push({ strategy: s, reason: 'no_free_tier' }); continue; }
     // same for the paid route: no token, or Bright Data tier-skipped for the host
     if (s === 'PAID_FETCH' && !paidTierOk) { skipped.push({ strategy: s, reason: 'no_paid_tier' }); continue; }
+    if (s === 'URL_FIND' && hasUrl && order.includes('REFETCH_FREE') && !CLASS_STRATEGIES[gapClass].includes('URL_FIND')) {
+      const rf = skipped.find((k) => k.strategy === 'REFETCH_FREE');
+      if (!rf || !REFETCH_SPENT.test(rf.reason)) { skipped.push({ strategy: s, reason: 'refetch_not_spent' }); continue; }
+    }
     const g = runGates[s];
     if (g && !g.ok) { skipped.push({ strategy: s, reason: g.reason }); continue; }
     const e = eligible(s);
