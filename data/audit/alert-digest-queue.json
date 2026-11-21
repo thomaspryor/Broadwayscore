@@ -791,5 +791,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T19:02:34.999Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7511-gemini-callers",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7511-gemini-callers",
+    "description": "land.yml did not land land/bro-7511-gemini-callers: the scripts-lib-tests gate went red at e464519246. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44938896850",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7511-gemini-callers"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "e4645192461e4d18d2e822e3ef0f5443e452f8df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44938896850"
+      }
+    ],
+    "queuedAt": "2026-11-21T19:16:06.843Z"
   }
 ]
