@@ -1,26 +1,31 @@
 {
-  "generatedAt": "2026-11-21T05:27:02.914Z",
+  "generatedAt": "2026-11-21T11:14:34.786Z",
   "night": "2026-11-20",
   "counts": {
     "total": 2,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 2
+    "failed": 1,
+    "notGraded": 1
   },
   "lines": [
     {
-      "verdict": "PENDING",
-      "line": "Bigfoot Ripped My Dog In Half I Saw It: not graded yet, still being checked."
+      "verdict": "FAIL",
+      "line": "Elektra: published by the regular pipeline; 6 of 10 reviews live by 12:00am; Exeunt Magazine went live at 12:54am (late); The New York Times not live by 3:59am; Observer not live by 3:59am; OperaWire not live by 3:59am; emails ready. Failed."
     },
     {
-      "verdict": "PENDING",
-      "line": "Elektra: not graded yet, still being checked; emails ready."
+      "verdict": "UNKNOWN",
+      "line": "Bigfoot Ripped My Dog In Half I Saw It: not graded, no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 24,
+    "graded": 25,
     "passed": 4,
     "passedOnOwn": 3
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "elektra-off-broadway-2026|2026-11-20|review:exeunt-magazine:Loren Noveck": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:nytimes:": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:observer:": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:operawire:": "2026-11-21T11:14:34.786Z"
+  }
 }
