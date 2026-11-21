@@ -332,7 +332,7 @@ async function runOutlet(outlet, all, opts) {
       if (existing.status === 'error') return done(1, 'in-profile probe page not recognised (bot challenge?); not logging in on an uncertain probe');
       if (existing.status === 'logged-in' && inBrowser) {
         // The control: the same url in a cookie-less profile must be walled.
-        const c = await bprobe.classifyWithControl(probe, existing.page, { loadWithCookies: (alt) => bprobe.loadProbe(context, alt), profileControl: (pr, o) => bprobe.profileControlProbe(context, pr, cfg.authCookies, o) }).catch((e) => ({ error: e.message }));
+        const c = await bprobe.classifyWithControl(probe, existing.page, { loadWithCookies: (alt, o) => bprobe.loadProbe(context, alt, o), profileControl: (pr, o) => bprobe.profileControlProbe(context, pr, cfg.authCookies, o) }).catch((e) => ({ error: e.message }));
         // Fallback outlets (BRO-7716): the in-profile probe cannot detect a
         // vacuous (free) probe URL, only this control can. A bot-walled
         // control is tolerated for --probe-only (read-only) and fails closed

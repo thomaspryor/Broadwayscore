@@ -98,7 +98,9 @@ async function classifyWithControl(probe, withCookies, { anon = anonymousProbe, 
   for (const url of probe.altUrls) {
     const alt = { ...probe, url };
     let sub;
-    try { sub = await loadWithCookies(alt); } catch { continue; }
+    // Slow read (8s): an alternate whose anonymous page is long tells logged-in from logged-out only by a
+    // late-rendered paywall marker, so a 3s read of a logged-out profile could miss it (false OK, review 2026-11-21).
+    try { sub = await loadWithCookies(alt, { waitMs: 8000 }); } catch { continue; }
     const ar = await classifyOneUrl(alt, sub, { anon, profileControl });
     if (ar.status === 'logged-in') return { ...ar, usedUrl: url, rotatedFrom: probe.url };
   }
@@ -151,7 +153,13 @@ async function profileControlProbe(context, probe, authCookies, { waitMs } = {})
     for (const c of saved) await context.clearCookies({ name: c.name, domain: c.domain });
     return await loadProbe(context, probe, { waitMs });
   } finally {
-    if (saved.length) await context.addCookies(saved);
+    if (saved.length) {
+      // A failed restore leaves the profile logged out and the caller swallows control errors, so say it loudly.
+      try { await context.addCookies(saved); } catch (e) {
+        console.error(`cookie-browser-probe: RESTORE FAILED for ${saved.length} auth cookie(s) after the profile control: ${e.message}`);
+        throw e;
+      }
+    }
   }
 }
 

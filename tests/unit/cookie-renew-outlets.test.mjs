@@ -507,3 +507,31 @@ test('rotation never passes a logged-out profile (alternate walled for the profi
   const r = await bprobe.classifyWithControl(p, full, { anon: async (pr) => (pr.url === p.url ? full : walled), loadWithCookies: async () => walled });
   assert.equal(r.status, 'vacuous', 'a dead session must keep the safe vacuous stop');
 });
+
+test('rotation loads alternates with the slow (8s) read so a late paywall bar is not missed', async () => {
+  const p = COOKIE_PROBES.newyorker;
+  const full = { html: '<p>article</p>', body: 'x'.repeat(8474) };
+  const walled = { html: '<div data-testid="paywall-bar-thin">', body: 'x'.repeat(645) };
+  const waits = [];
+  // A logged-out profile whose paywall bar renders only on the slow read: must NOT come back logged-in.
+  const loadWithCookies = async (_alt, o = {}) => { waits.push(o.waitMs); return o.waitMs >= 8000 ? walled : full; };
+  const r = await bprobe.classifyWithControl(p, full, { anon: async (pr) => (pr.url === p.url ? full : walled), loadWithCookies });
+  assert.ok(waits.length >= 1 && waits.every((w) => w === 8000), `alternates read with waitMs 8000, got ${waits}`);
+  assert.equal(r.status, 'vacuous');
+});
+
+test('profileControlProbe: a failed cookie restore is logged and rethrown, never silent', async () => {
+  const saved = [{ name: 'NYT-S', domain: '.nytimes.com', value: 'v' }];
+  const errs = [];
+  const orig = console.error; console.error = (m) => errs.push(String(m));
+  const page = { goto: async () => {}, waitForTimeout: async () => {}, content: async () => '<p>x</p>', evaluate: async () => 'x', innerText: async () => 'x', close: async () => {} };
+  const context = {
+    cookies: async () => saved, clearCookies: async () => {},
+    addCookies: async () => { throw new Error('boom'); },
+    newPage: async () => page,
+  };
+  try {
+    await assert.rejects(() => bprobe.profileControlProbe(context, { url: 'https://www.nytimes.com/x' }, ['NYT-S'], { waitMs: 0 }), /boom/);
+  } finally { console.error = orig; }
+  assert.ok(errs.some((m) => /RESTORE FAILED/.test(m)), 'restore failure must be logged');
+});
