@@ -1,19 +1,43 @@
 {
-  "updatedAt": "2026-11-21T16:34:39.989Z",
-  "processed": 1,
-  "failed": 1,
-  "successRate": "50.0%",
+  "updatedAt": "2026-11-21T16:43:30.568Z",
+  "processed": 85,
+  "failed": 65,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 13,
+    "scrapingbee": 8,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 24
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-21T16:15:35.376Z",
+      "event": "bb-session",
+      "session": "793824b7",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-21T16:19:22.405Z",
+      "event": "bb-session",
+      "session": "c215c200",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-21T16:19:22.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T16:38:44.714Z",
+      "event": "bb-session",
+      "session": "6a3847cb",
+      "url": "https://deadline.com/2025/12/walt-disney-world-raiders-of-the-lost-ark-boulder-a"
+    }
+  ]
 }
