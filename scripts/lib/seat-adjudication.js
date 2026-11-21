@@ -323,6 +323,11 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
   return { claims, label };
 }
 
+/** April names used em dashes ("Center Orchestra (front \u2014 rows C-E)"); site copy bans them. */
+function cleanName(n) {
+  return String(n).replace(/\s*\u2014\s*/g, ', ').replace(/\(\s*,\s*/g, '(').replace(/,\s*\)/g, ')').trim();
+}
+
 /**
  * Build the final section from claims the verifier accepted. Returns { section } or
  * { dropped: reason }. Pure: the decision table lives here so the CLI and tests share it.
@@ -335,7 +340,7 @@ function decideSection(original, claims, accepted) {
   if (!sentences.length) sentences = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard.note.replace(/([^.!?])$/, '$1.'));
   if (!sentences.length) return { dropped: 'no supported rationale' };
   const has = (k) => ok.find((c) => c.kind === k);
-  const out = { name: original.name };
+  const out = { name: cleanName(original.name) };
   if (original.rowRange && has('rowRange')) out.rowRange = original.rowRange;
   if (original.bestRow && out.rowRange && has('bestRow')) out.bestRow = original.bestRow;
   out.verdict = original.verdict;
@@ -371,6 +376,6 @@ function quoteHash(q) {
 module.exports = {
   VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, hazardType, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
   normalizeText, htmlToText, theaterNamePatterns, pageNamesTheater, sectionKeywords, selectPassages,
-  wellFormed, quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,
+  wellFormed, cleanName, quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,
   parseVerifyReply, groundRewrite, decideSection, theaterKeepProblems, quoteHash,
 };

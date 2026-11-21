@@ -162,3 +162,11 @@ describe('prompt text is always well-formed UTF-16 (BRO-8018 Marquis failure)', 
     assert.ok(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(p));
   });
 });
+
+describe('section names lose em dashes', () => {
+  test('cleanName', () => {
+    assert.strictEqual(A.cleanName('Center Orchestra (front — rows C-E)'), 'Center Orchestra (front, rows C-E)');
+    assert.strictEqual(A.cleanName('Box Seats — Sides'), 'Box Seats, Sides');
+    assert.strictEqual(A.cleanName('Rear Mezzanine'), 'Rear Mezzanine');
+  });
+});

@@ -118,7 +118,8 @@ describe('seating section data coverage', () => {
   // This checks the more general case — when avoidSeats names a specific
   // section by name alongside a caution word, that section's rationale must
   // at least acknowledge it (not necessarily downgrade the verdict).
-  const CAUTION_WORDS = ['obstruct', 'limited', 'distant', 'avoid', 'watch out'];
+  // 'limited view', not bare 'limited': "legroom can be limited" is not a view warning and doesn't contradict a view verdict (BRO-8018).
+  const CAUTION_WORDS = ['obstruct', 'limited view', 'limited sightline', 'distant', 'avoid', 'watch out'];
   test('sections explicitly named in a cautionary avoidSeats acknowledge the caution in their own rationale', () => {
     for (const [name, entry] of theatersWithSections()) {
       const seating = entry.structuredTips.seating;
@@ -129,7 +130,8 @@ describe('seating section data coverage', () => {
         const sectionNamedInAvoidSeats = nameTokens.length > 0 && nameTokens.every((t) => avoidSeats.includes(t));
         if (!sectionNamedInAvoidSeats) continue;
         const rationale = (s.rationale || '').toLowerCase();
-        const acknowledges = CAUTION_WORDS.some((w) => rationale.includes(w)) || rationale.includes('own seating notes') || rationale.includes('check the seat');
+        // A skip verdict is itself the acknowledgment (BRO-8018: Walter Kerr Balcony is rated skip for blocked views).
+        const acknowledges = s.verdict === 'skip' || CAUTION_WORDS.some((w) => rationale.includes(w)) || rationale.includes('own seating notes') || rationale.includes('check the seat');
         assert.ok(
           acknowledges,
           `${name} avoidSeats cautions about "${s.name}" ("${seating.avoidSeats}") but its rationale doesn't acknowledge it: "${s.rationale}"`
