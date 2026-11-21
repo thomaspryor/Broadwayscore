@@ -16,7 +16,12 @@
  *   held-copy (BRO-7891): a syndicated copy whose original is on the site; it never goes on the site itself, so the
  *   drain and the sweep leave it alone (re-sending it to ingest-urls would be futile).
  *
- * Pure transitions (addEntries, markStatus) are tested on their own; the git wrappers reuse lease-store.
+ * Corrections (BRO-7891 item 2): an entry with kind 'correction' {show, url, field, value, expect?} asks the running
+ *   lane to edit one field of a review it published tonight (the regular fix path, new-fix-plan + execute-approved-fix,
+ *   only reaches the site after the lease ends). The lane applies it to its review file and republishes the row on its
+ *   next pass. Never fetched as a review URL; the drain and the sweep never send one to ingest-urls.
+ *
+ * Pure transitions (addEntries, addCorrections, markStatus) are tested on their own; the git wrappers reuse lease-store.
  */
 const crypto = require('crypto');
 const { execFile } = require('child_process');
@@ -31,6 +36,11 @@ const FINAL_STATUSES = Object.freeze(['published', 'failed', 'rejected', 'alread
 const ALERT_STATUSES = Object.freeze(['failed', 'rejected']);
 const STATUSES = Object.freeze(['queued', ...FINAL_STATUSES]);
 const GIT_TIMEOUT_MS = 20000;
+const CORRECTION_KIND = 'correction';
+// Fields the lane can change on a row it published without changing the row's identity (critic + outlet) or taking it
+// off the site. A take-down or a byline fix needs the regular path or a rollback.
+const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore', 'llmPullQuote']);
+const isCorrection = (e) => !!e && e.kind === CORRECTION_KIND;
 
 const iso = (now) => new Date(typeof now === 'function' ? now() : (now === undefined ? Date.now() : now)).toISOString();
 
@@ -82,6 +92,41 @@ function addEntries(state, { show, lines = [], addedBy = 'unknown', now, ttlMs =
 }
 
 /**
+ * BRO-7891 item 2: queue field corrections for reviews the lane published tonight. Pure. One entry per URL + field; a
+ * second correction of the same URL + field replaces the first (a person correcting their own correction), whatever its
+ * status. The value is checked here with the regular edit's value rules, so a bad value is refused at the CLI.
+ * @param lines [{url, field, value, expect?}] expect = the value the person saw (compare-and-set); absent = any
+ * @returns {{ok, state, added: [id], invalid: [{url, reason}]}}
+ */
+function addCorrections(state, { show, lines = [], addedBy = 'unknown', now, ttlMs = ENTRY_TTL_MS } = {}) {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(String(show || ''))) return { ok: false, reason: 'bad-show', detail: `bad show id "${show}"` };
+  const { FIELD_VALUE_CHECKS } = require('../review-field-edit');
+  const next = { ...state, leases: { ...((state && state.leases) || {}) } };
+  const at = iso(now);
+  const expiresAt = new Date(Date.parse(at) + ttlMs).toISOString();
+  const added = []; const invalid = [];
+  for (const line of lines) {
+    const url = String((line && line.url) || '').trim();
+    const norm = normalizeUrl(url);
+    const field = line && line.field;
+    if (!norm) { invalid.push({ url, reason: 'not an http(s) URL' }); continue; }
+    if (!LANE_CORRECTION_FIELDS.includes(field)) { invalid.push({ url, reason: `the lane can only correct ${LANE_CORRECTION_FIELDS.join(', ')} (got "${field}")` }); continue; }
+    const check = FIELD_VALUE_CHECKS[field];
+    const err = check ? check(line.value, {}, {}) : null;
+    if (err) { invalid.push({ url, reason: err }); continue; }
+    const id = `${show}|fix|${crypto.createHash('sha1').update(`${norm}|${field}`).digest('hex').slice(0, 12)}`;
+    next.leases[id] = {
+      holder: HOLDER, kind: CORRECTION_KIND, show, url, field, value: line.value,
+      ...(Object.prototype.hasOwnProperty.call(line, 'expect') ? { expect: line.expect } : {}),
+      addedAt: at, addedBy: String(addedBy), acquiredAt: at, heartbeatAt: at, expiresAt,
+    };
+    added.push(id);
+  }
+  if (!added.length) return { ok: false, reason: 'nothing-valid', detail: invalid.map((i) => `${i.url}: ${i.reason}`).join('; '), invalid };
+  return { ok: true, state: next, added, invalid };
+}
+
+/**
  * Record what happened to entries. Pure. Unknown ids are ignored (the entry expired or was never there). A final
  * status is never overwritten by 'queued' (a slow write must not reopen a published entry).
  * @param updates [{id, addedAt?, status, reason?}]: with addedAt, applied only to that generation of the entry
@@ -122,6 +167,14 @@ function inboxAlertFor(update) {
   const url = update.url || update.id;
   const why = update.reason ? `: ${String(update.reason).slice(0, 300)}` : '';
   const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe, as near-miss ingestCommand
+  if (update.kind === CORRECTION_KIND) {
+    return {
+      conditionKey: `opening-night-lane-inbox:${update.id}@${update.addedAt || ''}`,
+      title: `Lane correction ${update.status} for ${show}`,
+      description: `The opening-night lane did not put the ${update.field || 'field'} correction for ${url} on the site${why}. `
+        + `Fix it the regular way (it goes live with the first rebuild after the lane): node scripts/new-fix-plan.js --review-edit='${show}/<file>.json:${update.field || '<field>'}=<value>'`,
+    };
+  }
   const fix = update.status === 'rejected'
     ? `If it is tonight's review, add it again with --force: node scripts/opening-night-lane-inbox.js add --show=${show} --url=${q(url)} --force`
     : `The drain sends it to ingest-urls.yml after the lane ends; to retry now: node scripts/opening-night-lane-inbox.js add --show=${show} --url=${q(url)}`;
@@ -143,6 +196,12 @@ function storeOpts(opts = {}) {
 function addSync(opts, args) {
   const store = require('./lease-store');
   return store.casTransition(storeOpts(opts), (s) => addEntries(s, { ...args, now: opts.now }));
+}
+
+/** Queue corrections (sync git, compare-and-swap). */
+function addCorrectionsSync(opts, args) {
+  const store = require('./lease-store');
+  return store.casTransition(storeOpts(opts), (s) => addCorrections(s, { ...args, now: opts.now }));
 }
 
 /** Write statuses back (sync git, compare-and-swap). */
@@ -183,6 +242,6 @@ async function readForShow({ repoDir, remote = 'origin', show }) {
 }
 
 module.exports = {
-  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES, ALERT_STATUSES,
-  normalizeUrl, entryId, addEntries, markStatus, entriesFor, isOpen, inboxAlertFor, addSync, markSync, readSync, readForShow,
+  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES, ALERT_STATUSES, CORRECTION_KIND, LANE_CORRECTION_FIELDS,
+  normalizeUrl, entryId, addEntries, addCorrections, isCorrection, markStatus, entriesFor, isOpen, inboxAlertFor, addSync, addCorrectionsSync, markSync, readSync, readForShow,
 };

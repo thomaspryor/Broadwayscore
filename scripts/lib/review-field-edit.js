@@ -858,4 +858,4 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
 }
 
 module.exports = {
-  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };
+  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, FIELD_VALUE_CHECKS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };
