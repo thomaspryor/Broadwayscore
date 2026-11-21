@@ -1387,20 +1387,6 @@
     "queuedAt": "2026-11-20T21:03:42.443Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T00:29:29.862Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-cinderella-lyric-hammersmith-off-west-end-2026",
     "title": "Unhandled CV.wrongProduction on Cinderella",
     "description": "guardian/Lyndsey Winship (guardian--lyndsey-winship.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre\nguardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a valid review of a Cinderella production, bu — https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
@@ -1413,5 +1399,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T00:53:04.337Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T01:46:08.613Z"
   }
 ]

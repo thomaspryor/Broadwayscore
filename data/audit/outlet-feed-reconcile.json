@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T00:29:44.566Z",
+  "generatedAt": "2026-11-21T01:46:25.087Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -152,15 +152,31 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "lighting-and-sound-america",
-      "error": "HTTP 500 for https://lightingandsoundamerica.com/news/rss.asp"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 909,
+  "itemsScanned": 873,
   "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [
