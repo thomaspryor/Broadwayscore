@@ -17,19 +17,21 @@
  *   CJS:  require('./lib/refuse-under-bare-node-test');
  *   ESM:  import './lib/refuse-under-bare-node-test.js';
  *
- * It exits 0 (the runner reports the file as passing with no tests) only when
- * BOTH hold:
- *   1. this process is a file the test runner itself spawned: node passes
- *      --test-isolation=process (Node >= 22.8) in that child's execArgv; on
- *      older Node, NODE_TEST_CONTEXT is set and the parent command line has a
- *      bare `--test` flag;
- *   2. the entry file (argv[1]) is not a *.test.{js,mjs,cjs,ts,mts,cts} file.
- * A script spawned BY a test file (parent is `node x.test.mjs`, execArgv
- * empty) or run directly (`node scripts/sd-parity-test.js`) is unaffected.
- * An EXPLICIT `node --test scripts/x-test.js` is refused too (the runner
- * child looks the same), so a real node:test suite must never load this: it
- * would report green without running. Name such files *.test.* instead; the
- * class test fails on a guarded file that imports node:test.
+ * It exits 0 (the runner reports the file as passing with no tests) when
+ * ALL hold:
+ *   1. the entry file (argv[1]) is not a *.test.{js,mjs,cjs,ts,mts,cts} file;
+ *   2. this process looks like a runner child: --test-isolation=process or
+ *      --test in execArgv (Node >= 22.8 runner children), or NODE_TEST_CONTEXT
+ *      set (older Node, and anything a test file spawns);
+ *   3. the parent command line has a bare `--test` flag (so the parent is the
+ *      runner, not a `node x.test.mjs` that spawned this script) and does NOT
+ *      name this file. `node --test scripts/x-test.js` names it: the caller
+ *      asked for it, so it runs and its exit code counts (no false green for
+ *      the custom-runner self-tests). Only discovery by glob is refused.
+ * If the parent command line cannot be read, condition 3 counts as met
+ * (fail safe: refuse rather than run live work).
+ * A script spawned BY a test file or run directly (`node scripts/x-test.js`)
+ * is unaffected.
  *
  * Not covered: `node --test --test-isolation=none`, which imports every file
  * into the runner process itself (opt-in flag, not the bare default).
@@ -39,10 +41,11 @@
  * allowlisted there.
  */
 
+const fs = require('fs');
 const path = require('path');
 
 const { TEST_FILE_RE } = require('./test-run-guard');
-const BARE_TEST_FLAG_RE = /(^|\s)--test(\s|$)/;
+const BARE_TEST_FLAG_RE = /(^|\s)--test(\s|=|$)/;
 
 function execArgvIsRunnerChild(execArgv) {
   return (execArgv || []).some(
@@ -64,21 +67,38 @@ function parentArgs(ppid) {
   }
 }
 
-/**
- * Pure decision. `getParentArgs` is only consulted on the old-Node fallback.
- */
-function shouldRefuse({ execArgv, env, argv, getParentArgs }) {
-  const entry = path.basename(String((argv && argv[1]) || ''));
-  if (!entry || TEST_FILE_RE.test(entry)) return false;
-  if (execArgvIsRunnerChild(execArgv)) return true;
-  if (env && env.NODE_TEST_CONTEXT && typeof getParentArgs === 'function') {
-    return BARE_TEST_FLAG_RE.test(getParentArgs() || '');
+function namesEntry(parent, entry, cwd) {
+  let real;
+  try {
+    real = fs.realpathSync(entry);
+  } catch {
+    real = path.resolve(cwd, entry);
   }
-  return false;
+  return parent.split(/\s+/).some((tok) => {
+    if (!tok || tok.startsWith('-')) return false;
+    try {
+      return fs.realpathSync(path.resolve(cwd, tok)) === real;
+    } catch {
+      return false;
+    }
+  });
+}
+
+/**
+ * Pure decision (getParentArgs and cwd injected for tests).
+ */
+function shouldRefuse({ execArgv, env, argv, getParentArgs, cwd = process.cwd() }) {
+  const entryPath = String((argv && argv[1]) || '');
+  const entry = path.basename(entryPath);
+  if (!entry || TEST_FILE_RE.test(entry)) return false;
+  if (!execArgvIsRunnerChild(execArgv) && !(env && env.NODE_TEST_CONTEXT)) return false;
+  const parent = typeof getParentArgs === 'function' ? getParentArgs() || '' : '';
+  if (!parent) return true;
+  if (!BARE_TEST_FLAG_RE.test(parent)) return false;
+  return !namesEntry(parent, entryPath, cwd);
 }
 
 if (
-  !process.env.BSC_ALLOW_UNDER_NODE_TEST &&
   shouldRefuse({
     execArgv: process.execArgv,
     env: process.env,
@@ -88,8 +108,8 @@ if (
 ) {
   const rel = path.relative(process.cwd(), String(process.argv[1]));
   process.stdout.write(
-    `# skipped ${rel}: not a *.test.* file, refusing to run under node --test ` +
-      `(BRO-7984). Run it directly: node ${rel}\n`,
+    `# skipped ${rel}: not a *.test.* file, refusing to run it from node --test's ` +
+      `file discovery (BRO-7984). Run it directly: node ${rel}\n`,
   );
   process.exit(0);
 }
