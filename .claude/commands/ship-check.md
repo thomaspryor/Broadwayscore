@@ -15,7 +15,7 @@ Sessions kept invoking this skill and then running a reduced version (one cheap 
 
 1. **Run it BEFORE `git push … land/<name>`.** A land push of more than 30 gated lines is blocked until this skill's reviewers have run (`pre-push-land-preflight.sh`), and "SAFE TO ARCHIVE" is refused after a ship-check without them (the Stop hook, `verify-edits.sh`). A review of already-landed code can stop nothing.
 2. **It applies to every code change**, not only `src/`: `scripts/`, `.github/workflows/`, `.claude/hooks/`, `supabase/`, tests. "Nothing under src/" is not a reason to skip Phase 5.
-3. **Phase 5 is required in full.** Both of these must run AFTER you invoke the skill, or the hooks do not count it: (a) a Claude reviewer, an `Agent` call with `subagent_type: "review-panelist"` (some containers lack that type; `general-purpose` is accepted then, but the prompt must be a real review prompt of 200+ characters that says to review/audit the diff); (b) an external adversarial reviewer: a `curl -d` POST to `api.openai.com/v1/chat/completions` (Codex runs in cloud sessions too: `bash scripts/codex/ensure-cli.sh` installs it, BRO-7927; the gpt-5.4-mini fallback is for when that prints MISSING, and the coverage banner must say so), a Gemini `generateContent` call, or `codex exec`, with a real response (an `echo`, a `/v1/models` listing, an empty or error reply does not count). The Claude reviewer's prompt must be a real review prompt (200+ characters). The fresh-eyes UX reviewer is required only when the diff touches UI files. (c) the skeptic reviewer (reviewer 4 below, BRO-7839): `node scripts/lib/skeptic-review-stop.mjs --ship-check`. It asks the owner's question ("is this fully tested? what is untested or could still be broken?") over your diff and the commands you actually ran. Required from 2026-11-25; until then a missing run is reported as advisory.
+3. **Phase 5 is required in full.** Both of these must run AFTER you invoke the skill, or the hooks do not count it: (a) a Claude reviewer, an `Agent` call with `subagent_type: "review-panelist"` (some containers lack that type; `general-purpose` is accepted then, but the prompt must be a real review prompt of 200+ characters that says to review/audit the diff); (b) an external adversarial reviewer: a `curl -d` POST to `api.openai.com/v1/chat/completions` (Codex runs in cloud sessions too: `bash scripts/codex/ensure-cli.sh` installs it, BRO-7927; the gpt-5.4-mini fallback is for when that prints MISSING, and the coverage banner must say so), a Gemini `generateContent` call, or `codex exec`, with a real response (an `echo`, a `/v1/models` listing, an empty or error reply does not count). The Claude reviewer's prompt must be a real review prompt (200+ characters). The fresh-eyes UX reviewer is required only when the diff touches UI files. (c) the skeptic reviewer (reviewer 5 below, BRO-7839): `node scripts/lib/skeptic-review-stop.mjs --ship-check`. It asks the owner's question ("is this fully tested? what is untested or could still be broken?") over your diff and the commands you actually ran. Required from 2026-11-25; until then a missing run is reported as advisory.
 4. **Phase 2: `land.yml` runs `tsc` and `next lint` strictly on the rebased tree, so you may leave those to it (say so in the report). It does NOT run the build: when the diff touches `src/`, run `npm run build` yourself after invoking this skill, or the land gate blocks the push.** Phase 3 and Phase 4 may be skipped only when the diff has no data or UI effect, and the report must say that. **A diff that touches the fetch / SERP chain (`url-discovery.js`, `scraper.js`, `site-search-discovery.js`, `free-first-fetch.js`, `serp-*.js`, or any call to a paid vendor) always has a data effect: it moves spend. Phase 3 is then NOT skippable; run `node scripts/spend-effect-check.js --since=<ISO time it went live> --hosts=<hosts>` (add `--hosts=serp` for search) after it lands and put the table in the report (or `NO-EFFECT-CHECK: <reason>`). The cloud Stop check refuses `Phase 3: skipped: no data effect` for such a change (BRO-7552).**
 5. **Finish with a `COVERAGE:` block**, one line per phase 2 to 5: `ran: <the command or Agent>` or `skipped: <reason>`. A skipped Phase 5 reviewer is a failure, not an option.
 6. **Record the verdict with the coverage-checked command**, not a bare `--query=record`: `node scripts/lib/review-coverage.mjs --record`. It refuses to record a pass unless both reviewers ran, and attaches evidence when they did. Commit first: on a pass it also stamps the `Review-Receipt` trailer on HEAD (message only), which land.yml checks.
@@ -178,9 +178,9 @@ npx playwright screenshot --browser=chromium --viewport-size=1440,900 --full-pag
 - Is the new feature visually consistent with the established design language?
 - Any regressions on pages that weren't supposed to change?
 
-### Phase 5: Multi-angle review (run ALL THREE in parallel)
+### Phase 5: Multi-angle review (run reviewers 1 to 4 in parallel, then the skeptic)
 
-Launch all three reviewers simultaneously. Save the screenshots to files that can be referenced.
+Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can be referenced.
 
 1. **Claude subagent — Codebase-aware UX review** — Use the Task tool with subagent_type "review-panelist":
 
@@ -314,7 +314,35 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
 
-4. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:
+4. **Gemini (with codebase access) — Correctness review (BRO-7987)** — Run via Bash. A third model family that reads the code: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend, about $0.09 a review on gemini-2.5-pro). Codex challenges the design; this one hunts correctness bugs, so the two overlap little.
+   ```bash
+   GEMINI_OUT=$(mktemp /tmp/ship-check-gemini.XXXXXX)
+   DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
+   CURRENT=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+   if [ "$CURRENT" = "$DEFAULT_BRANCH" ] || [ "$CURRENT" = "HEAD" ]; then BASE=$(git rev-parse HEAD~5 2>/dev/null) || BASE=$(git rev-list --max-parents=0 HEAD | head -1); else BASE="$DEFAULT_BRANCH"; fi
+   {
+   cat <<'PROMPT_HEAD'
+   You are a senior code reviewer. You can READ this repository with your file tools (read_file, grep_search, glob, list_directory). Use them: open every file the diff touches and the code it calls or is called by, and check each claim against the real code before you make it. Every finding must cite file:line. No generic advice. Do not run setup or preflight commands; you cannot, and none are needed.
+
+   Find, most severe first:
+   1. Correctness bugs: wrong units, off-by-one, inverted conditions, wrong argument order, a caller the diff did not update, a return value it ignores.
+   2. Silent failures: errors swallowed, an empty result treated as success, a fallback that hides the failure.
+   3. Behaviour that differs between a fresh cloud container (CLAUDE_CODE_REMOTE=true, no local state) and the owner's Mac.
+   4. Security: secrets printed or logged, injection, unsanitised input reaching a shell.
+   If you find nothing real, say "No findings" and list what you checked. Under 500 words. Bullet points only.
+
+   THE DIFF TO REVIEW:
+   PROMPT_HEAD
+   git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ 2>/dev/null | head -2000
+   echo; echo "=== UNCOMMITTED CHANGES ==="
+   git diff HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ 2>/dev/null | head -1000
+   } | node scripts/gemini/review.js --caller=ship-check > "$GEMINI_OUT"
+   GEMINI_RC=$?
+   cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
+   ```
+   Its status line (stderr) goes in the coverage banner: `GEMINI_RC=0` with `ok … reads=N` ran with repo access (`no-reads`: it opened no files, so its file:line claims are unverified); `3` `MISSING: <reason>` (no key, or the CLI could not be installed: print the reason as a degraded-review line); `1` `FAILED:`/`EMPTY:` (a coverage failure, not a pass); `4` `UNSAFE:` (the read-only lock did not hold: do not use the review, run `git status`, undo only the changes it names, and report it as a P0 about the review tooling). Its line numbers can be a few lines off; open the file before acting on a finding.
+
+5. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:
 
    ```bash
    node scripts/lib/skeptic-review-stop.mjs --ship-check
@@ -327,7 +355,7 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 Present findings in a structured report.
 
 **Reviewer coverage (print this FIRST — a degraded review is NOT a passed review):**
-State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review, e.g. a failed data preflight — task #1320), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review (blocked by data preflight) — fell back to gpt-5.4-mini`; do not fold either into a bare "reviewed, no findings" line, since an empty/refused-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
+State exactly which reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback, (4) Gemini correctness review: its `GEMINI-REVIEW:` status line with the file-read count, or its MISSING/FAILED/UNSAFE reason. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review, e.g. a failed data preflight — task #1320), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review (blocked by data preflight) — fell back to gpt-5.4-mini`; do not fold either into a bare "reviewed, no findings" line, since an empty/refused-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
 
 **P0 — Blockers** (must fix before shipping):
 - Build/lint/type errors
