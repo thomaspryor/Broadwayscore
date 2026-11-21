@@ -337,7 +337,9 @@ async function main() {
       bylineFromListing: byline.bylineFromListing,
       url,
       source: 'ingest-urls',
-      fields: ingestCaller ? { ingestSource: ingestCaller } : {},
+      // BRO-7934: a run with no named dispatcher is a person or session: record that as 'manual'
+      // instead of leaving the file with no caller (164 files in one week).
+      fields: { ingestSource: ingestCaller || 'manual' },
     };
     if (publishDate) input.publishDate = publishDate;
     if (bylineConflictStands(byline.criticName, bylineConflict)) {
