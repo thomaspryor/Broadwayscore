@@ -116,17 +116,8 @@ The owner is mostly on iPhone/iPad. Before saying something needs "the Mac":
 
 - **Phone browser is enough** (give a direct link, never say Mac): GitHub settings (secrets, token scopes), ScrapingBee, Bright Data, Vercel and Supabase dashboards, Gmail filters (desktop-site mode), claude.ai/code environment settings, Routines.
 - **Cloud can do it**: committed scripts with production keys (`cloud-run-script.js`), any workflow dispatch, private data edits (`execute-approved-fix.yml`), starting work in its own session (`create_session`).
-- **A session on the Mac can do it** (start it yourself, see "Running work on the owner's Mac Studio" below): Xcode, iOS simulators, the self-hosted E2E runner, the Mac's checkouts and files, anything a command on the Mac can do.
+- **A Mac session can do it**: Xcode, simulators, the Mac's files. Start it yourself: `docs/cloud-mac-studio-runbook.md`.
 - **Really the owner's hands**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
-
-## Running work on the owner's Mac Studio (BRO-8014)
-
-Cloud sessions can start a Claude session ON the Mac Studio. Do it yourself; never ask the owner to open a local session or run a command.
-1. `list_environments`: the Mac shows as `kind: bridge` environments named `Toms-Mac-Studio:<folder>:<id>` (folders `Broadwayscore`, `BroadwayScorecard-app`, `tmp`). Pick the one for the repo. `list_computer_folders` reports these folders `not_available` to cloud sessions: that only means you can't attach the folder here, starting a session there still works.
-2. `create_session` with that `environment_id`, a `model` from `node scripts/session-model.js BRO-N`, and a self-contained prompt (card, steps, what to verify, `send_message` the result to your session id from `get_session`).
-3. First time in a session it is refused with `elevated_session_untrusted_device`: call `confirm_repository_trust` with the digest the refusal gives. The owner taps yes on their phone (no chat question first), then repeat the same `create_session`.
-4. The Mac must be online (green dot under Devices in the app). If no bridge environment is listed or the session never connects, say so in one line and continue the rest from cloud.
-Prompt the Mac session to avoid anything needing the Mac password (sudo) and never to ask the owner to type commands. Example: the self-hosted E2E runner setup, started from the GitHub-billing session on 2026-11-21.
 
 ## Key gaps cloud has vs local
 
@@ -139,7 +130,7 @@ Prompt the Mac session to avoid anything needing the Mac password (sudo) and nev
 
 ## When in doubt
 
-Do what you can from cloud first. Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). If it should happen now, start it on the Mac yourself (section above) instead of parking it. Else say so in a line, keep going. Never ask the owner to switch to a local session or make a technical choice.
+Do what you can from cloud first. Work a Mac session can do alone: `--dispatch --mac-only "<why>"` (`linear-brain.js --help`). Else say so in a line, keep going. Never ask the owner to switch to a local session or make a technical choice.
 
 ## Starting a worker session (BRO-5040)
 
