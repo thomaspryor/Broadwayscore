@@ -17,7 +17,17 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { computeOutletFulltext, evaluateFloors, recentYears } = require('./lib/outlet-fulltext');
+const { computeOutletFulltext, evaluateFloors, recentYears, countPendingCandidates } = require('./lib/outlet-fulltext');
+
+function countPendingCandidatesFor(base) {
+  const readJ = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
+  const data = path.join(__dirname, '..', 'data');
+  const shows = readJ(path.join(data, 'shows.json'));
+  const reviews = readJ(path.join(data, 'reviews.json'));
+  const showsById = new Map(((shows && (shows.shows || shows)) || []).map((s) => [s.id, s]));
+  const heldIndex = require('./lib/pending-triage').buildHeldUrlIndex((reviews && (reviews.reviews || reviews)) || []);
+  return countPendingCandidates({ base, showsById, heldIndex });
+}
 const { INERT_STRATEGIES } = require('./lib/gap-recovery-ledger');
 const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 
@@ -45,11 +55,13 @@ function main() {
     }
   } catch (e) { console.error(`check-outlet-fulltext-floors: ledger unreadable (${ledger}): ${e.message}`); return 2; }
   const { rates, gaps } = computeOutletFulltext({ base });
-  const v = evaluateFloors({ rates, gaps, attemptedKeys, staleDays: parseInt(opt('stale-days', '7'), 10) || 7 });
-  if (asJson) { console.log(JSON.stringify({ ...v, ledgerRows, gapCount: gaps.length }, null, 1)); return v.ok ? 0 : 1; }
+  // BRO-8023: unsettled _pending candidates of tracked outlets are gaps too.
+  const pc = countPendingCandidatesFor(base);
+  const v = evaluateFloors({ rates, gaps, attemptedKeys, staleDays: parseInt(opt('stale-days', '7'), 10) || 7, pendingCandidates: pc.byOutlet });
+  if (asJson) { console.log(JSON.stringify({ ...v, ledgerRows, gapCount: gaps.length, pendingCandidates: pc.rows.length }, null, 1)); return v.ok ? 0 : 1; }
   console.log(`Major-outlet full text, ${recentYears().join('/')} productions (ledger ${ledgerRows} rows, ${gaps.length} gaps):`);
   for (const x of v.outlets) {
-    console.log(`  ${x.outlet.padEnd(16)} ${String(x.pct).padStart(5)}%  floor ${x.floor}%  gaps ${String(x.gaps).padStart(3)}  never attempted ${String(x.unattempted).padStart(3)}${x.fail ? '  FAIL' : x.below ? '  below floor (all gaps attempted)' : ''}`);
+    console.log(`  ${x.outlet.padEnd(16)} ${String(x.pct).padStart(5)}%  floor ${x.floor}%  gaps ${String(x.gaps).padStart(3)}  never attempted ${String(x.unattempted).padStart(3)}${x.pending ? `  (${x.pending} unsettled in _pending)` : ''}${x.fail ? '  FAIL' : x.below ? '  below floor (all gaps attempted)' : ''}`);
   }
   if (v.staleUnattempted.length) {
     console.log(`\n${v.staleUnattempted.length} gap(s) older than the stale window with no recovery attempt logged:`);

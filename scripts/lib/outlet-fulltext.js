@@ -196,6 +196,40 @@ function quotedExcerptDuplicates({ base, tierOf = defaultTierOf(), outlets = MAJ
 }
 
 /**
+ * BRO-8023: _pending stubs of tracked outlets on recent productions that no rule
+ * has settled (no promoteSkippedReason / rssIdentityRejected) and the no-fetch
+ * triage still calls a candidate. These are reviews the site may be missing
+ * that the scored-folder scan above cannot see: 242 not-held times-uk links sat
+ * in _pending while this report said times-uk had 14 gaps.
+ * @param {{base:string, outlets?:string[], showsById?:Map<string,object>, heldIndex?:Map}} o
+ * @returns {{byOutlet: Record<string,number>, rows: object[]}}
+ */
+function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsById = new Map(), heldIndex = new Map() }) {
+  const T = require('./pending-triage');
+  const want = new Set(outlets);
+  const byOutlet = {};
+  const rows = [];
+  const pend = path.join(base, '_pending');
+  let dirs = [];
+  try { dirs = fs.readdirSync(pend); } catch { return { byOutlet, rows }; }
+  for (const s of dirs) {
+    if (!isRecentProductionShow(s)) continue;
+    let fl; try { fl = fs.readdirSync(path.join(pend, s)); } catch { continue; }
+    for (const f of fl) {
+      if (!f.endsWith('.json')) continue;
+      const r = readJson(path.join(pend, s, f));
+      const o = r && (r.outletId || f.split('--')[0]);
+      if (!r || !want.has(o) || T.isSettledPendingStub(r)) continue;
+      const v = T.triagePendingStub(r, { showId: s, show: showsById.get(s), heldIndex });
+      if (v.verdict !== 'candidate') continue;
+      byOutlet[o] = (byOutlet[o] || 0) + 1;
+      rows.push({ outlet: o, show: s, file: f, url: r.url || null });
+    }
+  }
+  return { byOutlet, rows };
+}
+
+/**
  * The floor verdict (BRO-7702 owner rule: no gap, and no write-off without
  * logged attempts). An outlet fails when it is below its floor AND at least
  * one of its gaps has never been attempted (below the floor with every gap
@@ -205,16 +239,23 @@ function quotedExcerptDuplicates({ base, tierOf = defaultTierOf(), outlets = MAJ
  * @param {{rates:object, gaps:object[], attemptedKeys:Set<string>, nowMs?:number, staleDays?:number}} a
  * @returns {{ok:boolean, outlets:object[], staleUnattempted:object[], belowFloor:string[], failingOutlets:string[]}}
  */
-function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleDays = 7 }) {
+function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleDays = 7, pendingCandidates = {} }) {
   const ageDays = (g) => {
     const t = Date.parse(g.firstSeenAt || g.publishDate || '');
     return Number.isFinite(t) ? (nowMs - t) / 86400e3 : Infinity; // undated = old
   };
-  const outlets = Object.entries(rates).map(([o, t]) => {
+  // BRO-8023: an outlet with candidates still in _pending is missing reviews the scored scan cannot see; they
+  // count as never-attempted gaps (in the denominator too) so "every outlet at floor" cannot hide them.
+  const allOutlets = new Set([...Object.keys(rates), ...Object.keys(pendingCandidates)]);
+  const outlets = [...allOutlets].map((o) => {
+    const t = rates[o] || { n: 0, full: 0, documented: 0, dupCovered: 0, pct: 100, floor: floorFor(o) };
+    const pending = pendingCandidates[o] || 0;
     const og = gaps.filter((g) => g.outlet === o);
-    const unattempted = og.filter((g) => !attemptedKeys.has(g.reviewKey));
-    const below = t.pct < t.floor;
-    return { outlet: o, pct: Math.round(t.pct * 10) / 10, floor: t.floor, n: t.n, gaps: og.length, unattempted: unattempted.length, below, fail: below && unattempted.length > 0 };
+    const unattempted = og.filter((g) => !attemptedKeys.has(g.reviewKey)).length + pending;
+    const n = t.n + pending;
+    const pct = n ? (100 * (t.full + t.documented + t.dupCovered)) / n : 100;
+    const below = pct < t.floor;
+    return { outlet: o, pct: Math.round(pct * 10) / 10, floor: t.floor, n, gaps: og.length + pending, pending, unattempted, below, fail: below && unattempted > 0 };
   }).sort((a, b) => a.pct - b.pct);
   const staleUnattempted = gaps.filter((g) => !attemptedKeys.has(g.reviewKey) && ageDays(g) > staleDays)
     .map((g) => ({ reviewKey: g.reviewKey, outlet: g.outlet, tier: g.tier, ageDays: Number.isFinite(ageDays(g)) ? Math.round(ageDays(g)) : null }));
@@ -226,5 +267,5 @@ module.exports = {
   evaluateFloors,
   MAJOR_FULLTEXT_OUTLETS, STRICT_OUTLETS, FLOOR_STRICT, FLOOR_DEFAULT,
   isMajorFulltextOutlet, floorFor, sameCritic, isRecentProductionShow, recentYears, isFull, excerptPassages, excerptQuotedIn,
-  computeOutletFulltext, quotedExcerptDuplicates, scannerExclusions,
+  computeOutletFulltext, quotedExcerptDuplicates, scannerExclusions, countPendingCandidates,
 };
