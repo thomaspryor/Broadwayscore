@@ -135,3 +135,18 @@ test('review fix: adapter grouping never pulls a retry or a lower band ahead of 
   const mixed = [B(1, 'telegraph', { recency: 'recent' }), B(2, 'financialtimes', { recency: 'recent' }), B(3, 'telegraph', { recency: 'recent' }), B(4, 'financialtimes'), B(5, 'telegraph'), B(6, 'financialtimes')];
   assert.deepEqual(PO.groupBrowserSessions(mixed, name).map((c) => c.id), [1, 3, 2, 4, 6, 5]);
 });
+
+test('class guard: a manual tier pin whose text now classifies complete is reported stale (BRO-7943)', () => {
+  const L = require('./gap-recovery-ledger.js');
+  const classify = (r) => ({ contentTier: (r.fullText || '').length > 3000 ? 'complete' : 'truncated' });
+  assert.equal(L.isStaleManualTierPin({ manualContentTier: 'truncated', fullText: 'x'.repeat(9381) }, classify), true);
+  assert.equal(L.isStaleManualTierPin({ manualContentTier: 'truncated', fullText: 'x'.repeat(2913) }, classify), false); // the pin still holds
+  assert.equal(L.isStaleManualTierPin({ manualContentTier: 'invalid', fullText: 'x'.repeat(9381) }, classify), false); // a verdict, not a length call
+  assert.equal(L.isStaleManualTierPin({ fullText: 'x'.repeat(9381) }, classify), false);
+  // the pin itself is not passed to the classifier
+  let seen; L.isStaleManualTierPin({ manualContentTier: 'stub', fullText: 'y' }, (r) => { seen = r; return { contentTier: 'stub' }; });
+  assert.equal(seen.manualContentTier, undefined);
+  // the real classifier honours the pin, so the check must strip it: with the real one a pinned complete text reads stale
+  const Q = require('./content-quality.js');
+  assert.equal(Q.classifyContentTier({ manualContentTier: 'truncated', fullText: 'z' }).contentTier, 'truncated');
+});

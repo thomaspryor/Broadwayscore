@@ -152,6 +152,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       return e;
     };
     const owned = L.ownedRecordReason(review);
+    if (owned === 'manual_tier' && L.isStaleManualTierPin({ ...review, showId: row.showId }, require('./lib/content-quality').classifyContentTier)) STALE_PINS.push(reviewKey);
     // Re-selection with extra run gates: a browser session that fails at run
     // time falls through to the next strategy instead of starving it.
     const reselect = (extraGates = {}) => selectStrategy({
@@ -218,12 +219,14 @@ function printPlan(cands) {
     console.log(`  ${k.padEnd(26)} ${String(byClass[k]).padStart(5)}  ${Object.entries(v).map(([s, n]) => `${s}=${n}`).join(' ')}`);
   }
   console.log('\nno strategy, by first skip reason chain:', JSON.stringify(skipReasons));
+  if (STALE_PINS.length) console.log(`\nSTALE MANUAL TIER PINS (${STALE_PINS.length}): pinned below complete, but the text now classifies complete; clear manualContentTier so the gap can close (BRO-7943):\n  ${STALE_PINS.join('\n  ')}`);
   console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v.enabled]))));
   return { byClass, byStrategy, byClassStrategy, skipReasons };
 }
 
 /** Stats for --summary (nightly reads it; never a review file). */
 let DRY_WORK_ORDER = null;
+const STALE_PINS = [];
 let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
 const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, timeBudgetHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
 function writeSummary() {
