@@ -296,7 +296,7 @@ test('BRO-7994: no outside trigger, or only tests edited, or nothing landed -> a
 test('a wrapper before the interpreter still counts as a direct run; text that mentions one does not', () => {
   const ev = [...edit('scripts/fixture-job.js'), ...landed()];
   for (const c of ['timeout 300 node scripts/fixture-job.js --x', 'FOO=1 node scripts/fixture-job.js', 'nohup node scripts/fixture-job.js &',
-    'timeout -k 5 300 node scripts/fixture-job.js', 'nice -n 10 node scripts/fixture-job.js', 'cd x && env A=1 time node scripts/fixture-job.js']) {
+    'timeout -k 5 300 node scripts/fixture-job.js', 'nice -n 10 node scripts/fixture-job.js', 'cd x && env A=1 time node scripts/fixture-job.js', 'timeout 300 env FOO=1 node scripts/fixture-job.js']) {
     assert.equal(decide([...ev, ...bash(c)]).decision, 'allow', c);
   }
   for (const c of ['echo timeout 300 node scripts/fixture-job.js', 'timeout 300 node scripts/fixture-job.js --help', 'grep node scripts/fixture-job.js']) {
