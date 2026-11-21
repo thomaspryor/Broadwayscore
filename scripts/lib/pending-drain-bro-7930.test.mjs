@@ -209,3 +209,24 @@ test('raiseDrainHealthAlerts fires the zero-promote alert and resolves the growt
   assert.deepEqual(fired, ['pending-drain-zero-promote']);
   assert.deepEqual(resolved, ['pending-drain-growth']);
 });
+
+// Ship-check findings (BRO-7930): scoped cursors, stale needsRefetch, 4-digit numeric titles, wedge on unreadable stub.
+test('state keeps separate open_/pending cursors', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const ds = (await import('node:module')).createRequire(import.meta.url)('./pending-drain-state.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pds-'));
+  ds.saveState(dir, { cursors: { recent: 'a', other: null, open_recent: 'b', open_other: 'c' }, turn: 1, history: [] });
+  const s = ds.loadState(dir);
+  assert.equal(s.cursors.open_recent, 'b'); assert.equal(s.cursors.open_other, 'c'); assert.equal(s.cursors.recent, 'a');
+});
+test('scoring decision clears stale needsRefetch', async () => {
+  const lg = (await import('node:module')).createRequire(import.meta.url)('./limbo-gate.js');
+  const out = lg.applyDecision({ needsRefetch: true }, { route: 'scoring', rule: 'queued' }, '2026-11-21T00:00:00Z');
+  assert.equal(out.needsRefetch, undefined);
+  assert.equal(lg.applyDecision({}, { route: 'refetch', rule: 'x' }, 'n').needsRefetch, true);
+});
+test('4-digit numeric title (1984) is not a bare generic title; 3-digit still is', async () => {
+  const g = (await import('node:module')).createRequire(import.meta.url)('./generic-title-guard.js');
+  assert.equal(g.genericSingleWordTitle('1984'), null);
+  assert.equal(g.genericSingleWordTitle('13'), '13');
+});

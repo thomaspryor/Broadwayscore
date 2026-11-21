@@ -454,13 +454,20 @@ async function processShow(showId, deps = {}) {
     }
     const filepath = path.join(pendingDir, file);
     lastFile = file;
-    inspected++;
-    let data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    // Already evaluated and skipped on a prior run — don't re-fetch the URL.
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filepath, 'utf8')); } catch (e) {
+      // BRO-7930: one unreadable stub must not wedge the sweep before its cursor is saved.
+      console.log(`  [${file}] unreadable (${e.message}) — skipped`);
+      kept++;
+      continue;
+    }
+    // Already evaluated and skipped on a prior run — don't re-fetch the URL. Not counted as inspected:
+    // settled junk stays in _pending forever and would make a healthy quiet drain look stalled.
     if (data.promoteSkippedReason) {
       kept++;
       continue;
     }
+    inspected++;
     // Tagged by sweep-rss-pending-junk.js (task #1073): the pre-fix RSS
     // openingWindow branch attributed unrelated theater-section articles
     // (obituaries, awards coverage) to whatever show opened that week. These
@@ -644,8 +651,8 @@ async function processShow(showId, deps = {}) {
       let existing = null;
       try { existing = JSON.parse(fs.readFileSync(newPath, 'utf8')); } catch { /* unreadable primary: fall through to keep */ }
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
-      const existingHasText = !!existing && typeof existing.fullText === 'string' && existing.fullText.trim().length >= 200;
-      if (verdict === 'same-article' && (existingHasText || isRedundantPendingStub(data, newFilename))) {
+      // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
+      if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
         console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this article`);
         if (!dry) fs.unlinkSync(filepath);
         droppedRedundant++;
@@ -817,6 +824,7 @@ if (require.main === module) {
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
     const sweep = allOpen || allPending;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
+    const cursorPrefix = allPending ? '' : 'open_';
     // Recent = opened in the last 2 years (the owner's no-gaps scope), through the shared show data.
     const showById = new Map(shows.map(sh => [sh.id, sh]));
     const RECENT_MS = 730 * 864e5;
@@ -824,9 +832,10 @@ if (require.main === module) {
     let plan, tierEnds = {};
     if (sweep) {
       const recentFirst = state.turn % 2 === 0;
-      const t = rotateTiered(planPendingWork(ids, { raw: true }), { cursors: state.cursors, tierOf, recentFirst });
+      // --all-open and --all-pending walk different subsets: each keeps its own cursors so one cannot reset the other's pass.
+      const t = rotateTiered(planPendingWork(ids, { raw: true }), { cursors: { recent: state.cursors[cursorPrefix + 'recent'] || null, other: state.cursors[cursorPrefix + 'other'] || null }, tierOf, recentFirst });
       plan = t.work; tierEnds = t.tierEnds;
-      console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) queued (${recentFirst ? 'recent-show files first' : 'older-show files first'}), cursors recent=${state.cursors.recent || '(top)'} other=${state.cursors.other || '(top)'}`);
+      console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) queued (${recentFirst ? 'recent-show files first' : 'older-show files first'}), cursors recent=${state.cursors[cursorPrefix + 'recent'] || '(top)'} other=${state.cursors[cursorPrefix + 'other'] || '(top)'}`);
     } else plan = planPendingWork(ids);
     const reached = { recent: null, other: null };
     let completedPass = true;
@@ -860,10 +869,10 @@ if (require.main === module) {
       // Otherwise it resumes after the last file reached. A tier not reached this run keeps its cursor.
       const nextCursors = { ...state.cursors };
       for (const tier of ['recent', 'other']) {
-        if (reached[tier]) nextCursors[tier] = tierEnds[tier] && reached[tier] >= tierEnds[tier] ? null : reached[tier];
+        if (reached[tier]) nextCursors[cursorPrefix + tier] = tierEnds[tier] && reached[tier] >= tierEnds[tier] ? null : reached[tier];
       }
       const pending = countPendingFiles();
-      console.log(`Rotation: ${completedPass ? 'every queued file reached' : 'budget hit'}; next cursors recent=${nextCursors.recent || '(top)'} other=${nextCursors.other || '(top)'}; _pending now holds ${pending} file(s)`);
+      console.log(`Rotation: ${completedPass ? 'every queued file reached' : 'budget hit'}; next cursors recent=${nextCursors[cursorPrefix + 'recent'] || '(top)'} other=${nextCursors[cursorPrefix + 'other'] || '(top)'}; _pending now holds ${pending} file(s)`);
       if (!dryRun) {
         state.cursors = nextCursors;
         state.turn = (state.turn || 0) + 1;

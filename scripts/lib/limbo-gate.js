@@ -135,6 +135,7 @@ function limboStamp(decision, nowIso) {
 function applyDecision(d, decision, nowIso) {
   const out = { ...d, ...limboStamp(decision, nowIso) };
   for (const k of decision.clear || []) delete out[k];
+  if (decision.route === 'scoring') delete out.needsRefetch; // recovered text: a stale flag blocks later guards
   return out;
 }
 

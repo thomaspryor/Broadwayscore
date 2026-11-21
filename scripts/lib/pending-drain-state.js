@@ -23,7 +23,7 @@ function loadState(root) {
     const s = JSON.parse(fs.readFileSync(statePath(root), 'utf8'));
     const c = s.cursors && typeof s.cursors === 'object' ? s.cursors : {};
     return {
-      cursors: { recent: typeof c.recent === 'string' ? c.recent : null, other: typeof c.other === 'string' ? c.other : null },
+      cursors: Object.fromEntries(['recent', 'other', 'open_recent', 'open_other'].map(k => [k, typeof c[k] === 'string' ? c[k] : null])),
       turn: Number.isInteger(s.turn) ? s.turn : 0,
       history: Array.isArray(s.history) ? s.history : [],
     };
