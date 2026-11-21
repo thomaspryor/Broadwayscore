@@ -187,7 +187,7 @@ test('review fixture: --verify that is not the acceptance command recorded at di
 });
 
 test('a sha tied to the stranded job\'s own sha (ancestry or patch twin) is refused here — that job did the work', () => {
-  for (const tie of [{ tiedToStranded: true }, { tiedToStrandedByPatch: true }]) {
+  for (const tie of [{ tiedToStranded: true }, { tiedToStrandedByPatch: true }, { tiedToStrandedByContent: true }]) {
     const d = core.decideLandedElsewhere(base({ landing: { ...WORK, ...tie } }));
     assert.match(d.refusals.join('\n'), /tied to the stranded job's own sha/);
   }

@@ -533,11 +533,12 @@ function main() {
   landing.tiedToStrandedByContent = tie.tiedToStrandedByContent;
   if (landedElsewhere && !dataRepo) {
     for (const st of rows.filter((r) => String(r.event) === 'job-stranded' && r.sha)) {
-      if (landing.tiedToStranded || landing.tiedToStrandedByPatch) break;
+      if (landing.tiedToStranded || landing.tiedToStrandedByPatch || landing.tiedToStrandedByContent) break;
       if (pre.stranded && st.sha === pre.stranded.sha) continue;
       const t = computeStrandedTie(sha, st.sha, { cwd: REPO, landed: landing.verdict === 'LANDED', includeEarlierCommits: true });
       landing.tiedToStranded = t.tiedToStranded;
       landing.tiedToStrandedByPatch = t.tiedToStrandedByPatch;
+      landing.tiedToStrandedByContent = t.tiedToStrandedByContent;
     }
   }
   console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; authored ${landing.authorTs}, committed ${landing.commitTs}`);

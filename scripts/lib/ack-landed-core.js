@@ -721,7 +721,7 @@ function decideLandedElsewhere(input) {
   // A stranded job's OWN work can land after its window (a squash-merge
   // re-stamps the author date); that belongs to the default ack's stranded
   // tie, which records the job as productive — not here.
-  if (landing.tiedToStranded || landing.tiedToStrandedByPatch) {
+  if (landing.tiedToStranded || landing.tiedToStrandedByPatch || landing.tiedToStrandedByContent) {
     refusals.push(`the sha is tied to the stranded job's own sha${stranded && stranded.sha ? ` ${stranded.sha}` : ''} — that job DID do this work; ack it with the default mode`);
   }
 
