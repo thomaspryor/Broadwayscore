@@ -47,7 +47,7 @@ async function postDiscord(text, env = process.env, fetchFn = globalThis.fetch) 
       signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: text.slice(0, 1900) }),
+      body: JSON.stringify({ content: text.length > 1900 ? `${text.slice(0, 1850)}\n… (truncated, full list in the run log)` : text }),
     });
     return true;
   } catch {
@@ -70,7 +70,7 @@ async function notifyBoardAfterSave(notify, label, opts = {}) {
   } catch (e) {
     if (e && e.code === MISSING_KEY) throw e;
     const msg = String((e && e.message) || e).replace(/\s+/g, ' ').slice(0, 300);
-    log(`::warning::${label}: could not file the task-board card (${msg}). Data updates were saved and still push; the next daily run re-detects the finding and retries.`);
+    log(`::warning::${label}: could not file the task-board card (${msg}). The audit carries on so its saved data updates reach the push step; the next daily run re-detects the finding and retries the card.`);
     const discord = await postDiscord(
       `⚠️ ${label}: the task-board card could not be filed (${msg}). Findings:\n${opts.summary || '(see the run log)'}`,
       opts.env, opts.fetchFn,

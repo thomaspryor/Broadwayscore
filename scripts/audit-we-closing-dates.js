@@ -236,9 +236,9 @@ async function notifyLinear(ambiguous, todayStr) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   // BRO-7920: a missing board key must fail before any data is written, not after.
   if (!DRY_RUN) assertBoardConfigured();
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('WE CLOSING DATE AUDIT (bidirectional)');
   console.log('='.repeat(60));
