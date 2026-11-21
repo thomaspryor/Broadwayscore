@@ -61,3 +61,27 @@ test('BRO-7537: legacy callers (temperature null) keep 4.6 requests unchanged an
   assert.deepEqual(claudeSamplingParams('claude-sonnet-4-6', null), {});
   assert.deepEqual(claudeSamplingParams('claude-sonnet-5-5', null), { thinking: { type: 'between_tools' } });
 });
+
+test('combined two-leg A/B: shadowBoth swaps BOTH legs into one ensemble (owner 2026-11-21)', () => {
+  // Stubbed legs, no API: control Positive majority; each single swap tips to a Mixed majority;
+  // both swaps together make it unanimous Mixed. shadowBoth must carry both shadow scores.
+  const script = `
+    const { EnsembleReviewScorer } = require('./scripts/llm-scoring/ensemble-scorer');
+    const s = new EnsembleReviewScorer('x', 'x', 'x', undefined, { verbose: false, shadowOpenaiModel: 'gpt-5.6-luna', shadowClaudeModel: 'claude-sonnet-5-5' });
+    const out = (bucket, score) => async () => ({ success: true, result: { bucket, score, confidence: 'high', verdict: 'v', keyQuote: 'q' }, inputTokens: 0, outputTokens: 0 });
+    s.claudeScorer.scoreReviewV5 = out('Positive', 72);
+    s.openaiScorer.scoreReviewV5 = out('Positive', 74);
+    s.geminiScorer.scoreReviewV5 = out('Mixed', 60);
+    s.shadowOpenaiScorer.scoreReviewV5 = out('Mixed', 58);
+    s.shadowClaudeScorer.scoreReviewV5 = out('Mixed', 62);
+    s.scoreReview('text', '').then((r) => console.log(JSON.stringify({
+      control: [r.bucket, r.modelResults.claude.score, r.modelResults.openai.score],
+      both: r.shadowBoth && [r.shadowBoth.bucket, r.shadowBoth.modelResults.claude.score, r.shadowBoth.modelResults.openai.score, r.shadowBoth.modelResults.gemini.score, r.shadowBoth.openaiLeg.ok, r.shadowBoth.claudeLeg.ok],
+      single: [r.shadow.modelResults.claude.score, r.shadowClaude.modelResults.openai.score],
+    })));`;
+  const out = execFileSync('npx', ['ts-node', '--transpile-only', '--project', 'scripts/tsconfig.json', '-e', script], { cwd: root, encoding: 'utf8' });
+  const r = JSON.parse(out.trim().split('\n').pop());
+  assert.deepEqual(r.control, ['Positive', 72, 74]);
+  assert.deepEqual(r.both, ['Mixed', 62, 58, 60, true, true]);
+  assert.deepEqual(r.single, [72, 74], 'single-leg arms keep the other control leg');
+});

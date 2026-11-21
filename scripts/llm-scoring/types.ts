@@ -154,6 +154,8 @@ export interface EnsembleResult {
   shadow?: EnsembleResult;
   /** Experiment only (shadowClaudeModel, BRO-7529): same review with a second Claude model in the Claude leg. */
   shadowClaude?: EnsembleResult;
+  /** Experiment only: both shadow legs (OpenAI and Claude) swapped into one ensemble. */
+  shadowBoth?: EnsembleResult;
   /** Experiment only: the Claude leg's own outcome in this arm. */
   claudeLeg?: { ok: boolean; rejected: boolean; error?: string };
   /** Experiment only (shadow mode): the OpenAI leg's own outcome in this arm. */

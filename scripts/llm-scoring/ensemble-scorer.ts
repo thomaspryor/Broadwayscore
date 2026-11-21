@@ -461,6 +461,15 @@ export class EnsembleReviewScorer {
       combined.claudeLeg = legStatus(results.find(r => r.model === 'claude'));
       combined.shadowClaude.claudeLeg = legStatus(shadowClaudeOutcome);
     }
+    if (shadowOutcome && shadowClaudeOutcome) {
+      // Experiment only: BOTH shadow legs in the same ensemble (combined two-leg A/B),
+      // so the A/B sees how the two new legs interact in the majority/median combine.
+      const swapped = results.map(r => (r.model === 'openai' ? shadowOutcome : r.model === 'claude' ? shadowClaudeOutcome : r));
+      combined.shadowBoth = this.combineOutcomes(swapped, band);
+      const legStatus = (o?: ModelOutcome) => ({ ok: !!(o && o.result), rejected: !!(o && o.rejected), error: o && !o.result && !o.rejected ? String(o.error || 'no_result').slice(0, 200) : undefined });
+      combined.shadowBoth.openaiLeg = legStatus(shadowOutcome);
+      combined.shadowBoth.claudeLeg = legStatus(shadowClaudeOutcome);
+    }
     return combined;
   }
 
@@ -799,6 +808,7 @@ export class EnsembleReviewScorer {
     // shadow that scored is stretched even when the control was rejected.
     if (ensembleResult.shadow) ensembleResult.shadow = applyTailStretch(ensembleResult.shadow, anchoredBandScoreSource);
     if (ensembleResult.shadowClaude) ensembleResult.shadowClaude = applyTailStretch(ensembleResult.shadowClaude, anchoredBandScoreSource);
+    if (ensembleResult.shadowBoth) ensembleResult.shadowBoth = applyTailStretch(ensembleResult.shadowBoth, anchoredBandScoreSource);
 
     // Check for rejection (v5.2+)
     if (ensembleResult.rejected) {
@@ -843,9 +853,11 @@ export class EnsembleReviewScorer {
     // can reapply it idempotently.
     const shadowStretched = ensembleResult.shadow;
     const shadowClaudeStretched = ensembleResult.shadowClaude;
+    const shadowBothStretched = ensembleResult.shadowBoth;
     ensembleResult = applyTailStretch(ensembleResult, anchoredBandScoreSource);
     if (shadowStretched) ensembleResult.shadow = shadowStretched; // stretched once, above
     if (shadowClaudeStretched) ensembleResult.shadowClaude = shadowClaudeStretched;
+    if (shadowBothStretched) ensembleResult.shadowBoth = shadowBothStretched;
 
     // Post-scoring hallucination guard: if the LLM admitted it had no real review
     // content and invented a score, refuse to write the result.

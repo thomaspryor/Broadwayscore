@@ -87,3 +87,21 @@ test('too few shows or banded pairs is not enough evidence', () => {
   assert.equal(r.gates.showDrift.pass, false);
   assert.equal(r.gates.legAccuracy.pass, false);
 });
+
+// Combined two-leg A/B (owner 2026-11-21): both legs swapped in one ensemble.
+test("leg 'both': leg accuracy must hold for EACH swapped leg", () => {
+  const rs = [];
+  // OpenAI shadow leg as accurate as control; Claude shadow leg 10 pts further from the band midpoint.
+  for (let i = 0; i < 40; i++) rs.push(rec(`s${i % 12}`, arm(60, 'Mixed', { openaiScore: 60, claudeScore: 60 }), arm(60, 'Mixed', { openaiScore: 60, claudeScore: 70 }), { band: { floor: 51, ceiling: 70 } }));
+  const both = M.computeReport(rs, { leg: 'both' });
+  assert.equal(both.gates.legAccuracy.pass, false, 'the Claude leg got worse');
+  assert.deepEqual(Object.keys(both.gates.legAccuracy.value).sort(), ['claude', 'openai']);
+  assert.equal(M.computeReport(rs).gates.legAccuracy.pass, true, 'red-then-green: the OpenAI-only view misses it');
+});
+
+test("leg 'both': a record fails when EITHER shadow leg errored", () => {
+  const rs = [];
+  for (let i = 0; i < 60; i++) rs.push(rec(`s${i % 12}`, arm(70, 'Positive', { openaiLegOk: true, claudeLegOk: true }), arm(70, 'Positive', { openaiLegOk: true, claudeLegOk: false, claudeLegRejected: false })));
+  assert.equal(M.computeReport(rs, { leg: 'both' }).gates.shadowErrors.value.shadow, 1);
+  assert.equal(M.computeReport(rs).gates.shadowErrors.value.shadow, 0, 'red-then-green: the OpenAI-only view misses it');
+});
