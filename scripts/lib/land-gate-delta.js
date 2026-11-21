@@ -285,12 +285,17 @@ function tapRunFinished({ exit, text } = {}) {
   return (exit === 0 || exit === 1) && /^# tests \d+\s*$/m.test(text || '');
 }
 
-/** One part's manifest record, from that runner's own exit and log. */
-function shardPart(gate, { exit, text } = {}) {
+/**
+ * One part's manifest record, from that runner's own exit and log. `whole`: the
+ * gate ran entire on one runner (part "1/1"), so it is judged exactly as an
+ * unsplit run would be: any ordinary exit counts as finished (a TAP gate with
+ * nothing to run, or scoped to zero files, prints no `# tests N`). A slice of a
+ * split TAP batch must reach its own `# tests N`. 124 (timeout) and 128+
+ * (killed) never finish.
+ */
+function shardPart(gate, { exit, text } = {}, { whole = false } = {}) {
   const code = Number.isInteger(exit) ? exit : null;
-  // Non-TAP gates print no `# tests N`; they run whole (part "1/1") and count as
-  // finished on any ordinary exit. 124 (timeout) and 128+ (killed) never finish.
-  const finished = TAP_GATES.has(gate) ? tapRunFinished({ exit: code, text }) : (code !== null && code >= 0 && code < 124);
+  const finished = TAP_GATES.has(gate) && !whole ? tapRunFinished({ exit: code, text }) : (code !== null && code >= 0 && code < 124);
   return { exit: code, finished };
 }
 
@@ -526,6 +531,8 @@ function readGateResult(dir, gate) {
  */
 function readShardEntry(dir, gate, meta) {
   const file = path.join(dir, `${gate}.shards.json`);
+  // One runner's part of a split run that was never merged judges only a slice.
+  if (meta && meta.shard && !meta.sharded) return { invalid: `this dir is part ${meta.shard} of a split run that was never merged` };
   if (!fs.existsSync(file)) {
     if (meta && meta.sharded) return { invalid: `meta.json says the run was split but ${gate}.shards.json is missing` };
     // Any other gate's manifest also marks the dir as split (meta.json lost or overwritten).

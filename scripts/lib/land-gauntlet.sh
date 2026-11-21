@@ -152,6 +152,20 @@ want_gate() { [ -z "${GAUNTLET_GATES:-}" ] || [[ ",${GAUNTLET_GATES}," == *",$1,
 # Read once and drop from the env so test processes (some run this script)
 # never inherit a scope.
 SCOPE_DIR="${GAUNTLET_SCOPE_DIR:-}"; unset GAUNTLET_SCOPE_DIR
+# GAUNTLET_SHARD=k/n (BRO-7324): run slice k of n of the node unit batch only,
+# with node's own --test-shard (it sorts the files first, so every runner given
+# the same list cuts the same slices; test.yml unit-test-shards does the same).
+# Other gates are split between runners whole, with GAUNTLET_GATES.
+# meta.json records the slice and the tree; scripts/lib/land-gauntlet-merge.js
+# joins the parts, and land-gate-delta.js refuses a part that was never merged.
+# Dropped from the env like the scope, so nested runs never inherit a slice.
+SHARD="${GAUNTLET_SHARD:-}"; unset GAUNTLET_SHARD
+if [ -n "$SHARD" ]; then
+  if ! [[ "$SHARD" =~ ^([0-9]+)/([0-9]+)$ ]] || [ "${BASH_REMATCH[1]}" -lt 1 ] || [ "${BASH_REMATCH[2]}" -lt 2 ] \
+    || [ "${BASH_REMATCH[2]}" -gt 16 ] || [ "${BASH_REMATCH[1]}" -gt "${BASH_REMATCH[2]}" ]; then
+    echo "land-gauntlet.sh: GAUNTLET_SHARD must be k/n with 1<=k<=n, 2<=n<=16 (got $SHARD)" >&2; exit 2
+  fi
+fi
 # scope_list <gate> <array-name>: record the list, then narrow it to the scope.
 scope_list() {
   local gate="$1"; local -n _list="$2"
@@ -256,8 +270,10 @@ unit_tests_node() {
   if [ -z "$list" ] || [ ${#tests[@]} -eq 0 ]; then echo "::error::node unit batch ($src) is empty or missing"; return 1; fi
   scope_list unit-tests-node tests
   [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
-  echo "# node batch ($src): ${#tests[@]} files"
-  node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
+  local -a shard_arg=()
+  [ -n "$SHARD" ] && shard_arg=("--test-shard=$SHARD")
+  echo "# node batch ($src): ${#tests[@]} files${SHARD:+, slice $SHARD (BRO-7324)}"
+  node --test --test-reporter=tap --test-timeout 300000 ${shard_arg[@]+"${shard_arg[@]}"} ${tests[@]+"${tests[@]}"}
 }
 gate unit-tests-node unit_tests_node
 
@@ -604,7 +620,9 @@ node -e '
   const exits = Object.fromEntries(gates.map(g => [g, Number(require("fs").readFileSync(`${out}/${g}.exit`, "utf8").trim())]));
   const gateSecs = {};  // BRO-7324: timing only, absent when a gate wrote no .secs
   for (const g of gates) { try { const v = Number(require("fs").readFileSync(`${out}/${g}.secs`, "utf8").trim()); if (Number.isFinite(v)) gateSecs[g] = v; } catch {} }
-  require("fs").writeFileSync(`${out}/meta.json`, JSON.stringify({ sha, root, wallMs: Number(t1) - Number(t0), finishedAt: new Date().toISOString(), node: process.version, gates, exits, gateSecs, checkedOut: process.argv[6] === "1", depsReinstalled: process.argv[7] === "1" }, null, 2) + "\n");
-' "$OUT" "$SHA" "$ROOT" "$T0" "$T1" "$([ -n "$CHECKOUT" ] && echo 1 || echo 0)" "$DEPS_CHANGED"
+  // BRO-7324: shard/tree only on a split part (undefined drops out of the JSON).
+  const shard = process.argv[8] || undefined; const tree = process.argv[9] || undefined;
+  require("fs").writeFileSync(`${out}/meta.json`, JSON.stringify({ sha, root, wallMs: Number(t1) - Number(t0), finishedAt: new Date().toISOString(), node: process.version, gates, exits, gateSecs, checkedOut: process.argv[6] === "1", depsReinstalled: process.argv[7] === "1", shard, tree }, null, 2) + "\n");
+' "$OUT" "$SHA" "$ROOT" "$T0" "$T1" "$([ -n "$CHECKOUT" ] && echo 1 || echo 0)" "$DEPS_CHANGED" "$SHARD" "$([ -n "$SHARD" ] && git rev-parse 'HEAD^{tree}')"
 echo "gauntlet done: $SHA in $(( (T1 - T0) / 1000 ))s → $OUT ($(tr '\n' ' ' < <(for g in "$OUT"/*.exit; do printf '%s=%s\n' "$(basename "${g%.exit}")" "$(cat "$g")"; done)))"
 exit 0
