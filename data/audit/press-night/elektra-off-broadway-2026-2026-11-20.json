@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "showId": "elektra-off-broadway-2026",
+  "night": "2026-11-20",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-21T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-21T02:30:04.164Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-21T04:55:12.614Z",
+    "lastOkSampleAt": "2026-11-21T04:55:12.614Z"
+  },
+  "firstLiveAt": "2026-11-21T02:35:04.516Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-21T02:55:05.555Z",
+  "liveCount": 5,
+  "liveCountAt": {
+    "1h": 5,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-21T04:00:09.079Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-20",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "theatermania|dan rubins",
+      "outlet": "TheaterMania",
+      "critic": "Dan Rubins",
+      "tier": 2,
+      "publishAt": "2026-11-20",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T02:35:04.516Z",
+      "prevOkSampleAt": "2026-11-21T02:30:04.164Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-20",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T02:35:04.516Z",
+      "prevOkSampleAt": "2026-11-21T02:30:04.164Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|david finkle",
+      "outlet": "New York Stage Review",
+      "critic": "David Finkle",
+      "tier": 2,
+      "publishAt": "2026-11-20",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T02:55:05.555Z",
+      "prevOkSampleAt": "2026-11-21T02:50:05.264Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theater life|samuel l. leiter",
+      "outlet": "Theater Life",
+      "critic": "Samuel L. Leiter",
+      "tier": 2,
+      "publishAt": "2026-11-20",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T02:55:05.555Z",
+      "prevOkSampleAt": "2026-11-21T02:50:05.264Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "this week in new york|mark rifkin",
+      "outlet": "This Week in New York",
+      "critic": "Mark Rifkin",
+      "tier": 4,
+      "publishAt": "2026-11-20",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T02:55:05.555Z",
+      "prevOkSampleAt": "2026-11-21T02:50:05.264Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "show-score"
+      ],
+      "count": 3,
+      "covered": 0,
+      "coverage": 0,
+      "missing": [
+        "nytimes",
+        "observer",
+        "operawire"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 5,
+      "fetchedAt": "2026-11-21T05:00:25.343Z",
+      "censusNote": "no BWW roundup found",
+      "excluded": [
+        {
+          "outletId": "new-york-classical-review",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        }
+      ]
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-21T05:00:25.437Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-21T05:00:30.036Z",
+    "files": [
+      {
+        "file": "broadwayworld--alexander-cohen.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Alexander Cohen",
+        "firstSeenAt": "2026-09-30T05:37:26.426Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": null,
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadwayworld--richard-sasanow.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Richard Sasanow",
+        "firstSeenAt": "2026-11-20T04:29:31.057Z",
+        "scoredAt": null,
+        "publishDate": "2022-04-03",
+        "url": "broadwayworld.com/bwwopera/article/bww-review-stemme-and-davidsen-do-a-fine-sister-act-in-elektra-by-strauss-at-the-met-20220403",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-21T02:07:31.871Z",
+        "scoredAt": "2026-11-21T02:12:34.745Z",
+        "publishDate": "2026-11-20",
+        "url": "culturesauce.com/elektra-daniel-fish-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "financialtimes--sarah-hemming.json",
+        "outletId": "financialtimes",
+        "outlet": "Financial Times",
+        "critic": "Sarah Hemming",
+        "firstSeenAt": "2026-09-30T05:37:29.578Z",
+        "scoredAt": "2026-09-30T06:20:43.248Z",
+        "publishDate": "2025-02-06",
+        "url": "ft.com/content/912df256-18e5-48c9-a466-a0c072e26b7a",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "guardian--arifa-akbar.json",
+        "outletId": "guardian",
+        "outlet": "The Guardian",
+        "critic": "Arifa Akbar",
+        "firstSeenAt": "2026-09-30T05:37:29.520Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "theguardian.com/stage/2025/feb/05/elektra-review-duke-of-yorks-theatre-london-brie-larson-daniel-fish",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "independent--alice-saville.json",
+        "outletId": "independent",
+        "outlet": "The Independent",
+        "critic": "Alice Saville",
+        "firstSeenAt": "2026-09-30T05:37:29.570Z",
+        "scoredAt": "2026-09-30T06:20:47.463Z",
+        "publishDate": "2025-02-06",
+        "url": "the-independent.com/arts-entertainment/theatre-dance/reviews/elektra-brie-larson-duke-of-york-review-b2693359.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "new-york-classical-review--rick-perdian.json",
+        "outletId": "new-york-classical-review",
+        "outlet": "New York Classical Review",
+        "critic": "Rick Perdian",
+        "firstSeenAt": "2026-10-17T12:43:59.729Z",
+        "scoredAt": null,
+        "publishDate": "April 2nd, 2022",
+        "url": "newyorkclassicalreview.com/2022/04/stemme-and-davidsen-bring-vocal-gleam-sibling-complexity-to-mets-elektra",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--david-finkle.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle",
+        "firstSeenAt": "2026-11-21T02:19:19.393Z",
+        "scoredAt": "2026-11-21T02:37:58.265Z",
+        "publishDate": "2026-11-20",
+        "url": "nystagereview.com/2026/11/20/elektra-grade-a-director-daniel-fish-has-his-creative-way-with-sophokles",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "standard--tim-bano.json",
+        "outletId": "standard",
+        "outlet": "Evening Standard",
+        "critic": "Tim Bano",
+        "firstSeenAt": "2026-09-30T05:37:29.536Z",
+        "scoredAt": null,
+        "publishDate": "2025-02-06",
+        "url": "standard.co.uk/culture/theatre/elektra-duke-of-york-review-brie-larson-b1209486.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "telegraph--dominic-cavendish.json",
+        "outletId": "telegraph",
+        "outlet": "The Telegraph",
+        "critic": "Dominic Cavendish",
+        "firstSeenAt": "2026-09-30T05:37:29.529Z",
+        "scoredAt": "2026-09-30T06:20:56.407Z",
+        "publishDate": "2025-02-05",
+        "url": "telegraph.co.uk/theatre/what-to-see/elektra-duke-of-yorks-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theater-life--samuel-l-leiter.json",
+        "outletId": "theater-life",
+        "outlet": "Theater Life",
+        "critic": "Samuel L. Leiter",
+        "firstSeenAt": "2026-11-21T02:19:46.854Z",
+        "scoredAt": "2026-11-21T02:38:00.908Z",
+        "publishDate": "2026-11-20",
+        "url": "theaterlife.com/elektra",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--dan-rubins.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Dan Rubins",
+        "firstSeenAt": "2026-11-21T02:07:23.880Z",
+        "scoredAt": "2026-11-21T02:12:37.609Z",
+        "publishDate": "2026-11-20",
+        "url": "theatermania.com/news/review-daniel-fishs-elektra-is-electric-thanks-to-ted-hearnes-choral-score_1860465",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--sam-marlowe.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Sam Marlowe",
+        "firstSeenAt": "2026-09-30T05:37:29.555Z",
+        "scoredAt": null,
+        "publishDate": "2025-02-06",
+        "url": "thestage.co.uk/reviews/elektra-review-duke-of-yorks-theatre-london-brie-larson-daniel-fish-sophokles-stockard-channing-anne-carson",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "this-week-in-new-york--unknown.json",
+        "outletId": "this-week-in-new-york",
+        "outlet": "This Week in New York",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-21T02:19:48.686Z",
+        "scoredAt": "2026-11-21T02:38:03.480Z",
+        "publishDate": "2026-11-20",
+        "url": "twi-ny.com/2026/11/20/elektra-daniel-fish-tina-benko-tfana",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout-london--andrzej-lukowski.json",
+        "outletId": "timeout-london",
+        "outlet": "Time Out London",
+        "critic": "Andrzej Lukowski",
+        "firstSeenAt": "2026-09-30T05:37:29.543Z",
+        "scoredAt": null,
+        "publishDate": "2025-02-06",
+        "url": "timeout.com/london/theatre/elektra-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "times-uk--dominic-maxwell.json",
+        "outletId": "times-uk",
+        "outlet": "The Times (UK)",
+        "critic": "Dominic Maxwell",
+        "firstSeenAt": "2026-09-30T05:37:29.549Z",
+        "scoredAt": "2026-09-30T06:21:13.043Z",
+        "publishDate": "2025-02-05",
+        "url": "thetimes.com/culture/theatre-dance/article/elektra-review-brie-larson-london-0gxv37l9x",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "whatsonstage--sarah-crompton.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Sarah Crompton",
+        "firstSeenAt": "2026-09-30T05:37:29.562Z",
+        "scoredAt": "2026-09-30T06:21:17.121Z",
+        "publishDate": "2025-02-05",
+        "url": "whatsonstage.com/news/elektra-west-end-review-brie-larson-leads-an-abstract-elusive-revival_1663709",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
