@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-21T17:08:56.919Z",
+  "timestamp": "2026-11-21T17:25:29.194Z",
   "stats": {
-    "totalReviews": 83645,
+    "totalReviews": 83650,
     "alreadyFlagged": 22415,
     "dateGuardCatches": 235,
     "directorMismatch": 3853,
-    "tvFilmSignals": 2399,
-    "londonSignals": 3914,
+    "tvFilmSignals": 2400,
+    "londonSignals": 3915,
     "offBroadwaySignals": 780,
     "yearMismatch": 394,
     "noPublishDate": 8240
@@ -12470,7 +12470,7 @@
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 90,
       "publishDate": "2024-12-18",
-      "url": null,
+      "url": "https://www.timeout.com/london/theatre/cat-on-a-hot-tin-roof-1-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23741,7 +23741,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 93,
       "publishDate": "2025-06-04",
-      "url": null,
+      "url": "https://www.ft.com/content/295c5299-d91e-461b-bd9a-852ec7d92ab1?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23774,7 +23774,7 @@
       "file": "standard--nick-curtis.json",
       "score": 92,
       "publishDate": "2025-06-04",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/fiddler-on-the-roof-at-the-barbican-this-is-a-mustsee-b1231142.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -81447,6 +81447,19 @@
       ]
     },
     {
+      "showId": "the-snowman-off-west-end-2026",
+      "file": "whatsonstage--diane-parkes.json",
+      "publishDate": "2026-10-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "the-sound-inside-regional-2021",
       "file": "wttw--hedy-weiss.json",
       "score": 88,
@@ -92292,7 +92305,7 @@
       "file": "artsdesk--matt-wolf.json",
       "score": 81,
       "publishDate": "2025-07-24",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/moon-misbegotten-almeida-theatre-review-michael-shannon-sears-night-sky",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -92320,7 +92333,7 @@
       "file": "i-paper--fiona-mountford.json",
       "score": 85,
       "publishDate": "2025-06-26",
-      "url": null,
+      "url": "https://inews.co.uk/culture/arts/moon-for-misbegotten-best-acting-british-stage-3771644?srsltid=AYCX9vKKmQXvUzFSgf4BgLUWBwUTjJ0pBq6g-NNc_JXtQ7dfefvgp5mA",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -92348,7 +92361,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 79,
       "publishDate": "2025-06-26",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-moon-for-the-misbegotten-review-ruth-wilson-qdbpb55f0",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -93840,7 +93853,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 66,
       "publishDate": "2024-11-22",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/alls-well-that-ends-well-sam-wanamaker-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -121281,7 +121294,7 @@
     {
       "showId": "mexodus-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": 74,
+      "score": null,
       "publishDate": "2025-10-04",
       "url": "https://newyorktheater.me/2025/10/04/mexodus-review/",
       "findings": [
@@ -129222,6 +129235,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "roosevelvis-west-end-2015",
+      "file": "britishtheatrecom--james-garden.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
