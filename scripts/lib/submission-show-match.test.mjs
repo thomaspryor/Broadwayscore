@@ -69,3 +69,13 @@ test('empty input matches nothing', () => {
   assert.deepEqual(ids(''), []);
   assert.deepEqual(ids(null), []);
 });
+
+// BRO-7921: "Waiting for Lefty" matched only the 2024 regional entry.
+test('regional-only exact match also offers the covered-market production', () => {
+  const shows = [
+    { id: 'waiting-for-lefty-regional-2024', title: 'Waiting for Lefty', market: 'regional' },
+    { id: 'clifford-odets-waiting-for-lefty-off-broadway-2026', title: 'Clifford Odets’ Waiting for Lefty', market: 'broadway' },
+  ];
+  assert.deepEqual(findMatchingShows('Waiting for Lefty', shows).map((s) => s.id),
+    ['waiting-for-lefty-regional-2024', 'clifford-odets-waiting-for-lefty-off-broadway-2026']);
+});

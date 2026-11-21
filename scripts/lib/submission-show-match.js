@@ -28,6 +28,10 @@ function specificEnough(normalized) {
   return normalized.includes(' ') || normalized.length >= MIN_SINGLE_WORD_PARTIAL;
 }
 
+function isUncoveredMarket(s) {
+  return s.market === 'regional' || s.market === 'tour';
+}
+
 /**
  * @param {string} showName  the submitter's show name
  * @param {Array<{id:string, slug?:string, title:string}>} shows
@@ -39,7 +43,19 @@ function findMatchingShows(showName, shows) {
   // Title before slug: "ragtime" is ragtime-2025's slug, but a submitted
   // "Ragtime" must still return all three productions for disambiguation.
   const exact = input ? shows.filter((s) => normalizeTitle(s.title) === input) : [];
-  if (exact.length) return exact;
+  if (exact.length) {
+    // BRO-7921: "Waiting for Lefty" exactly matched only a 2024 regional entry
+    // and hid "Clifford Odets' Waiting for Lefty" (the covered-market
+    // production), so the review was filed against the wrong show. When every
+    // exact hit is outside the covered markets, add whole-word partial hits
+    // from covered markets as extra candidates.
+    if (exact.every(isUncoveredMarket) && specificEnough(input)) {
+      const extra = shows.filter((s) => !exact.includes(s) && !isUncoveredMarket(s)
+        && wordContains(normalizeTitle(s.title), input));
+      return [...exact, ...extra];
+    }
+    return exact;
+  }
 
   const raw = showName.toLowerCase().trim();
   const bySlug = shows.filter((s) => s.id === raw || s.slug === raw);

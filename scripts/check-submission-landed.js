@@ -23,7 +23,8 @@ if (!args.show || !args.url) {
 const dataDir = path.join(__dirname, '..', 'data');
 const reviewsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8'));
 const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
-const show = (showsData.shows || showsData).find((s) => s.id === args.show) || null;
+const allShows = showsData.shows || showsData;
+const show = allShows.find((s) => s.id === args.show) || null;
 
 const result = checkSubmissionLanded({
   showId: args.show,
@@ -31,8 +32,10 @@ const result = checkSubmissionLanded({
   reviews: reviewsData.reviews || reviewsData,
   reviewTextsDir: path.join(dataDir, 'review-texts'),
   show,
+  shows: allShows,
 });
 
+if (result.refiledUnder) console.log(`note: review file found under ${result.refiledUnder}, not the submitted show ${args.show}`);
 console.log(result.landed
   ? `✅ Landed: ${args.show} review is in reviews.json (${result.file})`
   : `❌ NOT on the site: ${result.reason}${result.file ? ` (${result.file})` : ''}`);

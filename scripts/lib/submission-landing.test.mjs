@@ -82,3 +82,27 @@ test('an excluded review keeps its exclusion reason even when unscored', () => {
   assert.equal(r.landed, false);
   assert.ok(!r.pendingScore, `expected a real exclusion, got: ${r.reason}`);
 });
+
+// BRO-7921: issue #1178 was submitted against waiting-for-lefty-regional-2024
+// but ingested under the Off-Broadway show; the landed check only looked under
+// the submitted id and raised a false "needs a manual check".
+test('file under a different show than the submitted id: found via all shows', () => {
+  const dir = fixture({ llmScore: { score: 78 } });
+  const wrong = { id: 'waiting-for-lefty-regional-2024', market: 'regional' };
+  const reviews = [{ showId: SHOW.id, url: URL }];
+  const withoutFallback = checkSubmissionLanded({ showId: wrong.id, url: URL, reviews, reviewTextsDir: dir, show: wrong });
+  assert.equal(withoutFallback.landed, false);
+  const r = checkSubmissionLanded({ showId: wrong.id, url: URL, reviews, reviewTextsDir: dir, show: wrong, shows: [wrong, SHOW] });
+  assert.equal(r.landed, true);
+  assert.equal(r.refiledUnder, SHOW.id);
+});
+
+test('fallback: URL under no show stays not landed; unrelated show dirs are ignored', () => {
+  const dir = fixture({ llmScore: { score: 78 } });
+  const other = { id: 'unrelated-show-2026' };
+  fs.mkdirSync(path.join(dir, other.id));
+  const wrong = { id: 'waiting-for-lefty-regional-2024' };
+  const r = checkSubmissionLanded({ showId: wrong.id, url: 'https://example.com/none', reviews: [], reviewTextsDir: dir, show: wrong, shows: [wrong, other, SHOW] });
+  assert.equal(r.landed, false);
+  assert.equal(r.file, null);
+});

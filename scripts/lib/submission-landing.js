@@ -40,9 +40,24 @@ function findSubmissionFile(showDir, submittedUrl) {
 /**
  * @returns {{ landed: boolean, reason: string|null, file: string|null }}
  */
-function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
-  const file = findSubmissionFile(path.join(reviewTextsDir, showId), url);
+function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show, shows }) {
+  const submittedShowId = showId;
+  let file = findSubmissionFile(path.join(reviewTextsDir, showId), url);
+  // BRO-7921: the validator can pick a different production than the one the
+  // ingest filed the review under (#1178: submitted against
+  // waiting-for-lefty-regional-2024, written under the 2026 Off-Broadway
+  // show). Look across all shows before calling it missing, and judge the
+  // landing against the show that actually holds the file.
+  if (!file && Array.isArray(shows) && shows.length) {
+    const actual = findShowForSubmission(url, shows, reviewTextsDir);
+    if (actual) {
+      showId = actual.id;
+      show = actual;
+      file = findSubmissionFile(path.join(reviewTextsDir, showId), url);
+    }
+  }
   if (!file) return { landed: false, reason: 'no review file was written for this URL', file: null };
+  const refiledUnder = showId !== submittedShowId ? showId : null;
   // URL identity only. An outlet+critic fallback would let an older, already
   // listed review by the same critic vouch for a submission that was itself
   // excluded (ship-check 2026-09-22). A merge that kept a different URL on the
@@ -50,7 +65,7 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
   // never a false "added".
   const fileUrl = submissionUrlKey(file.data.url);
   const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && submissionUrlKey(r.url) === fileUrl);
-  if (inReviews) return { landed: true, reason: null, file: file.path };
+  if (inReviews) return { landed: true, reason: null, file: file.path, refiledUnder };
   // BRO-4431: a page we couldn't read yet was saved as a stub that the
   // collector, the T1/T2 gap audit and the aggregator star relay keep
   // retrying. Same wait-then-escalate path as an unscored review (the sweep
