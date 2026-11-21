@@ -21,43 +21,8 @@ const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { geminiThinkingOff, buildGeminiBatchRequest } = require('../../scripts/lib/llm-batch.js');
 
-const PENDING = new Set([
-  'scripts/audit-images-llm.js',
-  'scripts/audit-llm-scores.js',
-  'scripts/audit-non-reviews.js',
-  'scripts/audit-tour-art.js',
-  'scripts/audit-touring-contamination.js',
-  'scripts/audit-we-reviews.js',
-  'scripts/backfill-cast-web.js',
-  'scripts/bww-regional-add-plan.js',
-  'scripts/classify-non-reviews.js',
-  'scripts/classify-show-origins.js',
-  'scripts/classify-wrong-production.js',
-  'scripts/classify-wrong-show.js',
-  'scripts/detect-cross-outlet-duplicates.js',
-  'scripts/enrich-card-acceptance.js',
-  'scripts/eval-v52.js',
-  'scripts/extract-explicit-ratings.js',
-  'scripts/extract-pull-quotes.js',
-  'scripts/generate-related-shows.js',
-  'scripts/generate-theater-tips.js',
-  'scripts/lib/aeo-visibility.js',
-  'scripts/lib/audit-city-reviews.js',
-  'scripts/lib/buzz-classifier.js',
-  'scripts/lib/city-hub-audit.js',
-  'scripts/lib/content-verifier.js',
-  'scripts/lib/ibdb-cast.js',
-  'scripts/lib/llm-score-extractor.js',
-  'scripts/lib/owner-reply-judge.mjs',
-  'scripts/lib/page-validator.js',
-  'scripts/lib/season-page-reader.js',
-  'scripts/lib/verify-image.js',
-  'scripts/llm-scoring/multi-model-critique.ts',
-  'scripts/llm-scoring/sanity-v6-single.mjs',
-  'scripts/test-consistency.js',
-  'scripts/video-proto/copyreview.js',
-  'scripts/video-reviews/verify-productions.js',
-]);
+// Kept in a data file so the audit that maps test-named paths to test.yml does not treat them as test deps.
+const PENDING = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests/fixtures/gemini-thinking-pending.json'), 'utf8')).pending);
 
 // The helper itself returns the 2.x literal; its batch builder is checked functionally below.
 const HELPER_HOME = 'scripts/lib/llm-batch.js';
