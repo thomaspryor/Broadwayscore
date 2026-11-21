@@ -262,6 +262,8 @@ describe('BRO-8023: processShow settles same-url stubs against the filed primary
     d.fetch = async () => ({ content: '<html><head><meta name="author" content="Thom Geier"><meta property="article:published_time" content="2025-09-27T10:00:00Z"></head><body><article><p>' + 'Punch at the Young Vic is a play. '.repeat(80) + '</p></article></body></html>' });
     await processShow(PUNCH.id, d);
     assert.ok(fs.existsSync(stub));
-    assert.ok(!JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason);
+    const kept = JSON.parse(fs.readFileSync(stub, 'utf8'));
+    assert.ok(!kept.promoteSkippedReason);
+    assert.equal(kept.pendingFetchAttemptResult, 'target-exists:culturesauce--thom-geier.json', 'why it stays open is recorded');
   });
 });

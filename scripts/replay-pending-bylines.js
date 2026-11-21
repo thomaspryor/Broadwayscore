@@ -837,6 +837,9 @@ async function processShow(showId, deps = {}) {
         continue;
       }
       console.log(`  [${file}] would-be target ${newFilename} already exists — keep pending`);
+      // BRO-8023: record why it stays open (a score/excerpt/body the primary lacks needs a merge), so the floors
+      // report counts it as attempted rather than an untouched gap.
+      if (!data.pendingFetchAttemptedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), `target-exists:${newFilename}`);
       if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); // keep the rebuilt body
       kept++;
       continue;
