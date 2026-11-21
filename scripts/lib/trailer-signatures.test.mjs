@@ -532,3 +532,17 @@ test('furniture tail: ship-check cases, a cut sentence that starts with a date o
     assert.equal(FT.stripKnownTrailers(t, 'x'), t, tail);
   }
 });
+
+test('Independent / Standard CMS widget footers are stripped for the tier check (BRO-7943)', () => {
+  const indy = BODY + ' To 7 December (0207 400 1257) More about Musicals Regent\'s Park Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  assert.ok(!/commenting forum/.test(T.stripCmsWidgetFooters(indy)));
+  assert.equal(tier(indy, 'independent').contentTier, 'complete');
+  const std = BODY + ' To 29 Nov, donmarwarehouse.com . MORE ABOUT The Maids Donmar Warehouse Solange Murder sisters Shopping Best Buys What I\'m buying from the 2025 Marks & Spencer x Bella Freud drop Best toy advent calendars for Christmas 2025';
+  assert.ok(!/Shopping Best Buys/.test(T.stripCmsWidgetFooters(std)));
+  assert.equal(tier(std, 'standard').contentTier, 'complete');
+  // a review cut mid-sentence before the widget stays truncated
+  const cut = BODY.slice(0, -40) + ' MORE ABOUT The Maids Shopping Best Buys Best toy advent calendars';
+  assert.equal(tier(cut, 'standard').contentTier, 'truncated');
+  // no widget: unchanged
+  assert.equal(T.stripCmsWidgetFooters(BODY), BODY);
+});
