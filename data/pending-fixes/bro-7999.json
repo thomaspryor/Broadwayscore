@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7999",
   "planId": "c26babe7-66bb-476a-85b0-9825452f2e9f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-21T17:19:35.056Z",
   "submitter": {
     "name": null,
@@ -122,5 +122,69 @@
         "description": "the-music-man-2022/ap--mark-kennedy.json: wrongShowManualClear"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-21T19:35:39.543Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/camdennewjournal--lucy-popescu.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/camdennewjournal--lucy-popescu.json nonReviewFlag: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json nonReviewFlag: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-see-off-broadway-2026/washington-square-news--ethan-li.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-see-off-broadway-2026/washington-square-news--ethan-li.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-see-off-broadway-2026/washington-square-news--ethan-li.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-thanksgiving-play-2023/amny--matt-windman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-regional-2022/chicago-reader--albert-williams.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/joysauce--janvi-sai.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/ap--mark-kennedy.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/ap--mark-kennedy.json wrongShowManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
