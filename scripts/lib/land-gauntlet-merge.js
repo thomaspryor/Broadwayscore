@@ -43,6 +43,13 @@ function readLines(file) {
   return t === null ? null : t.split('\n').map((l) => l.trim()).filter(Boolean);
 }
 
+/** A gate one runner ran whole. Every gate writes a log: none means lost evidence. */
+function wholePart(gate, dir) {
+  const text = readText(path.join(dir, `${gate}.log`));
+  const p = shardPart(gate, { exit: readExit(dir, gate), text: text || '' }, { whole: true });
+  return text === null ? { ...p, finished: false } : p;
+}
+
 /** Pure. "k/n" -> {k, n} or null. */
 function parseShard(s) {
   const m = /^(\d+)\/(\d+)$/.exec(String(s || ''));
@@ -72,9 +79,12 @@ function writeAtomic(file, text) {
 function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
   const metaA = readJson(path.join(dirA, 'meta.json'));
   const metaB = readJson(path.join(dirB, 'meta.json'));
-  // Mark first: whatever happens next, the verdict sees a split run.
-  const marked = { ...(metaA || {}), sharded: true };
+  // Mark first: whatever happens next, the verdict sees a split run whose merge
+  // has not finished (mergeIncomplete is dropped only by the final meta write),
+  // so a crash mid-merge, or stale manifests in a reused dir, never read as done.
+  const marked = { ...(metaA || {}), sharded: true, mergeIncomplete: true };
   fs.mkdirSync(dirA, { recursive: true });
+  for (const f of fs.readdirSync(dirA)) if (f.endsWith('.shards.json')) fs.rmSync(path.join(dirA, f), { force: true });
   writeAtomic(path.join(dirA, 'meta.json'), `${JSON.stringify(marked, null, 2)}\n`);
 
   const problems = [];
@@ -84,9 +94,11 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
   for (const k of ['sha', 'root', 'tree']) {
     if (!metaA || !metaB || !metaA[k] || metaA[k] !== metaB[k]) problems.push(`the two runs differ in ${k} (${metaA && metaA[k]} vs ${metaB && metaB[k]})`);
   }
+  // A scoped run records the full list in .files but runs a narrower one, so
+  // equal lists would prove nothing: a split run must be unscoped.
+  for (const d of [dirA, dirB]) if (fs.existsSync(path.join(d, 'SCOPED'))) problems.push(`${d} is a scoped run; a split run must judge whole gates`);
   if (problems.length) return { ok: false, problems, gates: [] };
 
-  for (const f of fs.readdirSync(dirA)) if (f.endsWith('.shards.json')) fs.rmSync(path.join(dirA, f), { force: true });
   const byPart = { [metaA.shard]: dirA, [metaB.shard]: dirB };
   const n = sA.n;
   const expected = Array.from({ length: n }, (_, i) => `${i + 1}/${n}`);
@@ -137,9 +149,9 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
         const src = path.join(dirB, f);
         if (fs.existsSync(src)) fs.copyFileSync(src, path.join(dirA, f)); else fs.rmSync(path.join(dirA, f), { force: true });
       }
-      part = shardPart(gate, { exit: readExit(dirB, gate), text: readText(path.join(dirB, `${gate}.log`)) || '' }, { whole: true });
+      part = wholePart(gate, dirB);
     } else if (inA) {
-      part = shardPart(gate, { exit: readExit(dirA, gate), text: readText(path.join(dirA, `${gate}.log`)) || '' }, { whole: true });
+      part = wholePart(gate, dirA);
     }
     if (!inA && !inB) for (const f of ADJACENT[gate] || []) fs.rmSync(path.join(dirA, f), { force: true });
     const entry = { expected: ['1/1'], parts: { '1/1': part } };
@@ -147,10 +159,6 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
     writeAtomic(path.join(dirA, `${gate}.shards.json`), `${JSON.stringify(entry, null, 2)}\n`);
     done.push(gate);
   }
-
-  // A scoped run is never cached or published as a full base: keep any SCOPED mark.
-  const scoped = [...new Set([...(readLines(path.join(dirA, 'SCOPED')) || []), ...(readLines(path.join(dirB, 'SCOPED')) || [])])];
-  if (scoped.length) writeAtomic(path.join(dirA, 'SCOPED'), `${scoped.join('\n')}\n`);
 
   // Rewrite meta.json the way land-gauntlet.sh's writer does, from the files.
   const present = fs.readdirSync(dirA).filter((f) => f.endsWith('.exit')).map((f) => f.replace(/\.exit$/, '')).sort();

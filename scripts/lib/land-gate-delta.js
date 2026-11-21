@@ -532,6 +532,7 @@ function readGateResult(dir, gate) {
 function readShardEntry(dir, gate, meta) {
   const file = path.join(dir, `${gate}.shards.json`);
   // One runner's part of a split run that was never merged judges only a slice.
+  if (meta && meta.mergeIncomplete) return { invalid: 'the split merge did not finish' };
   if (meta && meta.shard && !meta.sharded) return { invalid: `this dir is part ${meta.shard} of a split run that was never merged` };
   if (!fs.existsSync(file)) {
     if (meta && meta.sharded) return { invalid: `meta.json says the run was split but ${gate}.shards.json is missing` };

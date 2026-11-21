@@ -11,7 +11,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { mergeGauntletDirs, parseShard, mergedExit } = require('./land-gauntlet-merge.js');
-const { GATES, readGateResult, decideAllGates, shardPart } = require('./land-gate-delta.js');
+const { GATES, readGateResult, readShardEntry, decideAllGates, shardPart } = require('./land-gate-delta.js');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const judge = (base, branch) => { const gates = decideAllGates({ base, branch }); return { gates, verdict: gates.every((g) => g.verdict === 'pass') ? 'pass' : 'fail' }; };
@@ -175,4 +175,45 @@ test('node --test-shard slices are disjoint and their union is the unsharded run
   // Same list in a different order slices the same way (node sorts first).
   const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', '--test-shard=1/2', ...[...files].reverse()], { encoding: 'utf8', env });
   assert.deepEqual(new Set([...r.stdout.matchAll(/^\s*# Subtest: (t\d+)$/mg)].map((m) => m[1])), s1);
+});
+
+test('a merge that never finished is refused, even over complete-looking manifests', () => {
+  const { a, b } = pair(); const { a: ba, b: bb } = pair();
+  assert.equal(mergeGauntletDirs(a, b).ok, true); mergeGauntletDirs(ba, bb);
+  const meta = JSON.parse(fs.readFileSync(path.join(a, 'meta.json'), 'utf8'));
+  assert.equal(meta.mergeIncomplete, undefined, 'a finished merge drops the marker');
+  fs.writeFileSync(path.join(a, 'meta.json'), JSON.stringify({ ...meta, mergeIncomplete: true }));
+  assert.match(readGateResult(a, 'tsc').shards.invalid, /did not finish/);
+  assert.equal(judge(ba, a).verdict, 'fail');
+});
+
+test('a scoped part is refused: its .files is the full list, not what ran', () => {
+  const { a, b } = pair();
+  fs.writeFileSync(path.join(b, 'SCOPED'), 'unit-tests-node\n');
+  const r = mergeGauntletDirs(a, b);
+  assert.equal(r.ok, false);
+  assert.match(r.problems.join(' '), /scoped run/);
+});
+
+test('a whole gate whose log was lost is an unfinished part', () => {
+  const { a, b } = pair(); const { a: ba, b: bb } = pair();
+  fs.rmSync(path.join(b, 'unit-tests-tsx.log'));
+  assert.equal(mergeGauntletDirs(a, b).ok, true); mergeGauntletDirs(ba, bb);
+  const all = judge(ba, a);
+  assert.equal(all.verdict, 'fail');
+  assert.ok(all.gates.some((g) => g.gate === 'unit-tests-tsx' && g.mode === 'shard-incomplete'));
+});
+
+test('a sharded gauntlet run clears a reused dir and marks itself a part', () => {
+  const out = tmp();
+  fs.writeFileSync(path.join(out, 'tsc.exit'), '0\n');
+  fs.writeFileSync(path.join(out, 'tsc.shards.json'), '{}');
+  const r = spawnSync('bash', [path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), out], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, GAUNTLET_SHARD: '1/2', GAUNTLET_GATES: 'none' } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(fs.existsSync(path.join(out, 'tsc.exit')), false, 'stale exit removed');
+  assert.equal(fs.existsSync(path.join(out, 'tsc.shards.json')), false, 'stale manifest removed');
+  const meta = JSON.parse(fs.readFileSync(path.join(out, 'meta.json'), 'utf8'));
+  assert.equal(meta.shard, '1/2');
+  assert.match(meta.tree, /^[0-9a-f]{40}$/);
+  assert.match(readShardEntry(out, 'tsc', meta).invalid, /never merged/);
 });
