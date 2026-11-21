@@ -219,7 +219,11 @@ function sourceExtractors(market = 'west-end') {
       { name: 'playbill-verdict', dir: 'playbill-verdict', fn: parsePlaybillVerdict, validate: true },
       // softFail: an archived Show Score page routinely captures 0 tiles (SPA
       // pagination) — that is not a broken parser, so it must not trip zeroExtract.
-      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true },
+      // productionWindow (BRO-7967): Show Score reuses one slug for every production of a title, so an
+      // archived page can be another production's (elektra-off-broadway-2026 archived the 2022 Met Opera
+      // page; its NYT/Observer/OperaWire rows failed the press-night record). The scraper rejects such a
+      // page on its next run, but the archive file stays and the census read it. Same date-window guard.
+      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true, productionWindow: true },
     ];
   }
   const { extractReviews } = require('../scrape-theatre-reviews');
@@ -393,6 +397,10 @@ function buildCensusFromArchives(showId, opts = {}) {
       // and let extraction + outlet-union be the safety net, rather than nuking a
       // genuine roundup we simply can't verify.
       if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
+    }
+    if (s.productionWindow && opts.show && (opts.show.openingDate || opts.show.previewsStartDate)) {
+      const { checkPageProductionWindow } = require('./show-score-production-window');
+      if (!checkPageProductionWindow(html, opts.show, archiveCanonicalUrl(html)).ok) { wrongRoundup.push(s.name); continue; }
     }
     if (s.claim) {
       const { checkTrArchiveClaim, loadCoverageClaims } = require('./tr-archive-claim');

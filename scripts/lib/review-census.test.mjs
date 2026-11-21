@@ -421,3 +421,21 @@ test('standingOutlets pseudo-source respects market scoping (west-end outlet doe
   assert.equal(census.hadAnySource, false, 'west-end-only standing outlet must not apply to a broadway show');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('BRO-7967: a Show Score archive that is another production\'s page (dates years before opening) is rejected', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-sspw-'));
+  fs.mkdirSync(path.join(dir, 'show-score'));
+  const tiles = ['April 3, 2022', 'April 4, 2022', 'April 5, 2022', 'April 8, 2022', 'April 13, 2022']
+    .map((d, i) => `<div class="tile"><a href="https://www.nytimes.com/2022/04/0${i + 1}/arts/music/elektra-met.html">r</a><span>${d}</span></div>`).join('');
+  fs.writeFileSync(path.join(dir, 'show-score', 'elektra-x.html'), `<html><body>${tiles}</body></html>`);
+  const sources = sourceExtractors('off-broadway').filter((s) => s.name === 'show-score');
+  const show = { id: 'elektra-x', title: 'Elektra', openingDate: '2026-11-20', previewsStartDate: '2026-11-10' };
+  const c = buildCensusFromArchives('elektra-x', { archiveDir: dir, sources, show });
+  assert.deepEqual(c.wrongRoundup, ['show-score']);
+  assert.equal(c.count, 0, 'none of the 2022 page rows reach the census');
+  // Same page dated inside this production's run is kept.
+  fs.writeFileSync(path.join(dir, 'show-score', 'elektra-x.html'), `<html><body>${tiles.replace(/April (\d+), 2022/g, 'November 2$1, 2026').replace(/2022\/04/g, '2026/11')}</body></html>`);
+  const ok = buildCensusFromArchives('elektra-x', { archiveDir: dir, sources, show });
+  assert.deepEqual(ok.wrongRoundup, []);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
