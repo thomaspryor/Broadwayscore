@@ -1,13 +1,20 @@
 {
-  "totalMissing": 1,
+  "totalMissing": 307,
   "phase0UrlsFound": 0,
-  "phase1Recovered": 0,
+  "phase1Recovered": 169,
   "phase2Recovered": 0,
   "phase3Recovered": 0,
   "phase3Scraped": 0,
   "phase3ScrapeFailed": 0,
-  "byOutlet": {},
-  "errors": 1,
-  "timeBudgetMin": 100,
-  "timeBudgetExhausted": false
+  "byOutlet": {
+    "theater-life": {
+      "phase1": 169,
+      "phase2": 0,
+      "phase3": 0
+    }
+  },
+  "errors": 0,
+  "timeBudgetMin": 40,
+  "timeBudgetExhausted": false,
+  "phaseDeadlinesHit": []
 }
