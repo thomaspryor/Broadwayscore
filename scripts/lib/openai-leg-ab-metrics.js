@@ -95,9 +95,9 @@ function interactionTerm(records, combinedKey, singleKeys) {
     const x = (r[combinedKey].score - base) - singleKeys.reduce((acc, k) => acc + (r[k].score - base), 0);
     const wt = r.weight || 1;
     n += 1; w += wt; sum += wt * x; absSum += wt * Math.abs(x);
-    if (Math.abs(x) > 5) over5 += 1;
+    if (Math.abs(x) > 5) over5 += wt;
   }
-  return { n, meanInteraction: w ? +(sum / w).toFixed(2) : 0, meanAbsInteraction: w ? +(absSum / w).toFixed(2) : 0, over5Pts: n ? +(over5 / n).toFixed(4) : 0 };
+  return { n, meanInteraction: w ? +(sum / w).toFixed(2) : 0, meanAbsInteraction: w ? +(absSum / w).toFixed(2) : 0, over5Pts: w ? +(over5 / w).toFixed(4) : 0 }; // weighted, like the means
 }
 
 /** records -> full report with per-gate pass/fail. Records where control failed are excluded and counted. */

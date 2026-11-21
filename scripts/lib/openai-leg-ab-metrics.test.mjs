@@ -132,3 +132,8 @@ test('interactionTerm: 0 when the combined change is the sum of the single chang
   assert.equal(x.meanInteraction, 3.5);
   assert.equal(x.over5Pts, 0.5);
 });
+
+test('interactionTerm over5Pts is population-weighted, like the means', () => {
+  const r = (wt, both) => ({ weight: wt, control: arm(75, 'Positive'), a: arm(75, 'Positive'), b: arm(75, 'Positive'), ab: arm(both, 'Positive') });
+  assert.equal(M.interactionTerm([r(1, 85), r(9, 75)], 'ab', ['a', 'b']).over5Pts, 0.1);
+});
