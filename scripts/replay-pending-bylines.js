@@ -385,7 +385,8 @@ const present = (v) => v != null && v !== '';
 function sameArticleSettleReason(data, primary, primaryFile) {
   if (!data || !primaryBodyIsSound(primary)) return null;
   // A named critic other than the primary's may be a second critic on one url (the duplicateOf path files that).
-  const who = (x) => String(x || '').toLowerCase().replace(/[^a-z]+/g, '');
+  const { foldDiacritics } = require('./lib/title-match');
+  const who = (x) => foldDiacritics(String(x || '')).toLowerCase().replace(/[^a-z]+/g, '');
   if (who(data.criticName) && who(data.criticName) !== 'unknown' && who(data.criticName) !== who(primary.criticName)) return null;
   const { normalizeArticleUrl } = require('./lib/combined-review-utils');
   const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
