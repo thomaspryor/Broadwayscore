@@ -7,12 +7,12 @@ name: Audit WE Closing Dates
 # keyword-anchored "Booking until DD Month YYYY" date. See
 # scripts/audit-we-closing-dates.js and memory/feedback_closing_date_audit_gaps.md.
 #
-# SHADOW MODE (remove once live-validated): the extraction regex has not yet
-# been checked against real westendtheatre.com HTML in this sandbox (no
-# scraping credentials available there). The scheduled cron runs --dry-run
-# until a workflow_dispatch run against real shows confirms extraction
-# accuracy — see the report step's live output before flipping this to a
-# live write.
+# LIVE (shadow mode removed 2026-11-21): the
+# daily cron applies EXTENSIONS for real. Validated by manual live run
+# 44872579455 (Oh, Mary! 2027-01-02 -> 2027-06-05) and an all-open-shows dry run
+# 44873542013. Only EXTENSION results write (routeWeAuditResult, pinned by
+# scripts/lib/we-closing-date-classify.test.mjs); new-closing candidates,
+# over-cap extensions and shrinks go to the report / Linear only.
 
 on:
   schedule:
@@ -105,13 +105,7 @@ jobs:
             SHOWS_FLAG="--shows=${INPUT_SHOWS}"
           fi
 
-          # Shadow mode: scheduled (cron) runs are forced dry-run regardless of
-          # the dry_run input default, until a manual live run has confirmed
-          # extraction accuracy against real westendtheatre.com pages. See the
-          # header comment above for how to flip this.
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            node scripts/audit-we-closing-dates.js --dry-run $TB_FLAG $SHOWS_FLAG
-          elif [ "${INPUT_DRY_RUN}" = "true" ]; then
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
             node scripts/audit-we-closing-dates.js --dry-run $TB_FLAG $SHOWS_FLAG
           else
             node scripts/audit-we-closing-dates.js $TB_FLAG $SHOWS_FLAG

@@ -42,7 +42,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractWestEndClosingDateDetailed } = require('./lib/we-closing-date-extract');
-const { classifyWeClosingDelta } = require('./lib/we-closing-date-classify');
+const { classifyWeClosingDelta, routeWeAuditResult } = require('./lib/we-closing-date-classify');
 const { classifyMissingSchedule } = require('./lib/closing-audit-classify');
 const { discoverWestEndTheatreUrl } = require('./lib/westend-slug-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
@@ -280,46 +280,33 @@ async function main() {
       result = { id: show.id, name: show.name, action: 'ERROR', reason: `unhandled: ${e.message.slice(0, 120)}` };
     }
 
-    switch (result.action) {
-      case 'ERROR':
-        errors.push(result);
-        break;
-      case 'NEW_CLOSING_NEEDS_REVIEW':
-        newClosings.push(result);
-        break;
-      case 'EXTENSION':
-        if (!canWriteClosingDate(show)) {
-          extensions.push({ ...result, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
-        } else {
-          extensions.push(result);
-          if (!DRY_RUN) {
-            writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY, recordExtension: false });
-          }
-        }
-        break;
-      case 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW':
-      case 'NEEDS_HUMAN_REVIEW':
-        ambiguous.push(result);
-        break;
-      case 'POSSIBLY_CLOSED_NEEDS_REVIEW': {
-        // Flood guard (mirrors audit-closing-dates.js's
-        // TITLE_MISMATCH_FLOOD_CAP): a wave of title_mismatch flags in one
-        // run is far more likely a pageMatchesShowTitle() regression or a
-        // WET template change than that many shows all closing on the same
-        // day. Route overflow to errors instead of spamming Linear with a
-        // parser-breakage storm.
-        const titleMismatchFlags = ambiguous.filter(x => x.missingKind === 'title_mismatch').length;
-        if (result.missingKind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
-          errors.push({ ...result, action: 'ERROR', reason: 'possibly_closed_flood_suspected_parser_breakage' });
-        } else {
-          ambiguous.push(result);
-        }
-        break;
+    // Extension-only write rule: routeWeAuditResult is the ONLY place that decides
+    // bucket and write permission (pinned in we-closing-date-classify.test.mjs).
+    // Nothing below may call writeClosingDate except through route.write.
+    const route = routeWeAuditResult(result.action, canWriteClosingDate(show));
+    if (result.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+      // Flood guard (mirrors audit-closing-dates.js's TITLE_MISMATCH_FLOOD_CAP):
+      // a wave of title_mismatch flags in one run is far more likely a
+      // pageMatchesShowTitle() regression or a WET template change than that many
+      // shows all closing on the same day. Route overflow to errors instead of
+      // spamming Linear with a parser-breakage storm.
+      const titleMismatchFlags = ambiguous.filter(x => x.missingKind === 'title_mismatch').length;
+      if (result.missingKind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
+        errors.push({ ...result, action: 'ERROR', reason: 'possibly_closed_flood_suspected_parser_breakage' });
+        continue;
       }
-      case 'MATCH':
-      default:
-        matches.push(result);
-        break;
+    }
+    if (route.bucket === 'extensions') {
+      if (!route.write) {
+        extensions.push({ ...result, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
+      } else {
+        extensions.push(result);
+        if (!DRY_RUN) {
+          writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY, recordExtension: false });
+        }
+      }
+    } else {
+      ({ errors, newClosings, ambiguous, matches })[route.bucket].push(result);
     }
   }
 
