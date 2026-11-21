@@ -130,7 +130,7 @@ function isShieldedSyndicatedCopy(review, filePath, show) {
   const { normalizeOutlet } = require('./review-normalization');
   const primaries = getSyndicationPrimariesInDir(review && review.criticName,
     normalizeOutlet((review && (review.outletId || review.outlet)) || ''),
-    () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }, normalizeOutlet);
+    () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }, normalizeOutlet, { show });
   if (!primaries.length) return false;
   try {
     return require('./review-guards').hasIncludableSyndicationPrimary(review, show || null, filePath, { primaries, requireScore: true });
