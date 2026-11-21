@@ -124,6 +124,17 @@ function findCandidateGaps(shows, complexDefs, categoryFilter, marketKey) {
   const genericTokens = marketKey === 'london' ? LONDON_GENERIC_TOKENS : GENERIC_TOKENS;
   const result = {};
 
+  // A slug already linked to a DIFFERENT complex is placed, not unlinked.
+  // "Royal Court Theatre Upstairs" (royal-court) shares "upstairs" with Soho
+  // Theatre and must not be reported as a candidate gap there (BRO-7455).
+  const claimedBy = new Map();
+  for (const [cs, d] of Object.entries(complexDefs)) {
+    for (const sub of (Array.isArray(d && d.subVenueSlugs) ? d.subVenueSlugs : [])) {
+      if (!claimedBy.has(sub)) claimedBy.set(sub, new Set());
+      claimedBy.get(sub).add(cs);
+    }
+  }
+
   for (const [complexSlug, def] of Object.entries(complexDefs)) {
     // Same Array.isArray guard as findOrphanSubVenueSlugs. A spread of a
     // missing/non-iterable subVenueSlugs throws "is not iterable" here on
@@ -146,6 +157,8 @@ function findCandidateGaps(shows, complexDefs, categoryFilter, marketKey) {
     const candidates = [];
     for (const [slug, rawSet] of slugToRaw) {
       if (covered.has(slug)) continue;
+      const owners = claimedBy.get(slug);
+      if (owners && [...owners].some(o => o !== complexSlug)) continue;
       if (marketKey === 'london' && LONDON_DISTINCT_VENUES[complexSlug]?.has(slug)) continue;
       const slugWords = new Set(slug.split('-'));
       let bestOverlap = 0;

@@ -234,3 +234,22 @@ test('London candidate gaps still catch bare National Theatre auditorium names',
     'national-theatre': [{ slug: 'dorfman-theatre', rawStrings: ['Dorfman Theatre'], showCount: 1 }],
   });
 });
+
+test('findCandidateGaps skips a slug already linked to a different complex (BRO-7455)', () => {
+  const defs = {
+    'soho-theatre': { name: 'Soho Theatre', subVenueSlugs: ['soho-theatre-upstairs'] },
+    'royal-court': { name: 'Royal Court', subVenueSlugs: ['royal-court-theatre-upstairs'] },
+  };
+  const shows = [
+    { venue: 'Soho Theatre Upstairs', category: 'off-west-end' },
+    { venue: 'Royal Court Theatre Upstairs', category: 'off-west-end' },
+  ];
+  assert.deepEqual(findCandidateGaps(shows, defs, londonMarket.matches, londonMarket.key), {});
+  // Reverted guard would flag each Upstairs slug under the other complex.
+  const unlinked = { ...defs, 'royal-court': { name: 'Royal Court', subVenueSlugs: [] } };
+  assert.ok(findCandidateGaps(shows, unlinked, londonMarket.matches, londonMarket.key)['soho-theatre']);
+});
+
+test('royal-court complex links Royal Court Theatre Upstairs (BRO-7455)', () => {
+  assert.ok(westEndComplexDefs['royal-court'].subVenueSlugs.includes('royal-court-theatre-upstairs'));
+});
