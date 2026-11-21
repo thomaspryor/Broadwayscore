@@ -309,12 +309,13 @@ function extractStageBody(html) {
   // at the card itself. Off under the page-furniture kill switch.
   const cardAt = region.search(/class="[^"]*aos-Contact(?:JobTitle|Biog)\b/);
   if (startM && cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
+  const isAuthorBio = (t) => t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t);
   const isTrailingNoise = (t) =>
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
     // multi-word-name pattern, so allow zero additional name parts.
     // BRO-6872: case-sensitive and short only; with /i "The protagonist is a writer…" was dropped.
-    (t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t)) ||
+    isAuthorBio(t) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
@@ -340,7 +341,7 @@ function extractStageBody(html) {
     // Only trailers that appear after a review count as anchors (bio, subscribe, copyright); "Login Register" or
     // "Related Articles" can sit in page chrome above the review, so they never anchor here. Try each anchor in
     // page order and take the first with a real run of prose before it.
-    const isAnchor = (t) => isPlainBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
+    const isAnchor = (t) => isPlainBio(t) || isAuthorBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
     paras = null;
     for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
       if (!isAnchor(found[trailerAt].t)) continue;
@@ -352,7 +353,7 @@ function extractStageBody(html) {
       const farGap = found[trailerAt].at - found[trailerAt - 1].end > 5000;
       let from = trailerAt - 1;
       while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
-      const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t));
+      const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t) && !/^Book (?:great value )?tickets\b/i.test(t));
       const runLen = run.join('\n\n').length;
       const farOk = !farGap || isPlainBio(found[trailerAt].t) || (run.length >= 4 && runLen >= 1200);
       if (run.length >= 3 && runLen >= 600 && farOk) paras = run;
