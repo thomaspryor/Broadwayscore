@@ -41450,13 +41450,13 @@
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-21T17:50:45.565Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-21T22:43:25.467Z",
+      "lastSeen": "2026-11-21T22:59:15.432Z",
       "lastNotifiedAt": "2026-11-21T17:50:45.565Z",
       "lastSurfacedAt": "2026-11-21T17:50:45.565Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
       "status": "resolved",
@@ -47692,7 +47692,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:c02b7b47": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/smoke.spec.ts › Post-deploy smoke tests › signed-out visitor can open the sign-in options at 1280px\"",
       "firstSeen": "2026-11-21T20:48:11.700Z",
@@ -47703,7 +47703,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-8019",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-21T22:46:57.536Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-7324-data-pin-v2": {
       "status": "resolved",
@@ -47819,6 +47821,32 @@
       "lastSeen": "2026-11-21T21:08:30.714Z",
       "lastNotifiedAt": "2026-11-21T21:08:30.714Z",
       "lastSurfacedAt": "2026-11-21T21:08:30.714Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7511-liverun-wrapper": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: deadline red on land/bro-7511-liverun-wrapper",
+      "firstSeen": "2026-11-21T22:54:52.933Z",
+      "incidentOpenedAt": "2026-11-21T22:54:52.933Z",
+      "lastSeen": "2026-11-21T22:54:52.933Z",
+      "lastNotifiedAt": "2026-11-21T22:54:52.933Z",
+      "lastSurfacedAt": "2026-11-21T22:54:52.933Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-8021-mwqvjryr": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: colocated-tests red on land/job/linear-BRO-8021-mwqvjryr",
+      "firstSeen": "2026-11-21T23:04:46.706Z",
+      "incidentOpenedAt": "2026-11-21T23:04:46.706Z",
+      "lastSeen": "2026-11-21T23:04:46.706Z",
+      "lastNotifiedAt": "2026-11-21T23:04:46.706Z",
+      "lastSurfacedAt": "2026-11-21T23:04:46.706Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
