@@ -56,11 +56,14 @@ describe('copy rules', () => {
     assert.ok(A.copyProblems('Called "the best"').includes('quotation marks'));
     assert.ok(A.copyProblems('Good for Jersey Boys fans', { forbiddenTitles: ['Jersey Boys'] }).length);
     assert.deepStrictEqual(A.copyProblems("Close to the stage, with the theater's best rake."), []);
+    assert.ok(A.copyProblems('Rows F to L are identified as the best.').length);
+    assert.ok(A.copyProblems('The source recommends these seats.').length);
   });
 });
 
 describe('groundRewrite + decideSection', () => {
   const reply = {
+    name: { keep: true, evidence: [{ src: 1, quote: 'Orchestra Center, rows F to L' }] },
     verdict: { supported: true, evidence: [{ src: 1, quote: 'The best seats are in the Orchestra Center' }] },
     rowRange: { keep: true, evidence: [{ src: 1, quote: 'Orchestra Center, rows F to L' }] },
     bestRow: { keep: true, evidence: [{ src: 1, quote: 'Row H is perfect' }] },
@@ -73,7 +76,7 @@ describe('groundRewrite + decideSection', () => {
   };
   const { claims } = A.groundRewrite(section, reply, sources);
   test('only grounded, rule-clean claims reach the verifier', () => {
-    assert.deepStrictEqual(claims.map((c) => c.kind), ['verdict', 'rowRange', 'rationale']);
+    assert.deepStrictEqual(claims.map((c) => c.kind), ['name', 'verdict', 'rowRange', 'rationale']);
   });
   test('kept section carries only accepted fields; ungrounded bestRow and priceTier removed', () => {
     const acc = new Map(claims.map((c, i) => [i + 1, true]));
@@ -83,6 +86,14 @@ describe('groundRewrite + decideSection', () => {
     assert.strictEqual(out.priceTier, undefined);
     assert.strictEqual(out.rationale, 'Rows F to L put you close enough to see faces.');
     assert.deepStrictEqual(out.evidenceUrls, ['https://a.example/g']);
+  });
+  test('verifier rejecting the section name drops the section (audit: unsupported qualifiers)', () => {
+    const acc = new Map(claims.map((c, i) => [i + 1, c.kind !== 'name']));
+    assert.strictEqual(A.decideSection(section, claims, acc).dropped, 'section name not supported');
+  });
+  test('verifier sees the paragraph around each quote', () => {
+    const v = A.buildVerifyPrompt({ theaterName: 'Gershwin Theatre', sectionName: 'Orchestra Center', claims });
+    assert.match(v, /SURROUNDING TEXT: \.\.\.gershwin theatre seating chart/);
   });
   test('verifier rejecting the verdict drops the section', () => {
     const acc = new Map(claims.map((c, i) => [i + 1, c.kind !== 'verdict']));
@@ -97,6 +108,7 @@ describe('groundRewrite + decideSection', () => {
     const src = [{ url: 'https://c.example', text: page, namesTheater: true }];
     const sec = { name: 'Corners', verdict: 'skip', verdictLabel: 'Skip', hazards: [{ type: 'side-angle', note: 'x' }] };
     const rep = {
+      name: { keep: true, evidence: [{ src: 1, quote: 'Avoid the extreme corner seats' }] },
       verdict: { supported: true, evidence: [{ src: 1, quote: 'Avoid the extreme corner seats' }] },
       hazards: [{ i: 0, keep: true, note: 'Corner seats miss some of the stage', evidence: [{ src: 1, quote: 'the extreme corner seats miss some of the stage' }] }],
     };

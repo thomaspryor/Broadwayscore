@@ -175,9 +175,21 @@ function groundEvidence(evidence, sources) {
     const quote = String(e.quote || '');
     if (quote.length > MAX_QUOTE_CHARS) continue;
     if (!quoteInText(quote, src.text)) continue;
-    ok.push({ src: e.src, url: src.url, quote });
+    ok.push({ src: e.src, url: src.url, quote, context: quoteContext(quote, src.text) });
   }
   return ok;
+}
+
+/**
+ * ~350 chars either side of the quote (normalized text), so the verifier can see which theater,
+ * level and side the surrounding paragraph is about. Audit fix: a Right Orchestra quote was
+ * accepted as support for the Rear Orchestra because the verifier saw the sentence alone.
+ */
+function quoteContext(quote, text, pad = 350) {
+  const n = normalizeText(text);
+  const i = n.indexOf(normalizeText(quote));
+  if (i < 0) return '';
+  return n.slice(Math.max(0, i - pad), i + normalizeText(quote).length + pad);
 }
 
 /** Copy rules for public seating text. Returns a list of problems (empty = fine). */
@@ -187,6 +199,7 @@ function copyProblems(text, { forbiddenTitles = [] } = {}) {
   if (/[—]/.test(s)) problems.push('em dash');
   if (/["“”]/.test(s)) problems.push('quotation marks');
   if (/(^|[\s(])'[^']{3,}'(?=[\s,.;:)!?]|$)/.test(s)) problems.push('quotation marks');
+  if (/\b(the|a|one|this) (source|reviewer|review|user|poster|commenter)s?\b|\baccording to\b|\b(is|are) (identified|described|considered|reported|regarded) as\b|\bwidely regarded\b|\breportedly\b/i.test(s)) problems.push('talks about sources instead of giving advice');
   const norm = ` ${normalizeText(s)} `;
   for (const title of forbiddenTitles) {
     const t = normalizeText(title);
@@ -236,18 +249,21 @@ RULES
 - Every kept item needs evidence: {"src": <source number>, "quote": "<exact words copied from that source, 12 to 300 characters>"}.
   Copy quotes character for character from the source text. Do not paraphrase inside "quote". A quote that is not on the page is discarded by a program.
 - The quote must be about this theater and this section (or the rows it covers), not another theater or level.
-- verdict: supported only if a source says this section is among the best (sweet-spot), fine/good (solid), or poor/to avoid (skip).
+- name: keep only if the sources describe this area, including every qualifier in the name (row letters, front/rear, side, value). Copy rows exactly as the source writes them.
+- verdict: supported only if the sources say it about the WHOLE area named, not just part of it, and a source says this section is among the best (sweet-spot), fine/good (solid), or poor/to avoid (skip).
 - rowRange/bestRow: only if a source names those rows for this section.
 - isValuePick: only if a source says this section is good value / a deal / cheaper for what you get.
 - priceTier: only if a source says this section is expensive (premium), mid-priced, or cheap (budget).
 - bestFor/worstFor: only if a source ties this section to that kind of show (allowed tags: musical, play, dance-heavy, spectacle, intimate-drama).
-- hazards: keep one only if a source describes that problem in this section. You may reword the note.
-- rationale: rewrite as 1 to 4 short plain sentences for a ticket buyer, each backed by evidence. Use your own words.
+- hazards: keep one only if a source describes that problem in this section AND the problem matches its [type] label. You may reword the note.
+- rationale: rewrite as 1 to 4 short plain sentences of direct advice to a ticket buyer, each backed by evidence. Use your own words.
+  Never talk about the sources (no "the source", "reviewers", "is described as", "is identified as", "reportedly", "according to").
   No quotation marks. No em dashes. Do not name websites or reviewers. Do not name any show except: ${tenants}.
 - label: a 1 to 4 word label for the verdict that the evidence supports (e.g. "Best overall", "Good value", "Too far back"), no punctuation except hyphens.
 
 Reply with ONLY this JSON:
-{"verdict":{"supported":true|false,"evidence":[...]},
+{"name":{"keep":true|false,"evidence":[...]},
+ "verdict":{"supported":true|false,"evidence":[...]},
  "label":"...",
  "rowRange":{"keep":true|false,"evidence":[...]},
  "bestRow":{"keep":true|false,"evidence":[...]},
@@ -262,10 +278,14 @@ Omit a field object when the section does not have that field.`);
 
 /** The checker sees each claim next to its quotes and says yes or no per claim. */
 function buildVerifyPrompt({ theaterName, sectionName, claims }) {
-  const block = claims.map((c, i) => `CLAIM ${i + 1} [${c.kind}]: ${c.text}\n${c.evidence.map((e) => `  EVIDENCE (${e.url}): "${e.quote}"`).join('\n')}`).join('\n\n');
+  const block = claims.map((c, i) => `CLAIM ${i + 1} [${c.kind}]: ${c.text}\n${c.evidence.map((e) => `  EVIDENCE (${e.url}): "${e.quote}"${e.context ? `\n    SURROUNDING TEXT: ...${e.context}...` : ''}`).join('\n')}`).join('\n\n');
   return wellFormed(`You are a strict fact-checker. Each claim below is about the "${sectionName}" seats at ${theaterName} on Broadway.
 For each claim, decide if the EVIDENCE quotes, read literally, support the claim for this section at this theater.
 Say false if the evidence is about a different section, a different theater, is vaguer than the claim, or only partly supports it.
+Use the SURROUNDING TEXT to check which theater, level and side a quote is about: a quote from a paragraph about another area does not support this section.
+The evidence must cover the WHOLE area the claim names. If the section is "Rear Mezzanine and Far Sides" and the evidence only says to avoid the far sides, a claim that the whole section is to avoid is false.
+A [name] claim is supported only if every qualifier in the name (rows, front/rear, side, value, etc.) is backed by the evidence.
+A [hazard] claim must match its TYPE label as well as its note (e.g. "steep rake" is false if the evidence is about stairs or a shallow rake).
 A [verdict] claim of "good, reasonable seats" is supported by evidence that the seats are good, decent or worth buying; it does not need to say they are the best.
 
 ${block}
@@ -296,6 +316,8 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
   };
   const r = reply || {};
   const v = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' }[section.verdict];
+  // The section name is shown as a heading, so every qualifier in it is a claim (audit: "front", "rows 1-11", "value band").
+  if (r.name && r.name.keep) add('name', `The area called "${section.name}" is a real, distinct seating area at this theater, and each detail in that name (rows, position, value) is accurate.`, r.name.evidence);
   if (r.verdict && r.verdict.supported) add('verdict', `The ${section.name} seats ${v}.`, r.verdict.evidence);
   // The row quote often only names the rows; the verdict quote says how good they are. The verifier sees both.
   if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${section.name}, rows ${section.rowRange} ${v}.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
@@ -311,7 +333,8 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
     if (!orig || !h.keep || !hazardType(orig.type)) continue;
     const note = String(h.note || orig.note || '').trim();
     if (!note || copyProblems(note, { forbiddenTitles }).length) continue;
-    add('hazard', `${section.name}: ${note}`, h.evidence, { hazard: { type: hazardType(orig.type), note } });
+    const type = hazardType(orig.type);
+    add('hazard', `${section.name} has a ${type.replace(/-/g, ' ')} problem: ${note}`, h.evidence, { hazard: { type, note } });
   }
   (r.rationale || []).forEach((s) => {
     const text = String((s && s.text) || '').trim();
@@ -334,6 +357,7 @@ function cleanName(n) {
  */
 function decideSection(original, claims, accepted) {
   const ok = claims.filter((c, i) => accepted.get(i + 1) === true);
+  if (!ok.some((c) => c.kind === 'name')) return { dropped: 'section name not supported' };
   if (!ok.some((c) => c.kind === 'verdict')) return { dropped: 'verdict not supported' };
   let sentences = ok.filter((c) => c.kind === 'rationale').map((c) => c.sentence);
   // No rewritten sentence survived but a hazard did: the verified hazard note is the explanation.
