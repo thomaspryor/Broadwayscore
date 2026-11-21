@@ -60,7 +60,7 @@ function readPage(url) {
 /** Broadway titles a rationale may not name at this theater: every title except current tenants. */
 function showTitleRules(theaterName) {
   let shows = [];
-  for (const p of [path.join(ROOT, 'data', 'shows.json'), '/home/user/Broadwayscore/data/shows.json']) {
+  for (const p of [path.join(ROOT, 'data', 'shows.json')]) {
     try { const j = JSON.parse(fs.readFileSync(p, 'utf8')); shows = Array.isArray(j) ? j : j.shows; break; } catch { /* next */ }
   }
   if (!shows.length) throw new Error('shows.json not found (run scripts/setup-local-data.sh --link-only)');

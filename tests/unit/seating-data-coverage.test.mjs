@@ -10,10 +10,12 @@
  * produces a `sections` field — see scripts/lib/theater-tips-merge.js and
  * tests/unit/theater-tips-merge-preserves-sections.test.mjs for the fix).
  *
- * This test pins the data-coverage half of the acceptance criteria: at least
- * 10 theaters carry valid seating sections, and every section that exists is
- * shaped so SeatingGuidanceCard/SeatingGuidance (src/components/) will render
- * it (isValidSection requires name + verdict + verdictLabel).
+ * BRO-8018 (2026-11): sections were rebuilt from the April research, each claim
+ * re-checked word for word against its cited pages (scripts/reverify-seat-sections.js).
+ * The audit file below lists exactly which theaters passed; this test pins that set
+ * (not a floor, so a partial wipe fails too) and runs the shared section rules
+ * (scripts/lib/seating-sections-validators.js): sourced, no em dashes, no quotation
+ * marks, no show named except a current tenant.
  *
  * Run with: node --test tests/unit/seating-data-coverage.test.mjs
  */
@@ -32,6 +34,9 @@ const META_PATH = path.join(__dirname, '../../data/theater-metadata.json');
 const meta = require(META_PATH);
 
 const VALID_VERDICTS = new Set(['sweet-spot', 'solid', 'skip']);
+const AUDIT_PATH = path.join(__dirname, '../../data/seat-research-eval/audits/2026-11-bro-8018.json');
+const { validateSeatingSections } = require('../../scripts/lib/seating-sections-validators.js');
+const { showTitleRules } = require('../../scripts/reverify-seat-sections.js');
 
 function theatersWithSections() {
   return Object.entries(meta).filter(
@@ -40,12 +45,22 @@ function theatersWithSections() {
 }
 
 describe('seating section data coverage', () => {
-  test('at least 10 theaters have non-empty seating sections', () => {
-    const withSections = theatersWithSections();
-    assert.ok(
-      withSections.length >= 10,
-      `Expected >=10 theaters with seating sections, found ${withSections.length}: ${withSections.map(([n]) => n).join(', ')}`
-    );
+  test('exactly the theaters the BRO-8018 audit verified have sections', () => {
+    const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+    const expected = audit.theaters.filter((t) => t.kept).map((t) => t.theater).filter((t) => t in meta).sort();
+    const actual = theatersWithSections().map(([n]) => n).sort();
+    assert.ok(expected.length >= 10, `audit kept only ${expected.length} theaters`);
+    assert.deepStrictEqual(actual, expected, 'theaters with seating sections differ from the verified set: a wipe, or sections added without re-verification');
+  });
+
+  test('every section passes the shared rules (sourced, clean copy, no stale show names)', () => {
+    const problems = [];
+    for (const [name, entry] of theatersWithSections()) {
+      let forbiddenTitles = [];
+      try { forbiddenTitles = showTitleRules(name).forbidden; } catch { /* no shows.json in this checkout: title rule skipped */ }
+      problems.push(...validateSeatingSections(name, entry.structuredTips.seating.sections, { forbiddenTitles }));
+    }
+    assert.deepStrictEqual(problems, []);
   });
 
   test('every populated theater has at least one sweet-spot or value-pick section', () => {
@@ -120,25 +135,6 @@ describe('seating section data coverage', () => {
           `${name} avoidSeats cautions about "${s.name}" ("${seating.avoidSeats}") but its rationale doesn't acknowledge it: "${s.rationale}"`
         );
       }
-    }
-  });
-
-  test('the BRO-932 target theaters (Shubert, St. James, Nederlander, Imperial, Lunt-Fontanne, Minskoff, Marquis, Gershwin, Palace, Lyric) are all populated', () => {
-    const targets = [
-      'Shubert Theatre',
-      'St. James Theatre',
-      'Nederlander Theatre',
-      'Imperial Theatre',
-      'Lunt-Fontanne Theatre',
-      'Minskoff Theatre',
-      'Marquis Theatre',
-      'Gershwin Theatre',
-      'Palace Theatre',
-      'Lyric Theatre',
-    ];
-    for (const name of targets) {
-      const sections = meta[name]?.structuredTips?.seating?.sections;
-      assert.ok(sections?.length > 0, `${name} is missing seating sections`);
     }
   });
 });
