@@ -74,6 +74,7 @@ function misattributedWetRoundup(d, guards = require('./review-guards')) {
   if (!/westendtheatre\.com/i.test(url) || WET_OUTLETS.includes(d.outletId)) return null;
   let isRoundup = false;
   try { isRoundup = !!guards.isRoundupUrl(url).isRoundup; } catch { /* not a roundup */ }
+  // lane-exempt: sweep over already-filed files after the 7-day limbo grace (never an opening-night lane writer)
   return isRoundup
     ? { route: 'reject', rule: 'wet-roundup-misattributed', flag: { isRoundupArticle: true, roundupReason: 'WestEndTheatre.com roundup page filed under another outlet (BRO-7930)' } }
     : null;
