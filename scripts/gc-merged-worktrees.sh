@@ -508,7 +508,7 @@ stale_unmerged=()
 # already on origin/main. Returns 0 when handled, 1 to fall through to SKIP.
 TMP_CHECKOUT_MAX_AGE_MIN="${TMP_CHECKOUT_MAX_AGE_MIN:-360}"
 reap_stale_tmp_checkout() {
-  local wt="$1" parent sz
+  local wt="$1" parent sz owner reap_reason
   case "$wt" in
     *..*) return 1 ;;
     /tmp/*/main|/private/tmp/*/main|/var/folders/*/main|/private/var/folders/*/main) ;;
@@ -521,17 +521,32 @@ reap_stale_tmp_checkout() {
     merge-test-gate-baseline-??????|open-backlog-sweep-??????|zombie-verify-??????) ;;
     *) return 1 ;;
   esac
-  [ -n "$(find "$parent" -maxdepth 0 -mmin +"$TMP_CHECKOUT_MAX_AGE_MIN" 2>/dev/null)" ] || return 1
-  find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print 2>/dev/null | grep -q . && return 1
+  [ -f "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" ] || return 1
+  owner=$(node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" owner "$wt") || return 1
+  case "$owner" in
+    dead)
+      # The creator died. Allow provisioning/subprocess teardown to settle first.
+      [ -n "$(find "$parent" -maxdepth 0 -mmin +10 2>/dev/null)" ] || return 1
+      reap_reason="dead owner, older than 10m"
+      ;;
+    legacy)
+      [ -n "$(find "$parent" -maxdepth 0 -mmin +"$TMP_CHECKOUT_MAX_AGE_MIN" 2>/dev/null)" ] || return 1
+      find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print 2>/dev/null | grep -q . && return 1
+      reap_reason="legacy checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m"
+      ;;
+    *) return 1 ;;
+  esac
+  node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" safe "$wt" || return 1
   git -C "$wt" merge-base --is-ancestor HEAD origin/main 2>/dev/null || return 1
   sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
   sz=${sz:-0}
   if [ "$DRY_RUN" = "1" ]; then
-    log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — detached temp checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m, HEAD on origin/main"
+    log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — $reap_reason, HEAD on origin/main"
   else
-    LC_ALL=C git worktree remove --force "$wt" >/dev/null 2>&1 || return 1
+    LC_ALL=C git worktree remove "$wt" >/dev/null 2>&1 || return 1
+    rm -f "$parent/.acceptance-owner.json"
     rmdir "$parent" 2>/dev/null || true
-    log "REMOVE-TMP [$CURRENT_REPO_NAME] $wt — freed $(human_kb "$sz"), detached temp checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m"
+    log "REMOVE-TMP [$CURRENT_REPO_NAME] $wt — freed $(human_kb "$sz"), $reap_reason, HEAD on origin/main"
   fi
   removed=$((removed+1))
   removed_freed_kb=$((removed_freed_kb + sz))

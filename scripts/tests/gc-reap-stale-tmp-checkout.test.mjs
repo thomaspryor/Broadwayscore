@@ -140,3 +140,29 @@ test('every makeFreshCheckout prefix in scripts/ is on the GC reap allowlist', (
     assert.ok(gc.includes(`${p}??????`), `gc-merged-worktrees.sh reap allowlist is missing ${p}`);
   }
 });
+
+test('dead owners are reaped promptly while live, dirty, unmerged and locked trees survive', () => {
+  const fx = buildFixture();
+  const marker = (co, owner) => fs.writeFileSync(path.join(co.parent, '.acceptance-owner.json'), JSON.stringify(owner));
+  // Fresh source mtimes are allowed once the recorded owner has died.
+  fs.utimesSync(path.join(fx.leaked.wt, 'a.txt'), new Date(), new Date());
+  marker(fx.leaked, { pid: process.pid, started: 'a different process start' });
+  const twentyMinutesAgo = new Date(Date.now() - 20 * 60 * 1000);
+  fs.utimesSync(fx.leaked.parent, twentyMinutesAgo, twentyMinutesAgo);
+  marker(fx.fresh, { pid: process.pid, started: execFileSync('ps', ['-p', String(process.pid), '-o', 'lstart='], { encoding: 'utf8' }).trim() });
+  backdate(fx.fresh.parent);
+  fs.writeFileSync(path.join(fx.foreign.wt, 'note'), 'preserve me');
+  const dirtyParent = fs.mkdtempSync(path.join(fx.tmp, 'acceptance-check-'));
+  const dirty = path.join(dirtyParent, 'main');
+  git(fx.repo, 'worktree', 'add', '-q', '--detach', dirty, 'main');
+  fs.writeFileSync(path.join(dirty, 'untracked'), 'work');
+  backdate(dirtyParent);
+  const lockedParent = fs.mkdtempSync(path.join(fx.tmp, 'acceptance-check-'));
+  const locked = path.join(lockedParent, 'main');
+  git(fx.repo, 'worktree', 'add', '-q', '--detach', locked, 'main');
+  git(fx.repo, 'worktree', 'lock', locked);
+  backdate(lockedParent);
+  const out = runGc(fx, { dryRun: false });
+  assert.ok(!fs.existsSync(fx.leaked.wt), out);
+  for (const wt of [fx.fresh.wt, fx.unique.wt, dirty, locked]) assert.ok(fs.existsSync(wt), wt);
+});

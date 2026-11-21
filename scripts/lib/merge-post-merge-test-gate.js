@@ -975,7 +975,7 @@ if (require.main === module) {
       try {
         const { removeCheckout } = require('./acceptance-check-core.js');
         removeCheckout(checkout);
-      } catch { /* best effort — a leftover worktree is picked up by `git worktree prune` */ }
+      } catch { /* checkout cleanup reports failures; the guarded GC retries abandoned trees */ }
     };
   }
 

@@ -179,13 +179,13 @@ test('leaseLooksLive: null-pid startup grace never queries process identity', ()
 test('parseDispatchFloorGB: blank and whitespace fall back to the default, not 0', () => {
   const warnings = [];
   const warn = m => warnings.push(m);
-  assert.equal(parseDispatchFloorGB('', warn), 5);
-  assert.equal(parseDispatchFloorGB('   ', warn), 5);
-  assert.equal(parseDispatchFloorGB(undefined, warn), 5);
+  assert.equal(parseDispatchFloorGB('', warn), 15);
+  assert.equal(parseDispatchFloorGB('   ', warn), 15);
+  assert.equal(parseDispatchFloorGB(undefined, warn), 15);
   assert.equal(warnings.length, 0, 'unset/blank is not a typo, no warning');
   assert.equal(parseDispatchFloorGB('0', warn), 0, 'an explicit 0 still disables the floor');
   assert.equal(parseDispatchFloorGB(' 12 ', warn), 12);
-  assert.equal(parseDispatchFloorGB('abc', warn), 5);
-  assert.equal(parseDispatchFloorGB('-3', warn), 5);
+  assert.equal(parseDispatchFloorGB('abc', warn), 15);
+  assert.equal(parseDispatchFloorGB('-3', warn), 15);
   assert.equal(warnings.length, 2);
 });

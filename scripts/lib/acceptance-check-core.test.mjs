@@ -148,6 +148,29 @@ function fixture() {
 
 function copiedShows(co) { return fs.readFileSync(path.join(co.wt, 'data', 'shows.json'), 'utf8'); }
 
+test('owned acceptance checkouts are cleaned on normal exit and termination', () => {
+  const f = fixture();
+  try {
+    for (const signal of ['', 'SIGTERM']) {
+      const program = `
+        const { makeFreshCheckout } = require(process.argv[1]);
+        const co = makeFreshCheckout({ repo: process.argv[2], prefix: 'acceptance-check-' });
+        console.log(JSON.stringify({ dir: co.dir, wt: co.wt }));
+        if (process.argv[3]) process.kill(process.pid, process.argv[3]);
+      `;
+      const result = require('node:child_process').spawnSync(process.execPath, [
+        '-e', program, require.resolve('./acceptance-check-core.js'), f.repo, signal,
+      ], { encoding: 'utf8', timeout: 20000 });
+      assert.ok(!result.error, String(result.error));
+      const co = JSON.parse(result.stdout.trim().split('\n').at(-1));
+      assert.equal(fs.existsSync(co.dir), false, result.stderr);
+      assert.ok(!sh(f.repo, 'worktree', 'list').includes(co.wt));
+    }
+  } finally {
+    fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('BRO-4830: stale-but-clean data clone is fast-forwarded BEFORE the copy', () => {
   const f = fixture();
   try {
