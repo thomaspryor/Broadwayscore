@@ -2438,6 +2438,7 @@ const WRONG_PRODUCTION_OR_SHOW_FIELDS = [
   'wrongProduction', 'wrongShow', 'allowEarlyDate', 'allowCrossMarket',
   'wrongProductionManualClear', 'wrongProductionCleared', 'wrongProductionAutoCleared',
   'humanReviewedWrongProduction', 'wrongShowManualClear',
+  'wrongProductionOverride', 'wrongShowOverride', // BRO-7944
 ];
 
 /**
@@ -2467,8 +2468,10 @@ function isEffectivelyWrongProductionOrShow(review) {
     && !review.wrongProductionManualClear
     && !review.wrongProductionCleared
     && !review.wrongProductionAutoCleared
+    && !review.wrongProductionOverride // BRO-7944: permanent human override = flag not in effect
     && review.humanReviewedWrongProduction !== false);
-  const effectivelyWrongShow = !!(review.wrongShow && !review.wrongShowManualClear);
+  const effectivelyWrongShow = !!(review.wrongShow && !review.wrongShowManualClear
+    && !review.wrongShowOverride);
   return { effectivelyWrongProduction, effectivelyWrongShow };
 }
 

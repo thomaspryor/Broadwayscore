@@ -41,12 +41,13 @@ function defaultDeps() {
 function outcomeForFetchError(message) {
   const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
   const reason = classifyFetchFailure({ message });
-  return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason };
+  // BRO-7944: keep the raw error + HTTP status so the ledger row says WHY (fetch_error rows were opaque).
+  return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason, error: String(message || '').slice(0, 200), httpStatus: require('./gap-recovery-ledger').httpStatusFrom(message) };
 }
 
 /** Turn fetched HTML into a candidate, or the right refusal. */
 function fromHtml(html, url, via, deps) {
-  if (!html || typeof html !== 'string') return { ok: false, outcome: 'no_evidence', reason: 'fetch_error' };
+  if (!html || typeof html !== 'string') return { ok: false, outcome: 'no_evidence', reason: 'fetch_error', error: `empty body via ${via || '?'} (${typeof html})` };
   // A 200 "page not found" template says nothing about the article: soft_404 is non-evidence.
   if (deps.isNotFoundHtml(html)) return { ok: false, outcome: 'non_evidence', reason: 'soft_404' };
   const text = deps.extractArticleText(html, hostOf(url));
@@ -241,7 +242,7 @@ async function paidFetch(c, deps = defaultDeps()) {
     const capped = !!deps.bdBlockedCount && deps.bdBlockedCount() > blockedBefore;
     const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
     const reason = classifyFetchFailure({ message: e.message, bdWasCapped: capped });
-    return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason };
+    return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason, error: String(e.message || '').slice(0, 200), httpStatus: require('./gap-recovery-ledger').httpStatusFrom(e.message) };
   }
   const r = fromHtml(res && res.content, c.url, 'paid:brightdata', deps);
   return r.ok ? { ...r, url: c.url } : r;

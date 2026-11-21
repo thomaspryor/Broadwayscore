@@ -98,12 +98,53 @@ function makeRow(r) {
     priorFullTextHash: r.priorFullTextHash || null,
     pushedBlob: r.pushedBlob || null,
   };
+  // BRO-7944 diagnostics: content tier at attempt time, HTTP status and error text (null when not applicable).
+  if (r.tier) row.tier = String(r.tier);
+  if (Number.isFinite(r.httpStatus)) row.httpStatus = r.httpStatus;
+  if (r.error) row.error = String(r.error).slice(0, 200);
   row.seq = Number.isFinite(r.seq) ? r.seq : ++_seq;
   if (r.retryAfter) row.retryAfter = r.retryAfter;
   if (r.abandoned) row.abandoned = true;
   if (r.runId) row.runId = r.runId;
   if (r.detail) row.detail = r.detail;
   return row;
+}
+
+/**
+ * BRO-7944: true when this review+strategy's latest live row is a non-evidence outcome
+ * newer than GAP_NON_EVIDENCE_COOLDOWN_MIN (default 60). Non-evidence never counts toward
+ * the retry caps, so without this a batch's next round redoes it straight away.
+ */
+function recentNonEvidence(rows, strategy, nowMs = Date.now(), env = process.env) {
+  const mins = Number(env.GAP_NON_EVIDENCE_COOLDOWN_MIN);
+  const ms = (Number.isFinite(mins) && mins >= 0 ? mins : 60) * 60000;
+  let last = null;
+  for (const r of rows || []) if (r.strategy === strategy && r.outcome !== 'reopened') last = (!last || tsMs(r) >= tsMs(last)) ? r : last;
+  return !!last && last.outcome === 'non_evidence' && nowMs - tsMs(last) < ms;
+}
+
+/** HTTP status embedded in an error message ("HTTP 403", "Bright Data HTTP 429: ..."), or null. */
+function httpStatusFrom(message) {
+  const m = /\bHTTP[ /]?(\d{3})\b/i.exec(String(message || '')) || /\b(?:status(?:Code)?|code)[ :=]+([1-5]\d{2})\b/i.exec(String(message || ''));
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * BRO-7944: diagnostics every refused attempt row must carry (the url the attempt
+ * used, how many bytes the candidate text had, the tier of the record, and the HTTP
+ * status or error). `got` = strategy result, `r` = acceptance result, `c` = candidate.
+ * Never returns an undefined key: `{...extra}` spreads must not blank the url.
+ */
+function refusalDiagnostics({ c = {}, got = {}, r = null }) {
+  const raw = typeof got.rawText === 'string' ? got.rawText.length : null;
+  const out = {
+    url: got.url || c.url || null,
+    bytesAfter: r && Number.isFinite(r.newLen) ? r.newLen : (raw !== null ? raw : (got.ok === false ? 0 : null)),
+    tier: (r && r.decision && r.decision.priorTier) || c.contentTier || null,
+    httpStatus: Number.isFinite(got.httpStatus) ? got.httpStatus : httpStatusFrom(got.error || got.reason),
+    error: got.error || (r && r.reason ? String(r.reason) : null) || (got.reason ? String(got.reason) : null),
+  };
+  return out;
 }
 
 /** One O_APPEND write per row (safe against concurrent appenders). */
@@ -481,6 +522,7 @@ function pendingPushInfo(rows) {
       reviewKey: key, gapClass: last.gapClass, strategy: last.strategy, url: last.url,
       bytesBefore: last.bytesBefore, bytesAfter: last.bytesAfter, priorFullTextHash: last.priorFullTextHash, runId: last.runId,
       priorTier: (last.detail && last.detail.priorTier) || null, newTier: (last.detail && last.detail.newTier) || null,
+      acceptedHash: (last.detail && last.detail.acceptedHash) || null,
     });
   }
   return out;
@@ -526,6 +568,9 @@ function isVanishedReviewFile(err, filePath) {
 
 module.exports = {
   tierImproved,
+  recentNonEvidence,
+  httpStatusFrom,
+  refusalDiagnostics,
   isVanishedReviewFile,
   pendingPushInfo,
   outcomeForGateRefusal,

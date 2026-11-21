@@ -470,3 +470,36 @@ test('strategyEligibility: two lost free-fetch recoveries at one url stop raw-HT
   const N = require('./gap-recovery-nightly.js');
   assert.equal(N.planCounts([{ recency: 'historic', strategy: null, skipped: [{ strategy: 'REFETCH_FREE', reason: 'lost_loop_at_url' }] }]).needsDecision, 1);
 });
+
+// BRO-7944: every refusal row carries url, bytesAfter, tier and the HTTP status or error.
+test('refusalDiagnostics: fetch_error keeps the candidate url, an error and an HTTP status', async () => {
+  const { createRequire } = await import('node:module');
+  const L2 = createRequire(import.meta.url)('./gap-recovery-ledger');
+  const d = L2.refusalDiagnostics({ c: { url: 'https://x.test/a', contentTier: 'stub' }, got: { ok: false, reason: 'fetch_error', error: 'Bright Data HTTP 429: slow down', url: undefined } });
+  assert.equal(d.url, 'https://x.test/a');
+  assert.equal(d.tier, 'stub');
+  assert.equal(d.httpStatus, 429);
+  assert.match(d.error, /429/);
+  assert.equal(d.bytesAfter, 0);
+  const row = L2.makeRow({ reviewKey: 'a/b.json', outcome: 'no_evidence', reason: 'fetch_error', ...d });
+  assert.equal(row.url, 'https://x.test/a');
+  assert.equal(row.httpStatus, 429);
+  assert.equal(row.tier, 'stub');
+});
+test('refusalDiagnostics: gate refusal keeps bytesAfter and the prior tier from the decision', async () => {
+  const { createRequire } = await import('node:module');
+  const L2 = createRequire(import.meta.url)('./gap-recovery-ledger');
+  const d = L2.refusalDiagnostics({ c: { url: 'https://x.test/a', contentTier: 'stub' }, got: { ok: true, url: 'https://x.test/b', rawText: 'abc' }, r: { code: 'too_short', reason: 'too short', newLen: 120, decision: { priorTier: 'excerpt' } } });
+  assert.deepEqual([d.url, d.bytesAfter, d.tier, d.error], ['https://x.test/b', 120, 'excerpt', 'too short']);
+});
+
+test('recentNonEvidence: a fresh non_evidence row cools the strategy down; old, other-strategy and evidence rows do not (BRO-7944)', () => {
+  const now = Date.parse('2026-11-21T08:00:00Z');
+  const r = (o) => ({ strategy: 'REFETCH_FREE', outcome: 'non_evidence', ts: '2026-11-21T07:30:00Z', ...o });
+  assert.equal(L.recentNonEvidence([r({})], 'REFETCH_FREE', now, {}), true);
+  assert.equal(L.recentNonEvidence([r({ ts: '2026-11-21T06:00:00Z' })], 'REFETCH_FREE', now, {}), false);
+  assert.equal(L.recentNonEvidence([r({})], 'ARCHIVE', now, {}), false);
+  assert.equal(L.recentNonEvidence([r({ outcome: 'rejected' })], 'REFETCH_FREE', now, {}), false);
+  assert.equal(L.recentNonEvidence([r({ ts: '2026-11-21T06:00:00Z' }), r({})], 'REFETCH_FREE', now, {}), true);
+  assert.equal(L.recentNonEvidence([r({})], 'REFETCH_FREE', now, { GAP_NON_EVIDENCE_COOLDOWN_MIN: '10' }), false);
+});

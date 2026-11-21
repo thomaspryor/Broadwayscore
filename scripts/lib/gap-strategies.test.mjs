@@ -30,7 +30,7 @@ test('REFETCH_FREE asks fetchPage for the free tiers only', async () => {
 
 test('fetch errors map through failed-fetch-policy: 404 is evidence, budget cap is not', async () => {
   const dead = await S.refetchFree(c, deps({ fetchPage: async () => { throw new Error('HTTP 404'); } }));
-  assert.deepEqual(dead, { ok: false, outcome: 'no_evidence', reason: 'url_dead_404' });
+  assert.deepEqual(dead, { ok: false, outcome: 'no_evidence', reason: 'url_dead_404', error: 'HTTP 404', httpStatus: 404 }); // BRO-7944 diagnostics
   assert.equal(S.outcomeForFetchError('All tiers failed').outcome, 'no_evidence');
 });
 

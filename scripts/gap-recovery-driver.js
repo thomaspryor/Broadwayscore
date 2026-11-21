@@ -117,6 +117,9 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20) });
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
       if (!e.ok) return e;
+      // BRO-7944: a non-evidence outcome (soft 404, timeout) is retried, but not minutes later by the next batch round.
+      const ne = L.recentNonEvidence(ledgerIndex.get(reviewKey) || [], strategy);
+      if (ne) return { ok: false, reason: 'non_evidence_cooldown' };
       if (strategy === 'REFETCH_FREE' && ffEntry) {
         const g = collectorRefetchGate(rg.shouldRetryFetch(show, review, ffEntry));
         if (!g.ok) return g;
@@ -158,7 +161,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     out.push({
       reviewKey, filePath, showId: row.showId, file: row.file, outletId: review.outletId || row.outletId,
       outlet: review.outlet, criticName: review.criticName, source: review.source, url: review.url || null,
-      gapClass: row.gapClass, subclass: row.subclass, recency: row.recency,
+      gapClass: row.gapClass, subclass: row.subclass, recency: row.recency, contentTier: review.contentTier || null,
       showDate: (show && (show.openingDate || show.previewsStartDate)) || null,
       tier: (outlets[review.outletId || row.outletId] && outlets[review.outletId || row.outletId].tier) || null,
       attempts: facts.attempts, lastTryMs: facts.lastTryMs,
@@ -168,6 +171,11 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
   }
   out.sort(compareCandidates);
   return out;
+}
+
+/** sha256 of the file's current fullText: lets a later round prove an uncommitted file is still OUR accepted text. */
+function acceptedHash(filePath) {
+  try { return require('crypto').createHash('sha256').update(String(readJson(filePath).fullText || '')).digest('hex'); } catch { return null; }
 }
 
 function bump(o, k, n = 1) { o[k] = (o[k] || 0) + n; }
@@ -203,7 +211,7 @@ function printPlan(cands) {
 /** Stats for --summary (nightly reads it; never a review file). */
 let DRY_WORK_ORDER = null;
 let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
-const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
+const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, timeBudgetHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
 function writeSummary() {
   const summaryFile = arg('summary');
   if (!summaryFile) return;
@@ -386,7 +394,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   };
 
   // Land what an earlier run committed but could not push, before new work.
-  const pend = retryPendingPushes({ repoDir: dir, onLanded });
+  let pend;
+  try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
 
   let urlFindRuns = 0;
@@ -417,12 +426,14 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const record = (c, strategy, extra) => {
     const st = L.strategyState(L.indexRows(L.readRows(ledgerPath)), c.reviewKey, strategy);
     const stamp = L.evidenceStamp({ show: c.show, strategy, outcome: extra.outcome, reason: extra.reason, priorState: st });
-    L.appendRows([{ reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, runId: RUN_ID, bytesBefore: c.bytesBefore, url: extra.url || c.url, ...extra, ...stamp }], ledgerPath);
+    // BRO-7944: url last so an `extra.url: undefined` (strategy gave none) cannot blank the candidate's url.
+    L.appendRows([{ reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, runId: RUN_ID, bytesBefore: c.bytesBefore, tier: c.contentTier, ...extra, ...stamp, url: extra.url || c.url }], ledgerPath);
     const b = (stats.byStrategy[strategy] = stats.byStrategy[strategy] || { attempted: 0, accepted: 0, outcomes: {} });
     b.attempted++;
     bump(b.outcomes, `${extra.outcome}:${String(extra.reason || '').split(':')[0]}`);
   };
 
+  const CADENCE = require('./lib/gap-recovery-batch').checkpointCadence(); // BRO-7944: env-tunable, capped at 10 accepts / 10 min
   let lastFlushAt = Date.now();
   const flush = (label) => {
     lastFlushAt = Date.now();
@@ -442,18 +453,45 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     }
   };
 
+  // BRO-7944: a round killed between an accept and its checkpoint leaves the accepted text
+  // uncommitted in the clone with a pending_push row. Adopt and land it (no lost text, no refetch).
+  try {
+    const { orphanAccepts } = require('./lib/gap-recovery-batch');
+    const { execFileSync } = require('child_process');
+    const repo = fs.realpathSync(dir);
+    const { landingKey } = require('./lib/review-texts-checkpoint');
+    // Only this driver's accepts: recover-wayback-reviews (runId wayback-*) owns its own uncommitted files.
+    const stillPending = new Map([...L.pendingPushInfo(L.readRows(ledgerPath))].filter(([k, v]) => !landedKeys.has(k) && !String(v.runId || '').startsWith('wayback-')));
+    const o = orphanAccepts(stillPending, {
+      readText: (k) => { try { return readJson(path.join(dir, k)).fullText || ''; } catch { return null; } },
+      hashText: (t) => require('crypto').createHash('sha256').update(String(t)).digest('hex'),
+      isDirty: (k) => { try { return execFileSync('git', ['-C', repo, 'status', '--porcelain', '--', k], { encoding: 'utf8' }).trim().length > 0; } catch { return false; } },
+    });
+    for (const k of o.adopt) {
+      const abs = path.resolve(dir, k);
+      tracker.add(abs); tracker.expected.set(abs, landingKey(readJson(abs))); pendingInfo.set(k, stillPending.get(k));
+    }
+    SUMMARY.adopted = o.adopt.length; SUMMARY.orphansGone = o.gone.length;
+    if (o.adopt.length || o.gone.length) console.log(`  [adopt] ${o.adopt.length} uncommitted accepted review(s) from an earlier round; ${o.gone.length} pending with no text on disk`);
+    if (o.adopt.length) flush('adopt-orphans');
+  } catch (e) { console.error(`  [adopt] ${e.message}`); if (e && e.name === 'ReviewTextsPushError') SUMMARY.pushRetryFailed = true; }
+
   try {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
       let strategy = c.strategy;
       try {
-      if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
+      if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); SUMMARY.timeBudgetHit = true; break; }
       if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
+      // BRO-7944: the run lock belongs to the parent (nightly/batch). If it died we no longer own exclusivity: stop.
+      if (process.env.GAP_RECOVERY_RUN_LOCK_PARENT && String(process.ppid) !== process.env.GAP_RECOVERY_RUN_LOCK_PARENT) { console.log('\nParent (lock holder) is gone; stopping.'); SUMMARY.error = SUMMARY.error || 'parent_gone'; break; }
       // An accept must not wait uncommitted behind slow reviews that accept nothing (ship-check P1).
-      if (tracker.size && Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
+      if (tracker.size && Date.now() - lastFlushAt > CADENCE.maxMs) flush(`checkpoint ${accepted}`);
       // Full (paid-capable) URL_FIND slots are planned above; this backstop
       // holds the cap for any URL_FIND the plan did not mark.
+      // BRO-7944: accepted by an earlier round and awaiting landing (or adopted above): nothing left to attempt.
+      if (earlierPending.has(c.reviewKey) || pendingInfo.has(c.reviewKey)) continue;
       if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
       // BRO-7942: URL_FIND ran ~55 of the 85 nightly minutes for 0/96 accepted: it gets a time slice.
       if (c.strategy === 'URL_FIND' && PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; continue; }
@@ -545,7 +583,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [] } : undefined;
       if (!got.ok) {
         console.log(`  ✗ ${got.outcome} (${got.reason})${got.methods ? ` ${JSON.stringify(got.methods)}` : ''}`);
-        record(c, strategy, { outcome: got.outcome, reason: got.reason, url: got.url, ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
+        record(c, strategy, { outcome: got.outcome, reason: got.reason, ...L.refusalDiagnostics({ c, got }), ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
         // A hard 404/410 on the stored url goes onto the record (httpStatus),
         // so the classifier routes it to URL_DEAD and url rediscovery ranks it.
         if (!got.url || got.url === c.url) {
@@ -596,7 +634,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         // check included); its method stays un-done so the next night tries
         // the other links (this url is skipped from now on).
         const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
-        record(c, strategy, { outcome, reason: r.code, url: got.url, bytesAfter: r.newLen, detail });
+        record(c, strategy, { outcome, reason: r.code, ...L.refusalDiagnostics({ c, got, r }), detail });
         continue;
       }
       accepted++;
@@ -606,13 +644,13 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID, priorTier: r.decision.priorTier || null, newTier: r.decision.newTier || null };
       pendingInfo.set(c.reviewKey, info);
       console.log(`  ✓ accepted ${r.newLen} chars via ${got.via} (tier ${r.decision.priorTier} -> ${r.decision.newTier})`);
-      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, priorTier: r.decision.priorTier || null, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
+      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, acceptedHash: acceptedHash(c.filePath), priorTier: r.decision.priorTier || null, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
       stats.byStrategy[strategy].accepted++;
       // Every 5 accepts, or once an accept has waited 2 minutes: an uncommitted
       // write in the shared review-texts clone is lost to any other job's
       // reset (BRO-7171 2026-11-10: a URL_FIND accept, ~6 min per review, was
       // wiped by a concurrent cleanup job's `git reset` before checkpoint 5).
-      if (accepted % 5 === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
+      if (accepted % CADENCE.everyAccepts === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > CADENCE.maxMs) flush(`checkpoint ${accepted}`);
       await new Promise((res) => setTimeout(res, 1500));
       } catch (e) {
         // Renamed/deleted under us: skip this review (non-evidence), keep the night going.
@@ -638,6 +676,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (const s of sessions.values()) if (s && s.close) await s.close().catch(() => {});
   }
 
+  try { SUMMARY.spend = { bd: require('./lib/scraper').getScraperStats().bdRequests || 0, serp: require('./lib/url-discovery').getSerpQueryCount() }; } catch { SUMMARY.spend = null; }
   Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, landedImproved: improvedKeys.size, urlFindSpentMin: Math.round(urlFindSpentMs / 6000) / 10, urlFindSliceSkipped, byStrategy: stats.byStrategy, runId: RUN_ID });
   if (runError) {
     SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError;
@@ -659,6 +698,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   }
   return 0;
 }
+
+// BRO-7944: a timed-out/killed round (batch runner SIGTERM) still leaves its summary behind.
+process.on('SIGTERM', () => { SUMMARY.error = SUMMARY.error || 'terminated (SIGTERM)'; writeSummary(); process.exit(143); });
 
 main()
   .then((code) => { process.exitCode = code || 0; })
