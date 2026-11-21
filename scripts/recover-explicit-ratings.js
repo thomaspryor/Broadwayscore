@@ -598,7 +598,7 @@ async function fetchTheaterLifeRatings(reviews) {
         // naming this show beats the post title, and a title-only star keeps
         // the corroboration-gated 'wp-api-title' label.
         const bodyText = String(posts[0].content?.rendered || '').replace(/<[^>]+>/g, ' ');
-        const stars = resolveTheaterLifeStars({ title, text: bodyText, showTitles: [review.data.showTitle || ''] });
+        const stars = resolveTheaterLifeStars({ title, text: bodyText, showTitles: [review.data.showTitle || showFor(review.data)?.title || ''] });
         if (stars.rating) {
           const total = parseFloat(stars.rating);
 
