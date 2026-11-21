@@ -154,5 +154,9 @@ describe('check-corpus-drift wiring (BRO-2321)', () => {
     assert.deepEqual(lib.checkMirrorSummary(base, { now }), [], 'a pre-BRO-7999 summary has no count: no breach');
     const s = lib.buildMirrorSummary({ byRule: {}, totalScanned: 1, totalExcluded: 0, reasonlessWrongAttribution: 3 }, null, null);
     assert.equal(s.reasonlessWrongAttribution, 3);
+    const s2 = lib.buildMirrorSummary({ byRule: {}, totalScanned: 1, totalExcluded: 0, reasonlessWrongAttribution: 4 }, null, s);
+    assert.equal(s2.previousReasonlessWrongAttribution, 3);
+    assert.match(lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: 4, previousReasonlessWrongAttribution: 3 }, { now })[0] || '', /rose 3 -> 4/, 'ratchet below the baseline');
+    assert.deepEqual(lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: 3, previousReasonlessWrongAttribution: 4 }, { now }), [], 'a drop is fine');
   });
 }

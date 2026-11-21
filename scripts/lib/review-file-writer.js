@@ -370,9 +370,16 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // BRO-7999 R1: say WHY a held record is not on the site. Before this, a URL we
   // already held but excluded (wrongProduction, wrongShow, CV wrong-article, ...)
   // printed as a bare "Skipped: no-changes" and read as "already live".
-  if (result && result.filepath && (result.action !== 'skipped' || result.reason === 'no-changes')) {
-    const rule = classifyHeldOut(showId, result.filepath, result.record);
-    if (rule !== undefined) result.heldOutRule = rule;
+  // Only new/updated/no-changes: a would-supersede path names the flagged file the real run
+  // would retire, and a guard refusal wrote nothing (ship-check findings).
+  if (result && result.filepath && (result.action === 'new' || result.action === 'updated' || result.reason === 'no-changes')) {
+    // The in-memory record only where disk cannot hold the outcome: a dry run never writes, and
+    // a no-op left disk equal to it. A real write classifies disk, because safeWriteReview can
+    // stamp wrongProduction / wrongShow on its own copy (review-write-guard.js) after we built it.
+    const useMemory = options.dryRun === true || result.reason === 'no-changes';
+    // Only a rule is attached (callers compare result shapes; an included record adds nothing).
+    const rule = classifyHeldOut(showId, result.filepath, useMemory ? result.record : undefined);
+    if (rule) result.heldOutRule = rule;
   }
   return result;
 }
@@ -386,9 +393,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function classifyHeldOut(showId, filepath, record) {
   try {
     const data = record || JSON.parse(fs.readFileSync(filepath, 'utf8'));
-    const rule = require('./review-guards').explainExclusion(data, _getShowById(showId), filepath);
+    // The file's own show folder wins over the caller's id: a tour or cross-market reroute
+    // (and a multi-show fan-out) lands the record under another show, and the show-dependent
+    // rules (dates, director, unopened) must judge it against that show.
+    const ownShowId = (filepath && path.basename(path.dirname(filepath))) || showId;
+    const rule = require('./review-guards').explainExclusion(data, _getShowById(ownShowId) || _getShowById(showId), filepath);
     return rule || null;
-  } catch {
+  } catch (e) {
+    // Never fail a write over a label, but never stay silent either (Codex ship-check).
+    console.warn(`  ⚠ could not tell whether ${path.basename(filepath || '')} is held out: ${e.message}`);
     return undefined;
   }
 }

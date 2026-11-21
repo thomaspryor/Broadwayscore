@@ -19,6 +19,9 @@ function newOutcomeFile() {
 function writeIngestOutcome(outcome, env = process.env) {
   const file = env[ENV];
   if (!file) return;
+  // BRO-7999 (Codex ship-check): 'held-out' is a note, never allowed to replace a failure
+  // (retry-stub / skipped) another write in the same action already reported.
+  if (outcome && outcome.outcome === 'held-out' && stubProblem(readIngestOutcome(file))) return;
   try { fs.writeFileSync(file, JSON.stringify(outcome)); } catch (e) { console.error(`⚠️  could not write ingest outcome: ${e.message}`); }
 }
 
@@ -44,4 +47,20 @@ function heldOutNote(outcome) {
   return `review is on file but held out of the site by ${outcome.rule || 'an exclusion rule'}`;
 }
 
-module.exports = { ENV, newOutcomeFile, writeIngestOutcome, readIngestOutcome, removeOutcomeFile, stubProblem, heldOutNote };
+/**
+ * BRO-7999: after a plan's LAST action, the reasons each held-out ingest still is (a later
+ * action may have cleared its flag). classify(showId, filepath) -> rule | null | undefined.
+ */
+// Opening-night holds that lift on their own when reviews drop: expected, not a failed fix.
+const SELF_CLEARING_RULES = new Set(['previewPlaceholder', 'prematureForUnopenedShow']);
+function stillHeldOut(results, classify) {
+  const reasons = [];
+  for (const r of results || []) {
+    if (!r || !r.heldOut) continue;
+    const rule = classify(r.heldOut.showId, r.heldOut.filepath);
+    if (rule && !SELF_CLEARING_RULES.has(rule)) reasons.push(`${path.basename(r.heldOut.filepath)} is on file but still held out of the site by ${rule} after every action ran`);
+  }
+  return reasons;
+}
+
+module.exports = { ENV, newOutcomeFile, writeIngestOutcome, readIngestOutcome, removeOutcomeFile, stubProblem, heldOutNote, stillHeldOut, SELF_CLEARING_RULES };

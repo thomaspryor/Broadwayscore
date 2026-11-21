@@ -38,10 +38,10 @@ test('an unchanged re-ingest of a held-out record names the rule (the BRO-7817 c
   assert.equal(r.heldOutRule, 'wrongShow');
 });
 
-test('an included record reports heldOutRule null, not a rule', (t) => {
+test('an included record gets no heldOutRule key (result shapes stay as callers compare them)', (t) => {
   const { dir } = fixture(t, {});
   const r = createOrMergeReviewFile(showId, { ...input }, { reviewTextsDir: dir });
-  assert.equal(r.heldOutRule, null);
+  assert.equal(Object.hasOwn(r, 'heldOutRule'), false);
 });
 
 test('a dry-run merge classifies the in-memory record and writes nothing', (t) => {
@@ -67,9 +67,30 @@ test('a guard refusal gets no heldOutRule (nothing new is on file)', () => {
   assert.equal(r.heldOutRule, undefined);
 });
 
+test('ingest-outcome: a held-out note never overwrites a failure already reported (Codex ship-check)', () => {
+  const f = o.newOutcomeFile();
+  try {
+    o.writeIngestOutcome({ outcome: 'retry-stub', reason: 'fetch failed' }, { [o.ENV]: f });
+    o.writeIngestOutcome({ outcome: 'held-out', rule: 'wrongShow' }, { [o.ENV]: f });
+    assert.equal(o.readIngestOutcome(f).outcome, 'retry-stub');
+  } finally { o.removeOutcomeFile(f); }
+});
+
 test('ingest-outcome: held-out is a note for the fix runner, never a failed recovery', () => {
   assert.equal(o.stubProblem({ outcome: 'held-out', rule: 'wrongShow' }), null);
   assert.match(o.heldOutNote({ outcome: 'held-out', rule: 'wrongShow' }) || '', /held out of the site by wrongShow/);
   assert.equal(o.heldOutNote({ outcome: 'retry-stub' }), null);
   assert.equal(o.heldOutNote(null), null);
+});
+
+test('a fix plan whose ingest stays held out after the last action fails; one a later action cleared passes', (t) => {
+  const { dir, filepath } = fixture(t, { wrongShow: true, wrongShowReason: 'fixture' });
+  const results = [{ action: 'run-script', ok: true, heldOut: { showId, filepath } }, { action: 'review-file-op', ok: true }];
+  const classify = (sid, fp) => classifyHeldOut(sid, fp);
+  assert.match(o.stillHeldOut(results, classify)[0] || '', /still held out of the site by wrongShow/);
+  const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  delete data.wrongShow;
+  fs.writeFileSync(filepath, JSON.stringify(data));
+  assert.deepEqual(o.stillHeldOut(results, classify), [], 'a later action cleared the flag');
+  assert.ok(dir);
 });
