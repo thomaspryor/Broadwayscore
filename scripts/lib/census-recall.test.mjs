@@ -459,13 +459,13 @@ test('summarizeRun carries combinedRecall into the trend entry', () => {
   assert.equal(e.combinedRecall, 0.5);
 });
 
-test('BRO-7970: a dip inside a noisy family\'s own run-to-run sd is not a regression (real trend)', async () => {
+test('BRO-7970: a dip inside a noisy family\'s own run-to-run sd is not a regression (real trend)', async (t) => {
   const fs = await import('node:fs');
   const url = new URL('../../data/audit/census-recall-trend.jsonl', import.meta.url);
-  if (!fs.existsSync(url)) return; // sparse checkouts omit audit data
+  if (!fs.existsSync(url)) return t.skip('sparse checkout omits audit data');
   const all = parseTrendJsonl(fs.readFileSync(url, 'utf8'));
   const i = all.findIndex(e => e.date === '2026-11-19');
-  if (i < 0) return;
+  if (i < 0) return t.skip('2026-11-19 row not in trend');
   const r = detectRecallRegression(all.slice(0, i + 1));
   assert.equal(r.verdict, 'ok', r.reason);
 });
@@ -477,4 +477,18 @@ test('BRO-7970: noisy history raises the bar, but a collapse past it still fires
   assert.equal(dip.verdict, 'ok', dip.reason);
   const collapse = detectRecallRegression([...hist, wk('2026-07-01', 0.02, 0.2)]);
   assert.equal(collapse.verdict, 'regressed');
+});
+
+test('BRO-7970: noise relaxation is capped, so a noisy low-recall arm collapsing to 0 still fires', () => {
+  const wk = (date, v, y) => ({ date, families: { naive: v }, shows: 5, truthUrls: 50, familyYield: { naive: y } });
+  const hist = [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.9].map((v, k) => wk(`2026-06-${10 + k}`, v, v * 10));
+  const r = detectRecallRegression([...hist, wk('2026-07-01', 0, 0)]);
+  assert.equal(r.verdict, 'regressed', r.reason);
+});
+
+test('BRO-7970: an arm\'s unavailable-input runs do not inflate its noise', () => {
+  const wk = (date, v, extra = {}) => ({ date, families: { onDisk: v }, shows: 5, truthUrls: 50, familyYield: { onDisk: v * 10 }, ...extra });
+  const hist = [wk('2026-06-01', 0, { unavailableArms: ['onDisk'] }), ...Array.from({ length: 11 }, (_, k) => wk(`2026-06-${10 + k}`, 0.6))];
+  const r = detectRecallRegression([...hist, wk('2026-07-01', 0.4)]);
+  assert.equal(r.verdict, 'regressed', r.reason);
 });

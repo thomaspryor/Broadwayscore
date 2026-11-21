@@ -114,6 +114,7 @@ const REGRESSION_DEFAULTS = {
    * are untouched. Needs minNoiseRuns samples, else the flat floor applies.
    */
   noiseSigmas: 1.5,
+  maxNoiseRelaxFraction: 0.75,
   noiseLookbackRuns: 12,
   minNoiseRuns: 6,
 };
@@ -446,11 +447,18 @@ function detectRecallRegression(entries, opts = {}) {
       const yieldNote = yieldKnown ? `${round3(curYield)} vs ${round3(baseYield)} URLs/show` : 'yield unknown';
 
       const drop = baseline - current;
+      // Runs where this arm's input was unavailable recorded a fake 0; they are not noise.
       const noiseSamples = history.slice(-cfg.noiseLookbackRuns)
+        .filter(e => !(e.unavailableArms || []).includes(arm))
         .map(e => (e[level] || {})[arm])
         .filter(v => typeof v === 'number' && Number.isFinite(v));
       const noiseSd = noiseSamples.length >= cfg.minNoiseRuns ? sampleSd(noiseSamples) : 0;
-      const dropThreshold = Math.max(cfg.dropThreshold, cfg.noiseSigmas * noiseSd);
+      // Noise may relax the bar but never past a 75% collapse of the baseline:
+      // a low-recall arm falling to ~0 must always fire (flat floor still applies).
+      const dropThreshold = Math.min(
+        Math.max(cfg.dropThreshold, cfg.noiseSigmas * noiseSd),
+        Math.max(cfg.dropThreshold, cfg.maxNoiseRelaxFraction * baseline),
+      );
       if (drop >= dropThreshold && yieldFell) {
         regressions.push({
           level, arm, baseline: round3(baseline), current: round3(current), drop: round3(drop),
@@ -495,7 +503,7 @@ function detectRecallRegression(entries, opts = {}) {
   }
   return {
     verdict: 'ok',
-    reason: `${comparedArms} search method(s) within ${cfg.dropThreshold} of their ${prior.length}-run median${skipped.length ? ` (skipped: ${skipped.join(', ')})` : ''}`,
+    reason: `${comparedArms} search method(s) within their noise-adjusted threshold (floor ${cfg.dropThreshold}) of their ${prior.length}-run median${skipped.length ? ` (skipped: ${skipped.join(', ')})` : ''}`,
     regressions: [], latest, comparedArms, skipped,
   };
 }
