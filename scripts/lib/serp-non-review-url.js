@@ -50,3 +50,26 @@ function isNonReviewSectionUrl(url) {
 }
 
 module.exports = { isNonReviewUrl, isNonReviewSectionUrl };
+
+// BRO-7963: the Sunday Times printed an Ian McKellen feature interview under
+// culture/tv-radio, a section that also holds real Times theatre reviews, so the
+// url cannot be blocked. The prose gives it away: the interviewer writes in the
+// first person ("I say", "when I ask"), tags quotes with a manner ("says with a
+// smile") and the page closes on a reader prompt. A review uses none of these.
+// Each marker is deliberately narrow (a review may say "he says" or "she smiles");
+// two DISTINCT markers are needed, so one stray phrase never refuses a review.
+const INTERVIEW_MARKERS = [
+  ['says_with', /\b(?:says|said|replies|laughs|admits|recalls)\s+with\s+(?:a|an)\s+(?:smile|laugh|grin|shrug|chuckle|sigh)\b/i],
+  ['manner_verb', /["”’]\s*(?:he|she|they|He|She|They)[ \t]+(?:laughs|smiles|grins|shrugs|chuckles|sighs|beams)\b/i],
+  ['interviewer_i', /(?:^|[,.;—–)]\s*)I (?:say|ask|suggest|point out|put it to (?:him|her|them))\b|\b(?:he|she|they) (?:tells|told) me\b|\bwhen I (?:ask|asked|meet|met)\b|\b(?:his|her|their) (?:agent|publicist|PR) (?:is|sits|hovers)\b/i],
+  ['qa', /(?:^|\n)\s*(?:Q|Question)\s*[:.]\s+\S[\s\S]{0,400}?\n\s*(?:A|Answer)\s*[:.]\s+\S/],
+];
+
+/** @returns {{interview: boolean, markers: string[]}} */
+function interviewTextSignals(text) {
+  const s = String(text || '');
+  const markers = INTERVIEW_MARKERS.filter(([, re]) => re.test(s)).map(([name]) => name);
+  return { interview: markers.length >= 2, markers };
+}
+
+module.exports.interviewTextSignals = interviewTextSignals;
