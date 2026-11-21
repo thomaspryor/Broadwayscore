@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-21T01:28:56.253Z",
-  "processed": 2,
-  "failed": 2,
-  "successRate": "50.0%",
+  "updatedAt": "2026-11-21T01:57:34.357Z",
+  "processed": 313,
+  "failed": 198,
+  "successRate": "61.3%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 184,
+    "amp": 1,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 37,
+    "scrapingbee": 21,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 48
+    "archive": 69
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
     {
       "t": "2026-11-21T00:27:00.760Z",
@@ -101,6 +101,23 @@
       "t": "2026-11-21T00:57:38.333Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-21T01:31:03.016Z",
+      "event": "bb-session",
+      "session": "b06a96bb",
+      "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouc"
+    },
+    {
+      "t": "2026-11-21T01:31:03.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-11-21T01:50:20.913Z",
+      "event": "bb-session",
+      "session": "33e03a4c",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
