@@ -6,7 +6,7 @@
 const SEND_RE = /(?:^|__)send_?message$/i;
 // A send tool_result that is not a delivery: refusal, inactive session, error status.
 const FAIL_RESULT_RE = /\b(?:permission denied|denied|refused|not allowed|needs approval|session_inactive|session not found|unreachable)\b|"status"\s*:\s*"(?:error|failed|refused|denied|inactive)"|"error"\s*:\s*"[^"]/i;
-const DELIVERED_RE = /"(?:status"\s*:\s*"(?:delivered|queued|sent)"|delivered"\s*:\s*true)/i;
+const DELIVERED_RE = /"?status"?\s*[:=]\s*"?(?:delivered|queued|sent)\b|"?delivered"?\s*[:=]\s*true|\bmessage (?:delivered|sent|queued)\b/i;
 const WAIT_ON_RE = /\b(?:repl\w*|reports?(?:-?backs?)?|response|answer|ack(?:nowledg\w+)?|parent|sessions?|workers?|peer)\b/i;
 
 const targetOf = (t, parentIds = []) => {
