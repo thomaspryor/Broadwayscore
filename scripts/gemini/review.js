@@ -11,7 +11,7 @@
  *      scripts/gemini/review-policy.toml, which allows only the read tools. Plan mode alone
  *      is not read-only headless (the CLI auto-allows exit_plan_mode, then writes).
  *   3. refuses the result if the working tree changed during the run (UNSAFE)
- *   4. counts real file reads; a review that read nothing gets a warning header, since a
+ *   4. counts real file reads; a run that read nothing is retried once, then gets a warning header, since a
  *      probe showed gemini-2.5-pro citing file:line it never opened
  *   5. logs the spend to the LLM usage ledger (provider gemini)
  *
@@ -28,9 +28,13 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const PIN = process.env.GEMINI_CLI_VERSION || '0.70.0';
-// Pro, not Flash: on a planted cross-file bug both caught it 3/3, but Flash missed it 1 run in 4 and once
-// opened with "No findings" before describing it. Pro is ~$0.09 a review vs ~$0.02 (BRO-7987 probe).
-const DEFAULT_MODEL = 'gemini-2.5-pro';
+// Flash, not Pro (BRO-7987 probe). The point of this reviewer is that it opens the code, and on a
+// 600-line diff Pro opened no files in 3 of 4 runs (while writing "I have verified..."), even with
+// READ_NUDGE; Flash opened 6 files in 3 of 3. On a planted cross-file unit bug Flash caught it in
+// 6 of 7 runs, Pro 3 of 3. Flash is ~$0.02 a review, Pro ~$0.09. Override: GEMINI_REVIEW_MODEL.
+const DEFAULT_MODEL = 'gemini-2.5-flash';
+const READ_NUDGE = 'Before you answer, open with read_file every file the diff or plan names, and the code it calls. A review that opens no files is rejected. Then do the review described above.';
+const RETRY_NUDGE = 'Your previous answer was rejected because you opened no files. ' + READ_NUDGE;
 const POLICY = path.join(__dirname, 'review-policy.toml');
 const READ_TOOLS = ['read_file', 'read_many_files', 'grep_search', 'glob', 'list_directory'];
 const NO_READS_HEADER = 'NOTE: Gemini opened no repository files in this review; treat every file:line claim below as unverified.';
@@ -43,9 +47,9 @@ function installDecision({ have, pin, remote }) {
 }
 
 /** CLI argv for one headless read-only review. */
-function buildArgs({ model, policy }) {
+function buildArgs({ model, policy, retry = false }) {
   return ['--skip-trust', '--approval-mode', 'plan', '--policy', policy, '-m', model, '-o', 'json',
-    '-p', 'Do the review described above. Read the repository files you need before you claim anything about them.'];
+    '-p', retry ? RETRY_NUDGE : READ_NUDGE];
 }
 
 /**
@@ -123,36 +127,40 @@ function main() {
   }
 
   const cwd = process.cwd();
-  const before = gitStatus(cwd);
-  const r = spawnSync(bin, buildArgs({ model, policy: POLICY }), {
-    cwd, input: prompt, encoding: 'utf8', timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024,
-    env: { ...process.env, NO_COLOR: '1' },
-  });
-  const after = before === null ? null : gitStatus(cwd);
-  if (before !== null) {
-    const changed = treeChanges(before, after);
-    if (changed.length) done(4, `UNSAFE: the working tree changed during the Gemini review (${changed.slice(0, 5).join(', ')}); check those files before trusting anything, the read-only policy did not hold`);
-  }
+  const attempt = (retry) => {
+    const before = gitStatus(cwd);
+    const r = spawnSync(bin, buildArgs({ model, policy: POLICY, retry }), {
+      cwd, input: prompt, encoding: 'utf8', timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024,
+      env: { ...process.env, NO_COLOR: '1' },
+    });
+    if (before !== null) {
+      const changed = treeChanges(before, gitStatus(cwd));
+      if (changed.length) done(4, `UNSAFE: the working tree changed during the Gemini review (${changed.slice(0, 5).join(', ')}); check those files before trusting anything, the read-only policy did not hold`);
+    }
+    const parsed = parseCliJson(r.stdout);
+    // Log what was spent even when the review itself is unusable.
+    if (parsed.usage && parsed.usage.length) {
+      try {
+        const { logSessionCall } = require('../lib/gemini-usage-ledger');
+        for (const u of parsed.usage) logSessionCall({ provider: 'gemini', model: u.model, response: { usageMetadata: u.usageMetadata }, caller });
+      } catch { /* record only */ }
+    }
+    if (r.error && r.error.code === 'ETIMEDOUT') done(1, `FAILED: gemini timed out after ${timeoutMs / 1000}s`);
+    if (r.status !== 0) {
+      const why = parsed.error || String(r.stderr || '').split('\n').filter((l) => l && !/256-color/.test(l)).pop() || `exit ${r.status}`;
+      done(1, `FAILED: gemini exited ${r.status}: ${String(why).slice(0, 300)}`);
+    }
+    if (parsed.error) done(1, `FAILED: ${parsed.error}`);
+    if (!parsed.response) done(1, 'EMPTY: gemini exited 0 with no response text');
+    return parsed;
+  };
 
-  const parsed = parseCliJson(r.stdout);
-  // Log what was spent even when the review itself is unusable.
-  if (parsed.usage && parsed.usage.length) {
-    try {
-      const { logSessionCall } = require('../lib/gemini-usage-ledger');
-      for (const u of parsed.usage) logSessionCall({ provider: 'gemini', model: u.model, response: { usageMetadata: u.usageMetadata }, caller });
-    } catch { /* record only */ }
-  }
-  if (r.error && r.error.code === 'ETIMEDOUT') done(1, `FAILED: gemini timed out after ${timeoutMs / 1000}s`);
-  if (r.status !== 0) {
-    const why = parsed.error || String(r.stderr || '').split('\n').filter((l) => l && !/256-color/.test(l)).pop() || `exit ${r.status}`;
-    done(1, `FAILED: gemini exited ${r.status}: ${String(why).slice(0, 300)}`);
-  }
-  if (parsed.error) done(1, `FAILED: ${parsed.error}`);
-  if (!parsed.response) done(1, 'EMPTY: gemini exited 0 with no response text');
-
+  let parsed = attempt(false);
+  let retried = false;
+  if (parsed.reads === 0) { retried = true; parsed = attempt(true); } // one retry: a review that read nothing is not a code review
   process.stdout.write((parsed.reads === 0 ? NO_READS_HEADER + '\n\n' : '') + parsed.response + '\n');
-  done(0, `GEMINI-REVIEW: ${parsed.reads === 0 ? 'no-reads' : 'ok'} model=${model} reads=${parsed.reads}`);
+  done(0, `GEMINI-REVIEW: ${parsed.reads === 0 ? 'no-reads' : 'ok'} model=${model} reads=${parsed.reads}${retried ? ' retried=1' : ''}`);
 }
 
-module.exports = { installDecision, buildArgs, parseCliJson, treeChanges, NO_READS_HEADER, READ_TOOLS, PIN, POLICY };
+module.exports = { installDecision, buildArgs, parseCliJson, treeChanges, NO_READS_HEADER, READ_TOOLS, READ_NUDGE, RETRY_NUDGE, PIN, POLICY };
 if (require.main === module) main();
