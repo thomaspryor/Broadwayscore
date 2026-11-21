@@ -4,9 +4,9 @@
  * "Collector LLM: wrong production" on a West End / Off-West End record, and
  * report how many flags survive. READ-ONLY on review files (writes only --out).
  *
- *   node scripts/recheck-london-wrongprod.js --out=/tmp/x.json [--since=2024-11-20] [--limit=N] [--concurrency=4]
- *   node scripts/recheck-london-wrongprod.js --summarize=/tmp/x.json   # before/after counts
- *   node scripts/recheck-london-wrongprod.js --stored-audit --strict    # no LLM: unhealed own-venue flags (exit 1); add --apply to heal them
+ *   node scripts/lib/recheck-london-wrongprod.js --out=/tmp/x.json [--since=2024-11-20] [--limit=N] [--concurrency=4]
+ *   node scripts/lib/recheck-london-wrongprod.js --summarize=/tmp/x.json   # before/after counts
+ *   node scripts/lib/recheck-london-wrongprod.js --stored-audit --strict    # no LLM: unhealed own-venue flags (exit 1); add --apply to heal them
  *
  * Needs the main checkout's data/review-texts (absent in worktrees): set DATA_ROOT.
  */
@@ -14,16 +14,16 @@ const fs = require('fs');
 const path = require('path');
 // Minimal .env loader (dotenv is not installed in worktrees).
 try {
-  for (const l of fs.readFileSync(path.join(__dirname, '..', '.env'), 'utf8').split('\n')) {
+  for (const l of fs.readFileSync(path.join(__dirname, '..', '..', '.env'), 'utf8').split('\n')) {
     const m = l.match(/^([A-Z0-9_]+)=(.*)$/);
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
   }
 } catch (e) { /* env already set */ }
-const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
-const { isLongRunningProduction } = (() => { try { return { isLongRunningProduction: require('./lib/long-runner-registry').isLongRunningProduction }; } catch (e) { return {}; } })();
+const { verifyContent, resolveCvMarket } = require('./content-verifier');
+const { isLongRunningProduction } = (() => { try { return { isLongRunningProduction: require('./long-runner-registry').isLongRunningProduction }; } catch (e) { return {}; } })();
 
 const arg = n => (process.argv.find(a => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
-const DATA = process.env.DATA_ROOT || path.join(__dirname, '..', 'data');
+const DATA = process.env.DATA_ROOT || path.join(__dirname, '..', '..', 'data');
 const LONDON = new Set(['west-end', 'off-west-end']);
 
 // A cleared flag counts only when a model re-judged real text and found a valid, non-film review of the right
@@ -59,12 +59,12 @@ function listFlags(since) {
  */
 // --apply: heal the audit's findings (review-texts is the private repo: commit + push it afterwards).
 function applyOwnVenueHeal(items) {
-  const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
-  const { classifyContentTier } = require('./lib/content-quality');
-  const { restoreQuarantinedText, resetWrongContentTier } = require('./lib/collector-wp-release');
-  const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
-  const { applyOwnVenueTourCarveout } = require('./lib/tour-stop-carveout');
-  const { textNamesEarlierRun } = require('./lib/run-contamination');
+  const { clearWrongProductionFlags } = require('./wrong-production-clear');
+  const { classifyContentTier } = require('./content-quality');
+  const { restoreQuarantinedText, resetWrongContentTier } = require('./collector-wp-release');
+  const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
+  const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
+  const { textNamesEarlierRun } = require('./run-contamination');
   const nowIso = new Date().toISOString();
   let n = 0;
   for (const { show, file } of items) {
@@ -90,7 +90,7 @@ function applyOwnVenueHeal(items) {
 }
 
 function storedAudit(since, strict) {
-  const { applyOwnVenueTourCarveout } = require('./lib/tour-stop-carveout');
+  const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
   const { out } = listFlags(since);
   const bad = [];
   const badItems = [];

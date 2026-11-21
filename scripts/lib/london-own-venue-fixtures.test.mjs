@@ -76,7 +76,7 @@ const haveData = fs.existsSync(path.join(dataRoot, 'review-texts')) && fs.exists
 test('no unhealed own-venue London wrongProduction flags in the corpus', { skip: !haveData && 'review-texts not present' }, () => {
   let out;
   try {
-    out = execFileSync('node', [path.join(root, 'scripts', 'recheck-london-wrongprod.js'), '--stored-audit', '--strict'], { encoding: 'utf8', env: { ...process.env, DATA_ROOT: dataRoot } });
+    out = execFileSync('node', [path.join(root, 'scripts', 'lib', 'recheck-london-wrongprod.js'), '--stored-audit', '--strict'], { encoding: 'utf8', env: { ...process.env, DATA_ROOT: dataRoot } });
   } catch (e) { assert.fail(`unhealed own-venue flags:\n${e.stdout}`); }
   assert.match(out, /"unhealedOwnVenueFlags":0/);
 });
