@@ -193,3 +193,42 @@ describe('BRO-8023: a same-url stub with a copy of the primary body is redundant
     assert.equal(isRedundantPendingStub({ ...stub, originalScore: '4/5' }, 'thewrap--robert-hofler.json', { fullText: body }), false);
   });
 });
+
+describe('BRO-8023: processShow settles same-url stubs against the filed primary', () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const URL1 = 'https://culturesauce.com/punch-west-end-review/';
+  function setup(stubText, primaryText) {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8023b-'));
+    const pdir = path.join(root, '_pending', PUNCH.id);
+    fs.mkdirSync(pdir, { recursive: true });
+    fs.mkdirSync(path.join(root, PUNCH.id), { recursive: true });
+    fs.writeFileSync(path.join(root, PUNCH.id, 'culturesauce--thom-geier.json'), JSON.stringify({ outletId: 'culturesauce', criticName: 'Thom Geier', url: URL1, fullText: primaryText }));
+    fs.writeFileSync(path.join(pdir, 'culturesauce--abc.json'), JSON.stringify({ outletId: 'culturesauce', criticName: 'Unknown', url: URL1, fullText: stubText }));
+    return { root, stub: path.join(pdir, 'culturesauce--abc.json') };
+  }
+  const deps = (root, counter) => ({
+    root, show: PUNCH, dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => { counter.n++; return { content: '<html></html>' }; },
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  });
+  test('a fetched copy no longer than the primary body is dropped before any fetch', async () => {
+    const body = 'word '.repeat(600);
+    const { root, stub } = setup(body, body + ' more');
+    const c = { n: 0 };
+    const r = await processShow(PUNCH.id, deps(root, c));
+    assert.equal(fs.existsSync(stub), false);
+    assert.equal(r.droppedRedundant, 1);
+    assert.equal(c.n, 0);
+  });
+  test('a stub carrying a longer body than the primary is tagged with the reason (kept), not re-fetched forever', async () => {
+    const { root, stub } = setup('word '.repeat(900), 'word '.repeat(600));
+    const c = { n: 0 };
+    const d = deps(root, c);
+    d.fetch = async () => { c.n++; return { content: '<html><head><meta name="author" content="Thom Geier"><meta property="article:published_time" content="2025-09-27T10:00:00Z"><title>Punch review</title></head><body><article><p>' + 'Punch at the Young Vic is a play. '.repeat(80) + '</p></article></body></html>' }; };
+    const r = await processShow(PUNCH.id, d);
+    assert.equal(fs.existsSync(stub), true, 'kept on disk');
+    const j = JSON.parse(fs.readFileSync(stub, 'utf8'));
+    assert.match(j.promoteSkippedReason || '', /same article already filed as culturesauce--thom-geier\.json/);
+    assert.equal(r.tagged, 1);
+  });
+});
