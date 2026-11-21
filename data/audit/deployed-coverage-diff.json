@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-21T04:20:42.734Z",
+  "generatedAt": "2026-11-21T05:52:46.692Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 364,
-  "clean": 364,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 367,
+  "clean": 366,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "openingDate": "2026-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.46 vs local 60.21 (Δ2.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-21T05:52:40.143Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

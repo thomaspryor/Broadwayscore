@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T04:20:17.865Z",
+  "generatedAt": "2026-11-21T05:52:26.441Z",
   "windowDays": 45,
   "showsScanned": 287,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 285.3020461111111,
+      "fileAgeHours": 286.8378422222222,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 262.75376805555555,
+      "nonTerminalAgeHours": 264.2894836111111,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=one-day-the-musical-west-end-2026 --url=https://au.variety.com/t/just-for-one-day-the-live-aid-musical/ --outlet=variety   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-20T17:05:24.008Z",
-      "fileAgeHours": 11.247910555555556,
+      "fileAgeHours": 12.783701944444445,
       "gapSeenAt": "2026-11-20T17:07:34.789Z",
-      "nonTerminalAgeHours": 11.211965555555556,
+      "nonTerminalAgeHours": 12.747681111111111,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 254.5339627777778,
+      "fileAgeHours": 256.0697238888889,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 253.38932305555556,
+      "nonTerminalAgeHours": 254.92503861111112,
       "needsManualRecovery": true
     },
     {
@@ -78,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=its-a-wonderful-life-a-live-radio-play-2026 --url=https://www.broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T08:38:24.451Z",
-      "fileAgeHours": 43.698015833333336,
+      "fileAgeHours": 45.233763055555556,
       "gapSeenAt": "2026-11-20T00:13:40.042Z",
-      "nonTerminalAgeHours": 28.11050638888889,
+      "nonTerminalAgeHours": 29.646221944444445,
       "needsManualRecovery": false
     }
   ],
