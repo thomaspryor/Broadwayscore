@@ -446,11 +446,14 @@ test('classifyWithControl: NYT browser control blocked -> session-less profile c
   const sub = { html: '<article>full</article>', body: 'x'.repeat(6170) };
   const blocked = { html: '<script src="https://geo.captcha-delivery.com/x"></script>', body: '', httpStatus: 403 };
   const sessionless = { html: '<div class="regiwall gateway-content">', body: 'x'.repeat(2904), httpStatus: 200 };
+  const err404 = { ...sessionless, httpStatus: 404 };
   const r = await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => sessionless });
   assert.equal(r.status, 'logged-in');
   // profile control also blocked, or none supplied -> still fails closed as before
   assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => blocked })).status, 'control-blocked');
   assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked })).status, 'control-blocked');
+  // a 404 from the profile control is not evidence
+  assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => err404 })).status, 'control-blocked');
   // a session-less profile that still reads the full article means the url is free
   const free = { html: '<article>full</article>', body: 'x'.repeat(6170), httpStatus: 200 };
   assert.equal((await bprobe.classifyWithControl(p, sub, { anon: async () => blocked, profileControl: async () => free })).status, 'vacuous');
@@ -495,4 +498,12 @@ test('every probe url in COOKIE_PROBES is unique and absolute (rotation list hyg
   const urls = Object.values(COOKIE_PROBES).flatMap((x) => [x.url, ...(x.altUrls || [])]);
   assert.equal(new Set(urls).size, urls.length);
   for (const u of urls) assert.match(u, /^https:\/\//);
+});
+
+test('rotation never passes a logged-out profile (alternate walled for the profile too)', async () => {
+  const p = COOKIE_PROBES.newyorker;
+  const full = { html: '<p>article</p>', body: 'x'.repeat(8474) };
+  const walled = { html: '<div data-testid="paywall-bar-thin">', body: 'x'.repeat(645) };
+  const r = await bprobe.classifyWithControl(p, full, { anon: async (pr) => (pr.url === p.url ? full : walled), loadWithCookies: async () => walled });
+  assert.equal(r.status, 'vacuous', 'a dead session must keep the safe vacuous stop');
 });

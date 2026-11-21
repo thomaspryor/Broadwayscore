@@ -100,7 +100,7 @@ async function classifyWithControl(probe, withCookies, { anon = anonymousProbe, 
     let sub;
     try { sub = await loadWithCookies(alt); } catch { continue; }
     const ar = await classifyOneUrl(alt, sub, { anon, profileControl });
-    if (ar.status !== 'vacuous' && ar.status !== 'control-blocked') return { ...ar, usedUrl: url, rotatedFrom: probe.url };
+    if (ar.status === 'logged-in') return { ...ar, usedUrl: url, rotatedFrom: probe.url };
   }
   return r;
 }
@@ -119,7 +119,7 @@ async function classifyOneUrl(probe, withCookies, { anon, profileControl }) {
     let c = await anon(probe, opts);
     if (blockedOnly(c) && probe.profileControl && profileControl) {
       const pc = await profileControl(probe, opts).catch(() => null);
-      if (pc && pc.html && !isBotChallenge(pc.html)) c = pc;
+      if (pc && pc.html && pc.httpStatus === 200 && !isBotChallenge(pc.html)) c = pc;
     }
     return c;
   };
