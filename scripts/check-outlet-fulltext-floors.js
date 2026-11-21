@@ -31,7 +31,10 @@ function main() {
   const base = fs.existsSync(path.join(root, 'data', 'review-texts')) ? path.join(root, 'data', 'review-texts') : root;
   // A missing or empty corpus would score every outlet on zero rows and read as a pass (BRO-7193).
   try { assertReviewTextCorpus(base); } catch (e) { return exitIfCorpusNotScanned(e, { prefix: 'check-outlet-fulltext-floors: ' }); }
-  const ledger = opt('ledger', process.env.GAP_RECOVERY_LEDGER_PATH || path.join(__dirname, '..', 'data', 'audit', 'gap-recovery-attempts.jsonl'));
+  // The ledger the driver writes (lib ledgerPathDefault): on the Mac that is the
+  // machine state file; the data/audit mirror lags it by hours, so reading the
+  // mirror reported 13 gaps "never attempted" that the batch had attempted.
+  const ledger = opt('ledger', require('./lib/gap-recovery-ledger').ledgerPathDefault());
   const attemptedKeys = new Set();
   let ledgerRows = 0;
   try {

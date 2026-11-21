@@ -503,3 +503,13 @@ test('recentNonEvidence: a fresh non_evidence row cools the strategy down; old, 
   assert.equal(L.recentNonEvidence([r({ ts: '2026-11-21T06:00:00Z' }), r({})], 'REFETCH_FREE', now, {}), true);
   assert.equal(L.recentNonEvidence([r({})], 'REFETCH_FREE', now, { GAP_NON_EVIDENCE_COOLDOWN_MIN: '10' }), false);
 });
+
+// 2026-11-21: check-outlet-fulltext-floors read the data/audit mirror while
+// the Mac driver writes the machine state ledger, so it reported 13 gaps the
+// batch had attempted as "never attempted". Readers resolve the ledger the
+// way the driver does.
+test('floors report reads the ledger the driver writes (ledgerPathDefault), not a hardcoded mirror path', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'check-outlet-fulltext-floors.js'), 'utf8');
+  assert.match(src, /ledgerPathDefault\(\)/);
+  assert.doesNotMatch(src, /path\.join\([^)]*'gap-recovery-attempts\.jsonl'\)/);
+});
