@@ -20,7 +20,7 @@ const path = require('path');
 const { pushReviewTexts, pushFailureAction, dispatchDownstream } = require('./lib/land-ingested-reviews');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
-const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { createOrMergeReviewFile, classifyHeldOut } = require('./lib/review-file-writer');
 const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
@@ -173,7 +173,7 @@ async function main() {
     }
   }
 
-  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [], fanShowIds: new Set() };
+  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [], fanShowIds: new Set(), heldOut: {} };
 
   for (let i = 0; i < entries.length; i++) {
     let { url, outletOverride, listedCritic } = entries[i];
@@ -413,6 +413,9 @@ async function main() {
         // for the reasons the BRO-5874 block above gives. No second root.
         const fan = applyMultiShowFanoutToFile(writeResult.filepath, { reviewTextsDir });
         if (fan.applied) {
+          // The fan-out rewrote the parent: classify what is on disk now (BRO-7999).
+          const after = classifyHeldOut(showId, writeResult.filepath);
+          if (after) writeResult.heldOutRule = after; else if (after === null) delete writeResult.heldOutRule;
           // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
           const WROTE_CHILD = new Set(['create', 'fill', 'held-trim']);
           for (const c of fan.children) {
@@ -426,6 +429,13 @@ async function main() {
       }
     }
 
+    // BRO-7999 R1: a record we hold but the site excludes is not "already live".
+    // Say which rule holds it out, every run (not only --verbose), and count it.
+    if (writeResult.heldOutRule) {
+      results.heldOut[writeResult.heldOutRule] = (results.heldOut[writeResult.heldOutRule] || 0) + 1;
+      console.log(`    ⊘ On file but held out of the site by rule: ${writeResult.heldOutRule}`);
+    }
+
     console.log('');
   }
 
@@ -437,6 +447,11 @@ async function main() {
   console.log(`  Updated: ${results.updated}`);
   console.log(`  Skipped: ${results.skipped}`);
   console.log(`  Failed:  ${results.failed}`);
+  const heldOutTotal = Object.values(results.heldOut).reduce((a, b) => a + b, 0);
+  if (heldOutTotal > 0) {
+    const byRule = Object.entries(results.heldOut).sort((a, b) => b[1] - a[1]).map(([r, n]) => `${r} ${n}`).join(', ');
+    console.log(`  On file but held out of the site: ${heldOutTotal} (${byRule})`);
+  }
   if (results.warnings.length) {
     console.log(`  Warnings: ${results.warnings.length}`);
     results.warnings.forEach(w => console.log(`    ⚠️  ${w}`));

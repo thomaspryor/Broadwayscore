@@ -522,20 +522,6 @@
     "queuedAt": "2026-11-21T15:17:13.887Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T16:53:50.085Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
@@ -591,5 +577,127 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T17:27:53.780Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
+    "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
+    "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44930723668",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44930723668)"
+      }
+    ],
+    "queuedAt": "2026-11-21T17:50:45.570Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
+    "title": "Opening-night email draft on hold: a quality check flagged a review — still happening after 7 days",
+    "description": "Filed BRO-8004: this has been happening for 7+ days without clearing.\n\nThe opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8004",
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Cloud 9"
+      }
+    ],
+    "queuedAt": "2026-11-21T17:34:45.365Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7999-held-out-queue",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7999-held-out-queue",
+    "description": "land.yml did not land land/bro-7999-held-out-queue: the unit-tests-node gate went red at 2ec31dbf7c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44930711443",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7999-held-out-queue"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2ec31dbf7c01509330d0badedf1bb77e06c7477e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44930711443"
+      }
+    ],
+    "queuedAt": "2026-11-21T17:46:55.710Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1786/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 1786 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n27 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: audit-show-review-gap.js (351), opening-night-poller.js (217), ingest-review-from-url.js (211).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T17:50:25.755Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8000-mwqnjofn",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8000-mwqnjofn",
+    "description": "land.yml did not land land/job/linear-BRO-8000-mwqnjofn: the unit-tests-node gate went red at d9d6f36e70. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44930611954",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8000-mwqnjofn"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d9d6f36e70cebdac2ce43392fad6c634db8095f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44930611954"
+      }
+    ],
+    "queuedAt": "2026-11-21T17:58:36.509Z"
   }
 ]

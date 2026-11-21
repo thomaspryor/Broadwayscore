@@ -129,3 +129,34 @@ describe('check-corpus-drift wiring (BRO-2321)', () => {
     assert.equal(runEntry(null).status, 1);
   });
 });
+
+// BRO-7999 R4: a wrongAttribution flag with no reason anywhere keeps a review off the site with
+// nobody able to say why. The committed summary carries the count; the check fails when it grows.
+{
+  const lib = require('../../scripts/lib/exclusion-rule-census');
+  test('BRO-7999: isReasonlessWrongAttribution accepts any recorded reason field', () => {
+    assert.equal(lib.isReasonlessWrongAttribution({ wrongAttribution: true }), true);
+    assert.equal(lib.isReasonlessWrongAttribution({ wrongAttribution: true, wrongAttributionReason: '  ' }), true, 'blank is no reason');
+    for (const k of lib.WRONG_ATTRIBUTION_REASON_FIELDS) {
+      assert.equal(lib.isReasonlessWrongAttribution({ wrongAttribution: true, [k]: k === 'wrongAttributionManualFlag' ? true : 'why' }), false, k);
+    }
+    assert.equal(lib.isReasonlessWrongAttribution({ wrongAttribution: false }), false);
+    assert.equal(lib.isReasonlessWrongAttribution(null), false);
+  });
+  test('BRO-7999: the mirror check breaches only when the reasonless count grows past the baseline', () => {
+    const now = Date.parse('2026-11-21T12:00:00Z');
+    const base = { generatedAt: '2026-11-21T00:00:00Z', ruleDeltas: {}, mirror: null };
+    const at = lib.REASONLESS_WRONG_ATTRIBUTION_BASELINE;
+    assert.deepEqual(lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: at }, { now }), []);
+    const b = lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: at + 1 }, { now });
+    assert.equal(b.length, 1);
+    assert.match(b[0], /wrongAttribution files carry no reason/);
+    assert.deepEqual(lib.checkMirrorSummary(base, { now }), [], 'a pre-BRO-7999 summary has no count: no breach');
+    const s = lib.buildMirrorSummary({ byRule: {}, totalScanned: 1, totalExcluded: 0, reasonlessWrongAttribution: 3 }, null, null);
+    assert.equal(s.reasonlessWrongAttribution, 3);
+    const s2 = lib.buildMirrorSummary({ byRule: {}, totalScanned: 1, totalExcluded: 0, reasonlessWrongAttribution: 4 }, null, s);
+    assert.equal(s2.previousReasonlessWrongAttribution, 3);
+    assert.match(lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: 4, previousReasonlessWrongAttribution: 3 }, { now })[0] || '', /rose 3 -> 4/, 'ratchet below the baseline');
+    assert.deepEqual(lib.checkMirrorSummary({ ...base, reasonlessWrongAttribution: 3, previousReasonlessWrongAttribution: 4 }, { now }), [], 'a drop is fine');
+  });
+}

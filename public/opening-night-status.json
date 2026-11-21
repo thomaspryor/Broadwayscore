@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T17:25:39.987Z",
+  "generatedAt": "2026-11-21T17:46:09.827Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "the-snowman-west-end",
       "thumbnail": "/images/shows/the-snowman-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 84,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 2,
+      "t1": 1,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "2/8 total",
+          "T1:1/3",
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -143,6 +143,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-21T17:46:09.827Z",
+          "rc": 2,
+          "s": 84,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },

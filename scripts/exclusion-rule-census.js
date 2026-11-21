@@ -21,6 +21,7 @@
  *   node scripts/exclusion-rule-census.js                 # scan, report, snapshot
  *   node scripts/exclusion-rule-census.js --show=ID        # single show, no snapshot/diff
  *   node scripts/exclusion-rule-census.js --json-only      # JSON to stdout, no console report
+ *   node scripts/exclusion-rule-census.js --list-reasonless  # wrongAttribution files with no reason (BRO-7999)
  *   node scripts/exclusion-rule-census.js --no-diff        # skip baseline diff/rotation
  *   node scripts/exclusion-rule-census.js --limit=N        # top-N shows per rule (default 5)
  *   node scripts/exclusion-rule-census.js --compare-rebuild
@@ -57,6 +58,7 @@ const {
   formatMirrorReport,
   buildMirrorSummary,
   checkMirrorSummary,
+  isReasonlessWrongAttribution,
 } = require('./lib/exclusion-rule-census');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -138,6 +140,7 @@ function runCheck(argv) {
       + (m ? `; ${m.disagreements}/${m.comparedFiles} disagree with the rebuild (${(m.disagreementRate * 100).toFixed(2)}%)` : ''));
     const deltas = Object.entries(summary.ruleDeltas || {}).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 5);
     if (deltas.length) console.log(`  largest rule moves: ${deltas.map(([r, d]) => `${r} ${d > 0 ? '+' : ''}${d}`).join(', ')}`);
+    if (typeof summary.reasonlessWrongAttribution === 'number') console.log(`  wrongAttribution files with no reason: ${summary.reasonlessWrongAttribution}`);
   }
   for (const b of breaches) console.log(`DRIFT: ${b}`);
   process.exit(breaches.length ? 1 : 0);
@@ -185,12 +188,13 @@ function scanCorpus({ reviewTextsDir, showById, showFilter, rebuildExcludedBySho
         continue;
       }
       const rule = explainExclusion(data, show, filePath);
+      const reasonless = isReasonlessWrongAttribution(data);
       const rebuildList = rebuildExcludedByShow && Object.prototype.hasOwnProperty.call(rebuildExcludedByShow, showId)
         ? rebuildExcludedByShow[showId] : null;
       if (rebuildList) {
-        records.push({ showId, file, rule, alignedRule: explainExclusion(data, show, filePath, { rebuildExclusions: rebuildList }) });
+        records.push({ showId, file, rule, reasonless, alignedRule: explainExclusion(data, show, filePath, { rebuildExclusions: rebuildList }) });
       } else {
-        records.push({ showId, file, rule });
+        records.push({ showId, file, rule, reasonless });
       }
     }
   }
@@ -224,6 +228,13 @@ function main() {
   assertCorpusScanned(records.length, { gate: !showFilter, label: REVIEW_TEXTS_DIR });
 
   const census = buildCensus(records);
+  // BRO-7999 R4: counts only into the committed summary; file names stay local (--list-reasonless).
+  census.reasonlessWrongAttribution = records.filter((r) => r.reasonless).length;
+  if (argv.includes('--list-reasonless')) {
+    for (const r of records.filter((x) => x.reasonless)) console.log(`${r.showId}/${r.file}`);
+    console.log(`${census.reasonlessWrongAttribution} wrongAttribution files with no reason`);
+    return;
+  }
   const snapshot = { generatedAt: new Date().toISOString(), showFilter, ...census };
 
   if (!jsonOnly) {
