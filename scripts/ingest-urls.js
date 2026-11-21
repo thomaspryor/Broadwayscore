@@ -304,8 +304,9 @@ async function main() {
     }
 
     // BRO-7817: an announcement (closing date, opening date, anniversary) is not a review. Refuse it
-    // before any file is written; both the url slug and the short body must say so.
-    if (fullText) {
+    // before any file is written. BRO-7874: also when no text was extracted (refused on an
+    // announcement slug alone; Theater Pizzazz "assassins-cancels-remaining-performances" was a stub).
+    {
       const news = classifyNewsPost({ url, text: fullText });
       if (news.news) {
         results.skipped++;

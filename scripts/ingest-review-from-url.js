@@ -592,6 +592,18 @@ if (!show) {
     }
   }
 
+  // BRO-7874: the same news-post guard as ingest-urls.js, before any write. A score-only page (no
+  // body, a rating recovered from the HTML) is a review by definition and is not asked.
+  if (hasBody) {
+    const news = require('./lib/news-post-guard').classifyNewsPost({ url, text });
+    if (news.news) {
+      // `Skipped: <reason>` is the ingest-skip-classify contract (expected rejection).
+      console.log(`⚠️  Skipped: news-post — ${news.reason} — ${url}`);
+      require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'news-post' });
+      process.exit(0);
+    }
+  }
+
   console.log(`╔══════════════════════════════════════════════════╗`);
   console.log(`║  Show:    ${show.title} (${showId})`);
   console.log(`║  Outlet:  ${outletName} (${outletId})`);

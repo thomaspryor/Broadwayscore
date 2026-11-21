@@ -227,6 +227,10 @@ const EXPECTED_REJECTION_REASONS = [
   // reviews say "review" in the url (review-file-writer.js). NOT durable: the
   // verdict depends on openingDate, which can move.
   'pre-opening-non-review',
+  // BRO-7874: a short announcement (closing date, cancellation, a star's return, a closing-night bow)
+  // refused before any write by scripts/lib/news-post-guard.js. NOT durable: a fuller later fetch of
+  // the same url may carry review prose.
+  'news-post',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -377,6 +381,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'pre-opening-non-review') {
     return `${showId}: ${url} is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url.`;
+  }
+  if (reason === 'news-post') {
+    return `${showId}: ${url} is a short announcement (closing date, cancellation, a cast return, a closing-night bow), not a review, so it was refused before any write (lib/news-post-guard.js, BRO-7874). Expected rejection; if it IS a review, the guard's phrase list in news-post-guard.js is wrong for this page.`;
   }
   if (reason === 'timeout-listing-capsule') {
     return `${showId}: ${url} is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest.`;
