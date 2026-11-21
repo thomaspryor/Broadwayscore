@@ -215,6 +215,7 @@ function extractShowTitle(wpTitle) {
   title = title
     .replace(/\s+reviews?\s+round-?up\b.*$/i, '')       // "X Reviews Round-up – venue"
     .replace(/\s+reviews?:\s+.+$/i, '')                   // "X reviews: Is it the best..."
+    .replace(/\s+reviews?\s+[-–—]\s+.+$/i, '')            // BRO-7931: "X Reviews - Venue" (new WET format)
     .replace(/\s+in\s+(the\s+)?west\s+end\b.*$/i, '')    // "X in the West End ..."
     .replace(/\s+in\s+london\b.*$/i, '')                  // "X in London"
     .trim();
@@ -533,6 +534,7 @@ async function main() {
     }
 
     const show = matchResult.show;
+    stats.titleMatched = (stats.titleMatched || 0) + 1;
 
     // BRO-6682: never archive a roundup on a non-London row or a pre-run post.
     {
@@ -736,6 +738,11 @@ async function main() {
     console.log(`  Errors:         ${stats.errors.length}`);
     stats.errors.forEach(e => console.log(`    ⚠️  ${e}`));
   }
+  const zero = require('./lib/wet-zero-match').wetZeroMatchProblem({ totalPosts: Math.max(0, (stats.totalPosts || 0) - (stats.unprocessedPosts || 0)), titleMatched: stats.titleMatched, showFilter });
+  if (zero) {
+    console.error(`::error::${zero}`);
+    process.exitCode = 1;
+  }
 }
 
 module.exports = { wetCandidateShows, wetPostOtherProduction, extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPageHtml, isCachedNoRatings, NO_RATINGS_RECHECK_DAYS };
@@ -743,7 +750,7 @@ module.exports = { wetCandidateShows, wetPostOtherProduction, extractStarRatings
 if (require.main === module) {
   main()
     .then(() => cleanup())
-    .then(() => process.exit(0))  // fetchPage() uses Playwright which hangs node
+    .then(() => process.exit(process.exitCode || 0))  // BRO-7931: keep zero-match failure; fetchPage() uses Playwright which hangs node
     .catch(e => {
       console.error('Fatal error:', e);
       cleanup().finally(() => process.exit(1));

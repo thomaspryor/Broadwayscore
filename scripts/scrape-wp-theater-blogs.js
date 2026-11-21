@@ -487,7 +487,7 @@ async function scrapeSite(site, shows) {
     }
 
     const { show } = match;
-    const showId = show.slug || show.id;
+    const showId = show.id;
 
     siteStats.matchedShows++;
 
