@@ -1,0 +1,181 @@
+{
+  "issueNumber": "bro-4887",
+  "planId": "beee02a1-c6b4-4e35-9a86-bd6b941a4f3b",
+  "status": "applied",
+  "createdAt": "2026-10-09T00:21:02.101Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4887: fix the Into the Woods Broadway pages before the West End promo links them: correct the 2022 opening date, clear three false pre-opening flags, file the NY Post and Theatrely reviews correctly, delete misfiled copies in the 1987/1997 pages (the 1997 Washington Post file is kept: it holds a different article), and flag the 2016 London Independent review. Bylines (Observer, NYT) and refetches (amNY, Front Mezz Junkies, Talkin Broadway) are left for a follow-up because they could not be verified from cloud.",
+    "steps": [
+      "Opening night was 2022-07-10: the first-night reviews (NYT, NYSR, Broadway News, amNY, NY Post) are dated 07-10/11 and previews began 06-28. 2022-08-06 came from IBDB and flagged genuine opening reviews as pre-opening.",
+      "Genuine Broadway 2022 review (nystagereview.com 2022/07/10, full text). The wrongProduction flag came from the wrong opening date.",
+      "Genuine review of the St. James production; the flag was CV-promoted because the publish date preceded the wrong 2022-08-06 opening date.",
+      "Genuine opening-night piece (broadwaynews.com 2022/07/10); flagged anticipatory_pre_opening_post only because of the wrong opening date.",
+      "Wrongly credited copy of the Theatrely review by Joey Sims (the stored text names Joey Sims). The Joey Sims file stays and its duplicate pointer self-heals once this file is gone.",
+      "Johnny Oleksinski NY Post review (nypost.com/2022/07/10/...) was misfiled under the 1987 production; it reviews the 2022 revival.",
+      "Date in the review URL (2022/07/10); the stored 1987-11-05 was a fake date from the misfiling.",
+      "Flagged misfiled copy of the 2022 NY Post review; the real one is now filed under 2022.",
+      "Unflagged misfiled copy of the 2022 NYSR review (url nystagereview.com/2022/07/10); the real one is already filed under 2022.",
+      "Misfiled undated copy of the 2022 Theater Pizzazz review; the real one is already filed under 2022.",
+      "The Independent review at this url is of the 2016 Menier Chocolate Factory (London) production, not the 1987 Broadway one.",
+      "Reason for the flag"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-2022",
+        "field": "openingDate",
+        "oldValue": "2022-08-06",
+        "newValue": "2022-07-10",
+        "description": "Opening night was 2022-07-10: the first-night reviews (NYT, NYSR, Broadway News, amNY, NY Post) are dated 07-10/11 and previews began 06-28. 2022-08-06 came from IBDB and flagged genuine opening reviews as pre-opening."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/nysr--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine Broadway 2022 review (nystagereview.com 2022/07/10, full text). The wrongProduction flag came from the wrong opening date."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine review of the St. James production; the flag was CV-promoted because the publish date preceded the wrong 2022-08-06 opening date."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/broadwaynews--brittani-samuel.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine opening-night piece (broadwaynews.com 2022/07/10); flagged anticipatory_pre_opening_post only because of the wrong opening date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-2022/theatrely--david-gordon.json",
+        "description": "Wrongly credited copy of the Theatrely review by Joey Sims (the stored text names Joey Sims). The Joey Sims file stays and its duplicate pointer self-heals once this file is gone."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-1987/nypost--johnny-oleksinski.json",
+        "destPath": "into-the-woods-2022/nypost--johnny-oleksinski.json",
+        "description": "Johnny Oleksinski NY Post review (nypost.com/2022/07/10/...) was misfiled under the 1987 production; it reviews the 2022 revival."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/nypost--johnny-oleksinski.json",
+        "field": "publishDate",
+        "oldValue": "1987-11-05",
+        "newValue": "2022-07-10",
+        "description": "Date in the review URL (2022/07/10); the stored 1987-11-05 was a fake date from the misfiling."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-1997/nypost--johnny-oleksinski.json",
+        "description": "Flagged misfiled copy of the 2022 NY Post review; the real one is now filed under 2022."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-1987/nysr--david-finkle.json",
+        "description": "Unflagged misfiled copy of the 2022 NYSR review (url nystagereview.com/2022/07/10); the real one is already filed under 2022."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-1997/theater-pizzazz--samuel-l-leiter.json",
+        "description": "Misfiled undated copy of the 2022 Theater Pizzazz review; the real one is already filed under 2022."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-1987/independent--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The Independent review at this url is of the 2016 Menier Chocolate Factory (London) production, not the 1987 Broadway one."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-1987/independent--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "The url (independent.co.uk .../into-the-woods-menier-chocolate-factory...) is the 2016 Menier Chocolate Factory London production, not the 1987 Broadway production.",
+        "description": "Reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T02:14:55.459Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for into-the-woods-2022"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/nysr--david-finkle.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/broadwaynews--brittani-samuel.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/theatrely--david-gordon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-1987/nypost--johnny-oleksinski.json → into-the-woods-2022/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/nypost--johnny-oleksinski.json publishDate: \"1987-11-05\" -> \"2022-07-10\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1987/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/theater-pizzazz--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-1987/independent--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-1987/independent--unknown.json wrongProductionReason: null -> \"The url (independent.co.uk .../into-the-woods-menier-chocolate-factory...) is the 2016 Menier Chocolate Factory London production, not the 1987 Broadway production.\""
+    }
+  ]
+}

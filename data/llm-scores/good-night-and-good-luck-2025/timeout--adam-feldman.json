@@ -1,0 +1,58 @@
+{
+  "showId": "good-night-and-good-luck-2025",
+  "outletId": "timeout",
+  "outlet": "Time Out",
+  "criticName": "Adam Feldman",
+  "score": 42,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "high",
+  "keyPhrases": [
+    {
+      "text": "there's no need to see it",
+      "sentiment": "negative"
+    },
+    {
+      "text": "nothing in this production is better than what you can get at home by renting the movie for $3.99",
+      "sentiment": "negative"
+    },
+    {
+      "text": "just plopped their screenplay onstage and called it a play",
+      "sentiment": "negative"
+    },
+    {
+      "text": "unobjectionable",
+      "sentiment": "negative"
+    },
+    {
+      "text": "well designed and full of fine actors doing their jobs",
+      "sentiment": "positive"
+    },
+    {
+      "text": "Clooney and Heslov have made no effort to translate those moments",
+      "sentiment": "negative"
+    },
+    {
+      "text": "Scott Pask's excellent bilevel set",
+      "sentiment": "positive"
+    },
+    {
+      "text": "beautifully lit by Heather Gilbert",
+      "sentiment": "positive"
+    }
+  ],
+  "reasoning": "Despite acknowledging technical competence and some positive elements, the review is fundamentally negative with explicit non-recommendation ('there's no need to see it') and harsh criticism of the adaptation as lazy theatrical translation.",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "4/5",
+      "expectedRange": "72-88",
+      "actualScore": 42
+    }
+  ],
+  "scoredAt": "2026-02-21T03:41:12.655Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "4/5",
+  "dtliThumb": "Down",
+  "bwwThumb": "Down"
+}

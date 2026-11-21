@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-6503-nonreview",
+  "planId": "c1bbef79-45f8-4134-8e33-a695b5dc5603",
+  "status": "applied",
+  "createdAt": "2026-10-29T15:11:50.272Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag 3 Guardian news/blog pieces ingested by the BRO-6503 recovery as non-reviews",
+    "steps": [
+      "clybourne-park-west-end-2011/guardian--ben-quinn.json: isNonReviewReason",
+      "clybourne-park-west-end-2011/guardian--ben-quinn.json: isNonReview",
+      "julius-caesar-west-end-2012/guardian--matt-trueman.json: isNonReviewReason",
+      "julius-caesar-west-end-2012/guardian--matt-trueman.json: isNonReview",
+      "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json: isNonReviewReason",
+      "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-west-end-2011/guardian--ben-quinn.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian news story on the Pulitzer win (BRO-6503)",
+        "description": "clybourne-park-west-end-2011/guardian--ben-quinn.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-west-end-2011/guardian--ben-quinn.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "clybourne-park-west-end-2011/guardian--ben-quinn.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "julius-caesar-west-end-2012/guardian--matt-trueman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian casting news story (BRO-6503)",
+        "description": "julius-caesar-west-end-2012/guardian--matt-trueman.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "julius-caesar-west-end-2012/guardian--matt-trueman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "julius-caesar-west-end-2012/guardian--matt-trueman.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian theatreblog essay on arts funding by Lee Hall (BRO-6503)",
+        "description": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T17:30:58.918Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clybourne-park-west-end-2011/guardian--ben-quinn.json isNonReviewReason: null -> \"manual (not a review): Guardian news story on the Pulitzer win (BRO-6503)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clybourne-park-west-end-2011/guardian--ben-quinn.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "julius-caesar-west-end-2012/guardian--matt-trueman.json isNonReviewReason: null -> \"manual (not a review): Guardian casting news story (BRO-6503)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "julius-caesar-west-end-2012/guardian--matt-trueman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json isNonReviewReason: null -> \"manual (not a review): Guardian theatreblog essay on arts funding by Lee Hall (BRO-6503)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pitmen-painters-west-end-2011/guardian--lyn-gardner.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

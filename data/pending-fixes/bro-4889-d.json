@@ -1,0 +1,181 @@
+{
+  "issueNumber": "bro-4889-d",
+  "planId": "738485f7-6b02-405c-9fe3-0dd2e1c5144a",
+  "status": "applied",
+  "createdAt": "2026-10-14T21:01:37.614Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: Cat on a Hot Tin Roof (2013) excludes the NYT review on a bad ensemble rejection; Osage 2007 TheaterMania and Private Lives 2011 Daily News carry false wrongProduction flags (Daily News also scored 80 on a negative text); Cat 2008 NYT shows a 2013 Johansson excerpt",
+    "steps": [
+      "Clear the ensemble wrong_production rejection on cat-on-a-hot-tin-roof-2013 nytimes--ben-brantley",
+      "Clear false wrongProduction flags (with manual-clear markers) on august-osage-county-2007 theatermania--unknown and private-lives-2011 nydailynews--joe-dziemianowicz; set the Daily News humanReviewScore to 45",
+      "Null the 2013-production dtli and Show Score excerpts on cat-on-a-hot-tin-roof-2008 nytimes--ben-brantley",
+      "Rebuild"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-4889: clear the ensemble wrong_production rejection; its reasoning (\"not the current Broadway production\") is wrong: the text and url are Brantley on the 2013 Johansson revival at the Richard Rodgers, i.e. this show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-4889: clear the ensemble wrong_production rejection; its reasoning (\"not the current Broadway production\") is wrong: the text and url are Brantley on the 2013 Johansson revival at the Richard Rodgers, i.e. this show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-02-05T04:34:52.528Z",
+        "newValue": null,
+        "description": "BRO-4889: clear the ensemble wrong_production rejection; its reasoning (\"not the current Broadway production\") is wrong: the text and url are Brantley on the 2013 Johansson revival at the Richard Rodgers, i.e. this show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This is a 2013 review of a Broadway revival starring Scarlett Johansson, not the current Broadway production; openai: The review is about a 2013 production of 'Cat on a Hot Tin Roof', not the current Broadway run.",
+        "newValue": null,
+        "description": "BRO-4889: clear the ensemble wrong_production rejection; its reasoning (\"not the current Broadway production\") is wrong: the text and url are Brantley on the 2013 Johansson revival at the Richard Rodgers, i.e. this show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/theatermania--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews the Steppenwolf Broadway transfer with Deanna Dunagan and Amy Morton, directed by Anna D. Shapiro"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/theatermania--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews Kim Cattrall and Paul Gross in the Richard Eyre revival (2011)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/nydailynews--joe-dziemianowicz.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 45,
+        "description": "BRO-4889: stored llm score 80 contradicts a negative text (headline \"fizz-free\", \"not nearly frothy enough\", \"isn't his best\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/nydailynews--joe-dziemianowicz.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4889: read the full text; negative-leaning (fizz-free revival, too matter-of-fact, no chemistry, Eyre not at his best, with small credits for Cattrall and Gross). 45 = Mixed-negative.",
+        "description": "Why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+        "field": "dtliExcerpt",
+        "oldValue": "This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.",
+        "newValue": null,
+        "description": "BRO-4889: excerpt is about the 2013 Scarlett Johansson revival, not this 2008 Broadhurst production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+        "field": "showScoreExcerpt",
+        "oldValue": "This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.",
+        "newValue": null,
+        "description": "BRO-4889: excerpt is about the 2013 Scarlett Johansson revival, not this 2008 Broadhurst production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T21:47:19.224Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json rejectedAt: \"2026-02-05T04:34:52.528Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json rejectionReasoning: \"claude: This is a 2013 review of a Broadway revival starring Scarlett Johansson, not the current Broadway production; openai: The review is about a 2013 production of 'Cat on a Hot Tin Roof', not the current Broadway run.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/theatermania--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/theatermania--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/nydailynews--joe-dziemianowicz.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/nydailynews--joe-dziemianowicz.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/nydailynews--joe-dziemianowicz.json humanReviewScore: null -> 45"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/nydailynews--joe-dziemianowicz.json humanReviewNote: null -> \"BRO-4889: read the full text; negative-leaning (fizz-free revival, too matter-of-fact, no chemistry, Eyre not at his best, with small credits for Cattrall and Gross). 45 = Mixed-negative.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json dtliExcerpt: \"This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json showScoreExcerpt: \"This Broadway revival proves that Tennessee Williams's drama about sexual frustration and family mendacity remains as potent as ever, thanks largely to a blazing performance by Scarlett Johansson as Maggie the Cat.\" -> null"
+    }
+  ]
+}

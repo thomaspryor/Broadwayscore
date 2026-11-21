@@ -1,0 +1,374 @@
+{
+  "issueNumber": "bro-4853-b",
+  "planId": "9a59b41d-cadf-47b2-a4b2-3d433e85456d",
+  "status": "applied",
+  "createdAt": "2026-10-08T00:08:35.128Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 2 of 4. Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit (regex detectors plus a whole-corpus model sweep, every hit read by hand) found 70 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), 5 cookie-banner records, and 63 records holding another work's Wikipedia article, a person's biography, a disambiguation page, a song list or wiki markup.",
+    "steps": [
+      "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
+      "Clear the 5 cookie-banner synopses",
+      "Clear the 63 wrong-article synopses so the production-verified enricher can refill them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "synopsis",
+        "oldValue": "Mike Birbiglia (; born June 20, 1978) is an American comedian, actor, director, producer and Emmy-nominated writer. He has written and performed a series of award-winning solo shows worldwide.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Mike Birbiglia (comedian biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "walking-with-ghosts-2022",
+        "field": "synopsis",
+        "oldValue": "The White Stripes were an American rock duo formed in Detroit, Michigan, in 1997. The group consisted of Jack White (guitar, keyboards, piano, vocals) and Meg White (drums, percussion, vocals).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is The White Stripes (band article). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-this-a-room-2021",
+        "field": "synopsis",
+        "oldValue": "The Room is Harold Pinter's first play, written and first produced in 1957.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Harold Pinter's The Room (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-present-2017",
+        "field": "synopsis",
+        "oldValue": "Present Arms is a Broadway musical comedy that opened April 26, 1928, with music by Richard Rodgers, lyrics by Lorenz Hart, and book by Herbert Fields.  It was produced by Lew Fields with musical numbers stage by Busby Berkeley.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Present Arms (1928 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tuck-everlasting-2016",
+        "field": "synopsis",
+        "oldValue": "The use of cameras, cell phones, and other recording devices during the show is strictly prohibited by law, except when used for accessibility services. No weapons permitted on the premises.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a theatre recording-device notice. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-2016",
+        "field": "synopsis",
+        "oldValue": "The Father (Swedish: Fadren) is a naturalistic tragedy by  Swedish playwright August Strindberg, written in 1887. It is about the struggle between parents over the future of their child; resulting in the mother, using her cunning manipulative skills, subduing and finally destroying the father.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Strindberg's The Father (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lady-day-at-emersons-bar-and-grill-2014",
+        "field": "synopsis",
+        "oldValue": "MCC Theater’s annual Miscast gala is one of the most exciting and unique theater events in town. Broadway’s hottest stars perform songs from roles in which they would not traditionally be cast. And the results are thrilling!",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is MCC Theater's Miscast gala promo. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rocky-2014",
+        "field": "synopsis",
+        "oldValue": "= ; Act I \"Ain't Down Yet\" - Company \"My Nose Ain't Broken\" - Rocky \"Raining\" - Adrian \"Patriotic\" - Apollo Creed, Miles Jergens, Apollo Girls \"My Nose Ain't Broken (Reprise)\" - Rocky \"The Flip Side\" - Rocky, Adrian \"Adrian\" - Rocky \"Wanna Know Why\" - Gazzo, Buddy, Rocky, Mickey \"Fight From the Heart\" - Rocky \"One of Us\" - Company ; Act II \"Training Montage #1\" - Company \"In the Ring\" - Mickey \"Training Montage #2\" - Company \"Happiness\" - Rocky, Adrian \"I'm Done\" - Adrian \"Southside Celebrity\" -",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of musical numbers. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scandalous-2012",
+        "field": "synopsis",
+        "oldValue": "The musical numbers from the 2012 Broadway production are: ; Act I \"Stand Up\" – Aimee & Ensemble \"Minnie's Prayer\" – Minnie \"Why Can't I? \" – Aimee \"He Will Be My Home\" – Robert & Aimee \"Come Whatever May\" – Robert & Aimee \"He Will Be My Home\" (Reprise) – Robert, Aimee, James & Minnie \"That Sweet Lass From Cork\" – Ensemble \"Come Whatever May\" (Reprise) – Robert, Aimee & Ensemble \"How Could You?",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of musical numbers. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gershwins-porgy-and-bess-2012",
+        "field": "synopsis",
+        "oldValue": "Porgy and Bess (2006), first studio cast recording directly based on the original 1935 production of George Gershwin's opera Porgy and Bess. The music used for this was compiled through research by John Mauceri who also conducted the musical forces for the recording. The Nashville Symphony Orchestra was conducted by Mauceri.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 2006 studio recording of Porgy and Bess. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "memphis-2009",
+        "field": "synopsis",
+        "oldValue": "Memphis most commonly refers to: Memphis, Egypt, a former capital of ancient Egypt Memphis, Tennessee, a major American city Memphis may also refer to:",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2006",
+        "field": "synopsis",
+        "oldValue": "Trade in the dull gray of the concrete jungle for the glamour of 19th-century Paris. Be immersed in a world inspired by the Belle Époque, a period in which the arts flourished and spirits were high.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Parisian glamour show unrelated to Company. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "martin-short-fame-becomes-me-2006",
+        "field": "synopsis",
+        "oldValue": "Martin Hayter Short (born March 26, 1950) is a Canadian comedian, actor, and writer. Short is known as an energetic comedian who gained prominence for his roles in sketch comedy. He has also acted in numerous films and television shows. His awards include two Primetime Emmy Awards, two Actor Awards, and a Tony Award.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Martin Short (comedian biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "by-jeeves-2001",
+        "field": "synopsis",
+        "oldValue": "= The following songs were performed in the 1975 musical in London. The songs \"Food of Love\", sung by Aunt Dahlia, and \"Song of Spode\", sung first by Spode and again in a reprise by Aunt Dahlia, were cut before the London production and not recorded. In the song \"Eulalie\", Jeeves advises Bertie to use the word Eulalie to subdue the villainous Spode.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is songs from the 1975 London musical. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-of-love-1997",
+        "field": "synopsis",
+        "oldValue": "The triumph of love has been a popular allegory in art since at least the Italian Renaissance. It is especially popular in domestic items such as desci da parto and cassoni.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the Triumph of Love art allegory. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "redwood-curtain-1993",
+        "field": "synopsis",
+        "oldValue": "composer = Lawrence Shragge country = United States language = English executive_producer = Richard Welsh producer = cinematography = Ronnie Taylor editor = Scott Vickrey runtime = 100 minutes company = network = ABC released = Redwood Curtain is an American drama television film that premiered on ABC on April 23, 1995, as part of the Hallmark Hall of Fame anthology series.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup for a film. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1991",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1998",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1999",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broadway-1987",
+        "field": "synopsis",
+        "oldValue": "characters = genre = Drama setting = The private party room of the Paradise Night Club, New York City premiere = place = Broadhurst Theatre, New York City, New York orig_lang = English subject = web = Broadway is a 1926 Broadway play produced by Jed Harris and written and directed by George Abbott and Philip Dunning.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup for the 1926 play. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quick-change-1980",
+        "field": "synopsis",
+        "oldValue": "Grimm is a burned out New Yorker who's down on his luck. He longs to escape his miserable life in New York City - and the country - but is lacking the means to do so. Desperate, he dresses up as a clown and robs a bank in midtown Manhattan. He sets up a daring hostage situation tying fake dynamite all over his waist and successfully steals $1 million along with his accomplices: girlfriend Phyllis and best friend Loomis.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the 1990 film Quick Change. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-grandmothers-house-we-go-1981",
+        "field": "synopsis",
+        "oldValue": "5-year-old twins Sarah and Julie (Mary-Kate Olsen and Ashley Olsen) are sweet but naughty, to the frustration of their single mother, Rhonda (Cynthia Geary). After overhearing her say she needs a break from them, they decide to run away to great-grandmother's house in Edgemont for Christmas. The girls sneak onto a city bus, but learn that it only goes downtown, and that Edgemont is three hours away.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is an Olsen twins TV film. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-1980",
+        "field": "synopsis",
+        "oldValue": "A home, or domicile, is a space used as a permanent or semi-permanent residence for one or more human occupants, and sometimes various companion animals. Homes provide sheltered spaces, for instance rooms, where domestic activity can be performed such as sleeping, preparing food, eating and hygiene as well as providing spaces for work and leisure such as remote working, studying and playing.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the dictionary definition of 'home'. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "players-1978",
+        "field": "synopsis",
+        "oldValue": "A massively multiplayer online role-playing game (MMORPG) is a video game that combines aspects of a role-playing video game and a massively multiplayer online game.\nAs in role-playing games (RPGs), the player assumes the role of a character (often in a fantasy world or science-fiction world) and takes control over many of that character's actions.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is MMORPG video games. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wings-1979",
+        "field": "synopsis",
+        "oldValue": "Wings is a musical with music by Jeffrey Lunden and book and lyrics by Arthur Perlman adapted from Arthur Kopit's play of the same name. The one-act musical concerns an older female stroke victim who was an aviatrix and wing-walker. The original production premiered at Chicago's Goodman Theatre in October 1992 and opened at the New York Shakespeare Festival Joseph Papp Public Theater in February 1993.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the later musical adaptation, not the play. Cleared so the production-verified Wikipedia enricher can refill it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-08T00:54:18.601Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for walking-with-ghosts-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for is-this-a-room-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-present-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for tuck-everlasting-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-father-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lady-day-at-emersons-bar-and-grill-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for rocky-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for scandalous-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-gershwins-porgy-and-bess-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for memphis-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for company-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for martin-short-fame-becomes-me-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for by-jeeves-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for triumph-of-love-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for redwood-curtain-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for peter-pan-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for peter-pan-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for peter-pan-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for broadway-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for quick-change-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for to-grandmothers-house-we-go-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for home-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for players-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for wings-1979"
+    }
+  ]
+}

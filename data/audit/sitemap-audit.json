@@ -1,0 +1,57 @@
+{
+  "date": "2026-03-07",
+  "totalUrls": 27270,
+  "byType": {
+    "cast": {
+      "count": 20729,
+      "percentage": 76,
+      "note": "Individual actor profile pages — 76% of sitemap"
+    },
+    "show": {
+      "count": 2301,
+      "percentage": 8.4,
+      "note": "Core content — show review pages"
+    },
+    "creative": {
+      "count": 2219,
+      "percentage": 8.1,
+      "note": "Director/playwright/composer profiles"
+    },
+    "critics": {
+      "count": 1581,
+      "percentage": 5.8,
+      "note": "Critic + outlet detail pages"
+    },
+    "lists": {
+      "count": 155,
+      "percentage": 0.6,
+      "note": "Gold list season pages"
+    },
+    "compare": {
+      "count": 100,
+      "percentage": 0.4,
+      "note": "Curated comparison pages"
+    },
+    "browse": {
+      "count": 66,
+      "percentage": 0.2,
+      "note": "Browse/landing pages"
+    },
+    "theater": {
+      "count": 50,
+      "percentage": 0.2,
+      "note": "Theater venue pages"
+    },
+    "other": {
+      "count": 69,
+      "percentage": 0.3,
+      "note": "Guides, tony-awards, hub pages, static pages"
+    }
+  },
+  "diagnosis": {
+    "indexCoverage": "62% (sampled 50 random pages)",
+    "unindexedPages": "9 found — all historical closed shows, no technical issues (no noindex, all 200 OK, canonical present)",
+    "rootCause": "NOT crawl budget — Google chooses not to index low-demand historical shows. 27K sitemap is dominated by 20K+ cast pages (76%), which are low-priority for search.",
+    "recommendation": "DO NOT prune aggressively. Consider: (1) lower priority for cast pages in sitemap (0.65 → 0.4), (2) filter out cast pages with only 1 show credit from sitemap, (3) monitor if reduced cast page presence improves indexing of high-value pages."
+  }
+}

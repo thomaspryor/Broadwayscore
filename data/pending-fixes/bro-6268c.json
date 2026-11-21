@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-6268c",
+  "planId": "f0748308-d26f-4559-aef2-8353e8e73e7d",
+  "status": "applied",
+  "createdAt": "2026-11-03T05:33:28.869Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retitle the 2011 Gielgud Lend Me a Tenor musical: drop the Theatricalia \"(Musical)\" disambiguator that validate-data --strict flags (type is already musical; id/slug unchanged).",
+    "steps": [
+      "Retitle lend-me-a-tenor-musical-west-end-2011 \"Lend Me a Tenor (Musical)\" -> \"Lend Me a Tenor\""
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "lend-me-a-tenor-musical-west-end-2011",
+        "expectTitle": "Lend Me a Tenor (Musical)",
+        "newTitle": "Lend Me a Tenor",
+        "reason": "Theatricalia genre disambiguator, not part of the title; show type field already says musical (BRO-6268)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T06:28:11.141Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled lend-me-a-tenor-musical-west-end-2011: \"Lend Me a Tenor (Musical)\" -> \"Lend Me a Tenor\""
+    }
+  ],
+  "executedIn": "ci"
+}

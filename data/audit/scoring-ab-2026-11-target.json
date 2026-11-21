@@ -1,0 +1,200 @@
+{
+ "generatedAt": "2026-11-21",
+ "question": "Owner chose (2026-11-21, after scoring-ab-2026-11-combined.json failed the bucket gate for luna + Sonnet 5.5): revert the Claude leg to claude-sonnet-4-6, keep gpt-5.6-luna, move Gemini to gemini-3.5-flash-lite. Confirm that target ensemble before switching.",
+ "design": "Control = gpt-4o + claude-sonnet-4-6 + gemini-2.5-flash. shadowAll = gpt-5.6-luna + claude-sonnet-4-6 (fresh second sample) + gemini-3.5-flash-lite = the target production ensemble. Every review of 20 open shows (same seed as combinedshows). The claude arm (4.6 vs 4.6) is the Claude noise floor.",
+ "run": {
+  "workflowRun": 44930740908,
+  "label": "targetshows",
+  "records": 592,
+  "spendUsd": 20.55
+ },
+ "verdict": "Score gates pass (bucket Rave +1.19pp, Mixed -2.21pp; mean drift +0.47; rejections +0.17pp; 0 of 20 shows move >2 pts; errors 0.5% vs control 0.85%). legAccuracy misses by 0.01 pt on the OpenAI leg only (luna MAE 3.50 vs gpt-4o 2.49, slack 1.0): luna is already live (BRO-7537) and gpt-4o retires 2027-01-14, so this switch does not change it; finals above include it. Claude 4.6 vs 4.6 noise: 0.19% bucket flips.",
+ "reports": {
+  "all": {
+   "generatedAt": "2026-11-21T17:59:16.359Z",
+   "leg": "all",
+   "sampled": 592,
+   "usable": 587,
+   "paired": 587,
+   "controlFailed": 5,
+   "scoredBoth": 516,
+   "sharesControl": {
+    "Rave": 0.3287904599659284,
+    "Positive": 0.393526405451448,
+    "Mixed": 0.11243611584327087,
+    "Negative": 0.04258943781942078,
+    "Pan": 0.01192504258943782,
+    "rejected": 0.11073253833049404
+   },
+   "sharesShadow": {
+    "Rave": 0.34071550255536626,
+    "Positive": 0.393526405451448,
+    "Mixed": 0.09028960817717206,
+    "Negative": 0.049403747870528106,
+    "Pan": 0.013628620102214651,
+    "rejected": 0.11243611584327087
+   },
+   "movedOver5Pts": 0.0562,
+   "bucketFlips": 0.0891,
+   "gates": {
+    "bucketShiftPp": {
+     "pass": true,
+     "value": {
+      "Rave": 1.19,
+      "Positive": 0,
+      "Mixed": -2.21,
+      "Negative": 0.68,
+      "Pan": 0.17
+     },
+     "limit": 5
+    },
+    "meanDrift": {
+     "pass": true,
+     "value": 0.47,
+     "limit": 2
+    },
+    "rejectionDelta": {
+     "pass": true,
+     "value": 0.17,
+     "limit": 2
+    },
+    "showDrift": {
+     "pass": true,
+     "value": {
+      "showsChecked": 20,
+      "showsOver": 0,
+      "worst": []
+     },
+     "limit": 0.1
+    },
+    "legAccuracy": {
+     "pass": false,
+     "value": {
+      "openai": {
+       "control": 2.49,
+       "shadow": 3.5,
+       "n": 101
+      },
+      "claude": {
+       "control": 3.38,
+       "shadow": 3.32,
+       "n": 108
+      },
+      "gemini": {
+       "control": 2.76,
+       "shadow": 3.45,
+       "n": 107
+      }
+     },
+     "limit": 1
+    },
+    "shadowErrors": {
+     "pass": true,
+     "value": {
+      "shadow": 0.0051,
+      "control": 0.0085,
+      "perLeg": {
+       "openai": {
+        "shadow": 0,
+        "control": 0
+       },
+       "claude": {
+        "shadow": 0,
+        "control": 0
+       },
+       "gemini": {
+        "shadow": 0.0051,
+        "control": 0.0085
+       }
+      }
+     },
+     "limit": 0.01
+    }
+   },
+   "allPass": false,
+   "interaction": {
+    "n": 513,
+    "meanInteraction": 0.05,
+    "meanAbsInteraction": 0.38,
+    "over5Pts": 0.0019
+   }
+  },
+  "claudeNoise": {
+   "generatedAt": "2026-11-21T17:59:17.336Z",
+   "leg": "claude",
+   "sampled": 592,
+   "usable": 587,
+   "paired": 587,
+   "controlFailed": 5,
+   "scoredBoth": 522,
+   "sharesControl": {
+    "Rave": 0.3287904599659284,
+    "Positive": 0.393526405451448,
+    "Mixed": 0.11243611584327087,
+    "Negative": 0.04258943781942078,
+    "Pan": 0.01192504258943782,
+    "rejected": 0.11073253833049404
+   },
+   "sharesShadow": {
+    "Rave": 0.3270868824531516,
+    "Positive": 0.39522998296422485,
+    "Mixed": 0.11243611584327087,
+    "Negative": 0.04258943781942078,
+    "Pan": 0.01192504258943782,
+    "rejected": 0.11073253833049404
+   },
+   "movedOver5Pts": 0,
+   "bucketFlips": 0.0019,
+   "gates": {
+    "bucketShiftPp": {
+     "pass": true,
+     "value": {
+      "Rave": -0.17,
+      "Positive": 0.17,
+      "Mixed": 0,
+      "Negative": 0,
+      "Pan": 0
+     },
+     "limit": 5
+    },
+    "meanDrift": {
+     "pass": true,
+     "value": 0.01,
+     "limit": 2
+    },
+    "rejectionDelta": {
+     "pass": true,
+     "value": 0,
+     "limit": 2
+    },
+    "showDrift": {
+     "pass": true,
+     "value": {
+      "showsChecked": 20,
+      "showsOver": 0,
+      "worst": []
+     },
+     "limit": 0.1
+    },
+    "legAccuracy": {
+     "pass": true,
+     "value": {
+      "control": 3.38,
+      "shadow": 3.32,
+      "n": 108
+     },
+     "limit": 1
+    },
+    "shadowErrors": {
+     "pass": true,
+     "value": {
+      "shadow": 0,
+      "control": 0
+     },
+     "limit": 0.01
+    }
+   },
+   "allPass": true
+  }
+ }
+}

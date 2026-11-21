@@ -1,0 +1,43 @@
+{
+  "issueNumber": "bro-5647-d",
+  "planId": "f6b8dc82-5e77-495e-99b3-5866bcf3df2a",
+  "status": "applied",
+  "createdAt": "2026-10-19T01:08:23.397Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "CATS: The Jellicle Ball, clear isEstimate.capitalization. bro-5647-b set the capitalization to the $18M The Hollywood Reporter reports from the SEC Form D maximum, but left the estimate flag, so the card still prints ~$18.0M. Form D maxima elsewhere (boop, stranger-things, suffs) print unmarked.",
+    "steps": [
+      "Clear the capitalization estimate flag on cats-the-jellicle-ball"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": false,
+          "capitalization": true
+        },
+        "newValue": {
+          "weeklyRunningCost": false,
+          "capitalization": false
+        },
+        "description": "The $18M is a reported Form D maximum (The Hollywood Reporter, Jul 13, 2026), printed like other Form D maxima, so it carries no estimate mark."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T02:06:53.116Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for cats-the-jellicle-ball"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# BRO-7958 state
+Done: take-downs (wrongShow/wrongProduction/isNonReview set laneRevoked, removal-only publish, live-absence verify), publishDate (FIELD_VALUE_CHECKS + dateSource relabel + plausibility), criticName (rename in one merge, file move), llmPullQuote (verbatim check, live q verify), deploy-port absentUrls. 59 tests in tests/unit/lane-manual-inbox.test.mjs pass; 12 fail with the lane code reverted. Ship-check done (Claude + Codex), findings fixed.
+Branch job/linear-BRO-7958-mwq8vl9u also carries the unlanded BRO-7891 item-2 commits (merged in).
+Remaining: land. Run `bash scripts/merge-worktree-to-main.sh` from the branch (its pre-push step was slow; no land/** ref seen yet). Then confirm lane-rehearsal-recorded.yml is green and re-run `node --test tests/unit/lane-manual-inbox.test.mjs` on main.

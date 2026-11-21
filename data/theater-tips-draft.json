@@ -1,0 +1,4048 @@
+{
+  "_meta": {
+    "description": "LLM-generated structured theater tips from scraped data",
+    "model": "gemini-2.5-flash",
+    "lastUpdated": "2026-10-01T06:24:20.070Z"
+  },
+  "theaters": {
+    "Al Hirschfeld Theatre": {
+      "seating": {
+        "bestSeats": "The mezzanine offers great sightlines of the stage.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 332 W. 44th St. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited.",
+        "tip": "Consider booking your parking spot in advance to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a block away."
+          },
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale American cuisine with a focus on cocktails."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A legendary theater district institution known for its caricatures and classic dishes."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Iron Bar",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively bar with a good selection of drinks and a casual atmosphere."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A relaxed spot for a post-show drink."
+          },
+          {
+            "name": "Sugar Factory - Time Square",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Known for its extravagant desserts and cocktails."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Offers a variety of pastries, sandwiches, and coffee for a quick bite."
+          },
+          {
+            "name": "Gyu-Kaku Japanese BBQ - New York, NY | Times Square Manhattan",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Japanese BBQ where you grill your own food at the table."
+          },
+          {
+            "name": "Spice Symphony Times Square",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Flavorful Indian dishes in the heart of Times Square."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 45th Street.",
+        "nearestSubway": "The nearest station is 42 St-Times Sq, served by the 1, 2, 3, 7, N, Q, R, W, and S trains.",
+        "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available in the theater, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-15T04:22:00.567Z",
+      "hasScrapedData": true
+    },
+    "Ambassador Theatre": {
+      "seating": {
+        "bestSeats": "The Ambassador Theatre is an intimate house for its size. Stick to the front mezzanine or orchestra for the best experience.",
+        "avoidSeats": "Rear mezzanine seats can feel distant."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "GMC Parking - Eastway Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon Parking - 250 W. 50th St. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area.",
+        "tip": "Consider booking your parking spot in advance online for potentially better rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes near the theater."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale steak and chop options."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy West African cuisine before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Festive atmosphere for after-theater drinks and snacks."
+          },
+          {
+            "name": "Carnegie Diner & Caf  828 8th Ave, New York, NY",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic diner fare, open late."
+          },
+          {
+            "name": "Serafina Times Square",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A reliable choice for Italian cuisine."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Quick bites and drinks before the show."
+          },
+          {
+            "name": "Sir Henrys",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual spot for a quick bite."
+          },
+          {
+            "name": "Gui Steakhouse",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Steakhouse with quick service."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Ambassador Theatre entrance is located on West 49th Street.",
+        "nearestSubway": "The closest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:08:25.286Z",
+      "hasScrapedData": true
+    },
+    "August Wilson Theatre": {
+      "seating": {
+        "bestSeats": "The August Wilson Theatre generally has good sightlines. However, to avoid any obstruction from the balcony overhang, aim for seats in the front two-thirds of the orchestra.",
+        "avoidSeats": "Seats in the last few rows of the orchestra may have obstructed views of the top of the stage due to the balcony overhang."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "MPG Parking - 1675 Broadway Garage LLC",
+            "walkMinutes": 0
+          },
+          {
+            "name": "Algin Management - ARO Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "iPark - 790 7th Avenue Parking Corp. Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Theater District.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Very close to the theater, offering classic American fare."
+          },
+          {
+            "name": "Saar Indian Bistro",
+            "cuisine": "Indian",
+            "walkMinutes": 6,
+            "priceRange": "$$$",
+            "notes": "A short walk for flavorful Indian dishes."
+          },
+          {
+            "name": "Toloache-Midtown",
+            "cuisine": "Mexican",
+            "walkMinutes": 6,
+            "priceRange": "$$",
+            "notes": "Enjoy modern Mexican cuisine before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Russian Samovar & Tolstoy's Lounge",
+            "cuisine": "Russian",
+            "walkMinutes": 6,
+            "priceRange": "$$$",
+            "notes": "Enjoy a unique Russian experience with food and drinks."
+          },
+          {
+            "name": "Russian Vodka Room",
+            "cuisine": "Russian",
+            "walkMinutes": 6,
+            "priceRange": "$$",
+            "notes": "Extensive vodka selection and Russian snacks."
+          },
+          {
+            "name": "Gallaghers Steakhouse - Manhattan",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 6,
+            "priceRange": "$$$$",
+            "notes": "Classic steakhouse experience for a post-show celebration."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 6,
+            "priceRange": "$$",
+            "notes": "Quick and easy pizza slices near the theater."
+          },
+          {
+            "name": "Black Iron Burger Theater District",
+            "cuisine": "Burgers",
+            "walkMinutes": 5,
+            "priceRange": "$$",
+            "notes": "Casual burger joint for a quick bite."
+          },
+          {
+            "name": "Bartley Dunnes",
+            "cuisine": "American",
+            "walkMinutes": 5,
+            "priceRange": "$$",
+            "notes": "A casual spot for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 52nd Street.",
+        "nearestSubway": null,
+        "exitStrategy": "After the show, head west towards 8th Avenue to avoid the heaviest crowds, or use the subway at 50th Street.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-15T04:22:07.176Z",
+      "hasScrapedData": true
+    },
+    "Belasco Theatre": {
+      "seating": {
+        "bestSeats": "The mezzanine offers excellent views of the stage and the theater's stunning Tiffany ceiling lights at a lower price point.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 1
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - Hippodrome Garage",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited, especially during show times.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Bar Mexicana",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy classic Mexican dishes and drinks before the show."
+          },
+          {
+            "name": "Connolly's Pub and Restaurant - 45th",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A traditional pub with a lively atmosphere, perfect for a pre-theater meal."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A great spot for BBQ lovers before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Gatsby's Landing - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A stylish spot for post-show cocktails and late-night bites."
+          },
+          {
+            "name": "The Public House at Merrion Row Hotel",
+            "cuisine": "Gastro Pub",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Relaxed gastro pub with a good selection of beers and comfort food."
+          },
+          {
+            "name": "Butter Midtown",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale dining with a sophisticated ambiance."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Valerie",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Offers a variety of quick bites and drinks in a stylish setting."
+          },
+          {
+            "name": "Mermaid Oyster Bar - Times Square",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A great place for a quick oyster fix before the show."
+          },
+          {
+            "name": "The Perfect Pint - West",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for a quick bite and a pint."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 44th Street.",
+        "nearestSubway": "The nearest subway station is 42nd Street–Bryant Park, served by the B, D, F, and M lines.",
+        "exitStrategy": "Exiting onto 44th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:09:11.785Z",
+      "hasScrapedData": true
+    },
+    "Bernard B. Jacobs Theatre": {
+      "seating": {
+        "bestSeats": "Front mezzanine seats offer an excellent overhead perspective and are considered a great value.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a short walk from the theater."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy sushi and Japanese cuisine before the show."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick bite of French pastries before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Iron Bar",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively American bar, perfect for a post-show drink."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood restaurant with a fun atmosphere."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a relaxed atmosphere with classic American fare."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Get a quick sandwich before the show."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Bernard B. Jacobs Theatre entrance is located on West 45th Street.",
+        "nearestSubway": "The closest subway stations are Times Square-42nd Street (1/2/3/N/Q/R/W) and 49th Street (N/R/W).",
+        "exitStrategy": "Exiting towards 8th Avenue can provide quicker access to taxis and ride-sharing services.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:09:18.773Z",
+      "hasScrapedData": true
+    },
+    "Booth Theatre": {
+      "seating": {
+        "bestSeats": "The Booth is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Theater District.",
+        "tip": "Consider booking parking in advance to secure a spot and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York pizza, perfect for a pre-theater meal."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 4,
+            "priceRange": "$$",
+            "notes": "Enjoy French pastries and light fare before the show."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 4,
+            "priceRange": "$$",
+            "notes": "Casual seafood dining with a fun atmosphere."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Relaxed Irish pub with a good selection of drinks."
+          },
+          {
+            "name": "Bond 45",
+            "cuisine": "Italian",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a lively bar scene."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine in a stylish setting."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Quick and easy deli sandwiches and snacks."
+          },
+          {
+            "name": "Hard Rock Cafe - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 6,
+            "priceRange": "$$",
+            "notes": "Classic American fare in a rock 'n' roll themed setting."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Enjoy classic barbecue dishes."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is on 45th Street.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, N, Q, R, W lines) is the closest.",
+        "exitStrategy": "Head west toward Eighth Avenue for easier access to taxis and subway lines, or use ride-sharing apps.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:09:25.751Z",
+      "hasScrapedData": true
+    },
+    "Broadhurst Theatre": {
+      "seating": {
+        "bestSeats": "The Broadhurst generally offers solid sightlines throughout. Being slightly wider than average, even seats on the sides provide good views.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 3
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited, especially during show times.",
+        "tip": "Consider booking your parking spot in advance online for a guaranteed space and potentially lower rates."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York pizza just a block away."
+          },
+          {
+            "name": "Il Forno",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A short walk for some pre-theater pasta."
+          },
+          {
+            "name": "Iron Bar",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Solid American fare and drinks close to the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy creative cocktails and a late-night bite."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 5,
+            "priceRange": "$$",
+            "notes": "A lively Irish pub for a post-show pint."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 5,
+            "priceRange": "$$$",
+            "notes": "Upscale American cuisine with a great ambiance."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 5,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Classic deli sandwiches for a fast meal."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick sushi options before the show."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 44th Street.",
+        "nearestSubway": "The 42nd Street–Times Square station is the closest, serving the 1, 2, 3, 7, N, Q, R, W, and S lines.",
+        "exitStrategy": "Exiting towards 8th Avenue can sometimes be less congested than heading east towards Times Square.",
+        "restrooms": "Restrooms are available, but can get crowded during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:09:33.723Z",
+      "hasScrapedData": true
+    },
+    "Broadway Theatre": {
+      "seating": {
+        "bestSeats": "The orchestra has a good rake for sightlines, and the front mezzanine is excellent.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "MPG Parking - 1675 Broadway Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Algin Management - ARO Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "iPark - 790 7th Avenue Parking Corp. Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area of Times Square.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Very close to the theater; a convenient option for a pre-show meal."
+          },
+          {
+            "name": "Saar Indian Bistro",
+            "cuisine": "Indian",
+            "walkMinutes": 4,
+            "priceRange": "$$$",
+            "notes": "A short walk for flavorful Indian cuisine before the show."
+          },
+          {
+            "name": "Gallaghers Steakhouse - Manhattan",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 4,
+            "priceRange": "$$$$",
+            "notes": "Classic steakhouse experience near the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Russian Vodka Room",
+            "cuisine": "Russian",
+            "walkMinutes": 4,
+            "priceRange": "$$",
+            "notes": "Enjoy a unique post-show experience with Russian cuisine and vodka."
+          },
+          {
+            "name": "Faces and Names",
+            "cuisine": "Comfort Food",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A relaxed spot for comfort food and drinks after the show."
+          },
+          {
+            "name": "Tanner Smith's",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 4,
+            "priceRange": "$$",
+            "notes": "Craft cocktails in a stylish setting, perfect for a post-show nightcap."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Classic pizza slices near the theater."
+          },
+          {
+            "name": "Black Iron Burger Theater District",
+            "cuisine": "Burgers",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty burger joint for a fast bite."
+          },
+          {
+            "name": "Bartley Dunnes",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on Broadway.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-15T04:22:13.733Z",
+      "hasScrapedData": true
+    },
+    "Lena Horne Theatre": {
+      "seating": {
+        "bestSeats": "The Lena Horne Theatre is known for its intimate feel and good sightlines throughout. Aim for seats in the center orchestra for the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited, especially during show times.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes, perfect for a pre-theater dinner."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine just a short walk from the theater."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A great option for a lighter meal before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "A lively steakhouse known for its energetic atmosphere."
+          },
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Offers a sophisticated setting for post-show drinks and bites."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for drinks and pub fare after the show."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Mexican options for a fast bite."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy fresh seafood in a vibrant Times Square setting."
+          },
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A modern bar offering a variety of drinks and light bites."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 47th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto 47th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:09:47.645Z",
+      "hasScrapedData": true
+    },
+    "Circle in the Square Theatre": {
+      "seating": {
+        "bestSeats": "Given the theater-in-the-round setup, any seat offers an intimate view, but aim for center seats for the most balanced perspective.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "(SP+) - Hilton Park Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Sheraton Midtown Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Hilton Park Garage (2nd Entrance)",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area of Midtown.",
+        "tip": "Consider booking your parking spot in advance online for a guaranteed space and potentially lower rates."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "La Grande Boucherie NYC",
+            "cuisine": "French",
+            "walkMinutes": 3,
+            "priceRange": "$$$$",
+            "notes": "Enjoy a classic French meal before the show."
+          },
+          {
+            "name": "Dabble",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A modern American option close to the theater."
+          },
+          {
+            "name": "Nusr-Et Steakhouse New York",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 3,
+            "priceRange": "$$$$",
+            "notes": "High-end steakhouse experience."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Fernando's Hideaway",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "A great spot for cocktails after the show."
+          },
+          {
+            "name": "Tanner Smith's",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Another option for post-show drinks in a lively atmosphere."
+          },
+          {
+            "name": "Faces and Names",
+            "cuisine": "Comfort Food",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Relax with some comfort food after the curtain falls."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Grab a quick slice of pizza."
+          },
+          {
+            "name": "wagamama, midtown, new york",
+            "cuisine": "Pan-Asian",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Fast-casual pan-Asian cuisine."
+          },
+          {
+            "name": "Rosie O'Grady's",
+            "cuisine": "American",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Classic American fare in a casual setting."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The theater entrance is located on 50th Street, just west of Broadway.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting onto 50th Street provides easy access to taxis and the subway. Head east towards Broadway for more transportation options.",
+        "restrooms": "Restrooms are available within the theater."
+      },
+      "lastUpdated": "2026-04-15T04:22:20.479Z",
+      "hasScrapedData": true
+    },
+    "Ethel Barrymore Theatre": {
+      "seating": {
+        "bestSeats": "Center orchestra seats provide the optimal viewing and listening experience at the Ethel Barrymore Theatre.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes close to the theater."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine before the show."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale dining experience with a modern twist on classic steakhouse fare."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Interlude Rooftop Lounge",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Relax with cocktails and enjoy the city views after the show."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively spot for a post-show bite and drinks."
+          },
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine in a stylish setting."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich."
+          },
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Quick American fare."
+          },
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a quick Mexican bite before the show."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 47th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street, served by the N, R, and W lines.",
+        "exitStrategy": "Exiting towards 8th Avenue can provide quicker access to taxis and ride-sharing services.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:10:00.313Z",
+      "hasScrapedData": true
+    },
+    "Eugene O'Neill Theatre": {
+      "seating": {
+        "bestSeats": "The front mezzanine center offers an excellent, unobstructed view of the wide stage. The acoustics are also very good throughout the theater.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "GMC Parking - Eastway Garage",
+            "walkMinutes": 0
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon Parking - 250 W. 50th St. Garage",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes near the theater."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale steakhouse with a lively atmosphere."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Flavorful Indian cuisine, a short walk from the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Starchild Rooftop Bar & Lounge",
+            "cuisine": "Bar / Lounge / Bottle Service",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Rooftop bar with great views for a post-show drink."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for a late-night bite and drinks."
+          },
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Contemporary American cuisine in a stylish setting."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Mexican options."
+          },
+          {
+            "name": "Carnegie Diner & Caf  828 8th Ave, New York, NY",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a fast bite."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "West African cuisine for a quick and flavorful meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 49th Street.",
+        "nearestSubway": "The nearest station is 49 St, served by the N, R, and W trains.",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines, or use the side streets to avoid the heaviest crowds.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-15T04:22:27.650Z",
+      "hasScrapedData": true
+    },
+    "Gerald Schoenfeld Theatre": {
+      "seating": {
+        "bestSeats": "The mezzanine offers excellent sightlines throughout the theater.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 3
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Theater District.",
+        "tip": "Consider booking your parking spot in advance to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza, perfect for a pre-theater meal."
+          },
+          {
+            "name": "Il Forno",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy classic Italian dishes close to the theater."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A cozy Irish pub with a lively atmosphere."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A legendary Broadway institution, great for a celebratory post-show dinner."
+          },
+          {
+            "name": "Bond 45",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a lively bar scene."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Contemporary American cuisine in a stylish setting."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich before the show."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and easy sandwiches and deli fare."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Sushi and Japanese snacks for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 45th Street.",
+        "nearestSubway": "The 42nd Street–Times Square station is the closest, serving the 1, 2, 3, 7, N, Q, R, W, and S lines.",
+        "exitStrategy": "Exiting onto the street after the show can be crowded. Head west towards 8th Avenue for slightly less congestion, or use the subway.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:10:14.074Z",
+      "hasScrapedData": true
+    },
+    "Gershwin Theatre": {
+      "seating": {
+        "bestSeats": "The Gershwin is a large theater, but the steep rake means even rear mezzanine seats offer decent views. Center orchestra provides the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 790 7th Avenue Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "MPG Parking - 1675 Broadway Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon Parking - 250 W. 50th St. Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic American fare just steps from the theater."
+          },
+          {
+            "name": "Beast & Butterflies",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Stylish spot with a diverse menu."
+          },
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining experience."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Russian Samovar & Tolstoy's Lounge",
+            "cuisine": "Russian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy a unique Russian experience with live music."
+          },
+          {
+            "name": "Rosie O'Grady's",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A lively Irish pub with a great atmosphere."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Experience the flavors of West Africa."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Quick and tasty pizza slices."
+          },
+          {
+            "name": "Carnegie Diner & Caf  828 8th Ave, New York, NY",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a quick bite."
+          },
+          {
+            "name": "Black Iron Burger Theater District",
+            "cuisine": "Burgers",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Delicious burgers for a fast and satisfying meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 51st Street, between Broadway and 8th Avenue.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting towards 8th Avenue can sometimes be less congested than heading towards Broadway.",
+        "restrooms": "Restrooms are available on multiple levels, but can get crowded during intermission."
+      },
+      "lastUpdated": "2026-04-15T04:22:34.383Z",
+      "hasScrapedData": true
+    },
+    "Harold and Miriam Steinberg Center for Theatre": {
+      "seating": {
+        "bestSeats": "The theater is small, so most seats offer a good view. Aim for the center sections for the most balanced perspective.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [],
+        "streetParking": "Street parking in this area is extremely limited and difficult to find, especially during show times.",
+        "tip": "Consider booking parking in advance at a nearby garage to save time and reduce stress."
+      },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
+      },
+      "logistics": {
+        "entrance": "The main entrance is on 46th Street.",
+        "nearestSubway": "The nearest subway station is Times Square-42nd Street (1/2/3/7/N/Q/R/W/S lines).",
+        "exitStrategy": "Exiting onto 46th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:10:24.634Z",
+      "hasScrapedData": false
+    },
+    "Helen Hayes Theater": {
+      "seating": {
+        "bestSeats": "Given the small size of the Helen Hayes Theater, most seats offer excellent views. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 3
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York pizza just steps from the theater. Expect a wait during peak hours."
+          },
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Located in the InterContinental hotel, offering a pre-theater menu."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A great option for a hearty meal before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A lively Irish pub with a good selection of beers and comfort food."
+          },
+          {
+            "name": "Bond 45",
+            "cuisine": "Italian",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a vibrant atmosphere, perfect for after the show."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "A legendary Broadway institution, known for its caricatures and classic dishes."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 8,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich before the show."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "For a quick sandwich or snack."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a quick and casual bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 44th Street.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W, S lines) is the closest subway stop.",
+        "exitStrategy": "Exiting onto 44th Street provides easy access to taxis and the subway. Consider walking a block or two further from Times Square for easier transportation.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:10:31.679Z",
+      "hasScrapedData": true
+    },
+    "Hudson Theatre": {
+      "seating": {
+        "bestSeats": "The orchestra section offers great legroom and excellent acoustics. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area of Times Square.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Bar Mexicana",
+            "cuisine": "Mexican",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Enjoy vibrant Mexican flavors close to the theater."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A classic steakhouse experience near the theater."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Casual seafood dining with a fun atmosphere."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Haven Rooftop",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy drinks and American fare with a view."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A great spot for barbecue after the show."
+          },
+          {
+            "name": "Connolly's Pub and Restaurant - 45th",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A traditional Irish pub with a lively atmosphere."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Hard Rock Cafe - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic American fare in a rock 'n' roll setting."
+          },
+          {
+            "name": "Gatsby's Landing - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A quick bite with an upscale feel."
+          },
+          {
+            "name": "The Public House at Merrion Row Hotel",
+            "cuisine": "Gastro Pub",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Gastro pub fare for a quick and tasty meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Hudson Theatre's main entrance is on 44th Street.",
+        "nearestSubway": "The nearest subway station is Times Square-42nd Street, accessible via the 1, 2, 3, 7, N, Q, R, W, and S lines.",
+        "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds in Times Square, or use the subway at Times Square-42nd Street.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:10:39.137Z",
+      "hasScrapedData": true
+    },
+    "Imperial Theatre": {
+      "seating": {
+        "bestSeats": "Center orchestra rows D-L are considered some of the best seats on Broadway due to the theater's wide stage and excellent acoustics.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in Times Square is extremely limited and not recommended.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza, great for a casual pre-show meal."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a delightful French pastry and coffee before the show."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively spot for sushi and Japanese cuisine."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A legendary Broadway institution, perfect for a celebratory post-show dinner."
+          },
+          {
+            "name": "Bond 45",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a lively atmosphere."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Contemporary American cuisine in a relaxed setting."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and easy sandwiches and deli fare."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood spot with a fun, themed atmosphere."
+          },
+          {
+            "name": "Hard Rock Cafe - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic American fare with a rock 'n' roll vibe."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Imperial Theatre's main entrance is located on West 45th Street.",
+        "nearestSubway": "The nearest subway station is 42nd Street–Times Square, served by the 1, 2, 3, 7, N, Q, R, W, and S lines.",
+        "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:10:46.539Z",
+      "hasScrapedData": true
+    },
+    "James Earl Jones Theatre": {
+      "seating": {
+        "bestSeats": "The James Earl Jones Theatre has been renovated with all-new seating, so most seats offer good views. Aim for the center Orchestra or front Mezzanine for optimal sightlines.",
+        "avoidSeats": "Seats at the far sides of the balcony may have partially obstructed views."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - 53 W. 48th St. Parking LLC Garage",
+            "walkMinutes": 3
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "The Lotus Room",
+            "cuisine": "Asian",
+            "walkMinutes": 2,
+            "priceRange": "$$$$",
+            "notes": "Upscale Asian cuisine, perfect for a pre-theater dinner."
+          },
+          {
+            "name": "Sessions",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Classic American dishes in a stylish setting."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy a steak before the show at this popular spot."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy cocktails and American fare after the show."
+          },
+          {
+            "name": "Haven Rooftop",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Rooftop bar with great views and a lively atmosphere."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Experience West African cuisine in Times Square."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Alderman",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for a quick bite before the show."
+          },
+          {
+            "name": "Interlude Rooftop Lounge",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a quick drink and snack with a view."
+          },
+          {
+            "name": "Utsav Indian Bar and Grill",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab some Indian appetizers before the show."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on West 48th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto 48th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:10:54.008Z",
+      "hasScrapedData": true
+    },
+    "John Golden Theatre": {
+      "seating": {
+        "bestSeats": "The mezzanine offers surprisingly good views despite its steepness. Center orchestra seats provide the most direct view of the stage.",
+        "avoidSeats": "Legroom can be limited in the orchestra section, so those needing more space might prefer an aisle seat or mezzanine."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Theater District.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a short walk from the theater."
+          },
+          {
+            "name": "Il Forno",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A cozy spot for a pre-theater Italian meal."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy French pastries and coffee before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Iron Bar",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A lively bar with American fare, perfect for a post-show drink and bite."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Upscale American cuisine with a great ambiance for after the theater."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A legendary theater district institution, great for a special post-show experience."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and easy sandwiches and snacks."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Sushi and Japanese snacks for a quick bite."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood restaurant for a quick meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The John Golden Theatre's main entrance is located on 45th Street.",
+        "nearestSubway": "The nearest subway stations are the 49th Street station (N, R, W lines) and the 42nd Street-Times Square station (1, 2, 3, 7, A, C, E, N, Q, R, W lines).",
+        "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and subway lines. Head west for less crowded subway access.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:11:01.378Z",
+      "hasScrapedData": true
+    },
+    "Longacre Theatre": {
+      "seating": {
+        "bestSeats": "Center orchestra seats provide the optimal viewing experience. The proscenium arch is a beautiful feature of this classic theater.",
+        "avoidSeats": "The balcony overhang can obstruct views from the rear orchestra rows."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 0
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes near the theater."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine before the show."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale steakhouse experience."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine and cocktails after the show."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A lively spot for a post-show drink and a bite."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Experience West African flavors in Times Square."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich."
+          },
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual Mexican spot for a quick bite."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Seafood options for a pre-show meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Longacre Theatre entrance is located on West 48th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto 48th Street provides the most direct access to taxis and subway lines.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:11:08.509Z",
+      "hasScrapedData": true
+    },
+    "Lunt-Fontanne Theatre": {
+      "seating": {
+        "bestSeats": "The front mezzanine offers excellent sightlines in this grand theater.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in this area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$$",
+            "notes": "Upscale steakhouse with a lively atmosphere, perfect for a pre-theater dinner."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy a delicious steak or seafood dish before the show."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Grab a quick bite of French cuisine before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 205,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine and cocktails after the show."
+          },
+          {
+            "name": "Interlude Rooftop Lounge",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 220,
+            "priceRange": "$$",
+            "notes": "Relax with cocktails and enjoy the city views."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 225,
+            "priceRange": "$$",
+            "notes": "A casual spot for drinks and American fare."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 215,
+            "priceRange": "$$",
+            "notes": "Enjoy quick Mexican favorites."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 220,
+            "priceRange": "$$$",
+            "notes": "A great place for a quick seafood meal."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 220,
+            "priceRange": "$$$",
+            "notes": "Enjoy a quick Indian meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 46th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto 46th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:11:15.217Z",
+      "hasScrapedData": true
+    },
+    "Lyceum Theatre": {
+      "seating": {
+        "bestSeats": "The Lyceum is an intimate theater, so most seats offer good views. Center orchestra seats provide the most direct view of the stage.",
+        "avoidSeats": "Seats in the rear of the balcony may feel distant. Side orchestra seats can sometimes have partially obstructed views."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "The Lotus Room",
+            "cuisine": "Asian",
+            "walkMinutes": 2,
+            "priceRange": "$$$$",
+            "notes": "Upscale Asian cuisine, great for a pre-theater dinner if you're looking to splurge."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Classic steakhouse experience near the theater."
+          },
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Located in the hotel, offering a convenient pre-show dining option."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Haven Rooftop",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy drinks and American fare with a view after the show."
+          },
+          {
+            "name": "Connolly's Pub and Restaurant - 45th",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A lively pub atmosphere for a post-show drink."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Casual BBQ spot for a late-night bite."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Havana Central Times Square",
+            "cuisine": "Cuban",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Cuban food."
+          },
+          {
+            "name": "The Public House at Merrion Row Hotel",
+            "cuisine": "Gastro Pub",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "A quick bite at a Gastro Pub."
+          },
+          {
+            "name": "Sushi Lab Rooftop",
+            "cuisine": "Sushi",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Sushi on a rooftop."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Lyceum Theatre entrance is located on 45th Street.",
+        "nearestSubway": "The nearest subway station is Times Square-42nd Street, served by the 1, 2, 3, 7, N, Q, R, W, and S lines.",
+        "exitStrategy": "Exiting onto 45th Street, you can easily grab a taxi or head towards Times Square for subway access.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:11:22.962Z",
+      "hasScrapedData": true
+    },
+    "Lyric Theatre": {
+      "seating": {
+        "bestSeats": "The Lyric is a large theater, so aim for seats in the center orchestra for the best views. Mezzanine seats can also offer a good perspective, especially in the front rows.",
+        "avoidSeats": "Seats far to the side in the balcony or rear orchestra may have obstructed views. Check the seating chart carefully when purchasing tickets."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - Global Parking LLC Garage",
+            "walkMinutes": 3
+          },
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a short walk from the theater."
+          },
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Enjoy some BBQ before the show."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "A classic theater district restaurant with a lively atmosphere."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Sugar Factory - Time Square",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 21,
+            "priceRange": "$$$",
+            "notes": "Known for its extravagant desserts and cocktails."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A cozy Irish pub for a post-show drink."
+          },
+          {
+            "name": "Yard House - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Wide selection of beers and American fare."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Quick sandwiches and deli fare."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Classic diner food."
+          },
+          {
+            "name": "Planet Hollywood - New York City",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A themed restaurant with American cuisine."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 43rd Street.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W, S lines) is the closest subway stop.",
+        "exitStrategy": "Exiting towards 7th or 8th Avenue provides the most options for transportation and avoiding crowds.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:11:30.775Z",
+      "hasScrapedData": true
+    },
+    "Majestic Theatre": {
+      "seating": {
+        "bestSeats": "Center orchestra rows E-M offer an ideal viewing experience at the Majestic Theatre.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a block away."
+          },
+          {
+            "name": "Il Forno",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Enjoy classic Italian dishes before the show."
+          },
+          {
+            "name": "Iron Bar",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A solid American bar with a varied menu."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Sophisticated cocktails and a late-night menu."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "A legendary Broadway institution, perfect for a celebratory post-show meal."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Contemporary American cuisine with a lively atmosphere."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 8,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 8,
+            "priceRange": "$$",
+            "notes": "Quick sushi and Japanese bites."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A quick and easy deli option for a pre-show bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 44th Street.",
+        "nearestSubway": "The 42nd Street–Times Square subway station (1, 2, 3, 7, N, Q, R, W lines) is the closest.",
+        "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds after the show, or use the subway.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:11:40.328Z",
+      "hasScrapedData": true
+    },
+    "Marquis Theatre": {
+      "seating": {
+        "bestSeats": "Orchestra seats offer the most immersive experience. Mezzanine seats provide a good overall view of the stage.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic steakhouse experience close to the theater."
+          },
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale American cuisine with a lively bar scene."
+          },
+          {
+            "name": "Havana Central Times Square",
+            "cuisine": "Cuban",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy authentic Cuban dishes and cocktails before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy a late-night drink in a sophisticated setting."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Seafood restaurant with a vibrant atmosphere, perfect for after the show."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 5,
+            "priceRange": "$$",
+            "notes": "Relaxed Irish pub with a good selection of beers and comfort food."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich before the show."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood spot for a quick and fun bite."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy sushi and Japanese appetizers in a lively setting."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "Enter through the Marriott Marquis hotel lobby on Broadway and take the escalators up to the theater entrance.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto Broadway can be crowded. Consider using the hotel's side exits to 45th or 46th Street for a slightly less congested departure.",
+        "restrooms": "Restrooms are located inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:11:48.007Z",
+      "hasScrapedData": true
+    },
+    "Minskoff Theatre": {
+      "seating": {
+        "bestSeats": "The front mezzanine offers exceptional, full-stage views.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 2
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in Times Square is extremely limited.",
+        "tip": "Consider booking your parking spot in advance online to guarantee a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy some sushi before the show; it's very close to the theater."
+          },
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A convenient option for a pre-theater meal with classic American fare."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A steakhouse option close to the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Broadway Lounge",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy drinks with a view after the show."
+          },
+          {
+            "name": "Havana Central Times Square",
+            "cuisine": "Cuban",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy some Cuban cuisine and cocktails after the show."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A classic Irish pub for a post-show drink."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick sandwich before the show."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A classic diner for a quick bite."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual seafood option for a quick meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Minskoff Theatre's main entrance is located on 45th Street.",
+        "nearestSubway": "The nearest station is 42 St-Times Sq, served by the 1, 2, 3, 7, N, Q, R, W, and S trains.",
+        "exitStrategy": "Exiting onto 45th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-15T04:22:41.400Z",
+      "hasScrapedData": true
+    },
+    "Music Box Theatre": {
+      "seating": {
+        "bestSeats": "The Music Box Theatre is a smaller venue, so most seats offer good views. Center orchestra seats provide the optimal experience.",
+        "avoidSeats": "Balcony seats may feel distant for some viewers. Check the specific seating chart for any obstructed views before booking."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza, perfect for a pre-theater meal."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy French pastries and coffee before the show."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively spot for sushi and Japanese cuisine."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A legendary Broadway institution, great for a post-show drink and soaking in the atmosphere."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Contemporary American cuisine with a lively bar scene."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A casual spot for drinks and pub fare after the show."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale steakhouse offering a quick bite at the bar."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood spot for a quick and fun bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Music Box Theatre entrance is located on 45th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:03.664Z",
+      "hasScrapedData": true
+    },
+    "Nederlander Theatre": {
+      "seating": {
+        "bestSeats": "Good sightlines from most seats. The mezzanine has a nice rake.",
+        "avoidSeats": "Watch out for limited legroom in some orchestra sections."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Global Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - 150 W. 38th St. Garage - Valet",
+            "walkMinutes": 3
+          },
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited.",
+        "tip": "Consider booking your parking spot in advance online to guarantee a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "42nd and Sky Lounge - Hilton New York Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy a pre-show cocktail with city views."
+          },
+          {
+            "name": "Planet Hollywood - New York City",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A classic themed dining experience."
+          },
+          {
+            "name": "Paul's on Time Square - Hilton Garden Inn",
+            "cuisine": "Contemporary Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining near the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Enjoy sushi and drinks after the show."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Casual seafood spot with a fun atmosphere."
+          },
+          {
+            "name": "Charlie Palmer Steak IV",
+            "cuisine": "American",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Steakhouse dining in Times Square."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Hard Rock Cafe - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Quick and casual American fare."
+          },
+          {
+            "name": "Dave & Buster's - New York City (Times Square)",
+            "cuisine": "American",
+            "walkMinutes": 4,
+            "priceRange": "$$",
+            "notes": "Arcade games and American food."
+          },
+          {
+            "name": "AperiBar",
+            "cuisine": "Italian",
+            "walkMinutes": 4,
+            "priceRange": "$$$",
+            "notes": "Italian spot for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is on West 41st Street.",
+        "nearestSubway": "The nearest station is 42 St-Times Sq, served by the 1, 2, 3, 7, N, Q, R, W, and S trains.",
+        "exitStrategy": "Head west toward 8th Avenue for easier access to taxis and subway lines, or east towards 6th Avenue for Grand Central Terminal.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-15T04:22:48.913Z",
+      "hasScrapedData": true
+    },
+    "Neil Simon Theatre": {
+      "seating": {
+        "bestSeats": "Front mezzanine center seats offer the best overall view in this large house with a wide orchestra.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "MPG Parking - 1675 Broadway Garage LLC",
+            "walkMinutes": 0
+          },
+          {
+            "name": "Algin Management - ARO Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "iPark - 851 8th Avenue Parking Corp. Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area of Times Square.",
+        "tip": "Consider booking your parking spot in advance to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 0,
+            "priceRange": "$$",
+            "notes": "Extremely close to the theater, offering classic American fare."
+          },
+          {
+            "name": "Russian Samovar & Tolstoy's Lounge",
+            "cuisine": "Russian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy a pre-theater Russian meal with vodka pairings."
+          },
+          {
+            "name": "Serafina Times Square",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Popular spot for Italian dishes near Times Square."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "54 Below",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A popular cabaret and supper club for a late-night experience."
+          },
+          {
+            "name": "Russian Vodka Room",
+            "cuisine": "Russian",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Extensive vodka selection and late-night snacks."
+          },
+          {
+            "name": "Gallaghers Steakhouse - Manhattan",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Classic steakhouse experience for a post-show celebration."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Black Iron Burger Theater District",
+            "cuisine": "Burgers",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Quick and tasty burger joint."
+          },
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York style pizza."
+          },
+          {
+            "name": "Carnegie Diner & Caf  828 8th Ave, New York, NY",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 52nd Street.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting onto 52nd Street provides easy access to taxis and the subway.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-15T04:22:56.129Z",
+      "hasScrapedData": true
+    },
+    "New Amsterdam Theatre": {
+      "seating": {
+        "bestSeats": "The orchestra section provides excellent sightlines, allowing you to fully appreciate the stage and the Art Nouveau details of the theater.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Global Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 4
+          }
+        ],
+        "streetParking": "Street parking in Times Square is extremely limited.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "42nd and Sky Lounge - Hilton New York Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy American cuisine with a view before the show."
+          },
+          {
+            "name": "Paul's on Time Square - Hilton Garden Inn",
+            "cuisine": "Contemporary Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy a contemporary Italian meal."
+          },
+          {
+            "name": "Planet Hollywood - New York City",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A classic themed dining experience."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Castell Rooftop Lounge",
+            "cuisine": "Bar / Lounge / Bottle Service",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy drinks with a view after the show."
+          },
+          {
+            "name": "RA Sushi Bar Restaurant - Times Square, NY",
+            "cuisine": "Japanese",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy sushi and Japanese cuisine."
+          },
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A fun seafood option near the theater."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick sandwich or deli snack."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a fast bite."
+          },
+          {
+            "name": "Hard Rock Cafe - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A quick and casual American meal."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is on 42nd Street.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W lines) is the closest.",
+        "exitStrategy": "Exiting towards 7th Avenue provides the most direct access to the subway and taxi stands.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:26.286Z",
+      "hasScrapedData": true
+    },
+    "Palace Theatre": {
+      "seating": {
+        "bestSeats": "Orchestra seats provide the most immersive experience in this grand, renovated theater. Mezzanine seats also offer excellent views.",
+        "avoidSeats": "Balcony seats may feel distant due to the theater's height; check seat views before booking."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 2
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in Times Square is extremely limited and not recommended.",
+        "tip": "Consider booking parking in advance online to secure a spot and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Sessions",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine just steps from the theater."
+          },
+          {
+            "name": "The Lotus Room",
+            "cuisine": "Asian",
+            "walkMinutes": 2,
+            "priceRange": "$$$$",
+            "notes": "Upscale Asian dining for a pre-theater indulgence."
+          },
+          {
+            "name": "PRIME CATCH",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Classic steakhouse experience near the theater district."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A lively bar and restaurant, perfect for post-show drinks and bites."
+          },
+          {
+            "name": "Haven Rooftop",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy rooftop views and American fare after the show."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Experience West African cuisine in Times Square."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Mexican dishes for a fast bite."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Seafood options for a quick pre-show meal."
+          },
+          {
+            "name": "Interlude Rooftop Lounge",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "Cocktails and light bites with a view."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on Broadway.",
+        "nearestSubway": "The 47-50 Streets - Rockefeller Center station (B, D, F, M) is the closest subway stop.",
+        "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway. Consider walking a block or two further from Times Square for easier transportation.",
+        "restrooms": "Restrooms are available within the theater; expect potential queues during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:34.568Z",
+      "hasScrapedData": true
+    },
+    "Richard Rodgers Theatre": {
+      "seating": {
+        "bestSeats": "The front mezzanine is popular for its full view of the stage. Orchestra seats also offer excellent sightlines.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a quick French bite before the show."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale dining experience with a modern twist on classic steakhouse fare."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Flavorful Indian cuisine close to the theater."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy contemporary American cuisine and cocktails after the show."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A lively spot for a post-show drink and casual American fare."
+          },
+          {
+            "name": "Havana Central Times Square",
+            "cuisine": "Cuban",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Experience the vibrant flavors of Cuba with classic dishes and cocktails."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Bubba Gump - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Casual seafood spot for a quick bite."
+          },
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Mexican options."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic deli sandwiches and snacks."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Richard Rodgers Theatre entrance is located on 46th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:42.524Z",
+      "hasScrapedData": true
+    },
+    "Samuel J. Friedman Theatre": {
+      "seating": {
+        "bestSeats": "The Samuel J. Friedman Theatre is an intimate space, so most seats offer a good view. Center orchestra seats provide the optimal perspective.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 0
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking is extremely limited and difficult to find in the Theater District.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes in a cozy setting, perfect for a pre-theater dinner."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine before the show."
+          },
+          {
+            "name": "Glass House Tavern",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A solid choice for contemporary American cuisine."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 205,
+            "priceRange": "$$$",
+            "notes": "Enjoy a late-night drink in a stylish setting."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 225,
+            "priceRange": "$$",
+            "notes": "A lively spot for a post-show drink and some pub fare."
+          },
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 210,
+            "priceRange": "$$",
+            "notes": "Enjoy French pastries and coffee after the show."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Revel & Rye Bar and Restaurant",
+            "cuisine": "American",
+            "walkMinutes": 210,
+            "priceRange": "$$$",
+            "notes": "Quick bites and drinks in a lively atmosphere."
+          },
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 215,
+            "priceRange": "$$",
+            "notes": "Grab some tacos or a quick Mexican bite."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 210,
+            "priceRange": "$$$$",
+            "notes": "Upscale steakhouse with quick options at the bar."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The entrance is located on 47th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and subway lines after the show.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:50.043Z",
+      "hasScrapedData": true
+    },
+    "Shubert Theatre": {
+      "seating": {
+        "bestSeats": "Orchestra seats offer the best views, especially in the center sections. Mezzanine seats can also provide a good vantage point.",
+        "avoidSeats": "Seats far to the side in the balcony may have obstructed views."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Edison ParkFast - 307 W. 44th St. Lot",
+            "walkMinutes": 3
+          },
+          {
+            "name": "Dock Parking - 1540 Broadway Garage LLC",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on Shubert Alley.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, 7, N, Q, R, W lines) is the closest subway stop.",
+        "exitStrategy": "Exiting onto Shubert Alley allows for a less crowded departure than exiting directly onto 44th Street. Head east for subway access or west for ride-sharing options.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-02T16:12:54.836Z",
+      "hasScrapedData": true
+    },
+    "St. James Theatre": {
+      "seating": {
+        "bestSeats": "The orchestra section offers excellent sightlines. The front mezzanine is also a great option.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 2
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza just a block away."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "A great option for elevated Indian cuisine before the show."
+          },
+          {
+            "name": "Bond 45",
+            "cuisine": "Italian",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a lively atmosphere."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Enjoy creative cocktails and a late-night menu."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A traditional Irish pub for a relaxed post-show drink."
+          },
+          {
+            "name": "Sardi's",
+            "cuisine": "Continental",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "A Broadway institution, perfect for a celebratory dinner."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 8,
+            "priceRange": "$$",
+            "notes": "Quick pastries and coffee."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a quick and satisfying bite."
+          },
+          {
+            "name": "The Brooklyn Deli - Times Square",
+            "cuisine": "Deli",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "Sandwiches and snacks."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 44th Street.",
+        "nearestSubway": "The 42nd Street–Times Square station (1, 2, 3, N, Q, R, W lines) is the closest subway stop.",
+        "exitStrategy": "Head west on 44th Street to avoid the heaviest crowds in Times Square, or use the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-02T16:13:02.260Z",
+      "hasScrapedData": true
+    },
+    "Stephen Sondheim Theatre": {
+      "seating": {
+        "bestSeats": "The Stephen Sondheim Theatre is a well-designed midsize house, offering excellent views from most locations. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": "Seats in the rear of the balcony may feel distant. Check the seating chart for obstructed views before booking."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "City Parking - 1133 6th Avenue Garage LLC​",
+            "walkMinutes": 1
+          },
+          {
+            "name": "LAZ at Edison Parkfast - Hippodrome Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "MPG Parking - Tower 45 Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in the Theater District is extremely limited, especially during show times.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Bar Mexicana",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy vibrant Mexican flavors close to the theater."
+          },
+          {
+            "name": "Planet Hollywood - New York City",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "A classic spot for a fun, themed dining experience."
+          },
+          {
+            "name": "Paul's on Time Square - Hilton Garden Inn",
+            "cuisine": "Contemporary Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Upscale Italian dining with a modern twist."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "The Public House at Merrion Row Hotel",
+            "cuisine": "Gastro Pub",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Relax with drinks and pub fare after the show."
+          },
+          {
+            "name": "Butter Midtown",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A stylish spot for a late-night bite."
+          },
+          {
+            "name": "Gatsby's Landing - Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy a lively atmosphere and classic American dishes."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Virgil's Real BBQ - New York City",
+            "cuisine": "Barbecue",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab some BBQ for a quick and satisfying meal."
+          },
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic diner fare for a fast and casual bite."
+          },
+          {
+            "name": "O'Donoghue's Bar & Restaurant",
+            "cuisine": "Irish",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Enjoy a quick drink and a snack at this Irish pub."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 43rd Street.",
+        "nearestSubway": "The 42nd Street–Bryant Park/Fifth Avenue station is the closest, served by the B, D, F, and M lines.",
+        "exitStrategy": "Head west towards 8th Avenue for easier access to taxis and ride-sharing services, or use the subway at 42nd Street.",
+        "restrooms": "Restrooms are available in the lobby and mezzanine levels."
+      },
+      "lastUpdated": "2026-04-02T16:13:10.523Z",
+      "hasScrapedData": true
+    },
+    "Studio 54": {
+      "seating": {
+        "bestSeats": "The theater is relatively small, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": "Balcony seats may feel distant for some viewers."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Champion Parking - 230 LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "MP Parking - 1745 MP Parking Inc. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "MPG Parking - 1675 Broadway Garage LLC",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in this area of Midtown.",
+        "tip": "Consider booking your parking spot in advance online for potentially lower rates and guaranteed availability."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A convenient American option right near the theater."
+          },
+          {
+            "name": "Beast & Butterflies",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Stylish restaurant with a lively atmosphere."
+          },
+          {
+            "name": "Russian Vodka Room",
+            "cuisine": "Russian",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Enjoy pre-theater Russian cuisine and vodka."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Faces and Names",
+            "cuisine": "Comfort Food",
+            "walkMinutes": 3,
+            "priceRange": "$$",
+            "notes": "A cozy spot for comfort food and drinks after the show."
+          },
+          {
+            "name": "Tanner Smith's",
+            "cuisine": "Cocktail Bar",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A great cocktail bar for a post-show drink."
+          },
+          {
+            "name": "Russian Samovar & Tolstoy's Lounge",
+            "cuisine": "Russian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Upscale Russian dining with live music."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Black Iron Burger Theater District",
+            "cuisine": "Burgers",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty burger joint."
+          },
+          {
+            "name": "Angelo's Pizza",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza."
+          },
+          {
+            "name": "54 Below",
+            "cuisine": "American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "A popular spot for a quick bite and live entertainment."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on 54th Street.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting onto 54th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available inside the theater."
+      },
+      "lastUpdated": "2026-04-15T04:23:02.948Z",
+      "hasScrapedData": true
+    },
+    "Todd Haimes Theatre": {
+      "seating": {
+        "bestSeats": "The Todd Haimes Theatre is a smaller venue, so most seats offer a good view. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": null
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon Parking - Advance Parking LLC Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon Parking - Global Parking LLC Garage",
+            "walkMinutes": 3
+          },
+          {
+            "name": "LAZ at Edison Parkfast - 307 W. 44th St. Lot",
+            "walkMinutes": 3
+          }
+        ],
+        "streetParking": "Street parking in Times Square is extremely limited and difficult to find.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "John's Pizzeria",
+            "cuisine": "Pizzeria",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Classic New York-style pizza, perfect for a casual pre-theater meal."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "The Stinger Cocktail Bar and Kitchen",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$$",
+            "notes": "Enjoy creative cocktails and a sophisticated atmosphere after the show."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "The Brooklyn Diner Times Square",
+            "cuisine": "American",
+            "walkMinutes": 9,
+            "priceRange": "$$",
+            "notes": "A classic diner experience with a wide variety of options for a quick bite."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": null,
+        "nearestSubway": "The nearest station is 42 St-Times Sq, served by the 1, 2, 3, 7, N, Q, R, W, and S trains.",
+        "exitStrategy": "Exiting onto 43rd Street allows for easy access to taxis and the subway.",
+        "restrooms": null
+      },
+      "lastUpdated": "2026-04-15T04:31:44.461Z",
+      "hasScrapedData": true
+    },
+    "Vivian Beaumont Theater": {
+      "seating": {
+        "bestSeats": "The thrust stage offers excellent sightlines from most seats, providing an intimate viewing experience. Center orchestra seats provide the most direct view.",
+        "avoidSeats": "Seats far to the side may offer a slightly obstructed view of certain stage areas."
+      },
+      "parking": {
+        "nearestGarages": [],
+        "streetParking": "Street parking in the Lincoln Center area is extremely limited and difficult to find, especially during performance hours.",
+        "tip": "Consider reserving parking in advance, as the area can get very busy, especially during Lincoln Center events."
+      },
+      "dining": {
+        "preShow": [],
+        "postShow": [],
+        "quickBite": []
+      },
+      "logistics": {
+        "entrance": "The main entrance faces Lincoln Center Plaza.",
+        "nearestSubway": "The 1 train at 66th Street - Lincoln Center Station is the closest subway stop.",
+        "exitStrategy": "Exiting towards the subway is efficient, but allow extra time due to crowds, especially after popular shows. Consider walking a few blocks east for easier taxi access.",
+        "restrooms": "Restrooms are available within the theater."
+      },
+      "lastUpdated": "2026-04-02T16:13:28.461Z",
+      "hasScrapedData": true
+    },
+    "Walter Kerr Theatre": {
+      "seating": {
+        "bestSeats": "The Walter Kerr is a smaller theater, so most seats offer good views. Center orchestra seats provide the most immersive experience.",
+        "avoidSeats": "Seats at the rear of the balcony may feel distant."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "Icon-Crowne Plaza Times Square Garage LLC",
+            "walkMinutes": 1
+          },
+          {
+            "name": "iPark - 259 West 47th Street Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "(SP+) - Biltmore Theater Garage",
+            "walkMinutes": 1
+          }
+        ],
+        "streetParking": "Street parking is extremely limited in the Times Square area.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Classic Italian dishes near the theater."
+          },
+          {
+            "name": "DILLI DILLI",
+            "cuisine": "Indian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine before the show."
+          },
+          {
+            "name": "Brooklyn Chop House - Times Square",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 1,
+            "priceRange": "$$$$",
+            "notes": "Upscale dining experience with a modern twist on classic steakhouse fare."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Bowtie Bar",
+            "cuisine": "Contemporary American",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Enjoy drinks and contemporary American cuisine after the show."
+          },
+          {
+            "name": "The Mean Fiddler",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A casual spot for a post-show bite and drinks."
+          },
+          {
+            "name": "Lagos TSQ",
+            "cuisine": "West African",
+            "walkMinutes": 1,
+            "priceRange": "$$$",
+            "notes": "Experience the vibrant flavors of West Africa."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "LE PARISIEN BAKERY",
+            "cuisine": "French",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Grab a quick pastry or sandwich."
+          },
+          {
+            "name": "Dos Caminos - Times Square",
+            "cuisine": "Mexican",
+            "walkMinutes": 1,
+            "priceRange": "$$",
+            "notes": "Quick and tasty Mexican options."
+          },
+          {
+            "name": "Blue Fin - New York",
+            "cuisine": "Seafood",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy fresh seafood in a vibrant setting."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The Walter Kerr Theatre entrance is located on West 48th Street.",
+        "nearestSubway": "The nearest subway station is 49th Street (N, R, W lines).",
+        "exitStrategy": "Exiting onto 48th Street provides easy access to taxis and the subway.",
+        "restrooms": "Restrooms are available within the theater."
+      },
+      "lastUpdated": "2026-04-02T16:13:35.151Z",
+      "hasScrapedData": true
+    },
+    "Winter Garden Theatre": {
+      "seating": {
+        "bestSeats": "The Winter Garden is a wide theater, so aim for seats in the center orchestra to get the best view of the stage. Mezzanine seats can also offer a good overall perspective.",
+        "avoidSeats": "Seats far to the side in the orchestra or mezzanine may have obstructed views due to the theater's width."
+      },
+      "parking": {
+        "nearestGarages": [
+          {
+            "name": "iPark - 790 7th Avenue Parking Corp. Garage",
+            "walkMinutes": 1
+          },
+          {
+            "name": "Icon Parking - 250 W. 50th St. Garage",
+            "walkMinutes": 2
+          },
+          {
+            "name": "GMC Parking - Eastway Garage",
+            "walkMinutes": 2
+          }
+        ],
+        "streetParking": "Street parking in this area is extremely limited, especially during show times.",
+        "tip": "Consider booking your parking spot in advance online to secure a space and potentially save money."
+      },
+      "dining": {
+        "preShow": [
+          {
+            "name": "Winnies Broadway",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A very short walk to the theater, offering classic American fare."
+          },
+          {
+            "name": "DaMarino NYC",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy Italian dishes close to the theater."
+          },
+          {
+            "name": "Saar Indian Bistro",
+            "cuisine": "Indian",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "Enjoy flavorful Indian cuisine before the show."
+          }
+        ],
+        "postShow": [
+          {
+            "name": "Gallaghers Steakhouse - Manhattan",
+            "cuisine": "Steakhouse",
+            "walkMinutes": 2,
+            "priceRange": "$$$$",
+            "notes": "A classic steakhouse experience for a post-show celebration."
+          },
+          {
+            "name": "Russian Samovar & Tolstoy's Lounge",
+            "cuisine": "Russian",
+            "walkMinutes": 3,
+            "priceRange": "$$$",
+            "notes": "Enjoy a unique Russian dining experience after the show."
+          },
+          {
+            "name": "Rosie O'Grady's",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$$",
+            "notes": "A lively spot for a post-show drink and a bite."
+          }
+        ],
+        "quickBite": [
+          {
+            "name": "Carnegie Diner & Caf  828 8th Ave, New York, NY",
+            "cuisine": "American",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A classic diner for a quick and satisfying bite."
+          },
+          {
+            "name": "Toloache-Midtown",
+            "cuisine": "Mexican",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "Grab some tacos or a quick Mexican snack."
+          },
+          {
+            "name": "Pasta Lovers Trattoria",
+            "cuisine": "Italian",
+            "walkMinutes": 2,
+            "priceRange": "$$",
+            "notes": "A casual spot for a quick pasta dish."
+          }
+        ]
+      },
+      "logistics": {
+        "entrance": "The main entrance is located on Broadway.",
+        "nearestSubway": null,
+        "exitStrategy": "Exiting onto Broadway provides easy access to taxis and the subway. Consider walking a block west to avoid the immediate crowds.",
+        "restrooms": "Restrooms are available, but lines can form during intermission."
+      },
+      "lastUpdated": "2026-04-15T04:23:16.574Z",
+      "hasScrapedData": true
+    }
+  }
+}

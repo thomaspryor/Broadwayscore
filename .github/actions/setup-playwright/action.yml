@@ -1,0 +1,101 @@
+name: Setup Playwright
+description: Install Playwright browsers with caching. Saves ~15s per workflow run.
+
+inputs:
+  browsers:
+    description: 'Browsers to install (space-separated, e.g., "chromium" or "chromium webkit")'
+    required: false
+    default: 'chromium'
+  optional:
+    description: 'true = a failed install is a warning, not a job failure (BRO-6021). For jobs where Playwright is only a last-resort fetcher; the caller must cope with a missing browser.'
+    required: false
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Playwright browsers
+      id: playwright-cache
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ inputs.browsers }}-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Install Playwright browsers
+      shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        INPUT_BROWSERS: ${{ inputs.browsers }}
+        INPUT_OPTIONAL: ${{ inputs.optional }}
+      run: |
+        log=$(mktemp)
+        if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+          cmd=(npx playwright install ${INPUT_BROWSERS} --with-deps)
+        else
+          cmd=(npx playwright install-deps ${INPUT_BROWSERS})
+        fi
+        # BRO-5964: apt's default per-connection timeout is 120s, so one
+        # stalled mirror fetch ("Ign:" on azure.archive.ubuntu.com, main run
+        # 39790224688) burned most of each 220s attempt and both timed out.
+        # 20s makes apt give up on a stalled read and move to its built-in
+        # retry (default Acquire::Retries 3) inside the attempt. It is an
+        # inactivity timeout, not a speed floor; the 220s `timeout` below stays the
+        # backstop. The file stays for the rest of the job, so later
+        # apt-get steps (poppler-utils) get it too.
+        printf 'Acquire::http::Timeout "20";\nAcquire::https::Timeout "20";\n' \
+          | sudo tee /etc/apt/apt.conf.d/99-bsc-net-timeouts > /dev/null \
+          || echo "::warning::could not write apt timeout conf; apt keeps its 120s default"
+        # timeout-minutes isn't supported on composite-action steps, so the
+        # `timeout` command is what stops this from silently eating the
+        # parent job's entire budget on a hung apt-get/dpkg lock (task #1815).
+        # BRO-4480: two attempts, because a stalled download/apt mirror is
+        # transient (main run 36892886642 hung 8m once; the next runs were
+        # fine). A normal install takes 15-46s. Worst case = 2 x (220s + 15s
+        # kill grace) + 30s dpkg recovery = 500s, modelled in
+        # tests/unit/data-validation-job-budget.test.mjs.
+        # `|| status=$?` is load-bearing: this step runs under `bash -e`, so a
+        # bare `status=$?` after a failing command is never reached and the
+        # diagnostics below would never print (.github/workflows/CLAUDE.md).
+        for attempt in 1 2; do
+          status=0
+          timeout -k 15 220 "${cmd[@]}" > "$log" 2>&1 || status=$?
+          [ "$status" -eq 0 ] && break
+          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
+            what="timed out after 220s"
+          else
+            what="failed (exit $status)"
+          fi
+          if [ "$attempt" -eq 1 ]; then
+            echo "::warning::${cmd[*]} ${what} on attempt 1 — retrying. Output so far:"
+            tail -n 40 "$log"
+            # A killed install can leave apt/dpkg children holding the dpkg
+            # lock; clear them so attempt 2 does not hang on the same lock.
+            # `[a]`/`[d]` keep the pattern from matching this command's own
+            # `sudo pkill ...` command line (pkill only excludes itself).
+            sudo pkill -f '[a]pt-get|[d]pkg' || true
+            timeout 30 sudo dpkg --configure -a || true
+          else
+            echo "::error::${cmd[*]} ${what} on both attempts — full output of attempt 2:"
+            cat "$log"
+            # Cache-hit path only: install-deps just tops up fonts/xvfb, and the
+            # Azure apt mirror stalls mid-download (Test Suite failed 13x in 24h,
+            # BRO-5818). If Chromium already launches, the stall is not fatal.
+            if [ "${{ steps.playwright-cache.outputs.cache-hit }}" = "true" ] \
+               && [[ " ${INPUT_BROWSERS} " == *" chromium "* ]] \
+               && timeout 60 node -e "require('playwright').chromium.launch().then(b=>b.close()).then(()=>process.exit(0),e=>{console.error(e.message);process.exit(1)})"; then
+              echo "::warning::install-deps failed but chromium launches; continuing (BRO-5818)"
+              break
+            fi
+            if [ "${INPUT_OPTIONAL}" = "true" ]; then
+              # BRO-6021: gather shards lost all discovery to an apt mirror stall
+              # although Playwright is only their last-resort fetcher. Drop the
+              # partial browser dir so the post-job cache save (key shared by every
+              # caller) finds nothing and cannot poison later fail-closed runs.
+              rm -rf "$HOME/.cache/ms-playwright"
+              echo "::warning::Playwright unavailable, tier skipped (BRO-6021)"
+              exit 0
+            fi
+            exit 1
+          fi
+        done
+        tail -n 20 "$log"

@@ -1,0 +1,484 @@
+{
+  "issueNumber": "bro-6329-2",
+  "planId": "78b47c4a-fe6f-4706-95c1-76842c5f6beb",
+  "status": "applied",
+  "createdAt": "2026-10-26T22:35:37.649Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6329 part 2: null art that is plainly another work on live shows and mark noReliableArt; files removed in the same land.",
+    "steps": [
+      "heeramandi-off-west-end-2026: Netflix set-design still, not stage art; null so the placeholder shows (BRO-6329)",
+      "heeramandi-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "kidnap-off-west-end-2026: poster for the Kidnep film; null so the placeholder shows (BRO-6329)",
+      "kidnap-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "mortal-wounds-off-west-end-2026: film poster; null so the placeholder shows (BRO-6329)",
+      "mortal-wounds-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "mother-ignacia-off-west-end-2027: religious painting, not production art; null so the placeholder shows (BRO-6329)",
+      "mother-ignacia-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "our-public-house-off-west-end-2026: photo of a bar interior; null so the placeholder shows (BRO-6329)",
+      "our-public-house-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "peter-pan-west-end-2026: poster for the Vaudevillians drag Peter Pan, not the Polka production; null so the placeholder shows (BRO-6329)",
+      "peter-pan-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026: book cover; null so the placeholder shows (BRO-6329)",
+      "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "remember-your-lovers-off-west-end-2026: photo of Theatre 503, not the Finborough; null so the placeholder shows (BRO-6329)",
+      "remember-your-lovers-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "rockers-off-west-end-2026: Rockers Live album cover; null so the placeholder shows (BRO-6329)",
+      "rockers-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "the-cherry-orchard-west-end-2026: Roundabout Theatre Company's New York production art; null so the placeholder shows (BRO-6329)",
+      "the-cherry-orchard-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "the-odyssey-off-west-end-2026: Troubadour Stageworks poster, not the Kiln production; null so the placeholder shows (BRO-6329)",
+      "the-odyssey-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heeramandi-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/heeramandi-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/heeramandi-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "heeramandi-off-west-end-2026: Netflix set-design still, not stage art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heeramandi-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Netflix set-design still, not stage art",
+          "key": "heeramandi|theatre royal stratford east|"
+        },
+        "description": "heeramandi-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kidnap-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/kidnap-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/kidnap-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "kidnap-off-west-end-2026: poster for the Kidnep film; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kidnap-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): poster for the Kidnep film",
+          "key": "kidnap|park theatre|"
+        },
+        "description": "kidnap-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mortal-wounds-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mortal-wounds-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/mortal-wounds-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mortal-wounds-off-west-end-2026: film poster; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mortal-wounds-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): film poster",
+          "key": "mortal wounds|orange tree theatre|"
+        },
+        "description": "mortal-wounds-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-ignacia-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mother-ignacia-off-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mother-ignacia-off-west-end-2027: religious painting, not production art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-ignacia-off-west-end-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): religious painting, not production art",
+          "key": "mother ignacia|riverside studios|"
+        },
+        "description": "mother-ignacia-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-public-house-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/our-public-house-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/our-public-house-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "our-public-house-off-west-end-2026: photo of a bar interior; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-public-house-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): photo of a bar interior",
+          "key": "our public house|marylebone theatre|"
+        },
+        "description": "our-public-house-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "peter-pan-west-end-2026: poster for the Vaudevillians drag Peter Pan, not the Polka production; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): poster for the Vaudevillians drag Peter Pan, not the Polka production",
+          "key": "peter pan|polka theatre|"
+        },
+        "description": "peter-pan-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/raising-hare-an-evening-with-chloe-dalton-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/raising-hare-an-evening-with-chloe-dalton-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026: book cover; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): book cover",
+          "key": "raising hare an evening with chloe dalton|kiln theatre|"
+        },
+        "description": "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "remember-your-lovers-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/remember-your-lovers-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/remember-your-lovers-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "remember-your-lovers-off-west-end-2026: photo of Theatre 503, not the Finborough; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "remember-your-lovers-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): photo of Theatre 503, not the Finborough",
+          "key": "remember your lovers|finborough theatre|"
+        },
+        "description": "remember-your-lovers-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockers-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rockers-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "rockers-off-west-end-2026: Rockers Live album cover; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockers-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Rockers Live album cover",
+          "key": "rockers|kiln theatre|"
+        },
+        "description": "rockers-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
+          "poster": "/images/shows/the-cherry-orchard-west-end-2026/poster.jpeg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-cherry-orchard-west-end-2026: Roundabout Theatre Company's New York production art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Roundabout Theatre Company's New York production art",
+          "key": "the cherry orchard|harold pinter theatre|2026-10-13"
+        },
+        "description": "the-cherry-orchard-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-odyssey-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-odyssey-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-odyssey-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/the-odyssey-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-odyssey-off-west-end-2026: Troubadour Stageworks poster, not the Kiln production; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-odyssey-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Troubadour Stageworks poster, not the Kiln production",
+          "key": "the odyssey|kiln theatre|"
+        },
+        "description": "the-odyssey-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T22:49:43.773Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for heeramandi-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for heeramandi-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for kidnap-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for kidnap-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mortal-wounds-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for mortal-wounds-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mother-ignacia-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for mother-ignacia-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for our-public-house-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for our-public-house-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for raising-hare-an-evening-with-chloe-dalton-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for raising-hare-an-evening-with-chloe-dalton-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for remember-your-lovers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for remember-your-lovers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rockers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for rockers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-cherry-orchard-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-cherry-orchard-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-odyssey-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-odyssey-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-6854-dups",
+  "planId": "4c31d7da-deca-4269-8d5d-4a586afbf557",
+  "status": "pending",
+  "createdAt": "2026-11-09T07:41:29.905Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Boston: retire 3 duplicate city-finder rows (BRO-6854)",
+    "steps": [
+      "shows.json: paranormal-activity-regional-2026.openingDate",
+      "shows.json: paranormal-activity-regional-2026.closingDate",
+      "shows.json: rhinoceros-regional-2026.openingDate",
+      "shows.json: purpose-huntington-regional-2026.openingDate",
+      "shows.json: purpose-huntington-regional-2026.closingDate",
+      "retire-show",
+      "retire-show",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-07-09",
+        "newValue": "2026-07-15",
+        "description": "shows.json: paranormal-activity-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-30",
+        "description": "shows.json: paranormal-activity-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-08-11",
+        "newValue": "2026-08-21",
+        "description": "shows.json: rhinoceros-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-huntington-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-08",
+        "newValue": "2026-09-16",
+        "description": "shows.json: purpose-huntington-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-huntington-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: purpose-huntington-regional-2026.closingDate"
+      },
+      {
+        "type": "retire-show",
+        "id": "paranormal-activity-regional-2026",
+        "expectTitle": "Paranormal Activity",
+        "duplicateOf": "paranormal-activity-boston-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; paranormal-activity-boston-regional-2026 holds the reviews"
+      },
+      {
+        "type": "retire-show",
+        "id": "rhinoceros-regional-2026",
+        "expectTitle": "Rhinoceros",
+        "duplicateOf": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; the longer-id row holds the reviews"
+      },
+      {
+        "type": "retire-show",
+        "id": "purpose-huntington-regional-2026",
+        "expectTitle": "Purpose",
+        "duplicateOf": "purpose-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; purpose-regional-2026 holds the reviews"
+      }
+    ]
+  }
+}

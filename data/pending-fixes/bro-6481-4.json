@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-6481-4",
+  "planId": "3dcd7103-c329-4467-b83a-053475bf499f",
+  "status": "applied",
+  "createdAt": "2026-10-28T22:23:14.114Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6481 census misfiles, retry of bro-6481-2 (moves used destinationPath; Titanique url edit refused, so delete and reingest)",
+    "steps": [
+      "BRO-6481: move the one review off the duplicate Clara row (the kept row holds no Theater Pizzazz file) so the retire below can run.",
+      "retire-show",
+      "titanique-2026 TheWrap file holds the 2022 off-Broadway review (url thewrap.com/titanique-off-broadway-review-celine-dion-titanic/); delete so ingest-urls can add the 2026 Broadway review",
+      "BRO-6481 outlet census: newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens is the off-Broadway (Park Avenue Armory) review, filed under the Broadway production; the off-Broadway row holds no NYTG file."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+        "destPath": "clara-sex-love-and-classical-music-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+        "description": "BRO-6481: move the one review off the duplicate Clara row (the kept row holds no Theater Pizzazz file) so the retire below can run."
+      },
+      {
+        "type": "retire-show",
+        "id": "clara-sex-love-and-classical-off-broadway-2026",
+        "expectTitle": "Clara: Sex, Love and Classical",
+        "duplicateOf": "clara-sex-love-and-classical-music-off-broadway-2026",
+        "reason": "BRO-6481: truncated-title duplicate of clara-sex-love-and-classical-music-off-broadway-2026 (59E59, same 2026-04-22 start, same 2026-05-10 close); its one review (Theater Pizzazz) is moved to the kept row first"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "titanique-2026/thewrap--robert-hofler.json",
+        "description": "titanique-2026 TheWrap file holds the 2022 off-Broadway review (url thewrap.com/titanique-off-broadway-review-celine-dion-titanic/); delete so ingest-urls can add the 2026 Broadway review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "illinoise-2024/nytg--amelia-merrill.json",
+        "destPath": "illinoise-off-broadway-2024/nytg--amelia-merrill.json",
+        "description": "BRO-6481 outlet census: newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens is the off-Broadway (Park Avenue Armory) review, filed under the Broadway production; the off-Broadway row holds no NYTG file."
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T22:50:47.877Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--alix-cohen.json → clara-sex-love-and-classical-music-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired clara-sex-love-and-classical-off-broadway-2026 (\"Clara: Sex, Love and Classical\" @ 59E59 Theaters); moved its audience-buzz.json entry to clara-sex-love-and-classical-music-off-broadway-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted titanique-2026/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved illinoise-2024/nytg--amelia-merrill.json → illinoise-off-broadway-2024/nytg--amelia-merrill.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

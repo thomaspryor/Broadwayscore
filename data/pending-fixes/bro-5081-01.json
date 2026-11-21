@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-01",
+  "planId": "961e91d5-deb0-4292-b917-f6b7df68bfee",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 1: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://www.theguardian.com/stage/2022/oct/06/1776-american-history-play-new-york-broadway is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/ is Frank Rizzo; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2006/legit/reviews/a-chorus-line-4-1200512859/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://observer.com/2019/11/a-christmas-carol-review-jack-thorne-campbell-scott/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page. The page critic already has the live record observer--david-cote.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.theatermania.com/news/review-jefferson-mays-brings-his-ghastly-good-christmas-carol-to-broadway_94589/#:~:text=Review%3A%20Jefferson%20Mays%20Brings%20His,Good%20Christmas%20Carol%20to%20Broadway&text=Jefferson%20Mays%20stars%20in%20Charles,Arden%2C%20at%20Broadway's%20Nederlander%20Theatre. is Pete Hempstead; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2010/legit/reviews/a-free-man-of-color-1117944074/ is Marilyn Stasio; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://observer.com/2022/04/review-a-strange-loop-gracefully-explores-issues-of-queer-black-identity/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941959/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.thewrap.com/aint-no-mo-broadway-review-jordan-cooper/ is Robert Hofler; Steve Pond came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/ is Naveen Kumar; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre is Michael Billington; Alexis Soloski came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2019/apr/22/all-my-sons-review-annette-bening-and-tracy-letts-power-sturdy-revival is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2019/legit/reviews/all-my-sons-review-annette-bening-broadway-1203194663/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2022/apr/14/american-buffalo-review-david-mamet-broadway is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/american-psycho_76780/ is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--alexis-soloski.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://observer.com/2018/11/american-son-kerry-washington-review/ is Rex Reed; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at http://deadline.com/2015/04/an-american-in-paris-christopher-wheeldon-broadway-review-1201408600/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2017/legit/reviews/anastasia-review-broadway-musical-1202393569/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/ is Christian Lewis; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2012/legit/reviews/annie-1117948712/ is Steven Suskin; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/11/theater-review-annie.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2007/legit/reviews/august-osage-county-3-1200554144/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1776-2022/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2022/oct/06/1776-american-history-play-new-york-broadway is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1776-2022/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/ is Frank Rizzo; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-chorus-line-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2006/legit/reviews/a-chorus-line-4-1200512859/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2019/observer--rex-reed.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--david-cote.json",
+        "description": "Page byline at https://observer.com/2019/11/a-christmas-carol-review-jack-thorne-campbell-scott/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page. The page critic already has the live record observer--david-cote.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2022/theatermania--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Pete Hempstead",
+        "description": "Page byline at https://www.theatermania.com/news/review-jefferson-mays-brings-his-ghastly-good-christmas-carol-to-broadway_94589/#:~:text=Review%3A%20Jefferson%20Mays%20Brings%20His,Good%20Christmas%20Carol%20to%20Broadway&text=Jefferson%20Mays%20stars%20in%20Charles,Arden%2C%20at%20Broadway's%20Nederlander%20Theatre. is Pete Hempstead; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-2023/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-free-man-of-color-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Marilyn Stasio",
+        "description": "Page byline at https://variety.com/2010/legit/reviews/a-free-man-of-color-1117944074/ is Marilyn Stasio; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/observer--rex-reed.json",
+        "field": "criticName",
+        "oldValue": "Rex Reed",
+        "newValue": "David Cote",
+        "description": "Page byline at https://observer.com/2022/04/review-a-strange-loop-gracefully-explores-issues-of-queer-black-identity/ is David Cote; Rex Reed came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2010/legit/reviews/a-view-from-the-bridge-1117941959/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/thewrap--steve-pond.json",
+        "field": "criticName",
+        "oldValue": "Steve Pond",
+        "newValue": "Robert Hofler",
+        "description": "Page byline at https://www.thewrap.com/aint-no-mo-broadway-review-jordan-cooper/ is Robert Hofler; Steve Pond came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778/ is Naveen Kumar; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-2014/guardian--alexis-soloski.json",
+        "field": "criticName",
+        "oldValue": "Alexis Soloski",
+        "newValue": "Michael Billington",
+        "description": "Page byline at https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre is Michael Billington; Alexis Soloski came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2019/apr/22/all-my-sons-review-annette-bening-and-tracy-letts-power-sturdy-revival is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2019/legit/reviews/all-my-sons-review-annette-bening-broadway-1203194663/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-buffalo-2022/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Alexis Soloski",
+        "description": "Page byline at https://www.theguardian.com/stage/2022/apr/14/american-buffalo-review-david-mamet-broadway is Alexis Soloski; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/theatermania--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/american-psycho_76780/ is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "Page byline at https://www.theguardian.com/stage/2016/apr/21/american-psycho-review-patrick-bateman-sings-strips-and-slashes is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record guardian--alexis-soloski.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-son-2018/observer--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Rex Reed",
+        "description": "Page byline at https://observer.com/2018/11/american-son-kerry-washington-review/ is Rex Reed; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-in-paris-2015/deadline--pete-hammond.json",
+        "field": "criticName",
+        "oldValue": "Pete Hammond",
+        "newValue": "Jeremy Gerard",
+        "description": "Page byline at http://deadline.com/2015/04/an-american-in-paris-christopher-wheeldon-broadway-review-1201408600/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-2017/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2017/legit/reviews/anastasia-review-broadway-musical-1202393569/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Christian Lewis",
+        "description": "Page byline at https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/ is Christian Lewis; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-2012/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Steven Suskin",
+        "description": "Page byline at https://variety.com/2012/legit/reviews/annie-1117948712/ is Steven Suskin; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/11/theater-review-annie.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2007/legit/reviews/august-osage-county-3-1200554144/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:04:23.605Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1776-2022/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1776-2022/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-chorus-line-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2019/observer--rex-reed.json duplicateOf: null -> \"observer--david-cote.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2022/theatermania--jesse-green.json criticName: \"Jesse Green\" -> \"Pete Hempstead\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-2023/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-free-man-of-color-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/observer--rex-reed.json criticName: \"Rex Reed\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/thewrap--steve-pond.json criticName: \"Steve Pond\" -> \"Robert Hofler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/guardian--alexis-soloski.json criticName: \"Alexis Soloski\" -> \"Michael Billington\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-buffalo-2022/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Alexis Soloski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-psycho-2016/theatermania--adam-feldman.json criticName: \"Adam Feldman\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-psycho-2016/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-son-2018/observer--jesse-green.json criticName: \"Jesse Green\" -> \"Rex Reed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-in-paris-2015/deadline--pete-hammond.json criticName: \"Pete Hammond\" -> \"Jeremy Gerard\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-2017/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Christian Lewis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "annie-2012/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "annie-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6212",
+  "planId": "0564419e-f038-414f-9320-eda8b0418cf4",
+  "status": "applied",
+  "createdAt": "2026-10-25T17:15:52.803Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude NYT Kwai West End preview feature (not a review) from Benjamin Button WE score",
+    "steps": [
+      "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json: isNonReviewReason",
+      "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): NYT pre-opening feature on the creators and rehearsals (opening Wednesday, previews underway), no critical evaluation of the production",
+        "description": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T17:22:15.463Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json isNonReviewReason: null -> \"manual (not a review): NYT pre-opening feature on the creators and rehearsals (opening Wednesday, previews underway), no critical evaluation of the production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-curious-case-of-benjamin-button-west-end-2024/nytimes--isabella-kwai.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

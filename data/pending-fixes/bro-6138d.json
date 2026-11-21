@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-6138d",
+  "planId": "411b1683-c093-49b7-acd5-cb736c81aeb1",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:56:43.300Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6138: Finding Neverland to Fizzle with cited 60% returned; correct Rock of Ages and Groundhog Day notes",
+    "steps": [
+      "Finding Neverland: estimatedRecoupmentPct [55,65] with source and date, designation Fizzle",
+      "Rock of Ages: correct theatre name in notes",
+      "Groundhog Day: remove conflicting capitalization wording in notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "showId": "finding-neverland-2015",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          55,
+          65
+        ],
+        "description": "Weinstein said about 60% was returned (Yahoo/Deadline 2016-05-06)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "showId": "finding-neverland-2015",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "https://www.yahoo.com/entertainment/harvey-weinstein-gives-finding-neverland-045352410.html",
+        "description": "source for the 60% figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "showId": "finding-neverland-2015",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2016-05-06",
+        "description": "date of the report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "showId": "finding-neverland-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "a sourced return of 30% or more is a Fizzle by commercial-designations rule"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "rock-of-ages-2009",
+        "showId": "rock-of-ages-2009",
+        "field": "notes",
+        "oldValue": "Rock of Ages (Brooks Atkinson Theatre, opened 2009-04-07, closed 2015-01-18). Press reports it recouped its $7.25 million capitalization, in 2012.",
+        "newValue": "Rock of Ages (Helen Hayes Theatre after its move from the Brooks Atkinson Theatre, opened 2009-04-07, closed 2015-01-18). Press reports it recouped its $7.25 million capitalization, in 2012.",
+        "description": "fix theatre name in notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "groundhog-day-2017",
+        "showId": "groundhog-day-2017",
+        "field": "notes",
+        "oldValue": "Groundhog Day (August Wilson Theatre, opened 2017-04-17, closed 2017-09-17). Press reports it did not recoup: Groundhog Day cost up to $17.5 million to stage, and the New York Times estimates that much of that money will be lost. No readable source states a capitalization, so none is shown.",
+        "newValue": "Groundhog Day (August Wilson Theatre, opened 2017-04-17, closed 2017-09-17). Press reports it did not recoup: a UK comedy site put the production cost at up to $17.5 million, and the New York Times estimated that much of the money would be lost. No readable trade source states a capitalization, so none is shown.",
+        "description": "remove conflicting capitalization wording"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T21:33:22.844Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added finding-neverland-2015 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added side-show-2014 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
+}

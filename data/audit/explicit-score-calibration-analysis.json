@@ -1,0 +1,100 @@
+{
+  "timestamp": "2026-01-31T19:00:00.000Z",
+  "description": "Analysis of LLM model accuracy vs explicit critic scores",
+  "sample": {
+    "total_reviews_with_original_score": 100,
+    "usable_comparisons": 94,
+    "excluded": 6,
+    "exclusion_reason": "OpenAI returned 0 or Gemini returned null"
+  },
+  "model_accuracy": {
+    "openai": {
+      "mae": 9.6,
+      "bias": 0.6,
+      "within_5_pts": 52.1,
+      "within_10_pts": 70.2,
+      "within_15_pts": 84.0,
+      "bucket_accuracy": 57.4
+    },
+    "ensemble": {
+      "mae": 9.8,
+      "bias": -2.3,
+      "within_5_pts": 45.7,
+      "within_10_pts": 60.6,
+      "within_15_pts": 75.5,
+      "bucket_accuracy": 57.4
+    },
+    "gemini": {
+      "mae": 10.5,
+      "bias": -3.0,
+      "within_5_pts": 48.9,
+      "within_10_pts": 54.3,
+      "within_15_pts": 75.5,
+      "bucket_accuracy": 53.2
+    },
+    "claude": {
+      "mae": 10.8,
+      "bias": -4.1,
+      "within_5_pts": 40.4,
+      "within_10_pts": 56.4,
+      "within_15_pts": 73.4,
+      "bucket_accuracy": 54.3
+    }
+  },
+  "calibration_offsets": {
+    "description": "Models compress scores toward the middle. These offsets correct for that.",
+    "rave_85_plus": {
+      "sample_size": 28,
+      "ensemble_bias": -12.1,
+      "recommended_offset": 12
+    },
+    "positive_70_84": {
+      "sample_size": 42,
+      "ensemble_bias": -4.5,
+      "recommended_offset": 5
+    },
+    "mixed_55_69": {
+      "sample_size": 20,
+      "ensemble_bias": 8.6,
+      "recommended_offset": -9
+    },
+    "negative_below_55": {
+      "sample_size": 4,
+      "ensemble_bias": 34.8,
+      "recommended_offset": -35,
+      "note": "Small sample size - use with caution"
+    }
+  },
+  "worst_errors": [
+    {
+      "original_score": "1/5",
+      "ensemble_score": 78,
+      "error": 58,
+      "review": "aladdin-2014/HuffPost"
+    },
+    {
+      "original_score": "B",
+      "ensemble_score": 44,
+      "error": -39,
+      "review": "book-of-mormon-2011/Toronto Star"
+    },
+    {
+      "original_score": "2/5 stars",
+      "ensemble_score": 79,
+      "error": 39,
+      "review": "death-becomes-her-2024/New York Stage Review"
+    },
+    {
+      "original_score": "5/5 stars",
+      "ensemble_score": 63,
+      "error": -37,
+      "review": "gutenberg-2023/New York Stage Review"
+    }
+  ],
+  "recommendations": [
+    "Use OpenAI as primary model (lowest MAE, near-zero bias)",
+    "Apply range-based calibration offsets after scoring",
+    "For reviews with explicit critic scores, use those directly instead of LLM",
+    "Flag reviews where LLM score differs from expected range by >20 pts"
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "issueNumber": "bro-5395-k1",
+  "planId": "9da006b6-67d8-4166-8dfb-baaa5a02307f",
+  "status": "applied",
+  "createdAt": "2026-10-15T22:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (k1): clear showNotMentioned on 12 real reviews whose body describes the show without printing its title, each checked by hand against the show's venue and run (url-evidence corpus audit, 43 of 52 real).",
+    "steps": [
+      "breadcrumb",
+      "clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2023/jun/11/hope-has-a-happy-meal-review-dystopian-comedy-royal-court-london-tom-fowler (published June 11th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/hope-has-a-happy-meal-review-at-royal-court-london-from-tom-fowler (published June 12th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.whatsonstage.com/news/hope-has-a-happy-meal-review-fast-food-for-thought-that-loses-its-pace_1335876/ (published June 11th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-lehman-trilogy-nederlander-theatre-new-york (published 2021-10-15) names this show and its venue/run; show record Nederlander Theatre 2021-10-14..2022-01-02. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-turn-of-the-screw-off-west-end-2026/thestage--neil-norman.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-turn-of-the-screw-review-arcola-theatre-london (published 2026-09-21) names this show and its venue/run; show record Arcola Theatre 2026-09-11..None. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-turn-of-the-screw-off-west-end-2026/thestage--neil-norman.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/thestage--holly-omahony.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-shakespeares-globe-london-emily-lim (published 2026-05-01) names this show and its venue/run; show record Shakespeare's Globe 2026-05-01..2026-08-29. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/thestage--holly-omahony.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-west-end-2024/express-uk--neil-norman.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.express.co.uk/entertainment/theatre/1924910/Hello-Dolly-review-palladium-imelda-staunton (published 2024-07-18) names this show and its venue/run; show record London Palladium 2024-07-18..2024-09-14. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-west-end-2024/express-uk--neil-norman.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "now-you-see-me-live-west-end-2026/guardian--unknown.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum (published 2026-08-03) names this show and its venue/run; show record London Coliseum 2026-08-03..2026-09-06. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "now-you-see-me-live-west-end-2026/guardian--unknown.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soldiers-of-tomorrow-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/soldiers-of-tomorrow-review-finborough-theatre-london (published 2026-06-12) names this show and its venue/run; show record Finborough Theatre 2026-06-10..2026-07-04. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soldiers-of-tomorrow-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hot-wing-king-west-end-2024/standard--nick-curtis.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/the-hot-wing-king-national-theatre-review-b1172028.html (published 2024-07-22) names this show and its venue/run; show record Dorfman Theatre 2024-07-18..2024-09-14. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hot-wing-king-west-end-2024/standard--nick-curtis.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/guardian--unknown.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman (published April 24th, 2026) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/guardian--unknown.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller (published 2026-04-24) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T22:32:58.847Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2023/jun/11/hope-has-a-happy-meal-review-dystopian-comedy-royal-court-london-tom-fowler (published June 11th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/guardian--emma-john.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/hope-has-a-happy-meal-review-at-royal-court-london-from-tom-fowler (published June 12th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/thestage--dave-fargnoli.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.whatsonstage.com/news/hope-has-a-happy-meal-review-fast-food-for-thought-that-loses-its-pace_1335876/ (published June 11th, 2023) names this show and its venue/run; show record Royal Court 2023-06-09..2023-07-08. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/whatsonstage--verity-healey.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-2021/thestage--nicole-serratore.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-lehman-trilogy-nederlander-theatre-new-york (published 2021-10-15) names this show and its venue/run; show record Nederlander Theatre 2021-10-14..2022-01-02. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-2021/thestage--nicole-serratore.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/thestage--neil-norman.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-turn-of-the-screw-review-arcola-theatre-london (published 2026-09-21) names this show and its venue/run; show record Arcola Theatre 2026-09-11..None. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/thestage--neil-norman.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/thestage--holly-omahony.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-shakespeares-globe-london-emily-lim (published 2026-05-01) names this show and its venue/run; show record Shakespeare's Globe 2026-05-01..2026-08-29. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/thestage--holly-omahony.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-west-end-2024/express-uk--neil-norman.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.express.co.uk/entertainment/theatre/1924910/Hello-Dolly-review-palladium-imelda-staunton (published 2024-07-18) names this show and its venue/run; show record London Palladium 2024-07-18..2024-09-14. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-west-end-2024/express-uk--neil-norman.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "now-you-see-me-live-west-end-2026/guardian--unknown.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/aug/03/now-you-see-me-live-review-magic-london-coliseum (published 2026-08-03) names this show and its venue/run; show record London Coliseum 2026-08-03..2026-09-06. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "now-you-see-me-live-west-end-2026/guardian--unknown.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soldiers-of-tomorrow-off-west-end-2026/thestage--dave-fargnoli.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/soldiers-of-tomorrow-review-finborough-theatre-london (published 2026-06-12) names this show and its venue/run; show record Finborough Theatre 2026-06-10..2026-07-04. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soldiers-of-tomorrow-off-west-end-2026/thestage--dave-fargnoli.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hot-wing-king-west-end-2024/standard--nick-curtis.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/the-hot-wing-king-national-theatre-review-b1172028.html (published 2024-07-22) names this show and its venue/run; show record Dorfman Theatre 2024-07-18..2024-09-14. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hot-wing-king-west-end-2024/standard--nick-curtis.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/guardian--unknown.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman (published April 24th, 2026) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/guardian--unknown.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/thestage--dave-fargnoli.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller (published 2026-04-24) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/thestage--dave-fargnoli.json showNotMentioned: true -> false"
+    }
+  ]
+}

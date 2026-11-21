@@ -1,0 +1,190 @@
+{
+  "issueNumber": "bro-7660-p-b",
+  "planId": "7c595377-ca24-42bf-b616-3eda4ba8e362",
+  "status": "applied",
+  "createdAt": "2026-11-21T15:15:38.689Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows still excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears 8 wrongly flagged reviews (manual-clear breadcrumbs) and re-asserts 11 genuine non-review exclusions (junk or news bodies) so the audit counts them as human-held. (part 2 of 2)",
+    "steps": [
+      "BRO-7660 KEEP_NR: stored body is a fitness-device advertorial, not the review",
+      "BRO-7660 KEEP_NR: stored body is a fitness-device advertorial, not the review",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 CLEAR_WP: body reviews the MTC Stage II run, this production",
+      "BRO-7660 CLEAR_WP: body reviews the MTC Stage II run, this production",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 KEEP_NR: stored body is a domain-for-sale page",
+      "BRO-7660 CLEAR_NR: body is the LA Times opening review of the Belasco run",
+      "BRO-7660 CLEAR_NR: body is the LA Times opening review of the Belasco run",
+      "BRO-7660 CLEAR_WP: body reviews the 2024 Broadway premiere at the Todd Haimes",
+      "BRO-7660 CLEAR_WP: body reviews the 2024 Broadway premiere at the Todd Haimes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/nypost--johnny-oleksinski.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a fitness-device advertorial, not the review",
+        "description": "BRO-7660 KEEP_NR: stored body is a fitness-device advertorial, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/nypost--johnny-oleksinski.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a fitness-device advertorial, not the review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a domain-for-sale page",
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the MTC Stage II run, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the MTC Stage II run, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-inside-2019/theater-news-online--jeremy-gerard.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): stored body is a domain-for-sale page",
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-inside-2019/theater-news-online--jeremy-gerard.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: stored body is a domain-for-sale page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: body is the LA Times opening review of the Belasco run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: body is the LA Times opening review of the Belasco run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/new-york-sun--elysa-gardner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the 2024 Broadway premiere at the Todd Haimes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/new-york-sun--elysa-gardner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the 2024 Broadway premiere at the Todd Haimes"
+      }
+    ]
+  },
+  "executedAt": "2026-11-21T16:40:31.318Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "take-me-out-2022/nypost--johnny-oleksinski.json isNonReviewReason: null -> \"manual (not a review): stored body is a fitness-device advertorial, not the review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "take-me-out-2022/nypost--johnny-oleksinski.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json isNonReviewReason: null -> \"manual (not a review): stored body is a domain-for-sale page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-height-of-the-storm-2019/theater-news-online--joe-dziemianowicz.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theater-pizzazz--ron-fassler.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-inside-2019/theater-news-online--jeremy-gerard.json isNonReviewReason: null -> \"manual (not a review): stored body is a domain-for-sale page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-inside-2019/theater-news-online--jeremy-gerard.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-terms-of-my-surrender-2017/latimes--charles-mcnulty.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/new-york-sun--elysa-gardner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/new-york-sun--elysa-gardner.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

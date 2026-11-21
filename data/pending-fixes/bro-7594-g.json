@@ -1,0 +1,59 @@
+{
+  "issueNumber": "bro-7594-g",
+  "planId": "f1f20274-1846-4185-8ac9-c9813a9e59e6",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:10:06.286Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "awake-and-sing-2026: replace 1935 original-production credits (Harold Clurman as Director, Boris Aronson as Scenic Design) with the revival's director Tyne Rafaeli (source: manhattantheatreclub.com show page, 2026-11-16)",
+    "steps": [
+      "shows.json: awake-and-sing-2026.creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Clifford Odets",
+            "role": "Playwright"
+          },
+          {
+            "name": "Harold Clurman",
+            "role": "Director"
+          },
+          {
+            "name": "Boris Aronson",
+            "role": "Scenic Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Clifford Odets",
+            "role": "Playwright"
+          },
+          {
+            "name": "Tyne Rafaeli",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: awake-and-sing-2026.creativeTeam"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T16:16:14.191Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for awake-and-sing-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

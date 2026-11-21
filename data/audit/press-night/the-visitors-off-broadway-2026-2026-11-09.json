@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-visitors-off-broadway-2026",
+  "night": "2026-11-09",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-10T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-10T02:30:04.454Z",
+    "endedAt": "2026-11-10T09:00:30.754Z",
+    "intervalMin": 5,
+    "samples": 77,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-10T08:56:18.013Z",
+    "lastOkSampleAt": "2026-11-10T08:56:18.013Z"
+  },
+  "firstLiveAt": "2026-11-10T03:45:08.340Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-10T08:21:16.567Z",
+  "liveCount": 6,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": 4,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-10T04:00:09.101Z",
+    "2h": "2026-11-10T05:06:09.425Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-09",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "new york stage review|michael sommers",
+      "outlet": "New York Stage Review",
+      "critic": "Michael Sommers",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T03:45:08.340Z",
+      "prevOkSampleAt": "2026-11-10T03:40:08.075Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T03:45:08.340Z",
+      "prevOkSampleAt": "2026-11-10T03:40:08.075Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "talkin' broadway|james wilson",
+      "outlet": "Talkin' Broadway",
+      "critic": "James Wilson",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T04:45:11.488Z",
+      "prevOkSampleAt": "2026-11-10T04:40:11.123Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|allison considine",
+      "outlet": "New York Theatre Guide",
+      "critic": "Allison Considine",
+      "tier": 2,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-11-10T04:45:11.488Z",
+      "prevOkSampleAt": "2026-11-10T04:40:11.123Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatermania|zachary stewart",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T06:16:11.983Z",
+      "prevOkSampleAt": "2026-11-10T06:11:11.813Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "the new york sun|elysa gardner",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T08:21:16.567Z",
+      "prevOkSampleAt": "2026-11-10T08:16:16.374Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "complete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 4,
+      "covered": 4,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-10T05:00:26.929Z",
+      "censusNote": "archive + live BWW roundup (4 rows): https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-THE-VISITORS-Off-Broadway-20261109"
+    },
+    "end": {
+      "status": "complete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 4,
+      "covered": 4,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 6,
+      "fetchedAt": "2026-11-10T09:00:27.073Z",
+      "censusNote": "archive + live BWW roundup (4 rows): https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-THE-VISITORS-Off-Broadway-20261109"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-10T05:00:26.982Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      },
+      {
+        "at": "2026-11-10T09:00:27.160Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-10T09:00:30.681Z",
+    "files": [
+      {
+        "file": "bobs-theater-blog--unknown.json",
+        "outletId": "bobs-theater-blog",
+        "outlet": "Bob's Theater Blog",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-04T06:26:35.428Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-01",
+        "url": "gotham-playgoer.blogspot.com/2026/11/the-visitors.html",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "boston-globe--unknown.json",
+        "outletId": "boston-globe",
+        "outlet": "Boston Globe",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-25T14:48:26.811Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "bostonglobe.com/2026/10/23/lifestyle/national-geographic-museum-exploration-opens",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-10T02:15:04.371Z",
+        "scoredAt": "2026-11-10T03:16:29.629Z",
+        "publishDate": "2026-11-09",
+        "url": "culturesauce.com/the-visitors-bryna-turner-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "new-york-sun--elysa-gardner.json",
+        "outletId": "new-york-sun",
+        "outlet": "The New York Sun",
+        "critic": "Elysa Gardner",
+        "firstSeenAt": "2026-11-10T07:22:38.516Z",
+        "scoredAt": "2026-11-10T07:50:45.139Z",
+        "publishDate": "2026-11-09",
+        "url": "nysun.com/article/modern-family-familiar-friction",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--michael-sommers.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Michael Sommers",
+        "firstSeenAt": "2026-11-10T02:15:03.874Z",
+        "scoredAt": "2026-11-10T03:16:34.606Z",
+        "publishDate": "2026-11-09",
+        "url": "nystagereview.com/2026/11/09/the-visitors-playing-the-organ",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--allison-considine.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Allison Considine",
+        "firstSeenAt": "2026-11-10T04:09:35.979Z",
+        "scoredAt": "2026-11-10T04:21:57.954Z",
+        "publishDate": null,
+        "url": "newyorktheatreguide.com/reviews/the-visitors-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "pages-on-stages--mason-pilevsky.json",
+        "outletId": "pages-on-stages",
+        "outlet": "Pages on Stages",
+        "critic": "Mason Pilevsky",
+        "firstSeenAt": null,
+        "scoredAt": "2026-07-26T20:55:08.622Z",
+        "publishDate": "January 23rd, 2026",
+        "url": "pagesonstages.com/2026/01/23/the-visitors",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--james-wilson.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "James Wilson",
+        "firstSeenAt": "2026-11-10T04:09:36.541Z",
+        "scoredAt": "2026-11-10T04:22:03.804Z",
+        "publishDate": null,
+        "url": "talkinbroadway.com/page/ob/11_09_26.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--linda-buchwald.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Linda Buchwald",
+        "firstSeenAt": "2026-11-09T08:51:10.082Z",
+        "scoredAt": null,
+        "publishDate": "2026-08-05",
+        "url": "theatermania.com/news/celia-keenan-bolger-joins-world-premiere-of-the-visitors_1848157",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": null,
+        "scoredAt": "2026-11-10T05:48:29.192Z",
+        "publishDate": "2026-11-09",
+        "url": "theatermania.com/news/review-the-visitors-a-dark-comedy-about-siblings_1859149",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

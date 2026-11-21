@@ -1,0 +1,121 @@
+{
+  "issueNumber": "bro-6019",
+  "planId": "cffec8be-e21c-43f5-8abf-0e0aa5116191",
+  "status": "applied",
+  "createdAt": "2026-10-22T20:20:54.621Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6019: correct 7 Off-Broadway historical show facts where both independent web-grounded checkers agree and a cited page states the value.",
+    "steps": [
+      "Set 7 fields on 5 shows.json rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stereophonic-off-broadway-2023",
+        "field": "type",
+        "oldValue": "musical",
+        "newValue": "play",
+        "description": "stereophonic-off-broadway-2023: type musical -> play (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://en.wikipedia.org/wiki/Stereophonic_(play) and Playbill production page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stereophonic-off-broadway-2023",
+        "field": "closingDate",
+        "oldValue": "2023-12-31",
+        "newValue": "2023-12-17",
+        "description": "stereophonic-off-broadway-2023: closingDate 2023-12-31 -> 2023-12-17 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/production/stereophonic-off-broadway-playwrights-horizons-mainstage-theater-2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cats-the-jellicle-ball-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": "2024-06-10",
+        "newValue": "2024-06-20",
+        "description": "cats-the-jellicle-ball-off-broadway-2024: openingDate 2024-06-10 -> 2024-06-20 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/article/on-the-red-carpet-jellicle-cats-and-broadway-stars-came-out-to-the-cats-opening-night)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cats-the-jellicle-ball-off-broadway-2024",
+        "field": "closingDate",
+        "oldValue": "2024-08-10",
+        "newValue": "2024-09-08",
+        "description": "cats-the-jellicle-ball-off-broadway-2024: closingDate 2024-08-10 -> 2024-09-08 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/article/cats-the-jellicle-ball-walks-final-runway-september-08)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "titanique-off-broadway-2022",
+        "field": "openingDate",
+        "oldValue": "2022-06-14",
+        "newValue": "2022-06-23",
+        "description": "titanique-off-broadway-2022: openingDate 2022-06-14 -> 2022-06-23 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://en.wikipedia.org/wiki/Titanique)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "buena-vista-social-club-off-broadway-2023",
+        "field": "openingDate",
+        "oldValue": "2023-12-07",
+        "newValue": "2023-12-13",
+        "description": "buena-vista-social-club-off-broadway-2023: openingDate 2023-12-07 -> 2023-12-13 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/article/world-premiere-of-atlantic-theater-companys-buena-vista-social-club-opens-off-broadway-december-13)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-off-broadway-2024",
+        "field": "closingDate",
+        "oldValue": "2024-05-19",
+        "newValue": "2024-05-12",
+        "description": "oh-mary-off-broadway-2024: closingDate 2024-05-19 -> 2024-05-12 (BRO-6019 fact check: both GPT and Gemini checkers agree, cited https://playbill.com/production/oh-mary-off-broadway-lucille-lortel-theatre-2024)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T01:50:13.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for stereophonic-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for stereophonic-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cats-the-jellicle-ball-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for cats-the-jellicle-ball-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for titanique-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for buena-vista-social-club-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for oh-mary-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

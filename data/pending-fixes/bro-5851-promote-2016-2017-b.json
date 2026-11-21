@@ -1,0 +1,294 @@
+{
+  "issueNumber": "bro-5851-promote-2016-2017-b",
+  "planId": "d33ea97e-2477-4ce8-b9b2-facf1d67ae46",
+  "status": "applied",
+  "createdAt": "2026-10-22T12:30:51.793Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 8 closed West End production(s) for 2016-2017 found through Theatre Record (reviewed on WOS, never listed there; BRO-5851).",
+    "steps": [
+      "Append dirty-great-love-story-west-end-2017 (Arts Theatre, 2017-01-25 to 2017-03-18)",
+      "Append the-kite-runner-west-end-2017 (Wyndham's Theatre, 2017-01-10 to 2017-03-11)",
+      "Append art-west-end-2016 (The Old Vic, 2016-12-20 to 2017-02-18)",
+      "Append dreamgirls-west-end-2016 (Savoy Theatre, 2016-12-14 to 2019-01-12 (TR printed the first booking period; final Savoy performance per Official London Theatre))",
+      "Append the-sewing-group-west-end-2016 (Royal Court, 2016-11-16 to 2016-12-23)",
+      "Append the-dresser-west-end-2016 (Duke of York's Theatre, 2016-10-12 to 2017-01-14)",
+      "Append murder-ballad-west-end-2016 (Arts Theatre, 2016-10-05 to 2016-12-03)",
+      "Append pigeon-english-west-end-2016 (Ambassadors Theatre, 2016-09-28 to 2016-11-23)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dirty-great-love-story-west-end-2017",
+          "title": "Dirty Great Love Story",
+          "slug": "dirty-great-love-story-west-end-2017",
+          "venue": "Arts Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-01-25",
+          "closingDate": "2017-03-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.634Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-dirty-great-love-story-arts-theatre_42733/",
+            "https://www.theatrerecord.com/archive/volume/37/page/48"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-kite-runner-west-end-2017",
+          "title": "The Kite Runner",
+          "slug": "the-kite-runner-west-end-2017",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2017-01-10",
+          "closingDate": "2017-03-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.651Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-kite-runner-wyndhams-theatre_42625/",
+            "https://www.theatrerecord.com/archive/volume/37/page/9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "art-west-end-2016",
+          "title": "Art",
+          "slug": "art-west-end-2016",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2016-12-20",
+          "closingDate": "2017-02-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.669Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-art-old-vic_42545/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1411"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dreamgirls-west-end-2016",
+          "title": "Dreamgirls",
+          "slug": "dreamgirls-west-end-2016",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-12-14",
+          "closingDate": "2019-01-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.687Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "hand-verified",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-dreamgirls-savoy-theatre_42500/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1396",
+            "https://officiallondontheatre.com/news/dreamgirls-announces-final-west-end-performance-january-2019-111409983/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-sewing-group-west-end-2016",
+          "title": "The Sewing Group",
+          "slug": "the-sewing-group-west-end-2016",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2016-11-16",
+          "closingDate": "2016-12-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.704Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-sewing-group-royal-court_42279/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1297"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-dresser-west-end-2016",
+          "title": "The Dresser",
+          "slug": "the-dresser-west-end-2016",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-10-12",
+          "closingDate": "2017-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.721Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-the-dresser-duke-of-yorks_42004/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1143"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "murder-ballad-west-end-2016",
+          "title": "Murder Ballad",
+          "slug": "murder-ballad-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-10-05",
+          "closingDate": "2016-12-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.742Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-murder-ballad-arts-theatre_41948/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1097"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "pigeon-english-west-end-2016",
+          "title": "Pigeon English",
+          "slug": "pigeon-english-west-end-2016",
+          "venue": "Ambassadors Theatre",
+          "previewsStartDate": "2016-09-28",
+          "openingDate": null,
+          "closingDate": "2016-11-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-22T12:30:51.760Z",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-pigeon-english-ambassadors-theatre_41900/",
+            "https://www.theatrerecord.com/archive/volume/36/page/1072"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T13:11:12.094Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dirty-great-love-story-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-kite-runner-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added art-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dreamgirls-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-sewing-group-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-dresser-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added murder-ballad-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pigeon-english-west-end-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

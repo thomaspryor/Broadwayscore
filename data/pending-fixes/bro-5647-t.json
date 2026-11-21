@@ -1,0 +1,152 @@
+{
+  "issueNumber": "bro-5647-t",
+  "planId": "704074fb-81e1-4552-b1e3-a3531e45287f",
+  "status": "applied",
+  "createdAt": "2026-10-21T18:52:24.445Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5849 step 1 hand entries (the worker cannot see core data). All Out: SEC Form D (Boog Returns LLC) up to $5M, traced through its related persons Greg Nobile (Seaview) and Micah Frank (Broadway Video), lead producers per IBDB; stored as a filing maximum, not a guess. Carousel 2018: Forbes' ~$750K weekly estimate (operating costs undisclosed), stored as a guess (Estimate: source, industry-estimate, isEstimate.weeklyRunningCost) so it never decides a loss label. Held: Dorian Gray ~$750K (anonymous Reddit, unreadable here), Beetlejuice 2022 (no production-specific figure), Pass Over and The Little Prince (no commercial records). Old values from the private core data.",
+    "steps": [
+      "All Out budget, Carousel weekly estimate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5000000,
+        "description": "all-out: SEC Form D maximum"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D (Boog Returns LLC, CIK 0002085331, signed Sep 9, 2025): total offering up to $5 million, nothing sold yet. The filing does not name the show; its related persons are Greg Nobile of Seaview and Micah Frank of Broadway Video Theatricals, two of All Out's lead producers (IBDB). https://www.sec.gov/Archives/edgar/data/2085331/000208533125000002/xslFormDX01/primary_doc.xml",
+        "description": "all-out: quote the filing and how it was traced"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2085331/000208533125000002/xslFormDX01/primary_doc.xml",
+            "date": "2025-09-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.ibdb.com/broadway-production/all-out-comedy-about-ambition-544214",
+            "date": null
+          }
+        ],
+        "description": "all-out: add the filing and IBDB credits"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "showId": "carousel-2018",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 750000,
+        "description": "carousel-2018: Forbes' estimate, entered as a guess"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "showId": "carousel-2018",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Estimate: Forbes (Lee Seymour, Sep 20, 2018) said Carousel's weekly operating costs were undisclosed and estimated them at about $750,000. https://www.forbes.com/sites/leeseymour/2018/09/20/three-broadway-musicals-closed-last-week-what-happened/",
+        "description": "carousel-2018: say it is an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "showId": "carousel-2018",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "industry-estimate",
+        "description": "carousel-2018: an estimate, not a reported cost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "carousel-2018",
+        "showId": "carousel-2018",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "description": "carousel-2018: flag the weekly cost as an estimate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:59:22.479Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for carousel-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

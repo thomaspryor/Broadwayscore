@@ -1,0 +1,398 @@
+{
+  "issueNumber": "bro-5660-b",
+  "planId": "e8a92ae6-cf1d-4797-8cce-18aa68979627",
+  "status": "applied",
+  "createdAt": "2026-10-19T02:22:37.251Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Tag what each capitalization figure is (part B of 3, 25 records): \"maximum\" for an SEC Form D offering maximum or an \"up to\" figure, which /biz now prints as \"up to $X\" instead of an exact capitalization; \"sold\" where the filing says the amount was raised; \"reported\" where the source wording mentions a maximum only as context. Read from the live demo records; classifications per BRO-5660.",
+    "steps": [
+      "Set capitalizationBasis on 25 commercial.json records"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $7.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $7.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "operation-mincemeat",
+        "showId": "operation-mincemeat",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $14.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $14.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "othello-2025",
+        "showId": "othello-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $9M is the top of the filed $7M-$9M range (NPR cited about $8.5M), not the amount raised: print it as \"up to $9M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $15M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $15M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $8M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $8M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "showId": "patriots",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $8M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $8M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $6.5M is the top of the Form D range ($5M-$6.5M), not the amount raised: print it as \"up to $6.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "real-women-have-curves",
+        "showId": "real-women-have-curves",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $16.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $16.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $16M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $16M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "schmigadoon",
+        "showId": "schmigadoon",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $15M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $15M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sea-wall-a-life-2019",
+        "showId": "sea-wall-a-life-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $2.8M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $2.8M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shucked-2023",
+        "showId": "shucked-2023",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $16M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $16M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "showId": "spamalot",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $12M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $12M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "take-me-out-2022",
+        "showId": "take-me-out-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $3.85M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $3.85M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The $2,450,000 is the amount sold per the same SEC filing (bro-5647-h), not the offering maximum: print it as an exact figure, not \"up to\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The $8,488,000 is the amount sold per the same SEC filing (bro-5647-h), not the offering maximum: print it as an exact figure, not \"up to\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "showId": "the-cottage",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The $4,108,500 is the amount sold per the Form D/A (bro-5647-g), not the $6M offering maximum: print it as an exact figure, not \"up to\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "showId": "the-great-society-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The $4,302,500 is the amount sold per the same SEC filing (bro-5647-h), not the offering maximum: print it as an exact figure, not \"up to\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "showId": "the-hills-of-california-2024",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The $7,000,000 is the amount sold per the same SEC filing (bro-5647-h), not the offering maximum: print it as an exact figure, not \"up to\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $5.75M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $5.75M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "showId": "the-last-five-years-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $7.75M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $7.75M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "showId": "the-lehman-trilogy-2021",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $5.75M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $5.75M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $5.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $5.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "showId": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $4M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $4M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-wiz",
+        "showId": "the-wiz",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $15M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $15M\"."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T04:00:41.081Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for real-women-have-curves"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for schmigadoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for sea-wall-a-life-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for shucked-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for take-me-out-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-wiz"
+    }
+  ],
+  "executedIn": "ci"
+}

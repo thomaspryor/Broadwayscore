@@ -1,0 +1,144 @@
+{
+  "issueNumber": "bro-6559-b",
+  "planId": "34bddd4b-add6-4c84-8e26-02da5d27f681",
+  "status": "applied",
+  "createdAt": "2026-10-29T21:46:20.530Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Death of a Salesman capitalization $8M as reported by the NYT (2026-06-08); keep the Form D as a source",
+    "steps": [
+      "commercial.json: death-of-a-salesman.capitalizationSource",
+      "commercial.json: death-of-a-salesman.capitalization",
+      "commercial.json: death-of-a-salesman.capitalizationBasis",
+      "commercial.json: death-of-a-salesman.notes",
+      "commercial.json: death-of-a-salesman.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "capitalizationSource",
+        "oldValue": "The Hollywood Reporter (Aug 11, 2026): \"the play, which was capitalized for up to $8.9 million, has not announced recoupment after playing its final performance Aug. 9.\" https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+        "newValue": "The New York Times (Jun 8, 2026): \"some 'Salesman' investors are frustrated that the show, capitalized for $8 million, has not recouped its capitalization costs yet; members of the producing team say they expect it will do so.\" https://www.nytimes.com/2026/06/08/theater/scott-rudin-salesman-tony-awards.html The SEC Form D (Loman Broadway Ltd Liability Co, signed Feb 3, 2026) set the offering ceiling at $8,900,000, which The Hollywood Reporter (Aug 11, 2026) repeated as \"capitalized for up to $8.9 million.\"",
+        "description": "commercial.json: death-of-a-salesman.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "capitalization",
+        "oldValue": 8900000,
+        "newValue": 8000000,
+        "description": "commercial.json: death-of-a-salesman.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "capitalizationBasis",
+        "oldValue": "maximum",
+        "newValue": "reported",
+        "description": "commercial.json: death-of-a-salesman.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for up to $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report. Its SEC Form D (Loman Broadway Ltd Liability Co, CIK 0002107826, signed Feb 3, 2026) offered $8,900,000 with $0 sold at filing, before the first sale: https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/xslFormDX01/primary_doc.xml",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for $8 million, per The New York Times (Jun 8, 2026), against a Form D offering ceiling of $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report. Its SEC Form D (Loman Broadway Ltd Liability Co, CIK 0002107826, signed Feb 3, 2026) offered $8,900,000 with $0 sold at filing, before the first sale: https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/xslFormDX01/primary_doc.xml",
+        "description": "commercial.json: death-of-a-salesman.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+            "date": "2026-08-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/primary_doc.xml",
+            "date": "2026-02-03"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+            "date": "2026-08-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/primary_doc.xml",
+            "date": "2026-02-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2026/06/08/theater/scott-rudin-salesman-tony-awards.html",
+            "date": "2026-06-08"
+          }
+        ],
+        "description": "commercial.json: death-of-a-salesman.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T21:54:30.441Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    }
+  ],
+  "executedIn": "ci"
+}

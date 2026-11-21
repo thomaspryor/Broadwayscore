@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-7125",
+  "planId": "63223bfe-94d6-458e-b632-ebe3b0d9bf40",
+  "status": "applied",
+  "createdAt": "2026-11-08T13:01:00.422Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7125: move the Feb 2026 NYU Skirball review (1 Minute Critic, published 2026-02-15) from the St. Ann's Warehouse run to the Skirball run it covers; it is the one class-A cross-market hit that aborts backfill-review-dates.yml's safety check every day",
+    "steps": [
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "destPath": "kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T13:10:01.252Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json → kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

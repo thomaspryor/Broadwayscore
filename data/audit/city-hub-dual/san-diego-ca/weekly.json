@@ -1,0 +1,46 @@
+{
+ "city": "san-diego-ca",
+ "week": "2026-W47",
+ "today": "2026-11-17",
+ "findings": 2,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 1,
+  "4": 0,
+  "6": 1
+ },
+ "newFindings": 1,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 0,
+  "4": 0,
+  "6": 1
+ },
+ "provenance": 0,
+ "newProvenance": 0,
+ "plan": null,
+ "card": "BRO-7681",
+ "findingKeys": [
+  "show:hairspray-regional-2026:opening-date",
+  "show:seussical-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "show:hairspray-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "hairspray-regional-2026",
+   "label": "Hairspray",
+   "code": "opening-date",
+   "detail": "ours 2026-06-16 / page 2026-06-13",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

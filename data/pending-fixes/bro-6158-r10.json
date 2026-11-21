@@ -1,0 +1,232 @@
+{
+  "issueNumber": "bro-6158-r10",
+  "planId": "791897cd-7363-467d-8903-e97bec2139ff",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:57:06.862Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Did Not Recoup shows get our estimate, Flop or Fizzle (owner 2026-10-24)",
+    "steps": [
+      "commercial.json: in-transit-2016.designation",
+      "commercial.json: in-transit-2016.designationBasis",
+      "commercial.json: lysistrata-jones-2011.designation",
+      "commercial.json: lysistrata-jones-2011.designationBasis",
+      "commercial.json: soul-doctor-2013.designation",
+      "commercial.json: soul-doctor-2013.designationBasis",
+      "commercial.json: the-scottsboro-boys-2010.designation",
+      "commercial.json: the-scottsboro-boys-2010.designationBasis",
+      "commercial.json: war-paint-2017.designation",
+      "commercial.json: war-paint-2017.designationBasis",
+      "commercial.json: finding-neverland-2015.designation",
+      "commercial.json: finding-neverland-2015.designationBasis",
+      "commercial.json: side-show-2014.designation",
+      "commercial.json: side-show-2014.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "in-transit-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: in-transit-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "in-transit-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: in-transit-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lysistrata-jones-2011",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: lysistrata-jones-2011.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lysistrata-jones-2011",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: lysistrata-jones-2011.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "soul-doctor-2013",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: soul-doctor-2013.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "soul-doctor-2013",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: soul-doctor-2013.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-scottsboro-boys-2010",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-scottsboro-boys-2010.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-scottsboro-boys-2010",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-scottsboro-boys-2010.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "war-paint-2017",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: war-paint-2017.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "war-paint-2017",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: war-paint-2017.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: finding-neverland-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "finding-neverland-2015",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: finding-neverland-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "side-show-2014",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: side-show-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "side-show-2014",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: side-show-2014.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:39:51.195Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for in-transit-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for in-transit-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for lysistrata-jones-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for lysistrata-jones-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for soul-doctor-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for soul-doctor-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-scottsboro-boys-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-scottsboro-boys-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for war-paint-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for war-paint-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for finding-neverland-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for finding-neverland-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for side-show-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for side-show-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

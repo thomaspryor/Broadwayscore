@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-11-10T05:35:18.690Z",
+  "sampled": 668,
+  "usable": 661,
+  "paired": 661,
+  "controlFailed": 7,
+  "scoredBoth": 577,
+  "sharesControl": {
+    "Rave": 0.35703479576399394,
+    "Positive": 0.32526475037821484,
+    "Mixed": 0.12102874432677761,
+    "Negative": 0.057488653555219364,
+    "Pan": 0.012102874432677761,
+    "rejected": 0.12708018154311648
+  },
+  "sharesShadow": {
+    "Rave": 0.405446293494705,
+    "Positive": 0.32526475037821484,
+    "Mixed": 0.08925869894099848,
+    "Negative": 0.06354009077155824,
+    "Pan": 0.01361573373676248,
+    "rejected": 0.10287443267776097
+  },
+  "movedOver5Pts": 0.0416,
+  "bucketFlips": 0.0832,
+  "gates": {
+    "bucketShiftPp": {
+      "pass": true,
+      "value": {
+        "Rave": 4.84,
+        "Positive": 0,
+        "Mixed": -3.18,
+        "Negative": 0.61,
+        "Pan": 0.15
+      },
+      "limit": 5
+    },
+    "meanDrift": {
+      "pass": true,
+      "value": 0.97,
+      "limit": 2
+    },
+    "rejectionDelta": {
+      "pass": false,
+      "value": -2.42,
+      "limit": 2
+    },
+    "showDrift": {
+      "pass": true,
+      "value": {
+        "showsChecked": 25,
+        "showsOver": 2,
+        "worst": [
+          {
+            "showId": "east-is-east-octagon-regional-2026",
+            "n": 8,
+            "meanDelta": 2.5
+          },
+          {
+            "showId": "sunday-in-the-park-with-george-regional-2026",
+            "n": 15,
+            "meanDelta": 2.13
+          }
+        ]
+      },
+      "limit": 0.1
+    },
+    "legAccuracy": {
+      "pass": true,
+      "value": {
+        "control": 3.18,
+        "shadow": 3.64,
+        "n": 107
+      },
+      "limit": 1
+    },
+    "shadowErrors": {
+      "pass": true,
+      "value": {
+        "shadow": 0,
+        "control": 0
+      },
+      "limit": 0.01
+    }
+  },
+  "allPass": false
+}

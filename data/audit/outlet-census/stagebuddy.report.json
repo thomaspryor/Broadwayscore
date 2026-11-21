@@ -1,0 +1,912 @@
+{
+  "outletId": "stagebuddy",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T12:20:10.516Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 327,
+    "inWindow": 327,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 189,
+      "gap": 5,
+      "not-review": 71,
+      "catalog-gap": 34,
+      "out-of-window": 25,
+      "held-unmatched": 2,
+      "held-alt-url": 1
+    },
+    "viaTitleVariant": {
+      "gap": 1,
+      "held": 30,
+      "held-alt-url": 1
+    },
+    "recall": 0.974,
+    "recallWithCatalog": 0.83
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 8,
+      "gap": 1
+    },
+    "2025-26": {
+      "held": 39,
+      "not-review": 4,
+      "catalog-gap": 2,
+      "gap": 1
+    },
+    "2024-25": {
+      "gap": 1,
+      "held": 38,
+      "out-of-window": 2,
+      "catalog-gap": 2,
+      "not-review": 1
+    },
+    "2023-24": {
+      "held": 37,
+      "not-review": 4,
+      "held-unmatched": 1,
+      "out-of-window": 5,
+      "gap": 1,
+      "catalog-gap": 2
+    },
+    "2022-23": {
+      "held": 39,
+      "catalog-gap": 9,
+      "not-review": 24,
+      "out-of-window": 4,
+      "gap": 1,
+      "held-unmatched": 1
+    },
+    "2021-22": {
+      "not-review": 30,
+      "held": 28,
+      "catalog-gap": 14,
+      "out-of-window": 12
+    },
+    "2020-21": {
+      "not-review": 8,
+      "catalog-gap": 5,
+      "held-alt-url": 1,
+      "out-of-window": 2
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 274,
+    "notEnumerated": 19,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "american-psycho-2016",
+        "url": "http://stagebuddy.com/reviews/review-american-psycho",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "heisenberg-2016",
+        "url": "https://stagebuddy.com/reviews/review-heisenberg",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mean-girls-2018",
+        "url": "https://stagebuddy.com/theater/theater-review/review-mean-girls",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "meteor-shower-2017",
+        "url": "https://stagebuddy.com/theater/theater-review/review-meteor-shower",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "miss-saigon-2017",
+        "url": "https://stagebuddy.com/theater/theater-review/review-miss-saigon",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "my-fair-lady-2018",
+        "url": "https://stagebuddy.com/theater/theater-review/review-fair-lady",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "url": "https://stagebuddy.com/reviews/review-natasha-pierre-great-comet-1812",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oklahoma-2019",
+        "url": "https://stagebuddy.com/theater/theater-review/review-rodgers-hammersteins-oklahoma",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "on-the-twentieth-century-2015",
+        "url": "https://stagebuddy.com/reviews/on-the-twentieth-century-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "on-your-feet-2015",
+        "url": "https://stagebuddy.com/reviews/review-feet",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "prince-of-broadway-2017",
+        "url": "https://stagebuddy.com/theater/theater-review/review-prince-broadway",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "safe-house-off-broadway-2026",
+        "url": "https://stagebuddy.com/theater/theater-feature/safe-house-theatre-row",
+        "publishDate": "2026-09-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-degrees-of-separation-2017",
+        "url": "https://stagebuddy.com/theater/theater-review/review-six-degrees-separation",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "something-rotten-2015",
+        "url": "https://stagebuddy.com/reviews/something-rotten-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-gin-game-2015",
+        "url": "https://stagebuddy.com/reviews/review-gin-game",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-humans-2016",
+        "url": "https://stagebuddy.com/reviews/review-humans",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-little-foxes-2017",
+        "url": "https://stagebuddy.com/theater/theater-review/review-the-little-foxes",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "travesties-2018",
+        "url": "https://stagebuddy.com/theater/theater-review/review-of-travesties",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "waitress-2016",
+        "url": "https://stagebuddy.com/reviews/review-waitress",
+        "publishDate": null,
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/other-desert-citites",
+      "headline": "Other Desert Cities",
+      "publishDate": "2026-10-28",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "other-desert-cities-2026"
+      ],
+      "outOfWindow": [
+        "other-desert-cities-2011"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/tartuffe",
+      "headline": "Tartuffe",
+      "publishDate": "2025-12-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "tartuffe-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-weir",
+      "headline": "The Weir",
+      "publishDate": "2025-08-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-weir-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/heart-rock-roll",
+      "headline": "The Heart of Rock and Roll",
+      "publishDate": "2024-05-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "heart-of-rock-and-roll-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/merrily-roll-along",
+      "headline": "Merrily We Roll Along",
+      "publishDate": "2023-01-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "merrily-we-roll-along-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/king-lear",
+      "headline": "Review: King Lear at Shakespeare & Company",
+      "publishDate": "2021-07-26",
+      "matched": [
+        "company-2021"
+      ],
+      "heldUrls": [
+        "https://stagebuddy.com/theater/theater-review/company"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/na",
+      "headline": "N/A",
+      "publishDate": "2024-07-05",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/old-man-pool",
+      "headline": "The Old Man and The Pool",
+      "publishDate": "2022-11-14",
+      "via": null,
+      "held": [
+        "mike-birbiglia-the-old-man-and-the-pool-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/25th-annual-putman-country-spelling-bee",
+      "headline": "The 25th Annual Putman Country Spelling Bee",
+      "publishDate": "2026-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/sulphur-bottom",
+      "headline": "Sulphur Bottom",
+      "publishDate": "2025-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-pocket-park-kids",
+      "headline": "Review: The Pocket Park Kids",
+      "publishDate": "2025-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/vladimir",
+      "headline": "Vladimir",
+      "publishDate": "2024-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-motive-and-the-cue",
+      "headline": "The Motive and The Cue",
+      "publishDate": "2024-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-ernies-secret-life",
+      "headline": "Review: Ernie’s Secret Life",
+      "publishDate": "2024-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-else-true",
+      "headline": "Review: What Else Is True?",
+      "publishDate": "2023-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/rock-roll-man",
+      "headline": "Rock and Roll Man",
+      "publishDate": "2023-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-in-corpo",
+      "headline": "Review: In Corpo",
+      "publishDate": "2023-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-blurring-boundaries-2023",
+      "headline": "Review: Blurring Boundaries 2023",
+      "publishDate": "2023-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-storytime-will-neighbors-say",
+      "headline": "Review: storytime with What Will the Neighbors Say?",
+      "publishDate": "2023-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/anthony-rapps-without",
+      "headline": "Anthony Rapp’s Without You",
+      "publishDate": "2023-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-eddie-izzard-charles-dickens-great-expectations",
+      "headline": "Review: Eddie Izzard in ‘Charles Dickens’ Great Expectations’",
+      "publishDate": "2022-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-bethune-black-velvet-rose",
+      "headline": "Review: ‘Bethune, Our Black Velvet Rose’",
+      "publishDate": "2022-10-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-washington-square",
+      "headline": "Review: Washington Square",
+      "publishDate": "2022-10-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/butcher-boy-new-musical",
+      "headline": "The Butcher Boy, a new musical.",
+      "publishDate": "2022-08-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-butcher-boy",
+      "headline": "The Butcher Boy",
+      "publishDate": "2022-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-elephant-room",
+      "headline": "Review of ‘The Elephant in the Room’",
+      "publishDate": "2022-07-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-i-know-why-the-caged-bird-sings",
+      "headline": "Review of ‘I Know Why the Caged Bird Sings’",
+      "publishDate": "2022-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-golden-shield",
+      "headline": "Review of ‘Golden Shield’",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-shooting-celebrities",
+      "headline": "Review of ‘Shooting Celebrities’",
+      "publishDate": "2022-04-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/debate-baldwin-vs-buckley",
+      "headline": "‘Debate: Baldwin vs Buckley’ brings the famous 1965 debate closer than ever",
+      "publishDate": "2022-03-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/intimate-apparel",
+      "headline": "Intimate Apparel",
+      "publishDate": "2022-02-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/one-christmas-carol",
+      "headline": "Review of ‘One Christmas Carol’",
+      "publishDate": "2021-12-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-of-candlelight",
+      "headline": "Review of ‘Candlelight’",
+      "publishDate": "2021-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-visitor",
+      "headline": "The Visitor",
+      "publishDate": "2021-11-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-body-concert",
+      "headline": "Review of Body Concert",
+      "publishDate": "2021-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/six-the-musical",
+      "headline": "Six The Musical",
+      "publishDate": "2021-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-worlds-fair-inn",
+      "headline": "Review of Worlds Fair Inn",
+      "publishDate": "2021-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-john-patrick-shanley-masseuse",
+      "headline": "Review of John Patrick Shanley’s ‘I Am Your Masseuse’",
+      "publishDate": "2021-08-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-title-show-brooklyn-navy-yards",
+      "headline": "Review of ‘title of show’ at the Brooklyn Navy Yards",
+      "publishDate": "2021-08-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-alma-baya-r-t-new-york-theatres",
+      "headline": "Review of ‘Alma Baya’ at A.R.T./New York Theatres",
+      "publishDate": "2021-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/delightfully-macabre-wake-dorcas-kelly-spirited-dark-comedy",
+      "headline": "Delightfully macabre ‘The Wake of Dorcas Kelly’ is a spirited dark comedy",
+      "publishDate": "2021-07-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/extremely-grey-line-charming-tour-manhattans-underside",
+      "headline": "The Extremely Grey Line is a charming tour of Manhattan’s underside",
+      "publishDate": "2021-07-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
+      "headline": "The Imaginary Invalid",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/the-merchant-of-venice",
+      "headline": "The Merchant of Venice",
+      "publishDate": "2024-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/molly-sweeney",
+      "headline": "Molly Sweeney",
+      "publishDate": "2024-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "molly-sweeney-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/here-there-were-blueberries",
+      "headline": "Here There Are Blueberries",
+      "publishDate": "2024-05-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/operation-mincement-new-musical",
+      "headline": "Operation Mincemeat: A New Musical",
+      "publishDate": "2024-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "operation-mincemeat-2025"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/guys-dolls",
+      "headline": "Guys & Dolls",
+      "publishDate": "2024-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/hells-kitchen",
+      "headline": "Hell’s Kitchen",
+      "publishDate": "2023-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-a-passion",
+      "headline": "Review: A Passion",
+      "publishDate": "2023-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-cabaret-captivity",
+      "headline": "Review: ‘Cabaret in Captivity’",
+      "publishDate": "2023-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/colin-quinn-small-talk",
+      "headline": "Colin Quinn: Small Talk",
+      "publishDate": "2023-02-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-bkbx-frankenstein",
+      "headline": "Review: A BKBX Frankenstein",
+      "publishDate": "2022-11-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-sister-shakes-productions-romeo-juliet",
+      "headline": "Review of Sister Shakes Productions’ ‘Romeo & Juliet’",
+      "publishDate": "2022-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-juliet-2024",
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/richard-iii",
+      "headline": "Richard III",
+      "publishDate": "2022-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/fat-ham",
+      "headline": "Fat Ham",
+      "publishDate": "2022-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-legend-waitress-robber",
+      "headline": "Review: ‘The Legend of the Waitress and the Robber’",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-prayer-french-republic",
+      "headline": "Review: Prayer for the French Republic",
+      "publishDate": "2022-02-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/search-signs-intelligent-life-universe",
+      "headline": "The Search for Signs of Intelligent Life in the Universe",
+      "publishDate": "2022-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "the-search-for-signs-of-intelligent-life-in-the-universe-2000"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/mornings-at-seven",
+      "headline": "Morning’s at Seven",
+      "publishDate": "2021-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/girl-north-country",
+      "headline": "Girl From the North Country",
+      "publishDate": "2021-11-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "girl-from-the-north-country-2022"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/mrs-warrens-profession",
+      "headline": "Mrs.Warren’s Profession",
+      "publishDate": "2021-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "mrs-warrens-profession-1976"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-of-the-fever",
+      "headline": "Review of The Fever",
+      "publishDate": "2021-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fever-greenwich-house-theater-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-whimsical-world-sherlock-holmes",
+      "headline": "Review of ‘The Whimsical World of Sherlock Holmes’",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sherlock-holmes-1974"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/review-last-love-letters",
+      "headline": "Review of ‘The Last of the Love Letters’",
+      "publishDate": "2021-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/multi-season-science-fiction-epic-give-away-addictive-listening-experience",
+      "headline": "Multi-season science fiction epic ‘Give Me Away’ is an addictive listening experience",
+      "publishDate": "2021-07-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-listening-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stagebuddy.com/theater/theater-review/fruma-sarah-waiting-wings-2",
+      "headline": "Fruma-Sarah (Waiting in the Wings)",
+      "publishDate": "2021-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979"
+      ]
+    }
+  ]
+}

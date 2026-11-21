@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-5776-2-c",
+  "planId": "9af8c161-0522-4c8e-85bb-a1171786034c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5776: record the SEC Form D offering maximum for Damn Yankees ($18.5M, DY Broadway LLC) with its source and refreshed notes. Also fixes three show titles (Rhinoceros casing, 10 Things I Hate About You suffix, Midnight in the Garden of Good and Evil casing).",
+    "steps": [
+      "SEC Form D amounts are offering maxima and carry capitalizationBasis=maximum."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "rhinoceros-2027",
+        "expectTitle": "RHINOCEROS",
+        "newTitle": "Rhinoceros",
+        "reason": "BRO-5776: title as the production names itself (parent session request); id and slug unchanged"
+      },
+      {
+        "type": "retitle-show",
+        "id": "10-things-i-hate-about-you-on-broadway-2024",
+        "expectTitle": "10 Things I Hate About You on Broadway",
+        "newTitle": "10 Things I Hate About You",
+        "reason": "BRO-5776: title as the production names itself (parent session request); id and slug unchanged"
+      },
+      {
+        "type": "retitle-show",
+        "id": "midnight-in-the-garden-of-good-and-evil-2024",
+        "expectTitle": "Midnight In The Garden Of Good And Evil",
+        "newTitle": "Midnight in the Garden of Good and Evil",
+        "reason": "BRO-5776: title as the production names itself (parent session request); id and slug unchanged"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T05:42:27.962Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled rhinoceros-2027: \"RHINOCEROS\" -> \"Rhinoceros\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled 10-things-i-hate-about-you-on-broadway-2024: \"10 Things I Hate About You on Broadway\" -> \"10 Things I Hate About You\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled midnight-in-the-garden-of-good-and-evil-2024: \"Midnight In The Garden Of Good And Evil\" -> \"Midnight in the Garden of Good and Evil\""
+    }
+  ],
+  "executedIn": "ci"
+}

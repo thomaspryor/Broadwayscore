@@ -1,0 +1,362 @@
+{
+  "issueNumber": "bro-5647-o",
+  "planId": "37152615-1173-47a5-8890-362a950e0542",
+  "status": "applied",
+  "createdAt": "2026-10-21T16:42:09.777Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From the owner's last Oct 21 ChatGPT report (tracker p29), each quote re-read at its page. Correction: Death of a Salesman (2026) was labelled Easy Winner / recouped on a forum poster's guess ('could be 3 weeks away from recoupment'); The Hollywood Reporter (Aug 11, 2026) says it 'has not announced recoupment after playing its final performance', so it goes to TBD with THR's up-to-$8.9M capitalization. Upgrades: King Kong's final capitalization $35M (Broadway News, per the production; filing ceiling $36.5M), Othello's source to Variety's 'up to $9 million', Gutenberg's $638,000 weekly break-even (Broadway Journal). Old values from the private core data at 062b49f.",
+    "steps": [
+      "Death of a Salesman to TBD",
+      "King Kong, Othello, Gutenberg sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "recouped",
+        "oldValue": true,
+        "newValue": null,
+        "description": "death-of-a-salesman: no recoupment was announced"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "recoupedDate",
+        "oldValue": "2026",
+        "newValue": null,
+        "description": "death-of-a-salesman: no recoupment date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "recoupedSource",
+        "oldValue": "Low confidence, inferred: on the BroadwayWorld forum (Jun 9, 2026) a regular poster estimated breakeven at about $850K a week and wrote \"they could be 3 weeks away from recoupment.\" The production then grossed about $18.6M over its last nine weeks ($1.78M to $2.51M a week, Broadway League grosses). No producer announcement; the date is an estimate.",
+        "newValue": null,
+        "description": "death-of-a-salesman: the forum estimate was not a recoupment report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "TBD",
+        "description": "death-of-a-salesman: outcome unannounced; the closed-show rule decides later"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "capitalization",
+        "oldValue": 8000000,
+        "newValue": 8900000,
+        "description": "death-of-a-salesman: reported ceiling"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "capitalizationSource",
+        "oldValue": "Low confidence: a BroadwayWorld forum poster (Jun 9, 2026) called it \"an $8 million play\". No trade report gives the capitalization.",
+        "newValue": "The Hollywood Reporter (Aug 11, 2026): \"the play, which was capitalized for up to $8.9 million, has not announced recoupment after playing its final performance Aug. 9.\" https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+        "description": "death-of-a-salesman: cite THR"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. No recoupment announced (these producers typically do not announce one); marked a low-confidence winner from a forum estimate and the run's grosses. The 2012 revival's recoupment does not apply to this production.",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. Capitalized for up to $8.9 million. The Hollywood Reporter noted after closing that no recoupment had been announced (these producers typically do not announce one). A BroadwayWorld forum poster estimated in June that it was about three weeks from recouping; that is a guess, not a report.",
+        "description": "death-of-a-salesman: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+            "date": "2026-08-11"
+          }
+        ],
+        "description": "death-of-a-salesman: add THR"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "capitalization",
+        "oldValue": 36500000,
+        "newValue": 35000000,
+        "description": "king-kong: final capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing (offering up to $36.5M)",
+        "newValue": "Broadway News (Jul 22, 2019): King Kong's capitalization ceiling was $36.5 million \"(with a final number of $35 million, according to the production).\" https://www.broadwaynews.com/creating-the-stage-spectacular-of-moulin-rouge/",
+        "description": "king-kong: cite the final figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+            "date": "2019-06-26",
+            "excerpt": "That massive $36.5M will not be recouped when the show closes Aug. 18"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+            "date": "2019-06-26",
+            "excerpt": "That massive $36.5M will not be recouped when the show closes Aug. 18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/creating-the-stage-spectacular-of-moulin-rouge/",
+            "date": "2019-07-22"
+          }
+        ],
+        "description": "king-kong: add Broadway News"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "othello-2025",
+        "showId": "othello-2025",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing / NPR (~$8.5M cited). Range $7-9M.",
+        "newValue": "Variety (May 1, 2025): \"Capitalized for up to $9 million, the show is now the highest-grossing play revival in history.\" Deadline said producers did not disclose the investment amount. https://variety.com/2025/legit/news/denzel-washington-jake-gyllenhaal-othello-tony-nomination-snub-recoups-investment-1236383624/",
+        "description": "othello: cite Variety"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "othello-2025",
+        "showId": "othello-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/",
+            "date": "2025-05-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/othello-on-broadway-announces-recoupment/",
+            "date": "2025-05-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/denzel-washington-jake-gyllenhaal-othello-tony-nomination-snub-recoups-investment-1236383624/",
+            "date": "2025-05-01"
+          }
+        ],
+        "description": "othello: add Variety"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gutenberg",
+        "showId": "gutenberg",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 638000,
+        "description": "gutenberg: reported weekly break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gutenberg",
+        "showId": "gutenberg",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Nov 6, 2023): \"The box office weekly breakeven is $638,000.\" https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+        "description": "gutenberg: cite it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gutenberg",
+        "showId": "gutenberg",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "gutenberg: a break-even includes royalties"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gutenberg",
+        "showId": "gutenberg",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "gutenberg: reported by Broadway Journal"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T16:49:17.764Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for gutenberg"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for gutenberg"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6450-we-2012-13",
+  "planId": "707c6903-f224-46d2-b8c8-f0f532a6e4ae",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:44.992Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2012-2013 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append the-mystery-of-charles-dickens-west-end-2012 (Playhouse Theatre, 2012-09-13 to 2012-11-10)",
+      "Append what-you-will-west-end-2012 (Apollo Theatre, 2012-09-18 to 2012-10-06)",
+      "Append let-it-be-west-end-2012 (Prince of Wales Theatre, 2012-09-24 to 2013-01-19)",
+      "Append our-boys-west-end-2012 (Duchess Theatre, 2012-09-26 to 2012-12-15)",
+      "Append cabaret-west-end-2012 (Savoy Theatre, 2012-10-09 to 2013-01-19)",
+      "Append loserville-west-end-2012 (Garrick Theatre, 2012-10-17 to 2013-01-31)",
+      "Append uncle-vanya-west-end-2012 (Vaudeville Theatre, 2012-10-25 to 2013-01-26)",
+      "Append dreamboats-and-petticoats-west-end-2012 (Wyndham's Theatre, 2012-10-29 to 2013-01-19)",
+      "Append damned-by-despair-west-end-2012 (Olivier Theatre, 2012-11-02 to 2012-12-13)",
+      "Append twelfth-night-west-end-2012 (Apollo Theatre, 2012-11-02 to 2013-02-09)",
+      "Append all-that-fall-west-end-2012 (Arts Theatre, 2012-11-06 to 2012-11-24)",
+      "Append the-effect-west-end-2012 (Dorfman Theatre, 2012-11-06 to 2013-02-23)",
+      "Append a-christmas-carol-west-end-2012 (Arts Theatre, 2012-11-29 to 2013-01-06)",
+      "Append privates-on-parade-west-end-2012 (Noël Coward Theatre, 2012-12-01 to 2013-03-02)",
+      "Append viva-forever-west-end-2012 (Piccadilly Theatre, 2012-12-11 to 2013-06-29)",
+      "Append old-times-west-end-2013 (Harold Pinter Theatre, 2013-01-12 to 2013-04-06)",
+      "Append quartermaines-terms-west-end-2013 (Wyndham's Theatre, 2013-01-29 to 2013-04-13)",
+      "Append macbeth-west-end-2013 (Trafalgar Theatre, 2013-02-14 to 2013-04-27)",
+      "Append the-tailor-made-man-west-end-2013 (Arts Theatre, 2013-02-14 to 2013-04-06)",
+      "Append the-audience-west-end-2013 (Gielgud Theatre, 2013-03-05 to 2013-06-15)",
+      "Append the-winslow-boy-west-end-2013 (The Old Vic, 2013-03-08 to 2013-05-25)",
+      "Append peter-and-alice-west-end-2013 (Noël Coward Theatre, 2013-03-09 to 2013-06-01)",
+      "Append the-low-road-west-end-2013 (Royal Court, 2013-03-23 to 2013-05-11)",
+      "Append children-of-the-sun-west-end-2013 (Lyttelton Theatre, 2013-04-09 to 2013-07-14)",
+      "Append othello-west-end-2013 (Olivier Theatre, 2013-04-16 to 2013-10-05)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-mystery-of-charles-dickens-west-end-2012",
+          "title": "The Mystery of Charles Dickens",
+          "slug": "the-mystery-of-charles-dickens-west-end-2012",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2012-09-13",
+          "openingDate": "2012-09-13",
+          "closingDate": "2012-11-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.093Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/6eb/the-mystery-of-charles-dickens/production/1bzd"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "what-you-will-west-end-2012",
+          "title": "What You Will",
+          "slug": "what-you-will-west-end-2012",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2012-09-18",
+          "openingDate": "2012-09-18",
+          "closingDate": "2012-10-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.127Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/h11/what-you-will/production/13ec"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "let-it-be-west-end-2012",
+          "title": "Let It Be",
+          "slug": "let-it-be-west-end-2012",
+          "venue": "Prince of Wales Theatre",
+          "previewsStartDate": "2012-09-24",
+          "openingDate": "2012-09-24",
+          "closingDate": "2013-01-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.152Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gwt/let-it-be/production/14f2"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "our-boys-west-end-2012",
+          "title": "Our Boys",
+          "slug": "our-boys-west-end-2012",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2012-09-26",
+          "openingDate": "2012-09-26",
+          "closingDate": "2012-12-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.175Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5z9/our-boys/production/1338"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cabaret-west-end-2012",
+          "title": "Cabaret",
+          "slug": "cabaret-west-end-2012",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2012-10-09",
+          "openingDate": "2012-10-09",
+          "closingDate": "2013-01-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.197Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/tf/cabaret/production/14p8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "loserville-west-end-2012",
+          "title": "Loserville",
+          "slug": "loserville-west-end-2012",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2012-10-17",
+          "openingDate": "2012-10-17",
+          "closingDate": "2013-01-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.217Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gwz/loserville/production/1354"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "uncle-vanya-west-end-2012",
+          "title": "Uncle Vanya",
+          "slug": "uncle-vanya-west-end-2012",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2012-10-25",
+          "openingDate": "2012-10-25",
+          "closingDate": "2013-01-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.237Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9j/uncle-vanya/production/tdk"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dreamboats-and-petticoats-west-end-2012",
+          "title": "Dreamboats and Petticoats",
+          "slug": "dreamboats-and-petticoats-west-end-2012",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2012-10-29",
+          "openingDate": "2012-10-29",
+          "closingDate": "2013-01-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.258Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9pr/dreamboats-and-petticoats/production/14p6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "damned-by-despair-west-end-2012",
+          "title": "Damned by Despair",
+          "slug": "damned-by-despair-west-end-2012",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2012-11-02",
+          "openingDate": "2012-11-02",
+          "closingDate": "2012-12-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.281Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/de4/damned-by-despair/production/tjp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "twelfth-night-west-end-2012",
+          "title": "Twelfth Night",
+          "slug": "twelfth-night-west-end-2012",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2012-11-02",
+          "openingDate": "2012-11-02",
+          "closingDate": "2013-02-09",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.302Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f/twelfth-night/production/13ea"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "all-that-fall-west-end-2012",
+          "title": "All That Fall",
+          "slug": "all-that-fall-west-end-2012",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2012-11-06",
+          "openingDate": "2012-11-06",
+          "closingDate": "2012-11-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.324Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ghx/all-that-fall-a-radio-play/production/12f9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-effect-west-end-2012",
+          "title": "The Effect",
+          "slug": "the-effect-west-end-2012",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2012-11-06",
+          "openingDate": "2012-11-06",
+          "closingDate": "2013-02-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.345Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fna/the-effect/production/1adb"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-christmas-carol-west-end-2012",
+          "title": "A Christmas Carol",
+          "slug": "a-christmas-carol-west-end-2012",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2012-11-29",
+          "openingDate": "2012-11-29",
+          "closingDate": "2013-01-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.378Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ghv/a-christmas-carol-simon-callow-assembly-riverside-studios/production/12f7"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "privates-on-parade-west-end-2012",
+          "title": "Privates on Parade",
+          "slug": "privates-on-parade-west-end-2012",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2012-12-01",
+          "openingDate": "2012-12-01",
+          "closingDate": "2013-03-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.402Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ad/privates-on-parade/production/tm8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "viva-forever-west-end-2012",
+          "title": "Viva Forever",
+          "slug": "viva-forever-west-end-2012",
+          "venue": "Piccadilly Theatre",
+          "previewsStartDate": "2012-12-11",
+          "openingDate": "2012-12-11",
+          "closingDate": "2013-06-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.427Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/bg4/viva-forever/production/14h1"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "old-times-west-end-2013",
+          "title": "Old Times",
+          "slug": "old-times-west-end-2013",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2013-01-12",
+          "openingDate": "2013-01-12",
+          "closingDate": "2013-04-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.453Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/8b/old-times/production/12qm"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "quartermaines-terms-west-end-2013",
+          "title": "Quartermaine's Terms",
+          "slug": "quartermaines-terms-west-end-2013",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2013-01-29",
+          "openingDate": "2013-01-29",
+          "closingDate": "2013-04-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.476Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/59a/quartermaines-terms/production/1523"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "macbeth-west-end-2013",
+          "title": "Macbeth",
+          "slug": "macbeth-west-end-2013",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2013-02-14",
+          "openingDate": "2013-02-14",
+          "closingDate": "2013-04-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.498Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/t/macbeth/production/tnp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-tailor-made-man-west-end-2013",
+          "title": "The Tailor-Made Man",
+          "slug": "the-tailor-made-man-west-end-2013",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2013-02-14",
+          "openingDate": "2013-02-14",
+          "closingDate": "2013-04-06",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.519Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ght/the-tailor-made-man/production/12f5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-audience-west-end-2013",
+          "title": "The Audience",
+          "slug": "the-audience-west-end-2013",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2013-03-05",
+          "openingDate": "2013-03-05",
+          "closingDate": "2013-06-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.542Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/h0r/the-audience/production/13hv"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-winslow-boy-west-end-2013",
+          "title": "The Winslow Boy",
+          "slug": "the-winslow-boy-west-end-2013",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2013-03-08",
+          "openingDate": "2013-03-08",
+          "closingDate": "2013-05-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.580Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3na/the-winslow-boy/production/1bbr"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "peter-and-alice-west-end-2013",
+          "title": "Peter and Alice",
+          "slug": "peter-and-alice-west-end-2013",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2013-03-09",
+          "openingDate": "2013-03-09",
+          "closingDate": "2013-06-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.605Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gnf/peter-and-alice/production/12nm"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-low-road-west-end-2013",
+          "title": "The Low Road",
+          "slug": "the-low-road-west-end-2013",
+          "venue": "Royal Court",
+          "previewsStartDate": "2013-03-23",
+          "openingDate": "2013-03-23",
+          "closingDate": "2013-05-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.655Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/jcs/the-low-road/production/1ap8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "children-of-the-sun-west-end-2013",
+          "title": "Children of the Sun",
+          "slug": "children-of-the-sun-west-end-2013",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2013-04-09",
+          "openingDate": "2013-04-09",
+          "closingDate": "2013-07-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.676Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d0/children-of-the-sun/production/v65"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "othello-west-end-2013",
+          "title": "Othello",
+          "slug": "othello-west-end-2013",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2013-04-16",
+          "openingDate": "2013-04-16",
+          "closingDate": "2013-10-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2012-2013",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:44.698Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/8/othello/production/1egn"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T00:56:50.847Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-mystery-of-charles-dickens-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added what-you-will-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added let-it-be-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added our-boys-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cabaret-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added loserville-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added uncle-vanya-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dreamboats-and-petticoats-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added damned-by-despair-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added twelfth-night-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-that-fall-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-effect-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-carol-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added privates-on-parade-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added viva-forever-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added old-times-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added quartermaines-terms-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added macbeth-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-tailor-made-man-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-audience-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-winslow-boy-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added peter-and-alice-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-low-road-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added children-of-the-sun-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added othello-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
+}

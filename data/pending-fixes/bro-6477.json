@@ -1,0 +1,142 @@
+{
+  "issueNumber": "bro-6477",
+  "planId": "b0520549-4da8-4b65-bdca-b83b42dec569",
+  "status": "applied",
+  "createdAt": "2026-10-28T18:53:37.526Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6477: clear placeholder cast roles ('role not specified', 'unspecified') on my-neighbour-totoro-west-end-2025 and imitation-of-life-off-broadway-2026; they made the former-cast guard flag directors and source authors on main.",
+    "steps": [
+      "BRO-6477: drop placeholder cast role text (3 rows); guards read roles as name cues",
+      "BRO-6477: drop placeholder cast role text (7 rows); guards read roles as name cues"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-neighbour-totoro-west-end-2025",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Victoria Chen",
+            "role": "Satsuki"
+          },
+          {
+            "name": "Ai Ninomiya",
+            "role": "Mei"
+          },
+          {
+            "name": "Ami Okumura Jones",
+            "role": "role not specified"
+          },
+          {
+            "name": "Dai Tabuchi",
+            "role": "role not specified"
+          },
+          {
+            "name": "Jacqueline Tate",
+            "role": "role not specified"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Victoria Chen",
+            "role": "Satsuki"
+          },
+          {
+            "name": "Ai Ninomiya",
+            "role": "Mei"
+          },
+          {
+            "name": "Ami Okumura Jones"
+          },
+          {
+            "name": "Dai Tabuchi"
+          },
+          {
+            "name": "Jacqueline Tate"
+          }
+        ],
+        "description": "BRO-6477: drop placeholder cast role text (3 rows); guards read roles as name cues"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "imitation-of-life-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Adrienne Warren",
+            "role": "unspecified"
+          },
+          {
+            "name": "Jessica Vosk",
+            "role": "unspecified"
+          },
+          {
+            "name": "Michael Luwoye",
+            "role": "unspecified"
+          },
+          {
+            "name": "Charlie Thurston",
+            "role": "unspecified"
+          },
+          {
+            "name": "Aleyse Shannon",
+            "role": "unspecified"
+          },
+          {
+            "name": "Scarlett London Diviney",
+            "role": "unspecified"
+          },
+          {
+            "name": "Lily Gilliam",
+            "role": "unspecified"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Adrienne Warren"
+          },
+          {
+            "name": "Jessica Vosk"
+          },
+          {
+            "name": "Michael Luwoye"
+          },
+          {
+            "name": "Charlie Thurston"
+          },
+          {
+            "name": "Aleyse Shannon"
+          },
+          {
+            "name": "Scarlett London Diviney"
+          },
+          {
+            "name": "Lily Gilliam"
+          }
+        ],
+        "description": "BRO-6477: drop placeholder cast role text (7 rows); guards read roles as name cues"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T19:37:54.538Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for my-neighbour-totoro-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for imitation-of-life-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

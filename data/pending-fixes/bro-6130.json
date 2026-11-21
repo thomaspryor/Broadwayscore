@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6130",
+  "planId": "3bc2da2f-6187-4ff7-b612-3b94e10181d8",
+  "status": "applied",
+  "createdAt": "2026-11-18T05:29:00.523Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Good Thief TheaterMania (Mendoza): replace descriptive opening-line pull quote with an evaluative verbatim line (opening-night watch 2026-11-17)",
+    "steps": [
+      "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json: llmPullQuote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json",
+        "field": "llmPullQuote",
+        "oldValue": null,
+        "newValue": "Fitzgerald doesn’t try to win you over—he just does.",
+        "description": "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json: llmPullQuote"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T05:37:25.702Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json llmPullQuote: null -> \"Fitzgerald doesn’t try to win you over—he just does.\""
+    }
+  ],
+  "executedIn": "ci"
+}

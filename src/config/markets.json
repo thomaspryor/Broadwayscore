@@ -1,0 +1,11 @@
+{
+  "_comment": "One row per show category (BRO-4211). validate-data reads the category list from here, the feature-flag gates read featureFlag/hideFromAppFeed, and tests/unit/markets-consistency.test.ts fails if the min-review switches (src/lib/market-utils.ts, src/config/score-buckets.ts, scripts/lib/min-reviews.js) or getMarketLabel drift from these rows. minReviews is the base threshold before the T3-only extra. featureFlag: category is hidden from every public surface until that NEXT_PUBLIC_FEATURES flag is on. hideFromAppFeed: also withheld from public/data (the iOS app feed) while the flag is off (regional predates this and stays in the feed). launched: the web flag is on in code (featureFlags getter returns true, same as other launched flags), so the category shows on the website with no env var; hideFromAppFeed still keys off the env flag alone, so a launched category stays out of the iOS app feed until NEXT_PUBLIC_FEATURES names it (tour: BRO-4254, app labels tours as Broadway).",
+  "categories": {
+    "broadway": { "label": "Broadway", "market": "broadway", "minReviews": 5, "featureFlag": null, "hideFromAppFeed": false },
+    "off-broadway": { "label": "Off-Broadway", "market": "broadway", "minReviews": 3, "featureFlag": null, "hideFromAppFeed": false },
+    "west-end": { "label": "West End", "market": "west-end", "minReviews": 5, "featureFlag": null, "hideFromAppFeed": false },
+    "off-west-end": { "label": "Off-West End", "market": "west-end", "minReviews": 3, "featureFlag": null, "hideFromAppFeed": false },
+    "regional": { "label": "Regional", "market": "regional", "minReviews": 3, "featureFlag": "regional", "hideFromAppFeed": false },
+    "tour": { "label": "Tour", "market": "tour", "minReviews": 3, "featureFlag": "tour", "launched": true, "hideFromAppFeed": true }
+  }
+}

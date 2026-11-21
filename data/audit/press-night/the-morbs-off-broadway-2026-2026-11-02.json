@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-morbs-off-broadway-2026",
+  "night": "2026-11-02",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-03T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-03T02:30:06.194Z",
+    "endedAt": "2026-11-03T09:00:36.410Z",
+    "intervalMin": 5,
+    "samples": 77,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-03T08:57:13.330Z",
+    "lastOkSampleAt": "2026-11-03T08:57:13.330Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": 0,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-03T04:00:11.692Z",
+    "2h": "2026-11-03T05:07:02.593Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-03T05:00:25.510Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-03T09:00:32.689Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-03T05:00:25.595Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-03T09:00:32.756Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-03T09:00:36.370Z",
+    "files": [
+      {
+        "file": "phusionpassenger--unknown.json",
+        "outletId": "phusionpassenger",
+        "outlet": "phusionpassenger",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-26T08:11:05.417Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "phusionpassenger.com/library/config/nginx/reference",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--linda-buchwald.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Linda Buchwald",
+        "firstSeenAt": "2026-10-27T13:40:27.506Z",
+        "scoredAt": null,
+        "publishDate": "2026-07-28",
+        "url": "theatermania.com/news/egg-spoon-theatre-collective-to-present-the-world-premiere-of-jen-diamonds-the-morbs_1847289",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-03T09:00:28.724Z",
+    "runId": "41566494832",
+    "startedAt": "2026-11-03T02:33:52.443Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": null,
+    "discoveredByOutlet": {},
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": []
+  }
+}

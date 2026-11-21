@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-13",
+  "planId": "57b6be50-cd8b-4826-91c7-0d5b1e1624d6",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:42:49.529Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 13: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page date at https://www.newyorker.com/magazine/2024/10/14/the-hills-of-california-theatre-review is 2024-10-03 (show opened 2024-09-29); October 14, 2024 came from the legacy web-search step.",
+      "Page date at https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-1236197234/ is 2024-09-30 (show opened 2024-09-29); September 20, 2024 came from the legacy web-search step.",
+      "Page date at http://www.timeout.com/newyork/blog/broadway-review-the-humans-reopens-at-the-helen-hayes-theatre-021816 is 2016-02-19 (show opened 2016-02-18); October 25, 2016 came from the legacy web-search step.",
+      "Page date at https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html is 2022-07-21 (show opened 2022-07-21); August 2, 2022 came from the legacy web-search step.",
+      "Page date at https://variety.com/2018/legit/reviews/the-lifespan-of-a-fact-review-daniel-radcliffe-1202981956/ is 2018-10-19 (show opened 2018-10-18); October 5, 2018 came from the legacy web-search step.",
+      "Page date at https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html is 2022-04-17 (show opened 2022-04-17); April 7, 2022 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/theater/the-parisian-woman-1 is 2017-11-30 (show opened 2017-11-30); November 16, 2017 came from the legacy web-search step.",
+      "Page date at https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/ is 2011-04-29 (show opened 2011-04-28); April 21, 2011 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/blog/broadway-review-danny-devito-steals-a-revival-of-arthur-millers-the-price-031617 is 2017-03-17 (show opened 2017-03-16); March 9, 2017 came from the legacy web-search step.",
+      "Page date at https://variety.com/2007/legit/reviews/the-ritz-1200556826/ is 2007-10-12 (show opened 2007-10-11); August 12, 2007 came from the legacy web-search step.",
+      "Page date at https://www.theguardian.com/stage/2019/oct/15/the-rose-tattoo-review-marisa-tomei-broadway is 2019-10-16 (show opened 2019-10-15); October 8, 2019 came from the legacy web-search step.",
+      "Page date at https://www.hollywoodreporter.com/movies/movie-reviews/royal-family-theater-review-93636/ is 2009-10-08 (show opened 2009-10-08); December 17, 2009 came from the legacy web-search step.",
+      "Page date at https://variety.com/2009/legit/reviews/the-royal-family-2-1200476930/ is 2009-10-09 (show opened 2009-10-08); October 19, 2009 came from the legacy web-search step.",
+      "Page date at https://variety.com/2009/legit/reviews/the-story-of-my-life-1200476026/ is 2009-02-20 (show opened 2009-02-19); February 12, 2009 came from the legacy web-search step.",
+      "Page date at https://nypost.com/2021/10/13/thoughts-of-a-colored-man-review-broadway-tackles-changing-brooklyn/ is 2021-10-14 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/theater/thoughts-of-a-colored-man-broadway-review is 2021-10-13 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step.",
+      "Page date at https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235103378/ is 2021-10-14 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step.",
+      "Page date at https://www.hollywoodreporter.com/news/general-news/sutton-foster-violet-theater-review-697787/ is 2014-04-20 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step.",
+      "Page date at https://variety.com/2014/legit/reviews/broadway-review-violet-1201154462/ is 2014-04-21 (show opened 2014-04-20); April 11, 2014 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me is 2019-03-31 (show opened 2019-03-31); March 14, 2019 came from the legacy web-search step.",
+      "Page date at http://variety.com/2014/legit/reviews/broadway-review-you-cant-take-it-with-you-rose-byrne-james-earl-jones-1201315997/ is 2014-09-29 (show opened 2014-09-28); August 28, 2014 came from the legacy web-search step.",
+      "NYT 2008-01-11 review byline is Ben Brantley (archived page); Noel Murray came from a BWW roundup row",
+      "NYT 2015-03-06 review byline is Ben Brantley (archived page)",
+      "newsday.com page byline is Matt Windman",
+      "playsinternational.org.uk page byline is Mark Shenton"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-hills-of-california-2024/newyorker--naomi-fry.json",
+        "field": "publishDate",
+        "oldValue": "October 14, 2024",
+        "newValue": "2024-10-03",
+        "description": "Page date at https://www.newyorker.com/magazine/2024/10/14/the-hills-of-california-theatre-review is 2024-10-03 (show opened 2024-09-29); October 14, 2024 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hills-of-california-2024/variety--frank-rizzo.json",
+        "field": "publishDate",
+        "oldValue": "September 20, 2024",
+        "newValue": "2024-09-30",
+        "description": "Page date at https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-1236197234/ is 2024-09-30 (show opened 2024-09-29); September 20, 2024 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-humans-2016/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "October 25, 2016",
+        "newValue": "2016-02-19",
+        "description": "Page date at http://www.timeout.com/newyork/blog/broadway-review-the-humans-reopens-at-the-helen-hayes-theatre-021816 is 2016-02-19 (show opened 2016-02-18); October 25, 2016 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/vulture--helen-shaw.json",
+        "field": "publishDate",
+        "oldValue": "August 2, 2022",
+        "newValue": "2022-07-21",
+        "description": "Page date at https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html is 2022-07-21 (show opened 2022-07-21); August 2, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lifespan-of-a-fact-2018/variety--marilyn-stasio.json",
+        "field": "publishDate",
+        "oldValue": "October 5, 2018",
+        "newValue": "2018-10-19",
+        "description": "Page date at https://variety.com/2018/legit/reviews/the-lifespan-of-a-fact-review-daniel-radcliffe-1202981956/ is 2018-10-19 (show opened 2018-10-18); October 5, 2018 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-minutes-2022/vulture--jesse-green.json",
+        "field": "publishDate",
+        "oldValue": "April 7, 2022",
+        "newValue": "2022-04-17",
+        "description": "Page date at https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html is 2022-04-17 (show opened 2022-04-17); April 7, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-parisian-woman-2017/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "November 16, 2017",
+        "newValue": "2017-11-30",
+        "description": "Page date at https://www.timeout.com/newyork/theater/the-parisian-woman-1 is 2017-11-30 (show opened 2017-11-30); November 16, 2017 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/variety--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "April 21, 2011",
+        "newValue": "2011-04-29",
+        "description": "Page date at https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945115/ is 2011-04-29 (show opened 2011-04-28); April 21, 2011 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-2017/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "March 9, 2017",
+        "newValue": "2017-03-17",
+        "description": "Page date at https://www.timeout.com/newyork/blog/broadway-review-danny-devito-steals-a-revival-of-arthur-millers-the-price-031617 is 2017-03-17 (show opened 2017-03-16); March 9, 2017 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ritz-2007/variety--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "August 12, 2007",
+        "newValue": "2007-10-12",
+        "description": "Page date at https://variety.com/2007/legit/reviews/the-ritz-1200556826/ is 2007-10-12 (show opened 2007-10-11); August 12, 2007 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rose-tattoo-2019/guardian--adrian-horton.json",
+        "field": "publishDate",
+        "oldValue": "October 8, 2019",
+        "newValue": "2019-10-16",
+        "description": "Page date at https://www.theguardian.com/stage/2019/oct/15/the-rose-tattoo-review-marisa-tomei-broadway is 2019-10-16 (show opened 2019-10-15); October 8, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-royal-family-2009/hollywood-reporter--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "December 17, 2009",
+        "newValue": "2009-10-08",
+        "description": "Page date at https://www.hollywoodreporter.com/movies/movie-reviews/royal-family-theater-review-93636/ is 2009-10-08 (show opened 2009-10-08); December 17, 2009 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-royal-family-2009/variety--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "October 19, 2009",
+        "newValue": "2009-10-09",
+        "description": "Page date at https://variety.com/2009/legit/reviews/the-royal-family-2-1200476930/ is 2009-10-09 (show opened 2009-10-08); October 19, 2009 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-of-my-life-2009/variety--charles-isherwood.json",
+        "field": "publishDate",
+        "oldValue": "February 12, 2009",
+        "newValue": "2009-02-20",
+        "description": "Page date at https://variety.com/2009/legit/reviews/the-story-of-my-life-1200476026/ is 2009-02-20 (show opened 2009-02-19); February 12, 2009 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/nypost--johnny-oleksinski.json",
+        "field": "publishDate",
+        "oldValue": "October 31, 2021",
+        "newValue": "2021-10-14",
+        "description": "Page date at https://nypost.com/2021/10/13/thoughts-of-a-colored-man-review-broadway-tackles-changing-brooklyn/ is 2021-10-14 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "November 1, 2021",
+        "newValue": "2021-10-13",
+        "description": "Page date at https://www.timeout.com/newyork/theater/thoughts-of-a-colored-man-broadway-review is 2021-10-13 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/variety--aramide-tinubu.json",
+        "field": "publishDate",
+        "oldValue": "October 31, 2021",
+        "newValue": "2021-10-14",
+        "description": "Page date at https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235103378/ is 2021-10-14 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "violet-2014/hollywood-reporter--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "April 12, 2014",
+        "newValue": "2014-04-20",
+        "description": "Page date at https://www.hollywoodreporter.com/news/general-news/sutton-foster-violet-theater-review-697787/ is 2014-04-20 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "violet-2014/variety--marilyn-stasio.json",
+        "field": "publishDate",
+        "oldValue": "April 11, 2014",
+        "newValue": "2014-04-21",
+        "description": "Page date at https://variety.com/2014/legit/reviews/broadway-review-violet-1201154462/ is 2014-04-21 (show opened 2014-04-20); April 11, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "March 14, 2019",
+        "newValue": "2019-03-31",
+        "description": "Page date at https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me is 2019-03-31 (show opened 2019-03-31); March 14, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "you-cant-take-it-with-you-2014/variety--marilyn-stasio.json",
+        "field": "publishDate",
+        "oldValue": "August 28, 2014",
+        "newValue": "2014-09-29",
+        "description": "Page date at http://variety.com/2014/legit/reviews/broadway-review-you-cant-take-it-with-you-rose-byrne-james-earl-jones-1201315997/ is 2014-09-29 (show opened 2014-09-28); August 28, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-little-mermaid-2008/nytimes--noel-murray.json",
+        "field": "criticName",
+        "oldValue": "Noel Murray",
+        "newValue": "Ben Brantley",
+        "description": "NYT 2008-01-11 review byline is Ben Brantley (archived page); Noel Murray came from a BWW roundup row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fish-in-the-dark-2015/nytimes--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Ben Brantley",
+        "description": "NYT 2015-03-06 review byline is Ben Brantley (archived page)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arcadia-2011/newsday--linda-winer.json",
+        "field": "criticName",
+        "oldValue": "Linda Winer",
+        "newValue": "Matt Windman",
+        "description": "newsday.com page byline is Matt Windman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Mark Shenton",
+        "description": "playsinternational.org.uk page byline is Mark Shenton"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T00:00:24.744Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hills-of-california-2024/newyorker--naomi-fry.json publishDate: \"October 14, 2024\" -> \"2024-10-03\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hills-of-california-2024/variety--frank-rizzo.json publishDate: \"September 20, 2024\" -> \"2024-09-30\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-humans-2016/timeout--adam-feldman.json publishDate: \"October 25, 2016\" -> \"2016-02-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-2022/vulture--helen-shaw.json publishDate: \"August 2, 2022\" -> \"2022-07-21\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lifespan-of-a-fact-2018/variety--marilyn-stasio.json publishDate: \"October 5, 2018\" -> \"2018-10-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-minutes-2022/vulture--jesse-green.json publishDate: \"April 7, 2022\" -> \"2022-04-17\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/timeout--adam-feldman.json publishDate: \"November 16, 2017\" -> \"2017-11-30\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-people-in-the-picture-2011/variety--david-rooney.json publishDate: \"April 21, 2011\" -> \"2011-04-29\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/timeout--adam-feldman.json publishDate: \"March 9, 2017\" -> \"2017-03-17\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ritz-2007/variety--david-rooney.json publishDate: \"August 12, 2007\" -> \"2007-10-12\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rose-tattoo-2019/guardian--adrian-horton.json publishDate: \"October 8, 2019\" -> \"2019-10-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-royal-family-2009/hollywood-reporter--david-rooney.json publishDate: \"December 17, 2009\" -> \"2009-10-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-royal-family-2009/variety--david-rooney.json publishDate: \"October 19, 2009\" -> \"2009-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-of-my-life-2009/variety--charles-isherwood.json publishDate: \"February 12, 2009\" -> \"2009-02-20\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/nypost--johnny-oleksinski.json publishDate: \"October 31, 2021\" -> \"2021-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/timeout--adam-feldman.json publishDate: \"November 1, 2021\" -> \"2021-10-13\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/variety--aramide-tinubu.json publishDate: \"October 31, 2021\" -> \"2021-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "violet-2014/hollywood-reporter--david-rooney.json publishDate: \"April 12, 2014\" -> \"2014-04-20\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "violet-2014/variety--marilyn-stasio.json publishDate: \"April 11, 2014\" -> \"2014-04-21\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/timeout--adam-feldman.json publishDate: \"March 14, 2019\" -> \"2019-03-31\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "you-cant-take-it-with-you-2014/variety--marilyn-stasio.json publishDate: \"August 28, 2014\" -> \"2014-09-29\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-little-mermaid-2008/nytimes--noel-murray.json criticName: \"Noel Murray\" -> \"Ben Brantley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-in-the-dark-2015/nytimes--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Ben Brantley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-2011/newsday--linda-winer.json criticName: \"Linda Winer\" -> \"Matt Windman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Mark Shenton\""
+    }
+  ]
+}

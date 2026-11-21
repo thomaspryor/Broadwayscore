@@ -1,0 +1,89 @@
+name: WE Historical TR Resolve
+
+# BRO-5031: look up West End productions that WhatsOnStage reviewed but never
+# listed (the `unlistedReviews` in data/audit/we-historical-candidates-<season>.json)
+# on Theatre Record, and save each production's header (venue, run dates) to
+# data/audit/we-historical-review-led-<season>.json. promote-historical-we.js
+# reads that file. TR needs the subscriber login, which only Actions holds;
+# run-script.yml deliberately carries no outlet logins, hence this workflow.
+# Manual dispatch only; writes only public data/audit files, never review text.
+
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Comma-separated seasons, e.g. 2019-2020,2020-2021'
+        required: true
+        type: string
+      resume:
+        description: 'Keep finished rows of an earlier partial run (BRO-6298)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: we-historical-tr-resolve
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      # ref: main — push-with-retry.sh pushes HEAD to main, so a branch
+      # dispatch must not carry the branch's commits there.
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Install PDF tools
+        run: sudo apt-get install -y poppler-utils
+
+      - name: Resolve unlisted reviews on Theatre Record
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+          SEASONS: ${{ inputs.seasons }}
+          RESUME: ${{ inputs.resume }}
+        # --budget-min stops the lookups before the step timeout so the rows done so far are still committed
+        run: |
+          ARGS=(--seasons="$SEASONS" --budget-min=30)
+          if [ "$RESUME" = "true" ]; then ARGS+=(--resume); fi
+          node scripts/resolve-we-unlisted-tr.js "${ARGS[@]}"
+
+      - name: Commit lookup files
+        env:
+          SEASONS: ${{ inputs.seasons }}
+        run: |
+          IFS=',' read -ra SEASON_LIST <<< "$SEASONS"
+          for s in "${SEASON_LIST[@]}"; do
+            f="data/audit/we-historical-review-led-$s.json"
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "audit: WE historical TR lookups $SEASONS (BRO-5031) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Historical TR Resolve Failed'
+          severity: 'warning'

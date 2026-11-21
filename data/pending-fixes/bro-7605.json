@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7605",
+  "planId": "a1f7fc40-ee80-4a5e-942e-1382512f275e",
+  "status": "applied",
+  "createdAt": "2026-11-17T20:54:47.914Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude Guardian feature from scored reviews while preserving its lock",
+    "steps": [
+      "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json: isNonReviewReason",
+      "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian feature",
+        "description": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T22:03:30.618Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json isNonReviewReason: null -> \"manual (not a review): Guardian feature\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magic-mike-live-off-west-end-2021/guardian--tanya-gold.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}
