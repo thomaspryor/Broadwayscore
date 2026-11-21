@@ -218,3 +218,44 @@ describe('rows and seat numbers in section names (BRO-8018 audit 3)', () => {
     assert.ok(!A.decideSection(sec, g.claims, new Map(g.claims.map((c, k) => [k + 1, true]))).dropped);
   });
 });
+
+describe('overlapping rows and row ranges (BRO-8018 ship-check)', () => {
+  const S = (name, verdict, rowRange, urls = ['u1']) => ({ name, verdict, rowRange, evidenceUrls: urls });
+  test('rowSet reads ranges, lists and doubled front rows', () => {
+    assert.deepStrictEqual([...A.rowSet('L, P, O, K')].sort((a, b) => a - b), [10, 11, 14, 15]);
+    assert.ok(A.rowIndex('AA') < A.rowIndex('A') && A.rowIndex('AAA') < A.rowIndex('AA'));
+    assert.strictEqual(A.rowSet('end'), null);
+  });
+  test('cleanRowRange keeps the bare range and drops non-ranges', () => {
+    assert.strictEqual(A.cleanRowRange('A-H (8 rows each)'), 'A-H');
+    assert.strictEqual(A.cleanRowRange('Boxes A-D'), 'A-D');
+    assert.strictEqual(A.cleanRowRange('AAA-D'), 'AAA-D');
+    assert.strictEqual(A.cleanRowRange('N-end'), undefined);
+  });
+  test('Barrymore E-J best vs F-O good conflicts', () => {
+    assert.deepStrictEqual(A.rowConflicts([S('Center Orchestra (Rows E-J)', 'sweet-spot'), S('Center Orchestra (Rows F-O)', 'solid')]), [[0, 1]]);
+  });
+  test('Beaumont middle-orchestra list overlapping center range conflicts', () => {
+    assert.strictEqual(A.rowConflicts([S('Center Orchestra (Rows D-K)', 'sweet-spot'), S('Middle Orchestra (Rows L, P, O, K)', 'solid')]).length, 1);
+  });
+  test('no conflict across tiers, sides, same verdicts or disjoint rows', () => {
+    assert.strictEqual(A.rowConflicts([S('Front Mezzanine (Rows A-C)', 'sweet-spot'), S('Rear Mezzanine (Rows A-C)', 'solid')]).length, 0);
+    assert.strictEqual(A.rowConflicts([S('Center Orchestra (Rows E-J)', 'sweet-spot'), S('Side Orchestra (Rows E-J)', 'solid')]).length, 0);
+    assert.strictEqual(A.rowConflicts([S('Center Orchestra (Rows E-J)', 'sweet-spot'), S('Center Orchestra (Rows K-O)', 'solid')]).length, 0);
+    assert.strictEqual(A.rowConflicts([S('Center Orchestra (Rows E-J)', 'solid'), S('Center Orchestra (Rows F-O)', 'solid')]).length, 0);
+  });
+  test('the side with fewer sources is dropped; a tie drops both', () => {
+    assert.deepStrictEqual([...A.rowConflictDrops([S('Center Orchestra (Rows E-J)', 'sweet-spot', undefined, ['a', 'b']), S('Center Orchestra (Rows F-O)', 'solid')])], [1]);
+    assert.strictEqual(A.rowConflictDrops([S('Center Orchestra (Rows E-J)', 'sweet-spot'), S('Center Orchestra (Rows F-O)', 'solid')]).size, 2);
+  });
+  test('rows in the name with no nameRows claim at all are dropped (fail closed)', () => {
+    const ev = [{ url: 'u', quote: 'q' }];
+    const claims = [
+      { kind: 'name', name: 'Center Orchestra (Rows C-S)', evidence: ev },
+      { kind: 'verdict', evidence: ev },
+      { kind: 'rationale', sentence: 'Good seats.', evidence: ev },
+    ];
+    const acc = new Map(claims.map((c, k) => [k + 1, true]));
+    assert.strictEqual(A.decideSection({ name: 'Center Orchestra (Rows C-S)', verdict: 'sweet-spot' }, claims, acc).dropped, 'rows in name not supported');
+  });
+});

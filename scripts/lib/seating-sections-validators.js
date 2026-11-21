@@ -6,7 +6,7 @@
  * The quarterly merge cannot change sections at all (validateMergedMetadata).
  */
 
-const { VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, copyProblems, theaterKeepProblems } = require('./seat-adjudication');
+const { VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, copyProblems, theaterKeepProblems, rowConflicts, cleanRowRange } = require('./seat-adjudication');
 
 /**
  * @param {string} theater
@@ -18,6 +18,7 @@ function validateSeatingSections(theater, sections, { forbiddenTitles = [] } = {
   const p = [];
   if (!Array.isArray(sections)) return [`${theater}: sections is not an array`];
   for (const k of theaterKeepProblems(sections)) p.push(`${theater}: ${k}`);
+  for (const [i, j] of rowConflicts(sections)) p.push(`${theater}: overlapping rows with different verdicts: ${sections[i].name} / ${sections[j].name}`);
   sections.forEach((s, i) => {
     const at = `${theater} / ${s && s.name ? s.name : `section[${i}]`}`;
     if (!s || typeof s.name !== 'string' || !s.name.trim()) p.push(`${at}: missing name`);
@@ -25,6 +26,7 @@ function validateSeatingSections(theater, sections, { forbiddenTitles = [] } = {
     if (typeof s.verdictLabel !== 'string' || !s.verdictLabel.trim()) p.push(`${at}: missing verdictLabel`);
     if (s.priceTier !== undefined && !PRICE_TIERS.has(s.priceTier)) p.push(`${at}: bad priceTier ${s.priceTier}`);
     if (s.bestRow && !s.rowRange) p.push(`${at}: bestRow without rowRange`);
+    if (s.rowRange && cleanRowRange(s.rowRange) !== s.rowRange) p.push(`${at}: rowRange is not a plain row range: ${s.rowRange}`);
     for (const k of ['bestFor', 'worstFor']) for (const t of s[k] || []) if (!SHOW_TAGS.has(t)) p.push(`${at}: bad ${k} tag ${t}`);
     for (const h of s.hazards || []) if (!h || !HAZARD_TYPES.has(h.type) || !String(h.note || '').trim()) p.push(`${at}: bad hazard ${JSON.stringify(h)}`);
     const urls = Array.isArray(s.evidenceUrls) ? s.evidenceUrls.filter((u) => /^https?:\/\//.test(u)) : [];

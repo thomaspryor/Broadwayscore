@@ -381,6 +381,97 @@ function nameRowsClaimText(name, verdict, rowRange) {
   return `In ${name}, every one of rows ${rows} ${VERDICT_PHRASE[verdict]}, not only some of those rows.`;
 }
 
+/** Row letter -> order index. Doubled/tripled front rows (AA, AAA) come before A. Null if not a row. */
+function rowIndex(r) {
+  const t = String(r).trim().toUpperCase();
+  if (/^([A-Z])\1\1$/.test(t)) return t.charCodeAt(0) - 65 - 52;
+  if (/^([A-Z])\1$/.test(t)) return t.charCodeAt(0) - 65 - 26;
+  if (/^[A-Z]$/.test(t)) return t.charCodeAt(0) - 65;
+  return null;
+}
+
+const ROW_TOKEN = /\b([A-Z]{1,3})(?:\s*(?:-|to|through)\s*([A-Z]{1,3}))?\b/g;
+
+/** "E-J" -> [lo, hi]; null when the text has no letter range. Kept for callers that want one span. */
+function rowSpan(text) {
+  const set = rowSet(text);
+  return set && set.size ? [Math.min(...set), Math.max(...set)] : null;
+}
+
+/** Every row index a rows text covers: ranges and lists ("L, P, O, K"). Null when none parse. */
+function rowSet(text) {
+  const out = new Set();
+  for (const m of String(text || '').matchAll(ROW_TOKEN)) {
+    const a = rowIndex(m[1]), b = m[2] ? rowIndex(m[2]) : a;
+    if (a === null || b === null) continue;
+    for (let i = Math.min(a, b); i <= Math.max(a, b); i++) out.add(i);
+  }
+  return out.size ? out : null;
+}
+
+/** rowRange cleaned to a bare letter range ("A-H (8 rows each)" -> "A-H"); undefined if none ("N-end"). */
+function cleanRowRange(rr) {
+  const m = String(rr || '').match(/\b([A-Z]{1,3})\s*-\s*([A-Z]{1,3})\b/);
+  if (m && rowIndex(m[1]) !== null && rowIndex(m[2]) !== null) return `${m[1]}-${m[2]}`;
+  const one = String(rr || '').trim();
+  return /^[A-Z]{1,3}$/.test(one) && rowIndex(one) !== null ? one : undefined;
+}
+
+/** The rows a section covers: its rowRange, else the rows written in its name after "Row(s)". */
+function sectionRows(sec) {
+  if (sec.rowRange && cleanRowRange(sec.rowRange)) return rowSet(cleanRowRange(sec.rowRange));
+  const m = String(sec.name || '').match(/\brows?\s+([^)]*)/i);
+  return m ? rowSet(m[1]) : null;
+}
+
+/**
+ * The seat block a section sits in, for overlap checks. Orchestra rows run continuously (front,
+ * middle and rear orchestra are one lettering), mezzanine/balcony letters restart per tier, and
+ * side/box seats are a different block from center seats with the same letters.
+ */
+function seatBlock(name) {
+  const n = String(name).toLowerCase();
+  const fam = (n.match(/orchestra|mezzanine|mezz|balcony|loge|box/) || [null])[0];
+  if (!fam) return null;
+  const family = fam === 'mezz' ? 'mezzanine' : fam;
+  const tier = family === 'orchestra' ? '' : ((n.match(/\b(front|rear|upper|lower|dress)\b/) || [, ''])[1]);
+  const side = /\b(side|box|boxes|partial)\b/.test(n) || (/\b(left|right)\b/.test(n) && !/\bcenter\b/.test(n));
+  return `${tier} ${family} ${side ? 'side' : 'center'}`.trim();
+}
+
+/**
+ * Codex + Claude ship-check (BRO-8018): two sections in the same seat block whose rows overlap must
+ * not carry different verdicts (Barrymore rows E-J "best" vs F-O "good"; Beaumont D-K "best" vs
+ * rows L, P, O, K "good").
+ * @returns {Array<[number, number]>} index pairs that conflict
+ */
+function rowConflicts(sections) {
+  const out = [];
+  for (let i = 0; i < sections.length; i++) {
+    for (let j = i + 1; j < sections.length; j++) {
+      const a = sections[i], b = sections[j];
+      if (!a || !b || a.verdict === b.verdict) continue;
+      const ka = seatBlock(a.name), kb = seatBlock(b.name);
+      if (!ka || ka !== kb) continue;
+      const sa = sectionRows(a), sb = sectionRows(b);
+      if (sa && sb && [...sa].some((r) => sb.has(r))) out.push([i, j]);
+    }
+  }
+  return out;
+}
+
+/** Drop the side of each conflict with fewer sources; on a tie drop both. Returns indexes to drop. */
+function rowConflictDrops(sections) {
+  const drop = new Set();
+  const n = (s) => new Set(s.evidenceUrls || []).size;
+  for (const [i, j] of rowConflicts(sections)) {
+    if (n(sections[i]) > n(sections[j])) drop.add(j);
+    else if (n(sections[j]) > n(sections[i])) drop.add(i);
+    else { drop.add(i); drop.add(j); }
+  }
+  return drop;
+}
+
 function cleanName(n) {
   return String(n).replace(/\s*\u2014\s*/g, ', ').replace(/\(\s*,\s*/g, '(').replace(/,\s*\)/g, ')').trim();
 }
@@ -394,6 +485,11 @@ function decideSection(original, claims, accepted) {
   if (!ok.some((c) => c.kind === 'name')) return { dropped: 'section name not supported' };
   if (!ok.some((c) => c.kind === 'verdict')) return { dropped: 'verdict not supported' };
   if (claims.some((c, i) => c.kind === 'nameRows' && accepted.get(i + 1) !== true)) return { dropped: 'rows in name not supported' };
+  // Fail closed (ship-check): rows written in the name need an ACCEPTED nameRows claim. A claim that
+  // was never built (no quote grounded) or a rejected rowRange no longer lets the rows through.
+  const nc = ok.find((c) => c.kind === 'name');
+  const shownName = cleanName((nc && nc.name) || original.name);
+  if (nameRowsClaimText(shownName, original.verdict, ok.some((c) => c.kind === 'rowRange') ? original.rowRange : undefined) && !ok.some((c) => c.kind === 'nameRows')) return { dropped: 'rows in name not supported' };
   let sentences = ok.filter((c) => c.kind === 'rationale').map((c) => c.sentence);
   // No rewritten sentence survived but a hazard did: the verified hazard note is the explanation.
   if (!sentences.length) sentences = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard.note.replace(/([^.!?])$/, '$1.'));
@@ -401,7 +497,7 @@ function decideSection(original, claims, accepted) {
   const has = (k) => ok.find((c) => c.kind === k);
   const nameClaim = ok.find((c) => c.kind === 'name');
   const out = { name: cleanName((nameClaim && nameClaim.name) || original.name) };
-  if (original.rowRange && has('rowRange')) out.rowRange = original.rowRange;
+  if (original.rowRange && has('rowRange') && cleanRowRange(original.rowRange)) out.rowRange = cleanRowRange(original.rowRange);
   if (original.bestRow && out.rowRange && has('bestRow')) out.bestRow = original.bestRow;
   out.verdict = original.verdict;
   out.verdictLabel = DEFAULT_LABEL[original.verdict];
@@ -434,7 +530,7 @@ function quoteHash(q) {
 }
 
 module.exports = {
-  stripSeatNumbers, nameRows, nameRowsClaimText,
+  stripSeatNumbers, nameRows, nameRowsClaimText, rowIndex, rowSpan, rowSet, cleanRowRange, sectionRows, seatBlock, rowConflicts, rowConflictDrops,
   VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, hazardType, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
   normalizeText, htmlToText, theaterNamePatterns, pageNamesTheater, sectionKeywords, selectPassages,
   wellFormed, cleanName, quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,

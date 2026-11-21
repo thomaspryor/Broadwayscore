@@ -1,7 +1,7 @@
 {
  "card": "BRO-8018",
  "snapshotSha": "dfb4c22c47fa7e7f",
- "generatedAt": "2026-11-21T22:45:36.786Z",
+ "generatedAt": "2026-11-21T22:59:42.633Z",
  "theaters": [
   {
    "theater": "Al Hirschfeld Theatre",
@@ -4626,8 +4626,8 @@
     },
     {
      "name": "Rear Orchestra (under overhang, rows K-R)",
-     "status": "KEPT",
-     "reason": null,
+     "status": "DROPPED",
+     "reason": "overlaps another section with a different verdict",
      "claims": [
       {
        "kind": "name",
@@ -17366,8 +17366,10 @@
   },
   {
    "theater": "Vivian Beaumont Theater",
-   "kept": true,
-   "problems": [],
+   "kept": false,
+   "problems": [
+    "fewer than 3 sections"
+   ],
    "models": {
     "rewrite": "gpt-5.6-terra",
     "verify": "gemini-3.8-flash"
@@ -17515,8 +17517,8 @@
     },
     {
      "name": "Orchestra Center Back",
-     "status": "KEPT",
-     "reason": null,
+     "status": "DROPPED",
+     "reason": "overlaps another section with a different verdict",
      "claims": [
       {
        "kind": "name",

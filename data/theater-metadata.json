@@ -901,7 +901,7 @@
           },
           {
             "name": "Left/Right Mezzanine (Rows A-H)",
-            "rowRange": "A-H (8 rows each)",
+            "rowRange": "A-H",
             "verdict": "solid",
             "verdictLabel": "Solid choice",
             "rationale": "Choose inside seats in rows A or B for the cleanest and most detailed side-mezzanine views. Avoid double-digit seats by the far aisle if you want the least angled view.",
@@ -1784,16 +1784,6 @@
               "https://www.tickpick.com/blog/barrymore-theatre-seating-chart/"
             ],
             "dataPoints": 2
-          },
-          {
-            "name": "Center Orchestra (Rows F-O)",
-            "verdict": "solid",
-            "verdictLabel": "Solid choice",
-            "rationale": "Choose Center Orchestra rows F through O for a great stage view without paying a hefty price.",
-            "evidenceUrls": [
-              "https://www.headout.com/blog/ethel-barrymore-theatre-seating-chart/"
-            ],
-            "dataPoints": 1
           },
           {
             "name": "Center Front Mezzanine (Rows A-C)",
@@ -5295,7 +5285,6 @@
           },
           {
             "name": "Center Orchestra Rows N-W",
-            "rowRange": "N-end",
             "verdict": "solid",
             "verdictLabel": "Solid choice",
             "isValuePick": true,
@@ -5519,7 +5508,7 @@
           },
           {
             "name": "Lower Boxes (A-D)",
-            "rowRange": "Boxes A-D",
+            "rowRange": "A-D",
             "verdict": "solid",
             "verdictLabel": "Solid choice",
             "rationale": "Choose a lower box if you enjoy a close side vantage point. Prefer Box B or D over A or C for a less extreme angle. Expect a side view that can miss some action, but enjoy movable, comfortable seats and exceptional legroom.",
@@ -6444,46 +6433,7 @@
       "seating": {
         "bestSeats": "The thrust stage offers excellent sightlines from most seats, providing an intimate viewing experience. Center orchestra seats provide the most direct view.",
         "avoidSeats": "Seats far to the side may offer a slightly obstructed view of certain stage areas.",
-        "accessibility": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only).",
-        "sections": [
-          {
-            "name": "Center Orchestra (Rows D-K)",
-            "rowRange": "D-K",
-            "verdict": "sweet-spot",
-            "verdictLabel": "Top pick",
-            "priceTier": "premium",
-            "rationale": "Choose Center Orchestra Rows D-K for the best overall combination of sight and clarity. These rows are far enough back for an overview while remaining close to the action. Pick Row H if legroom is your priority.",
-            "evidenceUrls": [
-              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/",
-              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
-              "https://seatplan.com/new-york/vivian-beaumont-theater/seating-plan/"
-            ],
-            "dataPoints": 3
-          },
-          {
-            "name": "Middle Orchestra (Rows L, P, O, K)",
-            "verdict": "solid",
-            "verdictLabel": "Solid choice",
-            "isValuePick": true,
-            "rationale": "Choose rows L, P, O, or K for a great view of the stage without a hefty price. Row P is one step up.",
-            "evidenceUrls": [
-              "https://www.headout.com/blog/vivian-beaumont-theatre-seating-chart/",
-              "https://www.lct.org/shows/uncle-vanya/seating-chart/"
-            ],
-            "dataPoints": 2
-          },
-          {
-            "name": "Loge Center Left/Center Right (Rows D-E)",
-            "rowRange": "D-E (Center Left / Center Right)",
-            "verdict": "solid",
-            "verdictLabel": "Solid choice",
-            "rationale": "Choose Rows D and E in Center Left or Center Right for amazing views at a lower cost. Avoid these rows if hearing is a concern, because seats farther back than Loge Row C are not recommended for hearing-impaired patrons.",
-            "evidenceUrls": [
-              "https://www.tickpick.com/blog/vivian-beaumont-theater-at-lincoln-center-interactive-seating-chart/"
-            ],
-            "dataPoints": 1
-          }
-        ]
+        "accessibility": "Orchestra accessible via elevator. Induction hearing loop for t-coil. Loge NOT accessible (stairs only)."
       },
       "parking": {
         "streetParking": "Street parking in the Lincoln Center area is extremely limited and difficult to find, especially during performance hours.",

@@ -130,7 +130,12 @@ async function adjudicateSection(theaterName, section, rules, clients) {
   const sources = sourcesFor(theaterName, section);
   if (sources.some((s) => s.missing)) return { status: 'UNKNOWN', reason: 'evidence not fetched yet' };
   const live = sources.filter((s) => s.namesTheater);
-  if (!live.length) return { status: 'DROPPED', reason: 'no cited page loads and names the theater', sources: sources.map((s) => ({ url: s.url, ok: !!s.text, namesTheater: !!s.namesTheater })) };
+  const srcLog = sources.map((s) => ({ url: s.url, ok: !!s.text, namesTheater: !!s.namesTheater }));
+  // Codex ship-check: a fetch outage must not become a permanent drop. Only pages that loaded and
+  // name another theater (or none) are evidence of absence; unloaded pages stay UNKNOWN until
+  // `fetch --retry-failed` or an explicit --accept-unfetchable.
+  if (!live.length && !sources.some((s) => s.text) && !arg('accept-unfetchable')) return { status: 'UNKNOWN', reason: 'no cited page could be fetched', sources: srcLog };
+  if (!live.length) return { status: 'DROPPED', reason: sources.some((s) => s.text) ? 'no cited page loads and names the theater' : 'cited pages unfetchable', sources: srcLog };
 
   const rewritePrompt = A.buildRewritePrompt({ theaterName, section, sources, allowedShowTitles: rules.allowed });
   let reply;
@@ -167,6 +172,22 @@ function countQuotes(reply) {
   return n;
 }
 
+/** One place decides a theater: row conflicts resolved, then UNKNOWN / keep rule / copy rules. */
+function decideTheater(results, rules) {
+  for (const r of results) if (r && r.status === 'KEPT' && r.section.rowRange) {
+    const rr = A.cleanRowRange(r.section.rowRange);
+    if (rr) r.section.rowRange = rr; else { r.section.rowRange = undefined; r.section.bestRow = undefined; }
+  }
+  const keptIdx = results.map((r, i) => (r && r.status === 'KEPT' ? i : -1)).filter((i) => i >= 0);
+  const drops = A.rowConflictDrops(keptIdx.map((i) => results[i].section));
+  for (const k of drops) { const r = results[keptIdx[k]]; r.status = 'DROPPED'; r.reason = 'overlaps another section with a different verdict'; r.section = undefined; }
+  const kept = results.filter((r) => r && r.status === 'KEPT').map((r) => r.section);
+  const unknown = results.filter((r) => !r || r.status === 'UNKNOWN').length;
+  const problems = unknown ? ['has UNKNOWN sections'] : A.theaterKeepProblems(kept);
+  if (!unknown) for (const k of kept) for (const c of A.copyProblems(k.name, { forbiddenTitles: rules.forbidden })) problems.push(`${k.name}: ${c}`);
+  return { kept, unknown, problems };
+}
+
 async function cmdRun() {
   const clients = require('./lib/dual-model-client');
   clients.spend.maxUsd = Number(arg('max-usd', 25));
@@ -186,9 +207,7 @@ async function cmdRun() {
       if (results[i] && results[i].status !== 'UNKNOWN' && results[i].name === s.name) return;
       results[i] = { name: s.name, ...(await adjudicateSection(t, s, rules, clients)) };
     });
-    const kept = results.filter((r) => r && r.status === 'KEPT').map((r) => r.section);
-    const unknown = results.filter((r) => !r || r.status === 'UNKNOWN').length;
-    const problems = unknown ? ['has UNKNOWN sections'] : A.theaterKeepProblems(kept);
+    const { kept, unknown, problems } = decideTheater(results, rules);
     fs.writeFileSync(file, JSON.stringify({ theater: t, snapshotSha: snapSha, models: { rewrite: clients.OPENAI_MODEL, verify: clients.GEMINI_MODEL }, ranAt: new Date().toISOString(), sections: results, theaterKept: !problems.length, theaterProblems: problems }, null, 1));
     console.log(`${t}: ${kept.length}/${sections.length} kept, ${unknown} unknown${problems.length ? ` -> theater blank (${problems.join('; ')})` : ''}  [$${clients.spend.usd.toFixed(2)}]`);
   }
@@ -230,10 +249,7 @@ async function cmdRecheckRows() {
       res.claims.push({ kind: 'nameRows', text, accepted: acc.get(1), why: acc.why ? acc.why.get(1) : 'no grounded evidence', evidence: evidence.map((e) => ({ url: e.url, quoteHash: A.quoteHash(e.quote), quote: e.quote })) });
       if (acc.get(1) !== true) { res.status = 'DROPPED'; res.reason = 'rows in name not supported'; res.section = undefined; dropped++; }
     });
-    const kept = r.sections.filter((x) => x.status === 'KEPT').map((x) => x.section);
-    const unknown = r.sections.filter((x) => x.status === 'UNKNOWN').length;
-    const problems = unknown ? ['has UNKNOWN sections'] : A.theaterKeepProblems(kept);
-    for (const k of kept) for (const c of A.copyProblems(k.name, { forbiddenTitles: rules.forbidden })) problems.push(`${k.name}: ${c}`);
+    const { problems } = decideTheater(r.sections, rules);
     r.theaterKept = !problems.length; r.theaterProblems = problems; r.recheckedAt = new Date().toISOString();
     fs.writeFileSync(path.join(RESULTS, `${slug(r.theater)}.json`), JSON.stringify(r, null, 1));
   }
@@ -279,9 +295,13 @@ function cmdReport() {
 }
 
 function cmdApply() {
-  const { sha: snapSha } = loadSnapshot();
+  const { data, sha: snapSha } = loadSnapshot();
   const res = loadResults(snapSha);
   if (!res.length) throw new Error('no results for this snapshot; run `run` first');
+  // Codex ship-check: a partial run (--theater subset, interrupted run) must not clear the theaters it never looked at.
+  const ran = new Set(res.map((r) => r.theater));
+  const notRun = theatersWithSections(data).filter((t) => !ran.has(t));
+  if (notRun.length) throw new Error(`refusing: no results for ${notRun.length} snapshot theater(s): ${notRun.join(', ')}`);
   const unknown = res.filter((r) => r.sections.some((s) => !s || s.status === 'UNKNOWN')).map((r) => r.theater);
   if (unknown.length) throw new Error(`refusing: UNKNOWN sections remain for ${unknown.join(', ')}`);
   const { validateSeatingSections } = require('./lib/seating-sections-validators');
