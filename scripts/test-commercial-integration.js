@@ -16,7 +16,7 @@
  *   1 - One or more tests failed
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const { spawn } = require('child_process');
 const path = require('path');
 

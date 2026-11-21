@@ -50,7 +50,7 @@
  *   IMPACT_ACCOUNT_SID, IMPACT_AUTH_TOKEN
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const FLAG = (() => {
   const idx = process.argv.indexOf('--flag');
   return idx >= 0 ? process.argv[idx + 1] : 'ticket-single-button';

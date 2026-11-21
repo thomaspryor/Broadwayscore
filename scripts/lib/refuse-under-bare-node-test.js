@@ -26,6 +26,10 @@
  *   2. the entry file (argv[1]) is not a *.test.{js,mjs,cjs,ts,mts,cts} file.
  * A script spawned BY a test file (parent is `node x.test.mjs`, execArgv
  * empty) or run directly (`node scripts/sd-parity-test.js`) is unaffected.
+ * An EXPLICIT `node --test scripts/x-test.js` is refused too (the runner
+ * child looks the same), so a real node:test suite must never load this: it
+ * would report green without running. Name such files *.test.* instead; the
+ * class test fails on a guarded file that imports node:test.
  *
  * Not covered: `node --test --test-isolation=none`, which imports every file
  * into the runner process itself (opt-in flag, not the bare default).
@@ -37,7 +41,7 @@
 
 const path = require('path');
 
-const TEST_FILE_RE = /\.test\.[cm]?[jt]s$/;
+const { TEST_FILE_RE } = require('./test-run-guard');
 const BARE_TEST_FLAG_RE = /(^|\s)--test(\s|$)/;
 
 function execArgvIsRunnerChild(execArgv) {

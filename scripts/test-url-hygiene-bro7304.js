@@ -1,4 +1,4 @@
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 require('./lib/cli-help').exitOnHelp(module);
 const assert = require('assert');
 const { normalizeUrl } = require('./lib/review-normalization');

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // BRO-7382: card VERIFY entry point. Forecasts (v1, v2, v3) must never be in a public tracked file; the guard test fails if v3 leaks.
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv)) { console.log('usage: node scripts/test-review-forecast-privacy-guard.js (runs the forecast privacy guard and v3 unit tests)'); process.exit(0); }
 const { spawnSync } = require('child_process');

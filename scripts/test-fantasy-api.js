@@ -13,7 +13,7 @@
  */
 
 'use strict';
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 
 // Default to a local dev server: this suite INSERTS entries and leagues, and
 // anon cannot delete them, so a run against production leaves "Test Team"

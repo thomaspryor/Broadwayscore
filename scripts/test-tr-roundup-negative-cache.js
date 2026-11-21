@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Tests the theatre.reviews negative cache against the real lib functions.
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');

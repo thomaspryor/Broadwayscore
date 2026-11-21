@@ -6,7 +6,7 @@
  * Run: GEMINI_API_KEY=... npx ts-node scripts/llm-scoring/test-gemini.ts
  */
 
-import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import { GeminiScorer } from './gemini-scorer';
 
 const TEST_REVIEW = `

@@ -17,7 +17,7 @@
  *      npx ts-node scripts/llm-scoring/test-ensemble.ts --2model
  */
 
-import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import { EnsembleReviewScorer } from './ensemble-scorer';
 import { buildScoringInput, ReviewInputData } from './input-builder';
 // eslint-disable-next-line @typescript-eslint/no-var-requires

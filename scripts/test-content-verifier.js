@@ -6,7 +6,7 @@
  * to validate its accuracy before integrating into production pipelines.
  */
 
-require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const fs = require('fs');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');

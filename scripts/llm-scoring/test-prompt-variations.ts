@@ -5,7 +5,7 @@
  * Tests 4 different prompting strategies on the same reviews to find the most accurate approach.
  */
 
-import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: exits 0 if the node --test runner picked this file up
 import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';

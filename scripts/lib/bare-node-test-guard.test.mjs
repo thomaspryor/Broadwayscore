@@ -38,6 +38,7 @@ const ALLOWLIST = new Map([
   ['scripts/lib/test-send-marker.js', 'library; no main block'],
   ['scripts/lib/test-yml-manifest-paths.js', 'library; no main block'],
   ['scripts/lib/test-yml-push-paths.js', 'library; no main block'],
+  ['scripts/test-show-ranks.ts', 'pure node:test suite (no I/O); guarding it would turn an explicit `node --test` of it green without running'],
   ['src/lib/test-fixture-host.ts', 'pure constant module for the Next app'],
   ['tests/e2e/helpers/test.ts', 'Playwright fixture module; throws outside Playwright, no side effects'],
   ['tests/e2e/helpers/ugc-test.ts', 'Playwright fixture module; throws outside Playwright, no side effects'],
@@ -58,7 +59,12 @@ function firstLoad(src) {
   return m ? m[0] : null;
 }
 
+const NODE_TEST_RE = /from\s+['"](node:)?test['"]|require\(\s*['"](node:)?test['"]\s*\)/;
+
 function guardProblem(src) {
+  if (NODE_TEST_RE.test(src)) {
+    return 'is a node:test suite: rename it to *.test.* (or allowlist it); the guard would make `node --test <file>` pass without running';
+  }
   const first = firstLoad(src);
   if (!/refuse-under-bare-node-test/.test(src)) return 'never loads scripts/lib/refuse-under-bare-node-test.js';
   if (!first || !/refuse-under-bare-node-test/.test(first)) {
@@ -100,6 +106,7 @@ test('allowlist has no stale entries', () => {
 
 test('red-then-green: the rule flags a missing, late or comment-only guard', () => {
   assert.match(guardProblem("const fs = require('fs');\n"), /never loads/);
+  assert.match(guardProblem("import './lib/refuse-under-bare-node-test.js';\nimport { test } from 'node:test';\n"), /node:test suite/);
   assert.match(guardProblem("const fs = require('fs');\nrequire('./lib/refuse-under-bare-node-test');\n"), /first require/);
   assert.match(guardProblem("// require('./lib/refuse-under-bare-node-test')\nconst fs = require('fs');\n"), /first require/);
   assert.match(guardProblem("import fs from 'fs';\nimport './lib/refuse-under-bare-node-test.js';\n"), /first require/);
