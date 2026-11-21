@@ -178,6 +178,12 @@ const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
 // 'auto' ever filed a tracker). Matches the acceptance bar the card was
 // filed against: no open condition should sit past notifyCount 14 untracked.
 const ESCALATION_NOTIFY_THRESHOLD = 14;
+// BRO-7934: the count rule alone meant ~14 weeks for a once-a-week digest line
+// (218 alerts open without a card on 2026-11-20, 45 of them past 14 days).
+// A digest incident that has stayed open this long with no tracker gets its
+// card whatever the notice count. Either rule promotes; the count rule stays
+// for fast-repeating conditions.
+const ESCALATION_OPEN_DAYS = 7;
 
 // BRO-4487 — an 'auto' alert is a CONDITION, not a task. Measured 2026-10-01:
 // 476 machine-filed High/Urgent cards ever, 71 completed; 25 open cards whose
@@ -205,10 +211,20 @@ let sharedClockReleases = 0;
 // sighting held. Same rule as digest-autofix.js GATE_SLACK_HOURS.
 const DAILY_RUN_SLACK_HOURS = 12;
 
-function incidentContinues(existing, nowMs) {
+function incidentContinues(existing, nowMs, gapHours = INCIDENT_GAP_RESET_HOURS) {
   if (!existing || existing.status !== 'open') return false;
   const lastSeenMs = Date.parse(existing.lastSeen || '');
-  return Number.isFinite(lastSeenMs) && (nowMs - lastSeenMs) / 3600000 <= INCIDENT_GAP_RESET_HOURS;
+  return Number.isFinite(lastSeenMs) && (nowMs - lastSeenMs) / 3600000 <= gapHours;
+}
+
+// BRO-7934: a digest condition re-notifies once per cooldown (default 7 days),
+// so the 96h gap above would restart its incident clock on every call and the
+// 7-day age rule could never fire. Digest incidents tolerate one full cooldown
+// between sightings (plus the daily-run slack).
+function incidentGapHours(disposition, cooldownHours) {
+  const c = Number(cooldownHours);
+  if (disposition !== 'digest' || !Number.isFinite(c)) return INCIDENT_GAP_RESET_HOURS;
+  return Math.max(INCIDENT_GAP_RESET_HOURS, c + DAILY_RUN_SLACK_HOURS);
 }
 
 /**
@@ -216,9 +232,9 @@ function incidentContinues(existing, nowMs) {
  * that was resolved, never seen, or not seen for INCIDENT_GAP_RESET_HOURS
  * starts a new incident now.
  */
-function currentIncidentOpenedAt(existing, nowMs) {
+function currentIncidentOpenedAt(existing, nowMs, gapHours = INCIDENT_GAP_RESET_HOURS) {
   const nowIso = new Date(nowMs).toISOString();
-  if (!incidentContinues(existing, nowMs)) return nowIso;
+  if (!incidentContinues(existing, nowMs, gapHours)) return nowIso;
   return existing.incidentOpenedAt || existing.firstSeen || nowIso;
 }
 
@@ -369,7 +385,15 @@ function decideDigestEscalation({ conditionKey, existing, notifyCount, now, thre
     // BRO-4487: a deferred 'auto' condition files its card once the incident
     // has been open DEFERRED_AUTO_FILE_AFTER_HOURS, whatever the count.
     if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now, fileAfterHours, firstSeen)) return { action: 'promote', reason: 'age' };
-    return { action: notifyCount > threshold ? 'promote' : 'normal' };
+    if (notifyCount > threshold) return { action: 'promote' };
+    // BRO-7934: age rule. An open incident (see currentIncidentOpenedAt: a
+    // resolved or long-unseen condition restarts the clock) older than
+    // ESCALATION_OPEN_DAYS is promoted on the call after it crosses the line.
+    if (existing && existing.status === 'open' && Number.isFinite(now)) {
+      const opened = Date.parse(existing.incidentOpenedAt || existing.firstSeen || '');
+      if (Number.isFinite(opened) && (now - opened) / 3600000 >= ESCALATION_OPEN_DAYS * 24) return { action: 'promote', reason: 'open-age' };
+    }
+    return { action: 'normal' };
   }
   // BRO-3030 pre-mortem P0: paid-usage families are never silenced. They are
   // still promoted+tracked above (that is the escalation this card exists
@@ -1071,7 +1095,7 @@ async function routeAlert(opts) {
   // cards are worked within minutes (red-first) and are never deferred.
   const fileAfterHours = Number(deferFilingHours);
   const deferAuto = disposition === 'auto' && !dispatchAtFiling && Number.isFinite(fileAfterHours) && fileAfterHours > 0;
-  const incidentOpenedAt = currentIncidentOpenedAt(existing, nowMs);
+  const incidentOpenedAt = currentIncidentOpenedAt(existing, nowMs, incidentGapHours(disposition, cooldownHours));
   // A new incident of a deferred condition must not inherit the previous
   // incident's tracker: resolveCondition() keeps linearIdentifier, so without
   // this a recurrence reads as "already tracked" and never gets a card
@@ -1575,6 +1599,7 @@ module.exports = {
   isNeverQuietCondition,
   NEVER_QUIET_CONDITION_RE,
   ESCALATION_NOTIFY_THRESHOLD,
+  ESCALATION_OPEN_DAYS,
   queueDigestLine,
   drainDigestQueue,
   peekDigestQueue,

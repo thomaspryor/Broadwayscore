@@ -1291,6 +1291,55 @@ test('decideDigestEscalation: pure boundary — promotes at notifyCount>14, not 
   }
 });
 
+// ── BRO-7934: a digest incident open 7+ days gets its card regardless of count ──
+test('decideDigestEscalation: age rule — untracked open incident promotes at 7 days, not before; tracked never re-promotes by age', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation, ESCALATION_OPEN_DAYS } = router;
+    assert.equal(ESCALATION_OPEN_DAYS, 7);
+    const now = Date.now();
+    const ago = (d) => new Date(now - d * 86400000).toISOString();
+    const row = (d, extra = {}) => ({ status: 'open', incidentOpenedAt: ago(d), firstSeen: ago(d), ...extra });
+    // weekly line: notifyCount is only 2, but the incident is 8 days old
+    assert.deepEqual(decideDigestEscalation({ existing: row(8), notifyCount: 2, now }), { action: 'promote', reason: 'open-age' });
+    assert.equal(decideDigestEscalation({ existing: row(6.9), notifyCount: 2, now }).action, 'normal');
+    // 45-day-old row from the 2026-11-20 audit shape
+    assert.equal(decideDigestEscalation({ existing: row(45), notifyCount: 7, now }).action, 'promote');
+    // resolved rows do not promote by age
+    assert.equal(decideDigestEscalation({ existing: row(30, { status: 'resolved' }), notifyCount: 2, now }).action, 'normal');
+    // already tracked: age never re-promotes
+    assert.equal(decideDigestEscalation({ existing: row(30, { linearIdentifier: 'BRO-1', lastSurfacedAt: ago(0) }), notifyCount: 2, now }).action, 'quiet');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a weekly-cooldown digest row open 8 days with 2 notices is carded on its next sighting', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    const ago = (d) => new Date(Date.now() - d * 86400000).toISOString();
+    const ledger = router.loadLedger();
+    ledger.conditions['test:weekly-age'] = {
+      status: 'open', disposition: 'digest', title: 'Weekly line', firstSeen: ago(8), incidentOpenedAt: ago(8),
+      lastSeen: ago(7.1), lastNotifiedAt: ago(7.1), lastSurfacedAt: ago(7.1), notifyCount: 2,
+    };
+    fs.writeFileSync(path.join(tmpDir, "alert-ledger.json"), JSON.stringify(ledger));
+    const r = await router.routeAlert({ conditionKey: 'test:weekly-age', title: 'Weekly line', description: 'd', disposition: 'digest' });
+    assert.equal(r.action, 'auto', 'promoted by age on notice 3');
+    assert.equal(calls.createLinearIssue.length, 1);
+    assert.equal(router.loadLedger().conditions['test:weekly-age'].linearIdentifier, 'BRO-999');
+    // control: same row only 3 days old is NOT carded (cooldown 0 so it reaches the escalation check)
+    const l2 = router.loadLedger();
+    l2.conditions['test:young'] = { status: 'open', disposition: 'digest', title: 'Young', firstSeen: ago(3), incidentOpenedAt: ago(3), lastSeen: ago(2), notifyCount: 2 };
+    fs.writeFileSync(path.join(tmpDir, "alert-ledger.json"), JSON.stringify(l2));
+    const y = await router.routeAlert({ conditionKey: 'test:young', title: 'Young', description: 'd', disposition: 'digest', cooldownHours: 0 });
+    assert.notEqual(y.action, 'auto');
+    assert.equal(calls.createLinearIssue.length, 1);
+  } finally {
+    restore();
+  }
+});
+
 test('decideDigestEscalation: pure — already-tracked stays quiet inside the resurface window, resurfaces once it elapses', () => {
   const { router, restore } = loadRouterWithFakes();
   try {
