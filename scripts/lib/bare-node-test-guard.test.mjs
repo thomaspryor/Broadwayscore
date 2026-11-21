@@ -60,6 +60,6 @@ test('guard exits 0 under node --test for a live script, without running it', ()
     assert.equal(d.status, 0);
     assert.equal(fs.existsSync(path.join(tmp, 'RAN')), true, 'direct run must still execute');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   }
 });
