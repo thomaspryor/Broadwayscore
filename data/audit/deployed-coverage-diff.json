@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T17:42:04.454Z",
+  "generatedAt": "2026-11-21T18:19:13.378Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,20 +11,20 @@
   },
   "shows": [
     {
-      "showId": "orlando-off-west-end-2026",
-      "title": "Orlando: A Pornobiography",
-      "openingDate": "2026-11-10",
+      "showId": "buena-vista-social-club-tour-2026",
+      "title": "Buena Vista Social Club",
+      "openingDate": "2026-09-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.99 vs local 79.39 (Δ0.4)"
+          "detail": "deployed cs 84.43 vs local 85.23 (Δ0.8)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-21T17:41:59.927Z"
+      "localCount": 7,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-21T18:19:10.062Z"
     }
   ],
   "persistentDefective": 0,

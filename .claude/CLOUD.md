@@ -36,7 +36,7 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 
 **If one fails with "Unknown skill"** (sessions started with `create_session`, intermittently): Read `.claude/commands/<name>.md` and follow it fully by hand. The Stop hook counts that read after the failed call, never the failed call, and refuses a `NO-SHIP-CHECK`/`NO-WHAT-ELSE`/`NO-WRAP-UP` whose reason is only that the command did not load (BRO-5068).
 
-Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here; its Codex leg runs in cloud too: `bash scripts/codex/ensure-cli.sh` installs the CLI and restores the stored login (BRO-7927), and a `MISSING` from it is a degraded review the coverage banner must name, never the normal case.
+Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here; its Codex leg runs in cloud too: `bash scripts/codex/ensure-cli.sh` installs the CLI and restores the stored login (BRO-7927), and a `MISSING` from it is a degraded review the coverage banner must name, never the normal case. Gemini reads the code too in `/plan-review` and `/ship-check`: `node scripts/gemini/review.js` runs the Gemini CLI read-only (policy file, tree check, spend log; BRO-7987).
 
 ## Landing (the owner never merges)
 

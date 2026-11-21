@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T18:02:01.636Z",
+  "timestamp": "2026-11-21T18:17:40.436Z",
   "stats": {
-    "totalReviews": 83689,
-    "alreadyFlagged": 22416,
+    "totalReviews": 83712,
+    "alreadyFlagged": 22419,
     "dateGuardCatches": 235,
     "directorMismatch": 3858,
-    "tvFilmSignals": 2400,
-    "londonSignals": 3931,
+    "tvFilmSignals": 2401,
+    "londonSignals": 3932,
     "offBroadwaySignals": 780,
     "yearMismatch": 394,
-    "noPublishDate": 8239
+    "noPublishDate": 8244
   },
   "findings": [
     {
@@ -57968,6 +57968,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"phylicia rashad\" from purpose-2025"
+        }
+      ]
+    },
+    {
+      "showId": "pygmalion-off-broadway-2025",
+      "file": "theater-life--ellis-nassour.json",
+      "score": null,
+      "publishDate": "2025-10-23",
+      "url": "https://theaterlife.com/pygmalion-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -122876,6 +122890,20 @@
     },
     {
       "showId": "my-night-with-reg-west-end-2015",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": "2015-01-24",
+      "url": "https://www.britishtheatre.com/ar/posts/review-my-night-with-reg-apollo-theatre-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "my-night-with-reg-west-end-2015",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 89,
       "publishDate": "2015-01-27",
@@ -147104,7 +147132,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2025-01-10",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14268825/PATRICK-MARMION-reviews-Titanique-Criterion-Theatre-London-Titanic-fun-Celines-doppelganger.html",
       "findings": [

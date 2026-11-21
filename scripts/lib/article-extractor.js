@@ -462,6 +462,31 @@ function extractLsaBody(html) {
 }
 
 /**
+ * British Theatre (britishtheatre.com): the review is the <p> prose inside `<div id="article-body">`. The generic
+ * pass also keeps the site headline block above it ("Multiple article boundaries" on White Christmas, BRO-6487),
+ * so read only that div. Null when the div or enough prose is missing (callers fall back to the generic pass).
+ */
+function extractBritishTheatreBody(html) {
+  const open = /<div\b[^>]*\bid=(?:"article-body"|'article-body')[^>]*>/i.exec(html);
+  if (!open) return null;
+  let depth = 1;
+  const tagRe = /<(\/?)div\b[^>]*>/gi;
+  tagRe.lastIndex = open.index + open[0].length;
+  let end = -1, m;
+  while ((m = tagRe.exec(html))) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) { end = m.index; break; }
+  }
+  const inner = html.slice(open.index + open[0].length, end < 0 ? undefined : end);
+  let paras = [...inner.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map((x) => stripHtml(x[1])).filter((t) => t.length > 40 && /[a-z]/.test(t));
+  // The review ends at the author line ("X is a contributor at British Theatre, ..."), then the newsletter box and related headlines.
+  const tail = paras.findIndex((t) => /\bis (?:a|an|the) [a-z ]{0,30}(?:contributor|editor|writer|critic|reviewer) (?:at|for|of) British Theatre\b/i.test(t) || /^Get the latest theatre news/i.test(t) || /Oops! We couldn.t add your email/i.test(t));
+  if (tail >= 0) paras = paras.slice(0, tail);
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * CurtainUp (curtainup.com) — BRO-6761. 1990s-style table layout: no container
  * div, the review is bare text between the last layout </table> (the show-photo
  * "pic" table) and the "credit" table (cast / dates / "Reviewed by ..."). Every
@@ -1386,6 +1411,11 @@ function extractArticleTextUnchecked(html, hostname, criticHint, { outletOnly = 
     if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
+  if (host.includes('britishtheatre.com')) {
+    const btText = extractBritishTheatreBody(html);
+    if (btText) return btText;
+  }
+
   if (host.includes('curtainup.com')) {
     const cuText = extractCurtainUpBody(html);
     if (cuText) return cuText;
@@ -1547,7 +1577,7 @@ const OUTLET_BRANCH_HOSTS = [
   'talkinbroadway.com', 'wsj.com', 'variety.com', 'deadline.com', 'hollywoodreporter.com',
   'lavocedinewyork.com', 'nysun.com', 'broadwayworld.com', 'thestage.co.uk', 'thetimes.co.uk',
   'thetimes.com', 'newyorker.com', 'lightingandsoundamerica.com', 'curtainup.com',
-  'theatreweekly.com', 'theartsdesk.com', 'stagebuddy.com', 'dailymail.',
+  'theatreweekly.com', 'theartsdesk.com', 'stagebuddy.com', 'dailymail.', 'britishtheatre.com',
 ];
 
 /**
@@ -1786,4 +1816,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues, extractArcFusionBody, extractStageBody };
+module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues, extractArcFusionBody, extractStageBody, extractBritishTheatreBody };
