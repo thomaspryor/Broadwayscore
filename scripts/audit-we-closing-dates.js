@@ -356,13 +356,10 @@ async function main() {
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.extracted} (+${e.delta}d) [${e.urlSource}]`);
   for (const n of newClosings) console.log(`  NEW  ${n.id}: null → ${n.extracted} [${n.urlSource}]`);
-  for (const a of ambiguous) {
-    if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
-      console.log(`  AMB  ${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`);
-    } else {
-      console.log(`  AMB  ${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
-    }
-  }
+  const describeAmbiguous = a => (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+    ? `${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`
+    : `${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
+  for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
   for (const e of errors) console.log(`  ERR  ${e.id}: ${e.reason}`);
 
   const changed = extensions.filter(e => !e.skipped).length;
@@ -373,7 +370,7 @@ async function main() {
 
   if (ambiguous.length > 0) {
     await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates', {
-      summary: ambiguous.map(a => `• ${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`).join('\n'),
+      summary: ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n'),
     });
   }
 
