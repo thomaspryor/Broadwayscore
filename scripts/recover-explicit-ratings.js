@@ -566,14 +566,24 @@ async function fetchGuardianRatings(reviews) {
 
 // ---------------------------------------------------------------------------
 // Theater Life WP API helper
+const TL_MAX_CONSECUTIVE_FAILURES = 3;
 // ---------------------------------------------------------------------------
 async function fetchTheaterLifeRatings(reviews) {
   let recovered = 0;
   const toProcess = LIMIT > 0 ? reviews.slice(0, LIMIT) : reviews;
+  // theaterlife.com times out from GitHub runners: the 2026-11-21 run spent
+  // 70 minutes on 129 timeouts and recovered nothing (BRO-7928). Stop after a
+  // few in a row; phase 1 still reads the footer from stored text.
+  let consecutiveFailures = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i, 2)) break;
+    if (consecutiveFailures >= TL_MAX_CONSECUTIVE_FAILURES) {
+      console.log(`    theaterlife.com unreachable (${consecutiveFailures} failures in a row); skipping the other ${toProcess.length - i}`);
+      stats.theaterLifeUnreachable = true;
+      break;
+    }
     recordAttempt(review);
     try {
       // Extract slug from URL
@@ -622,9 +632,11 @@ async function fetchTheaterLifeRatings(reviews) {
           review.recovered = true;
         }
       }
+      consecutiveFailures = 0;
     } catch (err) {
       console.log(`    [${i + 1}/${toProcess.length}] ✗ ${review.showId}: ${err.message}`);
       stats.errors++;
+      consecutiveFailures++;
     }
 
     // Rate limit: 500ms (WP API is slower)

@@ -99,3 +99,30 @@ test('footerStars treats straight and curly apostrophes as the same (BRO-7928)',
   assert.equal(footerStars("Photo credit.\nA Doll’s House, Part 2 *** 1/2 John Golden Theatre", ["A Doll's House, Part 2"]), '3.5/5 stars');
   assert.equal(footerStars("Photo credit.\nA Doll's House, Part 2 ** Golden", ['A Doll’s House, Part 2']), '2/5 stars');
 });
+
+test("a combined column's title star is read per show, not the last group (BRO-7928)", () => {
+  // Live post title of the Time and the Conways review (2017). The end-of-title
+  // match used to give all three reviews A Clockwork Orange's 2 stars.
+  const title = 'Time and the Conways ***1/2 &#8211; Measure for Measure**1/2 &#8211; A Clockwork Orange **';
+  const pick = (show) => resolveTheaterLifeStars({ title, text: '', showTitles: [show] }).rating;
+  assert.equal(pick('Time and the Conways'), '3.5/5 stars');
+  assert.equal(pick('Measure for Measure'), '2.5/5 stars');
+  assert.equal(pick('A Clockwork Orange'), '2/5 stars');
+  assert.equal(pick('Hamlet'), null, 'no segment names this show: no guess');
+  assert.equal(resolveTheaterLifeStars({ title, text: '' }).rating, null, 'no show title: no guess');
+  assert.equal(pick(''), null);
+  // A single-show title is unchanged.
+  assert.equal(resolveTheaterLifeStars({ title: 'Wish You Were Here ***1/2', text: '', showTitles: ['Wish You Were Here'] }).rating, '3.5/5 stars');
+});
+
+test('combined titles split by commas, with subtitles, and a one-show title with an extra segment (BRO-7928)', () => {
+  const pick = (title, show) => resolveTheaterLifeStars({ title, text: '', showTitles: [show] }).rating;
+  const lightning = 'Scotland, PA ***, Little Shop of Horrors ****, Forbidden Broadway: The Next Generation ***, The Lightning Thief: The Percy Jackson Musical **';
+  assert.equal(pick(lightning, 'The Lightning Thief'), '2/5 stars');
+  assert.equal(pick(lightning, 'Little Shop of Horrors'), '4/5 stars');
+  assert.equal(pick(lightning, 'Scotland, PA'), '3/5 stars');
+  assert.equal(pick('The Shark Is Broken ***, Back to the Future: The Musical ***', 'Back to the Future: The Musical'), '3/5 stars');
+  assert.equal(pick('Sunday in the Park with George **** &#8211; Linda ***1/2', 'Sunday in the Park with George'), '4/5 stars');
+  assert.equal(pick('Sunday in the Park with George **** &#8211; Linda ***1/2', 'Linda'), '3.5/5 stars');
+  assert.equal(pick('Clara- Sex, Love and Classical Music *** – Mrs. Schumann Speaks Out', 'Clara: Sex, Love and Classical Music'), '3/5 stars');
+});

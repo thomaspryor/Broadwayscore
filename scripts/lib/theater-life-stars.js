@@ -105,8 +105,32 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
     const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? titleRating : footer;
     return { cleanTitle, rating, source: 'wp-api-footer' };
   }
-  if (titleRating) return { cleanTitle, rating: titleRating, source: 'wp-api-title' };
+  // A combined column's title carries one star group per show ("Time and the
+  // Conways ***1/2 – Measure for Measure**1/2 – A Clockwork Orange **"), and
+  // the end-of-title match reads the LAST show's group. Use only the segment
+  // naming this show (BRO-7928: the Conways review got A Clockwork Orange's 2).
+  const titleOnly = /[*★]/.test(cleanTitle) ? segmentTitleStars(title, shows) : titleRating;
+  if (titleOnly) return { cleanTitle, rating: titleOnly, source: 'wp-api-title' };
   return { cleanTitle, rating: null, source: null };
+}
+
+/**
+ * The star group that follows this show's name in a title listing several
+ * shows, each with its own stars ("A ***1/2 – B**1/2 – C **", "Scotland, PA
+ * ***, The Lightning Thief: The Percy Jackson Musical **"). Each segment is
+ * the text before a star group; sameTitle lets a subtitle follow the name.
+ * Null when no segment names a show, or two named segments disagree.
+ */
+function segmentTitleStars(title, shows) {
+  const found = new Set();
+  const re = new RegExp(`([^*★]*?)\\s*${STARS}${FRACTION}`, 'g');
+  const t = decodeHtmlEntities(String(title || ''));
+  let m;
+  while ((m = re.exec(t)) !== null) {
+    const name = m[1].replace(/^[\s,;|–—-]+/, '').replace(/[\s,;|–—:-]+$/, '');
+    if (name && shows.some(s => sameTitle(s, name))) found.add(toRating(m[2], m[3]));
+  }
+  return found.size === 1 ? [...found][0] : null;
 }
 
 /**
@@ -126,4 +150,4 @@ function footerRatingFromStoredText(data) {
   return { originalScore: `${total}/5 stars`, normalizedScore: Math.round((total / 5) * 100), source: 'wp-api-footer' };
 }
 
-module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, footerRatingFromStoredText, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };
+module.exports = { parseTitleStars, segmentTitleStars, footerStars, resolveTheaterLifeStars, footerRatingFromStoredText, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };
