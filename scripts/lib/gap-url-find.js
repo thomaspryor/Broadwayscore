@@ -639,6 +639,12 @@ function urlFindPriority(tierOf) {
     // BRO-7702: the major outlets under a full-text floor take the paid slots first.
     const ma = isFloorGap(a); const mb = isFloorGap(b);
     if (ma !== mb) return ma ? -1 : 1;
+    // BRO-7922: never-tried (0) before tried, least recently tried first. Without
+    // this the same top-N by tier/date were retried every night after the
+    // cooldown (each ending no_evidence) and 35 floor gaps behind them were
+    // never attempted for 28+ days.
+    const la = Number(a.urlFindLastTryMs) || 0; const lb = Number(b.urlFindLastTryMs) || 0;
+    if (la !== lb) return la - lb;
     if (t(a) !== t(b)) return t(a) - t(b);
     if (d(a) !== d(b)) return d(b) - d(a);
     return String(a.reviewKey).localeCompare(String(b.reviewKey));
