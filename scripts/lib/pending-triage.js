@@ -23,6 +23,16 @@ const PLAYBILL_ARTICLE_RE = /^https?:\/\/(?:www\.)?playbill\.com\/article\//i;
 // 0 scored urls match; a "first-look-theatre-..." review slug is left alone.
 const ANNOUNCEMENT_SLUG_RE = /(?:^|[-/])(?:production-(?:images|photos|shots)-(?:released|revealed)|first-look-(?:at|photos|images|pictures))(?:-|\/|$)/i;
 
+// Second batch (2026-11-21): the drain promoted two Times interviews and a Deadline closing-date story.
+// Over the 49,794 scored urls: 0 have an "interview" token in the final slug without "review(s)"; 1 has
+// "closing-date" (itself a news article: independent aspects-of-love-closing-date-refund).
+const INTERVIEW_SLUG_RE = /(?:^|-)interview(?:-|$)/i;
+const CLOSING_DATE_SLUG_RE = /(?:^|-)closing-date(?:-|$)/i;
+const REVIEW_TOKEN_RE = /(?:^|-)reviews?(?:-|$)/i;
+function finalSlug(url) {
+  try { return new URL(String(url)).pathname.split('/').filter(Boolean).pop() || ''; } catch { return ''; }
+}
+
 function hostKey(url) {
   try { return new URL(String(url)).hostname.replace(/^www\./i, '').toLowerCase(); } catch { return null; }
 }
@@ -35,13 +45,23 @@ function heldHosts(heldIndex) {
 }
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { isArticleOutsideProductionWindow } = require('./date-guard');
+const { urlYearConflict } = require('./url-year-guard');
 
-/** host+path, lowercased, no www., no trailing slash, no query/hash. Pure. */
+/**
+ * The canonical same-article key (combined-review-utils.normalizeArticleUrl): tracking params dropped, an id
+ * query kept, so query-routed archives (LSA story.asp?ID=, post.cfm?id=) do not collapse into one key (BRO-6682).
+ */
 function normalizeReviewUrl(url) {
-  try {
-    const u = new URL(String(url || '').trim());
-    return `${u.hostname.replace(/^www\./i, '').toLowerCase()}${u.pathname.replace(/\/+$/, '').toLowerCase()}`;
-  } catch { return null; }
+  return require('./combined-review-utils').normalizeArticleUrl(url);
+}
+
+/** The show title's distinctive words all appear in the url (a double review or roundup naming this show too). Pure. */
+function urlNamesShow(url, show) {
+  const words = String((show && show.title) || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/['\u2019]/g, '').split(/[^a-z0-9]+/).filter((w) => w.length >= 3 && !['the', 'and', 'musical', 'play'].includes(w));
+  if (!words.length) return false;
+  const u = String(url || '').toLowerCase().replace(/['\u2019]/g, '');
+  return words.every((w) => new RegExp(`(?:^|[^a-z0-9])${w}(?:[^a-z0-9]|$)`).test(u));
 }
 
 /**
@@ -81,6 +101,16 @@ function triagePendingStub(data, ctx = {}) {
   const listing = listingPageUrlReason(url);
   if (listing) return { verdict: 'junk', reason: `${listing} URL, not a review` };
   if (isBlockedReviewUrl(url)) return { verdict: 'junk', reason: 'aggregator/listing/feature URL, not an outlet review' };
+  const slug = finalSlug(url);
+  if (!REVIEW_TOKEN_RE.test(slug) && INTERVIEW_SLUG_RE.test(slug)) return { verdict: 'junk', reason: 'interview, not a review' };
+  if (!REVIEW_TOKEN_RE.test(slug) && CLOSING_DATE_SLUG_RE.test(slug)) return { verdict: 'junk', reason: 'closing-date news story, not a review' };
+  // A show with no dates cannot use the production window; its id year against a /YYYY/ url year still settles
+  // a 2-years-off article (observer.com/2024/12/a-complete-unknown-review filed under myth-off-broadway-2026).
+  if (ctx.show && !ctx.show.openingDate && !ctx.show.previewsStartDate) {
+    const idYear = Number((String(ctx.showId || '').match(/-(\d{4})$/) || [])[1]);
+    const bad = idYear ? urlYearConflict(url, idYear, ctx.show.title) : null;
+    if (bad) return { verdict: 'junk', reason: `url year ${bad} is more than a year from the show's ${idYear} (show has no dates)` };
+  }
   if (PLAYBILL_ARTICLE_RE.test(url)) return { verdict: 'junk', reason: 'Playbill news article, not a review' };
   if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
@@ -92,6 +122,9 @@ function triagePendingStub(data, ctx = {}) {
   if (held && held.size) {
     if (held.has(ctx.showId)) return { verdict: 'duplicate', reason: 'url already scored for this show', heldBy: [ctx.showId] };
     const others = [...held].sort();
+    // 425 scored urls belong to 2+ shows (NYT double reviews, Times roundups): a url that names this show too is
+    // a candidate, not another show's review.
+    if (urlNamesShow(url, ctx.show)) return { verdict: 'candidate', reason: null, heldBy: others };
     return { verdict: 'junk', reason: `url already scored under ${others.slice(0, 3).join(', ')}, not a review of this production`, heldBy: others };
   }
   // A date the stub already carries (site search / aggregator) settles a
@@ -120,7 +153,7 @@ function bylineIsShowCreator(byline, show) {
 
 /** A stub's stored date as YYYY-MM-DD, or null when it is absent, unparseable or names no 4-digit year. Pure. */
 function stubDateIso(pd) {
-  const str = String(pd || '').trim();
+  const str = String(pd || '').trim().replace(/(\d)(?:st|nd|rd|th)\b/gi, '$1'); // "August 12th, 2021"
   if (!str || !/(?:^|\D)(?:19|20)\d{2}(?:\D|$)/.test(str)) return null;
   const t = Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(str) ? `${str}T12:00:00Z` : str);
   if (!Number.isFinite(t)) return null;
@@ -136,4 +169,4 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

@@ -150,3 +150,11 @@ test('BRO-8023: unsettled _pending candidates count as never-attempted gaps and 
   assert.equal(w.fail, true, 'an outlet with only pending candidates is below floor with unattempted gaps');
   assert.equal(v.ok, false);
 });
+
+test('BRO-8023: pending candidates the drain already fetched count as attempted, not unattempted', () => {
+  const v = F.evaluateFloors({ rates: { wsj: { n: 10, pct: 100, floor: 98 } }, gaps: [], attemptedKeys: new Set(), pendingCandidates: { wsj: { n: 2, attempted: 2 } } });
+  const w = v.outlets.find((x) => x.outlet === 'wsj');
+  assert.equal(w.unattempted, 0);
+  assert.equal(w.below, true);
+  assert.equal(w.fail, false, 'below floor but every pending candidate was worked');
+});

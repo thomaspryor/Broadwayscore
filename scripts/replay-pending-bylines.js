@@ -308,7 +308,7 @@ function loadHeldIndex() {
     try {
       const r = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/reviews.json'), 'utf8'));
       _heldIndexMemo = pendingTriage.buildHeldUrlIndex(r.reviews || r);
-    } catch (e) { console.log(`  held-url index unavailable (${e.message}) — cross-show check skipped`); _heldIndexMemo = new Map(); }
+    } catch (e) { console.log(`  held-url index unavailable (${e.message}) — cross-show and host checks skipped`); _heldIndexMemo = null; return null; }
   }
   return _heldIndexMemo;
 }
@@ -376,6 +376,17 @@ const RSS_IDENTITY_FETCH_STRIKES = 3;
  * e.g. paul-mccartney-upcoming-beatles-biopics. Numeric ids and short slugs
  * carry no evidence either way (BRO-7078).
  */
+/**
+ * BRO-8023: record that the drain fetched this stub and could not promote it (first time only, so a weekly
+ * re-try does not churn the file). The floors report counts such a stub as an attempted gap, not a never-worked one.
+ */
+function stampFetchAttempt(filepath, data, dry, nowIso, why) {
+  if (dry || !data || data.pendingFetchAttemptedAt) return;
+  data.pendingFetchAttemptedAt = nowIso;
+  data.pendingFetchAttemptResult = why;
+  try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not stamp fetch attempt: ${e.message}`); }
+}
+
 function isDescriptiveNonReviewSlug(url) {
   let parts;
   try { parts = new URL(String(url || '')).pathname.split('/').filter(Boolean); } catch { return false; }
@@ -456,7 +467,8 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -643,6 +655,7 @@ async function processShow(showId, deps = {}) {
       html = result?.content;
       if (!html) {
         console.log(`  [${file}] fetch returned no content — keep`);
+        stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-content');
         if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'fetch returned no content');
         kept++;
         continue;
@@ -690,6 +703,7 @@ async function processShow(showId, deps = {}) {
     } catch (e) {
       const msg = String((e && e.message) || e).slice(0, 80);
       console.log(`  [${file}] fetch failed: ${msg} — keep`);
+        stampFetchAttempt(filepath, data, dry, now().toISOString(), 'fetch-failed');
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, `fetch failed: ${msg}`);
       kept++;
       continue;
@@ -728,6 +742,7 @@ async function processShow(showId, deps = {}) {
         noteUnrecoverable(file, filepath, data, 'no byline in page and no recoverable body');
       } else {
         console.log(`  [${file}] no byline detected — keep in pending`);
+        if (!data.pendingRefetchedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-byline');
         // A rebuilt body is still progress: persist it so the next run (or a
         // human) starts from the text, not an empty stub.
         if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
@@ -910,7 +925,8 @@ if (require.main === module) {
       : ids;
     // --skip-empty-body-retry (BRO-7004): the poller's per-show press-night drain shares timeBudget
     // with this phase, so a retry pass could spend the whole budget before the first _pending stub.
-    if (!args.includes('--skip-empty-body-retry') && !triageOnly) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
+    // A shard runs beside its siblings: the shared retry phase would fetch the same stubs n times (BRO-8023).
+    if (!args.includes('--skip-empty-body-retry') && !triageOnly && !shardArg) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
       cooldownHours: showArg || showsArg ? 1 : 6,
       budget: createRunBudget(Math.min(2, timeBudget.minutes || 2)) });
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
