@@ -41450,7 +41450,7 @@
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-19T17:00:14.718Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-21T15:27:05.090Z",
+      "lastSeen": "2026-11-21T15:36:17.376Z",
       "lastNotifiedAt": "2026-11-20T17:01:52.989Z",
       "lastSurfacedAt": "2026-11-20T17:01:52.989Z",
       "notifyCount": 3,
@@ -41590,7 +41590,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
@@ -41602,7 +41602,9 @@
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 50
+      "silentRefires": 49,
+      "resolvedAt": "2026-11-21T15:36:17.141Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
