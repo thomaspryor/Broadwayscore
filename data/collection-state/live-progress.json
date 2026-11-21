@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-11-21T15:45:36.092Z",
-  "processed": 198,
-  "failed": 121,
-  "successRate": "62.1%",
+  "updatedAt": "2026-11-21T15:45:26.484Z",
+  "processed": 250,
+  "failed": 153,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 117,
+    "playwright": 152,
     "amp": 0,
     "browserbase": 8,
-    "directCookies": 0,
-    "scrapingdog": 24,
-    "scrapingbee": 18,
+    "directCookies": 1,
+    "scrapingdog": 27,
+    "scrapingbee": 20,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 42
+    "archive": 52
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-21T14:18:38.625Z",
-      "event": "bb-session",
-      "session": "d2ee4864",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
     {
       "t": "2026-11-21T14:18:39.459Z",
       "event": "bb-cookie-inject",
@@ -132,6 +126,12 @@
       "event": "bb-session",
       "session": "80969a8c",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-21T15:14:57.210Z",
+      "event": "bb-session",
+      "session": "e3b05326",
+      "url": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-"
     }
   ]
 }
