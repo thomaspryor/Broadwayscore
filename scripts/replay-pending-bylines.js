@@ -73,6 +73,7 @@ Options:
   --triage-only              (BRO-8023) settle every stub a URL/date rule can judge,
                              fetch nothing; report the fetch candidates left
   --era=2025-26|2015-24|pre-2015  restrict the scope to shows of that era
+  --shard=i/n                split the scope across n parallel processes (local batch)
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -234,9 +235,18 @@ function listOpenShowIdsWithPending() {
   return listShowIdsWithPending().filter(id => isPendingDrainEligible(showById.get(id), closedWithinDays));
 }
 
+// --shard=i/n (BRO-8023): split one scope across n parallel local batch processes by a stable id hash.
+const shardArg = (args.find(a => a.startsWith('--shard='))?.split('=')[1] || '').match(/^(\d+)\/(\d+)$/);
+function inShard(id, i, n) {
+  let h = 0;
+  for (const c of String(id)) h = ((h << 5) - h + c.charCodeAt(0)) | 0;
+  return Math.abs(h) % n === i;
+}
 function showIds() {
-  const ids = scopeShowIds();
-  return eraArg ? ids.filter(id => pendingTriage.showEra(id) === eraArg) : ids;
+  let ids = scopeShowIds();
+  if (eraArg) ids = ids.filter(id => pendingTriage.showEra(id) === eraArg);
+  if (shardArg) ids = ids.filter(id => inShard(id, Number(shardArg[1]), Number(shardArg[2])));
+  return ids;
 }
 
 function scopeShowIds() {
@@ -852,6 +862,7 @@ async function raiseDrainHealthAlerts(history, deps = {}) {
 }
 
 module.exports = {
+  inShard,
   pendingPromoteRejectReason,
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
@@ -898,7 +909,7 @@ if (require.main === module) {
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
     // BRO-8023: a triage-only or era-scoped batch is not a sweep: it must not move the rotation cursors or
     // write a drain-health history row (a no-fetch run would read as a zero-promote sweep).
-    const sweep = (allOpen || allPending) && !triageOnly && !eraArg;
+    const sweep = (allOpen || allPending) && !triageOnly && !eraArg && !shardArg;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
     const cursorPrefix = allPending ? '' : 'open_';
     // Recent = opened in the last 2 years (the owner's no-gaps scope), through the shared show data.
