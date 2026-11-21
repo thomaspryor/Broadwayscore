@@ -81,3 +81,10 @@ test('teaser listing ending in a "Related Articles" paragraph (no bio/subscribe/
   const teasers = Array.from({ length: 6 }, (_, i) => `Teaser ${i}: a short blurb about another production currently playing somewhere in London tonight.`);
   assert.equal(extractArticleText(page(ps(teasers) + '<p>Related Articles and more from this author for you to read next.</p>'), 'thestage.co.uk'), null);
 });
+
+test('live layout: review paragraphs tight together, then ~30k chars of author-card markup, then bio/subscribe/copyright', () => {
+  const card = '<div>' + '<span>card</span>'.repeat(2000) + '</div>';
+  const html = `<html><body><h1>Cleansed review</h1>${ps(BODY)}${card}<p>Natasha is international editor for The Stage and writes about theatre.</p>${card}<p>Invest in The Stage today with a subscription starting at £1.</p><p>© Copyright Playbook Media Trading Company Limited</p></body></html>`;
+  const tx = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(tx && tx.includes('criss-crossing') && !/international editor|Invest in The Stage/.test(tx));
+});

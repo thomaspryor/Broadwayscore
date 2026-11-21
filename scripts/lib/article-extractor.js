@@ -344,7 +344,10 @@ function extractStageBody(html) {
     paras = null;
     for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
       if (!isAnchor(found[trailerAt].t)) continue;
-      let from = trailerAt;
+      if (trailerAt === 0) continue;
+      // The author-card markup between the review and its trailer can be tens of thousands of characters
+      // (live: 30k), so the gap rule applies inside the run of review paragraphs, not before the trailer.
+      let from = trailerAt - 1;
       while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
       const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t));
       if (run.length >= 3 && run.join('\n\n').length >= 600) paras = run;
