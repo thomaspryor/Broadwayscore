@@ -35,18 +35,17 @@ test('every recover-*-browser.js outlet has an adapter, keyed by its persistent 
 test('30% rule per adapter: a nightly:false adapter is planned only when the run names its outlet', () => {
   assert.equal(A.ADAPTERS.nyt.nightly, false, 'NYT measured 4/20 live (20%)');
   assert.equal(A.ADAPTERS.wapo.nightly, false, 'WaPo measured 0/40 live');
-  assert.equal(A.ADAPTERS.thetimes.nightly, false, 'Times measured 0/20 live');
+  assert.equal(A.ADAPTERS.thetimes.nightly, true, 'Times re-measured 9/16 live after the footer fix (BRO-7943)');
   assert.equal(A.ADAPTERS.wsj.nightly, false, 'WSJ measured 1/20 live');
   assert.equal(A.ADAPTERS.newyorker.nightly, false, 'New Yorker measured 0/20 live');
   assert.equal(A.adapterUsable('nytimes'), false);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
   assert.equal(A.adapterUsable('thestage'), true, 'The Stage measured 18/20');
-  // Telegraph: unmeasured and the session ends with the month, so nightly off;
-  // a run that names --outlet=telegraph plans it (BRO-7171).
-  assert.equal(A.ADAPTERS.telegraph.nightly, false);
-  assert.equal(A.adapterUsable('telegraph'), false);
-  assert.equal(A.adapterUsable('telegraph', { explicitOutlets: new Set(['telegraph']) }), true);
+  // Telegraph: measured 4/8 live (BRO-7943), subscription kept: nightly on.
+  assert.equal(A.ADAPTERS.telegraph.nightly, true);
+  assert.equal(A.adapterUsable('telegraph'), true);
+  assert.equal(A.adapterUsable('wsj', { explicitOutlets: new Set(['wsj']) }), true);
   assert.equal(A.adapterUsable('guardian', { explicitOutlets: new Set(['guardian']) }), false);
 });
 
