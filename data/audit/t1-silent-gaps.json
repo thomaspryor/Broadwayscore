@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T17:41:41.793Z",
+  "generatedAt": "2026-11-21T18:18:58.306Z",
   "windowDays": 45,
   "showsScanned": 286,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 298.65540166666665,
+      "fileAgeHours": 299.27610444444446,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 276.11041472222223,
+      "nonTerminalAgeHours": 276.73166833333335,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=one-day-the-musical-west-end-2026 --url=https://au.variety.com/t/just-for-one-day-the-live-aid-musical/ --outlet=variety   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-20T17:05:24.008Z",
-      "fileAgeHours": 24.6012625,
+      "fileAgeHours": 25.22196222222222,
       "gapSeenAt": "2026-11-20T17:07:34.789Z",
-      "nonTerminalAgeHours": 24.56861222222222,
+      "nonTerminalAgeHours": 25.189865833333332,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "title": "Nine Night",
+      "openingDate": "2026-11-12",
+      "file": "londontheatre1--unknown.json",
+      "outletId": "londontheatre1",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.londontheatre1.com/reviews/nine-night-kiln-theatre/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=nine-night-off-west-end-2026 --url=https://www.londontheatre1.com/reviews/nine-night-kiln-theatre/ --outlet=londontheatre1   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-21T17:52:05.783Z",
+      "fileAgeHours": 0.4457072222222222,
+      "gapSeenAt": "2026-11-21T18:18:58.306Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +82,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 267.88728694444444,
+      "fileAgeHours": 268.50989888888887,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 266.74596972222224,
+      "nonTerminalAgeHours": 267.36722333333336,
       "needsManualRecovery": true
     },
     {
@@ -78,9 +102,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=its-a-wonderful-life-a-live-radio-play-2026 --url=https://www.broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T08:38:24.451Z",
-      "fileAgeHours": 57.05132944444444,
+      "fileAgeHours": 57.67594666666667,
       "gapSeenAt": "2026-11-20T00:13:40.042Z",
-      "nonTerminalAgeHours": 41.467153055555556,
+      "nonTerminalAgeHours": 42.088406666666664,
       "needsManualRecovery": false
     }
   ],

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T17:42:04.853Z",
+  "generatedAt": "2026-11-21T18:19:13.708Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -166,47 +166,14 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "firstnightmagazine",
-      "error": "HTTP 403 for https://firstnightmagazine.com/feed/"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 879,
-  "matchedGaps": 1,
+  "itemsScanned": 925,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "nixon-in-china-regional-2026",
-      "title": "Nixon in China",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/washington-national-opera-2026-27-review-nixon-in-china/",
-      "headline": "Washington National Opera 2026-27 Review: Nixon in China",
-      "publishDate": "2026-11-21"
-    },
     {
       "showId": "elektra-off-broadway-2026",
       "title": "Elektra",
