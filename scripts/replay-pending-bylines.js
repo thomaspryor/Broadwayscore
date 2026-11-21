@@ -785,6 +785,20 @@ async function processShow(showId, deps = {}) {
         kept++;
         continue;
       }
+      if (verdict === 'same-article') {
+        // BRO-8023: the primary already scores this article; the stub only adds a longer body or an excerpt. Settle
+        // it with the reason (kept, not deleted) instead of re-fetching it every week (33 such 2025-26 stubs).
+        const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
+        console.log(`  [${file}] ${newFilename} already scores this article — tagged (stub carries extra body/excerpt, not merged)`);
+        if (!dry) {
+          data.promoteSkippedReason = `same article already filed as ${newFilename} (stub body ${len(data.fullText)} chars vs primary ${len(existing && existing.fullText)}; extra body/excerpt not merged) (BRO-8023)`;
+          data.promoteSkippedAt = now().toISOString();
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        tagged++;
+        kept++;
+        continue;
+      }
       console.log(`  [${file}] would-be target ${newFilename} already exists — keep pending`);
       if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); // keep the rebuilt body
       kept++;
