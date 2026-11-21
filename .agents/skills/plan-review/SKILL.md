@@ -42,7 +42,7 @@ Identify the plan to critique. This is either:
 PLAN_FILE=$(mktemp /tmp/critique-plan-XXXXXX)
 echo "Plan file: $PLAN_FILE"
 ```
-Remember this path — use `$PLAN_FILE` in ALL subsequent commands in this skill run (Codex guard, Gemini curl, etc.).
+Remember this path — use `$PLAN_FILE` in ALL subsequent commands in this skill run (Codex guard, Gemini reviewer, etc.).
 
 Write the plan text to `$PLAN_FILE`.
 
@@ -207,8 +207,42 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > THE PLAN:
    > [paste the full plan text here]
 
-4. **Gemini — Consistency & Gap Checker** — Run this curl command via Bash.
-   **Gemini check:** Run `echo ${GEMINI_API_KEY:+SET}` first. If empty, record Gemini as **MISSING** in the coverage banner (Phase 3) with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed) — don't just silently drop it. If SET, run the curl and check `jq -e '.error'`; surface any API error instead of emitting empty output.
+4. **Gemini (with codebase access) — Consistency & Gap Checker** — Run via Bash. Since BRO-7987 Gemini reads the repository the way Codex does: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend).
+   ```bash
+   GEMINI_OUT=$(mktemp /tmp/plan-review-gemini.XXXXXX)
+   {
+   cat <<'PROMPT_HEAD'
+   You can READ this repository with your file tools (read_file, grep_search, glob, list_directory). Before you claim anything about a file, script or workflow the plan names, open it. Cite file:line for every code-level claim. Do not run setup or preflight commands; you cannot, and none are needed.
+
+   Review this plan for internal contradictions, gaps between stated goals and actual steps, and assumptions that are never validated.
+
+   **CONSISTENCY LENS:**
+   1. Does the plan contradict itself? (e.g., says "simple" but has 8 steps, says "fast" but requires 3 API calls)
+   2. Are there gaps between what the plan SAYS it does and what the steps ACTUALLY do?
+   3. What does the plan assume is true but never checks? (data exists, API is available, user has permissions). Check the ones you can against the repository.
+
+   **GAP LENS:**
+   4. What is the plan silent about? (error handling, rollback, what happens if step 3 fails)
+   5. Are there steps that depend on each other but don't say so?
+   6. What would a new developer ask after reading this plan that isn't answered?
+   7. Does the repository already have code that does part of this? Name it (file:line).
+
+   Be specific. Reference step numbers. Under 400 words. Bullet points only.
+
+   THE PLAN:
+   PROMPT_HEAD
+   cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
+   } | node scripts/gemini/review.js --caller=plan-review > "$GEMINI_OUT"
+   GEMINI_RC=$?
+   cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
+   ```
+   Its status line (stderr) says what happened. Put it in the coverage banner (Phase 3):
+   - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with repo access. `no-reads` instead of `ok` means it opened no files, so the banner says its code claims are unverified.
+   - `GEMINI_RC=3`, `MISSING: <reason>`: run the plan-text-only curl below instead and print `Gemini: MISSING (<reason>), plan-text curl ran instead, no repo access`. If the reason is `GEMINI_API_KEY is not set`, record Gemini as **MISSING** with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed). Don't silently drop it.
+   - `GEMINI_RC=1`, `FAILED:` or `EMPTY:`: a coverage failure, not a pass. Run the curl below too and print the reason in the banner.
+   - `GEMINI_RC=4`, `UNSAFE:`: the read-only lock did not hold and Gemini changed files. Do not use its review. Run `git status`, undo only the changes the status line names (never your own work), report it as a P0 about the review tooling, and run the curl below.
+
+   Fallback (plan text only, no repo access): check `jq -e '.error'` on the response and surface any API error instead of emitting empty output.
    ```
    curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$GEMINI_API_KEY" \
      -H "Content-Type: application/json" \
@@ -295,7 +329,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
 ### Phase 3: Present results
 
-**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review — task #1320), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review — fell back to gpt-5.4-mini`; don't fold either into a bare "reviewed" line, since an empty/refused-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
+**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran with repo access (`scripts/gemini/review.js`, and how many files it read) or only on the plan-text curl. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review — task #1320), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review — fell back to gpt-5.4-mini`; don't fold either into a bare "reviewed" line, since an empty/refused-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
 
 Show all six critiques clearly with headers:
 - **Codex (Production & Architecture)**
@@ -310,7 +344,7 @@ Show all six critiques clearly with headers:
 After presenting all critiques:
 
 1. **Consensus table** — Create a table of issues raised by 2+ reviewers, with columns: Issue | Raised by | Severity (P0/P1/P2) | Affected tasks. **Weight by expertise:**
-   - Cross-family agreement (Codex + a Claude reviewer) on the same finding is high signal — different model lineages reaching the same conclusion despite both reading the codebase. Note: Gemini does NOT have codebase access; weight its findings on assumptions/contradictions, not code-level claims.
+   - Cross-family agreement (Codex + a Claude reviewer) on the same finding is high signal — different model lineages reaching the same conclusion despite both reading the codebase. Gemini reads the codebase through `scripts/gemini/review.js` (BRO-7987), so Codex + Gemini agreement is cross-family too. When Gemini fell back to the plan-text curl or its status said `no-reads`, weight its findings on assumptions/contradictions, not code-level claims.
    - **Design Reviewer findings carry FULL weight even when raised alone.** This reviewer is the only one that read the existing codebase patterns — its findings about wrong abstraction, codebase fit, and deletion cost almost never show up in the other reviewers' output. A solo design finding is NOT a low-confidence finding; it's a high-signal finding from the only reviewer qualified to make it. Promote any design P0 to a blocker even if no other reviewer mentions it.
    - Any finding from the User Impact reviewer where real users would receive unexpected communication, be locked out, or experience irreversible harm is automatically P0. Cosmetic defaults and suboptimal experiences are P1.
    - Note the confidence level.
