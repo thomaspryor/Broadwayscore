@@ -580,7 +580,7 @@ async function processShow(showId, deps = {}) {
           const sib = siblingForArticle(show, deps.allShows || loadAllShows(), publishDate,
             { hasCopy: (sid) => fs.existsSync(path.join(root, '_pending', sid, file)) });
           settle = sib
-            ? { kind: 'sibling', reason: `article published ${String(publishDate).slice(0, 10)} belongs to same-title production ${sib.id}; its _pending copy carries it (BRO-7945)`, sibling: sib.id }
+            ? { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${sib.id}, whose _pending copy carries it (BRO-7945)`, sibling: sib.id }
             : { kind: 'outside-all', reason: rejectReason };
           redundantCopies[settle.kind] = (redundantCopies[settle.kind] || 0) + 1;
         }
@@ -734,8 +734,10 @@ if (require.main === module) {
 
     let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0;
     const alertPromises = [];
+    const settledTotals = {}; // BRO-7945: out-of-window copies settled this run (sibling | outside-all)
     for (const { showId: id, files } of planPendingWork(ids)) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, alertPromise } = await processShow(id, { files });
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, redundantCopies, alertPromise } = await processShow(id, { files });
+      for (const [k, n] of Object.entries(redundantCopies || {})) settledTotals[k] = (settledTotals[k] || 0) + n;
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
@@ -753,6 +755,7 @@ if (require.main === module) {
     console.log(`Dropped (url already filed, stub had nothing extra): ${totalDropped}`);
     console.log(`Kept in _pending: ${totalKept}`);
     console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
+    console.log(`  out-of-window copies settled (BRO-7945): ${JSON.stringify(settledTotals)}; unique URLs fetched: ${runFetchCache.stats().unique}`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
   })().catch(e => {
     console.error(e);

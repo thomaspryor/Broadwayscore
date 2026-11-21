@@ -56,7 +56,11 @@ function run({ root = path.join(__dirname, '..'), argv = process.argv.slice(2), 
   for (const r of rows.filter((x) => x.status === 'silent').slice(0, 25)) log(`  SILENT ${r.showId}/${r.file}`);
   if (!noWrite) {
     fs.mkdirSync(auditDir, { recursive: true });
-    fs.writeFileSync(path.join(auditDir, 'scored-absent.json'), JSON.stringify({ generatedAt: new Date().toISOString(), ...summary, rows: rows.slice(0, 400) }, null, 1) + '\n');
+    // Rewrite only when the findings change, so a steady state is not a commit on every rebuild.
+    const out = path.join(auditDir, 'scored-absent.json');
+    const body = { ...summary, rows: rows.slice(0, 400) };
+    let prev = null; try { const j = JSON.parse(fs.readFileSync(out, 'utf8')); delete j.generatedAt; prev = JSON.stringify(j); } catch { /* first run */ }
+    if (prev !== JSON.stringify(body)) fs.writeFileSync(out, JSON.stringify({ generatedAt: new Date().toISOString(), ...body }, null, 1) + '\n');
   }
   return { summary, rows, exitCode: strict && summary.silent > 0 ? 1 : 0 };
 }

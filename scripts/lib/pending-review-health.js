@@ -62,6 +62,8 @@ const PRESERVED_PENDING_FIELDS = [
   'firstSeenAt',
   'promoteSkippedReason',
   'promoteSkippedAt',
+  'promoteSettled',
+  'promoteSettledSibling',
   'rssIdentityRejected',
   'pendingUnrecoverableAt',
   'pendingRefetchedAt',
