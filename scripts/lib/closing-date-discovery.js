@@ -89,7 +89,11 @@ function callClaudeSonnet(prompt) {
 
 function isCredibleUrl(url, hosts = CREDIBLE_HOSTS) {
   if (!url) return false;
-  return hosts.some(h => url.includes(h));
+  // Hostname match on a domain boundary: 'whatsonstage.com.evil.org' or a path
+  // containing the host string must not pass (BRO-7993 review).
+  const host = hostOf(url);
+  if (!host) return false;
+  return hosts.some(h => host === h || host.endsWith('.' + h));
 }
 
 // Per-field configuration. fieldType determines: the SERP query phrasing,
@@ -353,7 +357,7 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
   }
   return {
     date: cluster.centerDate,
-    sources: cluster.cluster.map(c => ({ url: c.sourceUrl, title: c.sourceTitle, quote: c.quote })),
+    sources: cluster.cluster.map(c => ({ url: c.sourceUrl, title: c.sourceTitle, quote: c.quote, date: c.date })),
     extractions,
     fieldType,
   };

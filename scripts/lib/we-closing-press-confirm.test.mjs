@@ -47,13 +47,13 @@ for (const [id, booking] of HORIZONS) {
 }
 
 test('7 day tolerance is inclusive, 8 is rejected', () => {
-  const q = 'final performance on the date';
+  const q = 'final performance on 3 January';
   assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-01-10', discovery: press('2027-01-03', q), todayStr: TODAY }).apply, true);
   assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-01-11', discovery: press('2027-01-03', q), todayStr: TODAY }).apply, false);
 });
 
 test('never overwrites a stored closingDate, never applies a past date', () => {
-  const q = 'final performance on the date';
+  const q = 'final performance on 3 January 2027 and 15 November';
   assert.equal(decideWeNewClosing({ stored: '2027-01-03', bookingDate: '2027-01-03', discovery: press('2027-01-03', q), todayStr: TODAY }).apply, false);
   assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2026-11-15', discovery: press('2026-11-15', q), todayStr: TODAY }).apply, false);
 });
@@ -80,4 +80,26 @@ test('extraction plumbing: parse + cluster accept an explicit final date, reject
   assert.equal(clusterDates([{ ...low, sourceUrl: 'https://www.whatsonstage.com/a' }], { fieldType: 'closing-we' }), null);
   const c = clusterDates([{ ...ok, sourceUrl: 'https://www.whatsonstage.com/a' }], { fieldType: 'closing-we' });
   assert.equal(c.centerDate, '2027-01-03');
+});
+
+test('cast departure quote does not count', () => {
+  const d = decideWeNewClosing({ stored: null, bookingDate: '2027-01-03', discovery: press('2027-01-03', 'The star plays her final performance on 3 January.'), todayStr: TODAY });
+  assert.equal(d.apply, false);
+});
+
+test('quote must name the date day, and the written date is the evidence source date', () => {
+  assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-01-03', discovery: press('2027-01-03', 'The final performance will be in January.'), todayStr: TODAY }).apply, false);
+  const d = decideWeNewClosing({ stored: null, bookingDate: '2027-01-03', discovery: { date: '2027-01-02', sources: [
+    { url: 'https://a.com/1', quote: 'a vague mention', date: '2027-01-02' },
+    { url: 'https://www.whatsonstage.com/2', quote: 'final performance on 3 January', date: '2027-01-03' },
+  ] }, todayStr: TODAY });
+  assert.equal(d.apply, true);
+  assert.equal(d.date, '2027-01-03');
+});
+
+test('host check is domain-bounded', () => {
+  const cfg = getFieldConfig('closing-we');
+  assert.equal(isCredibleUrl('https://whatsonstage.com.evil.org/a', cfg.hosts), false);
+  assert.equal(isCredibleUrl('https://evil.org/whatsonstage.com/a', cfg.hosts), false);
+  assert.equal(isCredibleUrl('https://www.playbill.com/a'), true);
 });

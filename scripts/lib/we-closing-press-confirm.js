@@ -23,6 +23,9 @@ const EXPLICIT_FINAL = FIELD_CONFIGS['closing-we'].quoteAcceptanceRegex;
 // A quote that is really a booking window must not count as a final performance.
 const BOOKING_WINDOW = /booking (?:until|through|to)|on sale (?:until|through)|tickets? (?:are )?(?:available|on sale) (?:until|through)|book(?:ing)? now until/i;
 
+// A cast member's last night is not the production's closing.
+const CAST_DEPARTURE = /\b(?:cast|star|stars|leaves|leaving|departs?|departure|exits?|replac\w+|final (?:week|weeks) for)\b/i;
+
 function no(reason) { return { apply: false, date: null, reason, sources: [] }; }
 
 function decideWeNewClosing(opts) {
@@ -36,13 +39,22 @@ function decideWeNewClosing(opts) {
   if (gap > toleranceDays) return no(`press_disagrees_with_booking_page_${gap}d`);
   if (todayStr && press < todayStr) return no('press_date_in_past');
 
+  // The evidence must be a single source whose OWN date is within tolerance of
+  // the booking date, whose quote is an explicit final-performance statement,
+  // names that date's day number, and is not a cast departure / booking window.
+  // The date written is that source's date, not the cluster centre.
   const sources = (discovery.sources || []).filter(s => s && s.url);
   const explicit = sources.filter(s => {
-    const q = (s.quote || '');
-    return EXPLICIT_FINAL.test(q.toLowerCase()) && !BOOKING_WINDOW.test(q);
+    const q = s.quote || '';
+    const d = s.date || press;
+    if (Math.abs(Math.round((new Date(d) - new Date(bookingDate)) / 86400000)) > toleranceDays) return false;
+    if (!EXPLICIT_FINAL.test(q.toLowerCase()) || BOOKING_WINDOW.test(q) || CAST_DEPARTURE.test(q)) return false;
+    const day = String(parseInt(d.slice(8, 10), 10));
+    return new RegExp(`(^|\\D)${day}(st|nd|rd|th)?(\\D|$)`).test(q);
   });
   if (explicit.length === 0) return no('no_explicit_final_performance_quote');
-  return { apply: true, date: press, reason: 'press_confirmed', sources: explicit };
+  const date = explicit[0].date || press;
+  return { apply: true, date, reason: 'press_confirmed', sources: explicit };
 }
 
 module.exports = { decideWeNewClosing, WEST_END_CREDIBLE_HOSTS };
