@@ -874,7 +874,10 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Fails open for titles with no 4+ char variant (SIX, Art, 13): textMentionsTitle cannot see them.
   const _titleCheckable = !!_mentionTitle && buildShowTitleVariants(_mentionTitle).some((v) => v.length >= 4);
   const _swapText = typeof incoming.fullText === 'string' ? decodeHtmlEntities(incoming.fullText) : '';
-  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && _titleCheckable
+  // Only weak slots (stub/empty/short text): a corpus check found ~0.5% of real, scored reviews
+  // fail the mention test (old url shapes, titles the variants miss), and their swaps must still work.
+  const _slotIsWeak = !(typeof existing.fullText === 'string' && existing.fullText.length >= 1500 && !existing.wrongProduction);
+  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && _titleCheckable && _slotIsWeak
     && _swapText.length >= SHOW_MENTION_SWAP_MIN_CHARS
     && !textMentionsTitle(_swapText, _mentionTitle)
     && !textMentionsShortTitle(_swapText, _mentionTitle)
