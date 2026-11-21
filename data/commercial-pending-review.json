@@ -33,40 +33,8 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "sweep-requeue-low-conf",
       "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
-      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z"
-    },
-    "parade-2023": {
-      "capitalization": 6500000,
-      "capitalizationSource": "Broadway Journal (Dec. 23, 2022): \"At $6.5 million, the show's capitalization...\" https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
-      "weeklyRunningCost": 659000,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "No public recoupment announcement located; Broadway Journal said full capitalization required 32 weeks at the same level plus the tax credit, and Playbill reported the Broadway run ended Aug. 6, 2023 after 169 performances.",
-      "estimatedRecoupmentPct": null,
-      "notes": "Broadway Journal's investor-deck coverage put capitalization at $6.5M and weekly operating expenses at $659k before royalties; Playbill reported the run ended Aug. 6, 2023 after 169 performances. No public recoupment announcement was found, so I classified the production as Did Not Recoup. ([broadwayjournal.com](https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
-          "date": "2022-12-23"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/broadways-parade-finishes-limited-run-august-6",
-          "date": "2023-08-06"
-        }
-      ],
-      "title": "Parade",
-      "slug": "parade-2023",
-      "openingDate": "2023-03-16",
-      "status": "closed",
-      "researchedAt": "2026-11-14T22:40:28.230Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
-      "autoApplyBlockedAt": "2026-11-15T09:28:02.295Z"
+      "autoApplyBlockedAt": "2026-11-12T10:00:32.007Z",
+      "lastRequeuedAt": "2026-11-21T23:15:19.435Z"
     },
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",
@@ -228,7 +196,8 @@
       "confidence": "low",
       "researchedAt": "2026-11-07T21:48:33.775Z",
       "autoApplyBlocked": "record validation: commercial.json: \"billy-crystal-860\" has designation \"Easy Winner\" but recouped=null (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)",
-      "autoApplyBlockedAt": "2026-11-12T10:01:11.453Z"
+      "autoApplyBlockedAt": "2026-11-12T10:01:11.453Z",
+      "lastRequeuedAt": "2026-11-21T23:15:19.435Z"
     },
     "springsteen-on-broadway-2021": {
       "capitalization": null,
@@ -300,50 +269,6 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-11-21T22:59:25.063Z"
-    },
-    "the-fantasticks": {
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Nonprofit",
-      "notes": "Second Stage Theater’s Broadway premiere of The Fantasticks is at the Hayes with opening on Nov. 16, 2026 and closing on Feb. 7, 2027. Second Stage says it is a 501(c)3 not-for-profit, and the NYC tax-credit roundup checked did not mention The Fantasticks or Second Stage. I could not verify any public capitalization or weekly running cost in the requested sources, so recoupment is treated as not applicable. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/the-fantasticks-547118",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://2st.com/support/giving-faq",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://2st.com/shows/season-48",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        }
-      ],
-      "title": "The Fantasticks",
-      "slug": "the-fantasticks",
-      "openingDate": "2026-11-16",
-      "status": "open",
-      "researchedAt": "2026-11-16T18:10:24.754Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
-      "autoApplyBlockedAt": "2026-11-16T19:40:43.798Z"
     },
     "the-lost-boys-2026": {
       "title": "The Lost Boys",
@@ -1518,7 +1443,7 @@
       "researchedAt": "2026-11-21T23:11:32.730Z"
     }
   },
-  "lastUpdated": "2026-11-21T03:17:40.339Z",
+  "lastUpdated": "2026-11-21T23:15:19.435Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",
