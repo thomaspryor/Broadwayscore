@@ -15,7 +15,7 @@
  * Fail-closed order: dirA's meta.json is marked `sharded` FIRST, so a merge
  * that dies half way leaves a dir the verdict refuses, never one it reads as a
  * smaller unsplit run. A tree mismatch or a malformed shard pair exits 1
- * (infrastructure failure). A part or gate that is missing is NOT a merge
+ * (infrastructure failure). The commit shas may differ (two rebases); the tree may not. A part or gate that is missing is NOT a merge
  * error: it is written into the manifest as a null part, and the verdict
  * refuses the gate with the reason.
  */
@@ -91,7 +91,9 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
   if (!metaA || !metaB) problems.push(`meta.json unreadable in ${!metaA ? dirA : dirB}`);
   const sA = parseShard(metaA && metaA.shard); const sB = parseShard(metaB && metaB.shard);
   if (!sA || !sB || sA.n !== 2 || sB.n !== 2 || sA.k === sB.k) problems.push(`the two runs are not parts 1/2 and 2/2 of one split (got ${metaA && metaA.shard}, ${metaB && metaB.shard})`);
-  for (const k of ['sha', 'root', 'tree']) {
+  // Same tree, not same commit: each runner rebases on its own, so the commit
+  // shas differ (committer date) while the files under test are identical.
+  for (const k of ['root', 'tree']) {
     if (!metaA || !metaB || !metaA[k] || metaA[k] !== metaB[k]) problems.push(`the two runs differ in ${k} (${metaA && metaA[k]} vs ${metaB && metaB[k]})`);
   }
   // A scoped run records the full list in .files but runs a narrower one, so
@@ -169,6 +171,7 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
     ...metaA, gates: present, exits, gateSecs, sharded: true,
     shards: expected, wallMs: Math.max(Number(metaA.wallMs) || 0, Number(metaB.wallMs) || 0),
     partWallMs: { [metaA.shard]: metaA.wallMs, [metaB.shard]: metaB.wallMs },
+    partSha: { [metaA.shard]: metaA.sha, [metaB.shard]: metaB.sha },
   };
   delete meta.shard;
   writeAtomic(path.join(dirA, 'meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
