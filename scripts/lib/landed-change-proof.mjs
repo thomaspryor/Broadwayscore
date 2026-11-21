@@ -369,7 +369,9 @@ export const webSessionOf = (v) => (String(v || '').match(/session_[A-Za-z0-9]+/
  * rows: this audit's rows (cloud source, `session` trailer); retroRows: data/audit/session-retro.jsonl.
  * -> { landed: n distinct web sessions, covered: n, missing: [{ session, shas: [] }] }
  */
-export function retroCoverageGaps(rows, retroRows, landedDay) {
+export function retroCoverageGaps(rows, retroRows, landedDay, ledgerShas = []) {
+  // BRO-7911: rows written before webSessionId existed carry no session id and no sha in links, so 15 of 24 sessions on
+  // 2026-11-20 read as uncovered. A session whose own commit touched the retro ledger (ledgerShas, from git) is covered.
   const have = new Set(retroRows.map((r) => r.webSessionId).filter(Boolean));
   const linked = [];
   for (const r of retroRows) for (const l of r.links || []) if (/^[0-9a-f]{7,40}$/.test(l)) linked.push(l);
@@ -382,7 +384,7 @@ export function retroCoverageGaps(rows, retroRows, landedDay) {
   }
   const missing = [];
   for (const [session, shas] of by) {
-    if (have.has(session) || shas.some((sha) => linked.some((l) => sha.startsWith(l)))) continue;
+    if (have.has(session) || shas.some((sha) => linked.some((l) => sha.startsWith(l)) || ledgerShas.some((l) => sha.startsWith(l) || l.startsWith(sha)))) continue;
     missing.push({ session, shas: shas.map((x) => x.slice(0, 10)) });
   }
   return { landed: by.size, covered: by.size - missing.length, missing };
