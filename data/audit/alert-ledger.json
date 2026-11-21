@@ -369,13 +369,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-21T16:57:04.326Z",
+      "lastSeen": "2026-11-21T17:42:04.623Z",
       "lastNotifiedAt": "2026-11-21T05:52:46.849Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 87,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -47285,7 +47285,7 @@
       "linearIdentifier": null
     },
     "uncollected-blackout:the-snowman-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: The Snowman",
       "firstSeen": "2026-11-21T16:56:46.128Z",
@@ -47295,7 +47295,22 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-8001"
+      "linearIdentifier": "BRO-8001",
+      "resolvedAt": "2026-11-21T17:41:47.488Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
+    },
+    "backstop:one-day-the-musical-west-end-2026/variety--unknown.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 review stuck >24h: One Day – The Musical — variety",
+      "firstSeen": "2026-11-21T17:41:41.839Z",
+      "incidentOpenedAt": "2026-11-21T17:41:41.839Z",
+      "lastSeen": "2026-11-21T17:41:41.839Z",
+      "lastNotifiedAt": "2026-11-21T17:41:41.839Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-8006"
     }
   }
 }

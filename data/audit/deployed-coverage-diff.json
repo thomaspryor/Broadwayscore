@@ -1,78 +1,30 @@
 {
-  "generatedAt": "2026-11-21T16:57:04.183Z",
+  "generatedAt": "2026-11-21T17:42:04.454Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 366,
-  "defective": 4,
+  "clean": 369,
+  "defective": 1,
   "byType": {
-    "score-drift": 4
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
-      "openingDate": "2026-11-20",
+      "showId": "orlando-off-west-end-2026",
+      "title": "Orlando: A Pornobiography",
+      "openingDate": "2026-11-10",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.75 vs local 71.73 (Δ2.98)"
+          "detail": "deployed cs 78.99 vs local 79.39 (Δ0.4)"
         }
       ],
       "missingFromProd": [],
       "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-21T16:56:55.556Z"
-    },
-    {
-      "showId": "florence-off-west-end-2026",
-      "title": "Florence",
-      "openingDate": "2026-11-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.01 vs local 73.93 (Δ2.92)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-11-21T16:56:55.556Z"
-    },
-    {
-      "showId": "mj-2022",
-      "title": "MJ The Musical",
-      "openingDate": "2022-02-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.46 vs local 67.32 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 31,
-      "firstDefectAt": "2026-11-21T16:56:55.556Z"
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "title": "Les Misérables",
-      "openingDate": "1985-12-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.65 vs local 85.09 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-21T16:56:55.556Z"
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-21T17:41:59.927Z"
     }
   ],
   "persistentDefective": 0,
