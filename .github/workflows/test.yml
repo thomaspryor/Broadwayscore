@@ -29,8 +29,8 @@ on:
       - '.agents/**'
       - '.codex/**'
       - 'scripts/codex/**'
-      - 'scripts/gemini/review.js'
-      - 'scripts/gemini/review-policy.toml'
+      # BRO-7987: tests/unit/gemini-review.test.mjs requires scripts/gemini/review.js and checks review-policy.toml
+      - 'scripts/gemini/**'
       # scripts/lib/** — single push-path glob covering every file under
       # scripts/lib/ (source .js and colocated *.test.mjs alike). Replaces the
       # ~200 individually hand-listed scripts/lib paths that used to live here
