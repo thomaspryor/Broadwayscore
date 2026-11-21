@@ -136,6 +136,20 @@ test('a clean index after an earlier in-job push still reports pushed=true', () 
   }
 });
 
+// Class guard: every test that runs this action's script must hand it a
+// RUNNER_TEMP of its own. One that inherits the job's can be fed a stale
+// marker (a false pushed=true) and leaves its pushed-files list behind.
+test('every test that runs the push-review-texts script sets its own RUNNER_TEMP', () => {
+  const dir = path.join(ROOT, 'tests/unit');
+  const runners = fs.readdirSync(dir).filter((f) => /\.test\.(mjs|js)$/.test(f)).filter((f) => {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    return src.includes('push-review-texts/action.yml') && /spawnSync\(\s*'bash'/.test(src);
+  });
+  assert.ok(runners.length >= 4, `expected the known runners, found ${runners.join(', ')}`);
+  const inheriting = runners.filter((f) => !/RUNNER_TEMP\s*:/.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+  assert.deepEqual(inheriting, [], 'these tests run the action script with the inherited RUNNER_TEMP');
+});
+
 test('a staged change is committed and pushed as before', () => {
   const s = setup();
   try {

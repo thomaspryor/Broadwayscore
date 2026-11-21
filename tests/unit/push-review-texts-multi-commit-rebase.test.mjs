@@ -44,14 +44,19 @@ function setup() {
   git(rt, 'config', 'user.email', 't@t'); git(rt, 'config', 'user.name', 't');
   const out = path.join(tmp, 'gh-output');
   fs.writeFileSync(out, '');
-  return { tmp, origin, ws, rt, out, seed };
+  // BRO-7948: a private RUNNER_TEMP, so a pushed marker left in the job's
+  // temp dir cannot satisfy the pushed=true assertion below, and this run's
+  // pushed-files list stays out of it.
+  const runnerTemp = path.join(tmp, 'runner-temp');
+  fs.mkdirSync(runnerTemp);
+  return { tmp, origin, ws, rt, out, seed, runnerTemp };
 }
 
-function runAction({ ws, rt, out, origin }) {
+function runAction({ ws, rt, out, origin, runnerTemp }) {
   return spawnSync('bash', ['--noprofile', '--norc', '-eo', 'pipefail', '-c', SCRIPT], {
     cwd: rt, encoding: 'utf8', timeout: 170000,
     env: {
-      ...CLEAN_ENV, GITHUB_WORKSPACE: ws, GITHUB_OUTPUT: out, REVIEW_TEXTS_TOKEN: TOKEN, COMMIT_MSG: 'data: final',
+      ...CLEAN_ENV, GITHUB_WORKSPACE: ws, GITHUB_OUTPUT: out, RUNNER_TEMP: runnerTemp, REVIEW_TEXTS_TOKEN: TOKEN, COMMIT_MSG: 'data: final',
       GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: `url.file://${origin}.insteadOf`, GIT_CONFIG_VALUE_0: URL_IN_ACTION,
     },
   });
