@@ -127,6 +127,7 @@ const FIELD_CONFIGS = {
     promptExclusions: 'Not opening, not previews, not a booking period or on-sale window, not a Broadway, UK tour or regional stop, not a past extension if a newer date has been announced.',
     offMarketRule: 'If the article is about Broadway, a tour, a regional production or an off-West-End run, or only says tickets are on sale until a date, return {"date": null, "confidence": "low", "quote": null}.',
     hosts: WEST_END_CREDIBLE_HOSTS,
+    verifyQuote: true,
     sanityWindowDaysPast: 30,
     sanityWindowDaysFuture: 1095,
     quoteAcceptanceRegex: /final performance|closing on|last performance|ends? its run on|will close on|to close on|closes? on|last show on|final show/,
@@ -337,7 +338,11 @@ async function discoverAnnouncedDate(showTitle, fieldType, opts = {}, budget = n
       const text = fullText.slice(0, 4000);
       const raw = await callClaudeSonnet(buildExtractionPrompt(showTitle, text, c.url, fieldType));
       const parsed = parseExtraction(raw, { fieldType });
-      if (parsed) {
+      // The quote is model output: for fields that opt in, it must actually appear in the article.
+      const norm = t => (t || '').toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/\s+/g, ' ').trim();
+      if (parsed && cfg.verifyQuote && (!parsed.quote || !norm(fullText).includes(norm(parsed.quote).slice(0, 60)))) {
+        log(`  [discovery:${fieldType}] quote not found in article, dropped: ${c.url}`);
+      } else if (parsed) {
         extractions.push({ ...parsed, sourceUrl: c.url, sourceTitle: c.title || null });
       }
     } catch (e) {

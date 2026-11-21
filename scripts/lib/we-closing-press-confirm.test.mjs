@@ -115,3 +115,10 @@ test('end to end on real helpers: parseExtraction -> clusterDates -> decideWeNew
   const h = { ...parseExtraction('{"date":"2027-03-06","confidence":"high","quote":"Hadestown is booking until March."}', { fieldType: 'closing-we', now }), sourceUrl: 'https://www.whatsonstage.com/h' };
   assert.equal(clusterDates([h], { fieldType: 'closing-we' }), null);
 });
+
+test('booking/offer closes, cast "her last performance" and bad dates never apply', () => {
+  for (const q of ['Booking closes on 3 January', 'The offer closes on 3 January', 'She will give her last performance on 3 January']) {
+    assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-01-03', discovery: press('2027-01-03', q), todayStr: TODAY }).apply, false, q);
+  }
+  assert.equal(decideWeNewClosing({ stored: null, bookingDate: '2027-13-40', discovery: press('2027-01-03', 'final performance on 3 January'), todayStr: TODAY }).reason, 'bad_date');
+});

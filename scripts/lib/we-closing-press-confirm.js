@@ -21,10 +21,10 @@ const { WEST_END_CREDIBLE_HOSTS, FIELD_CONFIGS } = require('./closing-date-disco
 
 const EXPLICIT_FINAL = FIELD_CONFIGS['closing-we'].quoteAcceptanceRegex;
 // A quote that is really a booking window must not count as a final performance.
-const BOOKING_WINDOW = /booking (?:until|through|to)|on sale (?:until|through)|tickets? (?:are )?(?:available|on sale) (?:until|through)|book(?:ing)? now until/i;
+const BOOKING_WINDOW = /(?:booking|sale|offer|lottery|rush|ticket\w*)\s+(?:closes?|ends?)|booking (?:until|through|to)|on sale (?:until|through)|tickets? (?:are )?(?:available|on sale) (?:until|through)|book(?:ing)? now until/i;
 
 // A cast member's last night is not the production's closing.
-const CAST_DEPARTURE = /\b(?:cast|star|stars|leaves|leaving|departs?|departure|exits?|replac\w+|final (?:week|weeks) for)\b/i;
+const CAST_DEPARTURE = /\b(?:her|his|their|its star's)\s+(?:last|final)\s+performance|\b(?:cast|star|stars|leaves|leaving|departs?|departure|exits?|replac\w+|final (?:week|weeks) for)\b/i;
 
 function no(reason) { return { apply: false, date: null, reason, sources: [] }; }
 
@@ -36,6 +36,7 @@ function decideWeNewClosing(opts) {
 
   const press = discovery.date;
   const gap = Math.abs(Math.round((new Date(press) - new Date(bookingDate)) / 86400000));
+  if (!Number.isFinite(gap)) return no('bad_date');
   if (gap > toleranceDays) return no(`press_disagrees_with_booking_page_${gap}d`);
   if (todayStr && press < todayStr) return no('press_date_in_past');
 

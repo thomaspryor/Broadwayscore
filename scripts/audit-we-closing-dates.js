@@ -321,6 +321,9 @@ async function main() {
   // BRO-7993: a new-closing candidate (no stored closingDate, WET "Booking
   // until" date) is written ONLY when credible press names an explicit final
   // performance within PRESS_TOLERANCE_DAYS. Otherwise it stays blank, no card.
+  // Persist extension writes BEFORE the slow press step: a job timeout during
+  // discovery must not lose them (saveShows is idempotent; saved again below).
+  if (!DRY_RUN && extensions.some(e => !e.skipped)) saveShows(data);
   const pressConfirmed = [];
   const pressUnconfirmed = [];
   if (newClosings.length > 0 && !process.env.ANTHROPIC_API_KEY) {
@@ -331,6 +334,7 @@ async function main() {
       if (attempts >= MAX_PRESS_CONFIRMATIONS) { n.pressCheck = 'cap_reached'; continue; }
       const show = data.shows.find(s => s.id === n.id);
       if (!show) { n.pressCheck = 'show_not_found'; continue; }
+      if (typeof timeBudget.canStartItem === 'function' && !timeBudget.canStartItem(PRESS_CONFIRM_MIN_REMAINING_MS)) { n.pressCheck = 'budget_skipped'; continue; }
       attempts++;
       let discovery = null;
       try {
