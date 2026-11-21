@@ -5,6 +5,7 @@
  * the self-heal loop started by #170/#173).
  */
 import { getSupabaseClient } from '@/lib/supabase';
+import { trackUgc } from '@/lib/ugc-analytics';
 
 /** One ranked search result — already shaped to become a user_show_stubs
  *  row or a diary-shows.json entry (id matches buildDiarySlug()'s output). */
@@ -38,6 +39,15 @@ export const MEZZANINE_SEARCH_ERROR_COPY: Record<string, string> = {
   internal: 'Something went wrong on our side. Try again in a few minutes.',
 };
 
+/** BRO-7806: an upstream (theaterdiary.com) outage is answered as a handled 200 so it
+ *  does not page Sentry (BRO-7733), which also hides a long outage. Count each one as a
+ *  PostHog event so a spike on `mezzanine_upstream_unavailable` is visible. */
+export function noteMezzanineFailure(error: MezzanineSearchResponse['error']): void {
+  if (error === 'upstream_unavailable' || error === 'upstream_auth') {
+    trackUgc('mezzanine_upstream_unavailable', { error });
+  }
+}
+
 /** Search Mezzanine's full catalog by free-text title. Throws Error with
  *  user-ready copy on any handled failure. */
 export async function searchMezzanineCatalog(query: string): Promise<MezzanineCandidate[]> {
@@ -48,7 +58,10 @@ export async function searchMezzanineCatalog(query: string): Promise<MezzanineCa
     body: { query },
   });
   if (error || !data) throw new Error(MEZZANINE_SEARCH_ERROR_COPY.internal);
-  if (!data.ok) throw new Error(MEZZANINE_SEARCH_ERROR_COPY[data.error || 'internal'] || MEZZANINE_SEARCH_ERROR_COPY.internal);
+  if (!data.ok) {
+    noteMezzanineFailure(data.error);
+    throw new Error(MEZZANINE_SEARCH_ERROR_COPY[data.error || 'internal'] || MEZZANINE_SEARCH_ERROR_COPY.internal);
+  }
   return data.candidates || [];
 }
 
@@ -63,7 +76,10 @@ export async function resolveMezzanineShow(mezzShowId: string): Promise<Mezzanin
     body: { mezzShowId },
   });
   if (error || !data) throw new Error(MEZZANINE_SEARCH_ERROR_COPY.internal);
-  if (!data.ok) throw new Error(MEZZANINE_SEARCH_ERROR_COPY[data.error || 'internal'] || MEZZANINE_SEARCH_ERROR_COPY.internal);
+  if (!data.ok) {
+    noteMezzanineFailure(data.error);
+    throw new Error(MEZZANINE_SEARCH_ERROR_COPY[data.error || 'internal'] || MEZZANINE_SEARCH_ERROR_COPY.internal);
+  }
   return data.candidates || [];
 }
 

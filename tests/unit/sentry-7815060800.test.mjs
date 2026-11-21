@@ -80,3 +80,44 @@ test('a Parse 400 is our bug and stays a 500; a 429 is an outage', async t => {
   const limited = await caughtFrom(t, async () => new Response('{}', { status: 429 }), () => findShowsByTitle('x', 'app', 'tok'));
   assert.equal(errorOutcome(limited).status, 200);
 });
+
+// BRO-7806: the handled-200 outage must still leave a countable trace (a PostHog event).
+test('both search entry points count upstream outages, and only outages', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  require('tsx/cjs/api').register();
+  const Module = require('node:module');
+  const originalLoad = Module._load;
+  let response;
+  const events = [];
+  Module._load = function (name, ...args) {
+    if (name === '@/lib/supabase') return { getSupabaseClient: async () => ({ functions: { invoke: async () => ({ data: response, error: null }) } }) };
+    if (name === '@/lib/ugc-analytics') return { trackUgc: (event, props) => events.push([event, props]) };
+    return originalLoad.call(this, name, ...args);
+  };
+  try {
+    // An earlier test loaded the module with a different mock set: load it fresh.
+    delete require.cache[require.resolve('../../src/lib/mezzanine-search.ts')];
+    const { searchMezzanineCatalog, resolveMezzanineShow } = require('../../src/lib/mezzanine-search.ts');
+    for (const call of [() => searchMezzanineCatalog('hamilton'), () => resolveMezzanineShow('abc123')]) {
+      for (const error of ['upstream_unavailable', 'upstream_auth']) {
+        events.length = 0;
+        response = { ok: false, error };
+        await assert.rejects(call());
+        assert.deepEqual(events, [['mezzanine_upstream_unavailable', { error }]]);
+      }
+      for (const error of ['rate_limited', 'invalid_query', 'internal']) {
+        events.length = 0;
+        response = { ok: false, error };
+        await assert.rejects(call());
+        assert.deepEqual(events, [], `${error} is not an upstream outage`);
+      }
+      events.length = 0;
+      response = { ok: true, candidates: [] };
+      assert.deepEqual(await call(), []);
+      assert.deepEqual(events, []);
+    }
+  } finally {
+    Module._load = originalLoad;
+  }
+});
