@@ -188,6 +188,30 @@ test('a single failing message warns rather than pages', () => {
   assert.equal(s.findings.some((f) => f.code === 'pass-rate-degraded'), false);
 });
 
+test('a small source fully rejected by policy is info, not a daily warn (BRO-7972)', () => {
+  const rejected = (over = {}) => record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [], ...over });
+  const s = summarizeReports([report({ records: [record({ count: 500 }), rejected()] })]);
+  const f = s.findings.find((x) => x.code === 'unauthenticated-source');
+  assert.equal(f.severity, 'info');
+  const hr = dmarcHealthResult(s, { now: '2026-08-02T12:00:00.000Z' });
+  assert.equal(hr.status, 'pass');
+  // Mail that slipped through (disposition none) still warns.
+  const leaked = summarizeReports([report({ records: [record({ count: 500 }), rejected({ disposition: 'none' })] })]);
+  assert.equal(leaked.findings.find((x) => x.code === 'unauthenticated-source').severity, 'warn');
+});
+
+test('a stored warn for a fully rejected source no longer warns in the health row (BRO-7972)', () => {
+  const stored = {
+    windowEnd: '2026-11-19T23:59:59.000Z',
+    policy: { p: 'reject' },
+    sources: [{ ip: '13.211.69.231', fail: 3, pass: 0, dispositions: ['reject'] }],
+    findings: [{ severity: 'warn', code: 'unauthenticated-source', message: 'x', evidence: { ip: '13.211.69.231' } }],
+  };
+  assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'pass');
+  stored.sources[0].dispositions = ['none'];
+  assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'warn');
+});
+
 test('p=none is flagged as unenforced regardless of pass rate', () => {
   const s = summarizeReports([report({ policy: { ...POLICY, p: 'none', sp: 'none' } })]);
   const f = s.findings.find((x) => x.code === 'policy-unenforced');
