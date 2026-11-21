@@ -290,10 +290,10 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
        echo
        echo "=== UNCOMMITTED CHANGES ==="
        git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
-     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>&1
+     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>"$CODEX_OUT.log"
      cat "$CODEX_OUT"
      # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
-     # Refresh tokens rotate: persist the login after every exec, or the next cloud container restores a dead one.
+     # On CODEX_EMPTY, read $CODEX_OUT.log for the cause (auth, quota). Cloud: persist the login in case the exec rotated it.
      bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.

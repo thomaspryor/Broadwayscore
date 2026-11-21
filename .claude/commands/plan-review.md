@@ -99,10 +99,10 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    THE PLAN TO CRITIQUE:
    PROMPT_HEAD
      cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
-   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>&1
+   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
    cat "$PLAN_REVIEW_CODEX_OUT"
    # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
-   # Refresh tokens rotate: persist the login after every exec, or the next cloud container restores a dead one.
+   # On CODEX_EMPTY, read $PLAN_REVIEW_CODEX_OUT.log for the cause (auth, quota). Cloud: persist the login in case the exec rotated it.
    bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). Defaults to whatever model `~/.codex/config.toml` is set to.

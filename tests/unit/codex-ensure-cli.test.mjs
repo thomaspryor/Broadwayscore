@@ -58,7 +58,7 @@ test('the two review skills are in scope (guard is not vacuous)', () => {
 });
 
 // ---- behaviour of ensure-cli.sh with fakes on PATH ----
-function sandbox({ codexVersion, npmOk = true, auth = true }) {
+function sandbox({ codexVersion, npmOk = true, auth = true, nearExpiry = false }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ensure-cli-'));
   const bin = path.join(dir, 'bin');
   const home = path.join(dir, 'home');
@@ -74,7 +74,7 @@ function sandbox({ codexVersion, npmOk = true, auth = true }) {
   if (!codexVersion) fs.rmSync(path.join(bin, 'codex'));
   // fake npm "installs" codex by writing the version it was asked for
   w('npm', `echo "npm $*" >> "${calls}"; ${npmOk ? '' : 'exit 1;'} v="\${@: -1}"; v="\${v##*@}"; echo "$v" > "${verFile}"; cat > "${bin}/codex" <<'X'\n#!/usr/bin/env bash\necho "codex-cli $(cat "${verFile}")"\nX\nchmod +x "${bin}/codex"`);
-  w('node', `echo "node $*" >> "${calls}"; case "$*" in *auth-store.js*restore*) ${auth ? `echo '{}' > "${home}/.codex/auth.json"` : 'true'};; esac; exit 0`);
+  w('node', `echo "node $*" >> "${calls}"; case "$*" in *loginExpiryWhy*) ${nearExpiry ? "printf 'the Codex login expires soon'" : 'true'}; exit 0;; *auth-store.js*restore*) ${auth ? `echo '{}' > "${home}/.codex/auth.json"` : 'true'};; esac; exit 0`);
   const run = (args = [], env = {}) => spawnSync('bash', [path.join(repo, 'scripts', 'codex', 'ensure-cli.sh'), ...args], {
     encoding: 'utf8',
     env: { PATH: `${bin}:/usr/bin:/bin`, HOME: home, TMPDIR: dir, OPENAI_API_KEY: 'x', ...env },
@@ -124,9 +124,31 @@ test('no login can be restored: MISSING names the login, exit 1', () => {
   assert.match(r.stdout, /^MISSING: no Codex login/);
 });
 
-test('--save runs auth-store save and prints SAVED', () => {
+test('cloud --save runs auth-store save and prints SAVED', () => {
   const s = sandbox({ codexVersion: '0.160.0' });
-  const r = s.run(['--save']);
+  const r = s.run(['--save'], { CLAUDE_CODE_REMOTE: 'true' });
   assert.equal(r.stdout.trim(), 'SAVED');
   assert.match(s.log(), /auth-store\.js save/);
+});
+
+test('Mac --save never pushes the Mac login to the store', () => {
+  const s = sandbox({ codexVersion: '0.170.0' });
+  const r = s.run(['--save'], { CLAUDE_CODE_REMOTE: '' });
+  assert.equal(r.status, 0);
+  assert.doesNotMatch(s.log(), /auth-store/);
+});
+
+test('cloud login near expiry: MISSING, refresh left to the runner', () => {
+  const s = sandbox({ codexVersion: '0.160.0', nearExpiry: true });
+  const r = s.run([], { CLAUDE_CODE_REMOTE: 'true' });
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /^MISSING: the Codex login expires soon; refreshing it is left to the Codex daily runner/);
+  assert.doesNotMatch(s.log(), /install\.js/);
+});
+
+test('the Codex version pin matches the daily runner and the codex-runner workflow', () => {
+  const pin = (file, re) => { const m = fs.readFileSync(path.join(ROOT, file), 'utf8').match(re); assert.ok(m, `${file}: no pin found`); return m[1]; };
+  const ensure = pin('scripts/codex/ensure-cli.sh', /CODEX_CLI_VERSION:-([\d.]+)/);
+  assert.equal(pin('scripts/codex/daily-runner.js', /const CODEX_VERSION = '([\d.]+)'/), ensure);
+  assert.equal(pin('.github/workflows/codex-runner.yml', /@openai\/codex@([\d.]+)/), ensure);
 });
