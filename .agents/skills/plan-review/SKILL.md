@@ -209,6 +209,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
 4. **Gemini (with codebase access) — Consistency & Gap Checker** — Run via Bash. Since BRO-7987 Gemini reads the repository the way Codex does: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend).
    ```bash
+   [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty; write it (and export PLAN_FILE in this same shell) before running this reviewer"; exit 1; }
    GEMINI_OUT=$(mktemp /tmp/plan-review-gemini.XXXXXX)
    {
    cat <<'PROMPT_HEAD'
@@ -240,7 +241,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with repo access. `no-reads` instead of `ok` means it opened no files, so the banner says its code claims are unverified.
    - `GEMINI_RC=3`, `MISSING: <reason>`: run the plan-text-only curl below instead and print `Gemini: MISSING (<reason>), plan-text curl ran instead, no repo access`. If the reason is `GEMINI_API_KEY is not set`, record Gemini as **MISSING** with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed). Don't silently drop it.
    - `GEMINI_RC=1`, `FAILED:` or `EMPTY:`: a coverage failure, not a pass. Run the curl below too and print the reason in the banner.
-   - `GEMINI_RC=4`, `UNSAFE:`: the read-only lock did not hold and Gemini changed files. Do not use its review. Run `git status`, undo only the changes the status line names (never your own work), report it as a P0 about the review tooling, and run the curl below.
+   - `GEMINI_RC=4`, `UNSAFE:`: the working tree changed while Gemini ran. Either the read-only lock failed or another process (a parallel reviewer, a hook, a pull) edited those files. Do not use its review. Run `git status` and `git diff` on the named files and work out which it was; never revert a change you have not confirmed came from Gemini. If Gemini wrote it, report a P0 about the review tooling. Then run the curl below.
 
    Fallback (plan text only, no repo access): check `jq -e '.error'` on the response and surface any API error instead of emitting empty output.
    ```
@@ -248,7 +249,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      -H "Content-Type: application/json" \
      -d "$(jq -n --arg plan "$(cat "${PLAN_FILE:-/tmp/critique-plan.txt}")" '{
        contents: [{parts: [{text: ("Review this plan for internal contradictions, gaps between stated goals and actual steps, and assumptions that are never validated.\n\n**CONSISTENCY LENS:**\n1. Does the plan contradict itself? (e.g., says \"simple\" but has 8 steps, says \"fast\" but requires 3 API calls)\n2. Are there gaps between what the plan SAYS it does and what the steps ACTUALLY do?\n3. What does the plan assume is true but never checks? (data exists, API is available, user has permissions)\n\n**GAP LENS:**\n4. What is the plan silent about? (error handling, rollback, what happens if step 3 fails)\n5. Are there steps that depend on each other but don't say so?\n6. What would a new developer ask after reading this plan that isn't answered?\n\nBe specific. Reference step numbers. Under 400 words. Bullet points only.\n\n" + $plan)}]}
-     }')" | tee >(node scripts/log-llm-call.js --provider=gemini --model=gemini-2.5-flash --caller=plan-review >/dev/null 2>&1) | jq -r '.candidates[0].content.parts[0].text'
+     }')" | tee >(node scripts/log-llm-call.js --provider=gemini --model=gemini-2.5-flash --caller=plan-review >/dev/null 2>&1) | jq -r 'if .error then "GEMINI API ERROR: \(.error.message // .error)" else (.candidates[0].content.parts[0].text // "GEMINI EMPTY RESPONSE") end'
    ```
 
 5. **User Impact & Platform Defaults** — Use the Task tool with subagent_type "review-panelist" and this prompt:

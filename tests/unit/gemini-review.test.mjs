@@ -31,7 +31,8 @@ test('installDecision: cloud installs a missing or off-pin CLI, the Mac never in
   assert.equal(lib.installDecision({ have: '0.69.0', pin: '0.70.0', remote: true }), 'install');
   assert.equal(lib.installDecision({ have: '0.70.0', pin: '0.70.0', remote: true }), 'use');
   assert.equal(lib.installDecision({ have: '', pin: '0.70.0', remote: false }), 'missing');
-  assert.equal(lib.installDecision({ have: '0.50.0', pin: '0.70.0', remote: false }), 'use');
+  assert.equal(lib.installDecision({ have: '0.50.0', pin: '0.70.0', remote: false }), 'off-pin', 'an unvetted version is refused, never used');
+  assert.equal(lib.installDecision({ have: '0.70.0', pin: '0.70.0', remote: false }), 'use');
 });
 
 test('buildArgs: headless, plan mode, the read-only policy, JSON output', () => {
@@ -46,12 +47,12 @@ test('buildArgs: headless, plan mode, the read-only policy, JSON output', () => 
   assert.ok(!a.includes('--yolo') && !a.includes('-y'));
 });
 
-const cliJson = ({ response = 'Finding at a.js:1', reads = 2, models = { 'gemini-2.5-pro': { prompt: 1000, cached: 400, candidates: 50, thoughts: 20 } } } = {}) => JSON.stringify({
+const cliJson = ({ response = 'Finding at a.js:1', reads = 2, extraTools = {}, models = { 'gemini-2.5-pro': { prompt: 1000, cached: 400, candidates: 50, thoughts: 20 } } } = {}) => JSON.stringify({
   session_id: 's',
   response,
   stats: {
     models: Object.fromEntries(Object.entries(models).map(([m, t]) => [m, { tokens: t }])),
-    tools: { byName: { read_file: { count: reads, success: reads, fail: 0 }, write_file: { count: 1, success: 0, fail: 1 } } },
+    tools: { byName: { read_file: { count: reads, success: reads, fail: 0 }, write_file: { count: 1, success: 0, fail: 1 }, ...extraTools } },
   },
 });
 
@@ -68,10 +69,26 @@ test('parseCliJson: error JSON, no JSON and broken JSON are errors, never a revi
   assert.match(lib.parseCliJson('{"response": ').error, /unparseable/);
 });
 
-test('treeChanges: reports added and removed porcelain entries', () => {
-  assert.deepEqual(lib.treeChanges(' M a.js\0', ' M a.js\0'), []);
-  assert.deepEqual(lib.treeChanges(' M a.js\0', ' M a.js\0?? new.txt\0'), ['new.txt']);
-  assert.deepEqual(lib.treeChanges('?? x\0', ''), ['x']);
+test('treeChanges: added, removed and content-changed entries; parseStatus skips rename sources', () => {
+  const M = (o) => new Map(Object.entries(o));
+  assert.deepEqual(lib.treeChanges(M({ 'a.js': ' M:h1' }), M({ 'a.js': ' M:h1' })), []);
+  assert.deepEqual(lib.treeChanges(M({ 'a.js': ' M:h1' }), M({ 'a.js': ' M:h1', 'new.txt': '??:h2' })), ['new.txt']);
+  assert.deepEqual(lib.treeChanges(M({ x: '??:h' }), M({})), ['x']);
+  assert.deepEqual(lib.treeChanges(M({ 'a.js': ' M:h1' }), M({ 'a.js': ' M:h9' })), ['a.js'], 'same status, new content');
+  assert.deepEqual(lib.parseStatus('R  new.js\0old.js\0 M b.js\0'), [{ xy: 'R ', path: 'new.js' }, { xy: ' M', path: 'b.js' }]);
+});
+
+test('snapshot: hashes a dirty file by content and resolves paths from the repo root', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-snap-'));
+  spawnSync('git', ['init', '-q'], { cwd: repo });
+  fs.mkdirSync(path.join(repo, 'sub'));
+  fs.writeFileSync(path.join(repo, 'sub', 'f.txt'), 'one');
+  const a = lib.snapshot(path.join(repo, 'sub'));
+  fs.writeFileSync(path.join(repo, 'sub', 'f.txt'), 'two');
+  const b = lib.snapshot(path.join(repo, 'sub'));
+  assert.deepEqual(lib.treeChanges(a, b), ['sub/f.txt']);
+  assert.ok(!a.get('sub/f.txt').endsWith(':gone'), 'run from a subfolder it still finds the file');
+  assert.equal(lib.snapshot(os.tmpdir() + '/definitely-not-a-repo-' + process.pid), null);
 });
 
 // ---------- the policy file ----------
@@ -98,12 +115,13 @@ test('review-policy.toml allows only read tools and denies everything else', () 
 
 // ---------- the wrapper, against a fake gemini/npm ----------
 
-function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeJson2 = null, fakeExit = 0, writeFile = false, installTo = null } = {}) {
+function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeJson2 = null, fakeExit = 0, fakeExit2 = null, writeFile = false, editDirty = false, installTo = null } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-review-'));
   const bin = path.join(dir, 'bin');
   const repo = path.join(dir, 'repo');
   fs.mkdirSync(bin); fs.mkdirSync(repo);
   spawnSync('git', ['init', '-q'], { cwd: repo });
+  if (editDirty) fs.writeFileSync(path.join(repo, 'dirty.js'), 'before');
   const ver = path.join(dir, 'version');
   if (geminiVersion) fs.writeFileSync(ver, geminiVersion);
   fs.writeFileSync(path.join(dir, 'out.json'), fakeJson);
@@ -112,12 +130,15 @@ function sandbox({ geminiVersion = '0.70.0', fakeJson = cliJson(), fakeJson2 = n
   fs.writeFileSync(geminiPath, `#!/usr/bin/env bash
 if [ "$1" = "--version" ]; then [ -s "${ver}" ] || exit 127; cat "${ver}"; exit 0; fi
 printf '%s\\n' "$*" >> "${dir}/argv"
+printf '%s' "$HOME" > "${dir}/home-seen"
 cat > "${dir}/stdin"
 ${writeFile ? 'echo x > leaked.txt' : ''}
+${editDirty ? 'echo after > dirty.js' : ''}
 echo "Warning: 256-color support not detected." >&2
 if [ -s "${dir}/calls" ] && [ -s "${dir}/out2.json" ]; then cat "${dir}/out2.json"; else cat "${dir}/out.json"; fi
+N=$(wc -l < "${dir}/calls" 2>/dev/null || echo 0)
 echo 1 >> "${dir}/calls"
-exit ${fakeExit}
+${fakeExit2 === null ? `exit ${fakeExit}` : `[ "$N" -ge 1 ] && exit ${fakeExit2}; exit ${fakeExit}`}
 `, { mode: 0o755 });
   fs.writeFileSync(path.join(bin, 'npm'), `#!/usr/bin/env bash
 echo "$*" >> "${dir}/npm-calls"
@@ -198,6 +219,58 @@ test('wrapper: CLI failure and empty response are FAILED/EMPTY (exit 1), never a
   assert.match(empty.err, /^EMPTY:/);
 });
 
+test('wrapper: only content reads count; a glob-only run is retried as no-reads', () => {
+  const sb = sandbox({ fakeJson: cliJson({ reads: 0, extraTools: { glob: { count: 3, success: 3, fail: 0 }, list_directory: { count: 2, success: 2, fail: 0 } } }) });
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 0);
+  assert.match(r.err, /GEMINI-REVIEW: no-reads .*reads=0 retried=1/);
+});
+
+test('wrapper: a failed retry keeps the first answer, labelled unverified', () => {
+  const sb = sandbox({ fakeJson: cliJson({ reads: 0, response: 'first answer' }), fakeJson2: 'not json', fakeExit2: 1 });
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 0, r.err);
+  assert.ok(r.out.startsWith(lib.NO_READS_HEADER));
+  assert.match(r.out, /first answer/);
+});
+
+test('wrapper: an edit to an already-dirty file is UNSAFE', () => {
+  const sb = sandbox({ editDirty: true });
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 4);
+  assert.match(r.err, /^UNSAFE: .*dirty\.js/);
+});
+
+test('wrapper: a repo .gemini/ folder is refused (MISSING, exit 3) before Gemini runs', () => {
+  const sb = sandbox();
+  fs.mkdirSync(path.join(sb.repo, '.gemini'));
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 3);
+  assert.match(r.err, /^MISSING: .*\.gemini/);
+  assert.ok(!fs.existsSync(path.join(sb.dir, 'argv')));
+});
+
+test('wrapper: Gemini runs with a fresh empty HOME, removed afterwards', () => {
+  const sb = sandbox();
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.equal(r.code, 0, r.err);
+  const seen = fs.readFileSync(path.join(sb.dir, 'home-seen'), 'utf8');
+  assert.notEqual(seen, sb.dir, 'never the real home');
+  assert.match(path.basename(seen), /^gemini-review-home-/);
+  assert.ok(!fs.existsSync(seen), 'temp home is cleaned up');
+});
+
+test('wrapper: a bad --timeout-sec is FAILED; a failed paid call still logs spend', () => {
+  const sb = sandbox();
+  const bad = spawnSync(process.execPath, [SCRIPT, '--caller=test', '--timeout-sec=abc'], { cwd: sb.repo, input: 'x', encoding: 'utf8',
+    env: { PATH: process.env.PATH, HOME: sb.dir, GEMINI_API_KEY: 'k', GEMINI_CLI_BIN: sb.geminiPath, LLM_SESSION_LEDGER_PATH: sb.ledger } });
+  assert.equal(bad.status, 1);
+  assert.match(bad.stderr, /^FAILED: --timeout-sec/);
+  const failed = sandbox({ fakeJson: JSON.stringify({ error: { message: 'quota exceeded' } }), fakeExit: 1 });
+  run(failed, { env: { CLAUDE_CODE_REMOTE: 'true' } });
+  assert.ok(fs.existsSync(failed.ledger) && fs.readFileSync(failed.ledger, 'utf8').trim().length > 0, 'a failed call is logged');
+});
+
 test('wrapper: cloud installs the pin when the CLI is off-pin, MISSING when npm fails', () => {
   const ok = sandbox({ geminiVersion: '0.60.0', installTo: lib.PIN });
   const r = run(ok, { env: { CLAUDE_CODE_REMOTE: 'true' } });
@@ -209,34 +282,51 @@ test('wrapper: cloud installs the pin when the CLI is off-pin, MISSING when npm 
   assert.match(r2.err, /^MISSING: npm install/);
 });
 
-test('wrapper: the Mac never installs; a missing CLI is MISSING', () => {
+test('wrapper: the Mac never installs; a missing or off-pin CLI is MISSING', () => {
   const sb = sandbox({ geminiVersion: '' });
   const r = run(sb, { env: { CLAUDE_CODE_REMOTE: '' } });
   assert.equal(r.code, 3);
   assert.match(r.err, /^MISSING: no gemini CLI/);
   assert.equal(npmCalls(sb), '');
+  const off = sandbox({ geminiVersion: '0.50.0' });
+  const r2 = run(off, { env: { CLAUDE_CODE_REMOTE: '' } });
+  assert.equal(r2.code, 3);
+  assert.match(r2.err, /^MISSING: .*0\.50\.0/);
+  assert.ok(!fs.existsSync(path.join(off.dir, 'argv')), 'an off-pin CLI never runs');
 });
 
 // ---------- class guard over the review skills ----------
 
 function skillFiles() {
   const out = [];
-  const cmdDir = path.join(ROOT, '.claude', 'commands');
-  for (const f of fs.readdirSync(cmdDir)) if (f.endsWith('.md')) out.push(path.join(cmdDir, f));
-  const skillDir = path.join(ROOT, '.claude', 'skills');
-  if (fs.existsSync(skillDir)) for (const d of fs.readdirSync(skillDir)) {
-    const p = path.join(skillDir, d, 'SKILL.md');
-    if (fs.existsSync(p)) out.push(p);
-  }
+  const walk = (d, ok) => {
+    if (!fs.existsSync(d)) return;
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (e.name !== 'node_modules' && e.name !== 'worktrees') walk(p, ok); } else if (ok(e.name)) out.push(p);
+    }
+  };
+  walk(path.join(ROOT, '.claude', 'commands'), (n) => n.endsWith('.md'));
+  walk(path.join(ROOT, '.claude', 'skills'), (n) => n === 'SKILL.md');
+  walk(path.join(ROOT, '.claude', 'hooks'), (n) => /\.(sh|js|mjs)$/.test(n));
+  walk(path.join(ROOT, 'scripts'), (n) => n.endsWith('.sh'));
   return out;
 }
+
+// A shell-position gemini call: start of line, or after | ; & ( && ||, optionally via npx/$GEMINI_BIN.
+const DIRECT_GEMINI = /(^|[|;&(`]|\$\()\s*(?:npx\s+(?:-y\s+)?@google\/gemini-cli(?:@\S+)?|"?\$\{?GEMINI_(?:BIN|CLI_BIN)\}?"?|gemini)\s+(-p\b|-m\b|-y\b|--(approval-mode|yolo|prompt|model|policy|skip-trust)\b)/m;
+
+test('the direct-gemini detector: catches shell calls, ignores prose', () => {
+  for (const bad of ['gemini -p "x"', 'cat f | gemini --approval-mode plan', 'npx @google/gemini-cli@0.70.0 -p hi', '"$GEMINI_BIN" -m flash', 'x && gemini --yolo'])
+    assert.match(bad, DIRECT_GEMINI, bad);
+  for (const ok of ['Gemini -p is not used here', 'the gemini --policy flag loads a file', 'node scripts/gemini/review.js --caller=x'])
+    assert.doesNotMatch(ok, DIRECT_GEMINI, ok);
+});
 
 test('skills never run the gemini CLI directly; they go through scripts/gemini/review.js', () => {
   const offenders = [];
   for (const f of skillFiles()) {
-    const text = fs.readFileSync(f, 'utf8');
-    // a bare CLI invocation: `gemini -p`, `gemini --approval-mode`, `| gemini ` etc.
-    if (/(^|[|;&(]\s*|\s)gemini\s+(-p\b|-m\b|--(approval-mode|yolo|prompt|model|policy|skip-trust))/m.test(text)) offenders.push(path.relative(ROOT, f));
+    if (DIRECT_GEMINI.test(fs.readFileSync(f, 'utf8'))) offenders.push(path.relative(ROOT, f));
   }
   assert.deepEqual(offenders, [], 'run Gemini through scripts/gemini/review.js (read-only policy, tree check, spend log)');
 });
