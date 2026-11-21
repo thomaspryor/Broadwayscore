@@ -152,14 +152,25 @@ function equalLengthNotLonger(code, reason) {
   return !!m && m[1] === m[2];
 }
 
-/** Extra ledger detail for a BROWSER_SESSION gate refusal, so a later run can prove the above. */
-function subscriberReadDetail({ code, reason, storedText }) {
-  return { storedHash: sha16(storedText), ...(equalLengthNotLonger(code, reason) ? { equalToStored: true } : {}) };
+/**
+ * Extra ledger detail for a BROWSER_SESSION gate refusal. `equalToStored` needs the
+ * gate's own "(N >= N)" AND the browser's cleaned text hashing to the stored cleaned
+ * text: equal length alone could be any article of that size (review, BRO-7997).
+ */
+function subscriberReadDetail({ code, reason, storedText, storedCleaned = null, fetchedCleaned = null }) {
+  const sameText = storedCleaned != null && fetchedCleaned != null && sha16(storedCleaned) === sha16(fetchedCleaned);
+  return { storedHash: sha16(storedText), ...(equalLengthNotLonger(code, reason) && sameText ? { equalToStored: true } : {}) };
 }
+
+// Gate refusals that come AFTER the show-identity check: the page was this show's review.
+const IDENTITY_PASSED_REASONS = new Set(['byline_conflict', 'date_implausible', 'not_materially_longer', 'tier_downgrade', 'tier_invalid', 'url_change_refused']);
+// A stored paywall teaser equal to a browser read may mean the browser was logged out: no "complete" proof there.
+const NO_COMPLETE_PROOF_CLASSES = new Set(['PAYWALL_PAGE', 'PAYWALL_TRUNCATED', 'BLOCKED']);
 
 /**
  * @returns {{kind:'complete'|'wrong_page'|null, ts:string|null}} from the review's
- * LATEST conclusive BROWSER_SESSION refusal at the stored url.
+ * LATEST conclusive BROWSER_SESSION refusal at the stored url (a later row that shows
+ * the right article was read supersedes an older wrong_page).
  */
 function subscriberReadProof(liveRows, { reviewUrl = null, storedText = '' } = {}) {
   const { urlCanonicallyChanged } = require('./url-change-invariant');
@@ -168,10 +179,11 @@ function subscriberReadProof(liveRows, { reviewUrl = null, storedText = '' } = {
   for (let i = mine.length - 1; i >= 0; i--) {
     const r = mine[i];
     if (r.reason === 'not_longer') {
-      if (r.detail && r.detail.equalToStored && r.detail.storedHash === sha16(storedText)) return { kind: 'complete', ts: r.ts };
-      continue; // a shorter browser text proves nothing
+      if (r.detail && r.detail.equalToStored && r.detail.storedHash === sha16(storedText) && !NO_COMPLETE_PROOF_CLASSES.has(r.gapClass)) return { kind: 'complete', ts: r.ts };
+      continue; // a shorter / different browser text proves nothing
     }
     if (SUBSCRIBER_WRONG_PAGE_REASONS.has(r.reason)) return { kind: 'wrong_page', ts: r.ts };
+    if (IDENTITY_PASSED_REASONS.has(r.reason)) return { kind: null, ts: r.ts };
   }
   return { kind: null, ts: null };
 }

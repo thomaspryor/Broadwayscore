@@ -80,7 +80,7 @@ const CLASS_STRATEGIES = Object.freeze({
 });
 
 // REFETCH_FREE skip reasons that mean the free route is done for this review (not a cooldown).
-const REFETCH_SPENT = /^(?:abandoned|max_retries_reached|superseded_at_url|lost_loop_at_url|no_free_tier)$/;
+const REFETCH_SPENT = /^(?:abandoned|max_retries_reached|superseded_at_url|lost_loop_at_url|no_free_tier|subscriber_read_wrong_page)$/;
 
 const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
 // Classes the blanket PAID_FETCH fallback must not reach (BRO-7943 review).

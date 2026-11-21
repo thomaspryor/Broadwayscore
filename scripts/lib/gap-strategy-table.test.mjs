@@ -56,7 +56,7 @@ const url = 'https://www.thetimes.com/culture/theatre-dance/article/x';
 const row = (o) => ({ ts: '2026-11-21T10:00:00Z', strategy: 'BROWSER_SESSION', outcome: 'rejected', url, ...o });
 
 test('equal-length not_longer from the browser proves the stored text complete', () => {
-  const detail = PO.subscriberReadDetail({ code: 'not_longer', reason: 'not longer than existing (2455 >= 2455)', storedText: stored });
+  const detail = PO.subscriberReadDetail({ code: 'not_longer', reason: 'not longer than existing (2455 >= 2455)', storedText: stored, storedCleaned: stored, fetchedCleaned: stored });
   assert.equal(detail.equalToStored, true);
   assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail })], { reviewUrl: url, storedText: stored }).kind, 'complete');
 });
@@ -65,7 +65,7 @@ test('a longer stored text (browser was shorter) or changed stored text is no pr
   const shorter = PO.subscriberReadDetail({ code: 'not_longer', reason: 'not longer than existing (2455 >= 2000)', storedText: stored });
   assert.equal(shorter.equalToStored, undefined);
   assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail: shorter })], { reviewUrl: url, storedText: stored }).kind, null);
-  const eq = PO.subscriberReadDetail({ code: 'not_longer', reason: '(10 >= 10)', storedText: stored });
+  const eq = PO.subscriberReadDetail({ code: 'not_longer', reason: '(10 >= 10)', storedText: stored, storedCleaned: stored, fetchedCleaned: stored });
   assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail: eq })], { reviewUrl: url, storedText: stored + ' edited' }).kind, null);
   assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail: eq })], { reviewUrl: url + '-new-article', storedText: stored }).kind, null);
 });
@@ -81,4 +81,26 @@ test('the driver wires the subscriber-read proof and records its detail (guards 
   assert.match(src, /PO\.subscriberReadProof\(/);
   assert.match(src, /subscriber_read_complete/);
   assert.match(src, /PO\.subscriberReadDetail\(/);
+});
+
+test('equal length but different text is no completeness proof (review: same-size unrelated page)', () => {
+  const d = PO.subscriberReadDetail({ code: 'not_longer', reason: '(2455 >= 2455)', storedText: stored, storedCleaned: stored, fetchedCleaned: 'x'.repeat(stored.length) });
+  assert.equal(d.equalToStored, undefined);
+  assert.equal(PO.subscriberReadDetail({ code: 'not_longer', reason: '(2455 >= 2455)', storedText: stored }).equalToStored, undefined, 'no fetched text = no proof');
+});
+
+test('paywall-class rows never yield a complete proof (browser may have been logged out)', () => {
+  const d = PO.subscriberReadDetail({ code: 'not_longer', reason: '(5 >= 5)', storedText: stored, storedCleaned: stored, fetchedCleaned: stored });
+  assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail: d, gapClass: 'PAYWALL_TRUNCATED' })], { reviewUrl: url, storedText: stored }).kind, null);
+  assert.equal(PO.subscriberReadProof([row({ reason: 'not_longer', detail: d, gapClass: 'SHORT_UNVERIFIED' })], { reviewUrl: url, storedText: stored }).kind, 'complete');
+});
+
+test('a later identity-passing browser refusal supersedes an older wrong_page', () => {
+  const rows = [row({ ts: '2026-11-20T00:00:00Z', reason: 'show_not_mentioned' }), row({ ts: '2026-11-21T00:00:00Z', reason: 'byline_conflict' })];
+  assert.equal(PO.subscriberReadProof(rows, { reviewUrl: url, storedText: stored }).kind, null);
+});
+
+test('wrong_page proof does not strand URL_FIND behind refetch_not_spent', () => {
+  const r = sel({ gapClass: 'PAYWALL_PAGE', eligible: (s) => (s === 'REFETCH_FREE' || s === 'ARCHIVE' ? { ok: false, reason: 'subscriber_read_wrong_page' } : s === 'BROWSER_SESSION' ? { ok: false, reason: 'retry_backoff' } : { ok: true, reason: 'ok' }) });
+  assert.equal(r.strategy, 'URL_FIND', chain(r).join(' | '));
 });

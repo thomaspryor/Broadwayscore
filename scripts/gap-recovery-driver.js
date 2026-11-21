@@ -694,7 +694,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
         // URL_FIND: the found link was refused by the live gate (LLM identity
         // check included); its method stays un-done so the next night tries
         // the other links (this url is skipped from now on).
-        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(strategy === 'BROWSER_SESSION' ? PO.subscriberReadDetail({ code: r.code, reason: r.reason, storedText: readJson(c.filePath).fullText }) : {}), ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
+        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(strategy === 'BROWSER_SESSION' ? (() => { const st = readJson(c.filePath).fullText; const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning'); return PO.subscriberReadDetail({ code: r.code, reason: r.reason, storedText: st, storedCleaned: stripTrailingJunk(cleanText(String(st || ''))), fetchedCleaned: r.decision && r.decision.cleanedText }); })() : {}), ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
         record(c, strategy, { outcome, reason: r.code, ...L.refusalDiagnostics({ c, got, r }), detail });
         continue;
       }
