@@ -212,6 +212,16 @@ test('a stored warn for a fully rejected source no longer warns in the health ro
   assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'warn');
 });
 
+test('rejected-source downgrade keeps warn/action for look-alike-us, partial-pass and 5+ failures (BRO-7972)', () => {
+  const sev = (over) => summarizeReports([report({ records: [record({ count: 500 }),
+    record({ sourceIp: '198.51.100.7', count: 3, evaluatedDkim: 'fail', evaluatedSpf: 'fail', disposition: 'reject', dkim: [], spf: [], ...over })] })])
+    .findings.find((x) => x.code === 'unauthenticated-source').severity;
+  // Signs with our own domain but fails alignment: a misconfigured sender, keep visible.
+  assert.equal(sev({ dkim: [{ domain: 'broadwayscorecard.com', result: 'fail', selector: 'x' }] }), 'warn');
+  assert.equal(sev({ count: 5 }), 'action');
+  assert.equal(sev({ disposition: 'quarantine' }), 'warn');
+});
+
 test('p=none is flagged as unenforced regardless of pass rate', () => {
   const s = summarizeReports([report({ policy: { ...POLICY, p: 'none', sp: 'none' } })]);
   const f = s.findings.find((x) => x.code === 'policy-unenforced');

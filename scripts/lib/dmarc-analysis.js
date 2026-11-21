@@ -286,7 +286,10 @@ function daysBetween(aIso, bIso) {
  * summaries) and dmarcHealthResult (summaries written before this rule, which
  * the ingest deliberately does not rewrite while unchanged; BRO-7972).
  */
-function isBlockedByPolicy(source, failCountForHigh) {
+function isBlockedByPolicy(source, failCountForHigh, policyDomain) {
+  // A source signing with OUR domain is trying to be us (a misconfigured ESP
+  // or a replay), not a blind spoof: keep it a warn so lost mail stays visible.
+  if ((source.dkimDomains || []).some((d) => isUnderDomain(d, policyDomain))) return false;
   return source.fail > 0 && source.fail < failCountForHigh && !(source.pass > 0)
     && Array.isArray(source.dispositions) && source.dispositions.length > 0
     && source.dispositions.every((d) => d === 'reject');
@@ -346,7 +349,7 @@ function evaluateFindings(summary, opts = DEFAULTS) {
     // is the p=reject policy doing its job, not a hole to fix. It stays visible
     // as 'info' (and in the summary sources) but must not hold a daily warn row
     // for the whole 7-day report window.
-    const blockedByPolicy = isBlockedByPolicy(s, o.failCountForHigh);
+    const blockedByPolicy = isBlockedByPolicy(s, o.failCountForHigh, policy && policy.domain);
     findings.push({
       severity: s.fail >= o.failCountForHigh ? 'action' : (blockedByPolicy ? 'info' : 'warn'),
       code: 'unauthenticated-source',
@@ -495,7 +498,7 @@ function dmarcHealthResult(summary, opts = {}) {
     if (f.severity !== 'warn') return false;
     if (f.code !== 'unauthenticated-source' || !f.evidence) return true;
     const src = sources.find((x) => x.ip === f.evidence.ip);
-    return !(src && isBlockedByPolicy(src, DEFAULTS.failCountForHigh));
+    return !(src && isBlockedByPolicy(src, DEFAULTS.failCountForHigh, summary.policy && summary.policy.domain));
   });
   if (warnings.length) {
     return { status: 'warn', message: `${warnings.length} DMARC warning(s): ${warnings.map((f) => f.code).join(', ')}`, hint: warnings[0].message };
