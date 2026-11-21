@@ -80,7 +80,8 @@ async function cmdFetch() {
   const todo = urls.filter((u) => { const p = readPage(u); return !p || (!p.ok && arg('retry-failed')); });
   console.log(`fetch: ${urls.length} unique URLs, ${todo.length} to fetch`);
   let n = 0;
-  for (const url of todo) {
+  // Pages are independent files, so parallel fetches never write the same path.
+  await require('./lib/dual-model-client').pool(todo, Number(arg('concurrency', 6)), async (url) => {
     let rec;
     try {
       const r = await fetchPage(url, {});
@@ -92,7 +93,7 @@ async function cmdFetch() {
     }
     fs.writeFileSync(pageFile(url), JSON.stringify(rec));
     if (++n % 10 === 0) console.log(`  ${n}/${todo.length}`);
-  }
+  });
   const ok = urls.filter((u) => (readPage(u) || {}).ok).length;
   console.log(`fetch done: ${ok}/${urls.length} pages usable`);
 }
@@ -132,7 +133,7 @@ async function adjudicateSection(theaterName, section, rules, clients) {
 
   const decision = A.decideSection(section, claims, accepted);
   const claimLog = claims.map((c, i) => ({
-    kind: c.kind, text: c.text, accepted: accepted.get(i + 1),
+    kind: c.kind, text: c.text, accepted: accepted.get(i + 1), why: accepted.why ? accepted.why.get(i + 1) : undefined,
     evidence: c.evidence.map((e) => ({ url: e.url, quoteHash: A.quoteHash(e.quote), quote: e.quote })),
   }));
   if (decision.dropped) return { status: 'DROPPED', reason: decision.dropped, ...base, claims: claimLog };
@@ -159,7 +160,7 @@ async function cmdRun() {
     const file = path.join(RESULTS, `${slug(t)}.json`);
     let prev = {};
     try { prev = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* fresh */ }
-    if (prev.snapshotSha && prev.snapshotSha !== snapSha) prev = {};
+    if ((prev.snapshotSha && prev.snapshotSha !== snapSha) || arg('fresh')) prev = {};
     const rules = showTitleRules(t);
     const sections = data[t].structuredTips.seating.sections;
     const results = prev.sections || [];

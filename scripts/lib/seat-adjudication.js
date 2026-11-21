@@ -19,7 +19,12 @@
 const crypto = require('crypto');
 
 const VERDICTS = new Set(['sweet-spot', 'solid', 'skip']);
-const PRICE_TIERS = new Set(['premium', 'mid', 'budget']);
+const PRICE_TIERS = new Set(['budget', 'mid', 'premium', 'top']);
+// Must match SeatingHazardType in src/lib/data-types.ts (the UI prints the type as a label).
+const HAZARD_TYPES = new Set(['mezz-overhang', 'pillar', 'obstructed-view', 'side-angle', 'steep-rake', 'tight-legroom', 'distant', 'partial-stage', 'sound-dead-spot']);
+// April data used a few off-list types; map the ones that mean the same thing, drop the rest.
+const HAZARD_ALIASES = { distance: 'distant', legroom: 'tight-legroom', 'rail-obstruction': 'obstructed-view', 'side-on-view': 'side-angle', 'neck-turn': 'side-angle', 'corner-cutoff': 'partial-stage', 'staging-blocked': 'partial-stage', hearing: 'sound-dead-spot' };
+const hazardType = (t) => (HAZARD_TYPES.has(t) ? t : HAZARD_ALIASES[t] || null);
 const SHOW_TAGS = new Set(['musical', 'play', 'dance-heavy', 'spectacle', 'intimate-drama']);
 const DEFAULT_LABEL = { 'sweet-spot': 'Top pick', solid: 'Solid choice', skip: 'Skip' };
 const MAX_QUOTE_CHARS = 400;
@@ -252,6 +257,7 @@ function buildVerifyPrompt({ theaterName, sectionName, claims }) {
   return `You are a strict fact-checker. Each claim below is about the "${sectionName}" seats at ${theaterName} on Broadway.
 For each claim, decide if the EVIDENCE quotes, read literally, support the claim for this section at this theater.
 Say false if the evidence is about a different section, a different theater, is vaguer than the claim, or only partly supports it.
+A [verdict] claim of "good, reasonable seats" is supported by evidence that the seats are good, decent or worth buying; it does not need to say they are the best.
 
 ${block}
 
@@ -262,7 +268,8 @@ Reply with ONLY JSON: {"results":[{"i":1,"supported":true|false,"why":"<8 words>
 function parseVerifyReply(text, nClaims) {
   const j = parseJsonReply(text);
   const out = new Map();
-  for (const r of j.results || []) if (Number.isInteger(r.i)) out.set(r.i, r.supported === true);
+  out.why = new Map();
+  for (const r of j.results || []) if (Number.isInteger(r.i)) { out.set(r.i, r.supported === true); out.why.set(r.i, String(r.why || '').slice(0, 120)); }
   for (let i = 1; i <= nClaims; i++) if (!out.has(i)) throw new Error(`verifier reply missing claim ${i}`);
   return out;
 }
@@ -279,13 +286,12 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
     if (ev.length) claims.push({ kind, text, evidence: ev, ...extra });
   };
   const r = reply || {};
-  if (r.verdict && r.verdict.supported) {
-    const v = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' }[section.verdict];
-    add('verdict', `The ${section.name} seats ${v}.`, r.verdict.evidence);
-  }
-  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `The recommended rows for ${section.name} are ${section.rowRange}.`, r.rowRange.evidence);
+  const v = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' }[section.verdict];
+  if (r.verdict && r.verdict.supported) add('verdict', `The ${section.name} seats ${v}.`, r.verdict.evidence);
+  // The row quote often only names the rows; the verdict quote says how good they are. The verifier sees both.
+  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${section.name}, rows ${section.rowRange} ${v}.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
   if (section.bestRow && r.bestRow && r.bestRow.keep) add('bestRow', `${section.bestRow} is the single best row in ${section.name}.`, r.bestRow.evidence);
-  if (section.priceTier && r.priceTier && r.priceTier.keep) add('priceTier', `${section.name} seats are ${section.priceTier === 'premium' ? 'among the most expensive' : section.priceTier === 'budget' ? 'among the cheapest' : 'mid-priced'} at this theater.`, r.priceTier.evidence);
+  if (section.priceTier && r.priceTier && r.priceTier.keep) add('priceTier', `${section.name} seats are ${section.priceTier === 'premium' || section.priceTier === 'top' ? 'among the most expensive' : section.priceTier === 'budget' ? 'among the cheapest' : 'mid-priced'} at this theater.`, r.priceTier.evidence);
   if (section.isValuePick && r.isValuePick && r.isValuePick.keep) add('isValuePick', `${section.name} is good value for the money at this theater.`, r.isValuePick.evidence);
   for (const key of ['bestFor', 'worstFor']) {
     const tags = ((r[key] && r[key].keep) || []).filter((t) => SHOW_TAGS.has(t) && (section[key] || []).includes(t));
@@ -293,10 +299,10 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
   }
   for (const h of r.hazards || []) {
     const orig = (section.hazards || [])[h.i];
-    if (!orig || !h.keep) continue;
+    if (!orig || !h.keep || !hazardType(orig.type)) continue;
     const note = String(h.note || orig.note || '').trim();
     if (!note || copyProblems(note, { forbiddenTitles }).length) continue;
-    add('hazard', `${section.name}: ${note}`, h.evidence, { hazard: { type: orig.type, note } });
+    add('hazard', `${section.name}: ${note}`, h.evidence, { hazard: { type: hazardType(orig.type), note } });
   }
   (r.rationale || []).forEach((s) => {
     const text = String((s && s.text) || '').trim();
@@ -315,7 +321,9 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
 function decideSection(original, claims, accepted) {
   const ok = claims.filter((c, i) => accepted.get(i + 1) === true);
   if (!ok.some((c) => c.kind === 'verdict')) return { dropped: 'verdict not supported' };
-  const sentences = ok.filter((c) => c.kind === 'rationale');
+  let sentences = ok.filter((c) => c.kind === 'rationale').map((c) => c.sentence);
+  // No rewritten sentence survived but a hazard did: the verified hazard note is the explanation.
+  if (!sentences.length) sentences = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard.note.replace(/([^.!?])$/, '$1.'));
   if (!sentences.length) return { dropped: 'no supported rationale' };
   const has = (k) => ok.find((c) => c.kind === k);
   const out = { name: original.name };
@@ -325,7 +333,7 @@ function decideSection(original, claims, accepted) {
   out.verdictLabel = DEFAULT_LABEL[original.verdict];
   if (original.priceTier && has('priceTier')) out.priceTier = original.priceTier;
   if (original.isValuePick && has('isValuePick')) out.isValuePick = true;
-  out.rationale = sentences.map((c) => c.sentence).join(' ');
+  out.rationale = sentences.join(' ');
   const hazards = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard);
   if (hazards.length) out.hazards = hazards;
   const bf = has('bestFor'); if (bf) out.bestFor = bf.tags;
@@ -352,7 +360,7 @@ function quoteHash(q) {
 }
 
 module.exports = {
-  VERDICTS, PRICE_TIERS, SHOW_TAGS, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
+  VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, hazardType, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
   normalizeText, htmlToText, theaterNamePatterns, pageNamesTheater, sectionKeywords, selectPassages,
   quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,
   parseVerifyReply, groundRewrite, decideSection, theaterKeepProblems, quoteHash,

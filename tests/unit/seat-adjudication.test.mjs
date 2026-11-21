@@ -88,9 +88,26 @@ describe('groundRewrite + decideSection', () => {
     const acc = new Map(claims.map((c, i) => [i + 1, c.kind !== 'verdict']));
     assert.strictEqual(A.decideSection(section, claims, acc).dropped, 'verdict not supported');
   });
-  test('no accepted rationale drops the section', () => {
+  test('no accepted rationale and no accepted hazard drops the section', () => {
     const acc = new Map(claims.map((c, i) => [i + 1, c.kind !== 'rationale']));
     assert.strictEqual(A.decideSection(section, claims, acc).dropped, 'no supported rationale');
+  });
+  test('a verified hazard note stands in for a missing rationale', () => {
+    const page = 'Gershwin Theatre: the extreme corner seats miss some of the stage. Avoid the extreme corner seats.';
+    const src = [{ url: 'https://c.example', text: page, namesTheater: true }];
+    const sec = { name: 'Corners', verdict: 'skip', verdictLabel: 'Skip', hazards: [{ type: 'side-angle', note: 'x' }] };
+    const rep = {
+      verdict: { supported: true, evidence: [{ src: 1, quote: 'Avoid the extreme corner seats' }] },
+      hazards: [{ i: 0, keep: true, note: 'Corner seats miss some of the stage', evidence: [{ src: 1, quote: 'the extreme corner seats miss some of the stage' }] }],
+    };
+    const g = A.groundRewrite(sec, rep, src);
+    const { section: out } = A.decideSection(sec, g.claims, new Map(g.claims.map((c, i) => [i + 1, true])));
+    assert.strictEqual(out.rationale, 'Corner seats miss some of the stage.');
+  });
+  test('off-list April hazard types are mapped or dropped, never shipped', () => {
+    assert.strictEqual(A.hazardType('distance'), 'distant');
+    assert.strictEqual(A.hazardType('price'), null);
+    assert.strictEqual(A.hazardType('pillar'), 'pillar');
   });
 });
 
