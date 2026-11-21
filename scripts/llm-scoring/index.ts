@@ -2542,6 +2542,7 @@ async function main(): Promise<void> {
         claudeModel: cfg.claudeModel,
         openaiModel: cfg.openaiModel,
         geminiTemperature: cfg.geminiTemperature,
+        geminiModel: cfg.geminiModel, // the batch lines' thinking config must match the job's model (BRO-7511)
       });
 
       // Cost is committed at submission, so print the (batch-discounted)

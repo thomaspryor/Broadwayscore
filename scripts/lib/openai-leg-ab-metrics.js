@@ -67,13 +67,46 @@ function legMidpointError(arm, band, scoreKey = 'openaiScore') {
   return Math.abs(arm[scoreKey] - mid);
 }
 
+const LEG_KEYS = {
+  openai: { scoreKey: 'openaiScore', okKey: 'openaiLegOk', rejKey: 'openaiLegRejected' },
+  claude: { scoreKey: 'claudeScore', okKey: 'claudeLegOk', rejKey: 'claudeLegRejected' },
+  gemini: { scoreKey: 'geminiScore', okKey: 'geminiLegOk', rejKey: 'geminiLegRejected' },
+};
+
+function legsFor(leg) {
+  if (leg === 'both') return ['openai', 'claude'];
+  if (leg === 'all') return ['openai', 'claude', 'gemini'];
+  if (leg === 'claude' || leg === 'gemini') return [leg];
+  if (leg && leg !== 'openai') throw new Error(`unknown leg ${leg}`);
+  return ['openai'];
+}
+
+/**
+ * Do the swaps compound? Per review where control, the combined arm and every
+ * single-swap arm all scored: (combined - control) - sum(single - control).
+ * 0 = the combined change is just the sum of the single changes.
+ */
+function interactionTerm(records, combinedKey, singleKeys) {
+  let n = 0; let w = 0; let sum = 0; let absSum = 0; let over5 = 0;
+  for (const r of records) {
+    const arms = [r.control, r[combinedKey], ...singleKeys.map((k) => r[k])];
+    if (!arms.every((a) => BUCKETS.includes(outcomeClass(a)))) continue;
+    const base = r.control.score;
+    const x = (r[combinedKey].score - base) - singleKeys.reduce((acc, k) => acc + (r[k].score - base), 0);
+    const wt = r.weight || 1;
+    n += 1; w += wt; sum += wt * x; absSum += wt * Math.abs(x);
+    if (Math.abs(x) > 5) over5 += wt;
+  }
+  return { n, meanInteraction: w ? +(sum / w).toFixed(2) : 0, meanAbsInteraction: w ? +(absSum / w).toFixed(2) : 0, over5Pts: w ? +(over5 / w).toFixed(4) : 0 }; // weighted, like the means
+}
+
 /** records -> full report with per-gate pass/fail. Records where control failed are excluded and counted. */
 function computeReport(records, opts = {}) {
   // opts.leg 'claude' (BRO-7529): the swapped leg is Claude, so leg accuracy and
   // leg errors read claudeScore / claudeLegOk instead of the OpenAI fields.
-  const scoreKey = opts.leg === 'claude' ? 'claudeScore' : 'openaiScore';
-  const okKey = opts.leg === 'claude' ? 'claudeLegOk' : 'openaiLegOk';
-  const rejKey = opts.leg === 'claude' ? 'claudeLegRejected' : 'openaiLegRejected';
+  // opts.leg 'both' (OpenAI + Claude) / 'all' (+ Gemini, BRO-7511): several legs were
+  // swapped at once, so leg accuracy and leg errors must hold for EACH swapped leg.
+  const legs = legsFor(opts.leg);
   const usable = records.filter((r) => outcomeClass(r.control) !== 'failed');
   const controlFailed = records.length - usable.length;
 
@@ -104,28 +137,36 @@ function computeReport(records, opts = {}) {
   const shows = [...perShow.entries()].filter(([, v]) => v.n >= GATES.showMinReviews).map(([id, v]) => ({ showId: id, n: v.n, meanDelta: +(v.sum / v.n).toFixed(2) }));
   const showsOver = shows.filter((x) => Math.abs(x.meanDelta) > GATES.showDriftPts);
 
-  const errs = { control: [], shadow: [] };
-  for (const r of usable) {
-    const ec = legMidpointError(r.control, r.band, scoreKey); const es = legMidpointError(r.shadow, r.band, scoreKey);
-    if (ec !== null && es !== null) { errs.control.push(ec); errs.shadow.push(es); }
-  }
   const mae = (a) => (a.length ? +(a.reduce((x, y) => x + y, 0) / a.length).toFixed(2) : null);
-  const legMae = { control: mae(errs.control), shadow: mae(errs.shadow), n: errs.control.length };
+  const legMaeOf = (scoreKey) => {
+    const errs = { control: [], shadow: [] };
+    for (const r of usable) {
+      const ec = legMidpointError(r.control, r.band, scoreKey); const es = legMidpointError(r.shadow, r.band, scoreKey);
+      if (ec !== null && es !== null) { errs.control.push(ec); errs.shadow.push(es); }
+    }
+    return { control: mae(errs.control), shadow: mae(errs.shadow), n: errs.control.length };
+  };
+  const legMaePass = (m) => m.n >= GATES.legAccuracyMinPairs && m.shadow <= m.control + GATES.legAccuracySlack;
+  const legMaes = Object.fromEntries(legs.map((l) => [l, legMaeOf(LEG_KEYS[l].scoreKey)]));
+  const legMae = legs.length === 1 ? legMaes[legs[0]] : legMaes;
 
   // A leg error = the OpenAI call itself failed (not a rejection). Whole-arm
   // failures count too. Control's rate is reported for comparison.
-  const legFailed = (a) => outcomeClass(a) === 'failed' || (a && a[okKey] === false && !a[rejKey]);
-  const shadowFailed = usable.filter((r) => legFailed(r.shadow)).length;
-  const controlLegFailed = usable.filter((r) => legFailed(r.control)).length;
-  const shadowErrorRate = usable.length ? shadowFailed / usable.length : 0;
+  // Each swapped leg is gated on its own error rate (a multi-leg union would fail two
+  // legs that each pass); whole-arm failures count against every leg.
+  const legFailedOne = (a, l) => outcomeClass(a) === 'failed' || (a && a[LEG_KEYS[l].okKey] === false && !a[LEG_KEYS[l].rejKey]);
+  const rate = (arm, l) => (usable.length ? usable.filter((r) => legFailedOne(r[arm], l)).length / usable.length : 0);
+  const perLeg = Object.fromEntries(legs.map((l) => [l, { shadow: +rate('shadow', l).toFixed(4), control: +rate('control', l).toFixed(4) }]));
+  const shadowErrorRate = Math.max(...legs.map((l) => rate('shadow', l)));
+  const controlErrorRate = Math.max(...legs.map((l) => rate('control', l)));
 
   const gates = {
     bucketShiftPp: { pass: BUCKETS.every((b) => Math.abs(bucketShiftPp[b]) <= GATES.bucketShiftPp), value: bucketShiftPp, limit: GATES.bucketShiftPp },
     meanDrift: { pass: Math.abs(meanDrift) <= GATES.meanDrift, value: meanDrift, limit: GATES.meanDrift },
     rejectionDelta: { pass: Math.abs(rejectionDeltaPp) <= GATES.rejectionDeltaPp, value: rejectionDeltaPp, limit: GATES.rejectionDeltaPp },
     showDrift: { pass: shows.length >= GATES.showMinShows && showsOver.length / shows.length <= GATES.showDriftMaxShare, value: { showsChecked: shows.length, showsOver: showsOver.length, worst: showsOver.sort((a, b) => Math.abs(b.meanDelta) - Math.abs(a.meanDelta)).slice(0, 10) }, limit: GATES.showDriftMaxShare },
-    legAccuracy: { pass: legMae.n >= GATES.legAccuracyMinPairs && legMae.shadow <= legMae.control + GATES.legAccuracySlack, value: legMae, limit: GATES.legAccuracySlack },
-    shadowErrors: { pass: shadowErrorRate <= GATES.shadowErrorMaxRate, value: { shadow: +shadowErrorRate.toFixed(4), control: usable.length ? +(controlLegFailed / usable.length).toFixed(4) : 0 }, limit: GATES.shadowErrorMaxRate },
+    legAccuracy: { pass: legs.every((l) => legMaePass(legMaes[l])), value: legMae, limit: GATES.legAccuracySlack },
+    shadowErrors: { pass: shadowErrorRate <= GATES.shadowErrorMaxRate, value: { shadow: +shadowErrorRate.toFixed(4), control: +controlErrorRate.toFixed(4), ...(legs.length > 1 ? { perLeg } : {}) }, limit: GATES.shadowErrorMaxRate },
   };
   return {
     sampled: records.length,
@@ -142,4 +183,4 @@ function computeReport(records, opts = {}) {
   };
 }
 
-module.exports = { BUCKETS, GATES, outcomeClass, weightedShares, computeReport };
+module.exports = { BUCKETS, GATES, outcomeClass, weightedShares, computeReport, interactionTerm, legsFor };

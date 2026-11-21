@@ -30,7 +30,7 @@ import {
 const { detectBandFromReviewFile } = require('../lib/star-reliability');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getBestTextForScoring } = require('../lib/text-quality');
-const { openaiChatBody } = require('../lib/llm-batch.js');
+const { openaiChatBody, geminiThinkingOff } = require('../lib/llm-batch.js');
 const { COMPARATIVE_OPENAI } = require('../lib/models');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {
@@ -176,7 +176,7 @@ async function callGemini(prompt: string): Promise<string | null> {
       generationConfig: {
         temperature: COMPARATIVE_PARAMS.temperature,
         maxOutputTokens: COMPARATIVE_PARAMS.maxTokens,
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: geminiThinkingOff(COMPARATIVE_PARAMS.geminiModel), // BRO-7511: 3.x rejects thinkingBudget
       } as any,
     });
     const result = await model.generateContent(prompt);
