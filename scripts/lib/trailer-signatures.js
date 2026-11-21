@@ -193,7 +193,13 @@ const INDEPENDENT_COMMENTS_FOOTER_RE = /Join our commenting forum\s*Join thought
 // Only the LAST "More about" run before the widget, so a cut sentence that
 // itself opens "More about ..." stays and still reads as truncated.
 const INDEPENDENT_TOPIC_TAG_RE = /\s*More about\b(?:(?!More about\b)[^\n]){0,120}$/;
-const STANDARD_SHOPPING_FOOTER_RE = /MORE ABOUT\b[^.!?]{0,300}?\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
+// Matched at "Shopping Best Buys"; the "MORE ABOUT <tags>" block and a
+// "November's best theatre 1 / 10" gallery caption in front of it (72 corpus
+// files have the caption and no tag block) are removed separately, so a
+// punctuated tag left behind can never pass a cut review as complete.
+const STANDARD_SHOPPING_FOOTER_RE = /\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
+const STANDARD_TAG_BLOCK_RE = /\s*MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,300}$/;
+const STANDARD_GALLERY_CAPTION_RE = /\s*[^.!?\n]{0,80}?\b\d{1,2} \/ \d{1,2}$/;
 // The classifier counts words on the unstripped text, so a footer is only cut
 // from a body that is review-length on its own (shortest real flip: 1,901
 // chars); a short excerpt plus widget words must not read as complete.
@@ -208,6 +214,7 @@ function stripCmsWidgetFooters(text) {
     if (m && m.index >= CMS_FOOTER_MIN_BODY) {
       out = out.slice(0, m.index).trimEnd();
       if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '');
+      if (re === STANDARD_SHOPPING_FOOTER_RE) out = out.replace(STANDARD_TAG_BLOCK_RE, '').replace(STANDARD_GALLERY_CAPTION_RE, '');
     }
   }
   return out;
