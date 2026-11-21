@@ -148,3 +148,33 @@ test('gateReport: per-gate stats per run kind, scoped and untimed rows left out 
   assert.deepEqual(lim.kinds['land-gauntlet/branch'].wallSecs, { n: 3, median: 1000, min: 900, max: 1100 });
   assert.equal(lim.kinds['land-gauntlet/branch'].gates.tsc.n, 4);
 });
+
+test('checksGoal (BRO-7324): only pinned split landings with all gates and an API wall count; needs 10', () => {
+  const row = (wall, extra = {}) => ({ ts: '2026-11-22T00:00:00Z', branch: 'land/x', timing: { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 600, gateCount: 10 } }, checks: { nodeShard: 'artifact', dataPinned: true, wallSecs: wall, ...extra } } });
+  const noise = [
+    { ts: 't', branch: 'inert', timing: { v: 1, runs: {} } },
+    { ts: 't', branch: 'old', timing: { 'land-gauntlet/branch': { wallSecs: 1 } } },
+    row(100, { dataPinned: false }),
+    row(100, { nodeShard: undefined }),
+    row(null),
+    { ...row(100), timing: { ...row(100).timing, runs: { 'land-gauntlet/branch': { wallSecs: 600, gateCount: 9 } } } },
+    { ...row(100), timing: { ...row(100).timing, runs: { 'land-gauntlet/branch': { wallSecs: 600, gateCount: 10, scoped: true } } } },
+  ];
+  assert.equal(R.GOAL.gates, 10, 'goal gate count follows land-gate-delta GATES');
+  assert.equal(R.checksGoalRows(noise).length, 0);
+  const nine = R.checksGoal([...noise, ...Array.from({ length: 9 }, () => row(900))]);
+  assert.equal(nine.ok, false); assert.equal(nine.n, 9); assert.match(nine.reason, /only 9 of 10/);
+  const met = R.checksGoal([row(5000), ...Array.from({ length: 10 }, (_, i) => row(1000 + i * 30, { nodeShard: i % 2 ? 'local' : 'artifact' }))]);
+  assert.equal(met.ok, true, met.reason); assert.equal(met.n, 10); assert.equal(met.medianSecs, 1135);
+  const slow = R.checksGoal(Array.from({ length: 10 }, () => row(1200)));
+  assert.equal(slow.ok, false); assert.match(slow.reason, /not under 1200s/);
+});
+
+test('summarizeRun: real Checks minutes and the collect step seconds from the jobs API', () => {
+  const run = { id: 1, head_branch: 'land/x', status: 'completed', conclusion: 'success', run_started_at: '2026-11-21T00:00:00Z' };
+  const jobs = [{ name: 'Checks', started_at: '2026-11-21T00:00:00Z', completed_at: '2026-11-21T00:24:48Z', steps: [{ name: 'Collect the node shard (part 2/2)', started_at: '2026-11-21T00:09:00Z', completed_at: '2026-11-21T00:21:26Z' }] }];
+  const r = R.summarizeRun(run, jobs);
+  assert.equal(r.checksMinutes, 24.8); assert.equal(r.collectSecs, 746);
+  const u = R.summarizeRun(run, [{ name: 'Checks', started_at: '2026-11-21T00:00:00Z', completed_at: '2026-11-21T00:10:00Z', steps: [] }]);
+  assert.equal(u.checksMinutes, 10); assert.equal(u.collectSecs, null);
+});

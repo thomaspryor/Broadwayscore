@@ -9,7 +9,7 @@ import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { collectTiming, summaryLines } = require('./land-gate-timing.js');
+const { collectTiming, summaryLines, splitFacts, checksJobTiming, withChecksJob, parseArgs } = require('./land-gate-timing.js');
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-timing.js');
 
 function outDir(root, name, meta, { scoped = false } = {}) {
@@ -79,4 +79,44 @@ test('split parts are skipped; the merged dir is kept (BRO-7324 step C)', () => 
   const t = collectTiming({ roots: [root], t0Ms: T0 });
   assert.deepEqual(Object.keys(t.runs), [`${k}/branch`], 'merged dir kept, part 2 and the incomplete merge skipped');
   assert.equal(t.runs[`${k}/branch`].gateCount, 2);
+});
+
+test('splitFacts: shard source, wait/local seconds, and pinned means the pinned rev was USED on attempt 1', () => {
+  assert.equal(splitFacts({ nodeShard: '' }), null);
+  assert.equal(splitFacts({}), null);
+  assert.deepEqual(splitFacts({ attempt: '1', nodeShard: 'artifact', waitSecs: '2', localSecs: '0', pinnedRev: 'abc', usedRev: 'abc' }),
+    { attempt: 1, nodeShard: 'artifact', waitSecs: 2, localSecs: 0, dataPinned: true });
+  assert.equal(splitFacts({ attempt: '1', nodeShard: 'local', pinnedRev: 'abc', usedRev: 'def' }).dataPinned, false, 'requested, not used');
+  assert.equal(splitFacts({ attempt: '1', nodeShard: 'local', pinnedRev: '', usedRev: '' }).dataPinned, false, 'no pin');
+  assert.equal(splitFacts({ attempt: '2', nodeShard: 'local', pinnedRev: 'abc', usedRev: 'abc' }).dataPinned, false, 're-run attempts never pin');
+  assert.equal(splitFacts({ attempt: '1', nodeShard: 'local', waitSecs: '' }).waitSecs, null);
+  const o = parseArgs(['emit', '--node-shard=local', '--wait-secs=720', '--used-rev=x', '--pinned-rev=x', '--attempt=1']);
+  assert.deepEqual(o.split, { nodeShard: 'local', waitSecs: '720', usedRev: 'x', pinnedRev: 'x', attempt: '1' });
+});
+
+test('checksJobTiming / withChecksJob: Checks wall and collect step seconds from the jobs API listing', () => {
+  const listing = { jobs: [
+    { name: 'Checks (shard 2/2)', started_at: '2026-11-21T00:00:00Z', completed_at: '2026-11-21T00:15:00Z' },
+    { name: 'Checks', started_at: '2026-11-21T00:00:00Z', completed_at: '2026-11-21T00:24:48Z',
+      steps: [{ name: 'Collect the node shard (part 2/2)', started_at: '2026-11-21T00:09:00Z', completed_at: '2026-11-21T00:21:26Z' }] },
+  ] };
+  assert.deepEqual(checksJobTiming(listing), { wallSecs: 1488, collectSecs: 746 });
+  assert.deepEqual(checksJobTiming([{ name: 'Checks', started_at: '2026-11-21T00:00:00Z', completed_at: null }]), { wallSecs: null, collectSecs: null });
+  assert.equal(checksJobTiming({ jobs: [] }), null);
+  const t = withChecksJob({ v: 1, runs: {}, checks: { nodeShard: 'local', dataPinned: false } }, listing);
+  assert.deepEqual(t.checks, { nodeShard: 'local', dataPinned: false, wallSecs: 1488, collectSecs: 746 });
+  // Unsplit run: the wall is still recorded. Garbage never throws.
+  assert.deepEqual(withChecksJob({ v: 1, runs: {} }, listing).checks, { wallSecs: 1488, collectSecs: 746 });
+  assert.equal(withChecksJob(null, listing), null);
+  assert.deepEqual(withChecksJob({ v: 1, runs: {} }, 'nonsense'), { v: 1, runs: {} });
+});
+
+test('land.yml passes the split facts to emit and merges the jobs-API wall into the ledger row (BRO-7324 wiring)', () => {
+  const y = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../../.github/workflows/land.yml'), 'utf8');
+  const emit = y.slice(y.indexOf('land-gate-timing.js emit'), y.indexOf('land-gate-timing.js emit') + 600);
+  for (const a of ['--attempt=', '--node-shard=', '--wait-secs=', '--local-secs=', '--pinned-rev=', '--used-rev=']) assert.ok(emit.includes(a), `emit call lacks ${a}`);
+  assert.match(y, /NODE_SHARD_SRC: \$\{\{ steps\.node_shard\.outputs\.node_shard \}\}/);
+  assert.match(y, /echo "data_rev=\$DATA_REV" >> "\$GITHUB_OUTPUT"/);
+  assert.match(y, /timeout \d+ gh api "repos\/\$\{\{ github\.repository \}\}\/actions\/runs\/\$\{\{ github\.run_id \}\}\/attempts\/\$\{\{ github\.run_attempt \}\}\/jobs/);
+  assert.match(y, /withChecksJob\(/);
 });

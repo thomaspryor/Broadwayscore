@@ -607,6 +607,7 @@ jobs:
           # B read the same one (empty = unreadable = run part 2 here).
           DATA_REV=$(git -C /tmp/core-data-checkout rev-parse HEAD 2>/dev/null) || DATA_REV=""
           echo "core data @ ${DATA_REV:-unknown}"
+          echo "data_rev=$DATA_REV" >> "$GITHUB_OUTPUT"   # timing ledger: was the pin used (BRO-7324)
           node scripts/lib/land-shard.js collect --repo="$GITHUB_REPOSITORY" \
             --run-id="$GITHUB_RUN_ID" --attempt="$GITHUB_RUN_ATTEMPT" \
             --out="$RUNNER_TEMP/land-node-shard" --merge-into="$RUNNER_TEMP/land-gauntlet/branch" \
@@ -900,10 +901,18 @@ jobs:
         continue-on-error: true
         env:
           T0: ${{ steps.gitcfg.outputs.t0 }}
+          # Split facts only this job knows; the Checks wall comes from the jobs API in the Land job.
+          NODE_SHARD_SRC: ${{ steps.node_shard.outputs.node_shard }}
+          SHARD_WAIT_SECS: ${{ steps.node_shard.outputs.wait_secs }}
+          SHARD_LOCAL_SECS: ${{ steps.node_shard.outputs.local_secs }}
+          PINNED_REV: ${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}
+          USED_REV: ${{ steps.node_shard.outputs.data_rev }}
         run: |
           [ -f scripts/lib/land-gate-timing.js ] || { echo "no land-gate-timing.js on this tree"; exit 0; }
           node scripts/lib/land-gate-timing.js emit --t0="${T0:-0}" \
             --root="$RUNNER_TEMP/land-gauntlet" --root="$RUNNER_TEMP/land-fast" \
+            --attempt="$GITHUB_RUN_ATTEMPT" --node-shard="$NODE_SHARD_SRC" --wait-secs="$SHARD_WAIT_SECS" \
+            --local-secs="$SHARD_LOCAL_SECS" --pinned-rev="$PINNED_REV" --used-rev="$USED_REV" \
             --github-output="$GITHUB_OUTPUT" --summary-file="$GITHUB_STEP_SUMMARY" || true
 
       # BRO-6043: hand the Land job a "tsc already passed on this exact tree"
@@ -1516,7 +1525,11 @@ jobs:
             # above), so a missing helper must warn loudly and still let the
             # ref be deleted below — never redden a landing that happened.
             if [ -n "$LAND_LIB" ]; then
-              LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
+              # BRO-7324: the Checks job's real wall and collect seconds, from the jobs API
+              # (best-effort: no file = the row carries the job's own timing only).
+              timeout 60 gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}/jobs?per_page=50" \
+                > "$RUNNER_TEMP/land-run-jobs.json" 2>/dev/null || rm -f "$RUNNER_TEMP/land-run-jobs.json"
+              LAND_JOBS_FILE="$RUNNER_TEMP/land-run-jobs.json" LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
               LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" LAND_RECEIPT="${{ needs.checks.outputs.receipt }}" \
               node -e '
                 const { appendLanding, parseLandings } = require(require("path").resolve(process.env.LAND_LIB));
@@ -1525,7 +1538,11 @@ jobs:
                 let onMain = "";
                 try { onMain = require("child_process").execFileSync("git", ["show", "origin/main:data/audit/landings.jsonl"], { encoding: "utf8", maxBuffer: 64 << 20 }); } catch { onMain = ""; }
                 if (parseLandings && parseLandings(onMain).some((x) => x.sha === e.LAND_SHA && x.branch === e.LAND_BRANCH)) { console.log("landings.jsonl on main already has this row (merge train)"); process.exit(0); }
-                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null, receipt: e.LAND_RECEIPT || null, timing: (() => { try { return e.LAND_TIMING ? JSON.parse(e.LAND_TIMING) : null; } catch { return null; } })() });
+                let timing = null;
+                try { timing = e.LAND_TIMING ? JSON.parse(e.LAND_TIMING) : null; } catch { timing = null; }
+                // BRO-7324: add the Checks wall + collect seconds from the jobs API (best-effort).
+                if (timing) { try { timing = require(require("path").resolve("scripts/lib/land-gate-timing.js")).withChecksJob(timing, JSON.parse(require("fs").readFileSync(e.LAND_JOBS_FILE, "utf8"))); } catch {} }
+                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null, receipt: e.LAND_RECEIPT || null, timing });
                 console.log(`landings.jsonl += ${JSON.stringify(row)}`);
               ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
                 || echo "::warning::landings.jsonl row for ${SHA:0:10} could NOT be written — the landing itself is verified; check-direct-push-to-main.yml may digest this sha as unrecorded"

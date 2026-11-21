@@ -120,7 +120,10 @@ function summarizeRun(run, jobs, annotations = []) {
   const shardJob = byName(/^Checks \(shard 2\/2\)$/);
   const shard = shardJob ? { conclusion: shardJob.conclusion || null, minutes: shardJob.started_at && shardJob.completed_at ? round1(minutes(shardJob.started_at, shardJob.completed_at)) : null } : null;
   const fast = !!(checks && (checks.steps || []).some((s) => FAST_STEP_RE.test(s.name)));
-  const rec = { id: run.id, branch: run.head_branch, started: start, outcome: 'other', minutes: null, refusedIn: null, causes: [], fast, shard };
+  const collectStep = checks && (checks.steps || []).find((s) => /^Collect the node shard/.test(s.name || ''));
+  const checksMinutes = checks && checks.started_at && checks.completed_at ? round1(minutes(checks.started_at, checks.completed_at)) : null;
+  const collectSecs = collectStep && collectStep.started_at && collectStep.completed_at ? Math.round((Date.parse(collectStep.completed_at) - Date.parse(collectStep.started_at)) / 1000) : null;
+  const rec = { id: run.id, branch: run.head_branch, started: start, outcome: 'other', minutes: null, refusedIn: null, causes: [], fast, shard, checksMinutes, collectSecs };
   if (run.status !== 'completed') return rec;
   if (land && land.conclusion === 'success' && land.completed_at) {
     return { ...rec, outcome: 'landed', minutes: round1(minutes(start, land.completed_at)) };
@@ -196,6 +199,51 @@ function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
     out[kind] = { runs: k.runs, scoped: k.scoped, fullGateCount: full, wallSecs: stat(k.wall.filter(w => w.n === full).map(w => w.s)), gates: Object.fromEntries(Object.entries(k.gates).map(([g, xs]) => [g, stat(xs)]).sort((a, b) => (b[1].median || 0) - (a[1].median || 0))) };
   }
   return { days, landings: timed.length, kinds: out };
+}
+
+/**
+ * BRO-7324 goal. The landings that count: the Checks job split in two (part 2 from
+ * runner B or re-run here), core data pinned AND used (attempt 1 only: a re-run
+ * attempt never pins), the branch gauntlet ran all `gateCount` gates unscoped
+ * (inert runs have no branch run), and a Checks wall read from the jobs API. Landings whose
+ * branch had a red gate and paid for a base run are included on purpose: that is
+ * real time to land. Newest last.
+ */
+function checksGoalRows(rows, { gateCount = GOAL.gates } = {}) {
+  return (rows || []).filter((r) => {
+    const t = r && r.timing; const c = t && t.checks;
+    const br = t && t.runs && t.runs['land-gauntlet/branch'];
+    return Boolean(c && (c.nodeShard === 'artifact' || c.nodeShard === 'local') && c.dataPinned === true
+      && Number.isFinite(c.wallSecs) && br && !br.scoped && Number(br.gateCount) === gateCount);
+  });
+}
+
+// gates follows the verdict's gate list, so adding a gate never strands the goal on a stale count.
+const GOAL = { landings: 10, medianSecs: 1200, gates: require('./land-gate-delta.js').GATES.length };
+
+/** -> { ok, n, medianSecs, rows, reason } over the newest GOAL.landings counted rows. */
+function checksGoal(rows, goal = GOAL) {
+  const all = checksGoalRows(rows, { gateCount: goal.gates });
+  const last = all.slice(-goal.landings);
+  const med = median(last.map((r) => r.timing.checks.wallSecs));
+  if (last.length < goal.landings) return { ok: false, n: last.length, medianSecs: med, rows: last, reason: `only ${last.length} of ${goal.landings} pinned split landings with all ${goal.gates} gates are recorded in data/audit/landings.jsonl (Checks wall from the jobs API)` };
+  const ok = med < goal.medianSecs;
+  return { ok, n: last.length, medianSecs: med, rows: last, reason: ok ? `median Checks ${med}s < ${goal.medianSecs}s over the last ${last.length}` : `median Checks ${med}s is not under ${goal.medianSecs}s over the last ${last.length}` };
+}
+
+function printChecks(rows) {
+  const split = (rows || []).filter((r) => r && r.timing && r.timing.checks && (r.timing.checks.nodeShard === 'artifact' || r.timing.checks.nodeShard === 'local'));
+  if (!split.length) { console.log('\nChecks job (BRO-7324 split): no landing records it yet.'); return; }
+  console.log(`\nChecks job, per landing (wall from the Actions jobs API; land-gauntlet/branch wall leaves out the collect wait):`);
+  for (const r of split.slice(-20)) {
+    const c = r.timing.checks; const br = (r.timing.runs || {})['land-gauntlet/branch'];
+    const f = (v) => (v == null ? '-' : String(v));
+    console.log(`  ${r.ts.slice(0, 16)} ${String(r.branch).padEnd(34).slice(0, 34)} checks ${f(c.wallSecs).padStart(5)}s  gauntlet ${f(br && br.wallSecs).padStart(5)}s  part2 ${f(c.nodeShard).padEnd(8)} wait ${f(c.waitSecs)}s local ${f(c.localSecs)}s collect ${f(c.collectSecs)}s  pinned ${c.dataPinned ? 'yes' : 'no'}  attempt ${f(c.attempt)}`);
+  }
+  const by = (pred) => median(split.filter(pred).map((r) => r.timing.checks.wallSecs).filter(Number.isFinite));
+  console.log(`  median Checks: artifact ${by((r) => r.timing.checks.nodeShard === 'artifact') ?? '-'}s, local ${by((r) => r.timing.checks.nodeShard === 'local') ?? '-'}s, pinned+used ${by((r) => r.timing.checks.dataPinned) ?? '-'}s`);
+  const g = checksGoal(rows);
+  console.log(`  goal (median < ${GOAL.medianSecs}s over ${GOAL.landings} pinned split landings, ${GOAL.gates} gates): ${g.ok ? 'MET' : 'NOT MET'}: ${g.reason}`);
 }
 
 function printGates(rep) {
@@ -278,7 +326,8 @@ async function main(argv = process.argv.slice(2)) {
     const led = readLandings(process.cwd());
     if (!led.available) { console.error('land-timing-report: data/audit/landings.jsonl not found (run from the repo root)'); return 1; }
     const rep = gateReport(led.rows, { days: o.days });
-    if (o.json) console.log(JSON.stringify(rep, null, 2)); else printGates(rep);
+    if (o.json) console.log(JSON.stringify({ ...rep, checksGoal: checksGoal(led.rows) }, null, 2));
+    else { printGates(rep); printChecks(led.rows); }
     return 0;
   }
   const { fetchGitHubJSON } = require('./gh-api-client.js');
@@ -302,6 +351,6 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE, gateReport };
+module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE, gateReport, checksGoalRows, checksGoal, GOAL };
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });
