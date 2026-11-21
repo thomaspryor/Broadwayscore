@@ -9,7 +9,7 @@ const all = (over = {}) => REQUIRED.map((name) => ({ name, status: 'pass', messa
 
 test('all pass, warnings and unrelated failures: clean', () => {
   const r = all({ 'Bright Data': { status: 'warn' } }).concat([{ name: 'Dispatch PAT (submit-review)', status: 'fail' }, { name: 'Sentry', status: 'fail' }]);
-  assert.equal(preflightVerdict({ results: r, sb: { ok: true, pctUsed: 50, remaining: 1000 } }).ok, true);
+  assert.equal(preflightVerdict({ results: r, sb: { ok: true, pctUsed: 50, remaining: 125000 } }).ok, true);
 });
 
 test('fail or skip on a needed key, missing results, low credits: problems', () => {
@@ -29,4 +29,10 @@ test('a crashed check is matched by its function name and counts as a problem', 
   const v = preflightVerdict({ results: r, sb: null });
   assert.deepEqual(v.problems.map((p) => p.key), ['Bright Data']);
   assert.match(v.problems[0].why, /check crashed/);
+});
+
+test('credits gate on credits left, not percent used (2026-11-21 false page: 91% used, 23,738 left)', () => {
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, remaining: 23738 } }).ok, true);
+  const low = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 40, remaining: 9000 } });
+  assert.deepEqual(low.problems.map((p) => p.key), ['ScrapingBee credits']);
 });

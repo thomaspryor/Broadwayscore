@@ -358,7 +358,7 @@ const OWNER_ACTIONS = {
   'broadcast:overdue:': 'Send the opening-night email; it is overdue.',
   // BRO-6858 (card: owner alert within 15 min on Broadway press nights). Sent only after the watchdog's own retry.
   'press-night:stuck:': 'Nothing is needed from you. You asked to hear within 15 minutes when a Broadway press-night review is found but not on the site; the watchdog already retried once and the details are below.',
-  'press-night:preflight:': 'Top up or renew the account named below before tonight\'s Broadway opening (a scraper or AI account is out of credit or its key stopped working).',
+  'press-night:preflight:': 'Top up or renew the account named below before tonight\'s press night (a scraper or AI account is out of credit or its key stopped working).',
   'press-night-clock.yml': 'Nothing is needed from you. You asked to hear when the press-night clock breaks within a day of a Broadway opening; it restarts itself on the next orchestrator tick.',
   'lane-live-timeout:': 'Nothing is needed from you. A worker session is already checking why a new review took too long to reach the show page, and the lane retries it on its own.',
   'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
