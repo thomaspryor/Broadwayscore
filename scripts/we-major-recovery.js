@@ -207,7 +207,7 @@ function ingest(showId, m, url, show) {
     if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
-  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)}` };
+  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)} | ingest: ${tail}` };
   return { outcome: 'ingested', file: kept, bodyChars };
 }
 
