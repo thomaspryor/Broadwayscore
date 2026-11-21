@@ -1243,5 +1243,36 @@
       }
     ],
     "queuedAt": "2026-11-21T20:44:05.109Z"
+  },
+  {
+    "conditionKey": "land:land/mac-studio-docs",
+    "title": "Landing blocked: unit-tests-node red on land/mac-studio-docs",
+    "description": "land.yml did not land land/mac-studio-docs: the unit-tests-node gate went red at 6650168d95. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44947402621",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-studio-docs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6650168d951d9ffca5e3f7f69aa9b9d94cd09569"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44947402621"
+      }
+    ],
+    "queuedAt": "2026-11-21T20:46:07.057Z"
   }
 ]
