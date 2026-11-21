@@ -64,3 +64,19 @@ test('CLI e2e: added error() fails, advisory env downgrades, warn() passes', () 
     assert.equal(cli().status, 0);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('unrelated removed error() elsewhere does not cancel a new one (separate hunks)', () => {
+  const d = `--- a/${V}\n+++ b/${V}\n@@ -1,3 +1,3 @@\n c\n-    error(\`old thing\`);\n c\n@@ -50,3 +50,4 @@\n c\n+    error(\`brand new\`);\n c\n`;
+  assert.equal(findUnprovenNewValidatorErrors({ files: [{ path: V, diff: d }], changedFiles: [V] }).violations.length, 1);
+});
+test('moved error() (identical text, different hunk) is fine', () => {
+  const d = `--- a/${V}\n+++ b/${V}\n@@ -1,3 +1,3 @@\n c\n-    error(\`same\`);\n c\n@@ -50,3 +50,4 @@\n c\n+    error(\`same\`);\n c\n`;
+  assert.deepEqual(findUnprovenNewValidatorErrors({ files: [{ path: V, diff: d }], changedFiles: [V] }).violations, []);
+});
+test('marker in unchanged context does not exempt a later added error()', () => {
+  const d = `--- a/${V}\n+++ b/${V}\n@@ -1,4 +1,5 @@\n // gate-arm-ok: old proof\n c\n+    error(\`new\`);\n c\n`;
+  assert.equal(findUnprovenNewValidatorErrors({ files: [{ path: V, diff: d }], changedFiles: [V] }).violations.length, 1);
+});
+test('baseline named only in the validator head text (not the diff/helpers) does not exempt', () => {
+  assert.equal(run(['+    error(`x`);'], { changed: [V, 'data/audit/x-baseline.json'], file: { headText: "require('x-baseline.json')" } }).length, 1);
+});

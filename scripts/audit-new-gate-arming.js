@@ -72,7 +72,7 @@ if (baseText === null) {
 const headText = tryGit('show', `HEAD:${WF}`) || '';
 const { violations } = findUnprovenNewGates({ baseText, headText, changedFiles: changed });
 if (!violations.length) {
-  console.log(`new-gate-arming: ${vFail ? 'workflow check OK' : 'OK'} (no unproven new blocking gate in ${base}..HEAD)`);
+  console.log(`new-gate-arming: ${vv.length ? (vFail ? 'workflow check OK' : 'workflow check OK, but ADVISORY validator findings above') : 'OK'} (no unproven new blocking gate in ${base}..HEAD)`);
   process.exit(vFail ? 1 : 0);
 }
 for (const v of violations) {

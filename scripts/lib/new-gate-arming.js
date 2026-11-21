@@ -176,16 +176,29 @@ function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
     const helpers = VALIDATORS[f.path];
     if (!helpers) continue;
     const hunks = parseHunks(f.diff);
+    // Pair each added call with a removed twin so rewording/moving is not "new":
+    // identical text anywhere in the file first (a move), then any leftover removed
+    // call in the SAME hunk (a reword). Unpaired added calls are net-new. The
+    // marker must sit on an ADDED line of the same hunk (context lines do not count).
     const added = [];
-    let removedCalls = 0;
-    for (const h of hunks) {
-      const marked = h.all.some(l => /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(l));
-      removedCalls += h.removed.filter(l => hardErrorCall(l, helpers)).length;
-      for (const l of h.added) if (hardErrorCall(l, helpers)) added.push({ line: norm(l), marked });
-    }
-    const net = Math.max(0, added.length - removedCalls);
-    const unmatched = added.slice(added.length - net);
-    const refText = [f.headText || '', f.diff || '', ...(contextTexts || [])].join('\n');
+    const removed = [];
+    hunks.forEach((h, i) => {
+      const marked = h.added.some(l => /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(l));
+      for (const l of h.removed) if (hardErrorCall(l, helpers)) removed.push({ line: norm(l), hunk: i, used: false });
+      for (const l of h.added) if (hardErrorCall(l, helpers)) added.push({ line: norm(l), hunk: i, marked, paired: false });
+    });
+    const pair = (match) => {
+      for (const a of added) {
+        if (a.paired) continue;
+        const r = removed.find(x => !x.used && match(a, x));
+        if (r) { r.used = true; a.paired = true; }
+      }
+    };
+    pair((a, r) => a.line === r.line);
+    pair((a, r) => a.hunk === r.hunk);
+    const unmatched = added.filter(a => !a.paired);
+    // A baseline exempts only if the diff itself, or a changed helper file, names it.
+    const refText = [f.diff || '', ...(contextTexts || [])].join('\n');
     const baselined = baselines.some(b => refText.includes(b.split('/').pop()));
     for (const a of unmatched) {
       if (a.marked || baselined) continue;
