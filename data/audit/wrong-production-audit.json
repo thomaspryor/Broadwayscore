@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T05:49:49.582Z",
+  "timestamp": "2026-11-21T06:09:20.041Z",
   "stats": {
-    "totalReviews": 83579,
-    "alreadyFlagged": 22530,
+    "totalReviews": 83605,
+    "alreadyFlagged": 22533,
     "dateGuardCatches": 235,
     "directorMismatch": 3824,
     "tvFilmSignals": 2389,
-    "londonSignals": 3877,
-    "offBroadwaySignals": 778,
+    "londonSignals": 3878,
+    "offBroadwaySignals": 777,
     "yearMismatch": 390,
-    "noPublishDate": 8252
+    "noPublishDate": 8253
   },
   "findings": [
     {
@@ -99609,10 +99609,36 @@
     },
     {
       "showId": "cleansed-west-end-2016",
+      "file": "independent--holly-williams.json",
+      "publishDate": "2016-02-24",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cleansed-the-dorfman-national-theatre-review-gorefest-staged-with-upsetting-realism-a6893541.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-west-end-2016",
       "file": "standard--henry-hitchings.json",
       "score": 82,
       "publishDate": "2016-02-24",
       "url": "https://www.standard.co.uk/culture/theatre/cleansed-theatre-review-love-is-cruel-in-sarah-kanes-gory-world-a3187716.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-west-end-2016",
+      "file": "whatsonstage--michael-coveney.json",
+      "publishDate": "2016-02-24",
+      "url": "https://www.whatsonstage.com/news/cleansed-dorfman-national-theatre_39810/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -117251,25 +117277,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "linda-vista-2019",
-      "file": "slantmagazine--dan-rubins.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.slantmagazine.com/theater/review-tracy-lettss-linda-vista-doesnt-make-enough-space-for-its-women/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
