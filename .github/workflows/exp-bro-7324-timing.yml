@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [alone, conc6, conc8, with-libs, shards2]
+        mode: [libs-alone, libs-conc6]
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
@@ -46,7 +46,8 @@ jobs:
           run() { local n=$1; shift; local s=$(date +%s); node --test --test-reporter=tap --test-timeout 300000 "$@" > $O/$n.tap 2>&1; echo "$n rc=$? wall=$(( $(date +%s)-s ))s pass=$(grep -c '^ok ' $O/$n.tap) fail=$(grep -c '^not ok ' $O/$n.tap)"; }
           S0=$(date +%s)
           case "$MODE" in
-            alone) run node "${T[@]}" ;;
+            libs-alone) run libs "${L[@]}" ;;
+            libs-conc6) run libs --test-concurrency=6 "${L[@]}" ;;
             conc6) run node --test-concurrency=6 "${T[@]}" ;;
             conc8) run node --test-concurrency=8 "${T[@]}" ;;
             with-libs) run node "${T[@]}" & run libs "${L[@]}" & wait ;;
