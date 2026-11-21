@@ -1,13 +1,83 @@
 {
-  "generatedAt": "2026-11-21T14:33:41.060Z",
+  "generatedAt": "2026-11-21T15:38:14.058Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 366,
-  "clean": 366,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 365,
+  "clean": 361,
+  "defective": 4,
+  "byType": {
+    "score-drift": 3,
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "les-miserables-regional-2026",
+      "title": "Les Miserables",
+      "openingDate": "2026-11-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: oazis"
+        }
+      ],
+      "missingFromProd": [
+        "oazis"
+      ],
+      "localCount": 2,
+      "deployedCount": 1,
+      "firstDefectAt": "2026-11-21T15:38:10.298Z"
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "title": "Water for Elephants",
+      "openingDate": "2025-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.87 vs local 79.41 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 49,
+      "deployedCount": 49,
+      "firstDefectAt": "2026-11-21T15:38:10.298Z"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "openingDate": "2024-04-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 56.43 vs local 56.37 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-21T15:38:10.298Z"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.9 vs local 87.54 (Δ0.36)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-11-21T15:38:10.298Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
