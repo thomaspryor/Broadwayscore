@@ -3,10 +3,10 @@
     "blind": false,
     "count": 1,
     "reason": "ok",
-    "at": "2026-11-20T16:35:46.561Z"
+    "at": "2026-11-21T15:50:46.676Z"
   },
   "venueReaders": {
-    "at": "2026-11-20T16:35:46.561Z",
+    "at": "2026-11-21T15:50:46.676Z",
     "readers": 54,
     "active": 194,
     "activeCovered": 111,
@@ -115,7 +115,7 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-11-20T16:35:46.561Z",
+    "at": "2026-11-21T15:50:46.676Z",
     "readers": 23,
     "active": 98,
     "activeCovered": 32,
@@ -167,14 +167,14 @@
         "reason": "no ticketing feed or dated listing on the homepage (probed 2026-09-30)"
       },
       {
+        "venue": "Donmar Warehouse",
+        "recentShows": 8,
+        "reason": "403 to a plain fetch (Cloudflare); no public ticketing feed found"
+      },
+      {
         "venue": "Peacock Theatre",
         "recentShows": 8,
         "reason": "Sadler's Wells' West End dance house; dance, not theatre"
-      },
-      {
-        "venue": "Donmar Warehouse",
-        "recentShows": 7,
-        "reason": "403 to a plain fetch (Cloudflare); no public ticketing feed found"
       },
       {
         "venue": "Globe Theatre",

@@ -50,6 +50,8 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { discoverWestEndClosingDate } = require('./lib/closing-date-discovery');
+const { decideWeNewClosing } = require('./lib/we-closing-press-confirm');
 
 const USAGE = `audit-we-closing-dates.js — Daily bidirectional audit of closingDate values for open West End shows.
 
@@ -78,6 +80,12 @@ const MAX_AUTO_EXTENSION_DAYS = 180;
 // is normal (last performances sell out / drop off the booking site).
 const POSSIBLY_CLOSED_MIN_DAYS = 5;
 const TITLE_MISMATCH_FLOOD_CAP = 5;
+// BRO-7993: press-confirmation of new-closing candidates. Each attempt costs one
+// SERP query + up to 5 fetches + up to 5 Sonnet extractions, so cap per run
+// (the run budget also bounds it).
+const MAX_PRESS_CONFIRMATIONS = 15;
+const PRESS_CONFIRM_MIN_REMAINING_MS = 150_000;
+const PRESS_TOLERANCE_DAYS = 7;
 
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const URL_OVERRIDES = CONFIG.urlOverrides || {};
@@ -310,6 +318,41 @@ async function main() {
     }
   }
 
+  // BRO-7993: a new-closing candidate (no stored closingDate, WET "Booking
+  // until" date) is written ONLY when credible press names an explicit final
+  // performance within PRESS_TOLERANCE_DAYS. Otherwise it stays blank, no card.
+  // Persist extension writes BEFORE the slow press step: a job timeout during
+  // discovery must not lose them (saveShows is idempotent; saved again below).
+  if (!DRY_RUN && extensions.some(e => !e.skipped)) saveShows(data);
+  const pressConfirmed = [];
+  const pressUnconfirmed = [];
+  if (newClosings.length > 0 && !process.env.ANTHROPIC_API_KEY) {
+    console.log('\nPress confirmation: skipped (ANTHROPIC_API_KEY not set), candidates left blank');
+  } else {
+    let attempts = 0;
+    for (const n of newClosings) {
+      if (attempts >= MAX_PRESS_CONFIRMATIONS) { n.pressCheck = 'cap_reached'; continue; }
+      const show = data.shows.find(s => s.id === n.id);
+      if (!show) { n.pressCheck = 'show_not_found'; continue; }
+      if (typeof timeBudget.canStartItem === 'function' && !timeBudget.canStartItem(PRESS_CONFIRM_MIN_REMAINING_MS)) { n.pressCheck = 'budget_skipped'; continue; }
+      attempts++;
+      let discovery = null;
+      try {
+        discovery = await discoverWestEndClosingDate(show.name || show.title || n.id, { log: m => console.log(m) }, timeBudget, PRESS_CONFIRM_MIN_REMAINING_MS);
+      } catch (e) {
+        console.warn(`  [press-confirm] ${n.id}: discovery error: ${e.message.slice(0, 120)}`);
+      }
+      const decision = decideWeNewClosing({ stored: show.closingDate || null, bookingDate: n.extracted, discovery, todayStr: TODAY, toleranceDays: PRESS_TOLERANCE_DAYS });
+      n.pressCheck = decision.reason;
+      if (!decision.apply) { pressUnconfirmed.push(n); continue; }
+      if (!canWriteClosingDate(show)) { n.pressCheck = 'humanCorrectedClosingDate'; pressUnconfirmed.push(n); continue; }
+      if (!DRY_RUN) {
+        writeClosingDate(show, decision.date, `WE press-confirmed (audit ${TODAY}): ${decision.sources.map(s => s.url).join(', ')}`, { todayStr: TODAY, recordExtension: false });
+      }
+      pressConfirmed.push({ ...n, action: 'NEW_CLOSING_PRESS_CONFIRMED', applied: decision.date, sources: decision.sources });
+    }
+  }
+
   const report = {
     generatedAt: new Date().toISOString(),
     mode: DRY_RUN ? 'dry-run' : 'live',
@@ -317,6 +360,8 @@ async function main() {
       audited: budgetExitIndex,
       extensions: extensions.length,
       newClosings: newClosings.length,
+      pressConfirmed: pressConfirmed.length,
+      pressUnconfirmed: newClosings.length - pressConfirmed.length,
       ambiguous: ambiguous.length,
       matches: matches.length,
       errors: errors.length,
@@ -325,6 +370,7 @@ async function main() {
     },
     extensions,
     newClosings,
+    pressConfirmed,
     ambiguous,
     matches,
     errors,
@@ -338,18 +384,20 @@ async function main() {
   console.log(`  ✅ Matches:                    ${matches.length}`);
   console.log(`  📈 Extensions auto-applied:    ${extensions.length}`);
   console.log(`  🆕 New-closing candidates:     ${newClosings.length}`);
+  console.log(`  📰 Press-confirmed + applied:  ${pressConfirmed.length} (rest left blank)`);
   console.log(`  ⚠️  Ambiguous (need review):    ${ambiguous.length}`);
   console.log(`  ❌ Errors:                     ${errors.length}`);
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.extracted} (+${e.delta}d) [${e.urlSource}]`);
-  for (const n of newClosings) console.log(`  NEW  ${n.id}: null → ${n.extracted} [${n.urlSource}]`);
+  for (const n of newClosings) console.log(`  NEW  ${n.id}: null → ${n.extracted} [${n.urlSource}] press=${n.pressCheck || 'n/a'}`);
+  for (const c of pressConfirmed) console.log(`  PRESS ${c.id}: null → ${c.applied}`);
   const describeAmbiguous = a => (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
     ? `${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`
     : `${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
   for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
   for (const e of errors) console.log(`  ERR  ${e.id}: ${e.reason}`);
 
-  const changed = extensions.filter(e => !e.skipped).length;
+  const changed = extensions.filter(e => !e.skipped).length + pressConfirmed.length;
   if (changed > 0 && !DRY_RUN) {
     saveShows(data);
     console.log(`\n✅ Wrote ${changed} closingDate updates to shows.json`);

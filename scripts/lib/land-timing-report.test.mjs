@@ -95,3 +95,30 @@ test('percentile, refusal rate and the target check', () => {
   assert.match(miss, /time-to-refusal/);
   assert.equal(R.parseArgs(['--check-targets']).check, true);
 });
+
+test('gateReport: per-gate stats per run kind, scoped and untimed rows left out (BRO-7324)', () => {
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const run = (wall, tsc, extra = {}) => ({ wallSecs: wall, gateSecs: { tsc, 'unit-tests-node': wall - 60 }, gateCount: 2, scoped: false, ...extra });
+  const rows = [
+    { ts: '2026-11-21T10:00:00Z', sha: 'a', timing: { v: 1, runs: { 'land-gauntlet/branch': run(900, 80), 'land-gauntlet/base': run(950, 90) } } },
+    { ts: '2026-11-21T11:00:00Z', sha: 'b', timing: { v: 1, runs: { 'land-gauntlet/branch': run(1000, 100), 'land-gauntlet/confirm': run(200, 10, { scoped: true }) } } },
+    { ts: '2026-11-21T11:30:00Z', sha: 'c', timing: { v: 1, runs: { 'land-gauntlet/branch': run(1100, 120) } } },
+    { ts: '2026-11-21T11:40:00Z', sha: 'd' },
+    { ts: '2026-11-01T11:00:00Z', sha: 'e', timing: { v: 1, runs: { 'land-gauntlet/branch': run(5000, 5000) } } },
+  ];
+  const rep = R.gateReport(rows, { days: 7, nowMs: now });
+  assert.equal(rep.landings, 3);
+  const b = rep.kinds['land-gauntlet/branch'];
+  assert.deepEqual(b.wallSecs, { n: 3, median: 1000, min: 900, max: 1100 });
+  assert.deepEqual(b.gates.tsc, { n: 3, median: 100, min: 80, max: 120 });
+  assert.deepEqual(Object.keys(b.gates), ['unit-tests-node', 'tsc']);
+  assert.equal(rep.kinds['land-gauntlet/confirm'].scoped, 1);
+  assert.equal(rep.kinds['land-gauntlet/confirm'].wallSecs.n, 0);
+  assert.equal(R.gateReport([], { nowMs: now }).landings, 0);
+  assert.equal(R.parseArgs(['--gates', '--days=3']).gates, true);
+  assert.ok(R.parseArgs(['--gates', '--check-targets']).error);
+  // a GAUNTLET_GATES-limited run of the same kind is left out of the wall stat, kept per gate
+  const lim = R.gateReport([...rows, { ts: '2026-11-21T11:50:00Z', sha: 'f', timing: { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 30, gateSecs: { tsc: 20 }, gateCount: 1, scoped: false } } } }], { days: 7, nowMs: now });
+  assert.deepEqual(lim.kinds['land-gauntlet/branch'].wallSecs, { n: 3, median: 1000, min: 900, max: 1100 });
+  assert.equal(lim.kinds['land-gauntlet/branch'].gates.tsc.n, 4);
+});

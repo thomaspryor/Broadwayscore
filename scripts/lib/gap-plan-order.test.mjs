@@ -90,17 +90,40 @@ test('slot split: retries vs new items', () => {
   assert.deepEqual(PO.slotSplit([{ attempts: 0 }, { attempts: 2 }, {}, { attempts: 1 }]), { retry: 2, new: 2 });
 });
 
-test('URL_FIND time slice: 15 min default, env override, 0 disables URL_FIND', () => {
-  assert.equal(PO.urlFindSliceMs({}), 15 * 60000);
-  assert.equal(PO.urlFindSliceExhausted(14 * 60000, {}), false);
-  assert.equal(PO.urlFindSliceExhausted(15 * 60000, {}), true);
+test('URL_FIND time slice: env override, 0 disables URL_FIND', () => {
+  assert.equal(PO.urlFindSliceExhausted(14 * 60000, { TIME_BUDGET_MIN: '90' }), false);
+  assert.equal(PO.urlFindSliceExhausted(15 * 60000, { TIME_BUDGET_MIN: '90' }), true);
   assert.equal(PO.urlFindSliceMs({ GAP_URL_FIND_SLICE_MIN: '30' }), 30 * 60000);
+});
+
+test('BRO-7986: URL_FIND slice is a sixth of the run, never over 15 min; explicit env wins', () => {
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '90' }), 15 * 60000); // nightly unchanged
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '120' }), 15 * 60000);
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20' }), Math.round((20 / 6) * 60000)); // batch round
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20', GAP_URL_FIND_SLICE_MIN: '10' }), 10 * 60000);
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20', GAP_URL_FIND_SLICE_MIN: '0' }), 0);
+  // the run length is read the way the driver reads it: unset / junk -> 60 min run -> 10 min slice
+  assert.equal(PO.runBudgetMin({}), 60);
+  assert.equal(PO.urlFindSliceMs({}), 10 * 60000);
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: 'x' }), 10 * 60000);
+  assert.equal(PO.runBudgetMin({ TIME_BUDGET_MIN: '20m' }), 20);
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20m' }), Math.round((20 / 6) * 60000));
+  // a URL_FIND-only run (--strategy=URL_FIND) has nothing to share time with
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20' }, { only: 'URL_FIND' }), 20 * 60000);
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20' }, { only: 'ARCHIVE' }), Math.round((20 / 6) * 60000));
+  assert.equal(PO.urlFindSliceExhausted(19 * 60000, { TIME_BUDGET_MIN: '20' }, { only: 'URL_FIND' }), false);
+  // Codex: --class=NO_URL plans only URL_FIND too; the exception follows the plan, not the flag
+  assert.deepEqual(PO.urlFindSliceOpts([{ strategy: 'URL_FIND' }, { strategy: 'URL_FIND' }], null), { only: 'URL_FIND' });
+  assert.deepEqual(PO.urlFindSliceOpts([{ strategy: 'URL_FIND' }, { strategy: 'ARCHIVE' }], null), { only: null });
+  assert.deepEqual(PO.urlFindSliceOpts([], null), { only: null });
+  assert.deepEqual(PO.urlFindSliceOpts([{ strategy: 'ARCHIVE' }], 'URL_FIND'), { only: 'URL_FIND' });
+  assert.equal(PO.urlFindSliceMs({ TIME_BUDGET_MIN: '20', GAP_URL_FIND_SLICE_MIN: ' ' }), Math.round((20 / 6) * 60000)); // blank never disables
 });
 
 test('the driver wires the slice, backoff and band comparator (guards against unwiring)', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
-  for (const needle of ['PO.urlFindSliceExhausted(urlFindSpentMs)', 'PO.backoffGate(', 'PO.identicalRefetchProof(', 'PO.slotSplit(', 'freeInPlace: true', 'landedImproved']) {
+  for (const needle of ['PO.urlFindSliceExhausted(urlFindSpentMs, process.env, sliceOpts)', 'PO.urlFindSliceOpts(work, OPTS.only)', 'PO.runBudgetMin() * 60000', 'PO.backoffGate(', 'PO.identicalRefetchProof(', 'PO.slotSplit(', 'freeInPlace: true', 'landedImproved']) {
     assert.ok(src.includes(needle), `driver lost ${needle}`);
   }
 });

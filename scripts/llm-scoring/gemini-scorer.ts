@@ -12,6 +12,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, GEMINI_CALIBRATION_OFFSET } from './config';
 const { createReviewBudget, callWithTimeout } = require('../lib/llm-call-budget.js');
+const { geminiThinkingOff } = require('../lib/llm-batch.js');
 
 // ========================================
 // TYPES
@@ -80,7 +81,8 @@ export class GeminiScorer {
         // thinkingBudget=0 disables thinking entirely. Ignored by 2.0-flash
         // and earlier models. (Caught 2026-04-28 when migrating A/B harness
         // to 2.5-flash for separate quota pool.)
-        thinkingConfig: { thinkingBudget: 0 },
+        // Gemini 3.x rejects thinkingBudget (HTTP 400): the per-model form (BRO-7511).
+        thinkingConfig: geminiThinkingOff(this.options.model),
       } as any,
     });
 

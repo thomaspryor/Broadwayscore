@@ -373,6 +373,11 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
         return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable, methodsIfWalledRefused };
       }
       if (URL_IDENTITY_REFUSALS.has(d.code)) { refusedCandidates.push(cand.url); continue; }
+      // BRO-7986: the record's url is pinned and this link is not a cosmetic
+      // variant of it, so this record can never take it: refused for this
+      // record (not identity evidence about the page), or the method stays
+      // open and re-finds it every cooldown at SERP/BD cost.
+      if (d.code === 'url_pinned') { refusedCandidates.push(cand.url); continue; }
       // The page may well be this review but cannot be taken (paywall, too
       // short, not longer, record locked): the link is found, never "not
       // findable". Keep it for the ledger; the method stays open.

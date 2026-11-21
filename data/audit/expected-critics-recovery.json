@@ -316,6 +316,13 @@
         {
           "at": "2026-11-15T16:32:50.662Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-21T16:56:58.234Z",
+          "outcome": "non_evidence",
+          "collectorOutcome": "rejected",
+          "reason": "no-publish-date",
+          "url": "https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera"
         }
       ]
     },
@@ -332,8 +339,16 @@
         {
           "at": "2026-11-14T15:59:27.290Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-21T16:56:58.234Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-21T16:56:58.234Z",
+        "note": "auto (BRO-7312): 3 targeted searches of timeout-london for iphigenie-en-tauride-english-national-opera-west-end-2026 found no review (2026-11-13, 2026-11-14, 2026-11-21)"
+      }
     },
     "iphigenie-en-tauride-english-national-opera-west-end-2026::whatsonstage": {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -348,8 +363,16 @@
         {
           "at": "2026-11-14T15:59:27.290Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-21T16:56:58.234Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-21T16:56:58.234Z",
+        "note": "auto (BRO-7312): 3 targeted searches of whatsonstage for iphigenie-en-tauride-english-national-opera-west-end-2026 found no review (2026-11-13, 2026-11-14, 2026-11-21)"
+      }
     },
     "the-morbs-off-broadway-2026::theatermania": {
       "showId": "the-morbs-off-broadway-2026",
@@ -452,8 +475,16 @@
         {
           "at": "2026-11-20T17:59:42.126Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-21T16:56:40.359Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-21T16:56:40.359Z",
+        "note": "auto (BRO-7312): 3 targeted searches of theatermania for tosca-off-broadway-2026 found no review (2026-11-19, 2026-11-20, 2026-11-21)"
+      }
     },
     "downstate-2026::talkinbroadway": {
       "showId": "downstate-2026",
@@ -530,18 +561,6 @@
     "now-you-see-me-live-2026::nypost": {
       "showId": "now-you-see-me-live-2026",
       "outletId": "nypost",
-      "openingDate": "2026-11-16",
-      "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": [
-        {
-          "at": "2026-11-20T18:01:42.135Z",
-          "outcome": "no_evidence"
-        }
-      ]
-    },
-    "now-you-see-me-live-2026::nysr": {
-      "showId": "now-you-see-me-live-2026",
-      "outletId": "nysr",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
       "attempts": [
@@ -628,27 +647,139 @@
       "outletId": "vulture",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": []
+      "attempts": [
+        {
+          "at": "2026-11-21T16:57:13.424Z",
+          "outcome": "no_evidence"
+        }
+      ]
     },
     "the-fantasticks-2026::theater-scene": {
       "showId": "the-fantasticks-2026",
       "outletId": "theater-scene",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": []
+      "attempts": [
+        {
+          "at": "2026-11-21T16:57:38.885Z",
+          "outcome": "no_evidence"
+        }
+      ]
     },
     "the-fantasticks-2026::theatrely": {
       "showId": "the-fantasticks-2026",
       "outletId": "theatrely",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": []
+      "attempts": [
+        {
+          "at": "2026-11-21T16:57:38.885Z",
+          "outcome": "rejected",
+          "reason": "file-exists",
+          "url": "https://www.theatrely.com/post/nathan-levy-and-maxim-chlumecky-have-been-waiting-to-do-broadway-together-since-college-now-they-get-their-shot-in-reimagined-the-fantasticks"
+        }
+      ]
     },
     "the-fantasticks-2026::variety": {
       "showId": "the-fantasticks-2026",
       "outletId": "variety",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
+      "attempts": [
+        {
+          "at": "2026-11-21T16:57:38.885Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::chicagotribune": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": [
+        {
+          "at": "2026-11-21T16:58:04.513Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::cititour": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "cititour",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": [
+        {
+          "at": "2026-11-21T16:58:04.513Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::nypost": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "nypost",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": [
+        {
+          "at": "2026-11-21T16:58:04.513Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::nytimes": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "nytimes",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": [
+        {
+          "at": "2026-11-21T16:58:04.513Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::talkinbroadway": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "talkinbroadway",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": []
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::theater-scene": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "theater-scene",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": []
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::theatrely": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "theatrely",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": []
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::thewrap": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "thewrap",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": []
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::timeout": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "timeout",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
+      "attempts": []
+    },
+    "blue-man-group-a-new-holiday-surprise-2026::variety": {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "outletId": "variety",
+      "openingDate": "2026-11-17",
+      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
       "attempts": []
     }
   }

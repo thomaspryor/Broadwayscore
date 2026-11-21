@@ -215,6 +215,89 @@ test('a url move stamps the caller urlDiscoveryMethod (and drops a stale one); t
   assert.equal(JSON.parse(fs.readFileSync(c2.filePath, 'utf8')).urlDiscoveryMethod, 'test-recovery', 'stale method replaced by the recovery method');
 });
 
+test('BRO-7986: pinned url helpers (dead-outlaw Vulture: pinned url vs the same url + ".html")', () => {
+  const pin = 'https://www.vulture.com/article/theater-review-dead-outlaw-musical-broadway';
+  assert.equal(gate.isTrivialUrlVariant(pin, pin + '.html'), true);
+  assert.equal(gate.isTrivialUrlVariant(pin, pin.replace('https://www.', 'http://') + '/'), true);
+  assert.equal(gate.isTrivialUrlVariant(pin, pin + '?utm_source=x#top'), true);
+  assert.equal(gate.isTrivialUrlVariant(pin + '?mid=googlenews', pin), true); // real pinned vulture/wsj/nyt queries
+  assert.equal(gate.isTrivialUrlVariant(pin, pin + '-2.html'), false);
+  assert.equal(gate.isTrivialUrlVariant(pin, 'https://www.nymag.com/article/theater-review-dead-outlaw-musical-broadway.html'), false);
+  assert.equal(gate.isTrivialUrlVariant(pin, 'not a url'), false);
+  // a script path's query names the article; nothing is percent-decoded (review: %26 vs &)
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/post.php?slug=a', 'https://site.com/post.php?slug=b'), false);
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/post.php?slug=a', 'https://site.com/post.php?slug=a'), true);
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/index.php?id=a%26part%3D2', 'https://site.com/index.php?id=a&part=2'), false);
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/a%2Fb', 'https://site.com/a/b'), false);
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/', 'https://site.com/?p=9'), false); // site root never matches
+  // Codex: an article-id param names the article on any path
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/review?id=1', 'https://site.com/review?id=2'), false);
+  assert.equal(gate.isTrivialUrlVariant('https://site.com/review?id=1&utm_source=x', 'https://site.com/review/?id=1'), true);
+  assert.equal(gate.isTrivialUrlVariant('https://abcnews.go.com/wireStory?id=5', 'https://abcnews.go.com/wireStory'), false);
+  // an auto pin the guard's flip-flop rule lifts (pinned on a tag page) is not pinned for that move
+  const tagPin = { url: 'https://www.theatermania.com/tags/dead-outlaw/', urlVerified: true, urlVerifiedAuto: true };
+  const article = 'https://www.theatermania.com/broadway/reviews/dead-outlaw-review_1234.html';
+  assert.equal(gate.pinnedUrl(tagPin, article), false);
+  assert.equal(gate.pinnedUrl({ ...tagPin, urlVerifiedAuto: false }, article), true);
+  assert.equal(gate.pinnedUrl({ url: pin, urlVerified: true, urlVerifiedAuto: true }, 'https://www.vulture.com/article/other.html'), true);
+  assert.equal(gate.pinnedUrl({ url: pin, urlVerified: true }), true);
+  assert.equal(gate.pinnedUrl({ url: pin, urlManualOverride: true }), true);
+  assert.equal(gate.pinnedUrl({ url: pin }), false);
+  assert.equal(gate.pinnedUrl({ urlVerified: true }), false);
+  assert.deepEqual(gate.pinnedUrlRoute({ url: pin, urlVerified: true }, pin + '.html'), { keepPinned: true, refusal: null });
+  assert.deepEqual(gate.pinnedUrlRoute({ url: pin, urlVerified: true }, 'https://www.vulture.com/article/other.html'), { keepPinned: false, refusal: 'url_pinned' });
+  assert.deepEqual(gate.pinnedUrlRoute({ url: pin }, 'https://www.vulture.com/article/other.html'), { keepPinned: false, refusal: null });
+  assert.deepEqual(gate.pinnedUrlRoute(tagPin, article), { keepPinned: false, refusal: null });
+});
+
+test('BRO-7986: a pinned url recovers text from a trivial variant at the pinned url, with no move fields stamped', () => {
+  const c = candidateFile({ urlVerified: true, urlVerifiedAuto: true, urlDiscoveryMethod: 'http-redirect', dtliExcerpt: GOOD.slice(0, 240) });
+  const variant = c.url.replace(/\.html$/, '/');
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: variant, expectUrl: c.url, labels: { ...LABELS, urlDiscoveryMethod: 'gap-url-find' } });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.code, 'accepted');
+  assert.equal(r.landedUrl, c.url, 'the ledger is told the stored url, not the fetched one');
+  const onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.url, c.url, 'pinned url kept');
+  assert.ok(onDisk.fullText.startsWith("Joe Turner's Come and Gone"));
+  assert.equal(onDisk.previousUrl, undefined, 'no move happened');
+  assert.equal(onDisk.textRecoveryProvenance.priorUrl, undefined);
+  assert.equal(onDisk.textRecoveryProvenance.sourceUrl, variant, 'where the text came from');
+  assert.equal(onDisk.urlDiscoveryMethod, 'http-redirect', 'discovery method untouched');
+});
+
+test('BRO-7986 (Codex): a url edited onto the record during the write does not end up holding the text, reported as accepted', () => {
+  const c = candidateFile({ urlVerified: true, dtliExcerpt: GOOD.slice(0, 240) });
+  const fixedUrl = 'https://www.nytimes.com/2026/03/17/theater/joe-turner-corrected.html';
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: c.url.replace(/\.html$/, '/'), expectUrl: c.url, labels: LABELS,
+    // an unlocked url edit lands between the gate and the write
+    beforeWrite: () => { const d = JSON.parse(fs.readFileSync(c.filePath, 'utf8')); d.url = fixedUrl; fs.writeFileSync(c.filePath, JSON.stringify(d, null, 2) + '\n'); } });
+  assert.equal(r.ok, false, 'not reported as accepted');
+  assert.equal(r.code, 'write_rolled_back', r.reason);
+});
+
+test('BRO-7986: the page fetched at a trivial variant still passes the full gate (no identity evidence -> refused, nothing written)', () => {
+  const c = candidateFile({ urlVerified: true });
+  const before = fs.readFileSync(c.filePath, 'utf8');
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: c.url.replace(/\.html$/, '/'), expectUrl: c.url, labels: LABELS });
+  assert.equal(r.ok, false);
+  assert.equal(r.code, 'identity_unproven', r.reason);
+  assert.equal(fs.readFileSync(c.filePath, 'utf8'), before);
+});
+
+test('BRO-7986: a pinned url never moves to a different article url: refused before the write as non-evidence, file untouched', () => {
+  const L = require('./gap-recovery-ledger.js');
+  for (const pin of [{ urlVerified: true }, { urlManualOverride: true }]) {
+    const c = candidateFile({ ...pin, dtliExcerpt: GOOD.slice(0, 240) });
+    const before = fs.readFileSync(c.filePath, 'utf8');
+    const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: 'https://www.nytimes.com/2026/03/17/theater/joe-turner-review-moved.html', expectUrl: c.url, labels: LABELS });
+    assert.equal(r.ok, false);
+    assert.equal(r.code, 'url_pinned');
+    assert.equal(L.outcomeForGateRefusal(r.code), 'non_evidence', 'a pin says nothing about whether the page is this review');
+    assert.equal(fs.readFileSync(c.filePath, 'utf8'), before);
+  }
+});
+
 test('an invented-url row (fabricatedEntry) whose real review is accepted gets the flag cleared, or the rebuild keeps skipping it (BRO-7171)', () => {
   const c = candidateFile({ fabricatedEntry: true, fabricatedReason: 'Legacy web-search row (BRO-7171): url answered 404', source: 'web-search', httpStatus: 404, dtliExcerpt: GOOD.slice(0, 240) });
   const newUrl = 'https://www.nytimes.com/2026/03/17/theater/joe-turner-review-real.html';

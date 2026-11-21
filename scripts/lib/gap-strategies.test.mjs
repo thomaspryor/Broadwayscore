@@ -239,6 +239,28 @@ test('urlFind: timeouts stay open, unreadable links are kept, slots skip old ref
   assert.equal(UF.fetchRefusedOnEvidence(['free:no_evidence/url_dead_410', 'wayback:rejected/archive_thin_copy']), true);
 });
 
+// BRO-7986 ship-check: a pinned record refuses every non-variant link; the
+// method must finish (refused), not stay open as "found but unreadable".
+test('urlFind: a url_pinned link is refused for the record and finishes the method', async () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const UF = require('./gap-url-find.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind-'));
+  fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+  const fp = path.join(tmp, 'julie-west-end-2018', 'telegraph--x.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'X Y', url: 'https://t.co.uk/pinned', urlVerified: true, fullText: 'short' }));
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+  UF.runMethod = async () => ({ candidates: [{ url: 'https://t.co.uk/s1' }], tried: [], error: null });
+  UF.fetchCandidateText = async () => ({ ok: true, rawText: 'text', html: '<h1>x</h1>', tried: ['free:ok 4'], via: 'free' });
+  try {
+    const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['SLUG_GUESS'] }, { gate: async () => ({ ok: false, code: 'url_pinned' }) });
+    assert.equal(r.ok, false);
+    assert.equal(r.methods.SLUG_GUESS, 'candidates_refused');
+    assert.ok((r.refusedCandidates || []).includes('https://t.co.uk/s1'));
+    assert.equal((r.foundUnreadable || []).length, 0);
+  } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
 // Ship-check P1: a query that errored left part of the index unsearched, so
 // refusing what the other queries found must not finish the method.
 test('urlFind: a partial index error keeps the method open even when its found links are refused', async () => {

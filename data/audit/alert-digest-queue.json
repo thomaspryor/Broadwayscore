@@ -278,20 +278,6 @@
     "queuedAt": "2026-11-21T11:21:30.474Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +19 more). Checked 2026-11-21.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T12:46:58.537Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category",
     "title": "Live-data test failing: every shows.json id suffix matches its category (tests/unit/show-id-market-suffix.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every shows.json id suffix matches its category\" in tests/unit/show-id-market-suffix.test.mjs is red against the live corpus.\n\nnew id/category mismatch: fix the id (scripts/rename-show-id.js) or the category\n+ actual - expected\n\n+ [\n+   'the-seagull-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-three-sisters-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'brigadoon-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-glass-menagerie-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alice-in-wonderland-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-invention-of-love-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-maids-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'in-praise-of-love-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-lady-from-the-sea-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alls-well-that-ends-well-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cymbeline-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cyrano-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'marie-and-rosetta-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'an-oak-tree-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'hold-on-to-your-butts-west-end-",
@@ -336,20 +322,6 @@
       }
     ],
     "queuedAt": "2026-11-21T13:03:30.060Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T14:33:21.085Z"
   },
   {
     "conditionKey": "land:land/bro-7993-we-closing-press-confirm",
@@ -443,5 +415,181 @@
       }
     ],
     "queuedAt": "2026-11-21T15:20:03.182Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
+    "title": "Live-data test failing: audit-aggregator-archive-integrity.js: baseline holds no stale entries (tests/unit/audit-stale-baseline-detection.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"audit-aggregator-archive-integrity.js: baseline holds no stale entries\" in tests/unit/audit-stale-baseline-detection.test.mjs is red against the live corpus.\n\naudit-aggregator-archive-integrity.js --check-stale exited 1; prune with: node scripts/audit-aggregator-archive-integrity.js --prune-stale\n- bww-reviews/the-oresteia-off-west-end-2026\n- bww-reviews/the-play-that-goes-wrong-2017\n- bww-reviews/the-rat-trap-off-west-end-2026\n- bww-reviews/the-story-west-end-2026\n- bww-reviews/the-threepenny-opera-2006\n- bww-reviews/the-water-engine-1978\n- bww-reviews/titanique-2026\n- bww-reviews/tru-off-west-end-2026\n- bww-reviews/twelfth-night-2013\n- bww-reviews/vivat-vivat-regina-1972\n- bww-reviews/woman-in-mind-west-end-2025\n- bww-roundups/an-enemy-of-the-people-west-end-2024\n- bww-roundups/illinoise-off-broadway-2024\n… and 43 more\nA stale entry would silently re-excuse the same regression later. Prune: node scripts/audit-aggregator-archive-integrity.js --prune-stale (or --update-baseline when the scan has no new bad archives)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
+    "fields": [],
+    "queuedAt": "2026-11-21T15:50:52.171Z"
+  },
+  {
+    "conditionKey": "land:land/money-welcome-personal",
+    "title": "Landing blocked: unit-tests-node red on land/money-welcome-personal",
+    "description": "land.yml did not land land/money-welcome-personal: the unit-tests-node gate went red at 86e20d3926. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44919105222",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/money-welcome-personal"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "86e20d3926228d24a7e0c23c93973a07a85b4806"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44919105222"
+      }
+    ],
+    "queuedAt": "2026-11-21T15:35:05.766Z"
+  },
+  {
+    "conditionKey": "ugc:one-tap-unregistered-origin",
+    "title": "Google sign-in corner card is blocked by a Google setting",
+    "description": "In the last 24 hours 15 of 16 desktop visitors' Google sign-in cards were refused by Google (reason: unregistered_origin), across 15 devices. Fix: in Google Cloud Console, Credentials, open the web client and add https://broadwayscorecard.com and https://www.broadwayscorecard.com under Authorized JavaScript origins, then save.",
+    "severity": "error",
+    "url": "https://broadwayscorecard.com/admin/accounts",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T15:38:34.125Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7987-gemini-reviewer",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7987-gemini-reviewer",
+    "description": "land.yml did not land land/bro-7987-gemini-reviewer: the unit-tests-node gate went red at 0b1d327a86. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44919552168",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7987-gemini-reviewer"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0b1d327a86023ddb66bb67942a6eb60b2871e23e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44919552168"
+      }
+    ],
+    "queuedAt": "2026-11-21T15:40:35.364Z"
+  },
+  {
+    "conditionKey": "cookie-renew:confirm-failed:nytimes",
+    "title": "Cookie renew: nytimes CI health check still failing",
+    "description": "Cookies were renewed and pushed, but check-cookie-health did not report nytimes logged in.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44918094987",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T15:17:13.887Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T16:53:50.085Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T16:10:09.730Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
+    "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T16:10:11.871Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Angela Lin',\n+     outletId: 'broadwayworld',\n+     showId: 'chopin-in-winter-regional-2026'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "fields": [],
+    "queuedAt": "2026-11-21T16:33:00.574Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-21.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T16:53:19.063Z"
   }
 ]

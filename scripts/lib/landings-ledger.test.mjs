@@ -102,3 +102,13 @@ test('landedShaForTip: newest row wins when one tip landed twice; partial and em
   assert.equal(landedShaForTip(parseLandings(''), OTHER), null);
   assert.equal(landedShaForTip(undefined, OTHER), null);
 });
+
+test('appendLanding stores timing only when it is a plain object (BRO-7324)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ledger-timing-'));
+  const timing = { v: 1, runs: { 'land-gauntlet/branch': { wallSecs: 900, gateSecs: { tsc: 80 }, gates: ['tsc'], scoped: false } } };
+  assert.deepEqual(appendLanding({ repoDir: dir, branch: 'land/x', sha: SHA, timing }).timing, timing);
+  assert.equal('timing' in appendLanding({ repoDir: dir, branch: 'land/y', sha: OTHER, timing: '{"v":1}' }), false);
+  assert.equal('timing' in appendLanding({ repoDir: dir, branch: 'land/z', sha: OTHER, timing: [1] }), false);
+  assert.equal('timing' in appendLanding({ repoDir: dir, branch: 'land/w', sha: OTHER }), false);
+  assert.deepEqual(readLandings(dir).rows[0].timing, timing);
+});

@@ -1,137 +1,43 @@
 {
-  "updatedAt": "2026-11-21T15:13:04.519Z",
-  "processed": 198,
-  "failed": 114,
-  "successRate": "63.5%",
+  "updatedAt": "2026-11-21T16:47:51.807Z",
+  "processed": 251,
+  "failed": 154,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 117,
+    "playwright": 153,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 23,
-    "scrapingbee": 18,
-    "brightdata": 3,
+    "scrapingdog": 13,
+    "scrapingbee": 8,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 42
+    "archive": 24
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-11-21T14:18:38.625Z",
+      "t": "2026-11-21T16:15:35.376Z",
       "event": "bb-session",
-      "session": "d2ee4864",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "793824b7",
+      "url": "http://www.publictheater.org/"
     },
     {
-      "t": "2026-11-21T14:18:39.459Z",
+      "t": "2026-11-21T16:19:22.405Z",
+      "event": "bb-session",
+      "session": "c215c200",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-21T16:19:22.713Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-21T14:19:02.540Z",
+      "t": "2026-11-21T16:38:44.714Z",
       "event": "bb-session",
-      "session": "c46a4a35",
-      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
-    },
-    {
-      "t": "2026-11-21T14:19:25.878Z",
-      "event": "bb-session",
-      "session": "9b29367f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-21T14:19:34.662Z",
-      "event": "bb-session",
-      "session": "2d7b90c1",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-21T14:20:38.148Z",
-      "event": "bb-session",
-      "session": "3a6e4ebd",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-11-21T14:20:48.407Z",
-      "event": "bb-session",
-      "session": "ff22281c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-11-21T14:22:54.397Z",
-      "event": "bb-session",
-      "session": "6d66351e",
-      "url": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-"
-    },
-    {
-      "t": "2026-11-21T14:25:13.568Z",
-      "event": "bb-session",
-      "session": "4d6bc5fa",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-11-21T14:25:14.369Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-11-21T14:56:23.488Z",
-      "event": "bb-session",
-      "session": "9ed1550a",
-      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
-    },
-    {
-      "t": "2026-11-21T14:56:25.502Z",
-      "event": "bb-session",
-      "session": "7dbd7e65",
-      "url": "https://frontmezzjunkies.com/2026/10/03/misty-green-breaks-your-heart-one-bad-de"
-    },
-    {
-      "t": "2026-11-21T14:57:12.702Z",
-      "event": "bb-session",
-      "session": "79d00be9",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-21T15:03:30.914Z",
-      "event": "bb-session",
-      "session": "09e76273",
-      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
-    },
-    {
-      "t": "2026-11-21T15:10:35.543Z",
-      "event": "bb-session",
-      "session": "3879cabf",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-11-21T15:10:36.028Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-21T15:10:40.033Z",
-      "event": "bb-session",
-      "session": "10fef2fa",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-21T15:10:47.538Z",
-      "event": "bb-session",
-      "session": "cf1dc603",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-21T15:11:47.102Z",
-      "event": "bb-session",
-      "session": "7e7dcd0f",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-11-21T15:11:54.515Z",
-      "event": "bb-session",
-      "session": "80969a8c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+      "session": "6a3847cb",
+      "url": "https://deadline.com/2025/12/walt-disney-world-raiders-of-the-lost-ark-boulder-a"
     }
   ]
 }

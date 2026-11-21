@@ -535,7 +535,7 @@ function pendingPushInfo(rows) {
 // writer or the post-write check) say nothing about whether the source holds
 // the review: they never count toward a cap.
 // identity_check_unavailable: the LLM identity check errored (no verdict).
-const WRITE_PATH_REFUSALS = new Set(['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'dry_run_needs_llm', 'identity_check_unavailable']);
+const WRITE_PATH_REFUSALS = new Set(['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'url_pinned', 'dry_run_needs_llm', 'identity_check_unavailable']);
 
 /** Ledger outcome for a recoverReviewTextVerified refusal code. */
 function outcomeForGateRefusal(code) {

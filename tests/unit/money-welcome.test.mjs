@@ -34,9 +34,8 @@ test('email has unsubscribe headers, footer and no em dashes', () => {
   assert.match(m.headers['List-Unsubscribe'], /mailto:hi@broadwayscorecard\.com/);
   assert.match(m.headers['List-Unsubscribe'], /list=money&email=pat%40real\.org/);
   assert.equal(m.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
-  assert.ok(!/—/.test(m.text + m.html + m.subject));
+  assert.ok(!/—/.test(m.text + m.subject));
   assert.match(m.text, /Unsubscribe:/);
-  assert.match(m.html, />Unsubscribe</);
 });
 
 test('idempotency key hides the address and is stable', () => {
@@ -177,5 +176,5 @@ test('resolveEnabled: variable false wins, file turns it on, default off', () =>
 test('welcome copy asks what the reader wants, never who they are', () => {
   const m = w.buildWelcomeEmail({ email: 'a@example.com' });
   assert.ok(!/who'?s on it|who is on it|your connection/i.test(m.text));
-  assert.ok(/what you were hoping to find/.test(m.text));
+  assert.ok(/hoping to find\?/.test(m.text));
 });

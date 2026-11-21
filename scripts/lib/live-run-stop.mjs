@@ -17,6 +17,15 @@
 // Library files a workflow script imports are not judged (the 2-level closure covers ~90% of scripts/lib, see the
 // BRO-7738 review); /did-it-work still asks for those to be run.
 //
+// BRO-7994 adds a second class to the same check: a landed src/ or scripts/ change whose success depends on a setting
+// OUTSIDE the repo (an OAuth client's origins, DNS, a third-party dashboard) that the session admitted it could not
+// check, declared with an OUTSIDE-SETTING: line, or handed to the owner as a manual step on an outside site. That
+// chunk may not close SAFE TO ARCHIVE (or defer proof) without one of: a LIVE-CHECK: line citing 2+ successes that
+// appear in a live-read result taken after the last land; a RECHECK-AFTER within 7 days with a real (not
+// existence-only) acceptance command; or NO-OUTSIDE-SETTING: <15+ chars>. Kill switch OUTSIDE_SETTING_STOP_DISABLE=1.
+// Incident 2026-11-21 (BRO-6917 Part 5): Google One Tap closed SAFE TO ARCHIVE on "0 events 3 min after go-live";
+// 14 of 14 real attempts were refused because the Google client never listed the site origins.
+//
 // Rollout (CLAUDE.md section 19): one nudge per chunk of work until LIVE_RUN_BLOCKING_FROM, then two. Every decision
 // that would block is logged to .cache/live-run-stop.log. Fails open on any error; kill switch LIVE_RUN_STOP_DISABLE=1.
 // Wired in .claude/hooks/verify-edits.sh as [VE:LIVERUN]; pinned by live-run-stop.test.mjs.
@@ -31,6 +40,11 @@ import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
 import { isMainModule } from './is-main-module.mjs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const OUTSIDE = require('./outside-setting.js');
+const OWNER_STEPS = require('./owner-steps.js');
 
 export const LIVE_RUN_BLOCKING_FROM = '2026-11-25';
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit']);
@@ -152,6 +166,73 @@ export function liveRunFor(events, edit, lastLand) {
   return null;
 }
 
+const CODE_PATH_RE = /(?:^|\/)((?:src|scripts)\/[\w./@-]+)$/;
+const CODE_IN_CMD_RE = /(?:^|[\s'"=(/])((?:src|scripts)\/[\w./@-]+\.(?:tsx?|jsx?|mjs|cjs|sh|py|css))\b/g;
+const isProductCode = (rel) => !!rel && !/\.test\.\w+$|(?:^|\/)__tests__\//.test(rel);
+
+/** PURE. Did this chunk edit (before the last land) a non-test src/ or scripts/ file? */
+export function landedCodeEdit(events, from, lastLand) {
+  for (let i = from + 1; i < lastLand; i++) {
+    const e = events[i];
+    if (e.kind !== 'assistant_tool_use') continue;
+    if (EDIT_TOOLS.has(e.name)) {
+      const p = String(e.input?.file_path || '');
+      const m = /\/\.claude\/projects\//.test(p) ? null : CODE_PATH_RE.exec(p);
+      if (m && isProductCode(m[1])) return m[1];
+    } else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
+      for (const m of String(e.input?.command || '').matchAll(CODE_IN_CMD_RE)) if (isProductCode(m[1])) return m[1];
+    }
+  }
+  return null;
+}
+
+/**
+ * PURE (BRO-7994). The outside-setting gap of a landed chunk, or null when there is none or it was covered.
+ * -> { trigger, file, why } where trigger is 'admits' | 'declared' | 'owner-ask'.
+ */
+export function outsideSettingGap({ events, from, lastLand, lastMessage = '', now = new Date() }) {
+  const file = landedCodeEdit(events, from, lastLand);
+  if (!file) return null;
+  const joined = answerTexts(events.slice(from + 1), lastMessage).join('\n');
+  const admitted = OUTSIDE.admitsUnverifiable(joined);
+  const declared = OUTSIDE.declaration(joined);
+  const ownerAsk = OWNER_STEPS.isManualOutsideAsk(OWNER_STEPS.ownerBlock(lastMessage));
+  const trigger = admitted ? 'admits' : declared ? 'declared' : ownerAsk ? 'owner-ask' : null;
+  if (!trigger) return null;
+  if (OUTSIDE.bypass(joined)) return null;
+  const recheck = OUTSIDE.recheckAcceptanceOk(joined, now);
+  if (recheck.ok) return null;
+  const claims = OUTSIDE.liveCheckClaims(joined);
+  if (claims.length) {
+    const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
+    const reads = [];
+    for (let i = lastLand + 1; i < events.length; i++) {
+      const e = events[i];
+      if (e.kind !== 'assistant_tool_use' || !OUTSIDE.isLiveRead(e.name, e.input)) continue;
+      const r = answers.get(e.id);
+      if (r && !r.isError) reads.push(typeof r.content === 'string' ? r.content : JSON.stringify(r.content ?? ''));
+    }
+    const seen = (n) => reads.some((t) => new RegExp(`(?<![\\d.])${n}(?![\\d])`).test(t));
+    if (claims.some((c) => c.counts.some(seen))) return null;
+  }
+  const why = admitted ? `the session wrote "${String(admitted).slice(0, 80)}"` : declared ? `OUTSIDE-SETTING: ${declared.slice(0, 80)}` : 'the closing hands the owner a manual step on an outside site';
+  return { trigger, file, why, recheckReason: recheck.reason, hadClaims: claims.length > 0 };
+}
+
+export function outsideSettingMessage(gap) {
+  return [
+    'BLOCKED (BRO-7994): this session landed a change that only works if a setting OUTSIDE the repo is right, and it has not seen the change work for real users.',
+    `- ${gap.file}: ${gap.why}`,
+    gap.hadClaims ? '- The LIVE-CHECK line\'s numbers do not appear in any live read taken after the land (PostHog/Vercel/Supabase reads, account-metrics, cloud-run-script).' : null,
+    `- Recheck route not usable: ${gap.recheckReason}.`,
+    'Do one of these, then close again:',
+    '  1. Read real traffic after the land (PostHog/Vercel/Supabase connector, or node scripts/lib/account-metrics.js) and write LIVE-CHECK: <2+ successes, e.g. "5 One Tap sign-ins since 14:00">. Zero events or "no errors" is not a success.',
+    '  2. Pause the card instead of closing: write OUTSIDE-SETTING: <the setting> on it, a RECHECK-AFTER: <date within 7 days>, and a VERIFY: command that checks the live effect (test -f / ls only show a file exists). The daily recheck then owns it, so this session may close.',
+    '  3. NO-OUTSIDE-SETTING: <15+ chars on why nothing outside the repo decides whether this works>.',
+    'Owner steps for the setting: node scripts/lib/owner-steps.js lists ready recipes (e.g. google-js-origins) with a direct link.',
+  ].filter(Boolean).join('\n');
+}
+
 export function blockBudget(now = new Date()) {
   return now.toISOString().slice(0, 10) >= LIVE_RUN_BLOCKING_FROM ? 2 : 1;
 }
@@ -170,7 +251,7 @@ export function blockMessage(missing) {
 }
 
 /** PURE Stop-hook decision. -> { decision, reason, message?, chunkKey? } */
-export function stopHookDecision({ lastMessage = '', events = null, env = process.env, index = new Map() }) {
+export function stopHookDecision({ lastMessage = '', events = null, env = process.env, index = new Map(), now = new Date() }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.LIVE_RUN_STOP_DISABLE === '1') return { decision: 'allow', reason: 'LIVE_RUN_STOP_DISABLE=1' };
   const defers = defersProof(lastMessage);
@@ -193,6 +274,11 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const landed = landedPushIndices(events).filter((i) => i > from);
   if (!landed.length) return { decision: 'allow', reason: bareBypass ? 'NO-LIVE-RUN bypass' : 'nothing landed in this chunk' };
   const lastLand = landed[landed.length - 1];
+  const chunkKey = from < 0 ? '' : String(events[from].messageId || events[from].ts || from);
+  if (env.OUTSIDE_SETTING_STOP_DISABLE !== '1') {
+    const gap = outsideSettingGap({ events, from, lastLand, lastMessage, now });
+    if (gap) return { decision: 'block', chunkKey: `${chunkKey}:outside`, reason: `outside setting (${gap.trigger}): ${gap.file}`.slice(0, 300), message: outsideSettingMessage(gap) };
+  }
   // Only edits that a land push after them carried count.
   const edits = liveEdits(events, from, index).filter((x) => x.lastEdit < lastLand);
   if (!edits.length) return { decision: 'allow', reason: 'no landed edit to a file a workflow runs' };
@@ -203,7 +289,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (!missing.length) return { decision: 'allow', reason: 'every live file was run' };
   return {
     decision: 'block',
-    chunkKey: from < 0 ? '' : String(events[from].messageId || events[from].ts || from),
+    chunkKey,
     reason: `not run live: ${missing.map((m) => m.file).join(', ')}`.slice(0, 300),
     message: blockMessage(missing),
   };
@@ -237,7 +323,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   if (!tp || !fs.existsSync(tp)) return 0;
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
   const index = workflowScriptIndex(loadWorkflows(root));
-  const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env, index });
+  const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env, index, now });
   if (d.decision !== 'block') return 0;
   const counter = path.join(os.tmpdir(), `live-run-stop-${createHash('sha1').update(tp + '\u0000' + (d.chunkKey || '')).digest('hex').slice(0, 12)}`);
   let n = 0;

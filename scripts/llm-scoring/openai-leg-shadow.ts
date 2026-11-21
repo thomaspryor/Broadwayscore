@@ -25,8 +25,8 @@ import { EnsembleReviewScorer } from './ensemble-scorer';
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { isReviewTextFile } = require('../lib/review-text-sidecars');
 const { openaiScoringModels } = require('../lib/llm-batch.js');
-const { SCORING_OPENAI } = require('../lib/models');
-const { computeReport } = require('../lib/openai-leg-ab-metrics.js');
+const { SCORING_OPENAI, SCORING_SONNET } = require('../lib/models');
+const { computeReport, interactionTerm } = require('../lib/openai-leg-ab-metrics.js');
 const { parseMaxCost } = require('../lib/experiment-guard');
 
 const ROOT = path.join(__dirname, '../..');
@@ -146,27 +146,34 @@ function armOf(e: any) {
     claudeLegRejected: e.claudeLeg ? e.claudeLeg.rejected : null,
     claudeLegError: e.claudeLeg ? e.claudeLeg.error || null : null,
     claudeScore: e.modelResults?.claude?.score ?? null,
+    geminiLegOk: e.geminiLeg ? e.geminiLeg.ok : null,
+    geminiLegRejected: e.geminiLeg ? e.geminiLeg.rejected : null,
+    geminiLegError: e.geminiLeg ? e.geminiLeg.error || null : null,
+    // Kept so a later A/B can recombine arms offline (the combine needs all three legs).
+    geminiScore: e.modelResults?.gemini?.score ?? null,
   };
 }
 
 // List prices, $ per 1M tokens: [input, output, cacheRead, cacheWrite].
-// Sonnet 5.5 list likely $2/$10, but the cap table below prices it at the 4.6 rates (no repo price source). Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
+// Sonnet 5.5 $2/$10, Sonnet 4.6 $3/$15, gpt-4o $2.50/$10, gpt-5.6-luna $0.20/$1.20,
 // Gemini 2.5-flash $0.30/$2.50 (scripts/llm-scoring/cost.ts, scripts/lib/research-cost.js).
-const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [3, 15, 0.3, 3.75] /* cap prices 5.5 at 4.6 list rates (no repo price source); real bill is lower or equal */ };
+const CLAUDE_RATES: Record<string, number[]> = { 'claude-sonnet-4-6': [3, 15, 0.3, 3.75], 'claude-sonnet-5-5': [2, 10, 0.2, 2.5] /* Anthropic list price (checked 2026-11-21): $2/$10, cache read 0.1x, write 1.25x */ };
 const OPENAI_RATES_PM: Record<string, number[]> = { 'gpt-4o': [2.5, 10], 'gpt-5.6-luna': [0.2, 1.2], 'gpt-6-luna': [0.2, 1.2], 'gpt-5.4-mini': [0.75, 4.5], 'gpt-5.6-sol': [5, 30] };
+// gemini-3.5-flash-lite lists at the same $0.30/$2.50 (Google pricing page, checked 2026-11-21).
 const GEMINI_RATES = [0.3, 2.5];
-function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
+function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude: string | undefined, controlOpenai: string, controlClaude: string) {
   const claudeC = (t: any, m: string) => { const r = CLAUDE_RATES[m]; return t ? (t.input * r[0] + t.output * r[1] + (t.cacheRead || 0) * r[2] + (t.cacheWrite || 0) * r[3]) / 1e6 : 0; };
   const openaiC = (t: any, m: string) => { const r = OPENAI_RATES_PM[m] || [5, 30]; return t ? (t.input * r[0] + t.output * r[1]) / 1e6 : 0; };
   const out = {
-    claudeControl: claudeC(u.claude, 'claude-sonnet-4-6'),
-    openaiControl: openaiC(u.openai, SCORING_OPENAI), // the control leg runs the production pin (gpt-5.6-luna since BRO-7537)
+    claudeControl: claudeC(u.claude, controlClaude),
+    openaiControl: openaiC(u.openai, controlOpenai), // the models the control arm actually ran (pins unless --control-*-model)
     gemini: u.gemini ? (u.gemini.input * GEMINI_RATES[0] + u.gemini.output * GEMINI_RATES[1]) / 1e6 : 0,
     claudeShadow: shadowClaude ? claudeC(sh.claude, shadowClaude) : 0,
     openaiShadow: shadowOpenai !== 'none' ? openaiC(sh.openai, shadowOpenai) : 0,
+    geminiShadow: sh.gemini ? (sh.gemini.input * GEMINI_RATES[0] + sh.gemini.output * GEMINI_RATES[1]) / 1e6 : 0,
   };
-  const total = out.claudeControl + out.openaiControl + out.gemini + out.claudeShadow + out.openaiShadow;
-  return { ...out, total, tokens: { claudeControl: u.claude, openaiControl: u.openai, gemini: u.gemini, claudeShadow: sh.claude, openaiShadow: sh.openai } };
+  const total = out.claudeControl + out.openaiControl + out.gemini + out.claudeShadow + out.openaiShadow + out.geminiShadow;
+  return { ...out, total, tokens: { claudeControl: u.claude, openaiControl: u.openai, gemini: u.gemini, claudeShadow: sh.claude, openaiShadow: sh.openai, geminiShadow: sh.gemini } };
 }
 
 async function runShard() {
@@ -177,6 +184,17 @@ async function runShard() {
   if (shadowModel !== 'none' && !openaiScoringModels().includes(shadowModel)) throw new Error(`unknown --shadow-model ${shadowModel}`);
   const shadowClaudeModel = flag('shadow-claude-model');
   if (shadowClaudeModel && !['claude-sonnet-4-6', 'claude-sonnet-5-5'].includes(shadowClaudeModel)) throw new Error(`unknown --shadow-claude-model ${shadowClaudeModel}`);
+  // Control legs default to the production pins; --control-openai-model / --control-claude-model
+  // pin the control to older models, e.g. a combined two-leg A/B of old legs vs both new legs.
+  const controlOpenaiModel = flag('control-openai-model', SCORING_OPENAI)!;
+  if (!openaiScoringModels().includes(controlOpenaiModel)) throw new Error(`unknown --control-openai-model ${controlOpenaiModel}`);
+  const controlClaudeModel = flag('control-claude-model', SCORING_SONNET)!;
+  if (!(controlClaudeModel in CLAUDE_RATES)) throw new Error(`unknown --control-claude-model ${controlClaudeModel}`);
+  // BRO-7511: gemini-2.5-flash shuts down 2026-12-01 (Google auto-routes it to gemini-3.5-flash-lite).
+  const shadowGeminiModel = flag('shadow-gemini-model');
+  if (shadowGeminiModel && !['gemini-3.5-flash-lite', 'gemini-2.5-flash'].includes(shadowGeminiModel)) throw new Error(`unknown --shadow-gemini-model ${shadowGeminiModel}`);
+  // Without the key the shadow scorer is silently absent and every paid record lacks the arm.
+  if (shadowGeminiModel && !process.env.GEMINI_API_KEY) throw new Error('--shadow-gemini-model needs GEMINI_API_KEY');
   const sampleN = Number(flag('sample', '1000'));
   const seed = Number(flag('seed', '20261109'));
   const shard = Number(flag('shard', '0'));
@@ -192,10 +210,18 @@ async function runShard() {
   // done = every id any shard of this label already scored (dedupe shifts shard membership, so a
   // sibling shard's file can hold ids this shard would otherwise re-bill on resume).
   const prefix = path.basename(outPath).replace(/shard-\d+\.jsonl$/, '');
+  const priorControls = new Set<string>();
   for (const f of fs.readdirSync(path.dirname(outPath))) {
     if (!new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 'shard-\\d+\\.jsonl$').test(f)) continue;
-    for (const l of fs.readFileSync(path.join(path.dirname(outPath), f), 'utf8').split('\n')) { try { done.add(JSON.parse(l).id); } catch { /* partial line */ } }
+    for (const l of fs.readFileSync(path.join(path.dirname(outPath), f), 'utf8').split('\n')) {
+      try { const r = JSON.parse(l); done.add(r.id); priorControls.add(`${r.controlModel}+${r.controlClaudeModel}`); } catch { /* partial line */ }
+    }
   }
+
+  // A label holds ONE control configuration: resuming it with other control models would mix them in one report.
+  const thisControl = `${controlOpenaiModel}+${controlClaudeModel}`;
+  const otherControls = [...priorControls].filter((c) => c !== thisControl);
+  if (otherControls.length) throw new Error(`this label already holds records with control ${otherControls.join(', ')}; use a new --label for control ${thisControl}`);
 
   const pop = population();
   const openShowsRaw = flag('open-shows');
@@ -223,24 +249,24 @@ async function runShard() {
   });
   if (dupDropped) console.log(`dedupe: dropped ${dupDropped} reviews whose prepared scoring input duplicates an earlier one`);
   const mine = deduped.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
-  console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${SCORING_OPENAI} vs shadow ${shadowModel}${shadowClaudeModel ? `, claude shadow ${shadowClaudeModel}` : ''}`);
+  console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${controlOpenaiModel}+${controlClaudeModel} vs shadow ${shadowModel}${shadowClaudeModel ? `, claude shadow ${shadowClaudeModel}` : ''}${shadowGeminiModel ? `, gemini shadow ${shadowGeminiModel}` : ''}`);
 
   const scorer = new EnsembleReviewScorer(
     process.env.ANTHROPIC_API_KEY || '', process.env.OPENAI_API_KEY || '', process.env.GEMINI_API_KEY, undefined,
-    { verbose: false, shadowOpenaiModel: shadowModel === 'none' ? undefined : shadowModel as any, shadowClaudeModel: shadowClaudeModel as any },
+    { verbose: false, openaiModel: controlOpenaiModel as any, claudeModel: controlClaudeModel as any, shadowOpenaiModel: shadowModel === 'none' ? undefined : shadowModel as any, shadowClaudeModel: shadowClaudeModel as any, shadowGeminiModel },
   );
 
   // Spend guard (BRO-7529, owner cap): --max-cost-usd is THIS shard's budget, priced from the scorers'
   // own token counts at list rates (sync pricing, no batch discount, so an upper bound).
   const maxCost = parseMaxCost(args.map((a) => (a.startsWith('--max-cost-usd=') ? a.replace('--max-cost-usd=', '--max-cost=') : a)), 10);
-  const spent = () => legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel).total;
+  const spent = () => legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel, controlOpenaiModel, controlClaudeModel).total;
   const costPath = outPath.replace(/\.jsonl$/, '.cost.json');
   let priorSpend = 0;
   try { priorSpend = Number(JSON.parse(fs.readFileSync(costPath, 'utf8')).total) || 0; } catch { /* first run */ }
   if (priorSpend) console.log(`resuming: prior est spend $${priorSpend.toFixed(2)} counts toward --max-cost-usd`);
   const spentTotal = () => priorSpend + spent();
   const writeCost = () => {
-    const c = legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel);
+    const c = legCost(scorer.getTokenUsage(), scorer.getShadowTokenUsage(), shadowModel, shadowClaudeModel, controlOpenaiModel, controlClaudeModel);
     fs.writeFileSync(costPath, JSON.stringify({ records: finished, capHit, maxCostUsd: Number.isFinite(maxCost) ? maxCost : null, priorSpend, ...c, total: priorSpend + c.total }, null, 2) + '\n');
     return priorSpend + c.total;
   };
@@ -250,7 +276,7 @@ async function runShard() {
     while (next < mine.length) {
       if (spentTotal() >= maxCost) { capHit = true; break; }
       const c = mine[next++];
-      let rec: any = { id: c.id, showId: c.showId, stratum: c.stratum, weight: c.weight, controlModel: SCORING_OPENAI, shadowModel, controlClaudeModel: 'claude-sonnet-4-6', shadowClaudeModel: shadowClaudeModel || null };
+      let rec: any = { id: c.id, showId: c.showId, stratum: c.stratum, weight: c.weight, controlModel: controlOpenaiModel, shadowModel, controlClaudeModel, shadowClaudeModel: shadowClaudeModel || null, shadowGeminiModel: shadowGeminiModel || null };
       try {
         const reviewFile = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
         const prepared = scorer.prepareScoringInput(reviewFile);
@@ -260,6 +286,9 @@ async function runShard() {
         rec.control = e ? armOf(e) : { success: false, error: result.error || 'no_result' };
         rec.shadow = shadowModel === 'none' ? undefined : (e && e.shadow ? armOf(e.shadow) : { success: false, error: 'no_shadow' });
         if (shadowClaudeModel) rec.shadowClaude = e && e.shadowClaude ? armOf(e.shadowClaude) : { success: false, error: 'no_shadow_claude' };
+        if (shadowClaudeModel && shadowModel !== 'none') rec.shadowBoth = e && e.shadowBoth ? armOf(e.shadowBoth) : { success: false, error: 'no_shadow_both' };
+        if (shadowGeminiModel) rec.shadowGemini = e && e.shadowGemini ? armOf(e.shadowGemini) : { success: false, error: 'no_shadow_gemini' };
+        if (shadowGeminiModel && shadowClaudeModel && shadowModel !== 'none') rec.shadowAll = e && e.shadowAll ? armOf(e.shadowAll) : { success: false, error: 'no_shadow_all' };
       } catch (err: any) {
         rec.control = { success: false, error: String(err && err.message || err).slice(0, 200) };
         if (shadowModel !== 'none') rec.shadow = { success: false, error: 'control_threw' };
@@ -290,10 +319,20 @@ function runReport() {
   let dupes = 0;
   for (const r of records) { if (byId.has(r.id)) dupes++; byId.set(r.id, r); }
   if (dupes) console.warn(`::warning::${dupes} duplicate review record(s) across shards; kept the latest of each`);
-  // --leg=claude: compare control vs the shadowClaude arm (BRO-7529); default compares the OpenAI shadow arm.
+  // --leg=claude: control vs the shadowClaude arm (BRO-7529); --leg=both: control vs the arm with BOTH
+  // shadow legs swapped in; default compares the OpenAI shadow arm.
   const leg = flag('leg');
-  const recs = [...byId.values()].map((r: any) => (leg === 'claude' ? { ...r, shadow: r.shadowClaude } : r));
-  const report = { generatedAt: new Date().toISOString(), leg: leg || 'openai', ...computeReport(recs, { leg }) };
+  // --leg=gemini: the shadowGemini arm; --leg=all: all three shadow legs swapped (BRO-7511).
+  const ARM: Record<string, string> = { openai: 'shadow', claude: 'shadowClaude', gemini: 'shadowGemini', both: 'shadowBoth', all: 'shadowAll' };
+  if (leg && !(leg in ARM)) throw new Error(`unknown --leg ${leg}`);
+  const recs = [...byId.values()].map((r: any) => ({ ...r, shadow: r[ARM[leg || 'openai']] }));
+  const report: any = { generatedAt: new Date().toISOString(), leg: leg || 'openai', ...computeReport(recs, { leg }) };
+  // Combined arms: do the swaps compound? Per review, (combined - control) minus the sum of
+  // each single-swap arm's (arm - control), all against the same control outputs.
+  if (leg === 'both' || leg === 'all') {
+    const singles = leg === 'both' ? ['shadow', 'shadowClaude'] : ['shadow', 'shadowClaude', 'shadowGemini'];
+    report.interaction = interactionTerm([...byId.values()], ARM[leg], singles);
+  }
   const write = flag('write');
   if (write) fs.writeFileSync(path.isAbsolute(write) ? write : path.join(ROOT, write), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));

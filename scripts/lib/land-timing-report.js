@@ -17,6 +17,12 @@
  * step named "Fast-fail ..." (land.yml, BRO-7150) is "after". --split=<ISO time> overrides.
  *
  * Usage: node scripts/lib/land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name] [--check-targets]
+ *        node scripts/lib/land-timing-report.js --gates [--days=7] [--json]
+ * --gates (BRO-7324): no API. Reads the `timing` field land.yml writes on each row of
+ *   data/audit/landings.jsonl (scripts/lib/land-gate-timing.js) and prints, per run kind
+ *   (land-gauntlet/branch, land-gauntlet/base, land-fast/branch, ...), the median/min/max
+ *   wall seconds and per-gate seconds over full (unscoped) runs. Gate seconds overlap
+ *   (the background lane runs beside the main lane), so they are never summed.
  * --check-targets: exit 1 unless the trailing window meets TARGETS (the BRO-7150 acceptance check).
  * Needs GH_TOKEN or GITHUB_TOKEN (read-only API calls; about 1 + runs + failed runs).
  * Exit: 0 report printed (targets met with --check-targets) | 1 API failure or targets missed | 2 usage
@@ -157,12 +163,52 @@ function report(records, { split = null } = {}) {
   };
 }
 
+/**
+ * BRO-7324: per-gate seconds from landings.jsonl rows carrying `timing` (land-gate-timing.js).
+ * Scoped runs are left out. Per-gate stats use every other run; wall stats only the runs
+ * with the largest gateCount seen for that kind (a GAUNTLET_GATES-limited run is not full).
+ */
+function gateReport(rows, { days = 7, nowMs = Date.now() } = {}) {
+  const since = nowMs - days * 86400000;
+  const timed = (rows || []).filter(r => r && r.timing && r.timing.runs && Date.parse(r.ts) >= since);
+  const kinds = {};
+  for (const r of timed) {
+    for (const [kind, run] of Object.entries(r.timing.runs)) {
+      const k = kinds[kind] || (kinds[kind] = { runs: 0, scoped: 0, wall: [], gates: {} });
+      k.runs += 1;
+      if (run.scoped) { k.scoped += 1; continue; }
+      // Wall time only compares like with like: a GAUNTLET_GATES-limited run (lazy base) is not a full run.
+      if (Number.isFinite(run.wallSecs)) k.wall.push({ s: run.wallSecs, n: Number(run.gateCount) || 0 });
+      for (const [g, v] of Object.entries(run.gateSecs || {})) if (Number.isFinite(v)) (k.gates[g] || (k.gates[g] = [])).push(v);
+    }
+  }
+  const stat = (xs) => ({ n: xs.length, median: median(xs), min: xs.length ? Math.min(...xs) : null, max: xs.length ? Math.max(...xs) : null });
+  const out = {};
+  for (const [kind, k] of Object.entries(kinds)) {
+    const full = Math.max(0, ...k.wall.map(w => w.n));
+    out[kind] = { runs: k.runs, scoped: k.scoped, fullGateCount: full, wallSecs: stat(k.wall.filter(w => w.n === full).map(w => w.s)), gates: Object.fromEntries(Object.entries(k.gates).map(([g, xs]) => [g, stat(xs)]).sort((a, b) => (b[1].median || 0) - (a[1].median || 0))) };
+  }
+  return { days, landings: timed.length, kinds: out };
+}
+
+function printGates(rep) {
+  console.log(`Gate timing from data/audit/landings.jsonl, last ${rep.days} day(s): ${rep.landings} landing(s) carry timing.`);
+  if (!rep.landings) { console.log('No timed landings yet (the record starts with the second landing after BRO-7324 step 1).'); return; }
+  console.log('Merge-train riders carry no timing (the holder writes their rows).');
+  for (const [kind, k] of Object.entries(rep.kinds)) {
+    const w = k.wallSecs;
+    console.log(`\n${kind}: ${k.runs} run(s), ${k.scoped} scoped (left out). Wall over runs of all ${k.fullGateCount} gates: median ${w.median}s (min ${w.min}, max ${w.max}, n=${w.n})`);
+    for (const [g, s] of Object.entries(k.gates)) console.log(`  ${g.padEnd(22)} median ${String(s.median).padStart(5)}s  min ${s.min}  max ${s.max}  n=${s.n}`);
+  }
+}
+
 function parseArgs(argv) {
-  const o = { days: 7, json: false, split: null, check: false, repo: process.env.GITHUB_REPOSITORY || DEFAULT_REPO };
+  const o = { days: 7, json: false, split: null, check: false, gates: false, repo: process.env.GITHUB_REPOSITORY || DEFAULT_REPO };
   for (const a of argv) {
     let m;
     if ((m = a.match(/^--days=(\d+(?:\.\d+)?)$/))) o.days = Number(m[1]);
     else if (a === '--json') o.json = true;
+    else if (a === '--gates') o.gates = true;
     else if (a === '--check-targets') o.check = true;
     else if ((m = a.match(/^--split=(.+)$/)) && Number.isFinite(Date.parse(m[1]))) o.split = m[1];
     else if ((m = a.match(/^--repo=([\w.-]+\/[\w.-]+)$/))) o.repo = m[1];
@@ -170,6 +216,7 @@ function parseArgs(argv) {
     else return { error: `unknown or malformed argument: ${a}` };
   }
   if (!(o.days > 0)) return { error: '--days must be positive' };
+  if (o.gates && (o.check || o.split)) return { error: '--gates reads the ledger only; it takes no --check-targets or --split' };
   return o;
 }
 
@@ -217,8 +264,16 @@ function printText(rep, { days, split }) {
 
 async function main(argv = process.argv.slice(2)) {
   const o = parseArgs(argv);
-  if (o.help) { console.log('usage: land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name]'); return 0; }
+  if (o.help) { console.log('usage: land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name] [--check-targets] | --gates [--days=7] [--json]'); return 0; }
   if (o.error) { console.error(`land-timing-report: ${o.error}`); return 2; }
+  if (o.gates) {
+    const { readLandings } = require('./landings-ledger.js');
+    const led = readLandings(process.cwd());
+    if (!led.available) { console.error('land-timing-report: data/audit/landings.jsonl not found (run from the repo root)'); return 1; }
+    const rep = gateReport(led.rows, { days: o.days });
+    if (o.json) console.log(JSON.stringify(rep, null, 2)); else printGates(rep);
+    return 0;
+  }
   const { fetchGitHubJSON } = require('./gh-api-client.js');
   const api = (url) => fetchGitHubJSON(url, { caller: 'land-timing-report.js', timeoutMs: 30000 });
   let records;
@@ -240,6 +295,6 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE };
+module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE, gateReport };
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T14:33:41.354Z",
+  "generatedAt": "2026-11-21T16:57:04.514Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,11 @@
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "the-snowman-off-west-end-2026",
+      "title": "The Snowman",
+      "openingDate": "2026-11-21"
     },
     {
       "id": "eurotrash-off-west-end-2026",
@@ -84,6 +89,11 @@
       "openingDate": "2026-11-20"
     },
     {
+      "id": "the-ugly-one-off-west-end-2026",
+      "title": "The Ugly One",
+      "openingDate": "2026-11-20"
+    },
+    {
       "id": "its-a-wonderful-life-a-live-radio-play-2026",
       "title": "It’s A Wonderful Life: A Live Radio Play",
       "openingDate": "2026-11-18"
@@ -147,52 +157,23 @@
     {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "arrowhead-regional-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "north-west-end",
-      "error": "Timeout fetching https://northwestend.com/feed/"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 865,
-  "matchedGaps": 2,
-  "possibleGaps": 1,
+  "itemsScanned": 918,
+  "matchedGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "florence-off-west-end-2026",
-      "title": "Florence",
-      "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/11/21/florence-review-park-theatre-finsbury-london-honor-santa-barnes/",
-      "headline": "‘Florence’ review &#8211; Basic satire of fake personas in the arts world",
-      "publishDate": "2026-11-21"
-    },
     {
       "showId": "nixon-in-china-regional-2026",
       "title": "Nixon in China",
@@ -200,6 +181,15 @@
       "outletId": "operawire",
       "url": "https://operawire.com/washington-national-opera-2026-27-review-nixon-in-china/",
       "headline": "Washington National Opera 2026-27 Review: Nixon in China",
+      "publishDate": "2026-11-21"
+    },
+    {
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "level": "possible",
+      "outletId": "operawire",
+      "url": "https://operawire.com/san-francisco-opera-2026-27-review-strauss-in-concert/",
+      "headline": "San Francisco Opera 2026-27 Review: Strauss in Concert",
       "publishDate": "2026-11-21"
     },
     {
