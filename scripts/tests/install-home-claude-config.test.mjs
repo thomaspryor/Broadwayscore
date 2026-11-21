@@ -448,3 +448,13 @@ test('repo allows the read-only Bash commands and nothing that writes (BRO-7533)
   assert.deepEqual(bash.filter((r) => writers.test(r)), [], 'no allowed command name may write');
   assert.deepEqual(bash.filter((r) => !wanted.includes(r.slice(5, -3))), [], 'only the approved read-only set');
 });
+
+// BRO-7885 (owner 2026-11-21, option A): peer messaging must not hit a hidden approval. Guard: these exact
+// rules stay in the repo allow list and reach the home settings; nothing broader (no server-wide wildcard for peers).
+test('peer messaging tools are allowed by exact name and reach the home settings (BRO-7885)', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  const wanted = ['SendMessage', 'ListAgents', 'mcp__claude-code-remote__send_message', 'mcp__Claude_Code_Remote__send_message'];
+  for (const r of wanted) assert.ok(real.permissions.allow.includes(r), `repo allows ${r}`);
+  const { allow } = buildSettings(real, '/home/user');
+  for (const r of wanted) assert.ok(allow.includes(r), `installer carries ${r} into the home settings`);
+});
