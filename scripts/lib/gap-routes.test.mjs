@@ -110,3 +110,16 @@ test('review fix: opening a second outlet session closes the first (one shared c
   assert.deepEqual(log, ['thestage']);
   assert.deepEqual([...m.keys()].sort(), ['ft', 'nyt']); // failed outlet stays failed for the run
 });
+
+test('review fix: browser items run grouped by adapter (one Chrome launch per outlet, not per switch)', () => {
+  const PO = require('./gap-plan-order.js');
+  const B = (id, o) => ({ id, strategy: 'BROWSER_SESSION', outletId: o });
+  const work = [B(1, 'financialtimes'), B(2, 'telegraph'), { id: 3, strategy: 'PAID_FETCH', outletId: 'x' }, B(4, 'times-uk'), B(5, 'financialtimes'), B(6, 'sunday-times'), B(7, 'telegraph')];
+  const name = (c) => { const a = A.adapterFor(c.outletId); return a && a.name; };
+  const out = PO.groupBrowserSessions(work, name);
+  assert.deepEqual(out.map((c) => c.id), [1, 5, 3, 2, 7, 4, 6]); // non-browser item keeps slot 2; times-uk + sunday-times share one adapter
+  let switches = 0;
+  out.filter((c) => c.strategy === 'BROWSER_SESSION').reduce((p, c) => { if (p && name(p) !== name(c)) switches++; return c; }, null);
+  assert.equal(switches, 2); // ft -> telegraph -> thetimes
+  assert.deepEqual(work.map((c) => c.id), [1, 2, 3, 4, 5, 6, 7]); // input untouched
+});

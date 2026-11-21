@@ -423,7 +423,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const URL_FIND_FREE_MAX_PER_RUN = envInt('GAP_URL_FIND_FREE_MAX_PER_RUN', 24);
   const todo = planUrlFind(cands, URL_FIND_MAX_PER_RUN, URL_FIND_FREE_MAX_PER_RUN);
   if (todo.skippedUrlFind) console.log(`  URL_FIND: ${URL_FIND_MAX_PER_RUN} full + ${URL_FIND_FREE_MAX_PER_RUN} free-only slots tonight; ${todo.skippedUrlFind} wait for a later night`);
-  const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
+  // Browser items grouped by adapter: one Chrome launch + auth probe per outlet, not per switch (BRO-7943).
+  const work = PO.groupBrowserSessions(OPTS.limit ? todo.slice(0, OPTS.limit) : todo, (c) => { const a = adapterFor(c.outletId); return a && a.name; });
   const split = PO.slotSplit(work);
   SUMMARY.slots = { retry: split.retry, new: split.new };
   console.log(`  slots tonight: ${split.retry} retries + ${split.new} new items (of ${work.length}); URL_FIND time slice ${Math.round(PO.urlFindSliceMs() / 60000)} min`);
