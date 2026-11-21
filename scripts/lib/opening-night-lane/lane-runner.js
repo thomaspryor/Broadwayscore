@@ -36,6 +36,7 @@ const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
 const inbox = require('./manual-inbox');
+const { TAKEDOWN_FIELDS } = inbox;
 const { getSyndicationPrimaries, criticFileSlug } = require('../syndication-pairs');
 const card = require('../review-completeness');
 const { resolveOutletFromUrl } = require('../review-normalization');
@@ -80,7 +81,7 @@ function findLaneFile(dir, night, key) {
  * (review-field-edit applyReviewFieldEdit: allowlist, value checks, provenance stamp). `expect` (the value the person
  * saw) is compared first; a score the rebuild would not use (provisional, outside the printed rating's band) is refused.
  */
-function planCorrection(record, entry, at) {
+function planCorrection(record, entry, at, ctx = {}) {
   const { applyReviewFieldEdit } = require('../review-field-edit');
   const field = entry.field;
   const current = record[field] === undefined ? null : record[field];
@@ -90,13 +91,34 @@ function planCorrection(record, entry, at) {
   if (Object.prototype.hasOwnProperty.call(entry, 'expect') && JSON.stringify(current) !== JSON.stringify(entry.expect)) {
     return { reject: `${field} is ${JSON.stringify(current)} now, not the ${JSON.stringify(entry.expect)} the correction expected` };
   }
-  const res = applyReviewFieldEdit(record, { field, oldValue: current, newValue: entry.value }, { fixId: `lane-inbox:${entry.id}`, at });
+  const stamp = { fixId: `lane-inbox:${entry.id}`, at };
+  let base = record;
+  // BRO-7958: isNonReview = true is a human verdict only when isNonReviewReason says so (a fresh content verification
+  // would otherwise demote the flag). The regular edit refuses to write that reason, so the lane writes it here.
+  if (field === 'isNonReview') base = { ...record, isNonReviewReason: 'manual (not a review): corrected in the opening-night lane' };
+  let res = applyReviewFieldEdit(base, { field, oldValue: current, newValue: entry.value }, stamp);
   if (!res.ok) return { reject: res.reason };
+  let next = res.record;
   if (field === 'humanReviewScore') {
-    const best = require('../rebuild-helpers').getBestScore(res.record);
+    const best = require('../rebuild-helpers').getBestScore(next);
     if (!best || best.source !== 'human-review' || best.score !== entry.value) return { reject: `the rebuild would publish ${best ? best.score : 'no score'}, not ${entry.value} (the printed rating's band, or a provisional score); fix it the regular way` };
   }
-  return { record: res.record };
+  if (field === 'publishDate') {
+    // A date that is no longer the lane's provisional guess: relabel it, or the next fetch replaces it (BRO-5090). And a
+    // date the write guard would answer with a silent wrongProduction flag is refused here, in words, not republished dropped.
+    const relabel = applyReviewFieldEdit(next, { field: 'dateSource', oldValue: next.dateSource === undefined ? null : next.dateSource, newValue: 'manual-correction' }, stamp);
+    if (!relabel.ok) return { reject: relabel.reason };
+    next = relabel.record;
+    if (ctx.show) {
+      const verdict = require('../date-plausibility').evaluateDatePlausibility({ review: next, show: ctx.show });
+      if (verdict && verdict.implausible) return { reject: `publishDate ${entry.value} is ${verdict.daysBefore} days before the show's earliest date ${verdict.earliestDate}; the write guard would flag the review wrongProduction. Fix it the regular way if the date is right` };
+    }
+  }
+  if (field === 'llmPullQuote') {
+    const row = laneCardRow(next, ctx.show || {});
+    if (row.pullQuote !== entry.value) return { reject: `the rebuild would show ${JSON.stringify(row.pullQuote || null)} as the quote, not the one given (its quote rules pick another); fix it the regular way` };
+  }
+  return { record: next };
 }
 
 /**
@@ -165,6 +187,7 @@ async function runLaneNight({
   const quoteless = [];
   const incomplete = new Map(); // BRO-7196: review key -> passes it was held for a missing card field
   const awaiting = new Set(); // paywall teasers held for an aggregator excerpt or rating (keys), until they score
+  const takedownDone = []; // BRO-7958: take-downs verified gone (or never on the site)
   const removedCopies = []; // copies published in an earlier pass and taken down when their original scored
   const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
@@ -238,13 +261,19 @@ async function runLaneNight({
   // BRO-7891 item 2: corrections read this pass (manualCandidates reads the inbox once) and the ones whose row is queued
   // for publish again, by review key.
   let passCorrections = [];
-  const correctionsByKey = new Map(); // review key -> [{entry, score}]: score = the assignedScore the corrected row carries
-  // `row` given: only corrections that row carries (a batch already in flight with the old score never settles a newer one).
+  const correctionsByKey = new Map(); // review key -> [{entry, prop?, val?}]: prop/val = the row field the correction sets, and its value
+  // BRO-7958: take-downs. A take-down is applied to the file at once and rides the next publish as a removal; it settles
+  // only when the live site no longer shows the URL. takenDownKeys: reviews the lane keeps off the site for the night.
+  const stagedTakedowns = []; // {key, url, criticName, outletId, entry, stagedAt, tries, inflight}
+  const takenDownKeys = new Set();
+  const TAKEDOWN_TRIES = 2; // publishes that could not see it gone before the correction is reported failed
+  const ROW_PROP = { humanReviewScore: 'assignedScore', publishDate: 'publishDate', criticName: 'criticName', llmPullQuote: 'pullQuote' };
+  // `row` given: only corrections that row carries (a batch already in flight with the old value never settles a newer one).
   const settleCorrections = (key, status, reason, row) => {
     const list = correctionsByKey.get(key) || [];
     const keep = [];
     for (const c of list) {
-      if (row && c.score !== undefined && row.assignedScore !== c.score) { keep.push(c); continue; }
+      if (row && c.prop !== undefined && row[c.prop] !== c.val) { keep.push(c); continue; }
       noteInbox(c.entry, status, reason);
     }
     if (keep.length) correctionsByKey.set(key, keep); else correctionsByKey.delete(key);
@@ -295,6 +324,12 @@ async function runLaneNight({
    * correction for a URL still being worked waits (up to MANUAL_TRIES passes); one for a review the lane did not publish
    * tonight is rejected with the regular path's command (that alert names it).
    */
+  // The show's full record (earliest dates for the date-plausibility check), or null when data/shows.json is not here.
+  let fullShow;
+  const showForPlan = () => {
+    if (fullShow === undefined) { try { fullShow = (require('../../../data/shows.json').shows || []).find((x) => x.id === show.id) || null; } catch { fullShow = null; } }
+    return fullShow ? { ...fullShow, ...show } : show;
+  };
   const applyCorrections = () => {
     const fs = require('fs');
     for (const e of passCorrections) {
@@ -304,6 +339,7 @@ async function runLaneNight({
       // Rows the lane keeps off the site tonight: a correction must not put them back.
       if (copySkipped.has(key)) { noteInbox(e, 'rejected', `a syndicated copy the lane keeps off the site (the ${copySkipped.get(key).primary} review is the one published)`); continue; }
       if (failedKeys().has(key)) { noteInbox(e, 'rejected', 'the lane held this review from publish tonight'); continue; }
+      if (takenDownKeys.has(key)) { noteInbox(e, 'rejected', 'this review was taken down tonight; the lane does not change a review it keeps off the site'); continue; }
       // A batch carrying this review is publishing now: wait for it, so the corrected row is the next one sent.
       if (inflightKeys.has(key)) continue;
       const found = reviewTextsDir ? findLaneFile(require('path').join(reviewTextsDir, show.id), night, key) : null;
@@ -315,23 +351,54 @@ async function runLaneNight({
         noteInbox(e, 'rejected', 'not a review the lane published tonight');
         continue;
       }
-      const plan = planCorrection(found.record, e, new Date(now()).toISOString());
+      const plan = planCorrection(found.record, e, new Date(now()).toISOString(), { show: showForPlan() });
       if (plan.reject) { noteInbox(e, 'rejected', plan.reject); continue; }
       let record = found.record;
+      let file = found.file; let name = found.name;
       if (!plan.unchanged) {
         const { safeWriteReview } = require('../review-write-guard');
-        const w = safeWriteReview(found.file, plan.record);
+        // A byline change moves the file (its name carries the critic): write the new slot first, drop the old one after.
+        if (e.field === 'criticName') {
+          const dir = require('path').dirname(found.file);
+          const existing = new Map();
+          for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) { try { existing.set(f, JSON.parse(fs.readFileSync(require('path').join(dir, f), 'utf8'))); } catch { /* torn file: not a slot we can reuse */ } }
+          existing.delete(found.name);
+          name = trust.laneReviewFilename({ outletId: plan.record.outletId, criticName: plan.record.criticName, night, url: plan.record.url, existing }).filename;
+          file = require('path').join(dir, name);
+        }
+        const w = safeWriteReview(file, plan.record);
         if (!w.wrote) { noteInbox(e, 'failed', `review file write refused (${w.skipped || 'unknown'})`); continue; }
-        record = JSON.parse(fs.readFileSync(found.file, 'utf8'));
-        if (JSON.stringify(record[e.field]) !== JSON.stringify(e.value)) { noteInbox(e, 'failed', `the write guard kept ${e.field} at ${JSON.stringify(record[e.field])}`); continue; }
+        record = JSON.parse(fs.readFileSync(file, 'utf8'));
+        const kept = JSON.stringify(record[e.field]) === JSON.stringify(e.value);
+        // The write guard can answer a date with its own wrongProduction flag, or a byline with Unknown. Put the old file back.
+        const sideFlag = e.field === 'publishDate' && record.wrongProduction === true && found.record.wrongProduction !== true;
+        if (!kept || sideFlag) {
+          if (file !== found.file) fs.rmSync(file, { force: true }); else safeWriteReview(found.file, found.record, { force: true });
+          noteInbox(e, 'failed', sideFlag ? 'the write guard flagged the review wrongProduction for that date; the file is back as it was' : `the write guard kept ${e.field} at ${JSON.stringify(record[e.field])}`);
+          continue;
+        }
+        if (file !== found.file) fs.rmSync(found.file, { force: true });
       }
-      fileToKey.set(found.name, key);
+      fileToKey.set(name, key);
+      if (TAKEDOWN_FIELDS.includes(e.field)) {
+        // Off the site: no republish of this review, an earlier correction still waiting on it is moot, and a staged row never goes out.
+        const qi = pending.findIndex((q) => q.key === key);
+        if (qi >= 0) pending.splice(qi, 1);
+        settleCorrections(key, 'failed', 'the review was taken down before this change was live');
+        takenDownKeys.add(key);
+        if (!stagedTakedowns.some((t) => t.key === key)) stagedTakedowns.push({ key, url: record.url, criticName: record.criticName, outletId: record.outletId, entry: e, stagedAt: now(), tries: 0 });
+        noteInbox(e, 'queued');
+        continue;
+      }
       const row = laneCardRow(record, show);
       const queued = pending.find((q) => q.key === key);
-      if (queued) { queued.row = row; if (e.field === 'humanReviewScore') queued.rescored = true; }
-      else pending.push({ key, row, scoredAt: now(), ...(e.field === 'humanReviewScore' ? { rescored: true } : {}) });
+      const prop = ROW_PROP[e.field];
+      const vf = ['criticName', 'publishDate', 'llmPullQuote'].includes(e.field) ? [e.field] : [];
+      const extra = { ...(e.field === 'humanReviewScore' ? { rescored: true } : {}), ...(e.field === 'criticName' ? { replacesUrl: true } : {}) };
+      if (queued) { queued.row = row; Object.assign(queued, extra); queued.verifyFields = [...new Set([...(queued.verifyFields || []), ...vf])]; }
+      else pending.push({ key, row, scoredAt: now(), ...extra, ...(vf.length ? { verifyFields: vf } : {}) });
       if (!correctionsByKey.has(key)) correctionsByKey.set(key, []);
-      correctionsByKey.get(key).push({ entry: e, ...(e.field === 'humanReviewScore' ? { score: row.assignedScore } : {}) });
+      correctionsByKey.get(key).push({ entry: e, prop, val: row[prop] });
       noteInbox(e, 'queued');
     }
     passCorrections = [];
@@ -343,13 +410,34 @@ async function runLaneNight({
     // merged or about to be: a copy in flight or re-queued as missing is still on the site when its original scores
     for (const r of batch) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
     const remove = stagedRemovals.filter((x) => batchKeys.has(x.primaryKey));
+    // BRO-7958: every take-down not already in flight rides this batch (or is the whole batch), and a byline change takes
+    // its old row down in the same merge that adds the new one (same URL: nothing to wait for gone).
+    const takedowns = stagedTakedowns.filter((t) => !t.inflight);
+    for (const t of takedowns) t.inflight = true;
+    const takedownArg = [...takedowns.map((t) => ({ url: t.url, key: t.key, verifyAbsent: true })),
+      ...batch.filter((r) => r.replacesUrl).map((r) => ({ url: r.row.url, key: r.key, verifyAbsent: false }))];
     for (const k of batchKeys) inflightKeys.add(k);
     try {
       const res = await publish.publishLaneReviews({
-        show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
+        show: show.id, night, rows: batch, ...(takedownArg.length ? { takedown: takedownArg } : {}), ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
         openingDate, dryRun, ...(timeZone ? { timeZone } : {}), ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
+      // BRO-7958: take-downs the merge did (and the live site stopped showing) or found nothing to remove: done. One the live
+      // site still shows after the publish stays staged for the next batch, up to TAKEDOWN_TRIES, then it is reported failed.
+      const goneKeys = new Set([...(res.gone || []), ...(res.notRemoved || [])]);
+      for (const t of takedowns) {
+        if (goneKeys.has(t.key)) {
+          stagedTakedowns.splice(stagedTakedowns.indexOf(t), 1);
+          liveKeys.delete(t.key);
+          for (const [k, v] of [...livePublished]) if (discovery.canonicalUrl(v.row.url) === t.key) { livePublished.delete(k); liveTaken.delete(k); }
+          takedownDone.push({ key: t.key, reason: (res.notRemoved || []).includes(t.key) ? 'was not on the site' : 'taken down, verified gone live' });
+          noteInbox(t.entry, 'published', dryRun ? 'dry run' : ((res.notRemoved || []).includes(t.key) ? 'it was not on the site (never published, or already off); the review file is flagged' : 'taken down; the live site no longer shows it'));
+        } else if (++t.tries >= TAKEDOWN_TRIES) {
+          stagedTakedowns.splice(stagedTakedowns.indexOf(t), 1);
+          noteInbox(t.entry, 'failed', 'the review file is flagged, but the live site still showed the review after the publish; the first rebuild after the lane removes it');
+        }
+      }
       const notLive = new Set([...(res.missing || [])]);
       for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
         if (notLive.has(x.primaryKey)) continue;
@@ -394,7 +482,7 @@ async function runLaneNight({
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
       pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
-    } finally { for (const k of batchKeys) inflightKeys.delete(k); }
+    } finally { for (const k of batchKeys) inflightKeys.delete(k); for (const t of takedowns) t.inflight = false; }
   };
   // A row that may be a syndicated copy (its critic has a primary outlet) is held until the end of the pass: its primary
   // can still be scored later in the same pass, and then the copy must be pulled from the queue, not already published
@@ -414,19 +502,19 @@ async function runLaneNight({
   // So an ordinary pass still publishes once at its end; only a pass that runs long (slow or hung scoring) publishes
   // what it already has after 5 minutes instead of holding it for the whole pass.
   const maybePublish = async ({ midPass = false } = {}) => {
-    if (!pending.length || abandonPending()) return;
-    if (midPass && !pending.some((r) => now() - r.scoredAt >= midPassPublishAfterMs)) return;
+    if ((!pending.length && !stagedTakedowns.some((t) => !t.inflight)) || abandonPending()) return;
+    if (midPass && !pending.some((r) => now() - r.scoredAt >= midPassPublishAfterMs) && !stagedTakedowns.some((t) => !t.inflight && now() - t.stagedAt >= midPassPublishAfterMs)) return;
     const slots = midPass ? maxInflight - 1 : maxInflight;
     if (forkClock) {
       if (busyUntil.filter((e) => e > now()).length >= slots) return; // every slot is still busy on its own timeline
       const batch = takeBatch(midPass);
-      if (!batch.length) return;
+      if (!batch.length && !stagedTakedowns.some((t) => !t.inflight)) return;
       const clock = forkClock(now());
       await publishBatch(batch, clock);
       busyUntil.push(clock.now());
     } else if (inflight.size < slots) {
       const batch = takeBatch(midPass);
-      if (!batch.length) return;
+      if (!batch.length && !stagedTakedowns.some((t) => !t.inflight)) return;
       const p = publishBatch(batch, { now, wait }).finally(() => inflight.delete(p));
       inflight.add(p);
     }
@@ -676,7 +764,7 @@ async function runLaneNight({
   // A stand-down skips the queue and only waits for in-flight batches, so the lease is released quickly.
   if (forkClock) {
     let guard = 0;
-    while (pending.length && !abandonPending() && guard++ < 20) {
+    while ((pending.length || stagedTakedowns.length) && !abandonPending() && guard++ < 20) {
       const clock = forkClock(now());
       await publishBatch(pending.splice(0), clock);
       busyUntil.push(clock.now());
@@ -687,7 +775,7 @@ async function runLaneNight({
     // try is a push and a deploy dispatch. What is left is reported unpublished and paged (BRO-7159 what-else).
     const publishErrors = () => errors.filter((e) => e.adapter === 'publish').length;
     const errorsBefore = publishErrors();
-    const publishable = () => pending.length > 0 && !abandonPending() && publishErrors() - errorsBefore < 3;
+    const publishable = () => (pending.length > 0 || stagedTakedowns.some((t) => !t.inflight)) && !abandonPending() && publishErrors() - errorsBefore < 3;
     while ((inflight.size || publishable()) && guard++ < 40) {
       if (publishable() && inflight.size < maxInflight) await maybePublish();
       else await Promise.race(inflight);
@@ -703,6 +791,7 @@ async function runLaneNight({
   }
   // A correction not live by the end is on the review file: the first rebuild after the lane publishes it (if the
   // night's push-review-texts lands). 'failed' so the person hears it is not on the site yet.
+  for (const t of stagedTakedowns.splice(0)) noteInbox(t.entry, 'failed', abandonPending() ? 'the lane stood down before the take-down published; the review file is flagged, so the first rebuild after the lane removes it' : 'the review file is flagged, but the take-down was not confirmed live when the lane ended; the first rebuild after the lane removes it');
   for (const key of [...correctionsByKey.keys()]) settleCorrections(key, 'failed', 'saved to the review file but not live when the lane ended; the first rebuild after the lane publishes it');
   // A correction added after the last pass read the inbox (the lease is held until the night's push finishes): no lane
   // will apply it. One last read, and each open one is rejected, so the person hears and uses the regular path.
@@ -715,7 +804,7 @@ async function runLaneNight({
     }
   }
   await flushInbox();
-  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, takedownDone, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
     inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 

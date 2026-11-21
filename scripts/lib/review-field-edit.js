@@ -256,6 +256,12 @@ const FIELD_VALUE_CHECKS = {
     }
     return storedLabelRelabelError(v, record);
   },
+  // BRO-7958: a real calendar day, never a timestamp or free text (the lane's date correction publishes it as written).
+  publishDate: (v) => {
+    if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return 'publishDate must be a YYYY-MM-DD calendar day';
+    const d = new Date(`${v}T00:00:00Z`);
+    return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v ? null : `publishDate ${v} is not a real calendar day`;
+  },
   urlDead: (v) => (v === true || v === false ? null : 'urlDead must be true or false'),
   urlDeadAt: (v) => (v === null || (typeof v === 'string' && !Number.isNaN(Date.parse(v))) ? null : 'urlDeadAt must be an ISO date or null'),
   urlDeadUrl: (v, record) => (v === null || v === record.url ? null : 'urlDeadUrl must equal the record url (or null)'),

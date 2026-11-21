@@ -37,11 +37,27 @@ const ALERT_STATUSES = Object.freeze(['failed', 'rejected']);
 const STATUSES = Object.freeze(['queued', ...FINAL_STATUSES]);
 const GIT_TIMEOUT_MS = 20000;
 const CORRECTION_KIND = 'correction';
-// Fields the lane can change on a row it published without changing the row's identity (critic + outlet) or taking it
-// off the site. A take-down or a byline fix needs the regular path or a rollback.
-// A score only (v1): publish verifies a score change live (rescored); a pull quote change could not be verified, and its
-// value check needs the review text, which the CLI does not have.
-const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore']);
+// Fields the lane can change on a row it published (v1: the score only).
+// v2 (BRO-7958): the byline, the date and the pull quote, and take-downs (wrongShow / wrongProduction / isNonReview = true).
+// TAKEDOWN_FIELDS only ever go true: un-flagging a lane review is the regular path's job (it needs the human-clear markers).
+// Value checks that need the review text (llmPullQuote verbatim) run when the lane applies the edit, not at the CLI.
+const TAKEDOWN_FIELDS = Object.freeze(['wrongShow', 'wrongProduction', 'isNonReview']);
+const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore', 'publishDate', 'criticName', 'llmPullQuote', ...TAKEDOWN_FIELDS]);
+/** The CLI-side value check for a lane correction field, or null. (The lane re-checks with the record at apply time.) */
+function laneValueError(field, value) {
+  if (TAKEDOWN_FIELDS.includes(field)) return value === true ? null : `${field} can only be set to true on a lane review (clear a flag the regular way)`;
+  if (field === 'criticName') {
+    return typeof value === 'string' && value.trim().length >= 3 && value.trim().length <= 80 && !/^(unknown|n\/a|staff)$/i.test(value.trim())
+      ? null : 'criticName must be a person\'s name (3-80 chars, not Unknown)';
+  }
+  if (field === 'llmPullQuote') {
+    const { MIN_QUOTE_LENGTH } = require('../pull-quote-guards');
+    return typeof value === 'string' && value.trim().length > MIN_QUOTE_LENGTH ? null : `llmPullQuote must be a string longer than ${MIN_QUOTE_LENGTH} chars`;
+  }
+  const { FIELD_VALUE_CHECKS } = require('../review-field-edit');
+  const check = FIELD_VALUE_CHECKS[field];
+  return check ? check(value, {}, {}) : null;
+}
 const isCorrection = (e) => !!e && e.kind === CORRECTION_KIND;
 
 const iso = (now) => new Date(typeof now === 'function' ? now() : (now === undefined ? Date.now() : now)).toISOString();
@@ -102,7 +118,6 @@ function addEntries(state, { show, lines = [], addedBy = 'unknown', now, ttlMs =
  */
 function addCorrections(state, { show, lines = [], addedBy = 'unknown', now, ttlMs = ENTRY_TTL_MS } = {}) {
   if (!/^[a-z0-9][a-z0-9-]*$/.test(String(show || ''))) return { ok: false, reason: 'bad-show', detail: `bad show id "${show}"` };
-  const { FIELD_VALUE_CHECKS } = require('../review-field-edit');
   const next = { ...state, leases: { ...((state && state.leases) || {}) } };
   const at = iso(now);
   const expiresAt = new Date(Date.parse(at) + ttlMs).toISOString();
@@ -113,8 +128,7 @@ function addCorrections(state, { show, lines = [], addedBy = 'unknown', now, ttl
     const field = line && line.field;
     if (!norm) { invalid.push({ url, reason: 'not an http(s) URL' }); continue; }
     if (!LANE_CORRECTION_FIELDS.includes(field)) { invalid.push({ url, reason: `the lane can only correct ${LANE_CORRECTION_FIELDS.join(', ')} (got "${field}")` }); continue; }
-    const check = FIELD_VALUE_CHECKS[field];
-    const err = check ? check(line.value, {}, {}) : null;
+    const err = laneValueError(field, line.value);
     if (err) { invalid.push({ url, reason: err }); continue; }
     const id = `${show}|fix|${crypto.createHash('sha1').update(`${norm}|${field}`).digest('hex').slice(0, 12)}`;
     next.leases[id] = {
@@ -244,6 +258,6 @@ async function readForShow({ repoDir, remote = 'origin', show }) {
 }
 
 module.exports = {
-  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES, ALERT_STATUSES, CORRECTION_KIND, LANE_CORRECTION_FIELDS,
+  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES, ALERT_STATUSES, CORRECTION_KIND, LANE_CORRECTION_FIELDS, TAKEDOWN_FIELDS, laneValueError,
   normalizeUrl, entryId, addEntries, addCorrections, isCorrection, markStatus, entriesFor, isOpen, inboxAlertFor, addSync, addCorrectionsSync, markSync, readSync, readForShow,
 };
