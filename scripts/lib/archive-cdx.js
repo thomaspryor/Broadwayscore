@@ -2,9 +2,13 @@
  * archive-cdx.js: the one place that knows how the Internet Archive refuses a
  * CDX / availability query without auth (BRO-8000).
  *
- * Since ~2026-11-14 web.archive.org answers every CDX query with
+ * Since ~2026-11-14 web.archive.org answers CDX queries for some publishers
+ * (measured 2026-11-21: nytimes.com, theguardian.com 403; telegraph.co.uk,
+ * timeout.com, variety.com, vulture.com, broadwayworld.com answer 200, so it is
+ * per-host, not a global auth wall) with
  * 403 "This type of CDX query requires authorization." and the availability API
- * with {"error":{"code":"upstream_error","message":"query failed with status_code=403"}}.
+ * could return {"error":{"code":"upstream_error","message":"query failed with status_code=403"}}
+ * (it answered 200 on 2026-11-21).
  * Ten scripts read that as "error" or "no capture" and nothing flagged it for a
  * week. A blocked route is NOT evidence about the page: callers must treat the
  * typed result `archive_auth_required` as "route unavailable", never as
