@@ -15,6 +15,7 @@
  *
  * Run: node scripts/test-archive-writers-category-guard.js   (exit 0 pass)
  */
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const fs = require('fs');
 const path = require('path');
 const { loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');

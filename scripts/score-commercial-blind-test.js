@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 /**
  * Score a blind commercial-research run against known outcomes (BRO-4990).
  *

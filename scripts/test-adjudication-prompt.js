@@ -5,6 +5,7 @@
  * Uses require() on the real lib module (never copies logic).
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const { KNOWN_STAR_OUTLETS, DESIGNATION_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 
 let passed = 0;

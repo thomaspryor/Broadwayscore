@@ -6,6 +6,7 @@
  */
 
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 
 const { estimateBudget, checkBudget, DEFAULT_PER_SHOW } = require('./lib/opening-night-budget');
 

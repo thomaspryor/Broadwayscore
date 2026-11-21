@@ -13,6 +13,7 @@
  * See: scripts/lib/review-guards.js, sprint-plan-serp-cost-reduction.md
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const {
   classifyLifecycle,
   shouldRetryUrlDiscovery,

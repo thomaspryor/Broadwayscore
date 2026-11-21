@@ -5,6 +5,7 @@
  * the main title is distinctive and no other current show shares it.
  * Requires the real functions (CLAUDE.md §15). Fails with the main-title fallback reverted.
  */
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const assert = require('assert');
 const { titleMatchesShow, urlSlugMatchesShow, mainTitleOf, mainTitleIsUnique } = require('./lib/rss-discovery');
 

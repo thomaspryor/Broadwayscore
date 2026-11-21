@@ -19,6 +19,7 @@
 //   NEWSLETTER_SUBJECT_PREFIX    optional prefix (e.g. "[DRAFT]") prepended
 //                                to the subject from meta.json — used by the
 //                                Saturday auto-draft workflow.
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

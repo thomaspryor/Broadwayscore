@@ -24,6 +24,7 @@
  *   npx ts-node ... -- --quick   # dry-run on 6 fixed cases (Helen Shaw + 5 sanity)
  */
 
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';

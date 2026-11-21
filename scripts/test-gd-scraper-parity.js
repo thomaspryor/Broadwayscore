@@ -12,6 +12,7 @@
  * Used to gate the S2-T2 lib extract and any future change to the GD scraper.
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

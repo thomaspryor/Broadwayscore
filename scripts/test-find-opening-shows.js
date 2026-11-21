@@ -1,3 +1,4 @@
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const assert = require('assert');
 const { findOpeningShows } = require('./lib/find-opening-shows');
 const now = new Date('2026-10-10T18:00:00');

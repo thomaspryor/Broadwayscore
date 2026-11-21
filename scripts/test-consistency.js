@@ -2,6 +2,7 @@
  * Test model self-consistency by scoring the same reviews twice
  */
 
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const Anthropic = require('@anthropic-ai/sdk').default;
 const OpenAI = require('openai').default;

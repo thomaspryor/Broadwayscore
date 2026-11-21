@@ -3,6 +3,7 @@
  * Guards for the quiz-onboarding data files (BRO-6579): genre sidecar and the
  * generated cities/hits. Reads the real committed files; invents nothing.
  */
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: no-op unless picked up by a bare `node --test`
 const fs = require('fs');
 const path = require('path');
 

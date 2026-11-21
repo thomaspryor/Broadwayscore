@@ -6,6 +6,7 @@
  *      npx ts-node scripts/llm-scoring/test-consistency.ts
  */
 
+import '../lib/refuse-under-bare-node-test.js'; // BRO-7984: no-op unless picked up by a bare `node --test`
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';
