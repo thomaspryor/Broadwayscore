@@ -12,7 +12,7 @@ name: Audit WE Closing Dates
 # 44872579455 (Oh, Mary! 2027-01-02 -> 2027-06-05) and an all-open-shows dry run
 # 44873542013. Only EXTENSION results write (routeWeAuditResult, pinned by
 # scripts/lib/we-closing-date-classify.test.mjs); new-closing candidates,
-# over-cap extensions and shrinks go to the report / Linear only.
+# over-cap extensions and shrinks are never written (new-closing candidates are counted in the step summary, the rest file a Linear card).
 
 on:
   schedule:
