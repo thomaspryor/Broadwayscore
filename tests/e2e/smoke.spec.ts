@@ -141,7 +141,11 @@ test.describe('Post-deploy smoke tests', () => {
       const signIn = phone
         ? page.getByRole('button', { name: /^Sign in (· free|to keep them)$/ })
         : page.locator('header').first().getByRole('button', { name: 'Sign in', exact: true });
-      const google = page.getByRole('button', { name: 'Continue with Google' });
+      // Exact name, scoped to the modal: the Profitability Scorecard gate's
+      // "Continue with Google / Apple" button substring-matched the loose
+      // locator, so the retry never opened the modal (BRO-8019).
+      const dialog = page.getByRole('dialog', { name: 'Sign in or create a free account' });
+      const google = dialog.getByRole('button', { name: 'Continue with Google', exact: true });
       // The header is server-rendered, so a click that lands before hydration
       // does nothing. Retry the open until the modal shows. Open menu only ever
       // opens, so clicking it again is safe.
@@ -151,7 +155,7 @@ test.describe('Post-deploy smoke tests', () => {
         await signIn.click({ timeout: 2000 });
         await expect(google).toBeVisible({ timeout: 3000 });
       }).toPass({ timeout: 30000 });
-      await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
+      await expect(dialog.getByRole('button', { name: 'Continue with Apple', exact: true })).toBeVisible();
     });
   }
 
