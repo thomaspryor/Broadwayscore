@@ -66,7 +66,7 @@ const INTERNAL_WORKFLOWS = new Set([
   'Check Direct Push To Main', 'Check Push Ledger', 'Check Linear Drain Health',
   'Guard — No Orphan Commit', 'Diagnose Shallow Fetch', 'Diag — push-with-retry fetch timing',
   'Mirror to GitLab', 'Mirror Core Data to GitLab', 'Mirror Review Texts to GitLab', 'Rotate GitLab Mirror Token',
-  'Critique Plan with LLMs', 'Get GPT-4 Plan Review', 'Review Sprint Plan with OpenAI',
+  'Get GPT-4 Plan Review', 'Review Sprint Plan with OpenAI',
   'Investigate Alert', 'Execute Approved Fix', 'Card Verifiability Audit', 'Check Arm Yield',
   'Drain Not-Attempted Backlog', 'Monitor Scheduled Email Count', 'Audit Time-Bomb Tests',
   'Secret Scan (gitleaks)', 'Stage Latency Log Rotation', 'Sentry Auto-Triage',
