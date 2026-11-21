@@ -815,9 +815,12 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   // are ancestors of every branch). Fallback to the per-entry spawn if the set
   // can't be built; if even that fails, isAncestor() is false => not skipped.
   const baseAncestors = ancestorSet(repoRoot, base);
-  const isOnBase = (head) => (
-    baseAncestors ? baseAncestors.has(head) : isAncestor(repoRoot, head, base)
-  );
+  const onBaseMemo = new Map();
+  const isOnBase = (head) => {
+    if (baseAncestors) return baseAncestors.has(head);
+    if (!onBaseMemo.has(head)) onBaseMemo.set(head, isAncestor(repoRoot, head, base));
+    return onBaseMemo.get(head);
+  };
   const isAncestorOfRef = (head) => isOnRef(head) && !isOnBase(head);
   // Loop-invariant: `stats` does not change inside the scan, so the pushed-file
   // set is hoisted out (it was rebuilt per entry) and doubles as the drift

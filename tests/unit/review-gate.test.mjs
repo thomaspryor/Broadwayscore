@@ -341,7 +341,7 @@ test('BRO-7951: light verdict on base head does not unlock a 60-line branch', (t
   assert.equal(queryPushAllowed({ repoRoot: repo }).allowed, false);
 });
 
-test('BRO-7951: verdict on branch head + 20 lines drift is still allowed', (t) => {
+test('BRO-7951: verdict on branch head + in-budget fixup drift is still allowed', (t) => {
   const repo = makeRepo();
   t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
