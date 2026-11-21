@@ -1,0 +1,72 @@
+name: Record Owner Answer
+run-name: "record-owner-answer ${{ inputs.issue }} [${{ inputs.choice }}]"
+
+# BRO-6266: saves an answer the owner gave in a Claude chat onto the card,
+# through the same recordAnswer path as the decision email's answer page.
+# Cloud sessions do not hold APPROVAL_HMAC_SECRET, so
+# scripts/record-owner-answer.js dispatches this workflow (via
+# scripts/cloud-dispatch.js) and it runs the script with --execute here.
+# Writes Linear only: no email, no repo push. Cards carrying a VISUAL-APPROVAL
+# line are refused by the script (approving a visual change ships it).
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: 'Card (BRO-N)'
+        required: true
+        type: string
+      choice:
+        description: 'Option key (a, b, approve, reject), own, or void (visual ask whose change shipped another way)'
+        required: true
+        type: string
+      text:
+        description: "The owner's words (required for own)"
+        required: false
+        type: string
+        default: ''
+      via:
+        description: 'Where the owner answered'
+        required: false
+        type: string
+        default: 'a chat with Claude'
+
+concurrency:
+  group: record-owner-answer-${{ inputs.issue }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Record the answer
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          ISSUE: ${{ inputs.issue }}
+          CHOICE: ${{ inputs.choice }}
+          # The answer text and via are read from the event payload by the script,
+          # never put in step env: this repo is public and step env is printed in the log.
+        run: |
+          if ! printf '%s' "$ISSUE" | grep -Eq '^BRO-[0-9]+$'; then echo "bad card id"; exit 1; fi
+          if ! printf '%s' "$CHOICE" | grep -Eq '^[A-Za-z]{1,10}$'; then echo "bad choice"; exit 1; fi
+          node scripts/record-owner-answer.js "$ISSUE" --choice "$CHOICE" --inputs-from-event --execute
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Record Owner Answer Failed'
+          severity: 'warning'

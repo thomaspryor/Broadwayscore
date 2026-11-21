@@ -1,0 +1,875 @@
+{
+  "generatedAt": "2026-10-27T23:55:28.339Z",
+  "season": "2012-2013",
+  "issue": "BRO-6450",
+  "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
+  "sources": [
+    "theatricalia (venue histories)",
+    "tr-az",
+    "olt",
+    "guardian",
+    "wikipedia (venue articles)"
+  ],
+  "counts": {
+    "reference": 56,
+    "theatricaliaOnly": 6,
+    "excludedShortRuns": 4
+  },
+  "reference": [
+    {
+      "title": "Mamma Mia!",
+      "venue": "Novello Theatre",
+      "start": "2012-09-06",
+      "end": "2020-03-16",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/epm/mamma-mia/production/y3p"
+    },
+    {
+      "title": "The Mystery of Charles Dickens",
+      "venue": "Playhouse Theatre",
+      "start": "2012-09-13",
+      "end": "2012-11-10",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/6eb/the-mystery-of-charles-dickens/production/1bzd"
+    },
+    {
+      "title": "A Chorus of Disapproval",
+      "venue": "Harold Pinter Theatre",
+      "start": "2012-09-17",
+      "end": "2013-01-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5cg/a-chorus-of-disapproval/production/12qn"
+    },
+    {
+      "title": "What You Will",
+      "venue": "Apollo Theatre",
+      "start": "2012-09-18",
+      "end": "2012-10-06",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h11/what-you-will/production/13ec"
+    },
+    {
+      "title": "Let It Be",
+      "venue": "Prince of Wales Theatre",
+      "start": "2012-09-24",
+      "end": "2013-01-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwt/let-it-be/production/14f2"
+    },
+    {
+      "title": "Our Boys",
+      "venue": "Duchess Theatre",
+      "start": "2012-09-26",
+      "end": "2012-12-15",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5z9/our-boys/production/1338"
+    },
+    {
+      "title": "Cabaret",
+      "venue": "Savoy Theatre",
+      "start": "2012-10-09",
+      "end": "2013-01-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/tf/cabaret/production/14p8"
+    },
+    {
+      "title": "Loserville",
+      "venue": "Garrick Theatre",
+      "start": "2012-10-17",
+      "end": "2013-01-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwz/loserville/production/1354"
+    },
+    {
+      "title": "Uncle Vanya",
+      "venue": "Vaudeville Theatre",
+      "start": "2012-10-25",
+      "end": "2013-01-26",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9j/uncle-vanya/production/tdk"
+    },
+    {
+      "title": "Dreamboats and Petticoats",
+      "venue": "Wyndham's Theatre",
+      "start": "2012-10-29",
+      "end": "2013-01-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9pr/dreamboats-and-petticoats/production/14p6"
+    },
+    {
+      "title": "Damned by Despair",
+      "venue": "Olivier Theatre",
+      "start": "2012-11-02",
+      "end": "2012-12-13",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/de4/damned-by-despair/production/tjp"
+    },
+    {
+      "title": "Twelfth Night",
+      "venue": "Apollo Theatre",
+      "start": "2012-11-02",
+      "end": "2013-02-09",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/f/twelfth-night/production/13ea"
+    },
+    {
+      "title": "All That Fall (A Radio Play)",
+      "venue": "Arts Theatre",
+      "start": "2012-11-06",
+      "end": "2012-11-24",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghx/all-that-fall-a-radio-play/production/12f9"
+    },
+    {
+      "title": "The Effect",
+      "venue": "Dorfman Theatre",
+      "start": "2012-11-06",
+      "end": "2013-02-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fna/the-effect/production/1adb"
+    },
+    {
+      "title": "All That Fall",
+      "venue": "Arts Theatre",
+      "start": "2012-11-08",
+      "end": "2012-11-24",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dbj/all-that-fall/production/ta3"
+    },
+    {
+      "title": "Spamalot",
+      "venue": "Playhouse Theatre",
+      "start": "2012-11-14",
+      "end": "2014-04-12",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/a40/spamalot/production/12qp"
+    },
+    {
+      "title": "A Christmas Carol, Simon Callow; Assembly & Riverside Studios",
+      "venue": "Arts Theatre",
+      "start": "2012-11-29",
+      "end": "2013-01-06",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghv/a-christmas-carol-simon-callow-assembly-riverside-studios/production/12f7"
+    },
+    {
+      "title": "Privates on Parade",
+      "venue": "Noël Coward Theatre",
+      "start": "2012-12-01",
+      "end": "2013-03-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ad/privates-on-parade/production/tm8"
+    },
+    {
+      "title": "Seussical the Musical!",
+      "venue": "Arts Theatre",
+      "start": "2012-12-04",
+      "end": "2013-01-06",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/crt/seussical-the-musical/production/12f6"
+    },
+    {
+      "title": "The Bodyguard",
+      "venue": "Adelphi Theatre",
+      "start": "2012-12-05",
+      "end": "2014-08-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e6r/the-bodyguard/production/ztc"
+    },
+    {
+      "title": "Viva Forever",
+      "venue": "Piccadilly Theatre",
+      "start": "2012-12-11",
+      "end": "2013-06-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/bg4/viva-forever/production/14h1"
+    },
+    {
+      "title": "The Judas Kiss",
+      "venue": "Duke of York's Theatre",
+      "start": "2013-01-09",
+      "end": "2013-04-06",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ep1/the-judas-kiss/production/y1f"
+    },
+    {
+      "title": "Old Times",
+      "venue": "Harold Pinter Theatre",
+      "start": "2013-01-12",
+      "end": "2013-04-06",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8b/old-times/production/12qm"
+    },
+    {
+      "title": "Rock of Ages",
+      "venue": "Garrick Theatre",
+      "start": "2013-01-18",
+      "end": "2013-11-02",
+      "sources": [
+        "theatricalia",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/g0r/rock-of-ages/production/117a"
+    },
+    {
+      "title": "Quartermaine's Terms",
+      "venue": "Wyndham's Theatre",
+      "start": "2013-01-29",
+      "end": "2013-04-13",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/59a/quartermaines-terms/production/1523"
+    },
+    {
+      "title": "Let It Be",
+      "venue": "Savoy Theatre",
+      "start": "2013-02-01",
+      "end": "2014-02-09",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwt/let-it-be/production/14f2"
+    },
+    {
+      "title": "Macbeth",
+      "venue": "Trafalgar Theatre",
+      "start": "2013-02-14",
+      "end": "2013-04-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/t/macbeth/production/tnp"
+    },
+    {
+      "title": "The Tailor-Made Man",
+      "venue": "Arts Theatre",
+      "start": "2013-02-14",
+      "end": "2013-04-06",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ght/the-tailor-made-man/production/12f5"
+    },
+    {
+      "title": "The Book of Mormon",
+      "venue": "Prince of Wales Theatre",
+      "start": "2013-02-25",
+      "end": "2020-03-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7z/the-book-of-mormon/production/wsg"
+    },
+    {
+      "title": "The Curious Incident of the Dog in the Night-Time",
+      "venue": "Apollo Theatre",
+      "start": "2013-03-01",
+      "end": "2013-12-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0y/the-curious-incident-of-the-dog-in-the-night-time/production/13e9"
+    },
+    {
+      "title": "The Audience",
+      "venue": "Gielgud Theatre",
+      "start": "2013-03-05",
+      "end": "2013-06-15",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0r/the-audience/production/13hv"
+    },
+    {
+      "title": "Burn The Floor",
+      "venue": "Shaftesbury Theatre",
+      "start": "2013-03-06",
+      "end": "2013-06-30",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/836/burn-the-floor/production/13td"
+    },
+    {
+      "title": "The Winslow Boy",
+      "venue": "The Old Vic",
+      "start": "2013-03-08",
+      "end": "2013-05-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3na/the-winslow-boy/production/1bbr"
+    },
+    {
+      "title": "Peter and Alice",
+      "venue": "Noël Coward Theatre",
+      "start": "2013-03-09",
+      "end": "2013-06-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gnf/peter-and-alice/production/12nm"
+    },
+    {
+      "title": "Untold Stories (Hymn & Cocktail Sticks)",
+      "venue": "Duchess Theatre",
+      "start": "2013-03-22",
+      "end": "2013-06-15",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ffh/untold-stories-hymn-cocktail-sticks/production/104d"
+    },
+    {
+      "title": "Potted Potter",
+      "venue": "Garrick Theatre",
+      "start": "2013-03-23",
+      "end": "2013-04-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gx1/potted-potter/production/1359"
+    },
+    {
+      "title": "The Low Road",
+      "venue": "Royal Court",
+      "start": "2013-03-23",
+      "end": "2013-05-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/jcs/the-low-road/production/1ap8"
+    },
+    {
+      "title": "Children of the Sun",
+      "venue": "Lyttelton Theatre",
+      "start": "2013-04-09",
+      "end": "2013-07-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/d0/children-of-the-sun/production/v65"
+    },
+    {
+      "title": "Once",
+      "venue": "Phoenix Theatre",
+      "start": "2013-04-09",
+      "end": "2015-03-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dnc/once/production/v8n"
+    },
+    {
+      "title": "Beautiful Thing",
+      "venue": "Arts Theatre",
+      "start": "2013-04-13",
+      "end": "2013-05-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9g9/beautiful-thing/production/12f4"
+    },
+    {
+      "title": "Othello",
+      "venue": "Olivier Theatre",
+      "start": "2013-04-16",
+      "end": "2013-10-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8/othello/production/1egn"
+    },
+    {
+      "title": "Doktor Glas",
+      "venue": "Wyndham's Theatre",
+      "start": "2013-04-18",
+      "end": "2013-05-11",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7k3/doktor-glas/production/1525"
+    },
+    {
+      "title": "Merrily We Roll Along",
+      "venue": "Harold Pinter Theatre",
+      "start": "2013-04-23",
+      "end": "2013-07-31",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8w6/merrily-we-roll-along/production/12qk"
+    },
+    {
+      "title": "The Hothouse",
+      "venue": "Trafalgar Theatre",
+      "start": "2013-05-04",
+      "end": "2013-08-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/536/the-hothouse/production/1ahb"
+    },
+    {
+      "title": "Passion Play",
+      "venue": "Duke of York's Theatre",
+      "start": "2013-05-07",
+      "end": "2013-08-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dq/passion-play/production/tvh"
+    },
+    {
+      "title": "The Play That Goes Wrong",
+      "venue": "Trafalgar Theatre",
+      "start": "2013-05-10",
+      "end": "2013-06-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/egr/the-play-that-goes-wrong/production/xrj"
+    },
+    {
+      "title": "Charlie and the Chocolate Factory",
+      "venue": "Theatre Royal Drury Lane",
+      "start": "2013-05-18",
+      "end": "2017-01-07",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7xm/charlie-and-the-chocolate-factory/production/vta"
+    },
+    {
+      "title": "Relatively Speaking",
+      "venue": "Wyndham's Theatre",
+      "start": "2013-05-20",
+      "end": "2013-08-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4n2/relatively-speaking/production/152a"
+    },
+    {
+      "title": "The Cripple of Inishmaan",
+      "venue": "Noël Coward Theatre",
+      "start": "2013-06-08",
+      "end": "2013-08-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/6a2/the-cripple-of-inishmaan/production/12nk"
+    },
+    {
+      "title": "Fences",
+      "venue": "Duchess Theatre",
+      "start": "2013-06-19",
+      "end": "2013-09-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5tb/fences/production/1339"
+    },
+    {
+      "title": "Private Lives",
+      "venue": "Gielgud Theatre",
+      "start": "2013-06-22",
+      "end": "2013-09-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/33m/private-lives/production/y7t"
+    },
+    {
+      "title": "Derren Brown: Infamous",
+      "venue": "Palace Theatre",
+      "start": "2013-06-24",
+      "end": "2013-08-17",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gth/derren-brown-infamous/production/1304"
+    },
+    {
+      "title": "The Ladykillers",
+      "venue": "Vaudeville Theatre",
+      "start": "2013-07-09",
+      "end": "2013-11-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/d1r/the-ladykillers/production/14sm"
+    },
+    {
+      "title": "Dirty Dancing",
+      "venue": "Piccadilly Theatre",
+      "start": "2013-07-13",
+      "end": "2014-02-22",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dnb/dirty-dancing/production/v8k"
+    },
+    {
+      "title": "Chimerica",
+      "venue": "Harold Pinter Theatre",
+      "start": "2013-08-06",
+      "end": "2013-10-19",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fpk/chimerica/production/10k6"
+    },
+    {
+      "title": "A Doll's House",
+      "venue": "Duke of York's Theatre",
+      "start": "2013-08-14",
+      "end": "2013-10-26",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e1/a-dolls-house/production/v1e"
+    }
+  ],
+  "uncorroborated": [
+    {
+      "title": "Baggage",
+      "venue": "Arts Theatre",
+      "start": "2012-09-06",
+      "end": "2012-10-06",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/f9t/baggage/production/12fa"
+    },
+    {
+      "title": "The Tragedie of King Richard the Third",
+      "venue": "Apollo Theatre",
+      "start": "2012-11-02",
+      "end": "2013-02-10",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/h10/the-tragedie-of-king-richard-the-third/production/13eb"
+    },
+    {
+      "title": "Goodnight Mr Tom",
+      "venue": "Phoenix Theatre",
+      "start": "2012-11-22",
+      "end": "2013-01-26",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/fm9/goodnight-mr-tom/production/10f1"
+    },
+    {
+      "title": "Little Charley Bear and his Christmas Adventure",
+      "venue": "Ambassadors Theatre",
+      "start": "2012-12-05",
+      "end": "2012-12-24",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gyk/little-charley-bear-and-his-christmas-adventure/production/1386"
+    },
+    {
+      "title": "Peppa Pig – Treasure Hunt",
+      "venue": "Criterion Theatre",
+      "start": "2012-12-06",
+      "end": "2013-01-06",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/h2x/peppa-pig-treasure-hunt/production/13jq"
+    },
+    {
+      "title": "Brainiac Live! (Daytime performances)",
+      "venue": "Palace Theatre",
+      "start": "2013-07-18",
+      "end": "2013-08-17",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gtj/brainiac-live-daytime-performances/production/1305"
+    }
+  ],
+  "excluded": [
+    {
+      "title": "Murder, Marple and Me",
+      "venue": "Ambassadors Theatre",
+      "start": "2013-06-11",
+      "end": "2013-06-19",
+      "reason": "run of 9 days < 14"
+    },
+    {
+      "title": "Tim Key – Masterslut",
+      "venue": "Arts Theatre",
+      "start": "2012-11-15",
+      "end": "2012-11-24",
+      "reason": "run of 10 days < 14"
+    },
+    {
+      "title": "Uncle Vanya",
+      "venue": "Noël Coward Theatre",
+      "start": "2012-11-05",
+      "end": "2012-11-10",
+      "reason": "run of 6 days < 14"
+    },
+    {
+      "title": "Private Peaceful",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2012-09-18",
+      "end": "2012-09-29",
+      "reason": "run of 12 days < 14"
+    }
+  ]
+}

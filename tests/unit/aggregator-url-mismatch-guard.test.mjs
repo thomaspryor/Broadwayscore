@@ -1,0 +1,164 @@
+/**
+ * Unit tests for the aggregator-URL-mismatch guard (added 2026-06-21).
+ *
+ * Bug class: serp-discovery (and other ingest paths) in gather-reviews.js could
+ * write a review-text stub whose `url` is on a known aggregator domain
+ * (theatre.reviews, show-score.com, stagedoor.com, …) but whose `outletId` is a
+ * real outlet (chichester-observer, guardian-uk, …). validate-review-texts.js
+ * flags this as an `aggregator_url_mismatch` ERROR and it held main red for 2
+ * days (one instance deleted 2026-06-15, commit 3d54cb4797).
+ *
+ * Prevention: lib/aggregator-domains.js exposes the canonical domain/outlet sets
+ * + isAggregatorUrlMismatch(), shared by BOTH the writer (gather-reviews.js
+ * createReviewFile) and the validator (validate-review-texts.js) so they agree by
+ * construction.
+ */
+import { test, describe } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const {
+  AGGREGATOR_DOMAINS,
+  AGGREGATOR_OUTLET_IDS,
+  hostnameOf,
+  isAggregatorUrlMismatch,
+  isAggregatorReviewSource,
+  shouldSkipAggregatorUrlWrite,
+} = require('../../scripts/lib/aggregator-domains');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO = path.join(__dirname, '..', '..');
+
+describe('isAggregatorUrlMismatch — pure predicate', () => {
+  test('aggregator domain + real outlet → mismatch (the contamination class)', () => {
+    // exactly the deleted-2026-06-15 case
+    assert.equal(isAggregatorUrlMismatch('https://theatre.reviews/some-roundup', 'chichester-observer'), true);
+    assert.equal(isAggregatorUrlMismatch('https://www.show-score.com/x', 'guardian-uk'), true);
+    assert.equal(isAggregatorUrlMismatch('https://stagedoor.com/shows/y', 'standard'), true);
+  });
+
+  test('aggregator domain + aggregator outlet → legit (not a mismatch)', () => {
+    assert.equal(isAggregatorUrlMismatch('https://theatre.reviews/x', 'theatre-reviews'), false);
+    assert.equal(isAggregatorUrlMismatch('https://show-score.com/x', 'show-score'), false);
+    assert.equal(isAggregatorUrlMismatch('https://stagedoor.com/x', 'stagedoor'), false);
+    assert.equal(isAggregatorUrlMismatch('https://www.londonboxoffice.co.uk/x', 'lbo'), false);
+  });
+
+  test('non-aggregator domain → never a mismatch (real outlet URL is fine)', () => {
+    assert.equal(isAggregatorUrlMismatch('https://www.nytimes.com/review', 'nytimes'), false);
+    assert.equal(isAggregatorUrlMismatch('https://www.theguardian.com/x', 'guardian-uk'), false);
+  });
+
+  test('www. prefix and casing are normalized before matching', () => {
+    assert.equal(isAggregatorUrlMismatch('https://WWW.Theatre.Reviews/X', 'chichester-observer'), true);
+  });
+
+  test('outletId is normalized (raw/capitalized aggregator id is still legit)', () => {
+    // Regression: triage passed raw d.outletId; a legit star-stub with a
+    // capitalized/aliased aggregator outletId was mis-flagged as a mismatch and
+    // deleted (2026-06-21). The lib now normalizes internally.
+    assert.equal(isAggregatorUrlMismatch('https://show-score.com/x', 'Show-Score'), false);
+    assert.equal(isAggregatorUrlMismatch('https://stagedoor.com/x', 'Stagedoor'), false);
+    // a real outlet stays a mismatch regardless of casing
+    assert.equal(isAggregatorUrlMismatch('https://show-score.com/x', 'Guardian-UK'), true);
+  });
+
+  test('missing/blank/unparseable inputs are not mismatches (innocent until provable)', () => {
+    assert.equal(isAggregatorUrlMismatch(null, 'chichester-observer'), false);
+    assert.equal(isAggregatorUrlMismatch('https://theatre.reviews/x', null), false);
+    assert.equal(isAggregatorUrlMismatch('not a url', 'chichester-observer'), false);
+    assert.equal(isAggregatorUrlMismatch('', ''), false);
+  });
+
+  test('hostnameOf strips www. and lowercases; null on garbage', () => {
+    assert.equal(hostnameOf('https://WWW.Show-Score.com/path'), 'show-score.com');
+    assert.equal(hostnameOf('garbage'), null);
+    assert.equal(hostnameOf(null), null);
+  });
+});
+
+describe('lockstep — validator and writer share the same canonical sets', () => {
+  test('the validator imports AGGREGATOR_DOMAINS/OUTLET_IDS from the shared lib', () => {
+    const src = fs.readFileSync(path.join(REPO, 'scripts', 'validate-review-texts.js'), 'utf8');
+    // Task #1194 (2026-08-12) moved the validator onto hasAggregatorUrlMismatch()
+    // in lib/aggregator-url-latent.js — a thin indirection that itself imports
+    // AGGREGATOR_DOMAINS/AGGREGATOR_OUTLET_IDS from lib/aggregator-domains, so the
+    // "don't redefine the sets" intent still holds. Accept either import path.
+    assert.match(src, /require\(['"]\.\/lib\/aggregator-(domains|url-latent)['"]\)/,
+      'validate-review-texts.js must import the shared sets (directly or via aggregator-url-latent), not redefine them');
+  });
+
+  test('gather-reviews.js wires the guard into createReviewFile (source + value aware)', () => {
+    const src = fs.readFileSync(path.join(REPO, 'scripts', 'gather-reviews.js'), 'utf8');
+    assert.match(src, /require\(['"]\.\/lib\/aggregator-domains['"]\)/,
+      'gather-reviews.js must import the shared predicate');
+    assert.match(src, /return 'aggregatorUrlMismatch'/,
+      'the guard must short-circuit the write with a rejection code');
+    // Regression: the guard must route through the value-first + source-aware
+    // decision (not the raw predicate) so it never drops a real star rating.
+    assert.match(src, /shouldSkipAggregatorUrlWrite\(reviewData, normalizedOutletId\)/,
+      'the guard must use the source/value-aware decision function');
+  });
+});
+
+describe('shouldSkipAggregatorUrlWrite — value-first + source-aware (the regression fix)', () => {
+  const aggUrl = 'https://stagedoor.com/musicals/15640-six/critic-reviews';
+  test('BLOCKS the contamination class: serp-discovery, aggregator URL, real outlet, no score', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: 'https://theatre.reviews/roundup' }, 'chichester-observer'), true);
+  });
+  test('does NOT block an aggregator-source write that also carries extracted text', () => {
+    // Task #1337: an aggregator-source write with NEITHER score NOR text is now
+    // its own contamination class (below) — the source label alone stopped being
+    // enough once the validator's canonical predicate (hasAggregatorUrlMismatch,
+    // aggregator-url-latent.js) was found to have no concept of source at all, only
+    // score. These assertions add the text signal these writes actually carry at
+    // ingest (an aggregator-extracted excerpt), matching production shape.
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'stagedoor', url: aggUrl, stagedoorExcerpt: 'A five-star triumph.' }, 'guardian'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'show-score', url: 'https://show-score.com/x', showScoreExcerpt: 'Audiences loved it.' }, 'guardian-uk'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x', westEndTheatreExcerpt: 'A must-see.' }, 'standard'), false);
+  });
+  test('BLOCKS an aggregator-source write with NEITHER score NOR text (task #1337)', () => {
+    // The gap #1337 closed: source alone used to be sufficient here, which let a
+    // write with nothing worth preserving land, only for validate-review-texts.js's
+    // hasAggregatorUrlMismatch() (source-blind, score-only) to flag it post-hoc.
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'stagedoor', url: aggUrl }, 'guardian'), true);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'show-score', url: 'https://show-score.com/x' }, 'guardian-uk'), true);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x' }, 'standard'), true);
+  });
+  test('does NOT block a write carrying a real star/score (would drop the rating)', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: aggUrl, originalScore: '3/5 stars' }, 'guardian'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: aggUrl, aggregatorStars: '4/5' }, 'guardian'), false);
+  });
+  test('does NOT block a normal outlet URL', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: 'https://www.theguardian.com/x' }, 'guardian'), false);
+  });
+  test('isAggregatorReviewSource recognizes the aggregator sources', () => {
+    for (const s of ['stagedoor', 'show-score', 'dtli', 'westendtheatre-roundup', 'theatre-reviews', 'lbo-individual', 'thestage-roundup']) {
+      assert.equal(isAggregatorReviewSource(s), true, s);
+    }
+    assert.equal(isAggregatorReviewSource('serp-discovery'), false);
+    assert.equal(isAggregatorReviewSource(null), false);
+  });
+});
+
+describe('canonical sets sanity', () => {
+  test('the canonical sets are non-empty (import did not silently fail)', () => {
+    assert.ok(AGGREGATOR_DOMAINS.size > 0);
+    assert.ok(AGGREGATOR_OUTLET_IDS.size > 0);
+    assert.ok(AGGREGATOR_DOMAINS.has('theatre.reviews'));
+    assert.ok(AGGREGATOR_OUTLET_IDS.has('theatre-reviews'));
+  });
+});

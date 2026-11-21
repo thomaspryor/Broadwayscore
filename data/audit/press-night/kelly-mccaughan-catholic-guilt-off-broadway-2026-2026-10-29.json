@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
+  "night": "2026-10-29",
+  "market": "off-broadway",
+  "embargoAt": "2026-10-30T02:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-30T01:30:03.377Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-30T03:55:10.076Z",
+    "lastOkSampleAt": "2026-10-30T03:55:10.076Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-30T03:00:07.388Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-30T04:00:27.332Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "fileState": {
+    "capturedAt": "2026-10-30T04:00:32.736Z",
+    "files": [
+      {
+        "file": "broadway-baby--unknown.json",
+        "outletId": "broadway-baby",
+        "outlet": "Broadway Baby",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-29T14:36:40.271Z",
+        "publishDate": null,
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "uktw--uk-theatre-web.json",
+        "outletId": "uktw",
+        "outlet": "Uktw",
+        "critic": "UK Theatre Web",
+        "firstSeenAt": "2026-10-29T07:15:24.405Z",
+        "publishDate": "2024-08-20",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

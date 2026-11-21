@@ -1,0 +1,208 @@
+/**
+ * review-forecast-pilot.js (BRO-7329): pure helpers for the quiet review-forecast pilot.
+ * No fs, no network, no clock (callers pass `today`).
+ *
+ * The pilot appends one dated row per upcoming Broadway show per day to a PRIVATE
+ * ledger (the repo is public, a committed forecast would be a published claim).
+ * The frozen forecast for a show is the LAST row recorded strictly before its
+ * opening night. Grading happens GRADE_AFTER_DAYS after opening.
+ *
+ * Model code is NOT here: features, ridge and leakage checks stay in
+ * review-forecast.js. This file only decides who gets a row, what a row holds,
+ * which rows may be appended, and how grades are scored.
+ */
+'use strict';
+
+const RF = require('./review-forecast');
+
+const PREVIEW_LOOKAHEAD_DAYS = 60; // a show is tracked once its first preview is this close
+const REDDIT_LEADUP_DAYS = 60; // Reddit window starts this long before first preview
+const GRADE_AFTER_DAYS = 14;
+
+const iso = (day) => new Date(day * 86400000).toISOString().slice(0, 10);
+const addDays = (isoDate, n) => iso(RF.toDay(isoDate) + n);
+const r1 = (x) => (x == null || !Number.isFinite(x) ? null : Math.round(x * 10) / 10);
+
+/** Broadway play or musical, opening strictly after `today`, in previews or first preview within 60 days. */
+function isPilotTarget(show, today) {
+  if (!show || show.category !== 'broadway') return false;
+  if (show.type !== 'play' && show.type !== 'musical') return false;
+  if (show.cancelledBeforeOpening || show.status === 'closed') return false;
+  const open = RF.toDay(show.openingDate);
+  const t = RF.toDay(today);
+  if (open == null || t == null || !(open > t)) return false;
+  const prev = RF.toDay(show.previewsStartDate || show.previewDate);
+  if (show.status === 'previews') return true;
+  return prev != null && prev <= t + PREVIEW_LOOKAHEAD_DAYS;
+}
+
+/** A row may exist only if it is dated strictly before opening night. */
+function canRecord(recordedAt, openingDate) {
+  const r = RF.toDay(recordedAt);
+  const o = RF.toDay(openingDate);
+  return r != null && o != null && r < o;
+}
+
+/** The frozen forecast: the latest row for the show dated strictly before openingDate. */
+function frozenForecastRow(rows, showId, openingDate) {
+  let best = null;
+  for (const r of rows) {
+    if (r.showId !== showId || !canRecord(r.recordedAt, openingDate)) continue;
+    if (!best || r.recordedAt > best.recordedAt) best = r;
+  }
+  return best;
+}
+
+/** Split candidate rows into those to append and those skipped (leakage or already recorded that day). */
+function selectAppendable(existingRows, candidates) {
+  const seen = new Set(existingRows.map((r) => `${r.showId}|${r.recordedAt}`));
+  const append = []; const skipped = [];
+  for (const c of candidates) {
+    const key = `${c.showId}|${c.recordedAt}`;
+    if (!canRecord(c.recordedAt, c.openingDate)) skipped.push({ row: c, why: 'recordedAt not before openingDate' });
+    else if (seen.has(key)) skipped.push({ row: c, why: 'already recorded for this day' });
+    else { seen.add(key); append.push(c); }
+  }
+  return { append, skipped };
+}
+
+/** audience-buzz entry -> {combined, designation, totalCount, sources}. Null-safe. */
+function audienceSnapshot(entry) {
+  if (!entry) return { combined: null, designation: null, totalCount: 0, sources: {} };
+  const sources = {};
+  let total = 0;
+  for (const [name, s] of Object.entries(entry.sources || {})) {
+    if (!s || typeof s.score !== 'number') continue;
+    const count = s.reviewCount ?? s.count ?? 0;
+    sources[name] = { score: s.score, count };
+    total += count;
+  }
+  return { combined: typeof entry.combinedScore === 'number' ? entry.combinedScore : null, designation: entry.designation || null, totalCount: total, sources };
+}
+
+/**
+ * Reddit aggregate for one show on one day. `posts` are raw Reddit post objects
+ * (created_utc, num_comments, score, upvote_ratio). Window = [previewsStart - leadup, today].
+ * Posts are split into `leadup` (before first preview) and `previews` buckets.
+ * Posts created after the end of `today` UTC are dropped, so a re-run never sees the future.
+ */
+function redditAggregate(posts, { previewsStartDate, today, leadupDays = REDDIT_LEADUP_DAYS }) {
+  const prev = RF.toDay(previewsStartDate);
+  const t = RF.toDay(today);
+  if (prev == null || t == null) return { available: false, reason: 'no previewsStartDate' };
+  const start = prev - leadupDays;
+  const end = t + 1; // exclusive, end of today UTC
+  const bucket = () => ({ posts: 0, comments: 0, scoreSum: 0, ratioSum: 0, ratioN: 0 });
+  const lead = bucket(); const prv = bucket();
+  const seen = new Set();
+  for (const p of posts) {
+    if (!p || !p.created_utc) continue;
+    if (p.id != null) { if (seen.has(p.id)) continue; seen.add(p.id); }
+    const d = p.created_utc / 86400;
+    if (d < start || d >= end) continue;
+    const b = d < prev ? lead : prv;
+    b.posts += 1; b.comments += p.num_comments || 0; b.scoreSum += p.score || 0;
+    if (typeof p.upvote_ratio === 'number') { b.ratioSum += p.upvote_ratio; b.ratioN += 1; }
+  }
+  const fin = (b) => ({ postCount: b.posts, commentCount: b.comments, meanPostScore: b.posts ? r1(b.scoreSum / b.posts) : null, meanUpvoteRatio: b.ratioN ? Math.round((b.ratioSum / b.ratioN) * 100) / 100 : null });
+  return { available: true, windowStart: iso(start), windowEnd: today, leadupDays, leadup: fin(lead), previews: fin(prv) };
+}
+
+/**
+ * Full-sample ridge fit plus a nested leave-one-season-out 80% band, using the real
+ * review-forecast.js ridge. rows = [{season, x, mu, y}]. Returns null if < minRows.
+ */
+function fitForecaster(rows, { minRows = 150 } = {}) {
+  if (rows.length < minRows) return null;
+  const toTrain = (rs) => rs.map((r) => ({ x: r.x, y: r.y - r.mu }));
+  const clamp = (v) => Math.max(0, Math.min(100, v));
+  const model = RF.fitRidge(toTrain(rows), RF.FEATURE_NAMES);
+  const resid = [];
+  for (const s of [...new Set(rows.map((r) => r.season))]) {
+    const tr = rows.filter((r) => r.season !== s); const te = rows.filter((r) => r.season === s);
+    if (tr.length < 60) continue;
+    const m = RF.fitRidge(toTrain(tr), RF.FEATURE_NAMES);
+    for (const r of te) resid.push(r.y - clamp(r.mu + RF.predictRidge(m, r.x)));
+  }
+  resid.sort((a, b) => a - b);
+  const q10 = RF.quantile(resid, 0.1); const q90 = RF.quantile(resid, 0.9);
+  // BRO-7430: the reader-facing 50% band, same residuals (matches band(nr.model, 0.25, 0.75) in the backtest).
+  const q25 = RF.quantile(resid, 0.25); const q75 = RF.quantile(resid, 0.75);
+  return {
+    n: rows.length,
+    predict(f) {
+      const p = clamp(f.mu + RF.predictRidge(model, f.x));
+      return { forecast: p, lo80: clamp(p + q10), hi80: clamp(p + q90), lo50: Math.min(p, clamp(p + q25)), hi50: Math.max(p, clamp(p + q75)) }; // the forecast always sits inside its own likely range
+    },
+  };
+}
+
+function isGradeDue(openingDate, today) {
+  const o = RF.toDay(openingDate); const t = RF.toDay(today);
+  return o != null && t != null && t - o >= GRADE_AFTER_DAYS;
+}
+
+/**
+ * One grade row, or null when not gradable yet (not due, no critic score, no frozen row).
+ * `frozen` = frozenForecastRow(...). Errors are absolute misses against criticScore.
+ */
+function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozenV2 = null, frozenV3 = null }) {
+  if (!isGradeDue(openingDate, today) || criticScore == null || !frozen) return null;
+  const miss = (v) => (typeof v === 'number' ? r1(Math.abs(criticScore - v)) : null);
+  const audience = frozen.audience ? frozen.audience.combined : null;
+  // BRO-7357: v2 shadow, graded beside v1. v2 comes from the frozen v2 row (Show Score used, recorded at or before
+  // opening minus 3 days); with none, v2 equals v1 (fallback). v1 is ALSO graded from that same row so the
+  // comparison uses one information date and one model fit (v1 refits nightly, v2 is frozen).
+  const usedShowScore = !!(frozenV2 && frozenV2.v2);
+  const v2row = usedShowScore ? frozenV2.v2 : null;
+  const v2Forecast = usedShowScore ? v2row.forecast : frozen.forecast;
+  const v1Same = usedShowScore ? frozenV2.forecast : frozen.forecast;
+  const v2 = {
+    v2ModelVersion: usedShowScore ? v2row.modelVersion : null, v2RecordedAt: usedShowScore ? frozenV2.recordedAt : frozen.recordedAt, v2UsedShowScore: usedShowScore,
+    v2ShowScoreMixed: ((usedShowScore ? v2row : frozen.v2) || {}).showScoreMixedProductions ?? null,
+    forecastV2: v2Forecast, missForecastV2: miss(v2Forecast), forecastV1SameRow: v1Same, missForecastV1SameRow: miss(v1Same),
+    inRange80V2: usedShowScore ? criticScore >= v2row.lo80 && criticScore <= v2row.hi80 : (typeof frozen.lo80 === 'number' ? criticScore >= frozen.lo80 && criticScore <= frozen.hi80 : null),
+  };
+  // BRO-7382: v3 earlier-run blend, graded against the base (v2, or v1 on fallback) stored on the SAME frozen row, so both share one information date.
+  const v3row = frozenV3 && frozenV3.v3 ? frozenV3.v3 : null;
+  const v3 = v3row ? {
+    forecastV3: v3row.v3Forecast, missForecastV3: miss(v3row.v3Forecast), v3BaseSameRow: frozenV3.v2.forecast, missV3BaseSameRow: miss(frozenV3.v2.forecast), v3RecordedAt: frozenV3.recordedAt,
+    v3Applied: true, v3Origin: v3row.v3Origin, v3EarlierSource: v3row.v3EarlierSource, v3EarlierN: v3row.v3EarlierN, v3Weight: v3row.v3Weight, v3Base: v3row.v3Base, v3ModelVersion: v3row.v3ModelVersion,
+  } : { forecastV3: null, missForecastV3: null, v3BaseSameRow: null, missV3BaseSameRow: null, v3RecordedAt: null, v3Applied: false, v3Origin: null, v3EarlierSource: null, v3EarlierN: null, v3Weight: null, v3Base: null, v3ModelVersion: null };
+  return {
+    ...v2,
+    ...v3,
+    showId, gradedAt: today, openingDate, criticScore, frozenRecordedAt: frozen.recordedAt,
+    forecast: frozen.forecast, categoryMean: frozen.categoryMean, previewAudience: audience,
+    missForecast: miss(frozen.forecast), missCategoryMean: miss(frozen.categoryMean), missPreviewAudience: miss(audience),
+    inRange80: typeof frozen.lo80 === 'number' ? criticScore >= frozen.lo80 && criticScore <= frozen.hi80 : null,
+  };
+}
+
+/** Running scoreboard over grade rows: n, mean absolute miss per method, range hit rate. */
+function scoreboard(grades) {
+  const avg = (k) => { const v = grades.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
+  const hits = grades.map((g) => g.inRange80).filter((x) => typeof x === 'boolean');
+  // BRO-7357: v1 vs v2 on the same shows; the Show Score-only subset compares v1 and v2 from the same ledger row.
+  const ss = grades.filter((g) => g.v2UsedShowScore);
+  // Clean = Broadway-specific Show Score page (flag false) and v2 used it. Every other graded show (shared or unmapped page, legacy row, other fallback) is counted in mixedOrUnknownPage, so the two buckets partition the shows.
+  const clean = ss.filter((g) => g.v2ShowScoreMixed === false);
+  const notClean = grades.filter((g) => !clean.includes(g));
+  const avgOf = (rows, k) => { const v = rows.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
+  // BRO-7382: v3 vs its own base on the same frozen row, only shows that carried an earlier-run score (grading rule on the card).
+  const c3 = grades.filter((g) => g.v3Applied === true);
+  const pair = (rows) => ({ shows: rows.length, base: avgOf(rows, 'missV3BaseSameRow'), v3: avgOf(rows, 'missForecastV3') });
+  return {
+    v3EarlierBlend: { note: 'carrying rows only; base = v2 (v1 when v2 fell back) from the same frozen row', all: pair(c3), outOfTown: pair(c3.filter((g) => g.v3Origin === 'out-of-town')), bySource: { 'own-record': pair(c3.filter((g) => g.v3EarlierSource === 'own-record')), 'web-compact': pair(c3.filter((g) => g.v3EarlierSource === 'web-compact')) } },
+    v2Shadow: { note: 'all = mixed information dates (v1 frozen the day before opening, v2 at opening minus 3); showScoreUsed compares both from the same row', all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') }, cleanPage: { v1SameRow: avgOf(clean, 'missForecastV1SameRow'), v2: avgOf(clean, 'missForecastV2') }, mixedOrUnknownPage: { shows: notClean.length, v1: avgOf(notClean, 'missForecast') } },
+    shows: grades.length,
+    forecast: avg('missForecast'), categoryMean: avg('missCategoryMean'), previewAudience: avg('missPreviewAudience'),
+    range80HitRate: hits.length ? Math.round((hits.filter(Boolean).length / hits.length) * 100) / 100 : null,
+  };
+}
+
+module.exports = {
+  PREVIEW_LOOKAHEAD_DAYS, REDDIT_LEADUP_DAYS, GRADE_AFTER_DAYS,
+  isPilotTarget, canRecord, frozenForecastRow, selectAppendable, audienceSnapshot,
+  redditAggregate, fitForecaster, isGradeDue, buildGradeRow, scoreboard, addDays,
+};

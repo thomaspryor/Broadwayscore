@@ -1,0 +1,330 @@
+{
+  "generatedAt": "2026-11-15T16:51:13.869Z",
+  "card": "BRO-7529",
+  "summary": "gpt-5.6-luna and claude-sonnet-5-5 each pass every section 13 gate on the open-shows run (n=779, 25 shows). On the random sample (n=1139) every gate passes except showDrift, which cannot be assessed there (only 3 shows have 5+ reviews). gpt-6-luna fails (leg accuracy 3.60 vs 2.48 control, showDrift unassessable on 4 shows, 11% bucket flips). Production pins unchanged.",
+  "runs": [
+    {
+      "candidate": "gpt-6-luna (BRO-7341 shards)",
+      "sample": "random",
+      "n": 806,
+      "sampled": 818,
+      "meanDrift": {
+        "pass": true,
+        "value": 0.12,
+        "limit": 2
+      },
+      "bucketShiftPp": {
+        "pass": true,
+        "value": {
+          "Rave": 3.24,
+          "Positive": 0.02,
+          "Mixed": -4.4,
+          "Negative": 1.41,
+          "Pan": -0.16
+        },
+        "limit": 5
+      },
+      "rejectionDeltaPp": {
+        "pass": true,
+        "value": -0.1,
+        "limit": 2
+      },
+      "showDrift": {
+        "pass": false,
+        "value": {
+          "showsChecked": 4,
+          "showsOver": 1,
+          "worst": [
+            {
+              "showId": "the-great-gatsby-tour-2026",
+              "n": 5,
+              "meanDelta": -2.8
+            }
+          ]
+        },
+        "limit": 0.1
+      },
+      "legAccuracy": {
+        "pass": false,
+        "value": {
+          "control": 2.48,
+          "shadow": 3.6,
+          "n": 121
+        },
+        "limit": 1
+      },
+      "shadowErrors": {
+        "pass": true,
+        "value": {
+          "shadow": 0,
+          "control": 0
+        },
+        "limit": 0.01
+      },
+      "bucketFlips": 0.1101,
+      "allPass": false
+    },
+    {
+      "candidate": "gpt-5.6-luna",
+      "sample": "random",
+      "n": 1139,
+      "sampled": 1153,
+      "meanDrift": {
+        "pass": true,
+        "value": 0.39,
+        "limit": 2
+      },
+      "bucketShiftPp": {
+        "pass": true,
+        "value": {
+          "Rave": 2.18,
+          "Positive": -0.09,
+          "Mixed": -2.53,
+          "Negative": 0.81,
+          "Pan": 0.37
+        },
+        "limit": 5
+      },
+      "rejectionDeltaPp": {
+        "pass": true,
+        "value": -0.74,
+        "limit": 2
+      },
+      "showDrift": {
+        "pass": false,
+        "value": {
+          "showsChecked": 3,
+          "showsOver": 0,
+          "worst": []
+        },
+        "limit": 0.1
+      },
+      "legAccuracy": {
+        "pass": true,
+        "value": {
+          "control": 2.47,
+          "shadow": 3.17,
+          "n": 220
+        },
+        "limit": 1
+      },
+      "shadowErrors": {
+        "pass": true,
+        "value": {
+          "shadow": 0,
+          "control": 0
+        },
+        "limit": 0.01
+      },
+      "bucketFlips": 0.092,
+      "allPass": false
+    },
+    {
+      "candidate": "gpt-5.6-luna",
+      "sample": "open-shows (25 shows, every review)",
+      "n": 779,
+      "sampled": 788,
+      "meanDrift": {
+        "pass": true,
+        "value": 0.34,
+        "limit": 2
+      },
+      "bucketShiftPp": {
+        "pass": true,
+        "value": {
+          "Rave": 2.7,
+          "Positive": 0,
+          "Mixed": -2.82,
+          "Negative": 0.9,
+          "Pan": 0.51
+        },
+        "limit": 5
+      },
+      "rejectionDeltaPp": {
+        "pass": true,
+        "value": -1.28,
+        "limit": 2
+      },
+      "showDrift": {
+        "pass": true,
+        "value": {
+          "showsChecked": 25,
+          "showsOver": 1,
+          "worst": [
+            {
+              "showId": "julius-caesar-globe-off-west-end-2026",
+              "n": 9,
+              "meanDelta": 2.11
+            }
+          ]
+        },
+        "limit": 0.1
+      },
+      "legAccuracy": {
+        "pass": true,
+        "value": {
+          "control": 2.56,
+          "shadow": 3.5,
+          "n": 152
+        },
+        "limit": 1
+      },
+      "shadowErrors": {
+        "pass": true,
+        "value": {
+          "shadow": 0,
+          "control": 0
+        },
+        "limit": 0.01
+      },
+      "bucketFlips": 0.0838,
+      "allPass": true
+    },
+    {
+      "candidate": "claude-sonnet-5-5",
+      "sample": "random",
+      "n": 1139,
+      "sampled": 1153,
+      "meanDrift": {
+        "pass": true,
+        "value": 0.35,
+        "limit": 2
+      },
+      "bucketShiftPp": {
+        "pass": true,
+        "value": {
+          "Rave": 1.92,
+          "Positive": -1.54,
+          "Mixed": -1.24,
+          "Negative": -0.28,
+          "Pan": 0.4
+        },
+        "limit": 5
+      },
+      "rejectionDeltaPp": {
+        "pass": true,
+        "value": 0.75,
+        "limit": 2
+      },
+      "showDrift": {
+        "pass": false,
+        "value": {
+          "showsChecked": 3,
+          "showsOver": 0,
+          "worst": []
+        },
+        "limit": 0.1
+      },
+      "legAccuracy": {
+        "pass": true,
+        "value": {
+          "control": 3.48,
+          "shadow": 3.76,
+          "n": 228
+        },
+        "limit": 1
+      },
+      "shadowErrors": {
+        "pass": true,
+        "value": {
+          "shadow": 0,
+          "control": 0
+        },
+        "limit": 0.01
+      },
+      "bucketFlips": 0.0588,
+      "allPass": false
+    },
+    {
+      "candidate": "claude-sonnet-5-5",
+      "sample": "open-shows (25 shows, every review)",
+      "n": 779,
+      "sampled": 788,
+      "meanDrift": {
+        "pass": true,
+        "value": 0.46,
+        "limit": 2
+      },
+      "bucketShiftPp": {
+        "pass": true,
+        "value": {
+          "Rave": 1.67,
+          "Positive": -2.44,
+          "Mixed": -0.9,
+          "Negative": -0.51,
+          "Pan": 0.39
+        },
+        "limit": 5
+      },
+      "rejectionDeltaPp": {
+        "pass": true,
+        "value": 1.8,
+        "limit": 2
+      },
+      "showDrift": {
+        "pass": true,
+        "value": {
+          "showsChecked": 25,
+          "showsOver": 0,
+          "worst": []
+        },
+        "limit": 0.1
+      },
+      "legAccuracy": {
+        "pass": true,
+        "value": {
+          "control": 3.34,
+          "shadow": 3.53,
+          "n": 154
+        },
+        "limit": 1
+      },
+      "shadowErrors": {
+        "pass": true,
+        "value": {
+          "shadow": 0,
+          "control": 0
+        },
+        "limit": 0.01
+      },
+      "bucketFlips": 0.0595,
+      "allPass": true
+    }
+  ],
+  "costPerReview": {
+    "basis": "1961 scored records across all three dispatches, token counts at list rates, sync pricing",
+    "claudeControl_sonnet46": 0.00813,
+    "openaiControl_gpt4o": 0.01237,
+    "gpt56luna_shadow": 0.00105,
+    "sonnet55_shadow_at_46_rates": 0.01111,
+    "sonnet55_shadow_if_2_10_rates_unverified": 0.00741
+  },
+  "projectedMonthlySavingUsdEstimate": {
+    "openaiLeg_gpt4o_to_gpt56luna": "about 320 of about 350/mo (estimate from list prices 0.20/1.20 vs 2.50/10)",
+    "claudeLeg_sonnet46_to_sonnet55": "about 130 of about 400/mo only if 5.5 lists at 2/10 (price not verified in repo; at 4.6 rates it costs more per review because of extra tokens)"
+  },
+  "spend": {
+    "totalEstimatedUsd": 67.57,
+    "capUsd": 80,
+    "byDispatch": {
+      "cheaper": 39.28,
+      "shows56": 27.41,
+      "smoke75": 0.88
+    },
+    "byLeg": {
+      "claudeControl": 15.94,
+      "openaiControl": 24.27,
+      "gemini": 3.5,
+      "claudeShadow": 21.79,
+      "openaiShadow": 2.07
+    },
+    "note": "Estimated from token counts at list rates (Sonnet 5.5 priced at 4.6 rates, so an upper bound). Vendor billing not checked directly; spot-check dashboards. Reviews deduped by prepared input before sharding; interrupted shards resumed without re-billing."
+  },
+  "sonnet55Confound": "Sonnet 5.5 rejects temperature/top_p and disabled thinking. The shadow request omits temperature (production 4.6 runs at 0.3) and sends thinking {type:\"between_tools\"}. Run-to-run noise is therefore higher, and the comparison measures the model change and the sampling change together. Any pin switch carries the same request shape (claudeSamplingParams in scorer.ts).",
+  "limits": [
+    "showDrift only assessable on open-shows runs; the random sample has 3-4 shows with 5+ reviews",
+    "open-shows sample is open shows only",
+    "Sonnet 5.5 price unverified"
+  ],
+  "pinsChanged": false
+}

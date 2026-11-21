@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6218-labels",
+  "planId": "41b0789a-b67a-4cec-b949-66a358535689",
+  "status": "applied",
+  "createdAt": "2026-10-25T20:16:00.127Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed new records get our estimate label (BRO-6158 rule): Flop from the live model figure; return engagements stay TBD",
+    "steps": [
+      "commercial.json: a-christmas-carol-2022.designationBasis",
+      "commercial.json: a-christmas-carol-2022.designation",
+      "commercial.json: is-this-a-room-2021.designationBasis",
+      "commercial.json: is-this-a-room-2021.designation",
+      "commercial.json: pass-over-2021.designationBasis",
+      "commercial.json: pass-over-2021.designation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: a-christmas-carol-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: a-christmas-carol-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "is-this-a-room-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: is-this-a-room-2021.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "is-this-a-room-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: is-this-a-room-2021.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pass-over-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: pass-over-2021.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pass-over-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: pass-over-2021.designation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T20:27:21.865Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for is-this-a-room-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for is-this-a-room-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for pass-over-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for pass-over-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

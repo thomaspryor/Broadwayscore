@@ -1,0 +1,97 @@
+{
+  "issueNumber": "bro-4449",
+  "planId": "045f4ff0-a397-4865-99d7-b973e9e31c33",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:34:19.629Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire 5 London one-night events (not productions) minted before the dated venue readers existed.",
+    "steps": [
+      "Retire the 5 rows with nonProduction + venue evidence URL, title+venue blocked"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "application-39-off-west-end-2026",
+        "expectTitle": "Application 39",
+        "reason": "Theatre Royal Stratford East two-night event, not a production run (BRO-4449, dated listing from BRO-4433)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.stratfordeast.com/whats-on/all-shows/application-39",
+        "blockTitleVenue": true,
+        "description": "Retire \"Application 39\": Theatre Royal Stratford East two-night event"
+      },
+      {
+        "type": "retire-show",
+        "id": "the-ballad-of-john-and-paul-off-west-end-2026",
+        "expectTitle": "The Ballad Of John And Paul",
+        "reason": "Theatre Royal Stratford East one-night event, not a production run (BRO-4449, dated listing from BRO-4433)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.stratfordeast.com/whats-on/all-shows/the-ballad-of-john-and-paul",
+        "blockTitleVenue": true,
+        "description": "Retire \"The Ballad Of John And Paul\": Theatre Royal Stratford East one-night event"
+      },
+      {
+        "type": "retire-show",
+        "id": "an-evening-of-stratford-east-singers-2026-off-west-end-2026",
+        "expectTitle": "An Evening Of Stratford East Singers 2026",
+        "reason": "Theatre Royal Stratford East one-night concert, not a production run (BRO-4449, dated listing from BRO-4433)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.stratfordeast.com/whats-on/all-shows/an-evening-of-stratford-east-singers-2026",
+        "blockTitleVenue": true,
+        "description": "Retire \"An Evening Of Stratford East Singers 2026\": Theatre Royal Stratford East one-night concert"
+      },
+      {
+        "type": "retire-show",
+        "id": "vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026",
+        "expectTitle": "Vittorio Angelone You Cant Say Nothing Any More",
+        "reason": "Theatre Royal Stratford East one-night stand-up set, not a production run (BRO-4449, dated listing from BRO-4433)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.stratfordeast.com/whats-on/all-shows/vittorio-angelone-you-cant-say-nothing-any-more",
+        "blockTitleVenue": true,
+        "description": "Retire \"Vittorio Angelone You Cant Say Nothing Any More\": Theatre Royal Stratford East one-night stand-up set"
+      },
+      {
+        "type": "retire-show",
+        "id": "drag-tales-off-west-end-2026",
+        "expectTitle": "Drag Tales",
+        "reason": "Park Theatre children's drag storytelling event, not a production run (BRO-4449, dated listing from BRO-4433)",
+        "nonProduction": true,
+        "evidenceUrl": "https://parktheatre.co.uk/events/drag-tales/",
+        "blockTitleVenue": true,
+        "description": "Retire \"Drag Tales\": Park Theatre children's drag storytelling event"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:21:17.849Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired application-39-off-west-end-2026 (\"Application 39\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-ballad-of-john-and-paul-off-west-end-2026 (\"The Ballad Of John And Paul\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired an-evening-of-stratford-east-singers-2026-off-west-end-2026 (\"An Evening Of Stratford East Singers 2026\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026 (\"Vittorio Angelone You Cant Say Nothing Any More\" @ Theatre Royal Stratford East) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired drag-tales-off-west-end-2026 (\"Drag Tales\" @ Park Theatre) — title+venue blocked"
+    }
+  ]
+}

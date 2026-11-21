@@ -1,0 +1,230 @@
+{
+  "issueNumber": "bro-5499-c",
+  "planId": "2b49f083-91a8-480f-bb26-32a6ff6b3b77",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:26:05.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (c): Midnight publish dates: the UTC ingest date was stored; set the printed local date.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/one-minute-critic--kelsey-minor.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints Oct 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/one-minute-critic--kelsey-minor.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/slantmagazine--dan-rubins.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: in the BroadwayWorld roundup dated Oct 15; first seen 02:26 UTC Oct 16 (10:26pm ET Oct 15)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/slantmagazine--dan-rubins.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/nytg--kyle-turner.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: byline prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/nytg--kyle-turner.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: WordPress post permalink 2026/10/15 (the page prints no date; the permalink is the CMS post date)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints Thursday, October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/theatermania--pete-hempstead.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/theatermania--pete-hempstead.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints Posted on October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:05:46.386Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/one-minute-critic--kelsey-minor.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/one-minute-critic--kelsey-minor.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/slantmagazine--dan-rubins.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/slantmagazine--dan-rubins.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/nytg--kyle-turner.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/nytg--kyle-turner.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/pages-on-stages--mason-pilevsky.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/the-interested-bystander--cary-wong.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/theatermania--pete-hempstead.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/theatermania--pete-hempstead.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/theater-scene--victor-gluck.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/theater-scene--victor-gluck.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/josh-at-the-movies--unknown.json dateSource: null -> \"human-page-verified\""
+    }
+  ]
+}

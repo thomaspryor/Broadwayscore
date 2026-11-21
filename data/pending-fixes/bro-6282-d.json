@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6282-d",
+  "planId": "9812c460-d6e7-42d1-9cce-b1fb58882c1c",
+  "status": "applied",
+  "createdAt": "2026-10-26T05:39:35.263Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "The Lightning Thief (2019): Flop to Fizzle. With its real capitalization the estimate is about 62% returned (Fizzle is 30% or more).",
+    "steps": [
+      "commercial.json: the-lightning-thief-2019.designation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: the-lightning-thief-2019.designation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T06:29:17.211Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lightning-thief-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

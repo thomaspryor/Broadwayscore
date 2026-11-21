@@ -1,0 +1,56 @@
+{
+  "issueNumber": "bro-6448",
+  "planId": "466bc07f-ede9-4cd5-bfce-6a23975a0211",
+  "status": "applied",
+  "createdAt": "2026-11-03T19:06:59.376Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Recover Daily Mail Quentin Letts review for Alan Bennett's Untold Stories (WE 2013), 5th scored review",
+    "steps": [
+      "Delete the invalid Daily Mail file for the show",
+      "Ingest alan-bennetts-untold-stories-west-end-2013 from handed-off HTML: http://www.dailymail.co.uk/tvshowbiz/reviews/article-2304229/Untold-Stories-Duchess-Theatre-review-More-like-tall-tales-Alan.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "alan-bennetts-untold-stories-west-end-2013/daily-mail--quentin-letts.json",
+        "destPath": null,
+        "description": "Delete the invalid Daily Mail file (anti-adblock script captured instead of the article) so the handoff ingest writes a clean copy."
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "alan-bennetts-untold-stories-west-end-2013",
+        "url": "http://www.dailymail.co.uk/tvshowbiz/reviews/article-2304229/Untold-Stories-Duchess-Theatre-review-More-like-tall-tales-Alan.html",
+        "outlet": "daily-mail",
+        "critic": "Quentin Letts",
+        "publishDate": "2013-04-04",
+        "description": "BRO-5886 html handoff: ingest http://www.dailymail.co.uk/tvshowbiz/reviews/article-2304229/Untold-Stories-Duchess-Theatre-review-More-like-tall-tales-Alan.html from HTML fetched outside CI",
+        "htmlBytes": 889823,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "4612d538a198b668fbe1ec4e5c3faee320111662ff67e8b8f5bf5f94029c33e8",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T20:51:58.051Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted alan-bennetts-untold-stories-west-end-2013/daily-mail--quentin-letts.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested http://www.dailymail.co.uk/tvshowbiz/reviews/article-2304229/Untold-Stories-Duchess-Theatre-review-More-like-tall-tales-Alan.html for alan-bennetts-untold-stories-west-end-2013 from handed-off HTML (889692 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

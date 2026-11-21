@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6493-d",
+  "planId": "bb6fb159-6131-4740-8b23-bd29f49cc5d0",
+  "status": "applied",
+  "createdAt": "2026-10-30T07:06:59.666Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: flag artshub Gina Fairley review (dated 2016-01-29, 326d before show's 2016-12-20 start) as wrongProduction so validate-data --strict passes",
+    "steps": [
+      "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T07:18:48.359Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/artshub--gina-fairley.json wrongProduction: null -> true (retracted _previousWrongProductionClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionOverride, wrongProductionOverrideReason, wrongProductionOverrideSetAt, wrongProductionOverrideSetBy)"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,181 @@
+{
+  "issueNumber": "bro-4663",
+  "planId": "3b10dd12-8576-4458-9e55-62afc5a14042",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4663: put back two corrections the 2026-10-05 Commercial Friday push reverted. Lucky Guy (2013) recouped in May 2013 (BRO-4652) and shows as a Flop again; The Outsiders recouped in the week ending Dec 28, 2025 and shows the Jan 2026 article month instead.",
+    "steps": [
+      "Lucky Guy: the seven BRO-4652 edits again (Easy Winner, recouped May 2013, Playbill/TheaterMania citations). humanReviewedDesignation survived the push and stays.",
+      "The Outsiders: recoupedDate back to 2025-12 and recoupedSource back to the Broadway News citation. The NYT URL stays in sources.",
+      "The merge and builder fixes in BRO-4657 stop the same revert from happening again."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Easy Winner",
+        "description": "lucky-guy-2013: designation (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "lucky-guy-2013: recouped (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2013-05",
+        "description": "lucky-guy-2013: recoupedDate (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 84 performances (April 1 - July 3, 2013), making recoupment highly unlikely given short run",
+        "newValue": "Playbill, TheaterMania (May 2, 2013): recouped its $3.6M capitalization after eight weeks of performances.",
+        "description": "lucky-guy-2013: recoupedSource (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "capitalizationSource",
+        "oldValue": "New York Times reported that Tom Hanks made it easy to raise $3.6 million to finance the Broadway play",
+        "newValue": "Playbill (May 2013): $3.6M",
+        "description": "lucky-guy-2013: capitalizationSource (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "notes",
+        "oldValue": "Despite Tom Hanks' star power helping raise $3.6 million, the show closed after only 84 performances, making full recoupment extremely unlikely",
+        "newValue": "Nora Ephron's final play, starring Tom Hanks, a limited run at the Broadhurst (opened Apr 1, 2013; closed Jul 3, 2013). Recouped its $3.6M capitalization after eight weeks of performances (announced May 2, 2013) and grossed over $1M most weeks.",
+        "description": "lucky-guy-2013: notes (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/nora-ephrons-lucky-guy-starring-tom-hanks-recoups-broadway-investment-com-205010",
+            "date": "2013-05-02"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/its-a-hit-broadway-premiere-of-nora-ephrons-lucky-guy-starring-tom-hanks-recoups-investment_65066/",
+            "date": "2013-05-02"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          }
+        ],
+        "description": "lucky-guy-2013: sources (restore: reverted by the 2026-10-05 Commercial Friday push)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "recoupedDate",
+        "oldValue": "2026-01",
+        "newValue": "2025-12",
+        "description": "the-outsiders: recoupedDate (restore: reverted by the 2026-10-05 Commercial Friday push; recoupment auto-apply had replaced the sourced week-ending date with the NYT article month)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "recoupedSource",
+        "oldValue": "https://www.nytimes.com/2026/01/27/theater/outsiders-broadway-musical-profit.html",
+        "newValue": "Broadway News (Jan 27, 2026): recouped its $22M investment as of the week ending Dec 28, 2025",
+        "description": "the-outsiders: recoupedSource (restore: reverted by the 2026-10-05 Commercial Friday push; recoupment auto-apply had replaced the sourced week-ending date with the NYT article month)"
+      }
+    ],
+    "changes": []
+  },
+  "executedAt": "2026-10-05T03:56:14.985Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-outsiders"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "issueNumber": "bro-5739",
+  "planId": "00955293-f9dc-48c7-84cf-436ca24bbf4c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5739: null the art on 5 live shows whose image is plainly another work (found by a vision sweep of 745 live thumbnails, confirmed by eye).",
+    "steps": [
+      "north-star-off-broadway-2026: image is an engagement ring photo; null thumbnail and poster.",
+      "petra-off-broadway-2026: image is the & Juliet On Broadway poster; null thumbnail and poster.",
+      "the-grocers-evening-off-west-end-2026: image is an Erie County Fair food drive flyer; null thumbnail and poster.",
+      "the-last-vikings-off-west-end-2026: image is a novel cover; null thumbnail and poster.",
+      "compost-whats-left-off-west-end-2026: image is the 'Work of Devotion' poster (another play); null thumbnail and poster."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/north-star-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "north-star-off-broadway-2026: art is an engagement ring photo, not this production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "petra-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/petra-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/petra-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "petra-off-broadway-2026: art is the & Juliet On Broadway poster, not this production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-grocers-evening-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-grocers-evening-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-grocers-evening-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-grocers-evening-off-west-end-2026: art is an Erie County Fair food drive flyer, not this production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-vikings-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-last-vikings-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-last-vikings-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-last-vikings-off-west-end-2026: art is a novel cover, not this production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "compost-whats-left-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/compost-whats-left-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/compost-whats-left-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "compost-whats-left-off-west-end-2026: art is the 'Work of Devotion' poster (another play), not this production; null so the placeholder shows (BRO-5739)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T01:27:27.184Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for petra-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-grocers-evening-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-last-vikings-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for compost-whats-left-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

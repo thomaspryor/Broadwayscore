@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6559",
+  "planId": "afe7798a-2fc1-456d-a44e-37914a558f7d",
+  "status": "applied",
+  "createdAt": "2026-10-29T21:11:54.419Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Record why six closed Windfall rows keep their label (no reported return multiple; model ranges straddle 1.5x or understate the run)",
+    "steps": [
+      "commercial.json: west-side-story-2009.notes",
+      "commercial.json: in-the-heights-2008.notes",
+      "commercial.json: the-bands-visit-2017.notes",
+      "commercial.json: fun-home-2015.notes",
+      "commercial.json: a-gentlemans-guide-to-love-and-murder-2013.notes",
+      "commercial.json: mean-girls-2018.notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "west-side-story-2009",
+        "field": "notes",
+        "oldValue": "West Side Story (Palace Theatre, opened 2009-03-19, closed 2011-01-02). Press reports it recouped its $14 million capitalization, in September 2009.",
+        "newValue": "West Side Story (Palace Theatre, opened 2009-03-19, closed 2011-01-02). Press reports it recouped its $14 million capitalization, in September 2009. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (low data quality, weekly running cost estimated from show type) puts investors at 0.31x to 1.27x, but it also has the show barely past break-even at closing, while the press reported it recouped its $14 million about six months into a 22-month run. The model understates this run, so it is not used to relabel it.",
+        "description": "commercial.json: west-side-story-2009.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "in-the-heights-2008",
+        "field": "notes",
+        "oldValue": "In the Heights (Richard Rodgers Theatre, opened 2008-03-09, closed 2011-01-09). Press reports it recouped its $10 million capitalization, in January 2009.",
+        "newValue": "In the Heights (Richard Rodgers Theatre, opened 2008-03-09, closed 2011-01-09). Press reports it recouped its $10 million capitalization, in January 2009. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (low data quality, weekly running cost estimated from show type) puts investors at 0.24x to 1.55x, a range that straddles the 1.5x Windfall line, so it cannot settle the label either.",
+        "description": "commercial.json: in-the-heights-2008.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bands-visit-2017",
+        "field": "notes",
+        "oldValue": "Began off-Broadway at the Atlantic Theater Company. Recouped its $8.75 million capitalization after 11 months, announced Sep 10, 2018 (Broadway News); won 10 Tony Awards including Best Musical. No weekly running cost reported.",
+        "newValue": "Began off-Broadway at the Atlantic Theater Company. Recouped its $8.75 million capitalization after 11 months, announced Sep 10, 2018 (Broadway News); won 10 Tony Awards including Best Musical. No weekly running cost reported. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (low data quality, weekly running cost estimated from show type) puts investors at 1.15x to 1.64x, a range that straddles the 1.5x Windfall line, so it cannot settle the label either.",
+        "description": "commercial.json: the-bands-visit-2017.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fun-home-2015",
+        "field": "notes",
+        "oldValue": "Commercial Broadway transfer of the Public Theater production at Circle in the Square (opened Apr 19, 2015; closed Sep 10, 2016). Recouped its $5.25M capitalization in about eight months; the first new musical of the 2014-15 season to pay off its investment.",
+        "newValue": "Commercial Broadway transfer of the Public Theater production at Circle in the Square (opened Apr 19, 2015; closed Sep 10, 2016). Recouped its $5.25M capitalization in about eight months; the first new musical of the 2014-15 season to pay off its investment. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (low data quality, weekly running cost estimated from show type) puts investors at 1.12x to 1.62x, a range that straddles the 1.5x Windfall line, so it cannot settle the label either.",
+        "description": "commercial.json: fun-home-2015.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-gentlemans-guide-to-love-and-murder-2013",
+        "field": "notes",
+        "oldValue": "A Gentleman's Guide to Love and Murder (Walter Kerr Theatre, opened 2013-11-17, closed 2016-01-17). Press reports it recouped its $7.5 million capitalization, in April 2015.",
+        "newValue": "A Gentleman's Guide to Love and Murder (Walter Kerr Theatre, opened 2013-11-17, closed 2016-01-17). Press reports it recouped its $7.5 million capitalization, in April 2015. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (low data quality, weekly running cost estimated from show type) puts investors at 1.1x to 1.78x, a range that straddles the 1.5x Windfall line, so it cannot settle the label either.",
+        "description": "commercial.json: a-gentlemans-guide-to-love-and-murder-2013.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mean-girls-2018",
+        "field": "notes",
+        "oldValue": "Musical comedy produced by Lorne Michaels. Opened Apr 2018, recouped full $17.3M by Jan 2020 (~21 months). Consistently grossed $1-1.3M/week. Closed Mar 2020 due to COVID shutdown and did not reopen, but investors were already made whole. Grossed ~$38-40M on Broadway.",
+        "newValue": "Musical comedy produced by Lorne Michaels. Opened Apr 2018, recouped full $17.3M by Jan 2020 (~21 months). Consistently grossed $1-1.3M/week. Closed Mar 2020 due to COVID shutdown and did not reopen, but investors were already made whole. Grossed ~$38-40M on Broadway. Stays Windfall (BRO-6559, checked 2026-10-29): the label rule moves a recouped show to Trickle only on a reported return multiple, and none is reported for this run. Our model (medium data quality, an industry estimate of the weekly running cost) puts investors at 1.22x to 1.64x, a range that straddles the 1.5x Windfall line, so it cannot settle the label either.",
+        "description": "commercial.json: mean-girls-2018.notes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T21:32:48.251Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for west-side-story-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for in-the-heights-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for fun-home-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-gentlemans-guide-to-love-and-murder-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for mean-girls-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,266 @@
+{
+  "issue": "BRO-2509",
+  "date": "2026-10-24",
+  "command": "node scripts/audit-regex-patterns.js --auto-recalibrate --dry-run --json",
+  "eligibleReviewsBefore": 34566,
+  "eligibleReviewsAfter": 34566,
+  "before": {
+    "exitCode": 1,
+    "contentPatternViolations": 20,
+    "titleViolations": 1,
+    "operaTitleViolations": 0,
+    "verifiedUpdates": 5
+  },
+  "after": {
+    "exitCode": 1,
+    "contentPatternViolations": 15,
+    "titleViolations": 1,
+    "operaTitleViolations": 0,
+    "verifiedUpdates": 0
+  },
+  "updates": [
+    {
+      "key": "NEWSLETTER_PATTERNS::0",
+      "previousAllowance": 200,
+      "allowance": 279,
+      "rawHits": 214,
+      "guard": "isGarbageContent",
+      "checked": 214,
+      "absorbed": 214,
+      "sampleOutlets": [
+        "Time Out London",
+        "Time Out New York",
+        "Time Out NY",
+        "Time Out",
+        "TimeOut NY"
+      ],
+      "sampleShowIds": [
+        "1536-off-west-end-2026",
+        "1536-west-end-2026",
+        "a-christmas-story-the-musical-2012"
+      ]
+    },
+    {
+      "key": "HORROR_FILM_PATTERNS::0",
+      "previousAllowance": 150,
+      "allowance": 233,
+      "rawHits": 179,
+      "guard": "detectHorrorFilmContent",
+      "checked": 179,
+      "absorbed": 179,
+      "sampleOutlets": [
+        "The Daily Beast",
+        "London Box Office",
+        "Evening Standard",
+        "Broadway Blog",
+        "Exeunt Magazine"
+      ],
+      "sampleShowIds": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "a-fine-idea-off-west-end-2026",
+        "a-little-life-west-end-2023"
+      ]
+    },
+    {
+      "key": "HORROR_FILM_PATTERNS::1",
+      "previousAllowance": 205,
+      "allowance": 283,
+      "rawHits": 217,
+      "guard": "detectHorrorFilmContent",
+      "checked": 217,
+      "absorbed": 217,
+      "sampleOutlets": [
+        "Variety",
+        "New York Theater",
+        "The New York Times",
+        "Off Off Online",
+        "voiceoverherald"
+      ],
+      "sampleShowIds": [
+        "13-2008",
+        "1984-2017",
+        "a-ghost-in-your-ear-off-broadway-2026"
+      ]
+    },
+    {
+      "key": "HORROR_FILM_PATTERNS::3",
+      "previousAllowance": 100,
+      "allowance": 153,
+      "rawHits": 117,
+      "guard": "detectHorrorFilmContent",
+      "checked": 117,
+      "absorbed": 117,
+      "sampleOutlets": [
+        "hauntedattractionnetwork",
+        "Off Off Online",
+        "Theatre Reviews Limited",
+        "Theatrely",
+        "Liamodell"
+      ],
+      "sampleShowIds": [
+        "a-ghost-in-your-ear-off-broadway-2026"
+      ]
+    },
+    {
+      "key": "HORROR_FILM_PATTERNS::4",
+      "previousAllowance": 20,
+      "allowance": 37,
+      "rawHits": 28,
+      "guard": "detectHorrorFilmContent",
+      "checked": 28,
+      "absorbed": 28,
+      "sampleOutlets": [
+        "The Hollywood Reporter",
+        "The Daily Beast",
+        "Culture Sauce",
+        "Lighting & Sound America",
+        "Fort Worth Star Telgram"
+      ],
+      "sampleShowIds": [
+        "a-christmas-carol-2019",
+        "a-christmas-carol-west-end-2026",
+        "angels-in-america-2018"
+      ]
+    }
+  ],
+  "unchangedManualPatterns": [
+    {
+      "key": "PAYWALL_PATTERNS::0",
+      "hits": 9,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "PAYWALL_PATTERNS::1",
+      "hits": 8,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "PAYWALL_PATTERNS::4",
+      "hits": 15,
+      "allowance": 12,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "PAYWALL_PATTERNS::5",
+      "hits": 13,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "PAYWALL_PATTERNS::8",
+      "hits": 17,
+      "allowance": 15,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "STRONG_CHROME_DUMP_PATTERNS::12",
+      "hits": 9,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "STRONG_CHROME_DUMP_PATTERNS::13",
+      "hits": 8,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "NEWSLETTER_PATTERNS::1",
+      "hits": 290,
+      "allowance": 150,
+      "checked": 290,
+      "absorbed": 288,
+      "reason": "Runtime guard did not absorb every matched file"
+    },
+    {
+      "key": "NEWSLETTER_PATTERNS::3",
+      "hits": 35,
+      "allowance": 10,
+      "checked": 35,
+      "absorbed": 34,
+      "reason": "Runtime guard did not absorb every matched file"
+    },
+    {
+      "key": "NEWSLETTER_PATTERNS::4",
+      "hits": 89,
+      "allowance": 28,
+      "checked": 89,
+      "absorbed": 87,
+      "reason": "Runtime guard did not absorb every matched file"
+    },
+    {
+      "key": "NAVIGATION_PATTERNS::2",
+      "hits": 317,
+      "allowance": 260,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "NAVIGATION_PATTERNS::6",
+      "hits": 541,
+      "allowance": 400,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "NAVIGATION_PATTERNS::7",
+      "hits": 23,
+      "allowance": 15,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "WRONG_ARTICLE_PATTERNS::3",
+      "hits": 8,
+      "allowance": 5,
+      "reason": "No registered absorbing runtime guard"
+    },
+    {
+      "key": "WRONG_ARTICLE_PATTERNS::7",
+      "hits": 61,
+      "allowance": 50,
+      "reason": "No registered absorbing runtime guard"
+    }
+  ],
+  "unchangedTitleViolations": [
+    {
+      "key": "NON_THEATER_PATTERNS::24",
+      "hits": 2,
+      "allowance": 0
+    }
+  ],
+  "reviewRecordsWritten": 0,
+  "runtimeGuardChanges": 0,
+  "newPaidFetches": 0,
+  "newLlmCalls": 0,
+  "newApiCalls": 0,
+  "remaining": "Scheduled auto-recalibration is not wired in. Workflow changes are outside this worker scope. Partial guard absorption and families without registered guards remain manual.",
+  "verification": {
+    "acceptance": {
+      "command": "node --test scripts/audit-regex-patterns.test.mjs",
+      "passedBefore": 13,
+      "passedAfter": 13,
+      "failed": 0
+    },
+    "relatedTests": {
+      "command": "node --test --test-timeout 300000 scripts/audit-regex-patterns.test.mjs scripts/lib/regex-pattern-recalibration.test.mjs tests/unit/audit-independent-title-corpus.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/park-reason-advisory.test.mjs scripts/lib/autonomous-eligibility.test.mjs",
+      "passed": 123,
+      "failed": 0
+    },
+    "workflowAudit": {
+      "command": "GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet",
+      "exitCode": 0,
+      "result": "lint-workflows: all gates green",
+      "skipped": "actionlint not installed here; CI runs it"
+    },
+    "blastRadius": "Compared real before/after JSON with strict assertions: exactly five allowances/provenance entries changed; all other allowances, 15 manual content violations and title results unchanged.",
+    "mainCheck": {
+      "command": "git log -S 'auto-recalibrate' --oneline -5",
+      "result": "5076640f",
+      "auditSourceBlobIdenticalBeforeChange": "c1166c8b200bc74eee2aee2cbf73b1cec2ddd8e6",
+      "acceptanceTestsFromOriginMain": {
+        "passed": 13,
+        "failed": 0
+      }
+    }
+  }
+}

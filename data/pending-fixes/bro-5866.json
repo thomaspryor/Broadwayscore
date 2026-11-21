@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-5866",
+  "planId": "3b160434-aad6-4c3d-920a-c1c6b77c94e4",
+  "status": "applied",
+  "createdAt": "2026-10-21T21:47:40.841Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5866: Safe House (Theatre Row, 2026) was mapped to the Show Score page of a different play, Enda Walsh's Safe House at St. Ann's Warehouse (2025), and carried its audience score. A corpus sweep by page review dates found 74 shows with Show Score data from another production. The public mappings and critic data were cleaned in the PR; this plan removes the matching audience scores from the private audience-buzz.json, corrects the Exeunt review's wrong-production reason, and deletes 15 off-topic search hits filed under Fire Fire. It also re-excludes a 2018 Broadway Cursed Child review filed under the 2026 West End one-part run.",
+    "steps": [
+      "Remove the Show Score audience score that came from another production's page from audience-buzz.json (33 shows, Safe House included; combinedScore recomputed, showScore tombstoned). The public mapping and show-score.json part landed in the BRO-5866 PR, recorded under _productionMismatch.",
+      "Already excluded as wrongProduction; the reason was wrong. It is the Feb 2025 review of Enda Walsh's Safe House at St. Ann's Warehouse, a different play from the 2026 Theatre Row Safe House.",
+      "Found by validate-data (wrong-production-by-date) during BRO-5866: the 2018-04-30 Front Row Center review of the Broadway Cursed Child sits under the 2026 West End one-part run. A dateless-revival reason lets the rebuild release the hold now that the date is known, so it flipped twice on 2026-10-21; a manual reason stops that.",
+      "Exclude it: the review is dated 2018-04-30, 3084 days before this production's first date (2026-10-09).",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Tabard Theatre event listing for a different play, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a news story about a fire on a TV set, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is an Old Fire Station drawing-club listing, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire in My Mouth concert review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a duplicate of the Fire in My Mouth concert review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Line of Fire TV review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a classical-music news column, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Wirecutter fire-pit buying guide, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a restaurant piece, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a Fire in My Mouth concert review, not a review of Fire Fire.",
+      "Search-discovery junk under Fire Fire (Arcola): the url is a review of the film The Fire Within You, not a review of Fire Fire."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "purge-wrong-production-show-score.js",
+        "arguments": [
+          "--apply"
+        ],
+        "description": "Remove the Show Score audience score that came from another production's page from audience-buzz.json (33 shows, Safe House included; combinedScore recomputed, showScore tombstoned). The public mapping and show-score.json part landed in the BRO-5866 PR, recorded under _productionMismatch."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "safe-house-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+        "field": "wrongProductionReason",
+        "oldValue": "anticipatory_pre_opening_post",
+        "newValue": "manual",
+        "description": "Already excluded as wrongProduction; the reason was wrong. It is the Feb 2025 review of Enda Walsh's Safe House at St. Ann's Warehouse, a different play from the 2026 Theatre Row Safe House."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
+        "field": "wrongProductionReason",
+        "oldValue": "dateless-revival",
+        "newValue": "manual",
+        "description": "Found by validate-data (wrong-production-by-date) during BRO-5866: the 2018-04-30 Front Row Center review of the Broadway Cursed Child sits under the 2026 West End one-part run. A dateless-revival reason lets the rebuild release the hold now that the date is known, so it flipped twice on 2026-10-21; a manual reason stops that."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Exclude it: the review is dated 2018-04-30, 3084 days before this production's first date (2026-10-09)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/chiswickcalendar--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Tabard Theatre event listing for a different play, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/daily-mail--lettice-bromovsky.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a news story about a fire on a TV set, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/dailyinfo--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is an Old Fire Station drawing-club listing, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/empire--matt-kamen.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/ground--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/guardian--alexandra-coghlan.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire in My Mouth concert review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/guardian--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a duplicate of the Fire in My Mouth concert review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/hollywood-reporter--angie-han.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Line of Fire TV review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/islingtontribune--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a classical-music news column, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/metro-uk--brooke-ivey-johnson.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/nytimes--kit-dillon.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Wirecutter fire-pit buying guide, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/observer--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a restaurant piece, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/sunday-express--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire Emblem video game review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/times-uk--unknown.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a Fire in My Mouth concert review, not a review of Fire Fire."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fire-fire-off-west-end-2026/variety--jay-weissberg.json",
+        "description": "Search-discovery junk under Fire Fire (Arcola): the url is a review of the film The Fire Within You, not a review of Fire Fire."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T23:00:26.625Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-wrong-production-show-score.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "safe-house-off-broadway-2026/exeunt-magazine--loren-noveck.json wrongProductionReason: \"anticipatory_pre_opening_post\" -> \"manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json wrongProductionReason: \"dateless-revival\" -> \"manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json wrongProduction: false -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/chiswickcalendar--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/daily-mail--lettice-bromovsky.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/dailyinfo--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/empire--matt-kamen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/ground--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/guardian--alexandra-coghlan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/hollywood-reporter--angie-han.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/islingtontribune--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/metro-uk--brooke-ivey-johnson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/nytimes--kit-dillon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/observer--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/sunday-express--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/times-uk--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/variety--jay-weissberg.json"
+    }
+  ],
+  "executedIn": "ci"
+}

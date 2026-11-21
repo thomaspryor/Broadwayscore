@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-7131b",
+  "planId": "0b38a7df-e986-45fa-9f48-59ba62a4552c",
+  "status": "applied",
+  "createdAt": "2026-11-08T16:48:25.434Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct preview/opening dates for 4 shows whose opening night was set to the first preview (My Neighbour Totoro, Marie and Rosetta, Oliver!, Music City); re-ingest the full Bachtrack Medea review over a teaser-only body",
+    "steps": [
+      "shows.json: my-neighbour-totoro-west-end-2025.previewsStartDate",
+      "shows.json: my-neighbour-totoro-west-end-2025.openingDate",
+      "shows.json: marie-and-rosetta-west-end-2026.previewsStartDate",
+      "shows.json: marie-and-rosetta-west-end-2026.openingDate",
+      "shows.json: oliver-west-end-2024.previewsStartDate",
+      "shows.json: oliver-west-end-2024.openingDate",
+      "shows.json: music-city-off-broadway-2026.previewsStartDate",
+      "Ingest medea-off-broadway-2026 from handed-off HTML: https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-neighbour-totoro-west-end-2025",
+        "field": "previewsStartDate",
+        "oldValue": "2024-05-17",
+        "newValue": "2025-03-08",
+        "description": "shows.json: my-neighbour-totoro-west-end-2025.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-neighbour-totoro-west-end-2025",
+        "field": "openingDate",
+        "oldValue": "2025-03-08",
+        "newValue": "2025-03-20",
+        "description": "shows.json: my-neighbour-totoro-west-end-2025.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marie-and-rosetta-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2025-05-01",
+        "newValue": "2026-02-28",
+        "description": "shows.json: marie-and-rosetta-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marie-and-rosetta-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-02-28",
+        "newValue": "2026-03-06",
+        "description": "shows.json: marie-and-rosetta-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oliver-west-end-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-05-02",
+        "newValue": "2024-12-14",
+        "description": "shows.json: oliver-west-end-2024.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oliver-west-end-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-14",
+        "newValue": "2025-01-14",
+        "description": "shows.json: oliver-west-end-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "music-city-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-03-23",
+        "newValue": "2026-06-15",
+        "description": "shows.json: music-city-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "medea-off-broadway-2026",
+        "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026",
+        "outlet": "bachtrack",
+        "critic": "Susan Stempleski",
+        "publishDate": "2026-10-31",
+        "description": "BRO-5886 html handoff: ingest https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026 from HTML fetched outside CI",
+        "htmlBytes": 65699,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "dfa64329a88efebd86876962c5e7bb4c49b31aedeff98eaa6490327b14d33194",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T18:30:45.614Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for my-neighbour-totoro-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for my-neighbour-totoro-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for marie-and-rosetta-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for marie-and-rosetta-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for oliver-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for oliver-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for music-city-off-broadway-2026"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026 for medea-off-broadway-2026 from handed-off HTML (65550 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

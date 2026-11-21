@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+/**
+ * check-reddit-freshness.js — one alert (not one per failed run) when Reddit
+ * audience data has gone stale while the scraper keeps trying (BRO-5916).
+ *
+ * Stale = no show's audience-buzz sources.reddit.lastUpdated within 48h AND
+ * the spend ledger shows Reddit calls inside that window. routeAlert notifies
+ * once per open incident and resolveCondition() closes it on the first fresh
+ * write. Advisory: always exits 0.
+ *
+ *   node scripts/check-reddit-freshness.js [--dry-run]
+ */
+'use strict';
+
+const fs = require('fs');
+const { NEVER_ASK_REDDIT_APP } = require('./lib/reddit-owner-guard');
+const path = require('path');
+const { redditStaleVerdict, redditOutageVerdict, readRedditLedgerRows, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
+
+const { isRedditRetired } = require('./lib/reddit-status');
+const CONDITION_KEY = 'reddit-sentiment:stale';
+
+function newestRedditWriteMs(buzz) {
+  let newest = null;
+  for (const rec of Object.values((buzz && buzz.shows) || {})) {
+    const t = Date.parse(rec && rec.sources && rec.sources.reddit && rec.sources.reddit.lastUpdated);
+    if (Number.isFinite(t) && (newest === null || t > newest)) newest = t;
+  }
+  return newest;
+}
+
+function countRedditAttempts(rows, nowMs) {
+  const since = nowMs - REDDIT_STALE_HOURS * 3600e3;
+  return rows.filter((r) => r && r.host === 'reddit.com' && Date.parse(r.ts) >= since).length;
+}
+
+async function main() {
+  const dryRun = process.argv.includes('--dry-run');
+  const nowMs = Date.now();
+  // BRO-7337: Reddit is retired on purpose (config/retired-sources.json). Stored data is frozen and
+  // no scraper runs, so there is nothing to be stale. Close any open incident and stop; this must
+  // come before the idle check, which would otherwise leave an open alert open forever.
+  if (isRedditRetired()) {
+    console.log('[reddit-freshness] Reddit is retired; nothing to check');
+    if (!dryRun) require('./lib/owner-alert-router').resolveCondition(CONDITION_KEY, { reason: 'reddit retired (config/retired-sources.json)' });
+    return;
+  }
+  const buzz = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audience-buzz.json'), 'utf8'));
+  const lastWriteMs = newestRedditWriteMs(buzz);
+  const ledgerRows = readRedditLedgerRows();
+  const attemptsInWindow = countRedditAttempts(ledgerRows, nowMs);
+  const v = redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs });
+  // BRO-7337: an outage must not wait 48h to be visible. Alerts when the scraper kept
+  // calling Reddit since the last write and nothing was written.
+  const o = redditOutageVerdict({ lastWriteMs, rows: ledgerRows, nowMs });
+  console.log(`[reddit-freshness] outage=${o.outage} (${o.attempts} Reddit calls since the last write)`);
+  const last = lastWriteMs ? new Date(lastWriteMs).toISOString() : 'never';
+  console.log(`[reddit-freshness] last Reddit write ${last}, ${attemptsInWindow} Reddit calls in ${REDDIT_STALE_HOURS}h, stale=${v.stale}`);
+  if (dryRun) return;
+
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+  // Idle (scraper made no Reddit calls) is neither stale nor fresh: leave any open
+  // incident alone so a quiet window cannot close it and re-notify on the next probe.
+  if (v.idle) return;
+  if (o.outage && !v.stale) {
+    await routeAlert({
+      conditionKey: CONDITION_KEY,
+      title: `Reddit fetching is failing: ${o.attempts} Reddit calls and no successful write since ${last}`,
+      description:
+        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log. ' +
+        `${NEVER_ASK_REDDIT_APP} BRO-7337.`,
+      severity: 'warning',
+      disposition: 'auto',
+      category: 'reddit-sentiment',
+      verify: 'node scripts/check-reddit-freshness.js --dry-run',
+    });
+    return;
+  }
+  // Resolve only when no Reddit call has happened since the last write: a broken run with
+  // few calls must not close an open outage alert (it would flap).
+  if (!v.stale && o.attempts === 0) {
+    resolveCondition(CONDITION_KEY, { reason: 'reddit-freshness: fresh Reddit data written' });
+    return;
+  }
+  await routeAlert({
+    conditionKey: CONDITION_KEY,
+    title: `Reddit audience data has had no successful write for ${Math.floor(v.ageHours)}h`,
+    description:
+      `No show's sources.reddit was written since ${last}, while the scraper kept trying (${attemptsInWindow} Reddit calls in ${REDDIT_STALE_HOURS}h). ` +
+      'Find a working route (Reddit direct 403, ScrapingBee timeouts, Scrapingdog breaker) and backfill shows opened since the last good write. ' +
+      'The ScrapingBee leg now cools down across runs (scripts/lib/reddit-dispatch-cooldown.js). ' + NEVER_ASK_REDDIT_APP,
+    severity: 'warning',
+    disposition: 'auto',
+    category: 'reddit-sentiment',
+    verify: 'node scripts/check-reddit-freshness.js --dry-run',
+  });
+}
+
+if (require.main === module) {
+  main().catch((e) => { console.error('[reddit-freshness] failed:', e.message); }).finally(() => process.exit(0));
+}
+
+module.exports = { newestRedditWriteMs, countRedditAttempts, CONDITION_KEY };

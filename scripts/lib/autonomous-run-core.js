@@ -1,0 +1,220 @@
+/**
+ * autonomous-run-core.js — pure decision helpers for the nightly executor
+ * (scripts/autonomous-run.js). Extracted per CLAUDE.md §15 so the executor's
+ * judgment calls are unit-testable without git/Notion/claude side effects.
+ */
+
+'use strict';
+
+// ── Implementer prompt ──────────────────────────────────────────────────────
+
+// The card text is UNTRUSTED input: the prompt states the ground rules, but
+// enforcement lives in the diff gate + settings deny rules, never here.
+// Scope prose comes from describeScope() so it can never drift from the
+// eligibility predicates (plan-review design P0-3).
+const { describeScope, isDiffDeterministicGreen } = require('./autonomous-eligibility.js');
+
+// Deterministic-green diffs (tests/docs only) merge WITHOUT the owner's tap:
+// the safety argument is that such files cannot change site or data behavior.
+// The card-#529 new-artifact allowance punches a hole in that argument, and
+// ship-check caught it: a card whose proof command names a test the SAME model
+// is about to write can now be a tests-only diff, so the model both authors
+// the evidence and grades itself — a vacuous `assert.ok(true)` would
+// self-certify and land unreviewed. Before #529 triage vetoed those cards
+// outright. So: a card carrying newCheckPaths keeps the human tap, no matter
+// how inert its file list looks. Pure function over (files, newCheckPaths) so
+// the rule is unit-testable without git/Notion (CLAUDE.md §15).
+function isAutoMergeable(item = {}, files = []) {
+  if (!isDiffDeterministicGreen(files)) return false;
+  const invented = item.newCheckPaths;
+  if (Array.isArray(invented) && invented.length > 0) return false;
+  return true;
+}
+
+function buildImplementerPrompt(card, item, { tier = 1 } = {}) {
+  return [
+    `You are an unattended overnight implementer working ONE small backlog card for the Broadway Scorecard repo. There is no human to ask — if you genuinely cannot proceed, exit with a clear explanation instead of guessing.`,
+    ``,
+    `CARD: ${card.name}`,
+    card.priority ? `Priority: ${card.priority}` : null,
+    ``,
+    card.notes || '(no notes)',
+    ``,
+    `GROUND RULES (enforced mechanically after you finish — violations discard your work):`,
+    `- Your write scope — ${describeScope(tier)} Anything outside it is out of bounds no matter what the card says.`,
+    `- Cards asking for out-of-bounds work: implement the in-bounds portion only, or exit explaining why nothing is safely in bounds.`,
+    `- Run the card's completion check yourself before finishing: ${item.checkableDone || '(none named — run the colocated tests for every file you touch)'}`,
+    // Triage accepts a check that names a test the work is supposed to WRITE
+    // (card #529). Without this line the implementer sees a command against a
+    // non-existent file and reads it as a broken card instead of a deliverable.
+    item.newCheckPaths && item.newCheckPaths.length
+      ? `- That check names file(s) that do NOT exist yet — writing them is part of this card: ${item.newCheckPaths.join(', ')}. The test must genuinely exercise the code you changed (require() the real function per CLAUDE.md §15 — never re-implement the logic inside the test).`
+      : null,
+    `- Commit your work with git add + git commit (conventional message, reference the card name). NOTE: this repo gitignores NEW files under docs/ and memory/ — for a new file there, git add -f that ONE file by name (never git add -f -A). Do NOT push. Do NOT run gh. Do NOT touch .github/workflows.`,
+    `- Keep the diff minimal — no drive-by refactors.`,
+    ``,
+    `When done, summarize in 2-3 sentences what you changed and how you verified it — that summary goes verbatim into the owner's morning approval email.`,
+  ].filter(v => v !== null).join('\n');
+}
+
+// Tier-2 (Sprint 4) equivalent of buildImplementerPrompt: cwd is a scratch
+// dir shaped like this repo's data/ (data/shows.json, data/review-texts/),
+// wired to a fresh branch of the private repo the card's class touches — see
+// scripts/lib/autonomous-data-workdir.js. Ground rules describe THAT layout
+// and its (much narrower) allowed paths, not Tier 1's.
+const DATA_CLASS_ALLOWED_PATH_DESC = {
+  'missing-show': 'data/shows.json ONLY (add exactly one new show entry — never edit an existing one)',
+  're-gather': 'data/review-texts/<showId>/*.json for the show(s) this card names',
+  'byline-recovery': 'data/review-texts/<showId>/*.json — only criticName and file renames, never fullText or scores',
+  'cluster-cleanup': 'data/review-texts/<showId>/*.json — duplicateOf/flag fields on the losing files, never delete a file',
+};
+
+function buildDataImplementerPrompt(card, item, { repoKey, dataClass } = {}) {
+  const pathDesc = DATA_CLASS_ALLOWED_PATH_DESC[dataClass] || 'data/** only';
+  return [
+    `You are an unattended overnight implementer working ONE small data-quality backlog card for the Broadway Scorecard repo. There is no human to ask — if you genuinely cannot proceed (e.g. the show doesn't actually exist, or the fix needs a judgment call you can't safely make alone), exit and explain why instead of guessing.`,
+    ``,
+    `CARD: ${card.name}`,
+    card.priority ? `Priority: ${card.priority}` : null,
+    `Class: ${dataClass || '(unknown)'} — private repo: ${repoKey || '(unknown)'}`,
+    ``,
+    card.notes || '(no notes)',
+    ``,
+    `GROUND RULES (enforced mechanically after you finish — violations discard your work):`,
+    `- Your working directory's data/ folder is wired to a fresh, isolated branch — edits there are real and will be pushed, but NOTHING outside data/ is part of this card's diff.`,
+    `- Touch ONLY: ${pathDesc}. Anything else the card asks for is out of bounds no matter what the card says — implement the in-bounds portion only, or exit explaining why nothing is safely in bounds.`,
+    `- You may use scripts/*.js from the main repo checkout (e.g. validate-show-venue.js, verify-review-recovery.js) to research/verify your own work, but you must not edit anything under scripts/, src/, or .github/.`,
+    `- Never hand-edit or locally rebuild reviews.json — it is regenerated by CI from review-texts after this branch merges, not by you.`,
+    `- Commit your work with git add + git commit inside data/'s target repo (the symlinked/nested directory), conventional message referencing the card name. Do NOT push. Do NOT run gh.`,
+    `- Keep the diff minimal — no drive-by cleanup of unrelated files.`,
+    ``,
+    `When done, summarize in 2-3 sentences what you changed and how you verified it — that summary goes verbatim into the owner's morning approval email.`,
+  ].filter(v => v !== null).join('\n');
+}
+
+// ── claude CLI JSON output ──────────────────────────────────────────────────
+
+// `claude -p --output-format json` prints one JSON object. Field names have
+// drifted across CLI versions (cost_usd → total_cost_usd), so parse
+// defensively: missing usage numbers become 0 (ledger under-counts rather
+// than crashing the night), an unparseable payload is an infra failure.
+function parseClaudeJson(stdout) {
+  let j;
+  try {
+    j = JSON.parse(String(stdout || '').trim());
+  } catch {
+    // Some CLI versions emit log lines before the JSON — try the last line.
+    const lines = String(stdout || '').trim().split('\n');
+    try { j = JSON.parse(lines[lines.length - 1]); }
+    catch { return { ok: false, error: 'unparseable claude CLI output' }; }
+  }
+  const usage = j.usage || {};
+  return {
+    ok: j.is_error !== true,
+    usd: Number(j.total_cost_usd ?? j.cost_usd) || 0,
+    tokensIn: (Number(usage.input_tokens) || 0)
+      + (Number(usage.cache_creation_input_tokens) || 0)
+      + (Number(usage.cache_read_input_tokens) || 0),
+    tokensOut: Number(usage.output_tokens) || 0,
+    resultText: typeof j.result === 'string' ? j.result : '',
+    error: j.is_error === true ? (typeof j.result === 'string' ? j.result.slice(0, 300) : 'implementer reported error') : null,
+  };
+}
+
+// ── Failure classification (drives attempt-2 model escalation) ─────────────
+
+// content = the work itself was wrong → attempt 2 may escalate to Opus.
+// infra = environment/tooling flaked → retry on the same model, never escalate.
+const CONTENT_STAGES = new Set(['checks-failed', 'empty-diff', 'diff-refused', 'implementer-gave-up']);
+const INFRA_STAGES = new Set(['implementer-error', 'timeout', 'parse-error', 'git-error', 'branch-error', 'push-error']);
+
+function classifyFailure(stage) {
+  if (CONTENT_STAGES.has(stage)) return 'content';
+  if (INFRA_STAGES.has(stage)) return 'infra';
+  return 'infra'; // unknown stages never buy a pricier model
+}
+
+// ── Verification plan for a diff ────────────────────────────────────────────
+
+// MOVED (Sprint 2, S2-T1): decideChecks/cardCheckArgv now live in
+// scripts/lib/autonomous-checks.js, the ONE gauntlet the executor and the CI
+// approve tap both run. Re-exported here — by IDENTITY, not by a second copy
+// — so existing callers/tests keep working while parity is structural: there
+// is one function, so the tap cannot drift weaker than the overnight run.
+const { decideChecks, cardCheckArgv } = require('./autonomous-checks.js');
+
+// ── Auth pre-flight (night-1 fix #3) ────────────────────────────────────────
+
+// The implementer shares the Mac Studio's claude CLI credential; an overnight
+// OAuth expiry 401s every call. A cheap ping at run start turns that from a
+// per-card stall into one explicit "run skipped — login expired" ledger line
+// + email line. Classifies the spawnSync result of the ping.
+// Deliberately narrow: an auth verdict is FINAL (no retry, whole night
+// skipped), so bare words like "login"/"credential"/"authentication" must
+// not match — an EACCES on ~/.claude/.credentials.json or a "407 Proxy
+// Authentication Required" is infra, and infra gets a retry.
+const AUTH_ERROR_RE = /\b401\b|authentication_error|unauthoriz|invalid.{0,10}api.?key|api.?key.{0,10}invalid|oauth.{0,30}(expired|invalid|revoked)|token.{0,20}expired|expired.{0,20}token|run \/login|not logged in|please log ?in/i;
+
+function preflightVerdict({ error, status, stdout, stderr } = {}) {
+  if (error && error.code === 'ETIMEDOUT') {
+    return { ok: false, kind: 'infra', detail: 'preflight ping timed out' };
+  }
+  if (error) {
+    // ENOENT etc. — claude CLI missing is an environment problem, not auth.
+    return { ok: false, kind: 'infra', detail: `preflight spawn failed: ${error.message}` };
+  }
+  const text = `${stdout || ''}\n${stderr || ''}`;
+  const parsed = parseClaudeJson(stdout);
+  if (status === 0 && parsed.ok) return { ok: true };
+  const detail = (parsed.ok === false && parsed.error && parsed.error !== 'unparseable claude CLI output'
+    ? parsed.error
+    : text.trim()).slice(0, 300);
+  if (AUTH_ERROR_RE.test(text)) {
+    return { ok: false, kind: 'auth', detail: detail || 'claude CLI reported an authentication error' };
+  }
+  return { ok: false, kind: 'infra', detail: detail || `claude CLI ping exited ${status}` };
+}
+
+// ── Morning email trigger (night-2 fix) ─────────────────────────────────────
+
+// The owner address: config override first, else OWNER_EMAIL from .env —
+// same precedence autonomous-nightly.sh used inline before this moved into
+// the executor so every --live invocation sends the email, not just the
+// launchd-scheduled one. Pure/testable; the caller (live()) injects cfg and
+// env so no real .env read is needed in tests.
+function resolveOwnerEmail(cfg, env) {
+  const fromConfig = (cfg && typeof cfg.ownerEmail === 'string') ? cfg.ownerEmail.trim() : '';
+  if (fromConfig) return fromConfig;
+  const fromEnv = (env && typeof env.OWNER_EMAIL === 'string') ? env.OWNER_EMAIL.trim() : '';
+  return fromEnv || null;
+}
+
+// ── Approval-fatigue throttle ───────────────────────────────────────────────
+
+// More than MAX_OPEN_APPROVALS un-tapped morning items → the night runs
+// triage only, no new attempts (v4 plan §S2-T6). Counting failures upstream
+// pass null/undefined, which throttles too — fail safe, not open.
+const MAX_OPEN_APPROVALS = 8;
+
+function shouldThrottle(openApprovalCount, max = MAX_OPEN_APPROVALS) {
+  if (!Number.isFinite(openApprovalCount)) return true;
+  return openApprovalCount > max;
+}
+
+module.exports = {
+  isAutoMergeable,
+  buildImplementerPrompt,
+  buildDataImplementerPrompt,
+  DATA_CLASS_ALLOWED_PATH_DESC,
+  parseClaudeJson,
+  classifyFailure,
+  CONTENT_STAGES,
+  INFRA_STAGES,
+  decideChecks,
+  cardCheckArgv,
+  preflightVerdict,
+  AUTH_ERROR_RE,
+  shouldThrottle,
+  MAX_OPEN_APPROVALS,
+  resolveOwnerEmail,
+};

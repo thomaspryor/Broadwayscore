@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "description": "Tony Awards categories with verified historical ties — multiple winners in same season/category. Used by scripts/validate-data.js to allow multiple winners only for these entries.",
+    "source": "Wikipedia Tony Awards by Year + Tony Awards official archive"
+  },
+  "ties": [
+    {
+      "season": "1975-76",
+      "category": "Best Actor in a Musical",
+      "winners": ["George Rose (My Fair Lady)", "Barry Bostwick (The Robber Bridegroom)"],
+      "showIds": ["my-fair-lady-1976", "the-robber-bridegroom-1976"]
+    },
+    {
+      "season": "1978-79",
+      "category": "Best Actress in a Play",
+      "winners": ["Constance Cummings (Wings)", "Carole Shelley (The Elephant Man)"],
+      "showIds": ["wings-1979", "the-elephant-man-1979"]
+    },
+    {
+      "season": "1992-93",
+      "category": "Best Original Score",
+      "winners": ["Kiss of the Spider Woman (Kander and Ebb)", "The Who's Tommy (Pete Townshend)"],
+      "showIds": ["kiss-of-the-spider-woman-1993", "the-whos-tommy-1993"]
+    },
+    {
+      "season": "2008-09",
+      "category": "Best Orchestrations",
+      "winners": ["Next to Normal (Tom Kitt)", "Billy Elliot (Martin Koch)"],
+      "showIds": ["next-to-normal-2009", "billy-elliot-the-musical-2008"]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-7519",
+  "planId": "735d91da-3b37-4fa4-bbbe-75969a2210f7",
+  "status": "applied",
+  "createdAt": "2026-11-15T15:00:10.677Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Refresh decayed coverageExpectation claims for ap, broadwaynews, latimes",
+    "steps": [
+      "coverage-expectation-redecide",
+      "coverage-expectation-redecide",
+      "coverage-expectation-redecide"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "ap",
+        "reason": "BRO-7519 scheduled re-probe: decayed reviews claim, measured coverage above floor"
+      },
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "broadwaynews",
+        "reason": "BRO-7519 scheduled re-probe: decayed reviews claim, measured coverage above floor"
+      },
+      {
+        "type": "coverage-expectation-redecide",
+        "outletId": "latimes",
+        "reason": "BRO-7519 scheduled re-probe: decayed reviews claim, measured coverage above floor"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T15:49:52.022Z",
+  "results": [
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "ap: coverageExpectationDecidedAt 2026-10-30 -> 2026-11-15 (measured 5.7%)"
+    },
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "broadwaynews: coverageExpectationDecidedAt 2026-10-30 -> 2026-11-15 (measured 50.5%)"
+    },
+    {
+      "action": "coverage-expectation-redecide",
+      "ok": true,
+      "changed": true,
+      "msg": "latimes: coverageExpectationDecidedAt 2026-10-30 -> 2026-11-15 (measured 17.1%)"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6045",
+  "planId": "b5745d4d-72de-4b8f-80f3-e221db15f6ca",
+  "status": "applied",
+  "createdAt": "2026-10-24T10:57:53.223Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6045: publish the verified BritishTheatre.com Broadway Thérèse Raquin review",
+    "steps": [
+      "Set allowCrossMarket=true on the Stephen Collins review, then rebuild reviews.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "therese-raquin-2015/britishtheatrecom--stephen-collins.json",
+        "field": "allowCrossMarket",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The stored article reviews Evan Cabnet’s Broadway production at Studio 54 with Keira Knightley and Judith Light. The rebuild excludes it as skippedCrossMarket because britishtheatrecom has region=london; production manual clears do not bypass that gate. Source: https://britishtheatre.com/review-therese-raquin-studio-54-4stars/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T19:02:27.710Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/britishtheatrecom--stephen-collins.json allowCrossMarket: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

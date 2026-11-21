@@ -1,0 +1,583 @@
+{
+  "issueNumber": "bro-6428-1314",
+  "planId": "6ddc97ad-6a60-4513-b1d5-ef492b6523b8",
+  "status": "applied",
+  "createdAt": "2026-10-27T10:08:54.886Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 17 closed West End production(s) for 2013-2014 from the historical backfill (we-historical:olt; BRO-6428).",
+    "steps": [
+      "Append the-resistible-rise-of-arturo-ui-west-end-2013 (Duchess Theatre, 2013-09-18 to 2013-12-07)",
+      "Append the-commitments-west-end-2013 (Palace Theatre, 2013-09-21 to 2015-11-01)",
+      "Append from-here-to-eternity-west-end-2013 (Shaftesbury Theatre, 2013-09-30 to 2014-03-29)",
+      "Append twelve-angry-men-west-end-2013 (Garrick Theatre, 2013-11-07 to 2014-06-14)",
+      "Append mojo-west-end-2013 (Harold Pinter Theatre, 2013-10-26 to 2014-02-08)",
+      "Append strangers-on-a-train-west-end-2013 (Gielgud Theatre, 2013-11-02 to 2014-02-22)",
+      "Append eric-and-little-ern-west-end-2013 (Vaudeville Theatre, 2013-11-19 to 2014-03-02)",
+      "Append the-duck-house-west-end-2013 (Vaudeville Theatre, 2013-11-27 to 2014-03-29)",
+      "Append fortunes-fool-west-end-2013 (The Old Vic, 2013-12-06 to 2014-02-22)",
+      "Append stephen-ward-west-end-2013 (Aldwych Theatre, 2013-12-03 to 2014-03-29)",
+      "Append the-full-monty-west-end-2014 (Noël Coward Theatre, 2014-02-20 to 2014-03-29)",
+      "Append other-desert-cities-west-end-2014 (The Old Vic, 2014-03-13 to 2014-05-24)",
+      "Append dirty-rotten-scoundrels-the-musical-west-end-2014 (Savoy Theatre, 2014-03-10 to 2015-03-07)",
+      "Append let-the-right-one-in-west-end-2014 (Apollo Theatre, 2014-03-26 to 2014-08-30)",
+      "Append the-pajama-game-west-end-2014 (Shaftesbury Theatre, 2014-05-02 to 2014-09-13)",
+      "Append miss-saigon-west-end-2014 (Prince Edward Theatre, 2014-05-03 to 2016-02-27)",
+      "Append the-crucible-west-end-2014 (The Old Vic, 2014-06-21 to 2014-09-13)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-resistible-rise-of-arturo-ui-west-end-2013",
+          "title": "The Resistible Rise of Arturo Ui",
+          "slug": "the-resistible-rise-of-arturo-ui-west-end-2013",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2013-09-18",
+          "openingDate": "2013-09-25",
+          "closingDate": "2013-12-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.435Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411045149/http://www.officiallondontheatre.co.uk/london-shows/show/item175971/the-resistible-rise-of-arturo-ui/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-commitments-west-end-2013",
+          "title": "The Commitments",
+          "slug": "the-commitments-west-end-2013",
+          "venue": "Palace Theatre",
+          "previewsStartDate": "2013-09-21",
+          "openingDate": "2013-10-08",
+          "closingDate": "2015-11-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.481Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160417042645/http://www.officiallondontheatre.co.uk/london-shows/show/item183412/the-commitments/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "from-here-to-eternity-west-end-2013",
+          "title": "From Here to Eternity",
+          "slug": "from-here-to-eternity-west-end-2013",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2013-09-30",
+          "openingDate": "2013-10-23",
+          "closingDate": "2014-03-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.507Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410214408/http://www.officiallondontheatre.co.uk/london-shows/show/item170947/from-here-to-eternity/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "twelve-angry-men-west-end-2013",
+          "title": "Twelve Angry Men",
+          "slug": "twelve-angry-men-west-end-2013",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2013-11-07",
+          "openingDate": "2013-11-11",
+          "closingDate": "2014-06-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.529Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410214556/http://www.officiallondontheatre.co.uk/london-shows/show/item196710/twelve-angry-men/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mojo-west-end-2013",
+          "title": "Mojo",
+          "slug": "mojo-west-end-2013",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2013-10-26",
+          "openingDate": "2013-11-13",
+          "closingDate": "2014-02-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.550Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411221056/http://www.officiallondontheatre.co.uk/london-shows/show/item197099/mojo/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "strangers-on-a-train-west-end-2013",
+          "title": "Strangers on a Train",
+          "slug": "strangers-on-a-train-west-end-2013",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2013-11-02",
+          "openingDate": "2013-11-19",
+          "closingDate": "2014-02-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.569Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160410031943/http://www.officiallondontheatre.co.uk/london-shows/show/item198038/strangers-on-a-train/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "eric-and-little-ern-west-end-2013",
+          "title": "Eric and Little Ern",
+          "slug": "eric-and-little-ern-west-end-2013",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2013-11-19",
+          "openingDate": "2013-11-20",
+          "closingDate": "2014-03-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.596Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151220061214/http://www.officiallondontheatre.co.uk:80/london-shows/show/item197213/eric-and-little-ern/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-duck-house-west-end-2013",
+          "title": "The Duck House",
+          "slug": "the-duck-house-west-end-2013",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2013-11-27",
+          "openingDate": "2013-12-10",
+          "closingDate": "2014-03-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.619Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160321052122/http://www.officiallondontheatre.co.uk:80/london-shows/show/item196844/the-duck-house"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fortunes-fool-west-end-2013",
+          "title": "Fortune's Fool",
+          "slug": "fortunes-fool-west-end-2013",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2013-12-06",
+          "openingDate": "2013-12-16",
+          "closingDate": "2014-02-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.641Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170825051956/http://www.officiallondontheatre.co.uk:80/london-shows/show/item199210/fortunes-fool/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "stephen-ward-west-end-2013",
+          "title": "Stephen Ward",
+          "slug": "stephen-ward-west-end-2013",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2013-12-03",
+          "openingDate": "2013-12-19",
+          "closingDate": "2014-03-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.663Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20150223150942/http://www.officiallondontheatre.co.uk/london-shows/show/item191840/stephen-ward/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-full-monty-west-end-2014",
+          "title": "The Full Monty",
+          "slug": "the-full-monty-west-end-2014",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2014-02-20",
+          "openingDate": "2014-02-25",
+          "closingDate": "2014-03-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.685Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160411222309/http://www.officiallondontheatre.co.uk/london-shows/show/item186810/the-full-monty/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "other-desert-cities-west-end-2014",
+          "title": "Other Desert Cities",
+          "slug": "other-desert-cities-west-end-2014",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2014-03-13",
+          "openingDate": "2014-03-24",
+          "closingDate": "2014-05-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.707Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170825051718/http://www.officiallondontheatre.co.uk:80/london-shows/show/item210265/other-desert-cities/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dirty-rotten-scoundrels-the-musical-west-end-2014",
+          "title": "Dirty Rotten Scoundrels the Musical",
+          "slug": "dirty-rotten-scoundrels-the-musical-west-end-2014",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2014-03-10",
+          "openingDate": "2014-04-02",
+          "closingDate": "2015-03-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.730Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20150517052154/http://www.officiallondontheatre.co.uk:80/london-shows/show/item202562/dirty-rotten-scoundrels-the-musical"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "let-the-right-one-in-west-end-2014",
+          "title": "Let the Right One In",
+          "slug": "let-the-right-one-in-west-end-2014",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2014-03-26",
+          "openingDate": "2014-04-07",
+          "closingDate": "2014-08-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.752Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20151007010012/http://www.officiallondontheatre.co.uk:80/london-shows/show/item221186/let-the-right-one-in/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-pajama-game-west-end-2014",
+          "title": "The Pajama Game",
+          "slug": "the-pajama-game-west-end-2014",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2014-05-02",
+          "openingDate": "2014-05-13",
+          "closingDate": "2014-09-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.772Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160405111100/http://www.officiallondontheatre.co.uk/london-shows/show/item208221/the-pajama-game/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "miss-saigon-west-end-2014",
+          "title": "Miss Saigon",
+          "slug": "miss-saigon-west-end-2014",
+          "venue": "Prince Edward Theatre",
+          "previewsStartDate": "2014-05-03",
+          "openingDate": "2014-05-21",
+          "closingDate": "2016-02-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.792Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171007105100/http://www.officiallondontheatre.co.uk:80/london-shows/show/item196416/miss-saigon"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-crucible-west-end-2014",
+          "title": "The Crucible",
+          "slug": "the-crucible-west-end-2014",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2014-06-21",
+          "openingDate": "2014-07-03",
+          "closingDate": "2014-09-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-27T10:08:54.826Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20161006011708/http://www.officiallondontheatre.co.uk:80/london-shows/show/item223246/the-crucible"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T10:36:52.752Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-resistible-rise-of-arturo-ui-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-commitments-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added from-here-to-eternity-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added twelve-angry-men-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mojo-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added strangers-on-a-train-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added eric-and-little-ern-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-duck-house-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fortunes-fool-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added stephen-ward-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-full-monty-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added other-desert-cities-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dirty-rotten-scoundrels-the-musical-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added let-the-right-one-in-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-pajama-game-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added miss-saigon-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-crucible-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

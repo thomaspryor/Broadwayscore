@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "description": "Dated weekly cost figures found in press research (BRO-4989), not yet in commercial.json costHistory. The shadow model reads them beside each record's migrated weeklyRunningCost; the migration writes them into costHistory. 'uncatalogued' holds productions with no commercial.json record, used only by the cost-index backtest.",
+    "fields": "asOf = the period the figure describes (midpoint for an average); kind running-cost | break-even; bound 'min' = the source says 'over'/'well over' (a floor, not a point); verified 'page' = read on the opened page, 'snippet' = search-result text only.",
+    "researchedAt": "2026-10-10"
+  },
+  "anchors": {
+    "hamilton": [
+      { "asOf": "2015-09-15", "amount": 650000, "kind": "running-cost", "sourceType": "industry-estimate", "sourceUrl": "https://deadline.com/2015/09/hamilton-by-the-numbers-anatomy-of-a-broadway-blockbuster-1201534240/", "note": "Deadline's own estimate; producers declined to give a figure", "verified": "snippet" },
+      { "asOf": "2016-02-01", "amount": 658000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "http://broadwayjournal.com/lavish-dolly-earns-modest-returns/", "note": "year-one average fixed weekly expenses", "verified": "page" },
+      { "asOf": "2017-01-31", "amount": 643000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/hamilton-inc-update-creators-producers-clean-up-as-muzzled-cast-waits-for-it", "note": "average fixed weekly expenses, year ended July 2017, excluding royalties and percentage rent", "verified": "page" }
+    ],
+    "the-phantom-of-the-opera-1988": [
+      { "asOf": "2019-06-30", "amount": 850000, "kind": "running-cost", "sourceType": "producer-confirmed", "sourceUrl": "https://www.alternet.org/amp/childhood-dream-andrew-lloyd-webber-2659866701", "note": "Lloyd Webber: pre-pandemic weekly running costs about $850K (reprint of his NYT essay)", "verified": "page" },
+      { "asOf": "2023-04-15", "amount": 976000, "kind": "running-cost", "sourceType": "producer-confirmed", "sourceUrl": "https://www.jerseyeveningpost.com/?p=2494385", "note": "Lloyd Webber to NBC: $952K to $1M a week (midpoint)", "verified": "page" }
+    ],
+    "wicked": [
+      { "asOf": "2023-11-06", "amount": 1000000, "bound": "min", "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "weekly expenses well over $1M (a floor)", "verified": "page" }
+    ],
+    "billy-elliot-the-musical-2008": [
+      { "asOf": "2011-10-15", "amount": 800000, "kind": "running-cost", "sourceType": "industry-estimate", "sourceUrl": "https://www.playgoer.org/2011/10/billy-elliot-and-changing-broadway.html", "note": "blog citing Michael Riedel (NY Post): weekly operating costs $800K", "verified": "page" }
+    ],
+    "come-from-away-2017": [
+      { "asOf": "2018-01-15", "amount": 600000, "kind": "running-cost", "sourceType": "industry-estimate", "sourceUrl": "https://arc-dev.theglobeandmail.com/arts/theatre-and-performance/come-from-away-musical-broadway-investors/article37876442/", "note": "Globe and Mail: about US$600K a week, 'as has been estimated'", "verified": "snippet" }
+    ],
+    "merrily-we-roll-along": [
+      { "asOf": "2023-10-10", "amount": 950000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "weekly nut about $950K", "verified": "page" }
+    ],
+    "back-to-the-future": [
+      { "asOf": "2023-08-03", "amount": 980000, "kind": "break-even", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "must gross at least $980K a week to break even", "verified": "page" }
+    ],
+    "water-for-elephants": [
+      { "asOf": "2024-03-21", "amount": 960000, "kind": "break-even", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "needs at least $960K weekly gross to cover operating expenses (2023 budget)", "verified": "page" }
+    ],
+    "cabaret-2024": [
+      { "asOf": "2024-04-21", "amount": 1160000, "kind": "break-even", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "must gross $1.16M a week to pay operating expenses (budget)", "verified": "page" }
+    ],
+    "gutenberg": [
+      { "asOf": "2023-10-12", "amount": 638000, "kind": "break-even", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "weekly box office break-even $638K", "verified": "page" }
+    ],
+    "good-night-and-good-luck-2025": [
+      { "asOf": "2025-04-03", "amount": 1000000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-rocky-rebound", "note": "running costs about $1M a week (operating papers)", "verified": "page" }
+    ],
+    "boop": [
+      { "asOf": "2025-04-05", "amount": 817000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-rocky-rebound", "note": "fixed weekly expenses $817K (investor estimate)", "verified": "page" }
+    ]
+  },
+  "uncatalogued": {
+    "spider-man-turn-off-the-dark": [
+      { "asOf": "2011-06-14", "amount": 1000000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases", "note": "operating expenses about $1M a week", "verified": "page" },
+      { "asOf": "2013-11-15", "amount": 1000000, "bound": "min", "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://playbill.com/article/broadways-spider-man-turn-off-the-dark-will-have-lost-nearly-60-million-by-closing-date-com-211971", "note": "averages a weekly cost of over $1M", "verified": "page" }
+    ],
+    "hello-dolly-2017": [
+      { "asOf": "2017-10-15", "amount": 850000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "http://broadwayjournal.com/lavish-dolly-earns-modest-returns/", "note": "fixed weekly operating expenses about $850K", "verified": "page" }
+    ],
+    "les-miserables-1987": [
+      { "asOf": "2002-10-02", "amount": 350000, "kind": "running-cost", "sourceType": "trade", "sourceUrl": "https://playbill.com/article/broadways-les-miz-closing-march-15-2003-com-108680", "note": "weekly running costs thought to be about $350K", "verified": "page" }
+    ]
+  }
+}

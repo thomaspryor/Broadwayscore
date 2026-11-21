@@ -1,0 +1,343 @@
+{
+  "issueNumber": "bro-2938-c",
+  "planId": "07a038e5-4214-407f-b2d2-a097e3b99719",
+  "status": "applied",
+  "createdAt": "2026-11-16T00:35:57.940Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2938: clear 22 of the last 23 review-text files whose filename carries a URL as the critic slug: 9 same-url duplicate deletes (plus two empty or third copies), 5 moves over a duplicate copy that points back at them, 9 Unknown-byline renames to outlet--unknown.json (the 23rd, the Matthew Wexler rename, is bro-2938-d)",
+    "steps": [
+      "Delete becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json: same url and same text as deadline--greg-evans.json (file already marked duplicateOf it)",
+      "Delete cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json: same url as one-minute-critic--matthew-wexler.json (complete); this copy is truncated and marked duplicateOf it",
+      "Delete death-of-a-salesman-2026/latimes--httpswwwlatimescompeoplecharles-mcnulty.json: 2022 Broadway review misfiled under the 2026 show (wrongProduction); death-of-a-salesman-2022 already holds this url",
+      "Delete giant-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json: same url as one-minute-critic--matthew-wexler.json; marked duplicateOf it",
+      "Delete giant-2026/one-minute-critic--unknown.json: same url and text as the URL-named copy deleted above (its duplicateOf target); third copy of the Matthew Wexler review",
+      "Delete jajas-african-hair-braiding-2023/ew--httpswwwfacebookcomentertainmentweekly.json: same url as ew--emlyn-travis.json (only utm params differ); marked duplicateOf it",
+      "Delete spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json: same url as chicago-sun-times--graham-meyer.json (complete); this copy is invalid and marked duplicateOf it",
+      "Delete the-price-2017/nytimes--httpswwwnytimescombyalexis-soloski.json: same url as nytimes--alexis-soloski.json (complete, same score); marked duplicateOf it",
+      "Delete oh-mary-west-end-2025/broadwayworld--httpswwwbroadwayworldcomauthoraliya-al-hassan.json: same url as broadwayworld--aliya-al-hassan.json; marked duplicateOf it (a third copy, broadwayworld--unknown.json, also points at that file, so overwriting it would trip the same-url guard)",
+      "Move beetlejuice-2019/observer--httpsobservercomauthorrex-reed.json over observer--rex-reed.json: dest is a same-url same-text copy marked duplicateOf this file",
+      "Move oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json over londonist--will-noble.json: dest is a same-url copy marked duplicateOf this file",
+      "Move the-lost-boys-2026/truehollywoodtalk--httpswwwfacebookcommarkospapadatos.json over truehollywoodtalk--markos-papadatos.json: dest is a same-url same-text copy marked duplicateOf this file",
+      "Move the-music-man-2022/observer--httpsobservercomauthorrex-reed.json over observer--rex-reed.json: dest is an invalid wrongProduction copy of the same url marked duplicateOf this file",
+      "Delete the-notebook-2024/chicago-sun-times--dennis-polkow.json: empty invalid wrongProduction copy of the Steven Oxman review url, filed under the wrong critic and marked duplicateOf the URL-named file",
+      "Move the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json over chicago-sun-times--steven-oxman.json: dest is an empty invalid copy of the same url marked duplicateOf this file",
+      "Rename glengarry-glen-ross-west-end-2026/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename hadestown-west-end-2024/culturemap--httpswwwfacebookcom311748092248591.json to culturemap--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename hamlet-off-broadway-2026/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename harmony-2023/queerty--httpswwwfacebookcomwexlerwrites.json to queerty--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename hercules-west-end-2025/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename home-2024/queerty--httpswwwfacebookcomwexlerwrites.json to queerty--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename orlando-off-broadway-2026/indiependent--httpsmfacebookcom100016996623460.json to indiependent--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename suffs-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline",
+      "Rename the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
+        "description": "Delete becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json: same url and same text as deadline--greg-evans.json (file already marked duplicateOf it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+        "description": "Delete cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json: same url as one-minute-critic--matthew-wexler.json (complete); this copy is truncated and marked duplicateOf it"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2026/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+        "description": "Delete death-of-a-salesman-2026/latimes--httpswwwlatimescompeoplecharles-mcnulty.json: 2022 Broadway review misfiled under the 2026 show (wrongProduction); death-of-a-salesman-2022 already holds this url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "giant-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+        "description": "Delete giant-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json: same url as one-minute-critic--matthew-wexler.json; marked duplicateOf it"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "giant-2026/one-minute-critic--unknown.json",
+        "description": "Delete giant-2026/one-minute-critic--unknown.json: same url and text as the URL-named copy deleted above (its duplicateOf target); third copy of the Matthew Wexler review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jajas-african-hair-braiding-2023/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "description": "Delete jajas-african-hair-braiding-2023/ew--httpswwwfacebookcomentertainmentweekly.json: same url as ew--emlyn-travis.json (only utm params differ); marked duplicateOf it"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json",
+        "description": "Delete spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json: same url as chicago-sun-times--graham-meyer.json (complete); this copy is invalid and marked duplicateOf it"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-price-2017/nytimes--httpswwwnytimescombyalexis-soloski.json",
+        "description": "Delete the-price-2017/nytimes--httpswwwnytimescombyalexis-soloski.json: same url as nytimes--alexis-soloski.json (complete, same score); marked duplicateOf it"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-west-end-2025/broadwayworld--httpswwwbroadwayworldcomauthoraliya-al-hassan.json",
+        "description": "Delete oh-mary-west-end-2025/broadwayworld--httpswwwbroadwayworldcomauthoraliya-al-hassan.json: same url as broadwayworld--aliya-al-hassan.json; marked duplicateOf it (a third copy, broadwayworld--unknown.json, also points at that file, so overwriting it would trip the same-url guard)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "beetlejuice-2019/observer--httpsobservercomauthorrex-reed.json",
+        "destPath": "beetlejuice-2019/observer--rex-reed.json",
+        "overwrite": true,
+        "description": "Move beetlejuice-2019/observer--httpsobservercomauthorrex-reed.json over observer--rex-reed.json: dest is a same-url same-text copy marked duplicateOf this file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json",
+        "destPath": "oh-mary-west-end-2025/londonist--will-noble.json",
+        "overwrite": true,
+        "description": "Move oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json over londonist--will-noble.json: dest is a same-url copy marked duplicateOf this file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lost-boys-2026/truehollywoodtalk--httpswwwfacebookcommarkospapadatos.json",
+        "destPath": "the-lost-boys-2026/truehollywoodtalk--markos-papadatos.json",
+        "overwrite": true,
+        "description": "Move the-lost-boys-2026/truehollywoodtalk--httpswwwfacebookcommarkospapadatos.json over truehollywoodtalk--markos-papadatos.json: dest is a same-url same-text copy marked duplicateOf this file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-music-man-2022/observer--httpsobservercomauthorrex-reed.json",
+        "destPath": "the-music-man-2022/observer--rex-reed.json",
+        "overwrite": true,
+        "description": "Move the-music-man-2022/observer--httpsobservercomauthorrex-reed.json over observer--rex-reed.json: dest is an invalid wrongProduction copy of the same url marked duplicateOf this file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-notebook-2024/chicago-sun-times--dennis-polkow.json",
+        "description": "Delete the-notebook-2024/chicago-sun-times--dennis-polkow.json: empty invalid wrongProduction copy of the Steven Oxman review url, filed under the wrong critic and marked duplicateOf the URL-named file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json",
+        "destPath": "the-notebook-2024/chicago-sun-times--steven-oxman.json",
+        "overwrite": true,
+        "description": "Move the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json over chicago-sun-times--steven-oxman.json: dest is an empty invalid copy of the same url marked duplicateOf this file"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "glengarry-glen-ross-west-end-2026/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "destPath": "glengarry-glen-ross-west-end-2026/ew--unknown.json",
+        "description": "Rename glengarry-glen-ross-west-end-2026/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hadestown-west-end-2024/culturemap--httpswwwfacebookcom311748092248591.json",
+        "destPath": "hadestown-west-end-2024/culturemap--unknown.json",
+        "description": "Rename hadestown-west-end-2024/culturemap--httpswwwfacebookcom311748092248591.json to culturemap--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hamlet-off-broadway-2026/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "destPath": "hamlet-off-broadway-2026/ew--unknown.json",
+        "description": "Rename hamlet-off-broadway-2026/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "harmony-2023/queerty--httpswwwfacebookcomwexlerwrites.json",
+        "destPath": "harmony-2023/queerty--unknown.json",
+        "description": "Rename harmony-2023/queerty--httpswwwfacebookcomwexlerwrites.json to queerty--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hercules-west-end-2025/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "destPath": "hercules-west-end-2025/ew--unknown.json",
+        "description": "Rename hercules-west-end-2025/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "home-2024/queerty--httpswwwfacebookcomwexlerwrites.json",
+        "destPath": "home-2024/queerty--unknown.json",
+        "description": "Rename home-2024/queerty--httpswwwfacebookcomwexlerwrites.json to queerty--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "orlando-off-broadway-2026/indiependent--httpsmfacebookcom100016996623460.json",
+        "destPath": "orlando-off-broadway-2026/indiependent--unknown.json",
+        "description": "Rename orlando-off-broadway-2026/indiependent--httpsmfacebookcom100016996623460.json to indiependent--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "suffs-2024/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "destPath": "suffs-2024/ew--unknown.json",
+        "description": "Rename suffs-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json",
+        "destPath": "the-lonely-few-off-broadway-2024/ew--unknown.json",
+        "description": "Rename the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json to ew--unknown.json: criticName is Unknown and the slug is a Facebook page, not a byline"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T01:34:15.080Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/latimes--httpswwwlatimescompeoplecharles-mcnulty.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted giant-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted giant-2026/one-minute-critic--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jajas-african-hair-braiding-2023/ew--httpswwwfacebookcomentertainmentweekly.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-tour-2025/chicago-sun-times--httpschicagosuntimescomgraham-meyer-for-wbez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-price-2017/nytimes--httpswwwnytimescombyalexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-west-end-2025/broadwayworld--httpswwwbroadwayworldcomauthoraliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved beetlejuice-2019/observer--httpsobservercomauthorrex-reed.json → beetlejuice-2019/observer--rex-reed.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json → oh-mary-west-end-2025/londonist--will-noble.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-lost-boys-2026/truehollywoodtalk--httpswwwfacebookcommarkospapadatos.json → the-lost-boys-2026/truehollywoodtalk--markos-papadatos.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-music-man-2022/observer--httpsobservercomauthorrex-reed.json → the-music-man-2022/observer--rex-reed.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-notebook-2024/chicago-sun-times--dennis-polkow.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-notebook-2024/chicago-sun-times--httpschicagosuntimescomsteven-oxman.json → the-notebook-2024/chicago-sun-times--steven-oxman.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved glengarry-glen-ross-west-end-2026/ew--httpswwwfacebookcomentertainmentweekly.json → glengarry-glen-ross-west-end-2026/ew--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hadestown-west-end-2024/culturemap--httpswwwfacebookcom311748092248591.json → hadestown-west-end-2024/culturemap--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hamlet-off-broadway-2026/ew--httpswwwfacebookcomentertainmentweekly.json → hamlet-off-broadway-2026/ew--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved harmony-2023/queerty--httpswwwfacebookcomwexlerwrites.json → harmony-2023/queerty--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hercules-west-end-2025/ew--httpswwwfacebookcomentertainmentweekly.json → hercules-west-end-2025/ew--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved home-2024/queerty--httpswwwfacebookcomwexlerwrites.json → home-2024/queerty--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved orlando-off-broadway-2026/indiependent--httpsmfacebookcom100016996623460.json → orlando-off-broadway-2026/indiependent--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved suffs-2024/ew--httpswwwfacebookcomentertainmentweekly.json → suffs-2024/ew--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-lonely-few-off-broadway-2024/ew--httpswwwfacebookcomentertainmentweekly.json → the-lonely-few-off-broadway-2024/ew--unknown.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6573-b",
+  "planId": "cba1bad7-7b95-4caa-9bf8-3dc62906296f",
+  "status": "applied",
+  "createdAt": "2026-10-30T03:05:32.688Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6573: publish dates for Blade (King) and WPRO (Rau) Bodyguard tour reviews",
+    "steps": [
+      "byline/pubDate from the Blade story metadata (pubDate Fri 16 Oct 2026)",
+      "publish date 2026-10-26 from the WPRO story dateline (task brief)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/the-blade--lillian-king.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-16",
+        "description": "byline/pubDate from the Blade story metadata (pubDate Fri 16 Oct 2026)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bodyguard-tour-2026/wpro--kimberly-rau.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-10-26",
+        "description": "publish date 2026-10-26 from the WPRO story dateline (task brief)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T03:30:37.850Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bodyguard-tour-2026/the-blade--lillian-king.json publishDate: null -> \"2026-10-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bodyguard-tour-2026/wpro--kimberly-rau.json publishDate: null -> \"2026-10-26\""
+    }
+  ],
+  "executedIn": "ci"
+}

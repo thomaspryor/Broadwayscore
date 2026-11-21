@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4271",
+  "planId": "735da409-f6c1-435d-be0a-ef9f802f2849",
+  "status": "applied",
+  "createdAt": "2026-09-29T05:53:28.781Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore the real publish date (2023-06-15) on the 2023 Time Out London School Girls review. A show-not-mentioned URL recovery on 2026-09-11 swapped its url to a Time Out New York listing and took that page date (2026-09-10); the url was later reverted (BRO-4153) but the date stayed.",
+    "steps": [
+      "Set publishDate 2026-09-10 -> 2023-06-15 on school-girls-or-the-african-mean-girls-play-2026/timeout-london--alice-saville.json (date as it stood before commit 86cfffd00 in broadway-review-texts)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/timeout-london--alice-saville.json",
+        "field": "publishDate",
+        "oldValue": "2026-09-10",
+        "newValue": "2023-06-15",
+        "description": "Undo a date inherited from a reverted wrong-edition url (BRO-4271); the file stays wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T09:17:08.459Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/timeout-london--alice-saville.json publishDate: \"2026-09-10\" -> \"2023-06-15\""
+    }
+  ]
+}

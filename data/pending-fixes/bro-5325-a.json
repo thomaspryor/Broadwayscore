@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5325-a",
+  "planId": "82ba251d-2c91-4b44-b8e2-473d2f2cb469",
+  "status": "applied",
+  "createdAt": "2026-10-14T03:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5325 (a): file Terry Teachout's WSJ reviews of Venus in Fur (2011) and Of Mice and Men (2014), which exist only inside the stored multi-review columns of godspell-2011 and act-one-2014, into those shows' own rows. venus-in-fur-2011's row holds a 220-char excerpt about another production (Reilly/Caradog); of-mice-and-men-2014 has no Teachout row (its only WSJ row is the AP copy, wrongAttribution).",
+    "steps": [
+      "copy-multishow-section.js godspell-2011 -> venus-in-fur-2011 (fill)",
+      "copy-multishow-section.js act-one-2014 -> of-mice-and-men-2014 (create)",
+      "then llm-ensemble-score.yml show_id per show, needs_rescore=true"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=godspell-2011/wsj--terry-teachout.json --to-show=venus-in-fur-2011 --expect-start=If_it_s_possible_to_become --expect-end=fry_a_carton_of_eggs_on_her --apply",
+        "description": "Copy the 996-char Venus in Fur section (single Samuel J. Friedman box) into venus-in-fur-2011/wsj--terry-teachout.json, replacing the wrong-production excerpt stub; url becomes the column url; refuses unless the venue-box section is unambiguous and starts/ends with the named words."
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=act-one-2014/wsj--terry-teachout.json --to-show=of-mice-and-men-2014 --expect-start=When_not_writing_plays_with_Moss_Hart --expect-end=with_any_regularity_on_Broadway --apply",
+        "description": "Create of-mice-and-men-2014/wsj--terry-teachout.json from the 2564-char Of Mice and Men section (single Longacre box) of the 2014-04-17 column; same refusals."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:59:51.534Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ]
+}

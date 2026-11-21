@@ -1,0 +1,309 @@
+{
+  "issueNumber": "bro-2882-c",
+  "planId": "73b386b0-e9ed-4b9a-a2a3-a593bec29c06",
+  "status": "applied",
+  "createdAt": "2026-10-13T01:58:57.671Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2882: 71 edits on 35 review files whose humanReviewScore was written by the text-only extractor prepass (a machine star read) instead of a person. Each is marked humanReviewScoreProvisional=true with a note, so getBestScore falls through to the stored originalScore / anchored LLM score. orphans-2013/timeout--david-cote also has its originalScore cleared: its 5/5 came from page chrome about a different show. joe-turners-come-and-gone-2026/nypost--johnny-oleksinski is left alone: an operator _locked it. Two duplicate files (sinatra thestage--unknown, trainspotting city-am--unknown) are skipped: they are already excluded as duplicateOf a named sibling. (part 3 of 3)",
+    "steps": [
+      "Set humanReviewScoreProvisional=true and a humanReviewNote on each file.",
+      "Clear originalScore on orphans-2013/timeout--david-cote.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 60 came from the extractor prepass (unicode-stars-fallthrough), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/nysr--david-finkle.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 80 came from the extractor prepass (unicode-stars), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/nysr--david-finkle.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 60 came from the extractor prepass (omc-alt-text), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/thestage--unknown.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 60 came from the extractor prepass (stage-star-svg), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/thestage--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/nypost--johnny-oleksinski.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 88 came from the extractor prepass (css-stars), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/nypost--johnny-oleksinski.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/timeout--adam-feldman.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 80 came from the extractor prepass (unicode-stars-fallthrough), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/timeout--adam-feldman.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-standard-of-living-west-end-2026/whatsonstage--sarah-crompton.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 80 came from the extractor prepass (wos-star-images), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-standard-of-living-west-end-2026/whatsonstage--sarah-crompton.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/city-am--adam-bloodworth.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 80 came from the extractor prepass (unicode-stars-fallthrough), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-west-end-2024/city-am--adam-bloodworth.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trainspotting-the-musical-west-end-2026/city-am--steve-dinneen.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 20 came from the extractor prepass (unicode-stars-fallthrough), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trainspotting-the-musical-west-end-2026/city-am--steve-dinneen.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/nysr--elysa-gardner.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 60 came from the extractor prepass (unicode-stars), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/nysr--elysa-gardner.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "war-horse-west-end-2026/city-am--steve-dinneen.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2882: humanReviewScore 80 came from the extractor prepass (unicode-stars-fallthrough), not a person. Provisional lets the normal ladder decide."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "war-horse-west-end-2026/city-am--steve-dinneen.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.",
+        "description": "BRO-2882: record why the human slot is provisional."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:42:24.516Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/nysr--david-finkle.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/nysr--david-finkle.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/thestage--unknown.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/thestage--unknown.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/nypost--johnny-oleksinski.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/nypost--johnny-oleksinski.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/timeout--adam-feldman.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/timeout--adam-feldman.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-standard-of-living-west-end-2026/whatsonstage--sarah-crompton.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-standard-of-living-west-end-2026/whatsonstage--sarah-crompton.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/city-am--adam-bloodworth.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-west-end-2024/city-am--adam-bloodworth.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trainspotting-the-musical-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trainspotting-the-musical-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/nysr--elysa-gardner.json humanReviewScoreProvisional: false -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/nysr--elysa-gardner.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "war-horse-west-end-2026/city-am--steve-dinneen.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "war-horse-west-end-2026/city-am--steve-dinneen.json humanReviewNote: null -> \"BRO-2882: this score was written by the text-only extractor prepass (a machine star read), not by a person. Marked provisional so the rebuild uses the normal score ladder.\""
+    }
+  ]
+}

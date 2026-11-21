@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-11-15T16:36:35.483Z",
+  "leg": "openai",
+  "sampled": 818,
+  "usable": 806,
+  "paired": 806,
+  "controlFailed": 12,
+  "scoredBoth": 736,
+  "sharesControl": {
+    "Rave": 0.28061408515095443,
+    "Positive": 0.36676774866703094,
+    "Mixed": 0.18124838238589486,
+    "Negative": 0.08711912311611424,
+    "Pan": 0.02342469971179523,
+    "rejected": 0.06082596096820939
+  },
+  "sharesShadow": {
+    "Rave": 0.3130096107855254,
+    "Positive": 0.36692903030337637,
+    "Mixed": 0.13726770945531577,
+    "Negative": 0.1011753396060829,
+    "Pan": 0.021836189408814925,
+    "rejected": 0.059782120440883754
+  },
+  "movedOver5Pts": 0.053,
+  "bucketFlips": 0.1101,
+  "gates": {
+    "bucketShiftPp": {
+      "pass": true,
+      "value": {
+        "Rave": 3.24,
+        "Positive": 0.02,
+        "Mixed": -4.4,
+        "Negative": 1.41,
+        "Pan": -0.16
+      },
+      "limit": 5
+    },
+    "meanDrift": {
+      "pass": true,
+      "value": 0.12,
+      "limit": 2
+    },
+    "rejectionDelta": {
+      "pass": true,
+      "value": -0.1,
+      "limit": 2
+    },
+    "showDrift": {
+      "pass": false,
+      "value": {
+        "showsChecked": 4,
+        "showsOver": 1,
+        "worst": [
+          {
+            "showId": "the-great-gatsby-tour-2026",
+            "n": 5,
+            "meanDelta": -2.8
+          }
+        ]
+      },
+      "limit": 0.1
+    },
+    "legAccuracy": {
+      "pass": false,
+      "value": {
+        "control": 2.48,
+        "shadow": 3.6,
+        "n": 121
+      },
+      "limit": 1
+    },
+    "shadowErrors": {
+      "pass": true,
+      "value": {
+        "shadow": 0,
+        "control": 0
+      },
+      "limit": 0.01
+    }
+  },
+  "allPass": false
+}

@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5162",
+  "planId": "7eb127a7-1cfb-4c2e-8007-efe4bf5fee79",
+  "status": "applied",
+  "createdAt": "2026-10-28T10:55:43.692Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5162: clear/repair malformed review url values on shipped rows",
+    "steps": [
+      "big-fish-2013/northjerseycom--robert-feldberg.json: url",
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json: url",
+      "oliver-west-end-2024/times-uk--clive-davis.json: url",
+      "picnic-2013/newsday--steve-parks.json: url",
+      "summer-2018/deadline--greg-evans.json: url"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/northjerseycom--robert-feldberg.json",
+        "field": "url",
+        "oldValue": "https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20family,%20centering%20on%20the%20rocky%20relationship%20of%20father%20and%20son;%20a%20fantasy,%20with%20appearances%20by%20a%20witch,%20a%20giant,%20a%20werewolf%20and%20a%20mermaid;%20and,%20under%20the%20dynamic%20direction%20of%20Susan%20Stroman,%20a%20big,%20eye-catching,%20mainstream%20Broadway%20musical,%20with%20dazzling%20scenery,%20clever%20staging%20and%20characters%20who%20dance%20at%20the%20drop%20of%20a%20note.%20(A%20parody%20of%20an%20old-fashioned%20patriotic%20number%20ends%20with%20red,%20white%20and%20blue%20streamers%20raining%20down%20on%20the%20heads%20of%20the%20audience.).%20%20-%20See%20more%20at:%20http://www.northjersey.com/arts_entertainment/226701621_A_celebration_of_tall_tales__set_to_music.html#sthash.wNO5vgR5.dpuf",
+        "newValue": "",
+        "description": "big-fish-2013/northjerseycom--robert-feldberg.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json",
+        "field": "url",
+        "oldValue": "https://Here We Are review — Sondheim’s last musical is utterly absorbing https://www.thetimes.com/article/ba6b1207-22ea-437a-bd91-ac545659c452?shareToken=14e0d8371d88d8963471262dde745e3b",
+        "newValue": "",
+        "description": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/times-uk--clive-davis.json",
+        "field": "url",
+        "oldValue": "http://Oliver! gets its first big makeover in 30 years — and it’s gorgeous https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f?shareToken=5073b9f984665e904f621177d95d19d4",
+        "newValue": "",
+        "description": "oliver-west-end-2024/times-uk--clive-davis.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-2018/deadline--greg-evans.json",
+        "field": "url",
+        "oldValue": "https://%C2%A0http://deadline.com/2018/04/summer-the-donna-summer-musical-broadway-review-lachanze-disco-1202374030/",
+        "newValue": "",
+        "description": "summer-2018/deadline--greg-evans.json: url"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T13:14:06.469Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "big-fish-2013/northjerseycom--robert-feldberg.json url: \"https://The%20show%20is%20a%20triple-decker:%20an%20intimate%20story%20of%20a%20family,%20centering%20on%20the%20rocky%20relationship%20of%20father%20and%20son;%20a%20fantasy,%20with%20appearances%20by%20a%20witch,%20a%20giant,%20a%20werewolf%20and%20a%20mermaid;%20and,%20under%20the%20dynamic%20direction%20of%20Susan%20Stroman,%20a%20big,%20eye-catching,%20mainstream%20Broadway%20musical,%20with%20dazzling%20scenery,%20clever%20staging%20and%20characters%20who%20dance%20at%20the%20drop%20of%20a%20note.%20(A%20parody%20of%20an%20old-fashioned%20patriotic%20number%20ends%20with%20red,%20white%20and%20blue%20streamers%20raining%20down%20on%20the%20heads%20of%20the%20audience.).%20%20-%20See%20more%20at:%20http://www.northjersey.com/arts_entertainment/226701621_A_celebration_of_tall_tales__set_to_music.html#sthash.wNO5vgR5.dpuf\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--unknown.json url: \"https://Here We Are review — Sondheim’s last musical is utterly absorbing https://www.thetimes.com/article/ba6b1207-22ea-437a-bd91-ac545659c452?shareToken=14e0d8371d88d8963471262dde745e3b\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/times-uk--clive-davis.json url: \"http://Oliver! gets its first big makeover in 30 years — and it’s gorgeous https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f?shareToken=5073b9f984665e904f621177d95d19d4\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-2018/deadline--greg-evans.json url: \"https://%C2%A0http://deadline.com/2018/04/summer-the-donna-summer-musical-broadway-review-lachanze-disco-1202374030/\" -> \"\""
+    }
+  ],
+  "executedIn": "ci"
+}

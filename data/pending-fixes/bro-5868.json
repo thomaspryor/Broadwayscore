@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-5868",
+  "planId": "4fa67a5b-2caa-43f1-b6a6-02e4ae56da00",
+  "status": "applied",
+  "createdAt": "2026-10-22T14:08:23.147Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5868: add a commercial entry for The Little Prince (2022) with its SEC Form D offering amount, labeled an estimate. All Out, Pass Over, Carousel, Beetlejuice and Dorian Gray leads have no citable source and are left out.",
+    "steps": [
+      "add-commercial-entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-little-prince-2022",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": 5250000,
+          "capitalizationSource": "Estimate from an SEC Form D filed Feb 7, 2022 by Little Prince Broadway Limited Partnership (New York, signed Jan 20, 2022): total offering amount $5,250,000. A Form D states the offering target, not final capitalization. https://www.sec.gov/Archives/edgar/data/1905475/000189709222000001/primary_doc.xml",
+          "notes": "Limited run at the Broadway Theatre (previews Mar 29, 2022; opened Apr 11; closed May 8, 2022). No recoupment or final capitalization reported; the $5.25M is the Form D offering target and is an estimate.",
+          "sources": [
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1905475/000189709222000001/primary_doc.xml",
+              "date": "2022-02-07"
+            }
+          ]
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-little-prince-2022",
+        "showId": "the-little-prince-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "the-little-prince-2022: capitalization is the Form D offering target, an estimate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T14:50:58.576Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-little-prince-2022 (TBD)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-little-prince-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

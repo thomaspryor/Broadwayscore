@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-7250-d261117-r9",
+  "planId": "520af131-3ae2-435e-9eb3-ea79c3e35ce8",
+  "status": "applied",
+  "createdAt": "2026-11-17T21:31:40.967Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7250: 2 local productions from theatre season pages",
+    "steps": [
+      "add life-and-times-of-michael-k-regional-2027",
+      "add arcadia-regional-2027"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add life-and-times-of-michael-k-regional-2027",
+        "show": {
+          "id": "life-and-times-of-michael-k-regional-2027",
+          "title": "Life & Times of Michael K",
+          "slug": "life-and-times-of-michael-k-regional-2027",
+          "venue": "ArtsEmerson, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-01-31",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-02-09",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "https://artsemerson.org/events/life-times-of-michael-k/#tickets"
+          ],
+          "images": {
+            "poster": "/images/shows/life-and-times-of-michael-k-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/life-and-times-of-michael-k-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add arcadia-regional-2027",
+        "show": {
+          "id": "arcadia-regional-2027",
+          "title": "Arcadia",
+          "slug": "arcadia-regional-2027",
+          "venue": "Central Square Theater, Cambridge, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-02-04",
+          "openingDateSource": "production page \"com/trs/account/2462) Arcadia February 4 - 28, 2027 Buy Ticke\" (http://www.centralsquaretheater.org/shows/arcadia-2027/)",
+          "closingDate": "2027-02-28",
+          "closingDateSource": "production page \"com/trs/account/2462) Arcadia February 4 - 28, 2027 Buy Ticke\" (http://www.centralsquaretheater.org/shows/arcadia-2027/)",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "http://www.centralsquaretheater.org/shows/arcadia-2027/"
+          ],
+          "images": {
+            "poster": "/images/shows/arcadia-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/arcadia-regional-2027/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T21:37:42.796Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added arcadia-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

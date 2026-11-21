@@ -1,0 +1,70 @@
+{
+  "issueNumber": "bro-5073-b",
+  "planId": "2239d47c-6f8e-4088-b1bc-55b097f35d4f",
+  "status": "applied",
+  "createdAt": "2026-10-11T20:08:54.672Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Great Comet: add the reported share of investment returned (15%, BroadwayWorld 2017) as a dated, cited range",
+    "steps": [
+      "Set estimatedRecoupmentPct [10,20], its source and date on the Great Comet record"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          20
+        ],
+        "description": "great-comet: reported \"returned 15%\" figure, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "BroadwayWorld (Oct 18, 2017, O'Henry Report): \"a show that routinely grossed over one million dollars per week only returned 15% of its investment.\" https://www.broadwayworld.com/industry/article/BWWs-Theatre-Business-Podcast-The-OHenry-Report-Goes-Inside-the-Numbers-that-Led-to-NATASHA-PIERRE-THE-GREAT-COMET-OF-1812s-Closing-20171018",
+        "description": "great-comet: reported \"returned 15%\" figure, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2017-10-18",
+        "description": "great-comet: reported \"returned 15%\" figure, quote checked on the page (BRO-5073)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T22:17:05.151Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    }
+  ]
+}

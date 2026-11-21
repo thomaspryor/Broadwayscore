@@ -1,0 +1,359 @@
+{
+  "issueNumber": "bro-5089-k",
+  "planId": "db6db094-4312-4029-9038-1e558a1c137b",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.562Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 11/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "old-times-2015",
+        "field": "synopsis",
+        "oldValue": "Old Times is a play by Harold Pinter. It was first performed by the Royal Shakespeare Company at the Aldwych Theatre in London on 1 June 1971. It starred Colin Blakely, Dorothy Tutin, and Vivien Merchant, and was directed by Peter Hall.",
+        "newValue": null,
+        "description": "old-times-2015: synopsis cleared (production history of another staging, no story): The synopsis describes the 1971 Royal Shakespeare Company premiere (Colin Blakely, Dorothy Tutin, Vivien Merchant, director Peter Hall), which does not match the 2015 Broadway production at the Todd H (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-2013",
+        "field": "synopsis",
+        "oldValue": "Picnic is a 1953 play by William Inge. The play premiered at the Music Box Theatre, Broadway, on 19 February 1953 in a Theatre Guild production, directed by Joshua Logan, which ran for 477 performances. The original cast featured Ralph Meeker, Eileen Heckart, Arthur O'Connell, Janice Rule, Reta Shaw, Kim Stanley and Paul Newman.",
+        "newValue": null,
+        "description": "picnic-2013: synopsis cleared (production history of another staging, no story): The synopsis describes the play's 1953 Broadway premiere and original cast (Joshua Logan, Paul Newman, etc.), which are from a different production than the 2012-2013 Todd Haimes Theatre listing. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-boy-2011",
+        "field": "synopsis",
+        "oldValue": "Man and Boy is a play by Terence Rattigan. It was first performed at The Queen's Theatre, London, and Brooks Atkinson Theatre, New York, in 1963, with Charles Boyer starring as Gregor Antonescu.",
+        "newValue": null,
+        "description": "man-and-boy-2011: synopsis cleared (production history of another staging, no story): The synopsis describes the play's original 1963 premiere (Queen's Theatre and a 1963 Broadway run with Charles Boyer) rather than the 2011 Broadway revival at the Brooks Atkinson/Todd Haimes Theatre d (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elling-2010",
+        "field": "synopsis",
+        "oldValue": "Elling is a 2007 theatre adaptation by Simon Bent of the 2001 film of the same name. The film and play is based on the book of the same name of Norwegian author Ingvar Ambjørnsen. A different (and less successful) version of the play premiered on Broadway on November 21, 2010 using a completely different cast and director, it closed on November 28, 2010, after 9 performances and 22 previews.",
+        "newValue": null,
+        "description": "elling-2010: synopsis cleared (production history of another staging, no story): The synopsis conflates productions: Simon Bent's adaptation (originally staged in 2007) is correct, but the Broadway run in November 2010 at the Ethel Barrymore was the Broadway production—the line cl (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "american-buffalo-2008",
+        "field": "synopsis",
+        "oldValue": "American Buffalo is a 1975 play by American playwright David Mamet that had its premiere in a showcase production at the Goodman Theatre, Chicago. After two additional showcase productions, it opened on Broadway in 1977.",
+        "newValue": null,
+        "description": "american-buffalo-2008: synopsis cleared (production history of another staging, no story): The text describes the play's 1975 Goodman Theatre premiere and early productions rather than the 2008 Broadway/Belasco Theatre run, so it refers to a different production. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-country-girl-2008",
+        "field": "synopsis",
+        "oldValue": "The Country Girl is a 1950 dramatic play by American playwright Clifford Odets which was subsequently adapted as a film of the same name in 1954, starring Bing Crosby and Grace Kelly.\nUta Hagen played the title role of Georgie Elgin in its original production, with Paul Kelly as her husband Frank, and Steven Hill as theatre director Bernie Dodd.",
+        "newValue": null,
+        "description": "the-country-girl-2008: synopsis cleared (production history of another staging, no story): The synopsis describes the 1950 play and original/film casting (Uta Hagen, Bing Crosby, Grace Kelly) rather than the 2008 Broadway revival at the Bernard B. Jacobs Theatre directed by Mike Nichols, wh (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "losing-louie-2006",
+        "field": "synopsis",
+        "oldValue": "Losing Louis a play by Simon Mendes da Costa, is a black comedy which first premiered at the Hampstead Theatre, London, on 24 January 2005. It was produced by Michael Codron and starred Alison Steadman and Lynda Bellingham and was directed by Robin Lefevre. Following Hampstead Theatre it transferred immediately to the West End before embarking on a No 1.",
+        "newValue": null,
+        "description": "losing-louie-2006: synopsis cleared (production history of another staging, no story): The synopsis describes the original Hampstead/West End production details (premiere date, director Robin Lefevre, cast Alison Steadman/Lynda Bellingham) rather than the Broadway Samuel J. Friedman 200 (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "flower-drum-song-2002",
+        "field": "synopsis",
+        "oldValue": "Flower Drum Song was the eighth musical by the team of Rodgers and Hammerstein. It is based on the 1957 novel, The Flower Drum Song, by Chinese-American author C. It premiered on Broadway in 1958 and was then performed in the West End and on tour. It was adapted for a 1961 musical film. After their extraordinary early successes, beginning with Oklahoma!",
+        "newValue": null,
+        "description": "flower-drum-song-2002: synopsis cleared (production history of another staging, no story): The synopsis describes the original 1958 premiere and history of Rodgers and Hammerstein’s Flower Drum Song and misattributes credits (e.g., listing David Chase as ‘Playwright’ instead of David Henry  (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ah-wilderness-1998",
+        "field": "synopsis",
+        "oldValue": "Ah, Wilderness! is a comedy play by American playwright Eugene O'Neill that premiered on Broadway at the Guild Theatre on October 2, 1933. It differs from a typical O'Neill play in its happy ending for the central character, and depiction of a happy family in turn-of-the-century America. It is O'Neill's only well-known comedy.",
+        "newValue": null,
+        "description": "ah-wilderness-1998: synopsis cleared (production history of another staging, no story): The synopsis describes the play's original 1933 Broadway premiere at the Guild Theatre and general play attributes rather than the 1998 Vivian Beaumont Theatre production, so it refers to a different  (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twilight-los-angeles-1992-1994",
+        "field": "synopsis",
+        "oldValue": "Twilight: Los Angeles, 1992 is a one-woman play written and originally performed by Anna Deavere Smith, an American actress, playwright and professor. It is about the infamous 1992 Los Angeles riots. It was originally commissioned by the Mark Taper Forum in Los Angeles and premiered there in 1993. The original Broadway production opened at the Cort Theatre and won the Lucille Lortel Award for Outstanding Revival, out of four nominations.",
+        "newValue": null,
+        "description": "twilight-los-angeles-1992-1994: synopsis cleared (production history of another staging, no story): The synopsis mixes productions—while Smith’s one-woman play did premiere at the Mark Taper Forum (1993) and later played Broadway in 1994, claiming the original Broadway production opened at the Cort  (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stanley-1997",
+        "field": "synopsis",
+        "oldValue": "Stanley is a 1996 play written by English playwright Pam Gems. The play premiered at the Royal National Theatre's Cottesloe Theatre in London.",
+        "newValue": null,
+        "description": "stanley-1997: synopsis cleared (production history of another staging, no story): The page lists a 1997 Broadway run at Circle in the Square, but the synopsis describes the play's 1996 premiere at the National Theatre in London, i.e., a different production/location. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sarafina-1988",
+        "field": "synopsis",
+        "oldValue": "is a South African musical by Mbongeni Ngema and Hugh Masekela depicting students involved in the Soweto Riots, in opposition to apartheid. It was also adapted into a 1992 film starring Whoopi Goldberg and Leleti Khumalo. premiered on Broadway on 28 January 1988, at the Cort Theatre, and closed on 2 July 1989, after 597 performances and 11 previews.",
+        "newValue": null,
+        "description": "sarafina-1988: synopsis cleared (production history of another staging, no story): The synopsis correctly describes Sarafina! as the South African musical about the Soweto student protests and its 1992 film adaptation, but the Broadway premiere date, theatre name/credit details (Hug (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joe-turners-come-and-gone-1988",
+        "field": "synopsis",
+        "oldValue": "Joe Turner's Come and Gone is a play by American playwright August Wilson. It is the second installment of his decade-by-decade chronicle of the African-American experience, The Pittsburgh Cycle, also known as The Century Cycle. The play was first staged 1984 at the Eugene O'Neill Theater Center and opened on Broadway in 1989.",
+        "newValue": null,
+        "description": "joe-turners-come-and-gone-1988: synopsis cleared (production history of another staging, no story): The synopsis correctly describes the play and its 1984 O'Neill staging, but incorrectly states the Broadway opening year as 1989 whereas the listed run at the Ethel Barrymore was in 1988. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "synopsis",
+        "oldValue": "Not Now, Darling is a 1967 farce written by English playwrights John Chapman and Ray Cooney, first staged at the Richmond Theatre, in Richmond, England prior to a long West End run. The production starred Donald Sinden and Bernard Cribbins, with Jill Melford, Mary Kenton, Brian Wilde, Carmel McSharry and Ann Sidney.",
+        "newValue": null,
+        "description": "not-now-darling-1970: synopsis cleared (production history of another staging, no story): The synopsis describes the 1967 Richmond/West End staging and its UK cast (Donald Sinden, Bernard Cribbins, etc.), not the 1970 Broadway Brooks Atkinson production in New York. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-1983",
+        "field": "synopsis",
+        "oldValue": "A View from the Bridge is a play by American playwright Arthur Miller. It was first staged on September 29, 1955, as a one-act verse drama with A Memory of Two Mondays at the Coronet Theatre on Broadway.",
+        "newValue": null,
+        "description": "a-view-from-the-bridge-1983: synopsis cleared (production history of another staging, no story): The synopsis describes the play's 1955 Coronet Theatre premiere (and incorrectly calls it a 'one-act verse drama') rather than the 1983 Ambassador Theatre Broadway production credited to Arvin Brown. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-present-2017",
+        "field": "synopsis",
+        "oldValue": "Platonov (, also known as Fatherlessness and A Play Without a Title) written specifically for Maria Yermolova, rising star of Maly Theatre. Yermolova rejected the play and it was not published until 1923. The lead character is Mikhail Platonov, a disillusioned provincial schoolmaster. The play is set in a dilapidated country house in the Russian provinces.",
+        "newValue": null,
+        "description": "the-present-2017: synopsis cleared (another work): The Broadway play The Present is Andrew Upton’s adaptation of Chekhov’s Platonov, but the synopsis given recounts the original Platonov’s publication history and setup rather than describing Upton’s s (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sylvia-2015",
+        "field": "synopsis",
+        "oldValue": "Starting with a flash-forward to Sylvia's expulsion from the Women's Social and Political Union (WSPU) in 1913, the work returns to Sylvia and Christabel's childhood, their memories of their father Richard's death, the early days of the WSPU, Christabel's relationship with Annie Kenney, the death of Sylvia's brother Frank and particularly Sylvia's close but on-off relationship with Keir Hardie.",
+        "newValue": null,
+        "description": "sylvia-2015: synopsis cleared (another work): The Broadway play Sylvia by A.R. Gurney (2015) is a comedy about a couple and their dog, whereas the given synopsis describes Sylvia Pankhurst and suffragette history, a different subject entirely. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-1994",
+        "field": "synopsis",
+        "oldValue": "\"Beauty and the Beast\" is a fairy tale written by the French novelist Gabrielle-Suzanne Barbot de Villeneuve and published anonymously in 1740 in La Jeune Américaine et les contes marins (The Young American and Marine Tales).\nVilleneuve's original story was abridged, revised, and published by French novelist Jeanne-Marie Leprince de Beaumont in 1756 in Magasin des enfants (Children's Collection) which became the most commonly retold version.",
+        "newValue": null,
+        "description": "beauty-and-the-beast-1994: synopsis cleared (another work): The text summarizes the 18th-century fairy-tale sources (Villeneuve/Beaumont) rather than describing the plot or characters of the 1994 Broadway musical production at the Palace Theatre. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-three-sisters-1996",
+        "field": "synopsis",
+        "oldValue": "At the beginning of World War I, in 1914, three sisters travel the English countryside with their widowed father Will Barbour, a traveling photographer who works at local fairs. The eldest daughter, Tiny, is engaged to Eustace, an earnest if slightly dull constable, although she is attracted to George, an adventurous carnival performer.",
+        "newValue": null,
+        "description": "the-three-sisters-1996: synopsis cleared (another work): The synopsis describes an English-family, WWI-era carnival story with characters like Tiny and Will Barbour, which does not match Chekhov's Three Sisters (Russian sisters Olga, Masha, Irina longing fo (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cost-of-living-2022",
+        "field": "synopsis",
+        "oldValue": "\"Cost of Living\" is a powerful exploration of the human experience, where the lives of four strangers intersect in unexpected ways. Marlee, a graduate student with cerebral palsy, and Eddie, a truck driver with a troubled past, forge an unlikely connection, while Jess, a wealthy woman, and John, her ex-husband, navigate the complexities of their relationship. As their stories unfold, the play delves into themes of disability, class, and the true cost of living, leaving audiences deeply moved and contemplating the depth of the human experience.",
+        "newValue": null,
+        "description": "cost-of-living-2022: synopsis cleared (invented plot details): The synopsis misstates key plot details — Eddie is not a truck driver (he is a caregiver with a troubled past) and elements like Marlee being a graduate student are not central facts in Martyna Majok’ (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beetlejuice-2022",
+        "field": "synopsis",
+        "oldValue": "In the quirky supernatural comedy \"Beetlejuice\", a recently deceased young woman named Lydia discovers the mischievous and outrageous bio-exorcist Beetlejuice, who promises to help her connect with the other side. But when Beetlejuice's antics spiral out of control, Lydia and her family must find a way to stop him before he takes over the living world. With its wild visuals, infectious music, and a devilishly funny lead character, \"Beetlejuice\" is a wild, irreverent ride that will leave audiences thoroughly entertained.",
+        "newValue": null,
+        "description": "beetlejuice-2022: synopsis cleared (invented plot details): The synopsis incorrectly states Lydia is recently deceased (she's a living goth teenager who befriends the deceased Maitlands); this misstates a central plot fact of Beetlejuice. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "suddenly-last-summer-1995",
+        "field": "synopsis",
+        "oldValue": "In 1936, in the Garden District of New Orleans, Mrs. Violet Venable, an elderly socialite widow from a prominent local family, has invited a doctor to her home. She talks nostalgically about her son Sebastian, a poet who died under mysterious circumstances in Spain the previous summer. Mary, a private mental institution, at her expense since returning to America.",
+        "newValue": null,
+        "description": "suddenly-last-summer-1995: synopsis cleared (invented plot details): The synopsis misnames the key witness (it’s Catherine/Catharine Holly, not 'Mary') and garbles her being in a private mental institution, introducing details not in Tennessee Williams’s play. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-in-yonkers-1991",
+        "field": "synopsis",
+        "oldValue": "In Brooklyn in 1942, Evelyn Kurnitz has just died following a lengthy illness. She refuses. After a threat by Bella, she lets them stay without ever saying they could stay. Despite their grandmother owning and operating a candy store, Jay and Arty do not like their new living situation. Into their collective lives returns one of Eddie and Bella's other siblings, Louie Kurnitz, a henchman for some gangsters.",
+        "newValue": null,
+        "description": "lost-in-yonkers-1991: synopsis cleared (invented plot details): The synopsis is garbled and contains incorrect or invented details about character actions and relationships (the original play concerns two boys sent to live with their strict grandmother and Aunt Be (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-sons-west-end-2019",
+        "field": "synopsis",
+        "oldValue": "In post-World War II America, a prosperous manufacturer confronts dark secrets from his past when his son returns home alive—a son he believed dead. As the family's comfortable lies unravel, Joe Keller must reckon with his wartime decisions and their devastating human cost, forcing a reckoning between personal ambition and moral responsibility that threatens to destroy everything he holds dear.",
+        "newValue": null,
+        "description": "all-my-sons-west-end-2019: synopsis cleared (invented plot details): The synopsis incorrectly claims a son returns home alive whom Joe believed dead, whereas in Arthur Miller's All My Sons the presumed-dead son (Larry) never returns and the drama centers on Joe Keller' (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it, read and confirmed); the production-verified enricher refills it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:24:37.425Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for old-times-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for picnic-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for man-and-boy-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for elling-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for american-buffalo-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-country-girl-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for losing-louie-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for flower-drum-song-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ah-wilderness-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for twilight-los-angeles-1992-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for stanley-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sarafina-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for joe-turners-come-and-gone-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for not-now-darling-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-view-from-the-bridge-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-present-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for beauty-and-the-beast-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-three-sisters-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for cost-of-living-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for suddenly-last-summer-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lost-in-yonkers-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for all-my-sons-west-end-2019"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-7170",
+  "planId": "cd6db46a-d8fb-46a3-8780-c7b3bc4c1483",
+  "status": "applied",
+  "createdAt": "2026-11-08T22:23:26.954Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retype two ENO productions at the London Coliseum (Trial By Jury & The Zoo; Angel's Bone) from special/play to opera so they leave the West End lists and appear in the Opera section",
+    "steps": [
+      "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.type",
+      "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.openingDate",
+      "shows.json: angels-bone-west-end-2026.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trial-by-jury-and-the-zoo-english-national-opera-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "opera",
+        "description": "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trial-by-jury-and-the-zoo-english-national-opera-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-03-04",
+        "description": "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "angels-bone-west-end-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "opera",
+        "description": "shows.json: angels-bone-west-end-2026.type"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T01:52:27.664Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for angels-bone-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

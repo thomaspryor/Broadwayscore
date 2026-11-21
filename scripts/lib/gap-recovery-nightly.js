@@ -1,0 +1,374 @@
+'use strict';
+/**
+ * gap-recovery-nightly.js — pure pieces of the nightly review-text recovery
+ * job (BRO-7171 Stage 3): the nightly summary row, the ACTION alerts, and the
+ * one aggregated owner digest line.
+ *
+ * Why a committed jsonl row and not owner-alert-router: the owner's morning
+ * digest is sent from GitHub Actions (morning-digest-action.yml, since
+ * 2026-11-02) on a fresh public-repo checkout. It cannot see the Mac or the
+ * private review-texts repo, and the router's digest queue
+ * (data/audit/alert-digest-queue.json) is a tracked non-jsonl file that
+ * sync-audit-checkout.sh resets on the Mac and only CI's health-check drains.
+ * So the nightly job appends ONE counts-only row per night to
+ * data/audit/gap-recovery-nightly.jsonl (merge=union) and publishes it; the
+ * digest renders the latest row. Alerts live on that row, so an alert shows
+ * every morning while its condition holds and stops when it clears: durable
+ * and consumed, with no queue to drain.
+ *
+ * Row: { ts, runId, status: 'ran'|'dry_run'|'disabled'|'busy'|'failed',
+ *        openTotal, openRecent, needsDecision, attempted, accepted, recovered,
+ *        byStrategy, reopened, pendingStuck, authFailedStreak, ceiling,
+ *        ceilingHit, pushFailed, alerts: [{key, text}] }
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const NIGHTLY_REL = path.join('data', 'audit', 'gap-recovery-nightly.jsonl');
+const DEFAULT_NIGHTLY_CEILING = 60;
+const PENDING_STUCK_HOURS = 24;
+// Same set as gap-recovery-ledger INERT_STRATEGIES (parity-tested). Not
+// required from there: the morning digest loads this file and must stay on
+// node built-ins (the ledger pulls review-guards -> scraper -> playwright).
+const INERT = new Set(['URL_FIND_PROBE']);
+const AUTH_STREAK_ALERT = 2;
+// BRO-7944: 26h. Run ~02:30 ET, digest ~08:00 ET (normal age ~6h): no row in 26h means a night was missed
+// (2026-11-20 was missed silently; launchctl showed runs=0), and yesterday must not show as today.
+const STALE_ROW_HOURS = 26;
+const ZERO_YIELD_NIGHTS = 3;
+
+// Skip reasons that mean a strategy has used up its tries (review-guards
+// shouldRetryFetch / shouldRetryUrlDiscovery), as opposed to a cooldown.
+// superseded_at_url: another writer's newer text at this url stands (gap-recovery-ledger).
+// lost_loop_at_url: our free-fetch accepts at this url keep being undone (BRO-7171).
+const EXHAUSTED_REASONS = new Set(['abandoned', 'max_retries_reached', 'collector_abandoned', 'collector_max_retries_reached', 'superseded_at_url', 'lost_loop_at_url']);
+
+function nightlyPathDefault(root = path.join(__dirname, '..', '..')) {
+  return process.env.GAP_RECOVERY_NIGHTLY_PATH || path.join(root, NIGHTLY_REL);
+}
+
+function readNightlyRows(file = nightlyPathDefault()) {
+  let text;
+  try { text = fs.readFileSync(file, 'utf8'); } catch { return []; }
+  const out = [];
+  for (const line of text.split('\n')) {
+    if (!line.trim()) continue;
+    try { const j = JSON.parse(line); if (j && j.ts && j.status) out.push(j); } catch { /* torn line */ }
+  }
+  // merge=union appends the other side's rows after ours: order by ts.
+  return out.sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts));
+}
+
+function appendNightlyRow(row, file = nightlyPathDefault()) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.appendFileSync(file, JSON.stringify(row) + '\n');
+}
+
+/** Nightly accepted-review ceiling (configurable; conservative first-week default). */
+function nightlyCeiling(env = process.env) {
+  const s = String(env.GAP_RECOVERY_NIGHTLY_CEILING || '').trim();
+  return /^\d+$/.test(s) ? Number(s) : DEFAULT_NIGHTLY_CEILING;
+}
+
+/**
+ * Counts from the driver's dry-run plan (candidates of every open gap).
+ * needsDecision = gaps on historic shows (>2y) with no automatic strategy
+ * left because every try was used up: the batch the owner will be asked to
+ * close (revised plan item 7; recent shows are never in it).
+ */
+function planCounts(candidates) {
+  let openTotal = 0; let openRecent = 0; let needsDecision = 0; let excludedRecords = 0;
+  for (const c of candidates || []) {
+    // BRO-7942: a wrongShow/wrongProduction record is not a recoverable gap (the gate refuses it
+    // before looking at text); 483 of them inflated openTotal. Reported on their own.
+    if ((c.skipped || []).some((k) => k.strategy === 'ANY' && k.reason === 'excluded_record')) { excludedRecords++; continue; }
+    openTotal++;
+    if (c.recency === 'recent') { openRecent++; continue; }
+    if (c.strategy) continue;
+    const reasons = (c.skipped || []).map((k) => String(k.reason));
+    if (reasons.some((r) => EXHAUSTED_REASONS.has(r)) && !reasons.some((r) => r === 'cooldown' || r === 'collector_cooldown')) needsDecision++;
+  }
+  return { openTotal, openRecent, needsDecision, excludedRecords };
+}
+
+/** Reviews whose latest ledger row is pending_push and older than PENDING_STUCK_HOURS. */
+function pendingStuckCount(ledgerRows, nowMs = Date.now()) {
+  const latest = new Map();
+  for (const r of ledgerRows || []) {
+    if (INERT.has(r.strategy)) continue; // read-only probe, never resolves a push
+    const t = Date.parse(r.ts || '');
+    const prev = latest.get(r.reviewKey);
+    if (!prev || t >= prev.t) latest.set(r.reviewKey, { t, outcome: r.outcome });
+  }
+  let n = 0;
+  for (const v of latest.values()) {
+    if (v.outcome === 'pending_push' && Number.isFinite(v.t) && nowMs - v.t > PENDING_STUCK_HOURS * 3600e3) n++;
+  }
+  return n;
+}
+
+/** Last row that actually ran the live driver (not dry-run/disabled/busy). */
+function lastRanRow(rows) {
+  for (let i = (rows || []).length - 1; i >= 0; i--) if (rows[i].status === 'ran') return rows[i];
+  return null;
+}
+
+/** Last row whose driver run produced a summary (ran or failed): the auth-streak base. */
+function lastSummaryRow(rows) {
+  for (let i = (rows || []).length - 1; i >= 0; i--) if (rows[i].status === 'ran' || rows[i].status === 'failed') return rows[i];
+  return null;
+}
+
+/**
+ * auth_failed streak in nights. A night with no browser attempt at all (screen
+ * locked, no GUI) says nothing about the login: the streak carries over.
+ * @param {{authFailed:boolean, authOk:boolean}} tonight
+ */
+function nextAuthStreak(prevRow, tonight) {
+  const prev = (prevRow && Number(prevRow.authFailedStreak)) || 0;
+  if (tonight.authFailed) return prev + 1;
+  if (tonight.authOk) return 0;
+  return prev;
+}
+
+/**
+ * Per-site streaks: site A failing one night and site B the next is not "B
+ * failed 2 nights". A site not tried tonight carries its streak.
+ * @returns {Record<string, number>} only sites with a streak > 0
+ */
+function nextAuthStreaks(prevRow, failedOutlets = [], okOutlets = []) {
+  const prev = (prevRow && prevRow.authFailedStreaks && typeof prevRow.authFailedStreaks === 'object') ? prevRow.authFailedStreaks : {};
+  const out = {};
+  for (const [k, v] of Object.entries(prev)) if (Number(v) > 0) out[k] = Number(v);
+  for (const o of okOutlets) delete out[o];
+  for (const o of failedOutlets) out[o] = (prev[o] ? Number(prev[o]) : 0) + 1;
+  return out;
+}
+
+/**
+ * BRO-7944: a strategy that attempted work on each of the last N ran nights (tonight
+ * included) and got 0 accepted on every one. A strategy not attempted tonight does
+ * not extend or break the streak: only nights it was attempted count.
+ * @param {Array} prevRows earlier nightly rows (status 'ran')
+ * @param {object} byStrategy tonight's summary.byStrategy ({S: {attempted, accepted}})
+ * @returns {string[]} strategy names, sorted
+ */
+function zeroYieldStrategies(prevRows, byStrategy, nights = ZERO_YIELD_NIGHTS) {
+  const ran = (prevRows || []).filter((r) => r.status === 'ran');
+  const out = [];
+  for (const [name, b] of Object.entries(byStrategy || {})) {
+    if (!b || !(b.attempted > 0) || b.accepted > 0) continue;
+    if (INERT.has(name)) continue;
+    let streak = 1;
+    for (let i = ran.length - 1; i >= 0 && streak < nights; i--) {
+      const p = (ran[i].byStrategy || {})[name];
+      if (!p || !(p.attempted > 0)) continue; // not attempted that night: neutral
+      if (p.accepted > 0) break;
+      streak++;
+    }
+    if (streak >= nights) out.push(name);
+  }
+  return out.sort();
+}
+
+/**
+ * BRO-7944 missed-run alarm: no nightly row (dry runs do not count) in `hours`.
+ * Pure. Returns the alert, or null when a row is fresh or the job has never run.
+ */
+function missedRunAlert(rows, nowMs = Date.now(), hours = STALE_ROW_HOURS) {
+  const real = (rows || []).filter((r) => r.status !== 'dry_run');
+  if (!real.length) return null;
+  const last = real[real.length - 1];
+  const ageH = (nowMs - Date.parse(last.ts)) / 3600e3;
+  if (Number.isFinite(ageH) && ageH <= hours) return null;
+  const ran = lastRanRow(real);
+  return { key: 'missed_run', text: `no nightly recovery run was recorded in the last ${hours} hours${ran ? ` (last ran ${new Date(ran.ts).toISOString().slice(0, 10)})` : ''}; check the Mac's scheduled job` };
+}
+
+/**
+ * ACTION alerts only (no per-outlet noise): lost browser session for 2+
+ * nights, a pending push stuck past a day or failed tonight, reconcile
+ * reopening recovered reviews, the nightly ceiling hit, the run failing.
+ * @returns {Array<{key:string, text:string}>} plain-English, owner-readable
+ */
+function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0, pushFailed = false, reopened = 0, ceilingHit = false, ceiling = DEFAULT_NIGHTLY_CEILING, runFailed = false, runError = '', timeBudgetHit = false, zeroStrategies = [], methodErrorRates = [] }) {
+  const out = [];
+  if (authFailedStreak >= AUTH_STREAK_ALERT) {
+    const who = authOutlets.length ? authOutlets.join(', ') : 'a subscriber site';
+    out.push({ key: 'browser_session_lost', text: `the Mac's ${who} login has failed ${authFailedStreak} nights in a row, so those reviews are not being recovered until it is logged in again` });
+  }
+  if (pushFailed || pendingStuck > 0) {
+    out.push({ key: 'pending_push_stuck', text: pushFailed
+      ? 'recovered texts could not be uploaded tonight; they are saved and the next run retries them first'
+      : `${pendingStuck} recovered text${pendingStuck === 1 ? ' has' : 's have'} waited more than a day to upload` });
+  }
+  if (reopened > 0) out.push({ key: 'reconcile_reopened', text: `${reopened} review${reopened === 1 ? '' : 's'} marked recovered had lost the recovered text and ${reopened === 1 ? 'was' : 'were'} reopened` });
+  if (ceilingHit) out.push({ key: 'ceiling_hit', text: `the nightly limit of ${ceiling} recovered reviews was reached, so more are waiting for the next night` });
+  if (timeBudgetHit) out.push({ key: 'time_budget_hit', text: 'the nightly run stopped because it used up its time budget before finishing the plan' });
+  if (zeroStrategies.length) out.push({ key: 'strategy_zero_yield', text: `${zeroStrategies.join(', ')} recovered nothing for ${ZERO_YIELD_NIGHTS} nights in a row while being tried` });
+  if (methodErrorRates.length) {
+    const who = methodErrorRates.map((b) => `${b.method} (${b.errored} of ${b.runs} lookups failed${b.lastError ? `: ${String(b.lastError).slice(0, 60)}` : ''})`).join('; ');
+    out.push({ key: 'url_find_method_failing', text: `a link-finding route is failing most of the time, so those reviews are not being searched: ${who}` });
+  }
+  if (runFailed) out.push({ key: 'run_failed', text: `the nightly run stopped with an error${runError ? ` (${String(runError).slice(0, 80)})` : ''}` });
+  return out;
+}
+
+/**
+ * Build tonight's row from the pieces the nightly entrypoint gathered.
+ * @param {object} a
+ * @param {object|null} a.summary driver --summary output ({attempted, accepted, landed, byStrategy, ceilingHit, pushFailed, authFailedOutlets, authOkOutlets, error})
+ * @param {object} a.counts planCounts()
+ * @param {number} a.reopened reconcile reopen count
+ * @param {number} a.superseded of those, recoveries another writer replaced (no alert)
+ * @param {Array} a.ledgerRows all ledger rows after the run
+ * @param {Array} a.prevRows earlier nightly rows
+ */
+function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superseded = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0, ownerBatch = null }) {
+  const s = summary || {};
+  // Streaks carry across busy/disabled/dry nights and count failed nights too.
+  const base = summary ? lastSummaryRow(prevRows) : null;
+  const authFailedStreaks = summary
+    ? nextAuthStreaks(base, s.authFailedOutlets || [], s.authOkOutlets || [])
+    : { ...((lastSummaryRow(prevRows) || {}).authFailedStreaks || {}) };
+  const authFailedStreak = Object.values(authFailedStreaks).reduce((m, v) => Math.max(m, v), 0);
+  const authFailedOutlets = Object.keys(authFailedStreaks).filter((k) => authFailedStreaks[k] >= AUTH_STREAK_ALERT).sort();
+  const pendingStuck = pendingStuckCount(ledgerRows, nowMs);
+  // A push failure has its own alert; it is not also a "run failed".
+  const runFailed = (status === 'failed' || driverExit !== 0) && !s.pushFailed;
+  const row = {
+    ts: new Date(nowMs).toISOString(),
+    runId,
+    status,
+    openTotal: counts ? counts.openTotal : null,
+    openRecent: counts ? counts.openRecent : null,
+    needsDecision: counts ? counts.needsDecision : null,
+    attempted: s.attempted || 0,
+    accepted: s.accepted || 0,
+    // BRO-7942: recovered = landed AND the tier went up; landed-without-gain is reported apart.
+    recovered: Number.isFinite(s.landedImproved) ? s.landedImproved : (s.landed || 0),
+    landedNoTierGain: Number.isFinite(s.landedImproved) ? Math.max(0, (s.landed || 0) - s.landedImproved) : null,
+    excludedRecords: counts ? counts.excludedRecords : null,
+    slots: s.slots || null,
+    urlFindSpentMin: Number.isFinite(s.urlFindSpentMin) ? s.urlFindSpentMin : null,
+    byStrategy: s.byStrategy || {},
+    reopened,
+    // Of reopened: another writer re-fetched the same url and its newer text
+    // stands (gap-recovery-ledger SUPERSEDED_REASON). Not a loss, no alert.
+    superseded,
+    pendingStuck,
+    authFailedStreak,
+    authFailedStreaks,
+    authFailedOutlets,
+    ceiling,
+    ceilingHit: !!s.ceilingHit,
+    timeBudgetHit: !!s.timeBudgetHit,
+    pushFailed: !!s.pushFailed,
+    // Stage 4: an unanswered owner batch (gap-terminal.js --owner-batch): count + file name only.
+    ownerBatchPending: ownerBatch && Number.isFinite(Number(ownerBatch.count))
+      ? { count: Number(ownerBatch.count), date: ownerBatch.date || null, file: ownerBatch.file ? path.basename(String(ownerBatch.file)) : null }
+      : null,
+  };
+  row.zeroYieldStrategies = status === 'ran' ? zeroYieldStrategies(prevRows, row.byStrategy) : [];
+  row.urlFindMethodErrors = status === 'ran' ? require('./url-find-method-health').urlFindMethodErrorRates(ledgerRows, { nowMs }) : [];
+  row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
+    timeBudgetHit: row.timeBudgetHit, zeroStrategies: row.zeroYieldStrategies,
+    authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,
+    methodErrorRates: row.urlFindMethodErrors, reopened: Math.max(0, reopened - superseded), ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
+  });
+  return row;
+}
+
+const fmt = (n) => Number(n).toLocaleString('en-US');
+
+/**
+ * The ONE aggregated owner line for the morning digest, or null when the job
+ * has never run. Plain English, no ids.
+ * @param {Array} rows readNightlyRows()
+ * @returns {string|null}
+ */
+function renderDigestLine(rows, nowMs = Date.now()) {
+  const real = (rows || []).filter((r) => r.status !== 'dry_run');
+  if (!real.length) return null;
+  const last = real[real.length - 1];
+  const ageH = (nowMs - Date.parse(last.ts)) / 3600e3;
+  if (!Number.isFinite(ageH) || ageH > STALE_ROW_HOURS) {
+    const ran = lastRanRow(real);
+    return `Review texts: the nightly recovery did not run last night${ran ? ` (last ran ${new Date(ran.ts).toISOString().slice(0, 10)})` : ''}. Needs attention: ${missedRunAlert(real, nowMs).text}.`;
+  }
+  if (last.status === 'disabled') return 'Review texts: the nightly recovery is switched off.';
+  if (last.status === 'busy') return 'Review texts: the nightly recovery was skipped last night because a manual recovery was running.';
+  const bits = [];
+  if (Number.isFinite(last.openRecent)) {
+    const prev = lastRanRow(real.slice(0, -1));
+    let change = '';
+    if (prev && Number.isFinite(prev.openRecent)) {
+      const d = last.openRecent - prev.openRecent;
+      change = d < 0 ? ` (${fmt(-d)} fewer than the night before)` : d > 0 ? ` (${fmt(d)} more than the night before)` : ' (no change)';
+    }
+    bits.push(`${fmt(last.openRecent)} reviews of recent shows still lack their full text${change}`);
+  }
+  bits.push(`${fmt(last.recovered || 0)} recovered last night`);
+  const ob = last.ownerBatchPending;
+  if (ob && ob.count > 0) {
+    bits.push(`${fmt(ob.count)} older ones are waiting for your yes or no${ob.file ? ` (${ob.file} in your claude-outputs folder)` : ''}`);
+  } else if (Number.isFinite(last.needsDecision)) {
+    bits.push(`${fmt(last.needsDecision)} older ones ${last.needsDecision === 1 ? 'has' : 'have'} run out of automatic options and will need your decision`);
+  }
+  let line = `Review texts: ${bits.join('; ')}.`;
+  if (last.status === 'failed' && !(last.alerts || []).some((a) => a.key === 'run_failed')) line += ' The nightly run stopped with an error.';
+  const alerts = (last.alerts || []).map((a) => a.text).filter(Boolean);
+  if (alerts.length) line += ` Needs attention: ${alerts.join('; ')}.`;
+  const fl = outletFloorLine(last.outletFloors);
+  if (fl) line += ` ${fl}`;
+  return line;
+}
+
+/** The counts-only slice of check-outlet-fulltext-floors.js --json kept on the nightly row (BRO-7702). Pure. */
+function outletFloorSummary(v) {
+  if (!v || typeof v !== 'object' || !Array.isArray(v.outlets)) return null;
+  return {
+    ok: !!v.ok,
+    below: v.outlets.filter((x) => x.below).map((x) => ({ outlet: x.outlet, pct: x.pct, floor: x.floor, unattempted: x.unattempted })),
+    failingOutlets: v.failingOutlets || [],
+    staleUnattempted: (v.staleUnattempted || []).length,
+  };
+}
+
+/** One plain-English digest sentence for the floor verdict; null when every outlet is at its floor. Pure. */
+function outletFloorLine(f) {
+  if (!f || (f.ok && !(f.below || []).length)) return null;
+  const parts = [];
+  if ((f.below || []).length) parts.push(`below the full-text target: ${f.below.map((b) => `${b.outlet} ${b.pct}% (target ${b.floor}%)`).join(', ')}`);
+  if (f.staleUnattempted) parts.push(`${fmt(f.staleUnattempted)} major-outlet review${f.staleUnattempted === 1 ? '' : 's'} missing text for over a week with no recovery attempt yet`);
+  return `Major outlets ${parts.join('; ')}.`;
+}
+
+module.exports = {
+  zeroYieldStrategies,
+  missedRunAlert,
+  ZERO_YIELD_NIGHTS,
+  outletFloorSummary,
+  outletFloorLine,
+  INERT_STRATEGIES: INERT,
+  NIGHTLY_REL,
+  DEFAULT_NIGHTLY_CEILING,
+  PENDING_STUCK_HOURS,
+  AUTH_STREAK_ALERT,
+  STALE_ROW_HOURS,
+  EXHAUSTED_REASONS,
+  nightlyPathDefault,
+  readNightlyRows,
+  appendNightlyRow,
+  nightlyCeiling,
+  planCounts,
+  pendingStuckCount,
+  lastRanRow,
+  lastSummaryRow,
+  nextAuthStreak,
+  nextAuthStreaks,
+  decideAlerts,
+  buildNightlyRow,
+  renderDigestLine,
+};

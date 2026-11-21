@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7663",
+  "planId": "9cb05923-0e5e-4bc2-a2c6-e05ecbfcebfc",
+  "status": "applied",
+  "createdAt": "2026-11-17T12:03:50.651Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "the-fantasticks-2026: hide phantom New York Daily News row. nydailynews--unknown.json is an excerpt-only BWW roundup row (no critic, no url, score 85) whose quote is verbatim from Joe Dziemianowicz's New York Theatre Guide review (nytg--joe-dziemianowicz.json, live). BWW now lists the quote under New York Theatre Guide. The real Daily News review (Chris Jones) is already hidden as a syndicated copy of his Chicago Tribune review.",
+    "steps": [
+      "the-fantasticks-2026/nydailynews--unknown.json: wrongAttribution",
+      "the-fantasticks-2026/nydailynews--unknown.json: wrongAttributionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-fantasticks-2026/nydailynews--unknown.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-fantasticks-2026/nydailynews--unknown.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fantasticks-2026/nydailynews--unknown.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-7663: BWW roundup credited Joe Dziemianowicz New York Theatre Guide quote to New York Daily News; the same text is live as nytg--joe-dziemianowicz.json",
+        "description": "the-fantasticks-2026/nydailynews--unknown.json: wrongAttributionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T13:08:50.432Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fantasticks-2026/nydailynews--unknown.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fantasticks-2026/nydailynews--unknown.json wrongAttributionReason: null -> \"BRO-7663: BWW roundup credited Joe Dziemianowicz New York Theatre Guide quote to New York Daily News; the same text is live as nytg--joe-dziemianowicz.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

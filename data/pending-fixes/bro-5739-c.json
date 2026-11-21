@@ -1,0 +1,103 @@
+{
+  "issueNumber": "bro-5739-c",
+  "planId": "8560c688-a549-4dae-9af2-fdbc9b522e4f",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5739-c: null art on 2 more live shows whose image is another production (The Human Body poster on The Lives of Others; a four-title season graphic on Three and a Bit) and mark noReliableArt.",
+    "steps": [
+      "the-lives-of-others-west-end-2026: null images, add noReliableArt marker; files removed in the same land.",
+      "three-and-a-bit-off-west-end-2027: null images, add noReliableArt marker; files removed in the same land."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lives-of-others-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-lives-of-others-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-lives-of-others-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/the-lives-of-others-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-lives-of-others-west-end-2026: art is another production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lives-of-others-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another production (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "the lives of others|adelphi theatre|2026-10-29"
+        },
+        "description": "the-lives-of-others-west-end-2026: mark noReliableArt so the image sweep does not re-attach it (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-and-a-bit-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/three-and-a-bit-off-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "three-and-a-bit-off-west-end-2027: art is another production; null so the placeholder shows (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-and-a-bit-off-west-end-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another production (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "three and a bit|almeida theatre|"
+        },
+        "description": "three-and-a-bit-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach it (BRO-5739)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T12:57:49.169Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lives-of-others-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-lives-of-others-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for three-and-a-bit-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for three-and-a-bit-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

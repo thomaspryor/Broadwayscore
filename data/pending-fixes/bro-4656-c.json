@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-4656-c",
+  "planId": "504b6015-cd0e-4959-9bbf-d8d37386b779",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4656: the Galinda book review that bro-4656-b could not find (renamed by critic backfill) is flagged wrongShow on the Wicked tour, plus its West End copy.",
+    "steps": [
+      "Flag wrongShow on the two remaining copies of the 1 Minute Critic Galinda novel review."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wicked-tour-2021/one-minute-critic--lauren-emily-whalen.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "1 Minute Critic review of Gregory Maguire's novel 'Galinda: A Charmed Childhood' (page title: \"book review\"), not a Wicked production. outlet-listing-poller matched it; findMatchingShows now skips book reviews (landed b27feb17). Renamed from one-minute-critic--unknown.json by the critic backfill, so bro-4656-b missed it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-west-end-2021/one-minute-critic--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "1 Minute Critic review of Gregory Maguire's novel 'Galinda: A Charmed Childhood' (page title: \"book review\"), not a Wicked production. outlet-listing-poller matched it; findMatchingShows now skips book reviews (landed b27feb17). Already excluded as wrongProduction; wrongShow is the accurate reason."
+      }
+    ]
+  },
+  "executedAt": "2026-10-06T00:43:39.975Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-tour-2021/one-minute-critic--lauren-emily-whalen.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-west-end-2021/one-minute-critic--unknown.json wrongShow: null -> true"
+    }
+  ]
+}
