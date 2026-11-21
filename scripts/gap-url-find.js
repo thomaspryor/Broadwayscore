@@ -92,13 +92,14 @@ async function main() {
   const fetched = new Map();
   for (const [i, row] of rows.entries()) {
     const { review } = row;
-    const show = shows.get(review.showId || row.reviewKey.split('/')[0]) || null;
+    // Folder wins over the showId field (BRO-7996), same as the rebuild.
+    const show = shows.get(row.reviewKey.split('/')[0] || review.showId) || null;
     const title = (show && show.title) || review.showTitle || row.reviewKey.split('/')[0];
     const ce = corpus.get(review.outletId) || { urls: [], samples: [] };
     const profile = UF.learnOutletProfile(ce.urls);
     const hosts = UF.outletHosts(review.outletId, profile, registry);
     if (!profile.hosts.length) profile.hosts = hosts.slice(0, 2);
-    const ctx = { review: { ...review, showId: review.showId || row.reviewKey.split('/')[0] }, show, title, profile, hosts,
+    const ctx = { review: { ...review, showId: row.reviewKey.split('/')[0] || review.showId }, show, title, profile, hosts,
       archiveDir: path.join(ROOT, 'data', 'aggregator-archive'), templates: UF.learnSlugTemplates(ce.samples), titleDirs: UF.learnTitleStartDirs(ce.samples), serpKeys, allowPaid };
     console.log(`\n[${i + 1}/${rows.length}] ${row.reviewKey}  "${title}"  ${review.criticName || '?'}  pub ${review.publishDate || '-'}  hosts ${hosts.join(',')}  prefixes ${profile.prefixes.join(',') || '-'}`);
     const rec = { reviewKey: row.reviewKey, outletId: review.outletId, year: row.year, category: show && show.category, source: review.source, methods: {} };
