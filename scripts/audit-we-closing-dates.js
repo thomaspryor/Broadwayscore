@@ -48,7 +48,7 @@ const { discoverWestEndTheatreUrl } = require('./lib/westend-slug-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { notifyBoardAfterSave, missingKeyError } = require('./lib/audit-board-notify');
+const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-we-closing-dates.js — Daily bidirectional audit of closingDate values for open West End shows.
@@ -236,6 +236,8 @@ async function notifyLinear(ambiguous, todayStr) {
 }
 
 async function main() {
+  // BRO-7920: a missing board key must fail before any data is written, not after.
+  if (!DRY_RUN) assertBoardConfigured();
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
   console.log('WE CLOSING DATE AUDIT (bidirectional)');
@@ -370,7 +372,9 @@ async function main() {
   }
 
   if (ambiguous.length > 0) {
-    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates');
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates', {
+      summary: ambiguous.map(a => `• ${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`).join('\n'),
+    });
   }
 
   await cleanup();

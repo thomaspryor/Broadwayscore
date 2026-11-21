@@ -57,7 +57,7 @@ const { pageMatchesShowTitle } = require('./lib/show-title-match');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
-const { notifyBoardAfterSave, missingKeyError } = require('./lib/audit-board-notify');
+const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-closing-dates.js — Daily bidirectional audit of closingDate values for open shows.
@@ -326,6 +326,8 @@ async function notifyLinear(ambiguous, todayStr) {
 }
 
 async function main() {
+  // BRO-7920: a missing board key must fail before any data is written, not after.
+  if (!DRY_RUN) assertBoardConfigured();
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('='.repeat(60));
@@ -640,7 +642,9 @@ async function main() {
   if (ambiguous.length > 0) {
     const lines = ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n');
     await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
-    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-closing-dates');
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-closing-dates', {
+      summary: ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n'),
+    });
   }
 
   await cleanup();
