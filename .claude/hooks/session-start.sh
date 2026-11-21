@@ -134,41 +134,20 @@ fi
 
 # Command-file drift check. The repo mirrors ~/.claude/commands/*.md into
 # .claude/commands/ so cloud sessions (no ~/.claude) get the same skills.
-# LOCALLY THE GLOBAL ~/.claude COPY IS THE ONE THAT LOADS (BRO-7887, verified
-# 2026-11-21: a Mac job's Skill ship-check loaded the 2026-10-21 global copy,
-# which lacked the skeptic reviewer step, so 0 of 5 Mac sessions ran it). The
-# old comment here said project copies shadow the global ones; they do not.
-# So drift means local sessions silently run a stale skill. Canonical rule:
-# the two copies must be IDENTICAL.
-# Auto-sync (BRO-7887): in the Broadwayscore repo only, when the global copy is
-# STRICTLY BEHIND (its blob is an older version of the repo file on
-# origin/main), has no uncommitted edit, and the repo file equals origin/main,
-# copy repo -> global (temp + mv, parallel-safe) and commit it in ~/.claude
-# (an uncommitted ~/.claude makes claude-sync pull refuse). Anything else
-# (home-only content, same mtime) still only warns: a human merges it.
+# LOCALLY THE GLOBAL ~/.claude COPY IS THE ONE THAT LOADS (BRO-7887: a Mac
+# ship-check loaded a month-old global copy without the skeptic step), so drift
+# means local sessions silently run a stale skill. A global copy that is strictly
+# behind is synced by scripts/lib/sync-stale-commands.sh; the rest warns below.
+# Canonical rule: the two copies must be IDENTICAL; merge best-of-both.
 if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/commands" ] && [ -d "$HOME/.claude/commands" ]; then
+  _cf_synced=$([ -f "$REPO_ROOT/scripts/lib/sync-stale-commands.sh" ] && bash "$REPO_ROOT/scripts/lib/sync-stale-commands.sh" "$REPO_ROOT" 2>/dev/null)
+  [ -n "$_cf_synced" ] && echo "🔁 COMMAND-FILE SYNC: global ~/.claude/commands was behind the repo; synced and committed:$_cf_synced"
   DRIFTED=""
-  SYNCED=""
-  _cf_bwsc=0
-  case "$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null)" in *thomaspryor/Broadwayscore*) _cf_bwsc=1 ;; esac
   for cf in "$REPO_ROOT"/.claude/commands/*.md; do
     [ -f "$cf" ] || continue
     cb=$(basename "$cf")
     gf="$HOME/.claude/commands/$cb"
     if [ -f "$gf" ] && ! cmp -s "$cf" "$gf"; then
-      if [ "$_cf_bwsc" = 1 ] \
-        && git -C "$REPO_ROOT" diff --quiet origin/main -- ".claude/commands/$cb" 2>/dev/null \
-        && git -C "$HOME/.claude" diff --quiet HEAD -- "commands/$cb" 2>/dev/null; then
-        _gh=$(git hash-object "$gf" 2>/dev/null)
-        if [ -n "$_gh" ] && git -C "$REPO_ROOT" log origin/main --format='%H' -n 200 -- ".claude/commands/$cb" 2>/dev/null \
-            | while read -r _c; do [ "$(git -C "$REPO_ROOT" rev-parse "$_c:.claude/commands/$cb" 2>/dev/null)" = "$_gh" ] && { echo hit; break; }; done | grep -q hit; then
-          if cp "$cf" "$gf.bro7887.$$" 2>/dev/null && mv "$gf.bro7887.$$" "$gf" 2>/dev/null; then
-            SYNCED="$SYNCED $cb"
-            continue
-          fi
-          rm -f "$gf.bro7887.$$" 2>/dev/null
-        fi
-      fi
       # Direction hint only — claude-sync pull (above) rewrites global mtimes,
       # and -nt is false on ties, so treat this as a starting point, not truth.
       if [ "$cf" -nt "$gf" ]; then
@@ -183,13 +162,6 @@ if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/.claude/commands" ] && [ -d "$HOME/.c
       fi
     fi
   done
-  if [ -n "$SYNCED" ]; then
-    # shellcheck disable=SC2086
-    ( cd "$HOME/.claude" && for _s in $SYNCED; do git add -- "commands/$_s"; done && git commit -q -m "commands: auto-sync$SYNCED from Broadwayscore (global copy was strictly behind; BRO-7887)" -- $(for _s in $SYNCED; do printf 'commands/%s ' "$_s"; done) ) >/dev/null 2>&1 || true
-    echo ""
-    echo "🔁 COMMAND-FILE SYNC: copied repo .claude/commands ->${SYNCED} into ~/.claude/commands"
-    echo "   (the global copy was an older repo version; committed in ~/.claude, claude-sync push publishes it)."
-  fi
   if [ -n "$DRIFTED" ]; then
     echo ""
     echo "🔶 COMMAND-FILE DRIFT: repo .claude/commands/ differs from ~/.claude/commands/ —"
