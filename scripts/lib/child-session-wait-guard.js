@@ -180,12 +180,12 @@ function childJobsDecision(input) {
 // otherwise the work belongs to the card or the parent and the session ends
 // SAFE TO ARCHIVE naming that owner.
 const DEAD_TARGET_RE = new RegExp([
-  '\\bparent\\b',
+  '@parent\\b|\\b(?:the|my|its) parent\\b(?! (?:director|folder|path|class|node|commit|dir|element|object))|\\bparent (?:session|worker|agent|system)\\b',
   '\\bsession that (?:started|created|spawned|launched|sent|dispatched|assigned|asked|tasked|gave)\\b',
   '\\bstart(?:ed)? (?:a |the )?(?:new|fresh) one\\b',
   '\\b(?:whoever|whatever session) (?:started|created|spawned) me\\b',
   '\\b(?:a |the |another |next )?(?:fresh|new|follow-?up|next|another|separate|board|dedicated) (?:worker|session)s?\\b',
-  '\\bboard (?:worker|queue)\\b|\\bworker queue\\b|\\bthe board\\b',
+  '\\bboard (?:worker|queue)\\b|\\bworker queue\\b|\\b(?:on|for|until) the board\\b',
   '\\bfollow-?up (?:card|issue|ticket|task)\\b|\\bheld card\\b|\\bnot-before\\b',
   '\\bcard (?:stays|remains|is|stay) (?:paused|parked|held|open|in progress)\\b',
   '\\b(?:paused|parked|held) until\\b',
