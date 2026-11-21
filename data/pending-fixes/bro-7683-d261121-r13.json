@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261121-r13",
   "planId": "9c3602b3-7fa7-4671-9519-420551c1dedd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-21T18:00:15.701Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-21T18:05:14.457Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-beauty-queen-of-leenane-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
