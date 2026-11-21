@@ -57,8 +57,10 @@ test('class guard: every paywalled major outlet we hold a login for has a browse
   for (const outletId of ['wsj', 'times-uk', 'sunday-times', 'financialtimes', 'telegraph']) {
     assert.ok(A.adapterFor(outletId), `${outletId}: no browser adapter (would be no_adapter forever)`);
   }
-  // wsj/thetimes/telegraph stay nightly:false until a live pilot clears the 30% bar (BRO-7943 pilot not yet run: run lock held)
-  assert.equal(A.adapterUsable('financialtimes'), true);
+  // BRO-7943 live pilots 2026-11-21: ft 88%, thetimes 56%, telegraph 50% -> nightly; wsj 25% -> manual only
+  for (const o of ['financialtimes', 'times-uk', 'sunday-times', 'telegraph']) assert.equal(A.adapterUsable(o), true, o);
+  assert.equal(A.adapterUsable('wsj'), false);
+  assert.equal(A.adapterUsable('wsj', { explicitOutlets: ['wsj'] }), true);
 });
 
 test('class guard: every login renew-cookies keeps alive has a recovery adapter (a login with no adapter = no_adapter forever)', () => {

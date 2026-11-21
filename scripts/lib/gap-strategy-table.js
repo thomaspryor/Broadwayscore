@@ -17,7 +17,9 @@ const STRATEGY_FLAGS = Object.freeze({
   // historic shows 9/20 = 45%. BRO-7943: that pilot measured brand-new reviews
   // but the flag switched ARCHIVE off for the whole 730-day "recent" window
   // (604 gaps, disabled_recent). Now a minimum show age instead.
-  // PILOT_RESULT_PLACEHOLDER
+  // Re-pilot 2026-11-21 (BRO-7943): 20 recent gaps from shows 193-673 days
+  // old, 8/20 = 40% accepted (8 archive_empty, 4 extractor_null) -> ON for
+  // shows opened >= 60 days ago.
   ARCHIVE: Object.freeze({ enabled: true, minShowAgeDays: 60, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); shows opened >= minShowAgeDays ago' }),
   // DISABLED 2026-11-09 by the Stage 2 decision rule: the NO_URL pilot (20
   // daily-mail / mail-on-sunday files) accepted 0/20, and The Stage
