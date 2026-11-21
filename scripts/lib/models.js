@@ -18,6 +18,11 @@ module.exports = {
   // gemini-3.8-flash as its replacement (BRO-7511). Thinks by default, so callers
   // send no thinkingConfig and keep maxOutputTokens high enough for thoughts.
   GEMINI_PRO: 'gemini-3.8-flash',
+  // Repo-reading code reviewer (scripts/gemini/review.js, plan-review's Gemini curl). Its own pin so
+  // a reviewer upgrade never moves the utility or scoring callers. BRO-8016 (owner 2026-11-21: "use a
+  // powerful model"): Gemini 4 Carbon, the flagship. Live on CLI 0.70.0 with the read-only policy
+  // (lock test passed) and it opened files on every probe. Price row: gemini-usage-ledger.js.
+  GEMINI_REVIEW: 'gemini-4-carbon',
   // General-purpose aliases for DIRECT Messages-API callers (~38 scripts).
   // Pinned to the 4.x generation on purpose (ship-check 2026-10-01): the 5.5
   // models reject `temperature` (400), think by default, and return a thinking

@@ -298,7 +298,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
        echo
        echo "=== UNCOMMITTED CHANGES ==="
        git diff HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ package.json CLAUDE.md 2>/dev/null | awk 'NR<=1000; NR==1001{print "=== DIFF CUT AT 1000 LINES ==="}'
-     } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>"$CODEX_OUT.log"
+     } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only -c model_reasoning_effort=high --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>"$CODEX_OUT.log"
      CODEX_RC=$?
      # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
      [ "$CODEX_RC" -eq 0 ] || { echo "codex exec exited $CODEX_RC:"; tail -5 "$CODEX_OUT.log"; : > "$CODEX_OUT"; }
@@ -332,7 +332,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
 
-4. **Gemini (with codebase access) — Correctness review (BRO-7987)** — Run via Bash. A third model family that reads the code: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend, about $0.02 a review on gemini-2.5-flash, which opened the files far more reliably than Pro in the BRO-7987 probe; it retries once if a run opens none). Codex challenges the design; this one hunts correctness bugs, so the two overlap little.
+4. **Gemini (with codebase access) — Correctness review (BRO-7987)** — Run via Bash. A third model family that reads the code: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend, about $0.10-0.30 a review on models.js GEMINI_REVIEW (Gemini 4 Carbon since BRO-8016; it opened files on every probe, where 2.5-pro often opened none); it retries once if a run opens none). Codex challenges the design; this one hunts correctness bugs, so the two overlap little.
    ```bash
    GEMINI_OUT=$(mktemp /tmp/ship-check-gemini.XXXXXX)
    DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main

@@ -99,7 +99,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    THE PLAN TO CRITIQUE:
    PROMPT_HEAD
      cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
-   } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
+   } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only -c model_reasoning_effort=high --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
    CODEX_RC=$?
    # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
    [ "$CODEX_RC" -eq 0 ] || { echo "codex exec exited $CODEX_RC:"; tail -5 "$PLAN_REVIEW_CODEX_OUT.log"; : > "$PLAN_REVIEW_CODEX_OUT"; }
@@ -235,11 +235,11 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
    Fallback (plan text only, no repo access): check `jq -e '.error'` on the response and surface any API error instead of emitting empty output.
    ```
-   curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$GEMINI_API_KEY" \
+   curl -s "https://generativelanguage.googleapis.com/v1beta/models/$(node -p "require('./scripts/lib/models').GEMINI_REVIEW"):generateContent?key=$GEMINI_API_KEY" \
      -H "Content-Type: application/json" \
      -d "$(jq -n --arg plan "$(cat "${PLAN_FILE:-/tmp/critique-plan.txt}")" '{
        contents: [{parts: [{text: ("Review this plan for internal contradictions, gaps between stated goals and actual steps, and assumptions that are never validated.\n\n**CONSISTENCY LENS:**\n1. Does the plan contradict itself? (e.g., says \"simple\" but has 8 steps, says \"fast\" but requires 3 API calls)\n2. Are there gaps between what the plan SAYS it does and what the steps ACTUALLY do?\n3. What does the plan assume is true but never checks? (data exists, API is available, user has permissions)\n\n**GAP LENS:**\n4. What is the plan silent about? (error handling, rollback, what happens if step 3 fails)\n5. Are there steps that depend on each other but don't say so?\n6. What would a new developer ask after reading this plan that isn't answered?\n\nBe specific. Reference step numbers. Under 400 words. Bullet points only.\n\n" + $plan)}]}
-     }')" | tee >(node scripts/log-llm-call.js --provider=gemini --model=gemini-2.5-flash --caller=plan-review >/dev/null 2>&1) | jq -r 'if .error then "GEMINI API ERROR: \(.error.message // .error)" else (.candidates[0].content.parts[0].text // "GEMINI EMPTY RESPONSE") end'
+     }')" | tee >(node scripts/log-llm-call.js --provider=gemini --model="$(node -p "require('./scripts/lib/models').GEMINI_REVIEW")" --caller=plan-review >/dev/null 2>&1) | jq -r 'if .error then "GEMINI API ERROR: \(.error.message // .error)" else (.candidates[0].content.parts[0].text // "GEMINI EMPTY RESPONSE") end'
    ```
 
 5. **User Impact & Platform Defaults** — Use the Task tool with subagent_type "review-panelist" and this prompt:

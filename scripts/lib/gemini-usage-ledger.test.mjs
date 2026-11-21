@@ -166,3 +166,12 @@ test('fetch resolves when headers arrive, not after the meter reads the body (op
   assert.equal(row.calls, 1);
   assert.equal(row.inputTokens, 1);
 });
+
+// BRO-8016 class guard: a new Gemini pin in models.js with no PRICES_PER_M row logs every call with
+// costUsd null, so the spend ledger silently stops counting it. Every Gemini pin must price.
+test('every Gemini pin in models.js has a price row', () => {
+  const models = require('./models.js');
+  const unpriced = Object.entries(models).filter(([, id]) => /^gemini-/.test(id) && L.estimateCostUsd(id, 1e6, 1e6) === null).map(([k, id]) => `${k}=${id}`);
+  assert.deepEqual(unpriced, [], `add a PRICES_PER_M row in gemini-usage-ledger.js: ${unpriced.join(', ')}`);
+  assert.equal(L.estimateCostUsd(models.GEMINI_REVIEW, 1e6, 1e6), 24);
+});
