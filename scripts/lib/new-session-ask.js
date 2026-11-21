@@ -9,7 +9,7 @@
  *
  * Pure: newSessionAsk(text) -> { block, match }. CLI: stdin {text} -> stdout JSON (fail-open).
  */
-const SESSION_NOUN = '(?:claude\\s+)?(?:code\\s+)?(?:session|chat|worker|conversation|tab)';
+const SESSION_NOUN = '(?:claude\\s+)?(?:code\\s+)?(?:session|chat|worker|conversation)';
 const ASK_RE = new RegExp([
   // "start a new session", "open a fresh session", "spin up another worker"
   '\\b(?:start|open|begin|spin up|launch|kick off|create)\\s+(?:up\\s+)?(?:a\\s+|an\\s+|another\\s+|the\\s+)?(?:new|fresh|separate|second|clean)\\s+' + SESSION_NOUN + '\\b',
@@ -27,6 +27,9 @@ function inQuotes(text, idx) {
   return dq % 2 === 1 || bt % 2 === 1;
 }
 
+// A worker describing its own create_session call is not an ask to the owner.
+const FIRST_PERSON_RE = /\b(?:I|I'll|I will|I am|I'm|we)\b[^.;\n]{0,30}$/i;
+
 /** @returns {{block: boolean, match: string|null}} */
 function newSessionAsk(text) {
   const t = String(text || '');
@@ -34,7 +37,7 @@ function newSessionAsk(text) {
   let m;
   while ((m = re.exec(t))) {
     const clause = t.slice(Math.max(0, m.index - 60), m.index).split(/[.;:!?\n—–]/).pop();
-    if (NEGATION_RE.test(clause) || inQuotes(t, m.index)) continue;
+    if (NEGATION_RE.test(clause) || inQuotes(t, m.index) || FIRST_PERSON_RE.test(clause)) continue;
     return { block: true, match: m[0] };
   }
   return { block: false, match: null };

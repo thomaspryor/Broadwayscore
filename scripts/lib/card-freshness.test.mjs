@@ -25,3 +25,7 @@ test('extractCardIds ranks by mentions and caps at 3', () => {
   assert.equal(extractCardIds(['BRO-1111 BRO-2222 BRO-3333 BRO-4444']).length, 3);
   assert.equal(buildFreshnessNotice([]), '');
 });
+
+test('ties go to the most recent mention, not the highest id', () => {
+  assert.equal(extractCardIds(['BRO-9000 BRO-1111'])[0], 'BRO-1111');
+});

@@ -193,6 +193,8 @@ const DEAD_TARGET_RE = new RegExp([
   '\\banother session\\b|\\bother session\\b',
 ].join('|'), 'i');
 // "waiting for the parent's answer" after a real question to @parent is the flow CLOUD.md prescribes.
+// An interactive session waiting for the owner's next message is woken by that message (not dead).
+const OWNER_WAIT_RE = /\b(?:once|until|when|after) (?:you|the owner)\b|\byou (?:reply|answer|respond|message|say|decide)\b|\bkeep chatting\b/i;
 const ANSWER_WAIT_RE = /\b(?:answer|repl(?:y|ies)|response|decision|question|reply)\b/i;
 
 /** The KEEP OPEN verdict line(s) and "Still running" lines, whole (not clause-split). */
@@ -217,6 +219,7 @@ function deadWaitDecision(input) {
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
   const hit = waitLines(closing).filter((l) => !DEAD_NOTHING_RE.test(l)).find((l) => DEAD_TARGET_RE.test(l));
   if (!hit) return no('KEEP OPEN does not wait on a parent, session, card or date');
+  if (OWNER_WAIT_RE.test(hit)) return no('waiting on the owner next message, which wakes the session');
   if (otherLive) return no('a background Agent, PR subscription or self-bound trigger will wake it');
   if (liveBackground(tools, done, { now }).length) return no('a background task or Monitor is live');
   if (ANSWER_WAIT_RE.test(hit)) {
