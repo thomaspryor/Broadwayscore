@@ -17,5 +17,5 @@ test('should-deploy gate suite (dedup within window, ship on change, fail open) 
   const r = spawnSync(process.execPath, ['--test', path.join(here, 'lib', 'should-deploy-gate.test.mjs'), path.join(here, 'lib', 'deploy-coalesce.test.mjs')], { encoding: 'utf8', timeout: 120000, env: { ...process.env, NODE_TEST_CONTEXT: undefined } });
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   assert.equal(r.status, 0, `gate tests failed:\n${out.slice(-2000)}`);
-  assert.match(out, /# fail 0/);
+  assert.match(out, /(# |\u2139 )fail 0/);
 });
