@@ -41,7 +41,9 @@ Mr. Yulin is a dignified Claudius, with a firm grip on the rhythm and sense in t
 The wedding cake, by the way, survives the production intact, with its white swirls of frosting still pristine as the lights dim. Of course the principal characters, all dead by the time this party's over, don't fare as well. Nobody gets to eat dessert.`;
 
 function makeCandidateFile(showId, url, publishDate) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-recovery-'));
+  // The record lives in a folder named for its show, as on disk (BRO-7996: the gate trusts the folder).
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-recovery-')), showId);
+  fs.mkdirSync(dir);
   const filePath = path.join(dir, 'nytimes--critic.json');
   fs.writeFileSync(filePath, JSON.stringify({ url, showId, publishDate, contentTier: 'stub' }));
   return {
