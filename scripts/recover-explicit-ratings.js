@@ -40,7 +40,7 @@ const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors'
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
-const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { resolveTheaterLifeStars } = require('./lib/theater-life-stars');
@@ -192,7 +192,21 @@ const stats = {
 
 // Returns true (and logs once) when the run budget is spent. Phase loops break
 // on this; main() skips any later phases.
-function budgetSpent(phaseLabel, remainingCount) {
+// Cumulative phase deadlines (share of the run budget each phase must finish
+// by). Phase 0's SERP discovery ate the whole weekly budget three runs in a row
+// and phases 1-3 never ran (BRO-7928); unused time rolls forward.
+const PHASE_DEADLINE_SHARES = { 0: 0.30, 1: 0.55, 2: 0.80, 3: 1 };
+const phaseDeadlineLogged = new Set();
+
+function budgetSpent(phaseLabel, remainingCount, phase) {
+  if (!(phase in PHASE_DEADLINE_SHARES)) throw new Error(`budgetSpent: unknown phase ${phase} (${phaseLabel})`);
+  if (!budget.exceeded() && phaseDeadlineReached(budget, PHASE_DEADLINE_SHARES, phase)) {
+    if (!phaseDeadlineLogged.has(phase)) {
+      phaseDeadlineLogged.add(phase);
+      console.log(`\n  ⏱ Phase ${phase} slot (${Math.round(PHASE_DEADLINE_SHARES[phase] * 100)}% of ${TIME_BUDGET_MIN} min) used in ${phaseLabel} — ${remainingCount} items deferred; moving to the next phase`);
+    }
+    return true;
+  }
   if (!budget.exceeded()) return false;
   if (!stats.timeBudgetExhausted) {
     stats.timeBudgetExhausted = true;
@@ -216,10 +230,16 @@ const attemptState = (() => {
   } catch { return { attempts: {} }; }
 })();
 const attemptKey = (r) => `${r.showId}/${r.file}`;
+// Phase 0 (paid SERP discovery) keeps its own rotation stamps. Phases 1-3 stamp
+// every review they walk, so with a shared stamp the cheap phase 1 pass re-dated
+// phase 0's no-URL backlog in last week's order and phase 0 restarted at the
+// same head every run once its slot capped it (BRO-7928 review).
+const PHASE0_KEY_PREFIX = 'p0:';
+const phase0AttemptKey = (r) => PHASE0_KEY_PREFIX + attemptKey(r);
 let attemptsSinceSave = 0;
 
-function recordAttempt(review) {
-  attemptState.attempts[attemptKey(review)] = new Date().toISOString();
+function recordAttempt(review, key = attemptKey(review)) {
+  attemptState.attempts[key] = new Date().toISOString();
   if (++attemptsSinceSave >= 25) saveAttemptState();
 }
 
@@ -230,7 +250,8 @@ function saveAttemptState(validKeys = null) {
   // everything outside the filter.
   if (validKeys) {
     for (const k of Object.keys(attemptState.attempts)) {
-      if (!validKeys.has(k)) delete attemptState.attempts[k];
+      const base = k.startsWith(PHASE0_KEY_PREFIX) ? k.slice(PHASE0_KEY_PREFIX.length) : k;
+      if (!validKeys.has(base)) delete attemptState.attempts[k];
     }
   }
   try {
@@ -248,7 +269,8 @@ function saveAttemptState(validKeys = null) {
 // Phase 0: URL discovery for reviews without URLs (e.g., Theatre Record)
 // ---------------------------------------------------------------------------
 async function phase0DiscoverUrls(reviews) {
-  const noUrl = reviews.filter(r => !r.data.url);
+  const noUrl = reviews.filter(r => !r.data.url)
+    .sort((a, b) => (attemptState.attempts[phase0AttemptKey(a)] || '').localeCompare(attemptState.attempts[phase0AttemptKey(b)] || ''));
   if (noUrl.length === 0) return reviews;
 
   console.log(`\n═══ PHASE 0: URL Discovery (${noUrl.length} reviews without URLs) ═══\n`);
@@ -284,8 +306,8 @@ async function phase0DiscoverUrls(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 0', toProcess.length - i)) break;
-    recordAttempt(review);
+    if (budgetSpent('phase 0', toProcess.length - i, 0)) break;
+    recordAttempt(review, phase0AttemptKey(review));
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${review.data.outletId} / ${review.data.criticName || 'Unknown'}`);
 
@@ -365,7 +387,7 @@ async function phase1ExtractLocal(reviews) {
   let idx = 0;
   for (const review of reviews) {
     // LLM-fallback extraction makes this loop slow at backlog scale
-    if (budgetSpent('phase 1', reviews.length - idx)) break;
+    if (budgetSpent('phase 1', reviews.length - idx, 1)) break;
     idx++;
     recordAttempt(review);
     const text = [
@@ -474,7 +496,7 @@ async function fetchGuardianRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (Guardian)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (Guardian)', toProcess.length - i, 2)) break;
     recordAttempt(review);
     try {
       const articleId = new URL(review.data.url).pathname.replace(/^\//, '');
@@ -540,7 +562,7 @@ async function fetchTheaterLifeRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i, 2)) break;
     recordAttempt(review);
     try {
       // Extract slug from URL
@@ -610,7 +632,7 @@ async function fetchNYSRRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (NYSR)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (NYSR)', toProcess.length - i, 2)) break;
     recordAttempt(review);
     try {
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
@@ -747,7 +769,7 @@ async function phase3ScrapeURLs(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     const url = review.data.url;
-    if (budgetSpent('phase 3', toProcess.length - i)) break;
+    if (budgetSpent('phase 3', toProcess.length - i, 3)) break;
     recordAttempt(review);
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${url}`);
