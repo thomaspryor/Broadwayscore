@@ -1,19 +1,54 @@
 {
-  "updatedAt": "2026-11-21T11:11:42.257Z",
-  "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "updatedAt": "2026-11-21T13:29:31.472Z",
+  "processed": 57,
+  "failed": 46,
+  "successRate": "55.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 8,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-21T12:57:08.948Z",
+      "event": "bb-session",
+      "session": "951483c7",
+      "url": "http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557"
+    },
+    {
+      "t": "2026-11-21T12:57:27.200Z",
+      "event": "bb-session",
+      "session": "9705b657",
+      "url": "http://stream.wsj.com/story/latest-headlines/SS-2-63399/SS-2-511161/"
+    },
+    {
+      "t": "2026-11-21T12:57:27.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-21T13:02:34.730Z",
+      "event": "bb-session",
+      "session": "b74fd4a3",
+      "url": "https://deadline.com/2025/12/walt-disney-world-raiders-of-the-lost-ark-boulder-a"
+    },
+    {
+      "t": "2026-11-21T13:07:50.824Z",
+      "event": "bb-session",
+      "session": "3359c2de",
+      "url": "https://www.talkinbroadway.com/page/ob/09_18_25b.html"
+    },
+    {
+      "t": "2026-11-21T13:07:52.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
