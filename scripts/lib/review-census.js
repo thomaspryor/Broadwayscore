@@ -369,6 +369,7 @@ function buildCensusFromArchives(showId, opts = {}) {
   const archivesPresent = [];
   const zeroExtract = [];
   const wrongRoundup = [];
+  const wrongProductionPage = [];
   for (const s of allSources) {
     if (s.pseudo) {
       // No archive file, no network — computed directly from opts (e.g. the
@@ -400,7 +401,10 @@ function buildCensusFromArchives(showId, opts = {}) {
     }
     if (s.productionWindow && opts.show && (opts.show.openingDate || opts.show.previewsStartDate)) {
       const { checkPageProductionWindow } = require('./show-score-production-window');
-      if (!checkPageProductionWindow(html, opts.show, archiveCanonicalUrl(html)).ok) { wrongRoundup.push(s.name); continue; }
+      // Its own list, not wrongRoundup: the scraper already records the page as another production's and
+      // drops its mapping, so there is nothing to re-fetch. wrongRoundup raises a major coverage-audit alarm
+      // (80 NYC shows would alarm daily for a supplementary source).
+      if (!checkPageProductionWindow(html, opts.show, archiveCanonicalUrl(html)).ok) { wrongProductionPage.push(s.name); continue; }
     }
     if (s.claim) {
       const { checkTrArchiveClaim, loadCoverageClaims } = require('./tr-archive-claim');
@@ -413,7 +417,7 @@ function buildCensusFromArchives(showId, opts = {}) {
     if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
-  return { ...unionCensus(perSource, { dropLegacyArchive: !!opts.dropLegacyArchive }), archivesPresent, zeroExtract, wrongRoundup };
+  return { ...unionCensus(perSource, { dropLegacyArchive: !!opts.dropLegacyArchive }), archivesPresent, zeroExtract, wrongRoundup, wrongProductionPage };
 }
 
 // Market-suffix tolerance: a roundup may label an outlet "Time Out"

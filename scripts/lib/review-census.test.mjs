@@ -431,11 +431,17 @@ test('BRO-7967: a Show Score archive that is another production\'s page (dates y
   const sources = sourceExtractors('off-broadway').filter((s) => s.name === 'show-score');
   const show = { id: 'elektra-x', title: 'Elektra', openingDate: '2026-11-20', previewsStartDate: '2026-11-10' };
   const c = buildCensusFromArchives('elektra-x', { archiveDir: dir, sources, show });
-  assert.deepEqual(c.wrongRoundup, ['show-score']);
+  assert.deepEqual(c.wrongProductionPage, ['show-score']);
+  assert.deepEqual(c.wrongRoundup, [], 'kept out of wrongRoundup, which the coverage audit treats as a major alarm');
   assert.equal(c.count, 0, 'none of the 2022 page rows reach the census');
+  // A page with no readable dates cannot be judged: kept (fail open).
+  fs.writeFileSync(path.join(dir, 'show-score', 'elektra-x.html'), '<html><body><a href="https://www.nytimes.com/x">r</a> Febtember 45, 20x6</body></html>');
+  const undated = buildCensusFromArchives('elektra-x', { archiveDir: dir, sources, show });
+  assert.deepEqual(undated.wrongProductionPage, []);
   // Same page dated inside this production's run is kept.
   fs.writeFileSync(path.join(dir, 'show-score', 'elektra-x.html'), `<html><body>${tiles.replace(/April (\d+), 2022/g, 'November 2$1, 2026').replace(/2022\/04/g, '2026/11')}</body></html>`);
   const ok = buildCensusFromArchives('elektra-x', { archiveDir: dir, sources, show });
-  assert.deepEqual(ok.wrongRoundup, []);
+  assert.deepEqual(ok.wrongProductionPage, []);
+  assert.ok(ok.count > 0, 'an in-window page still feeds the census');
   fs.rmSync(dir, { recursive: true, force: true });
 });
