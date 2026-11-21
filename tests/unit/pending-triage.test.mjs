@@ -196,6 +196,10 @@ describe('BRO-8023: sameArticleSettleReason (text-bearing same-url stubs are tag
     assert.equal(sameArticleSettleReason({ ...stub, dtliExcerpt: 'A fine show' }, good, 'f.json'), null);
     assert.ok(sameArticleSettleReason({ ...stub, originalScore: '4/5' }, { ...good, originalScore: '4/5' }, 'f.json'));
   });
+  test('a stub naming a different critic than the primary stays open (two critics, one url)', () => {
+    assert.equal(sameArticleSettleReason({ ...stub, criticName: 'Jane Roe' }, { ...good, criticName: 'Robert Hofler' }, 'f.json'), null);
+    assert.ok(sameArticleSettleReason({ ...stub, criticName: 'Robert Hofler' }, { ...good, criticName: 'Robert Hofler' }, 'f.json'));
+  });
   test('id-routed urls are different articles (LSA story.asp?ID=)', () => {
     const a = 'https://www.lastagetimes.com/story.asp?ID=1111', b = 'https://www.lastagetimes.com/story.asp?ID=2222';
     assert.equal(sameArticleSettleReason({ ...stub, url: a }, { ...good, url: b }, 'f.json'), null);
