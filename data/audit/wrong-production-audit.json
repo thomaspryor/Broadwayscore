@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-21T00:27:44.463Z",
+  "timestamp": "2026-11-21T00:44:38.229Z",
   "stats": {
-    "totalReviews": 83540,
+    "totalReviews": 83541,
     "alreadyFlagged": 22608,
     "dateGuardCatches": 222,
-    "directorMismatch": 3801,
+    "directorMismatch": 3802,
     "tvFilmSignals": 2380,
     "londonSignals": 3855,
     "offBroadwaySignals": 775,
@@ -50104,6 +50104,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 77,
+      "publishDate": "2015-03-15",
+      "url": "https://www.vulture.com/2015/03/theater-review-on-the-twentieth-century.html?mid=googlenews",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
         }
       ]
     },
