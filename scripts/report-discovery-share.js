@@ -78,7 +78,11 @@ async function main() {
   const sinceMs = Date.now() - args.days * 86400000;
   const recent = discoveryShare(files, { sinceMs });
   const all = discoveryShare(files);
-  const afterEnforcement = files.filter((f) => String(f.stamp) >= CALLER_REQUIRED_FROM && pipelineOf(f).endsWith('(no caller)'));
+  // Recent window (3d) so the alert clears once callers are fixed; manual-entry is a known hand path; a floor of 5
+  // keeps a few re-fetched old files (textFetchedAt resets on re-fetch) from alerting.
+  const recentCutoff = new Date(Date.now() - 3 * 86400000).toISOString();
+  const afterEnforcement = files.filter((f) => String(f.stamp) >= CALLER_REQUIRED_FROM && String(f.stamp) >= recentCutoff && f.source !== 'manual-entry' && pipelineOf(f).endsWith('(no caller)'));
+  const CALLER_ALERT_FLOOR = 5;
   const today = new Date().toISOString().slice(0, 10);
   const history = readLedger().filter((r) => r.date !== today);
   history.push({ date: today, pending });
@@ -107,7 +111,7 @@ async function main() {
       hint: 'Check enrich-reviews.yml scheduled fire rate (node scripts/check-cron-fire-rate.js --workflows=enrich-reviews.yml --dry-run) and the _pending drain log.',
     });
   } else resolveCondition('discovery-pending-growth', { reason: `pending ${pending}, ${growth.status}` });
-  if (afterEnforcement.length) {
+  if (afterEnforcement.length >= CALLER_ALERT_FLOOR) {
     await routeAlert({
       conditionKey: 'discovery-caller-missing', disposition: 'digest', severity: 'error', cooldownHours: 24,
       title: `${afterEnforcement.length} review files were ingested with no caller recorded`,

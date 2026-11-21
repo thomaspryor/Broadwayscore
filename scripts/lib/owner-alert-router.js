@@ -635,6 +635,8 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
 // the cloud worker's one-card-per-firing queue; the rest file parked.
 const MAX_START_NOW_PER_RUN = 3;
 let startNowFiledThisRun = 0;
+const MAX_OPEN_AGE_PER_RUN = 5; // BRO-7934: cards the 7-day age rule may file per router process
+let openAgePromotedThisRun = 0;
 // The provenance line deliberately avoids linear-drain-parked's
 // AUTO_FILED_MARKER ("Auto-filed by owner-alert-router") and
 // DISPATCH_AT_FILING_MARKER, so neither Mac-side pass double-selects it.
@@ -1173,6 +1175,12 @@ async function routeAlert(opts) {
       existing: existingForDecision ? { ...existingForDecision, incidentOpenedAt } : existingForDecision,
       firstSeen: sharedClockDue ? firstSeen : undefined,
     });
+    // BRO-7934: the 7-day age rule can make a whole backlog due at once (195 open
+    // digest alerts on 2026-11-21). Bound it per run; the rest promote on later runs.
+    if (digestDecision.action === 'promote' && digestDecision.reason === 'open-age') {
+      if (openAgePromotedThisRun >= MAX_OPEN_AGE_PER_RUN) digestDecision = { action: 'normal' };
+      else openAgePromotedThisRun++;
+    }
     if (digestDecision.action === 'promote') {
       effectiveDisposition = 'auto';
       promotedFromDigest = true;
@@ -1246,7 +1254,8 @@ async function routeAlert(opts) {
   // Callers that check for a filed tracker (audit-dependencies, health-check)
   // read this to say "watching" instead of "dispatch failed".
   if (deferAuto && effectiveDisposition === 'digest') result.deferred = true;
-  const ageEscalation = promotedFromDigest && digestDecision && digestDecision.reason === 'age';
+  const ageEscalation = promotedFromDigest && digestDecision && (digestDecision.reason === 'age' || digestDecision.reason === 'open-age');
+  const ageEscalationDays = digestDecision && digestDecision.reason === 'open-age' ? ESCALATION_OPEN_DAYS : Math.round(fileAfterHours / 24);
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
@@ -1281,10 +1290,10 @@ async function routeAlert(opts) {
         // below) instead of repeating in full every day.
         queueDigestLine({
           title: ageEscalation
-            ? `${title} — still happening after ${Math.round(fileAfterHours / 24)} days`
+            ? `${title} — still happening after ${ageEscalationDays} days`
             : `${title} — escalated after ${digestNotifyCount} notifications`,
           description: ageEscalation
-            ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(fileAfterHours / 24)}+ days without clearing.\n\n${description}`
+            ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${ageEscalationDays}+ days without clearing.\n\n${description}`
             : `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
           severity, conditionKey, url, decision, info, decisionPrompt, fields, tracked: dispatch.linearIdentifier,
         });
@@ -1593,7 +1602,8 @@ module.exports = {
   releaseSweptTracker,
   trackerRefileDue,
   REFILE_AFTER_CLOSE_HOURS,
-  _resetStartNowCountForTests: () => { startNowFiledThisRun = 0; },
+  _resetStartNowCountForTests: () => { startNowFiledThisRun = 0; openAgePromotedThisRun = 0; },
+  MAX_OPEN_AGE_PER_RUN,
   DEFERRED_AUTO_FILE_AFTER_HOURS,
   INCIDENT_GAP_RESET_HOURS,
   isNeverQuietCondition,

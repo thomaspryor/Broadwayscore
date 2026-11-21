@@ -1340,6 +1340,28 @@ test('routeAlert: a weekly-cooldown digest row open 8 days with 2 notices is car
   }
 });
 
+test('routeAlert: the 7-day age rule files at most MAX_OPEN_AGE_PER_RUN cards per run; the rest wait', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    const ago = (d) => new Date(Date.now() - d * 86400000).toISOString();
+    const N = router.MAX_OPEN_AGE_PER_RUN + 3;
+    const ledger = router.loadLedger();
+    for (let i = 0; i < N; i++) {
+      ledger.conditions[`test:backlog-${i}`] = { status: 'open', disposition: 'digest', title: `Backlog ${i}`, firstSeen: ago(9), incidentOpenedAt: ago(9), lastSeen: ago(1), notifyCount: 2 };
+    }
+    fs.writeFileSync(path.join(tmpDir, 'alert-ledger.json'), JSON.stringify(ledger));
+    let carded = 0;
+    for (let i = 0; i < N; i++) {
+      const r = await router.routeAlert({ conditionKey: `test:backlog-${i}`, title: `Backlog ${i}`, description: 'd', disposition: 'digest', cooldownHours: 0 });
+      if (r.action === 'auto') carded++;
+    }
+    assert.equal(carded, router.MAX_OPEN_AGE_PER_RUN);
+    assert.equal(calls.createLinearIssue.length, router.MAX_OPEN_AGE_PER_RUN);
+  } finally {
+    restore();
+  }
+});
+
 test('decideDigestEscalation: pure — already-tracked stays quiet inside the resurface window, resurfaces once it elapses', () => {
   const { router, restore } = loadRouterWithFakes();
   try {
