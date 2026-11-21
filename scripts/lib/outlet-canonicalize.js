@@ -625,7 +625,23 @@ function platformOriginMirrorOf({ candidateUrl, heldUrls }) {
   return miss;
 }
 
+// BRO-7998: ingest-review-from-url --trust-outlet. A caller that has proven the outlet some other
+// way (the Guardian Content API's `publication` says "The Observer" for a theguardian.com URL) keeps a
+// REGISTERED --outlet over the URL domain's outlet; otherwise the normal URL-wins rule applies.
+function resolveOutletForIngest({ outletArg, url, trust = false }) {
+  const byUrl = resolveCanonicalOutletId({ outletArg, url });
+  if (trust && outletArg) {
+    const asserted = resolveCanonicalOutletId({ outletArg, url: null });
+    if (asserted.outletId === outletArg && isRegisteredCanonical(outletArg)) {
+      return { outletId: outletArg, displayName: getOutletDisplayName(outletArg), source: 'trusted-arg',
+        warning: byUrl.outletId !== outletArg ? `--trust-outlet: keeping caller-asserted outlet "${outletArg}" (URL domain maps to "${byUrl.outletId}").` : null };
+    }
+  }
+  return byUrl;
+}
+
 module.exports = {
+  resolveOutletForIngest,
   resolveCanonicalOutletId,
   resolveUrlEditionOutletId,
   getCvStyle,

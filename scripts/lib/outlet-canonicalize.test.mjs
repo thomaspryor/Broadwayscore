@@ -290,3 +290,15 @@ test('BRO-2776: countArmedCvStyles is the check that catches VANISHED keys', () 
   assert.equal(countArmedCvStyles({}), 0);
   assert.equal(countArmedCvStyles(null), 0);
 });
+
+// BRO-7998: Observer pieces sit on theguardian.com; the Content API proved the publication.
+test('resolveOutletForIngest: --trust-outlet keeps a registered observer arg on a theguardian.com URL', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolveOutletForIngest } = createRequire(import.meta.url)('./outlet-canonicalize.js');
+  const url = 'https://www.theguardian.com/stage/2015/jun/18/x-review';
+  assert.equal(resolveOutletForIngest({ outletArg: 'observer', url }).outletId, 'guardian'); // URL still wins by default
+  const t = resolveOutletForIngest({ outletArg: 'observer', url, trust: true });
+  assert.equal(t.outletId, 'observer');
+  assert.equal(t.source, 'trusted-arg');
+  assert.equal(resolveOutletForIngest({ outletArg: 'not-a-real-outlet-zzz', url, trust: true }).outletId, 'guardian'); // unregistered arg never trusted
+});

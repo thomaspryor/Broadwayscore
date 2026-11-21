@@ -57,7 +57,7 @@ const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
 const { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared } = require('./lib/ingest-html-score');
 const { INGEST_REFUSED_URL_REASONS } = require('./lib/non-review-url-patterns');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
-const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
+const { resolveCanonicalOutletId, resolveOutletForIngest, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
@@ -147,6 +147,10 @@ const reviewTextsDir = dataDirArg || resolveReviewTextsDir();
 const knownShowIds = () => showsData.shows.map((s) => s.id);
 const forceClearStale = hasFlag('force-clear-stale-flag');
 const allowNonReviewUrl = hasFlag('allow-non-review-url');
+// BRO-7998: the caller has already proven the outlet by other means (the Guardian Content API's
+// `publication` field says "The Observer" for a theguardian.com/stage URL), so a REGISTERED --outlet
+// wins over the URL domain instead of being drifted to the domain's outlet.
+const trustOutlet = hasFlag('trust-outlet');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
 // New York Notebook class, girl-interrupted 2026-06-05), normalizeOutlet() can
@@ -354,7 +358,7 @@ if (!show) {
       .join(' ');
     console.warn(`⚠️  provisional outlet "${outletId}" (not in registry) — onboard to outlet-registry.json after review.`);
   } else if (outletArg) {
-    const resolved = resolveCanonicalOutletId({ outletArg, url });
+    const resolved = resolveOutletForIngest({ outletArg, url, trust: trustOutlet });
     if (resolved.warning) console.warn(`⚠️  ${resolved.warning}`);
     outletId = resolved.outletId;
     outletName = resolved.displayName;
