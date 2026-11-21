@@ -591,5 +591,24 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-21T17:27:53.780Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
+    "title": "Opening-night email draft on hold: a quality check flagged a review — still happening after 7 days",
+    "description": "Filed BRO-8004: this has been happening for 7+ days without clearing.\n\nThe opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8004",
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Cloud 9"
+      }
+    ],
+    "queuedAt": "2026-11-21T17:34:45.365Z"
   }
 ]
