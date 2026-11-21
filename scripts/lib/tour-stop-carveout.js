@@ -98,6 +98,14 @@ function applyOwnVenueTourCarveout(cv, show, { publishDate } = {}) {
   const basis = [cv.reasoning || '', ...(Array.isArray(cv.issues) ? cv.issues : [])].join(' ');
   const dated = parseDay(publishDate) != null;
   if (!dated && !TOUR_BASIS.test(basis) && !TAXONOMY_BASIS.test(basis)) return unchanged;
+  // An undated review whose verdict cites another year than this record's own
+  // is describing another run at the same house (A Christmas Carol 2018 at the
+  // Old Vic: "reviews the 2025-2026 revival"). Taxonomy wording alone must not clear it (BRO-7932).
+  if (!dated) {
+    const ownYear = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+    const cited = basis.match(/\b(?:19|20)\d{2}\b/g) || [];
+    if (cited.some(y => y !== ownYear)) return unchanged;
+  }
   return { wrongProduction: false, tourStopCarveoutApplied: true };
 }
 

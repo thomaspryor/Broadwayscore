@@ -6,7 +6,7 @@
  *
  *   node scripts/recheck-london-wrongprod.js --out=/tmp/x.json [--since=2024-11-20] [--limit=N] [--concurrency=4]
  *   node scripts/recheck-london-wrongprod.js --summarize=/tmp/x.json   # before/after counts
- *   node scripts/recheck-london-wrongprod.js --stored-audit --strict    # no LLM: unhealed own-venue flags (exit 1)
+ *   node scripts/recheck-london-wrongprod.js --stored-audit --strict    # no LLM: unhealed own-venue flags (exit 1); add --apply to heal them
  *
  * Needs the main checkout's data/review-texts (absent in worktrees): set DATA_ROOT.
  */
@@ -20,11 +20,21 @@ try {
   }
 } catch (e) { /* env already set */ }
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
-const { isLongRunningProduction } = (() => { try { return { isLongRunningProduction: require('./lib/long-runner-registry').isLongRunner }; } catch (e) { return {}; } })();
+const { isLongRunningProduction } = (() => { try { return { isLongRunningProduction: require('./lib/long-runner-registry').isLongRunningProduction }; } catch (e) { return {}; } })();
 
 const arg = n => (process.argv.find(a => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
 const DATA = process.env.DATA_ROOT || path.join(__dirname, '..', 'data');
 const LONDON = new Set(['west-end', 'off-west-end']);
+
+// A cleared flag counts only when a model re-judged real text and found a valid, non-film review of the right
+// production; skip-short / heuristic fallbacks and isValid=false rows are 'noEvidence', not cleared.
+function summary(rows) {
+  const done = rows.filter(x => !x.error);
+  const judged = done.filter(x => /^llm:/.test(x.verifiedBy || ''));
+  const stillFlagged = judged.filter(x => x.wrongProduction).length;
+  const cleared = judged.filter(x => !x.wrongProduction && x.isValid === true && !x.isFilmTv && !x.wrongArticle).length;
+  return { total: rows.length, errors: rows.length - done.length, stillFlagged, cleared, noEvidence: done.length - stillFlagged - cleared };
+}
 
 function listFlags(since) {
   const shows = (x => Array.isArray(x) ? x : x.shows)(JSON.parse(fs.readFileSync(path.join(DATA, 'shows.json'), 'utf8')));
@@ -47,43 +57,78 @@ function listFlags(since) {
  * attended this record's own theatre, review inside the run) and that no
  * override covers. Such a flag means a pre-carve-out verdict was never healed.
  */
+// --apply: heal the audit's findings (review-texts is the private repo: commit + push it afterwards).
+function applyOwnVenueHeal(items) {
+  const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+  const { classifyContentTier } = require('./lib/content-quality');
+  const { restoreQuarantinedText, resetWrongContentTier } = require('./lib/collector-wp-release');
+  const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
+  const { applyOwnVenueTourCarveout } = require('./lib/tour-stop-carveout');
+  const { textNamesEarlierRun } = require('./lib/run-contamination');
+  const nowIso = new Date().toISOString();
+  let n = 0;
+  for (const { show, file } of items) {
+    const fp = path.join(DATA, 'review-texts', show.id, file);
+    const orig = fs.readFileSync(fp, 'utf8'); // fresh read
+    const data = JSON.parse(orig);
+    const cv = data.contentVerification || {};
+    const ok = data.wrongProduction === true && !data.wrongProductionOverride && !data.wrongProductionManualClear
+      && typeof data.humanReviewedWrongProduction !== 'boolean' && !textNamesEarlierRun(data, show)
+      && applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate }).tourStopCarveoutApplied;
+    const field = String(data.fullText || '').length >= 800 ? 'fullText' : String(data.wrongFullText || '').length >= 800 ? 'wrongFullText' : null;
+    if (!ok || !field) { console.log(`  skipped ${show.id}/${file}`); continue; }
+    const note = `[${nowIso.slice(0, 10)} cleared collector wrongProduction: critic attended this record's own venue (${cv.reviewedVenue}); own-venue carve-out applied to the stored verdict${field === 'wrongFullText' ? '; text restored' : ''} (BRO-7932)]`;
+    clearWrongProductionFlags(data, { source: 'recheck-london-wrongprod.js', reason: note });
+    data.wrongProductionManualClear = true;
+    data.wrongProductionClearedNote = note;
+    if (field === 'wrongFullText') restoreQuarantinedText(data, classifyContentTier); else resetWrongContentTier(data, classifyContentTier);
+    if (isStaleScoreInput(data, show, fp)) markRescoreNeeded(data, 'wrongProduction false-positive cleared (recheck-london-wrongprod)');
+    fs.writeFileSync(fp, JSON.stringify(data, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
+    n++; console.log(`  healed ${show.id}/${file}`);
+  }
+  console.log(`APPLIED: healed ${n}`);
+}
+
 function storedAudit(since, strict) {
   const { applyOwnVenueTourCarveout } = require('./lib/tour-stop-carveout');
   const { out } = listFlags(since);
   const bad = [];
+  const badItems = [];
   for (const { show, file, data } of out) {
-    if (data.wrongProductionOverride === true || data.wrongProductionManualClear === true || data.humanReviewedWrongProduction === false) continue;
+    if (data.wrongProductionOverride === true || data.wrongProductionManualClear === true || typeof data.humanReviewedWrongProduction === 'boolean') continue;
     const cv = data.contentVerification || {};
     // Excluded for another reason too (duplicate, wrong show, feature/roundup, cut-off text): not a hidden real review.
     if (data.duplicateOf || data.wrongShow === true || data.isRoundupArticle === true || cv.truncated === true || (cv.articleType && cv.articleType !== 'review')) continue;
     const r = applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate });
-    if (r.tourStopCarveoutApplied) bad.push(`${show.id}/${file}`);
+    if (r.tourStopCarveoutApplied) { bad.push(`${show.id}/${file}`); badItems.push({ show, file, data }); }
   }
-  console.log(JSON.stringify({ londonCollectorFlags: out.length, unhealedOwnVenueFlags: bad.length }));
+  const noVenue = out.filter(o => !(o.data.contentVerification || {}).reviewedVenue).length;
+  // noVenueStored flags predate the reviewedVenue field: the audit cannot judge them (--recheck can).
+  console.log(JSON.stringify({ londonCollectorFlags: out.length, noVenueStored: noVenue, unhealedOwnVenueFlags: bad.length }));
   bad.forEach(b => console.log(`  ${b}`));
   // A corpus that yields no flags at all is a broken read, not a clean bill (the gate must not pass on missing data).
+  if (process.argv.includes('--apply')) applyOwnVenueHeal(badItems);
   if (strict && out.length === 0) { console.error('stored-audit: no London collector flags found; corpus unreadable?'); process.exit(2); }
   if (strict && bad.length) process.exit(1);
 }
 
 async function main() {
-  if (process.argv.includes('--stored-audit')) return storedAudit(arg('since') || '2024-11-20', process.argv.includes('--strict'));
+  if (process.argv.includes('--stored-audit')) return storedAudit(arg('since') || '0000-00-00', process.argv.includes('--strict'));
   if (arg('summarize')) {
     const r = JSON.parse(fs.readFileSync(arg('summarize'), 'utf8'));
     const done = r.filter(x => !x.error);
     const by = {}; done.forEach(x => by[x.verifiedBy] = (by[x.verifiedBy] || 0) + 1);
     console.log('verifiedBy', JSON.stringify(by));
-    const kept = done.filter(x => x.wrongProduction);
-    console.log(JSON.stringify({ total: r.length, errors: r.length - done.length, stillFlagged: kept.length, cleared: done.length - kept.length }, null, 1));
+    console.log(JSON.stringify(summary(r), null, 1));
     return;
   }
   const since = arg('since') || '2024-11-20';
   const { out, shows } = listFlags(since);
   const lim = +arg('limit') || out.length;
   const outFile = arg('out') || '/tmp/bro7932-recheck.json';
-  let results = []; try { results = JSON.parse(fs.readFileSync(outFile, 'utf8')); } catch (e) { /* fresh */ }
+  let results = []; if (fs.existsSync(outFile)) results = JSON.parse(fs.readFileSync(outFile, 'utf8')); // corrupt file: throw, never silently restart
   const seen = new Set(results.filter(r => !r.error).map(r => r.key));
-  const todo = out.slice(0, lim).filter(x => !seen.has(`${x.show.id}/${x.file}`));
+  const todo = out.filter(x => !seen.has(`${x.show.id}/${x.file}`)).slice(0, lim);
   const otherShowTitles = shows.filter(s => s.title && s.title.length >= 6).map(s => ({ id: s.id, t: s.title }));
   console.log(`${out.length} flagged, ${todo.length} to run`);
   let i = 0;
@@ -110,6 +155,6 @@ async function main() {
   await Promise.all(Array.from({ length: +arg('concurrency') || 4 }, worker));
   const done = results.filter(r => !r.error);
   const by = {}; done.forEach(x => by[x.verifiedBy] = (by[x.verifiedBy] || 0) + 1); console.log('verifiedBy', JSON.stringify(by));
-  console.log(JSON.stringify({ total: results.length, errors: results.length - done.length, stillFlagged: done.filter(r => r.wrongProduction).length, cleared: done.filter(r => !r.wrongProduction).length }));
+  console.log(JSON.stringify(summary(results)));
 }
 main().catch(e => { console.error(e); process.exit(1); });
