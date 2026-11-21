@@ -573,3 +573,12 @@ test('CMS footer review fix: a punctuated topic tag never makes a cut review com
   assert.ok(T.stripCmsWidgetFooters(cutMore).endsWith('never quite'));
   assert.equal(tier(cutMore, 'independent').contentTier, 'truncated');
 });
+
+test('CMS footer: Standard widget with a gallery caption and no MORE ABOUT block (72 corpus files, BRO-7943)', () => {
+  const W = " November's best theatre 1 / 10 Shopping Best Buys Best heat-protectant leave-ins for fine hair The nicest lunchboxes for your return to the office";
+  assert.equal(tier(BODY + ' Until January 4 ( 08544 871 7623, thepiccadillytheatre.com )' + W, 'standard').contentTier, 'complete');
+  assert.equal(tier(BODY.slice(0, -40) + W, 'standard').contentTier, 'truncated');
+  for (const tag of ['Oklahoma!', 'Hello, Dolly!']) {
+    assert.equal(tier(BODY.slice(0, -40) + ' MORE ABOUT ' + tag + ' Shopping Best Buys Best toy advent calendars', 'standard').contentTier, 'truncated', tag);
+  }
+});
