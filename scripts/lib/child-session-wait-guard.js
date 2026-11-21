@@ -181,7 +181,8 @@ function childJobsDecision(input) {
 // SAFE TO ARCHIVE naming that owner.
 const DEAD_TARGET_RE = new RegExp([
   '\\bparent\\b',
-  '\\bsession that (?:started|created|spawned|launched) me\\b',
+  '\\bsession that (?:started|created|spawned|launched|sent|dispatched|assigned|asked|tasked|gave)\\b',
+  '\\bstart(?:ed)? (?:a |the )?(?:new|fresh) one\\b',
   '\\b(?:whoever|whatever session) (?:started|created|spawned) me\\b',
   '\\b(?:a |the |another |next )?(?:fresh|new|follow-?up|next|another|separate|board|dedicated) (?:worker|session)s?\\b',
   '\\bboard (?:worker|queue)\\b|\\bworker queue\\b|\\bthe board\\b',
