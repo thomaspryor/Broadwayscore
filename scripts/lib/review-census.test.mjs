@@ -445,3 +445,26 @@ test('BRO-7967: a Show Score archive that is another production\'s page (dates y
   assert.ok(ok.count > 0, 'an in-window page still feeds the census');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// BRO-7965: Elektra (2026 off-Broadway) Show Score page listed the 2022 Met Opera NYT/Observer/OperaWire tiles.
+function ssTile(url, date) {
+  return `<div class="x"><div class="review-tile-v2 -critic"><div class="review-tile-v2__date">${date}</div>`
+    + `<div class="review-tile-v2__body"><a href="${url}">Read more <i></i></a></div></div></div>`;
+}
+test('parseShowScore drops tiles dated before this production (BRO-7965), keeps current and undated ones', () => {
+  const html = ssTile('https://www.nytimes.com/2022/04/03/arts/music/elektra-met-opera.html', 'April 3rd, 2022')
+    + ssTile('https://operawire.com/metropolitan-opera-2021-22-review-elektra/', 'April 5th, 2022')
+    + ssTile('https://culturesauce.com/elektra-daniel-fish-off-broadway-review/', 'November 20th, 2026');
+  const show = { openingDate: '2026-11-20', previewsStartDate: '2026-11-10', status: 'open' };
+  const ids = (rows) => rows.map((r) => r.outletId).sort();
+  assert.deepEqual(ids(parseShowScore(html, 'elektra', show)), ['culturesauce']);
+  // no show passed: legacy behavior, nothing dropped
+  assert.equal(parseShowScore(html, 'elektra').length, 3);
+  // a declared prior run covering the date keeps the tile
+  const withPrior = { ...show, priorRuns: [{ openingDate: '2022-03-01', closingDate: '2022-05-01' }] };
+  assert.equal(parseShowScore(html, 'elektra', withPrior).length, 3);
+});
+test('buildCensusFromArchives hands the show to the Show Score parser (BRO-7965)', () => {
+  const src = fs.readFileSync(new URL('./review-census.js', import.meta.url), 'utf8');
+  assert.match(src, /s\.fn\(html, showId, opts\.show\)/);
+});

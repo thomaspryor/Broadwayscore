@@ -183,11 +183,23 @@ function parsePlaybillVerdict(content, showId) {
 // URLs that map to a registry outlet; a 0-row result is NORMAL here (softFail),
 // never a "broken extractor" alarm. Defensive because Show Score's own
 // show-score-discover.js documents the SSR-partial behavior.
-function parseShowScore(content, showId) { // eslint-disable-line no-unused-vars
+function parseShowScore(content, showId, show) { // eslint-disable-line no-unused-vars
   let fn = null;
-  try { ({ extractShowScoreReviewUrls: fn } = require('./show-score-discover')); } catch (_) { return []; }
+  let tilesFn = null;
+  try { ({ extractShowScoreReviewUrls: fn, extractShowScoreCriticTiles: tilesFn } = require('./show-score-discover')); } catch (_) { return []; }
   if (!fn) return [];
-  const urls = fn(content) || [];
+  // BRO-7965: a Show Score page for a title with a famous earlier staging lists that staging's critic tiles
+  // (Elektra 2026 off-Broadway listed the 2022 Met Opera NYT / Observer / OperaWire reviews, tiles dated April 2022),
+  // and every one counted as an owed review the night's grade then called missing. Judge each tile by its own
+  // date with the same gate the ingest path uses (isShowScoreTileDateOutOfRun); undated tiles fail open.
+  const outOfRun = new Set();
+  if (show && tilesFn) {
+    const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
+    try {
+      for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(t.url);
+    } catch (_) { /* fail open */ }
+  }
+  const urls = (fn(content) || []).filter((u) => !outOfRun.has(u.split('#')[0]));
   const rows = [];
   const seen = new Set();
   for (const u of urls) {
@@ -411,7 +423,7 @@ function buildCensusFromArchives(showId, opts = {}) {
       if (!checkTrArchiveClaim(html, showId, opts.trClaims || loadCoverageClaims()).ok) { wrongRoundup.push(s.name); continue; }
     }
     let reviews = [];
-    try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }
+    try { reviews = s.fn(html, showId, opts.show) || []; } catch (_) { reviews = []; }
     // softFail sources (e.g. Show Score SPA shells) legitimately extract 0 from a
     // present archive — that is NOT a broken parser, so don't flag zeroExtract.
     if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
