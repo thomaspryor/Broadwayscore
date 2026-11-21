@@ -581,14 +581,14 @@ async function fetchTheaterLifeRatings(reviews) {
     if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i, 2)) break;
     if (breaker.tripped()) {
       console.log(`    theaterlife.com unreachable (${breaker.count} failures in a row); skipping the other ${toProcess.length - i}`);
-      stats.theaterLifeUnreachable = true;
       break;
     }
     recordAttempt(review);
+    // Parsed outside the try: a malformed stored URL is not a host failure.
+    let slug = '';
+    try { slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, ''); } catch { /* skipped below */ }
+    if (!slug) continue;
     try {
-      // Extract slug from URL
-      const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
-      if (!slug) continue;
 
       // Try posts first, then pages (Theater Life uses WordPress pages, not posts)
       let posts = [];
