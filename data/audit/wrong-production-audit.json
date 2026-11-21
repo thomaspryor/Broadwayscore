@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T13:28:34.396Z",
+  "timestamp": "2026-11-21T14:51:21.120Z",
   "stats": {
-    "totalReviews": 83623,
-    "alreadyFlagged": 22414,
+    "totalReviews": 83622,
+    "alreadyFlagged": 22416,
     "dateGuardCatches": 235,
-    "directorMismatch": 3844,
-    "tvFilmSignals": 2395,
-    "londonSignals": 3909,
-    "offBroadwaySignals": 778,
-    "yearMismatch": 394,
-    "noPublishDate": 8250
+    "directorMismatch": 3843,
+    "tvFilmSignals": 2396,
+    "londonSignals": 3906,
+    "offBroadwaySignals": 779,
+    "yearMismatch": 393,
+    "noPublishDate": 8247
   },
   "findings": [
     {
@@ -29893,20 +29893,6 @@
     },
     {
       "showId": "hamilton-tour-2024",
-      "file": "boston-globe--unknown.json",
-      "score": 82,
-      "publishDate": "2025-09-25",
-      "url": "https://www.bostonglobe.com/2025/09/25/arts/hamilton-boston-review/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2024 (0x). 2015 matches production: hamilton-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-tour-2024",
       "file": "broadwayworld--jarrod-michael.json",
       "score": 82,
       "publishDate": "2026-02-05",
@@ -37603,20 +37589,6 @@
       ]
     },
     {
-      "showId": "jekyll-and-hyde-1997",
-      "file": "the-globe-and-mail--kelly-nestruck.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/theatre-reviews/a-jekyll-hyde-for-the-comic-book-set/article5342539/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jeff calhoun\" from jekyll-and-hyde-2013"
-        }
-      ]
-    },
-    {
       "showId": "jekyll-and-hyde-2013",
       "file": "nyt-theater--unknown.json",
       "score": 41,
@@ -44171,11 +44143,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -45374,6 +45341,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 74,
+      "publishDate": "2025-09-18",
+      "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 169d before show (2025-09-18 vs 2026-03-06)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -71354,20 +71340,6 @@
       ]
     },
     {
-      "showId": "the-elephant-man-1979",
-      "file": "nytg--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/the-elephant-man",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
-        }
-      ]
-    },
-    {
       "showId": "the-elephant-man-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -82029,6 +82001,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "the-visit-regional-2026",
+      "file": "berkshire-eagle--unknown.json",
+      "publishDate": null,
+      "url": "https://www.berkshireeagle.com/Entertainment/ci_26279936/Williamstown-Theatre-Festival:-lsquo;The-Visitrsquo;---An-old-musical-becomes-new-again",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john doyle\" from the-visit-2015"
         }
       ]
     },
@@ -103162,35 +103147,7 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
-      "file": "plays-international--unknown.json",
-      "score": 76,
-      "publishDate": "2026-11-20",
-      "url": "https://playsinternational.org.uk/desire-under-the-elms-almeida-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "plays-to-see--rivka-jacobson.json",
-      "score": 79,
-      "publishDate": "2026-11-19",
-      "url": "https://playstosee.com/reviews/desire-under-the-elms/?utm_source=rss&utm_medium=rss&utm_campaign=desire-under-the-elms",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "file": "plays-to-see--unknown.json",
       "score": 79,
       "publishDate": "2026-11-19",
       "url": "https://playstosee.com/reviews/desire-under-the-elms/?utm_source=rss&utm_medium=rss&utm_campaign=desire-under-the-elms",
@@ -103297,6 +103254,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "timeout-london--time-out.json",
+      "score": 64,
+      "publishDate": "2026-11-20",
+      "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -105245,20 +105216,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "file": "a-youngish-perspective--ayoungishperspective1.json",
-      "score": 71,
-      "publishDate": "2026-11-20",
-      "url": "https://ayoungishperspective.co.uk/2026/11/20/review-eurotrash/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -113314,7 +113271,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -117825,7 +117782,7 @@
     {
       "showId": "light-shining-in-buckinghamshire-west-end-2015",
       "file": "whatsonstage--matt-trueman.json",
-      "score": 57,
+      "score": 62,
       "publishDate": "2015-04-24",
       "url": "https://www.whatsonstage.com/london-theatre/news/light-shining-buckinghamshire-national-theatre_37658.html/",
       "findings": [
@@ -121058,13 +121015,18 @@
       "showId": "mexodus-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 81,
-      "publishDate": "September 23rd, 2025",
+      "publishDate": "2025-09-23",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR2K57",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 164d before show (September 23rd, 2025 vs 2026-03-06)"
+          "detail": "Published 164d before show (2025-09-23 vs 2026-03-06)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
         }
       ]
     },
@@ -121121,13 +121083,13 @@
       "showId": "mexodus-off-broadway-2026",
       "file": "nytimes--brittani-samuel.json",
       "score": 76,
-      "publishDate": "2025-09-19",
+      "publishDate": "September 19th, 2025",
       "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 168d before show (2025-09-19 vs 2026-03-06)"
+          "detail": "Published 168d before show (September 19th, 2025 vs 2026-03-06)"
         }
       ]
     },
@@ -121183,20 +121145,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 155d before show (2025-10-02 vs 2026-03-06)"
-        }
-      ]
-    },
-    {
-      "showId": "mexodus-off-broadway-2026",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 74,
-      "publishDate": "September 18th, 2025",
-      "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 169d before show (September 18th, 2025 vs 2026-03-06)"
         }
       ]
     },
@@ -128221,6 +128169,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "relative-motion-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "score": 80,
+      "publishDate": "2026-11-20",
+      "url": "https://viewfromthegods.co.uk/2026/11/20/relative-motion-southwark-playhouse-borough/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -144757,19 +144719,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "file": "the-window-card--david-buchanan.json",
-      "publishDate": "2026-10-06",
-      "url": "https://thewindowcard.com/the-unbelievers-lauren-ambrose-interviews",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
