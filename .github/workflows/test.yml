@@ -644,6 +644,7 @@ on:
       - 'scripts/lint-design-tokens.js'
       - 'scripts/lint-font-floor.js'
       - 'scripts/test-email-broadcast.js'
+      - 'scripts/test-poller-rebuild-memo-restore.test.js'
       - 'scripts/test-url-wipe-hold.js' # BRO-7304
       - 'scripts/test-url-hygiene-bro7304.js' # BRO-7304
       - 'scripts/test-ordinal-publishdate-guards.js'
