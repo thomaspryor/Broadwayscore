@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7999-b",
   "planId": "908a36fc-d747-4412-bcdc-99ecc4e83ff2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-21T19:38:17.076Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "the-music-man-2022/ap--mark-kennedy.json: wrongArticleManualClear"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-21T19:59:52.507Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/ap--mark-kennedy.json wrongArticleManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
