@@ -190,3 +190,31 @@ describe('section names lose em dashes', () => {
     assert.strictEqual(A.cleanName('Rear Mezzanine'), 'Rear Mezzanine');
   });
 });
+
+describe('rows and seat numbers in section names (BRO-8018 audit 3)', () => {
+  test('seat numbers are stripped from names', () => {
+    assert.strictEqual(A.stripSeatNumbers('Side Sections (100s & 200s)'), 'Side Sections');
+    assert.strictEqual(A.stripSeatNumbers('Center Orchestra (Rows C-G)'), 'Center Orchestra (Rows C-G)');
+  });
+  test('rows in a name become a claim the verifier must accept for every row', () => {
+    assert.strictEqual(A.nameRows('Center Orchestra (Rows C-S)'), 'C-S');
+    assert.strictEqual(A.nameRows('Rear Mezzanine'), null);
+    assert.strictEqual(A.nameRows('Side Orchestra partial-view (above Row G)'), null);
+    assert.strictEqual(A.nameRows('Rear Orchestra behind Row R'), null);
+    assert.match(A.nameRowsClaimText('Center Orchestra (Rows C-S)', 'sweet-spot'), /every one of rows C-S are among the best/);
+    assert.strictEqual(A.nameRowsClaimText('Orchestra Center (Rows F-L)', 'sweet-spot', 'F-L'), null);
+  });
+  test('a rejected rows-in-name claim drops the section (Walter Kerr C-S)', () => {
+    const page = 'Gershwin Theatre: rows C and D of the Center Orchestra are unparalleled. Rows E to L are very good.';
+    const src = [{ url: 'https://w.example', text: page, namesTheater: true }];
+    const sec = { name: 'Center Orchestra', verdict: 'sweet-spot', verdictLabel: 'Top pick' };
+    const q = [{ src: 1, quote: 'rows C and D of the Center Orchestra are unparalleled' }];
+    const rep = { name: { text: 'Center Orchestra (Rows C-S)', keep: true, evidence: q }, verdict: { supported: true, evidence: q }, rationale: [{ text: 'Rows C and D are the best.', evidence: q }] };
+    const g = A.groundRewrite(sec, rep, src);
+    const i = g.claims.findIndex((c) => c.kind === 'nameRows');
+    assert.ok(i >= 0);
+    const acc = new Map(g.claims.map((c, k) => [k + 1, k !== i]));
+    assert.strictEqual(A.decideSection(sec, g.claims, acc).dropped, 'rows in name not supported');
+    assert.ok(!A.decideSection(sec, g.claims, new Map(g.claims.map((c, k) => [k + 1, true]))).dropped);
+  });
+});

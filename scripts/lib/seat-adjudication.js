@@ -316,16 +316,19 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
     if (ev.length) claims.push({ kind, text, evidence: ev, ...extra });
   };
   const r = reply || {};
-  const v = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' }[section.verdict];
+  const v = VERDICT_PHRASE[section.verdict];
   // The section name is shown as a heading, so every qualifier in it is a claim (audit: "front", "rows 1-11", "value band").
   // The rewriter may drop unsupported qualifiers ("front", "value band", made-up rows); the verifier checks the result.
   let name = section.name;
   const proposed = r.name && typeof r.name.text === 'string' ? cleanName(r.name.text.trim()) : '';
   if (proposed && proposed.length <= 70 && !copyProblems(proposed, { forbiddenTitles }).length) name = proposed;
+  name = stripSeatNumbers(name) || name;
   if (r.name && r.name.keep) add('name', `The evidence describes the seats named "${name}", and every specific detail in that name (row letters, seat numbers, words like front, rear, side, center, value) matches the evidence.`, r.name.evidence, { name });
   if (r.verdict && r.verdict.supported) add('verdict', `The ${name} seats ${v}.`, r.verdict.evidence);
   // The row quote often only names the rows; the verdict quote says how good they are. The verifier sees both.
-  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${name}, rows ${section.rowRange} ${v}.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
+  if (section.rowRange && r.rowRange && r.rowRange.keep) add('rowRange', `In ${name}, every one of rows ${section.rowRange} ${v}, not only some of those rows.`, [...(r.rowRange.evidence || []), ...((r.verdict && r.verdict.evidence) || [])]);
+  const nr = nameRowsClaimText(name, section.verdict, section.rowRange && r.rowRange && r.rowRange.keep ? section.rowRange : null);
+  if (nr) add('nameRows', nr, [...((r.name && r.name.evidence) || []), ...((r.verdict && r.verdict.evidence) || []), ...((r.rowRange && r.rowRange.evidence) || [])]);
   if (section.bestRow && r.bestRow && r.bestRow.keep) add('bestRow', `${section.bestRow} is the single best row in ${name}.`, r.bestRow.evidence);
   if (section.priceTier && r.priceTier && r.priceTier.keep) add('priceTier', `${name} seats are ${section.priceTier === 'premium' || section.priceTier === 'top' ? 'among the most expensive' : section.priceTier === 'budget' ? 'among the cheapest' : 'mid-priced'} at this theater.`, r.priceTier.evidence);
   if (section.isValuePick && r.isValuePick && r.isValuePick.keep) add('isValuePick', `${name} is good value for the money at this theater.`, r.isValuePick.evidence);
@@ -352,6 +355,32 @@ function groundRewrite(section, reply, sources, { forbiddenTitles = [] } = {}) {
 }
 
 /** April names used em dashes ("Center Orchestra (front \u2014 rows C-E)"); site copy bans them. */
+/** Seat numbers ("(100s & 200s)", "seats 101-114") change per production: never part of a name (audit 3). */
+function stripSeatNumbers(n) {
+  return String(n).replace(/\s*\([^)]*\d{2,}[^)]*\)/g, '').replace(/,?\s*seats?\s+\d[\d\s,&-]*/gi, '').trim();
+}
+
+/** Row letters carried in a section name, e.g. "Center Orchestra (Rows C-S)" -> "C-S". */
+function nameRows(n) {
+  // "above / behind / beyond Row G" names an open-ended zone, not row G itself; the verdict claim covers it.
+  if (/\b(above|behind|beyond|past|after|before|in front of|from)\s+rows?\b/i.test(String(n))) return null;
+  const m = String(n).match(/\brows?\s+([A-Z]{1,2}(?:\s*(?:-|to|through|,|&|and)\s*[A-Z]{1,2})*)\b/i);
+  return m ? m[1].trim() : null;
+}
+
+const VERDICT_PHRASE = { 'sweet-spot': 'are among the best seats in the house', solid: 'are good, reasonable seats', skip: 'are seats to avoid' };
+
+/**
+ * Audit 3: rows in a name were never checked against the verdict, so "Center Orchestra (Rows C-S)"
+ * shipped as a top pick when the source praised only C-L. This claim makes the verifier judge the
+ * verdict for EVERY row the name lists. Null when the name has no rows or rowRange already covers them.
+ */
+function nameRowsClaimText(name, verdict, rowRange) {
+  const rows = nameRows(name);
+  if (!rows || (rowRange && name.includes(rowRange))) return null;
+  return `In ${name}, every one of rows ${rows} ${VERDICT_PHRASE[verdict]}, not only some of those rows.`;
+}
+
 function cleanName(n) {
   return String(n).replace(/\s*\u2014\s*/g, ', ').replace(/\(\s*,\s*/g, '(').replace(/,\s*\)/g, ')').trim();
 }
@@ -364,6 +393,7 @@ function decideSection(original, claims, accepted) {
   const ok = claims.filter((c, i) => accepted.get(i + 1) === true);
   if (!ok.some((c) => c.kind === 'name')) return { dropped: 'section name not supported' };
   if (!ok.some((c) => c.kind === 'verdict')) return { dropped: 'verdict not supported' };
+  if (claims.some((c, i) => c.kind === 'nameRows' && accepted.get(i + 1) !== true)) return { dropped: 'rows in name not supported' };
   let sentences = ok.filter((c) => c.kind === 'rationale').map((c) => c.sentence);
   // No rewritten sentence survived but a hazard did: the verified hazard note is the explanation.
   if (!sentences.length) sentences = ok.filter((c) => c.kind === 'hazard').map((c) => c.hazard.note.replace(/([^.!?])$/, '$1.'));
@@ -404,6 +434,7 @@ function quoteHash(q) {
 }
 
 module.exports = {
+  stripSeatNumbers, nameRows, nameRowsClaimText,
   VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, hazardType, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
   normalizeText, htmlToText, theaterNamePatterns, pageNamesTheater, sectionKeywords, selectPassages,
   wellFormed, cleanName, quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,

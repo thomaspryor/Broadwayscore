@@ -5,6 +5,7 @@
  *
  *   node scripts/reverify-seat-sections.js fetch  --snapshot=FILE [--theater="Gershwin Theatre"]
  *   node scripts/reverify-seat-sections.js run    --snapshot=FILE [--theater=...] [--max-usd=25]
+ *   node scripts/reverify-seat-sections.js recheck-rows --snapshot=FILE [--max-usd=1]   (rows-in-name check on cached results)
  *   node scripts/reverify-seat-sections.js report --snapshot=FILE [--audit-out=FILE]
  *   node scripts/reverify-seat-sections.js apply  --snapshot=FILE [--write]
  *
@@ -194,6 +195,51 @@ async function cmdRun() {
   console.log(`spend: $${clients.spend.usd.toFixed(2)} over ${clients.spend.calls} calls`);
 }
 
+/**
+ * Audit-3 follow-up over cached results, without re-running the rewriter: strip seat numbers from
+ * kept names, and for names that carry rows, verify the verdict holds for every listed row using
+ * the quotes already grounded for that section. Rejected -> section dropped, theater re-decided.
+ */
+async function cmdRecheckRows() {
+  const clients = require('./lib/dual-model-client');
+  clients.spend.maxUsd = Number(arg('max-usd', 1));
+  const { data, sha: snapSha } = loadSnapshot();
+  const only = arg('theater') ? String(arg('theater')).split('|') : null;
+  let checked = 0, dropped = 0, renamed = 0;
+  for (const r of loadResults(snapSha)) {
+    if (only && !only.includes(r.theater)) continue;
+    const orig = data[r.theater].structuredTips.seating.sections;
+    const rules = showTitleRules(r.theater);
+    await clients.pool(r.sections.map((x, i) => [x, i]), 3, async ([res, i]) => {
+      if (res.status !== 'KEPT' || (res.claims || []).some((c) => c.kind === 'nameRows')) return;
+      const sec = res.section;
+      const stripped = A.cleanName(A.stripSeatNumbers(sec.name));
+      if (stripped && stripped !== sec.name) { sec.name = stripped; renamed++; }
+      const text = A.nameRowsClaimText(sec.name, sec.verdict, sec.rowRange);
+      if (!text) return;
+      const sources = sourcesFor(r.theater, orig[i]);
+      const idx = new Map(sources.map((s, k) => [s.url, k + 1]));
+      const quotes = (res.claims || []).filter((c) => c.accepted && ['name', 'verdict', 'rowRange'].includes(c.kind)).flatMap((c) => c.evidence);
+      const evidence = A.groundEvidence(quotes.map((e) => ({ src: idx.get(e.url), quote: e.quote })), sources);
+      const claim = { kind: 'nameRows', text, evidence };
+      let acc;
+      try {
+        acc = evidence.length ? A.parseVerifyReply(await clients.askGemini(A.buildVerifyPrompt({ theaterName: r.theater, sectionName: sec.name, claims: [claim] })), 1) : new Map([[1, false]]);
+      } catch (e) { res.status = 'UNKNOWN'; res.reason = `recheck: ${e.message}`; return; }
+      checked++;
+      res.claims.push({ kind: 'nameRows', text, accepted: acc.get(1), why: acc.why ? acc.why.get(1) : 'no grounded evidence', evidence: evidence.map((e) => ({ url: e.url, quoteHash: A.quoteHash(e.quote), quote: e.quote })) });
+      if (acc.get(1) !== true) { res.status = 'DROPPED'; res.reason = 'rows in name not supported'; res.section = undefined; dropped++; }
+    });
+    const kept = r.sections.filter((x) => x.status === 'KEPT').map((x) => x.section);
+    const unknown = r.sections.filter((x) => x.status === 'UNKNOWN').length;
+    const problems = unknown ? ['has UNKNOWN sections'] : A.theaterKeepProblems(kept);
+    for (const k of kept) for (const c of A.copyProblems(k.name, { forbiddenTitles: rules.forbidden })) problems.push(`${k.name}: ${c}`);
+    r.theaterKept = !problems.length; r.theaterProblems = problems; r.recheckedAt = new Date().toISOString();
+    fs.writeFileSync(path.join(RESULTS, `${slug(r.theater)}.json`), JSON.stringify(r, null, 1));
+  }
+  console.log(`recheck-rows: ${checked} checked, ${dropped} dropped, ${renamed} renamed  [$${clients.spend.usd.toFixed(2)}]`);
+}
+
 function loadResults(snapSha) {
   if (!fs.existsSync(RESULTS)) return [];
   return fs.readdirSync(RESULTS).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(RESULTS, f), 'utf8'))).filter((r) => r.snapshotSha === snapSha);
@@ -267,14 +313,14 @@ function cmdApply() {
 }
 
 const cmd = process.argv[2];
-const table = { fetch: cmdFetch, run: cmdRun, report: cmdReport, apply: cmdApply };
+const table = { fetch: cmdFetch, run: cmdRun, 'recheck-rows': cmdRecheckRows, report: cmdReport, apply: cmdApply };
 if (require.main === module) {
   const { hasHelpFlag } = require('./lib/cli-help.js');
   if (hasHelpFlag(process.argv.slice(2))) {
     console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 20).filter((l) => l.startsWith(' *')).map((l) => l.slice(3)).join('\n'));
     process.exit(0);
   }
-  if (!table[cmd]) { console.error('usage: reverify-seat-sections.js fetch|run|report|apply --snapshot=FILE'); process.exit(2); }
+  if (!table[cmd]) { console.error('usage: reverify-seat-sections.js fetch|run|recheck-rows|report|apply --snapshot=FILE'); process.exit(2); }
   Promise.resolve(table[cmd]()).catch((e) => { console.error(`error: ${e.message}`); process.exit(1); });
 }
 
