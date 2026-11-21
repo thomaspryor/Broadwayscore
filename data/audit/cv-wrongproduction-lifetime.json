@@ -1,21 +1,20 @@
 {
-  "updatedAt": "2026-11-20T10:25:59.270Z",
-  "scanned": 4899,
-  "showsWithViolations": 124,
-  "totalViolations": 153,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-11-21T10:43:43.077Z",
+  "scanned": 4910,
+  "showsWithViolations": 125,
+  "totalViolations": 154,
+  "newSinceLastRun": 1,
   "handled": {
     "not-shipped": 66,
-    "temporal-override-low-confidence": 974,
+    "temporal-override-low-confidence": 971,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "self-healed": 74,
-    "prior-run-or-tour-leg": 43
+    "prior-run-or-tour-leg": 46
   },
   "newViolationKeys": [
-    "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
-    "operation-mincemeat-west-end-2024::the-recs--alexandra-taylor.json"
+    "cinderella-lyric-hammersmith-off-west-end-2026::guardian--lyndsey-winship.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -109,6 +108,7 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
     "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
+    "cinderella-lyric-hammersmith-off-west-end-2026::guardian--lyndsey-winship.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
@@ -885,7 +885,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review evaluates the Chichester Festival Theatre's 2019 production of Shadowlands, which is a pre-West End regional — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment of cast and staging. However, it is a review OF the Chichester F — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -894,10 +894,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This review evaluates the Chichester Festival Theatre's 2019 production of Shadowlands, which is a pre-West End regional",
+          "cvReasoning": "This is a valid theater review with critical assessment of cast and staging. However, it is a review OF the Chichester F",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
-            "Article explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the Chichester run that transferred, not attending the West End opening performance"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run",
+            "Opening sentence explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych'"
           ]
         }
       ]
@@ -1894,6 +1894,23 @@
             "Review is of the Chichester Festival Theatre production (premiered August 2026), not the Orange Tree Theatre Off-West End production",
             "Text ends mid-sentence ('The story remains factual and heroic when it [...]'), indicating truncation"
           ]
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "openingDate": "2026-11-21",
+      "message": "guardian/Lyndsey Winship (guardian--lyndsey-winship.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
+      "violations": [
+        {
+          "filename": "guardian--lyndsey-winship.json",
+          "url": "https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
+          "outletId": "guardian",
+          "criticName": "Lyndsey Winship",
+          "matchedBy": "url",
+          "cvReasoning": null,
+          "cvIssues": null
         }
       ]
     },

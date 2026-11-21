@@ -1,23 +1,25 @@
 {
-  "updatedAt": "2026-11-20T10:26:34.257Z",
-  "scanned": 4899,
-  "showsWithViolations": 563,
-  "totalViolations": 786,
-  "newSinceLastRun": 7,
+  "updatedAt": "2026-11-21T10:44:20.131Z",
+  "scanned": 4910,
+  "showsWithViolations": 570,
+  "totalViolations": 796,
+  "newSinceLastRun": 11,
   "newViolationKeys": [
-    "romeo-and-juliet-2013::financialtimes--brendan-lemon.json",
-    "romeo-and-juliet-2013::nytimes--ben-brantley.json",
-    "picnic-2013::bloomberg--jeremy-gerard.json",
-    "picnic-2013::nydailynews--joe-dziemianowicz.json",
-    "master-class-2011::financialtimes--brendan-lemon.json",
-    "master-class-2011::nydailynews--joe-dziemianowicz.json",
-    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json"
+    "time-and-the-conways-2017::broadwaynews--charles-isherwood.json",
+    "time-and-the-conways-2017::variety--marilyn-stasio.json",
+    "the-heiress-2012::bloomberg--jeremy-gerard.json",
+    "the-heiress-2012::northjerseycom--robert-feldberg.json",
+    "seminar-2011::backstage--david-sheward.json",
+    "mexodus-off-broadway-2026::nytimes--brittani-samuel.json",
+    "eurotrash-off-west-end-2026::guardian--arifa-akbar.json",
+    "eurotrash-off-west-end-2026::thestage--sam-marlowe.json",
+    "a-moon-for-the-misbegotten-off-west-end-2025::guardian--arifa-akbar.json",
+    "cat-on-a-hot-tin-roof-off-west-end-2024::guardian--arifa-akbar.json",
+    "cat-on-a-hot-tin-roof-off-west-end-2024::times-uk--clive-davis.json"
   ],
   "actionableViolations": 9,
-  "newActionableSinceLastRun": 1,
-  "newActionableKeys": [
-    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json"
-  ],
+  "newActionableSinceLastRun": 0,
+  "newActionableKeys": [],
   "openActionableCount": 1,
   "actionableOpen": {
     "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json": "2026-11-20T10:26:30.020Z"
@@ -89,6 +91,8 @@
     "three-tall-women-2018::thestage--mark-shenton.json",
     "the-parisian-woman-2017::bobs-theater-blog--robert-sholiton.json",
     "the-bands-visit-2017::adriandimanlig--adrian-dimanlig.json",
+    "time-and-the-conways-2017::broadwaynews--charles-isherwood.json",
+    "time-and-the-conways-2017::variety--marilyn-stasio.json",
     "the-terms-of-my-surrender-2017::act-three-the-reviews--doug-marino.json",
     "the-terms-of-my-surrender-2017::amny--matt-windman.json",
     "the-price-2017::chicagotribune--chris-jones.json",
@@ -134,7 +138,6 @@
     "big-fish-2013::ap--mark-kennedy.json",
     "big-fish-2013::variety--marilyn-stasio.json",
     "the-glass-menagerie-2013::bloomberg--jeremy-gerard.json",
-    "romeo-and-juliet-2013::financialtimes--brendan-lemon.json",
     "romeo-and-juliet-2013::nytimes--ben-brantley.json",
     "jekyll-and-hyde-2013::bloomberg--philip-boroff.json",
     "orphans-2013::nydailynews--joe-dziemianowicz.json",
@@ -153,6 +156,8 @@
     "the-mystery-of-edwin-drood-2012::newsday--linda-winer.json",
     "elf-2012::ap--peter-santilli.json",
     "annie-2012::ap--jennifer-farrar.json",
+    "the-heiress-2012::bloomberg--jeremy-gerard.json",
+    "the-heiress-2012::northjerseycom--robert-feldberg.json",
     "fela-2012::backstage--david-sheward.json",
     "harvey-2012::philadelphia-inquirer--howard-shapiro.json",
     "nice-work-if-you-can-get-it-2012::ap--mark-kennedy.json",
@@ -166,6 +171,7 @@
     "the-road-to-mecca-2012::northjerseycom--robert-feldberg.json",
     "the-road-to-mecca-2012::variety--marilyn-stasio.json",
     "on-a-clear-day-you-can-see-forever-2011::bloomberg--jeremy-gerard.json",
+    "seminar-2011::backstage--david-sheward.json",
     "private-lives-2011::ap--mark-kennedy.json",
     "other-desert-cities-2011::northjerseycom--robert-feldberg.json",
     "chinglish-2011::ap--mark-kennedy.json",
@@ -242,6 +248,7 @@
     "design-for-living-2001::nytimes--ben-brantley.json",
     "copenhagen-2000::the-nation--carol-rocamora.json",
     "merrily-we-roll-along-1981::nydailynews--joe-dzieminaowicz.json",
+    "mexodus-off-broadway-2026::nytimes--brittani-samuel.json",
     "an-ark-off-broadway-2026::ap--mark-kennedy.json",
     "the-devil-wears-prada-west-end-2024::standard--martin-robinson.json",
     "mj-the-musical-west-end-2024::whatsonstage--sarah-crompton.json",
@@ -358,6 +365,8 @@
     "hay-fever-west-end-2026::thestage--the-stage.json",
     "hay-fever-west-end-2026::times-uk--dominic-maxwell.json",
     "the-last-man-off-west-end-2026::thestage--paul-vale.json",
+    "eurotrash-off-west-end-2026::guardian--arifa-akbar.json",
+    "eurotrash-off-west-end-2026::thestage--sam-marlowe.json",
     "the-price-off-west-end-2026::guardian--arifa-akbar.json",
     "the-price-off-west-end-2026::guardian--unknown.json",
     "the-price-off-west-end-2026::thestage--dave-fargnoli.json",
@@ -819,7 +828,10 @@
     "the-physicists-regional-2026::stage-raw--lovell-estell-iii.json",
     "painted-ponies-regional-2026::stage-raw--steven-morris.json",
     "green-corridors-regional-2026-city-garage-theatre::stage-raw--lovell-estell-iii.json",
-    "a-number-regional-2026::stage-raw--lovell-estell-iii.json"
+    "a-number-regional-2026::stage-raw--lovell-estell-iii.json",
+    "a-moon-for-the-misbegotten-off-west-end-2025::guardian--arifa-akbar.json",
+    "cat-on-a-hot-tin-roof-off-west-end-2024::guardian--arifa-akbar.json",
+    "cat-on-a-hot-tin-roof-off-west-end-2024::times-uk--clive-davis.json"
   ],
   "hits": [
     {
@@ -2047,6 +2059,46 @@
       ]
     },
     {
+      "showId": "time-and-the-conways-2017",
+      "title": "Time and the Conways",
+      "openingDate": "2017-10-10",
+      "message": "broadwaynews/Charles Isherwood (broadwaynews--charles-isherwood.json) SHIPPED but fullText never mentions 'Time and the Conways' (303 chars): https://broadway.news/2017/10/10/review/review-time-and-the-conways-offers-a-graceful-masterclass-in-time-and-failed-dreams/\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'Time and the Conways' (303 chars): http://variety.com/2017/legit/reviews/time-and-the-conways-review-elizabeth-mcgovern-1202586681/",
+      "violations": [
+        {
+          "filename": "broadwaynews--charles-isherwood.json",
+          "url": "https://broadway.news/2017/10/10/review/review-time-and-the-conways-offers-a-graceful-masterclass-in-time-and-failed-dreams/",
+          "outletId": "broadwaynews",
+          "criticName": "Charles Isherwood",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "variety--marilyn-stasio.json",
+          "url": "http://variety.com/2017/legit/reviews/time-and-the-conways-review-elizabeth-mcgovern-1202586681/",
+          "outletId": "variety",
+          "criticName": "Marilyn Stasio",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "the-terms-of-my-surrender-2017",
       "title": "The Terms of My Surrender",
       "openingDate": "2017-08-10",
@@ -3066,24 +3118,8 @@
       "showId": "romeo-and-juliet-2013",
       "title": "Romeo and Juliet",
       "openingDate": "2013-09-19",
-      "message": "financialtimes/Brendan Lemon (financialtimes--brendan-lemon.json) SHIPPED but fullText never mentions 'Romeo and Juliet' (303 chars): https://www.ft.com/cms/s/2/234a9692-210e-11e3-8aff-00144feab7de.html#axzz2fNqeiEaF\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Romeo and Juliet' (303 chars): http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html?pagewanted=all",
+      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Romeo and Juliet' (303 chars): http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html?pagewanted=all",
       "violations": [
-        {
-          "filename": "financialtimes--brendan-lemon.json",
-          "url": "https://www.ft.com/cms/s/2/234a9692-210e-11e3-8aff-00144feab7de.html#axzz2fNqeiEaF",
-          "outletId": "financialtimes",
-          "criticName": "Brendan Lemon",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
         {
           "filename": "nytimes--ben-brantley.json",
           "url": "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html?pagewanted=all",
@@ -3479,6 +3515,46 @@
       ]
     },
     {
+      "showId": "the-heiress-2012",
+      "title": "The Heiress",
+      "openingDate": "2012-11-01",
+      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'The Heiress' (213 chars, textIssues flag set): http://www.businessweek.com/news/2012-11-01/jessica-chastain-seethes-in-satisfying-heiress-review\nnorthjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'The Heiress' (303 chars): http://www.northjersey.com/arts_entertainment/theater/176908161_Broadway_review___The_Heiress__at_the_Walter_Kerr_Theatre.html",
+      "violations": [
+        {
+          "filename": "bloomberg--jeremy-gerard.json",
+          "url": "http://www.businessweek.com/news/2012-11-01/jessica-chastain-seethes-in-satisfying-heiress-review",
+          "outletId": "bloomberg",
+          "criticName": "Jeremy Gerard",
+          "haystackLength": 213,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "northjerseycom--robert-feldberg.json",
+          "url": "http://www.northjersey.com/arts_entertainment/theater/176908161_Broadway_review___The_Heiress__at_the_Walter_Kerr_Theatre.html",
+          "outletId": "northjerseycom",
+          "criticName": "Robert Feldberg",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "fela-2012",
       "title": "Fela!",
       "openingDate": "2012-07-12",
@@ -3745,6 +3821,30 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "seminar-2011",
+      "title": "Seminar",
+      "openingDate": "2011-11-20",
+      "message": "backstage/David Sheward (backstage--david-sheward.json) SHIPPED but fullText never mentions 'Seminar' (474 chars, textIssues flag set): http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-seminar-1005546752.story",
+      "violations": [
+        {
+          "filename": "backstage--david-sheward.json",
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-seminar-1005546752.story",
+          "outletId": "backstage",
+          "criticName": "David Sheward",
+          "haystackLength": 474,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -5394,6 +5494,30 @@
           "outletId": "nydailynews",
           "criticName": "Joe Dzieminaowicz",
           "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "mexodus-off-broadway-2026",
+      "title": "Mexodus",
+      "openingDate": "2026-03-10",
+      "message": "nytimes/Brittani Samuel (nytimes--brittani-samuel.json) SHIPPED but fullText never mentions 'Mexodus' (387 chars): https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html\n⚠️  nyt-theater/Unknown (nyt-theater--unknown.json) also too short to assess (0 chars): https://newyorktheater.me/2025/10/04/mexodus-review/",
+      "violations": [
+        {
+          "filename": "nytimes--brittani-samuel.json",
+          "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
+          "outletId": "nytimes",
+          "criticName": "Brittani Samuel",
+          "haystackLength": 387,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -7775,6 +7899,46 @@
       ]
     },
     {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Eurotrash' (3241 chars): https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic\nthestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Eurotrash' (3738 chars): https://thestage.co.uk/reviews/eurotrash-review-young-vic-theatre-london-kathryn-hunter-ben-whishaw",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 3241,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "thestage--sam-marlowe.json",
+          "url": "https://thestage.co.uk/reviews/eurotrash-review-young-vic-theatre-london-kathryn-hunter-ben-whishaw",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "haystackLength": 3738,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "the-price-off-west-end-2026",
       "title": "The Price",
       "openingDate": "2026-04-23",
@@ -8964,11 +9128,11 @@
           "haystackLength": 2947,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -14340,11 +14504,11 @@
           "haystackLength": 2597,
           "textIssuesFlag": true,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -14484,11 +14648,11 @@
           "haystackLength": 1909,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -14508,11 +14672,11 @@
           "haystackLength": 2339,
           "textIssuesFlag": false,
           "triage": {
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -17901,15 +18065,79 @@
           }
         }
       ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "title": "A Moon for the Misbegotten",
+      "openingDate": "2025-06-25",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Moon for the Misbegotten' (3345 chars): https://www.theguardian.com/stage/2025/jun/26/a-moon-for-the-misbegotten-review-ruth-wilson-michael-shannon-david-threlfall-almeida-theatre-london",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2025/jun/26/a-moon-for-the-misbegotten-review-ruth-wilson-michael-shannon-david-threlfall-almeida-theatre-london",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 3345,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "title": "Cat on a Hot Tin Roof",
+      "openingDate": "2024-12-16",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (4369 chars, textIssues flag set): https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3187 chars, textIssues flag set): https://www.thetimes.com/culture/theatre-dance/article/cat-on-a-hot-tin-roof-review-a-long-evening-of-mannered-excess-c9h6jdv9x\n⚠️  i-paper/Fiona Mountford (i-paper--fiona-mountford.json) also too short to assess (0 chars): https://inews.co.uk/culture/arts/daisy-edgar-jones-cat-hot-tin-roof-review-3438353\n⚠️  standard/Nick Curtis (standard--nick-curtis.json) also too short to assess (0 chars): https://www.standard.co.uk/culture/theatre/cat-on-a-hot-tin-roof-almeida-review-daisy-edgar-jones-b1200657.html\n⚠️  thestage/Siobhan Murphy (thestage--siobhan-murphy.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/cat-on-a-hot-tin-roof-review-almeida-theatre-london-tennessee-williams-rebecca-frecknall-kingsley-ben-adir-daisy-edgar-jones",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 4369,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "times-uk--clive-davis.json",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/cat-on-a-hot-tin-roof-review-a-long-evening-of-mannered-excess-c9h6jdv9x",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "haystackLength": 3187,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
-    "total": 786,
+    "total": 796,
     "counts": {
-      "excerpt": 190,
+      "excerpt": 195,
       "wrong-production": 9,
-      "unresolved": 530,
-      "truncated": 57
+      "unresolved": 539,
+      "truncated": 53
     },
     "outletPlans": [
       {
@@ -18440,9 +18668,9 @@
       },
       {
         "outletId": "backstage",
-        "total": 8,
+        "total": 9,
         "counts": {
-          "excerpt": 7,
+          "excerpt": 8,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -18511,6 +18739,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "seminar-2011/backstage--david-sheward.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "time-stands-still-2010/backstage--david-sheward.json",
             "bucket": "excerpt",
             "evidence": [
@@ -18523,9 +18760,9 @@
       },
       {
         "outletId": "bloomberg",
-        "total": 7,
+        "total": 8,
         "counts": {
-          "excerpt": 6,
+          "excerpt": 7,
           "unresolved": 1
         },
         "requiresArticleReview": true,
@@ -18586,6 +18823,15 @@
           },
           {
             "file": "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-heiress-2012/bloomberg--jeremy-gerard.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -18792,10 +19038,10 @@
       },
       {
         "outletId": "broadwaynews",
-        "total": 5,
+        "total": 6,
         "counts": {
           "truncated": 3,
-          "excerpt": 2
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -18837,6 +19083,15 @@
           },
           {
             "file": "the-boys-in-the-band-2018/broadwaynews--charles-isherwood.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "time-and-the-conways-2017/broadwaynews--charles-isherwood.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -19435,9 +19690,9 @@
       },
       {
         "outletId": "financialtimes",
-        "total": 15,
+        "total": 14,
         "counts": {
-          "excerpt": 6,
+          "excerpt": 5,
           "unresolved": 8,
           "truncated": 1
         },
@@ -19481,15 +19736,6 @@
           },
           {
             "file": "master-class-2011/financialtimes--brendan-lemon.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "romeo-and-juliet-2013/financialtimes--brendan-lemon.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -19620,10 +19866,10 @@
       },
       {
         "outletId": "guardian",
-        "total": 141,
+        "total": 144,
         "counts": {
-          "unresolved": 133,
-          "truncated": 7,
+          "unresolved": 139,
+          "truncated": 4,
           "excerpt": 1
         },
         "requiresArticleReview": true,
@@ -19711,6 +19957,15 @@
           },
           {
             "file": "a-month-in-the-country-off-west-end-2026/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "a-moon-for-the-misbegotten-off-west-end-2025/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -19917,6 +20172,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "cat-on-a-hot-tin-roof-off-west-end-2024/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "clybourne-park-west-end-2011/guardian--lyn-gardner.json",
             "bucket": "unresolved",
             "evidence": [
@@ -19981,6 +20245,15 @@
           },
           {
             "file": "endgame-royal-bath-regional-2025/guardian--arifa-akbar.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "eurotrash-off-west-end-2026/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -20197,11 +20470,11 @@
           },
           {
             "file": "let-it-be-west-end-2012/guardian--michael-billington.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -20467,11 +20740,11 @@
           },
           {
             "file": "routes-west-end-2013/guardian--michael-billington.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -20782,11 +21055,11 @@
           },
           {
             "file": "the-tailor-made-man-west-end-2013/guardian--michael-billington.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -21574,9 +21847,9 @@
       },
       {
         "outletId": "northjerseycom",
-        "total": 11,
+        "total": 12,
         "counts": {
-          "excerpt": 11
+          "excerpt": 12
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -21654,6 +21927,15 @@
           },
           {
             "file": "the-heidi-chronicles-2015/northjerseycom--robert-feldberg.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-heiress-2012/northjerseycom--robert-feldberg.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -22007,10 +22289,10 @@
       },
       {
         "outletId": "nytimes",
-        "total": 7,
+        "total": 8,
         "counts": {
           "wrong-production": 2,
-          "excerpt": 3,
+          "excerpt": 4,
           "truncated": 1,
           "unresolved": 1
         },
@@ -22041,6 +22323,15 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "mexodus-off-broadway-2026/nytimes--brittani-samuel.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -23295,8 +23586,7 @@
         "outletId": "thereviewshub",
         "total": 4,
         "counts": {
-          "unresolved": 2,
-          "truncated": 1,
+          "unresolved": 3,
           "excerpt": 1
         },
         "requiresArticleReview": true,
@@ -23330,20 +23620,20 @@
           },
           {
             "file": "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-            "bucket": "truncated",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=truncated"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         ]
       },
       {
         "outletId": "thestage",
-        "total": 188,
+        "total": 189,
         "counts": {
-          "unresolved": 174,
+          "unresolved": 175,
           "excerpt": 11,
           "truncated": 3
         },
@@ -23846,6 +24136,15 @@
           },
           {
             "file": "escaped-alone-tron-regional-2024/thestage--fergus-morgan.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "eurotrash-off-west-end-2026/thestage--sam-marlowe.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -25177,9 +25476,9 @@
       },
       {
         "outletId": "times-uk",
-        "total": 40,
+        "total": 41,
         "counts": {
-          "unresolved": 27,
+          "unresolved": 28,
           "truncated": 7,
           "excerpt": 6
         },
@@ -25237,6 +25536,15 @@
               "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "cat-on-a-hot-tin-roof-off-west-end-2024/times-uk--clive-davis.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -25596,11 +25904,11 @@
       },
       {
         "outletId": "variety",
-        "total": 10,
+        "total": 11,
         "counts": {
           "wrong-production": 1,
           "unresolved": 5,
-          "excerpt": 4
+          "excerpt": 5
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -25674,6 +25982,15 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "time-and-the-conways-2017/variety--marilyn-stasio.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
