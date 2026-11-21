@@ -253,7 +253,8 @@ function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleD
     const og = gaps.filter((g) => g.outlet === o);
     const unattempted = og.filter((g) => !attemptedKeys.has(g.reviewKey)).length + pending;
     const n = t.n + pending;
-    const pct = n ? (100 * (t.full + t.documented + t.dupCovered)) / n : 100;
+    // Pending candidates are missing reviews: same covered count over a bigger denominator.
+    const pct = pending ? (n ? (t.pct * t.n) / n : 100) : t.pct;
     const below = pct < t.floor;
     return { outlet: o, pct: Math.round(pct * 10) / 10, floor: t.floor, n, gaps: og.length + pending, pending, unattempted, below, fail: below && unattempted > 0 };
   }).sort((a, b) => a.pct - b.pct);
