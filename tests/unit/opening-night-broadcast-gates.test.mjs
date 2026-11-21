@@ -71,7 +71,7 @@ describe('runGateAlert exit code and blocked output', () => {
     assert.strictEqual(code, 1);
   });
 
-  test('isOwnerInformed treats missing/auto results as not informed', () => {
+  test('isOwnerInformed treats missing results and auto without a filed tracker as not informed', () => {
     assert.strictEqual(isOwnerInformed(null), false);
     assert.strictEqual(isOwnerInformed({ action: 'auto' }), false);
     assert.strictEqual(isOwnerInformed({ action: 'auto', dispatchOk: false }), false);
