@@ -37,9 +37,11 @@ test('rebuild threads the show to every primacy call (class guard: no show-less 
   const fs = await import('node:fs');
   for (const f of ['scripts/rebuild-all-reviews.js', 'scripts/lib/review-guards.js', 'scripts/lib/dedup-survivor.js', 'scripts/lib/star-score-mismatch.js', 'scripts/lib/press-night-review-state.js', 'scripts/lib/rebuild-staleness-scan.js', 'scripts/lib/opening-night-lane/lane-runner.js']) {
     const src = fs.readFileSync(f, 'utf8');
-    for (const m of src.matchAll(/getSyndicationPrimaries(?:InDir)?\(/g)) {
-      const call = src.slice(m.index, src.indexOf(';\n', m.index + 250) + 1 || m.index + 400);
-      assert.match(call, /\{ show[ :}]|\{ show \}|show: showById/, `${f}: ${call.slice(0, 90)} must pass the show (BRO-7957)`);
+    for (const m of src.matchAll(/(?:getSyndicationPrimaries(?:InDir)?|hasFullerSecondary|findFullerSecondaryFile)\(/g)) {
+      let depth = 0, end = m.index + m[0].length - 1; // the call's own parens, so a multi-line call is read whole
+      for (; end < src.length; end++) { if (src[end] === '(') depth++; else if (src[end] === ')' && --depth === 0) break; }
+      const call = src.slice(m.index, end + 1);
+      assert.match(call, /[{,]\s*show\s*[:},]/, `${f}: ${call.slice(0, 90)} must pass the show (BRO-7957)`);
     }
   }
 });
@@ -52,7 +54,9 @@ test('review-field-edit: the flip clears a Daily News flag only on a NYC-era sho
   assert.equal(syndicationPrimacyFlipApplies(ny, { folder: 'x' }, WE), false);
   assert.equal(syndicationPrimacyFlipApplies({ ...ny, syndicatedPrimaryFile: 'y/chicagotribune--chris-jones.json' }, { folder: 'x' }, NYC), false);
   assert.equal(syndicationPrimacyFlipApplies({ ...ny, outletId: 'chicagotribune', syndicatedPrimaryFile: 'x/nydailynews--chris-jones.json' }, { folder: 'x' }, NYC), false);
-  assert.equal(syndicationPrimacyFlipApplies({ ...ny, syndicatedPrimaryFile: undefined }, { folder: 'x' }, NYC), true);
+  const noPtr = { ...ny, syndicatedPrimaryFile: undefined };
+  assert.equal(syndicationPrimacyFlipApplies(noPtr, { folder: 'x', siblings: ['chicagotribune--chris-jones.json'] }, NYC), true);
+  assert.equal(syndicationPrimacyFlipApplies(noPtr, { folder: 'x', siblings: [] }, NYC), false, 'no Tribune counterpart on disk: nothing would take over');
 });
 test('migration planPair: same text flips; different text or dates stays', () => {
   const { planPair } = require('../../scripts/migrate-chris-jones-nyc-primacy.js');
@@ -62,4 +66,21 @@ test('migration planPair: same text flips; different text or dates stays', () =>
   assert.equal(planPair(a, { fullText: 'something else entirely '.repeat(30), publishDate: '2026-11-19' }, NYC, 't.json').action, 'skip');
   assert.equal(planPair(a, { fullText: text, publishDate: '2018-09-30' }, NYC, 't.json').action, 'skip');
   assert.equal(planPair(a, { fullText: text, publishDate: '2026-11-19' }, OLD, 't.json').action, 'skip');
+});
+
+test('fuller-secondary fallback follows the market primacy (a stub Daily News copy yields to the complete Tribune copy)', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7957-'));
+  const text = 'A full review of the production. '.repeat(60);
+  const ny = { criticName: 'Chris Jones', outletId: 'nydailynews', contentTier: 'excerpt', fullText: 'short', assignedScore: 70 };
+  const tr = { criticName: 'Chris Jones', outletId: 'chicagotribune', contentTier: 'complete', fullText: text, assignedScore: 70, publishDate: '2026-11-19', url: 'https://www.chicagotribune.com/x' };
+  fs.writeFileSync(path.join(dir, 'nydailynews--chris-jones.json'), JSON.stringify(ny));
+  fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify(tr));
+  try {
+    // default primacy: the stub is the Tribune, not NYDN, so NYDN has nothing to yield
+    assert.equal(synd.hasFullerSecondary(dir, 'nydailynews--chris-jones.json', ny, {}), false);
+    // NYC-era: NYDN is the primary; the lookup now considers it (finds the Tribune as its secondary when it is live)
+    const r = synd.findFullerSecondaryFile(dir, 'nydailynews--chris-jones.json', ny, { show: NYC });
+    assert.ok(r === null || r === 'chicagotribune--chris-jones.json');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

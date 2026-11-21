@@ -431,8 +431,8 @@ const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
  * @param {object} primaryData parsed primary file
  * @param {{fileNames?: string[]}} [opts]
  */
-function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames } = {}) {
-  return findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames }) !== null;
+function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames, show } = {}) {
+  return findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames, show }) !== null;
 }
 
 /**
@@ -440,10 +440,11 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
  * forScoring checks eligibility before a score exists; publishing callers keep
  * requiring a valid score so a failed scoring attempt cannot drop the primary.
  */
-function findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames, forScoring = false } = {}) {
+function findFullerSecondaryFile(showDir, primaryFileName, primaryData, { fileNames, forScoring = false, show } = {}) {
   if (!primaryData || !STUB_PRIMARY_TIERS.has(primaryData.contentTier) || primaryData.manualContentTier) return null;
   const critic = primaryData.criticName;
-  const config = getSyndicationConfig(critic);
+  const ovr = marketPrimacyOverride(critic, show); // BRO-7957: the Daily News is the primary on a NYC-era show
+  const config = ovr ? { primary: ovr.primary, secondary: ovr.secondary } : getSyndicationConfig(critic);
   if (!config || !isPrimaryFileFor(primaryFileName, [config.primary], critic)) return null;
   const fs = require('fs');
   const path = require('path');

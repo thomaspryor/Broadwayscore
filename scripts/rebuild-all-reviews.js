@@ -4542,7 +4542,7 @@ showDirs.forEach(showId => {
 
       // BRO-7327: a stub (truncated/excerpt) primary yields to a complete secondary copy.
       // Mirrors explainExclusion; the secondary's shield (hasLiveSyndicationPrimary) agrees.
-      if (hasFullerSecondary(showDir, file, data)) {
+      if (hasFullerSecondary(showDir, file, data, { show: showById[showId] })) {
         logExclusion("skippedSyndicated", showId, file, data);
         stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
         return;

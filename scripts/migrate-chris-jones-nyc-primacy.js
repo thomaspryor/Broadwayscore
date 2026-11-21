@@ -52,6 +52,9 @@ function main() {
     for (const nf of nyF) {
       const nPath = path.join(R, id, nf);
       const ny = JSON.parse(fs.readFileSync(nPath, 'utf8'));
+      // One-shot and idempotent: only a Daily News file still flagged as the copy is reversed. An unflagged pair is the
+      // runtime rule's (and the detector's) to handle; re-flagging here could undo a later heal.
+      if (!ny.isSyndicatedDuplicate) continue;
       // the Tribune file that is the same article (a show can hold several Jones files: previews, re-reviews)
       let best = null;
       for (const tf of trF) {
@@ -61,6 +64,10 @@ function main() {
         if (plan.action === 'flip' && (!best || plan.sim > best.plan.sim)) best = { tf, tPath, tr, plan };
       }
       if (!best) { tally.skip++; console.log(`SKIP ${id}/${nf}: no same-text Tribune pair`); continue; }
+      // The Daily News file must itself survive the gates once its flag is gone, or flagging the Tribune copy drops both.
+      const { explainExclusion } = require('./lib/review-guards');
+      const why = explainExclusion({ ...ny, isSyndicatedDuplicate: false, syndicatedPrimaryFile: undefined }, byId[id], path.join(R, id, nf), { ignoreKnownSyndication: true });
+      if (why) { tally.skip++; console.log(`SKIP ${id}/${nf}: Daily News copy would not ship (${why})`); continue; }
       tally.flip++;
       console.log(`${apply ? 'FLIP' : 'WOULD FLIP'} ${id}: ${nf} primary, ${best.tf} duplicate (sim ${best.plan.sim}, was-flagged ${!!ny.isSyndicatedDuplicate})`);
       if (!apply) continue;
