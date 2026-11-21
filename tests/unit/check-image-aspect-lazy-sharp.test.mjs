@@ -39,6 +39,6 @@ Module._load = function (req, ...rest) {
     assert.equal(r.signal, null, `script loaded sharp at startup (killed by ${r.signal})`);
     assert.equal(r.status, 0, r.stderr);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 });
   }
 });
