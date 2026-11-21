@@ -9,9 +9,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { computeStrandedTie } = require('../../scripts/lib/ack-landed-stranded-tie.js');
 const { decideAck, decideLandedElsewhere } = require('../../scripts/lib/ack-landed-core.js');
-const noTie = { tiedToStranded: false, tiedToStrandedByPatch: false };
-const directTie = { tiedToStranded: true, tiedToStrandedByPatch: false };
-const patchTie = { tiedToStranded: false, tiedToStrandedByPatch: true };
+const noTie = { tiedToStranded: false, tiedToStrandedByPatch: false, tiedToStrandedByContent: false };
+const directTie = { tiedToStranded: true, tiedToStrandedByPatch: false, tiedToStrandedByContent: false };
+const patchTie = { tiedToStranded: false, tiedToStrandedByPatch: true, tiedToStrandedByContent: false };
 
 function fixture(t, { large = false } = {}) {
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'ack-stranded-tip-'));
@@ -79,7 +79,11 @@ test('full rebase: only the rebased tip can acknowledge the job', t => {
   f.git('merge', '-q', '--ff-only', 'job');
   f.publish();
   assert.notEqual(rebasedTip, f.tip);
-  assert.deepEqual(f.tie(rebasedFirst), noTie);
+  // BRO-8008: once the WHOLE job is on main (every touched file identical),
+  // an earlier rebased commit that touches a job file ties by content only
+  // (card-name + job-window are still required by decideAck). The partial
+  // landing tests below prove it never ties while any job file differs.
+  assert.deepEqual(f.tie(rebasedFirst), { ...noTie, tiedToStrandedByContent: true });
   assert.deepEqual(f.tie(rebasedTip), patchTie);
   const decision = decideAck(facts(rebasedTip, f.tip, f.tie(rebasedTip)));
   assert.equal(decision.ok, true, decision.refusals.join('\n'));
