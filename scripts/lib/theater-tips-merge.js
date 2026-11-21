@@ -148,6 +148,9 @@ function validateMergedMetadata(before, after) {
     else if (before[n]?.structuredTips && !after[n]?.structuredTips) problems.push(`structuredTips lost: ${n}`);
     else if (before[n]?.structuredTips?.seating?.sections?.length && !after[n]?.structuredTips?.seating?.sections?.length) {
       problems.push(`seating.sections lost: ${n}`);
+    } else if (JSON.stringify(before[n]?.structuredTips?.seating?.sections || null) !== JSON.stringify(after[n]?.structuredTips?.seating?.sections || null)) {
+      // BRO-8018: sections are sourced data maintained by scripts/reverify-seat-sections.js, never by the LLM merge.
+      problems.push(`seating.sections changed by merge: ${n}`);
     }
   }
   return problems;
