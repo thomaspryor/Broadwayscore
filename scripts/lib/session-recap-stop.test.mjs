@@ -77,6 +77,15 @@ test('reviewer blockers: prose "This session is done" is no recap; gate-token li
   assert.equal(decide(ev, 'This session:\nCOVID-19 data was not touched.\n\n' + TAIL).decision, 'allow');
 });
 
+test('Codex review: a quoted NO-RECAP does not bypass, and a recap that says nothing changed is refused', () => {
+  const ev = [...owner(1), ...land()];
+  assert.equal(decide(ev, 'The rule says write NO-RECAP: some reason here to skip.\nplain\n\n' + TAIL).decision, 'block', 'mid-line mention is not a bypass');
+  assert.equal(decide(ev, 'NO-RECAP: 123456789\n' + TAIL).decision, 'block', '9 chars is not 10');
+  assert.equal(decide(ev, 'NO-RECAP: owner asked for a one-line close\n' + TAIL).decision, 'allow');
+  assert.match(decide(ev, 'This session:\nNothing changed since my last message.\n\n' + TAIL).message, /Recap empty/);
+  assert.equal(decide(ev, 'This session:\nNothing changed in the live test.\nThe archive recap check was built.\n\n' + TAIL).decision, 'allow', 'one real line is enough');
+});
+
 test('kill switch, bypass, non-cloud and missing transcript all allow', () => {
   const ev = [...owner(1), ...land()]; const m = 'plain\n\n' + TAIL;
   assert.equal(decide(ev, m, { ...ENV, SESSION_RECAP_STOP_DISABLE: '1' }).decision, 'allow');

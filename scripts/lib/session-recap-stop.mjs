@@ -27,6 +27,8 @@ const RECAP_HEAD_RE = /^[*_>#\s]*This session[*_\s]*:[*_\s]*(.*)$/i;
 const SECTION_RE = /^(?:(?:DISPATCHED|DEFERRED|HANDOFF PROMPT|PR-BLOCKER|NO-[A-Z-]+|EXECUTED|PREVENTION|ROOT-CAUSE|CLASS-GUARD|COUSINS|EFFECT|RED-THEN-GREEN|WORKTREE):|Still running\b|Nothing is still running|You need to\b|Nothing needed from you|DECISION NEEDED\b|Why this is your call|Option [AB]\b|My recommendation|Default:|SAFE TO (?:ARCHIVE|EXIT)\b|KEEP OPEN\b|ACTION NEEDED FROM YOU\b|You can remove the worktree|Keep the worktree)/i;
 const ID_RE = /\b(?!COVID\b)[A-Z]{2,6}-\d{2,}\b/;
 const CODE_RE = /`/;
+// A recap line that says nothing was done is the failure this gate exists to stop ("Nothing changed since my last message").
+const EMPTY_RE = /^(?:nothing (?:has )?changed|no (?:new )?changes|nothing (?:new|to report|else)|same as (?:before|above)|see (?:above|earlier|my last message))\b/i;
 const PATH_RE = /(?:^|[\s`'"(])(?:(?:src|scripts|data|memory|public|node_modules|\.claude|\.github)\/\S+|[\w.-]+\.(?:mjs|cjs|js|jsx|ts|tsx|json|jsonl|md|sh|yml|yaml|css)\b)/;
 const HASH_RE = /\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b/;
 
@@ -71,7 +73,7 @@ export function sessionRecapDecision({ lastMessage = '', events = null, env = pr
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.SESSION_RECAP_STOP_DISABLE === '1') return { decision: 'allow', reason: 'SESSION_RECAP_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
-  if (/NO-RECAP:\s*\S.{8,}/.test(lastMessage)) return { decision: 'allow', reason: 'NO-RECAP bypass' };
+  if (/^[ \t>*_-]*NO-RECAP:[ \t]*\S.{9,}/m.test(lastMessage)) return { decision: 'allow', reason: 'NO-RECAP bypass' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const landed = landedPushIndices(events).length;
   const owner = ownerMessageCount(events);
@@ -82,6 +84,7 @@ export function sessionRecapDecision({ lastMessage = '', events = null, env = pr
   if (lines.length === 0) return { decision: 'block', reason: 'empty recap', message: MSG.empty };
   if (lines.length > MAX_LINES) return { decision: 'block', reason: 'recap too long', message: MSG.toolong(lines.length) };
   const body = lines.join('\n');
+  if (lines.every((l) => EMPTY_RE.test(l))) return { decision: 'block', reason: 'recap says nothing', message: MSG.empty };
   if (ID_RE.test(body)) return { decision: 'block', reason: 'recap has a card id', message: MSG.leak('a card id') };
   if (CODE_RE.test(body)) return { decision: 'block', reason: 'recap has code', message: MSG.leak('code in backticks') };
   if (PATH_RE.test(body)) return { decision: 'block', reason: 'recap has a file path', message: MSG.leak('a file path') };
