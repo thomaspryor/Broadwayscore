@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T23:28:04.792Z",
+  "generatedAt": "2026-11-21T00:29:44.566Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,11 +7,6 @@
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "openingDate": "2026-11-17"
-    },
-    {
-      "id": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "openingDate": "2026-11-14"
     },
     {
       "id": "eurotrash-off-west-end-2026",
@@ -59,11 +54,6 @@
       "openingDate": "2026-11-15"
     },
     {
-      "id": "pride-bridge-theatre-off-west-end-2026",
-      "title": "Pride - Bridge Theatre",
-      "openingDate": "2026-11-14"
-    },
-    {
       "id": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
       "openingDate": "2026-11-16"
@@ -102,11 +92,6 @@
       "id": "a-christmas-story-the-musical-tour-2026",
       "title": "A Christmas Story The Musical",
       "openingDate": "2026-11-17"
-    },
-    {
-      "id": "nutty-nattys-magic-puppet-show-off-broadway-2026",
-      "title": "Nutty Natty's Magic Puppet Show",
-      "openingDate": "2026-11-14"
     },
     {
       "id": "our-town-regional-2026",
@@ -156,6 +141,10 @@
   ],
   "skipped": [
     {
+      "showId": "fantasma-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -163,43 +152,18 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "lighting-and-sound-america",
+      "error": "HTTP 500 for https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 874,
-  "matchedGaps": 2,
+  "itemsScanned": 909,
+  "matchedGaps": 1,
   "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/desire-under-the-elms-almeida-theatre/",
-      "headline": "“Desire Under the Elms” at Almeida Theatre",
-      "publishDate": "2026-11-20"
-    },
     {
       "showId": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
