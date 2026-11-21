@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7928",
+  "planId": "2ca6b172-1713-4d2f-bf7d-1cbaba10562f",
+  "status": "pending",
+  "createdAt": "2026-11-21T09:17:58.743Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Theater Life star ratings: 52 recovered from the outlet's own WP post titles/footers (theaterlife.com times out from CI runners, so the weekly recovery never reached them) and 8 stored ratings corrected (combined-column titles had given every show the last show's stars; Leopoldstadt stored 'A'). Read by recover-explicit-ratings.js phase 2 on the final BRO-7928 code; 509 stored title ratings re-audited against live posts. (part 1 of 3)",
+    "steps": [
+      "a-case-for-the-existence-of-god-off-broadway-2022/theater-life--david-sheward.json: originalScore",
+      "a-childs-christmas-in-wales-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore",
+      "all-in-comedy-about-love-2024/theater-life--david-sheward.json: originalScore",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-life--david-sheward.json: originalScore",
+      "back-to-the-future-2023/theater-life--david-sheward.json: originalScore",
+      "bernhardthamlet-2018/theater-life--david-sheward.json: originalScore",
+      "bernhardthamlet-2018/theater-life--isa-goldberg.json: originalScore",
+      "billy-crystal-860-2026/theater-life--david-sheward.json: originalScore",
+      "billy-crystal-860-2026/theater-life--paulanne-simmons.json: originalScore",
+      "chester-bailey-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore",
+      "church-and-state-off-broadway-2017/theater-life--paulanne-simmons.json: originalScore",
+      "clara-sex-love-and-classical-music-off-broadway-2026/theater-life--alix-cohen.json: originalScore",
+      "coal-country-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore",
+      "confederates-off-broadway-2022/theater-life--brian-scott-lipton.json: originalScore",
+      "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json: originalScore",
+      "curse-of-the-starving-class-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore",
+      "david-a-new-musical-off-broadway-2024/theater-life--paulanne-simmons.json: originalScore",
+      "days-of-wine-and-roses-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "encores-la-cage-aux-folles-off-broadway-2026/theater-life--david-sheward.json: originalScore",
+      "english-off-broadway-2022/theater-life--david-sheward.json: originalScore",
+      "evening-at-the-talk-house-off-broadway-2017/theater-life--david-sheward.json: originalScore",
+      "fade-off-broadway-2017/theater-life--isa-goldberg.json: originalScore",
+      "five-the-parody-musical-off-broadway-2024/theater-life--patrick-christiano.json: originalScore",
+      "frozen-2018/theater-life--david-sheward.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-case-for-the-existence-of-god-off-broadway-2022/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5 stars",
+        "description": "a-case-for-the-existence-of-god-off-broadway-2022/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-childs-christmas-in-wales-off-broadway-2022/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "a-childs-christmas-in-wales-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-in-comedy-about-love-2024/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "all-in-comedy-about-love-2024/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "back-to-the-future-2023/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "back-to-the-future-2023/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bernhardthamlet-2018/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "bernhardthamlet-2018/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bernhardthamlet-2018/theater-life--isa-goldberg.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "bernhardthamlet-2018/theater-life--isa-goldberg.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "billy-crystal-860-2026/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "billy-crystal-860-2026/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chester-bailey-off-broadway-2022/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "chester-bailey-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "church-and-state-off-broadway-2017/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "church-and-state-off-broadway-2017/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clara-sex-love-and-classical-music-off-broadway-2026/theater-life--alix-cohen.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "clara-sex-love-and-classical-music-off-broadway-2026/theater-life--alix-cohen.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "coal-country-off-broadway-2022/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "coal-country-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "confederates-off-broadway-2022/theater-life--brian-scott-lipton.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "confederates-off-broadway-2022/theater-life--brian-scott-lipton.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "copperfield-the-new-musical-off-broadway-2026/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "curse-of-the-starving-class-off-broadway-2025/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "curse-of-the-starving-class-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "david-a-new-musical-off-broadway-2024/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "david-a-new-musical-off-broadway-2024/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "days-of-wine-and-roses-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "days-of-wine-and-roses-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-a-comedy-of-terrors-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "dracula-a-comedy-of-terrors-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "encores-la-cage-aux-folles-off-broadway-2026/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "encores-la-cage-aux-folles-off-broadway-2026/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "english-off-broadway-2022/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "english-off-broadway-2022/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evening-at-the-talk-house-off-broadway-2017/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "evening-at-the-talk-house-off-broadway-2017/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fade-off-broadway-2017/theater-life--isa-goldberg.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "fade-off-broadway-2017/theater-life--isa-goldberg.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "five-the-parody-musical-off-broadway-2024/theater-life--patrick-christiano.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2.5/5 stars",
+        "description": "five-the-parody-musical-off-broadway-2024/theater-life--patrick-christiano.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frozen-2018/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "2/5 stars",
+        "description": "frozen-2018/theater-life--david-sheward.json: originalScore"
+      }
+    ]
+  }
+}
