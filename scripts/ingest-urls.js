@@ -415,7 +415,7 @@ async function main() {
         if (fan.applied) {
           // The fan-out rewrote the parent: classify what is on disk now (BRO-7999).
           const after = classifyHeldOut(showId, writeResult.filepath);
-          if (after !== undefined) writeResult.heldOutRule = after;
+          if (after) writeResult.heldOutRule = after; else if (after === null) delete writeResult.heldOutRule;
           // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
           const WROTE_CHILD = new Set(['create', 'fill', 'held-trim']);
           for (const c of fan.children) {
@@ -433,7 +433,7 @@ async function main() {
     // Say which rule holds it out, every run (not only --verbose), and count it.
     if (writeResult.heldOutRule) {
       results.heldOut[writeResult.heldOutRule] = (results.heldOut[writeResult.heldOutRule] || 0) + 1;
-      console.log(`    ⊘ On file but NOT on the site, held out by: ${writeResult.heldOutRule}`);
+      console.log(`    ⊘ On file but held out of the site by rule: ${writeResult.heldOutRule}`);
     }
 
     console.log('');

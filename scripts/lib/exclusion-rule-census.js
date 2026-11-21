@@ -308,6 +308,7 @@ function buildMirrorSummary(census, comparison, previous, now = new Date()) {
     mirror,
     previousDisagreementRate: previous && previous.mirror ? previous.mirror.disagreementRate : null,
     ...(typeof census.reasonlessWrongAttribution === 'number' ? { reasonlessWrongAttribution: census.reasonlessWrongAttribution } : {}),
+    ...(previous && typeof previous.reasonlessWrongAttribution === 'number' ? { previousReasonlessWrongAttribution: previous.reasonlessWrongAttribution } : {}),
   };
 }
 
@@ -333,6 +334,9 @@ function checkMirrorSummary(summary, { maxRuleDelta = Infinity, maxRateRise = In
   const reasonless = summary.reasonlessWrongAttribution;
   if (typeof reasonless === 'number' && reasonless > maxReasonless) {
     breaches.push(`${reasonless} wrongAttribution files carry no reason (baseline ${maxReasonless}): a new flag was set without wrongAttributionReason; find them with node scripts/exclusion-rule-census.js --list-reasonless`);
+  } else if (typeof reasonless === 'number' && typeof summary.previousReasonlessWrongAttribution === 'number' && reasonless > summary.previousReasonlessWrongAttribution) {
+    // Ratchet (Codex ship-check): once old flags get reasons, the count may not creep back up.
+    breaches.push(`wrongAttribution files with no reason rose ${summary.previousReasonlessWrongAttribution} -> ${reasonless}: a new flag was set without wrongAttributionReason (node scripts/exclusion-rule-census.js --list-reasonless)`);
   }
   return breaches;
 }

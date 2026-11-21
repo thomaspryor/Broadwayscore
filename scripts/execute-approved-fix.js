@@ -432,6 +432,7 @@ function executeRunScript(action) {
     const outcome = require('./lib/ingest-outcome');
     const outcomeFile = outcome.newOutcomeFile();
     let heldOutNote = '';
+    let heldOut = null;
     try {
       execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000, env: { ...process.env, [outcome.ENV]: outcomeFile } }); // 5 min timeout
       // BRO-6872: an ingest that only filed a retry stub exits 0, but no review reached the site.
@@ -441,9 +442,13 @@ function executeRunScript(action) {
       // BRO-7999: the record is on file but an exclusion rule keeps it off the site. Not a
       // failure (a later action in the plan may clear it), but the log must not say "recovered".
       const held = outcome.heldOutNote(reported);
-      if (held) { heldOutNote = `; ${held}`; console.log(`⚠️  ${held}`); }
+      if (held) {
+        heldOutNote = `; ${held}`;
+        console.log(`⚠️  ${held}`);
+        if (reported.showId && reported.filepath) heldOut = { showId: reported.showId, filepath: reported.filepath };
+      }
     } finally { outcome.removeOutcomeFile(outcomeFile); }
-    return { ok: true, msg: `Ran ${script} successfully${heldOutNote}` };
+    return { ok: true, msg: `Ran ${script} successfully${heldOutNote}`, ...(heldOut ? { heldOut } : {}) };
   } catch (err) {
     return { ok: false, reason: `Script ${script} failed: ${err.message}` };
   }
@@ -719,6 +724,14 @@ async function main() {
       failed.push(result.reason);
       console.log(`  FAILED: ${result.reason}`);
     }
+  }
+
+  // BRO-7999 (Codex ship-check): an ingest whose record an exclusion rule holds off the site
+  // is not a recovered review. A later action may clear the flag, so re-check each such file
+  // after the LAST action; one still held out makes the plan 'partial', never 'applied'.
+  for (const reason of require('./lib/ingest-outcome').stillHeldOut(results, require('./lib/review-file-writer').classifyHeldOut)) {
+    failed.push(reason);
+    console.log(`  FAILED: ${reason}`);
   }
 
   // BRO-5942: a file the plan deleted and a later action wrote anew has no

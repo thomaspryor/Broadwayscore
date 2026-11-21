@@ -865,7 +865,7 @@ if (!show) {
       if (fan.applied) {
         // The fan-out rewrote the parent: classify what is on disk now (BRO-7999).
         const after = classifyHeldOut(showId, result.filepath);
-        if (after !== undefined) result.heldOutRule = after;
+        if (after) result.heldOutRule = after; else if (after === null) delete result.heldOutRule;
         // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
         const WROTE_CHILD = new Set(['create', 'fill', 'held-trim']);
         for (const c of fan.children) {
@@ -902,8 +902,8 @@ if (!show) {
   // BRO-7999 R1: on file is not on the site. Name the rule that holds it out, and tell a
   // caller that asked for the outcome (execute-approved-fix.js) so it never logs "recovered".
   if (result.heldOutRule) {
-    console.log(`⊘ On file but NOT on the site, held out by: ${result.heldOutRule}`);
-    require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'held-out', rule: result.heldOutRule });
+    console.log(`⊘ On file but held out of the site by rule: ${result.heldOutRule}`);
+    require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'held-out', rule: result.heldOutRule, showId, filepath: result.filepath });
   }
 
   if (!dryRun && result.filepath && (result.action === 'new' || result.action === 'updated')) {

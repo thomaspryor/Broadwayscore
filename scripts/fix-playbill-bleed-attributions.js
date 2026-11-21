@@ -128,6 +128,8 @@ function main() {
         data.clearBreadcrumbRetracted = 'retracted stale crossOutletVerified: contradicted live wrongAttribution (#1023)';
         data.clearBreadcrumbRetractedAt = new Date().toISOString().slice(0, 10);
       }
+      // BRO-7999: a wrongAttribution flag must say why (exclusion-rule-census counts reasonless ones).
+      if (!String(entry.note || '').trim()) throw new Error(`manifest entry for ${entry.file || entry.path || 'a review'} has no note; a wrongAttribution flag needs a reason`);
       data.wrongAttribution = true;
       data.wrongAttributionReason = entry.note;
       delete data.crossOutletVerified;
