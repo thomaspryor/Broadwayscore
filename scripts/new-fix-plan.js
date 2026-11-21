@@ -263,10 +263,10 @@ function main(argv) {
       const show = String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '').split('/')[0];
       if (!leases.has(show)) leases.set(show, routing.liveLease(show, ROOT));
       const rec = readReview(String(a.file || '').replace(REVIEW_TEXTS_PREFIX, ''));
-      const p = routing.laneHeldEditProblem({ ...a, file: String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '') }, leases.get(show), { url: rec && rec.url });
-      if (!p) continue;
-      console.error(`  ${p.level === 'refuse' ? 'REFUSED' : 'warning:'} ${a.file}:${a.field}: ${p.message}`);
-      if (p.level === 'refuse') refused = true;
+      const laneProblem = routing.laneHeldEditProblem({ ...a, file: String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '') }, leases.get(show), { url: rec && rec.url });
+      if (!laneProblem) continue;
+      console.error(`  ${laneProblem.level === 'refuse' ? 'REFUSED' : 'warning:'} ${a.file}:${a.field}: ${laneProblem.message}`);
+      if (laneProblem.level === 'refuse') refused = true;
     }
     if (refused) return 1;
   }
