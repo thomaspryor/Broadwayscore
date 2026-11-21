@@ -95,4 +95,19 @@ function phaseDeadlineReached(budget, shares, phase) {
   return budget.elapsedMs() >= Math.round(Math.min(1, share) * budget.minutes * 60_000);
 }
 
-module.exports = { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached };
+/**
+ * Stop a per-item loop once `max` items in a row have failed (a host that
+ * times out from CI, BRO-7928). One success resets the count, so a flaky host
+ * that answers sometimes keeps being tried.
+ */
+function createFailureBreaker(max) {
+  let run = 0;
+  return {
+    fail() { run++; },
+    ok() { run = 0; },
+    tripped() { return run >= max; },
+    get count() { return run; },
+  };
+}
+
+module.exports = { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached, createFailureBreaker };

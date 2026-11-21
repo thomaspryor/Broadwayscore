@@ -40,7 +40,7 @@ const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors'
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
-const { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached } = require('./lib/run-budget');
+const { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached, createFailureBreaker } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { resolveTheaterLifeStars, footerRatingFromStoredText } = require('./lib/theater-life-stars');
@@ -574,13 +574,13 @@ async function fetchTheaterLifeRatings(reviews) {
   // theaterlife.com times out from GitHub runners: the 2026-11-21 run spent
   // 70 minutes on 129 timeouts and recovered nothing (BRO-7928). Stop after a
   // few in a row; phase 1 still reads the footer from stored text.
-  let consecutiveFailures = 0;
+  const breaker = createFailureBreaker(TL_MAX_CONSECUTIVE_FAILURES);
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i, 2)) break;
-    if (consecutiveFailures >= TL_MAX_CONSECUTIVE_FAILURES) {
-      console.log(`    theaterlife.com unreachable (${consecutiveFailures} failures in a row); skipping the other ${toProcess.length - i}`);
+    if (breaker.tripped()) {
+      console.log(`    theaterlife.com unreachable (${breaker.count} failures in a row); skipping the other ${toProcess.length - i}`);
       stats.theaterLifeUnreachable = true;
       break;
     }
@@ -632,11 +632,11 @@ async function fetchTheaterLifeRatings(reviews) {
           review.recovered = true;
         }
       }
-      consecutiveFailures = 0;
+      breaker.ok();
     } catch (err) {
       console.log(`    [${i + 1}/${toProcess.length}] ✗ ${review.showId}: ${err.message}`);
       stats.errors++;
-      consecutiveFailures++;
+      breaker.fail();
     }
 
     // Rate limit: 500ms (WP API is slower)

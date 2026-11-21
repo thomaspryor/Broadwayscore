@@ -122,3 +122,15 @@ test('recover-explicit-ratings passes its phase to every budget check (BRO-7928)
   assert.ok(calls.length >= 6, `expected the six phase loops, found ${calls.length}`);
   for (const c of calls) assert.match(c, /,\s*[0-3]\)\) break;$/, `no phase argument: ${c}`);
 });
+
+test('createFailureBreaker trips only on a run of failures; a success resets it (BRO-7928)', () => {
+  const { createFailureBreaker } = require('./run-budget.js');
+  // Mixed batch: two timeouts, a good review, then two more: never tripped,
+  // so the good review and the ones after it are still tried.
+  const b = createFailureBreaker(3);
+  b.fail(); b.fail(); assert.equal(b.tripped(), false);
+  b.ok(); assert.equal(b.count, 0);
+  b.fail(); b.fail(); assert.equal(b.tripped(), false);
+  b.fail(); assert.equal(b.tripped(), true, 'three in a row');
+  assert.equal(b.count, 3);
+});
