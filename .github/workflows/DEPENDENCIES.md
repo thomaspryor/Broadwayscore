@@ -346,7 +346,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | Secret | Used by (cross-repo writers) |
 |---|---|
 | `ALERT_TOKEN_SECRET` | 1 cross-repo writers (of 2 workflows using it): `data-health-check.yml` |
-| `ANTHROPIC_API_KEY` | 43 cross-repo writers (of 72 workflows using it) |
+| `ANTHROPIC_API_KEY` | 44 cross-repo writers (of 73 workflows using it) |
 | `APPROVAL_HMAC_SECRET` | 4 cross-repo writers (of 12 workflows using it) |
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
