@@ -39641,26 +39641,23 @@
       "resolveReason": "live-data test green"
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "main test.yml red: Unit Test Shard (4) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
+      "title": "main test.yml red: Unit Test Shard (1) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-11-08T22:03:17.171Z",
-      "incidentOpenedAt": "2026-11-10T20:10:35.661Z",
-      "lastSeen": "2026-11-10T21:00:51.410Z",
-      "lastNotifiedAt": "2026-11-10T20:10:35.661Z",
+      "incidentOpenedAt": "2026-11-21T20:33:48.506Z",
+      "lastSeen": "2026-11-21T20:33:48.506Z",
+      "lastNotifiedAt": "2026-11-21T20:33:48.506Z",
       "lastSurfacedAt": null,
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7323",
+      "linearIdentifier": "BRO-8021",
       "dispatch": {
-        "requestedAt": "2026-11-10T19:56:26.043Z",
+        "requestedAt": "2026-11-21T20:33:48.506Z",
         "mode": "dispatch-at-filing",
-        "runId": "42736454915",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42736454915"
-      },
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-10T21:00:53.403Z",
-      "resolveReason": "job-green"
+        "runId": "44941913758",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44941913758"
+      }
     },
     "land:land/bro-7150-fast-land": {
       "status": "resolved",
@@ -47683,20 +47680,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests — \"tests/e2e/smoke.spec.ts › Post-deploy smoke tests › signed-out visitor can open the sign-in options at 1280px\"",
-      "firstSeen": "2026-11-21T20:27:43.950Z",
-      "incidentOpenedAt": "2026-11-21T20:27:43.950Z",
-      "lastSeen": "2026-11-21T20:27:43.950Z",
-      "lastNotifiedAt": "2026-11-21T20:27:43.950Z",
+      "firstSeen": "2026-11-21T20:33:48.102Z",
+      "incidentOpenedAt": "2026-11-21T20:33:48.102Z",
+      "lastSeen": "2026-11-21T20:33:48.102Z",
+      "lastNotifiedAt": "2026-11-21T20:33:48.102Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-8019",
-      "dispatch": {
-        "requestedAt": "2026-11-21T20:27:43.950Z",
-        "mode": "dispatch-at-filing",
-        "runId": "44941523697",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44941523697"
-      }
+      "linearIdentifier": "BRO-8019"
     }
   }
 }
