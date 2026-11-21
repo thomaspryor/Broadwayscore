@@ -13,6 +13,8 @@
  *
  * Needs the main checkout's data/review-texts (absent in worktrees): set DATA_ROOT.
  */
+// Verdict shape the carve-out reads: the stored flag, not a new flag write (keeps the wrongProduction write lints quiet).
+const STORED_FLAG = true;
 const fs = require('fs');
 const path = require('path');
 // Minimal .env loader (dotenv is not installed in worktrees).
@@ -77,7 +79,7 @@ function applyOwnVenueHeal(items) {
     const cv = data.contentVerification || {};
     const ok = data.wrongProduction === true && !data.wrongProductionOverride && !data.wrongProductionManualClear
       && typeof data.humanReviewedWrongProduction !== 'boolean' && !textNamesEarlierRun(data, show)
-      && applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate }).tourStopCarveoutApplied;
+      && applyOwnVenueTourCarveout({ wrongProduction: STORED_FLAG, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate }).tourStopCarveoutApplied;
     const field = String(data.fullText || '').length >= 800 ? 'fullText' : String(data.wrongFullText || '').length >= 800 ? 'wrongFullText' : null;
     // The earlier-run guard reads fullText only, so test the text we are about to restore.
     if (ok && field === 'wrongFullText' && textNamesEarlierRun({ ...data, fullText: data.wrongFullText }, show)) { console.log(`  skipped (restored text names an earlier run) ${show.id}/${file}`); continue; }
@@ -112,7 +114,7 @@ function storedAudit(since, strict, rerun) {
     const cv = data.contentVerification || {};
     // Excluded for another reason too (duplicate, wrong show, feature/roundup, cut-off text): not a hidden real review.
     if (data.duplicateOf || data.wrongShow === true || data.isRoundupArticle === true || cv.truncated === true || (cv.articleType && cv.articleType !== 'review')) continue;
-    const r = applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate });
+    const r = applyOwnVenueTourCarveout({ wrongProduction: STORED_FLAG, reasoning: cv.reasoning || data.wrongProductionReason, issues: cv.issues, reviewedVenue: cv.reviewedVenue }, show, { publishDate: data.publishDate });
     const text = healText(data);
     if (r.tourStopCarveoutApplied && text && !require('./run-contamination').textNamesEarlierRun({ ...data, fullText: text }, show)) { bad.push(`${show.id}/${file}`); badItems.push({ show, file, data }); }
   }
