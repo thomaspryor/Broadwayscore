@@ -13,7 +13,7 @@ test('all pass, warnings and unrelated failures: clean', () => {
 });
 
 test('fail or skip on a needed key, missing results, low credits: problems', () => {
-  const v = preflightVerdict({ results: all({ Anthropic: { status: 'fail', message: '401' }, Resend: { status: 'skip' } }).filter((x) => x.name !== 'Vercel'), sb: { ok: true, pctUsed: 93, remaining: 70 } });
+  const v = preflightVerdict({ results: all({ Anthropic: { status: 'fail', message: '401' }, Resend: { status: 'skip' } }).filter((x) => x.name !== 'Vercel'), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
   assert.equal(v.ok, false);
   assert.deepEqual(v.problems.map((p) => p.key).sort(), ['Anthropic', 'Resend', 'ScrapingBee credits', 'Vercel']);
   assert.equal(v.resendDown, true);
@@ -31,17 +31,14 @@ test('a crashed check is matched by its function name and counts as a problem', 
   assert.match(v.problems[0].why, /check crashed/);
 });
 
-test('credits gate on credits left, not percent used (2026-11-21 false page: 91% used, 23,738 left)', () => {
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, remaining: 23738 } }).ok, true);
-  const low = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 40, remaining: 9000 } });
-  assert.deepEqual(low.problems.map((p) => p.key), ['ScrapingBee credits']);
-});
-
-test('credit count missing or malformed: falls back to percent used, never passes a near-empty account silently', () => {
-  for (const remaining of [undefined, null, 'abc', NaN]) {
-    assert.deepEqual(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 95, remaining } }).problems.map((p) => p.key), ['ScrapingBee credits']);
-    assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 50, remaining } }).ok, true);
-  }
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 10000, pctUsed: 99 } }).ok, true);
-  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 9999, pctUsed: 20 } }).ok, false);
+test('thin ScrapingBee balance never pages (ride-out policy, BRO-7854); exhausted does (2026-11-21 false page: 91% used, 23,738 left)', () => {
+  const today = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 91, usedCredits: 976262, maxCredits: 1000000, remaining: 23738 } });
+  assert.equal(today.ok, true);
+  assert.match(today.sbNote, /91% used/);
+  const thin = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 99, usedCredits: 995000, maxCredits: 1000000, remaining: 5000 } });
+  assert.equal(thin.ok, true);
+  const empty = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100, usedCredits: 1000000, maxCredits: 1000000, remaining: 0 } });
+  assert.deepEqual(empty.problems.map((p) => p.key), ['ScrapingBee credits']);
+  const noCount = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 100 } });
+  assert.deepEqual(noCount.problems.map((p) => p.key), ['ScrapingBee credits']);
 });
