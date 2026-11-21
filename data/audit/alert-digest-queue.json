@@ -1432,20 +1432,6 @@
     "queuedAt": "2026-11-21T02:41:53.083Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T03:27:18.235Z"
-  },
-  {
     "conditionKey": "corpus-drift:autoclear-vs-ensemble",
     "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
     "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 83557 files scanned.\n  wrongProduction violations: 1\n    assassins-off-broadway-2021/stageandcinema--tony-frankel.json :: rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
@@ -1489,6 +1475,20 @@
       }
     ],
     "queuedAt": "2026-11-21T03:47:03.985Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T04:20:17.867Z"
   },
   {
     "conditionKey": "land:land/wakeless-keepopen",
