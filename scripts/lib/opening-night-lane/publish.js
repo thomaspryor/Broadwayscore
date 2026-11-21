@@ -192,7 +192,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   const awaited = (x) => x.verifyAbsent !== false && (removedNow.has(canonicalUrl(x.url)) || x.removedBefore === true);
   const absentWanted = takedowns.filter(awaited);
   const notRemoved = takedowns.filter((x) => x.verifyAbsent !== false && !awaited(x)).map((x) => x.key);
-  await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url), absentUrls: absentWanted.map((x) => x.url) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
+  await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url), ...(absentWanted.length ? { absentUrls: absentWanted.map((x) => x.url) } : {}) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
   // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
