@@ -67,7 +67,13 @@ const LISTING_SOURCES = [
     },
     // pageText must carry the show title: a 404 body or another show's page is never art for this one.
     extractImage: (html, baseUrl, show) => {
-      if (show && show.title && !String(html || '').toLowerCase().includes(String(show.title).toLowerCase().replace(/&/g, '&amp;')) && !String(html || '').toLowerCase().includes(String(show.title).toLowerCase())) return null;
+      if (show && show.title) {
+        const page = String(html || '').toLowerCase();
+        if (!page.includes(String(show.title).toLowerCase())) return null;
+        // Same title, other company or year (a revival at another house): the page must name this venue too.
+        const house = String(show.venue || '').split(',')[0].replace(/\s+(?:theat(?:re|er)|center|centre|stage)\b.*$/i, '').trim().toLowerCase();
+        if (house && !page.includes(house)) return null;
+      }
       const m = String(html || '').match(/["'](?:https?:\/\/theatrewashington\.org)?(\/sites\/default\/files\/(?:styles\/[^/"']+\/public\/)?[^"'?]+\.(?:jpe?g|png|webp))(?:\?[^"']*)?["']/i);
       if (!m) return null;
       try { return new URL(m[1].replace(/\/styles\/[^/]+\/public\//, '/'), baseUrl).href; } catch { return null; }

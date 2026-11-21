@@ -65,12 +65,14 @@ test('BRO-7878 theatreWashington listing: DC shows only, slug with and without t
   for (const v of ['Signature Theatre, Arlington, VA', 'Olney Theatre Center, Olney, MD', 'Pasadena Playhouse, Pasadena, CA', undefined])
     assert.equal(listingSource({ venue: v }), null, String(v));
   assert.equal(listingSource({ venue: 'Keegan Theatre, Washington, DC' }).name, 'theatreWashington');
-  const html = '<meta property="og:image:alt" content="x"><img src="/themes/custom/backstage/dist/img/favicon-120.png"><img src="/sites/default/files/styles/landscape_810x405/public/2026-06/AFM%20KEY%20ART.jpg?itok=abc">';
+  let html = '<meta property="og:image:alt" content="x"><img src="/themes/custom/backstage/dist/img/favicon-120.png"><img src="/sites/default/files/styles/landscape_810x405/public/2026-06/AFM%20KEY%20ART.jpg?itok=abc">';
   assert.equal(l.extractImage(html, 'https://theatrewashington.org/shows/fine-madness'), 'https://theatrewashington.org/sites/default/files/2026-06/AFM%20KEY%20ART.jpg');
   assert.equal(l.extractImage('<p>no art</p>', 'https://theatrewashington.org/shows/x'), null);
-  const show = { title: 'A Fine Madness' };
+  const show = { title: 'A Fine Madness', venue: 'Woolly Mammoth Theatre, Washington, DC' };
+  html = html.replace('<meta', '<meta name="description" content="Woolly Mammoth Company"><meta');
   assert.equal(l.extractImage(html + '<h1>A Fine Madness</h1>', 'https://theatrewashington.org/shows/x', show), 'https://theatrewashington.org/sites/default/files/2026-06/AFM%20KEY%20ART.jpg');
   assert.equal(l.extractImage(html, 'https://theatrewashington.org/shows/x', show), null, 'page not about this show');
-  assert.equal(l.extractImage('<h1>A Fine Madness</h1><img src="https://theatrewashington.org/sites/default/files/a.jpg"><img src="/sites/default/files/logo.png">', 'https://theatrewashington.org/shows/x', show), 'https://theatrewashington.org/sites/default/files/a.jpg');
+  assert.equal(l.extractImage(html + 'A Fine Madness', 'https://theatrewashington.org/shows/x', { ...show, venue: 'Studio Theatre, Washington, DC' }), null, 'same title at another house');
+  assert.equal(l.extractImage('<h1>A Fine Madness</h1>Woolly Mammoth<img src="https://theatrewashington.org/sites/default/files/a.jpg"><img src="/sites/default/files/logo.png">', 'https://theatrewashington.org/shows/x', show), 'https://theatrewashington.org/sites/default/files/a.jpg');
   for (const s of LISTING_SOURCES) assert.ok(s.city.test(s.sample), `${s.name} sample must match its own city`);
 });
