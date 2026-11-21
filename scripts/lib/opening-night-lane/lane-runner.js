@@ -35,6 +35,7 @@ const nearMiss = require('./near-miss');
 const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
+const inbox = require('./manual-inbox');
 const { getSyndicationPrimaries, criticFileSlug } = require('../syndication-pairs');
 const card = require('../review-completeness');
 const { resolveOutletFromUrl } = require('../review-normalization');
@@ -45,6 +46,54 @@ const criticKey = (name) => criticFileSlug(name); // the rebuild's critic match 
 // BRO-7196: passes a review missing outlet name, critic or date is retried before the lane leaves it to the regular pipeline.
 const INCOMPLETE_TRIES = 3;
 const MANUAL_TRIES = 3; // BRO-7741: passes an inbox URL is retried before it is marked failed (and drained to ingest-urls)
+
+/**
+ * The reviews.json row the lane publishes for a review file (review-completeness toCardRow), with the score the rebuild
+ * would ship: a human score override on the file (a lane correction, or one the guarded writer preserved) is published
+ * only as the rebuild resolves it (rebuild-helpers getBestScore: provisional and star-band rules), so the site does not
+ * change again at the first rebuild after the lane.
+ */
+function laneCardRow(record, show) {
+  const row = card.toCardRow(record, show);
+  if (record && record.humanReviewScore != null) {
+    const best = require('../rebuild-helpers').getBestScore(record);
+    if (best && Number.isFinite(best.score)) row.assignedScore = best.score;
+  }
+  return row;
+}
+
+/** BRO-7891 item 2: the file tonight's lane wrote for review key `key` in `dir`, or null. */
+function findLaneFile(dir, night, key) {
+  const fs = require('fs'); const path = require('path');
+  let names; try { names = fs.readdirSync(dir).filter((f) => f.endsWith('.json')); } catch { return null; }
+  for (const f of names) {
+    let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+    if (d && d.openingNightLane && d.openingNightLane.night === night && discovery.canonicalUrl(d.url) === key) return { file: path.join(dir, f), name: f, record: d };
+  }
+  return null;
+}
+
+/**
+ * BRO-7891 item 2: the edited review record for a lane correction, or {reject}. Pure. Uses the regular edit's rules
+ * (review-field-edit applyReviewFieldEdit: allowlist, value checks, provenance stamp). `expect` (the value the person
+ * saw) is compared first; a score the rebuild would not use (provisional, outside the printed rating's band) is refused.
+ */
+function planCorrection(record, entry, at) {
+  const { applyReviewFieldEdit } = require('../review-field-edit');
+  const field = entry.field;
+  const current = record[field] === undefined ? null : record[field];
+  if (Object.prototype.hasOwnProperty.call(entry, 'expect') && JSON.stringify(current) !== JSON.stringify(entry.expect)) {
+    return { reject: `${field} is ${JSON.stringify(current)} now, not the ${JSON.stringify(entry.expect)} the correction expected` };
+  }
+  if (JSON.stringify(current) === JSON.stringify(entry.value)) return { record, unchanged: true };
+  const res = applyReviewFieldEdit(record, { field, oldValue: current, newValue: entry.value }, { fixId: `lane-inbox:${entry.id}`, at });
+  if (!res.ok) return { reject: res.reason };
+  if (field === 'humanReviewScore') {
+    const best = require('../rebuild-helpers').getBestScore(res.record);
+    if (!best || best.score !== entry.value) return { reject: `the rebuild would publish ${best ? best.score : 'no score'}, not ${entry.value} (the printed rating's band, or a provisional score); fix it the regular way` };
+  }
+  return { record: res.record };
+}
 
 /**
  * BRO-7741: what an inbox entry adds to the row the lane built from the page. The page's date must be tonight's (+/- 1
@@ -154,7 +203,8 @@ async function runLaneNight({
     if (!entry || manualClosed.has(gen(entry))) return;
     if (status === 'queued') { if (manualQueued.has(gen(entry))) return; manualQueued.add(gen(entry)); } else manualClosed.add(gen(entry));
     // url/show ride along for the driver's failed/rejected alert (markStatus ignores them).
-    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}), url: entry.url, show: show.id });
+    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}), url: entry.url, show: show.id,
+      ...(entry.kind ? { kind: entry.kind, field: entry.field } : {}) });
   };
   // BRO-7891: an inbox entry for a syndicated copy whose original is only queued tonight stays 'queued' until the
   // original is verified live ('held-copy', final: drain and sweep skip it). Never live by the end: it stays open and
@@ -181,6 +231,14 @@ async function runLaneNight({
       errors.push({ adapter: 'manual-inbox', error: `status write failed: ${String((e && e.message) || e).slice(0, 150)}` });
     }
   };
+  // BRO-7891 item 2: corrections read this pass (manualCandidates reads the inbox once) and the ones whose row is queued
+  // for publish again, by review key.
+  let passCorrections = [];
+  const correctionsByKey = new Map(); // review key -> [entry]
+  const settleCorrections = (key, status, reason) => {
+    for (const e of correctionsByKey.get(key) || []) noteInbox(e, status, reason);
+    correctionsByKey.delete(key);
+  };
   const outletIdFor = (e) => e.outletId || ((resolveOutletFromUrl(e.url) || {}).outletId) || null;
   const manualCandidates = async () => {
     if (!readInbox) return [];
@@ -191,8 +249,10 @@ async function runLaneNight({
     }
     const out = [];
     const failedNow = failedKeys();
+    passCorrections = (entries || []).filter((e) => inbox.isCorrection(e));
     for (const e of entries || []) {
       if (!e || !e.id || manualClosed.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
+      if (inbox.isCorrection(e)) continue; // a field correction, applied by applyCorrections: never fetched as a review
       const key = discovery.canonicalUrl(e.url);
       if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
       if (manualQueued.has(gen(e))) continue; // scored tonight (or a held copy), waiting for its publish
@@ -218,6 +278,48 @@ async function runLaneNight({
         ...(outletIdFor(e) ? { outletId: outletIdFor(e) } : {}), reason: 'manual-inbox', manualEntry: e });
     }
     return out;
+  };
+
+  /**
+   * BRO-7891 item 2: apply this pass's corrections to tonight's lane files and queue each row to publish again. A
+   * correction for a URL still being worked waits (up to MANUAL_TRIES passes); one for a review the lane did not publish
+   * tonight is rejected with the regular path's command (that alert names it).
+   */
+  const applyCorrections = () => {
+    const fs = require('fs');
+    for (const e of passCorrections) {
+      if (!e || !e.id || manualClosed.has(gen(e)) || manualQueued.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
+      const key = discovery.canonicalUrl(e.url);
+      if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
+      const found = reviewTextsDir ? findLaneFile(require('path').join(reviewTextsDir, show.id), night, key) : null;
+      if (!found) {
+        const working = awaiting.has(key) || manualByKey.has(key) || inflightKeys.has(key) || pending.some((q) => q.key === key);
+        const tries = (manualTries.get(gen(e)) || 0) + 1;
+        manualTries.set(gen(e), tries);
+        if (working && tries < MANUAL_TRIES) continue;
+        noteInbox(e, 'rejected', 'not a review the lane published tonight');
+        continue;
+      }
+      const plan = planCorrection(found.record, e, new Date(now()).toISOString());
+      if (plan.reject) { noteInbox(e, 'rejected', plan.reject); continue; }
+      let record = found.record;
+      if (!plan.unchanged) {
+        const { safeWriteReview } = require('../review-write-guard');
+        const w = safeWriteReview(found.file, plan.record);
+        if (!w.wrote) { noteInbox(e, 'failed', `review file write refused (${w.skipped || 'unknown'})`); continue; }
+        record = JSON.parse(fs.readFileSync(found.file, 'utf8'));
+        if (JSON.stringify(record[e.field]) !== JSON.stringify(e.value)) { noteInbox(e, 'failed', `the write guard kept ${e.field} at ${JSON.stringify(record[e.field])}`); continue; }
+      }
+      fileToKey.set(found.name, key);
+      const row = laneCardRow(record, show);
+      const queued = pending.find((q) => q.key === key);
+      if (queued) { queued.row = row; if (e.field === 'humanReviewScore') queued.rescored = true; }
+      else pending.push({ key, row, scoredAt: now(), ...(e.field === 'humanReviewScore' ? { rescored: true } : {}) });
+      if (!correctionsByKey.has(key)) correctionsByKey.set(key, []);
+      correctionsByKey.get(key).push(e);
+      noteInbox(e, 'queued');
+    }
+    passCorrections = [];
   };
 
   const publishBatch = async (batch, clock) => {
@@ -257,9 +359,14 @@ async function runLaneNight({
         liveKeys.add(r.key);
         liveTaken.add(`${criticKey(r.row.criticName)}|${r.row.outletId}`);
         if (manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
+        settleCorrections(r.key, 'published', dryRun ? 'dry run' : null);
       }
       const droppedKeys = new Set(res.dropped || []);
       for (const r of batch) if (!verified.has(r.key) && !missing.has(r.key) && !droppedKeys.has(r.key)) keptKeys.add(r.key);
+      for (const r of batch) {
+        if (droppedKeys.has(r.key)) settleCorrections(r.key, 'failed', 'landed in reviews.json but not in the regenerated show JSON');
+        else if (!verified.has(r.key) && !missing.has(r.key)) settleCorrections(r.key, 'failed', 'the merge kept the site\'s own row for this review');
+      }
       for (const r of batch) {
         if (!manualByKey.has(r.key) || verified.has(r.key) || missing.has(r.key)) continue;
         // dropped: never goes live; else the merge kept the site's own row (same outlet+critic, or same URL)
@@ -485,7 +592,7 @@ async function runLaneNight({
         // file row; the quote stays off the file, where pullQuote means a human editor's pick. A row the rebuild would
         // also ship without a quote (no text, or no sentence its quote rules accept) publishes and is reported on the
         // summary page with what it lacks. Only an outlet with no display name is held after scoring (kept on disk).
-        row = card.toCardRow(row, show);
+        row = laneCardRow(row, show);
         const cardGaps = card.missingCardFields(row);
         if (cardGaps.length && !cardGaps.includes('outlet')) quoteless.push({ key: a.key, missing: cardGaps });
         else if (cardGaps.length) {
@@ -516,7 +623,7 @@ async function runLaneNight({
           const file = [...fileToKey].find(([, k]) => k === sib.key)?.[0];
           if (!file || sib.key === a.key) continue;
           let sibRow;
-          try { sibRow = card.toCardRow(JSON.parse(require('fs').readFileSync(require('path').join(reviewTextsDir, show.id, file), 'utf8')), show); } catch { continue; }
+          try { sibRow = laneCardRow(JSON.parse(require('fs').readFileSync(require('path').join(reviewTextsDir, show.id, file), 'utf8')), show); } catch { continue; }
           const queued = pending.find((q) => q.key === sib.key);
           if (queued) queued.row = sibRow;
           else pending.push({ key: sib.key, row: sibRow, scoredAt: now(), rescored: true });
@@ -543,6 +650,7 @@ async function runLaneNight({
         }
       }
     }
+    applyCorrections();
     await flushInbox();
     await maybePublish();
     await wait(passIntervalMs);
@@ -578,9 +686,12 @@ async function runLaneNight({
     if (!manualQueued.has(gen(e)) || manualClosed.has(gen(e))) continue;
     noteInbox(e, 'failed', abandonPending() ? 'the lane stood down before publishing it; the drain sends it to ingest-urls' : 'not live when the lane ended; the drain sends it to ingest-urls');
   }
+  // A correction not live by the end is on the review file: the first rebuild after the lane publishes it (if the
+  // night's push-review-texts lands). 'failed' so the person hears it is not on the site yet.
+  for (const key of [...correctionsByKey.keys()]) settleCorrections(key, 'failed', 'saved to the review file but not live when the lane ended; the first rebuild after the lane publishes it');
   await flushInbox();
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
     inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 
-module.exports = { runLaneNight, loadDone, applyManualEntry, MANUAL_TRIES };
+module.exports = { runLaneNight, loadDone, applyManualEntry, laneCardRow, findLaneFile, planCorrection, MANUAL_TRIES };

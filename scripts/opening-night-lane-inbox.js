@@ -4,6 +4,7 @@
  * The opening-night lane's manual-URL inbox (BRO-7741). The fast path when a review is missing on a lane night:
  *
  *   node scripts/opening-night-lane-inbox.js add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force] [--queue-anyway]
+ *   node scripts/opening-night-lane-inbox.js correct --show=SHOW_ID --url=URL --field=humanReviewScore|llmPullQuote --value=V [--expect=V]
  *   node scripts/opening-night-lane-inbox.js list [--show=SHOW_ID] [--json]
  *   node scripts/opening-night-lane-inbox.js drain --show=SHOW_ID [--dispatch]
  *   node scripts/opening-night-lane-inbox.js sweep [--dispatch]
@@ -12,6 +13,9 @@
  *          Refused (exit 2) when no lane holds the show, since nothing would read it; --queue-anyway queues it for a
  *          lane that has not started yet. --force skips the night-date check (the page carries a wrong date). Dispatching ingest-urls.yml by hand
  *          for a leased show does the same thing.
+ * correct  BRO-7891 item 2: fix one field of a review the lane published tonight (a wrong score, a bad pull quote). The
+ *          lane edits its review file and republishes the row on its next pass. Refused (exit 2) when no lane holds the
+ *          show: use new-fix-plan.js --review-edit then. --expect=V refuses the edit unless the field still holds V.
  * list     What is in the inbox and what the lane did with each URL (queued, published, failed + why, rejected + why).
  * drain    After the lane ends: entries the lane never finished go to ingest-urls.yml (the regular path) and are
  *          marked drained. Without --dispatch it only prints what it would send. Run by opening-night-lane-live.yml.
@@ -51,6 +55,22 @@ function add() {
     : `Already in the inbox: ${url} (${res.duplicates[0]}).`);
 }
 
+/** A CLI value: JSON when it parses (numbers, null, booleans, quoted strings), else the raw string. */
+function parseValue(v) { if (v === undefined) return undefined; try { return JSON.parse(v); } catch { return v; } }
+
+function correct() {
+  const show = arg('show'); const url = arg('url'); const field = arg('field'); const raw = arg('value');
+  if (!show || !url || !field || raw === undefined) die('usage: correct --show=SHOW_ID --url=URL --field=humanReviewScore|llmPullQuote --value=V [--expect=V]');
+  const held = liveLease(show);
+  if (!held) die(`No opening-night lane holds ${show} right now; fix it the regular way: node scripts/new-fix-plan.js --review-edit='${show}/<file>.json:${field}=${raw}'`, 2);
+  const line = { url, field, value: parseValue(raw), ...(arg('expect') !== undefined ? { expect: parseValue(arg('expect')) } : {}) };
+  const res = inbox.addCorrectionsSync({ repoDir: REPO_DIR }, {
+    show, addedBy: process.env.GITHUB_ACTOR ? `cli:${process.env.GITHUB_ACTOR}` : 'cli', lines: [line],
+  });
+  if (!res.ok) die(`correction refused: ${res.reason} ${res.detail || ''}`);
+  console.log(`Queued for the lane: ${field}=${JSON.stringify(line.value)} on ${url} (${res.added[0]}). Applied on the next pass, about 2 minutes; check with: node scripts/opening-night-lane-inbox.js list --show=${show}`);
+}
+
 function list() {
   const state = inbox.readSync({ repoDir: REPO_DIR });
   const show = arg('show');
@@ -58,7 +78,7 @@ function list() {
   const rows = shows.flatMap((s) => inbox.entriesFor(state, s));
   if (flag('json')) { console.log(JSON.stringify(rows, null, 2)); return; }
   if (!rows.length) { console.log(show ? `Inbox empty for ${show}.` : 'Inbox empty.'); return; }
-  for (const e of rows) console.log(`${e.show}  ${e.status || 'waiting'}${e.reason ? ` (${e.reason})` : ''}  ${e.url}  added ${e.addedAt} by ${e.addedBy}`);
+  for (const e of rows) console.log(`${e.show}  ${e.status || 'waiting'}${e.reason ? ` (${e.reason})` : ''}  ${inbox.isCorrection(e) ? `correct ${e.field}=${JSON.stringify(e.value)} on ` : ''}${e.url}  added ${e.addedAt} by ${e.addedBy}`);
 }
 
 const ingestLines = (entries) => { const { formatIngestLine } = require('./lib/ingest-url-line'); return entries.map((e) => formatIngestLine({ url: e.url, outlet: e.outletId || null, critic: e.critic || null })); };
@@ -68,7 +88,8 @@ const ingestLines = (entries) => { const { formatIngestLine } = require('./lib/i
  * ingest-urls goes on too: that dispatch could not pass --force, and before the inbox it ingested whatever the date.
  */
 function drainPlan(entries) {
-  const open = entries.filter((e) => !e.status || e.status === 'queued' || e.status === 'failed'
+  // A correction is not a URL to ingest: its edit is on the lane's review file (or was refused and alerted).
+  const open = entries.filter((e) => !inbox.isCorrection(e)).filter((e) => !e.status || e.status === 'queued' || e.status === 'failed'
     || (e.status === 'rejected' && /^ingest-urls/.test(String(e.addedBy || ''))));
   return { open, lines: ingestLines(open) };
 }
@@ -87,7 +108,7 @@ function sweepPlan(state, { now = Date.now(), onSite, held }) {
   const byShow = new Map();
   const age = (t) => now - Date.parse(t || 0);
   for (const [id, e] of Object.entries((state && state.leases) || {})) {
-    if (!e || e.holder !== inbox.HOLDER || held(e.show)) continue;
+    if (!e || e.holder !== inbox.HOLDER || inbox.isCorrection(e) || held(e.show)) continue;
     const entry = { id, ...e };
     const stillOpen = drainPlan([entry]).open.length > 0;
     const due = stillOpen ? age(e.addedAt) >= STALE_OPEN_MS
@@ -168,10 +189,11 @@ function sweep() {
 
 if (require.main === module) {
   if (cmd === 'add') add();
+  else if (cmd === 'correct') correct();
   else if (cmd === 'list') list();
   else if (cmd === 'drain') drain();
   else if (cmd === 'sweep') sweep();
-  else die('usage: opening-night-lane-inbox.js add|list|drain|sweep (see --help)');
+  else die('usage: opening-night-lane-inbox.js add|correct|list|drain|sweep (see --help)');
 }
 
-module.exports = { drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS };
+module.exports = { parseValue, drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS };

@@ -66,4 +66,27 @@ function settleAfterInboxWrite({ showId, ids, repoDir, readLease = liveLease, ma
   return { ingestNow: true, lease: null };
 }
 
-module.exports = { ingestRouteDecision, routeToInbox, liveLease, settleAfterInboxWrite };
+/**
+ * BRO-7891 item 2: what new-fix-plan says about a review-field-edit on a show an opening-night lane holds. Pure. The
+ * regular plan only reaches the site after the lease ends (the rebuild skips a leased show), so a field the lane can
+ * correct is refused with the lane's own command; any other field is a warning that it lands after the lane.
+ * @param action {file:'<show>/<file>.json', field, newValue}
+ * @param lease  the show's live lease (liveLease), {unknown:true}, or null
+ * @param url    the review's URL when known
+ * @returns {{level:'refuse'|'warn', message}|null}
+ */
+function laneHeldEditProblem(action, lease, { url } = {}) {
+  if (!action || action.type !== 'review-field-edit' || !lease) return null;
+  const show = String(action.file || '').split('/')[0];
+  if (lease.unknown) return { level: 'warn', message: `could not read the opening-night lease store for ${show}; if a lane holds it tonight this edit reaches the site only after the lane ends` };
+  const { LANE_CORRECTION_FIELDS } = require('./opening-night-lane/manual-inbox');
+  if (LANE_CORRECTION_FIELDS.includes(action.field)) {
+    const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`;
+    return { level: 'refuse', message: `the opening-night lane holds ${show} (${lease.holder || 'lane'}): this plan would reach the site only after the lane ends. `
+      + `Correct it in the lane tonight: node scripts/opening-night-lane-inbox.js correct --show=${show} --url=${q(url || '<review URL>')} --field=${action.field} --value=${q(JSON.stringify(action.newValue))} `
+      + '(or pass --after-lane to write the plan anyway)' };
+  }
+  return { level: 'warn', message: `the opening-night lane holds ${show}: ${action.field} cannot be corrected by the lane, so this edit reaches the site only after the lane ends` };
+}
+
+module.exports = { laneHeldEditProblem, ingestRouteDecision, routeToInbox, liveLease, settleAfterInboxWrite };
