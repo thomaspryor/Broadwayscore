@@ -33,6 +33,9 @@ const STRATEGY_FLAGS = Object.freeze({
   // dropped, 0 reached the matcher; still 1 candidate / 0 fetched / 0 accepted,
   // under the 30% bar, so this stays off. The Mail pool is proven-zero for
   // another reason (serp-text-recovery-candidates.js: not indexed as reviews).
+  // RE-PILOT 2026-11-21 on non-Mail NO_URL gaps (BRO-7943; times-uk, wsj,
+  // washpost via GAP_PILOT_ENABLE=URL_REDISCOVER, 20 items): 0/20 accepted
+  // (15 no_serp_match, 5 extractor_null). Under the 30% bar: stays off.
   URL_REDISCOVER: Object.freeze({ enabled: false, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
   AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'superseded by URL_FIND (its AGG_LINK method)' }),
   // BRO-7171 owner challenge 2026-11-09: free-first url finding for reviews we
