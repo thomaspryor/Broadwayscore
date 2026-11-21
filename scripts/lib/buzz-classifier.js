@@ -17,7 +17,7 @@
 const https = require('https');
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_SONNET, KIMI } = require('./models');
-const { openaiChatBody } = require('./llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./llm-batch');
 const { commentAnchorsToShow } = require('./reddit-post-filters');
 
 // Zod-like schema validation (inline to avoid dependency)
@@ -240,7 +240,7 @@ async function callGemini(prompt) {
 
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0.1, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.1, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

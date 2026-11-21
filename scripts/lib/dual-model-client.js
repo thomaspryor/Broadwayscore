@@ -6,7 +6,7 @@ require('./llm-usage-install'); // spend meter before any client is built
  * Require ./llm-usage-install BEFORE this file so the repo's spend meter sees the calls.
  */
 
-const GEMINI_MODEL = process.env.AUDIT_GEMINI_MODEL || 'gemini-2.5-flash';
+const GEMINI_MODEL = process.env.AUDIT_GEMINI_MODEL || require('./models').GEMINI_FLASH;
 const { AUDIT_OPENAI } = require('./models');
 const { perTokenUsd } = require('./research-cost');
 const OPENAI_MODEL = process.env.AUDIT_OPENAI_MODEL || AUDIT_OPENAI;

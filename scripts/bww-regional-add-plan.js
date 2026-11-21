@@ -22,6 +22,8 @@ const S = require('./lib/city-season');
 const { pageToText } = require('./lib/season-page-reader');
 const { applyAddShow } = require('./lib/add-show-action');
 const { DECISIONS } = require('./bww-regional-coverage');
+const { GEMINI_FLASH } = require('./lib/models');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const ROOT = path.join(__dirname, '..');
 const argv = process.argv.slice(2);
@@ -42,9 +44,9 @@ async function askGemini(prompt) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY is not set');
   require('./lib/gemini-usage-ledger').install();
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } }),
     signal: AbortSignal.timeout(90000),
   });
   const j = await res.json();

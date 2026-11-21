@@ -5,8 +5,9 @@
  * scripts/lib/city-season.js fromPageRows() then drops everything the page text does not support.
  */
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
+const { geminiThinkingOff } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = require('./models').GEMINI_FLASH;
 
 const decode = (s) => String(s || '').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n))).replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#039;|&apos;/g, "'").replace(/&nbsp;/g, ' ').replace(/&[lr]squo;/g, "'");
 
@@ -42,7 +43,7 @@ async function readSeasonPage(args, { fetchImpl = fetch } = {}) {
   if (!key) throw new Error('GEMINI_API_KEY is not set');
   const res = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts: [{ text: buildPrompt(args) }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),
+    body: JSON.stringify({ contents: [{ parts: [{ text: buildPrompt(args) }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(MODEL) } }),
     signal: AbortSignal.timeout(90000),
   });
   const j = await res.json();

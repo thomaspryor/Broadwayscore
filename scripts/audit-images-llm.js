@@ -59,6 +59,7 @@ const RETRY_BASE_MS = 2000;    // Exponential backoff base
 const { buildVerificationPrompt, resolveMarketSlug } = require('./lib/verify-image');
 const { decideImageAuditAction } = require('./lib/image-audit-action');
 const { getMarketLabel } = require('./lib/market-label');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 
 
@@ -144,7 +145,7 @@ class ImageVerifier {
       generationConfig: {
         temperature: 0.2,
         maxOutputTokens: 300,
-        thinkingConfig: { thinkingBudget: 0 }, // 2.5-flash thinking eats budget; see feedback_gemini_thinking_token_budget
+        thinkingConfig: geminiThinkingOff(GEMINI_FLASH), // 2.5-flash thinking eats budget; see feedback_gemini_thinking_token_budget
       }
     });
     this.rateLimiter = new RateLimiter(RPM_LIMIT);

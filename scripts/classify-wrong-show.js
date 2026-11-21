@@ -67,6 +67,7 @@ const OUTPUT_PATH = path.join(DATA_DIR, 'audit', 'wrong-show-classified.json');
 const { titleWordsMatch, TITLE_GENERIC_WORDS } = require('./lib/show-matching');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 // --- Load shows ---
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -98,7 +99,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
-    generationConfig: { temperature: 0.0, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.0, maxOutputTokens: 300, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
   return new Promise((resolve, reject) => {
     const req = https.request(url, {

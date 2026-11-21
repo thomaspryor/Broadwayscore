@@ -31,7 +31,7 @@ const { findContainingTitleSibling } = require('./title-containment');
 const { titleVariantInfo, venueTokens } = require('./show-title-tokens');
 const { venueForms } = require('./outlet-listing-helpers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
-const { openaiChatBody } = require('./llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./llm-batch');
 
 // Confidence threshold below which the LLM tiebreaker fires
 const LLM_CONFIDENCE_THRESHOLD = 0.75;
@@ -49,7 +49,7 @@ function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 20, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.1, maxOutputTokens: 20, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     });
 
     const req = https.request(url, {

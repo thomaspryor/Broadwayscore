@@ -25,7 +25,7 @@ const path = require('path');
 const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
-const { openaiChatBody } = require('./llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./llm-batch');
 const { publishesNoCriticRating } = require('./score-extractors');
 const { isGalleryCounterRating } = require('./gallery-counter');
 
@@ -204,7 +204,7 @@ function callGemini(systemPrompt, userPrompt) {
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
     ],
-    generationConfig: { temperature: 0.0, maxOutputTokens: 200, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.0, maxOutputTokens: 200, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

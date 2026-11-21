@@ -12,7 +12,7 @@
  *
  * Usage:
  *   node scripts/evals/content-verifier-model-sweep.js
- *   node scripts/evals/content-verifier-model-sweep.js --models gemini-2-flash,gpt-5.6-luna
+ *   node scripts/evals/content-verifier-model-sweep.js --models gemini-flash,gpt-5.6-luna
  *   node scripts/evals/content-verifier-model-sweep.js --concurrency 4 --json
  */
 
@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GEMINI_FLASH, GPT4O_MINI, KIMI, CLAUDE_HAIKU, CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
-const { openaiChatBody } = require('../lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('../lib/llm-batch');
 const { ratesFor } = require('../lib/research-cost');
 
 const FIXTURE = path.join(
@@ -31,11 +31,11 @@ const FIXTURE = path.join(
 
 // Token pricing as of 2026-Q1 (USD per 1M tokens). Update if vendors change.
 const MODELS = {
-  'gemini-2-flash': {
+  'gemini-flash': {
     provider: 'google',
     api: 'google',
     model: GEMINI_FLASH,
-    priceIn: 0.10, priceOut: 0.40,
+    priceIn: 0.30, priceOut: 2.50, // GEMINI_FLASH (gemini-3.5-flash-lite), BRO-7511
     envKey: 'GEMINI_API_KEY',
   },
   // gpt-4o / gpt-4o-mini shut down 2027-01-14; both pins now resolve to one model (BRO-7341).
@@ -154,7 +154,7 @@ async function callGoogle(modelSpec, prompt) {
     { 'Content-Type': 'application/json' },
     JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, responseMimeType: 'application/json' },
+      generationConfig: { temperature: 0.1, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(modelSpec.model) },
     })
   );
   if (statusCode !== 200) throw new Error(`google ${statusCode}: ${body.slice(0, 200)}`);

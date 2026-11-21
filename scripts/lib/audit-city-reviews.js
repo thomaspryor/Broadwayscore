@@ -17,6 +17,8 @@ const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
 const { foldDiacritics } = require('./title-match');
+const { GEMINI_FLASH } = require('./models');
+const { geminiThinkingOff } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
 const ROOT = path.join(__dirname, '..', '..');
@@ -42,9 +44,9 @@ JSON keys: rightProduction (true/false/"unclear"), productionSeen (title and the
 async function gemini(prompt) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY is not set');
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } }),
     signal: AbortSignal.timeout(60000),
   });
   const j = await res.json();

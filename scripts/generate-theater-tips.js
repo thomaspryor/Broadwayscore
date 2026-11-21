@@ -33,6 +33,7 @@ const {
   auditCrossTheaterDiversity,
 } = require('./lib/theater-tips-validators');
 const { GEMINI_FLASH } = require('./lib/models');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 if (!process.env.GEMINI_API_KEY) require('./lib/load-env').loadEnv();
 
@@ -70,7 +71,7 @@ async function callGemini(systemPrompt, userPrompt) {
         temperature: 0.2,
         maxOutputTokens: 3000,
         responseMimeType: 'application/json',
-        thinkingConfig: { thinkingBudget: 0 }, // 2.5-flash thinking eats budget; see feedback_gemini_thinking_token_budget
+        thinkingConfig: geminiThinkingOff(GEMINI_FLASH), // 2.5-flash thinking eats budget; see feedback_gemini_thinking_token_budget
       },
     });
 

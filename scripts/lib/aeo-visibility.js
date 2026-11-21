@@ -122,9 +122,10 @@ function analyzeAnswer(rawText, citations) {
 // OpenAI rates come from research-cost.js RATES for the AEO_OPENAI pin in models.js (BRO-7339).
 const { AEO_OPENAI } = require('./models');
 const { ratesFor, WEB_SEARCH_CALL_USD } = require('./research-cost');
+const { geminiThinkingOff, geminiReplyText } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 const RATES = {
   openai: { inPerM: ratesFor(AEO_OPENAI).input, outPerM: ratesFor(AEO_OPENAI).output, perSearch: WEB_SEARCH_CALL_USD },
-  gemini: { inPerM: 0.30, outPerM: 2.5, perPrompt: 0.035 },  // gemini-2.5-flash + grounding ($35/1k grounded prompts)
+  gemini: { inPerM: 0.30, outPerM: 2.5, perPrompt: 0.035 },  // GEMINI_FLASH (3.5-flash-lite, same $0.30/$2.50 as 2.5-flash) + grounding ($35/1k grounded prompts)
 };
 
 function costOf(engine, usage) {
@@ -176,7 +177,7 @@ async function runOpenAI(prompt, { fetchImpl = fetch, apiKey = process.env.OPENA
 
 const DOMAIN_RE = /^[\w.-]+\.[a-z]{2,}$/i;
 
-async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMINI_API_KEY, model = 'gemini-2.5-flash' } = {}) {
+async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMINI_API_KEY, model = require('./models').GEMINI_FLASH } = {}) {
   const res = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: 'POST',
     signal: AbortSignal.timeout(120000),
@@ -184,14 +185,14 @@ async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMIN
     body: JSON.stringify({
       contents: [{ parts: [{ text: `${prompt}\n\nSearch the web and cite your sources.` }] }],
       tools: [{ google_search: {} }],
-      generationConfig: { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 4096 },
+      generationConfig: { thinkingConfig: geminiThinkingOff(model), maxOutputTokens: 4096 },
     }),
   });
   const d = await res.json();
   if (!res.ok || d.error) throw new Error(`gemini ${res.status}: ${(d.error && d.error.message) || 'error'}`);
   const cand = (d.candidates || [])[0] || {};
   if (cand.finishReason && cand.finishReason !== 'STOP') throw new Error(`gemini finishReason ${cand.finishReason}`);
-  const text = ((cand.content && cand.content.parts) || []).map(p => p.text || '').join('');
+  const text = geminiReplyText(d);
   const gm = cand.groundingMetadata || {};
   // Gemini returns vertex redirect URIs; the chunk title carries the source domain, so use that.
   const citations = (gm.groundingChunks || []).filter(c => c.web).map(c => {
@@ -216,7 +217,7 @@ async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMIN
 
 const ENGINES = {
   openai: { label: `ChatGPT (${AEO_OPENAI} + web_search)`, key: 'OPENAI_API_KEY', run: runOpenAI },
-  gemini: { label: 'Gemini (2.5-flash + Google Search)', key: 'GEMINI_API_KEY', run: runGemini },
+  gemini: { label: `Gemini (${require('./models').GEMINI_FLASH} + Google Search)`, key: 'GEMINI_API_KEY', run: runGemini },
 };
 
 /** Roll runs up per engine and overall. */

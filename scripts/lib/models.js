@@ -8,7 +8,16 @@
  * scripts/llm-scoring/ (scripts/tests/no-retired-claude-pins.test.mjs, BRO-7510).
  */
 module.exports = {
-  GEMINI_FLASH: 'gemini-2.5-flash',
+  // General Gemini utility alias (classifiers, extractors, audits; never review
+  // scoring). gemini-2.5-flash shuts down 2026-12-01 and Google reroutes it here
+  // (BRO-7511). 3.x rejects thinkingBudget:0: callers send geminiThinkingOff(model).
+  GEMINI_FLASH: 'gemini-3.5-flash-lite',
+  // Pro-class Gemini callers that need web tools or image judgment: the review
+  // fact-checker (google_search + url_context) and the visual-QA / UX-walkthrough
+  // screenshot reviewers. gemini-2.5-pro shuts down 2026-12-01; Google names
+  // gemini-3.8-flash as its replacement (BRO-7511). Thinks by default, so callers
+  // send no thinkingConfig and keep maxOutputTokens high enough for thoughts.
+  GEMINI_PRO: 'gemini-3.8-flash',
   // General-purpose aliases for DIRECT Messages-API callers (~38 scripts).
   // Pinned to the 4.x generation on purpose (ship-check 2026-10-01): the 5.5
   // models reject `temperature` (400), think by default, and return a thinking

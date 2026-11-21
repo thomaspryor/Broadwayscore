@@ -14,6 +14,8 @@ process.env.TS_NODE_PROJECT = new URL('../../scripts/tsconfig.json', import.meta
 require('ts-node/register');
 
 const { starToBand, buildSystemPromptV6, buildPromptV6 } = require('./config');
+const { geminiThinkingOff } = require('../lib/llm-batch.js');
+const SANITY_GEMINI = 'gemini-3.5-flash-lite'; // BRO-7511: 2.5-flash shuts down 2026-12-01
 
 if (!process.env.GEMINI_API_KEY) {
   console.error('GEMINI_API_KEY not set');
@@ -36,14 +38,14 @@ console.log('--- User prompt:', userPrompt.length, 'chars');
 
 const t0 = Date.now();
 const r = await fetch(
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+  `https://generativelanguage.googleapis.com/v1beta/models/${SANITY_GEMINI}:generateContent?key=${process.env.GEMINI_API_KEY}`,
   {
     signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: `${systemPrompt}\n\n---\n\n${userPrompt}` }] }],
-      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096, temperature: 0.1, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096, temperature: 0.1, thinkingConfig: geminiThinkingOff(SANITY_GEMINI) }
     })
   }
 );

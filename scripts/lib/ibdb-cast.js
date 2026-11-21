@@ -35,7 +35,7 @@ const { isBroadwayCategory } = require('./venue-classification');
 const { parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch } = require('./cast-tombstone');
 const { ibdbUrlRejectReason } = require('./ibdb-year-guard');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
-const { openaiChatBody } = require('./llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./llm-batch');
 
 const RATE_LIMIT_MS = 1500;
 
@@ -268,7 +268,7 @@ Title 2: "${ibdbTitle}"`;
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${process.env.GEMINI_API_KEY}`;
         const body = JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0, maxOutputTokens: 10, thinkingConfig: { thinkingBudget: 0 } }
+          generationConfig: { temperature: 0, maxOutputTokens: 10, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
         });
         const req = https.request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } }, (res) => {
           let data = '';

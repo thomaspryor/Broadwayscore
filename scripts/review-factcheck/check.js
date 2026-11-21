@@ -2,7 +2,7 @@
 'use strict';
 /**
  * BRO-5081 review fact-check, step 3: two web-grounded model checkers.
- *   gemini  gemini-2.5-pro + google_search + url_context tools
+ *   gemini  models.js GEMINI_PRO (gemini-3.8-flash) + google_search + url_context tools
  *   openai  gpt-5.4-mini (Responses API) + web_search tool
  * Each gets the production facts, our claimed outlet/critic/date, the URL and
  * the page snapshot fetch-pages.js saved. It never sees our score. Every answer
@@ -28,11 +28,13 @@ const MAX_USD = Number(args['max-usd'] || 20);
 const ONLY = args.only ? new Set(args.only.split(',')) : null;
 const MAX_TEXT = 24000;
 
-const GEMINI_MODEL = 'gemini-2.5-pro';
+// FACTCHECK_GEMINI_MODEL: run an old-vs-new comparison on the same sample (BRO-7511).
+const GEMINI_MODEL = process.env.FACTCHECK_GEMINI_MODEL || require('../lib/models').GEMINI_PRO;
 const OPENAI_MODEL = 'gpt-5.4-mini';
-// USD per 1M tokens (Gemini 2.5 Pro <=200k prompt; OpenAI per scripts/lib/research-cost.js).
+// USD per 1M tokens. Gemini 3.8 Flash list price from 2027-01-01 (half that until then), so the
+// --max-usd cap errs high; 2.5 Pro was 1.25 / 10. OpenAI per scripts/lib/research-cost.js.
 const PRICE = {
-  gemini: { input: 1.25, output: 10.0, perSearch: 0.035 },
+  gemini: { input: 1.50, output: 7.50, perSearch: 0.035 },
   openai: { input: 0.75, output: 4.5, perSearch: 0.01 },
 };
 

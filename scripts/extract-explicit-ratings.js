@@ -32,7 +32,7 @@ const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
 const { setExtractedScore } = require('./lib/score-routing');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -123,7 +123,7 @@ function callGemini(systemPrompt, userPrompt) {
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
     ],
-    generationConfig: { temperature: 0.0, maxOutputTokens: 200, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.0, maxOutputTokens: 200, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

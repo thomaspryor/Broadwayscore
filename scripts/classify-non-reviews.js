@@ -54,7 +54,7 @@ const { shouldSkipNonReviewStamp, nonReviewStampBlockReason } = require('./lib/f
 const { hasBotStubTruncationSignal } = require('./lib/content-quality');
 const { buildClassifySample } = require('./lib/classify-sample');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { finalResponseText, describeResponse, firstJsonObject } = require('./lib/anthropic-response-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -201,7 +201,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 200, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 200, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
   return new Promise((resolve, reject) => {
     const req = https.request(url, {

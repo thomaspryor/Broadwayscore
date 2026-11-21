@@ -121,6 +121,7 @@ const { selectRearmCandidates, refuseRearmWrite } = require('./lib/card-rearm.js
 const { guardFilerVerify, preserveFilerVerify } = require('./lib/filer-verify-guard.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.ENRICH_CARD_MODEL || CLAUDE_HAIKU;
@@ -323,20 +324,18 @@ function callOpenRouter(prompt, apiKey) {
 }
 
 // Same endpoint shape scripts/lib/buzz-classifier.js's Gemini call uses.
-// thinkingConfig: { thinkingBudget: 0 } is required for every GEMINI_FLASH
+// thinkingConfig: geminiThinkingOff(GEMINI_MODEL) is required for every GEMINI_FLASH
 // caller (tests/unit/gemini-thinking-budget-guard.test.mjs) — without it,
 // gemini-2.5-flash spends "thinking" tokens that count against
 // maxOutputTokens and truncates the visible response (2026-06-07 incident:
 // 1,296 pull quotes shipped cut off).
 function callGemini(prompt, apiKey) {
-  // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this,
-  // thinking tokens can eat the whole response budget and truncate the reply
-  // (same pattern as buzz-classifier.js/content-verifier.js/
-  // llm-score-extractor.js — CI's gemini-thinking-budget-guard test enforces
-  // every gemini-2.5-flash generateContent caller sets this).
+  // Thinking off (geminiThinkingOff): Gemini Flash models think by default and
+  // thinking tokens can eat the whole response budget and truncate the reply.
+  // CI's gemini-thinking-budget-guard test enforces it on every caller.
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { thinkingConfig: { thinkingBudget: 0 } },
+    generationConfig: { thinkingConfig: geminiThinkingOff(GEMINI_MODEL) },
   });
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
   return new Promise((resolve, reject) => {

@@ -1050,10 +1050,10 @@ async function reviewWithGemini(shots, apiKey) {
     parts.push({ text: `Screenshot: ${s.name}` });
     parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(s.file) } });
   }
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${apiKey}`, {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${models.GEMINI_PRO}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    // gemini-2.5-pro's mandatory "thinking" phase eats into maxOutputTokens
+    // The Pro-class model's (models.js GEMINI_PRO) default "thinking" phase eats into maxOutputTokens
     // before any visible text — a low budget here (e.g. 1500) can burn it
     // all on thinking and return content with no `parts` at all (see
     // scripts/visual-qa.mjs's reviewWithGemini comment for the same gotcha).
@@ -1062,7 +1062,7 @@ async function reviewWithGemini(shots, apiKey) {
   });
   if (!res.ok) throw new Error(`Gemini HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const body = await res.json();
-  const text = body?.candidates?.[0]?.content?.parts?.[0]?.text;
+  const text = llmBatch.geminiReplyText(body); // all non-thought parts (BRO-7511)
   if (!text) throw new Error(`Gemini returned no content (finishReason=${body?.candidates?.[0]?.finishReason}, ${JSON.stringify(body).slice(0, 200)})`);
   return parseFindingsJson(text);
 }

@@ -32,7 +32,7 @@ const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInS
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const negCache = require('./lib/pull-quote-negative-cache');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -165,7 +165,7 @@ function callGemini(systemPrompt, userPrompt) {
     // 300-token budget gets eaten by ~285 thinking tokens, leaving ~3 tokens of
     // visible output → pull quotes cut off mid-sentence ("Hell yeah!", "The show
     // stands as a rip-roaring"). See feedback_gemini_thinking_token_budget.
-    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

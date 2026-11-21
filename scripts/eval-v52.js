@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { claudeSamplingParams } = require('./lib/llm-batch');
 
 // Load .env file manually (source .env doesn't work in all environments)
@@ -218,7 +218,7 @@ async function scoreWithGemini(reviewText, context) {
   const client = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = client.getGenerativeModel({
     model: GEMINI_FLASH,
-    generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   const prompt = buildPromptV5(reviewText, context);

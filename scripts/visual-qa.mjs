@@ -26,6 +26,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSy
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import models from './lib/models.js';
+import llmBatch from './lib/llm-batch.js';
 import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
 import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-flag-awareness.mjs';
 import { rolePromptHeader, parseVerdictJson } from './lib/visual-qa-prompt.mjs';
@@ -430,7 +432,7 @@ async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model =
   return parseVerdictJson(content, { beforeOnly: roles.length > 0 && roles.every(r => r === 'before') });
 }
 
-async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model = 'gemini-2.5-pro' }) {
+async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model = models.GEMINI_PRO }) {
   const roles = refRoles && refRoles.length === refPaths.length ? refRoles : refPaths.map(() => 'goal');
   const parts = [{ text: rolePromptHeader(roles) }];
   for (let i = 0; i < refPaths.length; i++) {
@@ -446,7 +448,7 @@ async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model =
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts }],
-      // gemini-2.5-pro REQUIRES thinking mode (thinkingBudget=0 → HTTP 400).
+      // The Pro-class model (models.js GEMINI_PRO) thinks by default (BRO-7511).
       // Omit thinkingConfig to use the model's default budget. maxOutputTokens
       // must cover thinking tokens TOO — at 2048 the model's thoughts alone hit
       // the cap and it returns no content (finishReason=MAX_TOKENS, empty
@@ -461,8 +463,8 @@ async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model =
     throw new Error(`Gemini HTTP ${res.status}: ${text.slice(0, 200)}`);
   }
   const body = await res.json();
-  const content = body?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!content) throw new Error('Gemini returned no content (' + JSON.stringify(body).slice(0, 200) + ')');
+  const content = llmBatch.geminiReplyText(body); // all non-thought parts (BRO-7511)
+  if (!content) throw new Error(`Gemini returned no content (finishReason=${body?.candidates?.[0]?.finishReason}, ${JSON.stringify(body).slice(0, 200)})`);
   return parseVerdictJson(content, { beforeOnly: roles.length > 0 && roles.every(r => r === 'before') });
 }
 

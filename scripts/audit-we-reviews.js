@@ -25,7 +25,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { GEMINI_FLASH, GPT4O } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -124,7 +124,7 @@ async function callOpenAI(prompt, { model = GPT4O, maxTokens = 500 } = {}) {
 async function callGemini(prompt) {
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0, maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0, maxOutputTokens: 500, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

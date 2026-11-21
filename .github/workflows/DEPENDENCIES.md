@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (335 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (334 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -339,7 +339,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 - **scoring** (4): `llm-evaluate.yml`, `scoring-experiment.yml`, `snapshot-audience-grades.yml`, `snapshot-award-scores.yml`
 - **scraping** (1): `diag-fetch-timing.yml`
-- **other** (31): `batch-commercial-research.yml`, `board-hygiene-report.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `generate-related-shows.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-lane-switch.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `run-script.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `tr-layout-diag.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
+- **other** (30): `batch-commercial-research.yml`, `board-hygiene-report.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `generate-related-shows.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-lane-switch.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `run-script.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `tr-layout-diag.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
 
 ## Secrets used by cross-repo writers
 
@@ -366,7 +366,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 21 workflows using it) |
-| `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 201 workflows using it) |
+| `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 200 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
@@ -376,7 +376,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
 | `FT_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `FT_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
-| `GEMINI_API_KEY` | 32 cross-repo writers (of 51 workflows using it) |
+| `GEMINI_API_KEY` | 32 cross-repo writers (of 50 workflows using it) |
 | `GHA_BILLING_PAT` | 1 cross-repo writers (of 1 workflows using it): `opening-night-orchestrator.yml` |
 | `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
 | `GITHUB_TOKEN` | 100 cross-repo writers (of 157 workflows using it) |
@@ -404,7 +404,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 36 cross-repo writers (of 58 workflows using it) |
+| `OPENAI_API_KEY` | 36 cross-repo writers (of 57 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 16 workflows using it) |
 | `OWNER_EMAIL` | 73 cross-repo writers (of 161 workflows using it) |
 | `POSTHOG_PERSONAL_API_KEY` | 1 cross-repo writers (of 17 workflows using it): `data-health-check.yml` |
@@ -413,7 +413,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REDDIT_CLIENT_SECRET` | 4 cross-repo writers (of 5 workflows using it) |
 | `RESEND_API_KEY` | 76 cross-repo writers (of 166 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 143 cross-repo writers (of 263 workflows using it) |
+| `REVIEW_TEXTS_TOKEN` | 143 cross-repo writers (of 262 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 82 cross-repo writers (of 111 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 85 cross-repo writers (of 114 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 3 cross-repo writers (of 18 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |

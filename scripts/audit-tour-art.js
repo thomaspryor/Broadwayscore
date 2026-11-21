@@ -18,6 +18,7 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/audit
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
 const { foldDiacritics } = require('./lib/title-match');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const root = path.join(__dirname, '..');
 const OUT = path.join(root, 'src', 'config', 'onboarding-tour-art.json');
@@ -71,7 +72,7 @@ async function main() {
     console.log(`prune: ${dropped.length} dropped`);
     return;
   }
-  const model = new GoogleGenerativeAI(process.env.GEMINI_API_KEY).getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } });
+  const model = new GoogleGenerativeAI(process.env.GEMINI_API_KEY).getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } });
   const out = { ...prior };
   const report = [];
   for (const t of tours) {

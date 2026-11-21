@@ -72,7 +72,7 @@ const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -522,7 +522,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } },
+    generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) },
   });
   return new Promise((resolve, reject) => {
     const req = https.request(url, {

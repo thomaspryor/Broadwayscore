@@ -21,9 +21,10 @@ const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
 const { articleText, parseJson, sameCritic } = require('./audit-city-reviews');
-const { AUDIT_OPENAI } = require('./models');
+const { AUDIT_OPENAI, GEMINI_FLASH } = require('./models');
 const { foldDiacritics } = require('./title-match');
 const { toDateMs } = require('./date-utils');
+const { geminiThinkingOff } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const ROOT = path.join(__dirname, '..', '..');
 const saveJson = (dest, text) => fs.writeFileSync(dest, text);
@@ -35,9 +36,9 @@ const ISO = /^\d{4}-\d{2}-\d{2}/;
 // ---------- models ----------
 async function gemini(prompt) {
   const key = process.env.GEMINI_API_KEY; if (!key) throw new Error('GEMINI_API_KEY is not set');
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent`, {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } }),
     signal: AbortSignal.timeout(90000),
   });
   const j = await res.json();

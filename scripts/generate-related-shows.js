@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { isLocalOnlyShow } = require('./lib/local-market');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { buildScoreMap } = require('./lib/related-shows-scores');
@@ -273,7 +273,7 @@ function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.3, maxOutputTokens: 2000, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     });
 
     const req = https.request(url, {

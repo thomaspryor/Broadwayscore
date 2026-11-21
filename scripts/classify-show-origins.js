@@ -25,12 +25,13 @@ const fs = require('fs');
 const path = require('path');
 const { inScopeShows, normalizeOrigin, normalizeCheck, originsAgree, pathNoteConflicts, PATH_STAGES, SOURCE_TYPES } = require('./lib/show-origins');
 const { researchCallCost, countSearchCalls } = require('./lib/research-cost');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'show-origins.json');
 const MODEL = 'gpt-5.4-mini';
-const CHECK_MODEL = 'gemini-2.5-flash';
-// USD: per 1M tokens and per grounded request (Gemini 2.5 Flash paid tier).
+const CHECK_MODEL = require('./lib/models').GEMINI_FLASH;
+// USD: per 1M tokens and per grounded request (Gemini Flash paid tier; 3.5-flash-lite is priced the same).
 const GEMINI_PRICE = { input: 0.30, output: 2.50, perGrounded: 0.035 };
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => {
@@ -103,7 +104,7 @@ async function callGemini(text) {
       method: 'POST',
       signal: AbortSignal.timeout(300000),
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text }] }], tools: [{ google_search: {} }], generationConfig: { temperature: 0, maxOutputTokens: 4096, thinkingConfig: { thinkingBudget: 0 } } }),
+      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text }] }], tools: [{ google_search: {} }], generationConfig: { temperature: 0, maxOutputTokens: 4096, thinkingConfig: geminiThinkingOff(CHECK_MODEL) } }),
     });
     const body = await res.text();
     if (res.ok) {

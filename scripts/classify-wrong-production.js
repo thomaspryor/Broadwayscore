@@ -46,6 +46,7 @@ let lockedSkipCount = 0;
 
 // --- Load .env ---
 require('./lib/load-env').loadEnv();
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -123,7 +124,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
   return new Promise((resolve, reject) => {
     const req = https.request(url, {

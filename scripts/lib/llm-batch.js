@@ -63,6 +63,17 @@ function geminiThinkingOff(model) {
   return /^gemini-([3-9]|[1-9]\d)/.test(id) ? { thinkingLevel: 'minimal' } : { thinkingBudget: 0 };
 }
 
+/**
+ * Text of a Gemini generateContent reply (BRO-7511): every non-thought text part of
+ * the first candidate, joined. 3.x models can split a reply across parts and add
+ * thought parts, so reading parts[0] alone can return a fragment or a thought.
+ */
+function geminiReplyText(body) {
+  const parts = (body && body.candidates && body.candidates[0] && body.candidates[0].content && body.candidates[0].content.parts) || [];
+  if (!Array.isArray(parts)) return '';
+  return parts.filter((p) => p && !p.thought && typeof p.text === 'string').map((p) => p.text).join('');
+}
+
 function claudeSamplingParams(model, temperature = 0.3) {
   if (/^claude-sonnet-5/.test(String(model))) return { thinking: { type: 'between_tools' } };
   if (/^claude-haiku-5/.test(String(model))) return { thinking: { type: 'disabled' } };
@@ -356,7 +367,7 @@ function decideNextAction({ batchState, vendorStatuses, now }) {
 }
 
 module.exports = {
-  geminiThinkingOff,
+  geminiThinkingOff, geminiReplyText,
   OPENAI_REQUEST_PROFILES,
   openaiScoringModels,
   openaiChatBody,

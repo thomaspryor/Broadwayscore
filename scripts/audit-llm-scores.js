@@ -31,7 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GEMINI_FLASH, GPT4O } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -161,7 +161,7 @@ function callGemini(systemPrompt, userPrompt) {
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
     ],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
   });
 
   return new Promise((resolve, reject) => {

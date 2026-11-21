@@ -7,6 +7,8 @@
 require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs'), crypto = require('crypto');
 const { foldDiacritics } = require('../lib/title-match.js');
+const { geminiThinkingOff } = require('../lib/llm-batch.js');
+const REVIEW_GEMINI_MODEL = process.env.REVIEW_GEMINI || require('../lib/models').GEMINI_FLASH; // BRO-7511
 
 // covers everything render reads from the plan, so nothing can change after review (a tamper check, not a signature)
 const reviewHash = P => { const { review, ...rest } = P; return crypto.createHash('sha1').update(JSON.stringify(rest)).digest('hex').slice(0, 12); };
@@ -59,8 +61,8 @@ async function ask(model, P) {
       body: JSON.stringify({ model: process.env.REVIEW_GPT || 'gpt-5.4-mini', response_format: { type: 'json_object' }, messages: [{ role: 'user', content: text }] }), signal: AbortSignal.timeout(90000) });
     const j = await r.json(); if (j.error) throw new Error('gpt: ' + j.error.message); return JSON.parse(j.choices[0].message.content);
   }
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${process.env.REVIEW_GEMINI || 'gemini-2.5-flash'}:generateContent?key=${process.env.GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ parts: [{ text }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2, thinkingConfig: { thinkingBudget: 0 } } }), signal: AbortSignal.timeout(90000) });
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${REVIEW_GEMINI_MODEL}:generateContent?key=${process.env.GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: [{ text }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2, thinkingConfig: geminiThinkingOff(REVIEW_GEMINI_MODEL) } }), signal: AbortSignal.timeout(90000) });
   const j = await r.json(); if (j.error) throw new Error('gemini: ' + j.error.message); return JSON.parse(j.candidates[0].content.parts[0].text);
 }
 

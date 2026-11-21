@@ -45,6 +45,7 @@ const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone')
 const { selectShowsByFilter } = require('./lib/cast-show-filter');
 const { crossCheckCast, loadEvidenceTexts } = require('./lib/cast-review-crosscheck');
 const { cleanRole } = require('./lib/cast-role');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -250,7 +251,7 @@ async function callGemini(prompt, apiKey) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.1, maxOutputTokens: 2000, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     }),
   });
 

@@ -14,8 +14,9 @@ import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { openaiChatBody } = require('../lib/llm-batch.js');
+const { openaiChatBody, geminiThinkingOff } = require('../lib/llm-batch.js');
 const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
+const CRITIQUE_GEMINI = 'gemini-3.5-flash-lite'; // BRO-7511: 2.5-flash shuts down 2026-12-01
 
 const PROPOSALS = fs.readFileSync(path.join(MAIN_REPO_ROOT, 'data', 'audit', 'llm-scoring-proposals.md'), 'utf8');
 
@@ -65,7 +66,7 @@ async function getCritique(model: string, client: any): Promise<string> {
       return response.choices[0].message.content || '';
     }
     else if (model === 'Gemini') {
-      const genModel = client.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { thinkingConfig: { thinkingBudget: 0 } } });
+      const genModel = client.getGenerativeModel({ model: CRITIQUE_GEMINI, generationConfig: { thinkingConfig: geminiThinkingOff(CRITIQUE_GEMINI) } });
       const result = await genModel.generateContent(CRITIQUE_PROMPT);
       return result.response.text();
     }

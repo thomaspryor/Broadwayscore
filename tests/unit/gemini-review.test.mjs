@@ -162,7 +162,8 @@ test('wrapper: a good run prints the review, passes the policy, and logs spend',
   const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true' } });
   assert.equal(r.code, 0, r.err);
   assert.equal(r.out.trim(), 'Finding at a.js:1');
-  assert.match(r.err, /GEMINI-REVIEW: ok model=gemini-2\.5-flash reads=2$/m, 'default model is Flash, no retry when it read files');
+  const flash = require('../../scripts/lib/models.js').GEMINI_FLASH; // BRO-7511
+  assert.ok(r.err.includes(`GEMINI-REVIEW: ok model=${flash} reads=2\n`), 'default model is models.js GEMINI_FLASH, no retry when it read files');
   const argv = fs.readFileSync(path.join(sb.dir, 'argv'), 'utf8');
   assert.match(argv, /--approval-mode plan --policy \S+review-policy\.toml/);
   assert.equal(fs.readFileSync(path.join(sb.dir, 'stdin'), 'utf8'), 'Review this diff.');

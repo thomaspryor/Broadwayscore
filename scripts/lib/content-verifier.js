@@ -17,7 +17,7 @@ const https = require('https');
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, VERIFIER_HAIKU, CLAUDE_SONNET } = require('./models');
-const { openaiChatBody } = require('./llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./llm-batch');
 const { buildMessagesBody } = require('./anthropic-request');
 const { finalResponseText } = require('./anthropic-response-text');
 const { foldDiacritics } = require('./title-match');
@@ -199,7 +199,7 @@ function callGemini(prompt) {
       // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this it
       // spends the whole maxOutputTokens budget on internal thinking and returns
       // empty/truncated text (memory: feedback_gemini_thinking_token_budget).
-      generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     });
 
     const req = https.request(url, {

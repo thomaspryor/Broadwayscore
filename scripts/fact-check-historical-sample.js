@@ -47,7 +47,7 @@ if (require.main === module && (!process.argv[2] || hasHelpFlag(process.argv.sli
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'audit', 'fact-check');
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = require('./lib/models').GEMINI_FLASH;
 const { AUDIT_OPENAI: OPENAI_MODEL } = require('./lib/models');
 const { perTokenUsd } = require('./lib/research-cost');
 const { parseMaxCost, createSpendGuard, createCallMemo, callKey } = require('./lib/experiment-guard');

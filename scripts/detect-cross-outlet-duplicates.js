@@ -112,6 +112,7 @@ function trigramSimilarity(text1, text2) {
 }
 
 const { getBestText, resolveFingerprintGroup, excerptCopySide, defaultKeeperIncludable } = require('./lib/cross-outlet-group');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 // ============================================================
 // LLM Confirmation (Layer 3)
@@ -128,7 +129,7 @@ function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 30, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.1, maxOutputTokens: 30, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     });
 
     const req = https.request(url, {

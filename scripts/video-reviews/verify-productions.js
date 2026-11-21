@@ -38,7 +38,7 @@ const { listShowDirs } = require('../lib/list-show-dirs');
 const { foldDiacritics } = require('../lib/title-match');
 const { describeProduction, videoPredatesProduction, productionStartDate, isStaleDateFlag } = require('../lib/video-production-context');
 const { GPT4O, CLAUDE_SONNET, GEMINI_FLASH } = require('../lib/models');
-const { openaiChatBody } = require('../lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('../lib/llm-batch');
 const { invalidateWrongProductionAutoClear } = require('../lib/review-write-guard');
 
 const ROOT = path.resolve(__dirname, '../..');
@@ -161,7 +161,7 @@ ${String(t.transcript || '').substring(0, 3000)}
     signal: AbortSignal.timeout(300000),
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: user }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } }),
+    body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: user }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json', thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } }),
   });
   if (!resp.ok) throw new Error(`Gemini ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const text = (await resp.json()).candidates?.[0]?.content?.parts?.[0]?.text || '';

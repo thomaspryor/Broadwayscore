@@ -66,6 +66,7 @@ const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-sc
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { fullTextHash } = require('./lib/pull-quote-negative-cache');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { geminiThinkingOff } = require('./lib/llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -80,7 +81,7 @@ function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 50, thinkingConfig: { thinkingBudget: 0 } }
+      generationConfig: { temperature: 0.1, maxOutputTokens: 50, thinkingConfig: geminiThinkingOff(GEMINI_FLASH) }
     });
 
     const req = https.request(url, {

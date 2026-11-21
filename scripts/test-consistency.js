@@ -7,7 +7,7 @@ const Anthropic = require('@anthropic-ai/sdk').default;
 const OpenAI = require('openai').default;
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
-const { openaiChatBody } = require('./lib/llm-batch');
+const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const { claudeSamplingParams } = require('./lib/llm-batch');
 const fs = require('fs');
 const path = require('path');
@@ -92,7 +92,7 @@ async function scoreWithOpenAI(client, text) {
 }
 
 async function scoreWithGemini(client, text) {
-  const model = client.getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { thinkingConfig: { thinkingBudget: 0 } } });
+  const model = client.getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { thinkingConfig: geminiThinkingOff(GEMINI_FLASH) } });
   const result = await model.generateContent(PROMPT + text);
   const content = result.response.text().trim();
   try {

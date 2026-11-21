@@ -22,6 +22,7 @@ import { join } from 'node:path';
 const require = createRequire(import.meta.url);
 const MODELS = require('./models.js');
 const { readEnvKeys } = require('./load-env.js');
+const { geminiThinkingOff } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 /**
  * shadow: the judge runs and is logged, the rules still decide (today's behaviour).
@@ -169,7 +170,7 @@ async function callGemini(text, { fetchImpl, key }) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents: [{ role: 'user', parts: [{ text: buildUserContent(text) }] }],
-      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 120, thinkingConfig: geminiThinkingOff(GEMINI_MODEL) },
     }),
   });
   if (!res.ok) throw new Error(`gemini ${res.status}`);

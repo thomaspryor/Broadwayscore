@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { GEMINI_FLASH } = require('./models');
 const { getMarketLabel } = require('./market-label');
+const { geminiThinkingOff } = require('./llm-batch.js'); // 2.x: thinkingBudget 0, 3.x: thinkingLevel minimal (BRO-7511)
 
 // ============================================================
 // CONFIG
@@ -373,7 +374,7 @@ function getGeminiModel() {
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens: 300,
-      thinkingConfig: { thinkingBudget: 0 }, // 2.5-flash thinking eats the budget; see feedback_gemini_thinking_token_budget
+      thinkingConfig: geminiThinkingOff(GEMINI_FLASH), // 2.5-flash thinking eats the budget; see feedback_gemini_thinking_token_budget
     }
   });
   return geminiModel;
