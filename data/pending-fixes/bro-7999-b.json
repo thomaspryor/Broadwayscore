@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7999-b",
+  "planId": "908a36fc-d747-4412-bcdc-99ecc4e83ff2",
+  "status": "pending",
+  "createdAt": "2026-11-21T19:38:17.076Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7999: Music Man AP review still held by CV wrongArticle after wrongShow clear; hand-read as a real review",
+    "steps": [
+      "the-music-man-2022/ap--mark-kennedy.json: wrongArticleManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/ap--mark-kennedy.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-music-man-2022/ap--mark-kennedy.json: wrongArticleManualClear"
+      }
+    ]
+  }
+}
