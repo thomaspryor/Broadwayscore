@@ -437,13 +437,6 @@ jobs:
           echo "count=$COUNT" >> $GITHUB_OUTPUT
           echo "Reviews for show before rebuild: $COUNT"
 
-      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
-      # files pushed by other jobs since this job's checkout (never files
-      # this job wrote), and record which shows drifted.
-      - name: Sync review-texts drift before rebuild
-        if: inputs.dry_run != true
-        uses: ./.github/actions/sync-review-texts-drift
-
       # BRO-8012: restore the fingerprint memo that rebuild-fast.yml /
       # rebuild-reviews.yml save, so this press-night rebuild does not run cold
       # (~165s+ of cleanText). Restore only: no new cache entries from here.
@@ -457,6 +450,13 @@ jobs:
           key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-express-${{ github.sha }}
           restore-keys: |
             rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        if: inputs.dry_run != true
+        uses: ./.github/actions/sync-review-texts-drift
 
       - name: Rebuild reviews.json
         id: rebuild_reviews
