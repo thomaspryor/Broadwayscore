@@ -64,7 +64,10 @@ function escapeRe(s) {
  * these titles counts. Two different ratings for the same titles -> null.
  */
 function footerStars(text, titles) {
-  const body = String(text || '');
+  // Theater Life sometimes leaves the last star outside the bold tags
+  // ("Disruption **</em></strong>*<br>"); tag stripping then leaves two spaces
+  // and STARS stops at the gap, reading 2 for 3 (BRO-7928 audit).
+  const body = String(text || '').replace(/([*★])[ \t\u00a0]{2,}(?=[*★])/g, '$1 ');
   if (!body) return null;
   const found = new Set();
   for (const raw of titles || []) {

@@ -140,3 +140,16 @@ test('title segments: "and" joiner, and an exact name beats a prefix one (BRO-79
   assert.equal(pick(liaisons, 'Love, Love, Love'), '2/5 stars');
   assert.equal(pick('Good Time Charlie ***, Fish ****, Anon ***', 'ANON – a tempest at our kitchen table'), '3/5 stars');
 });
+
+test('footer stars split by stripped tags still count (BRO-7928 audit)', () => {
+  const strip = (h) => h.replace(/<[^>]+>/g, ' ');
+  // Live HTML of the Disruption and Water for Elephants footers.
+  // Disruption's next word lost its capital ("resented"), so the footer reads
+  // as prose and the per-show title segment gives the 3.
+  const disruption = strip('<p><strong><em>Disruption **</em></strong>*<br>resented by Jack DePalma');
+  assert.equal(footerStars(disruption, ['Disruption']), null, 'never the old 2');
+  assert.equal(resolveTheaterLifeStars({ title: 'An American Daughter **, Disruption ***', text: disruption, showTitles: ['Disruption'] }).rating, '3/5 stars');
+  assert.equal(footerStars(strip('<p><strong><em>Disruption **</em></strong>*<br>Presented by Jack DePalma'), ['Disruption']), '3/5 stars');
+  assert.equal(footerStars(strip('<p><strong><em>Water for Elephants ***</em></strong>*<br>MPERIAL THEATRE'), ['Water for Elephants']), '4/5 stars');
+  assert.equal(footerStars('Home **** Todd Haimes Theatre', ['Home']), '4/5 stars');
+});
