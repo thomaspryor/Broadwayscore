@@ -909,6 +909,11 @@ async function main() {
           censusExtractorBroken = true;
           console.log(`  🚨 WRONG-SHOW ROUNDUP: [${census.wrongRoundup.join(', ')}] archive is for a different show (combined roundup) — re-fetch this show's roundup.`);
         }
+        // BRO-7967: informational only (never censusExtractorBroken): a Show Score page that is another
+        // production's was left out, so "no roundup" below does not hide why that source is absent.
+        if (census.wrongProductionPage && census.wrongProductionPage.length) {
+          console.log(`  ℹ Skipped another production's page: [${census.wrongProductionPage.join(', ')}] (dates outside this run)`);
+        }
         if (census.hadAnySource) {
           console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
           if (censusMissing.length) {
