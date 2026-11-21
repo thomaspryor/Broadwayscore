@@ -185,9 +185,14 @@ function stripGuardianTopicsFooter(text) {
 // but an optional "Comments" label, so a cut final sentence that happens to
 // open "Join our commenting forum" is never taken for the footer.
 // No leading \s*: that made the match O(k^3) on a long whitespace run (review);
-// the cut point is trimmed instead. The topic-tag prefix never crosses a
-// sentence end, so "More about that later." in the review is not cut.
-const INDEPENDENT_COMMENTS_FOOTER_RE = /(?:More about\b[^\n.!?]{0,200}?)?Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
+// the cut point is trimmed instead. The "More about <tag>" topic tag in front
+// of it is removed separately (INDEPENDENT_TOPIC_TAG_RE): a tag such as
+// "More about Oklahoma!" left behind would read as a finished sentence and
+// pass a cut review as complete (review).
+const INDEPENDENT_COMMENTS_FOOTER_RE = /Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
+// Only the LAST "More about" run before the widget, so a cut sentence that
+// itself opens "More about ..." stays and still reads as truncated.
+const INDEPENDENT_TOPIC_TAG_RE = /\s*More about\b(?:(?!More about\b)[^\n]){0,120}$/;
 const STANDARD_SHOPPING_FOOTER_RE = /MORE ABOUT\b[^.!?]{0,300}?\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
 // The classifier counts words on the unstripped text, so a footer is only cut
 // from a body that is review-length on its own (shortest real flip: 1,901
@@ -200,7 +205,10 @@ function stripCmsWidgetFooters(text) {
   for (const re of [INDEPENDENT_COMMENTS_FOOTER_RE, STANDARD_SHOPPING_FOOTER_RE]) {
     const m = re.exec(out);
     // never leave less than a review-length body (a widget string near the top is not a footer)
-    if (m && m.index >= CMS_FOOTER_MIN_BODY) out = out.slice(0, m.index).trimEnd();
+    if (m && m.index >= CMS_FOOTER_MIN_BODY) {
+      out = out.slice(0, m.index).trimEnd();
+      if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '');
+    }
   }
   return out;
 }

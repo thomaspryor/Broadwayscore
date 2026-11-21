@@ -123,3 +123,15 @@ test('review fix: browser items run grouped by adapter (one Chrome launch per ou
   assert.equal(switches, 2); // ft -> telegraph -> thetimes
   assert.deepEqual(work.map((c) => c.id), [1, 2, 3, 4, 5, 6, 7]); // input untouched
 });
+
+test('review fix: adapter grouping never pulls a retry or a lower band ahead of a fresh higher-priority gap', () => {
+  const PO = require('./gap-plan-order.js');
+  const name = (c) => { const a = A.adapterFor(c.outletId); return a && a.name; };
+  const B = (id, o, extra) => ({ id, strategy: 'BROWSER_SESSION', outletId: o, ...extra });
+  // fresh FT, fresh Times, then an FT retry: the retry must not jump the fresh Times gap
+  const work = [B(1, 'financialtimes'), B(2, 'times-uk'), B(3, 'financialtimes', { attempts: 2 })];
+  assert.deepEqual(PO.groupBrowserSessions(work, name).map((c) => c.id), [1, 2, 3]);
+  // recent band-2 ft after historic? partitions keep their order; grouping only inside each
+  const mixed = [B(1, 'telegraph', { recency: 'recent' }), B(2, 'financialtimes', { recency: 'recent' }), B(3, 'telegraph', { recency: 'recent' }), B(4, 'financialtimes'), B(5, 'telegraph'), B(6, 'financialtimes')];
+  assert.deepEqual(PO.groupBrowserSessions(mixed, name).map((c) => c.id), [1, 3, 2, 4, 6, 5]);
+});
