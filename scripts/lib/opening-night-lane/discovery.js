@@ -391,7 +391,8 @@ function extractPublishDate(html) {
     const end = s.indexOf(';Fusion.', start);
     try {
       const gc = end > start ? JSON.parse(s.slice(start, end)) : null;
-      if (gc && typeof gc.display_date === 'string') tries.push([/^(.*)$/, gc.display_date]);
+      const arcDate = gc && [gc.display_date, gc.first_publish_date, gc.publish_date].find((v) => typeof v === 'string' && v);
+      if (arcDate) tries.push([/^(.*)$/, arcDate]);
     } catch { /* not the shape we know: no date from it */ }
   }
   // Talkin' Broadway pages carry no structured data: the date is in the "Theatre Review by {Critic} - {Month D, YYYY}" byline.
