@@ -205,3 +205,14 @@ test('BRO-7769: entity-encoded title and short titles do not trigger a false ref
   const b = { ...a, fullText: unrelatedText };
   assert.equal(mergeReviews(slot(), b, {}, { show: { title: 'SIX' }, script: 'test' }).url, b.url);
 });
+
+test('BRO-7769: refusal is idempotent and text just under the cutoff fails open', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  const ctx = { show: { title: GT_TITLE }, script: 'test' };
+  const once = mergeReviews(slot(), incoming, {}, ctx);
+  const twice = mergeReviews(once, incoming, {}, ctx);
+  assert.equal(twice.url, once.url);
+  assert.equal(twice.fullText || '', once.fullText || '');
+  const under = { ...incoming, fullText: 'Zach Grenier joins a cast. '.repeat(20).slice(0, 590) };
+  assert.equal(mergeReviews(slot(), under, {}, ctx).url, under.url);
+});
