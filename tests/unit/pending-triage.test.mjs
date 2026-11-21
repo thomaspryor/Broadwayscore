@@ -93,6 +93,15 @@ describe('triagePendingStub (BRO-8023)', () => {
     assert.equal(T.bylineIsShowCreator('Unknown', show), false);
   });
 
+  test('prose stub dates count (aggregator stubs store "December 14, 2014")', () => {
+    assert.equal(T.stubDateIso('December 14, 2014'), '2014-12-14');
+    assert.equal(T.stubDateIso('2025-09-27'), '2025-09-27');
+    assert.equal(T.stubDateIso('yesterday'), null);
+    assert.equal(T.stubDateIso(null), null);
+    const url = 'http://www.theatermania.com/new-york-city-theater/reviews/every-brilliant-thing-barrow-street-review_70976.html';
+    assert.equal(T.triagePendingStub({ url, publishDate: 'December 14, 2014' }, { showId: PUNCH.id, show: PUNCH }).verdict, 'junk');
+  });
+
   test('showEra buckets by id year suffix', () => {
     assert.equal(T.showEra('punch-west-end-2025'), '2025-26');
     assert.equal(T.showEra('hamlet-2019'), '2015-24');
