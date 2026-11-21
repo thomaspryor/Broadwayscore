@@ -1551,5 +1551,36 @@
       }
     ],
     "queuedAt": "2026-11-21T04:28:15.743Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7921-landed-fallback",
+    "title": "Landing blocked: rebase red on land/bro-7921-landed-fallback",
+    "description": "land.yml did not land land/bro-7921-landed-fallback: the rebase gate went red at fa36000986. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7921-landed-fallback @ fa36000986 (origin/land/bro-7921-landed-fallback) → origin/main @ c567be28b3 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c567be28b3: Rebasing (1/2) error: could not apply 638ccbc2f1c... BRO-7921: landed check falls back to all shows; title match keeps covered-market production hint: Resolve all conflicts manually, mark them as resolved Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44863812530",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7921-landed-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fa36000986172063fb153907f5cb0e9be14c076b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44863812530"
+      }
+    ],
+    "queuedAt": "2026-11-21T04:38:08.161Z"
   }
 ]
