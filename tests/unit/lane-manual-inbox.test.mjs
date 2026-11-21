@@ -848,7 +848,7 @@ test('BRO-7958: publish: a removal-only batch merges, deploys, and waits for the
     const stuck = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k2', verifyAbsent: true }], ledgerDir: dir, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT,
       ports: { ...ports, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) } });
     assert.deepEqual(stuck.stillLive, ['k2']); assert.deepEqual(stuck.gone, []); assert.equal(stuck.timedOut, true);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-7958: deploy port: an absent URL keeps the dispatch open until the live site stops showing it, then closes', async () => {
@@ -870,7 +870,7 @@ test('BRO-7958 review: a retry after the removal already merged still waits for 
     const ports = { updateReviews: async (fn) => fn(doc), regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) };
     const res = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k', verifyAbsent: true }], ledgerDir: dir, ports, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT });
     assert.deepEqual(res.gone, []); assert.deepEqual(res.stillLive, ['k']); assert.equal(res.timedOut, true);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-7958 review: a publishDate clear stays possible on the regular path; the lane refuses it', () => {
