@@ -1,0 +1,206 @@
+#!/usr/bin/env node
+/**
+ * land-shard.js: the two-runner split of land.yml's Checks (BRO-7324 step C).
+ *
+ * Runner A is the `checks` job ("Checks"); runner B is the `checks-shard` job
+ * ("Checks (shard 2/2)"). Both rebase onto the base sha dispatch-guard pinned
+ * and run land-gauntlet.sh on the same tree: every gate whole on exactly one
+ * part, and the node unit batch split with GAUNTLET_SHARD=k/2. B uploads its
+ * out-dir as an artifact. Right after its own part, A collects B's part, merges
+ * it with land-gauntlet-merge.js, and only then decides which gates need a base
+ * result. Kill switch: repo variable LAND_NODE_SHARD_DISABLED=1 (dispatch-guard
+ * reads it once; B is skipped and A runs every gate unsplit, as before).
+ *
+ * Fail closed, and never idle on a runner that is not coming: when B's part is
+ * not there (B queued, missing from this attempt, finished without uploading,
+ * past the wait deadline, or the API is down), A runs part 2 itself with the
+ * same harness. So every gate always runs on some runner; a lost part costs
+ * time, never a gate. A merge refusal or a failed local run exits 1, which the
+ * Gate verdict reports as the `node-shard` gate. A merged dir missing a gate
+ * is refused later by land-gate-delta.js (shard-incomplete).
+ *
+ * B runs its gauntlet under `watch`, which stops it once A's job has completed
+ * (A failed fast, or finished part 2 itself), so a fast refusal stays fast.
+ *
+ * CLI:
+ *   land-shard.js gates <1|2>
+ *   land-shard.js collect --repo=o/r --run-id=N --attempt=N --out=DIR --merge-into=DIR
+ *                         --harness=PATH [--wait-min=12] [--interval-s=20]
+ *   land-shard.js watch --repo=o/r --run-id=N --attempt=N --stopped-marker=FILE -- <cmd> [args...]
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const CHECKS_JOB_NAME = 'Checks';
+const SHARD_JOB_NAME = 'Checks (shard 2/2)';
+// From land-timing-report.js --gates (5 full branch gauntlets, 2026-11-21):
+// unit-tests-node 924s, scripts-lib-tests 333s, bash-integration 327s and
+// lint-workflows 302s (A's background lane under GAUNTLET_PARALLEL), tsx 63s,
+// tsc 57s, the rest under 20s. A: ~460s node half + ~150s small gates, with a
+// ~630s background lane beside them, after a ~3 min fast-fail. B: ~460s node
+// half + 333s scripts-lib, no fast-fail. Both reach the merge close together.
+const SHARD_PARTS = {
+  1: ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'bash-integration', 'toplevel-regression', 'lint-workflows'],
+  2: ['unit-tests-node', 'scripts-lib-tests'],
+};
+
+/** Name of B's artifact for one run attempt (land.yml's upload step uses the same shape). */
+function shardArtifactName(runId, attempt) { return `land-node-shard-${runId}-${attempt}`; }
+
+/**
+ * Pure. One poll of A's collect step.
+ * job: B's job in this attempt from the jobs API (undefined when not listed);
+ * artifactId: B's artifact id when listed; recheck: the previous poll saw B
+ * completed without an artifact (listing lag gets one more look).
+ * -> { action: 'fetch'|'wait'|'recheck'|'local', reason }
+ */
+function decideShardPoll({ job, artifactId, elapsedMs, waitMs, recheck = false }) {
+  if (artifactId) return { action: 'fetch', reason: `artifact ${artifactId} listed` };
+  if (!job) return { action: 'local', reason: `no "${SHARD_JOB_NAME}" job in this run attempt (kill switch flipped mid-run, or only failed jobs were re-run)` };
+  if (job.status === 'completed') {
+    if (!recheck) return { action: 'recheck', reason: `shard job completed (${job.conclusion}); listing the artifacts once more` };
+    return { action: 'local', reason: `shard job finished (${job.conclusion || 'no conclusion'}) without uploading its part` };
+  }
+  if (job.status !== 'in_progress') return { action: 'local', reason: `shard job has not started (${job.status}); not waiting for a runner` };
+  if (elapsedMs >= waitMs) return { action: 'local', reason: `shard job still running after ${Math.round(waitMs / 60000)} min` };
+  return { action: 'wait', reason: 'shard job running' };
+}
+
+/** Pure. One poll of B's watcher: stop once A's job is over. */
+function decidePeerWatch({ peerJob }) {
+  if (peerJob && peerJob.status === 'completed') return { action: 'stop', reason: `"${CHECKS_JOB_NAME}" already completed (${peerJob.conclusion}); its result no longer needs this part` };
+  return { action: 'continue' };
+}
+
+function parseArgs(argv) {
+  const o = {}; const rest = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === '--') { rest.push(...argv.slice(i + 1)); break; }
+    const m = /^--([a-z0-9-]+)=(.*)$/.exec(argv[i]); if (m) o[m[1]] = m[2];
+  }
+  o._ = rest;
+  return o;
+}
+
+function gh(args, exec, extra = {}) {
+  const { runGhWithFallback } = require('./land-retry-on-cancel.js');
+  return runGhWithFallback(args, { exec, fallbackToken: process.env.GH_FALLBACK_TOKEN, ...extra });
+}
+function jobsOfAttempt(o, exec) {
+  return JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/attempts/${o.attempt}/jobs?per_page=100`], exec)).jobs || [];
+}
+function lastNamed(jobs, name) { return jobs.filter((j) => j.name === name).pop(); }
+
+function sleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
+function firstLine(err) { return String((err && err.message) || err).split('\n')[0]; }
+
+/** Run part 2 on this runner (A), into a fresh dir. Exit code of the gauntlet. */
+function runLocal(o, { spawn, log }) {
+  fs.rmSync(o.out, { recursive: true, force: true });
+  log(`node-shard: running part 2/2 (${SHARD_PARTS[2].join(', ')}) on this runner`);
+  const r = spawn('bash', [o.harness, o.out], {
+    stdio: 'inherit',
+    env: { ...process.env, GAUNTLET_GATES: SHARD_PARTS[2].join(','), GAUNTLET_SHARD: '2/2', GAUNTLET_PARALLEL: '0', GAUNTLET_SCOPE_DIR: '' },
+  });
+  return r.status === null ? 1 : r.status;
+}
+
+function fetchPart(o, artifactId, name, { exec }) {
+  fs.rmSync(o.out, { recursive: true, force: true }); fs.mkdirSync(o.out, { recursive: true });
+  const zip = `${o.out.replace(/\/+$/, '')}.zip`;
+  // gh writes the zip to stdout; latin1 keeps every byte.
+  const bin = gh([`repos/${o.repo}/actions/artifacts/${artifactId}/zip`], (cmd, args, opts) => exec(cmd, args, { ...opts, encoding: 'latin1' }));
+  fs.writeFileSync(zip, Buffer.from(bin, 'latin1'));
+  exec('unzip', ['-oq', zip, '-d', o.out], { stdio: ['ignore', 'inherit', 'inherit'] });
+  if (!fs.existsSync(path.join(o.out, 'meta.json'))) throw new Error(`artifact ${name} has no meta.json`);
+}
+
+function collect(o, { exec = require('child_process').execFileSync, spawn = require('child_process').spawnSync, now = Date.now, sleep = sleepMs, log = console.log } = {}) {
+  const fail = (msg) => { console.error(`::error::node-shard: ${msg}`); return 1; };
+  for (const k of ['repo', 'run-id', 'attempt', 'out', 'merge-into', 'harness']) if (!o[k]) return fail(`collect needs --${k}`);
+  const name = shardArtifactName(o['run-id'], o.attempt);
+  const waitMs = Number(o['wait-min'] || 12) * 60000;
+  const intervalMs = Number(o['interval-s'] || 20) * 1000;
+  const t0 = now();
+  let recheck = false; let apiErrors = 0; let source = null;
+  for (;;) {
+    let job; let artifactId = null;
+    try {
+      job = lastNamed(jobsOfAttempt(o, exec), SHARD_JOB_NAME);
+      const arts = JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/artifacts?name=${encodeURIComponent(name)}&per_page=10`], exec)).artifacts || [];
+      const a = arts.find((x) => x.name === name && !x.expired);
+      artifactId = a ? a.id : null;
+      apiErrors = 0;
+    } catch (err) {
+      apiErrors++;
+      log(`node-shard: API error ${apiErrors}/3: ${firstLine(err)}`);
+      if (apiErrors >= 3) { log('node-shard: local, the GitHub API failed 3 times in a row'); source = 'local'; break; }
+      sleep(intervalMs); continue;
+    }
+    const d = decideShardPoll({ job, artifactId, elapsedMs: now() - t0, waitMs, recheck });
+    log(`node-shard: ${d.action}, ${d.reason}`);
+    if (d.action === 'fetch') {
+      try { fetchPart(o, artifactId, name, { exec }); source = 'artifact'; } catch (err) { log(`node-shard: could not download or unpack ${name}: ${firstLine(err)}; running part 2 here`); source = 'local'; }
+      break;
+    }
+    if (d.action === 'local') { source = 'local'; break; }
+    recheck = d.action === 'recheck';
+    sleep(recheck ? Math.min(intervalMs, 10000) : intervalMs);
+  }
+  if (source === 'local') {
+    const rc = runLocal(o, { spawn, log });
+    if (rc !== 0) return fail(`part 2/2 on this runner exited ${rc}`);
+  }
+  const { mergeGauntletDirs } = require('./land-gauntlet-merge.js');
+  const r = mergeGauntletDirs(o['merge-into'], o.out);
+  if (!r.ok) { for (const p of r.problems) console.error(`::error::split merge refused: ${p}`); return 1; }
+  log(`node-shard: merged part 2/2 (${source}) into ${o['merge-into']}: ${r.gates.length} gate(s)`);
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `source=${source}\n`);
+  return 0;
+}
+
+/** B: run <cmd> and stop it once A's job has completed. Exit code of <cmd>, or 0 when stopped. */
+function watch(o, { exec = require('child_process').execFileSync, spawnAsync = require('child_process').spawn, log = console.log, intervalMs = 30000 } = {}) {
+  for (const k of ['repo', 'run-id', 'attempt', 'stopped-marker']) if (!o[k]) { console.error(`::error::watch needs --${k}`); return Promise.resolve(2); }
+  if (!o._.length) { console.error('::error::watch needs -- <cmd>'); return Promise.resolve(2); }
+  fs.rmSync(o['stopped-marker'], { force: true });
+  return new Promise((resolve) => {
+    const child = spawnAsync(o._[0], o._.slice(1), { stdio: 'inherit', detached: true });
+    let stopped = false;
+    const timer = setInterval(() => {
+      let peerJob;
+      try { peerJob = lastNamed(jobsOfAttempt(o, exec), CHECKS_JOB_NAME); } catch (err) { log(`node-shard watch: API error (keeps running): ${firstLine(err)}`); return; }
+      const d = decidePeerWatch({ peerJob });
+      if (d.action !== 'stop' || stopped) return;
+      stopped = true;
+      log(`node-shard watch: stopping, ${d.reason}`);
+      fs.writeFileSync(o['stopped-marker'], `${d.reason}\n`);
+      try { process.kill(-child.pid, 'SIGTERM'); } catch {}
+      setTimeout(() => { try { process.kill(-child.pid, 'SIGKILL'); } catch {} }, 10000).unref();
+    }, intervalMs);
+    child.on('exit', (code) => {
+      clearInterval(timer);
+      resolve(stopped ? 0 : (code === null ? 1 : code));
+    });
+  });
+}
+
+async function main(argv) {
+  const [cmd, ...rest] = argv;
+  if (cmd === 'gates') {
+    const part = SHARD_PARTS[rest[0]];
+    if (!part) { console.error(`usage: land-shard.js gates <${Object.keys(SHARD_PARTS).join('|')}>`); return 2; }
+    console.log(part.join(','));
+    return 0;
+  }
+  if (cmd === 'collect') return collect(parseArgs(rest));
+  if (cmd === 'watch') return watch(parseArgs(rest));
+  console.error('usage: land-shard.js gates <k> | collect ... | watch ... -- <cmd>');
+  return 2;
+}
+
+module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, shardArtifactName, decideShardPoll, decidePeerWatch, collect, watch, parseArgs };
+
+if (require.main === module) main(process.argv.slice(2)).then((c) => { process.exitCode = c; });

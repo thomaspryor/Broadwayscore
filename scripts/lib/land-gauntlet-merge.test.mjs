@@ -98,8 +98,16 @@ test('a red part makes the merged exit red, and a gate tsc ran on B carries B\'s
   assert.equal(fs.readFileSync(path.join(a, 'tsc-tree-status'), 'utf8'), 'from-b\n');
 });
 
-test('merge-level refusals: tree, sha or root differ; same part twice; a lone part; parts sliced different lists', () => {
-  for (const [k, v] of [['tree', 'T2'], ['sha', 'S2'], ['root', '/other']]) {
+test('two rebases of one tree: different commit shas, same tree, merge (partSha keeps both)', () => {
+  const { a, b } = pair({ b: { sha: 'S2' } });
+  assert.equal(mergeGauntletDirs(a, b).ok, true);
+  const meta = JSON.parse(fs.readFileSync(path.join(a, 'meta.json'), 'utf8'));
+  assert.deepEqual(meta.partSha, { '1/2': 'S1', '2/2': 'S2' });
+  assert.equal(meta.sha, 'S1');
+});
+
+test('merge-level refusals: tree or root differ, or tree missing; same part twice; a lone part; parts sliced different lists', () => {
+  for (const [k, v] of [['tree', 'T2'], ['root', '/other'], ['tree', '']]) {
     const { a, b } = pair({ b: { [k]: v } });
     const r = mergeGauntletDirs(a, b);
     assert.equal(r.ok, false, k);
