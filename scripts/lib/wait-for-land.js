@@ -230,7 +230,12 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
         if (r.conclusion === 'cancelled') throw err;
         jobs = null;
       }
-      if (jobs && landJobSucceeded(jobs)) {
+      if (!jobs) {
+        // BRO-7324: unread jobs means "did Land succeed?" is unknown (an
+        // advisory job alone can turn a landed run red): no verdict this poll.
+        // Nothing is built or cached: the next poll may read the jobs.
+        jobsUnread = true;
+      } else if (landJobSucceeded(jobs)) {
         // BRO-7324: Land succeeded; only an advisory job ("Checks (shard 2/2)")
         // made the run red or cancelled. That is a landing, not a refusal.
         entry = { landed: true };
@@ -253,14 +258,10 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
       } else {
         entry = {};
       }
-      // An unread red run is not cached: the next poll may read its jobs.
-      if (jobs) cache.set(key, entry);
-      // BRO-7324: unread jobs means "did Land succeed?" is unknown (an
-      // advisory job alone can turn a landed run red): no verdict this poll.
-      else jobsUnread = true;
+      if (entry) cache.set(key, entry);
     }
-    if (entry.landed) conclusion = 'success';
-    cancellation = entry.cancellation;
+    if (entry?.landed) conclusion = 'success';
+    cancellation = entry?.cancellation;
   }
   return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion, runConclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation, jobsUnread };
 }

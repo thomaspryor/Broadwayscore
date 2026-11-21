@@ -250,6 +250,28 @@ test('BRO-7324: only "Checks (shard 2/2)" red or cancelled while Land succeeded 
   assert.equal(verdict({ refSha: TIP, run: reread }).verdict, 'refused');
 });
 
+test('BRO-7324: every red conclusion with unreadable jobs returns "waiting", builds no entry, caches nothing', () => {
+  for (const conclusion of ['failure', 'timed_out', 'action_required', 'startup_failure', 'stale']) {
+    for (const badJobs of [() => { throw new Error('HTTP 502'); }, () => ({ jobs: 'garbage' }), () => undefined]) {
+      const r = run({ id: 4250, head_branch: 'land/bro-7324-u', run_attempt: 2, conclusion });
+      const read = (endpoint) => {
+        if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: [] };
+        if (endpoint.includes('/workflows/land.yml/runs?')) return { workflow_runs: [r] };
+        if (endpoint.includes('/jobs?')) return badJobs();
+        assert.fail(`unexpected endpoint: ${endpoint}`);
+      };
+      const cache = new Map();
+      const got = readLatestRun(r.head_branch, { read, cache });
+      assert.equal(got.jobsUnread, true, conclusion);
+      assert.equal(got.conclusion, conclusion, 'never guessed landed');
+      assert.equal(got.cancellation, undefined);
+      assert.equal([...cache.keys()].filter((k) => k.startsWith('4250:')).length, 0, 'an unread run is not cached');
+      assert.equal(verdict({ refSha: TIP, run: got }).verdict, 'waiting');
+      assert.equal(verdict({ refSha: null, lastSha: TIP, run: got }).verdict, 'waiting');
+    }
+  }
+});
+
 test('a red run for an OLDER tip says nothing about a fresh push', () => {
   const v = verdict({ refSha: TIP, run: run({ head_sha: 'f'.repeat(40), conclusion: 'failure' }) });
   assert.equal(v.verdict, 'waiting');

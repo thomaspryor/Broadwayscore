@@ -136,12 +136,20 @@ function gh(args, exec, extra = {}) {
   const { runGhWithFallback } = require('./land-retry-on-cancel.js');
   return runGhWithFallback(args, { exec, fallbackToken: process.env.GH_FALLBACK_TOKEN, ...extra });
 }
-// A hung gh would block watch's event loop (and with it the child's exit), so
-// every jobs listing is bounded; a timeout is just one more API error.
+// A hung gh would block watch's event loop (and with it the child's exit), or
+// eat the whole Checks job in collect, so every network call is bounded:
+// listings 60s, the artifact zip 180s (unzip, local, 60s). In collect each
+// bound is also clipped to the --wait-min deadline (never below MIN_CALL_MS),
+// and a timed-out call there runs part 2 locally at once instead of retrying.
 const GH_TIMEOUT_MS = 60000;
-function jobsOfAttempt(o, exec) {
-  const bounded = (cmd, args, opts) => exec(cmd, args, { ...opts, timeout: GH_TIMEOUT_MS });
-  return JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/attempts/${o.attempt}/jobs?per_page=100`], bounded)).jobs || [];
+const GH_DOWNLOAD_TIMEOUT_MS = 180000;
+const UNZIP_TIMEOUT_MS = 60000;
+const MIN_CALL_MS = 30000;
+const bounded = (exec, ms) => (cmd, args, opts) => exec(cmd, args, { ...opts, timeout: ms });
+// execFileSync's own timeout kill: code ETIMEDOUT (signal SIGTERM).
+function isTimeout(err) { return Boolean(err && err.code === 'ETIMEDOUT'); }
+function jobsOfAttempt(o, exec, timeoutMs = GH_TIMEOUT_MS) {
+  return JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/attempts/${o.attempt}/jobs?per_page=100`], bounded(exec, timeoutMs))).jobs || [];
 }
 function lastNamed(jobs, name) { return jobs.filter((j) => j && j.name === name).pop(); }
 function readJson(file) { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; } }
@@ -161,13 +169,13 @@ function runLocal(o, { spawn, log }) {
   return r.status === null ? 1 : r.status;
 }
 
-function fetchPart(o, artifactId, name, { exec }) {
+function fetchPart(o, artifactId, name, { exec, timeoutMs = GH_DOWNLOAD_TIMEOUT_MS }) {
   fs.rmSync(o.out, { recursive: true, force: true }); fs.mkdirSync(o.out, { recursive: true });
   const zip = `${o.out.replace(/\/+$/, '')}.zip`;
   // gh writes the zip to stdout; latin1 keeps every byte.
-  const bin = gh([`repos/${o.repo}/actions/artifacts/${artifactId}/zip`], (cmd, args, opts) => exec(cmd, args, { ...opts, encoding: 'latin1' }));
+  const bin = gh([`repos/${o.repo}/actions/artifacts/${artifactId}/zip`], (cmd, args, opts) => exec(cmd, args, { ...opts, encoding: 'latin1', timeout: timeoutMs }));
   fs.writeFileSync(zip, Buffer.from(bin, 'latin1'));
-  exec('unzip', ['-oq', zip, '-d', o.out], { stdio: ['ignore', 'inherit', 'inherit'] });
+  exec('unzip', ['-oq', zip, '-d', o.out], { stdio: ['ignore', 'inherit', 'inherit'], timeout: UNZIP_TIMEOUT_MS });
   if (!fs.existsSync(path.join(o.out, 'meta.json'))) throw new Error(`artifact ${name} has no meta.json`);
 }
 
@@ -178,25 +186,30 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
   const waitMs = Number(o['wait-min'] || 12) * 60000;
   const intervalMs = Number(o['interval-s'] || 20) * 1000;
   const t0 = now();
+  // --wait-min is a deadline for the whole collect wait, network calls included.
+  const deadline = t0 + waitMs;
+  const callMs = (cap) => Math.min(cap, Math.max(deadline - now(), MIN_CALL_MS));
   let recheck = false; let apiErrors = 0; let source = null;
   for (;;) {
+    if (now() >= deadline) { log(`node-shard: local, no part 2/2 within the ${Math.round(waitMs / 60000)} min wait`); source = 'local'; break; }
     let job; let artifactId = null;
     try {
-      job = lastNamed(jobsOfAttempt(o, exec), SHARD_JOB_NAME);
-      const arts = JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/artifacts?name=${encodeURIComponent(name)}&per_page=10`], exec)).artifacts || [];
+      job = lastNamed(jobsOfAttempt(o, exec, callMs(GH_TIMEOUT_MS)), SHARD_JOB_NAME);
+      const arts = JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/artifacts?name=${encodeURIComponent(name)}&per_page=10`], bounded(exec, callMs(GH_TIMEOUT_MS)))).artifacts || [];
       const a = arts.find((x) => x.name === name && !x.expired);
       artifactId = a ? a.id : null;
       apiErrors = 0;
     } catch (err) {
+      if (isTimeout(err)) { log(`node-shard: local, a GitHub API call timed out: ${firstLine(err)}`); source = 'local'; break; }
       apiErrors++;
       log(`node-shard: API error ${apiErrors}/3: ${firstLine(err)}`);
       if (apiErrors >= 3) { log('node-shard: local, the GitHub API failed 3 times in a row'); source = 'local'; break; }
-      sleep(intervalMs); continue;
+      sleep(Math.min(intervalMs, Math.max(0, deadline - now()))); continue;
     }
     const d = decideShardPoll({ job, artifactId, elapsedMs: now() - t0, waitMs, recheck });
     log(`node-shard: ${d.action}, ${d.reason}`);
     if (d.action === 'fetch') {
-      try { fetchPart(o, artifactId, name, { exec }); source = 'artifact'; } catch (err) { log(`node-shard: could not download or unpack ${name}: ${firstLine(err)}; running part 2 here`); source = 'local'; }
+      try { fetchPart(o, artifactId, name, { exec, timeoutMs: callMs(GH_DOWNLOAD_TIMEOUT_MS) }); source = 'artifact'; } catch (err) { log(`node-shard: could not download or unpack ${name}: ${firstLine(err)}; running part 2 here`); source = 'local'; }
       if (source === 'artifact') {
         const v = validateFetchedPart(readJson(path.join(o['merge-into'], 'meta.json')), readJson(path.join(o.out, 'meta.json')));
         if (!v.ok) { log(`node-shard: not merging ${name}: ${v.reason}; running part 2 here`); source = 'local'; }
@@ -210,7 +223,7 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
     }
     if (d.action === 'local') { source = 'local'; break; }
     recheck = d.action === 'recheck';
-    sleep(recheck ? Math.min(intervalMs, 10000) : intervalMs);
+    sleep(Math.min(recheck ? Math.min(intervalMs, 10000) : intervalMs, Math.max(0, deadline - now())));
   }
   if (source === 'local') {
     const rc = runLocal(o, { spawn, log });
@@ -276,6 +289,6 @@ async function main(argv) {
   return 2;
 }
 
-module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, DATA_REV_FILE, shardArtifactName, decideShardPoll, decidePeerWatch, validateFetchedPart, validateDataRev, decideChecksDone, collect, watch, checksDone, parseArgs };
+module.exports = { GH_TIMEOUT_MS, GH_DOWNLOAD_TIMEOUT_MS, MIN_CALL_MS, CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, DATA_REV_FILE, shardArtifactName, decideShardPoll, decidePeerWatch, validateFetchedPart, validateDataRev, decideChecksDone, collect, watch, checksDone, parseArgs };
 
 if (require.main === module) main(process.argv.slice(2)).then((c) => { process.exitCode = c; });
