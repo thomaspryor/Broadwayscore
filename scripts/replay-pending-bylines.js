@@ -549,9 +549,9 @@ async function processShow(showId, deps = {}) {
       continue;
     }
     if (openingYear) {
-      const m = url.match(/\/((?:19|20)\d{2})\b/);
-      if (m && Math.abs(parseInt(m[1], 10) - openingYear) > 1) {
-        console.log(`  [${file}] REJECT: URL year ${m[1]} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+      const badYear = require('./lib/url-year-guard').urlYearConflict(url, openingYear, show?.title);
+      if (badYear) {
+        console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
         if (!dry) fs.unlinkSync(filepath);
         rejected++;
         continue;

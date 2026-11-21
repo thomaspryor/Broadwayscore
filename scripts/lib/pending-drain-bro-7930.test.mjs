@@ -143,3 +143,10 @@ test('the sweep calls the gate and the rotation (a refactor back to newest-first
   assert.match(src, /route-limbo-reviews/);
   assert.match(src, /raiseDrainHealthAlerts\(state\.history\)/);
 });
+
+const { urlYearConflict } = require('./url-year-guard.js');
+test('URL-year reject: a year that is part of the show title is not a date (1984, the real Times review that was deleted)', () => {
+  assert.equal(urlYearConflict('https://www.thetimes.com/culture/theatre-dance/article/1984-review-a-clever-take-on-orwells-classic-gjsnvnxjm', 2014, '1984'), null);
+  assert.equal(urlYearConflict('https://deadline.com/2026/10/box-office-x-1237151001/', 2009, '9 to 5'), '2026');
+  assert.equal(urlYearConflict('https://x.com/2025/review', 2026, 'Hamlet'), null);
+});
