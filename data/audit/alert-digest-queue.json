@@ -1463,6 +1463,37 @@
     "queuedAt": "2026-11-21T23:05:28.690Z"
   },
   {
+    "conditionKey": "land:land/bro-7324-retro",
+    "title": "Landing blocked: deadline red on land/bro-7324-retro",
+    "description": "land.yml did not land land/bro-7324-retro: the deadline gate went red at d7b1c455bf. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7324-retro @ d7b1c455bf (origin/land/bro-7324-retro) → origin/main @ de096e8a32 [land] attempt 1/3: rebased onto de096e8a32, 1 file(s) changed — running checks [land] verified-base: main moved 4837529558 → de096e8a32 across 292 file(s), substantive — re-checking on the merged tree (+5 test file(s) changed on main since the verified base); full re-check: branch and main both changed Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44954737714",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7324-retro"
+      },
+      {
+        "name": "gate",
+        "value": "deadline"
+      },
+      {
+        "name": "tip",
+        "value": "d7b1c455bf63d270f401f68ec2f34c7b1853989b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44954737714"
+      }
+    ],
+    "queuedAt": "2026-11-21T23:42:09.180Z"
+  },
+  {
     "conditionKey": "land:land/seating-expansion-data",
     "title": "Landing blocked: rebase red on land/seating-expansion-data",
     "description": "land.yml did not land land/seating-expansion-data: the rebase gate went red at 241532e0b1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44960808694",
