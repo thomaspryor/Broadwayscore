@@ -415,8 +415,7 @@
     "the-authenticator-west-end-2026/theupcoming--jim-compton-hall.json",
     "private-lives-royal-exchange-regional-2026/a-youngish-perspective--laura-davies.json",
     "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
-    "cinderella-lyric-hammersmith-off-west-end-2026/british-theatre--unknown.json",
-    "cinderella-lyric-hammersmith-off-west-end-2026/pinkprincetheatre--unknown.json"
+    "downstate-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -677,7 +676,8 @@
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json"
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -908,8 +908,7 @@
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
       "ruthless-the-musical-regional-2026/splash-magazines--mira-temkin.json",
-      "cinderella-lyric-hammersmith-off-west-end-2026/british-theatre--unknown.json",
-      "cinderella-lyric-hammersmith-off-west-end-2026/pinkprincetheatre--unknown.json"
+      "downstate-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "amp": [
       "data/review-texts/33-variations-2009/variety--david-rooney.json"
@@ -1127,7 +1126,7 @@
     ]
   },
   "startTime": "2026-11-20T21:57:04.948Z",
-  "lastProcessed": "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
   "log": [
     {
       "t": "2026-11-21T00:27:00.760Z",
@@ -1317,6 +1316,72 @@
       "event": "bb-session",
       "session": "42022c35",
       "url": "http://broadwayandme.blogspot.com/2018/05/the-unabashed-confessions-of-harry.htm"
+    },
+    {
+      "t": "2026-11-21T03:59:40.397Z",
+      "event": "bb-session",
+      "session": "f17e6e9d",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-21T03:59:41.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T03:59:59.742Z",
+      "event": "bb-session",
+      "session": "b86d9360",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-21T04:00:00.536Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T04:00:58.972Z",
+      "event": "bb-session",
+      "session": "33c81f35",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-21T04:00:59.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T04:01:17.201Z",
+      "event": "bb-session",
+      "session": "cfce689b",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-21T04:01:18.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T04:03:04.566Z",
+      "event": "bb-session",
+      "session": "0b89260b",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-21T04:03:05.364Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-21T04:03:23.480Z",
+      "event": "bb-session",
+      "session": "16dfb520",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-21T04:03:24.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
