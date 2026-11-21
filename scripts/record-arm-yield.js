@@ -123,6 +123,7 @@ const MIN_PLAUSIBLE_SHOW_DIRS = 500;
 function collectOutletYield(reviewTextsDir, days) {
   const wantedDays = new Set(days);
   const byOutlet = new Map();
+  const byPipeline = new Map();
   if (!fs.existsSync(reviewTextsDir)) return null;
 
   const showDirs = listShowDirs(reviewTextsDir).filter((name) => {
@@ -162,6 +163,14 @@ function collectOutletYield(reviewTextsDir, days) {
       if (!stamp) continue;
       const day = String(stamp).slice(0, 10);
       if (!wantedDays.has(day)) continue;
+      // BRO-7934: also count by the pipeline that produced the file (ingestSource when a caller was
+      // recorded, else the collector `source`), so a workflow that runs green but produces nothing
+      // ("ok-but-zero") shows up as a silent pipeline arm.
+      for (const key of new Set([data.ingestSource, data.source].filter((k) => typeof k === 'string' && k))) {
+        if (!byPipeline.has(key)) byPipeline.set(key, new Map());
+        const pm = byPipeline.get(key);
+        pm.set(day, (pm.get(day) || 0) + 1);
+      }
       const outletId = data.outletId;
       if (!outletId) continue;
       if (!byOutlet.has(outletId)) byOutlet.set(outletId, new Map());
@@ -169,7 +178,7 @@ function collectOutletYield(reviewTextsDir, days) {
       dayMap.set(day, (dayMap.get(day) || 0) + 1);
     }
   }
-  return { byOutlet, showDirCount: showDirs.length };
+  return { byOutlet, byPipeline, showDirCount: showDirs.length };
 }
 
 /**
@@ -265,7 +274,7 @@ function main() {
 
   const fresh = [];
   let outletScanFailed = false;
-  const outletArms = arms.filter((a) => a.kind === 'outlet');
+  const outletArms = arms.filter((a) => a.kind === 'outlet' || a.kind === 'pipeline');
   if (outletArms.length) {
     // Skipping (not zero-filling) keeps a missing OR PARTIAL private-repo
     // checkout from manufacturing a corpus-wide "every outlet is dead" alert.
@@ -287,11 +296,13 @@ function main() {
       const byOutlet = outletScan.byOutlet;
       for (const arm of outletArms) {
         for (const day of days) {
-          const itemsFound = (arm.outletIds || []).reduce(
-            (sum, outletId) => sum + ((byOutlet.get(outletId) || new Map()).get(day) || 0),
-            0
-          );
-          fresh.push({ arm: arm.id, date: day, itemsFound, kind: 'outlet', recordedAt });
+          const itemsFound = arm.kind === 'pipeline'
+            ? (arm.pipelineKeys || []).reduce((sum, k) => sum + ((outletScan.byPipeline.get(k) || new Map()).get(day) || 0), 0)
+            : (arm.outletIds || []).reduce(
+              (sum, outletId) => sum + ((byOutlet.get(outletId) || new Map()).get(day) || 0),
+              0
+            );
+          fresh.push({ arm: arm.id, date: day, itemsFound, kind: arm.kind, recordedAt });
         }
       }
     }

@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-21T05:52:46.692Z",
+  "generatedAt": "2026-11-21T07:02:05.032Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 367,
-  "clean": 366,
+  "checked": 366,
+  "clean": 365,
   "defective": 1,
   "byType": {
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "openingDate": "2026-11-20",
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 62.46 vs local 60.21 (Δ2.25)"
+          "detail": "deployed cs 75.94 vs local 76.53 (Δ0.59)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-21T05:52:40.143Z"
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-21T07:01:53.869Z"
     }
   ],
   "persistentDefective": 0,

@@ -119,7 +119,48 @@ const ARMS = [
   // pages on this arm's normal rhythm is mis-tuned, and having it registered
   // means that mis-tuning shows up immediately instead of in the owner's inbox.
   { id: 'outlet:nysr', label: 'New York Stage Review (reviews collected)', kind: 'outlet', outletIds: ['nysr'] },
+
+  // ── BRO-7934 pipeline arms: "ok-but-zero". A workflow can succeed every run and its pipeline
+  // still produce no review files (the workflow arms above only count successful runs). Output is
+  // counted by the file's ingestSource (the caller) or collector `source`. Only pipelines with a
+  // steady record are listed; the detector learns each one's own cadence.
+  ...[
+    ['outlet-listing-poller', 'Outlet listing poller'],
+    ['opening-night-discovery', 'Opening-night discovery'],
+    ['serp-discovery', 'SERP discovery'],
+    ['outlet-serp-discovery', 'Outlet SERP discovery'],
+    ['bww-reviews', 'BroadwayWorld review pages'],
+    ['bww-roundup', 'BroadwayWorld roundups'],
+    ['dtli', 'Did They Like It'],
+    ['playbill-verdict', 'Playbill Verdict'],
+    ['show-score', 'Show Score'],
+    ['westendtheatre', 'West End Theatre'],
+    ['audit-show-review-gap', 'Aggregator gap audit (backstop)'],
+    ['discover-tour-stop-reviews', 'Tour-stop discovery'],
+  ].map(([key, label]) => ({ id: `pipeline:${key}`, label: `${label} (review files produced)`, kind: 'pipeline', pipelineKeys: [key] })),
 ];
+
+// BRO-7934: every discovery/collection workflow gets a yield arm (the registry
+// covered 7 workflows when 35 find or collect reviews). Hand-written entries
+// above win; the rest are generated from the one shared list.
+const { DISCOVERY_WORKFLOWS, armIdForWorkflow } = require('./discovery-workflows');
+// 'steady' (collapse rule applies) only for crons that fire at least daily; a
+// weekly/seasonal cron's volume drop is not evidence of anything.
+function cadenceFor(file) {
+  try {
+    const { extractCrons, worstGapHours } = require('./cron-coverage');
+    const yml = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '.github', 'workflows', file), 'utf8');
+    const gap = worstGapHours(extractCrons(yml));
+    return gap !== null && gap <= 26 ? 'steady' : 'sparse';
+  } catch {
+    return 'sparse';
+  }
+}
+for (const file of DISCOVERY_WORKFLOWS) {
+  const id = armIdForWorkflow(file);
+  if (ARMS.some((a) => a.id === id || (a.kind === 'workflow' && a.workflow === file))) continue;
+  ARMS.push({ id, label: file.replace(/\.yml$/, ''), kind: 'workflow', cadence: cadenceFor(file), workflow: file });
+}
 
 const ARMS_BY_ID = new Map(ARMS.map((a) => [a.id, a]));
 

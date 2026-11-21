@@ -121,6 +121,22 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh
 
+      # BRO-7931 #5: aggregator-truth.json / -flags.json had no scheduled writer and
+      # sat frozen since Jan 28. Regenerate weekly alongside the coverage audit.
+      - name: Regenerate aggregator-truth (BRO-7931)
+        if: always()
+        continue-on-error: true
+        run: |
+          node scripts/build-aggregator-truth.js
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/aggregator-truth.json data/aggregator-truth-flags.json
+          if git diff --cached --quiet; then echo "truth unchanged"; exit 0; fi
+          git commit -m "audit: regenerate aggregator-truth (weekly)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true'
         env:

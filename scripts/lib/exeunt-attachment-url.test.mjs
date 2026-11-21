@@ -99,7 +99,7 @@ test('ingest-review-from-url ingests an attachment url as its article, and a sec
     // BRO-6588) would rightly quarantine it here, and this test is about the url.
     '--outlet=exeunt-magazine', '--critic=Nicole Serratore', `--html-file=${fixture}`, '--publish-date=2026-10-12'];
   for (const run of [1, 2]) {
-    const r = spawnSync(process.execPath, argv, { env: { ...process.env, REVIEW_TEXTS_DIR: dir, BSC_STAGE_LATENCY_MUTE: '1' }, encoding: 'utf8' });
+    const r = spawnSync(process.execPath, argv, { env: { ...process.env, REVIEW_TEXTS_DIR: dir, BSC_STAGE_LATENCY_MUTE: '1', INGEST_CALLER: 'test' }, encoding: 'utf8' });
     assert.equal(r.status, 0, `run ${run}: ${(r.stdout + r.stderr).slice(-600)}`);
   }
   const saved = JSON.parse(fs.readFileSync(path.join(dir, 'fish-off-broadway-2026', 'exeunt-magazine--nicole-serratore.json'), 'utf8'));

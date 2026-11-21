@@ -19,6 +19,13 @@ on:
         description: 'Days ± around openingDate to include (default: 7)'
         required: false
         default: '7'
+      redispatched:
+        # redispatch-after-hours: 0.5  (BRO-7934: GitHub fired the */15 schedule 52 of 1,344 times, 2026-11-06..19.
+        #   cron-redispatch.js replaces a missing run; effective cadence ~30-60 min, sweeps ride main Test Suite
+        #   completions. A redispatched run behaves exactly like the scheduled one: no input branches on it.)
+        description: 'Set by scripts/cron-redispatch.js when GitHub dropped the schedule. No behavior change.'
+        required: false
+        default: ''
       force:
         description: 'Bypass per-show 60-min cooldown'
         required: false

@@ -183,6 +183,12 @@ function heldFiles(showId, outletIds) {
   return names.filter(n => outletIds.some(id => n.startsWith(`${id}--`)));
 }
 
+/** Fetch-route lines from an ingest run's stdout (which tier answered, whether a body was found), for the removal log. */
+function routeLines(stdout) {
+  return String(stdout || '').split('\n').map(l => l.trim())
+    .filter(l => /Success \(|→ Trying|No article-body|Cookie-plain|cookies-plain|Fetching:/.test(l)).slice(0, 6).join(' | ').slice(0, 300) || 'none';
+}
+
 function ingest(showId, m, url, show) {
   const win = lib.showWindow(show, m.outletId);
   if (!win) return { outcome: 'no-show-window' };
@@ -207,7 +213,7 @@ function ingest(showId, m, url, show) {
     if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
-  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)}` };
+  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)} | route: ${routeLines(r.stdout)}` };
   return { outcome: 'ingested', file: kept, bodyChars };
 }
 
