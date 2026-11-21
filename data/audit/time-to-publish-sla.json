@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-20T10:29:03.127Z",
-  "scope": "2 opening window(s): bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026 (2026-11-20), elektra-off-broadway-2026 (2026-11-20)",
+  "generatedAt": "2026-11-21T10:47:14.115Z",
+  "scope": "2 opening window(s): the-snowman-off-west-end-2026 (2026-11-21), cinderella-lyric-hammersmith-off-west-end-2026 (2026-11-21)",
   "degraded": null,
   "windows": [
     {
-      "showId": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
-      "openingDate": "2026-11-20",
-      "from": "2026-11-19T00:00:00.000Z",
-      "to": "2026-11-24T23:59:59.999Z"
+      "showId": "the-snowman-off-west-end-2026",
+      "openingDate": "2026-11-21",
+      "from": "2026-11-20T00:00:00.000Z",
+      "to": "2026-11-25T23:59:59.999Z"
     },
     {
-      "showId": "elektra-off-broadway-2026",
-      "openingDate": "2026-11-20",
-      "from": "2026-11-19T00:00:00.000Z",
-      "to": "2026-11-24T23:59:59.999Z"
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "openingDate": "2026-11-21",
+      "from": "2026-11-20T00:00:00.000Z",
+      "to": "2026-11-25T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 230486,
-  "logOldestEntryAt": "2026-11-18T15:52:20.813Z",
+  "logEntryCount": 183650,
+  "logOldestEntryAt": "2026-11-19T19:36:58.963Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 0,
+    "inFlight": 2,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,5 +35,28 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": []
+  "records": [
+    {
+      "showId": "the-snowman-off-west-end-2026",
+      "outletId": "london-theatre",
+      "reviewKey": "london-theatre:marianka-swain:https://www.londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
+      "basis": null,
+      "firstSeenAt": "2026-11-21T00:47:31.716Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "review-first-seen"
+    },
+    {
+      "showId": "the-snowman-off-west-end-2026",
+      "outletId": "broadwayworld",
+      "reviewKey": "broadwayworld:christiana-rose:https://www.broadwayworld.com/westend/article/Review-THE-SNOWMAN-Peacock-Theatre-20231120",
+      "basis": null,
+      "firstSeenAt": "2026-11-21T00:47:32.061Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "review-first-seen"
+    }
+  ]
 }
