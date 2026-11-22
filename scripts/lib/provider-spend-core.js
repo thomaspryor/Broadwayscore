@@ -167,11 +167,17 @@ function cycleDelta(reading, prevEntry, readAt = null) {
  * Compare one day record against thresholds. Unknown providers are breaches of
  * measurability, reported distinctly so the alert says "could not measure X",
  * not "X overspent".
- * @returns {{overspend: string[], unmeasured: string[]}}
+ * @returns {{overspend: string[], unmeasured: string[], notices: string[]}}
  */
 function budgetBreaches(record, thresholds, history = []) {
   const overspend = [];
   const unmeasured = [];
+  // BRO-7568: packs in thresholds.rideOutPacks (owner rule 2026-08-03: ScrapingBee
+  // running dry is ridden out until renewal, never a "buy credits?" question) report
+  // their pace/exhausted/daily-credit lines as notices: shown in the digest, never
+  // an overspend, never a streak reset. A non-array value means none (alarm as before).
+  const rideOut = new Set(Array.isArray(thresholds?.rideOutPacks) ? thresholds.rideOutPacks : []);
+  const notices = [];
   const p = record.providers || {};
 
   if (p.browserbase?.status === 'ok') {
@@ -194,13 +200,14 @@ function budgetBreaches(record, thresholds, history = []) {
     const entry = p[key];
     if (!entry || entry.status === 'unknown') { unmeasured.push(key); continue; }
     if (entry.status === 'baseline') continue; // measured; delta arrives tomorrow
+    const sink = rideOut.has(key) ? notices : overspend;
     const pace = packPaceBreach(key, entry, record, history);
-    if (pace !== undefined) { if (pace) overspend.push(pace); continue; }
+    if (pace !== undefined) { if (pace) sink.push(pace); continue; }
     if (thresholds[thKey] != null && entry.dayCredits > thresholds[thKey]) {
-      overspend.push(`${key} ${entry.dayCredits} credits > ${thresholds[thKey]}`);
+      sink.push(`${key} ${entry.dayCredits} credits > ${thresholds[thKey]}`);
     }
   }
-  return { overspend, unmeasured };
+  return { overspend, unmeasured, notices };
 }
 
 /**
@@ -385,6 +392,10 @@ function renderSnapshot({
         });
       }
     }
+  }
+
+  for (const n of breaches.notices || []) {
+    items.push({ title: `FYI, ride-out pack (not an alarm, owner rule): ${n}` });
   }
 
   let bannerText;

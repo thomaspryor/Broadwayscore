@@ -26,5 +26,9 @@
   "_acceptedDailyTrip_comment": "BRO-3011 (Sprint 3 weekly guard audit): owner-accepted exemptions from the DEFECT rule (a spend breaker tripping more than 2 days in 7 is a defect). Bright Data is accepted as of the sprint plan ('Bright Data today'): its web_unlocker2 breaker runs against an opening-window-reserved ceiling and trips most days by design. An accepted guard is reported as ACCEPTED, never alerted. Removing a provider here re-arms its DEFECT alert.",
   "acceptedDailyTrip": {
     "brightdata": true
-  }
+  },
+  "_rideOutPacks_comment": "BRO-7568 (2026-11-22): owner rule 2026-08-03, restated many times: when ScrapingBee credits run out, ride it out until the billing reset and never raise a decision about SB billing (SB is a fallback link in the chain, exhaustion only degrades). A pack listed here still gets its pace/exhausted/daily-credit lines, but as FYI notices in the digest, not overspend (no provider-spend:overspend alert, no streak reset). ScrapingDog is deliberately NOT listed: it is first in the fallback chain, so running it dry does hurt. Remove an entry to re-arm its alarm.",
+  "rideOutPacks": [
+    "scrapingbee"
+  ]
 }

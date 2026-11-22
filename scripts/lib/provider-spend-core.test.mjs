@@ -510,6 +510,40 @@ test('BRO-3023: records without readAt keep the legacy calendar-day behaviour', 
     assert.match(budgetBreaches(today, TH, week(6.5)).overspend.join(), /brightdata averaging \$6\.66\/day over 7 days > \$6/);
   });
 
+  // BRO-7568: owner rule 2026-08-03, ScrapingBee run-out is ridden out, never an overspend alarm.
+  test('rideOutPacks: a ScrapingBee pace/empty/daily-line breach is a notice, not overspend', () => {
+    const RO = { ...TH, rideOutPacks: ['scrapingbee'] };
+    const sd = { dayCredits: 1, cycleUsed: 1, cap: 10 };
+    const hist = [['2026-09-29', 41581], ['2026-09-30', 39824]].map(([d, c]) => rec(d, { dayCredits: c, cycleUsed: 800000, cap: 1000000 }, sd));
+    const pace = rec('2026-10-01', { dayCredits: 80595, cycleUsed: 903990, cap: 1000000, renewalDate: '2026-10-05', readAt: '2026-10-02T08:00:00Z' }, sd);
+    const empty = rec('2026-10-04', { dayCredits: 0, cycleUsed: 1000000, cap: 1000000, renewalDate: '2026-10-05' }, sd);
+    const noRenewal = rec('2026-10-09', { dayCredits: 60000, cycleUsed: 200000, cap: 1000000, renewalDate: null }, sd);
+    for (const [r, h, re] of [[pace, hist, /scrapingbee on pace to run out/], [empty, [], /scrapingbee pack exhausted/], [noRenewal, [], /scrapingbee 60000 credits > 35000/]]) {
+      const b = budgetBreaches(r, RO, h);
+      assert.deepStrictEqual(b.overspend, []);
+      assert.match(b.notices.join(), re);
+    }
+    // A ride-out day does not reset the verified-day streak.
+    assert.equal(computeStreak([...hist, pace], RO), 3);
+    assert.equal(computeStreak([...hist, pace], TH), 0);
+    // The digest still shows it, as an FYI line, under a within-budget banner.
+    const snap = renderSnapshot({ record: { ...pace, providers: { ...pace.providers, scrapingbee: { ...pace.providers.scrapingbee } } }, streak: 3, breaches: budgetBreaches(pace, RO, hist), generatedAt: 'x', attribution: null });
+    assert.match(snap.bannerText, /^Within budget/);
+    assert.ok(snap.items.some((i) => /FYI, ride-out pack .*scrapingbee on pace/.test(i.title)));
+  });
+
+  test('rideOutPacks: ScrapingDog still alarms; a malformed value means no ride-out', () => {
+    const sdBurn = { dayCredits: 152554, cycleUsed: 2342694, cap: 4577555 };
+    assert.match(budgetBreaches(rec('2026-10-29', sbFine, sdBurn), { ...TH, rideOutPacks: ['scrapingbee'] }, []).overspend.join(), /scrapingdog 152554/);
+    const empty = rec('2026-10-04', { dayCredits: 0, cycleUsed: 1000000, cap: 1000000, renewalDate: '2026-10-05' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
+    assert.match(budgetBreaches(empty, { ...TH, rideOutPacks: 'scrapingbee' }, []).overspend.join(), /scrapingbee pack exhausted/);
+  });
+
+  test('the committed thresholds file rides out ScrapingBee and only ScrapingBee', () => {
+    const cfg = require('../config/provider-spend-thresholds.json');
+    assert.deepStrictEqual(cfg.rideOutPacks, ['scrapingbee']);
+  });
+
   test('the pace average stops at a cycle reset', () => {
     const old = ['2026-10-01', '2026-10-02', '2026-10-03'].map((d) => rec(d, { dayCredits: 80000, cycleUsed: 990000, cap: 1000000 }, { dayCredits: 1, cycleUsed: 1, cap: 10 }));
     const fresh = rec('2026-10-04', { dayCredits: 20000, cycleUsed: 20000, cap: 1000000, renewalDate: '2026-11-04', readAt: '2026-10-05T08:00:00Z' }, { dayCredits: 1, cycleUsed: 1, cap: 10 });
