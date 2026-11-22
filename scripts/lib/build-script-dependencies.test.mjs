@@ -104,6 +104,18 @@ test('verified-base caller derives the graph from the merged tree and passes the
   assert.equal(seen.recheckScope.build, false);
 });
 
+test('a .ts script named on a build command line is traced with its imports (BRO-8056)', t => {
+  const root = fixture(t, {
+    'src/app/page.tsx': 'export default () => 1;',
+    'scripts/prebuild.sh': 'node scripts/run-x.js scripts/build-x.ts\n',
+    'scripts/run-x.js': 'module.exports = 1;',
+    'scripts/build-x.ts': `import { y } from './lib/y'; export const z = y;`,
+    'scripts/lib/y.js': 'module.exports = { y: 1 };',
+  });
+  const graph = collectBuildScriptDependencies(root);
+  assert.deepEqual([...graph].sort(), ['scripts/build-x.ts', 'scripts/lib/y.js', 'scripts/prebuild.sh', 'scripts/run-x.js']);
+});
+
 // BRO-8066: the scanner returned null on the real tree for weeks (computed
 // require of a package, a bare 'scripts/' literal, ...), so land never took the
 // small re-check path. Class guard: any new computed load in a build-reachable

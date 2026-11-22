@@ -77,7 +77,8 @@ const nextConfig = {
   // a held show's score appears. Checked post-build by
   // scripts/lib/check-coverage-floor-trace.js.
   outputFileTracingIncludes: {
-    '**/*': ['data/coverage-floor-snapshot.json', 'data/site-image-versions.json'],
+    // BRO-8056: the show-refresh manifest ships to ISR functions (read by phase 2).
+    '**/*': ['data/coverage-floor-snapshot.json', 'data/site-image-versions.json', 'data/show-refresh-manifest.json'],
   },
   outputFileTracingExcludes: {
     '**/*': [

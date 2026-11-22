@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import pathMod from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -31,6 +32,17 @@ test('siblingSourcePath: resolves a real .test.mjs to its real .js sibling', () 
     siblingSourcePath('scripts/fix-platform-ticket-links.test.mjs'),
     'scripts/fix-platform-ticket-links.js'
   );
+});
+
+test('siblingSourcePath: a .test.mjs whose only sibling is .ts resolves to the .ts (BRO-8056)', () => {
+  assert.equal(
+    siblingSourcePath('scripts/build-show-refresh-manifest.test.mjs'),
+    'scripts/build-show-refresh-manifest.ts'
+  );
+});
+
+test('siblingSourcePath: a .test.mjs whose only sibling is .mjs resolves to the .mjs (BRO-8056)', () => {
+  assert.equal(siblingSourcePath('scripts/land-ready.test.mjs'), 'scripts/land-ready.mjs');
 });
 
 test('siblingSourcePath: returns null when the sibling source does not exist on disk', () => {
@@ -286,7 +298,6 @@ test('scriptsExecutedBy: flag values, multiple files, ./ prefix, bash .sh, conti
 });
 
 // --- BRO-5261 (BRO-3087 retro-review): fourth shape, scripts a test names by path.
-import pathMod from 'node:path';
 const ROOT_DIR = pathMod.resolve(pathMod.dirname(new URL(import.meta.url).pathname), '..');
 const libDir = pathMod.join(ROOT_DIR, 'scripts', 'lib');
 const real = () => true;

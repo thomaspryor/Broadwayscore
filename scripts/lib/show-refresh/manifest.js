@@ -16,6 +16,37 @@ const { SLICE_VERSION } = require('./slice');
 const MANIFEST_SCHEMA = 1;
 const MANIFEST_FILE = 'data/show-refresh-manifest.json';
 
+/**
+ * Every data file a slice, or the compute of a slice, reads (paths under data/).
+ * A change to any of them can change a show's page, so the postbuild verifier
+ * checks none of them moved during the build. Required files must exist; the
+ * optional ones are read fail-open by their loaders (coverage floor), so absent
+ * is allowed. Defined here (not in the builder) so the verifier checks the
+ * manifest against this list rather than trusting the manifest's own.
+ */
+const SLICE_REQUIRED_FILES = [
+  'shows.json',
+  'reviews.json',
+  'blog-reviews-for-scoring.json',
+  'audience.json',
+  'buzz.json',
+  'outlet-registry.json',
+  'critic-consensus.json',
+  'audience-buzz.json',
+  'score-gate-overrides.json',
+  'curated-historical-shows.json',
+];
+const SLICE_OPTIONAL_FILES = [
+  'coverage-floor-snapshot.json',
+  'audit/show-review-gap.json',
+  'audit/score-public-since.json',
+  'audit/t1-coverage-ack.json',
+  // Written by the builder (before its data read) and again by next.config.js;
+  // hashing it catches a public/images change mid-build.
+  'site-image-versions.json',
+];
+const SLICE_INPUT_FILES = [...SLICE_REQUIRED_FILES, ...SLICE_OPTIONAL_FILES];
+
 /** Git's blob id for file content (what the gate's per-file shas are). */
 function gitBlobSha(buf) {
   const b = Buffer.isBuffer(buf) ? buf : Buffer.from(String(buf));
@@ -42,6 +73,7 @@ function imagesSig(images) {
  * @param {string|null} a.publicSha - this repo's commit
  * @param {object} a.registryFile - parsed data/outlet-registry.json
  * @param {Record<string, Buffer|string>} a.dataFiles - tracked core files by name (core-data-blob-meta DATA_TRACKED_FILES)
+ * @param {string[]} [a.absentFiles] - optional inputs that did not exist at prebuild; verified still absent
  * @param {string[]} a.imageKeys - keys of data/site-image-versions.json
  * @param {Array<{id: string, slug: string, images?: object}>} a.shows - computed shows that were prerendered
  * @param {Map<string, string>} a.sliceHashById
@@ -61,6 +93,7 @@ function buildManifest(a) {
   }
   const dataShas = {};
   for (const name of Object.keys(a.dataFiles).sort()) dataShas[name] = gitBlobSha(a.dataFiles[name]);
+  const absentFiles = [...new Set(a.absentFiles || [])].filter((n) => !(n in a.dataFiles)).sort();
   return {
     schema: MANIFEST_SCHEMA,
     sliceVersion: SLICE_VERSION,
@@ -71,6 +104,7 @@ function buildManifest(a) {
     publicSha: a.publicSha || null,
     registrySha: registrySha(a.registryFile),
     dataShas,
+    absentFiles,
     imageKeysSha: hash16(stable([...a.imageKeys].sort())),
     showCount: Object.keys(shows).length,
     shows,
@@ -81,9 +115,25 @@ function buildManifest(a) {
  * Postbuild check: the data this build compiled is the data the manifest
  * describes. Returns the list of problems ([] = consistent).
  */
-function verifyManifest(manifest, { dataFiles, publicSha }) {
+function verifyManifest(manifest, { dataFiles, publicSha, expectedInputs = null }) {
   const problems = [];
-  if (!manifest || manifest.schema !== MANIFEST_SCHEMA) return [`manifest schema ${manifest && manifest.schema} != ${MANIFEST_SCHEMA}`];
+  if (!isUsableManifest(manifest)) return [`manifest unusable (schema ${manifest && manifest.schema}, invalid ${!!(manifest && manifest.invalid)})`];
+  // An optional input that appeared mid-build switches its loader to new data
+  // (e.g. the coverage floor reads the gap audit over the snapshot).
+  // A build that prerenders shows but names none is a broken builder (slug
+  // mismatch, failed require), never a usable manifest.
+  if (!(manifest.showCount > 0) || Object.keys(manifest.shows).length === 0) problems.push(`manifest names no shows (showCount ${manifest.showCount})`);
+  // The verifier passes the input lists so a builder that stopped hashing a
+  // file cannot vouch for itself.
+  if (expectedInputs) {
+    const shas = manifest.dataShas || {};
+    const absent = new Set(manifest.absentFiles || []);
+    for (const name of expectedInputs.required || []) if (!(name in shas)) problems.push(`required input ${name} not hashed by the manifest`);
+    for (const name of expectedInputs.optional || []) if (!(name in shas) && !absent.has(name)) problems.push(`optional input ${name} neither hashed nor recorded absent`);
+  }
+  for (const name of manifest.absentFiles || []) {
+    if (name in dataFiles) problems.push(`${name} appeared during the build`);
+  }
   for (const [name, sha] of Object.entries(manifest.dataShas || {})) {
     if (!(name in dataFiles)) { problems.push(`${name} missing at postbuild`); continue; }
     const now = gitBlobSha(dataFiles[name]);
@@ -93,4 +143,19 @@ function verifyManifest(manifest, { dataFiles, publicSha }) {
   return problems;
 }
 
-module.exports = { MANIFEST_SCHEMA, MANIFEST_FILE, gitBlobSha, registrySha, imagesSig, buildManifest, verifyManifest };
+/**
+ * The only test a reader may use before trusting a manifest. The postbuild
+ * verifier never deletes a manifest the build already traced into functions
+ * (Vercel packages after postbuild); it overwrites it with invalidManifest().
+ */
+function isUsableManifest(m) {
+  return !!m && typeof m === 'object' && m.schema === MANIFEST_SCHEMA && m.invalid !== true
+    && !!m.shows && typeof m.shows === 'object' && !!m.dataShas && typeof m.dataShas === 'object';
+}
+
+/** The marker written over a manifest that failed verification. */
+function invalidManifest(problems) {
+  return { schema: MANIFEST_SCHEMA, invalid: true, problems: [...(problems || [])].map(String) };
+}
+
+module.exports = { MANIFEST_SCHEMA, MANIFEST_FILE, SLICE_REQUIRED_FILES, SLICE_OPTIONAL_FILES, SLICE_INPUT_FILES, gitBlobSha, registrySha, imagesSig, buildManifest, verifyManifest, isUsableManifest, invalidManifest };

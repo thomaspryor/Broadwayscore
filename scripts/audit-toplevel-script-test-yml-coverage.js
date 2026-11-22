@@ -164,12 +164,14 @@ function pathJoinedScriptDeps(src, fromDir, exists = (abs) => fs.existsSync(abs)
 }
 
 function siblingSourcePath(testRelPath) {
-  // scripts/foo.test.mjs -> scripts/foo.js ; scripts/foo.test.ts -> scripts/foo.ts
+  // scripts/foo.test.mjs -> scripts/foo.js (else foo.ts, foo.mjs) ;
+  // scripts/foo.test.ts -> scripts/foo.ts. BRO-8056: a .mjs test whose subject
+  // is a .ts script (run via tsx) was never checked when only .js was tried.
   const m = testRelPath.match(/^(scripts\/[^/]+)\.test\.(mjs|ts)$/);
   if (!m) return null;
   const [, stem, ext] = m;
-  const candidate = ext === 'ts' ? `${stem}.ts` : `${stem}.js`;
-  return fs.existsSync(path.join(ROOT, candidate)) ? candidate : null;
+  const candidates = ext === 'ts' ? [`${stem}.ts`] : [`${stem}.js`, `${stem}.ts`, `${stem}.mjs`];
+  return candidates.find((c) => fs.existsSync(path.join(ROOT, c))) || null;
 }
 
 // --- BRO-3207: the third shape — a script test.yml itself EXECUTES from a

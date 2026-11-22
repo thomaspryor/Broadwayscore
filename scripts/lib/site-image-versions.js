@@ -29,7 +29,11 @@ function writeSiteImageVersions() {
   const file = path.join(root, 'data', 'site-image-versions.json');
   const json = JSON.stringify(versions);
   if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== json) {
-    fs.writeFileSync(file, json);
+    // Atomic: the show-refresh manifest builder and next.config.js both write
+    // it, and a reader must never see a half-written file (BRO-8056).
+    const tmp = `${file}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, json);
+    fs.renameSync(tmp, file);
   }
   return versions;
 }

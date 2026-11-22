@@ -3615,6 +3615,16 @@ on:
       - 'scripts/replay-slow-market-openings.js'
       # BRO-5259 byline-evidence CLI (scripts/check-byline-evidence.test.mjs); a solo edit would otherwise trigger zero CI.
       - 'scripts/check-byline-evidence.js'
+      # BRO-8056 show-refresh manifest runner/verifier/builder (scripts/*-show-refresh-manifest.test.mjs); a solo edit would otherwise trigger zero CI.
+      - 'scripts/run-show-refresh-manifest.js'
+      - 'scripts/verify-show-refresh-manifest.js'
+      - 'scripts/build-show-refresh-manifest.ts'
+      # BRO-8056: .mjs subjects of top-level .test.mjs files, seen once the audit's sibling lookup tried .ts/.mjs; a solo edit would otherwise trigger zero CI.
+      - 'scripts/apply-supabase-email-auth.mjs'
+      - 'scripts/check-header-overflow.mjs'
+      - 'scripts/cloud-visual-qa.mjs'
+      - 'scripts/land-ready.mjs'
+      - 'scripts/visual-qa.mjs'
   pull_request:
     branches: [main]
   schedule:

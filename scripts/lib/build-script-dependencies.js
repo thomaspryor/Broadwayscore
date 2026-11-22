@@ -47,7 +47,7 @@ function collectBuildScriptDependencies(root) {
       if (!command || commandSeen.has(command)) return;
       commandSeen.add(command);
       if (/\b(?:node|bash|source)\s+["']?\$/.test(command)) throw new Error('dynamic build command');
-      for (const m of command.matchAll(/\bscripts\/[\w./-]+\.(?:[cm]?js|sh)\b/g)) add(path.join(root, 'package.json'), m[0]);
+      for (const m of command.matchAll(/\bscripts\/[\w./-]+\.(?:[cm]?js|sh|tsx?)\b/g)) add(path.join(root, 'package.json'), m[0]);
       for (const m of command.matchAll(/\bnpm\s+run(?:-script)?\s+([\w:-]+)/g)) {
         if (!commands[m[1]]) throw new Error('unknown build command');
         addCommand(commands[m[1]]);
