@@ -4,6 +4,7 @@
 // after the rebuild's star-band clamp and overrides. Anything that tells an LLM
 // a review's verdict (Critics' Take, pull quotes) must use the site score, or a
 // file saying 59 for a 4/5-star review (site 80) reads as "mixed".
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { applyLiveScores } = require('./critic-consensus-inputs');
@@ -43,4 +44,31 @@ function verdictBand(score) {
   return score >= 70 ? 'positive' : score >= 40 ? 'mixed' : 'negative';
 }
 
-module.exports = { buildLiveScoreLookup, loadLiveScoreLookup, verdictBand };
+const quoteHash = (q) => crypto.createHash('sha256').update(String(q || '')).digest('hex').slice(0, 12);
+
+/** llmPullQuoteVerdictBand value: the verdict direction a quote was picked for, bound to that exact quote. */
+function quoteVerdictStamp(score, quote) {
+  return `${verdictBand(score)}:${quoteHash(quote)}`;
+}
+
+/**
+ * True when a stored pull quote was picked for another verdict direction than
+ * the site score gives and the extractor may re-pick it. Never re-picks when
+ * live scores are unavailable (no oscillation back to file scores), on a
+ * human-curated or locked record, or when another writer changed the quote
+ * after it was stamped (the stamp's hash no longer matches).
+ */
+function needsRetone(data, liveScore, { liveAvailable } = {}) {
+  if (!liveAvailable || !data || !data.llmPullQuote) return false;
+  if (data._locked === true || data.llmPullQuoteSource === 'human-override' || data.humanReviewScore != null) return false;
+  const stamp = data.llmPullQuoteVerdictBand;
+  if (typeof stamp === 'string' && stamp) {
+    const [band, hash] = stamp.split(':');
+    if (hash !== quoteHash(data.llmPullQuote)) return false;
+    return band !== verdictBand(liveScore);
+  }
+  // Unstamped quotes were judged on the file's own score.
+  return verdictBand(data.assignedScore) !== verdictBand(liveScore);
+}
+
+module.exports = { buildLiveScoreLookup, loadLiveScoreLookup, verdictBand, quoteVerdictStamp, needsRetone };

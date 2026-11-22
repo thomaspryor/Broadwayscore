@@ -34,7 +34,9 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const negCache = require('./lib/pull-quote-negative-cache');
-const { loadLiveScoreLookup, verdictBand } = require('./lib/live-review-score');
+const { loadLiveScoreLookup, quoteVerdictStamp, needsRetone } = require('./lib/live-review-score');
+// Re-picks per run (BRO-8060). Bounds the cost if a set of re-picks keeps being quarantined by safeWriteReview.
+const RETONE_CAP = parseInt(process.env.PULL_QUOTE_RETONE_CAP || '150', 10);
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -359,7 +361,7 @@ function cleanResponse(response) {
 // ============================================================
 function scanReviewFiles() {
   const files = [];
-  const shows = listShowDirs(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
   // BRO-8060: judge each review against the score the site shows (reviews.json),
   // not the file's raw assignedScore. Null when reviews.json is unreadable.
   const liveScoreFor = loadLiveScoreLookup();
@@ -382,11 +384,10 @@ function scanReviewFiles() {
         // Skip if already has llmPullQuote (unless --overwrite), except a quote
         // picked for a different verdict direction than the site score now
         // gives (BRO-8060: a 4/5-star review judged on a raw 59 got a "mixed" quote).
-        // Quotes without a stamp were judged on the file score.
+        // Rules (human quotes, stamp bound to the quote): needsRetone in lib/live-review-score.js.
         let retone = false;
         if (hasUsableLlmQuote(data) && !OVERWRITE) {
-          const judgedBand = data.llmPullQuoteVerdictBand || verdictBand(data.assignedScore);
-          if (judgedBand === verdictBand(score)) { stats.skipped++; continue; }
+          if (!needsRetone(data, score, { liveAvailable: !!liveScoreFor }) || stats.retoneQueued >= RETONE_CAP) { stats.skipped++; continue; }
           retone = true;
         }
 
@@ -726,7 +727,7 @@ async function processReview(entry) {
       return;
     }
     current.llmPullQuote = quote;
-    current.llmPullQuoteVerdictBand = verdictBand(score); // BRO-8060: re-pick if the site verdict direction changes
+    current.llmPullQuoteVerdictBand = quoteVerdictStamp(score, quote); // BRO-8060: re-pick if the site verdict direction changes
     // safeWriteReview quarantines date-implausible / cross-market-contaminated
     // writes (returns wrote:false) instead of writing — count those as errors,
     // not successes, so the run summary reflects what actually landed.

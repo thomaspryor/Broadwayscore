@@ -26,13 +26,25 @@ test('verdict-prompting scripts are wired to live scores', () => {
   assert.match(cc, /liveRows:\s*liveReviewRows/);
 });
 
-test('stored quotes picked for another verdict direction are re-picked, and stamped so they do not loop', () => {
-  const { verdictBand } = require('./live-review-score.js');
+test('re-pick rules: wrong direction re-picks; human, locked, foreign-edited and no-live cases never do', () => {
+  const { verdictBand, needsRetone, quoteVerdictStamp } = require('./live-review-score.js');
   assert.equal(verdictBand(59), 'mixed');
   assert.equal(verdictBand(80), 'positive');
   assert.equal(verdictBand(39), 'negative');
   assert.equal(verdictBand(undefined), 'unknown');
+  const base = { llmPullQuote: 'A quote.', assignedScore: 59 };
+  const live = { liveAvailable: true };
+  assert.equal(needsRetone(base, 80, live), true, 'unstamped quote judged on 59, site 80');
+  assert.equal(needsRetone(base, 62, live), false, 'same direction');
+  assert.equal(needsRetone(base, 80, { liveAvailable: false }), false, 'no reviews.json: never flip back to file scores');
+  assert.equal(needsRetone({ ...base, humanReviewScore: 80 }, 80, live), false);
+  assert.equal(needsRetone({ ...base, llmPullQuoteSource: 'human-override' }, 80, live), false);
+  assert.equal(needsRetone({ ...base, _locked: true }, 80, live), false);
+  const stamped = { ...base, llmPullQuoteVerdictBand: quoteVerdictStamp(80, 'A quote.') };
+  assert.equal(needsRetone(stamped, 80, live), false, 'already picked for positive');
+  assert.equal(needsRetone(stamped, 30, live), true, 'site score moved to negative');
+  assert.equal(needsRetone({ ...stamped, llmPullQuote: 'A human edit.' }, 30, live), false, 'stamp belongs to another quote: leave it');
   const pq = fs.readFileSync(new URL('../extract-pull-quotes.js', import.meta.url), 'utf8');
-  assert.match(pq, /data\.llmPullQuoteVerdictBand \|\| verdictBand\(data\.assignedScore\)/);
-  assert.match(pq, /current\.llmPullQuoteVerdictBand = verdictBand\(score\)/);
+  assert.match(pq, /needsRetone\(data, score, \{ liveAvailable: !!liveScoreFor \}\)/);
+  assert.match(pq, /current\.llmPullQuoteVerdictBand = quoteVerdictStamp\(score, quote\)/);
 });
