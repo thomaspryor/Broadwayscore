@@ -4,13 +4,16 @@
  * Seat notes (BRO-8057): short, sourced tips tied to seat locations, typed
  * watch-out / value / note. Writes structuredTips.seating.seatNotes.
  *
+ *   node scripts/seat-notes.js seed   --theaters="A,B"|--all --out=FILE   candidate pages per theater (no notes yet)
  *   node scripts/seat-notes.js fetch  --candidates=FILE           fetch every cited page (cached)
+ *   node scripts/seat-notes.js excerpt --candidates=FILE --theater=NAME   seating sentences from the cached pages
  *   node scripts/seat-notes.js ground --candidates=FILE            check quotes, print what would publish
  *   node scripts/seat-notes.js apply  --candidates=FILE [--write] [--allow-shrink="reason"]
  *
  * FILE (private, keep it under .cache/ or outside the repo: it holds verbatim quotes):
  *   { "theaters": { "Al Hirschfeld Theatre": [ { type, hazard?, level, side?, rows?, claim,
- *       evidence: [ { url, quote, rowsInQuote? } ] } ] } }
+ *       evidence: [ { url, quote, rowsInQuote? } ] } ] },
+ *     "pages": { "Al Hirschfeld Theatre": [ url, ... ] } }   optional: extra pages fetch reads (seed writes these)
  *
  * A note publishes only when at least one of its quotes is found word-for-word (word boundaries)
  * on a fetched page that names the theater, and the quote itself mentions the note's level or
@@ -24,6 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { foldDiacritics } = require('./lib/title-match.js');
 const A = require('./lib/seat-adjudication');
 const { validateSeatNotes } = require('./lib/seat-notes-validators');
 const { publishableSeatNotes } = require('./lib/seat-notes-publish');
@@ -72,12 +76,81 @@ function arg(name, dflt) {
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
 const today = () => new Date().toISOString().slice(0, 10);
 
-function loadCandidates() {
+function loadCandidateFile() {
   const f = arg('candidates');
   if (!f) throw new Error('--candidates=FILE is required');
   const c = JSON.parse(fs.readFileSync(f, 'utf8'));
   if (!c || typeof c.theaters !== 'object') throw new Error('candidates file needs a "theaters" object');
-  return c.theaters;
+  return c;
+}
+const loadCandidates = () => loadCandidateFile().theaters;
+
+// Level pages SeatPlan publishes for most houses. A page that does not exist
+// comes back as a not-found page and is recorded as such (fetch never retries it).
+const SEATPLAN_LEVELS = ['', 'seating-plan/', 'orchestra/', 'mezzanine/', 'front-mezzanine/', 'rear-mezzanine/', 'balcony/'];
+const SEED_HOSTS = /^https:\/\/(www\.)?(seatplan\.com|tickpick\.com|headout\.com|rateyourseats\.com)\//;
+
+/** SeatPlan's slug: the one already cited for this theater, else slugified name. */
+function seatplanSlug(theater, urls) {
+  for (const u of urls) {
+    const m = u.match(/^https:\/\/(?:www\.)?seatplan\.com\/new-york\/([a-z0-9-]+)\//);
+    if (m) return m[1];
+  }
+  return foldDiacritics(theater).toLowerCase().replace(/['\u2018\u2019.]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+/**
+ * Candidate pages for each theater: every seat-guide URL already cited
+ * anywhere in its metadata, plus SeatPlan's level pages. Pure; exported.
+ */
+function seedPages(theater, entry) {
+  const cited = [...new Set((JSON.stringify(entry || {}).match(/https:\/\/[^"\s\\]+/g) || [])
+    .map((u) => u.replace(/[#?].*$/, '').replace(/[).,;:]+$/, ''))
+    .filter((u) => SEED_HOSTS.test(u)))];
+  const slug = seatplanSlug(theater, cited);
+  const sp = SEATPLAN_LEVELS.map((l) => `https://seatplan.com/new-york/${slug}/${l}`);
+  return [...new Set([...sp, ...cited])];
+}
+
+function cmdSeed() {
+  const meta = JSON.parse(fs.readFileSync(META, 'utf8'));
+  const names = arg('all') ? Object.keys(meta).filter((k) => !k.startsWith('_'))
+    : String(arg('theaters', '')).split(',').map((s) => s.trim()).filter(Boolean);
+  if (!names.length) throw new Error('--theaters="A,B" or --all');
+  const out = arg('out');
+  if (!out) throw new Error('--out=FILE is required (keep it under .cache/)');
+  const file = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : { theaters: {}, pages: {} };
+  file.pages = file.pages || {};
+  for (const t of names) {
+    if (!meta[t]) throw new Error(`${t}: not in theater-metadata.json`);
+    file.theaters[t] = file.theaters[t] || [];
+    file.pages[t] = seedPages(t, meta[t]);
+    console.log(`${t}: ${file.pages[t].length} pages`);
+  }
+  fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
+  fs.writeFileSync(out, `${JSON.stringify(file, null, 2)}\n`);
+}
+
+const SEAT_WORDS = /\b(orchestra|mezz(anine)?|balcony|box(es)?|row|rows|seats?|aisle|overhang|pillar|column|obstruct\w*|restricted|partial|legroom|leg room|rake|steep|cheap\w*|value|budget|price\w*|sightlines?)\b/i;
+
+/** Seating sentences from one theater's cached pages, numbered per page, for writing candidates. */
+function cmdExcerpt() {
+  const c = loadCandidateFile();
+  const theater = arg('theater');
+  if (!theater) throw new Error('--theater=NAME is required');
+  const urls = [...new Set([...(c.pages?.[theater] || []), ...(c.theaters[theater] || []).flatMap((n) => (n.evidence || []).map((e) => e.url))])];
+  const max = Number(arg('max', 60));
+  for (const url of urls) {
+    const p = readPage(url);
+    if (!p || !p.ok) { console.log(`\n## ${url} (${p ? p.error : 'not fetched'})`); continue; }
+    const names = A.pageNamesTheater(p.text, theater);
+    const sentences = p.text.split(/(?<=[.!?])\s+|\n+/).map((x) => x.trim())
+      .filter((x) => x.length >= 30 && x.length <= 400 && SEAT_WORDS.test(x));
+    const seen = new Set();
+    const keep = sentences.filter((x) => (seen.has(x) ? false : seen.add(x)));
+    console.log(`\n## ${url}${names ? '' : ' (PAGE DOES NOT NAME THE THEATER)'} [${keep.length} sentences]`);
+    keep.slice(0, max).forEach((x, i) => console.log(`${i + 1}. ${x}`));
+  }
 }
 
 const pageFile = (url) => path.join(PAGES, `${sha(url)}.json`);
@@ -103,29 +176,69 @@ const LEVEL_WORDS = {
   balcony: ['balcony'],
   box: ['box', 'boxes'],
 };
-/** The quote has to be about this place: it names the level, or one of the note's rows. */
-function quoteMatchesLocation(quote, note) {
-  const q = ` ${A.normalizeText(quote)} `;
-  if ((LEVEL_WORDS[note.level] || []).some((w) => q.includes(` ${w} `))) return true;
-  const rows = note.rows ? A.rowSet(note.rows) : null;
-  if (!rows) return false;
-  for (const m of String(quote).matchAll(/\brows?\s+([A-Z]{1,3})\b/g)) {
-    const i = A.rowIndex(m[1]);
-    if (i !== null && rows.has(i)) return true;
+/** Level words (from LEVEL_WORDS) in a short normalized snippet. */
+function levelWordsIn(snippet) {
+  const q = ` ${A.normalizeText(snippet)} `.replace(/ box like /g, ' ');
+  return [...new Set(Object.values(LEVEL_WORDS).flat())].filter((w) => q.includes(` ${w} `));
+}
+
+/**
+ * Row mentions in a quote: "row F", "Rows AA and BB", "rows E-L", "rows Q to
+ * Z". Each gets the level words right next to it ("Orchestra row F", "Front
+ * Mezzanine Row A", "row F in the Orchestra"), empty when the quote does not
+ * tie that mention to a level.
+ */
+function rowMentions(quote) {
+  const out = [];
+  const re = /\b[Rr]ows?\s+([A-Z]{1,3})(?:\s*(-|\u2013|\u2014|to|through|and|&)\s*([A-Z]{1,3}))?\b/g;
+  for (const m of String(quote).matchAll(re)) {
+    const range = m[3] && !/and|&/.test(m[2]);
+    const rows = new Set([...(A.rowSet(range ? `${m[1]}-${m[3]}` : m[1]) || []), ...(m[3] && !range ? A.rowSet(m[3]) || [] : [])]);
+    if (!rows.size) continue;
+    const before = String(quote).slice(0, m.index).trim().split(/\s+/).slice(-2).join(' ');
+    const afterM = String(quote).slice(m.index + m[0].length).match(/^\s*(?:in|on|of)\s+(?:the\s+)?((?:\w+\s+){0,1}\w+)/i);
+    out.push({ rows, levelWords: levelWordsIn(`${before} ${afterM ? afterM[1] : ''}`) });
   }
-  return false;
+  return out;
+}
+
+/**
+ * The quote has to be about this place. With rows on the note: a row the quote
+ * puts on this level (or on no level) must overlap the note's rows, or the
+ * quote names the level and mentions no rows there. Without rows: the quote
+ * names the level. Front and rear mezzanine notes refuse a quote that names
+ * only the other half.
+ */
+function quoteMatchesLocation(quote, note) {
+  const own = new Set(LEVEL_WORDS[note.level] || []);
+  const named = levelWordsIn(quote).some((w) => own.has(w));
+  const q = ` ${A.normalizeText(quote)} `;
+  const half = { 'front-mezzanine': ['front', 'rear'], 'rear-mezzanine': ['rear', 'front'] }[note.level];
+  if (half && !q.includes(` ${half[0]} mezz`) && q.includes(` ${half[1]} mezz`)) return false;
+  const rows = note.rows ? A.rowSet(note.rows) : null;
+  if (!rows) return named;
+  const here = rowMentions(quote).filter((m) => !m.levelWords.length || m.levelWords.some((w) => own.has(w)));
+  if (here.some((m) => [...m.rows].some((i) => rows.has(i)))) return true;
+  return named && here.length === 0;
 }
 
 async function cmdFetch() {
   const { fetchPage } = require('./lib/scraper');
   const theaters = loadCandidates();
   fs.mkdirSync(PAGES, { recursive: true });
-  const urls = [...new Set(Object.values(theaters).flat().flatMap((n) => (n.evidence || []).map((e) => e.url)))];
+  const pages = loadCandidateFile().pages || {};
+  const urls = [...new Set([...Object.values(pages).flat(),
+    ...Object.values(theaters).flat().flatMap((n) => (n.evidence || []).map((e) => e.url))])];
   const todo = urls.filter((u) => !pageFresh(readPage(u)) && (!readPage(u) || readPage(u).ok || arg('retry-failed')));
+  const cited = new Set(Object.values(theaters).flat().flatMap((n) => (n.evidence || []).map((e) => e.url)));
   console.log(`fetch: ${urls.length} cited pages, ${todo.length} to fetch`);
   const lastHit = {};
+  let skipped = 0;
   for (const url of todo) {
     const host = new URL(url).hostname;
+    // A SeatPlan level page the theater's main page does not link to is a
+    // not-found page; fetching it costs a paid fallback for nothing.
+    if (!cited.has(url) && !seatplanLevelLinked(url)) { skipped++; continue; }
     const wait = (lastHit[host] || 0) + HOST_SPACING_MS - Date.now();
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     lastHit[host] = Date.now();
@@ -141,6 +254,7 @@ async function cmdFetch() {
       const text = /<html|<body|<div/i.test(raw) ? A.htmlToText(raw) : raw;
       const notFound = /\b404\b[\s\S]{0,40}not found|page (not found|can.t be found)/i.test(text.slice(0, 800));
       rec = { url, ok: text.length > 200 && !notFound, text, source: r.source, fetchedAt: new Date().toISOString() };
+      if (/^https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/$/.test(url)) rec.links = seatplanLinks(raw);
       if (!rec.ok) rec.error = notFound ? 'not-found page' : 'page text under 200 chars';
     } catch (e) {
       rec = { url, ok: false, error: String(e.message || e).slice(0, 200), fetchedAt: new Date().toISOString() };
@@ -148,6 +262,27 @@ async function cmdFetch() {
     fs.writeFileSync(pageFile(url), JSON.stringify(rec));
     console.log(`  ${rec.ok ? 'ok  ' : 'FAIL'} ${url}${rec.ok ? '' : ` (${rec.error})`}`);
   }
+  if (skipped) console.log(`  skipped ${skipped} SeatPlan level pages the main page does not link to`);
+}
+
+/** SeatPlan venue sub-pages linked from a page's HTML: absolute https URLs ending in '/'. */
+function seatplanLinks(html) {
+  const out = new Set();
+  for (const m of String(html).matchAll(/href=["'](?:https?:\/\/(?:www\.)?seatplan\.com)?(\/new-york\/[a-z0-9-]+\/[a-z0-9-]+)\/?(?:[?#][^"']*)?["']/gi)) {
+    out.add(`https://seatplan.com${m[1].toLowerCase()}/`);
+  }
+  return [...out];
+}
+
+/** False when url is a SeatPlan level page whose cached main page failed, or was fetched with links and does not link it. */
+function seatplanLevelLinked(url) {
+  const m = url.match(/^(https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/)([a-z0-9-]+\/)$/);
+  if (!m) return true;
+  const main = readPage(m[1]);
+  if (!main) return true;
+  if (!main.ok) return false; // venue page missing: its level pages will 404 too
+  if (!Array.isArray(main.links)) return true;
+  return main.links.includes(url);
 }
 
 /**
@@ -232,7 +367,8 @@ function cmdApply() {
     if (r.unknown.length) blockers.push(`${theater}: ${r.unknown.length} cited pages not fetched (run fetch)`);
     blockers.push(...r.problems);
     const before = meta[theater]?.structuredTips?.seating?.seatNotes;
-    if (!arg('allow-shrink')) blockers.push(...shrinkProblems(theater, before, r.notes));
+    r.shrink = shrinkProblems(theater, before, r.notes);
+    if (!arg('allow-shrink')) blockers.push(...r.shrink);
   }
   if (blockers.length) {
     console.error(`apply refused:\n  ${blockers.join('\n  ')}`);
@@ -248,7 +384,7 @@ function cmdApply() {
       appliedAt: new Date().toISOString(),
       published: r.notes.map((n) => ({ type: n.type, level: n.level, evidence: n.evidence })),
       dropped: r.dropped.length,
-      ...(arg('allow-shrink') ? { allowShrink: String(arg('allow-shrink')) } : {}),
+      ...(arg('allow-shrink') && r.shrink.length ? { allowShrink: String(arg('allow-shrink')) } : {}),
     };
     console.log(`${theater}: ${r.notes.length} seat notes`);
   }
@@ -262,13 +398,13 @@ function cmdApply() {
 if (require.main === module) {
   const { hasHelpFlag } = require('./lib/cli-help.js');
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('usage: seat-notes.js fetch|ground|apply --candidates=FILE [--write] [--allow-shrink="reason"] [--retry-failed]');
+    console.log('usage: seat-notes.js seed|fetch|excerpt|ground|apply --candidates=FILE [--write] [--allow-shrink="reason"] [--retry-failed]');
     process.exit(0);
   }
   const cmd = process.argv[2];
-  const run = { fetch: cmdFetch, ground: () => cmdGround(), apply: cmdApply }[cmd];
-  if (!run) { console.error('usage: seat-notes.js fetch|ground|apply --candidates=FILE'); process.exit(2); }
+  const run = { seed: cmdSeed, fetch: cmdFetch, excerpt: cmdExcerpt, ground: () => cmdGround(), apply: cmdApply }[cmd];
+  if (!run) { console.error('usage: seat-notes.js seed|fetch|excerpt|ground|apply --candidates=FILE'); process.exit(2); }
   Promise.resolve(run()).catch((e) => { console.error(e.message || e); process.exit(1); });
 }
 
-module.exports = { quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };
+module.exports = { rowMentions, seatplanLevelLinked, seedPages, seatplanSlug, seatplanLinks, quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };

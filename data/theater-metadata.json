@@ -2613,6 +2613,120 @@
             ],
             "dataPoints": 2
           }
+        ],
+        "seatNotes": [
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "orchestra",
+            "rows": "BB-EE",
+            "claim": "The first few rows sit below a raised stage, so you spend the show looking up and can end up with a stiff neck.",
+            "short": "Below a raised stage, so expect to look up",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
+                "quoteHash": "56f21a75d211",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
+                "quoteHash": "743ca3c9d5ad",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "side-angle",
+            "level": "orchestra",
+            "side": "sides",
+            "claim": "In the Left and Right Orchestra, seats numbered 26 and up get a more restricted view the closer they are to the outside edge.",
+            "short": "Seat 26 and up: view narrows toward the wall",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
+                "quoteHash": "9981d427ef28",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "mezzanine",
+            "side": "sides",
+            "rows": "AA-BB",
+            "claim": "Rows AA and BB at the front of the side mezzanine have just three seats each, giving a box-like feel with a side-on view of the stage.",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+                "quoteHash": "f2bc20cf4df7",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "value",
+            "level": "mezzanine",
+            "rows": "F-N",
+            "claim": "The middle and rear mezzanine, rows F to N, are typically among the cheapest tickets in the house. The trade-off is a more distant view.",
+            "short": "Among the cheapest tickets, but farther from the stage",
+            "evidence": [
+              {
+                "url": "https://www.rateyourseats.com/gershwin-theatre/seating/mezzanine",
+                "quoteHash": "5a0f79569b12",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+                "quoteHash": "076e2f612931",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+                "quoteHash": "efc2972c63f9",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "orchestra",
+            "side": "center",
+            "rows": "F-L",
+            "claim": "Center Orchestra rows F to L are the sweet spot: close, but far enough back to take in the whole stage.",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
+                "quoteHash": "82c4c55d7c4e",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
+                "quoteHash": "a7b1a10d3aa0",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "mezzanine",
+            "side": "sides",
+            "rows": "F",
+            "claim": "Row F in the side mezzanine sections faces a cross aisle, so it has a lot of extra legroom.",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
+                "quoteHash": "f858f1e76f16",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          }
         ]
       },
       "parking": {
@@ -4821,6 +4935,141 @@
               "https://seatplan.com/new-york/music-box-theatre/mezzanine/"
             ],
             "dataPoints": 1
+          }
+        ],
+        "seatNotes": [
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "orchestra",
+            "rows": "AA-B",
+            "claim": "The front rows (AA, A and B) sit below a high stage, so you spend the show looking up and can miss action further back on stage.",
+            "short": "Below a high stage, so expect neck craning",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+                "quoteHash": "7ab081cfab7c",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+                "quoteHash": "80689296aea0",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "obstructed-view",
+            "level": "mezzanine",
+            "side": "sides",
+            "rows": "A-B",
+            "claim": "In the Left and Right Mezzanine, the outer seats (25 to 28) of rows A and B are partly blocked by the boxes that jut out beside the stage.",
+            "short": "Outer seats in rows A and B are blocked by the boxes",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
+                "quoteHash": "8414a38ec38a",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "orchestra",
+            "side": "sides",
+            "claim": "Toward the far left and right of the Orchestra the view can be partly blocked. Those seats sell for a little less.",
+            "short": "Partial view toward the far sides",
+            "evidence": [
+              {
+                "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+                "quoteHash": "78db4549afbf",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+                "quoteHash": "302dbd09f620",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "mezz-overhang",
+            "level": "orchestra",
+            "rows": "P",
+            "claim": "In the last orchestra row (P), the mezzanine overhang cuts slightly into the top of the stage.",
+            "short": "Mezzanine overhang trims the top of the stage",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+                "quoteHash": "3408a07a5bf4",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "value",
+            "level": "mezzanine",
+            "rows": "J-L",
+            "claim": "The back rows of the mezzanine are some of the cheapest seats in the house, and in a theater this small they still have a clear view of the stage.",
+            "short": "Some of the cheapest seats, still a clear view",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
+                "quoteHash": "d540f97d080f",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.headout.com/blog/music-box-theatre-seating-chart/",
+                "quoteHash": "b2a2696dddef",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+                "quoteHash": "fef1902428bb",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "orchestra",
+            "side": "center",
+            "rows": "E-L",
+            "claim": "Center Orchestra rows E to L are the sweet spot: past the front rows where you look up, and still close enough for detail.",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
+                "quoteHash": "67fcdf8b9414",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
+                "quoteHash": "02fd1cb49de5",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "mezzanine",
+            "claim": "Mezzanine legroom is tight, so taller people should pick an aisle seat.",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
+                "quoteHash": "00c06952fbc6",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
           }
         ]
       },

@@ -121,7 +121,7 @@ describe('validateSeatNotes', () => {
   });
 });
 
-const { quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles } = require('../../scripts/seat-notes.js');
+const { quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
 const { pageNamesTheater } = require('../../scripts/lib/seat-adjudication.js');
 
 describe('seat-notes grounding helpers', () => {
@@ -136,6 +136,62 @@ describe('seat-notes grounding helpers', () => {
     assert.strictEqual(quoteMatchesLocation('Seats in rows E-L are a little cheaper', { level: 'mezzanine', rows: 'E-J' }), true);
     assert.strictEqual(quoteMatchesLocation('Seats in rows E-L are a little cheaper', { level: 'mezzanine', rows: 'M-P' }), false);
     assert.strictEqual(quoteMatchesLocation('a little cheaper overall', { level: 'balcony' }), false);
+  });
+  test('a sentence that starts with "Rows" still counts its row letters (ramp 2026-11-22)', () => {
+    assert.strictEqual(quoteMatchesLocation('Rows AA and BB give a box-like feel', { level: 'mezzanine', rows: 'AA-BB' }), true);
+    assert.strictEqual(quoteMatchesLocation('Row F faces the aisle', { level: 'balcony', rows: 'F' }), true);
+  });
+  test('a row letter does not tie a quote about another level to this one', () => {
+    assert.strictEqual(quoteMatchesLocation('Orchestra row F has extra legroom', { level: 'balcony', rows: 'F' }), false);
+    assert.strictEqual(quoteMatchesLocation('Mezzanine rows J and K are cramped', { level: 'orchestra', rows: 'J-K' }), false);
+  });
+  test('another level named elsewhere in the quote does not void a row match', () => {
+    assert.strictEqual(quoteMatchesLocation('Mezzanine overhang cuts into view slightly in row P', { level: 'orchestra', rows: 'P' }), true);
+    assert.strictEqual(quoteMatchesLocation('Front Mezzanine Row A overhangs row J', { level: 'orchestra', rows: 'J' }), true);
+    assert.strictEqual(quoteMatchesLocation('Front Mezzanine Row A overhangs Orchestra Row O', { level: 'orchestra', rows: 'N-P' }), true);
+  });
+  test('row ranges and pairs count every row in them (ship-check 2026-11-22)', () => {
+    assert.strictEqual(quoteMatchesLocation('Seats in rows E-L are a little cheaper', { level: 'mezzanine', rows: 'F-J' }), true);
+    assert.strictEqual(quoteMatchesLocation('Stadium seating on the Orchestra level refers to rows Q to Z', { level: 'orchestra', rows: 'Y-Z' }), true);
+    assert.strictEqual(quoteMatchesLocation('Rows AA and BB give a box-like feel', { level: 'mezzanine', rows: 'BB' }), true);
+  });
+  test('naming the level is not enough when the quote puts the rows elsewhere on it', () => {
+    assert.strictEqual(quoteMatchesLocation('Orchestra row A is below the stage', { level: 'orchestra', rows: 'P-T' }), false);
+    assert.strictEqual(quoteMatchesLocation('Orchestra rows E-L have the best view', { level: 'balcony', rows: 'F' }), false);
+    assert.strictEqual(quoteMatchesLocation('Row F in the Orchestra has extra legroom', { level: 'balcony', rows: 'F' }), false);
+    assert.strictEqual(quoteMatchesLocation('The rear mezzanine seats are among the cheapest', { level: 'mezzanine', rows: 'F-N' }), true);
+  });
+  test('front and rear mezzanine are told apart; box-like is not a box', () => {
+    assert.strictEqual(quoteMatchesLocation('The Rear Mezzanine is steep', { level: 'front-mezzanine' }), false);
+    assert.strictEqual(quoteMatchesLocation('The Rear Mezzanine is steep', { level: 'rear-mezzanine' }), true);
+    assert.strictEqual(quoteMatchesLocation('These seats have a box-like feel', { level: 'box' }), false);
+  });
+  test('rowMentions tags each mention with the level beside it', () => {
+    const m = rowMentions('Front Mezzanine Row A overhangs row J of the Orchestra');
+    assert.deepStrictEqual(m.map((x) => x.levelWords), [['mezzanine'], ['orchestra']]);
+  });
+  test('seatplanSlug folds accents and reads www citations', () => {
+    assert.strictEqual(seatplanSlug('Th\u00e9\u00e2tre \u00dcnique', []), 'theatre-unique');
+    assert.strictEqual(seatplanSlug('X', ['https://www.seatplan.com/new-york/abc-theatre/orchestra/']), 'abc-theatre');
+  });
+  test('seed lists SeatPlan level pages under the cited slug plus cited seat guides', () => {
+    const entry = { structuredTips: { seating: { sections: [{ evidence: [
+      { url: 'https://seatplan.com/new-york/barrymore-theatre/orchestra/' },
+      { url: 'https://www.tickpick.com/blog/barrymore-theatre-seating-chart/?x=1' },
+      { url: 'https://www.nytimes.com/some-review' },
+    ] }] } } };
+    const pages = seedPages('Ethel Barrymore Theatre', entry);
+    assert.ok(pages.includes('https://seatplan.com/new-york/barrymore-theatre/'));
+    assert.ok(pages.includes('https://seatplan.com/new-york/barrymore-theatre/mezzanine/'));
+    assert.ok(pages.includes('https://www.tickpick.com/blog/barrymore-theatre-seating-chart/'));
+    assert.ok(!pages.some((u) => u.includes('nytimes')));
+    assert.ok(seedPages("Eugene O'Neill Theatre", {}).includes('https://seatplan.com/new-york/eugene-oneill-theatre/'));
+  });
+  test('SeatPlan sub-page links are read from the main page HTML', () => {
+    const html = '<a href="/new-york/gershwin-theatre/orchestra/">O</a><a href="https://seatplan.com/new-york/gershwin-theatre/mezzanine/">M</a><a href="/london/x/">L</a>';
+    assert.deepStrictEqual(seatplanLinks(html), ['https://seatplan.com/new-york/gershwin-theatre/orchestra/', 'https://seatplan.com/new-york/gershwin-theatre/mezzanine/']);
+    const loose = '<a href="https://www.seatplan.com/new-york/x-theatre/balcony?ref=1">B</a><a href=\'/new-york/x-theatre/orchestra\'>O</a>';
+    assert.deepStrictEqual(seatplanLinks(loose), ['https://seatplan.com/new-york/x-theatre/balcony/', 'https://seatplan.com/new-york/x-theatre/orchestra/']);
   });
   test('the writer refuses a large drop in notes or watch-outs', () => {
     const n = (type) => ({ type });
