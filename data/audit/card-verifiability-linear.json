@@ -1,12 +1,37 @@
 {
-  "generatedAt": "2026-11-21T13:41:16.381Z",
-  "total": 425,
-  "armedCount": 412,
-  "refusedCount": 13,
+  "generatedAt": "2026-11-22T13:33:50.368Z",
+  "total": 438,
+  "armedCount": 424,
+  "refusedCount": 14,
   "byKind": {
-    "shape": 13
+    "shape": 13,
+    "no-section": 1
   },
   "refused": [
+    {
+      "id": "BRO-8032",
+      "name": "Board workers unhealthy: ScrapingBee smoke check still fails (egress blocked), BRO-7433 closed too early",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8032/board-workers-unhealthy-scrapingbee-smoke-check-still-fails-egress",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-cloud-secrets.js --smoke)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8029",
+      "name": "x",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8029/x",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8007",
+      "name": "iOS: show page loses your rating offline (per-show reviews read skips the cache)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8007/ios-show-page-loses-your-rating-offline-per-show-reviews-read-skips",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: gh api repos/thomaspryor/BroadwayScorecard-app/actions/workflows/eas-build.yml/runs?per_page=5 --jq '.workflow_runs[] | )",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7926",
       "name": "iOS app: tell the user when a queued offline change is dropped, and queue the favorites write",
@@ -16,27 +41,11 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7898",
-      "name": "Byline-less BWW stub stays live when the outlet's real review is excluded as syndicated duplicate (Much Ado NYDN)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7898/byline-less-bww-stub-stays-live-when-the-outlets-real-review-is",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=much-ado-about-nothing-2026 (after fix + rebuild, live /data/shows/much-ado)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7788",
       "name": "Land preflight: refuse or warn when node_modules is unresolvable, so targeted guard tests are not silently skipped",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7788/land-preflight-refuse-or-warn-when-node-modules-is-unresolvable-so",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/cloud-doctor.js --quick)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7720",
-      "name": "App push: closing-date alert only for dates within 60 days",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7720/app-push-closing-date-alert-only-for-dates-within-60-days",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: cd \\~/BroadwayScorecard-app && npm test (alerts-registry: 'a date more than 60 days out never pushes' passes; red with g)",
       "kind": "shape"
     },
     {
@@ -113,19 +122,46 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 281,
-    "checked": 281,
+    "total": 282,
+    "checked": 282,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7977",
-      "name": "Pull quote on combined multi-show columns can come from another show's section",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7977/pull-quote-on-combined-multi-show-columns-can-come-from-another-shows",
-      "cmd": "node --test scripts/lib/pull-quote-combined-show-section.test.mjs",
+      "id": "BRO-8031",
+      "name": "Sentry regression: UgcError: UGC insert reviews failed (23503)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8031/sentry-regression-ugcerror-ugc-insert-reviews-failed-23503",
+      "cmd": "npx tsx --test tests/unit/sentry-7835186822.test.mjs",
       "missingPaths": [
-        "scripts/lib/pull-quote-combined-show-section.test.mjs"
+        "tests/unit/sentry-7835186822.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8014",
+      "name": "Register the Mac Studio as the free self-hosted runner for app Maestro E2E",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8014/register-the-mac-studio-as-the-free-self-hosted-runner-for-app-maestro",
+      "cmd": "node --test scripts/verify-mac-runner-registration.test.mjs",
+      "missingPaths": [
+        "scripts/verify-mac-runner-registration.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8011",
+      "name": "GitHub Actions overage: cap Mac E2E runs (app repo) + throttle IndexNow push workflow (data repo)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8011/github-actions-overage-cap-mac-e2e-runs-app-repo-throttle-indexnow",
+      "cmd": "node --test scripts/e2e-gate.test.mjs",
+      "missingPaths": [
+        "scripts/e2e-gate.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8002",
+      "name": "Check the 2026-11-22 Maestro nightly passed the Home Browse-all flows (BRO-7988 follow-up)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8002/check-the-2026-11-22-maestro-nightly-passed-the-home-browse-all-flows",
+      "cmd": "node --test tests/unit/home-list.test.mjs",
+      "missingPaths": [
+        "tests/unit/home-list.test.mjs"
       ]
     },
     {
@@ -201,21 +237,12 @@
       ]
     },
     {
-      "id": "BRO-7725",
-      "name": "Sentry error: SecurityError: Attempt to use history.replaceState() more than 100 times per 10",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7725/sentry-error-securityerror-attempt-to-use-historyreplacestate-more",
-      "cmd": "npx tsx --test tests/unit/sentry-7834294511.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7834294511.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-7721",
       "name": "iOS 1.1.0 App Store rejection (submission 99077a80, Nov 16): find reason and fix plan",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7721/ios-110-app-store-rejection-submission-99077a80-nov-16-find-reason-and",
-      "cmd": "test -f memory/app-store-rejection-99077a80-reason-and-fix.md",
+      "cmd": "node --test scripts/asc-listing.test.mjs",
       "missingPaths": [
-        "memory/app-store-rejection-99077a80-reason-and-fix.md"
+        "scripts/asc-listing.test.mjs"
       ]
     },
     {
@@ -234,15 +261,6 @@
       "cmd": "node --test tests/unit/account-capture-housekeeping.test.mjs",
       "missingPaths": [
         "tests/unit/account-capture-housekeeping.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7695",
-      "name": "Profitability Scorecard unlock: offer one-tap account sign-in alongside the email form",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7695/profitability-scorecard-unlock-offer-one-tap-account-sign-in-alongside",
-      "cmd": "node --test tests/unit/biz-gate-unlock.test.mjs",
-      "missingPaths": [
-        "tests/unit/biz-gate-unlock.test.mjs"
       ]
     },
     {

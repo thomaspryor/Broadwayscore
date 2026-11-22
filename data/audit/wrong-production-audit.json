@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T13:11:56.959Z",
+  "timestamp": "2026-11-22T13:30:13.959Z",
   "stats": {
-    "totalReviews": 83883,
+    "totalReviews": 83894,
     "alreadyFlagged": 22455,
     "dateGuardCatches": 241,
-    "directorMismatch": 3879,
+    "directorMismatch": 3881,
     "tvFilmSignals": 2411,
     "londonSignals": 3963,
-    "offBroadwaySignals": 785,
+    "offBroadwaySignals": 786,
     "yearMismatch": 395,
-    "noPublishDate": 8219
+    "noPublishDate": 8220
   },
   "findings": [
     {
@@ -62320,6 +62320,20 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "boston-globe--garrett-m-graff.json",
+      "score": 81,
+      "publishDate": "2026-01-29",
+      "url": "https://www.bostonglobe.com/2026/01/29/arts/some-like-it-hot-opera-house-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "boston-globe--unknown.json",
       "score": 81,
       "publishDate": "2026-01-29",
@@ -82973,6 +82987,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-west-end-2014",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 93,
+      "publishDate": "2014-01-22",
+      "url": "https://www.ft.com/content/09fec87c-8359-11e3-aa65-00144feab7de",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
         }
       ]
     },
@@ -147952,6 +147980,20 @@
       "score": 52,
       "publishDate": "2017-10-10T19:50:19-04:00",
       "url": "https://www.thedailybeast.com/downton-abbey-just-landed-on-broadway-kind-of-time-and-the-conways-measure-for-measure-and-the-home-place",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "file": "theater-life--david-sheward.json",
+      "score": 80,
+      "publishDate": "2017-10-18",
+      "url": "https://theaterlife.com/time-and-the-conways-12-measure-for-measure12-a-clockwork-orange/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
