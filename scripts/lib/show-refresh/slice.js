@@ -9,6 +9,7 @@
  * golden-hash test (slice.test.mjs) fails until you do.
  */
 const { stable, hash16 } = require('../live-score/core');
+const { coverageGateDisabled } = require('../coverage-gate');
 
 const SLICE_VERSION = 1;
 
@@ -74,11 +75,14 @@ function sliceHash(slice) {
 /**
  * The coverage-floor inputs computeOneShow needs, rebuilt from one slice (the
  * same three maps buildCoverageFloorInputs returns, holding only this show).
+ * COVERAGE_GATE_DISABLED is read here, at render time, like the build-time
+ * loaders do, so the kill switch also releases holds on published slices.
  */
-function coverageInputsFromSlice(slice) {
+function coverageInputsFromSlice(slice, env = process.env) {
   const covByShowId = new Map();
   const scorePublicSinceByShowId = new Map();
   const coverageAckedShowIds = new Set();
+  if (coverageGateDisabled(env)) return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
   if (slice.coverage.cov) covByShowId.set(slice.showId, slice.coverage.cov);
   if (slice.coverage.scorePublicSince) scorePublicSinceByShowId.set(slice.showId, slice.coverage.scorePublicSince);
   if (slice.coverage.acked) coverageAckedShowIds.add(slice.showId);

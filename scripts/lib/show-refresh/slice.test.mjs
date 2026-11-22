@@ -81,3 +81,10 @@ test('no slice for a _devOnly row or an unknown id; prototype keys never leak in
   assert.equal(s.consensus, null);
   assert.equal(s.audienceBuzz, null);
 });
+
+test('COVERAGE_GATE_DISABLED empties the coverage inputs rebuilt from a slice', () => {
+  const s = sliceFor('a', index());
+  assert.equal(coverageInputsFromSlice(s, {}).covByShowId.size, 1);
+  const off = coverageInputsFromSlice(s, { COVERAGE_GATE_DISABLED: '1' });
+  assert.equal(off.covByShowId.size + off.scorePublicSinceByShowId.size + off.coverageAckedShowIds.size, 0);
+});

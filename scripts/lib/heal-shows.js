@@ -39,6 +39,8 @@ function healShows(showsData, ctx) {
   if (!reviewCountByShow || typeof reviewCountByShow !== 'object') throw new Error('healShows: reviewCountByShow is required');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(today))) throw new Error(`healShows: today must be YYYY-MM-DD, got ${today}`);
   if (typeof imageExists !== 'function') throw new Error('healShows: imageExists is required');
+  // undefined would silently turn every image heal into a no-op.
+  if (typeof imagesPresent !== 'boolean') throw new Error('healShows: imagesPresent must be a boolean');
   const messages = [];
   const ok = (text) => messages.push({ level: 'ok', text });
   const log = (text) => messages.push({ level: 'log', text });
