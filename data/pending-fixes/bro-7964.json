@@ -1,0 +1,71 @@
+{
+  "issueNumber": "bro-7964",
+  "planId": "08005df6-4a1a-4c19-9270-96cf5cd21c2b",
+  "status": "pending",
+  "createdAt": "2026-11-22T07:47:32.491Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the 2025 BAM Harvey Theater run of A Streetcar Named Desire (Almeida transfer, Paul Mescal; previews Feb 28, opened Mar 11, closed Apr 6 2025) so its pending reviews can place",
+    "steps": [
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-streetcar-named-desire-off-broadway-2025",
+          "title": "A Streetcar Named Desire",
+          "slug": "a-streetcar-named-desire-off-broadway-2025",
+          "venue": "BAM Harvey Theater",
+          "openingDate": "2025-03-11",
+          "closingDate": "2025-04-06",
+          "previewsStartDate": "2025-02-28",
+          "status": "closed",
+          "type": "play",
+          "isRevival": true,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "revival",
+            "historical"
+          ],
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "runtime": "2h 45m",
+          "intermissions": 1,
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Paul Mescal",
+              "role": "Stanley Kowalski"
+            },
+            {
+              "name": "Patsy Ferran",
+              "role": "Blanche DuBois"
+            },
+            {
+              "name": "Anjana Vasan",
+              "role": "Stella Kowalski"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Tennessee Williams",
+              "role": "Playwright"
+            },
+            {
+              "name": "Rebecca Frecknall",
+              "role": "Director"
+            }
+          ]
+        },
+        "priorRunOf": "a-streetcar-named-desire-west-end-2023"
+      }
+    ]
+  }
+}
