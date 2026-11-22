@@ -260,6 +260,11 @@ function cmdApply() {
 }
 
 if (require.main === module) {
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('usage: seat-notes.js fetch|ground|apply --candidates=FILE [--write] [--allow-shrink="reason"] [--retry-failed]');
+    process.exit(0);
+  }
   const cmd = process.argv[2];
   const run = { fetch: cmdFetch, ground: () => cmdGround(), apply: cmdApply }[cmd];
   if (!run) { console.error('usage: seat-notes.js fetch|ground|apply --candidates=FILE'); process.exit(2); }
