@@ -3705,13 +3705,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-11-22T07:35:39.780Z",
+      "lastSeen": "2026-11-22T12:56:38.995Z",
       "lastNotifiedAt": "2026-11-22T03:29:22.037Z",
       "lastSurfacedAt": "2026-11-15T16:01:38.110Z",
       "notifyCount": 60,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3719,13 +3719,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-10-25T09:22:42.540Z",
-      "lastSeen": "2026-11-22T07:35:39.827Z",
+      "lastSeen": "2026-11-22T12:56:39.043Z",
       "lastNotifiedAt": "2026-11-22T03:29:22.249Z",
       "lastSurfacedAt": "2026-11-15T16:01:40.702Z",
       "notifyCount": 56,
       "cardId": null,
       "linearIdentifier": "BRO-5503",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "resolved",
@@ -4486,13 +4486,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-11-21T02:41:52.371Z",
-      "lastSeen": "2026-11-22T07:35:39.740Z",
+      "lastSeen": "2026-11-22T12:56:38.954Z",
       "lastNotifiedAt": "2026-11-22T03:28:21.514Z",
       "lastSurfacedAt": "2026-11-21T02:41:52.371Z",
       "notifyCount": 55,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4903,12 +4903,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-11-19T02:42:46.252Z",
-      "lastSeen": "2026-11-22T07:35:39.553Z",
+      "lastSeen": "2026-11-22T12:56:38.923Z",
       "lastNotifiedAt": "2026-11-22T07:35:39.553Z",
       "lastSurfacedAt": "2026-11-19T02:42:46.252Z",
       "notifyCount": 32,
       "cardId": null,
-      "linearIdentifier": "BRO-5563"
+      "linearIdentifier": "BRO-5563",
+      "silentRefires": 1
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -6668,13 +6669,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-26T19:23:29.367Z",
-      "lastSeen": "2026-11-22T07:35:39.170Z",
+      "lastSeen": "2026-11-22T12:56:38.834Z",
       "lastNotifiedAt": "2026-11-22T03:28:20.703Z",
       "lastSurfacedAt": "2026-11-15T16:01:36.613Z",
       "notifyCount": 48,
       "cardId": null,
       "linearIdentifier": "BRO-6754",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -6733,13 +6734,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-10-29T23:04:14.776Z",
-      "lastSeen": "2026-11-22T07:35:39.220Z",
+      "lastSeen": "2026-11-22T12:56:38.883Z",
       "lastNotifiedAt": "2026-11-22T03:28:21.089Z",
       "lastSurfacedAt": "2026-11-17T17:39:30.695Z",
       "notifyCount": 46,
       "cardId": null,
       "linearIdentifier": "BRO-6280",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -10335,13 +10336,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-26T23:27:47.707Z",
-      "lastSeen": "2026-11-22T07:35:39.760Z",
+      "lastSeen": "2026-11-22T12:56:38.975Z",
       "lastNotifiedAt": "2026-11-22T03:28:21.698Z",
       "lastSurfacedAt": "2026-11-21T02:41:52.851Z",
       "notifyCount": 45,
       "cardId": null,
       "linearIdentifier": "BRO-5823",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -13318,13 +13319,13 @@
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
       "incidentOpenedAt": "2026-11-19T17:46:16.131Z",
-      "lastSeen": "2026-11-22T07:35:39.800Z",
+      "lastSeen": "2026-11-22T12:56:39.015Z",
       "lastNotifiedAt": "2026-11-22T03:29:22.215Z",
       "lastSurfacedAt": "2026-11-22T03:29:22.215Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "resolved",
@@ -16606,13 +16607,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-11-14T02:28:58.139Z",
-      "lastSeen": "2026-11-22T07:35:39.864Z",
+      "lastSeen": "2026-11-22T12:56:39.080Z",
       "lastNotifiedAt": "2026-11-21T17:27:53.446Z",
       "lastSurfacedAt": "2026-11-18T15:22:11.703Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-7782",
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "resolved",
@@ -23642,12 +23643,13 @@
       "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
       "firstSeen": "2026-10-22T02:01:04.201Z",
       "incidentOpenedAt": "2026-11-16T17:43:50.035Z",
-      "lastSeen": "2026-11-22T07:35:39.239Z",
+      "lastSeen": "2026-11-22T12:56:38.903Z",
       "lastNotifiedAt": "2026-11-22T07:35:39.239Z",
       "lastSurfacedAt": "2026-11-16T17:43:50.035Z",
       "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": "BRO-7610"
+      "linearIdentifier": "BRO-7610",
+      "silentRefires": 1
     },
     "land:land/bro-5706-retire-eno-dup": {
       "status": "resolved",
@@ -44084,27 +44086,25 @@
       "title": "Wrong production: 1 scored review names only a sibling production's cast",
       "firstSeen": "2026-11-15T22:03:42.171Z",
       "incidentOpenedAt": "2026-11-21T12:47:08.578Z",
-      "lastSeen": "2026-11-22T07:35:49.809Z",
-      "lastNotifiedAt": "2026-11-21T12:47:08.578Z",
+      "lastSeen": "2026-11-22T12:56:49.101Z",
+      "lastNotifiedAt": "2026-11-22T12:56:49.101Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-7564",
-      "silentRefires": 12
+      "linearIdentifier": "BRO-7564"
     },
     "utc-shifted-publish-dates:found": {
       "status": "open",
       "disposition": "auto",
-      "title": "2 review publishDates are one day late (UTC truncation)",
+      "title": "4 review publishDates are one day late (UTC truncation)",
       "firstSeen": "2026-11-15T22:03:46.531Z",
       "incidentOpenedAt": "2026-11-19T18:39:36.911Z",
-      "lastSeen": "2026-11-22T07:35:53.647Z",
-      "lastNotifiedAt": "2026-11-21T12:47:13.387Z",
+      "lastSeen": "2026-11-22T12:56:53.785Z",
+      "lastNotifiedAt": "2026-11-22T12:56:53.785Z",
       "lastSurfacedAt": null,
-      "notifyCount": 7,
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-7565",
-      "silentRefires": 12
+      "linearIdentifier": "BRO-7565"
     },
     "uk-show-score-audience:on-us-shows": {
       "status": "open",
@@ -44112,13 +44112,12 @@
       "title": "UK Show Score audience data on 2 US shows",
       "firstSeen": "2026-11-15T22:03:48.692Z",
       "incidentOpenedAt": "2026-11-15T22:03:48.692Z",
-      "lastSeen": "2026-11-22T07:35:54.114Z",
-      "lastNotifiedAt": "2026-11-21T12:47:14.444Z",
+      "lastSeen": "2026-11-22T12:56:54.708Z",
+      "lastNotifiedAt": "2026-11-22T12:56:54.708Z",
       "lastSurfacedAt": null,
-      "notifyCount": 7,
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-7434",
-      "silentRefires": 12
+      "linearIdentifier": "BRO-7434"
     },
     "land:land/bro-7552-effect-gate": {
       "status": "resolved",
