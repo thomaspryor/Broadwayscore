@@ -41,6 +41,7 @@ const { findInFlightCoverage } = require('./lib/poller-idempotency');
 const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 const { findConflictingKey } = require('./lib/cache-collision');
 const W = require('./lib/watcher-loop');
+const { checkDtliCandidate } = require('./lib/dtli-watcher-year-guard');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIST_ACTIVE = process.argv.includes('--list-active');
@@ -387,6 +388,8 @@ async function pass(openings, ctx) {
     // not re-point it here; discover-dtli-slugs.js --force with the year rule
     // is the place to move a slug between productions.
     const dtliOwner = dtliResult.slug ? findConflictingKey(slugMap.shows, show.id, dtliResult.slug) : null;
+    const dateCheck = dtliResult.slug && known !== dtliResult.slug && !dtliOwner
+      ? await checkDtliCandidate(show, dtliResult.slug, httpGet) : null;
     if (dtliResult.error) {
       console.log(`  DTLI error: ${dtliResult.error}`);
     } else if (dtliResult.slug) {
@@ -402,6 +405,8 @@ async function pass(openings, ctx) {
         }
       } else if (dtliOwner) {
         console.log(`  ⚠ DTLI slug ${dtliResult.slug} already mapped to ${dtliOwner} — not assigning it to ${show.id} (cross-show collision)`);
+      } else if (!dateCheck.allowed) {
+        console.log(`  DTLI slug ${dtliResult.slug} refused: ${dateCheck.reason}`);
       } else {
         console.log(`  ✅ DTLI slug ${known ? 'CHANGED' : 'NEW'}: ${dtliResult.slug}${known ? ` (was ${known})` : ''}`);
         // Update slug map in place (kept in memory across loop passes)
