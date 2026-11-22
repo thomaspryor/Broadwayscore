@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8039",
   "planId": "e3b8c38b-e63f-498e-b2e5-381afec7c962",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T11:01:18.299Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "eurotrash-off-west-end-2026/thereviewshub--richard-maguire.json: originalScore"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T11:18:25.524Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eurotrash-off-west-end-2026/thereviewshub--richard-maguire.json originalScore: null -> \"5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
 }
