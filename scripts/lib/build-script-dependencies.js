@@ -29,7 +29,7 @@ function collectBuildScriptDependencies(root) {
     }
     const commands = fs.existsSync(path.join(root, 'package.json'))
       ? JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts || {} : {};
-    const add = (file, specifier) => {
+    const add = (file, specifier, literalOnly) => {
       if (specifier.endsWith('.json')) return; // Includes gitignored build manifests.
       let base;
       if (specifier.startsWith('.')) base = path.resolve(path.dirname(file), specifier);
@@ -39,7 +39,7 @@ function collectBuildScriptDependencies(root) {
       const resolved = [base, ...['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx', '.json', '/index.js', '/index.ts', '/index.tsx'].map(s => base + s)]
         .find(f => fs.existsSync(f) && fs.statSync(f).isFile());
       if (!resolved) throw new Error(`unresolved build import: ${specifier}`);
-      if (/\.test\.[^.]+$/.test(resolved)) return; // Tests never run in a site build (the root walk skips them too).
+      if (literalOnly && /\.test\.[^.]+$/.test(resolved)) return; // A bare path string naming a test is not a load; an explicit import/require still is traced.
       pending.push(resolved);
     };
     const commandSeen = new Set();
@@ -139,7 +139,7 @@ function collectBuildScriptDependencies(root) {
         if (!ts.isIdentifier(a)) return false;
         let found = null;
         const find = c => {
-          if (ts.isVariableDeclaration(c) && ts.isIdentifier(c.name) && c.name.text === a.text && c.initializer) found = c.initializer;
+          if (ts.isVariableDeclaration(c) && ts.isIdentifier(c.name) && c.name.text === a.text && c.initializer && (ts.getCombinedNodeFlags(c) & ts.NodeFlags.Const)) found = c.initializer;
           ts.forEachChild(c, find);
         };
         find(ast);
@@ -158,7 +158,7 @@ function collectBuildScriptDependencies(root) {
           ts.isElementAccessExpression(n.expression) && /require/i.test(n.expression.argumentExpression.getText(ast)))) throw new Error('indirect build loader');
         // A bare 'scripts/' (or any trailing-slash directory prefix) names no file;
         // only file-like literals can be dependencies.
-        if (ts.isStringLiteralLike(n) && /^scripts\/[^\s*]*\.(?:[cm]?js|jsx|[cm]?ts|tsx|sh)$/.test(n.text)) add(file, n.text);
+        if (ts.isStringLiteralLike(n) && /^scripts\/[^\s*]*\.(?:[cm]?js|jsx|[cm]?ts|tsx|sh)$/.test(n.text)) add(file, n.text, true);
         if ((ts.isImportDeclaration(n) || ts.isExportDeclaration(n)) && n.moduleSpecifier) add(file, n.moduleSpecifier.text);
         if (ts.isExternalModuleReference(n) && n.expression && ts.isStringLiteralLike(n.expression)) add(file, n.expression.text);
         if (ts.isCallExpression(n) && (n.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(n.expression) && loaders.has(n.expression.text) ||
@@ -173,7 +173,7 @@ function collectBuildScriptDependencies(root) {
           // already arm the build for packages.
           // require(path.join(ROOT, 'scripts/lib/x')): the literal tail is repo-root relative.
           else if (n.arguments.length === 1 && ts.isCallExpression(n.arguments[0]) && n.arguments[0].expression.getText(ast) === 'path.join' &&
-            n.arguments[0].arguments.length >= 2 && /root|repo/i.test(n.arguments[0].arguments[0].getText(ast)) && ts.isStringLiteralLike(n.arguments[0].arguments.at(-1)) &&
+            n.arguments[0].arguments.length === 2 && /root|repo/i.test(n.arguments[0].arguments[0].getText(ast)) && ts.isStringLiteralLike(n.arguments[0].arguments.at(-1)) &&
             n.arguments[0].arguments.at(-1).text.startsWith('scripts/')) add(file, n.arguments[0].arguments.at(-1).text);
           else if (n.arguments.length === 1 && isJsonConst(n.arguments[0])) { /* JSON data cannot load script code. */ }
           else if (declaredDeps(n)) declaredDeps(n).filter(spec => spec !== 'none').forEach(spec => add(file, spec));

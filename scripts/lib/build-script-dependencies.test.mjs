@@ -148,3 +148,10 @@ test('declared computed loads are traced; undeclared ones, unresolved literals a
   const shDeclared = fixture(t, { 'scripts/prebuild.sh': 'node scripts/x.js', 'scripts/x.js': `require('./y.sh')`, 'scripts/y.sh': '# build-deps-file: none\nnode "$T"' });
   assert.notEqual(collectBuildScriptDependencies(shDeclared), null);
 });
+
+test('review hardening: explicit test imports are traced, let-bound JSON names and multi-segment path.join tails fail closed', t => {
+  const traced = fixture(t, { 'src/a.ts': `import '../scripts/helper.test.js';`, 'scripts/helper.test.js': 'module.exports = 1;' });
+  assert.deepEqual([...collectBuildScriptDependencies(traced)], ['scripts/helper.test.js']);
+  assert.equal(collectBuildScriptDependencies(fixture(t, { 'src/a.ts': `let p = 'x.json'; p = 'y'; require(p);` })), null);
+  assert.equal(collectBuildScriptDependencies(fixture(t, { 'src/a.ts': `require(path.join(ROOT, 'other', 'scripts/lib/x'));`, 'scripts/lib/x.js': '' })), null);
+});
