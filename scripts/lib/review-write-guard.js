@@ -4032,7 +4032,8 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   const { isChallengeUrl, unwrapChallengeUrl } = require('./non-review-url-patterns');
   if (isChallengeUrl(existingUrl)) {
     const dest = unwrapChallengeUrl(existingUrl);
-    const canon = (u) => { try { const x = new URL(u); return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '')).toLowerCase(); } catch { return null; } };
+    // Same article = same host + path + query (story.asp?ID=1111 is not ID=2222); tracking params dropped.
+    const canon = (u) => { try { const x = new URL(u); [...x.searchParams.keys()].filter((k) => /^(?:utm_|fbclid|gclid)/i.test(k)).forEach((k) => x.searchParams.delete(k)); x.searchParams.sort(); return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '') + x.search).toLowerCase(); } catch { return null; } };
     if (dest && wellFormed(incomingUrl) && canon(incomingUrl) === canon(dest)) return true;
   }
   // Same site only: a host-wide named pattern can sit over real reviews

@@ -730,7 +730,12 @@ async function processShow(showId, deps = {}) {
     }
     if (openingYear) {
       const badYear = require('./lib/url-year-guard').urlYearConflict(url, openingYear, show?.title);
-      if (badYear) {
+      // A declared earlier run or tour leg in that year is this production's own coverage (BRO-8065 review).
+      const runYears = [...((show && show.priorRuns) || []), ...((show && show.tourLegs) || [])].flatMap((r) => {
+        const ys = Object.values(r || {}).map((v) => Number((String(v).match(/^((?:19|20)\d{2})-/) || [])[1])).filter(Boolean);
+        return ys.length ? Array.from({ length: Math.max(...ys) - Math.min(...ys) + 1 }, (_, i) => Math.min(...ys) + i) : [];
+      });
+      if (badYear && !runYears.includes(Number(badYear))) {
         console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
         verdictCount('rejected: url year more than a year from opening');
         if (!dry) fs.unlinkSync(filepath);
