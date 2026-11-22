@@ -38,7 +38,7 @@ const ALLOWLIST = new Map([
   ['scripts/lib/test-send-marker.js', 'library; no main block'],
   ['scripts/lib/test-yml-manifest-paths.js', 'library; no main block'],
   ['scripts/lib/test-yml-push-paths.js', 'library; no main block'],
-  ['scripts/test-show-ranks.ts', 'pure node:test suite (no I/O); safe for discovery to run'],
+  ['scripts/test-show-ranks.ts', 'pure node:test suite (no I/O); safe for discovery to run; registered in tests/unit-test-manifest-tsx.txt (BRO-8071)'],
   ['src/lib/test-fixture-host.ts', 'pure constant module for the Next app'],
   ['tests/e2e/helpers/test.ts', 'Playwright fixture module; throws outside Playwright, no side effects'],
   ['tests/e2e/helpers/ugc-test.ts', 'Playwright fixture module; throws outside Playwright, no side effects'],
@@ -102,6 +102,46 @@ test('allowlist has no stale entries', () => {
   const files = new Set(matchedNonTestFiles());
   const stale = [...ALLOWLIST.keys()].filter((f) => !files.has(f));
   assert.deepEqual(stale, []);
+});
+
+// BRO-8071: an allowlisted node:test suite is "safe for discovery", but discovery
+// only runs when someone types a bare `node --test`. scripts/test-show-ranks.ts
+// sat here for weeks while no CI job ran it. A node:test file on the allowlist
+// must be registered in a manifest (or named/globbed by a workflow run: step).
+const { ciCoverageOf } = require(path.join(ROOT, 'scripts', 'lib', 'ci-test-coverage.js'));
+
+function neverRunAllowlisted(allowlist, { read, covered }) {
+  return [...allowlist.keys()].filter((rel) => NODE_TEST_RE.test(read(rel)) && !covered(rel));
+}
+
+function ciCoverage() {
+  const manifestEntries = new Set();
+  for (const m of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt']) {
+    const abs = path.join(ROOT, m);
+    if (!fs.existsSync(abs)) continue;
+    for (const l of fs.readFileSync(abs, 'utf8').split('\n')) if (l.trim() && !l.trim().startsWith('#')) manifestEntries.add(l.trim());
+  }
+  const runText = fs.readdirSync(path.join(ROOT, '.github', 'workflows'))
+    .filter((f) => /\.ya?ml$/.test(f))
+    .map((f) => fs.readFileSync(path.join(ROOT, '.github', 'workflows', f), 'utf8'))
+    .join('\n');
+  return (rel) => Boolean(ciCoverageOf(rel, { manifestEntries, runText }));
+}
+
+test('every allowlisted node:test suite is run by CI (manifest, glob or run: step)', () => {
+  const never = neverRunAllowlisted(ALLOWLIST, {
+    read: (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8'),
+    covered: ciCoverage(),
+  });
+  assert.deepEqual(never, [], `allowlisted node:test file(s) no CI job runs: ${never.join(', ')}. Register in tests/unit-test-manifest-tsx.txt (.ts) or rename to *.test.* (collected), or delete.`);
+});
+
+test('red-then-green: an allowlisted node:test file with no CI registration is flagged', () => {
+  const al = new Map([['a/suite.ts', 'x'], ['a/lib.js', 'x']]);
+  const src = { 'a/suite.ts': "import { test } from 'node:test';\n", 'a/lib.js': 'module.exports = {};\n' };
+  const never = neverRunAllowlisted(al, { read: (r) => src[r], covered: () => false });
+  assert.deepEqual(never, ['a/suite.ts']);
+  assert.deepEqual(neverRunAllowlisted(al, { read: (r) => src[r], covered: () => true }), []);
 });
 
 test('red-then-green: the rule flags a missing, late or comment-only guard', () => {
