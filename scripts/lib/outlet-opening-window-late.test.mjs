@@ -39,3 +39,15 @@ test('late window ends: no polling 11+ days past opening', () => {
 test('outlet without a window strategy is not polled', () => {
   assert.deepEqual(ow.lateOutletsToPoll([{ id: 'x' }], {}, {}), []);
 });
+
+// BRO-8035: LondonTheatre1 reviewed The Lives of Others (West End, opened 2026-10-29) on 2026-11-02,
+// day 4, past the 3-day West End window. Reverting londontheatre1 in LATE_PUBLISHER_WINDOW_DAYS fails this.
+test('londontheatre1 is matched against The Lives of Others at +4 days (BRO-8035)', () => {
+  const lives = [{ id: 'the-lives-of-others-west-end-2026', category: 'west-end', openingDate: '2026-10-29' }];
+  const at = Date.parse('2026-11-02T00:20:00Z'); // minutes after LondonTheatre1 published
+  const win = ow.selectWindowShows(lives, at);
+  const late = ow.selectLateWindowShows(lives, at);
+  assert.equal(win.length, 0);
+  assert.deepEqual(ow.lateOutletsToPoll(late, {}, { londontheatre1: {} }), ['londontheatre1']);
+  assert.deepEqual(ow.poolForOutlet('londontheatre1', win, late, at).map((s) => s.id), ['the-lives-of-others-west-end-2026']);
+});
