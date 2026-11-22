@@ -1891,5 +1891,113 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T09:27:44.506Z"
+  },
+  {
+    "conditionKey": "land-preexisting:tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category [testCodeFailure]",
+    "title": "Test red on main: every shows.json id suffix matches its category [testCodeFailure]",
+    "description": "tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-7207. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938"
+      }
+    ],
+    "queuedAt": "2026-11-22T09:41:14.868Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it#31ea20cf8f",
+    "title": "Test red on main: broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
+    "description": "scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-7207. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938"
+      }
+    ],
+    "queuedAt": "2026-11-22T09:41:14.898Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/featured-state-persist-order.test.mjs::west-end edition persists every opening it#7eb2367617",
+    "title": "Test red on main: west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
+    "description": "scripts/newsletter/featured-state-persist-order.test.mjs::west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-7207. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/featured-state-persist-order.test.mjs::west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938"
+      }
+    ],
+    "queuedAt": "2026-11-22T09:41:14.925Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/lastfeatured-inweek.test.mjs::west-end edition run records only the Broadway ids #492686bd24",
+    "title": "Test red on main: west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution [testCodeFailure]",
+    "description": "scripts/newsletter/lastfeatured-inweek.test.mjs::west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-7207. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/lastfeatured-inweek.test.mjs::west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45007553938"
+      }
+    ],
+    "queuedAt": "2026-11-22T09:41:14.950Z"
   }
 ]
