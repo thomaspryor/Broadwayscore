@@ -775,7 +775,9 @@ function serpItemDate(result, window) {
  */
 function isIncompleteEnumeration(notes) {
   // "page 3: HTTP 503" / "page 3: fetch failed": a wp-json walk that stopped mid-listing (BRO-6514).
-  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|^page \d+: (?:HTTP|fetch failed)|^dated sitemaps: \d+ failed/.test(String(n)));
+  // A composite source prefixes its parts' notes ("wp-json: page 3: HTTP 503"), so no failure shape anchors to ^ alone.
+  // BRO-7816: the Guardian API's "2021-06-01 p1: HTTP 401", the CDX "<prefix> 2019: HTTP 503" were not matched, so a run where every month answered 401 was filed as complete.
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|(?:^|: )page \d+: (?:HTTP|fetch failed)|(?:^|: )dated sitemaps: \d+ failed|(?:^|: |\s)(?:\d{4}-\d{2}-\d{2} p\d+|\d{4}): (?:HTTP \d|\w*Error|fetch failed|Timeout|.*(?:ECONN|ETIMEDOUT|socket))/.test(String(n)));
 }
 
 /** PURE. A report's enumeration status: 'unreadable', 'incomplete' or 'complete' (BRO-6488). */
@@ -919,7 +921,8 @@ function itemFromSitemapEntry(g, src) {
 function shouldKeepPreviousReport(prev, next) {
   const ps = prev && prev.source && prev.source.status;
   const ns = next && next.source && next.source.status;
-  return ps === 'complete' && ns === 'unreadable';
+  // BRO-7816: an incomplete run that listed nothing (every request refused) is no better than unreadable.
+  return ps === 'complete' && (ns === 'unreadable' || (ns === 'incomplete' && next.source.enumerated === 0));
 }
 
 function writeJsonUnlessOnlyStampChanged(file, obj, indent) {

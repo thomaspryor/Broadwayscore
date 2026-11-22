@@ -536,6 +536,22 @@ test('BRO-7820: shouldKeepPreviousReport keeps a complete report over an unreada
   assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'incomplete' } }), false);
   assert.equal(k({ source: { status: 'unreadable' } }, { source: { status: 'unreadable' } }), false);
   assert.equal(k(null, { source: { status: 'unreadable' } }), false);
+  // BRO-7816: every request refused (Guardian test key 401) lists nothing; keep the good report.
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'incomplete', enumerated: 0 } }), true);
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'incomplete', enumerated: 40 } }), false);
+});
+
+test('BRO-7816: every enumerator failure note marks the run incomplete, composite-prefixed ones too', () => {
+  const inc = census.isIncompleteEnumeration;
+  assert.equal(inc(['2021-06-01 p1: HTTP 401']), true); // Guardian Content API, the run that was filed complete
+  assert.equal(inc(['2021-06-01 p2: fetch failed']), true);
+  assert.equal(inc(['thestage.co.uk/reviews/ 2019: HTTP 503']), true); // Wayback CDX
+  assert.equal(inc(['cdx: thestage.co.uk/reviews/ 2019: Timeout fetching x']), true);
+  assert.equal(inc(['wp-json: page 3: HTTP 503']), true); // composite part
+  assert.equal(inc(['sitemap-dated: dated sitemaps: 4 failed']), true);
+  assert.equal(inc(['2026: no URLs (blocked or empty; see log)']), false);
+  assert.equal(inc(['sitemap: 66 sitemaps from 2021-06-01, 3 without a matching URL, 0 not found (404)']), false);
+  assert.equal(inc(['wayback cdx: 120 captures, 80 URLs']), false);
 });
 
 // BRO-7885: same-title productions were "ambiguous" forever (55 rows). Real Slant / Illinoise data.

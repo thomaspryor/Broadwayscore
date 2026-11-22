@@ -180,7 +180,7 @@ const SOURCES = {
   nydailynews: unreadable('sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug'),
   observer: unreadable('only a two-day news sitemap (observer.com/news-sitemap.xml) in robots.txt; no archive sitemap'),
   chicagotribune: unreadable('sitemap index lists daily sitemaps (10k days since 1999, one paid proxy fetch each); the Chicago paper reviews Broadway touring productions only'),
-  guardian: unreadable('robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API'),
+  guardian: unreadable('robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the Content API lists the archive but needs GUARDIAN_API_KEY (the public test key answers HTTP 401, probed 2026-11-21) and the census job holds none'),
   latimes: unreadable('sitemap index lists 622 numbered sitemaps (sitemap-191412.xml) with no date or section in the names; a Los Angeles paper with few NYC reviews (80 corpus rows)'),
   talkinbroadway: unreadable('Cloudflare challenge on /sitemap.xml that every fetchPage tier fails (probed 2026-11-19), and robots.txt lists no sitemap'),
   cititour: unreadable('no sitemap (robots.txt lists none, /sitemap.xml answers 404); show pages under /NYC_Broadway are reached only by following links'),
