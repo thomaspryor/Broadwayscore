@@ -38,6 +38,10 @@ describe('publishableSeatNotes', () => {
     assert.strictEqual(noteLocationLabel(note), 'Left Mezzanine, row G');
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', side: 'sides' }), 'Orchestra, far sides');
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'K-W' }), 'Orchestra, rows K to W');
+    // A start row with the rows behind it reads "row O back", not as one row.
+    assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'O', claim: 'The Mezzanine overhang starts at Orchestra row O, and seats behind it may lose the top.' }), 'Orchestra, row O back');
+    assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'H', claim: 'From row H back in the Orchestra, the Mezzanine hangs over you.' }), 'Orchestra, row H back');
+    assert.strictEqual(noteLocationLabel({ level: 'mezzanine', side: 'left', rows: 'G', claim: 'Row G sits behind a cross aisle, so it has extra legroom.' }), 'Left Mezzanine, row G');
   });
   test('sources are distinct hosts', () => {
     assert.deepStrictEqual(noteSources({ evidence: [...ev(), ...ev(), ...ev('aviewfrommyseat.com')] }), ['seatplan.com', 'aviewfrommyseat.com']);

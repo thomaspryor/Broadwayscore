@@ -63,6 +63,10 @@ function daysBetween(fromIso, to) {
   return (b - a) / 86400000;
 }
 
+// A claim about a start row and everything behind it ("the overhang starts at
+// row O"). Its single stored row then reads "row O back", not "row O" (BRO-8057).
+const STARTS_A_SPAN = /\b(from (around )?row [A-Z]{1,3} back|(starts|begins) (at|over) (orchestra |mezzanine )?row|overhangs? (from|at) row|seats behind|back half)\b/i;
+
 /** "Center Orchestra, rows E to J" built from the structured location. */
 function noteLocationLabel(n) {
   const level = LEVEL_LABEL[n.level] || '';
@@ -74,7 +78,7 @@ function noteLocationLabel(n) {
   const r = String(n.rows);
   const m = r.match(/^([A-Z]{1,3})-([A-Z]{1,3})$/);
   if (m) return `${place}, rows ${m[1]} to ${m[2]}`;
-  if (/^[A-Z]{1,3}$/.test(r)) return `${place}, row ${r}`;
+  if (/^[A-Z]{1,3}$/.test(r)) return STARTS_A_SPAN.test(String(n.claim || '')) ? `${place}, row ${r} back` : `${place}, row ${r}`;
   return `${place}, ${r}`;
 }
 
