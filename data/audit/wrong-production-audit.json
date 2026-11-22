@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-22T11:59:33.778Z",
+  "timestamp": "2026-11-22T12:17:08.165Z",
   "stats": {
-    "totalReviews": 83877,
+    "totalReviews": 83882,
     "alreadyFlagged": 22450,
-    "dateGuardCatches": 238,
+    "dateGuardCatches": 241,
     "directorMismatch": 3879,
     "tvFilmSignals": 2411,
     "londonSignals": 3969,
@@ -71427,6 +71427,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-dead-1904-off-broadway-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "November 26th, 2024",
+      "url": "https://culturesauce.com/2024/11/26/the-dead-1904-joyce-off-broadway-review-irish-rep/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
+      "showId": "the-dead-1904-off-broadway-2026",
+      "file": "nysr--elysa-gardner.json",
+      "score": null,
+      "publishDate": "November 26th, 2024",
+      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+        }
+      ]
+    },
+    {
+      "showId": "the-dead-1904-off-broadway-2026",
+      "file": "nysr--steven-suskin.json",
+      "score": null,
+      "publishDate": "November 26th, 2024",
+      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-james-joyce-and-the-living-2024/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
         }
       ]
     },
