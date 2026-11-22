@@ -22,6 +22,8 @@ const { hasHelpFlag } = require('./cli-help.js');
 // a literal id, so the check could only ever print "FAIL all: show missing" and the
 // card bounced. Selector words are never show ids; refuse them as invalid arguments.
 const RESERVED_SELECTOR_IDS = new Set(['all', 'any', 'every', 'none']);
+// A market prefix plus a season (we-2011-12, bw-2010-2011): never a show id.
+const SEASON_TOKEN_RE = /^(?:we|bw|ob|owe|broadway|west-end)-\d{4}-(?:\d{2}|\d{4})$/;
 
 function parseArgs(args) {
   const command = args.join(' ');
@@ -31,6 +33,10 @@ function parseArgs(args) {
   if (!Number.isSafeInteger(minReviews)) throw new Error('Review minimum must be a safe integer');
   const reserved = match[1].split(',').filter(id => RESERVED_SELECTOR_IDS.has(id));
   if (reserved.length) throw new Error(`--show takes explicit show ids; "${reserved[0]}" is not one (for a whole window use node scripts/slow-market-grade.js --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD --check-gaps)`);
+  // BRO-7568: BRO-6503 filed --show=we-2011-12,we-2010-11 (season tokens). They can
+  // only ever print "show missing", so the nightly recheck failed a correct backfill.
+  const season = match[1].split(',').find(id => SEASON_TOKEN_RE.test(id));
+  if (season) throw new Error(`--show takes explicit show ids; "${season}" is a season, not a show (for a West End season use node scripts/audit-we-historical-season.js --season=YYYY-YYYY)`);
   return { showIds: [...new Set(match[1].split(','))], images: !!match[2], minReviews, type: match[4] || null };
 }
 
