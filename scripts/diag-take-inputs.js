@@ -28,7 +28,9 @@ const live = liveOutletKeys(reviews);
 const { isScoreable } = require('./lib/is-scoreable');
 const { createWithinShowDedup } = require('./lib/within-show-dedup');
 const { normalizeOutlet } = require('./lib/review-normalization');
-const inputs = loadReviewTexts(showId, live, { show, shows, normalizeOutlet, isScoreable, createDedup: createWithinShowDedup });
+const { canonicalizeUrlForDedup } = require('./lib/review-guards');
+const liveRows = Array.isArray(reviews) ? reviews : reviews.reviews;
+const inputs = loadReviewTexts(showId, live, { show, shows, normalizeOutlet, isScoreable, createDedup: createWithinShowDedup, liveRows, fallbackRows: liveRows, canonicalizeUrl: canonicalizeUrlForDedup });
 const auditView = loadReviewTexts(showId, live, { show, shows });
 console.log('INPUTS (generator)', inputs.length, 'AUDIT VIEW (unfiltered)', auditView.length);
 for (const i of inputs.filter((x) => JSON.stringify(x).toLowerCase().includes(needle || '\u0000'))) {

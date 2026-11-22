@@ -20,6 +20,8 @@ import { finalResponseText, describeResponse } from './lib/anthropic-response-te
 import { loadReviewTexts as loadConsensusInputs, consensusFingerprint, auditInputFingerprint, shouldRegenerate } from './lib/critic-consensus-inputs.js';
 import { isScoreable } from './lib/is-scoreable.js';
 import { createWithinShowDedup } from './lib/within-show-dedup.js';
+import reviewGuards from './lib/review-guards.js';
+const { canonicalizeUrlForDedup } = reviewGuards;
 import { requestWithRefusalRetry, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
@@ -63,6 +65,9 @@ function loadReviewTexts(showId, liveOutlets = null, show = undefined, shows = u
     createDedup: createWithinShowDedup,
     // BRO-7644: live reviews.json rows when the show has no review-text files yet.
     fallbackRows: liveReviewRows,
+    // Score each input as the site shows it (star-band clamp etc.), not the file's raw score.
+    liveRows: liveReviewRows,
+    canonicalizeUrl: canonicalizeUrlForDedup,
   });
 }
 
@@ -240,6 +245,7 @@ async function main() {
       console.warn(`::warning::consensus prune skipped: ${stale.length} entries look stale (cap ${MAX_STALE_PRUNE}), reviews.json is probably incomplete`);
       liveCounts = null;
       liveOutlets = null;
+      liveReviewRows = null; // suspect reviews.json: no live scores or fallback rows either
     } else if (stale.length) {
       console.log(`🗑️  Removing ${stale.length} consensus entr${stale.length === 1 ? 'y' : 'ies'} with fewer than ${MIN_SCORED_REVIEWS} live reviews: ${stale.join(', ')}`);
       for (const id of stale) delete consensusData.shows[id];

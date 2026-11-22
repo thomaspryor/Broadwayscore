@@ -73,6 +73,8 @@ function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = nul
     critic: data.criticName,
     text: textParts.join('\n\n'),
     score: data.assignedScore,
+    url: data.url || null,
+    outletId: data.outletId || null,
     publishDate: data.publishDate,
     hasFullText: !!data.fullText,
   };
@@ -142,6 +144,8 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   // the file-path scorer predicate does not.
   // Counted on SCORED inputs: the Fantasticks folder held three excluded or
   // unscored early files, so a zero-length test never fired.
+  // Live scores first, so a file the rebuild scores counts toward the gate below.
+  if (Array.isArray(opts.liveRows)) applyLiveScores(reviews, showId, opts.liveRows, opts);
   if (reviews.filter(r => r.score != null).length < 2 && Array.isArray(opts.fallbackRows)) {
     for (const r of opts.fallbackRows) {
       if (!r || r.showId !== showId) continue;
@@ -164,6 +168,64 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   // outlet+critic) exactly as inheritPriorRunReviews drops it.
   for (const d of carriedTextFiles(opts.show, opts.shows, root, opts)) {
     take(d, { show: d._ctxShow, filePath: d._srcPath, isScoreable: opts.isScoreable, carried: true });
+  }
+  if (Array.isArray(opts.liveRows)) applyLiveScores(reviews, showId, opts.liveRows, opts);
+  return reviews;
+}
+
+/**
+ * Use the score the site shows, not the review-text file's assignedScore.
+ * The rebuild corrects scores on the way to reviews.json (star-band clamp:
+ * a 4/5 review the LLM scored 59 shows as 80), so a take written from the
+ * raw file score called three 4/5-star raves "split" (the-dead-1904-off-
+ * broadway-2026, 2026-11-22). Matched on URL, then outlet + critic; rows with
+ * no live twin keep their file score. Mutates and returns `reviews`.
+ * @param {object[]} reviews generator inputs from loadReviewTexts
+ * @param {string} showId
+ * @param {object[]} liveRows reviews.json rows
+ * @param {{normalizeOutlet?: (name: string) => string, canonicalizeUrl?: (url: string) => string}} [opts]
+ *   injected (not required) so the write-free audit can share this module
+ */
+function applyLiveScores(reviews, showId, liveRows, opts = {}) {
+  const normalizeOutlet = opts.normalizeOutlet || null;
+  const canonUrl = opts.canonicalizeUrl || null;
+  const norm = v => String(v || '').trim().toLowerCase();
+  const urlKey = v => (v ? norm(canonUrl ? canonUrl(v) : v) : '');
+  const outletKey = v => norm(normalizeOutlet && v ? normalizeOutlet(v) : v);
+  const criticKey = v => {
+    const c = norm(v).replace(/\s+/g, ' ');
+    return !c || /^(unknown|unnamed|staff|anonymous)$/.test(c) ? '' : c;
+  };
+  // Index only identities that name ONE live score: a roundup URL shared by
+  // several critics, or two unnamed reviews at one outlet, would hand one
+  // review another's score, so ambiguous keys are dropped (file score kept).
+  const byUrl = new Map();
+  const byOutletCritic = new Map();
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const put = (m, k, v) => { if (!k) return; m.set(k, m.has(k) && !same(m.get(k), v) ? null : v); };
+  for (const r of liveRows) {
+    if (!r || r.showId !== showId || typeof r.assignedScore !== 'number') continue;
+    if (!passesExclusions(r)) continue;
+    const ok = `${outletKey(r.outletId || r.outlet)}|${criticKey(r.criticName)}`;
+    put(byUrl, urlKey(r.url), { score: r.assignedScore, ok });
+    if (criticKey(r.criticName)) put(byOutletCritic, ok, r.assignedScore);
+  }
+  for (const row of reviews) {
+    if (row.fromLiveRows) continue;
+    const ok = `${outletKey(row.outletId || row.outlet)}|${criticKey(row.critic)}`;
+    let live;
+    const u = byUrl.get(urlKey(row.url));
+    // A URL hit counts only when that live row is the same review (same outlet
+    // and critic, or the file has no named critic).
+    if (u && (u.ok === ok || !criticKey(row.critic))) live = u.score;
+    if (live === undefined && criticKey(row.critic)) {
+      const v = byOutletCritic.get(ok);
+      if (typeof v === 'number') live = v;
+    }
+    if (typeof live === 'number' && live !== row.score) {
+      row.fileScore = row.score;
+      row.score = live;
+    }
   }
   return reviews;
 }
@@ -235,7 +297,9 @@ function bucketOf(score) {
 function consensusFingerprint(reviews) {
   const rows = reviews || [];
   const scored = rows.filter(r => typeof r.score === 'number');
-  // Internal change-detection fingerprint over raw score bands. Not shown to
+  // Internal change-detection fingerprint over score bands (the generator's
+  // inputs carry live reviews.json scores when liveRows is passed; the audit's
+  // auditInputFingerprint stays on raw file scores, so drift compares raw to raw). Not shown to
   // readers, and the generator inputs carry no verdict (BRO-6729: user-facing
   // counters use the verdict via scripts/lib/review-breakdown.js).
   const bucketBreakdown = { positive: 0, mixed: 0, negative: 0 };
@@ -380,6 +444,7 @@ module.exports = {
   passesExclusions,
   namedBeforeUnknown,
   loadReviewTexts,
+  applyLiveScores,
   bucketOf,
   consensusFingerprint,
   auditInputFingerprint,
