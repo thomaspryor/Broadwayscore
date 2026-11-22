@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7774",
   "planId": "96f386a1-9b39-416b-b36c-768e3a801064",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T22:56:19.235Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "Delete leftover body-less Arts Desk duplicate stranded under the retired Cloud 9 National id (BRO-5489); cloud-9-west-end-2026 already holds the same review as artsdesk--aleks-sierz.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T23:36:33.512Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cloud-9-national-west-end-2026/artsdesk--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
