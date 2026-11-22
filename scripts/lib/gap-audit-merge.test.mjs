@@ -406,3 +406,13 @@ test('blastRadiusClearedKeys + resolveQuietConditions: resolves only after the q
   assert.deepStrictEqual(resolveQuietConditions(blastRadiusClearedKeys({ ok: true }), { nowMs: now }), [BLAST_RADIUS_ALERT_KEY]);
   assert.strictEqual(JSON.parse(fs.readFileSync(lp, 'utf8')).conditions[BLAST_RADIUS_ALERT_KEY].status, 'resolved');
 });
+
+// BRO-7568: a refused run's discarded states must survive in its log/alert.
+test('formatBlastStateDiff prints prev -> next for each flagged show (object or Map)', () => {
+  const { formatBlastStateDiff } = require('./gap-audit-merge.js');
+  const prev = { a: 'incomplete:0:4', b: 'incomplete:1:2' };
+  const next = new Map([['a', 'incomplete:0:0'], ['b', 'complete:1:1']]);
+  assert.equal(formatBlastStateDiff(['a', 'b'], prev, next), 'a: incomplete:0:4 -> incomplete:0:0; b: incomplete:1:2 -> complete:1:1');
+  assert.equal(formatBlastStateDiff(['z'], prev, {}), 'z: ? -> ?');
+  assert.equal(formatBlastStateDiff([], prev, next), '');
+});

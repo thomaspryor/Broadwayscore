@@ -677,10 +677,19 @@ const BLAST_RADIUS_ALERT_KEY = 'review-gap:blast-radius-refused';
  * still only resolves a key unseen for the incident gap, so a flapping
  * refusal stays one incident.
  */
+/**
+ * BRO-7568: "id: prev -> next" for the shows the blast-radius guard flagged, so a
+ * refused run's discarded states survive in its log and alert. Pure; first 20.
+ */
+function formatBlastStateDiff(changedIds, prevStates, nextStates, limit = 20) {
+  const get = (m, id) => (m instanceof Map ? m.get(id) : m && m[id]);
+  return (changedIds || []).slice(0, limit).map((id) => `${id}: ${get(prevStates, id) ?? '?'} -> ${get(nextStates, id) ?? '?'}`).join('; ');
+}
+
 function blastRadiusClearedKeys(blast, { dryRun = false } = {}) {
   return (!dryRun && blast && blast.ok === true) ? [BLAST_RADIUS_ALERT_KEY] : [];
 }
 
 module.exports = {
-  BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys,
+  BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys, formatBlastStateDiff,
   priorCensusUrls, seedPriorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, BASELINE_MAX_AGE_DAYS, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };

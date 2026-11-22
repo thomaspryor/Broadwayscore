@@ -257,7 +257,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, gapRowShowIds, schedulingCheckpoint, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, catalogueEveryFor } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys, formatBlastStateDiff } = require('./lib/gap-audit-merge');
 const { corpusDirProblem } = require('./lib/list-show-dirs');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
@@ -3424,7 +3424,12 @@ async function main(argv = process.argv.slice(2)) {
       const { prevStates, confirmed } = confirmQuarantinedStates(
         only(riskStateMap(prevAudit && prevAudit.results, { now: audit.generatedAt })), nextRisk, prevAudit && prevAudit.results);
       if (confirmed.length) console.log(`  ✓ ${confirmed.length} quarantined show(s) reproduced their quarantined state — accepted as baseline: ${confirmed.slice(0, 20).join(', ')}`);
-      return blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
+      const checked = blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
+      // BRO-7568: the refused run's new states are never persisted, so without this
+      // a later session cannot tell which inputs tripped the guard (BRO-7497 was
+      // left ENVIRONMENT-BLOCKED on exactly that). Print prev -> next per show.
+      checked.stateDiff = formatBlastStateDiff(checked.changedIds, prevStates, nextRisk);
+      return checked;
     })();
 
   // Roll up unknown outlet hosts: hosts that aggregator articles linked to
@@ -3550,12 +3555,13 @@ async function main(argv = process.argv.slice(2)) {
   if (!dryRun && !blast.ok) {
     console.error(`::error::${blast.reason}`);
     console.error(`Changed shows (first 20): ${blast.changedIds.slice(0, 20).join(', ')}`);
+    if (blast.stateDiff) console.error(`State changes (state:live:candidates, prev -> next): ${blast.stateDiff}`);
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
       await routeAlert({
         conditionKey: BLAST_RADIUS_ALERT_KEY,
         title: `Review-gap audit refused to write — ${blast.changedPct.toFixed(1)}% of shows changed coverage state`,
-        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\n${partial ? `PARTIAL write: the other ${results.length - riskyShowIds.length} show(s) audited this run were NOT risky and were persisted normally. Only the ${riskyShowIds.length} changed show(s) above were quarantined (kept at their prior entry).` : `The previous ${AUDIT_PATH} is intact — nothing was lost (every examined show this run was risky, so nothing could be safely split out).`} Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
+        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}${blast.stateDiff ? `\n\nState changes (prev -> next): ${blast.stateDiff}` : ''}\n\n${partial ? `PARTIAL write: the other ${results.length - riskyShowIds.length} show(s) audited this run were NOT risky and were persisted normally. Only the ${riskyShowIds.length} changed show(s) above were quarantined (kept at their prior entry).` : `The previous ${AUDIT_PATH} is intact — nothing was lost (every examined show this run was risky, so nothing could be safely split out).`} Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
         severity: 'error',
         disposition: 'human',
         cooldownHours: 6,
