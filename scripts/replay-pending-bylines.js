@@ -253,7 +253,12 @@ const shardArg = (args.find(a => a.startsWith('--shard='))?.split('=')[1] || '')
 function inShard(id, i, n) {
   let h = 0;
   for (const c of String(id)) h = ((h << 5) - h + c.charCodeAt(0)) | 0;
-  return Math.abs(h) % n === i;
+  // 1-based (1/4 .. 4/4) and 0-based (0/4 .. 3/4) both cover every id: n/n is the remainder-0 bucket
+  // (BRO-8065: --shard=4/4 used to match nothing, so a quarter of the 2015-24 batch was never fetched).
+  return Math.abs(h) % n === i % n;
+}
+if (shardArg && !(Number(shardArg[2]) >= 1 && Number(shardArg[1]) <= Number(shardArg[2]))) {
+  console.error(`--shard=${shardArg[0]}: want i/n with 1 <= i <= n`); process.exit(2);
 }
 function showIds() {
   let ids = scopeShowIds();

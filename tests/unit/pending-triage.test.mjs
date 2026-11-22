@@ -528,3 +528,14 @@ test('BRO-8065 review: the drain never deletes a stub whose url year is a declar
   assert.equal(r.rejected || 0, 0);
   assert.ok(!JSON.parse(fs.readFileSync(f, 'utf8')).promoteSkippedReason);
 });
+
+test('BRO-8065: --shard=1/n .. n/n together cover every show exactly once', () => {
+  const { inShard } = require('../../scripts/replay-pending-bylines.js');
+  const ids = Array.from({ length: 400 }, (_, i) => `show-${i}-west-end-20${10 + (i % 15)}`);
+  for (const n of [1, 2, 4, 7]) {
+    for (const id of ids) {
+      const hits = Array.from({ length: n }, (_, k) => k + 1).filter((i) => inShard(id, i, n)).length;
+      assert.equal(hits, 1, `${id} in ${hits} of ${n} shards`);
+    }
+  }
+});
