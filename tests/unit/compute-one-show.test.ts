@@ -26,7 +26,7 @@ const critic = [review(1, 82, 'nytimes'), review(2, 74), review(3, 65)];
 const blog = [review(9, 90, 'fixture-blog')];
 const noCoverage = buildCoverageFloorInputs({ gapAudit: { shows: [] }, stamps: {}, acks: {} }, {} as NodeJS.ProcessEnv);
 const deps = (extra: Partial<ComputeOneShowDeps> = {}): ComputeOneShowDeps => ({
-  audience: [], buzz: [], coverageFloorInputs: noCoverage,
+  blogReviews: [], audience: [], buzz: [], coverageFloorInputs: noCoverage,
   versionImage: <T extends string | null | undefined>(p: T) => p, ...extra,
 });
 const strip = (o: unknown) => JSON.parse(JSON.stringify(o, (k, v) => (k === 'computedAt' ? undefined : v)));
@@ -56,4 +56,10 @@ test('coverage-hold ceiling uses the injected clock (72h after opening)', () => 
   const late = computeOneShow(show, critic, deps({ now: opened + 80 * 3600 * 1000 }));
   assert.notEqual(early.coverageAcked, true);
   assert.equal(late.coverageAcked, true);
+});
+
+test("rejects a review that belongs to another show (slice contract)", () => {
+  const stray = { ...review(5, 70), showId: 'other-show-2026' } as RawReview;
+  assert.throws(() => computeOneShow(show, [...critic, stray], deps()), /other-show-2026/);
+  assert.throws(() => computeOneShow(show, critic, deps({ blogReviews: [stray] })), /other-show-2026/);
 });

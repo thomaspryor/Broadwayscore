@@ -1,7 +1,11 @@
-// BRO-8056 phase 1a: one show's computed record, from its own inputs only.
+// BRO-8056 phase 1a: one show's computed record.
 // getAllShows() (data-core.ts) maps every show through this. Show-refresh
-// (later phases) calls it with one show's slice, so every input the result
-// depends on is a parameter here: no module-level data, no fs.
+// (later phases) calls it with one show's slice.
+// Contract: rawReviews and deps.blogReviews must be THIS show's reviews only
+// (checked below). Not yet injected, so a caller must hold them equal to the
+// full build's: the outlet registry (engine -> getOutletRegistry(), a cached
+// file read), the market date used for status, and computedAt (real clock).
+// coverage-floor-inputs is a server-only module (it imports fs).
 import {
   computeShowData,
   ComputedShow,
@@ -16,8 +20,8 @@ import { coverageHoldReleased } from '../../scripts/lib/coverage-floor';
 export type CoverageFloorInputs = ReturnType<typeof readCoverageFloorInputs>;
 
 export interface ComputeOneShowDeps {
-  /** Blog reviews for this show (prebuild output), scored after its critic reviews. */
-  blogReviews?: RawReview[];
+  /** Blog reviews for this show (prebuild output), scored after its critic reviews. Required ([] if none) so a caller cannot silently drop them. */
+  blogReviews: RawReview[];
   audience: RawAudience[];
   buzz: RawBuzzThread[];
   coverageFloorInputs: CoverageFloorInputs;
@@ -28,7 +32,12 @@ export interface ComputeOneShowDeps {
 }
 
 export function computeOneShow(show: RawShow, rawReviews: RawReview[], deps: ComputeOneShowDeps): ComputedShow {
-  const showReviews = deps.blogReviews && deps.blogReviews.length
+  for (const list of [rawReviews, deps.blogReviews]) {
+    for (const r of list) {
+      if (r.showId !== show.id) throw new Error(`computeOneShow(${show.id}): got a review for ${r.showId}; pass only this show's reviews`);
+    }
+  }
+  const showReviews = deps.blogReviews.length
     ? [...rawReviews, ...deps.blogReviews]
     : rawReviews;
   const computed = computeShowData(show, showReviews, deps.audience, deps.buzz);

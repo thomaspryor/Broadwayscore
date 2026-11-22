@@ -140,7 +140,7 @@ export function getAllShows(): ComputedShow[] {
     .filter((show: any) => !show._devOnly)
     .map(show => computeOneShow(show, baseReviewsByShowId.get(show.id) || [], {
       ...deps,
-      blogReviews: blogReviewsByShowId.get(show.id),
+      blogReviews: blogReviewsByShowId.get(show.id) || [],
     }));
 
   return computedShowsCache;
