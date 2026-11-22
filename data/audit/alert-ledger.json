@@ -18378,7 +18378,7 @@
       "resolvedAt": "2026-10-14T19:48:44.837Z"
     },
     "pending-unrecoverable:kramerfauci-st-anns-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for kramerfauci-st-anns-off-broadway-2026 stuck in _pending with no text and no byline",
@@ -18390,10 +18390,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 8,
+      "resolvedAt": "2026-11-22T08:58:21.252Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "pending-unrecoverable:how-shakespeare-saved-my-life-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for how-shakespeare-saved-my-life-off-broadway-2026 stuck in _pending with no text and no byline",
@@ -18405,7 +18407,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-22T08:55:27.290Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "land:land/job/linear-BRO-5204-mv8g3bm2": {
       "status": "resolved",
@@ -19490,7 +19494,7 @@
       "title": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-22T08:56:25.223Z",
+      "lastSeen": "2026-11-22T09:27:26.086Z",
       "lastNotifiedAt": "2026-11-22T01:06:27.993Z",
       "lastSurfacedAt": null,
       "notifyCount": 67,
@@ -21821,7 +21825,7 @@
       "resolveReason": "absent"
     },
     "pending-unrecoverable:triumph-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for triumph-off-west-end-2026 stuck in _pending with no text and no byline",
@@ -21832,7 +21836,9 @@
       "lastSurfacedAt": "2026-10-19T17:03:40.561Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-22T09:01:40.247Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "dependabot-pr:1111": {
       "status": "resolved",
@@ -23931,13 +23937,13 @@
       "title": "1 user request(s) stuck — not live after 3 days",
       "firstSeen": "2026-10-22T07:05:54.815Z",
       "incidentOpenedAt": "2026-10-22T07:05:54.815Z",
-      "lastSeen": "2026-11-22T01:53:48.526Z",
+      "lastSeen": "2026-11-22T09:17:05.431Z",
       "lastNotifiedAt": "2026-11-19T16:49:33.174Z",
       "lastSurfacedAt": "2026-11-19T16:49:33.174Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "reddit-sentiment:stale": {
       "status": "resolved",
@@ -25525,7 +25531,7 @@
       "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "pending-unrecoverable:fences-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for fences-off-west-end-2026 stuck in _pending with no text and no byline",
@@ -25537,7 +25543,9 @@
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-22T08:54:59.171Z",
+      "resolveReason": "outside the post-opening alert window on a complete scan"
     },
     "opening-night-drift:the-curious-case-of-benjamin-button-off-broadway-2026": {
       "status": "resolved",
@@ -38483,13 +38491,13 @@
       "resolvedAt": "2026-11-06T21:29:38.516Z"
     },
     "pending-unrecoverable:parcel-from-america-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-06T20:46:29.742Z",
       "incidentOpenedAt": "2026-11-22T02:07:31.517Z",
-      "lastSeen": "2026-11-22T07:31:05.798Z",
+      "lastSeen": "2026-11-22T08:37:34.398Z",
       "lastNotifiedAt": "2026-11-22T02:07:31.517Z",
       "lastSurfacedAt": "2026-11-22T02:07:31.517Z",
       "notifyCount": 27,
@@ -38497,7 +38505,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 15,
       "sweptTracker": "BRO-7516",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "uncollected-blackout:tango-after-dark-off-west-end-2026": {
       "status": "resolved",
@@ -39444,19 +39452,19 @@
       "resolveReason": "absent"
     },
     "pending-unrecoverable:tristan-and-yseult-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-08T17:42:05.149Z",
       "incidentOpenedAt": "2026-11-22T02:07:56.595Z",
-      "lastSeen": "2026-11-22T07:31:33.936Z",
+      "lastSeen": "2026-11-22T08:37:58.906Z",
       "lastNotifiedAt": "2026-11-22T02:07:56.595Z",
       "lastSurfacedAt": "2026-11-16T05:50:36.548Z",
       "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-7581",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/job/linear-BRO-7137-mw8323fw": {
       "status": "resolved",
@@ -45396,7 +45404,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1,
-      "resolvedAt": "2026-11-22T08:56:25.072Z",
+      "resolvedAt": "2026-11-22T09:27:25.931Z",
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "land:land/bro-7748-near-miss-v2": {
