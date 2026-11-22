@@ -1591,7 +1591,7 @@ jobs:
         # changes a verdict: continue-on-error, input via env, never interpolated into the script; an empty list is a no-op inside the script (no != in if:, workflow-anchored-jobs-fail-closed).
         continue-on-error: true
         timeout-minutes: 2
-        if: always() && needs.checks.outputs.pre_existing_tests
+        if: always() && needs.checks.outputs.pre_existing_tests && steps.admit.outcome == 'success'
         env:
           LAND_PRE_EXISTING_TESTS: ${{ needs.checks.outputs.pre_existing_tests }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
