@@ -452,8 +452,8 @@ function runDiff(baselineSha, headSha, paths = SITE_PATHS) {
   return { result, files };
 }
 
-function writeOutput(proceed, reason) {
-  const lines = `proceed=${proceed}\nreason=${reason}\n`;
+function writeOutput(proceed, reason, retryAfterSec = 0) {
+  const lines = `proceed=${proceed}\nreason=${reason}\nretry_after_sec=${retryAfterSec}\n`;
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, lines);
   else process.stdout.write(lines);
 }
@@ -522,7 +522,12 @@ async function main() {
   );
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
 
-  writeOutput(proceed, reason);
+  // BRO-8028: a held (min-interval) run asks the workflow's deferred-retry job to
+  // re-dispatch once the interval ends, so skipped churn is never stranded waiting
+  // for an unreliable cron (+30s margin).
+  const retryAfterSec = !proceed && reason === 'min-interval' && baseline.ageSec != null
+    ? Math.max(60, Math.ceil(minIntervalSec - baseline.ageSec) + 30) : 0;
+  writeOutput(proceed, reason, retryAfterSec);
 }
 
 module.exports = { decide, isUrgent, CODE_PATHS, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES };

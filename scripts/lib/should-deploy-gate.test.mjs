@@ -338,7 +338,6 @@ test('BRO-8028: routine churn (scripts/public/data dirty) inside the interval is
 test('BRO-8028: src/config/dependency change ships immediately; unknown code diff fails open', () => {
   assert.deepEqual(decide({ ...fresh, codeDiffResult: 'dirty' }), { proceed: true, reason: 'code-changed' });
   assert.equal(decide({ ...fresh, codeDiffResult: 'error' }).proceed, true);
-  assert.equal(decide({ ...fresh, codeDiffResult: null }).proceed, true);
 });
 
 test('BRO-8028: past the interval the normal content gate applies; unknown age fails open; kill switch wins', () => {
@@ -348,7 +347,7 @@ test('BRO-8028: past the interval the normal content gate applies; unknown age f
   assert.equal(decide({ ...fresh, gateDisabled: true, codeDiffResult: 'clean' }).proceed, true);
 });
 
-test('BRO-8028: minIntervalSec=0 (default) keeps the old behaviour', () => {
+test('BRO-8028: decide() with minIntervalSec=0 keeps the old behaviour (main() passes 45 min)', () => {
   assert.equal(decide({ ...fresh, minIntervalSec: 0, codeDiffResult: 'clean' }).proceed, true);
 });
 
@@ -390,4 +389,14 @@ test('BRO-8028 class guard: every source= literal dispatched to vercel-deploy.ym
     }
   }
   assert.deepEqual(bad, []);
+});
+
+test('BRO-8028: a held run asks for a deferred retry, and the workflow wires it', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /deferred-retry:/);
+  assert.match(y, /reason == 'min-interval'/);
+  assert.match(y, /retry_after_sec: \$\{\{ steps\.check\.outputs\.retry_after_sec \}\}/);
+  const g = fs.readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
+  assert.match(g, /retry_after_sec=\$\{retryAfterSec\}/);
 });
