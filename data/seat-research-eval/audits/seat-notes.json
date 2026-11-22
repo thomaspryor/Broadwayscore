@@ -1,7 +1,7 @@
 {
   "theaters": {
     "Al Hirschfeld Theatre": {
-      "appliedAt": "2026-11-22T18:18:37.151Z",
+      "appliedAt": "2026-11-22T18:41:30.476Z",
       "published": [
         {
           "type": "watch-out",
@@ -101,12 +101,22 @@
           ]
         }
       ],
-      "dropped": 0,
-      "allowShrink": "owner 2026-11-22: center orchestra is not good value"
+      "dropped": 0
     },
     "Ethel Barrymore Theatre": {
-      "appliedAt": "2026-11-22T18:18:37.153Z",
+      "appliedAt": "2026-11-22T18:41:30.478Z",
       "published": [
+        {
+          "type": "watch-out",
+          "level": "orchestra",
+          "evidence": [
+            {
+              "url": "https://www.tickpick.com/blog/barrymore-theatre-seating-chart/",
+              "quoteHash": "ff53848e2dd6",
+              "fetchedAt": "2026-11-22"
+            }
+          ]
+        },
         {
           "type": "watch-out",
           "level": "orchestra",
@@ -119,17 +129,6 @@
             {
               "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
               "quoteHash": "3b110fc378c8",
-              "fetchedAt": "2026-11-22"
-            }
-          ]
-        },
-        {
-          "type": "watch-out",
-          "level": "orchestra",
-          "evidence": [
-            {
-              "url": "https://www.tickpick.com/blog/barrymore-theatre-seating-chart/",
-              "quoteHash": "ff53848e2dd6",
               "fetchedAt": "2026-11-22"
             }
           ]
@@ -210,8 +209,7 @@
           ]
         }
       ],
-      "dropped": 0,
-      "allowShrink": "owner 2026-11-22: center orchestra is not good value"
+      "dropped": 0
     }
   }
 }

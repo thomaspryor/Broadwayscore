@@ -101,6 +101,8 @@ export interface SeatNote {
   side?: 'center' | 'left' | 'right' | 'sides';
   rows?: string;
   claim: string;
+  /** One-line headline for the closed card (watch-out and value notes). */
+  short?: string;
   evidence: { url: string; quoteHash: string; fetchedAt: string }[];
   verifiedAt: string;
 }

@@ -5,7 +5,7 @@
  * lives in one place.
  *
  * A seat note is one sourced, specific tip tied to a seat location:
- *   { type: 'watch-out'|'value'|'note', hazard?, level, side?, rows?, claim,
+ *   { type: 'watch-out'|'value'|'note', hazard?, level, side?, rows?, claim, short?,
  *     evidence: [{ url, quoteHash, fetchedAt }], verifiedAt: 'YYYY-MM-DD' }
  */
 
@@ -111,6 +111,25 @@ function publishableSeatNotes(notes, { today = new Date() } = {}) {
   return live;
 }
 
+/**
+ * The two headline tips the closed card shows (owner-picked design B,
+ * 2026-11-22): the first watch-out and the first value note, in stored order.
+ * Takes the output of publishableSeatNotes().
+ */
+function seatNotePicks(notes) {
+  const list = Array.isArray(notes) ? notes : [];
+  return {
+    avoid: list.find((n) => n.type === 'watch-out') || null,
+    value: list.find((n) => n.type === 'value') || null,
+  };
+}
+
+/** "Center Orchestra, rows A to C. Very close to the stage." for a headline pick. */
+function pickText(n) {
+  const head = String(n.short || n.claim || '').trim().replace(/[.!]+$/, '');
+  return { where: noteLocationLabel(n), what: head ? `${head}.` : '' };
+}
+
 /** Latest verifiedAt across the notes shown, for "checked Nov 2026". */
 function latestVerified(notes) {
   let best = null;
@@ -121,4 +140,5 @@ function latestVerified(notes) {
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
   SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
+  seatNotePicks, pickText,
 };
