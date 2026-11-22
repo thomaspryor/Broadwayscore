@@ -199,6 +199,7 @@ const EXCLUDED_FILES = new Set([
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
+  'src/lib/compute-one-show.ts', // BRO-8056: per-show compute extracted from data-core
   // scoring-delta SCORE_VALUE_FILES
   'scripts/lib/rebuild-helpers.js',
   'scripts/lib/url-date.js', // BRO-6702: extractDateFromUrl moved out of rebuild-helpers

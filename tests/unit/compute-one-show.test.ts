@@ -24,7 +24,7 @@ const review = (i: number, score: number, outletId = `outlet-${i}`): RawReview =
 
 const critic = [review(1, 82, 'nytimes'), review(2, 74), review(3, 65)];
 const blog = [review(9, 90, 'fixture-blog')];
-const noCoverage = buildCoverageFloorInputs({ gapAudit: { shows: [] }, stamps: {}, acks: {} }, {} as NodeJS.ProcessEnv);
+const noCoverage = buildCoverageFloorInputs({ gapAudit: { results: [] }, stamps: {}, acks: [] }, {} as NodeJS.ProcessEnv);
 const deps = (extra: Partial<ComputeOneShowDeps> = {}): ComputeOneShowDeps => ({
   blogReviews: [], audience: [], buzz: [], coverageFloorInputs: noCoverage,
   versionImage: <T extends string | null | undefined>(p: T) => p, ...extra,
@@ -62,4 +62,17 @@ test("rejects a review that belongs to another show (slice contract)", () => {
   const stray = { ...review(5, 70), showId: 'other-show-2026' } as RawReview;
   assert.throws(() => computeOneShow(show, [...critic, stray], deps()), /other-show-2026/);
   assert.throws(() => computeOneShow(show, critic, deps({ blogReviews: [stray] })), /other-show-2026/);
+});
+
+test('coverage-floor inputs reach the computed show (cov, scorePublicSince, ack)', () => {
+  const inputs = buildCoverageFloorInputs({
+    gapAudit: { results: [{ showId: show.id, computedAt: '2026-11-03T00:00:00Z', censusVerdict: { verdict: 'incomplete', liveCount: 3, candidateCount: 9 } }] },
+    stamps: { [show.id]: '2026-11-02T12:00:00Z' },
+    acks: [{ key: `${show.id}::newsletter-gap` }],
+  }, {} as NodeJS.ProcessEnv);
+  const out = computeOneShow(show, critic, deps({ coverageFloorInputs: inputs, now: Date.parse(show.openingDate) + 3600 * 1000 }));
+  assert.equal(out.cov?.state, 'incomplete');
+  assert.equal(out.cov?.liveCount, 3);
+  assert.equal(out.scorePublicSince, '2026-11-02T12:00:00Z');
+  assert.equal(out.coverageAcked, true);
 });
