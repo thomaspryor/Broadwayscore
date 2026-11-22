@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-22T14:11:53.979Z",
+  "runDate": "2026-11-22T14:30:50.864Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,24 +12,24 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 51,
+    "failed": 52,
     "skipped": 0,
     "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 51,
+    "totalFailed": 52,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -55,7 +55,7 @@
   },
   "thisRun": {
     "processed": 0,
-    "failed": 51,
+    "failed": 52,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -101,12 +101,13 @@
       "tuck-everlasting-2016",
       "waitress-2021",
       "what-the-constitution-means-to-me-2019",
+      "wuthering-heights-off-broadway-2026",
       "yellow-face-2024"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 1,
-      "failed": 0
+      "processed": 10,
+      "failed": 51
     }
   },
   "processed": [],
@@ -151,6 +152,7 @@
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
     "red-2010/chicagotribune--chris-jones.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
@@ -165,7 +167,16 @@
   ],
   "cumulativeResumedState": {
     "processed": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "failed": [
       "picnic-2013/observer--rex-reed.json",
@@ -218,18 +229,29 @@
       "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
       "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
       "shrek-the-musical-2008/usatoday--elysa-gardner.json",
-      "all-my-sons-2008/usatoday--elysa-gardner.json"
+      "all-my-sons-2008/usatoday--elysa-gardner.json",
+      "wuthering-heights-off-broadway-2026/letterboxd--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
