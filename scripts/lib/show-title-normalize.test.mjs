@@ -232,3 +232,27 @@ test('BRO-8054: a name in the description is not enough, the writer must be cred
   const c = normalizeShowTitle({ id: 'eng-2026', title: 'Winter Light Years by Jane Roe' }, { sourceText: 'A new play written by Jane Roe.' });
   assert.equal(c.title, 'Winter Light Years');
 });
+
+// BRO-8054 ship-check: the corpus oracle is weaker than a show's own credit, and the automatic
+// writers (write guard, TIC) must never turn a tribute title into a fragment.
+test('BRO-8054: a known writer that is the SUBJECT of the title is never stripped', () => {
+  const kw = new Set(['bob dylan', 'carole king', 'nina simone', 'agatha christie']);
+  for (const t of ['Songs Inspired by Bob Dylan', 'A Night Inspired by Carole King', 'Portrait: Songs Inspired by Nina Simone', 'An Evening Celebrating Nina Simone by Nina Simone']) {
+    assert.equal(normalizeShowTitle({ id: 'x', title: t }, { knownWriters: kw, minRemainderWords: 2 }).title, t, t);
+  }
+  // even the report-only sweep (floor 1) keeps the dangling-tail rule
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Songs Inspired by Bob Dylan' }, { knownWriters: kw }).title, 'Songs Inspired by Bob Dylan');
+});
+
+test('BRO-8054: automatic writers never leave a one-word title (floor 2); the sweep keeps its floor 1', () => {
+  const kw = new Set(['agatha christie', 'william shakespeare']);
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Murdered by Agatha Christie' }, { knownWriters: kw, minRemainderWords: 2 }).title, 'Murdered by Agatha Christie');
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Hamlet by William Shakespeare' }, { knownWriters: kw }).title, 'Hamlet');
+});
+
+test('BRO-8054: staged/conceived/choreographed credits in the description are not writer credits', () => {
+  const t = 'Winter Light: A New Dance Piece by Jane Roe';
+  for (const d of ['Staged by Jane Roe.', 'Conceived by Jane Roe and company.', 'Choreographed by Jane Roe.']) {
+    assert.equal(normalizeShowTitle({ id: 'x', title: t }, { sourceText: d }).title, t, d);
+  }
+});

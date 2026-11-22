@@ -129,6 +129,11 @@ if [ -z "$PROMPT_TEXT" ]; then
   PROMPT_SOURCE="checkout:$PROMPT_FILE"
 fi
 echo "$(date -u +%FT%TZ): prompt source: $PROMPT_SOURCE ($(printf '%s' "$PROMPT_TEXT" | wc -c | tr -d ' ') bytes)"
+# CI checks the repository prompt for the cause-fix rule; the file actually run can be an older checkout.
+# Say so in the log when the rule is absent, so a stale prompt is visible instead of silent.
+if ! printf '%s' "$PROMPT_TEXT" | grep -q "Find the writer"; then
+  echo "$(date -u +%FT%TZ): WARN prompt from $PROMPT_SOURCE has no cause-fix rule (BRO-8054); this run may fix only the symptom"
+fi
 
 perl -e "alarm $CLAUDE_TIMEOUT_SEC; exec @ARGV" \
   claude --dangerously-skip-permissions --model opus -p "$PROMPT_TEXT" --output-format json
