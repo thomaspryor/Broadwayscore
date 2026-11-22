@@ -3,6 +3,11 @@
 // Usage: node scripts/fix-britishtheatre-locale-urls.js [--dir=<review-texts dir>] [--apply]
 // Rewritten files get urlCorrectedFrom + needsRefetch so the collector refetches despite existing text.
 const fs = require('fs'), path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/fix-britishtheatre-locale-urls.js [--dir=<review-texts dir>] [--apply]  (dry run unless --apply)');
+  process.exit(0);
+}
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { canonicalBritishTheatreUrl, hasBritishTheatreLocalePrefix } = require('./lib/britishtheatre-locale-url');
