@@ -1,18 +1,18 @@
 {
   "outletId": "exeunt-magazine",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:31:15.390Z",
+  "generatedAt": "2026-11-22T03:43:28.631Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 560,
-    "inWindow": 549,
+    "enumerated": 562,
+    "inWindow": 551,
     "undated": 0,
     "meta": {
-      "fetched": 560,
+      "fetched": 562,
       "failed": 0
     }
   },
@@ -20,32 +20,31 @@
   "summary": {
     "counts": {
       "not-review": 69,
-      "gap": 57,
+      "held": 306,
       "catalog-gap": 117,
-      "held": 250,
-      "out-of-window": 48,
+      "out-of-window": 47,
+      "gap": 4,
       "held-unmatched": 7,
       "held-alt-url": 1
     },
     "viaTitleVariant": {
-      "held": 12,
-      "gap": 4,
+      "held": 16,
+      "gap": 1,
       "held-alt-url": 1
     },
-    "recall": 0.815,
-    "recallWithCatalog": 0.591
+    "recall": 0.987,
+    "recallWithCatalog": 0.717
   },
   "seasons": {
     "2020-21": {
       "not-review": 5,
-      "gap": 1,
+      "held": 1,
       "catalog-gap": 1
     },
     "2021-22": {
       "catalog-gap": 24,
       "not-review": 14,
-      "gap": 9,
-      "held": 16,
+      "held": 25,
       "out-of-window": 11
     },
     "2022-23": {
@@ -56,39 +55,39 @@
       "gap": 2
     },
     "2023-24": {
-      "held": 43,
+      "held": 53,
       "not-review": 11,
       "catalog-gap": 23,
-      "gap": 11,
+      "gap": 1,
       "out-of-window": 4,
       "held-unmatched": 1
     },
     "2024-25": {
-      "held": 58,
+      "held": 71,
       "catalog-gap": 25,
-      "out-of-window": 15,
+      "out-of-window": 14,
       "not-review": 12,
-      "gap": 12,
       "held-unmatched": 2
     },
     "2025-26": {
       "catalog-gap": 16,
-      "held": 62,
+      "held": 83,
       "not-review": 18,
       "out-of-window": 4,
-      "gap": 22,
+      "gap": 1,
       "held-alt-url": 1,
       "held-unmatched": 3
     },
     "2026-27": {
-      "held": 33,
+      "held": 35,
       "held-unmatched": 1,
       "not-review": 3
     }
   },
   "corpusSide": {
-    "rowsInWindow": 365,
-    "notEnumerated": 36,
+    "rowsInWindow": 425,
+    "heldExcludedRows": 0,
+    "notEnumerated": 39,
     "noUrl": 0,
     "samples": [
       {
@@ -134,6 +133,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "jekyll-and-hyde-1997",
+        "url": "https://exeuntnyc.com/reviews/jekyll-hyde/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "jitney-2017",
         "url": "https://exeuntmagazine.com/reviews/jitney-samuel-j-friedman-theatre/",
         "publishDate": null,
@@ -160,6 +165,12 @@
       {
         "showId": "prince-of-broadway-2017",
         "url": "https://exeuntmagazine.com/reviews/review-prince-broadway/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "private-lives-2011",
+        "url": "https://exeuntnyc.com/reviews/private-lives-2/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -226,6 +237,12 @@
       {
         "showId": "the-heidi-chronicles-2015",
         "url": "https://exeuntnyc.com/reviews/the-heidi-chronicles/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-heiress-2012",
+        "url": "https://exeuntnyc.com/reviews/the-heiress/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -311,120 +328,6 @@
   },
   "gaps": [
     {
-      "url": "https://exeuntnyc.com/reviews/review-pass-over-at-the-august-wilson-theatre/",
-      "headline": "Review: Pass Over at the August Wilson Theatre",
-      "publishDate": "2021-08-31",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "pass-over-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-is-this-a-room-at-the-lyceum-theatre/",
-      "headline": "Review: Is This A Room at the Lyceum Theatre",
-      "publishDate": "2021-10-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "is-this-a-room-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-lehman-trilogy-at-the-nederlander-theatre/",
-      "headline": "Review: The Lehman Trilogy at the Nederlander Theatre",
-      "publishDate": "2021-10-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-lehman-trilogy-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-chicken-biscuits-at-circle-in-the-square/",
-      "headline": "Review: Chicken & Biscuits at Circle in the Square",
-      "publishDate": "2021-10-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "chicken-and-biscuits-2021"
-      ],
-      "outOfWindow": [
-        "the-circle-1989"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-trouble-in-mind-at-the-american-airlines-theatre/",
-      "headline": "Review: Trouble in Mind at the American Airlines Theatre",
-      "publishDate": "2021-11-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "trouble-in-mind-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-diana-the-musical-at-the-longacre-theatre/",
-      "headline": "Review: Diana, The Musical at the Longacre Theatre",
-      "publishDate": "2021-11-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "diana-the-musical-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-flying-over-sunset-at-lincoln-center-theater/",
-      "headline": "Review: Flying Over Sunset at Lincoln Center Theater",
-      "publishDate": "2021-12-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "flying-over-sunset-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-skeleton-crew-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: Skeleton Crew at the Samuel J. Friedman Theatre",
-      "publishDate": "2022-02-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "skeleton-crew-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-chinese-lady-at-the-public-theater/",
-      "headline": "Review: The Chinese Lady at the Public Theater",
-      "publishDate": "2022-03-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-chinese-lady-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
-      "headline": "Review: POTUS at the Shubert Theatre",
-      "publishDate": "2022-04-30",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
-      ],
-      "outOfWindow": [
-        "potus-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-some-like-it-hot-at-the-shubert-theatre/",
       "headline": "Review: Some Like It Hot at the Shubert Theatre",
       "publishDate": "2022-12-12",
@@ -447,17 +350,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-white-chip-at-mcc/",
-      "headline": "Review: The White Chip at MCC",
-      "publishDate": "2024-02-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-white-chip-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-munich-medea-happy-family-at-wp-theater/",
       "headline": "Review: Munich Medea: Happy Family at WP Theater",
       "publishDate": "2024-02-13",
@@ -475,251 +367,6 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/an-enemy-of-the-people-at-circle-in-the-square/",
-      "headline": "An Enemy of the People at Circle in the Square",
-      "publishDate": "2024-03-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "an-enemy-of-the-people-2024"
-      ],
-      "outOfWindow": [
-        "an-enemy-of-the-people-2012",
-        "the-circle-1989",
-        "an-enemy-of-the-people-1971"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-notebook-at-the-gerald-schoenfeld-theatre/",
-      "headline": "Review: The Notebook at the Gerald Schoenfeld Theatre",
-      "publishDate": "2024-03-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-notebook-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-lempicka-at-the-longacre-theatre/",
-      "headline": "Review: Lempicka at the Longacre Theatre",
-      "publishDate": "2024-04-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "lempicka-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-orlando-at-signature-theatre/",
-      "headline": "Review: Orlando at Signature Theatre",
-      "publishDate": "2024-04-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "orlando-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-suffs-at-the-music-box-theatre/",
-      "headline": "Review: Suffs at the Music Box Theatre",
-      "publishDate": "2024-04-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "suffs-2024"
-      ],
-      "outOfWindow": [
-        "suffs-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-patriots-at-the-barrymore-theatre/",
-      "headline": "Review: Patriots at the Barrymore Theatre",
-      "publishDate": "2024-04-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "patriots-2024"
-      ],
-      "outOfWindow": [
-        "barrymore-1997"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-lonely-few-at-mcc-theater/",
-      "headline": "Review: The Lonely Few at MCC Theater",
-      "publishDate": "2024-05-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-lonely-few-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-three-houses-at-signature-theatre/",
-      "headline": "Review: Three Houses at Signature Theatre",
-      "publishDate": "2024-05-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "three-houses-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-what-became-of-us-at-atlantic-stage-2/",
-      "headline": "Review: What Became of Us at Atlantic Stage 2",
-      "publishDate": "2024-06-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "what-became-of-us-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-sunset-blvd-at-the-st-james-theatre/",
-      "headline": "Review: Sunset Blvd. at the St. James Theatre",
-      "publishDate": "2024-10-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sunset-boulevard-2024"
-      ],
-      "outOfWindow": [
-        "sunset-boulevard-2017",
-        "sunset-boulevard-1994"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-henry-iv-at-polonsky-shakespeare-center/",
-      "headline": "Review: Henry IV at Polonsky Shakespeare Center",
-      "publishDate": "2025-02-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "henry-iv-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "henry-iv-2003",
-        "henry-iv-off-broadway-2015"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-redwood-at-nederlander-theatre/",
-      "headline": "Review: Redwood at Nederlander Theatre",
-      "publishDate": "2025-02-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "redwood-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-curse-of-the-starving-class-at-the-new-group-at-the-pershing-square-signature-center/",
-      "headline": "Review: Curse of the Starving Class at The New Group at The Pershing Square Signature Center",
-      "publishDate": "2025-03-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "curse-of-the-starving-class-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-all-nighter-at-robert-w-wilson-mcc-theater-space/",
-      "headline": "Review: All Nighter at Robert W. Wilson MCC Theater Space",
-      "publishDate": "2025-03-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "all-nighter-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-vanya-at-the-lucille-lortel/",
-      "headline": "Review: Vanya at the Lucille Lortel",
-      "publishDate": "2025-03-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "vanya-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-picture-of-dorian-gray-at-the-music-box/",
-      "headline": "Review: The Picture of Dorian Gray at The Music Box",
-      "publishDate": "2025-04-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-picture-of-dorian-gray-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-last-five-years-at-the-hudson-theatre/",
-      "headline": "Review: The Last Five Years at the Hudson Theatre",
-      "publishDate": "2025-04-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-last-five-years-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-john-proctor-is-the-villain-at-the-booth-theatre/",
-      "headline": "Review: John Proctor Is the Villain at the Booth Theatre",
-      "publishDate": "2025-04-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "john-proctor-is-the-villain-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-pirates-the-penzance-musical-at-the-todd-haimes-theatre/",
-      "headline": "Review: Pirates! The Penzance Musical at the Todd Haimes Theatre",
-      "publishDate": "2025-05-07",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "pirates-the-penzance-musical-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-eurydice-at-signature-theatre-center/",
-      "headline": "Review: Eurydice at Signature Theatre Center",
-      "publishDate": "2025-06-08",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "eurydice-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-lowcountry-at-atlantic-theater-company/",
-      "headline": "Review: Lowcountry at Atlantic Theater Company",
-      "publishDate": "2025-06-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "lowcountry-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-other-americans-at-the-public-theater/",
       "headline": "Review: The Other Americans at the Public Theater",
       "publishDate": "2025-09-26",
@@ -727,244 +374,6 @@
       "held": [],
       "matched": [
         "the-other-americans-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-punch-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: Punch at the Samuel J. Friedman Theatre",
-      "publishDate": "2025-10-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "punch-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-caroline-at-mcc/",
-      "headline": "Review: Caroline at MCC",
-      "publishDate": "2025-10-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "caroline-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-pershing-square-signature-center/",
-      "headline": "Review: Oratorio for Living Things at Pershing Square Signature Center",
-      "publishDate": "2025-10-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "oratorio-for-living-things-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-liberation-at-james-earl-jones-theatre/",
-      "headline": "Review: Liberation at James Earl Jones Theatre",
-      "publishDate": "2025-10-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "liberation-2025"
-      ],
-      "outOfWindow": [
-        "liberation-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-chess-at-the-imperial-theatre/",
-      "headline": "Review: Chess at the Imperial Theatre",
-      "publishDate": "2025-11-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "chess-2025"
-      ],
-      "outOfWindow": [
-        "chess-1988",
-        "chess-2003"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-disappear-at-the-minetta-lane-theatre/",
-      "headline": "Review: The Disappear at the Minetta Lane Theatre",
-      "publishDate": "2026-01-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-disappear-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-blackout-songs-at-robert-c-wilson-mcc-theater-space/",
-      "headline": "Review: Blackout Songs at Robert C. Wilson MCC Theater Space",
-      "publishDate": "2026-01-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "blackout-songs-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-data-at-the-lucille-lortel-theatre/",
-      "headline": "Review: Data at the Lucille Lortel Theatre",
-      "publishDate": "2026-02-02",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "data-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-coriolanus-at-theatre-for-a-new-audience/",
-      "headline": "Review: The Tragedy of Coriolanus at Theatre for a New Audience",
-      "publishDate": "2026-02-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-tragedy-of-coriolanus-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "the-audience-2015"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-hate-radio-at-st-anns-warehouse/",
-      "headline": "Review: Hate Radio at St. Ann's Warehouse",
-      "publishDate": "2026-02-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hate-radio-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-reservoir-at-atlantic-theater-company/",
-      "headline": "Review: The Reservoir at Atlantic Theater Company",
-      "publishDate": "2026-02-27",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-reservoir-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-night-side-songs-at-lct3/",
-      "headline": "Review: Night Side Songs at LCT3",
-      "publishDate": "2026-03-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "night-side-songs-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-bigfoot-at-new-york-city-center-stage-i/",
-      "headline": "Review: Bigfoot! at New York City Center – Stage I",
-      "publishDate": "2026-03-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "bigfoot-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-marcel-on-the-train/",
-      "headline": "Review: Marcel on the Train",
-      "publishDate": "2026-03-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "marcel-on-the-train-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-public-charge-at-the-public-theater/",
-      "headline": "Review: Public Charge at the Public Theater",
-      "publishDate": "2026-04-01",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "public-charge-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-balusters-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: The Balusters at the Samuel J. Friedman Theatre",
-      "publishDate": "2026-04-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-balusters-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-adding-machine-at-the-theater-at-st-clements/",
-      "headline": "Review: The Adding Machine at the Theater at St. Clement's",
-      "publishDate": "2026-04-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-adding-machine-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-receptionist-at-pershing-square-signature-center/",
-      "headline": "Review: The Receptionist at Pershing Square Signature Center",
-      "publishDate": "2026-05-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-receptionist-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-becky-shaw-at-the-hayes-theater/",
-      "headline": "Review: Becky Shaw at the Hayes Theater",
-      "publishDate": "2026-04-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "becky-shaw-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-girlschancemusic-at-vineyard-theatre/",
-      "headline": "Review: ||:GIRLS:||:CHANCE:||:MUSIC:|| at Vineyard Theatre",
-      "publishDate": "2026-06-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "girls-chance-music-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-isla-at-wp-theater/",
-      "headline": "Review: Isla at WP Theater",
-      "publishDate": "2026-08-14",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "isla-off-broadway-2026"
       ],
       "outOfWindow": []
     }
@@ -2587,17 +1996,6 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-new-world-stages/",
-      "headline": "Review: The Imaginary Invalid at New World Stages",
-      "publishDate": "2025-06-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-prosperous-fools-at-polonsky-shakespeare-center/",
       "headline": "Review: Prosperous Fools at Polonsky Shakespeare Center",
       "publishDate": "2025-06-13",
@@ -2709,5 +2107,9 @@
         "a-woman-among-women-off-broadway-2026"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }
