@@ -262,7 +262,7 @@ async function cmdFetch() {
     fs.writeFileSync(pageFile(url), JSON.stringify(rec));
     console.log(`  ${rec.ok ? 'ok  ' : 'FAIL'} ${url}${rec.ok ? '' : ` (${rec.error})`}`);
   }
-  if (skipped) console.log(`  skipped ${skipped} SeatPlan level pages the main page does not link to`);
+  if (skipped) console.log(`  skipped ${skipped} SeatPlan level pages whose venue page is missing`);
 }
 
 /** SeatPlan venue sub-pages linked from a page's HTML: absolute https URLs ending in '/'. */
@@ -274,15 +274,17 @@ function seatplanLinks(html) {
   return [...out];
 }
 
-/** False when url is a SeatPlan level page whose cached main page failed, or was fetched with links and does not link it. */
+/**
+ * False only when url is a SeatPlan level page whose venue page was fetched and
+ * missing (a wrong slug: every level page 404s too). The venue page does not
+ * link every level page (Walter Kerr links only /orchestra/), so links are not
+ * a reason to skip.
+ */
 function seatplanLevelLinked(url) {
   const m = url.match(/^(https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/)([a-z0-9-]+\/)$/);
   if (!m) return true;
   const main = readPage(m[1]);
-  if (!main) return true;
-  if (!main.ok) return false; // venue page missing: its level pages will 404 too
-  if (!Array.isArray(main.links)) return true;
-  return main.links.includes(url);
+  return !(main && !main.ok);
 }
 
 /**

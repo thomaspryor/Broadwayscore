@@ -53,6 +53,19 @@ describe('seat notes in theater-metadata.json', () => {
     assert.deepEqual(missing, [], `published by seat-notes.js but no rendering notes now: ${missing.join(', ')}`);
   });
 
+  test('no audited theater lost more than 20% of its notes or watch-outs (shrink backstop)', () => {
+    // Same bar apply holds itself to without --allow-shrink; this catches any other writer.
+    const shrunk = [];
+    for (const [t, a] of Object.entries(audit.theaters || {})) {
+      if (!Array.isArray(a.published) || !a.published.length) continue;
+      const now = rendering(t);
+      const wo = (xs) => xs.filter((n) => n.type === 'watch-out').length;
+      if (now.length < Math.ceil(a.published.length * 0.8)) shrunk.push(`${t}: ${now.length} notes, published ${a.published.length}`);
+      else if (wo(now) < Math.ceil(wo(a.published) * 0.8)) shrunk.push(`${t}: ${wo(now)} watch-outs, published ${wo(a.published)}`);
+    }
+    assert.deepEqual(shrunk, []);
+  });
+
   test('every theater with notes meets the publish rule (2+ notes, 1+ watch-out or value)', () => {
     // Does not trust the audit: a job that thins a theater's notes fails here too.
     const thin = theaters.filter((t) => notesOf(t)?.length).filter((t) => {
