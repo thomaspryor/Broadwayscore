@@ -46,12 +46,20 @@ function daysBetween(fromIso, toIso) {
 function previewsFallbackOpening(show, todayStr) {
   if (!show || show.openingDate) return null;
   if (!FALLBACK_CATEGORIES.has(show.category)) return null;
-  if (show.status !== 'previews' && show.status !== 'open') return null;
+  if (show.status !== 'previews' && show.status !== 'open' && show.status !== 'closed') return null;
   const start = show.previewsStartDate;
   if (!start || !/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
   const age = daysBetween(start, todayStr);
   if (!Number.isFinite(age)) return null;
-  if (age < PREVIEWS_FALLBACK_GRACE_DAYS || age > PREVIEWS_FALLBACK_MAX_AGE_DAYS) return null;
+  // BRO-8059: a run that already ended (closingDate reached, e.g. a 2-night
+  // OB engagement that closed at status=closed with no press night ever
+  // found) will never reach the grace window; the fallback applies at once,
+  // otherwise it trips the opening-date-required ratchet.
+  const ended = show.status === 'closed' && /^\d{4}-\d{2}-\d{2}$/.test(show.closingDate || '') && show.closingDate <= todayStr;
+  if (age < 0) return null;
+  if (show.status === 'closed' && !ended) return null;
+  if (!ended && age < PREVIEWS_FALLBACK_GRACE_DAYS) return null;
+  if (age > PREVIEWS_FALLBACK_MAX_AGE_DAYS) return null;
   return { openingDate: start, openingDateSource: PREVIEWS_FALLBACK_SOURCE };
 }
 

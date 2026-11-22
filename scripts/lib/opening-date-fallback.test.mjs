@@ -35,3 +35,10 @@ test('the fallback source is unconfirmed, so date enrichers overwrite it', () =>
   assert.equal(isUnconfirmedDateSource({ category: 'off-broadway', openingDateSource: 'previews-fallback' }), true);
   assert.equal(isUnconfirmedDateSource({ category: 'off-west-end', openingDateSource: 'previews-fallback' }), true);
 });
+
+test('BRO-8059: ended short run (closed, closingDate reached) gets the fallback without the grace wait', () => {
+  const s = ob({ status: 'closed', previewsStartDate: '2026-11-20', closingDate: '2026-11-21' });
+  assert.deepEqual(previewsFallbackOpening(s, '2026-11-22'), { openingDate: '2026-11-20', openingDateSource: 'previews-fallback' });
+  assert.equal(previewsFallbackOpening({ ...s, closingDate: '2026-12-30' }, '2026-11-22'), null);
+  assert.equal(previewsFallbackOpening({ ...s, category: 'broadway' }, '2026-11-22'), null);
+});
