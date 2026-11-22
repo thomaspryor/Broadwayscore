@@ -1,21 +1,21 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-11-21T21:10:08.469Z",
+  "generatedAt": "2026-11-22T18:49:23.951Z",
   "generator": "scripts/grade-openings.js (BRO-7082)",
-  "from": "2026-11-07",
-  "to": "2026-11-21",
+  "from": "2026-11-08",
+  "to": "2026-11-22",
   "windowHours": {
     "before": 72,
     "after": 168
   },
-  "historyFrom": "2026-10-27T21:09:37.000Z",
-  "commitsScanned": 971,
+  "historyFrom": "2026-10-28T18:53:26.000Z",
+  "commitsScanned": 911,
   "summary": {
     "broadway": {
       "openings": 8,
-      "onItsOwn": 1,
-      "neededHands": 6,
-      "neededHandsIngestOnly": 0,
+      "onItsOwn": 3,
+      "neededHands": 4,
+      "neededHandsIngestOnly": 2,
       "incomplete": 1,
       "noReviews": 0,
       "noReviewsClosed": 0,
@@ -23,14 +23,14 @@
       "notGradable": 0
     },
     "off-broadway": {
-      "openings": 20,
-      "onItsOwn": 4,
-      "neededHands": 3,
+      "openings": 21,
+      "onItsOwn": 5,
+      "neededHands": 2,
       "neededHandsIngestOnly": 1,
       "incomplete": 5,
-      "noReviews": 6,
-      "noReviewsClosed": 3,
-      "coverageUnknown": 2,
+      "noReviews": 8,
+      "noReviewsClosed": 5,
+      "coverageUnknown": 1,
       "notGradable": 0
     },
     "west-end": {
@@ -46,32 +46,54 @@
     },
     "off-west-end": {
       "openings": 19,
-      "onItsOwn": 6,
-      "neededHands": 7,
+      "onItsOwn": 9,
+      "neededHands": 2,
       "neededHandsIngestOnly": 1,
-      "incomplete": 4,
-      "noReviews": 2,
-      "noReviewsClosed": 0,
+      "incomplete": 5,
+      "noReviews": 3,
+      "noReviewsClosed": 3,
       "coverageUnknown": 0,
       "notGradable": 0
     }
   },
   "grades": [
     {
+      "showId": "fantasma-off-broadway-2026",
+      "title": "Fantasma",
+      "category": "off-broadway",
+      "openingDate": "2026-11-22",
+      "embargoAt": "2026-11-23T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-30T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "openingWeekLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
       "category": "off-west-end",
       "openingDate": "2026-11-21",
-      "embargoAt": "2026-11-21T22:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-28T22:00:00.000Z",
+      "embargoAt": "2026-11-21T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-28T21:00:00.000Z",
       "windowClosed": false,
-      "live": 1,
+      "live": 7,
       "lateLive": 0,
-      "openingWeekLive": 1,
-      "known": 1,
+      "openingWeekLive": 7,
+      "known": 7,
       "missing": 0,
-      "censusCandidates": 4,
+      "censusCandidates": 7,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -84,16 +106,16 @@
       "title": "The Snowman",
       "category": "off-west-end",
       "openingDate": "2026-11-21",
-      "embargoAt": "2026-11-21T22:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-28T22:00:00.000Z",
+      "embargoAt": "2026-11-21T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-28T21:00:00.000Z",
       "windowClosed": false,
       "live": 2,
       "lateLive": 0,
       "openingWeekLive": 2,
       "known": 2,
       "missing": 0,
-      "censusCandidates": 1,
+      "censusCandidates": 2,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
@@ -132,14 +154,36 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-28T03:00:00.000Z",
       "windowClosed": false,
-      "live": 6,
+      "live": 7,
       "lateLive": 0,
-      "openingWeekLive": 6,
-      "known": 6,
+      "openingWeekLive": 7,
+      "known": 7,
       "missing": 0,
-      "censusCandidates": 2,
+      "censusCandidates": 3,
       "hoursToLive": -0.1,
       "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "joris-lacoste-nexus-de-ladoration-off-broadway-2026",
+      "title": "Joris Lacoste: Nexus de l’adoration",
+      "category": "off-broadway",
+      "openingDate": "2026-11-20",
+      "embargoAt": "2026-11-21T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-28T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "openingWeekLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
       "historyCovers": true,
@@ -159,21 +203,20 @@
       "openingWeekLive": 7,
       "known": 7,
       "missing": 0,
-      "censusCandidates": 7,
+      "censusCandidates": 10,
       "hoursToLive": null,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-21T06:42:52.000Z",
           "outletId": "thestage",
           "cause": "text-gap",
-          "source": "e312e027 feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        }
-      ],
-      "sweepFinds": [
+          "fileChange": "modified",
+          "source": "e312e027 feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-21T08:06:17.000Z",
@@ -195,10 +238,10 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-26T21:00:00.000Z",
       "windowClosed": false,
-      "live": 11,
+      "live": 12,
       "lateLive": 0,
-      "openingWeekLive": 11,
-      "known": 11,
+      "openingWeekLive": 12,
+      "known": 12,
       "missing": 0,
       "censusCandidates": 16,
       "hoursToLive": 1.3,
@@ -206,6 +249,14 @@
       "onlyIngestDispatches": false,
       "signals": [],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-22T02:20:40.000Z",
+          "outletId": "stagetopage",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "887d2971 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-20T03:06:37.000Z",
@@ -235,17 +286,25 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-26T22:00:00.000Z",
       "windowClosed": false,
-      "live": 4,
+      "live": 6,
       "lateLive": 0,
-      "openingWeekLive": 4,
-      "known": 4,
+      "openingWeekLive": 6,
+      "known": 6,
       "missing": 0,
-      "censusCandidates": 7,
+      "censusCandidates": 9,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-22T16:45:36.000Z",
+          "outletId": "redbuslondinium",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "5077ee67 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-20T04:10:51.000Z",
@@ -460,6 +519,28 @@
       "expectedMissing": null
     },
     {
+      "showId": "wuthering-heights-off-broadway-2026",
+      "title": "Wuthering Heights",
+      "category": "off-broadway",
+      "openingDate": "2026-11-19",
+      "embargoAt": "2026-11-20T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-27T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 1,
+      "lateLive": 0,
+      "openingWeekLive": 1,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 9,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
       "showId": "florence-off-west-end-2026",
       "title": "Florence",
       "category": "off-west-end",
@@ -495,18 +576,19 @@
       "openingWeekLive": 1,
       "known": 1,
       "missing": 0,
-      "censusCandidates": 6,
+      "censusCandidates": 5,
       "hoursToLive": 2.2,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-21T16:05:57.000Z",
           "outletId": "daily-herald",
           "cause": "text-gap",
-          "source": "0589afa0 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
+          "fileChange": "modified",
+          "source": "0589afa0 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
         }
       ],
       "historyCovers": true,
@@ -551,16 +633,8 @@
       "censusCandidates": 7,
       "hoursToLive": 1.9,
       "verdict": "needed-hands",
-      "onlyIngestDispatches": false,
+      "onlyIngestDispatches": true,
       "signals": [
-        {
-          "kind": "hand-commit",
-          "at": "2026-11-21T07:53:22.000Z",
-          "outletId": "culturesauce",
-          "cause": "text-gap",
-          "source": "fd25ef60 feat: gap-recovery driver checkpoint 8 - 8 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-18T05:00:25.000Z",
@@ -579,6 +653,14 @@
         }
       ],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-21T07:53:22.000Z",
+          "outletId": "culturesauce",
+          "cause": "text-gap",
+          "fileChange": "modified",
+          "source": "fd25ef60 feat: gap-recovery driver checkpoint 8 - 8 accepted (BRO-7171 Stage 2)"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-20T12:39:45.000Z",
@@ -600,34 +682,41 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-24T22:00:00.000Z",
       "windowClosed": false,
-      "live": 24,
+      "live": 27,
       "lateLive": 0,
-      "openingWeekLive": 24,
-      "known": 24,
+      "openingWeekLive": 27,
+      "known": 27,
       "missing": 0,
-      "censusCandidates": 22,
+      "censusCandidates": 25,
       "hoursToLive": null,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-21T14:25:19.000Z",
           "outletId": "financialtimes",
           "cause": "text-gap",
-          "source": "b29ea81c feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
+          "fileChange": "modified",
+          "source": "b29ea81c feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
         },
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-21T06:37:13.000Z",
           "outletId": "thestage",
           "cause": "text-gap",
-          "source": "0582e851 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        }
-      ],
-      "sweepFinds": [
+          "fileChange": "modified",
+          "source": "0582e851 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-22T12:00:17.000Z",
+          "outletId": "londonlivinglarge",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "f0f902a9 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-21T13:12:54.000Z",
@@ -665,17 +754,25 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-25T03:00:00.000Z",
       "windowClosed": false,
-      "live": 8,
+      "live": 9,
       "lateLive": 0,
-      "openingWeekLive": 8,
-      "known": 8,
+      "openingWeekLive": 9,
+      "known": 9,
       "missing": 0,
-      "censusCandidates": 12,
+      "censusCandidates": 13,
       "hoursToLive": 1.2,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-21T21:34:59.000Z",
+          "outletId": "irish-central",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "07f97fa7 ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-18T10:53:54.000Z",
@@ -767,19 +864,11 @@
       "openingWeekLive": 8,
       "known": 8,
       "missing": 0,
-      "censusCandidates": 13,
+      "censusCandidates": 12,
       "hoursToLive": null,
       "verdict": "needed-hands",
-      "onlyIngestDispatches": false,
+      "onlyIngestDispatches": true,
       "signals": [
-        {
-          "kind": "hand-commit",
-          "at": "2026-11-21T07:55:40.000Z",
-          "outletId": "culturesauce",
-          "cause": "text-gap",
-          "source": "b35794c6 feat: gap-recovery driver checkpoint 9 - 9 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-19T03:01:42.000Z",
@@ -790,6 +879,14 @@
         }
       ],
       "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-21T07:55:40.000Z",
+          "outletId": "culturesauce",
+          "cause": "text-gap",
+          "fileChange": "modified",
+          "source": "b35794c6 feat: gap-recovery driver checkpoint 9 - 9 accepted (BRO-7171 Stage 2)"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-19T11:03:59.000Z",
@@ -811,26 +908,33 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-24T03:00:00.000Z",
       "windowClosed": false,
-      "live": 28,
+      "live": 29,
       "lateLive": 0,
-      "openingWeekLive": 28,
-      "known": 28,
+      "openingWeekLive": 29,
+      "known": 29,
       "missing": 0,
       "censusCandidates": 24,
       "hoursToLive": 0.3,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-18T06:40:44.000Z",
           "outletId": "jks-theatre-scene",
           "cause": "text-gap",
-          "source": "8306410f feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        }
-      ],
-      "sweepFinds": [
+          "fileChange": "modified",
+          "source": "8306410f feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
+        },
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-22T13:07:46.000Z",
+          "outletId": "stagezine",
+          "cause": "discovery-gap",
+          "fileChange": "added",
+          "source": "6a28888f ingest: audit-aggregator-gap auto-ingested review-texts"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-20T11:14:49.000Z",
@@ -891,13 +995,13 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-21T22:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "openingWeekLive": 0,
       "known": 0,
       "missing": 0,
-      "censusCandidates": 5,
+      "censusCandidates": 4,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
@@ -913,13 +1017,13 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-21T22:00:00.000Z",
-      "windowClosed": false,
-      "live": 26,
-      "lateLive": 0,
+      "windowClosed": true,
+      "live": 27,
+      "lateLive": 1,
       "openingWeekLive": 26,
       "known": 26,
       "missing": 0,
-      "censusCandidates": 28,
+      "censusCandidates": 30,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -970,7 +1074,7 @@
       "embargoAt": "2026-11-15T03:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-22T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "openingWeekLive": 0,
@@ -992,7 +1096,7 @@
       "embargoAt": "2026-11-15T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-22T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "openingWeekLive": 0,
@@ -1014,24 +1118,25 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-21T22:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "openingWeekLive": 0,
       "known": 0,
       "missing": 0,
-      "censusCandidates": 10,
+      "censusCandidates": 8,
       "hoursToLive": null,
-      "verdict": "needed-hands",
+      "verdict": "no-reviews",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-18T06:47:11.000Z",
           "outletId": "timeandleisure",
           "cause": "text-gap",
-          "source": "4e91f4ca feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
+          "fileChange": "modified",
+          "source": "4e91f4ca feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)"
         }
       ],
       "historyCovers": true,
@@ -1045,7 +1150,7 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-21T22:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 25,
       "lateLive": 0,
       "openingWeekLive": 25,
@@ -1067,7 +1172,7 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-21T22:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 0,
       "lateLive": 0,
       "openingWeekLive": 0,
@@ -1210,12 +1315,12 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-19T22:00:00.000Z",
       "windowClosed": true,
-      "live": 4,
-      "lateLive": 4,
+      "live": 5,
+      "lateLive": 5,
       "openingWeekLive": 0,
       "known": 0,
       "missing": 0,
-      "censusCandidates": 8,
+      "censusCandidates": 11,
       "hoursToLive": null,
       "verdict": "incomplete",
       "onlyIngestDispatches": false,
@@ -1261,16 +1366,17 @@
       "missing": 0,
       "censusCandidates": 9,
       "hoursToLive": 1.2,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-12T06:48:04.000Z",
           "outletId": "thestage",
           "cause": "text-gap",
-          "source": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
+          "fileChange": "modified",
+          "source": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)"
         }
       ],
       "historyCovers": true,
@@ -1285,12 +1391,12 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-18T22:00:00.000Z",
       "windowClosed": true,
-      "live": 27,
-      "lateLive": 16,
+      "live": 26,
+      "lateLive": 15,
       "openingWeekLive": 11,
       "known": 11,
       "missing": 0,
-      "censusCandidates": 26,
+      "censusCandidates": 24,
       "hoursToLive": null,
       "verdict": "incomplete",
       "onlyIngestDispatches": false,
@@ -1323,14 +1429,6 @@
           "outletId": "times-uk",
           "cause": "other",
           "source": "4a77e3b5 revert: cloud-9 times-uk was an interview, not a review (BRO-7569 non_review_url gate)",
-          "fileChange": "modified"
-        },
-        {
-          "kind": "hand-commit",
-          "at": "2026-11-15T22:59:21.000Z",
-          "outletId": "times-uk",
-          "cause": "text-gap",
-          "source": "5ffda775 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
           "fileChange": "modified"
         },
         {
@@ -1393,6 +1491,14 @@
       "sweepFinds": [
         {
           "kind": "sweep-find",
+          "at": "2026-11-15T22:59:21.000Z",
+          "outletId": "times-uk",
+          "cause": "text-gap",
+          "fileChange": "modified",
+          "source": "5ffda775 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
+        },
+        {
+          "kind": "sweep-find",
           "at": "2026-11-11T12:38:20.000Z",
           "outletId": "thestage",
           "cause": "discovery-gap",
@@ -1412,8 +1518,8 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-17T22:00:00.000Z",
       "windowClosed": true,
-      "live": 6,
-      "lateLive": 5,
+      "live": 7,
+      "lateLive": 6,
       "openingWeekLive": 1,
       "known": 1,
       "missing": 0,
@@ -1434,14 +1540,14 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-18T03:00:00.000Z",
       "windowClosed": true,
-      "live": 9,
-      "lateLive": 0,
+      "live": 10,
+      "lateLive": 1,
       "openingWeekLive": 9,
       "known": 9,
       "missing": 0,
       "censusCandidates": 5,
       "hoursToLive": null,
-      "verdict": "coverage-unknown",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
       "historyCovers": true,
@@ -1463,19 +1569,18 @@
       "missing": 0,
       "censusCandidates": 31,
       "hoursToLive": 4.2,
-      "verdict": "needed-hands",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-10T06:39:05.000Z",
           "outletId": "express-uk",
           "cause": "text-gap",
-          "source": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        }
-      ],
-      "sweepFinds": [
+          "fileChange": "modified",
+          "source": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
+        },
         {
           "kind": "sweep-find",
           "at": "2026-11-15T10:34:11.000Z",
@@ -1558,7 +1663,7 @@
       "openingWeekLive": 25,
       "known": 25,
       "missing": 0,
-      "censusCandidates": 35,
+      "censusCandidates": 33,
       "hoursToLive": 0.3,
       "verdict": "incomplete",
       "onlyIngestDispatches": false,
@@ -1625,8 +1730,8 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-17T03:00:00.000Z",
       "windowClosed": true,
-      "live": 10,
-      "lateLive": 1,
+      "live": 11,
+      "lateLive": 2,
       "openingWeekLive": 9,
       "known": 9,
       "missing": 0,
@@ -1740,16 +1845,17 @@
       "missing": 0,
       "censusCandidates": 4,
       "hoursToLive": null,
-      "verdict": "needed-hands",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
-      "signals": [
+      "signals": [],
+      "sweepFinds": [
         {
-          "kind": "hand-commit",
+          "kind": "sweep-find",
           "at": "2026-11-09T07:23:27.000Z",
           "outletId": "nytimes",
           "cause": "text-gap",
-          "source": "11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
+          "fileChange": "modified",
+          "source": "11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)"
         }
       ],
       "historyCovers": true,
@@ -1786,8 +1892,8 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T03:00:00.000Z",
       "windowClosed": true,
-      "live": 28,
-      "lateLive": 2,
+      "live": 29,
+      "lateLive": 3,
       "openingWeekLive": 26,
       "known": 26,
       "missing": 0,
@@ -1796,14 +1902,6 @@
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
-        {
-          "kind": "hand-commit",
-          "at": "2026-11-15T06:57:50.000Z",
-          "outletId": "lighting-and-sound-america",
-          "cause": "text-gap",
-          "source": "9bdc4730 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)",
-          "fileChange": "modified"
-        },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-09T04:18:11.000Z",
@@ -1833,50 +1931,16 @@
           ]
         }
       ],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "broom-play-off-broadway-2026",
-      "title": "Broom Play",
-      "category": "off-broadway",
-      "openingDate": "2026-11-07",
-      "embargoAt": "2026-11-08T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-15T03:00:00.000Z",
-      "windowClosed": true,
-      "live": 3,
-      "lateLive": 1,
-      "openingWeekLive": 2,
-      "known": 2,
-      "missing": 0,
-      "censusCandidates": 4,
-      "hoursToLive": null,
-      "verdict": "incomplete",
-      "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true,
-      "expectedMissing": null
-    },
-    {
-      "showId": "othello-bedlam-off-broadway-2026",
-      "title": "Othello (Bedlam)",
-      "category": "off-broadway",
-      "openingDate": "2026-11-07",
-      "embargoAt": "2026-11-08T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
-      "windowEnd": "2026-11-15T03:00:00.000Z",
-      "windowClosed": true,
-      "live": 10,
-      "lateLive": 1,
-      "openingWeekLive": 9,
-      "known": 9,
-      "missing": 0,
-      "censusCandidates": 6,
-      "hoursToLive": null,
-      "verdict": "incomplete",
-      "onlyIngestDispatches": false,
-      "signals": [],
+      "sweepFinds": [
+        {
+          "kind": "sweep-find",
+          "at": "2026-11-15T06:57:50.000Z",
+          "outletId": "lighting-and-sound-america",
+          "cause": "text-gap",
+          "fileChange": "modified",
+          "source": "9bdc4730 feat: gap-recovery driver checkpoint 1 - 1 accepted (BRO-7171 Stage 2)"
+        }
+      ],
       "historyCovers": true,
       "expectedMissing": null
     }
@@ -3218,7 +3282,8 @@
       "embargoAt": "2026-11-09T03:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-09T07:23:27.000Z",
-      "via": "11f18855 feat: gap-recovery driver final - 4 accepted (card Stage 2)"
+      "via": "11f18855 feat: gap-recovery driver final - 4 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "broadway",
@@ -3228,7 +3293,8 @@
       "embargoAt": "2026-11-09T03:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-15T06:57:50.000Z",
-      "via": "9bdc4730 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "9bdc4730 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "broadway",
@@ -3259,7 +3325,8 @@
       "embargoAt": "2026-11-09T21:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-10T06:39:05.000Z",
-      "via": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "0b291996 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -3471,7 +3538,8 @@
       "embargoAt": "2026-11-10T22:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-15T22:59:21.000Z",
-      "via": "5ffda775 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "5ffda775 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -3481,7 +3549,8 @@
       "embargoAt": "2026-11-11T21:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-12T06:48:04.000Z",
-      "via": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)"
+      "via": "a873ceca feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "west-end",
@@ -3567,7 +3636,8 @@
       "embargoAt": "2026-11-14T22:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-18T06:47:11.000Z",
-      "via": "4e91f4ca feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)"
+      "via": "4e91f4ca feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "broadway",
@@ -3599,7 +3669,8 @@
       "embargoAt": "2026-11-17T03:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-21T07:55:40.000Z",
-      "via": "b35794c6 feat: gap-recovery driver checkpoint 9 - 9 accepted (card Stage 2)"
+      "via": "b35794c6 feat: gap-recovery driver checkpoint 9 - 9 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "broadway",
@@ -3641,7 +3712,19 @@
       "embargoAt": "2026-11-17T03:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-18T06:40:44.000Z",
-      "via": "8306410f feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "8306410f feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
+    },
+    {
+      "category": "broadway",
+      "outletId": "stagezine",
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "embargoAt": "2026-11-17T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-22T13:07:46.000Z",
+      "via": "6a28888f ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -3652,6 +3735,17 @@
       "cause": "discovery-gap",
       "at": "2026-11-21T13:12:54.000Z",
       "via": "528ee938 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "londonlivinglarge",
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "embargoAt": "2026-11-17T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-22T12:00:17.000Z",
+      "via": "f0f902a9 ingest: audit-aggregator-gap auto-ingested review-texts",
       "by": "sweep"
     },
     {
@@ -3684,7 +3778,8 @@
       "embargoAt": "2026-11-17T22:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-21T06:37:13.000Z",
-      "via": "0582e851 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "0582e851 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -3740,6 +3835,17 @@
       "by": "sweep"
     },
     {
+      "category": "off-broadway",
+      "outletId": "irish-central",
+      "showId": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "embargoAt": "2026-11-18T03:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-21T21:34:59.000Z",
+      "via": "07f97fa7 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
       "category": "broadway",
       "outletId": "daily-herald",
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
@@ -3747,7 +3853,19 @@
       "embargoAt": "2026-11-19T03:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-21T16:05:57.000Z",
-      "via": "0589afa0 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)"
+      "via": "0589afa0 feat: gap-recovery driver checkpoint 1 - 1 accepted (card Stage 2)",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "stagetopage",
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "embargoAt": "2026-11-19T21:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-22T02:20:40.000Z",
+      "via": "887d2971 ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
     },
     {
       "category": "off-west-end",
@@ -3780,6 +3898,17 @@
       "cause": "discovery-gap",
       "at": "2026-11-20T04:10:51.000Z",
       "via": "8edfbabb ingest: audit-aggregator-gap auto-ingested review-texts",
+      "by": "sweep"
+    },
+    {
+      "category": "off-west-end",
+      "outletId": "redbuslondinium",
+      "showId": "goblin-off-west-end-2026",
+      "title": "Goblin",
+      "embargoAt": "2026-11-19T22:00:00.000Z",
+      "cause": "discovery-gap",
+      "at": "2026-11-22T16:45:36.000Z",
+      "via": "5077ee67 ingest: audit-aggregator-gap auto-ingested review-texts",
       "by": "sweep"
     },
     {
@@ -3822,7 +3951,8 @@
       "embargoAt": "2026-11-20T22:00:00.000Z",
       "cause": "text-gap",
       "at": "2026-11-21T06:42:52.000Z",
-      "via": "e312e027 feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)"
+      "via": "e312e027 feat: gap-recovery driver checkpoint 2 - 2 accepted (card Stage 2)",
+      "by": "sweep"
     }
   ]
 }
