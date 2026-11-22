@@ -1,39 +1,5 @@
 [
   {
-    "recordedAt": "2026-11-19T15:12:12.274Z",
-    "showId": "peter-pan-off-west-end-2026",
-    "newFile": "times-uk--unknown.json",
-    "ok": false,
-    "file": "times-uk--dominic-maxwell.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.thetimes.co.uk/article/peter-pan-review-jennifer-saunders-in-a-panto-full-of-smutty-pleasures-36k56zhz3",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": null,
-      "incomingUrl": "https://www.thetimes.com/culture/theatre-dance/article/pan-review-a-high-energy-new-look-at-peter-pan-77stn3zzk",
-      "incomingPublishDate": null
-    }
-  },
-  {
-    "recordedAt": "2026-11-19T16:10:14.456Z",
-    "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
-    "newFile": "standard--nick-curtis.json",
-    "ok": false,
-    "file": "standard--nick-curtis.json",
-    "reason": "publish-date-gap-exceeds-365-days",
-    "detail": {
-      "existingPublishDate": "2026-11-12",
-      "incomingPublishDate": "2025-05-08",
-      "diffDays": 553,
-      "existingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-review-barbican-radiohead-b1304586.html",
-      "incomingUrl": "https://www.standard.co.uk/culture/theatre/hamlet-hail-to-the-thief-aviva-studios-manchester-review-b1226517.html"
-    }
-  },
-  {
     "recordedAt": "2026-11-19T16:10:16.276Z",
     "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
     "newFile": "timeout-london--andrzej-lukowski.json",
@@ -9410,6 +9376,44 @@
   },
   {
     "recordedAt": "2026-11-22T18:22:01.359Z",
+    "showId": "the-snowman-off-west-end-2026",
+    "newFile": "manchester-evening-news--emma-gill.json",
+    "ok": false,
+    "file": "manchester-evening-news--emma-gill.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-13872438",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2017-11-08",
+      "incomingUrl": "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-17214659",
+      "incomingPublishDate": "2020-11-24"
+    }
+  },
+  {
+    "recordedAt": "2026-11-22T19:17:00.689Z",
+    "showId": "the-snowman-off-west-end-2026",
+    "newFile": "express-uk--neil-norman.json",
+    "ok": false,
+    "file": "express-uk--neil-norman.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theatre-London",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2009-12-04",
+      "incomingUrl": "https://www.express.co.uk/entertainment/theatre/363110/Dance-review-The-Snowman-Peacock-Theatre-London",
+      "incomingPublishDate": "2020-11-24"
+    }
+  },
+  {
+    "recordedAt": "2026-11-22T19:17:00.823Z",
     "showId": "the-snowman-off-west-end-2026",
     "newFile": "manchester-evening-news--emma-gill.json",
     "ok": false,
