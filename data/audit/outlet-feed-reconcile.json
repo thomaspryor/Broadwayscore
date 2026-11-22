@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T10:43:53.597Z",
+  "generatedAt": "2026-11-22T12:00:54.676Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -166,10 +166,6 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -188,12 +184,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 893,
-  "matchedGaps": 0,
+  "itemsScanned": 880,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-hammersmith",
+      "headline": "Panto Review: Cinderella (Lyric Hammersmith)",
+      "publishDate": "2026-11-22"
+    },
     {
       "showId": "elektra-off-broadway-2026",
       "title": "Elektra",
