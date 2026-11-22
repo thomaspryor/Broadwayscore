@@ -78,12 +78,22 @@ function stripWrongMarketSources(buzz: AudienceBuzzData, category: string | unde
   };
 }
 
+export interface AudienceShowInfo { category?: string; status?: string; closingDate?: string | null }
+
+/**
+ * One show's raw audience-buzz.json entry as every reader sees it. Pure: the
+ * module-load map below and show-refresh (BRO-8056, which carries the raw
+ * entry in a show's slice) both call it, so an overlay render matches the build.
+ */
+export function normalizeAudienceBuzz(buzz: AudienceBuzzData, showInfo: AudienceShowInfo | undefined): AudienceBuzzData {
+  return stripSuppressedSources(stripWrongMarketSources({ ...buzz, showInfo } as AudienceBuzzData, showInfo?.category));
+}
+
 // Normalize once at module load so every accessor sees clean sources.
 const showInfoById = new Map(rawShows.map(({ id, category, status, closingDate }) => [id, { category, status, closingDate }]));
 const normalizedShows: Record<string, AudienceBuzzData> = {};
 for (const [id, buzz] of Object.entries(audienceBuzzRaw.shows)) {
-  const showInfo = showInfoById.get(id);
-  normalizedShows[id] = stripSuppressedSources(stripWrongMarketSources({ ...buzz, showInfo }, showInfo?.category));
+  normalizedShows[id] = normalizeAudienceBuzz(buzz, showInfoById.get(id));
 }
 const audienceBuzz: AudienceBuzzFile = { ...audienceBuzzRaw, shows: normalizedShows };
 

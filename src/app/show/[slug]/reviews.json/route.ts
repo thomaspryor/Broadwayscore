@@ -1,6 +1,7 @@
 // Review rows past the first few, fetched by ReviewsList (BRO-6278). Static like the page.
 import { notFound } from 'next/navigation';
-import { getShowBySlug, getRecentShowSlugs } from '@/lib/data-core';
+import { getRecentShowSlugs } from '@/lib/data-core';
+import { getShowForRender } from '@/lib/show-render';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getReviewListItems, REVIEWS_INLINE_COUNT } from '@/lib/show-review-items';
 
@@ -13,7 +14,7 @@ export function generateStaticParams() {
 
 export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }> }) {
   const { slug } = await ctx.params;
-  const show = getShowBySlug(slug);
+  const show = getShowForRender(slug)?.show;
   if (!show || !isCategoryEnabled(show.category)) notFound();
   return Response.json(getReviewListItems(show).slice(REVIEWS_INLINE_COUNT));
 }

@@ -2,7 +2,8 @@ import { ImageResponse } from 'next/og';
 import { pngToOgJpegResponse } from '@/lib/og-jpeg';
 import { fetchImageDataUri } from '@/lib/og-image';
 import { interFontOption } from '@/lib/og-fonts';
-import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
+import { getHotShowSlugs } from '@/lib/data-core';
+import { getShowForRender } from '@/lib/show-render';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
 import { isShowScoreTBD } from '@/lib/show-score-tbd';
@@ -47,7 +48,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
 
 export default async function OGImage({ params: pendingParams }: { params: Promise<{ slug: string }> }) {
   const params = await pendingParams;
-  const show = getShowBySlug(params.slug);
+  const show = getShowForRender(params.slug)?.show;
 
   // Fall back to homepage OG if no show / no image / flag-gated category
   if (!show || !isCategoryEnabled(show.category)) {

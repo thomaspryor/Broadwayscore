@@ -9,6 +9,12 @@ const compilerRules = Object.fromEntries(nextVitals.flatMap(config =>
     .map(rule => [rule, 'off'])
 ));
 
+export const SHOW_PAGE_FILES = ['src/app/show/**', 'src/components/show-page/**'];
+const viaSeam = 'Read this show through getShowForRender() from @/lib/show-render (BRO-8056).';
+export const SHOW_PAGE_RESTRICTED_IMPORTS = ['@/lib/data-core', '../../lib/data-core', '../../../lib/data-core', '../../../../lib/data-core'].map(name => ({ name, importNames: ['getShowBySlug'], message: viaSeam }))
+  .concat(['@/lib/data-consensus', '../../lib/data-consensus', '../../../lib/data-consensus'].map(name => ({ name, importNames: ['getCriticConsensus'], message: viaSeam })))
+  .concat(['@/lib/data-audience', '../../lib/data-audience', '../../../lib/data-audience'].map(name => ({ name, importNames: ['getAudienceBuzz', 'getAudienceBuzzBySlug'], message: viaSeam })));
+
 export default [...nextVitals, {
   rules: {
     ...compilerRules,
@@ -20,4 +26,11 @@ export default [...nextVitals, {
     'import/first': 'error',
   },
   linterOptions: { reportUnusedDisableDirectives: false },
+}, {
+  // BRO-8056: a show page reads ITS show only through getShowForRender()
+  // (src/lib/show-render.ts), so a show-refresh overlay reaches the body,
+  // metadata, JSON-LD and reviews.json together. Other shows' lookups
+  // (getShowById for a tour parent, related shows) are allowed.
+  files: SHOW_PAGE_FILES,
+  rules: { 'no-restricted-imports': ['error', { paths: SHOW_PAGE_RESTRICTED_IMPORTS }] },
 }];

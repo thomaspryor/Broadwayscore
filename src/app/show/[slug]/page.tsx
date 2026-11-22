@@ -8,15 +8,15 @@ import { cache, Suspense } from 'react';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
-import { getShowBySlug, getRecentShowSlugs, getDataFreshness, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
+import { getRecentShowSlugs, getDataFreshness, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
-import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
-import { getCriticConsensus } from '@/lib/data-consensus';
+import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
+import { getShowForRender } from '@/lib/show-render';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
@@ -95,7 +95,7 @@ export const revalidate = 86400;
 // Metadata and both hero layouts share one request snapshot, even across UTC
 // midnight. The cached page passes the wording through hydration unchanged.
 const getLiveInHdForRender = cache((slug: string) => {
-  const show = getShowBySlug(slug);
+  const show = getShowForRender(slug)?.show;
   const hd = isOperaShow(show) ? show?.liveInHd : null;
   const today = new Date().toISOString().slice(0, 10);
   return { line: liveInHdLine(hd, today), description: liveInHdDescription(hd, today) };
@@ -115,7 +115,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const show = getShowBySlug(params.slug);
+  const show = getShowForRender(params.slug)?.show;
   // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
   if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
 
@@ -278,9 +278,10 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
 
 export default async function ShowPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const show = getShowBySlug(params.slug);
+  const render = getShowForRender(params.slug);
+  const show = render?.show;
 
-  if (!show || !isCategoryEnabled(show.category)) {
+  if (!render || !show || !isCategoryEnabled(show.category)) {
     notFound();
   }
 
@@ -344,8 +345,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const awards = getShowAwards(show.id);
   const awardsSummary = awards ? getAwardsSummary(show.id, show.openingDate, show.category) : null;
   const tonyNamesByCategory = getTonyNamesByCategory(show.id);
-  const audienceBuzz = getAudienceBuzz(show.id);
-  const consensus = getCriticConsensus(show.id);
+  const { audienceBuzz, consensus } = render;
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
   // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
