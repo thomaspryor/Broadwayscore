@@ -327,21 +327,24 @@ test('pathJoinedScriptDeps: exists is injectable', () => {
 });
 
 // BRO-8070: the path-named shape ignored .ts/.tsx literals, hiding 13 uncovered
-// sources. Revert the extension lists in the audit and these go red.
+// sources. Revert the extension lists in the audit and these go red. Made-up
+// names + injected exists so this file never becomes the audit's evidence.
+const yes = () => true;
 test('pathJoinedScriptDeps: a quoted scripts/*.ts literal is picked up (BRO-8070)', () => {
-  assert.deepEqual(
-    pathJoinedScriptDeps("readFileSync('scripts/publish-live-scores.ts', 'utf8');", libDir),
-    ['scripts/publish-live-scores.ts'],
-  );
+  assert.deepEqual(pathJoinedScriptDeps("readFileSync('scripts/made-up-thing.ts', 'utf8');", libDir, yes), ['scripts/made-up-thing.ts']);
 });
 
 test('pathJoinedScriptDeps: a path.join ending in a .ts file is picked up (BRO-8070)', () => {
   assert.deepEqual(
-    pathJoinedScriptDeps("const f = path.join(here, '..', 'llm-scoring', 'trim-multi-show.ts');", libDir),
-    ['scripts/llm-scoring/trim-multi-show.ts'],
+    pathJoinedScriptDeps("const f = path.join(here, '..', 'llm-scoring', 'made-up-sub.ts');", libDir, yes),
+    ['scripts/llm-scoring/made-up-sub.ts'],
   );
 });
 
-test('pathJoinedScriptDeps: .ts in exists-injected mode, still ignores scripts/lib .ts (BRO-8070)', () => {
-  assert.deepEqual(pathJoinedScriptDeps("x('scripts/lib/foo.ts'); y('scripts/made-up.tsx')", libDir, () => true), ['scripts/made-up.tsx']);
+test('pathJoinedScriptDeps: .tsx is picked up, scripts/lib .ts is still ignored (BRO-8070)', () => {
+  assert.deepEqual(pathJoinedScriptDeps("x('scripts/lib/foo.ts'); y('scripts/made-up.tsx')", libDir, yes), ['scripts/made-up.tsx']);
+});
+
+test('scriptsExecutedBy: tsx runs a .tsx script (BRO-8070)', () => {
+  assert.deepEqual(scriptsExecutedBy('npx tsx scripts/made-up.tsx --x'), ['scripts/made-up.tsx']);
 });

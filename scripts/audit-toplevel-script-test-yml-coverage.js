@@ -27,7 +27,8 @@
  * what blocks. Four shapes: a top-level scripts/*.test file and its sibling
  * source; a top-level source a tests/ file require()s (BRO-3202); a script a
  * push-running test.yml job executes (BRO-3207); a script a collected test or
- * scripts/lib/*.test.mjs names by path, literal or path.join (BRO-5261).
+ * scripts/lib/*.test.mjs names by path, literal or path.join, .js/.mjs/.cjs/.ts/.tsx
+ * (BRO-5261, BRO-8070: .ts literals were invisible and hid 13 gaps).
  *
  * Usage:
  *   node scripts/audit-toplevel-script-test-yml-coverage.js            # human-readable, exit 0 always
@@ -282,7 +283,7 @@ function parseJobs(yml) {
 // (optionally `npx`), so `echo "Run: node scripts/x.js"` text is not a step.
 const SEGMENT_SPLIT_RE = /&&|\|\||;|\|/;
 const COMMAND_RE = /^(?:(?:[A-Za-z_][A-Za-z0-9_]*=\S*|timeout\s+\d+\S*|time|npx|sudo)\s+)*(node|tsx|bash|sh)\s+(.*)$/;
-const SCRIPT_OPERAND_RE = /(?:^|\s|=)(?:\.\/)?(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts|sh))(?=\s|$|['"])/g;
+const SCRIPT_OPERAND_RE = /(?:^|\s|=)(?:\.\/)?(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts|tsx|sh))(?=\s|$|['"])/g;
 
 /** Pure: repo-relative scripts a run-step body line executes. */
 function scriptsExecutedBy(line) {

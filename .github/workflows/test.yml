@@ -450,6 +450,15 @@ on:
       # zero CI is the worst version of this gap.
       - 'scripts/llm-scoring/input-builder.ts'
       - 'scripts/llm-scoring/is-scoreable.ts'
+      # BRO-8070: the audit's path-named shape ignored .ts literals, so 13 more
+      # sources a collected test names by path were missed (10 here, 4 below).
+      # llm-scoring is globbed because ~30 of its 48 files were already listed
+      # one by one and every new .ts there reopened the gap (task #1745 lesson).
+      - 'scripts/llm-scoring/**'
+      - 'scripts/publish-live-scores.ts'
+      - 'scripts/verify-reviews.ts'
+      - 'scripts/append-season-payback-history.ts'
+      - 'scripts/test-show-ranks.ts'
       # BRO-7283: tests/unit/lane-comparative-parity.test.mjs imports comparative-core.ts.
       - 'scripts/llm-scoring/comparative-core.ts'
       # --- BRO-3202: the 27 sources below were found by MEASURING the gap, not
