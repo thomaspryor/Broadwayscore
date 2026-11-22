@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-22T10:41:38.368Z",
+  "timestamp": "2026-11-22T11:25:12.728Z",
   "stats": {
-    "totalReviews": 83876,
+    "totalReviews": 83877,
     "alreadyFlagged": 22450,
     "dateGuardCatches": 238,
     "directorMismatch": 3879,
     "tvFilmSignals": 2411,
-    "londonSignals": 3968,
+    "londonSignals": 3969,
     "offBroadwaySignals": 785,
     "yearMismatch": 395,
     "noPublishDate": 8221
@@ -104062,6 +104062,20 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "londonlivinglarge--unknown.json",
+      "score": 40,
+      "publishDate": "2026-11-18",
+      "url": "https://www.londonlivinglarge.com/2026/11/desire-under-elms-almeida-theatre-nov.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "north-west-end--phil-meikle.json",
       "score": 80,
       "publishDate": "2026-11-20",
@@ -122705,7 +122719,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "thestage--dave-fargnoli.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "July 3rd, 2024",
       "url": "https://www.thestage.co.uk/reviews/mnemonic-review-at-the-olivier-national-theatre-complicite",
       "findings": [
