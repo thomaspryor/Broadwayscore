@@ -19,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { canonicalBritishTheatreUrl } = require('./britishtheatre-locale-url');
 const {
   normalizeOutlet,
   normalizeCritic,
@@ -2346,7 +2347,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     } else if (_collisionOwner) {
       console.warn(`  ⊘ url-collision guard: refusing first-set url on ${filepath}: ${input.url} is already owned by ${_collisionOwner.filename}`);
     } else {
-      existing.url = input.url;
+      existing.url = canonicalBritishTheatreUrl(input.url);
       changed = true;
     }
   }

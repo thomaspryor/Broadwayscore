@@ -1,7 +1,7 @@
 'use strict';
-// BRO-8017: britishtheatre.com serves translated copies under /ar|ko|fr|es|de|ja|zh|pt|it/.
+// BRO-8017: britishtheatre.com serves translated copies under /<2-letter locale>/.
 // SERP discovery saved those; the translated page fails content verification.
-const LOCALE_RE = /^(https?:\/\/(?:www\.)?britishtheatre\.com)\/(?:ar|ko|fr|es|de|ja|zh|pt|it)(\/posts\/)/i;
+const LOCALE_RE = /^(https?:\/\/(?:www\.)?britishtheatre\.com)\/[a-z]{2}(?:-[a-z]{2})?(\/posts\/)/i;
 
 /** Rewrite a locale-prefixed britishtheatre.com /posts/ URL to its canonical form. Other URLs unchanged. */
 function canonicalBritishTheatreUrl(url) {

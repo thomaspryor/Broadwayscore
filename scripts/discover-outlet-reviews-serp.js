@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
+const { canonicalBritishTheatreUrl } = require('./lib/britishtheatre-locale-url');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
 const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
@@ -128,7 +129,7 @@ async function serpSearch(query, numResults = 10) {
     return [];
   }
   return results.map(r => ({
-    url: r.url,
+    url: canonicalBritishTheatreUrl(r.url), // BRO-8017: translated /<lang>/posts/ copies fail verification
     title: r.title || '',
     description: r.snippet || '',
   }));

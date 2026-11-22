@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // BRO-8017: rewrite locale-prefixed britishtheatre.com /posts/ URLs in review-texts.
 // Usage: node scripts/fix-britishtheatre-locale-urls.js [--dir=<review-texts dir>] [--apply]
-// Rewritten files are marked for refetch (fetchRetryAfter cleared, textStatus left for collector via forceRefetch list printed).
+// Rewritten files get urlCorrectedFrom + needsRefetch so the collector refetches despite existing text.
 const fs = require('fs'), path = require('path');
 const { canonicalBritishTheatreUrl, hasBritishTheatreLocalePrefix } = require('./lib/britishtheatre-locale-url');
 const dir = (process.argv.find(a => a.startsWith('--dir=')) || '').slice(6) || path.join(__dirname, '..', 'data', 'review-texts');
@@ -16,7 +16,7 @@ for (const show of fs.readdirSync(dir)) {
     const d = JSON.parse(fs.readFileSync(p, 'utf8'));
     if (!hasBritishTheatreLocalePrefix(d.url)) continue;
     const before = d.url; d.url = canonicalBritishTheatreUrl(before);
-    d._urlLocaleRewrittenFrom = before;
+    d.urlCorrectedFrom = before; d.needsRefetch = true; // standard refetch markers (url-corrected-refetch.js)
     delete d.fetchRetryAfter;
     delete d.fetchDiscoveryAbandoned; // abandoned flag was set against the locale URL and blocks refetch
     changed.push(`${show}/${f}`);
