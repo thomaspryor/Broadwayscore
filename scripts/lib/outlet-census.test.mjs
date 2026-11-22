@@ -400,10 +400,17 @@ test('BRO-7816: the blind table never prints a stale reason: a readable source o
   const [obs, wp] = census.blindOutlets([rep('washpost', ['unreadable: no WordPress API; sitemap enumeration not yet configured']), rep('observer', ['unreadable: old reason'])], { sources })
     .sort((a, b) => a.outletId.localeCompare(b.outletId));
   assert.equal(wp.stale, true);
-  assert.match(wp.why, /^stale report or failed refresh: the source is now sitemap .*--outlet=washpost$/);
+  assert.match(wp.why, /^stale report: the source is now sitemap .*--outlet=washpost$/);
   assert.match(census.blindOutlets([rep('washpost', [])], { sources, market: 'london' })[0].why, /--outlet=washpost --market=london$/);
   assert.doesNotMatch(wp.why, /not yet configured/);
   assert.equal(obs.why, 'only a two-day news sitemap; no archive sitemap');
+  // A readable source whose last run listed nothing is blind and says so (ew: all 13 children failed).
+  const ew = { outletId: 'ew', source: { kind: 'sitemap', status: 'incomplete', enumerated: 0, notes: ['child https://ew.com/sitemap_1.xml: All scraping methods failed'] }, corpusSide: { rowsInWindow: 486 } };
+  assert.match(census.blindOutlets([ew], { sources: { ew: { kind: 'sitemap' } } })[0].why, /^the last run listed nothing \(1 failed reads, first: child https:\/\/ew\.com/);
+  assert.equal(census.blindOutlets([{ ...ew, source: { ...ew.source, enumerated: 5 } }]).length, 0);
+  // A serp report whose source is now a sitemap is stale, not "search results only".
+  const sl = { outletId: 'slantmagazine', source: { kind: 'serp' }, corpusSide: { rowsInWindow: 300 } };
+  assert.equal(census.blindOutlets([sl], { sources: { slantmagazine: { kind: 'sitemap', proxyRetry: true } } })[0].stale, true);
   // Real committed reports against the live config: no blind row may carry a generic or placeholder reason.
   const fs = require('node:fs');
   const dir = new URL('../../data/audit/outlet-census/', import.meta.url);
@@ -553,6 +560,10 @@ test('BRO-7816: every enumerator failure note marks the run incomplete, composit
   assert.equal(inc(['2021-06-01 p1: The operation was aborted due to timeout']), true); // AbortSignal.timeout's message
   assert.equal(inc(['thestage.co.uk/reviews/ 2019: Unexpected token \'<\', "<html>" is not valid JSON']), true);
   assert.equal(inc(['2026: no URLs (blocked or empty; see log)']), false);
+  assert.equal(inc(['sitemap-years: 2026: no URLs (blocked or empty; see log)']), false);
+  assert.equal(inc(['sitemap-years: no URLs in any year (blocked)']), true);
+  assert.equal(inc(['https://web.archive.org/x 2019: HTTP 503']), true); // a CDX prefix without a trailing slash
+  assert.equal(inc(['guardian api key refused (HTTP 401); set GUARDIAN_API_KEY']), true);
   assert.equal(inc(['sitemap: 66 sitemaps from 2021-06-01, 3 without a matching URL, 0 not found (404)']), false);
   assert.equal(inc(['wayback cdx: 120 captures, 80 URLs']), false);
 });
@@ -629,9 +640,10 @@ test('BRO-7816: a source can opt proxy tiers back in over learned domain skips; 
   const ids = new Set(Object.values(skipFile).flatMap((v) => (Array.isArray(v) ? v : Object.keys(v))));
   for (const id of ids) effectiveDomainSkips(new Set(), [id]);
   // Every census source that opts in names real tiers, and only proxyRetry sources may (they are the ones that reach fetchPage).
-  for (const [id, src] of Object.entries(SOURCES)) {
+  for (const [id, src] of [...Object.entries(SOURCES), ...Object.entries(LONDON_SOURCES)]) {
     if (!src.ignoreDomainSkips) continue;
     assert.ok(src.proxyRetry, `${id}: ignoreDomainSkips needs proxyRetry`);
+    assert.equal(src.kind, 'sitemap', `${id}: only the plain sitemap enumerator forwards ignoreDomainSkips`);
     effectiveDomainSkips(new Set(), src.ignoreDomainSkips);
   }
 });

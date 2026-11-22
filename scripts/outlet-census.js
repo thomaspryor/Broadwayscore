@@ -140,25 +140,32 @@ async function enumerateGuardian(src, since, until) {
     const from = d.toISOString().slice(0, 10);
     const to = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).toISOString().slice(0, 10);
     const mk = `${src.query || ''}|${from}`;
-    if (!guardianMonths.has(mk)) {
+    let month = guardianMonths.get(mk);
+    if (!month) {
       const got = [];
+      let failed = false;
       for (let page = 1; page < 20; page++) {
         const q = new URLSearchParams({ section: 'stage', tag: 'tone/reviews', 'from-date': from, 'to-date': to, 'page-size': '200', page: String(page),
           'order-by': 'oldest', 'show-fields': 'headline,standfirst,publication,byline,starRating', 'api-key': key, ...(src.params || {}) });
         let r;
-        try { r = await get(`https://content.guardianapis.com/search?${q}`); } catch (e) { notes.push(`${from} p${page}: ${e.message}`); break; }
-        if (r.status !== 200) { notes.push(`${from} p${page}: HTTP ${r.status}`); break; }
+        try { r = await get(`https://content.guardianapis.com/search?${q}`); } catch (e) { notes.push(`${from} p${page}: ${e.message}`); failed = true; break; }
+        if (r.status !== 200) {
+          notes.push(`${from} p${page}: HTTP ${r.status}`);
+          // BRO-7816: a refused key (the public 'test' key answers 401) refuses every month; stop instead of ~170 calls.
+          if (r.status === 401 || r.status === 403) { notes.push(`guardian api key refused (HTTP ${r.status}); set GUARDIAN_API_KEY`); return { items, notes }; }
+          failed = true; break;
+        }
         const resp = JSON.parse(r.body).response || {};
         got.push(...(resp.results || []));
         if (key === 'test') await new Promise((ok) => setTimeout(ok, 1100)); // the public test key allows ~1 call/s
         if (!resp.pages || page >= resp.pages) break;
       }
-      // BRO-7816: a month that failed is not cached, so a second outlet on the same stream (Observer) re-reads it
-      // and records its own failure note instead of reading an empty month as complete.
-      if (notes.some((n) => n.startsWith(`${from} p`))) continue;
-      guardianMonths.set(mk, got);
+      // BRO-7816: a month that failed is used (its pages that did read) but not cached, so a second outlet on the
+      // same stream (Observer) re-reads it and records its own failure note instead of reading it as complete.
+      month = got;
+      if (!failed) guardianMonths.set(mk, got);
     }
-    for (const g of guardianMonths.get(mk)) {
+    for (const g of month) {
       const f = g.fields || {};
       if (src.publication && !src.publication.test(f.publication || '')) continue;
       // News and blog pieces before 2013 carry tone/reviews too (BRO-6503): those the shared
@@ -248,6 +255,8 @@ async function enumerateSitemap(src, since) {
       if (!got.length) notes.push(`${y}: no URLs (blocked or empty; see log)`);
       items.push(...got);
     }
+    // BRO-7816: one empty year can be real (a new year); every year empty is a blocked read, not a complete one.
+    if (!items.length) notes.push('sitemap-years: no URLs in any year (blocked)');
     const seen = new Set();
     return { items: items.filter((i) => !seen.has(i.url) && seen.add(i.url)), notes };
   } else if (src.kind === 'sitemap-dated') {

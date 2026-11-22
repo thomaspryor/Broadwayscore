@@ -779,7 +779,7 @@ function isIncompleteEnumeration(notes) {
   // BRO-7816: the Guardian API's "2021-06-01 p1: <error>" and the CDX "<prefix>/ 2019: <error>" are written only on
   // failure, so their shape (not the error text: a timeout reads "The operation was aborted") marks the run. They were
   // not matched, so a run where every month answered 401 was filed as complete.
-  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|(?:^|: )page \d+: (?:HTTP|fetch failed)|(?:^|: )dated sitemaps: \d+ failed|(?:^|: )\d{4}-\d{2}-\d{2} p\d+: |\/ \d{4}: /.test(String(n)));
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|(?:^|: )page \d+: (?:HTTP|fetch failed)|(?:^|: )dated sitemaps: \d+ failed|(?:^|: )\d{4}-\d{2}-\d{2} p\d+: |[^\s:]+ \d{4}: |no URLs in any year|api key refused/.test(String(n)));
 }
 
 /** PURE. A report's enumeration status: 'unreadable', 'incomplete' or 'complete' (BRO-6488). */
@@ -889,16 +889,22 @@ function blindOutlets(reports, { minRows = 100, sources = null, market = 'nyc' }
     if (rows < minRows) continue;
     const unreadable = src.kind === 'unreadable' || src.status === 'unreadable';
     const searchOnly = src.kind === 'serp';
-    if (!unreadable && !searchOnly) continue;
-    // The probed reason the config carries (BRO-7816): a blind outlet says why, so the next session knows what to try.
+    // BRO-7816: a readable source whose last run listed nothing (every request failed; ew's 13 children) is blind too.
+    const failedEmpty = !unreadable && !searchOnly && src.status === 'incomplete' && src.enumerated === 0;
+    if (!unreadable && !searchOnly && !failedEmpty) continue;
+    // The probed reason the config carries: a blind outlet says why, so the next session knows what to try.
     const cfg = sources && sources[r.outletId];
-    if (cfg && unreadable && !['unreadable', 'serp'].includes(cfg.kind)) {
+    if (cfg && cfg.kind !== 'unreadable' && cfg.kind !== src.kind) {
       out.push({ outletId: r.outletId, kind: src.kind, rows, stale: true,
-        why: `stale report or failed refresh: the source is now ${cfg.kind}${cfg.proxyRetry ? ' (proxyRetry, needs a proxy key)' : ''}; refresh with node scripts/outlet-census.js --outlet=${r.outletId}${market && market !== 'nyc' ? ` --market=${market}` : ''}` });
+        why: `stale report: the source is now ${cfg.kind}${cfg.proxyRetry ? ' (proxyRetry, needs a proxy key)' : ''}; refresh with node scripts/outlet-census.js --outlet=${r.outletId}${market && market !== 'nyc' ? ` --market=${market}` : ''}` });
       continue;
     }
     const reason = String((cfg && cfg.kind === 'unreadable' && cfg.reason) || src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
-    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? (reason || 'no listing can be read') : 'search results only (~10 per query), cannot list an archive' });
+    let why;
+    if (failedEmpty) why = `the last run listed nothing (${(src.notes || []).length} failed reads, first: ${String((src.notes || [])[0] || 'none').slice(0, 140)})`;
+    else if (searchOnly && !(cfg && cfg.kind === 'unreadable')) why = 'search results only (~10 per query), cannot list an archive';
+    else why = reason || 'no listing can be read';
+    out.push({ outletId: r.outletId, kind: src.kind, rows, why });
   }
   return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
 }
