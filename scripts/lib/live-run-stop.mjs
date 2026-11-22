@@ -115,7 +115,8 @@ export function liveEdits(events, from, index) {
     if (EDIT_TOOLS.has(e.name)) paths = [e.input?.file_path];
     // Edits made in the shell (sed -i, > redirect, python writes): every live path the editing command names (what-else gap).
     else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
-      const c = String(e.input?.command || '');
+      // BRO-8026: heredoc bodies are text, not edits; read paths from the shell code only (runShellCode drops them).
+      const c = runShellCode(String(e.input?.command || '')) || '';
       paths = [...c.matchAll(/(?:^|[\s'"=(/])((?:\.github\/workflows\/[\w.-]+\.ya?ml)|(?:scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py)))\b/g)].map((m) => m[1]);
     }
     for (const p of paths) add(p, i);

@@ -167,6 +167,9 @@ test('a shell edit of a live script counts as an edit (sed -i, redirect); a read
   assert.equal(decide([...bash("sed -i 's/a/b/' scripts/fixture-job.js"), ...landed()]).decision, 'block', 'sed -i');
   assert.equal(decide([...bash('cat > scripts/fixture-job.js <<EOF\nx\nEOF'), ...landed()]).decision, 'block', 'redirect');
   assert.equal(decide([...bash("sed -n 1,5p scripts/fixture-job.js"), ...landed()]).decision, 'allow', 'sed -n only reads');
+  // BRO-8026: a path named only inside a heredoc body is text, not an edited file.
+  assert.equal(decide([...bash('cat > scripts/lib/unlisted-helper.js <<EOF\n// see scripts/fixture-job.js\nEOF'), ...landed()]).decision, 'allow', 'heredoc body mentioning a live script');
+  assert.equal(decide([...bash('cat > scripts/fixture-job.js <<EOF\n// see scripts/lib/unlisted-helper.js\nEOF'), ...landed()]).decision, 'block', 'the redirect target still counts');
   assert.equal(decide([...bash("sed -i 's/a/b/' scripts/fixture-job.js"), ...bash('node scripts/fixture-job.js --dry-run'), ...landed()]).decision, 'allow', 'then ran it');
 });
 
