@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/check-prod-deploy.js'
+      - 'scripts/check-deploy-frequency.js'
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'
       - 'src/**'
