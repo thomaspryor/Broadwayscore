@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-22T13:00:04.832Z",
+  "runDate": "2026-11-22T13:17:16.854Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 53,
+    "processed": 0,
+    "failed": 51,
     "skipped": 0,
-    "successRate": "7.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 20
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 53,
-    "scrapingBeePageCredits": 20,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 51,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,12 +54,9 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 53,
+    "processed": 0,
+    "failed": 51,
     "shows": [
-      "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017",
-      "a-small-family-business-west-end-2014",
-      "a-streetcar-named-desire-regional-2024",
       "aint-no-mo-2022",
       "all-my-sons-2008",
       "clybourne-park-2012",
@@ -90,7 +87,6 @@
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
-      "the-dead-1904-off-broadway-2026",
       "the-hills-of-california-2024",
       "the-inheritance-2019",
       "the-lieutenant-of-inishmore-2006",
@@ -109,16 +105,11 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 23,
-      "failed": 10
+      "processed": 27,
+      "failed": 0
     }
   },
-  "processed": [
-    "the-dead-1904-off-broadway-2026/culturesauce--thom-geier.json",
-    "the-dead-1904-off-broadway-2026/nysr--elysa-gardner.json",
-    "the-dead-1904-off-broadway-2026/nysr--steven-suskin.json",
-    "a-streetcar-named-desire-regional-2024/third-coast-review--nancy-bishop.json"
-  ],
+  "processed": [],
   "failed": [
     "picnic-2013/observer--rex-reed.json",
     "suffs-2024/usatoday--melissa-ruggieri.json",
@@ -129,7 +120,6 @@
     "ghost-the-musical-2012/timeout--david-cote.json",
     "macbeth-2008/usatoday--elysa-gardner.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
-    "a-small-family-business-west-end-2014/sunday-times--christopher-hart.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
     "clybourne-park-2012/usatoday--elysa-gardner.json",
@@ -168,7 +158,6 @@
     "waitress-2021/vulture--helen-shaw.json",
     "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
     "farinelli-and-the-king-2017/observer--rex-reed.json",
-    "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017/times-uk--sam-marlowe.json",
     "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
     "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
     "shrek-the-musical-2008/usatoday--elysa-gardner.json",
@@ -205,16 +194,6 @@
       "a-streetcar-named-desire-regional-2024/third-coast-review--nancy-bishop.json"
     ],
     "failed": [
-      "the-mirror-and-the-light-west-end-2021/britishtheatrecom--julian-eaves.json",
-      "foxfinder-west-end-2018/britishtheatrecom--julian-eaves.json",
-      "anatomy-of-a-suicide-west-end-2017/britishtheatrecom--mark-ludmon.json",
-      "american-idiot-west-end-2016/britishtheatrecom--danny-coleman-cooke.json",
-      "the-taming-of-the-shrew-west-end-2016/britishtheatrecom--tim-hochstrasser.json",
-      "violence-and-son-west-end-2015/britishtheatrecom--tim-hochstrasser.json",
-      "american-buffalo-west-end-2015/britishtheatrecom--stephen-collins.json",
-      "richard-iii-west-end-2014/britishtheatrecom--stephen-collins.json",
-      "twelve-angry-men-west-end-2013/britishtheatrecom--stephen-collins.json",
-      "the-gruffalo-west-end-2010/britishtheatrecom--tim-hochstrasser.json",
       "picnic-2013/observer--rex-reed.json",
       "suffs-2024/usatoday--melissa-ruggieri.json",
       "the-hills-of-california-2024/times-uk--ann-treneman.json",
@@ -224,7 +203,6 @@
       "ghost-the-musical-2012/timeout--david-cote.json",
       "macbeth-2008/usatoday--elysa-gardner.json",
       "hamlet-2009/usatoday--elysa-gardner.json",
-      "a-small-family-business-west-end-2014/sunday-times--christopher-hart.json",
       "is-he-dead-2007/nypost--clive-barnes.json",
       "what-the-constitution-means-to-me-2019/usatoday--kelly-lawler.json",
       "clybourne-park-2012/usatoday--elysa-gardner.json",
@@ -263,7 +241,6 @@
       "waitress-2021/vulture--helen-shaw.json",
       "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
       "farinelli-and-the-king-2017/observer--rex-reed.json",
-      "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017/times-uk--sam-marlowe.json",
       "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
       "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
       "shrek-the-musical-2008/usatoday--elysa-gardner.json",
@@ -283,8 +260,16 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
+    ],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "wuthering-heights-off-broadway-2026/telegraph--dominic-cavendish.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -310,21 +295,6 @@
       "a-streetcar-named-desire-regional-2024/third-coast-review--nancy-bishop.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Sunday Times": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
