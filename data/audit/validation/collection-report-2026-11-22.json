@@ -1,31 +1,31 @@
 {
-  "runDate": "2026-11-22T18:57:04.624Z",
+  "runDate": "2026-11-22T19:14:26.382Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 60,
     "priority": "all",
-    "showFilter": "bat-boy-regional-2026,santas-first-christmas-off-west-end-2026,handle-with-care-regional-2026",
-    "aggressive": false,
+    "showFilter": "cinderella-lyric-hammersmith-off-west-end-2026",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "skipped": 0,
     "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 1,
@@ -34,15 +34,15 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 0,
     "scrapingBeePageCredits": 0,
@@ -54,11 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "shows": [
-      "handle-with-care-regional-2026",
-      "santas-first-christmas-off-west-end-2026"
+      "cinderella-lyric-hammersmith-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,31 +66,27 @@
     }
   },
   "processed": [
-    "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-    "handle-with-care-regional-2026/broadwayworld--richard-sasanow.json"
+    "cinderella-lyric-hammersmith-off-west-end-2026/londontheatre1--unknown.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-      "handle-with-care-regional-2026/broadwayworld--richard-sasanow.json"
+      "cinderella-lyric-hammersmith-off-west-end-2026/londontheatre1--unknown.json"
     ],
     "failed": []
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "cinderella-lyric-hammersmith-off-west-end-2026/londontheatre1--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "handle-with-care-regional-2026/broadwayworld--richard-sasanow.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
