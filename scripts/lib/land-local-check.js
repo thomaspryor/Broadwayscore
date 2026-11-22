@@ -572,7 +572,10 @@ function main(argv = process.argv.slice(2)) {
   const dev = clearStaleDevTypes(ROOT);
   if (dev.removed) console.log('land-local-check: removed .next/dev (stale `next dev` types fail the tsc gate with TS6053)');
   if (dev.devAlive) console.error('land-local-check: a `next dev`/`next-server` process is alive and will rewrite .next/dev/types; stop it (pkill -f "next dev") or tsc may fail with TS6053');
-  const env = { ...process.env, GAUNTLET_PARALLEL: '1', LAND_BASE: base };
+  // BRO-7101: the land workflow arms live-data-lane from a repo variable this
+  // machine cannot read; arm it here too so a local check never reports CLEAN
+  // on a test land.yml refuses. Override with LAND_LIVE_DATA_LANE_ARMED=0.
+  const env = { LAND_LIVE_DATA_LANE_ARMED: '1', ...process.env, GAUNTLET_PARALLEL: '1', LAND_BASE: base };
   const t0 = Date.now();
   let waited = false;
   try {

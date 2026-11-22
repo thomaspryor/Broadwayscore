@@ -1059,10 +1059,12 @@ jobs:
     # (cached), build ~5-8 min, smoke-first specs ~2 min; doubled when the tip
     # is red and the base is built too. Each run is capped by E2E_LOCAL_TIMEOUT.
     timeout-minutes: 45
-    # Advisory (BRO-7106): a red or timed-out e2e-local must never make the
+    # Unarmed (BRO-7106): a red or timed-out e2e-local must never make the
     # run's conclusion `failure`, which land-retry-on-cancel.js,
-    # land-stranded-refs.js and cloud-worker-pick.js read. Drop when arming.
-    continue-on-error: true
+    # land-stranded-refs.js and cloud-worker-pick.js read. Armed (BRO-7101):
+    # it fails like any gate, so "Re-run failed jobs" after a flake re-runs
+    # this job too instead of only Land with this attempt's frozen outputs.
+    continue-on-error: ${{ vars.LAND_E2E_BROWSER_BLOCKING != '1' }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -1087,7 +1089,7 @@ jobs:
           BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
           # Diff scope: only a change that can alter what the browser sees, or the
           # harness itself (so a harness change exercises and measures it).
-          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|next\.config\.js$|playwright\.config\.ts$|package(-lock)?\.json$|scripts/lib/land-e2e-local)'; then
+          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|content/|next\.config\.js$|tailwind\.config\.|postcss\.config\.|tsconfig\.json$|vercel\.json$|playwright\.config\.ts$|package(-lock)?\.json$|scripts/prebuild|scripts/lib/land-e2e-local)'; then
             echo "site_diff=true" >> "$GITHUB_OUTPUT"
           else
             echo "site_diff=false" >> "$GITHUB_OUTPUT"; echo "No site-relevant change vs origin/main: e2e-local skipped."
@@ -1158,7 +1160,7 @@ jobs:
         # While LAND_E2E_BROWSER_BLOCKING is unset land-gate-delta.js downgrades
         # e2e-local to report-only (exit 0, verdict=pass). Armed, a new failure
         # exits 1 and verdict=fail; the Land job refuses on anything but pass.
-        continue-on-error: true
+        continue-on-error: ${{ vars.LAND_E2E_BROWSER_BLOCKING != '1' }}
         shell: bash
         env:
           LAND_E2E_BROWSER_BLOCKING: ${{ vars.LAND_E2E_BROWSER_BLOCKING }}
@@ -1170,7 +1172,20 @@ jobs:
           node "$RUNNER_TEMP/e2e-harness/land-gate-delta.js" --gates e2e-local \
             --base-dir "$RUNNER_TEMP/e2e-local/base" --branch-dir "$RUNNER_TEMP/e2e-local/branch" \
             --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$GITHUB_OUTPUT" || rc=$?
-          echo "verdict=$([ "$rc" = 0 ] && echo pass || echo fail)" >> "$GITHUB_OUTPUT"
+          # The delta subtracts base from branch, so a build or timeout failure
+          # on BOTH sides cancels out. A branch that never ran its browser
+          # tests proves nothing: never a pass (ship-check review, BRO-7101).
+          # Infra lines come from land-e2e-local.sh (build, server, timeout,
+          # missing Playwright); per-test lines from land-e2e-local-report.js
+          # always read "<file> > <title>", so " > " tells them apart.
+          INFRA=$(grep -E '^::error::e2e-local gate failed: .+ \(exit [0-9]+\)$' "$RUNNER_TEMP/e2e-local/branch/e2e-local.log" 2>/dev/null | grep -v ' > ' | head -1 || true)
+          if [ -n "$INFRA" ] && [ "$rc" = 0 ]; then
+            echo "::warning::e2e-local: the branch's browser run did not complete (${INFRA#::error::}), so it is not judged against base"
+            [ "$LAND_E2E_BROWSER_BLOCKING" = "1" ] && rc=1
+            echo "verdict=fail" >> "$GITHUB_OUTPUT"
+          else
+            echo "verdict=$([ "$rc" = 0 ] && echo pass || echo fail)" >> "$GITHUB_OUTPUT"
+          fi
           exit "$rc"
 
       - name: Keep the E2E report
@@ -1331,15 +1346,27 @@ jobs:
           VERDICT: ${{ needs.e2e-local.outputs.verdict }}
           NEW_FAILURES: ${{ needs.e2e-local.outputs.new_failures }}
           E2E_RESULT: ${{ needs.e2e-local.result }}
+          TIP: ${{ needs.checks.outputs.tip }}
         run: |
           if [ "$SITE_DIFF" = "false" ]; then echo "e2e-local: no site-relevant change, nothing to judge"; exit 0; fi
           if [ "$VERDICT" = "pass" ]; then echo "e2e-local: no new browser E2E failures vs origin/main"; exit 0; fi
+          # A newer push to this land/** branch cancels this run's e2e-local
+          # (per-branch concurrency). This tip is then never landed anyway
+          # (land.js --expect-tip refuses it), so do not page a refusal for it
+          # or burn the branch's alert cooldown (ship-check review, BRO-7101).
+          if [ -z "$VERDICT" ] && [ "$E2E_RESULT" = "cancelled" ]; then
+            NOW=$(git ls-remote origin "refs/heads/$BRANCH" 2>/dev/null | cut -f1)
+            if [ -n "$NOW" ] && [ -n "$TIP" ] && [ "$NOW" != "$TIP" ]; then
+              echo "::notice::e2e-local was cancelled by a newer push (${NOW:0:10} replaced ${TIP:0:10}); land.js --expect-tip refuses this tip"
+              exit 0
+            fi
+          fi
           if [ "$VERDICT" = "fail" ]; then
             WHY="the branch newly breaks ${NEW_FAILURES:-?} browser E2E test(s) that pass on origin/main"
           else
             WHY="its browser E2E did not reach a verdict (job result: ${E2E_RESULT:-unknown}; crashed, timed out or cancelled)"
           fi
-          MSG="$BRANCH was NOT landed: $WHY. The failing tests are in the 'E2E on a local build' job's summary and annotations (artifact e2e-local-${{ github.run_id }}). Fix the UI or the stale spec, then push again. Kill switch: repo variable LAND_E2E_BROWSER_BLOCKING."
+          MSG="$BRANCH was NOT landed — e2e-local: $WHY. The failing tests are in the 'E2E on a local build' job's summary and annotations (artifact e2e-local-${{ github.run_id }}). Fix the UI or the stale spec, then push again. Kill switch: repo variable LAND_E2E_BROWSER_BLOCKING."
           echo "$MSG" > /tmp/land.log
           echo "failed_check=e2e-local" >> "$GITHUB_OUTPUT"
           echo "::error::$MSG"
