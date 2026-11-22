@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T22:39:01.441Z",
+  "generatedAt": "2026-11-22T23:13:49.007Z",
   "windowDays": 45,
   "showsScanned": 296,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 327.61435027777776,
+      "fileAgeHours": 328.1940691666667,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 305.0658722222222,
+      "nonTerminalAgeHours": 305.64575194444444,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 296.84618944444446,
+      "fileAgeHours": 297.42599472222224,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 295.7014272222222,
+      "nonTerminalAgeHours": 296.28130694444445,
       "needsManualRecovery": true
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=its-a-wonderful-life-a-live-radio-play-2026 --url=https://www.broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T08:38:24.451Z",
-      "fileAgeHours": 86.01021694444445,
+      "fileAgeHours": 86.59005083333334,
       "gapSeenAt": "2026-11-20T00:13:40.042Z",
-      "nonTerminalAgeHours": 70.42261055555555,
+      "nonTerminalAgeHours": 71.00249027777778,
       "needsManualRecovery": false
     }
   ],
