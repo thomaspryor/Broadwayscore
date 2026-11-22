@@ -146,7 +146,7 @@ const { classifyShow } = require('./lib/classify-show');
 const { titleSaysMusical, knownShowType } = require('./lib/title-says-musical');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
-const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const { normalizeShowTitle, buildVenueVocabulary, buildKnownWriters } = require('./lib/show-title-normalize');
 const {
   OB_VENUE_CONFIGS,
   OWE_VENUE_CONFIGS,
@@ -2592,6 +2592,7 @@ async function discoverShows() {
   // recognised even when THIS row's own venue field says something else.
   // Built once from the pre-existing corpus rather than per candidate.
   const discoveryVenueVocabulary = buildVenueVocabulary(data.shows);
+  const discoveryKnownWriters = buildKnownWriters(data.shows);
 
   // Shows queued by pending-fix add-show plans (BRO-4381) — see the guard in
   // the candidate loop below.
@@ -2755,7 +2756,7 @@ async function discoverShows() {
   // here — same shape as the circuit-breaker "held" path below.
   const heldForTitleReview = [];
   discoveredShows = discoveredShows.filter(show => {
-    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
+    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary, knownWriters: discoveryKnownWriters });
     if (titleFix.changed) {
       console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
       show.title = titleFix.title;

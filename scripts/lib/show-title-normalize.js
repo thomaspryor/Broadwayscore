@@ -53,39 +53,45 @@ const GENRE_DISAMBIGUATOR_RE = /\s*\((?:musical|play|opera)\)\s*$/i;
 const LISTING_YEAR_SUFFIX_RE = /_(?:19|20)\d{2}$/;
 // BRO-8051: trailing " by <Full Name>" playwright credit appended by a feed
 // (TIC: "Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West").
-// Pure regex is FP-prone ("Side by Side by Sondheim", "North by Northwest",
-// "Alice By Heart", "Damned by Despair"), so it strips ONLY with an oracle:
-//  (a) the name is 2-4 capitalised words (one-word tails are real title words),
-//  (b) the show id carries those exact name tokens as its trailing slug run
-//      (before an optional market/year tail) - the id was minted from the same
-//      credited string, so title and id agree the credit is part of the feed
-//      string - AND
-//  (c) something non-empty remains before " by ".
+// Pure regex is FP-prone ("Side by Side by Sondheim", "Stand by Your Man",
+// "Killed by Grace Kelly"), and the show id is NOT an oracle (ids are slugified
+// from the title, so they always carry the byline). The oracle is an
+// INDEPENDENT credit: the name must be a writer of this show (creativeTeam
+// Playwright/Book/Writer/Author/Music/Lyrics role) or a known writer anywhere
+// in the corpus (ctx.knownWriters, see buildKnownWriters). No oracle data, no strip.
 const BYLINE_NAME = "[A-Z][\\p{L}'.\\-]*(?:\\s+(?:[A-Z][\\p{L}'.\\-]*|de|van|von|da|di|la|le)){1,3}";
 const PLAYWRIGHT_BYLINE_RE = new RegExp('^(.*\\S)\\s+by\\s+(' + BYLINE_NAME + ')\\s*$', 'u');
-const ID_TAIL_RE = /-(?:regional|off-broadway|broadway|west-end|off-west-end|touring|tour|uk|us)(?:-\d{4})?$|-\d{4}$/;
+const WRITER_ROLE_RE = /playwright|writer|author|book|music|lyric|libretto|adapt/i;
 
-function slugTokens(s) {
+function nameKey(s) {
   return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/['\u2019.]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+    .replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-/** @returns {{title:string, name:string}|null} */
-function classifyPlaywrightByline(title, id) {
-  if (!id || !title) return null;
+/** Set of nameKey()s of everyone credited in a writing role anywhere in shows. */
+function buildKnownWriters(shows) {
+  const out = new Set();
+  for (const sh of shows || []) {
+    for (const c of Array.isArray(sh.creativeTeam) ? sh.creativeTeam : []) {
+      if (c && c.name && WRITER_ROLE_RE.test(c.role || '')) out.add(nameKey(c.name));
+    }
+  }
+  return out;
+}
+
+/** @returns {{title:string, name:string, oracle:string}|null} */
+function classifyPlaywrightByline(title, show, knownWriters) {
+  if (!title) return null;
   const m = PLAYWRIGHT_BYLINE_RE.exec(title);
   if (!m) return null;
   const rest = m[1].trim();
-  const name = m[2];
-  const nameToks = slugTokens(name);
-  if (nameToks.length < 2) return null;
-  let idBody = String(id);
-  for (let i = 0; i < 3; i++) idBody = idBody.replace(ID_TAIL_RE, '');
-  const idToks = idBody.split('-').filter(Boolean);
-  const tail = idToks.slice(-nameToks.length).join('-');
-  if (tail !== nameToks.join('-')) return null;
-  if (idToks[idToks.length - nameToks.length - 1] !== 'by') return null;
-  return { title: rest, name };
+  const key = nameKey(m[2]);
+  if (key.split(' ').length < 2) return null;
+  const own = (show && Array.isArray(show.creativeTeam) ? show.creativeTeam : [])
+    .some(c => c && c.name && WRITER_ROLE_RE.test(c.role || '') && nameKey(c.name) === key);
+  if (own) return { title: rest, name: m[2], oracle: 'show-credits-writer' };
+  if (knownWriters && knownWriters.has(key)) return { title: rest, name: m[2], oracle: 'corpus-known-writer' };
+  return null;
 }
 
 const {
@@ -96,7 +102,7 @@ const {
 
 /**
  * @param {{id?:string, title:string, venue?:string}} show
- * @param {{venueVocabulary?: string[]}} [ctx]
+ * @param {{venueVocabulary?: string[], knownWriters?: Set<string>}} [ctx]
  * @returns {{
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
@@ -154,9 +160,9 @@ function normalizeShowTitle(show, ctx = {}) {
   }
 
   // 1a''. BRO-8051: trailing playwright byline (oracle-gated, see above).
-  const byline = classifyPlaywrightByline(title, show.id);
+  const byline = classifyPlaywrightByline(title, show, ctx.knownWriters);
   if (byline) {
-    steps.push({ kind: 'playwright-byline', from: title, to: byline.title, oracle: 'id-slug-carries-byline' });
+    steps.push({ kind: 'playwright-byline', from: title, to: byline.title, oracle: byline.oracle });
     title = byline.title;
   }
 
@@ -182,6 +188,7 @@ module.exports = {
   GENRE_DISAMBIGUATOR_RE,
   LISTING_YEAR_SUFFIX_RE,
   classifyPlaywrightByline,
+  buildKnownWriters,
   buildVenueVocabulary,
   isExemptFromTitleCase,
 };

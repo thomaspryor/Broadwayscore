@@ -65,7 +65,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
-const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const { normalizeShowTitle, buildVenueVocabulary, buildKnownWriters } = require('./lib/show-title-normalize');
 const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
@@ -657,6 +657,7 @@ function validateRequiredFields(shows) {
 function validateShowTitles(shows) {
   info('Checking show titles for scrape artifacts (URL fragment / venue suffix / Roman-numeral case / ALL-CAPS)...');
   const venueVocabulary = buildVenueVocabulary(shows);
+  const knownWriters = buildKnownWriters(shows);
   let bad = 0;
 
   for (const show of shows) {
@@ -673,7 +674,7 @@ function validateShowTitles(shows) {
       continue;
     }
 
-    const result = normalizeShowTitle(show, { venueVocabulary });
+    const result = normalizeShowTitle(show, { venueVocabulary, knownWriters });
 
     if (result.manualReview) {
       bad++;

@@ -127,31 +127,35 @@ test('BRO-6268: genre words that are part of the real title are left alone', () 
   }
 });
 
-// BRO-8051: trailing playwright byline, oracle-gated.
-const { classifyPlaywrightByline } = require('./show-title-normalize.js');
+// BRO-8051: trailing playwright byline, oracle = independent writer credit (NOT the id).
+const { classifyPlaywrightByline, buildKnownWriters } = require('./show-title-normalize.js');
+const corpus = [{ id: 'x', creativeTeam: [
+  { name: 'Calamity West', role: 'Playwright' }, { name: 'William Shakespeare', role: 'Playwright' },
+  { name: 'Stephen Sondheim', role: 'Music & Lyrics' }, { name: 'Ivo van Hove', role: 'Director' } ] }];
+const knownWriters = buildKnownWriters(corpus);
 
-test('BRO-8051: strips TIC playwright byline when the id carries the name', () => {
-  const r = normalizeShowTitle({
-    id: 'engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026',
-    title: 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West',
-  });
+test('BRO-8051: strips byline when name is a known writer', () => {
+  const t = 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West';
+  const r = normalizeShowTitle({ id: 'engines-regional-2026', title: t }, { knownWriters });
   assert.equal(r.title, 'Engines and Instruments of Flight: A Fantasia in Three Acts');
   assert.deepEqual(r.steps.map(s => s.kind), ['playwright-byline']);
-  const h = normalizeShowTitle({ id: 'hamlet-by-william-shakespeare-regional-2026', title: 'Hamlet by William Shakespeare' });
-  assert.equal(h.title, 'Hamlet');
+  assert.equal(normalizeShowTitle({ id: 'h', title: 'Hamlet by William Shakespeare' }, { knownWriters }).title, 'Hamlet');
 });
 
-test('BRO-8051: real "by" titles and oracle-less titles are untouched', () => {
-  for (const [id, title] of [
-    ['side-by-side-by-sondheim-broadway-1977', 'Side by Side by Sondheim'],
-    ['north-by-northwest-west-end-2026', 'North by Northwest'],
-    ['alice-by-heart-broadway-2019', 'Alice By Heart'],
-    ['damned-by-despair-west-end-2024', 'Damned by Despair'],
-    ['stories-by-heart-broadway-2011', 'Stories By Heart'],
-    ['a-play-by-jane-doe-regional-2026', 'A Play by Jane Doe'.replace('Jane Doe', 'Someone Else')], // id/name mismatch
-  ]) {
-    assert.equal(normalizeShowTitle({ id, title }).title, title, title);
+test('BRO-8051: show\'s own writer credit is an oracle without corpus data', () => {
+  const r = normalizeShowTitle({ id: 'y', title: 'Tender by Jane Roe', creativeTeam: [{ name: 'Jane Roe', role: 'Author' }] });
+  assert.equal(r.title, 'Tender');
+});
+
+test('BRO-8051: real "by" titles untouched, id slug is NOT an oracle', () => {
+  for (const title of ['Side by Side by Sondheim', 'North by Northwest', 'Alice By Heart', 'Damned by Despair',
+    'Stories By Heart', 'Stand by Your Man', 'Killed by Grace Kelly', 'Directed by Ivo van Hove', 'Inspired by True Events']) {
+    // id minted from the title (the real ingestion shape) must not make it strip
+    const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-regional-2026';
+    assert.equal(normalizeShowTitle({ id, title }, { knownWriters }).title, title, title);
   }
-  // no id => no oracle => never strip
-  assert.equal(classifyPlaywrightByline('Hamlet by William Shakespeare', undefined), null);
+  // no oracle data at all => never strip
+  assert.equal(classifyPlaywrightByline('Hamlet by William Shakespeare', { id: 'hamlet-by-william-shakespeare' }), null);
+  // a director is not a writer
+  assert.equal(classifyPlaywrightByline('Hamlet by Ivo van Hove', {}, knownWriters), null);
 });

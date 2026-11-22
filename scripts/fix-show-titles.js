@@ -36,7 +36,7 @@
 'use strict';
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
-const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const { normalizeShowTitle, buildVenueVocabulary, buildKnownWriters } = require('./lib/show-title-normalize');
 const { classifyVenueSuffix } = require('./lib/title-venue-suffix');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -60,6 +60,7 @@ function main() {
   // built from the PRE-EDIT titles deliberately: stripping as we go must not
   // shrink the vocabulary that later rows are matched against.
   const venueVocabulary = buildVenueVocabulary(shows);
+  const knownWriters = buildKnownWriters(shows);
 
   const changes = [];
   const deferred = [];
@@ -82,7 +83,7 @@ function main() {
   }
 
   for (const show of shows) {
-    const result = normalizeShowTitle(show, { venueVocabulary });
+    const result = normalizeShowTitle(show, { venueVocabulary, knownWriters });
     if (result.manualReview) deferred.push({ id: show.id, title: show.title });
 
     // A trailing parenthetical no oracle could classify. Not an error and
