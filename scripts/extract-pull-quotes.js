@@ -34,6 +34,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const negCache = require('./lib/pull-quote-negative-cache');
+const { loadLiveScoreLookup, verdictBand } = require('./lib/live-review-score');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -59,6 +60,8 @@ const CHECKPOINT_INTERVAL = 50;
 // --- Stats ---
 const stats = {
   scanned: 0,
+  retoneQueued: 0, // stored quotes re-picked for a changed verdict direction (BRO-8060)
+  liveScored: 0, // files whose site score differs from the file score (BRO-8060)
   skipped: 0,
   llmCalls: 0,
   extracted: 0,
@@ -357,6 +360,9 @@ function cleanResponse(response) {
 function scanReviewFiles() {
   const files = [];
   const shows = listShowDirs(REVIEW_TEXTS_DIR);
+  // BRO-8060: judge each review against the score the site shows (reviews.json),
+  // not the file's raw assignedScore. Null when reviews.json is unreadable.
+  const liveScoreFor = loadLiveScoreLookup();
 
   for (const show of shows) {
     if (SHOW_FILTER && show !== SHOW_FILTER) continue;
@@ -367,15 +373,25 @@ function scanReviewFiles() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const score = liveScoreFor ? liveScoreFor(data.showId || show, data) : (typeof data.assignedScore === 'number' ? data.assignedScore : null);
+        if (score !== data.assignedScore) stats.liveScored++;
 
         // Skip if no meaningful fullText
         if (!data.fullText || data.fullText.length < 300) { stats.skipped++; continue; }
 
-        // Skip if already has llmPullQuote (unless --overwrite)
-        if (hasUsableLlmQuote(data) && !OVERWRITE) { stats.skipped++; continue; }
+        // Skip if already has llmPullQuote (unless --overwrite), except a quote
+        // picked for a different verdict direction than the site score now
+        // gives (BRO-8060: a 4/5-star review judged on a raw 59 got a "mixed" quote).
+        // Quotes without a stamp were judged on the file score.
+        let retone = false;
+        if (hasUsableLlmQuote(data) && !OVERWRITE) {
+          const judgedBand = data.llmPullQuoteVerdictBand || verdictBand(data.assignedScore);
+          if (judgedBand === verdictBand(score)) { stats.skipped++; continue; }
+          retone = true;
+        }
 
         // BRO-7535: already judged and rejected on this exact text and prompt.
-        if (negCache.shouldSkipForPriorRejection(data, { promptVersion: PROMPT_VERSION, overwrite: OVERWRITE || NEG_CACHE_OFF })) {
+        if (negCache.shouldSkipForPriorRejection({ ...data, assignedScore: score }, { promptVersion: PROMPT_VERSION, overwrite: OVERWRITE || NEG_CACHE_OFF })) {
           stats.skipped++; stats.priorRejectionSkipped++; continue;
         }
 
@@ -389,7 +405,8 @@ function scanReviewFiles() {
           continue;
         }
 
-        files.push({ filePath, data });
+        if (retone) stats.retoneQueued++;
+        files.push({ filePath, data, score, retone });
       } catch (e) {
         stats.errors++;
       }
@@ -446,7 +463,7 @@ async function processReview(entry) {
   // Pass assignedScore to the LLM so it can align the pull quote with the
   // review's overall verdict direction. See NYT hedge-opener bug — middle-
   // paragraph reservations were getting picked for positive reviews.
-  const score = typeof data.assignedScore === 'number' ? data.assignedScore : null;
+  const score = entry.score !== undefined ? entry.score : (typeof data.assignedScore === 'number' ? data.assignedScore : null);
   const hadPrevious = !!data.llmPullQuote;
   // Final rejections are stamped so the next run skips this text (BRO-7535).
   // Transient failures (API error, rate limit) are not stamped.
@@ -699,7 +716,7 @@ async function processReview(entry) {
     // human/other extractor set one) since we scanned — don't stomp it. A
     // stored quote failing the write guard is not kept (review-field-edit
     // refuses those edits too).
-    if (hasUsableLlmQuote(current) && !OVERWRITE) { stats.skipped++; return; }
+    if (hasUsableLlmQuote(current) && !OVERWRITE && !(entry.retone && current.llmPullQuote === data.llmPullQuote)) { stats.skipped++; return; }
     // Re-verify against the fresh body too: fullText is PROTECTED, but if it
     // legitimately changed since scan time (refetch/heal) the stale quote we
     // extracted may no longer be a substring of the current text.
@@ -709,6 +726,7 @@ async function processReview(entry) {
       return;
     }
     current.llmPullQuote = quote;
+    current.llmPullQuoteVerdictBand = verdictBand(score); // BRO-8060: re-pick if the site verdict direction changes
     // safeWriteReview quarantines date-implausible / cross-market-contaminated
     // writes (returns wrote:false) instead of writing — count those as errors,
     // not successes, so the run summary reflects what actually landed.
@@ -736,7 +754,7 @@ async function main() {
 
   console.log('Scanning review files...');
   let files = scanReviewFiles();
-  console.log(`Found ${files.length} reviews to process (skipped ${stats.skipped})\n`);
+  console.log(`Found ${files.length} reviews to process (skipped ${stats.skipped}; ${stats.liveScored} files use the site score over the file score; ${stats.retoneQueued} quotes re-picked for a changed verdict)\n`);
 
   if (LIMIT && files.length > LIMIT) {
     files = files.slice(0, LIMIT);
