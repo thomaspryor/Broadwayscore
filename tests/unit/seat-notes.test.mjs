@@ -68,6 +68,13 @@ describe('validateSeatNotes', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'You miss the elephant on the left side of the stage from here.' }]);
     assert.ok(p.some((x) => /production or set piece/.test(x)), p.join('\n'));
   });
+  test('a claim naming more sources than it cites is refused', () => {
+    const claim = 'Rows A to C are very close, and two seat guides say you can miss action at the sides.';
+    const p = validateSeatNotes('T', [{ ...watch, claim }, value]);
+    assert.ok(p.some((x) => /cites 1 source/.test(x)), p.join('\n'));
+    const ok = validateSeatNotes('T', [{ ...watch, claim, evidence: [...ev(), ...ev('aviewfrommyseat.com')] }, value]);
+    assert.deepStrictEqual(ok.filter((x) => /cites/.test(x)), []);
+  });
   test('show titles are refused', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'During Hadestown these seats are the best value in the house.' }], { showTitles: ['Hadestown'] });
     assert.ok(p.some((x) => /names show/.test(x)), p.join('\n'));

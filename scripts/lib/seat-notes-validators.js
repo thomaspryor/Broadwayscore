@@ -7,7 +7,11 @@
 
 const { HAZARD_TYPES, cleanRowRange, rowSet, copyProblems } = require('./seat-adjudication');
 const { BANNED_CLAIM_PATTERNS } = require('./theater-tips-validators');
-const { NOTE_TYPES, MAX_NOTES, LEVEL_LABEL, publishableSeatNotes, latestVerified } = require('./seat-notes-publish');
+const { NOTE_TYPES, MAX_NOTES, LEVEL_LABEL, publishableSeatNotes, latestVerified, noteSources } = require('./seat-notes-publish');
+
+// A claim that names a count of sources must cite at least that many hosts (BRO-8057 ship-check).
+const COUNT_WORDS = { two: 2, both: 2, three: 3, four: 4, several: 3, multiple: 2 };
+const COUNTED_SOURCES = /\b(two|both|three|four|several|multiple)\s+(?:seat\s+)?(guides|sources|reviewers|reviews|sites)\b/i;
 
 const SIDES = new Set(['center', 'left', 'right', 'sides']);
 // Pages a note may cite. Anything else (an arbitrary page a model surfaced) is refused.
@@ -57,6 +61,10 @@ function validateSeatNotes(theater, notes, { showTitles = [] } = {}) {
     const claim = String(n.claim || '');
     if (claim.length < CLAIM_MIN || claim.length > CLAIM_MAX) p.push(`${at}: claim length ${claim.length} outside ${CLAIM_MIN}-${CLAIM_MAX}`);
     if (PRODUCTION_WORDS.test(claim)) p.push(`${at}: names a production or set piece (house notes only)`);
+    const counted = claim.match(COUNTED_SOURCES);
+    if (counted && noteSources(n).length < COUNT_WORDS[counted[1].toLowerCase()]) {
+      p.push(`${at}: claim says "${counted[0]}" but cites ${noteSources(n).length} source(s)`);
+    }
     // Owner 2026-11-22: the Center Orchestra is the top price tier. "Cheaper than
     // premium" is not good value, so a value note there is refused outright.
     if (n.type === 'value' && n.level === 'orchestra' && (!n.side || n.side === 'center')) {
