@@ -20,7 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
-  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isMergeableBothSidesLedger, jsonFileParses,
+  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isMergeableBothSidesLedger, jsonFileParses, ledgerFileParses,
   isPromisorFetchFailure, isGeneratedDocConflict, refreshGeneratedDocsIn, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
@@ -1222,6 +1222,91 @@ test('BRO-6519: jsonFileParses reads the merged ledger from disk', () => {
   assert.equal(jsonFileParses(good), true);
   assert.equal(jsonFileParses(bad), false);
   assert.equal(jsonFileParses(path.join(dir, 'missing.json')), false);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// BRO-8030: every finished session lands a row in these two record files, so
+// "both sides changed it" sent 6 of 14 full re-checks (10-11 min each) for
+// nothing else. They take the small re-check ONLY when the merged file is
+// positively known to read correctly.
+const RETRO = 'data/audit/session-retro.jsonl';
+const COST = 'data/audit/claude-session-cost.jsonl';
+const trainMembers = (shared) => ['a', 'b'].map((n) => ({ name: n, base: 'a'.repeat(40), verified: true, ancestor: true, mainChanged: [], files: [...shared, `scripts/lib/${n}.js`] }));
+
+test('BRO-8030: a session record file both sides changed is small only when the merged file reads correctly', () => {
+  const branch = ['scripts/lib/foo.js', RETRO, COST];
+  const yes = () => true;
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [RETRO, COST], changedFiles: branch, ledgerOk: yes }).mode, 'small');
+  // fail closed: unknown, false, or a non-boolean truthy answer all stay full
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [RETRO], changedFiles: branch }).mode, 'full', 'no ledgerOk -> unknown -> full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [COST], changedFiles: branch }).mode, 'full', 'no ledgerOk -> unknown -> full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [RETRO], changedFiles: branch, ledgerOk: () => false }).mode, 'full', 'merged file has a broken line -> full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [COST], changedFiles: branch, ledgerOk: () => 'yes' }).mode, 'full', 'only a strict true counts');
+  // one bad record file among good ones is enough
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [RETRO, COST], changedFiles: branch, ledgerOk: (f) => f === RETRO }).mode, 'full');
+  // a real shared file next to a record file still forces full
+  const both = selectRecheckScope({ ancestor: true, intervening: [RETRO, 'scripts/lib/foo.js'], changedFiles: branch, ledgerOk: yes });
+  assert.equal(both.mode, 'full');
+  assert.match(both.reason, /scripts\/lib\/foo\.js/);
+  assert.doesNotMatch(both.reason, /session-retro/);
+  // nothing else in data/audit rides along, and near-miss names do not match
+  for (const f of ['data/audit/landings.jsonl', 'data/audit/session-retro.jsonl.bak', 'data/audit/x/session-retro.jsonl', 'scripts/session-retro.jsonl', 'data/audit/claude-session-cost.json']) {
+    assert.equal(isMergeableBothSidesLedger(f, yes), false, f);
+  }
+  // the switch still wins
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: [RETRO], changedFiles: branch, ledgerOk: yes, disabled: true }).mode, 'full');
+  // the BRO-6519 rule is unchanged: the spend ledger needs no check, the alert ledger needs one
+  assert.equal(isMergeableBothSidesLedger('data/audit/scraper-spend-ledger.jsonl'), true);
+  assert.equal(isMergeableBothSidesLedger('data/audit/alert-ledger.json'), false);
+  assert.equal(isMergeableBothSidesLedger('data/audit/alert-ledger.json', yes), true);
+});
+
+test('BRO-8030: a merge train whose members all landed a session record row is small, and only with the merged-file check', () => {
+  const yes = () => true;
+  const small = selectTrainRecheckScope({ members: trainMembers([RETRO, COST]), ledgerOk: yes });
+  assert.equal(small.mode, 'small', small.reason);
+  const unknown = selectTrainRecheckScope({ members: trainMembers([RETRO]) });
+  assert.equal(unknown.mode, 'full');
+  assert.match(unknown.reason, /session-retro\.jsonl/);
+  assert.equal(selectTrainRecheckScope({ members: trainMembers([COST]), ledgerOk: () => false }).mode, 'full', 'merged file has a broken line -> full');
+  // main changing the record file since a member's verified base is the same case
+  const viaMain = trainMembers([RETRO]).map((m, i) => (i === 0 ? { ...m, mainChanged: [RETRO, COST] } : m));
+  assert.equal(selectTrainRecheckScope({ members: viaMain, ledgerOk: yes }).mode, 'small');
+  // two members sharing a code file stay full whatever the ledgers say
+  const code = trainMembers([RETRO]).map((m) => ({ ...m, files: [...m.files, 'scripts/lib/shared.js'] }));
+  assert.equal(selectTrainRecheckScope({ members: code, ledgerOk: yes }).mode, 'full');
+  // the train check is for the session record files only: the keyed alert
+  // ledger keeps its full re-check in trains, as before this change
+  const calls = [];
+  const alert = selectTrainRecheckScope({ members: trainMembers(['data/audit/alert-ledger.json']), ledgerOk: (f) => { calls.push(f); return true; } });
+  assert.equal(alert.mode, 'full');
+  assert.deepEqual(calls, [], 'the train never asks about the alert ledger');
+  // the switch still wins
+  assert.equal(selectTrainRecheckScope({ members: trainMembers([RETRO]), ledgerOk: yes, disabled: true }).mode, 'full');
+});
+
+test('BRO-8030: ledgerFileParses reads the merged record file from disk and refuses anything that does not read cleanly', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'record-parse-'));
+  const w = (name, text) => { const p = path.join(dir, name); fs.writeFileSync(p, text); return p; };
+  assert.equal(ledgerFileParses(w('good.jsonl', '{"a":1}\n{"b":2}\n')), true);
+  assert.equal(ledgerFileParses(w('blank-lines.jsonl', '{"a":1}\n\n{"b":2}\n\n')), true, 'blank lines are skipped, as the readers do');
+  assert.equal(ledgerFileParses(w('no-trailing-newline.jsonl', '{"a":1}\n{"b":2}')), true);
+  assert.equal(ledgerFileParses(w('markers.jsonl', '{"a":1}\n<<<<<<< HEAD\n{"b":2}\n=======\n{"c":3}\n>>>>>>> x\n')), false, 'a leftover conflict marker');
+  assert.equal(ledgerFileParses(w('cut.jsonl', '{"a":1}\n{"b":\n')), false, 'a truncated row');
+  assert.equal(ledgerFileParses(w('glued.jsonl', '{"a":1}{"b":2}\n')), false, 'two rows glued onto one line');
+  assert.equal(ledgerFileParses(w('scalar.jsonl', '{"a":1}\n42\n')), false, 'a row must be an object');
+  assert.equal(ledgerFileParses(w('array.jsonl', '[{"a":1}]\n')), false);
+  assert.equal(ledgerFileParses(w('null.jsonl', 'null\n')), false);
+  assert.equal(ledgerFileParses(w('empty.jsonl', '')), false, 'an emptied record file is not "reads correctly"');
+  assert.equal(ledgerFileParses(w('blank.jsonl', '\n\n')), false);
+  assert.equal(ledgerFileParses(path.join(dir, 'missing.jsonl')), false);
+  assert.equal(ledgerFileParses(w('crlf.jsonl', '{"a":1}\r\n{"b":2}\r\n')), true, 'CRLF rows still read');
+  assert.equal(ledgerFileParses(w('bom.jsonl', '\uFEFF{"a":1}\n')), false, 'a byte-order mark is not a clean row: fail closed');
+  fs.mkdirSync(path.join(dir, 'dir.jsonl'));
+  assert.equal(ledgerFileParses(path.join(dir, 'dir.jsonl')), false, 'a directory at that path');
+  // a .json ledger keeps the BRO-6519 whole-file check
+  assert.equal(ledgerFileParses(w('good.json', '{"a":{"notifyCount":1}}\n')), true);
+  assert.equal(ledgerFileParses(w('bad.json', '{"a":1,\n<<<<<<< HEAD\n')), false);
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 

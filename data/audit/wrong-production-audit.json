@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T15:27:37.738Z",
+  "timestamp": "2026-11-22T16:59:33.693Z",
   "stats": {
-    "totalReviews": 83893,
-    "alreadyFlagged": 22457,
+    "totalReviews": 83946,
+    "alreadyFlagged": 22460,
     "dateGuardCatches": 241,
-    "directorMismatch": 3878,
-    "tvFilmSignals": 2412,
+    "directorMismatch": 3877,
+    "tvFilmSignals": 2411,
     "londonSignals": 3965,
     "offBroadwaySignals": 785,
-    "yearMismatch": 395,
-    "noPublishDate": 8218
+    "yearMismatch": 394,
+    "noPublishDate": 8263
   },
   "findings": [
     {
@@ -2597,20 +2597,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
-        }
-      ]
-    },
-    {
-      "showId": "a-raisin-in-the-sun-2014",
-      "file": "nytimes--ben-brantley.json",
-      "score": 86,
-      "publishDate": "April 3, 2014",
-      "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2004 (2x) more than 2014 (1x). 2004 matches production: a-raisin-in-the-sun-2004"
         }
       ]
     },
@@ -11439,20 +11425,6 @@
       ]
     },
     {
-      "showId": "bullets-over-broadway-2014",
-      "file": "thewrap--robert-hofler.json",
-      "score": 44,
-      "publishDate": "2014-04-11",
-      "url": "https://www.thewrap.com/bullets-broadway-theater-review-woody-allen-takes-another-shot-gangland-guys-dolls/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "burn-the-floor-2009",
       "file": "nytimes--charles-isherwood.json",
       "score": 56,
@@ -12121,20 +12093,6 @@
       "score": 90,
       "publishDate": "2021-11-12",
       "url": "https://frontmezzjunkies.com/2021/11/12/caroline-or-change-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. wolfe\" from caroline-or-change-2004"
-        }
-      ]
-    },
-    {
-      "showId": "caroline-or-change-2021",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": 93,
-      "publishDate": "November 1, 2021",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21813,7 +21771,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 85,
+      "score": 86,
       "publishDate": "2026-11-20",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
       "findings": [
@@ -25196,7 +25154,7 @@
       "showId": "fully-committed-2016",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2016-04-25T20:11:58-04:00",
       "url": "https://www.northjersey.com/arts-and-entertainment/theater/show-is-anything-but-reserved-1.1552866",
       "findings": [
         {
@@ -64690,7 +64648,7 @@
       "showId": "stories-the-tap-dance-sensation-off-west-end-2026",
       "file": "thestage--siobhan-murphy.json",
       "score": 40,
-      "publishDate": null,
+      "publishDate": "2026-10-16",
       "url": "https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
       "findings": [
         {
@@ -96359,20 +96317,6 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "file": "britishtheatrecom--susan-novak.json",
-      "score": 78,
-      "publishDate": "2026-04-18",
-      "url": "https://www.britishtheatre.com/posts/avenue-q-review-the-puppets-are-onto-something",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 77,
       "publishDate": "2026-04-17",
@@ -106297,7 +106241,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-11-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/eurotrash-young-vic-review",
       "findings": [
@@ -106395,7 +106339,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "standard--tim-bano.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-11-22",
       "url": "https://www.standard.co.uk/culture/theatre/eurotrash-review-b1305883.html",
       "findings": [
@@ -106436,7 +106380,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 87,
+      "score": 88,
       "publishDate": "2026-11-20",
       "url": "https://www.timeout.com/london/news/eurotrash-ben-whishaw-young-vic-review-112026",
       "findings": [
@@ -109786,7 +109730,7 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
-      "file": "standard--ghenet-pinderhughes-randall.json",
+      "file": "standard--nick-curtis.json",
       "score": 78,
       "publishDate": "2026-05-01",
       "url": "https://standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html",
@@ -141948,7 +141892,7 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "londontheatredirect--miranda-barrett.json",
+      "file": "londontheatredirect--james-mendel.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
@@ -148119,6 +148063,20 @@
       "score": 94,
       "publishDate": "2022-04-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-to-kill-a-mockingbird-gielgud-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": 89,
+      "publishDate": "2022-04-01",
+      "url": "https://www.britishtheatre.com/posts/review-to-kill-a-mockingbird-gielgud-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

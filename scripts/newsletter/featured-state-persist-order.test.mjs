@@ -50,7 +50,9 @@ const WEEK = '2026-08-24';
 function runGeneratorSandboxed(weekStart, extraEnv = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'featured-persist-order-test-'));
   const statePath = path.join(dir, 'newsletter-state.json');
-  fs.copyFileSync(REAL_STATE_PATH, statePath);
+  // The generator keeps only the newest 24 issue rows, so a fixed past WEEK ages
+  // out of a copy of today's state; seed with rows up to WEEK only.
+  fs.writeFileSync(statePath, JSON.stringify({ issues: (JSON.parse(fs.readFileSync(REAL_STATE_PATH, 'utf8')).issues || []).filter((i) => i && i.weekStart <= WEEK) }));
   try {
     execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
       cwd: repoRoot,

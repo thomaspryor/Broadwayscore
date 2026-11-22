@@ -224,20 +224,61 @@ const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
 // chosen (a conflicting rebase never reaches the checks), so a clean merge of
 // one of these is not a clash. The .jsonl is merge=union (.gitattributes); the
 // keyed-object .json counts only when the merged file still parses (ledgerOk).
-// Named one by one: other data/audit ledgers are not covered.
+// Named one by one, here and in SESSION_RECORD_LEDGER_RE below: other
+// data/audit ledgers are not covered.
 const BOTH_SIDES_LEDGER_RE = /^data\/audit\/(alert-ledger\.json|scraper-spend-ledger\.jsonl)$/;
 
-/** True when `file` changed on both sides may still take the small re-check. ledgerOk(file) checks a .json ledger in the merged tree; null = unknown. */
+// BRO-8030 (owner decision 2026-11-22): the two session record files. Every
+// finished session lands a row in them, so two landings in one train, or one
+// landing after main took another, always "both changed" them: 6 of 14 full
+// re-checks in the 2026-11-21/22 Land logs were for that alone, each 10-11 min
+// with the landing mutex held. session-retro.jsonl is merge=union; the cost
+// ledger is merged by the keyed-jsonl driver (.gitattributes). Unlike the
+// spend ledger these count ONLY when the merged file is positively known to
+// read correctly (ledgerOk === true); unknown stays full. Nothing in the test
+// floor reads either real file, so the full re-check never covered their data.
+const SESSION_RECORD_LEDGER_RE = /^data\/audit\/(session-retro|claude-session-cost)\.jsonl$/;
+
+/**
+ * True when `file` changed on both sides may still take the small re-check.
+ * ledgerOk(file) checks the file in the merged tree (null = unknown): the
+ * keyed .json ledger and both session record files need it to answer true;
+ * the BRO-6519 spend .jsonl needs no check.
+ */
 function isMergeableBothSidesLedger(file, ledgerOk = null) {
   const f = String(file);
-  if (!BOTH_SIDES_LEDGER_RE.test(f) || !isInertForVerification(f)) return false;
+  if (!isInertForVerification(f)) return false;
+  const checked = () => typeof ledgerOk === 'function' && ledgerOk(f) === true;
+  if (SESSION_RECORD_LEDGER_RE.test(f)) return checked();
+  if (!BOTH_SIDES_LEDGER_RE.test(f)) return false;
   if (f.endsWith('.jsonl')) return true;
-  return typeof ledgerOk === 'function' && ledgerOk(f) === true;
+  return checked();
 }
 
 /** True when `file` exists and parses as JSON. */
 function jsonFileParses(file) {
   try { JSON.parse(fs.readFileSync(file, 'utf8')); return true; } catch { return false; }
+}
+
+/**
+ * True when `file` exists, has at least one row, and every non-blank line is
+ * one JSON object. A leftover conflict marker, a cut-off row, two rows glued
+ * onto one line or an emptied file all answer false. Duplicate keys are not
+ * checked: main's cost ledger already holds one and its readers accept it.
+ */
+function jsonlFileParses(file) {
+  let text;
+  try { text = fs.readFileSync(file, 'utf8'); } catch { return false; }
+  const lines = text.split('\n').filter((l) => l.trim());
+  if (!lines.length) return false;
+  return lines.every((l) => {
+    try { const row = JSON.parse(l); return row !== null && typeof row === 'object' && !Array.isArray(row); } catch { return false; }
+  });
+}
+
+/** The merged-tree check behind ledgerOk: line by line for a .jsonl, whole file for a .json. */
+function ledgerFileParses(file) {
+  return String(file).endsWith('.jsonl') ? jsonlFileParses(file) : jsonFileParses(file);
 }
 
 function isInertForVerification(file) {
@@ -412,7 +453,8 @@ function isBuildCodePath(file, buildScripts = null) {
  * build code (isBuildCodePath). Unknown
  * ancestry, a failed diff, an overlap or the switch → 'full', today's
  * re-check. Fails closed. A bot ledger both sides wrote is not an overlap
- * (isMergeableBothSidesLedger, BRO-6519).
+ * (isMergeableBothSidesLedger, BRO-6519), nor does a session record file
+ * whose merged copy reads correctly (BRO-8030).
  * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean, buildScripts?:(Set<string>|null), ledgerOk?:((file:string)=>boolean)|null}} o
  * @returns {{mode:'full'|'small', build:boolean, reason:string}}
  */
@@ -437,10 +479,12 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
  * switch is set, any member lacks a verified base (a rider whose ticket had
  * no Land-Base only has a merge-base, which no gauntlet verified), its base
  * is not an ancestor of main, or any diff failed (null). Fails closed.
- * @param {{members:Array<{name:string, base:(string|null), verified:boolean, ancestor:boolean, mainChanged:(string[]|null), files:(string[]|null)}>, disabled?:boolean, buildScripts?:(Set<string>|null)}} o
+ * ledgerOk (BRO-8030) is asked about the two session record files only: the
+ * keyed alert ledger keeps its full re-check in a train, as before.
+ * @param {{members:Array<{name:string, base:(string|null), verified:boolean, ancestor:boolean, mainChanged:(string[]|null), files:(string[]|null)}>, disabled?:boolean, buildScripts?:(Set<string>|null), ledgerOk?:((file:string)=>boolean)|null}} o
  * @returns {{mode:'full'|'small', build:boolean, reason:string}}
  */
-function selectTrainRecheckScope({ members, disabled = false, buildScripts = null }) {
+function selectTrainRecheckScope({ members, disabled = false, buildScripts = null, ledgerOk = null }) {
   const full = (reason) => ({ mode: 'full', build: true, reason });
   if (disabled) return full('small re-check disabled (LAND_SMALL_RECHECK_DISABLED / LAND_TRAIN_SMALL_RECHECK_DISABLED)');
   if (!Array.isArray(members) || members.length < 2) return full('not a train');
@@ -448,6 +492,7 @@ function selectTrainRecheckScope({ members, disabled = false, buildScripts = nul
     if (!m.verified || !/^[0-9a-f]{40}$/.test(String(m.base || ''))) return full(`${m.name} has no verified base`);
     if (!Array.isArray(m.files)) return full(`files ${m.name} changed are unknown`);
   }
+  const recordOk = typeof ledgerOk === 'function' ? (f) => SESSION_RECORD_LEDGER_RE.test(String(f)) && ledgerOk(f) === true : null;
   let build = false;
   for (const m of members) {
     const others = members.filter((x) => x !== m).flatMap((x) => x.files);
@@ -456,6 +501,7 @@ function selectTrainRecheckScope({ members, disabled = false, buildScripts = nul
       intervening: Array.isArray(m.mainChanged) ? [...m.mainChanged, ...others] : null,
       changedFiles: m.files,
       buildScripts,
+      ledgerOk: recordOk,
     });
     if (scope.mode !== 'small') return full(`${m.name}: ${scope.reason}`);
     build = build || scope.build;
@@ -511,7 +557,7 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
           buildScripts: cwd && o.changedFiles?.some(f => f.startsWith('src/')) && intervening.some(f => f.startsWith('scripts/'))
             ? collectBuildScriptDependencies(cwd) : null,
           // cwd holds the branch rebased onto baseSha: the merged ledger.
-          ledgerOk: cwd ? (f) => jsonFileParses(path.join(cwd, f)) : null,
+          ledgerOk: cwd ? (f) => ledgerFileParses(path.join(cwd, f)) : null,
         });
       log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra}); ${recheckScope.mode} re-check: ${recheckScope.reason}`);
       return checks({ ...o, interveningTests, recheckScope });
@@ -1007,7 +1053,8 @@ function landBranch(o) {
       const mains = members.flatMap((m) => m.mainChanged || []);
       const buildScripts = all.some((f) => f.startsWith('src/')) && [...all, ...mains].some((f) => f.startsWith('scripts/'))
         ? collectBuildScriptDependencies(workdir) : null;
-      return selectTrainRecheckScope({ members, buildScripts });
+      // workdir holds the holder plus every rider: the merged record files.
+      return selectTrainRecheckScope({ members, buildScripts, ledgerOk: (f) => ledgerFileParses(path.join(workdir, f)) });
     };
 
     let lastReason = null;
@@ -1253,6 +1300,7 @@ module.exports = {
   classifyIntervening,
   isMergeableBothSidesLedger,
   jsonFileParses,
+  ledgerFileParses,
   landBranch,
   defaultChecks,
   decideVerifiedBaseSkip,
