@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-22T13:18:11.879Z",
+  "generatedAt": "2026-11-22T13:43:13.728Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 92,
+    "avgScoreDiff": 8
   },
   "syndicationPairs": [
     {
@@ -159,10 +159,23 @@
       "secondaryOutlets": [
         "totaltheater1"
       ],
-      "count": 0
+      "count": 1
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "David Sheward",
+      "showId": "time-and-the-conways-2017",
+      "primaryOutlet": "theater-life",
+      "secondaryOutlet": "cultural-weekly",
+      "primaryFile": "theater-life--david-sheward.json",
+      "secondaryFile": "cultural-weekly--david-sheward.json",
+      "similarity": 92,
+      "primaryScore": 70,
+      "secondaryScore": 78,
+      "scoreDiff": 8
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
