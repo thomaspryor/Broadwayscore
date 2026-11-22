@@ -4026,6 +4026,10 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   // outlet url kept arriving. A well-formed incoming url always beats it.
   const wellFormed = (u) => typeof u === 'string' && /^https?:\/\/[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?([\/?#]|$)/i.test(u);
   if (!wellFormed(existingUrl) && wellFormed(incomingUrl)) return true;
+  // BRO-8065: a bot-wall interstitial (/.well-known/captcha/) is never the article; the url it guards always wins
+  // (the breaker pinned girls-off-west-end-2026's londontheatre1 file onto its sgcaptcha url).
+  const { isChallengeUrl } = require('./non-review-url-patterns');
+  if (isChallengeUrl(existingUrl) && wellFormed(incomingUrl) && !isChallengeUrl(incomingUrl)) return true;
   // Same site only: a host-wide named pattern can sit over real reviews
   // elsewhere, so never let this hop an auto-pin to a different outlet.
   const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };

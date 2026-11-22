@@ -424,3 +424,25 @@ test('BRO-8065: safeWriteReview stores the guarded article url, never the bot-wa
   assert.equal(out.url, 'https://www.londontheatre1.com/reviews/girls-young-vic/');
   assert.match(out.challengeUrlUnwrappedFrom, /well-known\/captcha/);
 });
+
+test('BRO-8065: the flip-flop breaker never keeps (or pins) a bot-wall url over the article it guards', () => {
+  const { safeWriteReview } = require('../../scripts/lib/review-write-guard.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8065f-'));
+  const f = path.join(dir, 'girls-off-west-end-2026', 'londontheatre1--unknown.json');
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  const WALL = 'https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:1793302839.755&r=%2Freviews%2Fgirls-young-vic%2F';
+  const REAL = 'https://www.londontheatre1.com/reviews/girls-young-vic/';
+  // The real file's shape: upgraded onto the wall url, with the real url as the change breadcrumb.
+  fs.writeFileSync(f, JSON.stringify({ showId: 'girls-off-west-end-2026', outletId: 'londontheatre1', criticName: 'Unknown', url: WALL,
+    urlCorrectedFrom: REAL, urlUpdatedFrom: REAL, _urlChangedClear: { from: REAL, to: WALL } }));
+  safeWriteReview(f, { ...JSON.parse(fs.readFileSync(f, 'utf8')), url: WALL });
+  const out = JSON.parse(fs.readFileSync(f, 'utf8'));
+  assert.equal(out.url, REAL);
+  assert.notEqual(out.urlVerified, true);
+  // And a file the breaker already pinned onto the wall is released by the next write.
+  fs.writeFileSync(f, JSON.stringify({ ...out, url: WALL, urlVerified: true, urlVerifiedAuto: true, _urlChangedClear: { from: REAL, to: WALL } }));
+  safeWriteReview(f, { ...JSON.parse(fs.readFileSync(f, 'utf8')) });
+  const out2 = JSON.parse(fs.readFileSync(f, 'utf8'));
+  assert.equal(out2.url, REAL);
+  assert.notEqual(out2.urlVerified, true);
+});
