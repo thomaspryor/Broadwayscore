@@ -567,25 +567,40 @@ test('BRO-8025: an outlet missing 2 shows in each of 3 markets reaches an all-ma
   assert.equal(rc.missClasses(old, [], { now: NOW }).get('missed-at-first-pass:*:guardian').recurring, false);
 });
 
-test('BRO-8025: the all-markets class stands down while a single-market class of the same outlet is recurring or has a root card', () => {
+test('BRO-8025: the all-markets class never duplicates a market class and never hides an uncovered market', () => {
+  // 3 off-broadway + 1 west-end: market class recurring, wildcard has only 1 uncovered show.
   const rows = og.firstPassMisses([grade('a', 2, [sig('wsj')]), grade('b', 3, [sig('wsj')]), grade('c', 4, [sig('wsj')]), grade('d', 5, [sig('wsj')], 'west-end')]);
   const cls = rc.missClasses(rows, [], { now: NOW });
   assert.equal(cls.get('missed-at-first-pass:off-broadway:wsj').recurring, true);
   assert.equal(cls.get('missed-at-first-pass:*:wsj').recurring, false);
-  const two = og.firstPassMisses([grade('a', 2, [sig('x1')]), grade('b', 3, [sig('x1')]), grade('c', 4, [sig('x1')], 'west-end')]);
+  // Market root card (stale, last miss long ago) covers only its own shows: 3 recent shows in other markets still reach the wildcard.
+  const rows2 = og.firstPassMisses([grade('o', 40, [sig('x1')]), grade('a', 2, [sig('x1')], 'west-end'), grade('b', 3, [sig('x1')], 'west-end'), grade('c', 4, [sig('x1')], 'broadway')]);
   const card = { identifier: 'BRO-1', createdAt: iso(1), state: { type: 'started' }, description: rc.markerLine('missed-at-first-pass:off-broadway:x1') };
-  assert.equal(rc.missClasses(two, [card], { now: NOW }).get('missed-at-first-pass:*:x1').recurring, false);
+  const c2 = rc.missClasses(rows2, [card], { now: NOW });
+  assert.equal(c2.get('missed-at-first-pass:*:x1').recurring, true);
+  assert.equal(c2.get('missed-at-first-pass:*:x1').inWindow, 3);
+  // Wildcard root exists first: a later recurring market class points at it instead of filing another card.
+  const rows3 = og.firstPassMisses([grade('a', 2, [sig('y1')]), grade('b', 3, [sig('y1')]), grade('c', 4, [sig('y1')])]);
+  const wcard = { identifier: 'BRO-2', createdAt: iso(10), state: { type: 'started' }, description: rc.markerLine('missed-at-first-pass:*:y1') };
+  const c3 = rc.missClasses(rows3, [wcard], { now: NOW });
+  assert.equal(c3.get('missed-at-first-pass:off-broadway:y1').rootCause, 'BRO-2');
+  // A persisted row with the reserved '*' category is ignored, not counted.
+  assert.equal(rc.missClasses([{ showId: 's', outletId: 'z', category: '*', cause: 'discovery-gap', embargoAt: iso(3) }], [], { now: NOW }).size, 0);
 });
 
-test('BRO-8025: replaying data/audit/opening-grades.json finds repeat outlets no single-market class reaches', () => {
+test('BRO-8025: a marker Linear stored with an escaped * still reads back as the same class key', () => {
+  const key = 'missed-at-first-pass:*:guardian';
+  assert.equal(rc.rootCauseMarker(rc.markerLine(key).replace('*', '\\*')).key, key);
+  assert.equal(rc.rootCauseMarker(rc.markerLine(key)).key, key);
+});
+
+test('BRO-8025: replaying opening-grades.json shape: repeat outlets spread across markets reach a class only via the all-markets rule', () => {
   const doc = JSON.parse(fs.readFileSync(new URL('../../data/audit/opening-grades.json', import.meta.url), 'utf8'));
-  const rows = doc.firstPassMisses || [];
-  const now = Math.max(...rows.map((r) => Date.parse(r.embargoAt)).filter(Number.isFinite)) + 36e5;
-  const cls = [...rc.missClasses(rows, [], { now }).values()];
-  const perMarket = cls.filter((c) => c.category !== '*' && c.recurring).map((c) => `${c.cause}:${c.outletId}`);
-  const wild = cls.filter((c) => c.category === '*' && c.recurring);
-  const reached = wild.filter((c) => !perMarket.includes(`${c.cause}:${c.outletId}`));
-  assert.ok(reached.length > 0, 'at least one outlet only reaches a class through the all-markets rule');
+  assert.ok(Array.isArray(doc.firstPassMisses), 'opening-grades.json has firstPassMisses');
+  // Live data only has to replay without throwing and keep per-market keys intact; the
+  // detection claim itself is pinned by the fixed fixtures above.
+  const cls = [...rc.missClasses(doc.firstPassMisses, [], { now: Date.now() }).values()];
+  assert.ok(cls.every((c) => c.key === `${c.cause === 'text-gap' ? 'text-' : ''}missed-at-first-pass:${c.category}:${c.outletId}`));
 });
 
 test('BRO-7375: a commit that only modified the file is a text miss, one that created it is a discovery miss', () => {

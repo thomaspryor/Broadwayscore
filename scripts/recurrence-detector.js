@@ -258,7 +258,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
       rootCauseStartedAt: root ? root.startedAt || null : null,
       extraRootCauses: cls.extraRootCauses,
       subtypes: {},
-      example: `${cls.outletId} (${cls.category})`,
+      example: `${cls.outletId} (${MARKET_WORDS[cls.category] || cls.category})`,
       instances: cls.instances.map((c) => c.identifier),
       shows: cls.instances.map((c) => ({ showId: c.identifier, title: c.title, openedAt: c.createdAt, fixedAt: c.foundAt, via: c.via })),
       failedPreventions: [],
@@ -333,7 +333,7 @@ function missCardDescription(cls) {
     `${market}: ${cls.outletId} was ${text ? 'without full text after' : 'missed by'} the first pass on ${cls.inWindow} shows that opened in the last ${cls.windowDays || WINDOW_DAYS} days. ` +
       'Each one was fixed afterwards and nothing was filed, so the same gap stays open for the next opening.',
     '',
-    `Class: \`${cls.key}\`. Outlet: \`${cls.outletId}\`. Market: ${cls.category}.`,
+    `Class: \`${cls.key}\`. Outlet: \`${cls.outletId}\`. Market: ${MARKET_WORDS[cls.category] || cls.category}.`,
     '',
     'Shows (the "by" part is the commit that fixed it, i.e. the path a later find came in by):',
     shows,
@@ -670,7 +670,7 @@ function backtest(cards, ledger, days, misses = []) {
   const expected = [...expectedFlag.entries()].map(([key, f]) => ({ key, firstFlagged: f.at, reason: f.expected, total: final.get(key).instances.length }))
     .sort((a, b) => b.total - a.total);
   // Miss classes seen but under the bar, so the report shows one-offs did not fire.
-  const missBelow = [...finalMiss.values()].filter((c) => !firstFlag.has(c.key)).map((c) => ({ key: c.key, shows: c.instances.length })).sort((a, b) => b.shows - a.shows || (a.key < b.key ? -1 : 1));
+  const missBelow = [...finalMiss.values()].filter((c) => c.category !== rc.ALL_MARKETS && !firstFlag.has(c.key)).map((c) => ({ key: c.key, shows: c.instances.length })).sort((a, b) => b.shows - a.shows || (a.key < b.key ? -1 : 1));
   return { generatedAt: new Date(end).toISOString(), days, cards: cards.length, misses: misses.length, windowDays: WINDOW_DAYS, hits, expected, missBelow };
 }
 

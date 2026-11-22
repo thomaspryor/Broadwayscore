@@ -119,7 +119,8 @@ function overrideRootCause(instances) {
 /** {version, key} carried by a root-cause card's description, or null. */
 function rootCauseMarker(description) {
   const m = String(description || '').match(ROOT_CAUSE_MARKER_RE);
-  return m ? { version: m[1] || 'v0', key: m[2] } : null;
+  // Linear's markdown may store the all-markets '*' as '\\*' (BRO-8025); read it back as '*'.
+  return m ? { version: m[1] || 'v0', key: m[2].replace(/\\([*_])/g, '$1') } : null;
 }
 
 function markerLine(key) {
@@ -565,7 +566,7 @@ function missClasses(misses, cards = [], opts = {}) {
     if (!prev || String(m.at || '') < String(prev.at || '')) cls.shows.set(m.showId, m);
   };
   for (const m of misses || []) {
-    if (!m || !m.showId || !m.outletId || !m.category || !MISS_KEY_PREFIX[m.cause]) continue;
+    if (!m || !m.showId || !m.outletId || !m.category || m.category === ALL_MARKETS || !MISS_KEY_PREFIX[m.cause]) continue;
     const at = ms(m.embargoAt);
     if (!Number.isFinite(at) || at > now) continue;
     add(missKey(m), m, { category: m.category, windowDays });
@@ -597,12 +598,30 @@ function missClasses(misses, cards = [], opts = {}) {
       extraRootCauses: marked.map((c) => c.identifier).filter((id) => pick && id !== pick.identifier),
     });
   }
-  // One root card per gap: an all-markets class stands down while a single-market
-  // class of the same cause+outlet is itself recurring or already has a root card.
+  // One root card per gap (BRO-8025 ship-check). A market class that is recurring or already has
+  // a root card covers its own shows; the all-markets class then counts only the shows from
+  // markets NOT covered, so it never duplicates a card or hides an uncovered market. When the
+  // all-markets class already has a root card, it covers every market: recurring market classes
+  // without a root of their own point at it (comment, not a new card).
+  const cover = (c) => c.recurring || c.rootCause;
   for (const cls of out.values()) {
-    if (cls.category !== ALL_MARKETS || !cls.recurring || cls.rootCause) continue;
-    const sibling = [...out.values()].some((o) => o.category !== ALL_MARKETS && o.cause === cls.cause && o.outletId === cls.outletId && (o.recurring || o.rootCause));
-    if (sibling) { cls.reasons = []; cls.recurring = false; cls.coveredByMarketClass = true; }
+    if (cls.category !== ALL_MARKETS) continue;
+    const mine = [...out.values()].filter((o) => o.category !== ALL_MARKETS && o.cause === cls.cause && o.outletId === cls.outletId);
+    if (cls.rootCause) {
+      for (const o of mine) if (o.recurring && !o.rootCause) { o.rootCause = cls.rootCause; o.extraRootCauses = []; }
+      continue;
+    }
+    const coveredShows = new Set(mine.filter(cover).flatMap((o) => o.instances.map((i) => i.identifier)));
+    if (!coveredShows.size) continue;
+    const since = now - cls.windowDays * DAY;
+    const left = cls.instances.filter((i) => !coveredShows.has(i.identifier));
+    cls.coveredByMarketClass = cls.instances.length - left.length;
+    cls.instances = left;
+    cls.inWindow = left.filter((i) => ms(i.createdAt) >= since).length;
+    cls.firstSeen = left.length ? left[0].createdAt : null;
+    cls.lastSeen = left.length ? left[left.length - 1].createdAt : null;
+    cls.reasons = cls.inWindow >= minShows ? [`${cls.inWindow} shows in ${cls.windowDays} days`] : [];
+    cls.recurring = cls.reasons.length > 0;
   }
   return out;
 }
