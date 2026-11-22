@@ -142,9 +142,9 @@ function urlMissesShortTitle(url, title) {
   const parts = titleParts(title);
   // 3+ parts: "N/A" (2) has opaque review urls (lightingandsoundamerica story.asp?ID=) in the scored corpus.
   if (parts.length < 3 || parts.some((w) => w.length >= 3 || /\d/.test(w))) return false;
-  // Only a descriptive slug (4+ words) can be judged: an opaque url (FT /content/<uuid>, ?id=) says nothing.
+  // Only a descriptive slug (3+ words) can be judged: an opaque url (FT /content/<uuid>, ?id=) says nothing.
   const words = finalSlug(url).toLowerCase().replace(/\.html?$/i, '').split(/[^a-z]+/).filter((w) => w.length >= 3);
-  if (words.length < 4) return false;
+  if (words.length < 3) return false;
   const re = new RegExp(`(?:^|[^a-z0-9])${parts.slice(0, 3).join('[-_]?')}(?:[^a-z0-9]|$)`);
   return !re.test(String(url || '').toLowerCase());
 }
