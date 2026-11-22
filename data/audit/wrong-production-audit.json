@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-22T03:23:34.068Z",
+  "timestamp": "2026-11-22T04:41:04.453Z",
   "stats": {
     "totalReviews": 83829,
     "alreadyFlagged": 22427,
     "dateGuardCatches": 238,
-    "directorMismatch": 3869,
+    "directorMismatch": 3870,
     "tvFilmSignals": 2405,
     "londonSignals": 3955,
     "offBroadwaySignals": 782,
@@ -43957,8 +43957,21 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "publishDate": "2025-05-10",
+      "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"monique touko\" from marie-and-rosetta-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2025",
+      "file": "thestage--holly-omahony.json",
+      "publishDate": "2025-05-12",
+      "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -94660,7 +94673,7 @@
       "showId": "an-oak-tree-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 82,
-      "publishDate": "May 7th, 2025",
+      "publishDate": "2025-05-07",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-oak-tree-young-vic-review-tim-crouch-jessie-buckley-b2746376.html",
       "findings": [
         {
