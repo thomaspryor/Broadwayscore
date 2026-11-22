@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7957-flags-d",
   "planId": "77b3d2b2-c4d6-4f63-aa33-4b446a41cd2f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T03:56:44.490Z",
   "submitter": {
     "name": null,
@@ -203,5 +203,114 @@
         "description": "BRO-7957: clear pointer to the Tribune copy"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T04:35:23.454Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"stephen-sondheims-old-friends-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"stranger-things-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"suffs-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"sunset-boulevard-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-balusters-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fantasticks-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fantasticks-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-fantasticks-2026/chicagotribune--chris-jones--on-2026-11-16.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-outsiders-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wiz-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wiz-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"the-wiz-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"waiting-for-godot-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/nydailynews--chris-jones.json syndicatedPrimaryFile: \"wanted-2022/chicagotribune--chris-jones--on-2026-11-08.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"water-for-elephants-2024/chicagotribune--chris-jones.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
