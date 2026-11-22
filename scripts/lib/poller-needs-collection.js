@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasTerminalVerdict } = require('./uncollected-strand');
+const { isUncollectableOutlet } = require('./uncollectable-outlets');
 
 const MAX_COLLECTION_AGE_DAYS = 7;
 const FULL_TEXT_MIN = 1500; // collect-review-texts.js treats a longer stored text as already collected
@@ -29,6 +30,8 @@ function reviewNeedsCollection(review, siblings, { nowMs = Date.now() } = {}) {
   if (!/^https?:\/\//i.test(String(review.url || ''))) return false;
   if (review.wrongProduction || review.wrongShow || review.isRoundupArticle) return false;
   if (hasTerminalVerdict(review, siblings)) return false;
+  // BRO-7901: the collector skips print-only/defunct outlets by design, so an inline collect for them does nothing.
+  if (isUncollectableOutlet(review)) return false;
   // This is the opening-night trigger, not the general recovery queue. A known
   // paywall or an old stub must not cause another sweep rebuild and deploy.
   if (review.incompleteReason === 'paywall') return false;

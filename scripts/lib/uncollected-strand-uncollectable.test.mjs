@@ -29,3 +29,13 @@ test('class guard: the collector and the audit share one uncollectable-outlet de
   const audit = fs.readFileSync(new URL('./uncollected-strand.js', import.meta.url), 'utf8');
   assert.match(audit, /isUncollectableOutlet/);
 });
+
+test('outletId casing does not matter, and the poller trigger ignores uncollectable outlets too', () => {
+  const { isUncollectableOutlet } = require('./uncollectable-outlets.js');
+  const { reviewNeedsCollection } = require('./poller-needs-collection.js');
+  assert.equal(isUncollectableOutlet({ outletId: 'Starburst-Magazine' }), true);
+  assert.equal(isUncollectableOutlet({ outletId: 'thestage' }), false);
+  const fresh = (outletId) => ({ outletId, url: 'https://example.com/x', fullText: '', firstSeenAt: new Date().toISOString() });
+  assert.equal(reviewNeedsCollection(fresh('starburst-magazine'), new Map()), false);
+  assert.equal(reviewNeedsCollection(fresh('thestage'), new Map()), true);
+});

@@ -23,8 +23,14 @@ function loadUncollectableOutlets(registryPath = path.join(__dirname, '..', '..'
 function isUncollectableOutlet(review, outlets) {
   let set = outlets;
   if (!set) {
-    if (!cached) { try { cached = loadUncollectableOutlets(); } catch { cached = new Set(); } }
-    set = cached;
+    if (!cached) {
+      try { cached = loadUncollectableOutlets(); } catch (e) {
+        // Fail open (the audit reports the stub) but say why, and do not cache the failure.
+        console.warn(`[uncollectable-outlets] could not read outlet-registry.json: ${e.message}`);
+        set = new Set();
+      }
+    }
+    if (!set) set = cached;
   }
   return !!review && set.has(String(review.outletId || '').toLowerCase());
 }
