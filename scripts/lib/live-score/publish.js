@@ -7,6 +7,7 @@
 //   A failed upload or verify never advances the pointer for that show.
 
 const { buildPayload, payloadPath, shouldPublish, mergePointer } = require('./core');
+const { putVerified } = require('./storage');
 
 async function readJson(storage, path, cacheBust) {
   const r = await storage.get(path, { cacheBust });
@@ -32,9 +33,7 @@ async function publish({ storage, plan, rev, flagged = new Set(), safe = true, a
     if (dryRun) { results.push({ showId: item.showId, status: 'dry-run', v: built.v }); continue; }
     try {
       const path = payloadPath(item.showId, built.v);
-      await storage.put(path, built.text, { cacheSeconds: 31536000 });
-      const back = await storage.get(path);
-      if (back.status !== 200 || back.text !== built.text) throw new Error(`verify mismatch for ${path} (status ${back.status})`);
+      await putVerified(storage, path, built.text, { cacheSeconds: 31536000 });
       updates[item.showId] = { v: built.v, c: built.c, rev, n: built.n, rc: item.view.reviewCount };
       results.push({ showId: item.showId, status: 'uploaded', v: built.v, n: built.n });
     } catch (e) {

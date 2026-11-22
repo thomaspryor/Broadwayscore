@@ -1,0 +1,66 @@
+name: Show Refresh Kill Switch
+
+# BRO-8056 phase 1c: the reader kill switch for per-show publishing. kill sets
+# kill.json killed:true in the private show-refresh bucket; within one reader
+# poll every show page renders the build's own data again. unkill reverses it.
+# status prints the current state. Nothing reads the store until phase 2 lands
+# (flag OFF), so today this changes nothing a visitor sees.
+#
+# Run: Actions -> Show Refresh Kill Switch -> action + reason.
+# No npm ci: the CLI uses only Node built-ins.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'kill, unkill or status'
+        required: true
+        type: choice
+        options: [status, kill, unkill]
+      reason:
+        description: 'Why (recorded in kill.json; defaults to the action and who ran it)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: show-refresh-kill
+  cancel-in-progress: false
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Apply
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ACTION: ${{ inputs.action }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          set -o pipefail  # the tee below must not hide a failed kill
+          # An empty reason must never block an emergency kill.
+          REASON="${REASON:-workflow $ACTION by $GITHUB_ACTOR}"
+          if [ "$ACTION" = "status" ]; then
+            node scripts/show-refresh-store.js --status
+          else
+            node scripts/show-refresh-store.js "--$ACTION" "--reason=$REASON"
+            node scripts/show-refresh-store.js --status
+          fi | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Show Refresh Kill Switch Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
