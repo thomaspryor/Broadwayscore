@@ -157,3 +157,29 @@ describe('seat-notes grounding helpers', () => {
     assert.strictEqual(pageNamesTheater('the Lyric Theatre', 'Ethel Barrymore Theatre'), false);
   });
 });
+
+describe('value note expiry warning (BRO-8057)', () => {
+  const { valueNotesNearExpiry, buildToday, VALUE_MAX_AGE_DAYS } = require('../../scripts/lib/seat-notes-publish.js');
+  const meta = { 'Test Theatre': { structuredTips: { seating: { seatNotes: [watch, value, note] } } } };
+  test('quiet while the value note is fresh', () => {
+    assert.deepStrictEqual(valueNotesNearExpiry(meta, { today: new Date('2026-12-01') }), []);
+  });
+  test('warns inside the window, before the note is hidden', () => {
+    const day = new Date(Date.parse('2026-11-22') + (VALUE_MAX_AGE_DAYS - 30) * 86400000);
+    const found = valueNotesNearExpiry(meta, { today: day });
+    assert.strictEqual(found.length, 1);
+    assert.strictEqual(found[0].theater, 'Test Theatre');
+    assert.ok(found[0].daysLeft > 0 && found[0].daysLeft <= 30);
+    assert.strictEqual(publishableSeatNotes([watch, value], { today: day }).length, 2);
+  });
+  test('still reports a note that has already expired', () => {
+    const day = new Date(Date.parse('2026-11-22') + (VALUE_MAX_AGE_DAYS + 5) * 86400000);
+    assert.ok(valueNotesNearExpiry(meta, { today: day })[0].daysLeft < 0);
+    assert.deepStrictEqual(publishableSeatNotes([watch, value], { today: day }), []);
+  });
+  test('buildToday follows NEXT_PUBLIC_BUILD_DATE so server and client agree', () => {
+    process.env.NEXT_PUBLIC_BUILD_DATE = '2027-01-05';
+    try { assert.strictEqual(buildToday().toISOString().slice(0, 10), '2027-01-05'); }
+    finally { delete process.env.NEXT_PUBLIC_BUILD_DATE; }
+  });
+});

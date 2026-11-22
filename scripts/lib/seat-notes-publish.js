@@ -46,6 +46,16 @@ const SOURCE_LABEL = {
   'playbill.com': 'Playbill',
 };
 
+/**
+ * "Today" for expiry. In the web build this is the build date (inlined by
+ * next.config.js), so server HTML and client hydration judge the same day.
+ * Scripts and tests fall back to the real clock.
+ */
+function buildToday() {
+  const d = process.env.NEXT_PUBLIC_BUILD_DATE;
+  return d ? new Date(`${d}T12:00:00Z`) : new Date();
+}
+
 function daysBetween(fromIso, to) {
   const a = Date.parse(fromIso);
   const b = to instanceof Date ? to.getTime() : Date.parse(to);
@@ -97,7 +107,7 @@ function noteSourceLinks(n) {
  * The notes to render, in order, or [] when the theater does not clear the
  * bar (>= 2 notes, at least one watch-out or value).
  */
-function publishableSeatNotes(notes, { today = new Date() } = {}) {
+function publishableSeatNotes(notes, { today = buildToday() } = {}) {
   if (!Array.isArray(notes)) return [];
   const live = notes
     .filter((n) => n && NOTE_TYPES.includes(n.type) && n.claim && noteSources(n).length > 0)
@@ -109,6 +119,24 @@ function publishableSeatNotes(notes, { today = new Date() } = {}) {
   if (live.length < MIN_NOTES) return [];
   if (!live.some((n) => n.type === 'watch-out' || n.type === 'value')) return [];
   return live;
+}
+
+/**
+ * Value notes that are expired or expire within warnDays: [{ theater, where, daysLeft }].
+ * `meta` is data/theater-metadata.json. Used by scripts/audit-seat-notes-expiry.js.
+ */
+function valueNotesNearExpiry(meta, { today = new Date(), warnDays = 60 } = {}) {
+  const out = [];
+  for (const [theater, v] of Object.entries(meta || {})) {
+    const notes = v && v.structuredTips && v.structuredTips.seating && v.structuredTips.seating.seatNotes;
+    if (!Array.isArray(notes)) continue;
+    for (const n of notes) {
+      if (!n || n.type !== 'value') continue;
+      const daysLeft = Math.floor(VALUE_MAX_AGE_DAYS - daysBetween(n.verifiedAt, today));
+      if (daysLeft <= warnDays) out.push({ theater, where: noteLocationLabel(n), daysLeft });
+    }
+  }
+  return out;
 }
 
 /**
@@ -140,5 +168,5 @@ function latestVerified(notes) {
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
   SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
-  seatNotePicks, pickText,
+  seatNotePicks, pickText, valueNotesNearExpiry, buildToday,
 };
