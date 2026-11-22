@@ -1,6 +1,6 @@
 'use strict';
 
-const { getSyndicationConfig } = require('./syndication-pairs');
+const { getSyndicationConfig, marketPrimacyOverride } = require('./syndication-pairs');
 
 /**
  * S4-T1 — Per-outlet review cadence + heartbeat.
@@ -156,7 +156,11 @@ function buildCadenceReport(reviews, outlets, opts = {}) {
   ]);
   const credited = new Set(withMarket.map(r => articleKey(r, r.outletId)));
   for (const r of withMarket) {
-    const config = getSyndicationConfig(r.criticName);
+    // BRO-7957: on a market-primacy show the surviving original is the override's primary (Daily News), not the default
+    // one; either surviving copy credits the other outlet's heartbeat.
+    const override = marketPrimacyOverride(r.criticName, { category: r.market, openingDate: r.publishDate });
+    const base = getSyndicationConfig(r.criticName);
+    const config = override && r.outletId === override.primary ? override : base;
     if (!config || r.outletId !== config.primary) continue;
     for (const outletId of config.secondary) {
       if (!establishedCadences.has(`${outletId}::${r.market}`)) continue;

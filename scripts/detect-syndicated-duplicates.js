@@ -41,6 +41,11 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // Known syndication pairs — single source of truth shared with rebuild-all-reviews.js
 const { KNOWN_SYNDICATION_PAIRS: KNOWN_SYNDICATION } = require('./lib/syndication-pairs');
 
+// BRO-7957: market-aware primacy needs the show (market + openingDate).
+const showById = (() => {
+  try { const j = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8')); return Object.fromEntries((j.shows || j).map((x) => [x.id, x])); } catch { return {}; }
+})();
+
 // --- Known outlet pairs (derived from KNOWN_SYNDICATION) ---
 // Maps "outletA|outletB" (sorted) → { primary, secondary, critic }
 // Used to detect syndication when critic is "Unknown" — we match by outlet pair instead.
@@ -75,22 +80,8 @@ Usage:
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-// --- Text similarity (word trigram Jaccard) ---
-function trigramSimilarity(text1, text2) {
-  if (!text1 || !text2) return 0;
-  const words1 = text1.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
-  const words2 = text2.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
-  if (words1.length < 10 || words2.length < 10) return 0;
-
-  const trigrams1 = new Set();
-  const trigrams2 = new Set();
-  for (let i = 0; i < words1.length - 2; i++) trigrams1.add(words1.slice(i, i + 3).join(' '));
-  for (let i = 0; i < words2.length - 2; i++) trigrams2.add(words2.slice(i, i + 3).join(' '));
-
-  let intersection = 0;
-  for (const t of trigrams1) if (trigrams2.has(t)) intersection++;
-  return Math.round(100 * intersection / (trigrams1.size + trigrams2.size - intersection));
-}
+// --- Text similarity (word trigram Jaccard): scripts/lib/trigram-similarity.js (BRO-7957 extraction) ---
+const { trigramSimilarity } = require('./lib/trigram-similarity');
 
 // --- Main ---
 console.log('=== Detect Syndicated Duplicate Reviews ===');
@@ -164,8 +155,13 @@ function findSourceFile(showId, outletId, criticName) {
 }
 
 // Determine which outlet to keep for a given pair
-function choosePrimary(critic, outlet1, outlet2) {
+function choosePrimary(critic, outlet1, outlet2, show) {
   const normCritic = critic.toLowerCase();
+  // BRO-7957: market-aware primacy (Chris Jones on a NYC show: the Daily News copy is the original). Must agree with
+  // the rebuild, or the detector flags the copy the rebuild keeps.
+  const { getSyndicationPrimaries } = require('./lib/syndication-pairs');
+  if (getSyndicationPrimaries(critic, outlet1, { show }).includes(outlet2)) return outlet2;
+  if (getSyndicationPrimaries(critic, outlet2, { show }).includes(outlet1)) return outlet1;
   const known = KNOWN_SYNDICATION[normCritic];
   if (known) {
     if (known.secondary.includes(outlet1)) return outlet2;
@@ -210,7 +206,7 @@ for (const [key, revs] of multiOutlet) {
       if (sim < THRESHOLD) continue;
 
       // This is syndication
-      const primaryOutlet = choosePrimary(critic, o1, o2);
+      const primaryOutlet = choosePrimary(critic, o1, o2, showById[revs[0].showId]);
       const secondaryOutlet = primaryOutlet === o1 ? o2 : o1;
       const primaryFile = primaryOutlet === o1 ? f1 : f2;
       const secondaryFile = primaryOutlet === o1 ? f2 : f1;

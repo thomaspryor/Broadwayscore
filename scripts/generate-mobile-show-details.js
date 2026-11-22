@@ -799,9 +799,10 @@ for (const show of visibleShows) {
 
   // Seating sections + venue scores — look up by venue name
   const theater = show.venue ? theaterMeta[show.venue] : null;
+  // BRO-8018: seating advice describes the current production's house, so closed shows get none (web parity).
   if (theater) {
     const sections = theater.structuredTips?.seating?.sections;
-    if (sections?.length > 0) {
+    if (sections?.length > 0 && show.status !== 'closed') {
       detail.sg = sections.map(s => ({
         n: s.name,
         v: s.verdict,

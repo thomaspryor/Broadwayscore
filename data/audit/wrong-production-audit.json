@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T02:36:28.183Z",
+  "timestamp": "2026-11-22T03:23:34.068Z",
   "stats": {
-    "totalReviews": 83826,
-    "alreadyFlagged": 22426,
+    "totalReviews": 83829,
+    "alreadyFlagged": 22427,
     "dateGuardCatches": 238,
-    "directorMismatch": 3868,
+    "directorMismatch": 3869,
     "tvFilmSignals": 2405,
-    "londonSignals": 3951,
+    "londonSignals": 3955,
     "offBroadwaySignals": 782,
     "yearMismatch": 394,
-    "noPublishDate": 8235
+    "noPublishDate": 8232
   },
   "findings": [
     {
@@ -10733,6 +10733,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 59,
       "publishDate": null,
       "url": "https://www.thetimes.co.uk/article/boys-from-the-blackstuff-review-biting-scouse-wit-brings-a-tender-tribute-to-life-j0kfj769n",
       "findings": [
@@ -43954,6 +43955,19 @@
       ]
     },
     {
+      "showId": "marie-and-rosetta-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2025-05-10",
+      "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"monique touko\" from marie-and-rosetta-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "marjorie-prime-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 56,
@@ -57250,7 +57264,7 @@
     {
       "showId": "prince-faggot-off-broadway-2025",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
+      "score": 93,
       "publishDate": "2025-06-17",
       "url": "https://www.thewrap.com/prince-faggot-review-off-broadway/",
       "findings": [
@@ -57884,7 +57898,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "telegraph--lindsay-john.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2025-03-07",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/punch-young-vic-review/",
       "findings": [
@@ -57936,7 +57950,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 95,
       "publishDate": "2025-03-07",
       "url": "https://www.whatsonstage.com/news/punch-at-the-young-vic-review_1668215/",
       "findings": [
@@ -67937,6 +67951,7 @@
     {
       "showId": "tammy-faye-2024",
       "file": "times-uk--clive-davis.json",
+      "score": 43,
       "publishDate": null,
       "url": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
       "findings": [
@@ -92645,6 +92660,20 @@
     },
     {
       "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 77,
+      "publishDate": "2025-06-30",
+      "url": "https://www.londonboxoffice.co.uk/news/post/moon-for-the-misbegotten-almeida-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 88,
       "publishDate": "June 26th, 2025",
@@ -99531,6 +99560,20 @@
     },
     {
       "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "score": 54,
+      "publishDate": "2024-12-20",
+      "url": "https://www.londonboxoffice.co.uk/news/post/cat-on-a-hot-tin-roof-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
       "file": "london-theatre--holly-omahony.json",
       "score": 83,
       "publishDate": "2024-12-18",
@@ -105869,7 +105912,22 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
+      "file": "london-unattached--jeanne-horak.json",
+      "score": 94,
+      "publishDate": "2026-11-21",
+      "url": "https://www.london-unattached.com/eurotrash-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
       "file": "london-unattached--unknown.json",
+      "score": 94,
       "publishDate": "2026-11-21",
       "url": "https://www.london-unattached.com/eurotrash-young-vic/",
       "findings": [
@@ -141825,6 +141883,20 @@
     },
     {
       "showId": "the-maids-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 70,
+      "publishDate": "2025-10-23",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-maids-donmar-warehouse-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-maids-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": null,
       "publishDate": "2025-10-22",
@@ -146464,7 +146536,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2024-08-02",
       "url": "https://inews.co.uk/culture/arts/the-years-almeida-review-people-may-have-fainted-but-this-is-magnificent-3205549",
       "findings": [
@@ -146684,7 +146756,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 99,
       "publishDate": "2025-02-10",
       "url": "https://www.whatsonstage.com/news/the-years-west-end-review-this-play-cannot-be-missed_1663948/",
       "findings": [

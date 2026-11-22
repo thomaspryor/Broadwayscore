@@ -178,34 +178,32 @@ function rebuild(files) {
   return { included, excluded };
 }
 
-test('rebuild: unscored Tribune primary no longer takes the scored Daily News copy down', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
-  const r = rebuild({ 'chicagotribune--chris-jones.json': TRIB, 'nydailynews--chris-jones.json': NYDN });
+// BRO-7957: paranormal-activity-2026 is a NYC show opening after 2024, so Chris Jones's Daily News copy is the PRIMARY
+// and the Tribune copy the secondary (syndication-pairs.js marketPrimacyOverride). The same shield mechanics, roles swapped.
+const NYDN_UNSCORED = { ...NYDN, assignedScore: undefined, llmScore: undefined };
+const TRIB_SCORED = { ...TRIB, assignedScore: 84, llmScore: { score: 84, confidence: 'high' } };
+
+test('rebuild: unscored Daily News primary no longer takes the scored Tribune copy down', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r = rebuild({ 'nydailynews--chris-jones.json': NYDN_UNSCORED, 'chicagotribune--chris-jones.json': TRIB_SCORED });
   assert.equal(r.included, 1);
-  assert.deepEqual(r.excluded.map(e => [e.file, e.reason]), [['chicagotribune--chris-jones.json', 'skippedNoScore']]);
+  assert.deepEqual(r.excluded.map(e => [e.file, e.reason]), [['nydailynews--chris-jones.json', 'skippedNoScore']]);
 });
 
-test('rebuild: a scored Tribune primary still wins and the Daily News copy is skipped', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
-  const r = rebuild({
-    'chicagotribune--chris-jones.json': { ...TRIB, assignedScore: 84, llmScore: { score: 84, confidence: 'high' } },
-    'nydailynews--chris-jones.json': NYDN,
-  });
+test('rebuild: a scored Daily News primary still wins and the Tribune copy is skipped', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r = rebuild({ 'nydailynews--chris-jones.json': NYDN, 'chicagotribune--chris-jones.json': TRIB_SCORED });
   assert.equal(r.included, 1);
-  assert.deepEqual(r.excluded.map(e => [e.file, e.reason]), [['nydailynews--chris-jones.json', 'skippedSyndicated']]);
+  assert.deepEqual(r.excluded.map(e => [e.file, e.reason]), [['chicagotribune--chris-jones.json', 'skippedSyndicated']]);
 });
 
-test('rebuild: a primary that lost dedup to another copy still shields the Daily News copy', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
-  // A second Tribune file under a variant byline wins the fuzzy-critic dedup,
-  // so the real primary is processed but never emitted or released. The
-  // review already ships once; the Daily News copy must not count Chris
-  // Jones twice (ship-check finding on the first BRO-5901 cut).
-  const scored = { assignedScore: 84, llmScore: { score: 84, confidence: 'high' } };
+test('rebuild: a primary that lost dedup to another copy still shields the Tribune copy', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  // A second Daily News file under a variant byline wins the fuzzy-critic dedup, so the real primary is processed but
+  // never emitted or released. The review already ships once; the Tribune copy must not count Chris Jones twice.
   const r = rebuild({
-    'chicagotribune--c-jones.json': { ...TRIB, ...scored, criticName: 'C. Jones', url: `${TRIB.url}?amp=1`, fullText: body(24) },
-    'chicagotribune--chris-jones.json': { ...TRIB, ...scored },
-    // Syndicated copies are often re-edited, so fingerprint dedup cannot be
-    // relied on to catch this one.
-    'nydailynews--chris-jones.json': { ...NYDN, fullText: NYDN.fullText.replace(/haunted house/g, 'spooky home').replace(/stagecraft builds dread/g, 'design keeps everyone on edge') },
+    'nydailynews--c-jones.json': { ...NYDN, criticName: 'C. Jones', url: `${NYDN.url}?amp=1`, fullText: body(24) },
+    'nydailynews--chris-jones.json': { ...NYDN },
+    // Syndicated copies are often re-edited, so fingerprint dedup cannot be relied on to catch this one.
+    'chicagotribune--chris-jones.json': { ...TRIB_SCORED, fullText: TRIB.fullText.replace(/haunted house/g, 'spooky home').replace(/stagecraft builds dread/g, 'design keeps everyone on edge') },
   });
   assert.equal(r.included, 1);
-  assert.ok(r.excluded.some(e => e.file === 'nydailynews--chris-jones.json' && e.reason === 'skippedSyndicated'), JSON.stringify(r.excluded));
+  assert.ok(r.excluded.some(e => e.file === 'chicagotribune--chris-jones.json' && e.reason === 'skippedSyndicated'), JSON.stringify(r.excluded));
 });

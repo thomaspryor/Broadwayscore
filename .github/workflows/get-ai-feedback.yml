@@ -234,14 +234,13 @@ jobs:
           main().catch(console.error);
           EOF
 
-      - name: Commit feedback
+      # docs/* is gitignored on purpose (internal docs stay out of the repo), so the
+      # feedback goes to the run summary page instead of a commit (BRO-7511 follow-on).
+      - name: Publish feedback to the run summary
         if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ai-feedback-*.md
-          git diff --staged --quiet || git commit -m "Add AI feedback on plan"
-          bash scripts/lib/push-with-retry.sh
+          f=$(ls docs/ai-feedback-*.md 2>/dev/null | head -1)
+          if [ -n "$f" ]; then cat "$f" >> "$GITHUB_STEP_SUMMARY"; else echo "no feedback file written"; fi
       # severity-low-ok: manual workflow_dispatch only: the person who dispatched it is watching the run, and nothing scheduled or user-facing depends on it (advice request)
       - name: Notify on failure
         if: failure()

@@ -6,6 +6,9 @@ on:
     paths:
       - 'scripts/check-prod-deploy.js'
       - 'scripts/check-deploy-frequency.js'
+      - 'scripts/generate-theater-tips.js'
+      - 'scripts/reverify-seat-sections.js'
+      - 'data/theater-metadata.json' # BRO-8018: seating-data-coverage.test.mjs guards the seating sections
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'
       - 'src/**'
@@ -706,6 +709,7 @@ on:
       - 'scripts/collect-review-texts-v2.js'
       - 'scripts/detect-critic-typos.js'
       - 'scripts/detect-syndicated-duplicates.js'
+      - 'scripts/migrate-chris-jones-nyc-primacy.js'
       - 'scripts/detect-cross-outlet-duplicates.js'
       - 'scripts/discard-stuck-broadcast-drafts.js'
       - 'scripts/discover-dtli-slugs.js'

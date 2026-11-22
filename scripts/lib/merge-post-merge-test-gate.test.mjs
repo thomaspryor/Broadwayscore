@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, TEST_GATE_LOCAL_MIN_TIMEOUT_MS, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, TEST_GATE_LOCAL_MIN_TIMEOUT_MS, TEST_GATE_CI_TIMEOUT_MS, testChildEnv, floorSummaryLine, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -494,11 +494,54 @@ test('runTestGate: a timeout-killed merged run is NOT retried (BRO-6184), and th
   assert.doesNotMatch(result.reason, /twice|re-ran/);
 });
 
-test('TEST_GATE_TIMEOUT_MS stays 8 min (BRO-6184): above the 5 min that killed a loaded-runner merged run, 3 spawns fit the 30 min land cap', () => {
+test('the Land job cap (BRO-6184, BRO-8027): above the 8 min that killed runner merged runs, and the outer land cap covers merged + baseline at that cap', () => {
   assert.equal(TEST_GATE_TIMEOUT_MS, 8 * 60 * 1000);
+  assert.ok(TEST_GATE_CI_TIMEOUT_MS > TEST_GATE_TIMEOUT_MS, 'the Land job needs headroom over the 8 min that was killing it');
   const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
   const outer = Number(/MERGED_TREE_TIMEOUT_MS = (\d+) \* 60 \* 1000/.exec(land)[1]) * 60 * 1000;
-  assert.ok(outer > 3 * TEST_GATE_TIMEOUT_MS, 'outer land cap must cover merged + retry + baseline spawns');
+  assert.ok(outer >= 2 * TEST_GATE_CI_TIMEOUT_MS + 2 * 60 * 1000, 'outer land cap must cover a merged and a baseline spawn at the cap the Land job really uses');
+  assert.ok(outer >= 3 * TEST_GATE_TIMEOUT_MS + 2 * 60 * 1000, 'and merged + retry + baseline at the measured spawn time (under 8 min)');
+  // One attempt = this suite + the build; land-branch.js budgets it against the deadman.
+  const deadline = Number(/DEFAULT_LAND_DEADLINE_MS = (\d+) \* 60 \* 1000/.exec(land)[1]);
+  assert.ok(outer / 60000 + 20 <= deadline, 'a longer outer cap needs the deadman maths in land.yml and DEFAULT_LAND_DEADLINE_MS raised with it');
+});
+
+test('BRO-8027 testChildEnv: the gate never hands its own knobs to the tests it runs', () => {
+  const input = { PATH: '/bin', HOME: '/h', NODE_TEST_CONTEXT: 'child-v8', MERGE_TEST_GATE_NO_LOAD_SCALING: '1', MERGE_TEST_GATE_BASELINE_SHA: 'abc', MERGE_TEST_GATE_ONLY_LISTED: '1', MERGE_TEST_GATE_TIMEOUT_MS: '90000', MERGE_TEST_GATE_FUTURE_KNOB: 'x', MERGE_OTHER: 'kept' };
+  const frozen = JSON.stringify(input);
+  const out = testChildEnv(input);
+  assert.deepEqual(out, { PATH: '/bin', HOME: '/h', MERGE_OTHER: 'kept' });
+  assert.equal(JSON.stringify(input), frozen, 'input must not be mutated');
+  assert.deepEqual(testChildEnv({}), {});
+});
+
+test('BRO-8027 CLI under the Land job env: a test that reads the gate knobs from its environment sees none', () => {
+  // The real leak: land-branch.js runs the gate with MERGE_TEST_GATE_NO_LOAD_SCALING=1
+  // and a test that read the cap from process.env went red on merged AND
+  // baseline, so every full re-check ran the whole suite twice.
+  const dir = makeScratchRepo();
+  fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'contract.test.mjs'),
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\ntest('sees no gate knob', () => { assert.deepEqual(Object.keys(process.env).filter(k => k.startsWith('MERGE_TEST_GATE_')), []); });\n");
+  const proc = spawnSync(process.execPath, [CLI_PATH], {
+    cwd: dir,
+    input: 'scripts/lib/review-file-writer.js\n',
+    encoding: 'utf8',
+    timeout: 120000,
+    env: { ...process.env, MERGE_TEST_GATE_NO_LOAD_SCALING: '1', MERGE_TEST_GATE_SKIP_BASELINE: '1', MERGE_TEST_GATE_BASELINE_SHA: 'not-a-sha' },
+  });
+  assert.equal(proc.status, 0, `${proc.stdout}\n${proc.stderr}`);
+  assert.match(floorSummaryLine(proc.stdout), /^passed \(/);
+});
+
+test('BRO-8027 floorSummaryLine: finds the verdict after notes that end without a newline', () => {
+  assert.equal(floorSummaryLine('TAP version 13\nok 1 - a\npost-merge test floor: passed (ran 3 file(s) in 412s (cap 720s))\n'), 'passed (ran 3 file(s) in 412s (cap 720s))');
+  const preExisting = `${describePreExisting(['scripts/lib/x.test.mjs::some test'])}\npost-merge test floor: passed (ran 9 file(s) vs origin/main baseline: 0 new, 1 pre-existing)\n`;
+  assert.equal(floorSummaryLine(preExisting), 'passed (ran 9 file(s) vs origin/main baseline: 0 new, 1 pre-existing)');
+  assert.equal(floorSummaryLine('post-merge test floor: skipped (no test files found)\n'), 'skipped (no test files found)');
+  // glued onto the previous line (the pre-fix CLI output): not a verdict line
+  assert.equal(floorSummaryLine('    - a::bpost-merge test floor: passed (x)\n'), null);
+  assert.equal(floorSummaryLine(''), null);
+  assert.equal(floorSummaryLine(null), null);
 });
 
 test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {
@@ -1380,7 +1423,7 @@ test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 12 min, c
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0.5, cores: 14 }), 12 * MIN, 'idle machine keeps the 12 min local floor');
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 400, cores: 14 }), TEST_GATE_MAX_TIMEOUT_MS, 'ceiling');
   assert.equal(computeTestGateTimeoutMs({ fileCount: 5, loadAvg: 99, cores: 1 }) >= 12 * MIN, true);
-  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 40, cores: 14, env: { MERGE_TEST_GATE_NO_LOAD_SCALING: '1' } }), 8 * MIN, 'CI land opts out');
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 40, cores: 14, env: { MERGE_TEST_GATE_NO_LOAD_SCALING: '1' } }), TEST_GATE_CI_TIMEOUT_MS, 'CI land opts out of load scaling and takes its own fixed cap');
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: '90000' } }), 90000, 'valid override wins');
   for (const bad of ['abc', '0', '-5', '']) {
     assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: bad } }), 12 * MIN, `bad override ${bad} falls back`);
@@ -1390,25 +1433,31 @@ test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 12 min, c
 test('runTestGate passes ONE computed cap to every spawn and keeps the kill fail-safe (BRO-7947)', () => {
   const caps = [];
   const files = ['scripts/lib/merge-post-merge-test-gate.test.mjs'];
-  const pass = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
+  // env: {} (BRO-8027): this case is about the LOCAL cap; reading process.env
+  // made it red wherever an operator or the Land job had set a gate knob.
+  const pass = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, env: {}, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
   assert.equal(pass.ran, true);
   assert.equal(caps.length, 1);
   assert.ok(Number.isInteger(caps[0]) && caps[0] >= TEST_GATE_LOCAL_MIN_TIMEOUT_MS && caps[0] <= TEST_GATE_MAX_TIMEOUT_MS);
   assert.match(pass.reason, new RegExp(`in \\d+s \\(cap ${Math.round(caps[0] / 1000)}s\\)`));
   // a kill still blocks, is not retried, and never consults the baseline
   let spawns = 0;
-  const killed = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true,
+  const killed = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, env: {},
     makeBaselineCheckout: () => { throw new Error('baseline must not be consulted'); },
     execFn: () => { spawns++; return { status: null, signal: 'SIGTERM', error: { code: 'ETIMEDOUT' }, stdout: '', stderr: '' }; } });
   assert.equal(spawns, 1);
   assert.equal(killed.passed, false);
+  // the Land job's env gives every spawn the fixed CI cap
+  const ciCaps = [];
+  runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, env: { MERGE_TEST_GATE_NO_LOAD_SCALING: '1' }, execFn: (cwd, tf, cap) => { ciCaps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
+  assert.deepEqual(ciCaps, [TEST_GATE_CI_TIMEOUT_MS]);
 });
 
 test('MERGE_TEST_GATE_TIMEOUT_MS override: bad/zero values never disable the timeout; opt-out wins (BRO-7947)', () => {
   const c = (env) => computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env });
   assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '0.1' }), 12 * 60 * 1000);
   assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '999999999999' }), 60 * 60 * 1000);
-  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '90000', MERGE_TEST_GATE_NO_LOAD_SCALING: '1' }), 8 * 60 * 1000);
+  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '90000', MERGE_TEST_GATE_NO_LOAD_SCALING: '1' }), TEST_GATE_CI_TIMEOUT_MS);
   const mutex = require('node:fs').readFileSync(new URL('./push-mutex.sh', import.meta.url), 'utf8');
   const lockSec = Number(/PUSH_LOCK_TIMEOUT_SEC:-(\d+)/.exec(mutex)[1]);
   assert.ok(TEST_GATE_MAX_TIMEOUT_MS < lockSec * 1000, 'one spawn must finish before push-lock waiters fail open');

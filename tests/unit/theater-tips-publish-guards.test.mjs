@@ -55,6 +55,19 @@ describe('validateMergedMetadata', () => {
     assert.match(validateMergedMetadata(before, noSections)[0], /sections lost: A/);
     assert.equal(validateMergedMetadata(before, { A: before.A, B: {} }).length, 1);
   });
+  test('BRO-8018: a merge that edits or adds sections is refused', () => {
+    const good = { name: 'Orchestra', verdict: 'sweet-spot', verdictLabel: 'Top pick', rationale: 'Close and central.', evidenceUrls: ['https://e.example/a'], dataPoints: 1 };
+    const sec = [good, { ...good, name: 'Mezz', verdict: 'solid' }, { ...good, name: 'Balcony', verdict: 'skip' }];
+    const b = { _meta: {}, A: { structuredTips: { seating: { sections: sec } } } };
+    assert.deepEqual(validateMergedMetadata(b, JSON.parse(JSON.stringify(b))), []);
+    const edited = JSON.parse(JSON.stringify(b));
+    edited.A.structuredTips.seating.sections[0].rationale = 'LLM rewrite.';
+    assert.ok(validateMergedMetadata(b, edited).some((p) => /sections changed by merge: A/.test(p)));
+    const added = JSON.parse(JSON.stringify(b));
+    added.B = { structuredTips: { seating: { sections: sec } } };
+    const b2 = { ...JSON.parse(JSON.stringify(b)), B: {} };
+    assert.ok(validateMergedMetadata(b2, added).some((p) => /sections changed by merge: B/.test(p)));
+  });
   test('real metadata merged with its own existing tips validates clean', () => {
     const file = new URL('../../data/theater-metadata.json', import.meta.url);
     if (!fs.existsSync(file)) return;

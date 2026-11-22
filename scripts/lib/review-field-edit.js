@@ -273,11 +273,11 @@ const FIELD_VALUE_CHECKS = {
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.
-  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true)
-    ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
+  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true || ctx.syndicationPrimacyFlip === true)
+    ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal), or the market-aware primacy now makes this file the original (BRO-7957)'),
   // BRO-5396: a pointer whose primary file is gone is cleared when no live copy of the article exists
   // (ctx.syndicatedDanglingClear), or repointed to the live same-show copy the executor found (ctx.syndicatedRepointTo).
-  syndicatedPrimaryFile: (v, record, ctx = {}) => (((v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true))
+  syndicatedPrimaryFile: (v, record, ctx = {}) => (((v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true || ctx.syndicationPrimacyFlip === true))
     || (typeof v === 'string' && ctx.syndicatedRepointTo && v === `${ctx.folder}/${ctx.syndicatedRepointTo}`))
     ? null : 'syndicatedPrimaryFile may only be cleared (null) when it points at this same file, its primary is excluded for a primary-only reason, or its primary file is gone with no live copy; or repointed to the live same-show copy of a gone primary'),
   isRoundupArticle: (v) => (v === false ? null : 'isRoundupArticle may only be cleared (false)'),
@@ -783,6 +783,39 @@ function syndicatedDanglingContext(reviewTextsDir, ctx, record) {
   } catch { return {}; }
 }
 
+/**
+ * BRO-7957: true when `record` is a Chris Jones NY Daily News copy flagged as the duplicate of his Chicago Tribune file
+ * in the same show, and market-aware primacy (syndication-pairs.js marketPrimacyOverride) now makes the Daily News file
+ * the original. The detector's flag already attested same-article; this reverses only its direction.
+ */
+function syndicationPrimacyFlipApplies(record, ctx, show) {
+  if (!record) return false;
+  const { marketPrimacyOverride, getSyndicationPrimaries } = require('./syndication-pairs');
+  const ovr = marketPrimacyOverride(record.criticName, show);
+  if (!ovr) return false;
+  const outlet = require('./review-normalization').normalizeOutlet(record.outletId || record.outlet || '');
+  // A flag the detector left with no pointer on the file that is now the original (the-balusters-2026): nothing to verify.
+  // ...but only with the original's counterpart on disk, or nothing would take over from this file's flag.
+  // ...and only when that counterpart's text matches (>= 50% trigram overlap): a bare sibling proves nothing (proof-2026 scores 39).
+  if (typeof record.syndicatedPrimaryFile !== 'string') {
+    if (outlet !== ovr.primary || !ctx.dir) return false;
+    const fs = require('fs'), path = require('path');
+    const { trigramSimilarity } = require('./trigram-similarity');
+    return (ctx.siblings || []).some((f) => {
+      if (!/^chicagotribune--chris-jones/.test(f)) return false;
+      try { return trigramSimilarity(record.fullText, JSON.parse(fs.readFileSync(path.join(ctx.dir, f), 'utf8')).fullText) >= 50; } catch { return false; }
+    });
+  }
+  const target = require('path').basename(record.syndicatedPrimaryFile);
+  const slash = record.syndicatedPrimaryFile.indexOf('/');
+  if (slash >= 0 && record.syndicatedPrimaryFile.slice(0, slash) !== ctx.folder) return false;
+  const m = /^([a-z0-9-]+?)--/.exec(target);
+  const targetOutlet = m ? require('./review-normalization').normalizeOutlet(m[1]) : '';
+  // This file must now be the primary and the pointer target a secondary of it.
+  return outlet === ovr.primary && ovr.secondary.includes(targetOutlet)
+    && !getSyndicationPrimaries(record.criticName, outlet, { show }).includes(targetOutlet);
+}
+
 function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const fs = require('fs');
   const path = require('path');
@@ -807,8 +840,14 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
     }
   }
   if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')
-      && typeof record.syndicatedPrimaryFile === 'string' && !isSelfSyndicationPointer(record, ctx)) {
+      && !isSelfSyndicationPointer(record, ctx)) {
     ctx.syndicatedHeal = syndicatedHealDecision(reviewTextsDir, ctx, record) === 'clear';
+    try {
+      const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+      const show = (Array.isArray(shows) ? shows : shows.shows).find((s) => s.id === ctx.folder);
+      try { ctx.siblings = fs.readdirSync(path.join(reviewTextsDir, ctx.folder)); ctx.dir = path.join(reviewTextsDir, ctx.folder); } catch { ctx.siblings = []; }
+      ctx.syndicationPrimacyFlip = syndicationPrimacyFlipApplies(record, ctx, show);
+    } catch { ctx.syndicationPrimacyFlip = false; }
     // The AP scan never flags ap-- files itself (detect-syndicated-duplicates.js skips them), so on an AP-outlet row
     // with an AP wire url the stamp is a leftover from when the page was filed under another outlet (BRO-5289).
     if (!ctx.syndicatedHeal && record.outletId === 'ap' && record._apContentDetected === true && isApWireUrl(record.url)) ctx.syndicatedHeal = true;
@@ -865,4 +904,4 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
 }
 
 module.exports = {
-  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, FIELD_VALUE_CHECKS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };
+  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, FIELD_VALUE_CHECKS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer, syndicationPrimacyFlipApplies };

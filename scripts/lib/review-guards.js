@@ -6188,8 +6188,8 @@ function explainExclusion(data, show, filePath, opts) {
       const synd = require('./syndication-pairs');
       const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }; // unreadable dir: no portal rule
       // BRO-7327: a stub primary is the copy when a complete secondary exists (mirrors rebuild).
-      if (synd.hasFullerSecondary(require('path').dirname(filePath), require('path').basename(filePath), data)) return 'knownSyndicationSecondary';
-      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, listDir, require('./review-normalization').normalizeOutlet);
+      if (synd.hasFullerSecondary(require('path').dirname(filePath), require('path').basename(filePath), data, { show })) return 'knownSyndicationSecondary';
+      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, listDir, require('./review-normalization').normalizeOutlet, { show });
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {
@@ -6381,14 +6381,14 @@ function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requ
   const synd = require('./syndication-pairs');
   const norm = require('./review-normalization').normalizeOutlet;
   const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } };
-  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), listDir, norm);
+  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), listDir, norm, { show });
   if (!prims.length) return false;
   return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
     extraCheck: (p, pPath) => {
       // BRO-7393: let the scorer populate the unique complete secondary's score.
       // Publishing still keeps the stub until hasFullerSecondary can see a valid score.
       if (opts && opts.forScoring && !hasValidScore(data)
-          && synd.findFullerSecondaryFile(require('path').dirname(filePath), require('path').basename(pPath), p, { forScoring: true }) === require('path').basename(filePath)) return false;
+          && synd.findFullerSecondaryFile(require('path').dirname(filePath), require('path').basename(pPath), p, { forScoring: true, show }) === require('path').basename(filePath)) return false;
       return (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null;
     },
   });

@@ -11,11 +11,12 @@ const require = createRequire(import.meta.url);
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 
 const NIGHT = '2026-10-22';
-const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
+const DEFAULT_SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
+const NYC_SHOW = { ...DEFAULT_SHOW, category: 'broadway', market: 'broadway' }; // BRO-7957
 const TRIB = 'https://www.chicagotribune.com/2026/10/22/review-test-show/';
 const NYDN = 'https://www.nydailynews.com/2026/10/22/broadway-review-test-show/';
 
-async function night(urls, critic = 'Chris Jones', onDiskRows = []) {
+async function night(urls, critic = 'Chris Jones', onDiskRows = [], SHOW = DEFAULT_SHOW) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5993-synd-'));
   const scored = [];
   let doc = { reviews: [] };
@@ -65,4 +66,30 @@ test('a primary the regular pipeline already published (reviews.json) still stop
 test('critic names match the way the rebuild matches them (case, diacritics, punctuation)', async () => {
   const { res } = await night([NYDN], 'CHRIS  JONES', [{ criticName: 'Chris Jones', outletId: 'chicagotribune' }]);
   assert.equal(res.skipped.length, 1);
+});
+
+// BRO-7957: on a NYC show the Daily News copy ships and the Tribune copy is the held duplicate (one rule with the rebuild).
+test('BRO-7957 NYC show: Daily News is primary, the Tribune copy is skipped (either arrival order)', async () => {
+  for (const urls of [[NYDN, TRIB], [TRIB, NYDN]]) {
+    const { res } = await night(urls, 'Chris Jones', [], NYC_SHOW);
+    assert.equal(res.skipped.length, 1);
+    assert.match(res.skipped[0].key, /chicagotribune/);
+    assert.match(res.skipped[0].reason, /syndicated copy of the nydailynews review by Chris Jones/);
+    const published = res.published.flatMap((p) => p.merge ? [p.merge.added] : []);
+    assert.deepEqual(published, [1]);
+  }
+});
+
+test('BRO-7957 NYC show: a Daily News copy with no Tribune file is kept; Tribune alone yields to nothing', async () => {
+  const a = await night([NYDN], 'Chris Jones', [], NYC_SHOW);
+  assert.deepEqual(a.scored, ['nydailynews']);
+  const b = await night([TRIB], 'Chris Jones', [], NYC_SHOW);
+  assert.deepEqual(b.scored, ['chicagotribune']);
+});
+
+test('BRO-7957 pre-2024 NYC show and non-NYC show keep the Tribune primary', async () => {
+  for (const show of [{ ...NYC_SHOW, openingDate: '1982-10-07' }, { ...DEFAULT_SHOW, category: 'west-end', market: 'west-end' }, { ...DEFAULT_SHOW, category: 'regional', market: 'regional' }]) {
+    const { res } = await night([TRIB, NYDN], 'Chris Jones', [], show);
+    assert.match(res.skipped[0].key, /nydailynews/);
+  }
 });
