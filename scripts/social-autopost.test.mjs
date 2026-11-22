@@ -841,6 +841,16 @@ const lcPost = async (ctxLedger, now = at('2026-10-21T14:05:00Z')) => {
   return { summary, problems };
 };
 
+test('a comparison keeps other networks when Instagram already has a post that day', async () => {
+  const ledger = lcLedger();
+  ledger.posts.push({ showId: 'another-show', dueAt: '2026-10-21T14:00:00Z', channels: { instagram: { postId: 'prior' } } });
+  await withFakeBuffer(240, [{ id: 'p1', text: `Lc https://broadwayscorecard.com/show/${lc.ny.slug}?utm_source=twitter`, status: 'sent', dueAt: '2026-10-20T14:00:00.000Z' }, { id: 'prior', text: 'another show', status: 'scheduled', dueAt: '2026-10-21T14:00:00.000Z' }], async seen => {
+    await lcPost(ledger);
+    assert.equal(seen.created.length, 4);
+    assert.ok(!seen.created.some(p => p.channelId === 'ch-instagram'));
+  });
+});
+
 test('london-compare posts the compare card on all five networks and records london-compare:<showId>', async () => {
   const ledger = lcLedger();
   const run = require('./social-autopost/run.js');

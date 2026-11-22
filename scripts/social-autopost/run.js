@@ -36,6 +36,8 @@ const { writeScoreCaptions, aiDisabledReason } = require('./ai-captions');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
 const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS } = require('./config');
 const { targetSets, targetSetsUngated, tagChannels, channelKey, homeSet } = require('./routing');
+const { limitDailyNetworks } = require('../lib/social-network-daily-limit');
+const { MAX_PER_NETWORK_PER_DAY } = require('./config');
 const briefs = require('./briefs');
 const { withShowTags } = require('./tags');
 
@@ -251,16 +253,18 @@ async function retryFailedChannels(ledger, channels, buffer, now, summary) {
   let errors = 0;
   for (const entry of pendingRetries(ledger, now)) {
     const markers = entryMarkers(entry);
-    const tries = Object.keys(entry.pending).filter(key => channels.some(c => c.key === key));
-    if (!tries.length) continue; // the channel itself is down; allowedChannels() already reports it
+    const retryDueAt = new Date(Math.max(Date.parse(entry.dueAt), now + 10 * 60e3));
+    const eligible = limitDailyNetworks(channels, ledger, retryDueAt, MAX_PER_NETWORK_PER_DAY, entry);
+    const tries = Object.keys(entry.pending).filter(key => eligible.some(c => c.key === key));
+    if (!tries.length) continue; // unavailable channels or a daily limit can defer the retry
     entry.attempts = (entry.attempts || 1) + 1;
     for (const service of tries) { // `service` is the ledger key (routing.js channelKey)
       const text = entry.pending[service];
       const ch = channels.find(c => c.key === service);
       try {
         const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso: new Date(now - 4 * 864e5).toISOString() });
-        const post = existing || await buffer.createImagePost({ channel: ch, text, imageUrl: entry.imageUrl, altText: entry.altText || '', dueAt: new Date(Math.max(Date.parse(entry.dueAt), now + 10 * 60e3)) });
-        entry.channels[service] = { postId: post.id };
+        const post = existing || await buffer.createImagePost({ channel: ch, text, imageUrl: entry.imageUrl, altText: entry.altText || '', dueAt: retryDueAt });
+        entry.channels[service] = { postId: post.id, dueAt: post.dueAt || retryDueAt.toISOString() };
         delete entry.pending[service];
         delete entry.errors[service];
         summary.push(`| ${entry.title || entryName(entry)} (retry) | ${entry.dueAt} | ${service} | - |`);
@@ -355,7 +359,7 @@ const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_M
  * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
  */
 async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', maxDelayDays = null, ungated = false, entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
-  const targets = briefChannels(channels, newer, { ungated, slim: ctx.slim }); // ctx.slim: the numbers selection used (undefined: read the public files)
+  let targets = briefChannels(channels, newer, { ungated, slim: ctx.slim }); // ctx.slim: the numbers selection used (undefined: read the public files)
   if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
   const notValidated = unvalidated(ctx.ledger, targets);
   if (notValidated.length) throw new Error(`${label}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);
@@ -369,6 +373,8 @@ async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl
   // A roundup must not drift into the next week's news: past maxDelayDays the numbers stop being timely.
   if (maxDelayDays != null && t - earliest > maxDelayDays * 864e5) throw Object.assign(new Error(`${label}: no free day within ${maxDelayDays} days of ${new Date(earliest).toISOString().slice(0, 10)}`), { code: 'NO_SLOT' });
   const dueAt = new Date(t);
+  targets = limitDailyNetworks(targets, ctx.ledger, dueAt, MAX_PER_NETWORK_PER_DAY);
+  if (!targets.length) throw new Error(`${label}: daily network limits leave no usable channel`);
   console.log(`[autopost] ${label} goes out ${dueAt.toISOString()}${note ? ` ${note}` : ''}`);
 
   const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers, dueAt, label, now });
@@ -912,7 +918,7 @@ async function main() {
         if (live && !route.length) { console.log(`  [autopost] ${ev.show.id}: no channel set is configured for it, nothing posted`); continue; }
         let targets = [], imageUrl;
         if (live) {
-          targets = channels.filter(c => route.includes(c.set));
+          targets = limitDailyNetworks(channels.filter(c => route.includes(c.set)), ctx.ledger, ev.dueAt, MAX_PER_NETWORK_PER_DAY);
           if (!targets.length) throw new Error(`no usable channel in set(s) ${route.join(', ')}`);
           try { imageUrl = await hostCard(card.path, ev.show, now); } catch (e) { throw new Error(`image hosting failed: ${e.message}`); }
         }
