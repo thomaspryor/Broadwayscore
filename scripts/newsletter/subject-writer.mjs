@@ -50,21 +50,21 @@ export function firstSentence(text) {
 // were 70+ and one was a pan). The writer only saw the week's single rave and
 // pan, both for Eurotrash, and read them as a split. Words, not numbers, so the
 // line never lends a stray number to the writer.
-export const RECEPTION_POSITIVE = 70; // 4 or 5 stars
-export const RECEPTION_NEGATIVE = 50; // 2 stars or less
+export const RECEPTION_POSITIVE = 71; // 4 or 5 stars (71-100)
+export const RECEPTION_NEGATIVE = 50; // 2 stars or less (0-50)
 export function receptionOf(scores) {
-  const xs = (scores || []).map(Number).filter(Number.isFinite);
+  const xs = (scores || []).filter(x => typeof x === 'number' && Number.isFinite(x));
   const n = xs.length;
   if (n < 3) return null;
   const posN = xs.filter(x => x >= RECEPTION_POSITIVE).length;
-  const negN = xs.filter(x => x < RECEPTION_NEGATIVE).length;
+  const negN = xs.filter(x => x <= RECEPTION_NEGATIVE).length;
   const pos = posN / n, neg = negN / n;
   // Split: a real share on each side (2+ reviews each), not one outlier.
   if (n >= 4 && posN >= 2 && negN >= 2 && pos >= 0.25 && neg >= 0.25) return { verdict: 'split', pos, neg, n };
   // One outlier never undoes a consensus (a single pan among six reviews).
   if (pos >= 0.5 && (neg <= 0.15 || negN <= 1)) return { verdict: 'liked', pos, neg, n };
   if (neg >= 0.5 && (pos <= 0.15 || posN <= 1)) return { verdict: 'disliked', pos, neg, n };
-  return { verdict: 'mixed', pos, neg, n };
+  return { verdict: 'mixed', pos, neg, n, mid: (n - posN - negN) / n };
 }
 
 const share = (x) => (x >= 0.9 ? 'nearly every review' : x >= 0.75 ? 'most reviews' : x > 0.5 ? 'more than half the reviews' : x === 0.5 ? 'half the reviews' : x >= 0.25 ? 'a sizeable minority of reviews' : x > 0 ? 'a few reviews' : 'no reviews');
@@ -75,7 +75,7 @@ export function receptionLine(title, scores) {
   if (!r) return null;
   const desc = `${share(r.pos)} positive, ${share(r.neg)} negative`;
   if (r.verdict === 'split') return `Reception: ${title}: critics were split (${desc}).`;
-  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : (r.pos >= 0.5 ? 'critics leaned positive with real reservations' : r.neg >= 0.5 ? 'critics leaned negative' : 'reviews were mostly middling');
+  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : (r.pos >= 0.5 ? 'critics leaned positive with real reservations' : r.neg >= 0.5 ? 'critics leaned negative' : r.mid > Math.max(r.pos, r.neg) ? 'reviews were mostly middling' : 'reviews were mixed');
   return `Reception: ${title}: ${word} (${desc}); not split.`;
 }
 
@@ -84,11 +84,12 @@ export function receptionLine(title, scores) {
 export const SPLIT_RE = new RegExp([
   // split/divide aimed at the critics or the room, not a plot ("a family divided")
   String.raw`\b(?:split(?:s|ting)?|divid(?:ed|es|ing)|polari[sz](?:es|ed|ing))\s+(?:the\s+)?(?:room|critics?|reviewers?|opinions?|verdicts?|the press|press)\b`,
-  String.raw`\b(?:critics?|reviewers?|reviews?|verdicts?|opinions?|the press)\s+(?:(?:were|are|was|is|seem(?:ed)?|stay(?:ed)?|remain(?:ed)?)\s+)?(?:split|divided|torn|polari[sz]ed|at odds|all over the (?:map|place))\b`,
+  String.raw`\b(?:critics?|reviewers?|reviews?|verdicts?|opinions?|the press|the room)[,]?\s+(?:(?:were|are|was|is|seem(?:ed)?|stay(?:ed)?|remain(?:ed)?)\s+)?(?:split|divided|torn|polari[sz]ed|at odds|at loggerheads|in two camps|all over the (?:map|place))\b`,
   String.raw`\b(?:critics?|reviewers?)\s+(?:disagree[ds]?|clash(?:ed|es)?|can'?t agree|couldn'?t agree|could not agree)\b`,
-  String.raw`\b(?:split (?:verdict|decision|reviews?)|divisive|polari[sz]ing|contentious|love[- ]it[- ]or[- ](?:hate|loathe)[- ]it|love it or (?:hate|loathe) it)\b`,
-  String.raw`\bnot (?:every|all)(?: the| of the)? (?:critics?|reviewers?)\b|\bnot unanimous\b|\bfar from (?:settled|unanimous)\b`,
-  String.raw`\bnot (?:everyone|everybody) was (?:won over|on board|convinced|a fan)\b|\b(?:wasn'?t|weren'?t|was not|were not) (?:all )?on board\b`,
+  String.raw`\b(?:split (?:verdict|decision|reviews?)|love[- ]it[- ]or[- ](?:hate|loathe)[- ]it|love it or (?:hate|loathe) it|hot and cold)\b`,
+  String.raw`\b(?:divisive|polari[sz]ing|contentious)\s+(?:with|among|for)\s+(?:the\s+)?(?:critics|reviewers|the press)\b|\b(?:proved|proves|was|is|remains|seemed)\s+(?:divisive|polari[sz]ing|contentious)\b`,
+  String.raw`\bnot (?:every|all)(?: the| of the)? (?:critics?|reviewers?)\b|\b(?:not|wasn'?t|weren'?t) unanimous\b|\bfar from (?:settled|unanimous)\b`,
+  String.raw`\bnot (?:everyone|everybody) was (?:won over|on board|convinced|a fan)\b|\b(?:wasn'?t|weren'?t|was not|were not) (?:all )?on board\b|\bsome critics\b[^.]{0,40}\bothers\b`,
   String.raw`\bone to read up on\b`,
 ].join('|'), 'i');
 
@@ -205,6 +206,12 @@ export function buildPool(facts) {
     splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
     // Single-review scores that misrepresent their show: the pan of a show
     // critics liked, the rave of one they disliked.
+    // Each show's own Critic Score, so a pan number that equals it is not the pan.
+    criticScoreOf: new Map(facts.titles.flatMap(({ title }) => {
+      const l = facts.lines.find(x => x.startsWith(`Opening: ${title},`) || x.startsWith(`Closing soon: ${title},`));
+      const m = l && l.match(/Critic Score (\d{1,3})\/100/);
+      return m ? [[title, String(Number(m[1]))]] : [];
+    })),
     misleadingReviewScores: new Map(facts.lines.flatMap(l => {
       const m = l.match(/^(Rave|Pan) of the week: .*'s review of (.+) is (\d{1,3}) out of 100\.$/);
       if (!m) return [];
@@ -279,12 +286,15 @@ export function checkCandidate(c, pool, recent = []) {
     for (const why of criticRepeats(text, pool.criticNames || [])) p.push(`${field} ${why}`);
   }
   // Critics split only when a reception line says so (owner, 2026-11-22).
+  // The sentence must name a split show and no other show.
   const splits = pool.splitTitles || [];
+  const sentencesOf = (t) => String(t || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/);
   for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
-    for (const sentence of String(text).split(/(?<=[.!?])\s+/)) {
+    for (const sentence of sentencesOf(text)) {
       if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
-      if (splits.some(t => mentions(text, t))) continue;
-      p.push(`${field} says critics were split or not all on board, but the Reception facts say they were not: "${sentence.slice(0, 80)}"`);
+      const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
+      if (named.length && named.every(t => splits.includes(t))) continue;
+      p.push(`${field} says critics were split or not all on board, but the facts do not say that about the show it describes: "${sentence.slice(0, 80)}"`);
       break;
     }
   }
@@ -292,12 +302,25 @@ export function checkCandidate(c, pool, recent = []) {
   // with one on 2026-11-16).
   // Only when the show is named (here or in the subject) and the number is not
   // also a real Critic Score in the facts (another show at 16/100).
+  // Per sentence: the number must sit with that show (named in the sentence,
+  // or the sentence names no show and the subject does), and must not be the
+  // show's own Critic Score, a critic count or the /100 denominator.
   const misleading = pool.misleadingReviewScores || new Map();
-  for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
-    const hit = numbersIn(stripTitles(text, pool.titleNames || [])).find(n => misleading.has(n)
-      && !(pool.scoreNumbers && pool.scoreNumbers.has(n))
-      && titleForms(misleading.get(n)).some(t => mentions(text, t) || mentions(subject, t)));
-    if (hit) p.push(`${field} uses one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
+  if (misleading.size) {
+    for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+      const hit = sentencesOf(text).map(sentence => {
+        const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
+        const bare = stripTitles(sentence, pool.titleNames || []).replace(/\s*(?:\/|out of )100\b/gi, ' ').replace(/\b\d{1,3}\s+(?:critics|reviews|reviewers)\b/gi, ' ');
+        return numbersIn(bare).find(n => {
+          const show = misleading.get(n);
+          if (!show) return false;
+          const forms = titleForms(show);
+          const about = named.length ? forms.some(f => named.includes(f)) : forms.some(f => mentions(subject, f));
+          return about && (pool.criticScoreOf || new Map()).get(show) !== n;
+        });
+      }).find(Boolean);
+      if (hit) p.push(`${field} uses one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
+    }
   }
   const leads = pool.leadTitles || [];
   if (leads.length) {

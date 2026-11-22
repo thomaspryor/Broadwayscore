@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
 import { hasFreshRunReview, freshCutoffFor } from './fresh-run-reviews.mjs';
 import { loadOverrides, activeOverrides, waivesFreshRunGate, displayTitleFor, movedNote } from './editorial-overrides.mjs';
-import { createCompositeScoreLoader } from './composite-score.mjs';
+import { createCompositeScoreLoader, createReviewScoresLoader } from './composite-score.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -292,6 +292,8 @@ function italicizeLede(text, titles = []) {
 const aggregateScore = createCompositeScoreLoader(
   _testCompositesDir || path.join(repo, 'public/data/shows'),
 );
+// The reviews behind each published Critic Score, for the Reception facts.
+const publishedReviewScores = createReviewScoresLoader(_testCompositesDir || path.join(repo, 'public/data/shows'));
 
 function minReviews(category) {
   // Match the site: OB/OWE shows display a Critic Score at 3+ reviews, so a
@@ -3340,9 +3342,7 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
   // 2026-11-22: a 77 with one pan was written up as "splits the room").
   const reception = [];
   for (const t of titles.values()) {
-    const scores = reviewsForShow(t.id)
-      .filter(r => r.assignedScore != null) // same review set the Critic Score uses (flagged reviews are dropped when reviews.json is built)
-      .map(r => r.assignedScore);
+    const scores = publishedReviewScores(t.id); // the same reviews as the Critic Score shown
     const r = receptionOf(scores);
     const line = receptionLine(t.title, scores);
     if (!r || !line) continue;

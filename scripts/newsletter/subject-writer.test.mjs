@@ -379,3 +379,36 @@ test('second-opinion cases: honest copy passes, other split phrasings are caught
   const f = { ...rxFacts, lines: [...rxFacts.lines, 'Opening: Gloom, Off West End, play, opened this week, on Friday, Nov 20. Critic Score 16/100 from 5 critics.'], titles: [...rxFacts.titles, { id: 'gl', slug: 'gl', title: 'Gloom' }] };
   assert.ok(!checkCandidate({ ...rxGood, preheader: 'Goblin sits at 70 and Gloom sinks to 16/100.' }, buildPool(f)).some(x => /one review/.test(x)));
 });
+
+test('ship-check cases (2026-11-22)', () => {
+  // Star bands: 70 is three stars, 50 is two.
+  assert.notEqual(receptionOf([70, 70, 50]).verdict, 'liked');
+  assert.equal(receptionOf([null, '', 90, 90, 90]).verdict, 'liked', 'null and blank are not pans');
+  assert.match(receptionLine('X', [80, 40, 60]), /reviews were mixed/);
+  assert.match(receptionLine('X', [60, 60, 65, 80, 45]), /mostly middling/);
+  // One split show does not license split talk about another in the same field.
+  const f = { ...rxFacts, reception: [{ title: 'Eurotrash', verdict: 'split' }, { title: 'Goblin', verdict: 'liked' }] };
+  const fp = buildPool(f);
+  assert.match(checkCandidate({ ...rxGood, lede: 'Eurotrash lands at 77/100 and splits the room. Goblin divided critics at 70.' }, fp).join(), /lede says critics were split/);
+  assert.match(checkCandidate({ ...rxGood, lede: 'Eurotrash and Goblin both divided critics, at 77/100 and 70.' }, fp).join(), /lede says critics were split/);
+  for (const bad of ["Critics weren't unanimous on Goblin at 70.", 'Some critics loved Goblin, others did not.', 'Critics are at loggerheads over Goblin at 70.', 'Reviews ran hot and cold for Goblin at 70.']) {
+    assert.ok(checkCandidate({ ...rxGood, preheader: bad }, rxPool).some(x => /split/.test(x)), bad);
+  }
+  for (const ok of ['Goblin, about a polarizing figure, sits at 70.', 'Goblin, a contentious history play, sits at 70.']) {
+    assert.ok(!checkCandidate({ ...rxGood, preheader: ok }, rxPool).some(x => /split/.test(x)), ok);
+  }
+  // The rave of a disliked show is 100: "42/100" elsewhere is not that rave.
+  const d = {
+    ...rxFacts,
+    lines: [rxFacts.lines[0], 'Opening: Dud, Off West End, play, opened this week, on Friday, Nov 20. Critic Score 42/100 from 20 critics.',
+      "Rave of the week: our score for Jane Critic (The Paper)'s review of Dud is 100 out of 100.",
+      "Pan of the week: our score for John Critic (The Other Paper)'s review of Goblin is 20 out of 100."],
+    reception: [{ title: 'Dud', verdict: 'disliked' }, { title: 'Goblin', verdict: 'liked' }],
+    titles: [{ id: 'd', slug: 'd', title: 'Dud' }, { id: 'g', slug: 'g', title: 'Goblin' }],
+    leadTitles: ['Dud'],
+  };
+  const dp = buildPool(d);
+  const ok = { angle: 'a', subject: 'Dud stumbles to a weak 42/100 from 20 critics', preheader: 'Goblin fares better. Critics broadly liked it.', lede: 'Dud lands at a weak 42/100, and critics broadly disliked it. Goblin did better.' };
+  assert.ok(!checkCandidate(ok, dp).some(x => /one review/.test(x)), checkCandidate(ok, dp).join());
+  assert.match(checkCandidate({ ...ok, preheader: 'One critic scored Dud a perfect 100 anyway.' }, dp).join(), /one review's score \(100\)/);
+});
