@@ -901,6 +901,37 @@ function parseSitemapXml(xml, cutoff, urlFilter) {
  * @param {string} domain  e.g. "thestage.co.uk" or "theatermania.com"
  * @returns {string}
  */
+/**
+ * BRO-8034: outlets whose article URLs are opaque (ft.com/content/<uuid>) and whose
+ * reviews a generic `site:` query never surfaces: the one query for the whole outlet
+ * returns 10 of the outlet's newest theatre pieces, so a given show's review is
+ * usually not among them. financialtimes was missed on 4 openings (Lives of Others,
+ * Cloud 9, Desire Under the Elms, Eurotrash) and only found later by the aggregator
+ * sweep. These outlets are queried once PER SHOW, by title, instead.
+ */
+const PER_SHOW_SERP_OUTLETS = new Set(['financialtimes']);
+const PER_SHOW_SERP_MAX = 25;
+
+/** `site:ft.com "Eurotrash" review`: the show title in quotes carries the identity the opaque URL lacks. */
+function buildPerShowSerpQuery(domain, show) {
+  const title = String((show && show.title) || '').replace(/["\u201c\u201d]/g, '').replace(/\s+/g, ' ').trim();
+  return title ? `site:${domain} "${title}" review` : null;
+}
+
+/**
+ * The shows to query for a per-show outlet: newest opening first, capped so one poll
+ * stays inside the SERP budget (24h SERP cache makes repeat polls free).
+ */
+function perShowSerpTargets(shows, max = PER_SHOW_SERP_MAX, now = Date.now()) {
+  // Reviews land around the opening; a show opened >30 days ago is not worth a paid query.
+  const floor = new Date(now - 30 * 864e5).toISOString().slice(0, 10);
+  return (shows || [])
+    .filter(s => s && s.title && s.id && (!s.openingDate || String(s.openingDate) >= floor))
+    .slice()
+    .sort((a, b) => String(b.openingDate || '').localeCompare(String(a.openingDate || '')))
+    .slice(0, max);
+}
+
 function buildSerpQuery(domain) {
   const isUk = domain.endsWith('.co.uk');
   return `site:${domain} ${isUk ? 'theatre' : 'theater'} review`;
@@ -1056,4 +1087,8 @@ module.exports = {
   parseSitemapXml,
   extractListingUrls,
   buildSerpQuery,
+  buildPerShowSerpQuery,
+  perShowSerpTargets,
+  PER_SHOW_SERP_OUTLETS,
+  PER_SHOW_SERP_MAX,
 };
