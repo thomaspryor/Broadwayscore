@@ -345,7 +345,7 @@ export type ComputedShowWithReviews<R> = Omit<ComputedShow, 'criticScore'> & {
 // HELPER: GET OUTLET CONFIG
 // ===========================================
 
-export function getOutletConfig(outletId?: string, outletName?: string, showCategory?: string) {
+export function getOutletConfig(outletId?: string, outletName?: string, showCategory?: string, opts: { skipRegistry?: boolean } = {}) {
   // Per-region tier resolver: when showCategory is provided and the entry has
   // `tiers: { nyc, london }`, return the regional tier. Otherwise return the
   // legacy single `tier` field. (v5 — 2026-04-29)
@@ -377,7 +377,7 @@ export function getOutletConfig(outletId?: string, outletName?: string, showCate
   }
 
   // Fallback to outlet-registry.json tier (covers ~775 outlets not in OUTLET_TIERS)
-  if (outletId) {
+  if (outletId && !opts.skipRegistry) {
     const registryTier = getRegistryTier(outletId, showCategory);
     if (registryTier) {
       return {
@@ -402,7 +402,7 @@ export function getOutletConfig(outletId?: string, outletName?: string, showCate
 // CRITIC SCORE CALCULATION
 // ===========================================
 
-export function computeCriticScore(reviews: RawReview[], showCategory?: string, showType?: string): CriticScoreResult | null {
+export function computeCriticScore(reviews: RawReview[], showCategory?: string, showType?: string, registry?: Record<string, unknown>): CriticScoreResult | null {
   // The formula lives ONLY in scripts/lib/compute-critic-score.js, the same
   // module that writes the slim files' `cs` (BRO-4312). This used to be a
   // second, hand-mirrored copy; on the same inputs both agreed on all 1,500
@@ -414,15 +414,19 @@ export function computeCriticScore(reviews: RawReview[], showCategory?: string, 
   // floors/bumps and confidence weights are all applied inside scoreReviews.
   // A review without assignedScore is neither scored nor listed in
   // criticScore.reviews (the slim `rv` list drops it too); 0 such rows today.
-  const result = scoreReviews(reviews, getOutletRegistry(), showCategory, showType);
+  // BRO-8056: `registry` is injected by show-refresh (the build's bundled
+  // registry); default is the cached file read, as before.
+  const result = scoreReviews(reviews, registry ?? getOutletRegistry(), showCategory, showType);
   if (!result) return null;
 
   const computedReviews: ComputedReview[] = result.reviews.map((r: SharedScoredReview) => {
     const review = r.review as RawReview;
     return {
       showId: review.showId,
-      // Display id only (tier comes from the shared scorer above).
-      outletId: getOutletConfig(review.outletId, review.outlet, showCategory).id,
+      // Display id only (tier comes from the shared scorer above). The registry
+      // branch of getOutletConfig returns id = outletId, the same as its default
+      // branch, so skipping it changes no id and removes a file read (BRO-8056).
+      outletId: getOutletConfig(review.outletId, review.outlet, showCategory, { skipRegistry: true }).id,
       outlet: review.outlet,
       criticName: review.criticName,
       url: review.url,
@@ -627,7 +631,9 @@ export function computeShowData(
   show: RawShow,
   showReviews: RawReview[],
   audienceData: RawAudience[],
-  buzzThreads: RawBuzzThread[]
+  buzzThreads: RawBuzzThread[],
+  /** BRO-8056: injected registry and clock (ms epoch). Defaults: file read and the real clock. */
+  ctx: { registry?: Record<string, unknown>; now?: number } = {}
 ): ComputedShow {
   // Caller is expected to pass reviews already pre-filtered to this show
   // (data-core.ts uses a Map<showId, Reviews[]> index). The inner filter was
@@ -654,7 +660,7 @@ export function computeShowData(
   // So including these in the composite means: low-confidence scores show up
   // briefly until the cron picks them up, instead of disappearing entirely.
   // Notion 362637c5-416f-81ff-ad1f-c5b4b85e62ef tracks the parity question.
-  let criticScore = hideReviews ? null : computeCriticScore(showReviews, show.category, (show as { type?: string }).type);
+  let criticScore = hideReviews ? null : computeCriticScore(showReviews, show.category, (show as { type?: string }).type, ctx.registry);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)
@@ -670,7 +676,7 @@ export function computeShowData(
   // builds run after midnight UTC but before midnight local (e.g., Titanique 2026-04-12
   // appeared "open" at 9pm ET April 11 because UTC was already April 12).
   // The rule lives in scripts/lib/effective-status.js, which the app feed uses too.
-  const today = getMarketDate(show.category);
+  const today = getMarketDate(show.category, ctx.now);
   const normalizedStatus = normalizeShowStatus(show, today);
 
   const confidence = assessConfidence(criticScore, null, normalizedStatus);
@@ -678,7 +684,7 @@ export function computeShowData(
   // List-card caveat when most of an open show's reviews are 10+ years old.
   // Same rule as the show page hero (getReviewAgeYear), from the scored reviews'
   // own publish years rather than openingDate.
-  const reviewAgeYear = getReviewAgeYear({ status: normalizedStatus }, criticScore?.reviews);
+  const reviewAgeYear = getReviewAgeYear({ status: normalizedStatus }, criticScore?.reviews, ctx.now == null ? undefined : new Date(ctx.now));
   const reviewYearNote = reviewAgeYear === null ? null : `Most reviews from ${reviewAgeYear}`;
 
   return {
@@ -737,7 +743,7 @@ export function computeShowData(
     reviewYearNote,
     methodologyVersion: METHODOLOGY_VERSION,
     methodologyDate: METHODOLOGY_DATE,
-    computedAt: new Date().toISOString(),
+    computedAt: (ctx.now == null ? new Date() : new Date(ctx.now)).toISOString(),
   };
 }
 
