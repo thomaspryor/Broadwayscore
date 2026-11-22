@@ -220,3 +220,15 @@ test('BRO-8054: healShowTitles honours `only`, and skips shouted titles', () => 
   assert.equal(rows[1].title, BYLINE);
   assert.equal(rows[2].title, 'AMERICA, WHO HURT YOU?');
 });
+
+test('BRO-8054: a name in the description is not enough, the writer must be credited as writer', () => {
+  // Subject of a biographical show: no subtitle left, no writer cue.
+  const a = normalizeShowTitle({ id: 'songs-2026', title: 'Songs Inspired by Nina Simone' }, { sourceText: 'An evening of music celebrating Nina Simone and her era.' });
+  assert.equal(a.title, 'Songs Inspired by Nina Simone');
+  // Director credit never counts, even with a subtitle left over.
+  const b = normalizeShowTitle({ id: 'ham-2026', title: 'Hamlet: A New Version by Ivo van Hove' }, { sourceText: 'Directed by Ivo van Hove, this Hamlet runs 3 hours.' });
+  assert.equal(b.title, 'Hamlet: A New Version by Ivo van Hove');
+  // Explicit writer cue works without a subtitle.
+  const c = normalizeShowTitle({ id: 'eng-2026', title: 'Winter Light Years by Jane Roe' }, { sourceText: 'A new play written by Jane Roe.' });
+  assert.equal(c.title, 'Winter Light Years');
+});

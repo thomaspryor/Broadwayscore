@@ -92,6 +92,25 @@ function buildKnownWriters(shows) {
  *   (one word left) is never stripped on this oracle alone.
  * @returns {{title:string, name:string, oracle:string}|null}
  */
+/**
+ * BRO-8054: does the source description name `key` as the WRITER? A name merely
+ * present is not enough: directors, actors and the subject of a biographical
+ * show ("Songs Inspired by Nina Simone") are named there too. Accept when the
+ * description credits the name as writer ("written by", "play by", ...), or when
+ * the title that remains already has a subtitle ("Engines and Instruments of
+ * Flight: A Fantasia in Three Acts"), which a title ending in "Inspired by X"
+ * does not. A director credit always rejects.
+ */
+function descriptionCreditsWriter(sourceText, rest, key) {
+  const text = ' ' + nameKey(sourceText) + ' ';
+  const k = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (!text.includes(' ' + key + ' ')) return false;
+  if (new RegExp('\\b(?:directed by|director|direction by)\\s+(?:\\w+\\s+){0,2}' + k + '\\b|\\b' + k + '\\s+(?:directs|directed(?!\\s+by))\\b').test(text)) return false;
+  const writerCue = new RegExp('\\b(?:written by|play by|comedy by|drama by|musical by|penned by|playwright|new work by)\\s+(?:\\w+\\s+){0,2}' + k + '\\b').test(text);
+  const subtitled = /[:\u2013\u2014]\s*\S/.test(rest);
+  return writerCue || subtitled;
+}
+
 function classifyPlaywrightByline(title, show, knownWriters, sourceText) {
   if (!title) return null;
   const m = PLAYWRIGHT_BYLINE_RE.exec(title);
@@ -106,7 +125,7 @@ function classifyPlaywrightByline(title, show, knownWriters, sourceText) {
     .some(c => c && c.name && WRITER_ROLE_RE.test(c.role || '') && nameKey(c.name) === key);
   if (own) return { title: rest, name: m[2], oracle: 'show-credits-writer' };
   if (knownWriters && knownWriters.has(key)) return { title: rest, name: m[2], oracle: 'corpus-known-writer' };
-  if (sourceText && rest.split(/\s+/).length >= 2 && (' ' + nameKey(sourceText) + ' ').includes(' ' + key + ' ')) {
+  if (sourceText && rest.split(/\s+/).length >= 2 && descriptionCreditsWriter(sourceText, rest, key)) {
     return { title: rest, name: m[2], oracle: 'source-description' };
   }
   return null;

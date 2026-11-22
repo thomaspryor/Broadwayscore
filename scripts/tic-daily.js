@@ -68,7 +68,22 @@ async function stageAndAdd() {
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
   // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
   // whereas audit files written first would claim shows that never landed.
-  if (added.length) saveShows(doc, { reason: 'tic-daily' });
+  if (added.length) {
+    try {
+      saveShows(doc, { reason: 'tic-daily' });
+    } catch (e) {
+      // The write guard refused (e.g. a new row duplicates an existing one). Remember the ids with the
+      // reason so tomorrow does not pick the same candidates and throw again; nothing reached disk.
+      const why = String(e.message).split('\n')[0].slice(0, 200);
+      console.log(`::warning::tic-daily: shows write refused, ${added.length} candidate(s) not added: ${why}`);
+      const refusedIds = new Set(added.map((a) => a.id));
+      for (const k of Object.keys(nextSeen)) {
+        if (nextSeen[k] && nextSeen[k].reason === 'added' && refusedIds.has(nextSeen[k].id)) nextSeen[k] = { reason: `write-refused:${why}`, retry: false, on: today };
+      }
+      fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
+      return;
+    }
+  }
   fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
   fs.writeFileSync(ADDED, JSON.stringify({ on: today, added, pending }, null, 1) + '\n');
   if (!added.length) return;
