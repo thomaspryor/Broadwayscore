@@ -110,6 +110,7 @@ test('health-check reads invalid-file coverage from the push-on-main list, not t
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
   assert.match(src, /findInvalidWorkflowFiles\(invalidInput\)/);
+  assert.match(src, /unionRuns\(pushRuns, results\)/);
   assert.match(src, /invalidFilesPartial: pushPartial/);
 });
 
@@ -121,4 +122,25 @@ test('BRO-7589: a later schedule run of the same file (not in the push list) cle
 test('invalid-file row reads its own partial flag, not the all-events one', () => {
   const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
   assert.equal(invalidWorkflowFileResults({ skipped: false, partial: true, invalidFilesPartial: false, invalidWorkflowFiles: [] })[0].status, 'pass');
+});
+
+test('collectRunPages: null/malformed page is never a clean read', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  await assert.rejects(() => collectRunPages(async () => null), /no workflow_runs/);
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const r = await collectRunPages(async (p) => (p === 1 ? full : null));
+  assert.equal(r.partial, true);
+});
+test('unionRuns: dedupes by id, push list wins, null ids kept, falsy dropped', () => {
+  const { unionRuns } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const out = unionRuns([{ id: 1, v: 'push' }, null, { id: null }], [{ id: 1, v: 'all' }, { id: 2 }, { id: null }], undefined);
+  assert.deepEqual(out.map((r) => r.v || r.id), ['push', null, 2, null]);
+});
+test('a later schedule run clears a push-list finding through the union path', () => {
+  const { unionRuns } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const P2 = '.github/workflows/x.yml';
+  const later = { id: 50, name: 'X', path: P2, event: 'schedule', head_branch: 'main', conclusion: 'success', created_at: '2026-11-10T20:00:00Z', updated_at: '2026-11-10T20:05:00Z' };
+  const bad = { id: 49, name: P2, path: P2, event: 'push', head_branch: 'main', conclusion: 'failure', created_at: '2026-11-10T09:00:00Z', updated_at: '2026-11-10T09:00:00Z' };
+  assert.equal(findInvalidWorkflowFiles(unionRuns([bad], [later])).length, 0);
+  assert.equal(findInvalidWorkflowFiles(unionRuns([bad], [])).length, 1);
 });

@@ -58,7 +58,7 @@ const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
-const { findInvalidWorkflowFiles, collectRunPages } = require('./lib/invalid-workflow-file-signature.js');
+const { findInvalidWorkflowFiles, collectRunPages, unionRuns } = require('./lib/invalid-workflow-file-signature.js');
 const { isPageWorthyWorkflow } = require('./lib/page-worthy-alerts.js');
 const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
@@ -4286,8 +4286,7 @@ async function getWorkflowRunSummary() {
     }
     // Detection is complete from the push list; clearing evidence (a later
     // schedule/dispatch run of the same file) only exists in the all-events list.
-    const seenIds = new Set();
-    const invalidInput = [...pushRuns, ...results].filter((r) => r && (r.id == null || !seenIds.has(r.id) && seenIds.add(r.id)));
+    const invalidInput = unionRuns(pushRuns, results);
 
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');

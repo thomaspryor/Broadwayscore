@@ -87,7 +87,12 @@ async function collectRunPages(fetchPage, { maxPages = 5, onPageError } = {}) {
       partial = true;
       break;
     }
-    if (!Array.isArray(batch)) break;
+    if (!Array.isArray(batch)) {
+      // null / malformed body is no data, never a clean read
+      if (page === 1) throw new Error('runs page 1 returned no workflow_runs array');
+      partial = true;
+      break;
+    }
     runs.push(...batch);
     if (batch.length < 100) break;
     if (page === maxPages) partial = true;
@@ -95,4 +100,18 @@ async function collectRunPages(fetchPage, { maxPages = 5, onPageError } = {}) {
   return { runs, partial };
 }
 
-module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, collectRunPages, WORKFLOW_PATH_RE };
+/** De-duplicated (by id) union of run lists; the first list wins. Null ids are kept. */
+function unionRuns(...lists) {
+  const seen = new Set();
+  const out = [];
+  for (const list of lists) {
+    for (const r of Array.isArray(list) ? list : []) {
+      if (!r) continue;
+      if (r.id != null) { if (seen.has(r.id)) continue; seen.add(r.id); }
+      out.push(r);
+    }
+  }
+  return out;
+}
+
+module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, collectRunPages, unionRuns, WORKFLOW_PATH_RE };
