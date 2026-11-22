@@ -302,8 +302,10 @@ describe('needsFetch (which cached pages fetch downloads again)', () => {
     assert.equal(needsFetch(failed), false);
     assert.equal(needsFetch(failed, true), true);
   });
-  test('never retries a not-found page, even with --retry-failed (each retry is a paid call)', () => {
+  test('retries a not-found page only once it is stale (each retry is a paid call)', () => {
     assert.equal(needsFetch({ ok: false, error: 'not-found page', fetchedAt: now }, true), false);
+    assert.equal(needsFetch({ ok: false, error: 'not-found page', fetchedAt: '2020-01-01T00:00:00Z' }), false);
+    assert.equal(needsFetch({ ok: false, error: 'not-found page', fetchedAt: '2020-01-01T00:00:00Z' }, true), true);
   });
 });
 

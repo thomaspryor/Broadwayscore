@@ -75,6 +75,14 @@ describe('seat notes in theater-metadata.json', () => {
     assert.deepEqual(thin, []);
   });
 
+  test('every theater with notes still shows them today (value notes expire)', () => {
+    // The checks above judge notes on the day they were verified. The site judges
+    // them today, and a theater whose value note expired can drop below the publish
+    // bar and lose its card. Fix: re-run seat-notes.js for the named theaters.
+    const gone = theaters.filter((t) => notesOf(t)?.length && !publishableSeatNotes(notesOf(t)).length);
+    assert.deepEqual(gone, [], `notes no longer shown on the site: ${gone.join(', ')}`);
+  });
+
   test(`at least ${MIN_THEATERS_WITH_NOTES} theaters have notes that render`, () => {
     const n = theaters.filter(renders).length;
     assert.ok(n >= MIN_THEATERS_WITH_NOTES, `${n} theaters with seat notes, floor ${MIN_THEATERS_WITH_NOTES}`);

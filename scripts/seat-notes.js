@@ -229,14 +229,18 @@ function quoteMatchesLocation(quote, note) {
 
 /**
  * Whether fetch should (re)download a cached page record. A failure is
- * retried only with --retry-failed, and never a not-found page: that answer
- * does not change on a retry and each retry is a paid call. Pure; exported.
+ * retried only with --retry-failed. A not-found page is retried only once it
+ * is older than MAX_PAGE_AGE_DAYS: an immediate retry gets the same answer and
+ * each retry is a paid call, but a moved or restored page should come back
+ * eventually. Pure; exported.
  */
 function needsFetch(rec, retryFailed = false) {
   if (!rec) return true;
   if (pageFresh(rec)) return false;
   if (rec.ok) return true;
-  return retryFailed && rec.error !== 'not-found page';
+  if (!retryFailed) return false;
+  if (rec.error !== 'not-found page') return true;
+  return !(Date.now() - Date.parse(rec.fetchedAt) <= MAX_PAGE_AGE_DAYS * 86400000);
 }
 
 async function cmdFetch() {
