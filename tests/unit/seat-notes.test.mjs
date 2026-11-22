@@ -128,7 +128,7 @@ describe('validateSeatNotes', () => {
   });
 });
 
-const { seatplanLevelLinked, quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
+const { seatplanLevelLinked, needsFetch, quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
 const { pageNamesTheater } = require('../../scripts/lib/seat-adjudication.js');
 
 describe('seat-notes grounding helpers', () => {
@@ -180,6 +180,9 @@ describe('seat-notes grounding helpers', () => {
   test('seatplanSlug folds accents and reads www citations', () => {
     assert.strictEqual(seatplanSlug('Th\u00e9\u00e2tre \u00dcnique', []), 'theatre-unique');
     assert.strictEqual(seatplanSlug('X', ['https://www.seatplan.com/new-york/abc-theatre/orchestra/']), 'abc-theatre');
+    // SeatPlan files these two under other slugs (BRO-8057 step 3 found both as not-found pages).
+    assert.strictEqual(seatplanSlug('Helen Hayes Theater', []), 'hayes-theater');
+    assert.strictEqual(seatplanSlug('Studio 54', []), 'studio-54-theatre');
   });
   test('seed lists SeatPlan level pages under the cited slug plus cited seat guides', () => {
     const entry = { structuredTips: { seating: { sections: [{ evidence: [
@@ -284,6 +287,23 @@ describe('seat-note expiry alert decision (BRO-8057)', () => {
     const d = decideSeatNoteExpiryAlert([{ theater: 'T', where: 'Rear', daysLeft: 0, invalid: true }]);
     assert.match(d.alert.description, /verification date missing or invalid/);
     assert.match(d.alert.hint, /price still holds/);
+  });
+});
+
+describe('needsFetch (which cached pages fetch downloads again)', () => {
+  const now = new Date().toISOString();
+  test('fetches a page never fetched, keeps a fresh one', () => {
+    assert.equal(needsFetch(undefined), true);
+    assert.equal(needsFetch({ ok: true, fetchedAt: now }), false);
+    assert.equal(needsFetch({ ok: true, fetchedAt: '2020-01-01T00:00:00Z' }), true);
+  });
+  test('retries a failure only with --retry-failed', () => {
+    const failed = { ok: false, error: 'All scraping methods failed', fetchedAt: now };
+    assert.equal(needsFetch(failed), false);
+    assert.equal(needsFetch(failed, true), true);
+  });
+  test('never retries a not-found page, even with --retry-failed (each retry is a paid call)', () => {
+    assert.equal(needsFetch({ ok: false, error: 'not-found page', fetchedAt: now }, true), false);
   });
 });
 

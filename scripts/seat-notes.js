@@ -90,12 +90,17 @@ const loadCandidates = () => loadCandidateFile().theaters;
 const SEATPLAN_LEVELS = ['', 'seating-plan/', 'orchestra/', 'mezzanine/', 'front-mezzanine/', 'rear-mezzanine/', 'balcony/'];
 const SEED_HOSTS = /^https:\/\/(www\.)?(seatplan\.com|tickpick\.com|headout\.com|rateyourseats\.com)\//;
 
-/** SeatPlan's slug: the one already cited for this theater, else slugified name. */
+// Houses whose SeatPlan slug is not their slugified name (a wrong slug makes
+// every level page a not-found page, so the theater gets no notes).
+const SEATPLAN_SLUGS = { 'Helen Hayes Theater': 'hayes-theater', 'Studio 54': 'studio-54-theatre' };
+
+/** SeatPlan's slug: the one already cited for this theater, else a known override, else slugified name. */
 function seatplanSlug(theater, urls) {
   for (const u of urls) {
     const m = u.match(/^https:\/\/(?:www\.)?seatplan\.com\/new-york\/([a-z0-9-]+)\//);
     if (m) return m[1];
   }
+  if (SEATPLAN_SLUGS[theater]) return SEATPLAN_SLUGS[theater];
   return foldDiacritics(theater).toLowerCase().replace(/['\u2018\u2019.]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
@@ -222,6 +227,18 @@ function quoteMatchesLocation(quote, note) {
   return named && here.length === 0;
 }
 
+/**
+ * Whether fetch should (re)download a cached page record. A failure is
+ * retried only with --retry-failed, and never a not-found page: that answer
+ * does not change on a retry and each retry is a paid call. Pure; exported.
+ */
+function needsFetch(rec, retryFailed = false) {
+  if (!rec) return true;
+  if (pageFresh(rec)) return false;
+  if (rec.ok) return true;
+  return retryFailed && rec.error !== 'not-found page';
+}
+
 async function cmdFetch() {
   const { fetchPage } = require('./lib/scraper');
   const theaters = loadCandidates();
@@ -229,7 +246,7 @@ async function cmdFetch() {
   const pages = loadCandidateFile().pages || {};
   const urls = [...new Set([...Object.values(pages).flat(),
     ...Object.values(theaters).flat().flatMap((n) => (n.evidence || []).map((e) => e.url))])];
-  const todo = urls.filter((u) => !pageFresh(readPage(u)) && (!readPage(u) || readPage(u).ok || arg('retry-failed')));
+  const todo = urls.filter((u) => needsFetch(readPage(u), !!arg('retry-failed')));
   const cited = new Set(Object.values(theaters).flat().flatMap((n) => (n.evidence || []).map((e) => e.url)));
   console.log(`fetch: ${urls.length} cited pages, ${todo.length} to fetch`);
   const lastHit = {};
@@ -417,4 +434,4 @@ if (require.main === module) {
   Promise.resolve(run()).catch((e) => { console.error(e.message || e); process.exit(1); });
 }
 
-module.exports = { SHRINK_LIMIT, rowMentions, seatplanLevelLinked, seedPages, seatplanSlug, seatplanLinks, quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };
+module.exports = { SHRINK_LIMIT, needsFetch, rowMentions, seatplanLevelLinked, seedPages, seatplanSlug, seatplanLinks, quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };
