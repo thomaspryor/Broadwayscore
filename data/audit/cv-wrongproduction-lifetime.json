@@ -1,20 +1,21 @@
 {
-  "updatedAt": "2026-11-21T10:43:43.077Z",
-  "scanned": 4910,
-  "showsWithViolations": 125,
-  "totalViolations": 154,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-22T10:49:35.903Z",
+  "scanned": 4936,
+  "showsWithViolations": 126,
+  "totalViolations": 156,
+  "newSinceLastRun": 2,
   "handled": {
     "not-shipped": 66,
-    "temporal-override-low-confidence": 971,
-    "duplicate-not-shipped": 56,
-    "rebuild-skip-audit": 32,
+    "temporal-override-low-confidence": 977,
+    "duplicate-not-shipped": 55,
+    "rebuild-skip-audit": 31,
     "manual-clear-reason": 12,
     "self-healed": 74,
-    "prior-run-or-tour-leg": 46
+    "prior-run-or-tour-leg": 50
   },
   "newViolationKeys": [
-    "cinderella-lyric-hammersmith-off-west-end-2026::guardian--lyndsey-winship.json"
+    "les-miserables-arena-concert-spectacular-off-broadway-2026::nydailynews--chris-jones.json",
+    "marie-and-rosetta-west-end-2025::standard--nick-curtis.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -105,6 +106,7 @@
     "julius-caesar-globe-off-west-end-2026::thestage--holly-omahony.json",
     "nero-off-west-end-2026::theatre-weekly--greg-stewart.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
+    "les-miserables-arena-concert-spectacular-off-broadway-2026::nydailynews--chris-jones.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
     "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
@@ -170,7 +172,8 @@
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
     "oppenheimer-west-end-2015::standard--fiona-mountford.json",
-    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json"
+    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json",
+    "marie-and-rosetta-west-end-2025::standard--nick-curtis.json"
   ],
   "hits": [
     {
@@ -885,7 +888,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment of cast and staging. However, it is a review OF the Chichester F — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of Chichester Festival Theatre's 2019 production, explicitly named as the source, not a review of the W — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -894,10 +897,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review with critical assessment of cast and staging. However, it is a review OF the Chichester F",
+          "cvReasoning": "This is a review of Chichester Festival Theatre's 2019 production, explicitly named as the source, not a review of the W",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run",
-            "Opening sentence explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych'"
+            "Review evaluates the Chichester Festival Theatre 2019 production, not the West End run",
+            "Opening sentence dates the review as Friday, 27th February, but the expected West End opening is 2026-02-12 (a Thursday)"
           ]
         }
       ]
@@ -1835,7 +1838,7 @@
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "title": "Les Misérables: The Arena Concert Spectacular",
       "openingDate": "2026-07-28",
-      "message": "cititour/Brian Scott Lipton (cititour--brian-scott-lipton.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a performance of 'Les Misérables: The Arena Concert Spectacular' at Radio City Music Hall, which is — https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388\nnypost/Johnny Oleksinski (nypost--johnny-oleksinski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a performance at Radio City Music Hall, which is a Broadway venue, indicating that it is not an Off — https://nypost.com/2026/07/28/entertainment/les-miserables-review-musical-returns-to-nyc-in-massive-radio-city-concert/",
+      "message": "cititour/Brian Scott Lipton (cititour--brian-scott-lipton.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a performance of 'Les Misérables: The Arena Concert Spectacular' at Radio City Music Hall, which is — https://cititour.com/NYC_Broadway/Les-Miserables-The-Arena-Concert-Spectacular/1388\nnydailynews/Chris Jones (nydailynews--chris-jones.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a concert version of 'Les Misérables' at Radio City Music Hall, which is a Broadway venue, not Off- — https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/\nnypost/Johnny Oleksinski (nypost--johnny-oleksinski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a performance at Radio City Music Hall, which is a Broadway venue, indicating that it is not an Off — https://nypost.com/2026/07/28/entertainment/les-miserables-review-musical-returns-to-nyc-in-massive-radio-city-concert/",
       "violations": [
         {
           "filename": "cititour--brian-scott-lipton.json",
@@ -1847,6 +1850,18 @@
           "cvReasoning": "The review discusses a performance of 'Les Misérables: The Arena Concert Spectacular' at Radio City Music Hall, which is",
           "cvIssues": [
             "The review is for a production at Radio City Music Hall, which is not an Off-Broadway venue."
+          ]
+        },
+        {
+          "filename": "nydailynews--chris-jones.json",
+          "url": "https://www.nydailynews.com/2026/07/28/les-miserables-radio-city-musical-hall-review/",
+          "outletId": "nydailynews",
+          "criticName": "Chris Jones",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The review discusses a concert version of 'Les Misérables' at Radio City Music Hall, which is a Broadway venue, not Off-",
+          "cvIssues": [
+            "Review is about a concert version of Les Misérables at Radio City Music Hall, which is not an Off-Broadway venue."
           ]
         },
         {
@@ -3117,6 +3132,23 @@
             "Scraped content does not match the expected excerpt from the known Time Out London review by Andrzej Lukowski",
             "The scraped text contains different critical analysis and structure than the expected review"
           ]
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2025",
+      "title": "Marie & Rosetta",
+      "openingDate": "2025-05-09",
+      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
+      "violations": [
+        {
+          "filename": "standard--nick-curtis.json",
+          "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "matchedBy": "url",
+          "cvReasoning": null,
+          "cvIssues": null
         }
       ]
     }

@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-21T10:46:22.389Z",
-  "scanned": 4910,
-  "showsWithViolations": 3,
-  "totalViolations": 3,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-22T10:52:41.678Z",
+  "scanned": 4936,
+  "showsWithViolations": 4,
+  "totalViolations": 4,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "the-ugly-one-off-west-end-2026"
+  ],
   "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -14,7 +16,8 @@
   "violationKeys": [
     "cloud-9-west-end-2026",
     "tristan-and-yseult-off-broadway-2026",
-    "downstate-2026"
+    "downstate-2026",
+    "the-ugly-one-off-west-end-2026"
   ],
   "hits": [
     {
@@ -50,6 +53,18 @@
         {
           "titleMatch": false,
           "mentionCount": 4
+        }
+      ]
+    },
+    {
+      "showId": "the-ugly-one-off-west-end-2026",
+      "title": "The Ugly One",
+      "openingDate": "2026-11-20",
+      "message": "the-ugly-one-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 3
         }
       ]
     }
