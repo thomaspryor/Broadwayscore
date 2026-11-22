@@ -61,6 +61,10 @@ const EXPECTED_REPEATS = [
   // BRO-7654: recheck-route.js files one dated batch card per night, each naming mostly different failed Done
   // claims (one claim can be re-routed at most MAX_REROUTES=3 times, by design, BRO-7557; the card body says so). Count = nights with a failure, not one problem
   // coming back; the underlying alert/health conditions are classes of their own. Side effect: these cards also leave the rootCauseShare denominator and the fix-card sample (they are queue items, not fixes).
+  // BRO-8036: file-review-submission-card.js files one card per parked reader submission (BRO-7606). Count = submissions a
+  // person has to look at, not one problem coming back (the 4 cards that tripped the class were a one-off backfill of old
+  // parked issues plus one end-to-end test card). Real causes (scrape failed, show missing) are classes of their own.
+  { re: /^\s*review submission #\d+: needs a manual check\b/i, reason: 'one card per parked reader submission (file-review-submission-card.js, BRO-7606): count is queue size, not a recurring defect (BRO-8036)' },
   { re: /^\s*recheck \d{4}-\d{2}-\d{2}: \d+ done claims? no longer hold on main\b/i, reason: 'nightly recheck-route batch (recheck-route.js): one card per night of distinct failed Done claims (BRO-7654)' },
 ];
 

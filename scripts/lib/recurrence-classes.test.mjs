@@ -51,9 +51,16 @@ test('canary cards are expected repeats and never recurring', () => {
   assert.equal(cls.recurring, false);
 });
 
+test('BRO-8036: per-submission "needs a manual check" cards never make a recurring class', () => {
+  const cls = only(classesOf([1178, 935, 1056, 1062].map((n, i) => done(`Review submission #${n}: needs a manual check`, 8 + i, 7 + i))));
+  assert.ok(cls.expected, 'expected repeat');
+  assert.equal(cls.recurring, false);
+});
+
 test('every EXPECTED_REPEATS entry matches a real title shape', () => {
   const titles = [
     '[E2E Canary] alert chain test',
+    'Review submission #1178: needs a manual check',
     'Opening-night audit 2026-11-05',
     'Week in review: Nov 2',
     'Land dependabot PR #412',
@@ -63,6 +70,9 @@ test('every EXPECTED_REPEATS entry matches a real title shape', () => {
     'Recheck 2026-11-16: 5 done claims no longer hold on main',
   ];
   for (const e of rc.EXPECTED_REPEATS) assert.ok(titles.some((t) => e.re.test(t)), `no title for ${e.re}`);
+  // BRO-8036: per-submission queue cards are expected repeats; a different "needs a manual check" title is not.
+  assert.ok(rc.expectedRepeatReason('Review submission #1178: needs a manual check'));
+  assert.equal(rc.expectedRepeatReason('Feedback #12: needs a manual check'), null);
   assert.equal(rc.expectedRepeatReason('Morning digest did not arrive'), null);
   assert.equal(rc.expectedRepeatReason('Tech Scorecard weekly port did not run'), null);
 });
