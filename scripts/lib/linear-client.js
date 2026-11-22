@@ -381,7 +381,12 @@ async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMa
 // return the oldest N (verified live 2026-10-14, BRO-5287). An issue with 50+
 // comments is then read whole, page by page, up to maxPerIssue (BRO-6139: the
 // runner card BRO-4745 has hundreds, and the newest 50 hid older summaries).
-async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue = 2000, includeArchived = false } = {}) {
+// includeArchived defaults TRUE (BRO-7102): Done/Canceled cards auto-archive
+// ~2 days after close and Linear's issues() filter then drops them, so a caller
+// asking for a closed card's comments by identifier got an empty Map with no
+// error (ci-green-rate --cause-mix read 76 of 76 closes as untagged). Pass
+// false only to skip archived issues on purpose.
+async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue = 2000, includeArchived = true } = {}) {
   const prefix = `${teamKey}-`;
   const numbers = [...new Set((identifiers || [])
     .filter((id) => String(id).startsWith(prefix))

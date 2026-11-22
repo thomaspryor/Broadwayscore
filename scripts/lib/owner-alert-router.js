@@ -500,6 +500,13 @@ function buildCardNotes({ description, hint, fields, conditionKey, verify, diagn
   // BRO-7102 item 4: the failing test's shared identity, so the other test
   // filers (live-data lane, main test.yml red, digest-autofix) find this card.
   if (testId) parts.push(testIdMarker(testId));
+  // BRO-7102 item 5: the Done gate refuses a main test.yml red close without a
+  // CAUSE: tag (red-cause-tag.js). Say so on the card the worker reads. Kept
+  // AFTER the acceptance section and written as `<tag>` so this hint never
+  // parses as a tag itself (red-cause-tag.test.mjs holds that).
+  if (/^test-yml:(?:red:|main-streak)/.test(String(conditionKey || ''))) {
+    parts.push('\n## Closing\nThe close comment must carry one line CAUSE: <tag>, where <tag> is one of data-drift, stale-test, landing-collision, flake, infra. Closing without it is refused (BRO-7102).');
+  }
   let notes = parts.join('\n');
   if (notes.length < MIN_NOTES_LENGTH) {
     notes += `\n\nFiled automatically by owner-alert-router.js (conditionKey: ${conditionKey}).`;

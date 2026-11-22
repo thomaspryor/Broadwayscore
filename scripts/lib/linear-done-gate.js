@@ -267,17 +267,20 @@ function rootCauseCloseCheck({ identifier, title, description = '', commentText 
   }
 }
 
-// BRO-7102 item 5: a main test.yml red card's close should say why main went
+// BRO-7102 item 5: a main test.yml red card's close must say why main went
 // red (CAUSE: data-drift | stale-test | landing-collision | flake | infra), so
-// ci-green-rate.js --cause-mix can count it. ADVISORY ONLY (§19): it warns and
-// never refuses. Any error fails open.
-function redCauseCloseWarning({ identifier, title, description = '', commentText = '', existingComments = [] } = {}) {
+// ci-green-rate.js --cause-mix can count it. Advisory until
+// RED_CAUSE_BLOCKING_FROM (red-cause-tag.js), then it refuses;
+// RED_CAUSE_CLOSE_GATE=advisory rolls that back. Automated closers only warn.
+// Any error fails open. Returns { message, blocking } or null.
+function redCauseCloseCheck({ identifier, title, description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}) {
   if (!title) return null;
   try {
     const { checkRedCauseClose } = require('./red-cause-tag.js');
     // existingComments come oldest first (sortedCommentBodies); the close comment is newest of all.
     const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
-    return checkRedCauseClose({ identifier, title, description, texts }).message || null;
+    const r = checkRedCauseClose({ identifier, title, description, texts, commentText, nowMs, env });
+    return r.message ? { message: r.message, blocking: r.blocking } : null;
   } catch {
     return null;
   }
@@ -374,8 +377,12 @@ function checkLinearDoneTransition(args = {}) {
       result = addWarning(result, rw.message);
     }
   }
-  const cause = redCauseCloseWarning(args);
-  if (cause) result = addWarning(result, cause);
+  const cause = redCauseCloseCheck(args);
+  if (cause) {
+    result = cause.blocking && result.allowed !== false
+      ? { ...result, gated: true, allowed: false, verdict: 'red-cause-missing', reason: cause.message }
+      : addWarning(result, cause.message);
+  }
   const rcc = rootCauseCloseCheck(args);
   if (rcc) {
     if (rcc.blocking && result.allowed !== false) {
@@ -388,4 +395,4 @@ function checkLinearDoneTransition(args = {}) {
   return result;
 }
 
-module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, outsideSettingCloseCheck, OUTSIDE_SETTING_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };
+module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, outsideSettingCloseCheck, OUTSIDE_SETTING_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseCheck };

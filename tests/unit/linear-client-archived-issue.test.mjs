@@ -128,3 +128,24 @@ test('issueUnarchive is exported alongside archiveIssue and posts the unarchive 
   assert.deepEqual(calls.map((c) => c.op), ['issueUnarchive']);
   assert.equal(calls[0].variables.id, 'issue-7');
 });
+
+// BRO-7102: Done/Canceled cards auto-archive ~2 days after close, and Linear's
+// issues() filter drops archived issues unless includeArchived is set. A
+// by-identifier comment read of a closed card then returned an empty Map, no
+// error: ci-green-rate --cause-mix read 76 of 76 closed red cards as untagged.
+test('listIssueComments: includes archived issues by default; false opts out', async () => {
+  const { listIssueComments } = require('../../scripts/lib/linear-client.js');
+  const queries = [];
+  global.fetch = async (_url, opts) => {
+    const body = JSON.parse(opts.body);
+    queries.push(body.query);
+    const archived = /includeArchived: true/.test(body.query);
+    return { ok: true, status: 200, json: async () => ({ data: { issues: { nodes: archived ? [{ identifier: 'BRO-9', comments: { nodes: [{ body: 'CAUSE: flake', createdAt: '2026-11-13' }] } }] : [] } } }) };
+  };
+  const byDefault = await listIssueComments(['BRO-9']);
+  assert.equal((byDefault.get('BRO-9') || []).length, 1, 'an archived (closed) card must still return its comments');
+  assert.match(queries[0], /includeArchived: true/);
+  const optedOut = await listIssueComments(['BRO-9'], undefined, { includeArchived: false });
+  assert.equal(optedOut.has('BRO-9'), false);
+  assert.doesNotMatch(queries[1], /includeArchived/);
+});
