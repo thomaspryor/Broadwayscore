@@ -169,6 +169,9 @@ export function titleForms(title) {
   return short && short !== t && short.length >= 4 ? [t, short] : [t];
 }
 
+// Wording that treats a run as still going (BRO-8053).
+const STILL_ON_RE = /\b(?:final (?:performance|show|curtain) (?:is|comes|falls|will)|last (?:chance|performance is|week)|before it closes|closes|closing|(?:is )?still (?:playing|running|on)|plays (?:its|until|through)|runs (?:until|through)|book (?:now|it|tickets)|catch it|while you can|ends (?:on|this|Saturday|Sunday))\b/i;
+
 export function buildPool(facts) {
   const sheet = facts.lines.map(l => `- ${l}`).join('\n');
   const titleNames = facts.titles.flatMap(t => titleForms(t.title));
@@ -202,6 +205,11 @@ export function buildPool(facts) {
     // Venues, critics and outlets the facts name: the cards already show the
     // venue, and the lede is not the place for a critic (owner, 2026-11-15).
     venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
+    // Openings whose run ended before the email goes out (BRO-8053).
+    closedTitles: facts.lines.flatMap(l => {
+      const m = l.match(/^Opening: (.+?), .* It has already closed: /);
+      return m ? titleForms(m[1]) : [];
+    }),
     // Shows whose reception line says critics split (owner, 2026-11-22).
     splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
     // Single-review scores that misrepresent their show: the pan of a show
@@ -296,6 +304,19 @@ export function checkCandidate(c, pool, recent = []) {
       if (named.length && named.every(t => splits.includes(t))) continue;
       p.push(`${field} says critics were split or not all on board, but the facts do not say that about the show it describes: "${sentence.slice(0, 80)}"`);
       break;
+    }
+  }
+  // A show that has already closed is never "closing" or still on (BRO-8053:
+  // "its final performance is Saturday, Nov 21", sent Sunday the 22nd).
+  const closed = pool.closedTitles || [];
+  if (closed.length) {
+    for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+      const bad = sentencesOf(text).find(sentence => {
+        const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
+        const about = named.length ? named.some(t => closed.includes(t)) : closed.some(t => mentions(subject, t));
+        return about && STILL_ON_RE.test(stripTitles(sentence, pool.titleNames || []));
+      });
+      if (bad) { p.push(`${field} talks about a show that has already closed as if it were still running or about to close: "${bad.slice(0, 80)}"`); }
     }
   }
   // A single pan of a show critics liked is not a headline (both editions led

@@ -412,3 +412,35 @@ test('ship-check cases (2026-11-22)', () => {
   assert.ok(!checkCandidate(ok, dp).some(x => /one review/.test(x)), checkCandidate(ok, dp).join());
   assert.match(checkCandidate({ ...ok, preheader: 'One critic scored Dud a perfect 100 anyway.' }, dp).join(), /one review's score \(100\)/);
 });
+
+// BRO-8053: the Sunday refresh of 2026-11-16 told West End readers Top Gunchained's
+// "final performance is Saturday, Nov 21" on Sunday the 22nd.
+const tgFacts = {
+  ...rxFacts,
+  lines: [
+    ...rxFacts.lines,
+    'Opening: Top Gunchained, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21. Never write that readers can still see it or that it is closing.',
+  ],
+  titles: [...rxFacts.titles, { id: 't', slug: 't', title: 'Top Gunchained' }],
+  leadTitles: [...rxFacts.leadTitles, 'Top Gunchained'],
+};
+const tgPool = buildPool(tgFacts);
+const tgGood = {
+  angle: 'best-reviewed opening',
+  subject: 'Top Gunchained hits 79/100 from 6 critics',
+  preheader: 'It was the week\'s best London score. Eurotrash is close behind at 77.',
+  lede: 'Top Gunchained was the best-scoring London opening this week at a solid 79/100. Eurotrash is close behind at 77, and Goblin lands at 70.',
+};
+
+test('a show that already closed may be praised but never called still on or closing (BRO-8053)', () => {
+  assert.deepEqual(tgPool.closedTitles, ['Top Gunchained']);
+  assert.deepEqual(checkCandidate(tgGood, tgPool), []);
+  // The live 2026-11-22 preheader.
+  assert.match(checkCandidate({ ...tgGood, preheader: "It's the week's best London score, and its final performance is Saturday, Nov 21." }, tgPool).join(), /preheader talks about a show that has already closed/);
+  assert.match(checkCandidate({ ...tgGood, subject: 'Last chance: Top Gunchained hits 79/100' }, tgPool).join(), /subject talks about a show that has already closed/);
+  assert.match(checkCandidate({ ...tgGood, lede: 'Top Gunchained scores 79/100 and closes Saturday. Eurotrash sits at 77, Goblin at 70.' }, tgPool).join(), /lede talks about a show that has already closed/);
+  // Closing words about a show still running stay allowed.
+  assert.doesNotMatch(checkCandidate({ ...tgGood, preheader: 'Eurotrash is close behind at 77 and still running.' }, tgPool).join(), /already closed/);
+  // Nothing closed: the check is off (base fixture says "ends Wednesday" of a running show).
+  assert.deepEqual(pool.closedTitles, []);
+});
