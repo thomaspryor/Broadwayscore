@@ -153,6 +153,9 @@ async function enumerateGuardian(src, since, until) {
         if (key === 'test') await new Promise((ok) => setTimeout(ok, 1100)); // the public test key allows ~1 call/s
         if (!resp.pages || page >= resp.pages) break;
       }
+      // BRO-7816: a month that failed is not cached, so a second outlet on the same stream (Observer) re-reads it
+      // and records its own failure note instead of reading an empty month as complete.
+      if (notes.some((n) => n.startsWith(`${from} p`))) continue;
       guardianMonths.set(mk, got);
     }
     for (const g of guardianMonths.get(mk)) {
@@ -192,11 +195,12 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
     const cf = opts.childFilter;
     const children = [...body.matchAll(/<loc>([^<]+)/g)].map((m) => m[1].trim())
       .filter((c) => !cf || (typeof cf === 'function' ? cf(c, opts.since) : cf.test(c)));
-    const out = [];
-    await pool(children, opts.childConcurrency || 1, async (c) => {
-      try { out.push(...(await fetchSitemapUrls(c, urlFilter, opts)).map((g) => ({ sitemap: c, ...g }))); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
+    // Results land per child index, so childConcurrency > 1 keeps index order (first-seen dedupe stays deterministic).
+    const byChild = children.map(() => []);
+    await pool(children.map((c, i) => [c, i]), opts.childConcurrency || 1, async ([c, i]) => {
+      try { byChild[i] = (await fetchSitemapUrls(c, urlFilter, opts)).map((g) => ({ sitemap: c, ...g })); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
     });
-    return out;
+    return byChild.flat();
   }
   // A URL last modified before the window was published before it too.
   return parseSitemapXml(body, opts.since ? new Date(opts.since) : new Date(0), urlFilter);
@@ -522,7 +526,9 @@ async function runOutlet(outletId, o, shared) {
     if (!i.publishDate && (i.periodDate || i.lastmod)) Object.assign(i, { publishDate: i.periodDate || String(i.lastmod).slice(0, 10), dateSoft: true });
   }
   fs.mkdirSync(CACHE_DIR, { recursive: true });
-  if (!o.fromCache) fs.writeFileSync(itemsPath, JSON.stringify(enumerated));
+  // BRO-7816: a run that listed nothing because every request failed must not overwrite the last good items cache.
+  const failedEmpty = enumerated.items.length === 0 && census.isIncompleteEnumeration(enumerated.notes);
+  if (!o.fromCache && !failedEmpty) fs.writeFileSync(itemsPath, JSON.stringify(enumerated));
   if (o.emitItems) emitItems(outletId, enumerated);
   if (o.enumerateOnly) return { outletId, enumerated: enumerated.items.length };
   if (!shared.ctx) return null;
@@ -678,7 +684,7 @@ function summaryTable(market = 'nyc') {
 function blindOutletTable() {
   const files = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.report.json'));
   const blind = census.blindOutlets(files.flatMap((f) => { try { return [JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))]; } catch { return []; } }),
-    { sources: OUT_DIR === BASE_OUT_DIR ? SOURCES : LONDON_SOURCES });
+    { sources: OUT_DIR === BASE_OUT_DIR ? SOURCES : LONDON_SOURCES, market: OUT_DIR === BASE_OUT_DIR ? 'nyc' : 'london' });
   if (!blind.length) return '';
   return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
     ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why.replace(/\|/g, '/')} |`)].join('\n');

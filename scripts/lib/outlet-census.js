@@ -776,8 +776,10 @@ function serpItemDate(result, window) {
 function isIncompleteEnumeration(notes) {
   // "page 3: HTTP 503" / "page 3: fetch failed": a wp-json walk that stopped mid-listing (BRO-6514).
   // A composite source prefixes its parts' notes ("wp-json: page 3: HTTP 503"), so no failure shape anchors to ^ alone.
-  // BRO-7816: the Guardian API's "2021-06-01 p1: HTTP 401", the CDX "<prefix> 2019: HTTP 503" were not matched, so a run where every month answered 401 was filed as complete.
-  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|(?:^|: )page \d+: (?:HTTP|fetch failed)|(?:^|: )dated sitemaps: \d+ failed|(?:^|: |\s)(?:\d{4}-\d{2}-\d{2} p\d+|\d{4}): (?:HTTP \d|\w*Error|fetch failed|Timeout|.*(?:ECONN|ETIMEDOUT|socket))/.test(String(n)));
+  // BRO-7816: the Guardian API's "2021-06-01 p1: <error>" and the CDX "<prefix>/ 2019: <error>" are written only on
+  // failure, so their shape (not the error text: a timeout reads "The operation was aborted") marks the run. They were
+  // not matched, so a run where every month answered 401 was filed as complete.
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|(?:^|: )page \d+: (?:HTTP|fetch failed)|(?:^|: )dated sitemaps: \d+ failed|(?:^|: )\d{4}-\d{2}-\d{2} p\d+: |\/ \d{4}: /.test(String(n)));
 }
 
 /** PURE. A report's enumeration status: 'unreadable', 'incomplete' or 'complete' (BRO-6488). */
@@ -879,7 +881,7 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
  * and a report that predates a readable source says it is stale and how to refresh it, never the old reason
  * (washpost printed "not yet configured" for weeks after its sitemap source landed).
  */
-function blindOutlets(reports, { minRows = 100, sources = null } = {}) {
+function blindOutlets(reports, { minRows = 100, sources = null, market = 'nyc' } = {}) {
   const out = [];
   for (const r of reports || []) {
     const src = r.source || {};
@@ -892,7 +894,7 @@ function blindOutlets(reports, { minRows = 100, sources = null } = {}) {
     const cfg = sources && sources[r.outletId];
     if (cfg && unreadable && !['unreadable', 'serp'].includes(cfg.kind)) {
       out.push({ outletId: r.outletId, kind: src.kind, rows, stale: true,
-        why: `stale report: the source is now ${cfg.kind}${cfg.proxyRetry ? ' (proxyRetry, needs a proxy key)' : ''}; refresh with node scripts/outlet-census.js --outlet=${r.outletId}` });
+        why: `stale report or failed refresh: the source is now ${cfg.kind}${cfg.proxyRetry ? ' (proxyRetry, needs a proxy key)' : ''}; refresh with node scripts/outlet-census.js --outlet=${r.outletId}${market && market !== 'nyc' ? ` --market=${market}` : ''}` });
       continue;
     }
     const reason = String((cfg && cfg.kind === 'unreadable' && cfg.reason) || src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();

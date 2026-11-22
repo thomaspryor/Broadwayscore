@@ -400,7 +400,8 @@ test('BRO-7816: the blind table never prints a stale reason: a readable source o
   const [obs, wp] = census.blindOutlets([rep('washpost', ['unreadable: no WordPress API; sitemap enumeration not yet configured']), rep('observer', ['unreadable: old reason'])], { sources })
     .sort((a, b) => a.outletId.localeCompare(b.outletId));
   assert.equal(wp.stale, true);
-  assert.match(wp.why, /^stale report: the source is now sitemap .*--outlet=washpost$/);
+  assert.match(wp.why, /^stale report or failed refresh: the source is now sitemap .*--outlet=washpost$/);
+  assert.match(census.blindOutlets([rep('washpost', [])], { sources, market: 'london' })[0].why, /--outlet=washpost --market=london$/);
   assert.doesNotMatch(wp.why, /not yet configured/);
   assert.equal(obs.why, 'only a two-day news sitemap; no archive sitemap');
   // Real committed reports against the live config: no blind row may carry a generic or placeholder reason.
@@ -549,6 +550,8 @@ test('BRO-7816: every enumerator failure note marks the run incomplete, composit
   assert.equal(inc(['cdx: thestage.co.uk/reviews/ 2019: Timeout fetching x']), true);
   assert.equal(inc(['wp-json: page 3: HTTP 503']), true); // composite part
   assert.equal(inc(['sitemap-dated: dated sitemaps: 4 failed']), true);
+  assert.equal(inc(['2021-06-01 p1: The operation was aborted due to timeout']), true); // AbortSignal.timeout's message
+  assert.equal(inc(['thestage.co.uk/reviews/ 2019: Unexpected token \'<\', "<html>" is not valid JSON']), true);
   assert.equal(inc(['2026: no URLs (blocked or empty; see log)']), false);
   assert.equal(inc(['sitemap: 66 sitemaps from 2021-06-01, 3 without a matching URL, 0 not found (404)']), false);
   assert.equal(inc(['wayback cdx: 120 captures, 80 URLs']), false);
@@ -621,6 +624,10 @@ test('BRO-7816: a source can opt proxy tiers back in over learned domain skips; 
   assert.deepEqual([...effectiveDomainSkips(learned, undefined)].sort(), ['brightdata', 'direct-cookies', 'scrapingbee']);
   assert.equal(learned.size, 3, 'the learned set is not mutated');
   assert.throws(() => effectiveDomainSkips(learned, ['bright-data']), /unknown tier id/);
+  // Every tier id the learned skip file uses is accepted (a valid id must never throw "unknown").
+  const skipFile = require('../config/domain-tier-skip.json');
+  const ids = new Set(Object.values(skipFile).flatMap((v) => (Array.isArray(v) ? v : Object.keys(v))));
+  for (const id of ids) effectiveDomainSkips(new Set(), [id]);
   // Every census source that opts in names real tiers, and only proxyRetry sources may (they are the ones that reach fetchPage).
   for (const [id, src] of Object.entries(SOURCES)) {
     if (!src.ignoreDomainSkips) continue;

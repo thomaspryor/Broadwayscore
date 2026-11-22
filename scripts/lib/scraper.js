@@ -64,7 +64,7 @@ const { getSkippedTiers } = require('./domain-tier-skip');
 const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 let _domainTierSkip = null;
 // BRO-7816: the tier ids domain-tier-skip.json may name, so a typo in ignoreDomainSkips throws instead of doing nothing.
-const DOMAIN_SKIP_TIER_IDS = new Set(['cookies-plain', 'direct-cookies', 'amp-variant', 'playwright', 'scrapingdog', 'brightdata', 'scrapingbee']);
+const DOMAIN_SKIP_TIER_IDS = new Set(['cookies-plain', 'direct-cookies', 'amp-variant', 'archive-cdx', 'archive-first', 'browserbase', 'playwright', 'scrapingdog', 'brightdata', 'scrapingbee']);
 
 /**
  * PURE. The learned domain skips minus the tiers a caller opts back into (BRO-7816). domain-tier-skip.json is
