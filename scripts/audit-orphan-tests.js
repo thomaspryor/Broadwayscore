@@ -220,6 +220,9 @@ const EXEMPT_NEVER_CI = {
   // cleared were refilled, from live data/shows.json. Red between the plan
   // run and the backfill, so it is an acceptance probe, never run by CI.
   'scripts/verify-bro-5063-synopses.test.mjs': 'BRO-5063',
+  // BRO-8030: asserts the session record ledgers still read cleanly and grew
+  // after real landings merged rows into them. Date-gated RECHECK-AFTER probe.
+  'scripts/verify-bro-8030-recheck.test.mjs': 'BRO-8030',
   // BRO-2778: keys are repo-relative PATHS. A bare filename used to exempt
   // every same-named file in every scanned directory (ccusage-baseline and
   // opening-night-express each have a tests/unit/ twin), the collision this
