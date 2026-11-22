@@ -98,20 +98,6 @@
     "queuedAt": "2026-11-22T09:54:37.494Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
-    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-22T10:10:29.108Z"
-  },
-  {
     "conditionKey": "aggregator-health:thestage-roundups:coverage-drop",
     "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 56% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
     "description": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 56% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
@@ -257,5 +243,19 @@
       }
     ],
     "queuedAt": "2026-11-22T13:27:44.352Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T13:43:11.100Z"
   }
 ]
