@@ -158,7 +158,7 @@ function collectBuildScriptDependencies(root) {
           ts.isElementAccessExpression(n.expression) && /require/i.test(n.expression.argumentExpression.getText(ast)))) throw new Error('indirect build loader');
         // A bare 'scripts/' (or any trailing-slash directory prefix) names no file;
         // only file-like literals can be dependencies.
-        if (ts.isStringLiteralLike(n) && /^scripts\/[^\s*]*\.(?:[cm]?js|ts|tsx|sh)$/.test(n.text)) add(file, n.text);
+        if (ts.isStringLiteralLike(n) && /^scripts\/[^\s*]*\.(?:[cm]?js|jsx|[cm]?ts|tsx|sh)$/.test(n.text)) add(file, n.text);
         if ((ts.isImportDeclaration(n) || ts.isExportDeclaration(n)) && n.moduleSpecifier) add(file, n.moduleSpecifier.text);
         if (ts.isExternalModuleReference(n) && n.expression && ts.isStringLiteralLike(n.expression)) add(file, n.expression.text);
         if (ts.isCallExpression(n) && (n.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(n.expression) && loaders.has(n.expression.text) ||
@@ -173,7 +173,7 @@ function collectBuildScriptDependencies(root) {
           // already arm the build for packages.
           // require(path.join(ROOT, 'scripts/lib/x')): the literal tail is repo-root relative.
           else if (n.arguments.length === 1 && ts.isCallExpression(n.arguments[0]) && n.arguments[0].expression.getText(ast) === 'path.join' &&
-            n.arguments[0].arguments.length >= 2 && ts.isStringLiteralLike(n.arguments[0].arguments.at(-1)) &&
+            n.arguments[0].arguments.length >= 2 && /root|repo/i.test(n.arguments[0].arguments[0].getText(ast)) && ts.isStringLiteralLike(n.arguments[0].arguments.at(-1)) &&
             n.arguments[0].arguments.at(-1).text.startsWith('scripts/')) add(file, n.arguments[0].arguments.at(-1).text);
           else if (n.arguments.length === 1 && isJsonConst(n.arguments[0])) { /* JSON data cannot load script code. */ }
           else if (declaredDeps(n)) declaredDeps(n).filter(spec => spec !== 'none').forEach(spec => add(file, spec));
