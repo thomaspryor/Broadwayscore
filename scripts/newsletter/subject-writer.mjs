@@ -41,8 +41,20 @@ const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // First sentence of a lede. Does not split after an abbreviation ("St. Ann's
 // Warehouse", "Ms. Blakk for President"), which would cut the sentence before
 // its Critic Score and reject a good lede (ship-check, 2026-11-15).
-export function firstSentence(text) {
-  return String(text || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/)[0] || '';
+// A sentence ends at . ! or ? followed by a space and a word that is not lowercase,
+// so a title like "Oh, Mary!" mid-sentence ("Oh, Mary! was the best ...") does not end it.
+export const SENTENCE_BREAK = /(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+(?![a-z])/;
+/** Sentences of a text. A known title with ". ! ?" in it ("Oh, Mary!") never ends one. */
+export function splitSentences(text, titles = []) {
+  let t = String(text || '');
+  const held = [];
+  for (const title of [...titles].filter(x => x && /[.!?]/.test(x)).sort((a, b) => b.length - a.length)) {
+    t = t.replace(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(title)}(?![\\p{L}\\p{N}])`, 'gu'), (m, pre) => { held.push(title); return `${pre}\u0001${held.length - 1}\u0001`; });
+  }
+  return t.split(SENTENCE_BREAK).map(x => x.replace(/\u0001(\d+)\u0001/g, (_, i) => held[Number(i)]));
+}
+export function firstSentence(text, titles = []) {
+  return splitSentences(text, titles)[0] || '';
 }
 
 // How the critics as a group received a show, from its per-review scores
@@ -169,6 +181,22 @@ export function titleForms(title) {
   return short && short !== t && short.length >= 4 ? [t, short] : [t];
 }
 
+/** The fact line for a show the sheet names whose run is over (BRO-8053). buildPool keys on it exactly. */
+export const NOT_STILL_ON = ' Never write that readers can still see it or that it is closing.';
+export const closedFactLine = (title) => `Already closed: ${title}.${NOT_STILL_ON}`;
+
+// Wording that treats a run as still going (BRO-8053).
+const WEEKDAY_OR_MONTH = String.raw`(?:(?:mon|tues|wednes|thurs|fri|satur|sun)day|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*)`;
+const STILL_ON_RE = new RegExp(String.raw`\b(?:` + [
+  String.raw`(?<!\b(?:played|gave|had|staged) (?:its|their) )(?:final (?:performances?|shows?|curtain|week(?:end)?|days?|chance)|last (?:performances?|shows?|curtain|weekend|days|chance))\b(?! (?:was|were|came|played|fell))`,
+  String.raw`(?:its|the) last week`, String.raw`before it (?:closes|ends)`, 'closes', 'closing',
+  String.raw`(?:still|now|currently) (?:playing|running|on)`, 'extended', 'wrapping up', 'wraps',
+  String.raw`(?:is )?leaving`, String.raw`leaves (?:on |this |next )?` + WEEKDAY_OR_MONTH,
+  String.raw`(?:plays|runs|run|playing|running|on|continues) (?:until|through|to) (?:` + WEEKDAY_OR_MONTH + String.raw`|\d|next|this|the end)`,
+  String.raw`ends (?:its (?:[\w'-]+ ){0,3}run|on|this|tonight|today|tomorrow|` + WEEKDAY_OR_MONTH + ')',
+  String.raw`book(?:ing)? (?:now|it|tickets|before)`, 'tickets', 'catch', 'while you can', "don'?t miss", 'hurry', String.raw`(?:you )?(?:have|has) until`,
+].join('|') + String.raw`)\b`, 'i');
+
 export function buildPool(facts) {
   const sheet = facts.lines.map(l => `- ${l}`).join('\n');
   const titleNames = facts.titles.flatMap(t => titleForms(t.title));
@@ -202,6 +230,13 @@ export function buildPool(facts) {
     // Venues, critics and outlets the facts name: the cards already show the
     // venue, and the lede is not the place for a critic (owner, 2026-11-15).
     venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
+    // Openings whose run ended before the email goes out (BRO-8053).
+    // Matched against the known titles, not parsed, so a comma in a title is fine.
+    closedTitles: (() => {
+      const isClosed = ({ title }) => facts.lines.includes(closedFactLine(title));
+      const open = new Set(facts.titles.filter(t => !isClosed(t)).flatMap(({ title }) => titleForms(title)));
+      return facts.titles.filter(isClosed).flatMap(({ title }) => titleForms(title)).filter(t => !open.has(t));
+    })(),
     // Shows whose reception line says critics split (owner, 2026-11-22).
     splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
     // Single-review scores that misrepresent their show: the pan of a show
@@ -288,7 +323,7 @@ export function checkCandidate(c, pool, recent = []) {
   // Critics split only when a reception line says so (owner, 2026-11-22).
   // The sentence must name a split show and no other show.
   const splits = pool.splitTitles || [];
-  const sentencesOf = (t) => String(t || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/);
+  const sentencesOf = (t) => splitSentences(t, pool.titleNames || []);
   for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
     for (const sentence of sentencesOf(text)) {
       if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
@@ -296,6 +331,37 @@ export function checkCandidate(c, pool, recent = []) {
       if (named.length && named.every(t => splits.includes(t))) continue;
       p.push(`${field} says critics were split or not all on board, but the facts do not say that about the show it describes: "${sentence.slice(0, 80)}"`);
       break;
+    }
+  }
+  // A show that has already closed is never "closing" or still on (BRO-8053:
+  // "its final performance is Saturday, Nov 21", sent Sunday the 22nd).
+  const closed = pool.closedTitles || [];
+  if (closed.length) {
+    for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+      // Closing words are about the show named just before them in the same
+      // clause ("X hits 79 and Y closes Saturday" is about Y), else the first
+      // named after them. A clause that names no show is about the last show
+      // named before it, or every show so far for "both"/"they".
+      const names = pool.titleNames || [];
+      let last = names.filter(t => mentions(subject, t));
+      let sofar = [...last];
+      const clausesOf = (t) => sentencesOf(t).flatMap(x => x.split(/,\s+(?:and|but|while|as)\s+|;\s+|\s+(?:while|whereas)\s+/));
+      const bad = clausesOf(text).find(clause => {
+        const hits = names.flatMap(t => [...clause.matchAll(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(t)}(?![\\p{L}\\p{N}])`, 'gu'))]
+          .map(m => ({ t, at: m.index + m[1].length, end: m.index + m[0].length })));
+        let masked = clause;
+        for (const h of hits) masked = masked.slice(0, h.at) + ' '.repeat(h.end - h.at) + masked.slice(h.end);
+        const m = STILL_ON_RE.exec(masked);
+        let about = last;
+        if (m && hits.length) {
+          const before = hits.filter(h => h.end <= m.index);
+          const at = before.length ? Math.max(...before.map(h => h.at)) : Math.min(...hits.map(h => h.at));
+          about = hits.filter(h => h.at === at).map(h => h.t);
+        } else if (m && /\b(?:both|all|they|each|the two)\b/i.test(clause)) about = sofar;
+        if (hits.length) { last = [...new Set(hits.map(h => h.t))]; sofar = [...new Set([...sofar, ...last])]; }
+        return !!m && about.some(t => closed.includes(t));
+      });
+      if (bad) { p.push(`${field} talks about a show that has already closed as if it were still running or about to close: "${bad.slice(0, 80)}"`); }
     }
   }
   // A single pan of a show critics liked is not a headline (both editions led
@@ -328,7 +394,7 @@ export function checkCandidate(c, pool, recent = []) {
     if (!namesLead(subject) && !/\b(?:open(?:s|ed|ing|ings)?|premieres?|debuts?|new shows?)\b/i.test(subject)) {
       p.push("subject must be about this week's openings (name one, or say how the openings went); closings and other news go in the preview text or later in the paragraph");
     }
-    const first = firstSentence(lede);
+    const first = firstSentence(lede, pool.titleNames || []);
     if (!namesLead(first)) p.push("the opening paragraph's first sentence must name one of this week's openings");
     const tops = pool.topLeadTitles || [];
     if (tops.length) {
@@ -346,7 +412,7 @@ export function checkCandidate(c, pool, recent = []) {
     if (!subjNums.some(n => pool.scoreNumbers.has(n))) p.push("a subject that names a show must state that show's Critic Score number (e.g. 77/100)");
   }
   if (lede.length >= 80) {
-    const first = firstSentence(lede);
+    const first = firstSentence(lede, pool.titleNames || []);
     if (pool.scoreNumbers && pool.scoreNumbers.size && (pool.titleNames || []).some(t => mentions(first, t))
       && !numbersIn(stripTitles(first, pool.titleNames || [])).some(n => pool.scoreNumbers.has(n))) {
       p.push("the opening paragraph's first sentence names a show, so it must give that show's Critic Score number");
@@ -462,7 +528,10 @@ export function reusable(prev, facts) {
   try {
     const pool = buildPool(facts);
     if (checkCandidate(prev, pool, []).length) return null;
-    return { ...prev, showRefs: showsNamed(`${prev.subject} ${prev.preheader} ${prev.lede}`, pool), reused: true, alternates: prev.alternates || [] };
+    // Saved alternates face today's checks too (with the kept lede), so a rule added
+    // since they were written drops them from the owner's preview (BRO-8053).
+    const alternates = (prev.alternates || []).filter(a => a && a.subject && !checkCandidate({ ...a, lede: prev.lede }, pool, []).length);
+    return { ...prev, showRefs: showsNamed(`${prev.subject} ${prev.preheader} ${prev.lede}`, pool), reused: true, alternates };
   } catch { return null; }
 }
 

@@ -13,6 +13,7 @@
 const stage = require('./tic-stage');
 const { applyAddShow } = require('./add-show-action');
 const { getCity } = require('./tic-cities');
+const { buildKnownWriters } = require('./show-title-normalize');
 
 // Chicago and DC ids live in separate numbering spaces: match the city's own host only.
 const idRe = (city) => new RegExp(`${city.host.replace(/\./g, '\\.')}/[^/]+/(\\d+)/`);
@@ -63,7 +64,7 @@ async function evaluate(row, ctx, io) {
   if (!df.ok) return { status: 'rejected', reason: df.reason, retry: false };
   const dates = await io.dates(page);
   if (!dates) return { status: 'rejected', reason: 'no-publish-date', retry: true };
-  const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: ctx.today, city });
+  const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: ctx.today, city, knownWriters: ctx.knownWriters });
   // Short-history launch (BRO-6771): opened before the cutoff and no longer running.
   if (city.since && show.openingDate < city.since && show.status !== 'open') return { status: 'rejected', reason: 'before-since', retry: false };
   const dupe = stage.findDuplicate(show, ctx.shows, city);
@@ -92,6 +93,8 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   const next = { ...seen };
   const added = [];
   const topups = [];
+  // Independent writer credits already in the corpus: the byline oracle (BRO-8054).
+  const knownWriters = buildKnownWriters(shows);
   for (const row of pickTopups(listing, shows, seen, city).slice(0, max)) {
     try {
       const links = stage.linkedReviews(await io.page(row.id)).map((r) => ({ url: r.url, critic: r.critic || null }));
@@ -106,7 +109,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   for (const row of pickCandidates(listing, shows, seen, city).slice(0, max)) {
     let res;
     try {
-      res = await evaluate(row, { shows, today, city }, io);
+      res = await evaluate(row, { shows, today, city, knownWriters }, io);
     } catch (e) {
       log(`id ${row.id}: ERROR ${e.message}`);
       continue; // not remembered: tomorrow retries
@@ -128,4 +131,39 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   return { added, topups, seen: next };
 }
 
-module.exports = { ticIdOf, pickCandidates, pickTopups, isRetry, evaluate, runDaily, RETRY_REASONS };
+/**
+ * Save the rows runDaily just added to doc.shows (BRO-8054). The write guard can refuse a save
+ * (a new row duplicates an existing one) or fail for a transient reason (lock timeout, I/O).
+ * A refused batch must not drop its good rows, and a transient failure must not be remembered
+ * as a final refusal. So: try the batch; on failure take the rows out and save them one at a
+ * time. A row refused as a duplicate is recorded final (retry:false); any other failure forgets
+ * the seen entry so the next run picks the listing up again.
+ * @param {{shows: object[]}} doc  the loaded shows document; the added rows are already in doc.shows
+ * @param {{id: string}[]} added   runDaily's `added`
+ * @param {{save: (doc: object) => void, nextSeen: object, today: string, log?: (msg: string) => void}} ctx
+ * @returns {{id: string}[]} the entries that reached disk
+ */
+function saveAddedShows(doc, added, { save, nextSeen, today, log = () => {} }) {
+  const attempt = () => { try { save(doc); return null; } catch (e) { return e; } };
+  if (!attempt()) return added;
+  const rows = added.map((a) => [a, doc.shows.find((s) => s && s.id === a.id)]).filter(([, r]) => r);
+  for (const [, row] of rows) doc.shows.splice(doc.shows.indexOf(row), 1);
+  const landed = [];
+  for (const [a, row] of rows) {
+    doc.shows.push(row);
+    const err = attempt();
+    if (!err) { landed.push(a); continue; }
+    doc.shows.splice(doc.shows.indexOf(row), 1);
+    const why = String(err.message).split('\n')[0].slice(0, 200);
+    const permanent = /duplicate/i.test(String(err.message));
+    for (const k of Object.keys(nextSeen)) {
+      if (!nextSeen[k] || nextSeen[k].reason !== 'added' || nextSeen[k].id !== a.id) continue;
+      if (permanent) nextSeen[k] = { reason: `write-refused:${why}`, retry: false, on: today };
+      else delete nextSeen[k];
+    }
+    log(`id ${a.id}: shows write ${permanent ? 'refused' : 'failed, will retry'} (${why})`);
+  }
+  return landed;
+}
+
+module.exports = { saveAddedShows, ticIdOf, pickCandidates, pickTopups, isRetry, evaluate, runDaily, RETRY_REASONS };

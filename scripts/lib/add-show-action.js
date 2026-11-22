@@ -33,6 +33,9 @@ const ALLOWED = new Set([
   // BRO-7429: work identity (scripts/lib/work-identity.js). workKey names a work that is not the
   // title's default one; sameWorkAs lists the same-title rows a reviewer confirmed are the same work.
   'workKey', 'sameWorkAs',
+  // BRO-8054: title-normalization provenance (scripts/lib/show-title-normalize.js applyNormalizedTitle).
+  // A listing source that strips a title artifact records what it printed, so search still finds it.
+  'titleNormalizedFrom', 'titleNormalizedAt', 'akaTitles',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];

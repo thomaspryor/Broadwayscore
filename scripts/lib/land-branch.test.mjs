@@ -1261,6 +1261,44 @@ test('BRO-8030: a session record file both sides changed is small only when the 
   assert.equal(isMergeableBothSidesLedger('data/audit/alert-ledger.json', yes), true);
 });
 
+test('BRO-8030: a small re-check that leaned on a ledger says so, and names it, in its reason', () => {
+  const branch = ['scripts/lib/foo.js', RETRO, COST];
+  const asked = [];
+  const yes = (f) => { asked.push(f); return true; };
+  const leaned = selectRecheckScope({ ancestor: true, intervening: [RETRO, RETRO, 'scripts/lib/bar.js'], changedFiles: branch, ledgerOk: yes });
+  assert.equal(leaned.mode, 'small');
+  assert.deepEqual(leaned.ledgers, [RETRO]);
+  assert.match(leaned.reason, /only mergeable ledger\(s\) changed on both sides \(data\/audit\/session-retro\.jsonl\)/);
+  assert.deepEqual(asked, [RETRO], 'a file main lists twice is read once');
+  // nothing shared at all: the old wording, and no ledger named
+  const clean = selectRecheckScope({ ancestor: true, intervening: ['scripts/lib/bar.js'], changedFiles: branch, ledgerOk: yes });
+  assert.equal(clean.mode, 'small');
+  assert.deepEqual(clean.ledgers, []);
+  assert.match(clean.reason, /^no file changed on both sides; /);
+  // a full re-check names the shared file, counted once, and never the exempt ledger
+  const full = selectRecheckScope({ ancestor: true, intervening: [RETRO, 'scripts/lib/foo.js', 'scripts/lib/foo.js'], changedFiles: branch, ledgerOk: yes });
+  assert.equal(full.mode, 'full');
+  assert.match(full.reason, /both changed 1 file\(s\) \(scripts\/lib\/foo\.js\)/);
+  assert.equal(full.ledgers, undefined);
+  // mixed answers: the ledger that did not read cleanly is the shared file, the clean one is not named
+  const mixed = selectRecheckScope({ ancestor: true, intervening: [RETRO, COST, COST], changedFiles: branch, ledgerOk: (f) => f === RETRO });
+  assert.equal(mixed.mode, 'full');
+  assert.match(mixed.reason, /both changed 1 file\(s\) \(data\/audit\/claude-session-cost\.jsonl\)/);
+  assert.equal(selectTrainRecheckScope({ members: trainMembers([RETRO, COST]), ledgerOk: (f) => f === RETRO }).mode, 'full');
+  // only exempted ledgers are listed, never an unshared one the branch also touched
+  const one = selectRecheckScope({ ancestor: true, intervening: [COST], changedFiles: branch, ledgerOk: () => true });
+  assert.deepEqual(one.ledgers, [COST]);
+  // a train reports every ledger its members leaned on
+  const train = selectTrainRecheckScope({ members: trainMembers([RETRO, COST]), ledgerOk: () => true });
+  assert.equal(train.mode, 'small', train.reason);
+  assert.deepEqual([...train.ledgers].sort(), [COST, RETRO].sort());
+  assert.match(train.reason, /apart from mergeable ledger\(s\) \(.*session-retro\.jsonl/);
+  const plain = selectTrainRecheckScope({ members: trainMembers([]), ledgerOk: () => true });
+  assert.equal(plain.mode, 'small', plain.reason);
+  assert.deepEqual(plain.ledgers, []);
+  assert.doesNotMatch(plain.reason, /apart from/);
+});
+
 test('BRO-8030: a merge train whose members all landed a session record row is small, and only with the merged-file check', () => {
   const yes = () => true;
   const small = selectTrainRecheckScope({ members: trainMembers([RETRO, COST]), ledgerOk: yes });

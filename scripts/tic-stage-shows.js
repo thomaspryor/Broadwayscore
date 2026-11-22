@@ -18,6 +18,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractPublishDate } = require('./lib/article-extractor');
 const tic = require('./lib/theatreinchicago');
 const stage = require('./lib/tic-stage');
+const { buildKnownWriters } = require('./lib/show-title-normalize');
 const { getCity } = require('./lib/tic-cities');
 const { undistinguishableSibling, sameWorkFromText } = require('./lib/work-identity');
 
@@ -56,6 +57,7 @@ async function main() {
   const manifest = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : { staged: {}, rejected: {} };
   const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
   const existing = shows.shows || shows;
+  const knownWriters = buildKnownWriters(existing);
   const today = new Date().toISOString().slice(0, 10);
 
   const files = fs.readdirSync(cacheDir).filter((f) => f.endsWith('.json')).sort((a, b) => parseInt(b) - parseInt(a));
@@ -76,7 +78,7 @@ async function main() {
       if (!df.ok) { manifest.rejected[id] = df.reason; continue; }
       const dates = await openingDateFor(page);
       if (!dates) { manifest.rejected[id] = 'no-publish-date'; continue; }
-      const entry = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city });
+      const entry = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city, knownWriters });
       if (city.since && entry.openingDate < city.since && entry.status !== 'open') { manifest.rejected[id] = 'before-since'; continue; }
       const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)], city);
       if (dupe) { manifest.rejected[id] = `duplicate:${dupe.id}`; continue; }

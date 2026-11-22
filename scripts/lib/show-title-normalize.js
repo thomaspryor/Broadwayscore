@@ -81,8 +81,40 @@ function buildKnownWriters(shows) {
   return out;
 }
 
-/** @returns {{title:string, name:string, oracle:string}|null} */
-function classifyPlaywrightByline(title, show, knownWriters) {
+/**
+ * @param {string} title
+ * @param {object} [show]
+ * @param {Set<string>} [knownWriters]
+ * @param {string} [sourceText] the source's own description of the show. A THIRD,
+ *   weaker oracle for a first-time playwright nobody in the corpus credits yet
+ *   (BRO-8054: TIC's "Calamity West" row). The name must appear in the source's
+ *   own words AND at least two words must remain, so "Killed by Grace Kelly"
+ *   (one word left) is never stripped on this oracle alone.
+ * @returns {{title:string, name:string, oracle:string}|null}
+ */
+// Last words that cannot end a real title: connectors and participles that need an object.
+const DANGLING_TAIL_RE = /\b(?:inspired|adapted|based|written|directed|staged|conceived|choreographed|hosted|presented|curated|narrated|performed|produced|celebrating|honou?ring|featuring|starring|songs|music|lyrics|words|tribute|and|with|of|the|a|an|in|for|to|from|on|at)\s*$/i;
+
+/**
+ * BRO-8054: does the source description name `key` as the WRITER? A name merely
+ * present is not enough: directors, actors and the subject of a biographical
+ * show ("Songs Inspired by Nina Simone") are named there too. Accept when the
+ * description credits the name as writer ("written by", "play by", ...), or when
+ * the title that remains already has a subtitle ("Engines and Instruments of
+ * Flight: A Fantasia in Three Acts"), which a title ending in "Inspired by X"
+ * does not. A director credit always rejects.
+ */
+function descriptionCreditsWriter(sourceText, rest, key) {
+  const text = ' ' + nameKey(sourceText) + ' ';
+  const k = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (!text.includes(' ' + key + ' ')) return false;
+  if (new RegExp('\\b(?:directed by|director|direction by|staged by|conceived by|choreographed by|devised by|curated by|performed by)\\s+(?:\\w+\\s+){0,2}' + k + '\\b|\\b' + k + '\\s+(?:directs|directed(?!\\s+by))\\b').test(text)) return false;
+  const writerCue = new RegExp('\\b(?:written by|play by|comedy by|drama by|musical by|penned by|playwright|new work by)\\s+(?:\\w+\\s+){0,2}' + k + '\\b').test(text);
+  const subtitled = /[:\u2013\u2014]\s*\S/.test(rest);
+  return writerCue || subtitled;
+}
+
+function classifyPlaywrightByline(title, show, knownWriters, sourceText, minRemainderWords = 1) {
   if (!title) return null;
   const m = PLAYWRIGHT_BYLINE_RE.exec(title);
   if (!m) return null;
@@ -92,10 +124,23 @@ function classifyPlaywrightByline(title, show, knownWriters) {
   // Revue/credit titles ("Music by Richard Rodgers", "Sondheim on Sondheim by
   // Stephen Sondheim"): the remainder is a bare credit word or already names the writer.
   if (CREDIT_WORD_RE.test(rest) || key.split(' ').some(t => t.length > 3 && nameKey(rest).split(' ').includes(t))) return null;
+  // BRO-8054: a remainder that ends on a connector or participle ("Songs Inspired",
+  // "A Night Celebrating") means the name is the SUBJECT of the title, not its
+  // playwright ("Songs Inspired by Bob Dylan"). Never strip those, whatever the oracle.
+  if (DANGLING_TAIL_RE.test(rest)) return null;
   const own = (show && Array.isArray(show.creativeTeam) ? show.creativeTeam : [])
     .some(c => c && c.name && WRITER_ROLE_RE.test(c.role || '') && nameKey(c.name) === key);
   if (own) return { title: rest, name: m[2], oracle: 'show-credits-writer' };
-  if (knownWriters && knownWriters.has(key)) return { title: rest, name: m[2], oracle: 'corpus-known-writer' };
+  // The corpus and description oracles are weaker than the show's own credit, so they never
+  // leave a one-word title ("Murdered by Agatha Christie" is not "Murdered").
+  // The corpus oracle's floor is the caller's: the report-only sweep keeps "Hamlet by William
+  // Shakespeare" -> "Hamlet" (a human reads that list), the automatic paths (write guard, TIC
+  // ingestion) pass 2 so "Murdered by Agatha Christie" is never cut to "Murdered".
+  const restWords = rest.split(/\s+/).length;
+  if (knownWriters && knownWriters.has(key) && restWords >= minRemainderWords) return { title: rest, name: m[2], oracle: 'corpus-known-writer' };
+  if (sourceText && restWords >= Math.max(2, minRemainderWords) && descriptionCreditsWriter(sourceText, rest, key)) {
+    return { title: rest, name: m[2], oracle: 'source-description' };
+  }
   return null;
 }
 
@@ -107,7 +152,8 @@ const {
 
 /**
  * @param {{id?:string, title:string, venue?:string}} show
- * @param {{venueVocabulary?: string[], knownWriters?: Set<string>}} [ctx]
+ * @param {{venueVocabulary?: string[], knownWriters?: Set<string>, sourceText?: string, minRemainderWords?: number}} [ctx]
+ *   minRemainderWords: fewest words a byline strip may leave (default 1; automatic writers pass 2)
  * @returns {{
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
@@ -165,7 +211,7 @@ function normalizeShowTitle(show, ctx = {}) {
   }
 
   // 1a''. BRO-8051: trailing playwright byline (oracle-gated, see above).
-  const byline = classifyPlaywrightByline(title, show, ctx.knownWriters);
+  const byline = classifyPlaywrightByline(title, show, ctx.knownWriters, ctx.sourceText, ctx.minRemainderWords || 1);
   if (byline) {
     steps.push({ kind: 'playwright-byline', from: title, to: byline.title, oracle: byline.oracle });
     title = byline.title;
@@ -187,8 +233,67 @@ function normalizeShowTitle(show, ctx = {}) {
   return { title, changed: title !== original, manualReview, steps };
 }
 
+/**
+ * Write a normalizeShowTitle() result onto the row, with the provenance a later
+ * scrape needs to spot a flip-flop, and the old title kept as a search alias
+ * (search matches `title` and `akaTitles` only). The one writer for the sweep
+ * (fix-show-titles.js), the ingestion builders and the write guard, so they
+ * cannot disagree about what "healed" looks like.
+ * @returns {{id:string, from:string, to:string, steps:string[], prev:object}}
+ */
+function applyNormalizedTitle(show, result, nowIso = new Date().toISOString()) {
+  const prev = {
+    title: show.title,
+    titleNormalizedFrom: show.titleNormalizedFrom,
+    titleNormalizedAt: show.titleNormalizedAt,
+    akaTitles: Array.isArray(show.akaTitles) ? show.akaTitles.slice() : show.akaTitles,
+  };
+  const oldTitle = show.title;
+  show.titleNormalizedFrom = oldTitle;
+  show.titleNormalizedAt = nowIso;
+  show.title = result.title;
+  const aka = Array.isArray(show.akaTitles) ? show.akaTitles : [];
+  if (oldTitle && !aka.some(t => String(t).trim().toLowerCase() === oldTitle.trim().toLowerCase())) {
+    show.akaTitles = [...aka, oldTitle];
+  }
+  return { id: show.id, from: oldTitle, to: result.title, steps: result.steps.map(st => st.kind + (st.oracle ? ':' + st.oracle : '')), prev };
+}
+
+/** Put back exactly what applyNormalizedTitle() overwrote. */
+function undoNormalizedTitle(show, healed) {
+  for (const [k, v] of Object.entries(healed.prev)) {
+    if (v === undefined) delete show[k]; else show[k] = v;
+  }
+}
+
+/**
+ * Heal the titles of the rows `only` selects (all rows when omitted), using the
+ * SAME normalizeShowTitle() validate-data.js asks, with the whole corpus as
+ * oracle. Shouted titles are never rewritten (BRO-3920): the row is left for a
+ * human. Oracles are built from the PRE-HEAL corpus so healing row A cannot
+ * change what row B is matched against.
+ * @param {object[]} shows
+ * @param {{only?: (show:object)=>boolean, nowIso?: string}} [opts]
+ * @returns {Array} one applyNormalizedTitle() record per row healed
+ */
+function healShowTitles(shows, opts = {}) {
+  const venueVocabulary = buildVenueVocabulary(shows);
+  const knownWriters = buildKnownWriters(shows);
+  const healed = [];
+  for (const show of shows) {
+    if (opts.only && !opts.only(show)) continue;
+    const result = normalizeShowTitle(show, { venueVocabulary, knownWriters, minRemainderWords: 2 });
+    if (!result.changed || result.manualReview) continue;
+    healed.push(applyNormalizedTitle(show, result, opts.nowIso));
+  }
+  return healed;
+}
+
 module.exports = {
   normalizeShowTitle,
+  applyNormalizedTitle,
+  undoNormalizedTitle,
+  healShowTitles,
   MAX_VENUE_STRIP_PASSES,
   GENRE_DISAMBIGUATOR_RE,
   LISTING_YEAR_SUFFIX_RE,

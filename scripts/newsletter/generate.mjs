@@ -3290,7 +3290,7 @@ for (const o of _editorialOverrides.filter(x => x.waiveFreshRunGate)) {
 // Facts for the subject writer: only what this email renders, as plain true
 // sentences. Includes every well-reviewed primary-market show closing in the
 // closing window, whatever week it opened (owner, 2026-11-08).
-function buildSubjectFacts({ receptionOf, receptionLine }) {
+function buildSubjectFacts({ receptionOf, receptionLine, closedFactLine, NOT_STILL_ON }) {
   const body = sectionOrder.join('');
   const inBody = (t) => !!t && (body.includes(t) || body.includes(t.replace(/&/g, '&amp;')));
   const DAY = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -3300,6 +3300,19 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
   // Score first, no tier label (owner, 2026-11-15): the writer echoed "(Recommended)"
   // into the opening paragraph ("is Recommended from 33 reviews"). The Critic
   // Score is the product; the label is a UI band and stays out of the facts.
+  // BRO-8053: the email is read from the end of its week (Sunday) on, so a run that ended
+  // before then is over by the time anyone reads it. Say so, or the writer tells readers a
+  // closed show's "final performance is Saturday" (Top Gunchained, 2026-11-16 West End).
+  const NOT_ON = NOT_STILL_ON;
+  const closingNote = (s) => {
+    const d = s.closingDate;
+    if (!d) return s.status === 'closed' ? ` It has already closed.${NOT_ON}` : '';
+    if (d > horizon7Str) return '';
+    if (d < weekEndStr) return ` It has already closed: its final performance was ${DAY(d)}.${NOT_ON}`;
+    // The email body treats a run ending on the send day as over (closingDate <= weekEndStr).
+    if (d === weekEndStr) return ` Its final performance is ${DAY(d)}, the day this email goes out. Do not mention when it closes.${NOT_ON}`;
+    return ` Final performance ${DAY(d)}.`;
+  };
   const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)}/100 from ${a.count} critics`;
   lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
   lines.push(IS_WE
@@ -3320,9 +3333,9 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
       lines.push(`Transfer, not a new opening: ${s.title} is a transferred production. Do not call it an opening, do not lead with it, and do not name its theatres. The email adds its own sentence about the transfer, so do not repeat its score.`);
       continue;
     }
-    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${s.closingDate && s.closingDate <= horizon7Str ? ` Final performance ${DAY(s.closingDate)}.` : ''}`);
+    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${closingNote(s)}`);
   }
-  const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate >= weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
+  const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate > weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
     .map(s => ({ s, a: aggregateScore(s.id) }))
     .filter(x => x.a && x.a.count >= minReviews(x.s.category) && x.a.avg >= 70 && inBody(x.s.title))
     .sort((x, y) => y.a.avg - x.a.avg).slice(0, 6);
@@ -3368,6 +3381,12 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
       // The box-office leader is named in the email too, so it is not "another show".
       if (b.showRef && b.showRef.id && inBody(b.showRef.title)) titles.set(b.showRef.id, { id: b.showRef.id, slug: b.showRef.slug, title: b.showRef.title });
     }
+  }
+  // Every show the sheet names whose run is over, whatever line named it
+  // (rave, pan, transfer, opening): the writer may praise it, never sell it.
+  for (const t of titles.values()) {
+    const s = shows.find(x => x.id === t.id);
+    if (s && (s.closingDate ? s.closingDate <= weekEndStr : s.status === 'closed')) lines.push(closedFactLine(t.title));
   }
   const knownTitles = shows.filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(120)))
     .map(s => s.title).filter(Boolean);

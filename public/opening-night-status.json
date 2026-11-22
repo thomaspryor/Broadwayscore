@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T16:36:18.249Z",
+  "generatedAt": "2026-11-22T17:32:02.721Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -546,9 +546,9 @@
       "status": "open",
       "slug": "cinderella-lyric-hammersmith-off-west-end",
       "thumbnail": "/images/shows/cinderella-lyric-hammersmith-off-west-end-2026/thumbnail.webp",
-      "siteScore": 67.39,
+      "siteScore": 66.92,
       "liveScore": 67,
-      "scoreDrift": -0.39000000000000057,
+      "scoreDrift": 0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -738,6 +738,18 @@
           "t": "2026-11-22T15:27:55.745Z",
           "rc": 6,
           "s": 67.39,
+          "t1": 1,
+          "t2": 2,
+          "t3": 3,
+          "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-22T16:59:48.433Z",
+          "rc": 6,
+          "s": 66.92,
           "t1": 1,
           "t2": 2,
           "t3": 3,
@@ -2916,27 +2928,26 @@
       "status": "open",
       "slug": "goblin-off-west-end",
       "thumbnail": "/images/shows/goblin-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.91,
-      "liveScore": 75,
-      "scoreDrift": 0.09000000000000341,
+      "siteScore": 76.56,
+      "liveScore": 77,
+      "scoreDrift": 0.4399999999999977,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
       "t2": 2,
-      "t3": 3,
-      "positive": 5,
+      "t3": 4,
+      "positive": 6,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
-          "T1:0/3",
-          "hi-conf:5/6"
+          "6/8 total",
+          "T1:0/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3081,6 +3092,18 @@
           "t2": 2,
           "t3": 3,
           "p": 5,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-22T17:18:36.301Z",
+          "rc": 6,
+          "s": 76.56,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 6,
           "m": 0,
           "n": 0,
           "bc": "waiting"

@@ -61,6 +61,7 @@ const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night
 const { newDuplicateFindings, newRowFragmentFindings, formatFinding } = require('./shows-duplicate-rule');
 const { typeForListedShow } = require('./announced-promotion');
 const { typeExempt } = require('./market-expansion-validator');
+const { healShowTitles, undoNormalizedTitle } = require('./show-title-normalize');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -117,6 +118,34 @@ function readOnDiskShows(filePath) {
 }
 
 /**
+ * Heal the stored titles of the rows THIS save adds or changes (BRO-8054).
+ *
+ * Why here: every shows.json writer ends in this guard, so a title artifact a
+ * feed hands one writer (a trailing " by <playwright>", a "(Venue)" tail) is
+ * repaired for all of them, with the same normalizeShowTitle() validate-data.js
+ * asks. Only added/changed rows are touched: a row this save did not change
+ * keeps its title until validate-data / fix-show-titles.js says so, so an
+ * unrelated cron can never silently re-title a show because the corpus oracle
+ * moved. A row whose creativeTeam gains its playwright in this save (the
+ * backfill-playwright-credits lane) counts as changed, so a byline the oracle
+ * could not prove at ingestion is stripped the moment it can.
+ *
+ * `onDiskRows` is a thunk (the rows being replaced). Returns the heal records;
+ * pass `{ dryRun: true }` to report without leaving the rows mutated.
+ */
+function healChangedTitles(shows, onDiskRows, { dryRun = false } = {}) {
+  if (process.env.SHOWS_TITLE_HEAL_DISABLED === 'true') return [];
+  // "Changed" means the inputs of the byline decision differ from disk (the row is new, or its
+  // title, venue or credited team moved), not that the guard's own earlier steps touched the row.
+  const key = (s) => JSON.stringify([s.title, s.venue, s.creativeTeam]);
+  const before = new Map();
+  for (const s of onDiskRows()) if (s && s.id) before.set(s.id, key(s));
+  const healed = healShowTitles(shows, { only: (show) => before.get(show.id) !== key(show) });
+  if (dryRun) for (const h of healed.slice().reverse()) undoNormalizedTitle(shows.find((x) => x.id === h.id), h);
+  return healed;
+}
+
+/**
  * Build a loadShows/saveShows pair bound to a specific shows.json path.
  * The default export below is this, bound to the real data/shows.json —
  * tests use this factory directly to point at a throwaway fixture file
@@ -168,19 +197,36 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // A person's openingDate correction outlives every writer (BRO-4911).
       const restored = restoreHumanCorrectedOpeningDates(finalData.shows);
       if (restored.length) console.log(`::warning::shows-write-guard: kept human-corrected openingDate for ${restored.map((r) => `${r.id} (${r.from} -> ${r.to})`).join(', ')}`);
+      // Rows this save adds or changes get their title artifacts repaired
+      // (BRO-8054). After the type fill (a "(musical)" tail is the type hint
+      // fillListedShowTypes reads, BRO-6268) and before the duplicate check
+      // (a heal can make two rows share a title; see the undo below).
+      let onDisk;
+      const readBefore = () => (onDisk === undefined ? (onDisk = readOnDiskShows(guard.filePath)) : onDisk);
+      const healed = healChangedTitles(finalData.shows, readBefore);
+      if (healed.length) console.log(`shows-write-guard: healed title on ${healed.length} show(s): ${healed.map((h) => `${h.id} ("${h.from}" -> "${h.to}" [${h.steps.join(' + ')}])`).join('; ')}`);
       // A row the prebuild duplicate gate would fail on never reaches disk
       // (BRO-6578: one census stub blocked every Vercel build for 3h). Only
       // pairs this save creates are refused; the lock is held, so the file
       // read here is the state being replaced.
       // Kill switch for a misfire: SHOWS_DUP_GUARD_DISABLED=true (the prebuild gate still runs).
       if (!allowDuplicates && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
-        let onDisk;
-        const readBefore = () => (onDisk === undefined ? (onDisk = readOnDiskShows(guard.filePath)) : onDisk);
-        const added = [
+        const findDuplicates = () => [
           ...newDuplicateFindings(readBefore, finalData.shows),
           // BRO-7080: title-fragment stubs the key rule never pairs.
           ...newRowFragmentFindings(readBefore, finalData.shows),
         ];
+        let added = findDuplicates();
+        const involved = new Set(added.flatMap((f) => [f.show && f.show.id, f.existing && f.existing.id]));
+        const toUndo = healed.filter((h) => involved.has(h.id));
+        if (toUndo.length) {
+          // The heal may have created the pair. Keep the unhealed titles (only those rows) and let
+          // validate-data / fix-show-titles.js flag them: an unrelated cron's save must not fail
+          // because of a title repair it did not ask for.
+          for (const h of toUndo.slice().reverse()) undoNormalizedTitle(finalData.shows.find((x) => x.id === h.id), h);
+          console.log(`::warning::shows-write-guard: undid ${toUndo.length} title heal(s) because they created a duplicate row; titles left as written`);
+          added = findDuplicates();
+        }
         if (added.length) {
           throw new Error(`shows-write-guard: refusing to write ${added.length} new duplicate show row(s); the prebuild gate would fail the build:\n${added.map((f) => `  - ${formatFinding(f)}`).join('\n')}\nUse the existing row instead of adding one; for a genuinely distinct production list the other id in the row's distinctFrom.`);
         }
@@ -209,6 +255,11 @@ function createShowsWriteGuard(showsPath, options = {}) {
     }
     const showCount = data && Array.isArray(data.shows) ? data.shows.length : null;
     const entry = { reason: reason || null, showCount, at: new Date().toISOString() };
+    // Same heal as the real save, reported but not applied (BRO-8054).
+    if (data && Array.isArray(data.shows)) {
+      const healedTitles = healChangedTitles(data.shows, () => readOnDiskShows(guard.filePath), { dryRun: true });
+      if (healedTitles.length) entry.titleHeals = healedTitles.map((h) => ({ id: h.id, from: h.from, to: h.to, steps: h.steps }));
+    }
     if (!allowDup && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
       let onDisk;
       const readBefore = () => (onDisk === undefined ? (onDisk = readOnDiskShows(guard.filePath)) : onDisk);
@@ -253,5 +304,6 @@ module.exports = {
   mergeShows,
   stripStaleUpcomingTags,
   fillListedShowTypes,
+  healChangedTitles,
   LOCK_DIR: defaultGuard.lockDir,
 };

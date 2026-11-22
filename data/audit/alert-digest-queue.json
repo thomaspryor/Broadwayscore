@@ -262,20 +262,6 @@
     "queuedAt": "2026-11-22T14:08:24.469Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-22T14:53:12.386Z"
-  },
-  {
     "conditionKey": "land:land/job-linear-BRO-8017-mwrt6zzn",
     "title": "Landing blocked: unit-tests-node red on land/job-linear-BRO-8017-mwrt6zzn",
     "description": "land.yml did not land land/job-linear-BRO-8017-mwrt6zzn: the unit-tests-node gate went red at 6e69379609. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45031274736",
@@ -369,9 +355,9 @@
     "queuedAt": "2026-11-22T16:11:45.976Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-22.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -380,7 +366,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-22T16:37:11.112Z"
+    "queuedAt": "2026-11-22T16:45:51.640Z"
   },
   {
     "conditionKey": "land-preexisting:scripts/lib/opening-date-required.test.mjs::real corpus: no offender outside the frozen baseline [testCodeFailure]",
@@ -408,5 +394,81 @@
       }
     ],
     "queuedAt": "2026-11-22T16:37:49.211Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
+    "title": "Live-data test failing: audit-aggregator-archive-integrity.js: baseline holds no stale entries (tests/unit/audit-stale-baseline-detection.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"audit-aggregator-archive-integrity.js: baseline holds no stale entries\" in tests/unit/audit-stale-baseline-detection.test.mjs is red against the live corpus.\n\naudit-aggregator-archive-integrity.js --check-stale exited 1; prune with: node scripts/audit-aggregator-archive-integrity.js --prune-stale\n- bww-reviews/the-oresteia-off-west-end-2026\n- bww-reviews/the-play-that-goes-wrong-2017\n- bww-reviews/the-rat-trap-off-west-end-2026\n- bww-reviews/the-story-west-end-2026\n- bww-reviews/the-threepenny-opera-2006\n- bww-reviews/the-water-engine-1978\n- bww-reviews/titanique-2026\n- bww-reviews/tru-off-west-end-2026\n- bww-reviews/twelfth-night-2013\n- bww-reviews/vivat-vivat-regina-1972\n- bww-reviews/woman-in-mind-west-end-2025\n- bww-roundups/an-enemy-of-the-people-west-end-2024\n- bww-roundups/illinoise-off-broadway-2024\n… and 43 more\nA stale entry would silently re-excuse the same regression later. Prune: node scripts/audit-aggregator-archive-integrity.js --prune-stale (or --update-baseline when the scan has no new bad archives)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
+    "fields": [],
+    "queuedAt": "2026-11-22T16:48:54.075Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
+    "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nnew same-show/same-outlet critic-name near-duplicate(s) found — this is the Markoski/Markosky double-count shape (BRO-4156). Either merge the duplicate files (keep the richer/real-URL record, dedupe criticName to the outlet's own byline spelling), or if this is a genuine two-different-critics collision, add it to KNOWN_BACKLOG/allow-list with a note why.\n+ actual - expected\n\n+ [\n+   [\n+     'a-raisin-in-the-sun-2014',\n+     'ny1',\n+     'Roma Tore',\n+     'Roma Torre'\n+   ]\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
+    "fields": [],
+    "queuedAt": "2026-11-22T16:48:54.276Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Linda Winer',\n+     outletId: 'newsday',\n+     showId: 'a-raisin-in-the-sun-2014'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "fields": [],
+    "queuedAt": "2026-11-22T16:48:54.716Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8054-title-byline-sticks",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8054-title-byline-sticks",
+    "description": "land.yml did not land land/bro-8054-title-byline-sticks: the unit-tests-node gate went red at cce45670d5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45045314059",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8054-title-byline-sticks"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cce45670d53eb741e67b8b03dd7486ce64685796"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45045314059"
+      }
+    ],
+    "queuedAt": "2026-11-22T17:01:44.885Z"
   }
 ]

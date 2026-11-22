@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { normalizeShowTitle, buildVenueVocabulary } = require('./show-title-normalize.js');
+const { normalizeShowTitle, buildVenueVocabulary, applyNormalizedTitle, undoNormalizedTitle, healShowTitles } = require('./show-title-normalize.js');
 
 test('applies the venue strip alone', () => {
   const r = normalizeShowTitle({
@@ -166,5 +166,93 @@ test('BRO-8051: credit-style titles keep their credit word / writer name', () =>
   for (const title of ['Words and Music by Cole Porter', 'Music by Cole Porter', 'Written by Cole Porter',
     'Sondheim on Sondheim by Stephen Sondheim']) {
     assert.equal(normalizeShowTitle({ id: 'z', title }, { knownWriters: kw }).title, title, title);
+  }
+});
+
+// BRO-8054: the source description is a third oracle, so a first-time playwright
+// (no creative credit yet, not in the corpus) is still recognised.
+const BYLINE = 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West';
+const BYLINE_CLEAN = 'Engines and Instruments of Flight: A Fantasia in Three Acts';
+
+test('BRO-8054: source description naming the writer is an oracle', () => {
+  const r = normalizeShowTitle({ id: 'engines-2026', title: BYLINE }, { sourceText: 'A new play by Calamity West, directed by Ann Lee.' });
+  assert.equal(r.title, BYLINE_CLEAN);
+  assert.ok(r.steps.some((st) => st.oracle === 'source-description'));
+});
+
+test('BRO-8054: no oracle, no strip (description that does not name the writer)', () => {
+  const r = normalizeShowTitle({ id: 'engines-2026', title: BYLINE }, { sourceText: 'A play about flight, directed by Ann Lee.' });
+  assert.equal(r.title, BYLINE);
+  assert.equal(r.changed, false);
+});
+
+test('BRO-8054: a real "by" title is not stripped just because the description repeats it', () => {
+  const r = normalizeShowTitle({ id: 'killed-2026', title: 'Killed by Grace Kelly' }, { sourceText: 'Killed by Grace Kelly is a new comedy.' });
+  assert.equal(r.title, 'Killed by Grace Kelly');
+});
+
+test('BRO-8054: the strip never leaves a one-word title', () => {
+  const r = normalizeShowTitle({ id: 'tender-2026', title: 'Tender by Jane Roe' }, { sourceText: 'Tender by Jane Roe' });
+  assert.equal(r.title, 'Tender by Jane Roe');
+});
+
+test('BRO-8054: apply records provenance + alias, undo restores every field', () => {
+  const show = { id: 'a', title: BYLINE, akaTitles: ['Other'] };
+  const result = normalizeShowTitle(show, { sourceText: 'by Calamity West' });
+  const healed = applyNormalizedTitle(show, result, '2026-11-22T00:00:00.000Z');
+  assert.equal(show.title, BYLINE_CLEAN);
+  assert.equal(show.titleNormalizedFrom, BYLINE);
+  assert.equal(show.titleNormalizedAt, '2026-11-22T00:00:00.000Z');
+  assert.deepEqual(show.akaTitles, ['Other', BYLINE]);
+  undoNormalizedTitle(show, healed);
+  assert.deepEqual(show, { id: 'a', title: BYLINE, akaTitles: ['Other'] });
+});
+
+test('BRO-8054: healShowTitles honours `only`, and skips shouted titles', () => {
+  const writer = [{ name: 'Calamity West', role: 'Playwright' }];
+  const rows = [
+    { id: 'a', title: BYLINE, creativeTeam: writer },
+    { id: 'b', title: BYLINE, creativeTeam: writer },
+    { id: 'c', title: 'AMERICA, WHO HURT YOU?' },
+  ];
+  const healed = healShowTitles(rows, { only: (s) => s.id !== 'b' });
+  assert.deepEqual(healed.map((h) => h.id), ['a']);
+  assert.equal(rows[1].title, BYLINE);
+  assert.equal(rows[2].title, 'AMERICA, WHO HURT YOU?');
+});
+
+test('BRO-8054: a name in the description is not enough, the writer must be credited as writer', () => {
+  // Subject of a biographical show: no subtitle left, no writer cue.
+  const a = normalizeShowTitle({ id: 'songs-2026', title: 'Songs Inspired by Nina Simone' }, { sourceText: 'An evening of music celebrating Nina Simone and her era.' });
+  assert.equal(a.title, 'Songs Inspired by Nina Simone');
+  // Director credit never counts, even with a subtitle left over.
+  const b = normalizeShowTitle({ id: 'ham-2026', title: 'Hamlet: A New Version by Ivo van Hove' }, { sourceText: 'Directed by Ivo van Hove, this Hamlet runs 3 hours.' });
+  assert.equal(b.title, 'Hamlet: A New Version by Ivo van Hove');
+  // Explicit writer cue works without a subtitle.
+  const c = normalizeShowTitle({ id: 'eng-2026', title: 'Winter Light Years by Jane Roe' }, { sourceText: 'A new play written by Jane Roe.' });
+  assert.equal(c.title, 'Winter Light Years');
+});
+
+// BRO-8054 ship-check: the corpus oracle is weaker than a show's own credit, and the automatic
+// writers (write guard, TIC) must never turn a tribute title into a fragment.
+test('BRO-8054: a known writer that is the SUBJECT of the title is never stripped', () => {
+  const kw = new Set(['bob dylan', 'carole king', 'nina simone', 'agatha christie']);
+  for (const t of ['Songs Inspired by Bob Dylan', 'A Night Inspired by Carole King', 'Portrait: Songs Inspired by Nina Simone', 'An Evening Celebrating Nina Simone by Nina Simone']) {
+    assert.equal(normalizeShowTitle({ id: 'x', title: t }, { knownWriters: kw, minRemainderWords: 2 }).title, t, t);
+  }
+  // even the report-only sweep (floor 1) keeps the dangling-tail rule
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Songs Inspired by Bob Dylan' }, { knownWriters: kw }).title, 'Songs Inspired by Bob Dylan');
+});
+
+test('BRO-8054: automatic writers never leave a one-word title (floor 2); the sweep keeps its floor 1', () => {
+  const kw = new Set(['agatha christie', 'william shakespeare']);
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Murdered by Agatha Christie' }, { knownWriters: kw, minRemainderWords: 2 }).title, 'Murdered by Agatha Christie');
+  assert.equal(normalizeShowTitle({ id: 'x', title: 'Hamlet by William Shakespeare' }, { knownWriters: kw }).title, 'Hamlet');
+});
+
+test('BRO-8054: staged/conceived/choreographed credits in the description are not writer credits', () => {
+  const t = 'Winter Light: A New Dance Piece by Jane Roe';
+  for (const d of ['Staged by Jane Roe.', 'Conceived by Jane Roe and company.', 'Choreographed by Jane Roe.']) {
+    assert.equal(normalizeShowTitle({ id: 'x', title: t }, { sourceText: d }).title, t, d);
   }
 });
