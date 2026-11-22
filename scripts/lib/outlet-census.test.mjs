@@ -394,6 +394,24 @@ test('BRO-7812: blindOutlets flags big outlets whose listing cannot be read, and
   assert.deepEqual(census.blindOutlets(undefined), []);
 });
 
+test('BRO-7816: the blind table never prints a stale reason: a readable source over an old report says refresh, the config reason wins', () => {
+  const rep = (outletId, notes) => ({ outletId, source: { kind: 'unreadable', notes }, corpusSide: { rowsInWindow: 254 } });
+  const sources = { washpost: { kind: 'sitemap', proxyRetry: true }, observer: { kind: 'unreadable', reason: 'only a two-day news sitemap; no archive sitemap' } };
+  const [obs, wp] = census.blindOutlets([rep('washpost', ['unreadable: no WordPress API; sitemap enumeration not yet configured']), rep('observer', ['unreadable: old reason'])], { sources })
+    .sort((a, b) => a.outletId.localeCompare(b.outletId));
+  assert.equal(wp.stale, true);
+  assert.match(wp.why, /^stale report: the source is now sitemap .*--outlet=washpost$/);
+  assert.doesNotMatch(wp.why, /not yet configured/);
+  assert.equal(obs.why, 'only a two-day news sitemap; no archive sitemap');
+  // Real committed reports against the live config: no blind row may carry a generic or placeholder reason.
+  const fs = require('node:fs');
+  const dir = new URL('../../data/audit/outlet-census/', import.meta.url);
+  const reports = fs.readdirSync(dir).filter((n) => n.endsWith('.report.json')).map((f) => JSON.parse(fs.readFileSync(new URL(f, dir), 'utf8')));
+  for (const b of census.blindOutlets(reports, { sources: SOURCES })) {
+    assert.ok(b.why.length > 25 && !/not yet configured|no listing can be read/i.test(b.why), `${b.outletId}: "${b.why}"`);
+  }
+});
+
 test('BRO-7820: writeJsonUnlessOnlyStampChanged skips timestamp-only rewrites and writes real changes', () => {
   const fs = require('node:fs');
   const os = require('node:os');

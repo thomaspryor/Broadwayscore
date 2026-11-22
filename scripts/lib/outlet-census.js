@@ -871,7 +871,13 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
  * is how Slant's Call Me Izzy review stayed missing (BRO-7812). Advisory: the --summary prints these.
  * reports: parsed *.report.json objects. Returns [{ outletId, kind, rows, why }], biggest corpus first.
  */
-function blindOutlets(reports, { minRows = 100 } = {}) {
+/**
+ * PURE. Outlets with minRows+ corpus rows whose committed report could not list them. `sources` (the live
+ * SOURCES config) keeps the reason current (BRO-7816): a config reason beats the one frozen in an old report,
+ * and a report that predates a readable source says it is stale and how to refresh it, never the old reason
+ * (washpost printed "not yet configured" for weeks after its sitemap source landed).
+ */
+function blindOutlets(reports, { minRows = 100, sources = null } = {}) {
   const out = [];
   for (const r of reports || []) {
     const src = r.source || {};
@@ -881,7 +887,13 @@ function blindOutlets(reports, { minRows = 100 } = {}) {
     const searchOnly = src.kind === 'serp';
     if (!unreadable && !searchOnly) continue;
     // The probed reason the config carries (BRO-7816): a blind outlet says why, so the next session knows what to try.
-    const reason = String(src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
+    const cfg = sources && sources[r.outletId];
+    if (cfg && unreadable && !['unreadable', 'serp'].includes(cfg.kind)) {
+      out.push({ outletId: r.outletId, kind: src.kind, rows, stale: true,
+        why: `stale report: the source is now ${cfg.kind}${cfg.proxyRetry ? ' (proxyRetry, needs a proxy key)' : ''}; refresh with node scripts/outlet-census.js --outlet=${r.outletId}` });
+      continue;
+    }
+    const reason = String((cfg && cfg.kind === 'unreadable' && cfg.reason) || src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
     out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? (reason || 'no listing can be read') : 'search results only (~10 per query), cannot list an archive' });
   }
   return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
