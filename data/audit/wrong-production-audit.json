@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T01:19:01.476Z",
+  "timestamp": "2026-11-22T01:34:41.987Z",
   "stats": {
-    "totalReviews": 83818,
+    "totalReviews": 83820,
     "alreadyFlagged": 22426,
     "dateGuardCatches": 238,
     "directorMismatch": 3868,
     "tvFilmSignals": 2405,
-    "londonSignals": 3949,
+    "londonSignals": 3950,
     "offBroadwaySignals": 782,
     "yearMismatch": 394,
-    "noPublishDate": 8235
+    "noPublishDate": 8234
   },
   "findings": [
     {
@@ -136485,6 +136485,20 @@
       "score": 79,
       "publishDate": "2017-12-12",
       "url": "https://www.newsday.com/entertainment/theater/the-children-review-1.15429247",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-2017",
+      "file": "nytimes--jesse-green.json",
+      "score": 66,
+      "publishDate": "2017-12-12",
+      "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html?mtrref=www.google.com&gwh=00561AC54618A2B3449A9F4462DE3207&gwt=pay",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
