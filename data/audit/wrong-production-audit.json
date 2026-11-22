@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T12:57:33.929Z",
+  "timestamp": "2026-11-22T13:11:56.959Z",
   "stats": {
     "totalReviews": 83883,
-    "alreadyFlagged": 22452,
+    "alreadyFlagged": 22455,
     "dateGuardCatches": 241,
     "directorMismatch": 3879,
     "tvFilmSignals": 2411,
     "londonSignals": 3963,
     "offBroadwaySignals": 785,
     "yearMismatch": 395,
-    "noPublishDate": 8221
+    "noPublishDate": 8219
   },
   "findings": [
     {
@@ -2762,7 +2762,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2025-03-11",
       "url": "https://nystagereview.com/2025/03/11/a-streetcar-named-desire-a-healthy-shot-of-southern-discomfort/",
       "findings": [
@@ -2776,6 +2776,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "timeout--adam-feldman.json",
+      "score": 60,
       "publishDate": "2025-03-17",
       "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
       "findings": [
@@ -2789,7 +2790,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
-      "score": null,
+      "score": 93,
       "publishDate": "2025-03-11",
       "url": "https://www.vulture.com/article/theater-review-streetcar-named-desire-williams-frecknall-mescal-ferran.html",
       "findings": [
@@ -25995,7 +25996,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "thestage--dave-fargnoli.json",
-      "score": null,
+      "score": 59,
       "publishDate": "2024-09-27",
       "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt",
       "findings": [
@@ -34951,7 +34952,7 @@
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 78,
       "publishDate": "2018-04-15",
-      "url": "https://www.britishtheatre.com/hi/posts/review-instructions-for-correct-assembly-royal-court-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-instructions-for-correct-assembly-royal-court-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39373,6 +39374,7 @@
     {
       "showId": "kenrex-sheffield-regional-2024",
       "file": "thestage--holly-williams.json",
+      "score": 78,
       "publishDate": "2024-11-01",
       "url": "https://www.thestage.co.uk/reviews/kenrex-review-tanya-moiseiwitsch-playhouse-sheffield-jack-holden-ed-stambollouian-ken-rex-mcelroy",
       "findings": [
@@ -44114,6 +44116,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "standard--nick-curtis.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
       "findings": [
@@ -44127,6 +44130,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "thestage--holly-omahony.json",
+      "score": 79,
       "publishDate": "2025-05-12",
       "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer",
       "findings": [
@@ -47600,7 +47604,7 @@
     {
       "showId": "mrs-warrens-profession-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2025-05-27",
       "url": "https://playsinternational.org.uk/mrs-warrens-profession-garrick-theatre/",
       "findings": [
@@ -71074,6 +71078,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "independent--tim-bano.json",
+      "score": 57,
       "publishDate": "2024-06-26",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-constituent-review-james-corden-anna-maxwell-martin-b2569068.html",
       "findings": [
@@ -71429,13 +71434,13 @@
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 81,
-      "publishDate": "November 26th, 2024",
+      "publishDate": "2024-11-26",
       "url": "https://culturesauce.com/2024/11/26/the-dead-1904-joyce-off-broadway-review-irish-rep/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
@@ -71443,13 +71448,13 @@
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "nysr--elysa-gardner.json",
       "score": 79,
-      "publishDate": "November 26th, 2024",
+      "publishDate": "2024-11-26",
       "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
@@ -71457,13 +71462,13 @@
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "nysr--steven-suskin.json",
       "score": 59,
-      "publishDate": "November 26th, 2024",
+      "publishDate": "2024-11-26",
       "url": "https://nystagereview.com/2024/11/26/the-dead-1904-james-joyce-and-the-living-2024/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
@@ -75288,6 +75293,7 @@
     {
       "showId": "the-invention-of-love-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 77,
       "publishDate": "2024-12-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-invention-of-love-review",
       "findings": [
@@ -87404,6 +87410,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "thestage--chris-bartlett.json",
+      "score": 94,
       "publishDate": "2024-09-24",
       "url": "https://www.thestage.co.uk/reviews/war-horse-review-the-lowry-salford-tom-sturgess-michael-morpurgo-nick-stafford-katie-henry",
       "findings": [
@@ -93150,7 +93157,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-03-11",
       "url": "https://culturesauce.com/2025/03/11/paul-mescal-streetcar-named-desire-off-broadway-review/",
       "findings": [
@@ -93164,6 +93171,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "ew--dalton-ross.json",
+      "score": 85,
       "publishDate": "2025-03-11",
       "url": "https://ew.com/a-streetcar-named-desire-review-paul-mescal-far-from-common-11693721",
       "findings": [
@@ -93177,6 +93185,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "latimes--charles-mcnulty.json",
+      "score": 95,
       "publishDate": "2025-03-12",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
       "findings": [
@@ -93190,6 +93199,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "nytg--joe-dziemianowicz.json",
+      "score": 90,
       "publishDate": "2025-03-11",
       "url": "https://www.newyorktheatreguide.com/reviews/a-streetcar-named-desire-off-broadway-review-paul-mescal",
       "findings": [
@@ -93203,6 +93213,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "slantmagazine--dan-rubins.json",
+      "score": 72,
       "publishDate": "2025-03-11",
       "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
       "findings": [
@@ -93216,6 +93227,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "theatermania--zachary-stewart.json",
+      "score": 92,
       "publishDate": null,
       "url": "http://www.theatermania.com/off-broadway/reviews/a-streetcar-named-desire_76914.html",
       "findings": [
@@ -95719,6 +95731,7 @@
     {
       "showId": "anna-west-end-2019",
       "file": "britishtheatrecom--sophie-adnitt.json",
+      "score": 89,
       "publishDate": "2019-05-23",
       "url": "https://www.britishtheatre.com/posts/review-anna-national-theatre-london",
       "findings": [
@@ -96336,7 +96349,7 @@
       "file": "britishtheatrecom--susan-novak.json",
       "score": 78,
       "publishDate": "2026-04-18",
-      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "url": "https://www.britishtheatre.com/posts/avenue-q-review-the-puppets-are-onto-something",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -113408,7 +113421,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 65,
       "publishDate": "2015-05-14",
-      "url": "https://www.britishtheatre.com/nl/posts/review-high-society-old-vic-theatre-3stars",
+      "url": "https://www.britishtheatre.com/posts/review-high-society-old-vic-theatre-3stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -141754,6 +141767,7 @@
     {
       "showId": "the-little-foxes-off-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 76,
       "publishDate": "2024-12-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-little-foxes-review",
       "findings": [
@@ -145146,6 +145160,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 78,
       "publishDate": "2025-03-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
       "findings": [
