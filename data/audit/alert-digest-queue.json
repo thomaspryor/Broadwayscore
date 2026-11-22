@@ -1831,5 +1831,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T03:29:22.466Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+    "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)\" in scripts/lib/autoclear-vs-ensemble.test.mjs is red against the live corpus.\n\n1 wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n+ actual - expected\n\n+ [\n+   'mexodus-off-broadway-2026/nyt-theater--jonathan-mandell.json (rebuild: priorRuns/tourLegs covers publishDate (was: Pre-opening guard: review dated 2025-10-05 is 90+ days before show starts 2026-03-06))'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+    "fields": [],
+    "queuedAt": "2026-11-22T03:42:42.175Z"
   }
 ]
