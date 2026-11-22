@@ -12,6 +12,8 @@ const router = require('./owner-alert-router.js');
 const linear = require('./linear-client.js');
 
 const H = 3600_000;
+// The runner returns early without a key; set it for every test, not only the first.
+process.env.LINEAR_API_KEY = process.env.LINEAR_API_KEY || 'test-key';
 const calls = [];
 let ledger = { conditions: {} };
 let issue = null;
@@ -36,7 +38,6 @@ function setup({ ageH, state }) {
 }
 
 test('an In Review card red 1.5h is read and put back in Todo with START-NOW (was skipped until 6h)', async () => {
-  process.env.LINEAR_API_KEY = process.env.LINEAR_API_KEY || 'test-key';
   setup({ ageH: 1.5, state: { id: 's-rev', name: 'In Review', type: 'started' } });
   await escalateLongRedConditions([KEY]);
   const update = calls.find((c) => c[0] === 'update');
@@ -50,6 +51,12 @@ test('an unstarted card red 1.5h is read but left for the red-first pass (6h win
   setup({ ageH: 1.5, state: { id: 's-todo', name: 'Todo', type: 'unstarted' } });
   await escalateLongRedConditions([KEY]);
   assert.deepEqual(calls.map((c) => c[0]), ['read']);
+});
+
+test('Data Validation (48h threshold): a parked card is not escalated at 1h', async () => {
+  setup({ ageH: 25, state: { id: 's-b', name: 'Backlog', type: 'backlog' } });
+  await escalateLongRedConditions([KEY], { thresholdHours: 48 });
+  assert.deepEqual(calls, []);
 });
 
 test('a 20-minute incident costs no Linear read', async () => {

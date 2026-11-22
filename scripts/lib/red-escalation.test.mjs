@@ -177,6 +177,10 @@ test('a red signature whose card is parked (In Review / Paused / Backlog) escala
   assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }), card: card({ state: { id: 's-p', name: 'Paused', type: 'backlog' } }) }).escalate, true);
   // A started card a worker touched within ACTIVE_WORK_HOURS is still being worked.
   assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }), card: card({ state: inReview, updatedAt: iso(NOW - 2 * H) }) }).reason, 'being-worked');
+  // A card a worker paused moments ago keeps the full window.
+  assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }), card: card({ state: { id: 's-p', name: 'Paused', type: 'backlog' } }), historyReason: 'recently-paused' }).reason, 'too-young');
+  // Data Validation's 48h escalation is not shortened (its cards are filed parked).
+  assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 25 * H) }), card: card({ state: { id: 's-b', name: 'Backlog', type: 'backlog' } }), thresholdHours: 48 }).reason, 'too-young');
   // An unstarted card keeps the full window: the Mac red-first pass has it.
   assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }) }).reason, 'too-young');
   // The update puts it back where the cloud worker can take it.

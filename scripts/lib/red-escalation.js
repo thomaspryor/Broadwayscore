@@ -61,7 +61,11 @@ function decideRedEscalation({ condition, card, nowMs, env = process.env, thresh
   const openedMs = Date.parse(condition.incidentOpenedAt || condition.firstSeen || '');
   if (!Number.isFinite(openedMs) || !Number.isFinite(nowMs)) return { escalate: false, reason: 'no-incident-start', ageHours: null };
   const ageHours = Math.max(0, (nowMs - openedMs) / HOUR_MS);
-  const parked = !!(card && card.state && PARKED_STATE_TYPES.has(card.state.type));
+  // Only for the short (main-red) escalations: Data Validation runs this with
+  // 48h, and its cards are FILED parked, so the 1h rule would fire on filing.
+  // A card a worker paused moments ago (recently-paused) keeps the full window.
+  const parked = !!(card && card.state && PARKED_STATE_TYPES.has(card.state.type))
+    && thresholdHours <= ESCALATION_HOURS && historyReason !== 'recently-paused';
   const effectiveHours = parked ? Math.min(thresholdHours, PARKED_CARD_ESCALATION_HOURS) : thresholdHours;
   if (ageHours < effectiveHours) return { escalate: false, reason: 'too-young', ageHours };
   const lastMs = Date.parse(condition.escalatedAt || '');

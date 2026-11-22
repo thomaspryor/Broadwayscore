@@ -27,12 +27,16 @@
 const CAUSES = ['data-drift', 'stale-test', 'landing-collision', 'flake', 'infra'];
 const RED_CAUSE_BLOCKING_FROM = '2026-11-24';
 // Close comments written by machines that close a card on a passing check.
-// Matched against THIS close's comment only: a card the closer once touched
-// and a person later closes by hand is still held to the tag.
+// Matched against THIS close's comment only, and anchored at its start (each
+// writer opens its comment with the marker; red-cause-tag.test.mjs builds the
+// real comments): a card the closer once touched and a person later closes by
+// hand is still held to the tag, and pasting a marker mid-comment does not exempt.
 const AUTOMATED_CLOSER_MARKERS = [
-  /AUTO-CLOSED by stuck-card-closer/, // lib/stuck-card-closer.js CLOSER_MARKER
-  /Auto-closed by the nightly acceptance re-check/, // lib/autonomous-recheck-core.js buildAutoCloseComment
-  /Closed by sweep-recovered-alert-cards/, // lib/board-closer.js landedComment
+  /^AUTO-CLOSED by stuck-card-closer/, // lib/stuck-card-closer.js CLOSER_MARKER
+  /^Auto-closed by the nightly acceptance re-check/, // lib/autonomous-recheck-core.js buildAutoCloseComment
+  /^Closed by sweep-recovered-alert-cards/, // lib/board-closer.js landedComment
+  /^Auto-reset by bsc-reconcile's Linear zombie sweep/, // lib/linear-started-zombie-sweep-verify.js buildZombieActionComment
+  /^## Codex runner: (?:landed|already fixed on main, no code change)\n/, // codex/daily-runner.js Done closes
 ];
 // The titles route-main-streak-signatures.js and red-escalation.js file.
 const RED_TITLE_RE = /^(?:\[[^\]]*\]\s*)?main test\.yml (?:still )?red\b/i;
@@ -64,7 +68,7 @@ function parseCauseTag(texts) {
 
 /** PURE. Was this close comment written by an automated closer? */
 function isAutomatedClose(commentText) {
-  const t = String(commentText || '');
+  const t = String(commentText || '').trimStart();
   return AUTOMATED_CLOSER_MARKERS.some((re) => re.test(t));
 }
 

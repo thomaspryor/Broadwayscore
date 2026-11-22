@@ -220,6 +220,12 @@ test('safe-form: the acceptance command is admitted; vacuous windows/thresholds,
   no('node scripts/ci-green-rate.js --min 80 --days 7');
   no('node scripts/ci-green-rate.js --days 7 --min 80; rm -rf /');
   no('node scripts/ci-green-rate.js --days 7 --min 80 && echo pwned');
+  // BRO-7102 recheck form: an integer episode cap 1-24.
+  ok('node scripts/ci-green-rate.js --days 14 --min 80 --max-episode-hours 6');
+  ok('node scripts/ci-green-rate.js --days 14 --max-episode-hours 24 --json');
+  no('node scripts/ci-green-rate.js --days 14 --max-episode-hours 0');
+  no('node scripts/ci-green-rate.js --days 14 --max-episode-hours 999');
+  no('node scripts/ci-green-rate.js --days 14 --max-episode-hours 6; echo x');
 });
 
 test('CLI main(): exit 0 on PASS, 1 on FAIL, 2 on gh failure — never PASS when the fetch fails; --record appends exactly one ledger row', () => {

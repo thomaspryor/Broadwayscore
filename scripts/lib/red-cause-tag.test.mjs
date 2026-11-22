@@ -58,10 +58,18 @@ test('done gate: from the arm date an untagged red close is REFUSED; a tag, advi
   const { buildAutoCloseComment } = require('./autonomous-recheck-core.js');
   const { landedComment } = require('./board-closer.js');
   const closer = require('./stuck-card-closer.js');
+  const { buildZombieActionComment } = require('./linear-started-zombie-sweep-verify.js');
+  const cand = { identifier: 'BRO-1', verifyCmd: 'node --test x.test.mjs', cmd: 'node --test x.test.mjs', title: 't' };
   const autoComments = [
     buildAutoCloseComment({ cmd: 'node --test x.test.mjs', sha: 'abc' }),
     landedComment('land/x', 'abc'),
-    `${closer.CLOSER_MARKER || 'AUTO-CLOSED by stuck-card-closer'}. ${ev}`,
+    `${closer.buildClosureComment({ candidate: cand, sha: 'abc', auditGeneratedAt: '2026-11-18' })}\n${ev}`,
+    `${closer.buildSweepClosureComment()}\n${ev}`,
+    `${closer.buildBacklogClosureComment({ candidate: cand, sha: 'abc', sweepGeneratedAt: 'x', checkoutSha: 'y' })}\n${ev}`,
+    `${buildZombieActionComment({ action: 'done', identifier: 'BRO-1', jobId: 'j', cmd: 'node --test x.test.mjs', sha: 'abc' })}\n${ev}`,
+    // codex/daily-runner.js's two Done closes (literal prefixes there).
+    `## Codex runner: landed\n\n${ev}`,
+    `## Codex runner: already fixed on main, no code change\n\n${ev}`,
   ];
   for (const c of autoComments) {
     const r = checkLinearDoneTransition({ ...base, commentText: c });
@@ -70,6 +78,17 @@ test('done gate: from the arm date an untagged red close is REFUSED; a tag, advi
   // The exemption reads THIS close only: an old closer comment does not exempt a later hand close.
   const later = checkLinearDoneTransition({ ...base, existingComments: autoComments, commentText: ev });
   assert.equal(later.verdict, 'red-cause-missing');
+  // A marker pasted mid-comment does not exempt; the Codex "refused" bounce is not a close.
+  assert.equal(checkLinearDoneTransition({ ...base, commentText: `${ev}\nAUTO-CLOSED by stuck-card-closer` }).verdict, 'red-cause-missing');
+  assert.equal(rct.isAutomatedClose('## Codex runner: landed, but the Done gate refused\n\nx'), false);
+});
+
+test('drift guard: every automated Done-closer that can reach a red card opens with a known marker', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../codex/daily-runner.js', import.meta.url), 'utf8');
+  const doneCloses = [...src.matchAll(/moveCard\(id, 'Done', `([^`$]*)/g)].map((m) => m[1].replace(/\\n/g, '\n'));
+  assert.ok(doneCloses.length >= 2, 'daily-runner.js Done closes not found: update this guard');
+  for (const prefix of doneCloses) assert.ok(rct.isAutomatedClose(`${prefix}x`), `Codex Done close not exempt: ${prefix}`);
 });
 
 test('a freshly filed red card does not satisfy its own close check (the closing hint is not a tag)', () => {

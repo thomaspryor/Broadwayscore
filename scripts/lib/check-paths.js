@@ -418,7 +418,9 @@ const SAFE_CHECK_FORMS = [
   // error, and an empty window is a FAIL, so the exit code is a real
   // pass/fail signal, never vacuous (contrast the bare `gh run list` shape
   // refused above).
-  { re: /^node scripts\/ci-green-rate\.js(?: --days (?:[7-9]|[1-9]\d|[1-3]\d\d))?(?: --min (?:100|[5-9]\d))?(?: --json)?$/ },
+  // BRO-7102: --max-episode-hours 1-24 (integer) also FAILs on any red
+  // episode longer than that, the card's "no red episode over 6h" recheck.
+  { re: /^node scripts\/ci-green-rate\.js(?: --days (?:[7-9]|[1-9]\d|[1-3]\d\d))?(?: --min (?:100|[5-9]\d))?(?: --max-episode-hours (?:[1-9]|1\d|2[0-4]))?(?: --json)?$/ },
   // BRO-5456: "delete branch X" cards. check-remote-branch-absent.js runs one
   // read-only `git ls-remote --heads origin refs/heads/<branch>` (execFileSync
   // argv, no shell) and exits 0 only when the branch is gone, so it fails

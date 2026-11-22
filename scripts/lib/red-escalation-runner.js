@@ -40,9 +40,10 @@ async function escalateLongRedConditions(conditionKeys, opts = {}) {
     try {
       // Cheap ledger-only checks first, so a young incident costs no Linear call.
       // The stand-in card is a PARKED one (the shortest threshold,
-      // PARKED_CARD_ESCALATION_HOURS): an unstarted stand-in skipped every
-      // incident under 6h before the real card's state was ever read, so an
-      // In Review card that went red again waited the full 6h (BRO-7102).
+      // PARKED_CARD_ESCALATION_HOURS, which applies only when thresholdHours
+      // <= ESCALATION_HOURS): an unstarted stand-in skipped every incident
+      // under 6h before the real card's state was ever read, so an In Review
+      // card that went red again waited the full 6h (BRO-7102).
       const pre = decideRedEscalation({ condition, card: { state: { type: 'backlog' } }, nowMs, thresholdHours });
       if (!pre.escalate) continue;
       const data = await linear.graphql(`query($id: String!) { issue(id: $id) {
