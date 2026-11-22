@@ -210,6 +210,9 @@ jobs:
       gate: ${{ steps.verdict.outputs.gate }}
       new_failures: ${{ steps.delta.outputs.new_failures }}
       pre_existing: ${{ steps.delta.outputs.pre_existing }}
+      # BRO-7950: the FINAL delta's tests red on both branch and base (confirm
+      # re-judges when it ran). Consumed only by the alert steps below.
+      pre_existing_tests: ${{ steps.confirm.outputs.pre_existing_tests || steps.delta.outputs.pre_existing_tests }}
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
       hook_seed: ${{ steps.hookseed.outputs.seed }}
       receipt: ${{ steps.receipt.outputs.receipt }}
@@ -1583,6 +1586,21 @@ jobs:
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             --detail-file /tmp/land.log
 
+      - name: Alert — tests red on main too (pre-existing, not blocking)
+        # BRO-7950: one digest row per test, deduped by the router. Never
+        # changes a verdict: continue-on-error, input via env, never interpolated into the script; an empty list is a no-op inside the script (no != in if:, workflow-anchored-jobs-fail-closed).
+        continue-on-error: true
+        timeout-minutes: 2
+        if: always() && needs.checks.outputs.pre_existing_tests && steps.admit.outcome == 'success'
+        env:
+          LAND_PRE_EXISTING_TESTS: ${{ needs.checks.outputs.pre_existing_tests }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          node scripts/land-alert.js --branch "$BRANCH" --preexisting \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
       - name: Commit alert-router ledger changes
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         if: always() && steps.admit.outcome == 'success'
@@ -1692,6 +1710,21 @@ jobs:
             --sha "${{ needs.checks.outputs.tip }}" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "- owner digest: land:$BRANCH (${{ needs.checks.outputs.gate || 'checks' }} red) — ref left in place, nothing pushed" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Alert — tests red on main too (pre-existing, not blocking)
+        # BRO-7950: one digest row per test, deduped by the router. Never
+        # changes a verdict: continue-on-error, input via env, never interpolated into the script; an empty list is a no-op inside the script (no != in if:, workflow-anchored-jobs-fail-closed).
+        continue-on-error: true
+        timeout-minutes: 2
+        if: always()
+        env:
+          LAND_PRE_EXISTING_TESTS: ${{ needs.checks.outputs.pre_existing_tests }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          node scripts/land-alert.js --branch "$BRANCH" --preexisting \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Commit alert-router ledger changes
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)

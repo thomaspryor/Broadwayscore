@@ -495,6 +495,29 @@ function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) 
   });
 }
 
+/**
+ * BRO-7950: the tests that fail on BOTH the branch and origin/main, flattened
+ * across gates and deduped by file::name, for a second consumer (an
+ * alert-router digest row) beyond the step-summary table. Pure; never changes
+ * a verdict. Capped so a mass red cannot flood the digest.
+ */
+function preExistingAlertRows(decisions, { limit = 20 } = {}) {
+  const seen = new Set();
+  const rows = [];
+  for (const d of decisions || []) {
+    for (const f of (d && d.preExisting) || []) {
+      const file = String((f && f.file) || '');
+      const name = String((f && f.name) || '');
+      const key = `${file}::${name}`;
+      if (seen.has(key) || (!file && !name)) continue;
+      seen.add(key);
+      rows.push({ gate: d.gate, file, name });
+      if (rows.length >= limit) return rows;
+    }
+  }
+  return rows;
+}
+
 function firstFailingGate(decisions) {
   const d = (decisions || []).find((x) => x && x.verdict !== 'pass');
   return d ? d.gate : '';
@@ -694,6 +717,13 @@ function main(argv = process.argv.slice(2)) {
   if (args['github-output'] && args['github-output'] !== true) {
     const totals = decisions.reduce((t, d) => ({ n: t.n + d.newFailures.length, p: t.p + d.preExisting.length, f: t.f + d.fixed.length }), { n: 0, p: 0, f: 0 });
     fs.appendFileSync(String(args['github-output']), `gate=${gate}\nnew_failures=${totals.n}\npre_existing=${totals.p}\nfixed=${totals.f}\n`);
+    // BRO-7950: the alert list is a second consumer and must never change the exit code
+    // or fail this verdict step; a failure to build or write it only drops the alert.
+    try {
+      fs.appendFileSync(String(args['github-output']), `pre_existing_tests=${JSON.stringify(preExistingAlertRows(decisions))}\n`);
+    } catch (e) {
+      console.log(`::warning::land-gate-delta: pre-existing alert list not written (${e && e.message})`);
+    }
   }
   return gate ? 1 : 0;
 }
@@ -721,6 +751,7 @@ module.exports = {
   decideAllGates,
   redGates,
   firstFailingGate,
+  preExistingAlertRows,
   readGateResult,
   readMeta,
   formatSummary,
