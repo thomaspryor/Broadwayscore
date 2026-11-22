@@ -1738,7 +1738,7 @@ async function auditShow(show, opts = {}) {
             if (hit) out.push(hit);
           }
           const outlet = normalizeOutletId(d.outletId || d.outlet || '');
-          for (const p of getSyndicationPrimaries(d.criticName, outlet)) out.push({ outletId: p, criticName: d.criticName });
+          for (const p of getSyndicationPrimaries(d.criticName, outlet, { show })) out.push({ outletId: p, criticName: d.criticName });
           return out;
         });
         result.flaggedMisses.push({
