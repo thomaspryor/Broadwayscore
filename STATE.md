@@ -1,5 +1,17 @@
-# BRO-8008 state
-DONE: content tie (tiedToStrandedByContent) in scripts/lib/ack-landed-stranded-tie.js + core decideAck (card named + job window); temp origin/main worktree for verify when MAIN lags (scripts/ack-landed.js); tests (65+8 pass locally); ship-check run (Claude + Codex), fixes applied. Pushed to origin/land/job/linear-BRO-8008-mwqp6yxo (head abb6d25003); Land run 44938380894 was still running at minute 108.
-REMAINING: (1) confirm landing: `git fetch origin main && git branch -r --contains abb6d25003` must list origin/main (or `scripts/lib/wait-for-run.sh <land run id>`). A first Land run failed on tests/unit/ack-landed-stranded-tip.test.mjs shapes; fixed in abb6d25003.
-(2) After on main, in main checkout: node scripts/ack-landed.js --id BRO-7997 --sha 9d0ad78a501 --job-id linear:BRO-7997-mwqm0ow7 --verify 'node --test scripts/lib/gap-strategy-table.test.mjs' --reason '<>=...chars: BRO-7997 work rebased onto main as 500ee4ef54b+9d0ad78a501, files identical to stranded tip f78497b5eb9>'
-(3) node scripts/linear-session.js report --issue=BRO-8008 --status=done ... with --verification 'node --test scripts/lib/ack-landed-core.test.mjs'.
+# BRO-8065 state (headless job, 2026-11-22 16:31 EST)
+
+## Done
+- Code: classifier rules, bot-wall unwrap, drain verdict histogram, shard fix, review fixes. Committed on job/linear-BRO-8065-mws9qg5d with a ship-check receipt.
+- Tests: `node --test tests/unit/pending-triage.test.mjs` passes 93/93.
+- 2025-26: dry run 98% settled/junk/duplicate; fetch promoted 0. Pushed to broadway-review-texts.
+- 2015-24: 170 promoted (37 + 25 + 61 + 47), 824 tagged junk. Pushed to broadway-review-texts main (e7c46487779, 2cf2670e645). Every shard hit its 30-minute budget, so a remainder is left.
+- Spend since 2026-11-22T20:38:26Z: 887 paid calls, about $1.02.
+
+## In flight
+- Land attempt 3: log /tmp/bro8065-land3.log. Attempt 2 was refused by the venue-write audit (a false positive, fixed with a venue-write-guard-ok comment).
+
+## Remaining
+1. If land 3 is refused, read its log, fix, and rerun `bash scripts/merge-worktree-to-main.sh`.
+2. On up-to-date main: `node --test tests/unit/pending-triage.test.mjs`.
+3. Finish the 2015-24 remainder. Use the data worktree /private/tmp/brt-8065 (pull first), with `REVIEW_TEXTS_DIR=/private/tmp/brt-8065`, and run this for i in 1..4: `node --env-file=.env scripts/replay-pending-bylines.js --all-pending --era=2015-24 --shard=$i/4 --time-budget-min=30`.
+4. Pre-2015: triage first (`--triage-only`), then a sharded fetch.
