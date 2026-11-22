@@ -231,20 +231,6 @@
     "queuedAt": "2026-11-22T13:43:11.100Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-22.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-22T14:14:13.726Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-8017-mwrt6zzn",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8017-mwrt6zzn",
     "description": "land.yml did not land land/job/linear-BRO-8017-mwrt6zzn: the unit-tests-node gate went red at 6e69379609. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45029542069",
@@ -381,6 +367,20 @@
       }
     ],
     "queuedAt": "2026-11-22T16:11:45.976Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-22.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T16:37:11.112Z"
   },
   {
     "conditionKey": "land-preexisting:scripts/lib/opening-date-required.test.mjs::real corpus: no offender outside the frozen baseline [testCodeFailure]",
