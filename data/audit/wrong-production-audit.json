@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T19:24:58.569Z",
+  "timestamp": "2026-11-22T20:00:21.513Z",
   "stats": {
-    "totalReviews": 83977,
-    "alreadyFlagged": 22466,
+    "totalReviews": 83976,
+    "alreadyFlagged": 22467,
     "dateGuardCatches": 240,
     "directorMismatch": 3877,
     "tvFilmSignals": 2412,
-    "londonSignals": 3965,
+    "londonSignals": 3966,
     "offBroadwaySignals": 785,
     "yearMismatch": 394,
-    "noPublishDate": 8254
+    "noPublishDate": 8253
   },
   "findings": [
     {
@@ -21804,6 +21804,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 78,
       "publishDate": "2026-11-22",
       "url": "https://playsinternational.org.uk/eurotrash-young-vic/",
       "findings": [
@@ -21811,6 +21812,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -106254,7 +106260,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 83,
+      "score": 85,
       "publishDate": "2026-11-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/eurotrash-young-vic-review",
       "findings": [
@@ -106268,7 +106274,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-11-20",
       "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
       "findings": [
