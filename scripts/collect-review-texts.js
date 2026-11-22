@@ -598,20 +598,15 @@ const CONFIG = {
 // Outlets marked 'print-only' or 'defunct' have no online content — skip SERP discovery.
 // Single source of truth: outlet-registry.json (shared with collect-outlet-reviews.js).
 const UNCOLLECTABLE_OUTLETS = (() => {
-  const set = new Set();
+  // BRO-7901: shared with uncollected-strand.js so the audit and this collector cannot disagree.
   try {
-    const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
-    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-    for (const [id, info] of Object.entries(registry.outlets || {})) {
-      if (info.accessModel === 'print-only' || info.accessModel === 'defunct') {
-        set.add(id);
-      }
-    }
+    const set = require('./lib/uncollectable-outlets').loadUncollectableOutlets();
     console.log(`Loaded ${set.size} uncollectable outlets from registry (print-only + defunct)`);
+    return set;
   } catch (e) {
     console.warn('Warning: Could not load outlet-registry.json for uncollectable outlets:', e.message);
+    return new Set();
   }
-  return set;
 })();
 
 // Registry for the 1C dedupe's own-domain check (BRO-5254). Read once, lazily;

@@ -2,6 +2,7 @@
 
 const { datesFromDiscoveredReviews } = require('./opening-signal');
 const { toDateMs } = require('./date-utils');
+const { isUncollectableOutlet } = require('./uncollectable-outlets');
 
 /**
  * Date-independent detection of review URLs we discovered and then never fetched.
@@ -288,7 +289,8 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
-    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
+    // BRO-7901: print-only/defunct outlets are skipped by the collector by design; never fetched is the correct end state.
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings) || isUncollectableOutlet(review)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     // An undatable strand still counts — a missing timestamp must not buy a
     // file an exemption, which is the same "null field silences the check"
@@ -348,7 +350,8 @@ function findAgedStubs(files, { nowMs, maxAgeHours = AGED_STUB_MAX_AGE_HOURS } =
   for (const { file, review } of files || []) {
     if (!isNeverAttempted(review)) continue;
     if (Array.isArray(review.fetchAttempts) && review.fetchAttempts.length > 0) continue;
-    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
+    // BRO-7901: print-only/defunct outlets are skipped by the collector by design; never fetched is the correct end state.
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings) || isUncollectableOutlet(review)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     if (ageHours === null || ageHours >= maxAgeHours) {
       out.push({ file, url: review.url, outlet: review.outlet || null, ageHours });
