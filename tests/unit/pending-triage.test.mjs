@@ -446,3 +446,32 @@ test('BRO-8065: the flip-flop breaker never keeps (or pins) a bot-wall url over 
   assert.equal(out2.url, REAL);
   assert.notEqual(out2.urlVerified, true);
 });
+
+describe('BRO-8065: short titles and same-title sibling venues (2015-24 queue)', () => {
+  const NOID = { title: 'No I.D.', previewsStartDate: '2023-04-18', openingDate: '2023-04-19', closingDate: '2023-05-06', venue: 'Royal Court' };
+  test('"No I.D.": a url that never spells it out is junk; one that does stays a candidate; "N/A" is not judged', () => {
+    const v = T.triagePendingStub({ url: 'https://www.dailymail.com/news/article-16194341/Cornell-rape-Jonathan-Newell-fraternity-sober-monitor-party.html' }, { showId: 'no-i-d-west-end-2023', show: NOID });
+    assert.equal(v.verdict, 'junk');
+    assert.equal(T.triagePendingStub({ url: 'https://www.thestage.co.uk/reviews/no-i-d-review-royal-court-london' }, { showId: 'no-i-d-west-end-2023', show: NOID }).verdict, 'candidate');
+    assert.equal(T.triagePendingStub({ url: 'https://www.theguardian.com/stage/2023/apr/20/noid-review-royal-court' }, { showId: 'no-i-d-west-end-2023', show: NOID }).verdict, 'candidate');
+    assert.equal(T.triagePendingStub({ url: 'http://www.lightingandsoundamerica.com/news/story.asp?ID=SFSTE5' }, { showId: 'n-a-off-broadway-2024', show: { title: 'N/A', openingDate: '2024-06-10' } }).verdict, 'candidate');
+  });
+  const TN = { title: 'Twelfth Night', previewsStartDate: '2017-02-15', openingDate: '2017-02-22', closingDate: '2017-05-13', venue: 'Olivier Theatre' };
+  const SIBS = [{ id: 'twelfth-night-off-west-end-2014', venue: 'Young Vic' }, { id: 'twelfth-night-regional-2016', venue: 'Royal Exchange Theatre, Manchester' }];
+  test('a slug placing the review at another same-title entry\'s venue is that entry\'s review', () => {
+    const v = T.triagePendingStub({ url: 'https://www.thetimes.com/culture/theatre-dance/article/theatre-review-twelfth-night-at-the-young-vic-se1-88w8873pc' }, { showId: 'twelfth-night-west-end-2017', show: TN, sameTitleShows: SIBS });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /twelfth-night-off-west-end-2014/);
+  });
+  test('own venue, an undeclared pre-transfer venue, a playwright-named venue or a venue word in the title never settle', () => {
+    const own = 'https://www.thetimes.com/culture/theatre-dance/article/twelfth-night-review-at-the-olivier-theatre-x1';
+    assert.equal(T.triagePendingStub({ url: own }, { showId: 'twelfth-night-west-end-2017', show: TN, sameTitleShows: SIBS }).verdict, 'candidate');
+    // Death of a Salesman 2019 (Piccadilly) transferred from the Young Vic; no Young Vic entry exists, so no sibling.
+    const dos = { title: 'Death of a Salesman', openingDate: '2019-10-31', venue: 'Piccadilly Theatre' };
+    assert.equal(T.triagePendingStub({ url: 'https://www.thetimes.com/culture/theatre-dance/article/review-death-of-a-salesman-at-the-young-vic-se1-r9d8xhgnw' }, { showId: 'death-of-a-salesman-west-end-2019', show: dos, sameTitleShows: [{ id: 'death-of-a-salesman-1949', venue: 'Morosco Theatre' }] }).verdict, 'candidate');
+    const betrayal = { title: 'Betrayal', openingDate: '2019-09-05', venue: 'Bernard B. Jacobs Theatre' };
+    assert.equal(T.triagePendingStub({ url: 'https://observer.com/2019/09/tom-hiddleston-betrayal-broadway-debut-review-harold-pinter/' }, { showId: 'betrayal-2019', show: betrayal, sameTitleShows: [{ id: 'betrayal-west-end-2019', venue: 'Harold Pinter Theatre' }] }).verdict, 'candidate');
+    const crucible = { title: 'The Crucible', openingDate: '2016-03-31', venue: 'Walter Kerr Theatre' };
+    assert.equal(T.triagePendingStub({ url: 'http://www.hollywoodreporter.com/review/saoirse-ronan-crucible-theater-review-879646' }, { showId: 'the-crucible-2016', show: crucible, sameTitleShows: [{ id: 'the-crucible-crucible-regional-2024', venue: 'Crucible Theatre, Sheffield' }] }).verdict, 'candidate');
+  });
+});

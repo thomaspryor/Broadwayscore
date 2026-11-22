@@ -147,6 +147,20 @@ const VERDICTS = new Map();
 const verdictBucket = (reason) => String(reason || '').replace(/\s*\((?:BRO-\d+[^)]*|stub date, no fetch)\)/g, '')
   .replace(/"[^"]*"/g, '"…"').replace(/\b[a-z0-9]+(?:-[a-z0-9]+)*-\d{4}\b/g, '<show>').replace(/[a-z0-9-]+--[a-z0-9-]+\.json/g, '<file>')
   .replace(/\d{4}-\d{2}(?:-\d{2})?/g, '<date>').replace(/\d+/g, 'N').slice(0, 80);
+// BRO-8065: other shows.json entries with this show's title (for the sibling-venue triage rule), memoized per show list.
+const _titleIndexMemo = new WeakMap();
+function sameTitleShowsOf(show, deps = {}) {
+  if (!show || !show.title) return [];
+  const all = deps.allShows || (deps.root ? [] : loadAllShows());
+  if (!_titleIndexMemo.has(all)) {
+    const idx = new Map();
+    const key = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    for (const s of all) { const k = key(s.title); if (!k) continue; if (!idx.has(k)) idx.set(k, []); idx.get(k).push({ id: s.id, venue: s.venue }); }
+    _titleIndexMemo.set(all, { idx, key });
+  }
+  const { idx, key } = _titleIndexMemo.get(all);
+  return (idx.get(key(show.title)) || []).filter((o) => o.id !== show.id);
+}
 function verdictCount(key) { VERDICTS.set(key, (VERDICTS.get(key) || 0) + 1); }
 // A skip decided from the url text alone; re-opened when the url turns out to have been a bot-wall page (BRO-8065).
 const URL_ONLY_SKIP_RE = /url-token-mismatch|no-significant-title-tokens|url has no identity|non-review host/;
@@ -691,7 +705,7 @@ async function processShow(showId, deps = {}) {
 
     // BRO-8023: the no-fetch triage. A url another show already scores, a non-review section/listing, or a
     // stub date outside the production window is settled here (tagged, KEPT), never fetched.
-    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
+    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, sameTitleShows: sameTitleShowsOf(show, deps), showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
     if (tri.verdict === 'junk') {
       console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
       verdictCount(`junk: ${verdictBucket(tri.reason)}`);
