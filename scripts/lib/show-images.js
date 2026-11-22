@@ -82,7 +82,9 @@ function imageOnDisk(imgPath, opts = {}) {
  * 2026-10-08 293 such fields were live as broken images (BRO-2242).
  *
  * @param {string|null|undefined} imgPath
- * @param {{publicDir?: string}} [opts]
+ * @param {{publicDir?: string, exists?: (publicPath: string) => boolean}} [opts]
+ *   `exists` replaces the disk check (BRO-8056 heal-shows: the show-refresh
+ *   publisher answers from the build's image set instead of a checkout).
  * @returns {boolean}
  */
 function isPhantomImagePath(imgPath, opts = {}) {
@@ -91,6 +93,7 @@ function isPhantomImagePath(imgPath, opts = {}) {
   // in the build) is not ours to judge. Query/hash never reach the filesystem.
   const local = imgPath.trim().split(/[?#]/)[0];
   if (!local.startsWith('/images/shows/') || local.includes('..')) return false;
+  if (opts.exists) return !opts.exists(local);
   return !fs.existsSync(path.join(opts.publicDir || PUBLIC_DIR, local));
 }
 

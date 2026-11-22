@@ -12,10 +12,8 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
-const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { mayServeDiskImage } = require('./lib/image-source-match');
-const { isPhantomImagePath } = require('./lib/show-images');
+const { healShows } = require('./lib/heal-shows');
 
 const USAGE = `pre-deploy-check.js — Pre-deploy data integrity check that runs before every Vercel build.
 
@@ -64,42 +62,28 @@ try {
   if (!Array.isArray(shows)) throw new Error('shows.json is not an array');
   showCount = shows.length;
 
-  const today = new Date().toISOString().slice(0, 10);
-  let statusIssues = 0;
-  let statusDateHealed = 0;
-
-  // BRO-4099: a show marked "closed" whose closing date hasn't passed (the
-  // exact bug that caused Spelling Bee to disappear) used to hard-fail(),
-  // which aborts EVERY deploy over one bad row — slam-frank-off-broadway-2026
-  // sat closed with a stale future closingDate for 12+ hours on 2026-09-23
-  // and blocked opening-night reviews for The Last Ship and Cosi fan tutte
-  // from ever reaching prod. Self-heal like the other per-show fixers below
-  // (orphan images, venue/category, synopsis): the writer is now fixed
-  // upstream (update-show-status.js no longer creates this contradiction),
-  // so this is a backstop for whatever writer slips one through next. The
-  // true closing date is unknown once we're here — same trade-off
-  // update-show-status.js's own stale-open auto-close already makes — so
-  // clear it rather than guess a date. Respect humanCorrectedClosingDate:
-  // a human-locked future date on a closed show is a genuine data conflict
-  // that needs a human, but still shouldn't block every OTHER show's deploy.
-  for (const show of shows) {
-    if (show.status === 'closed' && show.closingDate && show.closingDate > today) {
-      if (canWriteClosingDate(show)) {
-        const staleDate = show.closingDate;
-        writeClosingDate(show, null, `pre-deploy-check self-heal: cleared stale future closingDate on closed show (was ${staleDate})`, { todayStr: today });
-        console.log(`   Self-healed "${show.title}" (${show.id}): cleared future closingDate ${staleDate} on closed show`);
-        statusDateHealed++;
-      } else {
-        console.log(`⚠️  "${show.title}" (${show.id}) is marked closed but closingDate ${show.closingDate} is in the future (humanCorrectedClosingDate=true — needs manual review, not auto-healing; deploy proceeds)`);
-        statusIssues++;
-      }
-    }
+  // BRO-8056: the self-heals live in lib/heal-shows.js (pure: no fs, no clock)
+  // so the show-refresh publisher heals a show exactly like this build does.
+  const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+  const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+  let imageSources = {};
+  try { imageSources = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'image-sources.json'), 'utf8')); } catch {}
+  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+  const reviewsByShow = {};
+  for (const r of (reviewsData.reviews || reviewsData || [])) {
+    reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
   }
-
-  if (statusIssues === 0 && statusDateHealed === 0) {
-    ok(`Show status/date integrity: ${showCount} shows checked, no contradictions`);
-  } else if (statusDateHealed > 0) {
-    ok(`Auto-healed ${statusDateHealed} show(s) with a status=closed/future-closingDate contradiction`);
+  const heal = healShows(showsData, {
+    today: new Date().toISOString().slice(0, 10),
+    // A checkout without the image tree must not read as "every file missing".
+    imagesPresent: fs.existsSync(IMAGES_DIR),
+    imageExists: (p) => fs.existsSync(path.join(PUBLIC_DIR, p)),
+    imageSources,
+    reviewCountByShow: reviewsByShow,
+  });
+  shows = showsData.shows;
+  for (const m of heal.messages) {
+    if (m.level === 'ok') ok(m.text); else console.log(m.text);
   }
 
   // Absolute floor (catastrophic data loss)
@@ -119,136 +103,8 @@ try {
     ok(`Show count: ${showCount} (no watermark yet)`);
   }
 
-  // Orphan image auto-fix: shows with null image references but local files on disk.
-  // This catches data/file mismatches from the dedup logic or private repo staleness.
-  // Also upgrades .jpg → .webp when a .webp file exists on disk (legacy backfill cleanup).
-  const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
-  let imageSources = {};
-  try { imageSources = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'image-sources.json'), 'utf8')); } catch {}
-  let orphansFixed = 0;
-  let jpgUpgraded = 0;
-  let danglingRefsFixed = 0;
-  // A checkout without the image tree must not read as "every file missing".
-  const imagesPresent = fs.existsSync(IMAGES_DIR);
-  for (const show of shows) {
-    if (!show || !show.id) continue;
-    const dir = path.join(IMAGES_DIR, show.id);
-    // A local path with no file behind it renders a broken image (high-society-
-    // west-end-2026's hero.webp, 2026-10-08). Clear it so the fill below can
-    // use a file that does exist, or the page falls back to the poster.
-    let danglingFixed = false;
-    for (const key of ['hero', 'poster', 'thumbnail']) {
-      const val = show.images && show.images[key];
-      if (imagesPresent && isPhantomImagePath(val)) {
-        show.images[key] = null;
-        danglingFixed = true;
-      }
-    }
-    if (danglingFixed) danglingRefsFixed++;
-    // Check for image files in any format (webp preferred, then jpg, png)
-    // A file whose recorded source a person rejected stays off the site.
-    const findImage = (name) => {
-      if (!mayServeDiskImage(show, imageSources[show.id]?.[name])) return null;
-      for (const ext of ['webp', 'jpg', 'png']) {
-        if (fs.existsSync(path.join(dir, `${name}.${ext}`))) return `${name}.${ext}`;
-      }
-      return null;
-    };
-    const heroFile = findImage('hero');
-    const posterFile = findImage('poster');
-    const thumbFile = findImage('thumbnail');
-    if (!heroFile && !posterFile && !thumbFile) continue;
-
-    if (!show.images) show.images = {};
-    let fixed = false;
-
-    // Fix null refs → file on disk
-    if (!show.images.hero && heroFile) { show.images.hero = `/images/shows/${show.id}/${heroFile}`; fixed = true; }
-    if (!show.images.poster && posterFile) { show.images.poster = `/images/shows/${show.id}/${posterFile}`; fixed = true; }
-    if (!show.images.thumbnail && thumbFile) { show.images.thumbnail = `/images/shows/${show.id}/${thumbFile}`; fixed = true; }
-
-    // Upgrade .jpg → .webp when .webp exists on disk
-    for (const key of ['hero', 'poster', 'thumbnail']) {
-      const val = show.images[key];
-      if (val && typeof val === 'string' && val.endsWith('.jpg') && val.startsWith('/images/')) {
-        const webpExists = fs.existsSync(path.join(dir, `${key}.webp`));
-        if (webpExists) {
-          show.images[key] = val.replace(/\.jpg$/, '.webp');
-          jpgUpgraded++;
-          fixed = true;
-        }
-      }
-    }
-
-    if (fixed) orphansFixed++;
-  }
-  if (danglingRefsFixed > 0) ok(`Cleared image paths with no file behind them on ${danglingRefsFixed} shows`);
-  if (orphansFixed > 0 || jpgUpgraded > 0) {
-    if (orphansFixed > 0) ok(`Auto-fixed ${orphansFixed} shows with orphan/outdated image refs`);
-    if (jpgUpgraded > 0) ok(`Upgraded ${jpgUpgraded} image paths from .jpg → .webp`);
-  }
-
-  // Venue-vs-category auto-fix: WE venues miscategorised as off-west-end (and vice versa).
-  // CI rebuilds can revert manual category fixes, so this self-heals on every deploy.
-  const { isWestEndVenue, isOffWestEndVenue, isLondonMarket } = require('./lib/venue-classification');
-  let categoryFixed = 0;
-  for (const show of shows) {
-    if (!show.venue || show.venue === 'TBA' || !isLondonMarket(show.category)) continue;
-    if (show.category === 'off-west-end' && isWestEndVenue(show.venue)) {
-      show.category = 'west-end';
-      categoryFixed++;
-    } else if (show.category === 'west-end' && isOffWestEndVenue(show.venue)) {
-      show.category = 'off-west-end';
-      categoryFixed++;
-    }
-  }
-  if (categoryFixed > 0) ok(`Auto-fixed ${categoryFixed} venue/category mismatches`);
-
-  // Auto-dedup: remove duplicate rows of the SAME London production (same
-  // title+category+venue, no conflicting year, not linked via priorRuns).
-  // Runs AFTER venue-category fix so both entries have corrected categories.
-  // Only dedup shows with 0 reviews (safe — no data loss). Title-only matching
-  // deleted distinct productions from prod (BRO-275) — see lib/london-deploy-dedup.js.
-  const { findLondonDuplicatesToRemove } = require('./lib/london-deploy-dedup');
-  const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
-  const reviewsByShow = {};
-  for (const r of (reviewsData.reviews || reviewsData || [])) {
-    reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
-  }
-  const toRemove = findLondonDuplicatesToRemove(shows, reviewsByShow);
-  if (toRemove.size > 0) {
-    showsData.shows = shows.filter(s => !toRemove.has(s.id));
-    shows = showsData.shows;
-    ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
-  }
-
-  // Bad-synopsis self-heal: strip any synopsis that's an LLM refusal, a generic
-  // production-history placeholder ("X is a stage play written by Y"), or stale
-  // future-tense transfer copy on an already-open show, before the UI renders
-  // it. The UI at src/app/show/[slug]/page.tsx:126 leaks show.synopsis into the
-  // SEO meta description, so a bad synopsis on prod is a double hit: bad show
-  // page + bad Google snippet. Stripping to null makes the freshness gate flag
-  // it as missing, so enrich-wikipedia-synopsis.js refills it on the next run.
-  // Shared detector lives in lib/synopsis-validation.js (1536 incident, 2026-06-21).
-  // Only strip clear-cut garbage at deploy time. 'invalid' (truncated /
-  // marketing) may still be partially useful to a reader, so leave it visible
-  // and let enrich-wikipedia-synopsis.js replace it on the next run.
-  const { classifyBadSynopsis } = require('./lib/synopsis-validation');
-  const HEALABLE = new Set(['refusal', 'placeholder', 'stale']);
-  let refusalStripped = 0;
-  for (const show of shows) {
-    if (!show || typeof show.synopsis !== 'string') continue;
-    const { bad, reason } = classifyBadSynopsis(show);
-    if (bad && HEALABLE.has(reason)) {
-      console.log(`   Stripped ${reason} synopsis from "${show.title}" (${show.id})`);
-      require('./lib/synopsis-source').clearSynopsis(show, null);
-      refusalStripped++;
-    }
-  }
-  if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} bad synopsis(es)`);
-
   // Write shows.json if any fixes were applied
-  if (orphansFixed > 0 || jpgUpgraded > 0 || danglingRefsFixed > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0 || statusDateHealed > 0) {
+  if (heal.changed) {
     saveShows(showsData);
   }
 
