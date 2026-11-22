@@ -46,12 +46,16 @@ export const SLICE_REQUIRED_FILES = [
   'critic-consensus.json',
   'audience-buzz.json',
   'score-gate-overrides.json',
+  'curated-historical-shows.json',
 ];
 export const SLICE_OPTIONAL_FILES = [
   'coverage-floor-snapshot.json',
   'audit/show-review-gap.json',
   'audit/score-public-since.json',
   'audit/t1-coverage-ack.json',
+  // Written by this builder (below, before the read) and again by next.config.js;
+  // hashing it lets the verifier catch a public/images change mid-build.
+  'site-image-versions.json',
 ];
 export const SLICE_INPUT_FILES = [...SLICE_REQUIRED_FILES, ...SLICE_OPTIONAL_FILES];
 
@@ -92,6 +96,10 @@ export function main(argv = process.argv.slice(2)) {
   }
   const dataDir = path.join(ROOT, 'data');
   const buildInstant = Date.now();
+  // Same images map next.config.js writes; written here first so the versioned
+  // image paths below match the ones this build's pages render, and before the
+  // data read so its hash is in dataShas.
+  const imageVersions: Record<string, unknown> = writeSiteImageVersions();
   const { files: dataFiles, absent: absentFiles } = readDataFiles(dataDir);
   const json = (name: string) => JSON.parse(dataFiles[name].toString('utf8'));
 
@@ -103,21 +111,23 @@ export function main(argv = process.argv.slice(2)) {
     buzz: json('buzz.json').threads,
   });
   const registryFile = json('outlet-registry.json');
-  const coverageFloorInputs = readCoverageFloorInputs({
+  const coverageFiles = {
     gapAudit: path.join(dataDir, 'audit', 'show-review-gap.json'),
     stamps: path.join(dataDir, 'audit', 'score-public-since.json'),
     acks: path.join(dataDir, 'audit', 't1-coverage-ack.json'),
     snapshot: path.join(dataDir, 'coverage-floor-snapshot.json'),
-  });
+  };
+  // As built (COVERAGE_GATE_DISABLED applied), for this build's held verdicts.
+  const coverageFloorInputs = readCoverageFloorInputs(coverageFiles);
   const index = indexForSlices(inputs, {
     consensusById: json('critic-consensus.json').shows,
     audienceBuzzById: json('audience-buzz.json').shows,
-    coverageFloorInputs,
+    // Slices carry coverage with the kill switch ignored ({} env), like the
+    // coverage-floor snapshot: slice.js applies it at render time, so slice
+    // hashes do not depend on the environment.
+    coverageFloorInputs: readCoverageFloorInputs(coverageFiles, {}),
   });
 
-  // Same images map next.config.js writes; written here first so the versioned
-  // image paths below match the ones this build's pages render.
-  const imageVersions: Record<string, unknown> = writeSiteImageVersions();
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { versionedImagePath } = require('../src/lib/versioned-image-path');
   // The shows the show page prerenders (generateStaticParams), by the same

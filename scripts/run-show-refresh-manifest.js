@@ -54,6 +54,11 @@ if (require.main === module) {
     process.exit(0);
   }
   try {
+    // Same .env* files next build loads (production mode), so feature flags set
+    // in .env.local reach getRecentShowSlugs() in the builder too.
+    try { require('@next/env').loadEnvConfig(ROOT, false); } catch (e) {
+      console.warn(`[show-refresh-manifest] WARNING: could not load .env files (${e && e.message})`);
+    }
     run({ builder: process.argv[2] });
   } catch (e) {
     console.warn(`[show-refresh-manifest] WARNING: runner failed (${e && e.message}); show refresh is off for this build.`);

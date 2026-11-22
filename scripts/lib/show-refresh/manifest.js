@@ -89,6 +89,9 @@ function verifyManifest(manifest, { dataFiles, publicSha }) {
   if (!isUsableManifest(manifest)) return [`manifest unusable (schema ${manifest && manifest.schema}, invalid ${!!(manifest && manifest.invalid)})`];
   // An optional input that appeared mid-build switches its loader to new data
   // (e.g. the coverage floor reads the gap audit over the snapshot).
+  // A build that prerenders shows but names none is a broken builder (slug
+  // mismatch, failed require), never a usable manifest.
+  if (!(manifest.showCount > 0) || Object.keys(manifest.shows).length === 0) problems.push(`manifest names no shows (showCount ${manifest.showCount})`);
   for (const name of manifest.absentFiles || []) {
     if (name in dataFiles) problems.push(`${name} appeared during the build`);
   }

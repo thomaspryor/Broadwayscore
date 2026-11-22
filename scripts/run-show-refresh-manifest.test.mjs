@@ -70,8 +70,8 @@ test('the CLI always exits 0, even for a failing builder', t => {
 function realManifest(dataFiles, publicSha) {
   return buildManifest({
     manifestId: 'm', buildInstant: Date.UTC(2026, 10, 22), coreSha: null, publicSha,
-    registryFile: { outlets: {} }, dataFiles, imageKeys: [], shows: [],
-    sliceHashById: new Map(), heldById: new Map(),
+    registryFile: { outlets: {} }, dataFiles, imageKeys: [], shows: [{ id: 's1', slug: 'show-one' }],
+    sliceHashById: new Map([['s1', 'abc']]), heldById: new Map([['s1', false]]),
   });
 }
 

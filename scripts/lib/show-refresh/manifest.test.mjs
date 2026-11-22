@@ -75,3 +75,11 @@ test('an invalid marker is never a usable manifest', () => {
   assert.equal(isUsableManifest(bad), false);
   assert.equal(verifyManifest(bad, { dataFiles: {}, publicSha: null }).length, 1);
 });
+
+test('a manifest naming no shows fails verification (broken builder, not an empty site)', () => {
+  const a = base(); a.shows = []; a.sliceHashById = new Map(); a.heldById = new Map();
+  const m = buildManifest(a);
+  const probs = verifyManifest(m, { dataFiles: base().dataFiles, publicSha: 'p'.repeat(40) });
+  assert.equal(probs.length, 1, probs.join('; '));
+  assert.match(probs[0], /names no shows/);
+});
