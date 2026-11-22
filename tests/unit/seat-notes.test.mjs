@@ -183,3 +183,18 @@ describe('value note expiry warning (BRO-8057)', () => {
     finally { delete process.env.NEXT_PUBLIC_BUILD_DATE; }
   });
 });
+
+describe('seat-note expiry alert decision (BRO-8057)', () => {
+  const { decideSeatNoteExpiryAlert, CONDITION_KEY } = require('../../scripts/lib/seat-notes-expiry-alert.js');
+  test('clean audit resolves the card', () => {
+    assert.deepStrictEqual(decideSeatNoteExpiryAlert([]).action, 'resolve');
+    assert.strictEqual(decideSeatNoteExpiryAlert([]).conditionKey, CONDITION_KEY);
+  });
+  test('findings route one warning card naming theater and days', () => {
+    const d = decideSeatNoteExpiryAlert([{ theater: 'Test Theatre', where: 'Center Mezzanine', daysLeft: 12 }, { theater: 'Old Theatre', where: 'Center Mezzanine', daysLeft: -3 }]);
+    assert.strictEqual(d.action, 'route');
+    assert.strictEqual(d.alert.severity, 'warning');
+    assert.match(d.alert.description, /Test Theatre \(Center Mezzanine\): hides in 12d/);
+    assert.match(d.alert.description, /Old Theatre \(Center Mezzanine\): expired 3d ago/);
+  });
+});
