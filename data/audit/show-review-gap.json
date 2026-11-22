@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-22T01:06:26.814Z",
+  "generatedAt": "2026-11-22T02:20:36.933Z",
   "windowDays": 1095,
-  "targets": 274,
-  "auditedThisRun": 25,
-  "carriedForward": 2794,
+  "targets": 261,
+  "auditedThisRun": 19,
+  "carriedForward": 2802,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 673,
-    "missingCurrentRun": 1519,
+    "withGap": 672,
+    "missingCurrentRun": 1516,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 876,
     "totalRecoverable": 49,
     "totalRecovered": 107,
     "humanExcluded": 34,
-    "automatedExcluded": 961,
+    "automatedExcluded": 964,
     "automatedExcludedListed": 708,
-    "priorProductionCitations": 8948
+    "priorProductionCitations": 8968
   },
   "results": [
     {
@@ -14927,7 +14927,9 @@
       "previewsStartDate": "2026-11-13",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again/",
         "https://www.thestage.co.uk/reviews/homo-alone-2-yikes-we-did-it-again-review-the-other-palace-london",
+        "http://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again.html",
         "https://www.whatsonstage.com/news/a-homo-alone-2-yikes-we-did-it-again-at-the-other-palace-review_1737649/",
         "https://www.allthatdazzles.co.uk/post/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
         "https://www.westendbestfriend.co.uk/news/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace-studio",
@@ -14949,6 +14951,18 @@
       "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [
+        {
+          "url": "http://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again.html",
+          "host": "stagetopage.co.uk",
+          "knownOutletId": "stagetopage",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again",
           "host": "stagetopage.co.uk",
@@ -14988,6 +15002,39 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fairypoweredproductions--fairypoweredproductions.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://oazis.app/pl/event/a-homo-alone-2-yikes-we-did-it-again",
           "host": "oazis.app",
@@ -15098,12 +15145,76 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Homo Alone 2: Yikes, We Did It Again!\" review other",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Homo Alone 2: Yikes, We Did It Again! The Other Palace - Studio review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 8,
+        "byReason": {
+          "non-review-host": 3,
+          "aggregator-internal-nav": 1,
+          "event-listing": 1,
+          "ticket-seller-product-page": 1,
+          "tag-index-page": 1,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -15119,6 +15230,21 @@
       ],
       "ingestResults": [
         {
+          "url": "http://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again.html",
+          "host": "stagetopage.co.uk",
+          "outletId": "stagetopage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again",
           "host": "stagetopage.co.uk",
           "outletId": "stagetopage",
@@ -15131,7 +15257,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=stagetopage.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=stagetopage.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=stagetopage.co.uk): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.googl\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         },
         {
           "url": "https://www.londonboxoffice.co.uk/search/month/a-homo-alone-2-yikes-we-did-it-again-tickets/2026/11/14/2",
@@ -15153,6 +15279,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "stagetopage",
+            "outlet": "stagetopage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again.html"
+          },
           {
             "outletId": "stagetopage",
             "outlet": "stagetopage",
@@ -15264,6 +15397,13 @@
             "firstSeenAt": "2026-11-20T03:06:31.196Z"
           },
           {
+            "url": "http://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again.html",
+            "outletId": "stagetopage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
+          },
+          {
             "url": "https://www.stagetopage.co.uk/2026/11/a-homo-alone-2-yikes-we-did-it-again",
             "outletId": "stagetopage",
             "state": "GAP",
@@ -15300,11 +15440,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again/",
+            "host": "fairypoweredproductions.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "a-knock-on-the-roof-off-broadway-2025",
@@ -52364,189 +52510,78 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/",
-        "https://www.sandiegouniontribune.com/2026/11/19"
+        "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/"
       ],
-      "dirFiles": 0,
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/",
           "host": "sandiegouniontribune.com",
           "knownOutletId": "san-diego-union-tribune",
-          "serpCensus": true,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "san-diego-union-tribune--pam-kragen.json",
+              "flag": "clean",
+              "urlInDir": "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ]
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/11/19",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune",
+          ],
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
+          "reverify": false
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Arrowhead\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Arrowhead\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Arrowhead\" review diversionary",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Arrowhead Diversionary Theatre, San Diego, CA review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Arrowhead Diversionary Theatre, San Diego, CA review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Arrowhead Diversionary Theatre, San Diego, CA review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 8,
-          "census-junk-host": 1,
-          "no-review-evidence": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/",
-          "host": "sandiegouniontribune.com",
-          "outletId": "san-diego-union-tribune",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/2026/11/19",
-          "host": "sandiegouniontribune.com",
-          "outletId": "san-diego-union-tribune",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "san-diego-union-tribune",
-            "outlet": "san-diego-union-tribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/"
-          },
-          {
-            "outletId": "san-diego-union-tribune",
-            "outlet": "san-diego-union-tribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.sandiegouniontribune.com/2026/11/19"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [
           {
             "url": "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/",
-            "outletId": "san-diego-union-tribune",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-21T21:34:55.343Z"
-          },
-          {
-            "url": "https://www.sandiegouniontribune.com/2026/11/19",
-            "outletId": "san-diego-union-tribune",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-21T21:34:55.343Z"
+            "host": "sandiegouniontribune.com",
+            "reason": "confirmed-non-review"
           }
         ],
-        "censusSchema": 4,
-        "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-11-21T21:34:55.343Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "art-2025",
@@ -95974,20 +96009,39 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello",
+        "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical",
         "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818",
         "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-Opens-on-Broadway-Updating-LIVE-20130303"
       ],
       "aggregatorListedUrls": [
+        "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+        "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+        "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+        "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+        "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+        "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+        "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+        "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+        "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+        "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+        "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+        "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+        "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
         "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+        "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+        "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+        "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+        "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+        "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
         "https://www.telegraph.co.uk/theatre/what-to-see/cinderella-review-happy-ever-andrew-lloyd-webbers-long-awaited/",
+        "https://www.timeout.com/london/theatre/cinderella-review-2",
+        "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
         "https://www.theguardian.com/stage/2021/aug/18/cinderella-review-not-so-much-a-ball-as-a-blast",
         "https://www.whatsonstage.com/london-theatre/reviews/cinderella-andrew-lloyd-webbers-musical_54726.html",
         "https://www.thetimes.co.uk/article/andrew-lloyd-webbers-cinderella-review-if-only-the-show-could-go-on-dp7wmr8kk",
-        "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-        "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-        "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-        "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
         "https://www.theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
         "http://theater.nytimes.com/2013/03/04/theater/reviews/rodgers-hammersteins-cinderella-at-broadway-theater.html",
         "http://online.wsj.com/article/AP95c59055d4bc4e6693e455d9d492d1bb.html",
@@ -96000,15 +96054,9 @@
         "http://www.vulture.com/2013/03/theater-review-cinderella.html",
         "http://www.northjersey.com/arts_entertainment/theater/194743211_Theater_review___Cinderella_.html",
         "http://www.ew.com/ew/article/0,,20364394_20678949,00.html",
-        "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-theatre-hammersmith",
-        "https://www.timeout.com/london/theatre/cinderella-59",
-        "https://www.theguardian.com/stage/nov/cinderella-review-lyric-hammersmith",
-        "https://chiswickcalendar.co.uk/cinderella-review-lyric-theatre-hammersmith/",
-        "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith",
-        "https://themother-hood.com/review-cinderella-at-lyric-theatre",
-        "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith/",
-        "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
         "https://www.theguardian.com/northern-ballet-cinderella-review-norwich-theatre",
+        "https://www.theguardian.com/stage/nov/cinderella-review-lyric-hammersmith",
+        "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
         "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-22783",
         "https://www.telegraph.co.uk/culture/theatre/3690541/Cinderella-at-Lyric-Hammersmith-review.html",
         "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-8310",
@@ -96019,12 +96067,292 @@
       "inReviewsJson": 1,
       "missing": [
         {
+          "url": "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+          "host": "theatlantic.com",
+          "knownOutletId": "theatlantic",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+          "host": "smh.com.au",
+          "knownOutletId": "smh",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
           "url": "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+          "host": "mytheatremates.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
@@ -96036,6 +96364,40 @@
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cinderella-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
@@ -96082,71 +96444,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
         },
         {
           "url": "https://www.theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
@@ -96317,18 +96614,6 @@
           ]
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-22783",
           "host": "britishtheatreguide.info",
           "knownOutletId": "british-theatre",
@@ -96427,84 +96712,32 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Cinderella\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Cinderella\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Cinderella\" review lyric",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Cinderella Lyric Hammersmith Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Cinderella Lyric Hammersmith Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Cinderella Lyric Hammersmith Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 585,
+        "count": 795,
         "byReason": {
-          "aggregator-internal-nav": 401,
-          "not-http-url": 102,
-          "aggregator-section-root": 8,
-          "non-review-host": 59,
-          "show-hub": 1,
-          "no-review-evidence": 1,
-          "roundup-page": 7,
-          "podcast-episode": 2,
-          "census-junk-host": 2,
-          "guide-article": 1,
-          "tag-index-page": 1
+          "non-review-host": 96,
+          "aggregator-internal-nav": 534,
+          "not-http-url": 113,
+          "production-database-listing": 23,
+          "aggregator-section-root": 16,
+          "non-stage-review": 3,
+          "roundup-page": 8,
+          "podcast-episode": 2
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello",
+          "publishDate": "2021-09-02"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical",
+          "publishDate": "2021-08-19"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818",
           "publishDate": "2021-08-18"
@@ -96516,56 +96749,115 @@
       ],
       "nonReviewCandidates": [
         {
-          "url": "https://www.timeout.com/london/theatre/cinderella-59",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "nonReviewVerdict": "timeout-listing-blurb",
-          "nonReviewDetail": "unauthored-and-pre-opening"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-theatre-hammersmith",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
+          "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-11-27"
-        },
-        {
-          "url": "https://chiswickcalendar.co.uk/cinderella-review-lyric-theatre-hammersmith/",
-          "host": "chiswickcalendar.co.uk",
-          "knownOutletId": "chiswickcalendar",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-11-28"
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2015-11-30"
-        },
-        {
-          "url": "https://themother-hood.com/review-cinderella-at-lyric-theatre",
-          "host": "themother-hood.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2012-12-29"
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith/",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2015-11-30"
+          "nonReviewDetail": "2015-11-29"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+          "host": "theatlantic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+          "host": "smh.com.au",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
           "host": "nytimes.com",
@@ -96574,8 +96866,64 @@
           "censusGateOn": true
         },
         {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+          "host": "mytheatremates.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/cinderella-review-happy-ever-andrew-lloyd-webbers-long-awaited/",
           "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cinderella-review-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
+          "host": "thetimes.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -96597,41 +96945,6 @@
         {
           "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webbers-cinderella-review-if-only-the-show-could-go-on-dp7wmr8kk",
           "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
-          "host": "independent.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -96730,21 +97043,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with british-theatre--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lyric-thea-26224\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-11-19\",\n  \"incomingUrl\": \"https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317\",\n  \"incomingPublishDate\": \"2015-11-29\"\n}\n\nManual remediation required: rename or clear the existing file."
-        },
-        {
           "url": "https://www.theguardian.com/stage/nov/cinderella-review-lyric-hammersmith",
           "host": "theguardian.com",
           "outletId": "guardian",
@@ -96821,13 +97119,6 @@
             "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
             "url": "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-22783"
           },
           {
@@ -96856,76 +97147,44 @@
           {
             "url": "https://www.theguardian.com/stage/nov/cinderella-review-lyric-hammersmith",
             "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-21T15:37:34.484Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
-            "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-21T23:05:11.674Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-22783",
             "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-21T07:01:31.926Z"
           },
           {
             "url": "https://www.telegraph.co.uk/culture/theatre/3690541/Cinderella-at-Lyric-Hammersmith-review.html",
             "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-21T00:29:15.275Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/cinderella-lyric-hammersmi-8310",
             "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-21T00:29:15.275Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.timeout.com/london/theatre/cinderella-59",
-            "host": "timeout.com",
-            "reason": "timeout-listing-blurb"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-theatre-hammersmith",
-            "host": "allthatdazzles.co.uk",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://chiswickcalendar.co.uk/cinderella-review-lyric-theatre-hammersmith/",
-            "host": "chiswickcalendar.co.uk",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith",
-            "host": "ayoungertheatre.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://themother-hood.com/review-cinderella-at-lyric-theatre",
-            "host": "themother-hood.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.ayoungertheatre.com/review-cinderella-lyric-hammersmith/",
-            "host": "ayoungertheatre.com",
+            "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-12317",
+            "host": "britishtheatreguide.info",
             "reason": "page-date-before-run"
           }
         ],
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "cinderella-regional-2023",
@@ -100587,8 +100846,8 @@
     {
       "showId": "club-nvrlnd-off-west-end-2026",
       "title": "Club NVRLND",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-11-14",
+      "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
@@ -100596,6 +100855,7 @@
         "https://theatreweekly.com/first-look-production-images-released-for-immersive-nightclub-musical-club-nvrlnd-at-the-vaults/",
         "https://www.thevaults.london/club-nvrlnd",
         "https://www.timeout.com/london/theatre/club-nvrlnd-review",
+        "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
         "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
         "https://www.voicemag.uk/review/club-nvrlnd-review",
         "https://www.theatrebookings.com/musical/club-nvrlnd"
@@ -100608,18 +100868,6 @@
           "url": "https://www.thevaults.london/club-nvrlnd",
           "host": "thevaults.london",
           "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
           "serpCensus": true,
           "sources": [
             {
@@ -100706,6 +100954,39 @@
           "reverify": true
         },
         {
+          "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--molly-glenn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://www.theatrebookings.com/musical/club-nvrlnd",
           "host": "theatrebookings.com",
           "knownOutletId": "theatrebookings",
@@ -100783,11 +101064,11 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Club NVRLND\" West End review",
+        "query": "\"Club NVRLND\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Club NVRLND\" West End review",
+            "query": "\"Club NVRLND\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
@@ -100801,7 +101082,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 3,
             "accepted": 1,
             "error": null
           },
@@ -100811,7 +101092,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 4,
             "accepted": 2,
             "error": null
           },
@@ -100822,7 +101103,7 @@
             "geo": "gb",
             "ok": true,
             "results": 4,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -100832,25 +101113,34 @@
             "geo": "gb",
             "ok": true,
             "results": 2,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 7,
+        "count": 6,
         "byReason": {
+          "non-review-host": 4,
           "aggregator-internal-nav": 1,
-          "non-review-host": 3,
-          "ticketing-reseller": 2,
-          "guide-article": 1
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2025-08-20"
+        }
+      ],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
@@ -100864,21 +101154,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "old-production-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "club-nvrlnd-off-west-end-2026: https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review dated 2025-08-20, over a year before this run; refused as the earlier production's review. Expected, no action needed."
-        },
-        {
           "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
           "host": "voicemag.uk",
           "outletId": "voice-magazine",
@@ -100891,7 +101166,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  ScrapingBee failed (render_js=false, domain=voicemag.uk): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -100904,13 +101179,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thevaults.london/club-nvrlnd"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review"
           },
           {
             "outletId": "voice-magazine",
@@ -100939,51 +101207,54 @@
           {
             "url": "https://www.thevaults.london/club-nvrlnd",
             "outletId": "thevaults.london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-            "outletId": "theatreandtonic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-21T11:50:31.398Z"
           },
           {
             "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
             "outletId": "voice-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
           },
           {
             "url": "https://www.theatrebookings.com/musical/club-nvrlnd",
             "outletId": "theatrebookings",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-15T00:00:28.468Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [
           {
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
+            "host": "theatreandtonic.co.uk",
+            "reason": "page-date-before-run"
+          },
+          {
             "url": "https://theatreweekly.com/first-look-production-images-released-for-immersive-nightclub-musical-club-nvrlnd-at-the-vaults/",
             "host": "theatreweekly.com",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe",
+            "host": "musicaltheatrereview.com",
             "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-21T11:50:31.398Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "clue-tour-2025",
@@ -130646,16 +130917,17 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://soundcloud.com/latheatrebites/destiny-of-desire-mark-taper",
         "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
-        "https://stagescenela.com/2026/11/destiny-of-desire-2",
+        "https://www.theatermania.com/news/review-destiny-of-desire-is-a-gloriously-campy-telenovela-at-the-mark-taper-forum_1860442/",
         "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
+        "https://stagescenela.com/2026/11/destiny-of-desire-2",
         "https://latheatrebites.com/destiny-of-desire-mark-taper-forum-review/",
         "https://larchmontbuzz.com/theater/embracing-the-drama-destiny-of-desire",
         "https://stagescenela.com/2026/11/destiny-of-desire-2/",
         "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
         "https://larchmontbuzz.com/theater/embracing-the-drama-destiny-of-desire/",
         "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/",
-        "https://soundcloud.com/latheatrebites/destiny-of-desire-mark-taper",
         "https://www.los-angeles-theatre.com/reviews/destiny-of-desire",
         "https://www.los-angeles-theatre.com/reviews/customer-reviews/destiny-of-desire",
         "http://www.davidcoddon.com/theatre-reviews/stage-west-destiny-of-desire-at-old-globe-theatre",
@@ -130736,10 +131008,6 @@
         },
         {
           "host": "stageraw.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
           "count": 1
         }
       ],
@@ -130835,12 +131103,72 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Destiny of Desire\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Destiny of Desire\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Destiny of Desire\" review mark",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 7,
+        "byReason": {
+          "non-review-host": 6,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 3,
@@ -130897,7 +131225,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=latimes.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: no usable HTML (187 chars); no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=latimes.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=latimes.com): ScrapingBee HTTP 404: <!DOCTYPE html> <html class=\"page error-page\" lang=\"en-US\">  <head> <meta charset=\"UTF-8\"> <style data-css-vars>\n    :root {\n\n        \n\n        \n        --cms-color-text-on-dark: var(--utility-color-w\nFetch failed: no usable HTML (187 chars); no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -130970,16 +131298,22 @@
             "firstSeenAt": "2026-11-17T23:39:11.103Z"
           },
           {
-            "url": "https://stagescenela.com/2026/11/destiny-of-desire-2",
-            "outletId": "stagescenela.com",
+            "url": "https://www.theatermania.com/news/review-destiny-of-desire-is-a-gloriously-campy-telenovela-at-the-mark-taper-forum_1860442/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-11-17T23:39:11.103Z"
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
           },
           {
             "url": "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
             "outletId": "latheatrix.com",
             "state": "live",
             "firstSeenAt": "2026-11-20T10:09:50.928Z"
+          },
+          {
+            "url": "https://stagescenela.com/2026/11/destiny-of-desire-2",
+            "outletId": "stagescenela.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-17T23:39:11.103Z"
           },
           {
             "url": "https://latheatrebites.com/destiny-of-desire-mark-taper-forum-review/",
@@ -131076,10 +131410,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 6,
-        "candidateCount": 12
+        "liveCount": 7,
+        "candidateCount": 13
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "detroit-67-regional-2026",
@@ -149472,11 +149806,15 @@
       "previewsStartDate": "2026-11-13",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://thespyinthestalls.com/2026/11/eurotrash/",
-        "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
+        "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
+        "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
         "https://www.londontheatre.co.uk/reviews/eurotrash-review-young-vic",
         "https://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash",
         "https://www.nytimes.com/theater/eurotrash-young-vic-london-review",
+        "https://www.thereviewshub.com/eurotrash-young-vic-london/",
+        "https://theatreandtonic.co.uk/blog/eurotrash-at-the-young-vic-review",
+        "https://thespyinthestalls.com/2026/11/eurotrash/",
+        "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
         "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.html",
         "https://monstagigz.com/2026/11/18/theatre-review-eurotrash-starring-ben-whishaw-and-kathryn-hunter-at-the-young-vic/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
@@ -149486,7 +149824,6 @@
         "https://www.westendbestfriend.co.uk/news/review-eurotrash-young-vic-theatre",
         "https://www.thetimes.com/culture/theatre-dance/article/eurotrash-review-ben-whishaw-8qxcm3q95",
         "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash.html",
-        "https://theatreandtonic.co.uk/blog/eurotrash-at-the-young-vic-review",
         "https://www.broadwayworld.com/westend/article/Review-EUROTRASH-starring-Kathryn-Hunter-and-Ben-Whishaw-Young-Vic-20261120",
         "https://www.whatsonstage.com/news/eurotrash-review-ben-whishaw-and-kathryn-hunter-on-a-merry-messy-road-trip_1737755/",
         "https://www.timeout.com/london/news/eurotrash-ben-whishaw-young-vic-review-112026",
@@ -149498,13 +149835,10 @@
         "https://culturalee.art/ben-whishaw-and-kathryn-hunter-star-in-eurotrash-a-darkly-comic-road-trip-through-europe-at-the-young-vic/",
         "https://www.telegraph.co.uk/theatre/eurotrash-young-vic-review-ben-whishaw",
         "https://theatreweekly.com/first-look-production-images-released-for-eurotrash-at-the-young-vic/",
-        "https://www.thereviewshub.com/eurotrash-young-vic-london/",
-        "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
         "https://firstnightmagazine.com/2026/11/20/review-of-eurotrash-2026-young-vic-stage-adaptation-of-krafts-novel-is-full-of-rubbish-but-thats-no-reason-to-dump-it/",
-        "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
         "https://www.ft.com/content/688949b0-f395-4d56-82ea-b55789849c33"
       ],
-      "dirFiles": 31,
+      "dirFiles": 32,
       "dirClean": 22,
       "inReviewsJson": 24,
       "missing": [
@@ -149529,6 +149863,96 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "duplicateOf"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "duplicate-of-held"
+          ],
+          "copyOfLiveReview": true,
+          "liveInReviews": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-eurotrash-young-vic"
+            }
+          ],
+          "listingDate": "2026-11-21",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.thereviewshub.com/eurotrash-young-vic-london/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "duplicateOf"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "duplicate-of-held"
+          ],
+          "copyOfLiveReview": true,
+          "liveInReviews": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-eurotrash-young-vic"
+            }
+          ],
+          "listingDate": "2026-11-21",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
+        },
+        {
           "url": "https://www.telegraph.co.uk/theatre/eurotrash-young-vic-review-ben-whishaw",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
@@ -149536,7 +149960,7 @@
           "recoverableFile": "telegraph--unknown.json",
           "recoverableOutletId": "telegraph",
           "recoverableCritic": "Unknown",
-          "recoverableCount": 1,
+          "recoverableCount": 2,
           "dirFlags": [
             {
               "file": "telegraph--unknown.json",
@@ -149585,88 +150009,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thereviewshub--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.thereviewshub.com/eurotrash-young-vic-london/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "duplicateOf"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "duplicate-of-held"
-          ],
-          "copyOfLiveReview": true,
-          "liveInReviews": true,
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-eurotrash-young-vic"
-            }
-          ],
-          "listingDate": "2026-11-21",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": false
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "duplicateOf"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "duplicate-of-held"
-          ],
-          "copyOfLiveReview": true,
-          "liveInReviews": true,
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-eurotrash-young-vic"
-            }
-          ],
-          "listingDate": "2026-11-21",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -149724,13 +150066,82 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Eurotrash\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Eurotrash\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Eurotrash\" review young",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Eurotrash\" Meierjohann review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Eurotrash Young Vic (Main House) review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Eurotrash Young Vic (Main House) review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Eurotrash Young Vic (Main House) review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 7,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 10,
         "byReason": {
-          "non-review-host": 2
+          "non-review-host": 8,
+          "tag-index-page": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -149757,7 +150168,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=telegraph.co.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=telegraph.co.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee ",
-          "recoveryCount": 2
+          "recoveryCount": 3
         }
       ],
       "censusVerdict": {
@@ -149788,16 +150199,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://thespyinthestalls.com/2026/11/eurotrash/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-21T05:52:10.576Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-20T21:58:32.056Z"
+            "firstSeenAt": "2026-11-21T23:05:11.674Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/eurotrash-review-young-vic",
@@ -149816,6 +150221,24 @@
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-21T18:18:24.170Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/eurotrash-at-the-young-vic-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-20T21:58:32.056Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/11/eurotrash/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-21T05:52:10.576Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-20T21:58:32.056Z"
           },
           {
             "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.html",
@@ -149872,12 +150295,6 @@
             "firstSeenAt": "2026-11-19T09:17:10.986Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/eurotrash-at-the-young-vic-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-20T21:58:32.056Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/westend/article/Review-EUROTRASH-starring-Kathryn-Hunter-and-Ben-Whishaw-Young-Vic-20261120",
             "outletId": "broadwayworld.com",
             "state": "live",
@@ -149926,12 +150343,6 @@
             "firstSeenAt": "2026-11-21T13:12:51.166Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-21T23:05:11.674Z"
-          },
-          {
             "url": "https://firstnightmagazine.com/2026/11/20/review-of-eurotrash-2026-young-vic-stage-adaptation-of-krafts-novel-is-full-of-rubbish-but-thats-no-reason-to-dump-it/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
@@ -149968,20 +150379,20 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
-            "host": "thereviewshub.com",
+            "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
+            "host": "britishtheatreguide.info",
             "reason": "confirmed-non-review"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
-            "host": "britishtheatreguide.info",
+            "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
+            "host": "thereviewshub.com",
             "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 21,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "eurydice-off-broadway-2026",
@@ -156690,12 +157101,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Fantasma\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Fantasma\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Fantasma\" review 59e59",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Fantasma\" Benne review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Fantasma 59E59 Theaters review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Fantasma 59E59 Theaters review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Fantasma 59E59 Theaters review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 15,
+        "byReason": {
+          "non-review-host": 5,
+          "aggregator-internal-nav": 3,
+          "census-junk-host": 1,
+          "no-review-evidence": 2,
+          "production-database-listing": 1,
+          "tag-index-page": 1,
+          "venue-production-page": 1,
+          "show-listing-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -156709,7 +157196,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-22T00:13:28.302Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "fat-ham-2023",
@@ -162765,11 +163252,11 @@
       "previewsStartDate": "2026-11-16",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://loureviews.blog/2026/11/19/play-review-florence-at-park-theatre/",
-        "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
+        "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
         "https://www.westendbestfriend.co.uk/news/review-florence-park-theatre",
         "https://theatreweekly.com/review-florence-at-park-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
+        "https://loureviews.blog/2026/11/19/play-review-florence-at-park-theatre/",
+        "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
         "https://www.londonboxoffice.co.uk/news/post/florence-park-theatre-review",
         "https://www.london-unattached.com/florence-play-honor-santa-barnes/",
         "https://theatreweekly.com/review-florence-at-park-theatre/",
@@ -162842,12 +163329,64 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Florence\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Florence\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Florence Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Florence Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Florence Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 7,
+        "byReason": {
+          "non-review-host": 4,
+          "census-junk-host": 1,
+          "roundup-page": 1,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -162858,16 +163397,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://loureviews.blog/2026/11/19/play-review-florence-at-park-theatre/",
-            "outletId": "loureviews.blog",
+            "url": "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-19T22:57:56.426Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-20T17:07:10.518Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-florence-park-theatre",
@@ -162882,10 +163415,16 @@
             "firstSeenAt": "2026-11-19T22:57:56.426Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://loureviews.blog/2026/11/19/play-review-florence-at-park-theatre/",
+            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-11-19T22:57:56.426Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-20T17:07:10.518Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/florence-park-theatre-review",
@@ -162923,7 +163462,7 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -163248,6 +163787,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-25",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "flyby-off-west-end-2026",
@@ -164468,18 +165046,6 @@
               "sourceUrl": null
             }
           ]
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/fourteen-again",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [],
@@ -164530,77 +165096,24 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Fourteen Again\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Fourteen Again\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Fourteen Again\" review menier",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Fourteen Again Menier Chocolate Factory review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Fourteen Again Menier Chocolate Factory review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Fourteen Again Menier Chocolate Factory review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 14,
-        "byReason": {
-          "non-review-host": 6,
-          "no-review-evidence": 1,
-          "tag-index-page": 3,
-          "non-review-path": 2,
-          "ticketing-listing": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/london/theatre/fourteen-again",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-10-06"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -164612,23 +165125,7 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.timeout.com/london/theatre/fourteen-again",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "fourteen-again-off-west-end-2026: https://www.timeout.com/london/theatre/fourteen-again is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -164639,13 +165136,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://hitthetheatre.co.uk/london/shows/fourteen-again"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/fourteen-again"
           }
         ],
         "suppressedMissing": [],
@@ -164656,21 +165146,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-22T00:13:28.302Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/fourteen-again",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-22T00:13:28.302Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/london/theatre/fourteen-again",
+            "host": "timeout.com",
+            "reason": "page-date-before-run"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-22T00:13:28.302Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "frankenstein-leeds-regional-2024",
@@ -236460,7 +236949,6 @@
       "previewsStartDate": "2026-11-21",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire/",
         "https://hackneycitizen.ghost.io/jack-and-the-beanstalk-review-hackney-empire",
         "https://hackneycitizen.ghost.io/jack-and-the-beanstalk-hackney-empire-review",
         "https://www.standard.co.uk/culture/theatre/jack-and-the-beanstalk-at-the-palladium-review-dawn-french-julian-clary-b1047362.html",
@@ -236679,85 +237167,14 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Jack and The Beanstalk\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Jack and The Beanstalk\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Jack and The Beanstalk\" review hackney",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Jack and The Beanstalk Hackney Empire review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Jack and The Beanstalk Hackney Empire review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Jack and The Beanstalk Hackney Empire review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 4,
-        "byReason": {
-          "non-review-host": 2,
-          "write-path-blocked": 1,
-          "show-listing-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire/",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2015-11-27"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -236863,17 +237280,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire/",
-            "host": "ayoungertheatre.com",
-            "reason": "page-date-before-run"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-22T00:13:28.302Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -314372,6 +314783,7 @@
       "previewsStartDate": "2026-10-22",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-are-out-for-ms.-blakk-for-president-off-broadway-get-a-1st-look",
+        "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president",
         "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-MS-BLAKK-FOR-PRESIDENT-Off-Broadway-at-Vineyard-Theatre-20261109"
       ],
       "aggregatorListedUrls": [
@@ -314385,23 +314797,27 @@
         "https://therecs.co.uk/ms-blakk-for-president/",
         "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
         "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
+        "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
+        "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
+        "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
         "https://www.offoffonline.com/offoffonline/2026/11/11/ms-blakk-for-president",
         "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+        "https://www.nytimes.com/2026/11/10/theater/ms-blakk-for-president-review-mccraney-glick-blankson-wood.html",
         "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review",
         "https://culturesauce.com/ms-blakk-for-president-off-broadway-review",
-        "https://www.nytimes.com/2026/11/10/theater/ms-blakk-for-president-review-mccraney-glick-blankson-wood.html",
-        "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review",
+        "https://essilfie.substack.com/review-ms-blakk-for-president",
+        "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
         "https://pagesonstages.com/2026/11/08/ms-blakk-for-president",
+        "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review",
+        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
         "https://theaterpizzazz.com/ms-blakk-for-president-a-drag-queens-campaign-runs-on-fabulousness-not-drama/",
         "https://thefrontrowcenter.com/2026/11/ms-blakk-for-president",
         "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
-        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
         "https://theaterlife.com/well-see-ms-blakk-for-president",
         "https://3viewstheater.com/views/ms-blakk-for-president-and-the-pitfalls-of-political-theater",
         "https://theaterlife.com/well-see-ms-blakk-for-president/",
         "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
         "https://essilfie.substack.com/p/review-ms-blakk-for-president",
-        "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
         "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
         "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
         "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
@@ -314414,7 +314830,32 @@
       "inReviewsJson": 18,
       "missing": [
         {
-          "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
+          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://essilfie.substack.com/review-ms-blakk-for-president",
+          "host": "essilfie.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
           "host": "storefrontrebellion.substack.com",
           "knownOutletId": null,
           "serpCensus": true,
@@ -314429,6 +314870,18 @@
           "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
+          "host": "storefrontrebellion.substack.com",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -314488,18 +314941,6 @@
         {
           "url": "https://essilfie.substack.com/p/review-ms-blakk-for-president",
           "host": "essilfie.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
-          "host": "storefrontrebellion.substack.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -314578,6 +315019,66 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
+          "host": "chicagoreader.com",
+          "knownOutletId": "chicago-reader",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicago-reader--dan-jakes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content?oid=70761615"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
+            }
+          ],
+          "reverify": false
+        },
+        {
           "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
@@ -314649,8 +315150,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 3,
+            "results": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -314659,8 +315160,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -314670,7 +315171,7 @@
             "geo": "us",
             "ok": true,
             "results": 4,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -314679,7 +315180,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -314690,7 +315191,7 @@
             "geo": "us",
             "ok": true,
             "results": 2,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -314699,35 +315200,61 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 401,
+        "count": 502,
         "byReason": {
-          "not-http-url": 76,
-          "non-review-host": 45,
-          "aggregator-internal-nav": 256,
-          "aggregator-section-root": 9,
-          "roundup-page": 3,
-          "podcast-episode": 1,
-          "production-database-listing": 7,
-          "non-stage-review": 1,
-          "census-junk-host": 2,
-          "news-roundup-site": 1
+          "non-review-host": 63,
+          "aggregator-internal-nav": 319,
+          "census-junk-host": 1,
+          "not-http-url": 81,
+          "production-database-listing": 18,
+          "aggregator-section-root": 13,
+          "non-stage-review": 2,
+          "roundup-page": 4,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president",
+          "publishDate": "2019-06-05"
+        }
+      ],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://essilfie.substack.com/review-ms-blakk-for-president",
+          "host": "essilfie.substack.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
+          "host": "storefrontrebellion.substack.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
         {
           "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
           "host": "storefrontrebellion.substack.com",
@@ -314741,30 +315268,68 @@
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
-        },
-        {
-          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
-          "host": "storefrontrebellion.substack.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
         }
       ],
       "ingestResults": [
         {
-          "url": "https://3viewstheater.com/views/ms-blakk-for-president-and-the-pitfalls-of-political-theater",
-          "host": "3viewstheater.com",
-          "outletId": "3views",
+          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; archive_auth_required (archive.org CDX blocked for this host, capture unknown)"
+        },
+        {
+          "url": "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        },
+        {
+          "url": "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+          "host": "variety.com",
+          "outletId": "variety",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expectedReason": "pre-opening-non-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://3viewstheater.com/views/ms-blakk-for-president-and-the-pitfalls-of-political-theater has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "msblackforpresident-off-broadway-2026: https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/ is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url."
         },
         {
           "url": "https://theaterlife.com/well-see-ms-blakk-for-president",
@@ -314780,84 +315345,46 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "msblackforpresident-off-broadway-2026: https://theaterlife.com/well-see-ms-blakk-for-president is already owned by well-see-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/well-see-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-          "host": "theaterlife.com",
-          "outletId": "theater-life",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://theaterlife.com/well-see-ms-blakk-for-president/ is already owned by well-see-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/well-see-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "https://3viewstheater.com/views/ms-blakk-for-president-and-the-pitfalls-of-political-theater",
+          "host": "3viewstheater.com",
+          "outletId": "3views"
         },
         {
-          "url": "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
+          "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+          "host": "theaterlife.com",
+          "outletId": "theater-life"
         },
         {
-          "url": "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
         },
         {
-          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
-          "host": "variety.com",
-          "outletId": "variety"
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "essilfie.substack.com",
+            "outlet": "essilfie.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://essilfie.substack.com/review-ms-blakk-for-president"
+          },
+          {
             "outletId": "storefrontrebellion.substack.com",
             "outlet": "storefrontrebellion.substack.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president"
+            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president"
           },
           {
             "outletId": "guardian",
@@ -314865,6 +315392,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play"
+          },
+          {
+            "outletId": "storefrontrebellion.substack.com",
+            "outlet": "storefrontrebellion.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president"
           },
           {
             "outletId": "theater-life",
@@ -314900,13 +315434,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://essilfie.substack.com/p/review-ms-blakk-for-president"
-          },
-          {
-            "outletId": "storefrontrebellion.substack.com",
-            "outlet": "storefrontrebellion.substack.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president"
           },
           {
             "outletId": "around-the-town-chicago",
@@ -315026,6 +315553,12 @@
             "firstSeenAt": "2026-11-13T14:41:23.451Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/11/10/theater/ms-blakk-for-president-review-mccraney-glick-blankson-wood.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-10T10:54:23.190Z"
+          },
+          {
             "url": "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review",
             "outletId": "newyorktheater.me",
             "state": "live",
@@ -315038,22 +315571,16 @@
             "firstSeenAt": "2026-11-14T00:31:07.833Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/11/10/theater/ms-blakk-for-president-review-mccraney-glick-blankson-wood.html",
-            "outletId": "nytimes.com",
+            "url": "https://pagesonstages.com/2026/11/08/ms-blakk-for-president",
+            "outletId": "pagesonstages.com",
             "state": "live",
-            "firstSeenAt": "2026-11-10T10:54:23.190Z"
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
             "url": "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review",
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-11-12T18:11:37.728Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2026/11/08/ms-blakk-for-president",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
             "url": "https://theaterpizzazz.com/ms-blakk-for-president-a-drag-queens-campaign-runs-on-fabulousness-not-drama/",
@@ -315068,11 +315595,18 @@
             "firstSeenAt": "2026-11-12T02:31:56.569Z"
           },
           {
-            "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
+            "url": "https://essilfie.substack.com/review-ms-blakk-for-president",
+            "outletId": "essilfie.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
+          },
+          {
+            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
             "outletId": "storefrontrebellion.substack.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-14T00:31:07.833Z"
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
             "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
@@ -315080,6 +315614,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
+            "url": "https://storefrontrebellion.substack.com/sr-review-ms-blakk-for-president",
+            "outletId": "storefrontrebellion.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-14T00:31:07.833Z"
           },
           {
             "url": "https://theaterlife.com/well-see-ms-blakk-for-president",
@@ -315115,13 +315656,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-08T00:30:12.652Z"
-          },
-          {
-            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
-            "outletId": "storefrontrebellion.substack.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
             "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
@@ -315171,7 +315705,7 @@
         "liveCount": 14,
         "candidateCount": 22
       },
-      "computedAt": "2026-11-21T10:30:38.671Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "much-ado-about-nothing-2026",
@@ -326561,11 +327095,13 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/nine-night-review-kiln-theatre",
+        "https://www.londontheatre1.com/reviews/nine-night-kiln-theatre",
+        "https://theatreweekly.com/review-nine-night-at-kiln-theatre",
+        "https://www.allthatdazzles.co.uk/post/review-nine-night-kiln-theatre",
         "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life",
         "https://www.britishtheatreguide.info/reviews/nine-night-dorfman-theatre-15850",
         "https://www.timeout.com/london/theatre/nine-night-1",
         "https://www.londontheatredirect.com/nine-night-tickets",
-        "https://www.londontheatre.co.uk/reviews/review-nine-night-at-trafalgar-studios",
         "https://theatreweekly.com/first-look-production-images-released-for-nine-night-as-kiln-theatre-extends-run/",
         "https://oazis.app/evenements/nine-night-at-kiln-theatre-an-award-winning-drama",
         "https://www.theguardian.com/nine-night-review-dorfman-national-theatre-london",
@@ -326574,26 +327110,14 @@
         "https://fairypoweredproductions.com/nine-night-review/",
         "https://www.londonboxoffice.co.uk/news/post/nine-night-review-trafalgar"
       ],
-      "dirFiles": 10,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 14,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/nine-night-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
+          "url": "https://theatreweekly.com/review-nine-night-at-kiln-theatre",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "serpCensus": true,
           "sources": [
             {
@@ -326759,8 +327283,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -326769,8 +327293,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
-            "accepted": 2,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -326779,7 +327303,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -326789,8 +327313,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 6,
-            "accepted": 2,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -326799,8 +327323,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 7,
+            "accepted": 3,
             "error": null
           },
           {
@@ -326809,25 +327333,24 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 5,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 10,
         "byReason": {
-          "non-review-host": 5,
+          "non-review-host": 6,
+          "census-junk-host": 1,
           "non-stage-review": 1,
-          "ticketing-reseller": 2,
-          "write-path-blocked": 1,
-          "no-review-evidence": 2,
-          "ticket-seller-product-page": 1
+          "ticketing-listing": 1,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
@@ -326846,14 +327369,6 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2018-05-01"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-nine-night-at-trafalgar-studios",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2018-12-14"
         }
       ],
       "automatedExcludedListed": 0,
@@ -326869,119 +327384,107 @@
       ],
       "ingestResults": [
         {
-          "url": "https://theartsdesk.com/theatre/nine-night-trafalgar-studios-review-hilarity-and-heartbreak",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "nine-night-off-west-end-2026: https://theartsdesk.com/theatre/nine-night-trafalgar-studios-review-hilarity-and-heartbreak has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://fairypoweredproductions.com/nine-night-review/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "old-production-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "nine-night-off-west-end-2026: https://fairypoweredproductions.com/nine-night-review/ dated 2022-10-08, over a year before this run; refused as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/nine-night-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatredirect.com/nine-night-tickets",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=londontheatredirect.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=londontheatredirect.com): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"utf-8\" />\n<meta http-equiv=\"Content-Language\" content=\"en-GB\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<meta htt\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
           "url": "https://theatreweekly.com/first-look-production-images-released-for-nine-night-as-kiln-theatre-extends-run/",
           "host": "theatreweekly.com",
-          "outletId": "theatre-weekly"
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/nine-night-off-west-end-2026/theatre-weekly--unknown.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
         {
           "url": "https://oazis.app/evenements/nine-night-at-kiln-theatre-an-award-winning-drama",
           "host": "oazis.app",
-          "outletId": "oazis"
+          "outletId": "oazis",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing write: oazis--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
         },
         {
           "url": "https://www.theguardian.com/nine-night-review-dorfman-national-theatre-london",
           "host": "theguardian.com",
-          "outletId": "guardian"
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; archive_auth_required (archive.org CDX blocked for this host, capture unknown)"
         },
         {
           "url": "https://fringereview.co.uk/review/fringereview-uk/nine-night",
           "host": "fringereview.co.uk",
-          "outletId": "fringereview"
+          "outletId": "fringereview",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fringereview.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+        },
+        {
+          "url": "https://theatreweekly.com/review-nine-night-at-kiln-theatre",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.londontheatredirect.com/nine-night-tickets",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/nine-night-trafalgar-studios-review-hilarity-and-heartbreak",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/nine-night-review/",
+          "host": "fairypoweredproductions.com",
+          "outletId": "fairypoweredproductions"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/nine-night-review-kiln-theatre"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life"
+            "url": "https://theatreweekly.com/review-nine-night-at-kiln-theatre"
           },
           {
             "outletId": "londontheatredirect",
@@ -327037,17 +327540,34 @@
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/reviews/nine-night-review-kiln-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-21T10:30:38.671Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/nine-night-kiln-theatre",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-nine-night-kiln-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
+          },
+          {
             "url": "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life",
-            "outletId": "londontheatredirect",
+            "outletId": "londontheatredirect.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-21T10:30:38.671Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-nine-night-at-kiln-theatre",
+            "outletId": "theatre-weekly",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-21T10:30:38.671Z"
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
           },
           {
             "url": "https://www.londontheatredirect.com/nine-night-tickets",
@@ -327110,17 +327630,12 @@
             "url": "https://www.britishtheatreguide.info/reviews/nine-night-dorfman-theatre-15850",
             "host": "britishtheatreguide.info",
             "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/review-nine-night-at-trafalgar-studios",
-            "host": "londontheatre.co.uk",
-            "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 8
+        "liveCount": 4,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-21T10:30:38.671Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "nixon-in-china-regional-2026",
@@ -328447,15 +328962,15 @@
       "category": "broadway",
       "previewsStartDate": "2026-11-11",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-NOW-YOU-SEE-ME-LIVE-Opens-on-Broadway-20261118",
-        "https://playbill.com/article/reviews-were-critics-mystified-by-now-you-see-me-live-on-broadway"
+        "https://playbill.com/article/reviews-were-critics-mystified-by-now-you-see-me-live-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-NOW-YOU-SEE-ME-LIVE-Opens-on-Broadway-20261118"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/now-you-see-me-live-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/now-you-see-me-live-broadway-review",
-        "https://www.timeout.com/newyork/news/broadway-review-now-you-see-me-live-111826",
         "https://nystagereview.com/2026/11/20/now-you-see-me-live-its-magic/",
         "https://www.theatermania.com/news/review-now-you-see-me-live-lacks-the-magic-of-broadway_1859999/",
+        "https://www.timeout.com/newyork/news/broadway-review-now-you-see-me-live-111826",
         "https://newyorktheater.me/2026/11/12/now-you-see-me-live-broadway-review/",
         "https://newyorktheater.me/2026/11/12/now-you-see-me-live-broadway-review",
         "https://culturesauce.com/now-you-see-me-live-broadway-review",
@@ -328553,19 +329068,87 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Now You See Me Live\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Now You See Me Live\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Now You See Me Live\" review hirschfeld",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Now You See Me Live\" Duffy review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Now You See Me Live Al Hirschfeld Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 389,
+        "count": 397,
         "byReason": {
+          "bare-host": 1,
+          "non-review-host": 55,
           "aggregator-internal-nav": 237,
+          "no-review-evidence": 5,
           "not-http-url": 75,
           "production-database-listing": 9,
           "aggregator-section-root": 9,
-          "non-review-host": 52,
           "non-stage-review": 1,
-          "bare-host": 1,
           "roundup-page": 4,
           "podcast-episode": 1
         }
@@ -328697,12 +329280,6 @@
             "firstSeenAt": "2026-11-19T04:21:51.813Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-now-you-see-me-live-111826",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-19T04:21:51.813Z"
-          },
-          {
             "url": "https://nystagereview.com/2026/11/20/now-you-see-me-live-its-magic/",
             "outletId": "nystagereview.com",
             "state": "live",
@@ -328711,6 +329288,12 @@
           {
             "url": "https://www.theatermania.com/news/review-now-you-see-me-live-lacks-the-magic-of-broadway_1859999/",
             "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-19T04:21:51.813Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/news/broadway-review-now-you-see-me-live-111826",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-19T04:21:51.813Z"
           },
@@ -328810,7 +329393,7 @@
         "liveCount": 8,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "now-you-see-me-live-off-west-end-2026",
@@ -381258,11 +381841,8 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-21",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.britishtheatre.com/posts/stratford-east-robin-hood-merry-mandem-cast-2026",
-        "https://www.timeout.com/london/theatre/robin-hood-and-the-merry-mandem"
-      ],
-      "dirFiles": 6,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
@@ -381308,101 +381888,17 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Robin Hood and the Merry Mandem\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Robin Hood and the Merry Mandem\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Robin Hood and the Merry Mandem\" review stratford",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 5,
-        "byReason": {
-          "non-review-host": 1,
-          "no-review-evidence": 1,
-          "write-path-blocked": 2,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.britishtheatre.com/posts/stratford-east-robin-hood-merry-mandem-cast-2026",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-09-28"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/robin-hood-and-the-merry-mandem",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-10-21"
-        }
-      ],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -381410,22 +381906,11 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.britishtheatre.com/posts/stratford-east-robin-hood-merry-mandem-cast-2026",
-            "host": "britishtheatre.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/robin-hood-and-the-merry-mandem",
-            "host": "timeout.com",
-            "reason": "page-date-before-run"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-22T00:13:28.302Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "robin-hood-west-end-2024",
@@ -387624,12 +388109,13 @@
     {
       "showId": "santas-first-christmas-off-west-end-2026",
       "title": "Santa's First Christmas",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-11-14",
+      "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
         "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
         "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613142",
         "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613142",
@@ -387641,6 +388127,18 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
+          "host": "primarytimes.co.uk",
+          "knownOutletId": "primarytimes",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
           "host": "primarytimes.co.uk",
@@ -387764,15 +388262,15 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Santa's First Christmas\" West End review",
+        "query": "\"Santa's First Christmas\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Santa's First Christmas\" West End review",
+            "query": "\"Santa's First Christmas\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -387783,7 +388281,7 @@
             "geo": "gb",
             "ok": true,
             "results": 2,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -387792,7 +388290,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 6,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -387802,7 +388300,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -387812,24 +388310,21 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 4,
         "byReason": {
-          "non-review-host": 1,
-          "non-stage-review": 2,
-          "census-junk-host": 4,
-          "non-review-path": 2,
-          "no-review-evidence": 1
+          "non-review-host": 2,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -387837,7 +388332,7 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613208",
+          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes",
           "provisional": false,
@@ -387849,7 +388344,22 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+        },
+        {
+          "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
+          "host": "primarytimes.co.uk",
+          "outletId": "primarytimes",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
         },
         {
           "url": "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
@@ -387895,26 +388405,16 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
-        },
-        {
-          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
-          "host": "primarytimes.co.uk",
-          "outletId": "primarytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
+          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
+          "host": "primarytimes.co.uk",
+          "outletId": "primarytimes"
+        },
+        {
+          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613208",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes"
         }
@@ -387922,6 +388422,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "primarytimes",
+            "outlet": "primarytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-"
+          },
           {
             "outletId": "primarytimes",
             "outlet": "primarytimes",
@@ -387968,45 +388475,52 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
+            "outletId": "primarytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-22T02:20:36.933Z"
+          },
+          {
             "url": "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-18T12:10:38.678Z"
           },
           {
             "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613142",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-18T21:11:04.729Z"
           },
           {
             "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613142",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-19T05:22:01.102Z"
           },
           {
             "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-15T11:47:44.893Z"
           },
           {
             "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613208",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-17T10:13:12.126Z"
           },
           {
             "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
             "outletId": "primarytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-16T16:28:25.966Z"
           }
         ],
@@ -388015,7 +388529,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-21T10:30:38.671Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -388206,12 +388720,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Saulo García: Parejas Disparejas\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Saulo García: Parejas Disparejas\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Saulo García: Parejas Disparejas\" review repertorio",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Saulo García: Parejas Disparejas Repertorio Español / Spanish Theatre Repertory review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Saulo García: Parejas Disparejas Repertorio Español / Spanish Theatre Repertory review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Saulo García: Parejas Disparejas Repertorio Español / Spanish Theatre Repertory review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 8,
+        "byReason": {
+          "bare-host": 1,
+          "non-review-host": 5,
+          "aggregator-internal-nav": 2
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -388225,7 +388800,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-21T21:34:55.343Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
@@ -515409,6 +515984,45 @@
       "computedAt": "2026-11-01T15:05:11.876Z"
     },
     {
+      "showId": "the-silence-and-the-noise-off-west-end-2026",
+      "title": "The Silence And The Noise",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-25",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-22T02:20:36.933Z"
+    },
+    {
       "showId": "the-singularity-play-regional-2024",
       "title": "The Singularity Play",
       "openingDate": "2024-05-24",
@@ -516172,12 +516786,6 @@
       "previewsStartDate": "2026-11-21",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
-        "https://www.pinkprincetheatre.com/post/review-the-snowman-the-peacock-theatre",
-        "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre",
-        "https://twinsandtravels.com/reviews/review-the-snowman-peacock-theatre-london/",
-        "https://thelivereview.co.uk/the-snowman-review-peacock-theatre-2/",
-        "https://www.westendbestfriend.co.uk/news/review-the-snowman-peacock-theatre",
         "https://www.voicemag.uk/review/the-snowman-at-the-peacock-theatre",
         "https://www.express.co.uk/entertainment/theatre/363110/Dance-review-The-Snowman-Peacock-Theatre-London",
         "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-17214659",
@@ -516290,126 +516898,14 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Snowman\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Snowman\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Snowman\" review peacock",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Snowman Peacock Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Snowman Peacock Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Snowman Peacock Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 5,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 12,
-        "byReason": {
-          "non-review-host": 9,
-          "roundup-page": 1,
-          "ticketing-reseller": 1,
-          "stored-date-before-production": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2014-12-09"
-        },
-        {
-          "url": "https://www.pinkprincetheatre.com/post/review-the-snowman-the-peacock-theatre",
-          "host": "pinkprincetheatre.com",
-          "knownOutletId": "pinkprincetheatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-11-26"
-        },
-        {
-          "url": "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre",
-          "host": "timewellspentmag.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-11-23"
-        },
-        {
-          "url": "https://twinsandtravels.com/reviews/review-the-snowman-peacock-theatre-london/",
-          "host": "twinsandtravels.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2019-12-01"
-        },
-        {
-          "url": "https://thelivereview.co.uk/the-snowman-review-peacock-theatre-2/",
-          "host": "thelivereview.co.uk",
-          "knownOutletId": "thelivereview",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-11-25"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-the-snowman-peacock-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2024-11-24"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -516449,7 +516945,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=voicemag.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=voicemag.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee failed ("
         }
       ],
       "ingestSkippedByCap": [],
@@ -516469,48 +516965,17 @@
           {
             "url": "https://www.voicemag.uk/review/the-snowman-at-the-peacock-theatre",
             "outletId": "voice-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-21T14:33:00.575Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
-            "host": "londontheatre1.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.pinkprincetheatre.com/post/review-the-snowman-the-peacock-theatre",
-            "host": "pinkprincetheatre.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre",
-            "host": "timewellspentmag.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://twinsandtravels.com/reviews/review-the-snowman-peacock-theatre-london/",
-            "host": "twinsandtravels.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://thelivereview.co.uk/the-snowman-review-peacock-theatre-2/",
-            "host": "thelivereview.co.uk",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-snowman-peacock-theatre",
-            "host": "westendbestfriend.co.uk",
-            "reason": "page-date-before-run"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-21T23:05:11.674Z"
+      "computedAt": "2026-11-22T02:20:36.933Z"
     },
     {
       "showId": "the-sound-inside-2019",
@@ -579176,29 +579641,28 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-22T01:06:26.814Z",
+    "at": "2026-11-22T02:20:36.933Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "recent-alien-abductions-regional-2026",
-      "the-kings-critique-off-broadway-2026",
-      "222-a-ghost-story-off-broadway-2026",
-      "hamlet-hail-to-the-thief-off-west-end-2026"
+      "santas-first-christmas-off-west-end-2026",
+      "msblackforpresident-off-broadway-2026",
+      "nine-night-off-west-end-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "jumpers-off-west-end-2026",
-      "global-majority-off-west-end-2026"
+      "the-silence-and-the-noise-off-west-end-2026",
+      "fly-you-fools-off-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 31,
+    "neverAuditedDueAtStart": 29,
     "oldestDueRowAtStart": {
       "showId": "midnight-off-broadway-2026",
       "computedAt": "2026-11-04T20:32:02.077Z",
-      "ageHours": 412.2
+      "ageHours": 413.4
     },
     "oldestDueRowAfterRun": {
       "showId": "midnight-off-broadway-2026",
       "computedAt": "2026-11-04T20:32:02.077Z",
-      "ageHours": 412.6
+      "ageHours": 413.8
     }
   }
 }
