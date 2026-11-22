@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7964",
   "planId": "08005df6-4a1a-4c19-9270-96cf5cd21c2b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T07:47:32.491Z",
   "submitter": {
     "name": null,
@@ -67,5 +67,14 @@
         "priorRunOf": "a-streetcar-named-desire-west-end-2023"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T07:59:52.513Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-streetcar-named-desire-off-broadway-2025 (priorRuns -> a-streetcar-named-desire-west-end-2023)"
+    }
+  ],
+  "executedIn": "ci"
 }
