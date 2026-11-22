@@ -17,6 +17,9 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// Fixture-only: safeWriteReview would otherwise read the live data/shows.json
+// (live-data-lane gate). An empty show map makes its show-aware guards no-op.
+require('../lib/review-write-guard.js')._setShowsCacheForTest(new Map());
 const negCache = require('../lib/pull-quote-negative-cache.js');
 
 const SENTENCES = [
