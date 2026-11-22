@@ -22,6 +22,15 @@
  */
 
 const ESCALATION_HOURS = 6;
+// BRO-7102 recheck: a signature that breaks AGAIN while its card sits In Review,
+// Paused or Backlog never reaches the red-first fast path (it takes unstarted
+// cards only), so it waited the full ESCALATION_HOURS with nobody on it: the
+// 2026-11-17 E2E visual-regression red ran 9.3h (BRO-7268 In Review since
+// 11-10; escalated at 7.0h, fixed 1.5h later). Such a card is put in front
+// after one hour instead. An unstarted card keeps ESCALATION_HOURS: the Mac
+// red-first pass already has it.
+const PARKED_CARD_ESCALATION_HOURS = 1;
+const PARKED_STATE_TYPES = new Set(['started', 'backlog']);
 // Re-stamp at most this often per signature (a card a worker took and paused
 // again is put back in front once a day, not on every red push).
 const RESTAMP_HOURS = 24;
@@ -52,7 +61,9 @@ function decideRedEscalation({ condition, card, nowMs, env = process.env, thresh
   const openedMs = Date.parse(condition.incidentOpenedAt || condition.firstSeen || '');
   if (!Number.isFinite(openedMs) || !Number.isFinite(nowMs)) return { escalate: false, reason: 'no-incident-start', ageHours: null };
   const ageHours = Math.max(0, (nowMs - openedMs) / HOUR_MS);
-  if (ageHours < thresholdHours) return { escalate: false, reason: 'too-young', ageHours };
+  const parked = !!(card && card.state && PARKED_STATE_TYPES.has(card.state.type));
+  const effectiveHours = parked ? Math.min(thresholdHours, PARKED_CARD_ESCALATION_HOURS) : thresholdHours;
+  if (ageHours < effectiveHours) return { escalate: false, reason: 'too-young', ageHours };
   const lastMs = Date.parse(condition.escalatedAt || '');
   if (Number.isFinite(lastMs) && nowMs - lastMs < RESTAMP_HOURS * HOUR_MS) return { escalate: false, reason: 'escalated-recently', ageHours };
   if (!card) return { escalate: false, reason: 'no-card', ageHours };
@@ -77,7 +88,7 @@ function decideRedEscalation({ condition, card, nowMs, env = process.env, thresh
     const touchedMs = Date.parse(card.updatedAt || '');
     if (Number.isFinite(touchedMs) && nowMs - touchedMs < ACTIVE_WORK_HOURS * HOUR_MS) return { escalate: false, reason: 'being-worked', ageHours };
   }
-  return { escalate: true, reason: 'red-too-long', ageHours };
+  return { escalate: true, reason: parked && ageHours < thresholdHours ? 'red-on-parked-card' : 'red-too-long', ageHours };
 }
 
 // A lowercase hyphenated tag, so cloud-worker-pick isMachineComment (MACHINE_TAG_RE)
@@ -132,7 +143,7 @@ function escalationUpdate({ card, ageHours, nowIso, todoStateId, pickable, subje
 }
 
 module.exports = {
-  ESCALATION_HOURS, RESTAMP_HOURS, ACTIVE_WORK_HOURS, HIGH_PRIORITY, DEFAULT_SUBJECT,
+  ESCALATION_HOURS, PARKED_CARD_ESCALATION_HOURS, RESTAMP_HOURS, ACTIVE_WORK_HOURS, HIGH_PRIORITY, DEFAULT_SUBJECT,
   ESCALATION_COMMENT_PREFIX, HOLD_HISTORY_REASONS, NO_STAMP_HISTORY_REASONS,
   decideRedEscalation, stampStartNow, escalationUpdate, lastEscalationCommentMs,
 };

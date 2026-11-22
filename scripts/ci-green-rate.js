@@ -52,9 +52,10 @@ const JQ = '{total: .total_count, runs: (.workflow_runs | map({databaseId: .id, 
 
 function usage() {
   return [
-    'Usage: node scripts/ci-green-rate.js [--days N] [--min M] [--json] [--record] [--workflow FILE] [--branch NAME] [--max-pages P]',
+    'Usage: node scripts/ci-green-rate.js [--days N] [--min M] [--max-episode-hours H] [--json] [--record] [--workflow FILE] [--branch NAME] [--max-pages P]',
     '  --days N       window in days (default 7)',
     '  --min M        minimum green rate percent for PASS (default 80)',
+    '  --max-episode-hours H  also FAIL when any red episode in the window (first red to next green, or still open) ran over H hours',
     '  --json         print the full result object instead of the table',
     '  --record       append this reading to data/audit/ci-green-rate.jsonl (health-check.js nightly; not an acceptance form)',
     '  --cause-mix    also print a CAUSE-MIX line: CAUSE: tags on main test.yml red cards closed in the window (reads Linear)',
@@ -244,7 +245,7 @@ function main(argv, deps = {}) {
 
   const ledgerRows = Array.isArray(deps.ledgerRows) ? deps.ledgerRows : readLedger();
   const result = core.computeGreenRate(fetched.runs, {
-    days: opts.days, min: opts.min, now, workflow: opts.workflow, branch: opts.branch, repo, truncated: fetched.truncated, ledgerRows,
+    days: opts.days, min: opts.min, maxEpisodeHours: opts.maxEpisodeHours, now, workflow: opts.workflow, branch: opts.branch, repo, truncated: fetched.truncated, ledgerRows,
   });
   result.fetchedRuns = fetched.runs.length;
   if (fetched.truncated) {

@@ -419,3 +419,44 @@ test('a cancel that ran >= HUNG_CANCEL_MIN is a hung job-timeout → RED; a shor
   assert.deepEqual(res.currentStreak, { color: 'red', length: 1 }, 'a hang breaks the green streak');
   assert.match(core.verdictLine(res), /, 1 hung \(cancelled >= 10 min, counted red\)\)/);
 });
+
+// BRO-7102 acceptance: "no red episode longer than 6h". The median hid the
+// long ones (13 of 101 episodes over 6h, median 37 min), so the longest
+// episode is measured and --max-episode-hours can fail on it.
+test('longest red episode: measured over closed and open episodes; --max-episode-hours fails on it', () => {
+  // 30 greens, then a 7h red episode (34h..27h ago), 20 greens, then a 1h one, then greens.
+  const rows = [
+    ...greens(30, 70),
+    run(34, 'failure'), run(30, 'failure'), run(27, 'success'),
+    ...greens(20, 26),
+    run(5, 'failure'), run(4, 'success'), run(3, 'success'),
+  ];
+  const base = core.computeGreenRate(rows, { days: 7, min: 80, now: NOW });
+  assert.equal(base.longestRedEpisodeMin, 7 * 60);
+  assert.equal(base.longestRedEpisodeStartedAt, new Date(NOW - 34 * H).toISOString());
+  assert.equal(base.verdict, 'PASS'); // no cap asked: rate-only, as before
+  const capped = core.computeGreenRate(rows, { days: 7, min: 80, now: NOW, maxEpisodeHours: 6 });
+  assert.equal(capped.verdict, 'FAIL');
+  assert.match(capped.reason, /longest red episode 7h .* over --max-episode-hours 6/);
+  assert.match(core.verdictLine(capped), /→ FAIL \(longest red episode 7h/);
+  assert.equal(core.computeGreenRate(rows, { days: 7, min: 80, now: NOW, maxEpisodeHours: 8 }).verdict, 'PASS');
+  assert.match(core.formatReport(base), /longest red episode: 420 min from /);
+
+  // An open episode counts from its first red to now.
+  const open = core.computeGreenRate([...greens(40, 60), run(8, 'failure'), run(1, 'failure')], { days: 7, min: 80, now: NOW, maxEpisodeHours: 6 });
+  assert.equal(open.longestRedEpisodeMin, 8 * 60);
+  assert.match(open.reason, /still open/);
+
+  // With a cap set, a rate FAIL names the rate as the reason.
+  const lowRate = core.computeGreenRate([...greens(10, 40), run(20, 'failure'), run(19, 'failure'), run(18, 'failure'), run(17, 'success')], { days: 7, min: 95, now: NOW, maxEpisodeHours: 6 });
+  assert.equal(lowRate.verdict, 'FAIL');
+  assert.match(lowRate.reason, /green rate .* under --min 95/);
+});
+
+test('--max-episode-hours parses; bad values are usage errors', () => {
+  assert.equal(core.parseCliArgs(['--max-episode-hours', '6']).maxEpisodeHours, 6);
+  assert.equal(core.parseCliArgs(['--max-episode-hours=1.5']).maxEpisodeHours, 1.5);
+  assert.equal(core.parseCliArgs([]).maxEpisodeHours, null);
+  assert.match(core.parseCliArgs(['--max-episode-hours', '0']).error, /must be a number > 0/);
+  assert.match(core.parseCliArgs(['--max-episode-hours']).error, /needs a value/);
+});

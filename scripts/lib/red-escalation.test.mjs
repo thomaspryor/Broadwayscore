@@ -155,3 +155,32 @@ test('BRO-7595: a bulleted or bold person hold under the machine line still hold
   }
   assert.equal(hd.hasOnlyMachinePark(M), true);
 });
+
+// BRO-7102 recheck, real shape: on 2026-11-17 the E2E visual-regression
+// signature broke again at 00:14Z while its card BRO-7268 sat In Review since
+// 11-10 (last touched then). red-first takes unstarted cards only, so nothing
+// moved until the 6h escalation (fired at 7.0h); main was red 9.3h.
+test('a red signature whose card is parked (In Review / Paused / Backlog) escalates after 1h, not 6h', () => {
+  const { PARKED_CARD_ESCALATION_HOURS } = require('./red-escalation.js');
+  assert.equal(PARKED_CARD_ESCALATION_HOURS, 1);
+  const opened = Date.parse('2026-11-17T00:14:04Z');
+  const inReview = { id: 's-rev', name: 'In Review', type: 'started' };
+  const bro7268 = card({ identifier: 'BRO-7268', priority: 2, state: inReview, updatedAt: '2026-11-10T06:54:27.339Z' });
+  const at = (h) => decideRedEscalation({ condition: cond({ incidentOpenedAt: iso(opened), linearIdentifier: 'BRO-7268' }), card: bro7268, nowMs: opened + h * H, env: ENV });
+  assert.equal(at(0.5).reason, 'too-young');
+  const d = at(1.2);
+  assert.equal(d.escalate, true);
+  assert.equal(d.reason, 'red-on-parked-card');
+  // Past 6h it is the ordinary reason.
+  assert.equal(at(6.5).reason, 'red-too-long');
+  // Paused / Backlog (backlog type) behave the same.
+  assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }), card: card({ state: { id: 's-p', name: 'Paused', type: 'backlog' } }) }).escalate, true);
+  // A started card a worker touched within ACTIVE_WORK_HOURS is still being worked.
+  assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }), card: card({ state: inReview, updatedAt: iso(NOW - 2 * H) }) }).reason, 'being-worked');
+  // An unstarted card keeps the full window: the Mac red-first pass has it.
+  assert.equal(decide({ condition: cond({ incidentOpenedAt: iso(NOW - 1.5 * H) }) }).reason, 'too-young');
+  // The update puts it back where the cloud worker can take it.
+  const u = escalationUpdate({ card: bro7268, ageHours: 1.2, nowIso: iso(opened + 1.2 * H), todoStateId: 's-todo', pickable: true });
+  assert.equal(u.input.stateId, 's-todo');
+  assert.match(u.input.description, /^START-NOW: /);
+});

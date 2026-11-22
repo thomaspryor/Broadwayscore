@@ -306,6 +306,11 @@ function computeGreenRate(rows, opts = {}) {
   let episodeStart = null; // t of the first red in the open red episode
   const latenciesMs = [];
   let redEpisodes = 0;
+  // BRO-7102: the 14-day goal is "no red episode longer than 6h", so the
+  // LONGEST episode is measured, not only the median (13 of 101 episodes
+  // ran past 6h while the median was 37 min). An episode that began before
+  // the window is clipped to the window's first run.
+  let longestEpisode = null; // { ms, startedAt, open }
   for (const r of colored) {
     if (cur && cur.color === r.color) cur.length++;
     else cur = { color: r.color, length: 1 };
@@ -316,10 +321,14 @@ function computeGreenRate(rows, opts = {}) {
       if (episodeStart === null) { episodeStart = r.t; redEpisodes++; }
     } else if (episodeStart !== null) {
       latenciesMs.push(r.t - episodeStart);
+      if (!longestEpisode || r.t - episodeStart > longestEpisode.ms) longestEpisode = { ms: r.t - episodeStart, startedAt: episodeStart, open: false };
       episodeStart = null;
     }
   }
   const openRedEpisodeMin = episodeStart === null ? null : Math.round((now - episodeStart) / 60000);
+  if (episodeStart !== null && (!longestEpisode || now - episodeStart > longestEpisode.ms)) longestEpisode = { ms: now - episodeStart, startedAt: episodeStart, open: true };
+  const longestRedEpisodeMin = longestEpisode ? Math.round(longestEpisode.ms / 60000) : null;
+  const maxEpisodeHours = Number.isFinite(opts.maxEpisodeHours) ? opts.maxEpisodeHours : null;
   const medMs = median(latenciesMs);
 
   const scored = counts.green + counts.red;
@@ -337,10 +346,14 @@ function computeGreenRate(rows, opts = {}) {
     reason = `cancel storm: ${counts.cancelled} cancelled vs ${scored} scored — rate not authoritative (see scripts/ci-health-check.sh)`;
   } else if (truncated) {
     reason = 'window incomplete: page cap hit — an incomplete window is never a PASS';
+  } else if (maxEpisodeHours !== null && longestEpisode && longestEpisode.ms > maxEpisodeHours * 3600000) {
+    reason = `longest red episode ${Math.round(longestEpisode.ms / 360000) / 10}h (from ${new Date(longestEpisode.startedAt).toISOString().slice(0, 16)}Z${longestEpisode.open ? ', still open' : ''}) is over --max-episode-hours ${maxEpisodeHours}`;
   } else if (counts.green * 100 >= min * scored) {
     // Integer comparison, so an exact-threshold sample (8 green / 2 red at
     // min 80) is PASS without float rounding deciding it.
     verdict = 'PASS';
+  } else if (maxEpisodeHours !== null) {
+    reason = `green rate ${rate}% is under --min ${min}`;
   }
 
   const trend = assessTrend(opts.ledgerRows || [], { now, current: { rate, verdict }, days });
@@ -367,6 +380,9 @@ function computeGreenRate(rows, opts = {}) {
     redToGreenMedianMin: medMs === null ? null : Math.round(medMs / 6000) / 10,
     redToGreenSamples: latenciesMs.length,
     openRedEpisodeMin,
+    longestRedEpisodeMin,
+    longestRedEpisodeStartedAt: longestEpisode ? new Date(longestEpisode.startedAt).toISOString() : null,
+    maxEpisodeHours,
     perDay,
     trend,
     verdict,
@@ -415,7 +431,7 @@ function formatReport(res) {
     `CI green rate — ${res.repo ? `${res.repo} ` : ''}${res.workflow} on ${res.branch}, ${res.event} runs, last ${res.days}d (${res.windowStart.slice(0, 16)}Z → ${res.windowEnd.slice(0, 16)}Z)${res.truncated ? ' [TRUNCATED: page cap hit]' : ''}`,
     `  completed ${res.counts.total} | green ${res.counts.green} | red ${res.counts.red} | cancelled ${res.counts.cancelled} | other ${res.counts.other} | reruns collapsed ${res.rerunsCollapsed || 0}`,
     `  longest green streak ${res.longestGreenStreak} | longest red streak ${res.longestRedStreak} | current streak: ${cur}`,
-    `  red episodes ${res.redEpisodes} | red→green latency median: ${lat}${res.openRedEpisodeMin === null ? '' : ` | open red episode: ${res.openRedEpisodeMin} min and counting`}`,
+    `  red episodes ${res.redEpisodes} | red→green latency median: ${lat}${res.longestRedEpisodeMin == null ? '' : ` | longest red episode: ${res.longestRedEpisodeMin} min from ${String(res.longestRedEpisodeStartedAt).slice(0, 16)}Z`}${res.openRedEpisodeMin === null ? '' : ` | open red episode: ${res.openRedEpisodeMin} min and counting`}`,
   ];
   if (res.perDay.length) {
     lines.push('  date        total green red  canc other');
@@ -434,7 +450,7 @@ function formatReport(res) {
  * bad value rather than throwing so the CLI can print usage and exit 2.
  */
 function parseCliArgs(argv) {
-  const o = { days: DEFAULTS.days, min: DEFAULTS.min, json: false, record: false, help: false, workflow: DEFAULTS.workflow, branch: DEFAULTS.branch, maxPages: DEFAULTS.maxPages };
+  const o = { days: DEFAULTS.days, min: DEFAULTS.min, json: false, record: false, help: false, workflow: DEFAULTS.workflow, branch: DEFAULTS.branch, maxPages: DEFAULTS.maxPages, maxEpisodeHours: null };
   const args = [...argv];
   const takeValue = (i, name) => {
     const a = args[i];
@@ -448,6 +464,15 @@ function parseCliArgs(argv) {
     if (key === '--json') { o.json = true; continue; }
     if (key === '--record') { o.record = true; continue; }
     if (key === '--help' || key === '-h') { o.help = true; continue; }
+    if (key === '--max-episode-hours') {
+      const { v, skip, err } = takeValue(i, key);
+      if (err) return { error: err };
+      i += skip;
+      const n = Number(v);
+      if (!Number.isFinite(n) || n <= 0 || n > 24 * 365) return { error: `--max-episode-hours must be a number > 0, got '${v}'` };
+      o.maxEpisodeHours = n;
+      continue;
+    }
     if (key === '--days' || key === '--min' || key === '--max-pages' || key === '--workflow' || key === '--branch') {
       const { v, skip, err } = takeValue(i, key);
       if (err) return { error: err };
