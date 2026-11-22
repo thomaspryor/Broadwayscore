@@ -130,7 +130,7 @@ function isSweepCommit(c) {
 // runs, scripts/gap-recovery-driver.js checkpoint message) commits under the
 // owner's git identity, so it graded as "hand-commit" and inflated needed-hands
 // (28+ text-gap commits in the 11-06..11-14 window alone). It is automation.
-const AUTOMATED_RECOVERY_SUBJECT = /^feat: gap-recovery driver (?:checkpoint \d+|final) - \d+ accepted\b/;
+const AUTOMATED_RECOVERY_SUBJECT = /^feat: gap-recovery driver (?:checkpoint \d+|final|adopt-orphans|after-error) - \d+ accepted\b/;
 function isAutomatedRecoveryCommit(c) { return AUTOMATED_RECOVERY_SUBJECT.test(String((c && c.subject) || '')); }
 
 /** Embargo and hand-evidence window bounds for an opening (shared with grade-openings.js). */
@@ -210,8 +210,8 @@ function causeOfSubject(subject) {
   // BRO-7145: the 2-month audit left 21 openings in 'other'; these are the subject families behind them.
   if (/gather-reviews:/.test(t)) return 'discovery-gap';
   if (/false flag|adjudicate|blocker|re-?clear|move[d]? .*(production|review)|correct venue|review fixes/.test(t)) return 'wrong-label';
-  if (/blocklist|placeholder|stub|mirror|listing|drop |delete /.test(t)) return 'content-tier';
-  if (/restore|fill .*body|re-?trim|reclean|mislabelled|wrongly rejected/.test(t)) return 'text-gap';
+  if (/\brestore\b|fill .*body|re-?trim|wrongly rejected/.test(t)) return 'text-gap';
+  if (/blocklist|placeholder|\bstub\b|\bmirror\b|\blisting\b|\bdrop |\bdelete |mislabelled/.test(t)) return 'content-tier';
   if (/name the .* after|critic ?name/.test(t)) return 'attribution';
   return 'other';
 }
@@ -254,6 +254,7 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
   const signals = [];
   const bySha = new Map((commits || []).map((c) => [String(c.sha).slice(0, 8), c]));
   const fixCommits = (commits || []).filter((c) => !isSweepCommit(c) && !isAutomatedRecoveryCommit(c));
+  const recoveryCommits = (commits || []).filter(isAutomatedRecoveryCommit);
   const seen = new Set();
   const seenPair = new Set();
   // One signal per (commit, outlet): a commit fixing four outlets is four
@@ -345,6 +346,18 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
   // "ingest:" commits) CREATED inside the window: the first pass missed them,
   // but no person stepped in, so they stay out of signals and the verdict.
   const sweepFinds = [];
+  // BRO-7145: driver checkpoints are not hand work but still prove the first pass
+  // missed a review (file added) or its text (file modified): same first-pass-miss feed.
+  for (const c of recoveryCommits) {
+    const at = toMs(c.at);
+    if (!inWin(at)) continue;
+    const mine = (c.files || []).filter((f) => f.startsWith(`${show.id}/`));
+    for (const o of new Set(mine.map((f) => outletIdFromFile(f, show.id)).filter(Boolean))) {
+      const change = fileChangeOf(c, mine.filter((f) => outletIdFromFile(f, show.id) === o));
+      if (change === 'deleted') continue;
+      sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: change === 'added' ? 'discovery-gap' : 'text-gap', fileChange: change || 'modified', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
+    }
+  }
   for (const c of commits || []) {
     const at = toMs(c.at);
     if (!inWin(at) || at < embargoMs + SWEEP_GRACE_H * HOUR || !SWEEP_FIND_SUBJECT.test(c.subject || '') || !Array.isArray(c.added)) continue;

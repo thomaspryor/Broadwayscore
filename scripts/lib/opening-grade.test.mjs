@@ -174,8 +174,12 @@ test('BRO-7145 parity: the grader recognises the exact subject gap-recovery-driv
   const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
   const m = src.match(/message: `([^`]*gap-recovery driver[^`]*)`/);
   assert.ok(m, 'driver checkpoint message not found; update AUTOMATED_RECOVERY_SUBJECT');
-  const subject = m[1].replace(/\$\{label\}/, 'checkpoint 3').replace(/\$\{accepted\}/, '3');
-  assert.ok(og.isAutomatedRecoveryCommit({ subject }), subject);
+  const labels = ['checkpoint 3', 'final', ...[...src.matchAll(/flush\('([a-z-]+)'\)/g)].map((x) => x[1])];
+  assert.ok(labels.includes('adopt-orphans') && labels.includes('after-error'), 'driver flush labels changed');
+  for (const label of labels) {
+    const subject = m[1].replace(/\$\{label\}/, label).replace(/\$\{accepted\}/, '3');
+    assert.ok(og.isAutomatedRecoveryCommit({ subject }), subject);
+  }
 });
 
 test('BRO-7145: subject families that used to fall into "other" get a cause class', () => {
@@ -190,7 +194,18 @@ test('BRO-7145: subject families that used to fall into "other" get a cause clas
     'data: restore NYSR America Who Hurt You review (3/5) wrongly rejected': 'text-gap',
     'data: Catarina - fill The Reviews Hub review body (3749 chars)': 'text-gap',
     'data: School Girls 2026 - name the Chicago Tribune stub after its critic': 'content-tier',
+    'reclean-truncated --apply: 3 complete reviews mislabelled truncated': 'content-tier',
+    'fix: stubborn enlisting of mirrors': 'other',
     'chore: unrelated tidy': 'other',
   };
   for (const [subject, cause] of Object.entries(cases)) assert.equal(og.causeOfSubject(subject), cause, subject);
+});
+
+test('BRO-7145 review: driver commits stay first-pass-miss evidence (text-gap / discovery-gap) without making the opening needed-hands', () => {
+  const mk = (added) => ({ sha: 'eeee222233', at: iso(embargo + 30 * 3600000), author: 'Tom Pryor', email: 'owner@example.com', subject: 'feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)', files: [`${show.id}/guardian--x.json`], added: added ? [`${show.id}/guardian--x.json`] : [] });
+  const run = (c) => og.gradeOpening({ show, files, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const mod = run(mk(false));
+  assert.notEqual(mod.verdict, 'needed-hands');
+  assert.deepEqual(og.firstPassMisses([{ ...mod, category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'text-gap']]);
+  assert.deepEqual(og.firstPassMisses([{ ...run(mk(true)), category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'discovery-gap']]);
 });
