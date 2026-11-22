@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-21T16:41:09.279Z",
+    "generatedAt": "2026-11-22T12:02:39.906Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 377,
-  "errorSeverity": 263,
+  "totalGaps": 376,
+  "errorSeverity": 262,
   "warningSeverity": 114,
   "gaps": [
     {
@@ -2615,15 +2615,6 @@
       "extracted": 8,
       "gap": 9,
       "ratio": 0.47,
-      "severity": "error"
-    },
-    {
-      "showId": "the-dead-1904-off-broadway-2026",
-      "category": "off-broadway",
-      "expected": 21,
-      "extracted": 8,
-      "gap": 13,
-      "ratio": 0.38,
       "severity": "error"
     },
     {
