@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T08:06:00.225Z",
+  "timestamp": "2026-11-22T08:40:30.457Z",
   "stats": {
-    "totalReviews": 83831,
-    "alreadyFlagged": 22435,
+    "totalReviews": 83839,
+    "alreadyFlagged": 22436,
     "dateGuardCatches": 238,
-    "directorMismatch": 3875,
-    "tvFilmSignals": 2408,
-    "londonSignals": 3963,
-    "offBroadwaySignals": 783,
+    "directorMismatch": 3879,
+    "tvFilmSignals": 2409,
+    "londonSignals": 3965,
+    "offBroadwaySignals": 784,
     "yearMismatch": 395,
-    "noPublishDate": 8215
+    "noPublishDate": 8213
   },
   "findings": [
     {
@@ -2732,6 +2732,52 @@
       ]
     },
     {
+      "showId": "a-streetcar-named-desire-crucible-regional-2025",
+      "file": "all-that-dazzles-uk--sam-waite.json",
+      "score": 64,
+      "publishDate": "2025-03-07",
+      "url": "https://www.allthatdazzles.co.uk/post/review-a-streetcar-named-desire-crucible-theatre-sheffield",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from a-streetcar-named-desire-off-broadway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-crucible-regional-2025",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 92,
+      "publishDate": "2025-03-11",
+      "url": "https://nypost.com/2025/03/11/entertainment/a-streetcar-named-desire-review-paul-mescal-sizzles-patsy-ferran-amazes-in-4-star-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from a-streetcar-named-desire-off-broadway-2025"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2025-03-17",
+      "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "a-streetcar-named-desire-regional-2024",
       "file": "splash-magazines--suzanne-magnuson.json",
       "score": 90,
@@ -2742,6 +2788,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/streetcar-named-desire-review-heartstopping-revival-grips-intensity/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from a-streetcar-named-desire-off-broadway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/a-streetcar-named-desire-at-the-almeida-review-paul-mescal-stars-in-this-red-hot-revival",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from a-streetcar-named-desire-off-broadway-2025"
         }
       ]
     },
@@ -93004,16 +93078,41 @@
       ]
     },
     {
-      "showId": "a-streetcar-named-desire-crucible-regional-2025",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": 92,
-      "publishDate": "2025-03-11",
-      "url": "https://nypost.com/2025/03/11/entertainment/a-streetcar-named-desire-review-paul-mescal-sizzles-patsy-ferran-amazes-in-4-star-revival/",
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-03-12",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "nytg--joe-dziemianowicz.json",
+      "publishDate": "2025-03-11",
+      "url": "https://www.newyorktheatreguide.com/reviews/a-streetcar-named-desire-off-broadway-review-paul-mescal",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2025-03-11",
+      "url": "https://www.theatermania.com/news/review-paul-mescal-led-a-streetcar-named-desire-violently-crashes-into-2025_1767057/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
