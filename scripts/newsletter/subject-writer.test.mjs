@@ -2,7 +2,7 @@
 // network calls stubbed. Requires the real module, no copied logic.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardDetailRepeats, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence } from './subject-writer.mjs';
+import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -23,7 +23,7 @@ const pool = buildPool(facts);
 const good = {
   angle: 'last chance',
   subject: 'The Revlon Girl, 83/100, closes Saturday',
-  preheader: 'Critics gave it an 83. The Bridge, at the Bush, ends Wednesday too.',
+  preheader: 'It scores 83. The Bridge, at the Bush, ends Wednesday too.',
   lede: 'The best-reviewed show in London right now is leaving. The Revlon Girl (83) closes Saturday, and The Bridge (76) closes Wednesday.',
 };
 
@@ -134,7 +134,7 @@ test('short form of a long title counts as that show, not as other shows inside 
     knownTitles: ['School Girls; Or, The African Mean Girls Play', 'Girls', 'Mean Girls', 'Hamilton'],
   };
   const p = buildPool(f);
-  const c = { angle: 'last chance', subject: 'School Girls, 84/100, closes Sunday, Nov 15', preheader: 'Critics gave it 84/100 from 34 critics.', lede: 'School Girls (84) ends its Broadway run Sunday, Nov 15, and critics loved it all the way.' };
+  const c = { angle: 'last chance', subject: 'School Girls, 84/100, closes Sunday, Nov 15', preheader: 'It scores 84/100 from 34 critics before it closes.', lede: 'School Girls (84) ends its Broadway run Sunday, Nov 15, and critics loved it all the way.' };
   assert.deepEqual(checkCandidate(c, p), []);
   assert.match(checkCandidate({ ...c, lede: c.lede + ' Hamilton plays on.' }, p).join(), /Hamilton/);
 });
@@ -142,7 +142,7 @@ test('short form of a long title counts as that show, not as other shows inside 
 test('openings lead: with this week\'s openings in the facts, a closings-only subject or first sentence is rejected (owner, 2026-11-09)', () => {
   const f = { ...facts, leadTitles: ['The Bridge'] };
   const p = buildPool(f);
-  const closingLead = { angle: 'last chance', subject: 'The Revlon Girl, 83/100, closes Saturday', preheader: 'Critics gave it an 83. Plus The Bridge, at the Bush.', lede: 'The Revlon Girl (83) closes Saturday, so this is the last call. The Bridge (76) is the other one to catch.' };
+  const closingLead = { angle: 'last chance', subject: 'The Revlon Girl, 83/100, closes Saturday', preheader: 'It scores 83. Plus The Bridge, at the Bush.', lede: 'The Revlon Girl (83) closes Saturday, so this is the last call. The Bridge (76) is the other one to catch.' };
   const probs = checkCandidate(closingLead, p).join();
   assert.match(probs, /subject must be about this week's openings/);
   assert.match(probs, /first sentence must name one of this week's openings/);
@@ -283,4 +283,82 @@ test('the "gave a score" guard does not reject our own wording or critic praise 
   // a missing critic name must not turn "a critic" into a banned phrase
   const p = buildPool({ ...weFacts, lines: [...weFacts.lines, "Rave of the week: our score for a critic (The Stage)'s review of Dogstar is 99 out of 100."] });
   assert.ok(!p.criticNames.includes('a critic'));
+});
+
+// ── Reception (owner, 2026-11-22) ──────────────────────────────────────────
+// Real 2026-11-16 scores: Eurotrash 23 of 26 reviews at 70+, one pan at 16.
+const EUROTRASH = [16, 56, 62, 71, 73, 74, 76, 76, 78, 79, 79, 80, 81, 82, 82, 84, 85, 87, 88, 88, 90, 90, 92, 94, 96, 100];
+const DOGSTAR = [35, 37, 39, 44, 55, 55, 58, 59, 60, 60, 62, 62, 65, 66, 68, 68, 73, 74, 75, 75, 78, 81, 82, 82, 84, 84, 89];
+
+test('receptionOf: one pan does not make a split; a real two-sided spread does', () => {
+  assert.equal(receptionOf(EUROTRASH).verdict, 'liked');
+  assert.equal(receptionOf(DOGSTAR).verdict, 'mixed');
+  assert.equal(receptionOf([20, 30, 40, 85, 90, 95]).verdict, 'split');
+  assert.equal(receptionOf([20, 30, 35, 40, 45]).verdict, 'disliked');
+  assert.equal(receptionOf([90, 20]), null, 'too few reviews to say');
+  assert.match(receptionLine('Eurotrash', EUROTRASH), /broadly liked it.*not split/);
+  assert.doesNotMatch(receptionLine('Eurotrash', EUROTRASH), /\d/, 'words only, so no stray numbers reach the writer');
+});
+
+const rxFacts = {
+  edition: 'west-end',
+  lines: [
+    'The email covers the week of Monday, Nov 16 to Sunday, Nov 22.',
+    'Opening: Eurotrash, Off West End, play at Soho Theatre, opened this week, on Tuesday, Nov 17. Critic Score 77/100 from 26 critics.',
+    'Opening: Goblin, Off West End, play at Bush Theatre, opened this week, on Wednesday, Nov 18. Critic Score 70/100 from 9 critics.',
+    "Rave of the week: our score for Jane Critic (The Paper)'s review of Eurotrash is 100 out of 100.",
+    "Pan of the week: our score for John Critic (The Other Paper)'s review of Eurotrash is 16 out of 100.",
+    receptionLine('Eurotrash', EUROTRASH),
+    receptionLine('Goblin', [60, 65, 70, 72, 75, 78, 80, 82, 85]),
+  ],
+  reception: [{ title: 'Eurotrash', verdict: 'liked' }, { title: 'Goblin', verdict: 'liked' }],
+  titles: [{ id: 'e', slug: 'e', title: 'Eurotrash' }, { id: 'g', slug: 'g', title: 'Goblin' }],
+  leadTitles: ['Eurotrash', 'Goblin'],
+};
+const rxPool = buildPool(rxFacts);
+const rxGood = {
+  angle: 'best-reviewed opening',
+  subject: 'Eurotrash lands at a solid 77/100 from 26 critics',
+  preheader: 'Goblin also opened and sits at 70. Critics broadly liked both.',
+  lede: 'Eurotrash lands at a solid 77/100, and critics broadly liked it. Goblin (70) is the other London opening of the week.',
+};
+
+test('a well-liked show with one pan passes when written straight', () => {
+  assert.deepEqual(checkCandidate(rxGood, rxPool), []);
+});
+
+test('the 2026-11-16 West End and Broadway outputs are rejected', () => {
+  // West End, as drafted.
+  const we = {
+    angle: 'split verdict',
+    subject: 'Eurotrash splits the room at 77/100 from 26 critics',
+    preheader: 'Our review scores for it run from a 100 rave to a 16 pan. Goblin and Florence also opened.',
+    lede: 'Eurotrash settles at 77/100, but the reviews behind that number are far from settled. Our scores for individual write-ups run all the way from 100 down to 16, so this is one to read up on before you book.',
+  };
+  const p = checkCandidate(we, rxPool).join('\n');
+  assert.match(p, /subject says critics were split/);
+  assert.match(p, /preheader says critics were split/);
+  assert.match(p, /lede says critics were split/);
+  // Broadway pattern: lead the preview with the pan, "not every critic was on board".
+  assert.match(checkCandidate({ ...rxGood, preheader: 'It also drew the harshest review of the week, which we score at 16/100.' }, rxPool).join(), /one review's score \(16\)/);
+  assert.match(checkCandidate({ ...rxGood, lede: `${rxGood.lede} It also drew the pan of the week, so not every critic was on board.` }, rxPool).join(), /lede says critics were split/);
+});
+
+test('split language is allowed about a show whose reception was split', () => {
+  const f = { ...rxFacts, reception: [{ title: 'Eurotrash', verdict: 'split' }, { title: 'Goblin', verdict: 'liked' }] };
+  const c = { ...rxGood, subject: 'Eurotrash splits critics at 77/100 from 26' };
+  assert.ok(!checkCandidate(c, buildPool(f)).some(x => /split/.test(x)), checkCandidate(c, buildPool(f)).join());
+  // Still wrong about the other show.
+  assert.match(checkCandidate({ ...c, preheader: 'Goblin divided critics too and sits at 70.' }, buildPool(f)).join(), /preheader says critics were split/);
+});
+
+test('subject and preview text may not credit a critic with a score (Nov 9: "Frank Scheck gave it 98 out of 100")', () => {
+  assert.match(checkCandidate({ ...rxGood, preheader: 'Jane Critic gave it 100 out of 100. Goblin also opened at 70.' }, rxPool).join(), /preheader says a critic gave a score/);
+  assert.match(checkCandidate({ ...rxGood, preheader: 'Jane Critic called it the best of the year. Goblin sits at 70.' }, rxPool).join(), /preheader names a critic or outlet \(Jane Critic\)/);
+});
+
+test('the writer prompt offers the split angle only when a show was split', () => {
+  assert.doesNotMatch(writerPrompt(rxPool), /the split verdict/);
+  assert.match(writerPrompt(buildPool({ ...rxFacts, reception: [{ title: 'Eurotrash', verdict: 'split' }] })), /the split verdict/);
+  assert.match(writerPrompt(rxPool), /Reception/);
 });

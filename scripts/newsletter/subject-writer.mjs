@@ -45,6 +45,42 @@ export function firstSentence(text) {
   return String(text || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/)[0] || '';
 }
 
+// How the critics as a group received a show, from its per-review scores
+// (owner, 2026-11-22: "Eurotrash splits the room at 77" when 23 of 26 reviews
+// were 70+ and one was a pan). The writer only saw the week's single rave and
+// pan, both for Eurotrash, and read them as a split. Words, not numbers, so the
+// line never lends a stray number to the writer.
+export const RECEPTION_POSITIVE = 70; // 4 or 5 stars
+export const RECEPTION_NEGATIVE = 50; // 2 stars or less
+export function receptionOf(scores) {
+  const xs = (scores || []).map(Number).filter(Number.isFinite);
+  const n = xs.length;
+  if (n < 3) return null;
+  const pos = xs.filter(x => x >= RECEPTION_POSITIVE).length / n;
+  const neg = xs.filter(x => x < RECEPTION_NEGATIVE).length / n;
+  // Split: a real share on each side, not one outlier (5+ reviews).
+  if (n >= 5 && pos >= 0.25 && neg >= 0.25) return { verdict: 'split', pos, neg, n };
+  if (pos >= 0.5 && neg <= 0.15) return { verdict: 'liked', pos, neg, n };
+  if (neg >= 0.5 && pos <= 0.15) return { verdict: 'disliked', pos, neg, n };
+  return { verdict: 'mixed', pos, neg, n };
+}
+
+const share = (x) => (x >= 0.9 ? 'nearly every review' : x >= 0.75 ? 'most reviews' : x >= 0.5 ? 'more than half the reviews' : x >= 0.25 ? 'a sizeable minority of reviews' : x > 0 ? 'a few reviews' : 'no reviews');
+
+/** One plain fact-sheet sentence about a show's reception, or null. */
+export function receptionLine(title, scores) {
+  const r = receptionOf(scores);
+  if (!r) return null;
+  const desc = `${share(r.pos)} positive, ${share(r.neg)} negative`;
+  if (r.verdict === 'split') return `Reception: ${title}: critics were split (${desc}).`;
+  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : 'reviews were mostly middling';
+  return `Reception: ${title}: ${word} (${desc}); not split.`;
+}
+
+// Words that say critics disagreed. Allowed only about a show whose reception
+// line says split.
+export const SPLIT_RE = /\b(?:split(?:s|ting)?|divid(?:ed|es|ing)|divisive|polari[sz](?:ing|ed|es)?|love[- ]it[- ]or[- ]hate|far from (?:settled|unanimous)|not (?:every|all) (?:the )?(?:critics?|reviewers?|reviews?)|not everyone|(?:critics?|reviewers?) (?:disagree|clash|are torn|were torn)|torn critics|mixed bag|run(?:s|ning)? (?:all the way )?from (?:a )?\d{1,3}\b[^.]{0,25}\b(?:to|down to|up to) (?:a )?\d{1,3}|one to read up on)\b/i;
+
 // Phrasing the template used, plus AI tells. Any hit rejects the candidate.
 const BANNED = [
   [/[–—]|\s-\s|--/, 'a dash used as punctuation'],
@@ -154,6 +190,17 @@ export function buildPool(facts) {
     // Venues, critics and outlets the facts name: the cards already show the
     // venue, and the lede is not the place for a critic (owner, 2026-11-15).
     venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
+    // Shows whose reception line says critics split (owner, 2026-11-22).
+    splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
+    // Single-review scores that misrepresent their show: the pan of a show
+    // critics liked, the rave of one they disliked.
+    misleadingReviewScores: new Set(facts.lines.flatMap(l => {
+      const m = l.match(/^(Rave|Pan) of the week: .*'s review of (.+) is (\d{1,3}) out of 100\.$/);
+      if (!m) return [];
+      const r = (facts.reception || []).find(x => x.title === m[2]);
+      if (!r) return [];
+      return (m[1] === 'Pan' && r.verdict === 'liked') || (m[1] === 'Rave' && r.verdict === 'disliked') ? [String(Number(m[3]))] : [];
+    })),
     criticNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:Rave|Pan) of the week: our score for (.+?) \((.+?)\)'s review of /g)].flatMap(m => [m[1], m[2]])))].filter(n => n.trim().toLowerCase() !== 'a critic'),
   };
 }
@@ -174,10 +221,21 @@ export function cardDetailRepeats(lede, { venues = [], critics = [] } = {}) {
   if (/\bat (?:the )?[A-Z][\w'.&-]*(?: [A-Z][\w'.&-]*)* (?:Theatre|Theater|Playhouse|Horizons|Center|Centre|Hall|House|Rep)\b/.test(t)) why.push('names a theatre; the cards show that');
   const v = venues.find(x => x && t.includes(x));
   if (v) why.push(`names a venue (${v}); the cards show that`);
-  if (/\b(?:gave|gives|give|giving|awarded|awards|handed)\b[^.]{0,60}?\b\d{1,3}(?: out of 100|\/100)/i.test(t)
-    || /\b(?:critics?|reviewers?)\b[^.]{0,40}\b(?:gave|gives|awarded|rated)\b[^.]{0,30}\b\d{2,3}\b/i.test(t)) why.push("says a critic gave a score; the Critic Score is ours, critics do not give one");
   // The cards carry the critic count; the lede is the voice (owner, 2026-11-15).
   if (/\b\d{1,3}\s+(?:critics|reviews|reviewers)\b/i.test(t)) why.push('states a review or critic count; the cards show that');
+  return why.concat(criticRepeats(t, critics));
+}
+
+/**
+ * A critic named or credited with a score. Runs on the subject and preview
+ * text too: the Nov 9 preview went out as "Frank Scheck gave it 98 out of 100"
+ * because only the lede was checked.
+ */
+export function criticRepeats(text, critics = []) {
+  const t = String(text || '');
+  const why = [];
+  if (/\b(?:gave|gives|give|giving|awarded|awards|handed)\b[^.]{0,60}?\b\d{1,3}(?: out of 100|\/100)/i.test(t)
+    || /\b(?:critics?|reviewers?)\b[^.]{0,40}\b(?:gave|gives|awarded|rated)\b[^.]{0,30}\b\d{2,3}\b/i.test(t)) why.push("says a critic gave a score; the Critic Score is ours, critics do not give one");
   const c = critics.find(x => x && t.includes(x));
   if (c) why.push(`names a critic or outlet (${c}); keep to our Critic Score`);
   return why;
@@ -206,6 +264,26 @@ export function checkCandidate(c, pool, recent = []) {
     if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
   }
   for (const why of cardDetailRepeats(lede, { venues: pool.venueNames, critics: pool.criticNames })) p.push(`lede ${why}`);
+  for (const [field, text] of [['subject', subject], ['preheader', pre]]) {
+    for (const why of criticRepeats(text, pool.criticNames || [])) p.push(`${field} ${why}`);
+  }
+  // Critics split only when a reception line says so (owner, 2026-11-22).
+  const splits = pool.splitTitles || [];
+  for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+    for (const sentence of String(text).split(/(?<=[.!?])\s+/)) {
+      if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
+      if (splits.some(t => mentions(sentence, t))) continue;
+      p.push(`${field} says critics were split or not all on board, but the Reception facts say they were not: "${sentence.slice(0, 80)}"`);
+      break;
+    }
+  }
+  // A single pan of a show critics liked is not a headline (both editions led
+  // with one on 2026-11-16).
+  const misleading = pool.misleadingReviewScores || new Set();
+  for (const [field, text] of [['subject', subject], ['preheader', pre]]) {
+    const hit = numbersIn(stripTitles(text, pool.titleNames || [])).find(n => misleading.has(n));
+    if (hit) p.push(`${field} leads with one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
+  }
   const leads = pool.leadTitles || [];
   if (leads.length) {
     const namesLead = (t) => leads.some(l => mentions(t, l));
@@ -251,7 +329,7 @@ export function writerPrompt(pool, { recent = [], feedback = null, count = 6 } =
 
 This is the weekly opening-night roundup. Its main story is THIS WEEK'S OPENINGS and how critics received them.${pool.leadTitles && pool.leadTitles.length ? ` Every subject line must be about this week's openings (lines starting "Opening:" that say "opened this week" in the ${pool.edition === 'west-end' ? 'West End or Off West End' : 'Broadway or Off-Broadway'}), and the opening paragraph must start with them.` : ''} A Broadway (or West End) opening outranks an Off-Broadway (or Off West End) one; a widely reviewed show outranks a thinly reviewed one. Closings, the rave and pan, box office and what's coming next are supporting news: use them in the preview text or later in the paragraph, never as the lead${pool.leadTitles && pool.leadTitles.length ? '' : ' unless the week had no openings'}.
 
-Write ${count} candidates, each from a DIFFERENT angle on the openings: the best-reviewed opening, the most-talked-about opening, the split verdict, the surprise, the flop, a perfect or record score, a famous title or name, how the week's openings went as a group.
+Write ${count} candidates, each from a DIFFERENT angle on the openings: the best-reviewed opening, the most-talked-about opening,${pool.splitTitles && pool.splitTitles.length ? ' the split verdict (only for a show whose Reception line says critics were split),' : ''} the surprise, the flop, a perfect or record score, a famous title or name, how the week's openings went as a group.
 
 Rules:
 1. Every claim, number, name and day must come from the facts below. Don't round, don't embellish, don't add context the facts don't give. Opinions belong to critics ("critics loved it"), never to us.
@@ -260,7 +338,8 @@ Rules:
 3. Preview text (shown after the subject in the inbox): 40 to ${PREHEADER_MAX} characters. It adds the next thing a reader wants to know; never repeat the subject.
 4. Opening paragraph: the editorial voice, 2 or 3 short sentences, like a friend telling you what happened this week. Lead with the Critic Score as a number out of 100, then say what it means or what stood out. Do NOT give the number of critics or reviews: the cards show it. Lead with the edition's main-market opening (Broadway or West End) whenever one opened this week, never an Off-Broadway or Off West End show. Scores are OURS: never say a critic or reviewer "gave", "awarded" or "rated" a show a score. If a critic matters, name no critic: say the show "scores" or "lands at" a number. The show cards below it already show every theatre, opening date, score and critic count, so NEVER repeat venues, opening dates or days of the week for an opening ("opened at the Lyttelton Theatre on Tuesday"), and never name a critic or outlet or quote a critic's score. Use plain words and contractions; no stiff phrases like "the only Broadway opening this week" or "the most of any". Good: "Cloud 9 lands at a solid 77/100, the best of a quiet week. Dogstar trails at 64." Bad: "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Bad: "The pan of the week went to Nero, which a critic gave 13 out of 100." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
 5. Never use: "opens to X reviews", "with critics", "big/busy/packed week", "scoring 75 or higher", "the reviews are in", dashes as punctuation, quotation marks, exclamation marks, emoji, clickbait, "not X, but Y".
-6. Vary the shape between candidates: a statement, a verdict, a score-first line, a question only if it is specific.
+6. HOW CRITICS FELT comes only from the "Reception" lines. Describe a show's reception exactly as its Reception line does. Never call a show split, divided or polarizing, and never say not every critic liked it, unless its Reception line says critics were split. The rave and the pan of the week are ONE review each: they say nothing about the other critics, so never build the subject or preview text on one, and never quote the spread between a show's best and worst review.
+7. Vary the shape between candidates: a statement, a verdict, a score-first line, a question only if it is specific.
 ${recent.length ? `\nRecent subject lines. Do not resemble these in wording, shape or opening words:\n${recent.map(r => `- ${r}`).join('\n')}\n` : ''}
 FACTS:
 ${pool.sheet}
@@ -269,7 +348,7 @@ Reply with only a JSON object: {"candidates": [{"angle": "<short angle name>", "
 }
 
 export function checkerPrompt(pool, c) {
-  return `You fact-check a newsletter's subject line, preview text and opening paragraph against the facts they were written from. The facts are correct by definition. Flag any claim, number, name, day, ranking or comparison the facts do not support, including small embellishments ("sold out", "every critic", "the best of the year", "closes tomorrow" when the facts give a weekday). Flag an opinion stated as the newsletter's own rather than the critics'. One plain word describing a Critic Score is allowed (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). "From N critics" is the same fact as "from N reviews". Do not flag style, tone or omissions.
+  return `You fact-check a newsletter's subject line, preview text and opening paragraph against the facts they were written from. The facts are correct by definition. Flag any claim, number, name, day, ranking or comparison the facts do not support, including small embellishments ("sold out", "every critic", "the best of the year", "closes tomorrow" when the facts give a weekday). Flag an opinion stated as the newsletter's own rather than the critics'. Flag any description of how critics felt as a group (split, divided, polarizing, not every critic on board, loved, panned) that the show's "Reception" line does not support; a single rave or pan never shows a split. One plain word describing a Critic Score is allowed (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). "From N critics" is the same fact as "from N reviews". Do not flag style, tone or omissions.
 
 FACTS:
 ${pool.sheet}
@@ -282,7 +361,7 @@ Reply with only a JSON object: {"supported": true|false, "problems": ["<each uns
 }
 
 export function judgePrompt(pool, cands) {
-  return `You are the editor of a theatre newsletter choosing this week's subject line. This is the weekly opening-night roundup, so this week's openings are the story; prefer candidates that lead with them. Rank these candidates by how likely a theatregoer is to open the email AND feel it was worth it: a clear, specific reason to open now, natural human voice, short enough for a phone, honest. Penalize anything vague, generic, mechanical or that oversells.
+  return `You are the editor of a theatre newsletter choosing this week's subject line. This is the weekly opening-night roundup, so this week's openings are the story; prefer candidates that lead with them. Rank these candidates by how likely a theatregoer is to open the email AND feel it was worth it: a clear, specific reason to open now, natural human voice, short enough for a phone, honest. Penalize anything vague, generic, mechanical or that oversells, and anything whose tone misleads about the score (a cautionary or doubtful line about a show most critics liked, or a warm one about a show they disliked).
 
 FACTS (for context):
 ${pool.sheet}
