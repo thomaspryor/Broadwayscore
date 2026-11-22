@@ -1,0 +1,248 @@
+{
+  "issueNumber": "bro-7568",
+  "planId": "08394f28-e4cb-4618-a79a-79b9d8f546af",
+  "status": "pending",
+  "createdAt": "2026-11-22T10:54:20.686Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7568: six Off-Broadway rows that got reviews in the BRO-7817 census-gap ingest still had no run dates (five announced, one previews with no opening), so the daily 'Data quality: stale announced shows' row fired again. Give each its sourced run. Sources: Is Anything Ok? SoHo Playhouse Fringe Encore 4-15 Mar 2026 (TDF show 22998, broadwayworld fringe encore lineup 20251119); Stories From the Brink SoHo Playhouse 18 Mar-3 Apr 2026, opening 19 Mar (TDF show 23145, broadwayworld 20260227); Heavenly Baba SoHo Playhouse 2-25 Apr 2026 (Front Row Center review text); Miracle on South Division Street Sheen Center Frank Shiner Theatre previews 14 Apr, opening 19 Apr, closing 10 May 2026 (TDF show 23064, sheencenter.org listing); Pea Dinneen: Raising Her Voice Irish Rep W. Scott McLucas Studio 16-28 Jun 2026 (broadwayworld 20260507, TDF show 23290); Wuthering Heights Little Opera Theatre of NY, Loreto Theater Sheen Center 19-22 Nov 2026 (Picture This Post listing; NY Classical Review 21 Nov), first performance used as opening (opera, no press night).",
+    "steps": [
+      "shows.json: is-anything-ok-off-broadway-2026.previewsStartDate",
+      "shows.json: is-anything-ok-off-broadway-2026.openingDate",
+      "shows.json: is-anything-ok-off-broadway-2026.closingDate",
+      "shows.json: is-anything-ok-off-broadway-2026.status",
+      "shows.json: stories-from-the-brink-off-broadway-2026.previewsStartDate",
+      "shows.json: stories-from-the-brink-off-broadway-2026.openingDate",
+      "shows.json: stories-from-the-brink-off-broadway-2026.closingDate",
+      "shows.json: stories-from-the-brink-off-broadway-2026.status",
+      "shows.json: heavenly-baba-off-broadway-2026.previewsStartDate",
+      "shows.json: heavenly-baba-off-broadway-2026.openingDate",
+      "shows.json: heavenly-baba-off-broadway-2026.closingDate",
+      "shows.json: heavenly-baba-off-broadway-2026.status",
+      "shows.json: miracle-on-south-division-street-off-broadway-2026.previewsStartDate",
+      "shows.json: miracle-on-south-division-street-off-broadway-2026.openingDate",
+      "shows.json: miracle-on-south-division-street-off-broadway-2026.closingDate",
+      "shows.json: miracle-on-south-division-street-off-broadway-2026.status",
+      "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.previewsStartDate",
+      "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.openingDate",
+      "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.closingDate",
+      "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.status",
+      "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.venue",
+      "shows.json: wuthering-heights-off-broadway-2026.openingDate",
+      "shows.json: wuthering-heights-off-broadway-2026.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-03-04",
+        "description": "shows.json: is-anything-ok-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-04",
+        "description": "shows.json: is-anything-ok-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-03-15",
+        "description": "shows.json: is-anything-ok-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: is-anything-ok-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stories-from-the-brink-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-03-18",
+        "description": "shows.json: stories-from-the-brink-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stories-from-the-brink-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-19",
+        "description": "shows.json: stories-from-the-brink-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stories-from-the-brink-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-04-03",
+        "description": "shows.json: stories-from-the-brink-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stories-from-the-brink-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: stories-from-the-brink-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heavenly-baba-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-04-02",
+        "description": "shows.json: heavenly-baba-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heavenly-baba-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-02",
+        "description": "shows.json: heavenly-baba-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heavenly-baba-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-04-25",
+        "description": "shows.json: heavenly-baba-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heavenly-baba-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: heavenly-baba-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miracle-on-south-division-street-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-04-14",
+        "description": "shows.json: miracle-on-south-division-street-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miracle-on-south-division-street-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-19",
+        "description": "shows.json: miracle-on-south-division-street-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miracle-on-south-division-street-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-05-10",
+        "description": "shows.json: miracle-on-south-division-street-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miracle-on-south-division-street-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: miracle-on-south-division-street-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pea-dinneen-raising-her-voice-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-06-16",
+        "description": "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pea-dinneen-raising-her-voice-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-16",
+        "description": "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pea-dinneen-raising-her-voice-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pea-dinneen-raising-her-voice-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pea-dinneen-raising-her-voice-off-broadway-2026",
+        "field": "venue",
+        "oldValue": "Chelsea",
+        "newValue": "Irish Repertory Theatre",
+        "description": "shows.json: pea-dinneen-raising-her-voice-off-broadway-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wuthering-heights-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-11-19",
+        "description": "shows.json: wuthering-heights-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wuthering-heights-off-broadway-2026",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "open",
+        "description": "shows.json: wuthering-heights-off-broadway-2026.status"
+      }
+    ]
+  }
+}
