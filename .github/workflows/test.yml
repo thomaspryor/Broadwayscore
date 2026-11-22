@@ -8,6 +8,7 @@ on:
       - 'scripts/check-deploy-frequency.js'
       - 'scripts/generate-theater-tips.js'
       - 'scripts/reverify-seat-sections.js'
+      - 'scripts/seat-notes.js'
       - 'data/theater-metadata.json' # BRO-8018: seating-data-coverage.test.mjs guards the seating sections
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'

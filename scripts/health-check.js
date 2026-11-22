@@ -58,7 +58,7 @@ const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
-const { findInvalidWorkflowFiles } = require('./lib/invalid-workflow-file-signature.js');
+const { findInvalidWorkflowFiles, collectRunPages, unionRuns } = require('./lib/invalid-workflow-file-signature.js');
 const { isPageWorthyWorkflow } = require('./lib/page-worthy-alerts.js');
 const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
@@ -4269,6 +4269,25 @@ async function getWorkflowRunSummary() {
       return { runs, partial };
     });
 
+    // Own try/catch: this optional list must never blank the repeat-failure data above.
+    let pushRuns = [];
+    let pushPartial = true;
+    try {
+      ({ runs: pushRuns, partial: pushPartial } = await cachedFetch('workflow-push-runs-main-24h', async () => {
+        const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        return collectRunPages(async (page) => {
+          const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&event=push&branch=main&per_page=100&page=${page}`;
+          const response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+          return response && response.workflow_runs;
+        }, { maxPages: 8, onPageError: (pg, e) => console.error(`[Workflows] push page ${pg} failed: ${e.message}`) });
+      }));
+    } catch (pushErr) {
+      console.error(`[Workflows] push-run list failed, invalid-file check uses the all-events list: ${pushErr.message}`);
+    }
+    // Detection is complete from the push list; clearing evidence (a later
+    // schedule/dispatch run of the same file) only exists in the all-events list.
+    const invalidInput = unionRuns(pushRuns, results);
+
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
@@ -4285,10 +4304,13 @@ async function getWorkflowRunSummary() {
         created: r.created_at,
       })),
       repeatFailures,
-      // BRO-7307: invalid workflow files, from the same already-fetched runs.
-      invalidWorkflowFiles: findInvalidWorkflowFiles(results),
+      // BRO-7307: invalid workflow files. BRO-7589: read from a push-on-main
+      // list of its own. The all-events list above always hits its 300-run
+      // cap (334 workflows), which made this row warn "truncated" every day.
+      invalidWorkflowFiles: findInvalidWorkflowFiles(invalidInput),
       skipped: false,
       partial,
+      invalidFilesPartial: pushPartial,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);
@@ -6332,7 +6354,7 @@ function invalidWorkflowFileResults(summary) {
   const files = (summary && summary.invalidWorkflowFiles) || [];
   if (!summary || summary.skipped) return [];
   if (files.length === 0) {
-    if (summary.partial) return [{ name: 'Workflow coverage: invalid files', status: 'warn', message: 'Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed' }];
+    if (summary.invalidFilesPartial !== undefined ? summary.invalidFilesPartial : summary.partial) return [{ name: 'Workflow coverage: invalid files', status: 'warn', message: 'Run list was truncated (page cap or a failed page), so an invalid workflow file could be missed' }];
     return [{ name: 'Workflow coverage: invalid files', status: 'pass', message: 'No workflow shows the invalid-file signature in the last 24h' }];
   }
   return files.map((f) => ({

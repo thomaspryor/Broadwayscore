@@ -32,6 +32,7 @@ const { handSteps, GATING_FIX_FIELDS } = require('./review-provenance');
 const INCLUSION_RULE_MODULE = './review-guards';
 let _includable = null;
 function isIncludableForRebuild(f, show, filePath) {
+  // build-deps: ./review-guards.js
   if (!_includable) _includable = require(INCLUSION_RULE_MODULE).isIncludableForRebuild;
   return _includable(f, show, filePath);
 }

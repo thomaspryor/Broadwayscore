@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { TheaterStructuredTips } from '@/lib/data-types';
+import { publishableSeatNotes } from '../../scripts/lib/seat-notes-publish';
 
 interface TheaterTipsCardProps {
   tips: TheaterStructuredTips;
@@ -40,10 +41,10 @@ function WalkIcon() {
 // Section renderers
 // ============================================
 
-function SeatingSection({ seating }: { seating: NonNullable<TheaterStructuredTips['seating']> }) {
+function SeatingSection({ seating, hideAdvice }: { seating: NonNullable<TheaterStructuredTips['seating']>; hideAdvice: boolean }) {
   return (
     <div className="space-y-3">
-      {seating.bestSeats && (
+      {!hideAdvice && seating.bestSeats && (
         <div className="flex items-start gap-2">
           <CheckIcon />
           <div>
@@ -52,7 +53,7 @@ function SeatingSection({ seating }: { seating: NonNullable<TheaterStructuredTip
           </div>
         </div>
       )}
-      {seating.avoidSeats && (
+      {!hideAdvice && seating.avoidSeats && (
         <div className="flex items-start gap-2">
           <WarningIcon />
           <div>
@@ -205,7 +206,10 @@ export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardP
 
   // Build list of sections that have data
   const sections: SectionKey[] = [];
-  if (tips.seating) sections.push('seating');
+  // Sourced seat tips (the Where to Sit card) replace the generated best/avoid
+  // lines; accessibility still shows here (BRO-8057).
+  const seatTipsShown = publishableSeatNotes(tips.seating?.seatNotes).length > 0;
+  if (tips.seating && (tips.seating.accessibility || (!seatTipsShown && (tips.seating.bestSeats || tips.seating.avoidSeats)))) sections.push('seating');
   if (tips.parking) sections.push('parking');
   if (tips.dining) sections.push('dining');
   if (tips.logistics) sections.push('logistics');
@@ -234,7 +238,7 @@ export default function TheaterTipsCard({ tips, fallbackTips }: TheaterTipsCardP
           {config.icon}
           <p className="text-xs font-semibold uppercase tracking-wider">{config.label}</p>
         </div>
-        {key === 'seating' && tips.seating && <SeatingSection seating={tips.seating} />}
+        {key === 'seating' && tips.seating && <SeatingSection seating={tips.seating} hideAdvice={seatTipsShown} />}
         {key === 'parking' && tips.parking && <ParkingSection parking={tips.parking} />}
         {key === 'dining' && tips.dining && <DiningSection dining={tips.dining} />}
         {key === 'logistics' && tips.logistics && <LogisticsSection logistics={tips.logistics} />}

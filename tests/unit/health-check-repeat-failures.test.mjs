@@ -72,7 +72,8 @@ test('BRO-3178: getWorkflowRunSummary fetches step details before grouping', asy
   assert.equal(summary.repeatFailures.length, 1);
   assert.equal(summary.repeatFailures[0].step, 'Deploy to Production');
   assert.equal(summary.repeatFailures[0].count, 2);
-  assert.equal(urls.length, 4, 'one run-list request plus one jobs request per failed run');
+  assert.equal(urls.filter(u => u.includes('/jobs')).length, 3, 'one jobs request per failed run');
+  assert.equal(urls.filter(u => u.includes('/actions/runs?')).length, 2, 'all-events run list plus the push-on-main list (BRO-7589)');
 });
 
 test('repeatFailureResults: count>=3 is error, exactly 2 is warn', () => {

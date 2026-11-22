@@ -76,3 +76,48 @@ describe('buildMergedStructuredTips preserves hand-curated seating sections', ()
     assert.deepStrictEqual(structuredTips.seating.sections, existingSections);
   });
 });
+
+// BRO-8057: the class, not one field. The July 2026 wipe happened because the
+// merge copied only the seating keys it named. Any key the LLM draft does not
+// own (seatNotes, or a field nobody has invented yet) must survive unchanged.
+import { validateMergedMetadata } from '../../scripts/lib/theater-tips-merge.js';
+
+describe('buildMergedStructuredTips preserves every non-LLM key (BRO-8057)', () => {
+  const seatNotes = [{ type: 'watch-out', level: 'orchestra', rows: 'K-Z', claim: 'Overhang from row K.', evidence: [{ url: 'https://seatplan.com/x/', quoteHash: 'abc' }], verifiedAt: '2026-11-22' }];
+  const existing = {
+    structuredTips: {
+      lastUpdated: '2026-04-16T20:58:43.117Z',
+      seating: { bestSeats: 'old', seatNotes, someFutureSeatingKey: { a: 1 } },
+      someFutureTopKey: ['x'],
+    },
+  };
+  const draft = { lastUpdated: '2026-10-01T06:00:00.000Z', seating: { bestSeats: 'new', avoidSeats: 'new avoid' }, parking: { tip: 'p' } };
+
+  test('seatNotes and unknown seating keys survive; LLM keys are refreshed', () => {
+    const { structuredTips } = buildMergedStructuredTips(draft, existing);
+    assert.deepStrictEqual(structuredTips.seating.seatNotes, seatNotes);
+    assert.deepStrictEqual(structuredTips.seating.someFutureSeatingKey, { a: 1 });
+    assert.strictEqual(structuredTips.seating.bestSeats, 'new');
+    assert.strictEqual(structuredTips.seating.avoidSeats, 'new avoid');
+  });
+
+  test('unknown top-level structuredTips keys survive', () => {
+    const { structuredTips } = buildMergedStructuredTips(draft, existing);
+    assert.deepStrictEqual(structuredTips.someFutureTopKey, ['x']);
+  });
+
+  test('non-LLM seating keys survive even when the draft has no seating at all', () => {
+    const { structuredTips } = buildMergedStructuredTips({ lastUpdated: 'x', parking: { tip: 'p' } }, existing);
+    assert.deepStrictEqual(structuredTips.seating.seatNotes, seatNotes);
+  });
+
+  test('validateMergedMetadata refuses a merge that drops or edits a non-LLM seating key', () => {
+    const before = { _meta: {}, A: existing };
+    const dropped = { _meta: {}, A: { structuredTips: { lastUpdated: 'x', seating: { bestSeats: 'new' } } } };
+    assert.ok(validateMergedMetadata(before, dropped).some((p) => /seating\.seatNotes changed by merge: A/.test(p)));
+    const top = JSON.parse(JSON.stringify(before)); delete top.A.structuredTips.someFutureTopKey;
+    assert.ok(validateMergedMetadata(before, top).some((p) => /structuredTips\.someFutureTopKey changed by merge: A/.test(p)));
+    const llmOnly = JSON.parse(JSON.stringify(before)); llmOnly.A.structuredTips.seating.bestSeats = 'refreshed';
+    assert.deepStrictEqual(validateMergedMetadata(before, llmOnly), []);
+  });
+});

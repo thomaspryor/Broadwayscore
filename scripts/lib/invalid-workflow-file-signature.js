@@ -66,4 +66,52 @@ function findInvalidWorkflowFiles(runs, { branch = 'main' } = {}) {
     .sort((a, b) => (a.newestAt < b.newestAt ? 1 : -1));
 }
 
-module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, WORKFLOW_PATH_RE };
+/**
+ * Page through a runs endpoint. `fetchPage(page)` returns `workflow_runs[]`
+ * (100 per page) and may throw. partial=true only when coverage is really
+ * incomplete: the cap was hit with a full last page, or a page after the
+ * first failed. A first-page failure propagates (no data is not a clean read).
+ * BRO-7589: scoped to event=push on main this stays complete; the all-events
+ * 24h list always hit its 300-run cap, so the row warned every day.
+ */
+async function collectRunPages(fetchPage, { maxPages = 5, onPageError } = {}) {
+  const runs = [];
+  let partial = false;
+  for (let page = 1; page <= maxPages; page++) {
+    let batch;
+    try {
+      batch = await fetchPage(page);
+    } catch (err) {
+      if (page === 1) throw err;
+      if (onPageError) onPageError(page, err);
+      partial = true;
+      break;
+    }
+    if (!Array.isArray(batch)) {
+      // null / malformed body is no data, never a clean read
+      if (page === 1) throw new Error('runs page 1 returned no workflow_runs array');
+      partial = true;
+      break;
+    }
+    runs.push(...batch);
+    if (batch.length < 100) break;
+    if (page === maxPages) partial = true;
+  }
+  return { runs, partial };
+}
+
+/** De-duplicated (by id) union of run lists; the first list wins. Null ids are kept. */
+function unionRuns(...lists) {
+  const seen = new Set();
+  const out = [];
+  for (const list of lists) {
+    for (const r of Array.isArray(list) ? list : []) {
+      if (!r) continue;
+      if (r.id != null) { if (seen.has(r.id)) continue; seen.add(r.id); }
+      out.push(r);
+    }
+  }
+  return out;
+}
+
+module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, collectRunPages, unionRuns, WORKFLOW_PATH_RE };

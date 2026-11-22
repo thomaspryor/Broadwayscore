@@ -19,7 +19,137 @@
       "lastUpdated": "2026-04-15T04:22:00.567Z",
       "seating": {
         "bestSeats": "The mezzanine offers great sightlines of the stage.",
-        "accessibility": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available."
+        "accessibility": "Orchestra-only wheelchair access. Infrared headsets and audio induction neck loops available.",
+        "seatNotes": [
+          {
+            "type": "watch-out",
+            "hazard": "mezz-overhang",
+            "level": "orchestra",
+            "rows": "K-T",
+            "claim": "From row K back, the mezzanine overhang can cut off the top of the stage.",
+            "short": "Mezzanine overhang can cut off the top of the stage",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
+                "quoteHash": "e833e65c8646",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "orchestra",
+            "rows": "A",
+            "claim": "Row A sits below stage level, close enough that some scenes are hard to take in comfortably.",
+            "short": "Below stage level, so some scenes are hard to take in",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
+                "quoteHash": "607fa1037c53",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
+                "quoteHash": "d133e7ed35d9",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "side-angle",
+            "level": "orchestra",
+            "side": "sides",
+            "claim": "Toward the far sides of the Left and Right Orchestra the view turns side-on, and higher seat numbers are often sold as partial view.",
+            "short": "Side-on view, often sold as partial view",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
+                "quoteHash": "8c9e18075d3a",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide",
+                "quoteHash": "a3bab45820c0",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "mezzanine",
+            "side": "sides",
+            "claim": "The far sides and back corners of the mezzanine have restricted views, and the rake gets steep in the last rows.",
+            "short": "Restricted views, and steep in the last rows",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
+                "quoteHash": "c3bae52e8c0f",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide",
+                "quoteHash": "326f6533099a",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "value",
+            "level": "mezzanine",
+            "side": "center",
+            "claim": "The middle rows of the Center Mezzanine are a price bracket below the front rows and keep a broad view of the stage.",
+            "short": "Cheaper than the front rows, with a broad view of the stage",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
+                "quoteHash": "af95c6612d4b",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "mezzanine",
+            "rows": "G",
+            "claim": "In the Left and Right Mezzanine, row G sits behind a cross aisle, so it has extra legroom and a clear look over the rows in front.",
+            "short": "Behind a cross aisle, so there is extra legroom",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
+                "quoteHash": "eb079be3fdc7",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
+                "quoteHash": "71d31ea26afc",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "mezzanine",
+            "claim": "Mezzanine rows are tight on legroom, even for people of average height. Aisle seats have the most room.",
+            "short": "Tight legroom, and aisle seats have the most room",
+            "evidence": [
+              {
+                "url": "https://aviewfrommyseat.com/venue/Al+Hirschfeld+Theatre/",
+                "quoteHash": "ba8480af54a9",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          }
+        ]
       },
       "parking": {
         "nearestGarages": [
@@ -1795,6 +1925,143 @@
               "https://www.headout.com/blog/ethel-barrymore-theatre-seating-chart/"
             ],
             "dataPoints": 1
+          }
+        ],
+        "seatNotes": [
+          {
+            "type": "watch-out",
+            "hazard": "partial-stage",
+            "level": "orchestra",
+            "side": "center",
+            "rows": "A-C",
+            "claim": "Rows A to C of the Center Orchestra are very close to the stage, and one seat guide says you can miss action at the sides.",
+            "short": "Very close to the stage, so you can miss action at the sides",
+            "evidence": [
+              {
+                "url": "https://www.tickpick.com/blog/barrymore-theatre-seating-chart/",
+                "quoteHash": "ff53848e2dd6",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "obstructed-view",
+            "level": "orchestra",
+            "side": "sides",
+            "rows": "D-E",
+            "claim": "At the outer ends of rows D and E, the boxes above slightly block the side of the stage.",
+            "short": "The boxes above slightly block the side of the stage",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
+                "quoteHash": "20bc50089e21",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
+                "quoteHash": "3b110fc378c8",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "watch-out",
+            "hazard": "steep-rake",
+            "level": "rear-mezzanine",
+            "rows": "D-G",
+            "claim": "The back half of the rear mezzanine gets steep, which can bother anyone uneasy with heights.",
+            "short": "Steep, which can bother anyone uneasy with heights",
+            "evidence": [
+              {
+                "url": "https://forum.broadwayworld.com/thread/Ethel-Barrymore-Theatre-Mezzanine-Seating",
+                "quoteHash": "5728dd84895d",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "value",
+            "level": "front-mezzanine",
+            "side": "center",
+            "rows": "D-E",
+            "claim": "The back two rows of the Center Front Mezzanine are the good-value rows, and the rake keeps the view clear over the rows in front.",
+            "short": "Lower price, and a clear view over the rows ahead",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/front-mezzanine/",
+                "quoteHash": "4aa485584be4",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/seating-plan/",
+                "quoteHash": "edc183cc75a4",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "value",
+            "level": "rear-mezzanine",
+            "side": "center",
+            "rows": "A-C",
+            "claim": "The front rows of the rear mezzanine are among the cheapest seats in the house with a clean, raised view of the stage.",
+            "short": "Among the cheapest seats, with a clean raised view",
+            "evidence": [
+              {
+                "url": "https://www.headout.com/blog/ethel-barrymore-theatre-seating-chart/",
+                "quoteHash": "5fcf6cf3c5fc",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/rear-mezzanine/",
+                "quoteHash": "0b1bb199251c",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "orchestra",
+            "claim": "Seats here are narrow with little legroom mid-row. Aisle seats in the Center Orchestra have the most room.",
+            "short": "Narrow seats, and aisle seats have the most room",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
+                "quoteHash": "b8cea6903a78",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://aviewfrommyseat.com/venue/Barrymore+Theatre/",
+                "quoteHash": "9b08912a0a8b",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
+          },
+          {
+            "type": "note",
+            "level": "rear-mezzanine",
+            "claim": "The rear mezzanine is the most cramped level. Taller people should book an aisle seat.",
+            "short": "The most cramped level, so tall people should take an aisle",
+            "evidence": [
+              {
+                "url": "https://seatplan.com/new-york/barrymore-theatre/rear-mezzanine/",
+                "quoteHash": "cb3652991572",
+                "fetchedAt": "2026-11-22"
+              },
+              {
+                "url": "https://aviewfrommyseat.com/venue/Barrymore+Theatre/",
+                "quoteHash": "9c2f05d5cc9d",
+                "fetchedAt": "2026-11-22"
+              }
+            ],
+            "verifiedAt": "2026-11-22"
           }
         ]
       },

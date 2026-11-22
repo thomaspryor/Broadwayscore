@@ -90,6 +90,7 @@ function loadRebuild() {
   if (!rebuildLib) {
     const argv = process.argv;
     process.argv = argv.slice(0, 2);
+    // build-deps: ../rebuild-all-reviews.js
     try { rebuildLib = require(path.join(__dirname, '..', ['rebuild-all-reviews', 'js'].join('.'))); } finally { process.argv = argv; }
   }
   return rebuildLib;

@@ -232,10 +232,12 @@ function extractArticleTextFromDocument(document, url) {
 const _src = extractArticleTextFromDocument.toString();
 const SELECTORS = (() => {
   const m = _src.match(/const SELECTORS = (\[[\s\S]*?\]);/);
+  // build-deps: none (evals a constant array literal sliced from this file's own source)
   return m ? eval(m[1]) : [];
 })();
 const MULTI_MATCH_SELECTORS = (() => {
   const m = _src.match(/const MULTI_MATCH_SELECTORS = new Set\((\[[\s\S]*?\])\);/);
+  // build-deps: none (evals a constant array literal sliced from this file's own source)
   return m ? new Set(eval(m[1])) : new Set();
 })();
 const CHROME_SELECTORS = (() => {

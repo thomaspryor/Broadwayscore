@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# build-deps-file: scripts/lib/land-gauntlet.sh, scripts/lib/tsc-node-options.sh
+# (the per-test "$f" loops run test files, which a site build never loads)
 # land-gauntlet.sh — run land.yml's check gauntlet against a checkout and
 # record each gate's exit code + output, without failing itself.
 #

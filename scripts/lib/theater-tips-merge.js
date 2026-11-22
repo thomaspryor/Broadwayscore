@@ -8,6 +8,12 @@
  * merge even though the LLM draft never produces that field.
  */
 
+// Keys the quarterly LLM merge owns and may rewrite. Every other key under
+// structuredTips / structuredTips.seating is carried forward byte-for-byte and
+// validateMergedMetadata refuses a merge that changes one (BRO-8057).
+const LLM_SEATING_KEYS = new Set(['bestSeats', 'avoidSeats', 'accessibility']);
+const LLM_TOP_KEYS = new Set(['lastUpdated', 'seating', 'parking', 'dining', 'logistics']);
+
 function buildAccessibilityText(accessibility) {
   if (!accessibility) return null;
   if (accessibility.notes) return accessibility.notes;
@@ -53,14 +59,16 @@ function buildMergedStructuredTips(tips, existingTheaterMetadata) {
     }
   }
 
-  // Preserve hand-curated seating sections. The LLM draft never produces
-  // this field (generate-theater-tips.js only outputs bestSeats/avoidSeats),
-  // so without this the merge silently deleted it on every quarterly run —
-  // wiped all 42 theaters' sections on the 2026-07-01 automated run (BRO-932).
-  const existingSections = existingTheaterMetadata?.structuredTips?.seating?.sections;
-  if (existingSections?.length) {
+  // Preserve every seating key the LLM draft does not own (BRO-932, BRO-8057).
+  // The draft only writes bestSeats/avoidSeats, and accessibility is injected
+  // above. Anything else (sections, seatNotes, a field added later) is sourced
+  // data owned by another script. Naming one field at a time is what let the
+  // 2026-07-01 run wipe all 42 theaters' sections, so this copies the class.
+  const existingSeating = existingTheaterMetadata?.structuredTips?.seating || {};
+  for (const [key, value] of Object.entries(existingSeating)) {
+    if (LLM_SEATING_KEYS.has(key)) continue;
     if (!structuredTips.seating) structuredTips.seating = {};
-    structuredTips.seating.sections = existingSections;
+    structuredTips.seating[key] = value;
   }
 
   // Parking
@@ -109,6 +117,13 @@ function buildMergedStructuredTips(tips, existingTheaterMetadata) {
     if (Object.keys(structuredTips.logistics).length === 0) delete structuredTips.logistics;
   }
 
+  // Same rule one level up: top-level structuredTips keys the draft does not own.
+  const existingTop = existingTheaterMetadata?.structuredTips || {};
+  for (const [key, value] of Object.entries(existingTop)) {
+    if (LLM_TOP_KEYS.has(key)) continue;
+    structuredTips[key] = value;
+  }
+
   return { structuredTips, accessibilityInjected, restaurantNames };
 }
 
@@ -148,12 +163,23 @@ function validateMergedMetadata(before, after) {
     else if (before[n]?.structuredTips && !after[n]?.structuredTips) problems.push(`structuredTips lost: ${n}`);
     else if (before[n]?.structuredTips?.seating?.sections?.length && !after[n]?.structuredTips?.seating?.sections?.length) {
       problems.push(`seating.sections lost: ${n}`);
-    } else if (JSON.stringify(before[n]?.structuredTips?.seating?.sections || null) !== JSON.stringify(after[n]?.structuredTips?.seating?.sections || null)) {
-      // BRO-8018: sections are sourced data maintained by scripts/reverify-seat-sections.js, never by the LLM merge.
-      problems.push(`seating.sections changed by merge: ${n}`);
+    } else {
+      // BRO-8018/8057: every non-LLM key is sourced data owned by another script, never by the LLM merge.
+      const b = before[n]?.structuredTips || {};
+      const a = after[n]?.structuredTips || {};
+      const bs = b.seating || {};
+      const as = a.seating || {};
+      for (const key of new Set([...Object.keys(bs), ...Object.keys(as)])) {
+        if (LLM_SEATING_KEYS.has(key)) continue;
+        if (JSON.stringify(bs[key] ?? null) !== JSON.stringify(as[key] ?? null)) problems.push(`seating.${key} changed by merge: ${n}`);
+      }
+      for (const key of new Set([...Object.keys(b), ...Object.keys(a)])) {
+        if (LLM_TOP_KEYS.has(key)) continue;
+        if (JSON.stringify(b[key] ?? null) !== JSON.stringify(a[key] ?? null)) problems.push(`structuredTips.${key} changed by merge: ${n}`);
+      }
     }
   }
   return problems;
 }
 
-module.exports = { buildMergedStructuredTips, buildAccessibilityText, draftHasContent, validateMergedMetadata };
+module.exports = { LLM_SEATING_KEYS, LLM_TOP_KEYS, buildMergedStructuredTips, buildAccessibilityText, draftHasContent, validateMergedMetadata };

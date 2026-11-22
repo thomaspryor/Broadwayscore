@@ -279,7 +279,9 @@ export function materializeTree(cwd, rev, extra = []) {
 /** require() a module from a tree under judgement, never a cached copy. */
 function requireFrom(root, rel) {
   const file = path.join(root, rel);
+  // build-deps: none (loads from the tree under judgement, not this one)
   delete require.cache[require.resolve(file)];
+  // build-deps: none
   return require(file);
 }
 

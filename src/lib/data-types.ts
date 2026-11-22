@@ -93,6 +93,20 @@ export interface SeatingSection {
   evidenceUrls?: string[];
 }
 
+/** One sourced seat tip (BRO-8057). Rules: scripts/lib/seat-notes-publish.js. */
+export interface SeatNote {
+  type: 'watch-out' | 'value' | 'note';
+  hazard?: SeatingHazardType;
+  level: 'orchestra' | 'front-mezzanine' | 'rear-mezzanine' | 'mezzanine' | 'balcony' | 'box';
+  side?: 'center' | 'left' | 'right' | 'sides';
+  rows?: string;
+  claim: string;
+  /** One-line headline for the closed card (watch-out and value notes). */
+  short?: string;
+  evidence: { url: string; quoteHash: string; fetchedAt: string }[];
+  verifiedAt: string;
+}
+
 export interface TheaterStructuredTips {
   lastUpdated: string;
   seating?: {
@@ -100,6 +114,7 @@ export interface TheaterStructuredTips {
     avoidSeats?: string;
     accessibility?: string;
     sections?: SeatingSection[];
+    seatNotes?: SeatNote[];
   };
   parking?: {
     nearestGarages?: TheaterTipGarage[];

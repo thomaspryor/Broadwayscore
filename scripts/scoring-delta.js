@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// build-deps-file: ./lib/review-guards.js, ./lib/date-guard.js, ./lib/wrong-production-autoclear.js, ./lib/cross-market-guard.js, ./lib/prior-run-sibling.js, ./lib/content-verifier.js, ./lib/non-review-url-patterns.js, ./lib/rebuild-helpers.js, ./lib/duplicate-of-exclusion.js
 /**
  * scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
  *

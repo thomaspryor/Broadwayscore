@@ -26,7 +26,8 @@ const nextConfig = {
   // generated agent rules to that tracked file (BRO-6568).
   agentRules: false,
   deploymentId,
-  env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false' },
+  // NEXT_PUBLIC_BUILD_DATE: the "today" seat-note expiry is judged against, fixed per build so server HTML and client hydration agree (BRO-8057).
+  env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false', NEXT_PUBLIC_BUILD_DATE: new Date().toISOString().slice(0, 10) },
   trailingSlash: false,
   // Type checking and ESLint run separately in test.yml.
   // Next 16 no longer runs ESLint during builds.

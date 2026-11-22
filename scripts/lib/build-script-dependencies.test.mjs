@@ -115,3 +115,55 @@ test('a .ts script named on a build command line is traced with its imports (BRO
   const graph = collectBuildScriptDependencies(root);
   assert.deepEqual([...graph].sort(), ['scripts/build-x.ts', 'scripts/lib/y.js', 'scripts/prebuild.sh', 'scripts/run-x.js']);
 });
+
+// BRO-8066: the scanner returned null on the real tree for weeks (computed
+// require of a package, a bare 'scripts/' literal, ...), so land never took the
+// small re-check path. Class guard: any new computed load in a build-reachable
+// file must be declared (`// build-deps: ...`) or this fails with the file named.
+test('the real repo tree yields a dependency graph (not null)', () => {
+  const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const graph = collectBuildScriptDependencies(repoRoot);
+  assert.notEqual(graph, null, 'scanner failed closed on the real tree: run scripts/lib/build-script-dependencies.js with the failure surfaced, then fix or annotate the computed load');
+  assert.ok(graph.has('scripts/prebuild.sh'));
+  assert.ok(graph.size > 50);
+});
+
+test('benign patterns the real tree uses do not fail closed', t => {
+  const root = fixture(t, {
+    'src/a.ts': `const p = require(require.resolve('typescript', { paths: [__dirname] })); const d = 'scripts/'; const prose = "scripts/lib/x.js's helper"; const part = 'scripts/audit-';
+      const SHOWS = path.join(__dirname, 'shows.json'); require(SHOWS);
+      const wrap = (name) => require(name); wrap('left-pad'); wrap('./local');
+      import { createRequire } from 'node:module'; createRequire(import.meta.url)('../scripts/lib/once.js');
+      require(path.join(ROOT, 'scripts/lib/joined'));`,
+    'src/local.ts': 'export {}',
+    'scripts/lib/once.js': 'module.exports = 1;',
+    'scripts/lib/joined.js': 'module.exports = 2;',
+  });
+  const graph = collectBuildScriptDependencies(root);
+  assert.notEqual(graph, null);
+  assert.deepEqual([...graph].sort(), ['scripts/lib/joined.js', 'scripts/lib/once.js']);
+});
+
+test('declared computed loads are traced; undeclared ones, unresolved literals and non-literal wrapper calls still fail closed', t => {
+  const ok = fixture(t, {
+    'src/a.ts': `// build-deps: ../scripts/lib/dyn.js\n require(['..','x'].join('/'));`,
+    'scripts/lib/dyn.js': 'module.exports = 1;',
+  });
+  assert.deepEqual([...collectBuildScriptDependencies(ok)], ['scripts/lib/dyn.js']);
+  const fileLevel = fixture(t, { 'src/a.ts': `// build-deps-file: none\n eval(code); import(x);` });
+  assert.deepEqual([...collectBuildScriptDependencies(fileLevel)], []);
+  for (const source of [`const wrap = (n) => require(n); wrap(someVar);`, `require(['..','x'].join('/'));`, `const f = 'scripts/missing.js';`, `import('./a.test.mjs'); require(path.join(R, 'scripts/lib/nope'))`]) {
+    assert.equal(collectBuildScriptDependencies(fixture(t, { 'src/a.ts': source })), null, source);
+  }
+  const sh = fixture(t, { 'scripts/prebuild.sh': 'node scripts/x.js', 'scripts/x.js': `require('./y.sh')`, 'scripts/y.sh': 'node "$T"' });
+  assert.equal(collectBuildScriptDependencies(sh), null);
+  const shDeclared = fixture(t, { 'scripts/prebuild.sh': 'node scripts/x.js', 'scripts/x.js': `require('./y.sh')`, 'scripts/y.sh': '# build-deps-file: none\nnode "$T"' });
+  assert.notEqual(collectBuildScriptDependencies(shDeclared), null);
+});
+
+test('review hardening: explicit test imports are traced, let-bound JSON names and multi-segment path.join tails fail closed', t => {
+  const traced = fixture(t, { 'src/a.ts': `import '../scripts/helper.test.js';`, 'scripts/helper.test.js': 'module.exports = 1;' });
+  assert.deepEqual([...collectBuildScriptDependencies(traced)], ['scripts/helper.test.js']);
+  assert.equal(collectBuildScriptDependencies(fixture(t, { 'src/a.ts': `let p = 'x.json'; p = 'y'; require(p);` })), null);
+  assert.equal(collectBuildScriptDependencies(fixture(t, { 'src/a.ts': `require(path.join(ROOT, 'other', 'scripts/lib/x'));`, 'scripts/lib/x.js': '' })), null);
+});
