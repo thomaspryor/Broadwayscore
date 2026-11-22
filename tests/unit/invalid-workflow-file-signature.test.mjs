@@ -84,7 +84,7 @@ test('rows are internal (no duplicate START-NOW card) and the key family auto-re
 });
 
 // BRO-7589 class guard: coverage is only "partial" when it really is.
-test('collectRunPages: 300 runs in 3 pages under a 5-page cap is complete, not partial', async () => {
+test('collectRunPages: 240 runs in 3 pages under a 5-page cap is complete, not partial', async () => {
   const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
   const pages = [100, 100, 40].map((n) => Array.from({ length: n }, (_, i) => ({ id: i })));
   const { runs, partial } = await collectRunPages(async (p) => pages[p - 1], { maxPages: 5 });
@@ -109,6 +109,16 @@ test('collectRunPages: later-page failure is partial, first-page failure propaga
 test('health-check reads invalid-file coverage from the push-on-main list, not the all-events list', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
-  assert.match(src, /invalidWorkflowFiles: findInvalidWorkflowFiles\(pushRuns\)/);
-  assert.match(src, /partial: pushPartial/);
+  assert.match(src, /findInvalidWorkflowFiles\(invalidInput\)/);
+  assert.match(src, /invalidFilesPartial: pushPartial/);
+});
+
+test('BRO-7589: a later schedule run of the same file (not in the push list) clears the finding', () => {
+  const pathP = '.github/workflows/opening-night-orchestrator.yml';
+  const later = { id: 99, name: 'Opening Night Orchestrator', path: pathP, event: 'schedule', head_branch: 'main', status: 'completed', conclusion: 'success', created_at: '2026-11-10T20:00:00Z', updated_at: '2026-11-10T20:05:00Z' };
+  assert.deepEqual(findInvalidWorkflowFiles([invalid(1), later]), []);
+});
+test('invalid-file row reads its own partial flag, not the all-events one', () => {
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  assert.equal(invalidWorkflowFileResults({ skipped: false, partial: true, invalidFilesPartial: false, invalidWorkflowFiles: [] })[0].status, 'pass');
 });
