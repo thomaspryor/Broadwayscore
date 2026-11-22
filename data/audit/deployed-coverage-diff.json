@@ -1,13 +1,237 @@
 {
-  "generatedAt": "2026-11-22T02:21:09.067Z",
+  "generatedAt": "2026-11-22T04:29:03.301Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 374,
-  "clean": 374,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 363,
+  "defective": 11,
+  "byType": {
+    "missing-from-prod": 10,
+    "score-drift": 7
+  },
+  "shows": [
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.25 vs local 69.48 (Δ0.23)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 33,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "title": "Paranormal Activity",
+      "openingDate": "2026-08-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "openingDate": "2026-04-26",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.37 vs local 72.44 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 41,
+      "deployedCount": 41,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "title": "The Rocky Horror Show",
+      "openingDate": "2026-04-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.13 vs local 72.46 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 38,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "title": "Schmigadoon!",
+      "openingDate": "2026-04-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 43,
+      "deployedCount": 43,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "openingDate": "2025-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.63 vs local 77.05 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "title": "Buena Vista Social Club",
+      "openingDate": "2025-03-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "title": "Maybe Happy Ending",
+      "openingDate": "2024-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.49 vs local 85.38 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 39,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "openingDate": "2024-04-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: chicagotribune"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 56.61 vs local 56.49 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagotribune"
+      ],
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.73 vs local 75.81 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-22T04:28:54.521Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
