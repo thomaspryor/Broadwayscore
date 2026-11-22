@@ -162,6 +162,44 @@ const SITE_PATHS = [
 
 const STALENESS_BACKSTOP_SEC = 6 * 3600;
 
+// BRO-8028 (2026-11-22 cost fix). Vercel billed ~$231 for the Oct 21-Nov 20
+// cycle with 300-400 production deploys/day: land.yml (source=land), pipeline
+// dispatches and the Mac heartbeat all reached this gate with a live deploy
+// only ~2-5 min old, and scripts/, public/ and core-data churn made the diff
+// dirty almost every time. Routine triggers now wait until the live deploy is
+// at least MIN_INTERVAL_MIN old (default 45 => <= ~32 routine deploys/day), UNLESS
+// the diff touches CODE_PATHS (site code, config, dependencies) or the trigger is
+// URGENT. Skipped data churn ships on the next trigger past the interval; the 6h
+// backstop and the heartbeat bound the worst case. Repo variable
+// DEPLOY_MIN_INTERVAL_MIN overrides (0 disables); DEPLOY_GATE_DISABLED=true
+// bypasses everything.
+const DEFAULT_MIN_INTERVAL_MIN = 45;
+
+// Immediate path: changing any of these is a code/config/dependency landing.
+const CODE_PATHS = [
+  'src/',
+  'next.config.js',
+  'tailwind.config.ts',
+  'tsconfig.json',
+  'package.json',
+  'package-lock.json',
+  'vercel.json',
+  '.vercelignore',
+];
+
+// workflow_dispatch `source` values that mean "ship now": /go-live-now,
+// opening-night pipelines, rebuild-fast. An empty or unknown source is routine
+// (throttled), so a NEW dispatcher defaults to cheap, not to a deploy per call.
+const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night'];
+const URGENT_WORKFLOW_RUN = 'Rebuild Reviews (Fast)';
+
+/** Pure: is this trigger an explicit ship-now request? */
+function isUrgent({ eventName, source, triggerWorkflow }) {
+  if (eventName === 'workflow_dispatch') return URGENT_SOURCES.includes(String(source || ''));
+  if (eventName === 'workflow_run') return triggerWorkflow === URGENT_WORKFLOW_RUN;
+  return false;
+}
+
 // git diff --quiet exit codes: 0 = no diff, 1 = diff, anything else = error.
 function classifyDiffExit(code) {
   if (code === 0) return 'clean';
@@ -189,7 +227,7 @@ function classifyDiffExit(code) {
  *   only the schedule branch has a staleness backstop to fall back on.
  * @returns {{proceed: boolean, reason: string}}
  */
-function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult }) {
+function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult, codeDiffResult = null, minIntervalSec = 0 }) {
   if (gateDisabled) return { proceed: true, reason: 'kill-switch' };
 
   if (eventName !== 'schedule') {
@@ -213,6 +251,12 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   }
 
   if (!baselineSha) return { proceed: true, reason: 'no-baseline-fail-open' };
+  // BRO-8028 min-interval throttle (routine triggers only; see header). Unknown
+  // age fails open below; a code-path diff that is dirty OR unknown ships.
+  if (minIntervalSec > 0 && deployAgeSec != null && deployAgeSec < minIntervalSec) {
+    if (baselineSha !== headSha && codeDiffResult !== 'clean') return { proceed: true, reason: 'code-changed' };
+    return { proceed: false, reason: 'min-interval' };
+  }
   if (baselineSha === headSha) {
     if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
     // dataDiffResult is 'clean'/'error'/null here. A positively-clean data
@@ -385,7 +429,7 @@ function git(args, opts = {}) {
   return runGitOrThrow(args, { encoding: 'utf8', ...opts }); // BRO-7458: the fetch below has a timeout
 }
 
-function runDiff(baselineSha, headSha) {
+function runDiff(baselineSha, headSha, paths = SITE_PATHS) {
   try {
     git(['fetch', '--depth=1', 'origin', baselineSha], { stdio: 'ignore', timeout: 60000 });
   } catch {
@@ -393,7 +437,7 @@ function runDiff(baselineSha, headSha) {
   }
   let code = 0;
   try {
-    git(['diff', '--quiet', '--no-renames', baselineSha, headSha, '--', ...SITE_PATHS], { stdio: 'ignore' });
+    git(['diff', '--quiet', '--no-renames', baselineSha, headSha, '--', ...paths], { stdio: 'ignore' });
   } catch (e) {
     code = typeof e.status === 'number' ? e.status : 128;
   }
@@ -401,7 +445,7 @@ function runDiff(baselineSha, headSha) {
   let files = [];
   if (result === 'dirty') {
     try {
-      files = git(['diff', '--name-only', '--no-renames', baselineSha, headSha, '--', ...SITE_PATHS])
+      files = git(['diff', '--name-only', '--no-renames', baselineSha, headSha, '--', ...paths])
         .trim().split('\n').filter(Boolean).slice(0, 20);
     } catch { /* listing is best-effort */ }
   }
@@ -415,7 +459,14 @@ function writeOutput(proceed, reason) {
 }
 
 async function main() {
-  const eventName = process.env.GATE_EVENT_NAME || 'schedule';
+  const rawEvent = process.env.GATE_EVENT_NAME || 'schedule';
+  // Non-urgent dispatch/workflow_run triggers are judged like a cron tick
+  // (content gate + min interval); urgent ones keep "ship now" semantics.
+  const urgent = isUrgent({ eventName: rawEvent, source: process.env.GATE_SOURCE, triggerWorkflow: process.env.GATE_TRIGGER_WORKFLOW });
+  const eventName = urgent ? rawEvent : 'schedule';
+  const minRaw = process.env.GATE_MIN_INTERVAL_MIN;
+  const minMin = minRaw !== undefined && minRaw !== '' && Number.isFinite(Number(minRaw)) ? Number(minRaw) : DEFAULT_MIN_INTERVAL_MIN;
+  const minIntervalSec = minMin * 60;
   const gateDisabled = process.env.GATE_DISABLED === 'true';
   const headSha = process.env.GATE_HEAD_SHA || git(['rev-parse', 'HEAD']).trim();
 
@@ -432,6 +483,15 @@ async function main() {
     baseline.ageSec != null && baseline.ageSec <= STALENESS_BACKSTOP_SEC
   ) {
     diff = runDiff(baseline.sha, headSha);
+  }
+
+  let codeDiff = { result: null, files: [] };
+  if (
+    !gateDisabled && eventName === 'schedule' && minIntervalSec > 0 &&
+    baseline.sha && baseline.sha !== headSha &&
+    baseline.ageSec != null && baseline.ageSec < minIntervalSec
+  ) {
+    codeDiff = runDiff(baseline.sha, headSha, CODE_PATHS);
   }
 
   // Core-data blob-SHA lookup is two cheap API calls (no clone), so unlike
@@ -451,19 +511,21 @@ async function main() {
     headSha,
     diffResult: diff.result,
     dataDiffResult,
+    codeDiffResult: codeDiff.result,
+    minIntervalSec,
   });
 
   const short = (s) => (s ? s.slice(0, 10) : 'unknown');
   const verb = proceed ? 'DEPLOY' : 'SKIP';
   console.log(
-    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${eventName} dataDiff=${dataDiffResult || 'unknown'}`
+    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} urgent=${urgent} dataDiff=${dataDiffResult || 'unknown'}`
   );
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
 
   writeOutput(proceed, reason);
 }
 
-module.exports = { decide, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES };
+module.exports = { decide, isUrgent, CODE_PATHS, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the

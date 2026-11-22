@@ -1482,7 +1482,7 @@ jobs:
           DEPLOY_SHA=$(git rev-parse HEAD)
           echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT
           echo "Fast path: triggering deploy for $DEPLOY_SHA..."
-          if gh workflow run vercel-deploy.yml; then
+          if gh workflow run vercel-deploy.yml -f source=opening-night; then
             echo "dispatched=true" >> $GITHUB_OUTPUT
           else
             echo "::warning::Deploy dispatch call failed — will deploy on next 5-min content-aware cron gate"
