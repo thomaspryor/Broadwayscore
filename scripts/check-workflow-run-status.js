@@ -63,38 +63,53 @@ function parseCount(v, name, min) {
   return Number(v);
 }
 
-/** Minutes from start (or creation) to last update; null when timestamps are missing. */
-function runMinutes(run) {
-  const start = Date.parse(run.startedAt || run.createdAt || '');
-  const end = Date.parse(run.updatedAt || '');
-  if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
-  return (end - start) / 60000;
-}
+const MAX_SKIPPED_CANCELS = 10;
+const TIMEOUT_ANNOTATION = /maximum execution time/i;
 
-const GITHUB_DEFAULT_JOB_TIMEOUT_MIN = 360;
-const MAX_SKIPPED_CANCEL_SCAN = 20; // single-run mode reads this many runs so short cancels can be skipped
+/** PURE. A cancel classifyCancels proved was not a timeout, on a first attempt (a re-run attempt's cancel could hide its failed first attempt). */
+function isSkippableCancel(r) {
+  return r.conclusion === 'cancelled' && r.cancelKind === 'not-timeout' && !(Number(r.attempt) > 1);
+}
 
 /**
- * Cancel duration (minutes) at or above which a cancel counts as a hang:
- * 90% of the workflow's largest timeout-minutes (job timeouts dominate step
- * ones), floor 10. GitHub's 360-min default when the file sets none.
- * undefined when the workflow file can't be read (display name, other repo):
- * every cancel then decides, the old behaviour.
+ * PURE. Classify one cancelled run from its jobs and their annotation messages
+ * ({ jobs: [{ annotations: [msg] }] }). 'timeout' when any job hit
+ * timeout-minutes, else 'not-timeout' (no jobs = superseded while queued;
+ * jobs without a timeout annotation = cancelled from outside).
  */
-function hungCancelMinutes(yamlText) {
-  if (typeof yamlText !== 'string') return undefined;
-  const vals = [...yamlText.matchAll(/^\s*timeout-minutes:\s*(\d+)\s*(?:#.*)?$/gm)].map((m) => Number(m[1]));
-  const max = vals.length ? Math.max(...vals) : GITHUB_DEFAULT_JOB_TIMEOUT_MIN;
-  return Math.max(10, Math.floor(max * 0.9));
+function cancelKindFrom(jobs) {
+  if (!Array.isArray(jobs)) return 'unknown';
+  return jobs.some((j) => (j.annotations || []).some((m) => TIMEOUT_ANNOTATION.test(m || ''))) ? 'timeout' : 'not-timeout';
 }
 
-function readWorkflowYaml(workflow) {
-  if (!/^[\w.-]+\.ya?ml$/.test(workflow)) return undefined;
-  try { return require('fs').readFileSync(require('path').join(__dirname, '..', '.github', 'workflows', workflow), 'utf8'); } catch { return undefined; }
+/**
+ * Sets run.cancelKind on the leading cancelled runs (the only ones that can be
+ * skipped), stopping at the first non-cancel or after MAX_SKIPPED_CANCELS + 1.
+ * api(path) returns parsed JSON for a REST path; any error leaves the run
+ * unclassified, so it still decides (fail closed).
+ */
+async function classifyCancels(runs, api) {
+  let n = 0;
+  for (const run of runs) {
+    if (!run.conclusion) continue;
+    if (run.conclusion !== 'cancelled' || n++ > MAX_SKIPPED_CANCELS || !run.id) break;
+    try {
+      const body = await api(`/repos/${PUBLIC_REPO}/actions/runs/${run.id}/jobs?per_page=100`);
+      const jobs = [];
+      for (const j of body.jobs || []) {
+        const ann = await api(`/repos/${PUBLIC_REPO}/check-runs/${j.id}/annotations?per_page=100`);
+        jobs.push({ annotations: (Array.isArray(ann) ? ann : []).map((a) => a.message) });
+      }
+      run.cancelKind = cancelKindFrom(jobs);
+    } catch {
+      run.cancelKind = 'unknown';
+    }
+  }
+  return runs;
 }
 
 /** Pure verdict: runs is gh's newest-first array. Returns { ok, message }. */
-function evaluate(runs, { expect, limit, minMatch, maxMatch, hungCancelMin }) {
+function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
   if (!Array.isArray(runs) || runs.length === 0) return { ok: false, message: 'No runs found' };
   if (limit === undefined) {
     // The newest FINISHED run. A queued/in-progress run has no conclusion yet,
@@ -104,24 +119,25 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch, hungCancelMin }) {
     // A stuck run is hidden only until GitHub ends it (job timeout 6h, queue
     // 24h); it then concludes 'cancelled' and this check reports it.
     //
-    // BRO-8010: a SHORT cancel is skipped too. Concurrency-group supersedes
-    // (a queued dispatch replaced before it got a job) and external cancels
-    // (press-night priority, runner freeing) end as 'cancelled' but say
-    // nothing about the code; opening-night-poller.yml had 35 success, 0
-    // failure, 12 such cancels after its fix and this check still read
-    // MISMATCH. A cancel that lasted up to the job's timeout-minutes is a
-    // HANG (Actions reports a timeout as 'cancelled', see ci-green-rate.js)
-    // and still decides. Only when hungCancelMin is known (the workflow file
-    // was readable) and never when the caller is asking about cancels.
+    // BRO-8010: a cancel PROVEN to be a supersede or external cancel
+    // (cancelKind 'not-timeout', set by classifyCancels from the jobs'
+    // annotations) is skipped too: it says nothing about the code.
+    // opening-night-poller.yml had 35 success, 0 failure, 12 such cancels
+    // after its fix and this check still read MISMATCH. A job timeout also
+    // ends 'cancelled' (ci-green-rate.js), so an unclassified cancel still
+    // decides, and so does a streak of more than MAX_SKIPPED_CANCELS.
+    // Never when the caller is asking about cancels.
     const finished = runs.filter((r) => r.conclusion);
     if (finished.length === 0) return { ok: false, message: 'No finished runs found' };
-    const skippable = (r) => hungCancelMin !== undefined && expect !== 'cancelled'
-      && r.conclusion === 'cancelled' && runMinutes(r) !== null && runMinutes(r) < hungCancelMin;
-    const run = finished.find((r) => !skippable(r));
-    const skipped = run ? finished.indexOf(run) : finished.length;
-    if (!run) return { ok: false, message: `MISMATCH — the ${skipped} most recent finished run(s) were all cancelled before finishing (cancel storm; nothing proves '${expect}')` };
+    const skippable = (r) => expect !== 'cancelled' && isSkippableCancel(r);
+    const idx = finished.findIndex((r) => !skippable(r));
+    const skipped = idx === -1 ? finished.length : idx;
+    if (idx === -1 || skipped > MAX_SKIPPED_CANCELS) {
+      return { ok: false, message: `MISMATCH — the ${skipped} most recent finished run(s) were all cancelled (cancel storm; nothing proves '${expect}')` };
+    }
+    const run = finished[idx];
     const ok = run.conclusion === expect;
-    const note = skipped ? ` (skipped ${skipped} newer short cancel(s), under ${hungCancelMin} min)` : '';
+    const note = skipped ? ` (skipped ${skipped} newer cancel(s) that were supersedes/external cancels, not timeouts)` : '';
     return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})${note}` };
   }
   // Only finished runs count: an in-progress/queued run has no conclusion yet
@@ -155,10 +171,9 @@ function isGhAuthError(err) {
 /** REST run → the gh `--json conclusion,status,headBranch,url` shape evaluate() reads. */
 function normalizeRestRun(run) {
   const out = { conclusion: run.conclusion || '', status: run.status, headBranch: run.head_branch, url: run.html_url };
-  // Timestamps feed runMinutes (BRO-8010 short-cancel skip); added only when present.
-  if (run.created_at) out.createdAt = run.created_at;
-  if (run.run_started_at) out.startedAt = run.run_started_at;
-  if (run.updated_at) out.updatedAt = run.updated_at;
+  // id/attempt feed classifyCancels (BRO-8010); added only when present.
+  if (run.id) out.id = run.id;
+  if (run.run_attempt) out.attempt = run.run_attempt;
   return out;
 }
 
@@ -246,14 +261,15 @@ async function main(argv) {
     process.exit(2);
   }
 
-  const hungCancelMin = limit === undefined ? hungCancelMinutes(readWorkflowYaml(workflow)) : undefined;
-  const fetchLimit = limit || (hungCancelMin !== undefined ? MAX_SKIPPED_CANCEL_SCAN : 1);
-  const args = ['run', 'list', '--workflow', workflow, '--limit', String(fetchLimit), '--json', 'conclusion,status,headBranch,url,createdAt,startedAt,updatedAt'];
+  // Single-run mode reads enough runs to step past skippable cancels (BRO-8010).
+  const fetchLimit = limit || MAX_SKIPPED_CANCELS + 2;
+  const args = ['run', 'list', '--workflow', workflow, '--limit', String(fetchLimit), '--json', 'conclusion,status,headBranch,url,databaseId,attempt'];
   args.push('--status', 'completed');
   if (branch) args.push('--branch', branch);
 
   let stdout;
   let runs;
+  let api = async (path) => JSON.parse(execFileSync('gh', ['api', path.replace(/^\//, '')], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
   try {
     stdout = execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (err) {
@@ -264,6 +280,7 @@ async function main(argv) {
     try {
       runs = await fetchWorkflowRuns({ workflow, branch, limit: fetchLimit, completedOnly: true });
       console.error('(gh not authenticated; read runs from the public GitHub API)');
+      api = (path) => getJson(proxyAwareFetch(), `${API}${path}`);
     } catch (e) {
       console.error(`gh not authenticated and public API fallback failed: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ''}`);
       process.exit(1);
@@ -272,14 +289,15 @@ async function main(argv) {
 
   if (runs === undefined) {
     try {
-      runs = JSON.parse(stdout);
+      runs = JSON.parse(stdout).map((r) => ({ ...r, id: r.databaseId }));
     } catch {
       console.error(`gh returned non-JSON output: ${stdout.slice(0, 200)}`);
       process.exit(1);
     }
   }
 
-  const { ok, message } = evaluate(runs, { expect, limit, minMatch, maxMatch, hungCancelMin });
+  if (limit === undefined && expect !== 'cancelled') await classifyCancels(runs, api);
+  const { ok, message } = evaluate(runs, { expect, limit, minMatch, maxMatch });
   const label = `${workflow}${branch ? `@${branch}` : ''}`;
   (ok ? console.log : console.error)(`${label}: ${message}`);
   process.exit(ok ? 0 : 1);
@@ -289,4 +307,4 @@ if (require.main === module) {
   main(process.argv.slice(2)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { parseArgs, evaluate, runMinutes, hungCancelMinutes, readWorkflowYaml, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
+module.exports = { parseArgs, evaluate, isSkippableCancel, cancelKindFrom, classifyCancels, MAX_SKIPPED_CANCELS, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
