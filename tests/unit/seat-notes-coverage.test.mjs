@@ -31,7 +31,7 @@ const showsJson = require(path.join(__dirname, '../../data/shows.json'));
 const shows = Array.isArray(showsJson) ? showsJson : showsJson.shows || [];
 
 // Theaters with notes that render, measured after each ramp step (BRO-8057).
-const MIN_THEATERS_WITH_NOTES = 12;
+const MIN_THEATERS_WITH_NOTES = 41;
 
 const theaters = Object.keys(meta).filter((k) => !k.startsWith('_'));
 const notesOf = (t) => meta[t]?.structuredTips?.seating?.seatNotes;
