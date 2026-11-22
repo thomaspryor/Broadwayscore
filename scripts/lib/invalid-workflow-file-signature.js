@@ -66,4 +66,33 @@ function findInvalidWorkflowFiles(runs, { branch = 'main' } = {}) {
     .sort((a, b) => (a.newestAt < b.newestAt ? 1 : -1));
 }
 
-module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, WORKFLOW_PATH_RE };
+/**
+ * Page through a runs endpoint. `fetchPage(page)` returns `workflow_runs[]`
+ * (100 per page) and may throw. partial=true only when coverage is really
+ * incomplete: the cap was hit with a full last page, or a page after the
+ * first failed. A first-page failure propagates (no data is not a clean read).
+ * BRO-7589: scoped to event=push on main this stays complete; the all-events
+ * 24h list always hit its 300-run cap, so the row warned every day.
+ */
+async function collectRunPages(fetchPage, { maxPages = 5, onPageError } = {}) {
+  const runs = [];
+  let partial = false;
+  for (let page = 1; page <= maxPages; page++) {
+    let batch;
+    try {
+      batch = await fetchPage(page);
+    } catch (err) {
+      if (page === 1) throw err;
+      if (onPageError) onPageError(page, err);
+      partial = true;
+      break;
+    }
+    if (!Array.isArray(batch)) break;
+    runs.push(...batch);
+    if (batch.length < 100) break;
+    if (page === maxPages) partial = true;
+  }
+  return { runs, partial };
+}
+
+module.exports = { isInvalidWorkflowFileRun, findInvalidWorkflowFiles, collectRunPages, WORKFLOW_PATH_RE };

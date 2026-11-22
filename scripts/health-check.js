@@ -58,7 +58,7 @@ const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
-const { findInvalidWorkflowFiles } = require('./lib/invalid-workflow-file-signature.js');
+const { findInvalidWorkflowFiles, collectRunPages } = require('./lib/invalid-workflow-file-signature.js');
 const { isPageWorthyWorkflow } = require('./lib/page-worthy-alerts.js');
 const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
@@ -4269,6 +4269,15 @@ async function getWorkflowRunSummary() {
       return { runs, partial };
     });
 
+    const { runs: pushRuns, partial: pushPartial } = await cachedFetch('workflow-push-runs-main-24h', async () => {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      return collectRunPages(async (page) => {
+        const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&event=push&branch=main&per_page=100&page=${page}`;
+        const response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+        return response && response.workflow_runs;
+      }, { maxPages: 5, onPageError: (pg, e) => console.error(`[Workflows] push page ${pg} failed: ${e.message}`) });
+    });
+
     const completed = results.filter(r => r.status === 'completed');
     const failed = completed.filter(r => r.conclusion === 'failure');
 
@@ -4285,10 +4294,12 @@ async function getWorkflowRunSummary() {
         created: r.created_at,
       })),
       repeatFailures,
-      // BRO-7307: invalid workflow files, from the same already-fetched runs.
-      invalidWorkflowFiles: findInvalidWorkflowFiles(results),
+      // BRO-7307: invalid workflow files. BRO-7589: read from a push-on-main
+      // list of its own. The all-events list above always hits its 300-run
+      // cap (334 workflows), which made this row warn "truncated" every day.
+      invalidWorkflowFiles: findInvalidWorkflowFiles(pushRuns),
       skipped: false,
-      partial,
+      partial: pushPartial,
     };
   } catch (err) {
     console.error(`[Workflows] API error: ${err.message}`);

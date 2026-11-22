@@ -82,3 +82,33 @@ test('rows are internal (no duplicate START-NOW card) and the key family auto-re
   const src = require('node:fs').readFileSync(new URL('../../scripts/lib/owner-alert-router.js', import.meta.url), 'utf8');
   assert.match(src, /family: \/\^workflow-invalid-file:\//);
 });
+
+// BRO-7589 class guard: coverage is only "partial" when it really is.
+test('collectRunPages: 300 runs in 3 pages under a 5-page cap is complete, not partial', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const pages = [100, 100, 40].map((n) => Array.from({ length: n }, (_, i) => ({ id: i })));
+  const { runs, partial } = await collectRunPages(async (p) => pages[p - 1], { maxPages: 5 });
+  assert.equal(runs.length, 240);
+  assert.equal(partial, false);
+});
+test('collectRunPages: cap hit with a full last page is partial', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const { runs, partial } = await collectRunPages(async () => full, { maxPages: 3 });
+  assert.equal(runs.length, 300);
+  assert.equal(partial, true);
+});
+test('collectRunPages: later-page failure is partial, first-page failure propagates', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const r = await collectRunPages(async (p) => { if (p === 2) throw new Error('boom'); return full; });
+  assert.equal(r.partial, true);
+  assert.equal(r.runs.length, 100);
+  await assert.rejects(() => collectRunPages(async () => { throw new Error('x'); }), /x/);
+});
+test('health-check reads invalid-file coverage from the push-on-main list, not the all-events list', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
+  assert.match(src, /invalidWorkflowFiles: findInvalidWorkflowFiles\(pushRuns\)/);
+  assert.match(src, /partial: pushPartial/);
+});
