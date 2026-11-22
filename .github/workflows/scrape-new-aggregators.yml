@@ -977,6 +977,18 @@ jobs:
       - name: Sync review-texts drift before rebuild
         uses: ./.github/actions/sync-review-texts-drift
 
+      # BRO-8013: restore the fingerprint memo (saved by rebuild-reviews.yml /
+      # rebuild-fast.yml) so this rebuild does not run cold. Restore only.
+      - name: Restore fingerprint memo
+        continue-on-error: true
+        timeout-minutes: 3
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-batch-${{ github.sha }}
+          restore-keys: |
+            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
       - name: Rebuild reviews.json
         id: rebuild_reviews
         run: node scripts/rebuild-all-reviews.js

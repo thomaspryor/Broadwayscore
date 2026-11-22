@@ -576,7 +576,7 @@ function findShortRebuildTimeoutSteps(raw) {
 }
 
 /**
- * Rule (y2) (advisory, BRO-8012): a step that runs scripts/rebuild-all-reviews.js
+ * Rule (y2) (BRO-8012, blocking since BRO-8013): a step that runs scripts/rebuild-all-reviews.js
  * with no restore of the fingerprint memo (.cache/rebuild-fp-cache.json) earlier
  * in the same job. Cold, the rebuild re-runs ~165s+ of cleanText work and took
  * 12-34 min on the opening-night poller, past its 10-min step timeout, which
@@ -628,6 +628,12 @@ function conjuncts(ifExpr) {
  * parenthesized `a || b` with one disjunct that is.
  */
 function restoreCoversRebuild(restoreIf, rebuildIf) {
+  // A restore with no `if:` runs only on success(); a rebuild gated on always()
+  // still runs after an earlier failure, cold (BRO-8013 review).
+  // GitHub adds an implicit success() to any `if:` with no status function, so a
+  // restore like `x == 'true'` is skipped after an earlier failure too.
+  const STATUS_FN = /\b(?:always|failure|cancelled|success)\s*\(/;
+  if (!STATUS_FN.test(restoreIf || '') && /\b(?:always|failure)\s*\(\)|!\s*cancelled\s*\(\)/.test(rebuildIf || '')) return false;
   const have = new Set(conjuncts(rebuildIf));
   return conjuncts(restoreIf).every((c) => {
     if (have.has(c)) return true;
@@ -1056,7 +1062,8 @@ async function main() {
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
   const shortCoreDataTimeoutFindings = [];
-  // Rule (y2) (BRO-8012) is advisory too (CLAUDE.md §19): cold rebuild, no memo.
+  // Rule (y2) (BRO-8012) landed advisory (CLAUDE.md §19); BLOCKING since BRO-8013
+  // (every rebuild call was fixed, so it lands at zero): cold rebuild, no memo.
   const rebuildNoMemoFindings = [];
   // Rule (z) (BRO-5972) is advisory too: workflows and composite actions.
   const unboundedGitFindings = [];
@@ -1278,7 +1285,7 @@ async function main() {
       if (hits.length > 0) fullBlobCheckoutFindings.push({ file, hits });
     }
 
-    // ── Rule (y2): rebuild-all-reviews.js with no fingerprint-memo restore (advisory) ─
+    // ── Rule (y2): rebuild-all-reviews.js with no fingerprint-memo restore (BLOCKING since BRO-8013) ─
     {
       const hits = findRebuildWithoutMemoRestore(raw);
       if (hits.length > 0) rebuildNoMemoFindings.push({ file, hits });
@@ -1361,11 +1368,11 @@ async function main() {
     }
   }
 
-  // ── Rule (y2): cold rebuilds, no fingerprint memo (advisory — never counts toward `total`) ─
+  // ── Rule (y2): cold rebuilds, no fingerprint memo (BLOCKING since BRO-8013) ─
   if (rebuildNoMemoFindings.length > 0) {
     const n = rebuildNoMemoFindings.reduce((acc, { hits }) => acc + hits.length, 0);
     console.log(
-      `ℹ️  rebuild-all-reviews.js runs with no fingerprint-memo restore: ${n} across ${rebuildNoMemoFindings.length} workflow(s). A cold rebuild re-cleans every text and outgrew the poller's 10-min step (BRO-8012). Add an actions/cache/restore of .cache/rebuild-fp-cache.json earlier in the job (see opening-night-poller.yml "Restore fingerprint memo") or \`# hygiene-rebuild-memo-ok: <reason>\` in the job.`,
+      `❌ rebuild-all-reviews.js runs with no fingerprint-memo restore: ${n} across ${rebuildNoMemoFindings.length} workflow(s). A cold rebuild re-cleans every text and outgrew the poller's 10-min step (BRO-8012). Add an actions/cache/restore of .cache/rebuild-fp-cache.json earlier in the job (see opening-night-poller.yml "Restore fingerprint memo") or \`# hygiene-rebuild-memo-ok: <reason>\` in the job.`,
     );
     for (const { file, hits } of rebuildNoMemoFindings) {
       console.log(`   • ${file}`);
@@ -1442,6 +1449,7 @@ async function main() {
   }
 
   const total =
+    rebuildNoMemoFindings.reduce((acc, { hits }) => acc + hits.length, 0) +
     violations.notifyFailure.length +
     violations.playwright.length +
     violations.pushRetry.length +

@@ -115,3 +115,48 @@ describe('restore detection edge cases (ship-check review)', () => {
     assert.match(hits[0].reason, /gated/);
   });
 });
+
+describe('every real workflow restores the memo (BRO-8013 class guard)', () => {
+  test('no .github/workflows file runs rebuild-all-reviews.js cold', () => {
+    const dir = path.join(process.cwd(), '.github', 'workflows');
+    const bad = [];
+    for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.yml'))) {
+      const hits = findRebuildWithoutMemoRestore(fs.readFileSync(path.join(dir, f), 'utf8'));
+      for (const h of hits) bad.push(`${f}:${h.lineNum} job ${h.job}`);
+    }
+    assert.deepEqual(bad, []);
+  });
+
+  test('the audit script counts y2 findings toward its blocking total', () => {
+    const src = fs.readFileSync(path.join(process.cwd(), 'scripts', 'audit-workflow-hygiene.js'), 'utf8');
+    assert.match(src, /const total =\s*\n\s*rebuildNoMemoFindings\.reduce/);
+  });
+});
+
+describe('always() rebuild needs a restore that also runs after a failure (BRO-8013)', () => {
+  test('an ungated restore does not cover an always() rebuild; a matching if does', () => {
+    const alwaysRebuild = REBUILD.replace('        run:', "        if: always() && steps.x.outputs.y == 'true'\n        run:");
+    assert.equal(findRebuildWithoutMemoRestore(wf(job('poll', RESTORE + alwaysRebuild))).length, 1);
+    const matched = RESTORE.replace('        uses:', "        if: always() && steps.x.outputs.y == 'true'\n        uses:");
+    assert.deepEqual(findRebuildWithoutMemoRestore(wf(job('poll', matched + alwaysRebuild))), []);
+  });
+});
+
+describe('failure() and !cancelled() rebuild gates also need a failure-safe restore (BRO-8013)', () => {
+  for (const gate of ['failure()', '!cancelled()', "!cancelled() && steps.x.outcome == 'success'"]) {
+    test(`ungated restore does not cover rebuild gated on ${gate}`, () => {
+      const rebuild = REBUILD.replace('        run:', `        if: ${gate}\n        run:`);
+      assert.equal(findRebuildWithoutMemoRestore(wf(job('poll', RESTORE + rebuild))).length, 1);
+      const matched = RESTORE.replace('        uses:', `        if: ${gate}\n        uses:`);
+      assert.deepEqual(findRebuildWithoutMemoRestore(wf(job('poll', matched + rebuild))), []);
+    });
+  }
+});
+
+describe('implicit success() on a restore with a non-status if: (BRO-8013, gemini review)', () => {
+  test('restore `x == true` does not cover an always() rebuild with the same conjunct', () => {
+    const rebuild = REBUILD.replace('        run:', "        if: always() && steps.x.outputs.y == 'true'\n        run:");
+    const restore = RESTORE.replace('        uses:', "        if: steps.x.outputs.y == 'true'\n        uses:");
+    assert.equal(findRebuildWithoutMemoRestore(wf(job('poll', restore + rebuild))).length, 1);
+  });
+});
