@@ -177,6 +177,6 @@ test('end to end: a bare `node --test` in a scratch dir skips a guarded live scr
     assert.equal(r2.status, 0, r2.stdout + r2.stderr);
     assert.equal(fs.existsSync(marker), true, 'script spawned by a test file must not be refused');
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
