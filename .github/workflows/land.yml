@@ -1588,10 +1588,10 @@ jobs:
 
       - name: Alert — tests red on main too (pre-existing, not blocking)
         # BRO-7950: one digest row per test, deduped by the router. Never
-        # changes a verdict: continue-on-error, input via env, never interpolated into the script.
+        # changes a verdict: continue-on-error, input via env, never interpolated into the script; an empty list is a no-op inside the script (no != in if:, workflow-anchored-jobs-fail-closed).
         continue-on-error: true
         timeout-minutes: 2
-        if: always() && steps.admit.outcome == 'success' && needs.checks.outputs.pre_existing_tests != '' && needs.checks.outputs.pre_existing_tests != '[]'
+        if: always() && needs.checks.outputs.pre_existing_tests
         env:
           LAND_PRE_EXISTING_TESTS: ${{ needs.checks.outputs.pre_existing_tests }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -1713,10 +1713,10 @@ jobs:
 
       - name: Alert — tests red on main too (pre-existing, not blocking)
         # BRO-7950: one digest row per test, deduped by the router. Never
-        # changes a verdict: continue-on-error, input via env, never interpolated into the script.
+        # changes a verdict: continue-on-error, input via env, never interpolated into the script; an empty list is a no-op inside the script (no != in if:, workflow-anchored-jobs-fail-closed).
         continue-on-error: true
         timeout-minutes: 2
-        if: always() && needs.checks.outputs.pre_existing_tests != '' && needs.checks.outputs.pre_existing_tests != '[]'
+        if: always()
         env:
           LAND_PRE_EXISTING_TESTS: ${{ needs.checks.outputs.pre_existing_tests }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
