@@ -146,13 +146,13 @@ test('a reverify row recovered this run does not hold the slow-market alert', ()
   assert.deepEqual(planRoundupGapAlerts([r], true, NOW).resolve, ['rc']);
 });
 
-test('off-Broadway uses the roundup path through day 3 and the slow path from day 4', () => {
+test('off-Broadway ignores census-only gaps both before and after day 3', () => {
   const day = (d) => new Date(NOW - d * 86400000).toISOString().slice(0, 10);
-  // Census-only gap: the roundup path counts it (uningested), the slow path does not.
+  // Census-only results are not roundup citations in either window.
   const mk = (id, d) => slow(id, 'off-broadway', day(d), { missing: [{ url: 'https://c.example/a', serpCensus: true }], aggregatorArticles: [{ url: 'https://bww.example/rr' }] });
   const plan = planRoundupGapAlerts([mk('d2', 2), mk('d5', 5)], false, NOW);
-  assert.deepEqual(plan.alert.map((a) => a.showId), ['d2']);
-  assert.deepEqual(plan.resolve, ['d5']);
+  assert.deepEqual(plan.alert, []);
+  assert.deepEqual(plan.resolve, ['d2', 'd5']);
 });
 
 // BRO-6687: an expected (correct, permanent) ingest rejection is settled, the
