@@ -325,6 +325,7 @@ function showEra(showId) {
 }
 
 const _sameTitleMemo = new WeakMap();
+// venue-write-guard-ok: sameTitleShowsFrom builds an in-memory read index of shows.json venues; it never writes a file.
 /** Other shows.json entries sharing this show's title (the fields siblingVenueReason reads). Memoized per array. */
 function sameTitleShowsFrom(show, allShows) {
   if (!show || !show.title || !Array.isArray(allShows)) return [];
