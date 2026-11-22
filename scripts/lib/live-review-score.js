@@ -61,11 +61,13 @@ function quoteVerdictStamp(score, quote) {
 function needsRetone(data, liveScore, { liveAvailable } = {}) {
   if (!liveAvailable || !data || !data.llmPullQuote) return false;
   if (data._locked === true || data.llmPullQuoteSource === 'human-override' || data.humanReviewScore != null) return false;
+  // A quote set through a review-field-edit plan (human or opening-night lane) is recorded in approvedFixes.
+  if (Array.isArray(data.approvedFixes) && data.approvedFixes.some(f => f && f.field === 'llmPullQuote')) return false;
   const stamp = data.llmPullQuoteVerdictBand;
   if (typeof stamp === 'string' && stamp) {
     const [band, hash] = stamp.split(':');
-    if (hash !== quoteHash(data.llmPullQuote)) return false;
-    return band !== verdictBand(liveScore);
+    // A stamp for another quote (merge or restore copied one field) says nothing: fall through to the file score.
+    if (hash === quoteHash(data.llmPullQuote)) return band !== verdictBand(liveScore);
   }
   // Unstamped quotes were judged on the file's own score.
   return verdictBand(data.assignedScore) !== verdictBand(liveScore);

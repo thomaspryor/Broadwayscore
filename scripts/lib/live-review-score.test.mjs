@@ -19,7 +19,7 @@ test('site score wins over the raw file score; no twin keeps the file score', ()
 // Every script that tells an LLM a review's verdict must read the site score.
 test('verdict-prompting scripts are wired to live scores', () => {
   const pq = fs.readFileSync(new URL('../extract-pull-quotes.js', import.meta.url), 'utf8');
-  assert.match(pq, /loadLiveScoreLookup\(\)/);
+  assert.match(pq, /loadLiveScoreLookup\(path\.join\(REVIEW_TEXTS_DIR/);
   assert.match(pq, /shouldSkipForPriorRejection\(\{ \.\.\.data, assignedScore: score \}/, 'skip cache must hash the same score the prompt uses');
   assert.doesNotMatch(pq.slice(pq.indexOf('async function processReview')), /const score = typeof data\.assignedScore/);
   const cc = fs.readFileSync(new URL('../generate-critic-consensus.js', import.meta.url), 'utf8');
@@ -43,8 +43,10 @@ test('re-pick rules: wrong direction re-picks; human, locked, foreign-edited and
   const stamped = { ...base, llmPullQuoteVerdictBand: quoteVerdictStamp(80, 'A quote.') };
   assert.equal(needsRetone(stamped, 80, live), false, 'already picked for positive');
   assert.equal(needsRetone(stamped, 30, live), true, 'site score moved to negative');
-  assert.equal(needsRetone({ ...stamped, llmPullQuote: 'A human edit.' }, 30, live), false, 'stamp belongs to another quote: leave it');
+  assert.equal(needsRetone({ ...stamped, llmPullQuote: 'Merged in.' }, 80, live), true, 'stale stamp falls back to the file score (59 mixed vs site positive)');
+  assert.equal(needsRetone({ ...base, approvedFixes: [{ field: 'llmPullQuote', fixId: 'x' }] }, 80, live), false, 'quote set by a review-field-edit plan');
   const pq = fs.readFileSync(new URL('../extract-pull-quotes.js', import.meta.url), 'utf8');
   assert.match(pq, /needsRetone\(data, score, \{ liveAvailable: !!liveScoreFor \}\)/);
+  assert.match(pq, /liveScoreFor\(show, data\)/, 'key on the directory, like the rebuild');
   assert.match(pq, /current\.llmPullQuoteVerdictBand = quoteVerdictStamp\(score, quote\)/);
 });

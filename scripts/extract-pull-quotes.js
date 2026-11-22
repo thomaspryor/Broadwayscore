@@ -361,10 +361,13 @@ function cleanResponse(response) {
 // ============================================================
 function scanReviewFiles() {
   const files = [];
+  stats.retoneQueued = 0; stats.liveScored = 0;
   const shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
   // BRO-8060: judge each review against the score the site shows (reviews.json),
   // not the file's raw assignedScore. Null when reviews.json is unreadable.
-  const liveScoreFor = loadLiveScoreLookup();
+  // reviews.json sits beside review-texts (data/), so a test's temp corpus never reads the real one.
+  const liveScoreFor = loadLiveScoreLookup(path.join(REVIEW_TEXTS_DIR, '..', 'reviews.json'));
+  if (!liveScoreFor) console.warn('⚠️  reviews.json unavailable: judging on file scores and re-picking no stored quotes');
 
   for (const show of shows) {
     if (SHOW_FILTER && show !== SHOW_FILTER) continue;
@@ -375,8 +378,10 @@ function scanReviewFiles() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        const score = liveScoreFor ? liveScoreFor(data.showId || show, data) : (typeof data.assignedScore === 'number' ? data.assignedScore : null);
-        if (score !== data.assignedScore) stats.liveScored++;
+        // Directory name, not data.showId: the rebuild publishes reviews.json rows under the directory.
+        const fileScore = typeof data.assignedScore === 'number' ? data.assignedScore : null;
+        const score = liveScoreFor ? liveScoreFor(show, data) : fileScore;
+        if (score !== fileScore) stats.liveScored++;
 
         // Skip if no meaningful fullText
         if (!data.fullText || data.fullText.length < 300) { stats.skipped++; continue; }
