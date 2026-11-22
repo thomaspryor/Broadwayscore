@@ -1,373 +1,367 @@
 {
-  "date": "2026-11-21",
+  "date": "2026-11-22",
   "days": 7,
   "recent": {
-    "total": 2945,
-    "noCaller": 337,
-    "backstop": 449,
-    "backstopShare": 0.15246179966044143,
+    "total": 3018,
+    "noCaller": 338,
+    "backstop": 463,
+    "backstopShare": 0.15341285619615638,
     "rows": [
       {
-        "pipeline": "serp-discovery",
-        "count": 423,
-        "share": 0.14363327674023768,
-        "backstop": false
-      },
-      {
         "pipeline": "audit-show-review-gap",
-        "count": 416,
-        "share": 0.14125636672325975,
+        "count": 430,
+        "share": 0.1424784625579854,
         "backstop": true
       },
       {
+        "pipeline": "serp-discovery",
+        "count": 416,
+        "share": 0.13783962889330684,
+        "backstop": false
+      },
+      {
         "pipeline": "bro-7817",
-        "count": 354,
-        "share": 0.12020373514431239,
+        "count": 355,
+        "share": 0.11762756792577866,
         "backstop": false
       },
       {
         "pipeline": "outlet-listing-poller",
-        "count": 332,
-        "share": 0.11273344651952462,
+        "count": 339,
+        "share": 0.11232604373757456,
         "backstop": false
       },
       {
         "pipeline": "ingest-urls (no caller)",
         "count": 173,
-        "share": 0.05874363327674024,
+        "share": 0.05732273028495693,
         "backstop": false
       },
       {
         "pipeline": "submit-review-form (no caller)",
-        "count": 163,
-        "share": 0.05534804753820034,
+        "count": 164,
+        "share": 0.054340622929092114,
         "backstop": false
       },
       {
         "pipeline": "show-score-playwright",
-        "count": 149,
-        "share": 0.050594227504244485,
-        "backstop": false
-      },
-      {
-        "pipeline": "discover-tour-stop-reviews",
-        "count": 97,
-        "share": 0.03293718166383701,
-        "backstop": false
-      },
-      {
-        "pipeline": "theatre-record",
-        "count": 65,
-        "share": 0.022071307300509338,
+        "count": 131,
+        "share": 0.04340622929092114,
         "backstop": false
       },
       {
         "pipeline": "we-major-recovery",
-        "count": 64,
-        "share": 0.02173174872665535,
+        "count": 117,
+        "share": 0.03876739562624255,
         "backstop": false
       },
       {
-        "pipeline": "show-score",
-        "count": 55,
-        "share": 0.01867572156196944,
+        "pipeline": "discover-tour-stop-reviews",
+        "count": 86,
+        "share": 0.028495692511597084,
         "backstop": false
       },
       {
-        "pipeline": "bww-roundup",
-        "count": 55,
-        "share": 0.01867572156196944,
+        "pipeline": "theatre-record",
+        "count": 71,
+        "share": 0.02352551358515573,
         "backstop": false
       },
       {
         "pipeline": "playbill-verdict",
-        "count": 52,
-        "share": 0.01765704584040747,
+        "count": 59,
+        "share": 0.01954937044400265,
         "backstop": false
       },
       {
-        "pipeline": "web-search",
-        "count": 39,
-        "share": 0.013242784380305603,
+        "pipeline": "show-score",
+        "count": 57,
+        "share": 0.018886679920477135,
         "backstop": false
       },
       {
-        "pipeline": "dtli",
-        "count": 35,
-        "share": 0.011884550084889643,
-        "backstop": false
-      },
-      {
-        "pipeline": "site-search",
-        "count": 35,
-        "share": 0.011884550084889643,
+        "pipeline": "bww-roundup",
+        "count": 46,
+        "share": 0.015241882041086813,
         "backstop": false
       },
       {
         "pipeline": "westendtheatre",
-        "count": 35,
-        "share": 0.011884550084889643,
+        "count": 41,
+        "share": 0.013585155732273028,
+        "backstop": false
+      },
+      {
+        "pipeline": "site-search",
+        "count": 40,
+        "share": 0.013253810470510271,
+        "backstop": false
+      },
+      {
+        "pipeline": "outlet-serp-discovery",
+        "count": 40,
+        "share": 0.013253810470510271,
         "backstop": false
       },
       {
         "pipeline": "google-news-rss",
-        "count": 34,
-        "share": 0.011544991511035654,
+        "count": 35,
+        "share": 0.011597084161696488,
         "backstop": false
       },
       {
         "pipeline": "audit-t1-silent-gaps",
         "count": 33,
-        "share": 0.011205432937181663,
+        "share": 0.010934393638170975,
         "backstop": true
       },
       {
-        "pipeline": "outlet-serp-discovery",
-        "count": 29,
-        "share": 0.009847198641765705,
+        "pipeline": "web-search",
+        "count": 32,
+        "share": 0.010603048376408217,
+        "backstop": false
+      },
+      {
+        "pipeline": "dtli",
+        "count": 31,
+        "share": 0.01027170311464546,
         "backstop": false
       },
       {
         "pipeline": "opening-night-lane",
         "count": 29,
-        "share": 0.009847198641765705,
+        "share": 0.009609012591119947,
         "backstop": false
       },
       {
         "pipeline": "theatre-reviews",
-        "count": 26,
-        "share": 0.008828522920203734,
-        "backstop": false
-      },
-      {
-        "pipeline": "bww-reviews",
-        "count": 24,
-        "share": 0.008149405772495755,
+        "count": 28,
+        "share": 0.00927766732935719,
         "backstop": false
       },
       {
         "pipeline": "tic-daily",
-        "count": 19,
-        "share": 0.0064516129032258064,
+        "count": 27,
+        "share": 0.008946322067594433,
         "backstop": false
       },
       {
         "pipeline": "discover-regional-serp-reviews",
         "count": 18,
-        "share": 0.006112054329371817,
+        "share": 0.005964214711729622,
+        "backstop": false
+      },
+      {
+        "pipeline": "lbo-individual",
+        "count": 18,
+        "share": 0.005964214711729622,
+        "backstop": false
+      },
+      {
+        "pipeline": "rss-discovery",
+        "count": 16,
+        "share": 0.005301524188204109,
         "backstop": false
       },
       {
         "pipeline": "serp-discovery-per-critic",
-        "count": 17,
-        "share": 0.005772495755517827,
+        "count": 14,
+        "share": 0.004638833664678595,
+        "backstop": false
+      },
+      {
+        "pipeline": "thestage-roundup",
+        "count": 14,
+        "share": 0.004638833664678595,
         "backstop": false
       },
       {
         "pipeline": "execute-approved-fix",
         "count": 14,
-        "share": 0.004753820033955857,
+        "share": 0.004638833664678595,
         "backstop": false
       },
       {
         "pipeline": "nyc-theatre",
         "count": 14,
-        "share": 0.004753820033955857,
+        "share": 0.004638833664678595,
         "backstop": false
       },
       {
-        "pipeline": "rss-discovery",
-        "count": 12,
-        "share": 0.0040747028862478775,
-        "backstop": false
-      },
-      {
-        "pipeline": "thestage-roundup",
-        "count": 11,
-        "share": 0.003735144312393888,
+        "pipeline": "bww-reviews",
+        "count": 13,
+        "share": 0.004307488402915839,
         "backstop": false
       },
       {
         "pipeline": "(no source)",
-        "count": 10,
-        "share": 0.003395585738539898,
+        "count": 12,
+        "share": 0.003976143141153081,
         "backstop": false
       },
       {
         "pipeline": "broad-web-serp",
         "count": 10,
-        "share": 0.003395585738539898,
+        "share": 0.0033134526176275677,
         "backstop": false
       },
       {
         "pipeline": "multi-show-split",
         "count": 9,
-        "share": 0.0030560271646859084,
-        "backstop": false
-      },
-      {
-        "pipeline": "lbo-individual",
-        "count": 8,
-        "share": 0.0027164685908319186,
+        "share": 0.002982107355864811,
         "backstop": false
       },
       {
         "pipeline": "wp-api-front-row-center",
-        "count": 7,
-        "share": 0.0023769100169779285,
+        "count": 8,
+        "share": 0.0026507620941020544,
         "backstop": false
       },
       {
         "pipeline": "bro-7812",
         "count": 7,
-        "share": 0.0023769100169779285,
-        "backstop": false
-      },
-      {
-        "pipeline": "wp-api-theater-life",
-        "count": 7,
-        "share": 0.0023769100169779285,
+        "share": 0.0023194168323392977,
         "backstop": false
       },
       {
         "pipeline": "opening-night-discovery",
         "count": 7,
-        "share": 0.0023769100169779285,
+        "share": 0.0023194168323392977,
         "backstop": false
       },
       {
         "pipeline": "bro-7600",
         "count": 7,
-        "share": 0.0023769100169779285,
+        "share": 0.0023194168323392977,
         "backstop": false
       },
       {
         "pipeline": "stagedoor",
         "count": 7,
-        "share": 0.0023769100169779285,
+        "share": 0.0023194168323392977,
+        "backstop": false
+      },
+      {
+        "pipeline": "wp-api-theater-life",
+        "count": 6,
+        "share": 0.0019880715705765406,
+        "backstop": false
+      },
+      {
+        "pipeline": "manual",
+        "count": 6,
+        "share": 0.0019880715705765406,
         "backstop": false
       },
       {
         "pipeline": "bro-7885",
         "count": 6,
-        "share": 0.0020373514431239388,
+        "share": 0.0019880715705765406,
         "backstop": false
       },
       {
         "pipeline": "bro-7131",
         "count": 5,
-        "share": 0.001697792869269949,
-        "backstop": false
-      },
-      {
-        "pipeline": "manual",
-        "count": 5,
-        "share": 0.001697792869269949,
+        "share": 0.0016567263088137839,
         "backstop": false
       },
       {
         "pipeline": "bww-roundup-domain-supplement",
         "count": 4,
-        "share": 0.0013582342954159593,
+        "share": 0.0013253810470510272,
         "backstop": false
       },
       {
         "pipeline": "loureviews-poller",
         "count": 4,
-        "share": 0.0013582342954159593,
-        "backstop": false
-      },
-      {
-        "pipeline": "blogger-feed-broadway-and-me",
-        "count": 3,
-        "share": 0.0010186757215619694,
+        "share": 0.0013253810470510272,
         "backstop": false
       },
       {
         "pipeline": "audit-outlet-ground-truth",
         "count": 3,
-        "share": 0.0010186757215619694,
+        "share": 0.0009940357852882703,
+        "backstop": false
+      },
+      {
+        "pipeline": "lbo-roundup",
+        "count": 3,
+        "share": 0.0009940357852882703,
+        "backstop": false
+      },
+      {
+        "pipeline": "blogger-feed-broadway-and-me",
+        "count": 2,
+        "share": 0.0006626905235255136,
         "backstop": false
       },
       {
         "pipeline": "process-review-submission",
         "count": 2,
-        "share": 0.0006791171477079797,
+        "share": 0.0006626905235255136,
         "backstop": false
       },
       {
         "pipeline": "direct-url-index-fallback",
         "count": 2,
-        "share": 0.0006791171477079797,
-        "backstop": false
-      },
-      {
-        "pipeline": "collect-talkinbroadway-index",
-        "count": 2,
-        "share": 0.0006791171477079797,
+        "share": 0.0006626905235255136,
         "backstop": false
       },
       {
         "pipeline": "bro-7453",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
         "pipeline": "bro-6487-stage-probe",
         "count": 1,
-        "share": 0.00033955857385398983,
-        "backstop": false
-      },
-      {
-        "pipeline": "rescue-abandoned-reviews",
-        "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
         "pipeline": "manual-entry (no caller)",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
         "pipeline": "stub-from-reviews-json",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
         "pipeline": "bro-7274",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
-        "pipeline": "lbo-roundup",
+        "pipeline": "collect-talkinbroadway-index",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       },
       {
         "pipeline": "reviews-json-stub",
         "count": 1,
-        "share": 0.00033955857385398983,
+        "share": 0.0003313452617627568,
         "backstop": false
       }
     ]
   },
   "all": {
-    "total": 83685,
+    "total": 83935,
     "noCaller": 14785,
-    "backstop": 1752,
-    "backstopShare": 0.020935651550457072
+    "backstop": 1780,
+    "backstopShare": 0.021206886281050812
   },
-  "pending": 6788,
+  "pending": 5766,
   "pendingGrowth": {
     "status": "insufficient-history",
-    "rows": 1,
+    "rows": 2,
     "alert": false
   },
-  "noCallerAfterEnforcement": 0
+  "noCallerAfterEnforcement": 116
 }
