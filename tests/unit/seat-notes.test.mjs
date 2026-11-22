@@ -68,6 +68,13 @@ describe('validateSeatNotes', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'You miss the elephant on the left side of the stage from here.' }]);
     assert.ok(p.some((x) => /production or set piece/.test(x)), p.join('\n'));
   });
+
+  test('refuses production words in the plural too (lighting rigs, set pieces)', () => {
+    for (const claim of ['Lighting rigs on the Balcony front get in the way here.', 'Set pieces at the side block part of the stage.']) {
+      const p = validateSeatNotes('T', [watch, { ...value, claim }]);
+      assert.ok(p.some((x) => /production or set piece/.test(x)), claim);
+    }
+  });
   test('a claim naming more sources than it cites is refused', () => {
     const claim = 'Rows A to C are very close, and two seat guides say you can miss action at the sides.';
     const p = validateSeatNotes('T', [{ ...watch, claim }, value]);
@@ -121,7 +128,7 @@ describe('validateSeatNotes', () => {
   });
 });
 
-const { quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
+const { seatplanLevelLinked, quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
 const { pageNamesTheater } = require('../../scripts/lib/seat-adjudication.js');
 
 describe('seat-notes grounding helpers', () => {
@@ -277,5 +284,34 @@ describe('seat-note expiry alert decision (BRO-8057)', () => {
     const d = decideSeatNoteExpiryAlert([{ theater: 'T', where: 'Rear', daysLeft: 0, invalid: true }]);
     assert.match(d.alert.description, /verification date missing or invalid/);
     assert.match(d.alert.hint, /price still holds/);
+  });
+});
+
+describe('seatplanLevelLinked (skip SeatPlan level pages that look missing)', () => {
+  const V = 'https://seatplan.com/new-york/x-theatre/';
+  const pages = (o) => (u) => o[u];
+  test('skips every level page when the venue page is a not-found page', () => {
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false, error: 'not-found page' } })), false);
+  });
+  test('a venue page that failed for another reason is unknown, so level pages are still fetched', () => {
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false, error: 'timeout' } })), true);
+  });
+  test('level names match across a line break, nonbreaking space or hyphen', () => {
+    for (const text of ['Front\nMezzanine seats', 'Front\u00a0Mezzanine', 'front-mezzanine rows']) {
+      const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text } });
+      assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), true, text);
+    }
+  });
+  test('skips front/rear mezzanine and balcony the seating plan never names', () => {
+    const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text: 'Orchestra and Mezzanine seating.' } });
+    assert.equal(seatplanLevelLinked(V + 'balcony/', read), false);
+    assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), false);
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', read), true);
+  });
+  test('fetches a level the seating plan names, or when nothing is cached yet', () => {
+    const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text: 'The Front Mezzanine and Balcony.' } });
+    assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), true);
+    assert.equal(seatplanLevelLinked(V + 'balcony/', read), true);
+    assert.equal(seatplanLevelLinked(V + 'balcony/', pages({})), true);
   });
 });

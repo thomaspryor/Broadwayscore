@@ -26,12 +26,12 @@ const meta = require(path.join(__dirname, '../../data/theater-metadata.json'));
 const audit = require(path.join(__dirname, '../../data/seat-research-eval/audits/seat-notes.json'));
 const { validateSeatNotes } = require('../../scripts/lib/seat-notes-validators.js');
 const { publishableSeatNotes, latestVerified } = require('../../scripts/lib/seat-notes-publish.js');
-const { houseTitles } = require('../../scripts/seat-notes.js');
+const { houseTitles, SHRINK_LIMIT } = require('../../scripts/seat-notes.js');
 const showsJson = require(path.join(__dirname, '../../data/shows.json'));
 const shows = Array.isArray(showsJson) ? showsJson : showsJson.shows || [];
 
 // Theaters with notes that render, measured after each ramp step (BRO-8057).
-const MIN_THEATERS_WITH_NOTES = 4;
+const MIN_THEATERS_WITH_NOTES = 12;
 
 const theaters = Object.keys(meta).filter((k) => !k.startsWith('_'));
 const notesOf = (t) => meta[t]?.structuredTips?.seating?.seatNotes;
@@ -51,6 +51,19 @@ describe('seat notes in theater-metadata.json', () => {
       .map(([t]) => t);
     const missing = published.filter((t) => !renders(t));
     assert.deepEqual(missing, [], `published by seat-notes.js but no rendering notes now: ${missing.join(', ')}`);
+  });
+
+  test('no audited theater lost more than 20% of its notes or watch-outs (shrink backstop)', () => {
+    // Same bar apply holds itself to without --allow-shrink; this catches any other writer.
+    const shrunk = [];
+    for (const [t, a] of Object.entries(audit.theaters || {})) {
+      if (!Array.isArray(a.published) || !a.published.length) continue;
+      const now = rendering(t);
+      const wo = (xs) => xs.filter((n) => n.type === 'watch-out').length;
+      if (now.length < a.published.length * (1 - SHRINK_LIMIT)) shrunk.push(`${t}: ${now.length} notes, published ${a.published.length}`);
+      else if (wo(now) < wo(a.published) * (1 - SHRINK_LIMIT)) shrunk.push(`${t}: ${wo(now)} watch-outs, published ${wo(a.published)}`);
+    }
+    assert.deepEqual(shrunk, []);
   });
 
   test('every theater with notes meets the publish rule (2+ notes, 1+ watch-out or value)', () => {

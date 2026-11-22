@@ -22,7 +22,7 @@ const SOURCE_HOSTS = new Set([
 ]);
 // House notes only (owner-approved plan v4): a claim about one production's
 // set or staging is not a fact about the seat, and goes stale when it closes.
-const PRODUCTION_WORDS = /\b(the set|set piece|scenery|catwalk|elephant|windmill|on-?stage seating|lighting rig|the production|this production|the show's|staging|projections?|cast members?)\b/i;
+const PRODUCTION_WORDS = /\b(the set|set pieces?|scenery|catwalks?|elephants?|windmills?|on-?stage seating|lighting rigs?|the production|this production|the show's|staging|projections?|cast members?)\b/i;
 const CLAIM_MIN = 20;
 const CLAIM_MAX = 240;
 const SHORT_MIN = 12;
