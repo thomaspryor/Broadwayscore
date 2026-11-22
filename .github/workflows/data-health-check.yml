@@ -312,7 +312,8 @@ jobs:
     # BRO-7181: 355->365 for three --alert audit steps raised 1->3 min each (Linear calls; job-timeout-margin gate).
     # BRO-7339: 365->368 for the 3-min OpenAI shutdown audit step (job-timeout-margin gate).
     # BRO-7342: 368->374 for the two 3-min Anthropic and Gemini shutdown audit steps (job-timeout-margin gate).
-    timeout-minutes: 374
+    # BRO-7117: 374->379 for the 5-min opening-night timeout headroom audit step (job-timeout-margin gate).
+    timeout-minutes: 379
     permissions:
       contents: write
       issues: write
@@ -682,6 +683,22 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-provider-retirements.js --provider=gemini --strict --alert
+
+      # BRO-7117: 3 of 12 "Opening Night Poller Failed" cards in 30 days were a step or job running out of its
+      # timeout-minutes after creeping toward it for days in green runs. Reads the last 30 completed runs of the
+      # opening-night poller/express/reviews workflows and flags any step whose slowest run used >= 80% of its cap.
+      # Advisory first (CLAUDE.md rule 19). --alert files one worker card (scripts/lib/audit-alert.js, warning,
+      # 20h cooldown), clears it when clean; unreadable run data files nothing and never clears it.
+      - name: Opening-night timeout headroom audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-step-timeout-headroom.js --strict --alert
 
       # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
       # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.

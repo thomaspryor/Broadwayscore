@@ -124,7 +124,8 @@ jobs:
     # (7560+120)/0.85 = 9035s, so 152min = 9120s.
     # 152->160 (BRO-8010): readiness rebuild cap 10->15 (+300s) and a memo
     # restore step; (9120*0.85+300+120)/0.85 = ~9610s, so 160min = 9600s+.
-    timeout-minutes: 160
+    # 160->167 (BRO-7117): the 6-min "Push collect checkpoint" step; (9600*0.85+360)/0.85 = ~10024s.
+    timeout-minutes: 167
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -964,9 +965,31 @@ jobs:
           # reads it so a collect that finished but was killed on exit (or
           # skipped slow URLs) reads as degraded, not crashed.
           COLLECT_SUMMARY_FILE: ${{ runner.temp }}/collect-summary.json
+          # BRO-7117: the forced end-of-run push to main ran past the 12-min cap after the 540s
+          # budget (run 44998053829: budget hit 07:48:14, killed 07:50:56 mid-push). Later steps
+          # push HEAD, which carries this local checkpoint commit, so skip that push here.
+          SKIP_FINAL_MAIN_PUSH: '1'
+          GIT_NET_TIMEOUT_SEC: '30'
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
         timeout-minutes: 12
+
+      # BRO-7117: the collect step above skips its own forced end-of-run main push
+      # (SKIP_FINAL_MAIN_PUSH) so it cannot run past its 12-min cap; push its local
+      # checkpoint commit (collection-state + spend ledger) here, in its own bounded step.
+      - name: Push collect checkpoint
+        if: always() && steps.collect.outcome != 'skipped'
+        continue-on-error: true
+        timeout-minutes: 6
+        env:
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          timeout 60 git fetch --quiet --depth=1 origin main || true
+          if [ -n "$(git log origin/main..HEAD --oneline 2>/dev/null | head -1)" ]; then
+            bash scripts/lib/push-with-retry.sh 5 main
+          else
+            echo "No pending collect checkpoint commit"
+          fi
 
       - name: Commit collected texts
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'

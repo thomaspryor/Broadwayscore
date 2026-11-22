@@ -6289,7 +6289,15 @@ function commitChanges(processed, forcePush = false) {
     // origin/main per push cycle, regardless of how many batches ran since
     // the last one.
     const elapsedSinceMainPush = Date.now() - _lastMainPushAt;
-    if (_hasPendingMainCommit && (forcePush || elapsedSinceMainPush >= CONFIG.mainPushIntervalMs)) {
+    const mainPush = require('./lib/collect-final-push').shouldPushMainCheckpoint({
+      forcePush,
+      intervalDue: elapsedSinceMainPush >= CONFIG.mainPushIntervalMs,
+      hasPendingCommit: _hasPendingMainCommit,
+    });
+    if (mainPush.reason === 'final-push-left-to-workflow') {
+      console.log('  ⏭ Final main push left to the workflow (SKIP_FINAL_MAIN_PUSH=1); checkpoint commit kept locally');
+    }
+    if (mainPush.push) {
       // Only clear the pending-commit flag / reset the clock on a CONFIRMED
       // push. On failure, leave both as-is: the next batch's amend keeps
       // accumulating on the same still-unpushed commit, and — since
