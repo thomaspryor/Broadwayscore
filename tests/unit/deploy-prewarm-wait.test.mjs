@@ -88,7 +88,7 @@ test('rebuild-fast dispatches the pre-warm early and skips its own dispatch only
   assert.ok(rf.indexOf('- name: Pre-warm the deploy') < rf.indexOf('- name: Rebuild reviews.json'));
   const trig = stepBlock(rf, 'Trigger deploy (core data changed)');
   assert.match(trig, /--find-prewarm "\$GITHUB_RUN_ID" \|\| true/);
-  assert.match(trig, /gh workflow run vercel-deploy\.yml \|\|/);
+  assert.match(trig, /gh workflow run vercel-deploy\.yml( -f source=rebuild-fast)? \|\|/);
 });
 
 test('vercel-deploy: gate deferred for pre-warm, wait step before core data, cache save skipped on stop', () => {
@@ -100,7 +100,7 @@ test('vercel-deploy: gate deferred for pre-warm, wait step before core data, cac
   assert.match(wait, /deploy-prewarm-wait\.js "\$WAIT_FOR_RUN"/);
   assert.match(wait, /gh run cancel "\$GITHUB_RUN_ID"/);
   assert.match(wait, /sleep \d+/, 'self-cancel must block so no later step runs');
-  assert.match(wait, /GATE_EVENT_NAME=workflow_dispatch node scripts\/lib\/should-deploy-gate\.js/);
+  assert.match(wait, /GATE_EVENT_NAME=workflow_dispatch (GATE_SOURCE=rebuild-fast )?node scripts\/lib\/should-deploy-gate\.js/);
   assert.match(wait, /SETUP=\$\(grep -E '\^\(package/);
   assert.match(wait, /\[ -z "\$SETUP" \] \|\| handoff/);
   const order = ['Install dependencies', 'Restore Next.js build + prebuild artifacts cache', H.WAIT_STEP, 'Checkout core data', 'Build', 'Deploy to Production', 'Save Next.js build + prebuild artifacts cache']
@@ -133,7 +133,7 @@ test('only a definite "no push" stops quietly; doubt hands off, a failed hand-of
   assert.match(wait, /if \[ "\$RC" -eq 10 \]; then stop_here/);
   assert.match(wait, /\[ "\$RC" -eq 0 \] \|\| handoff/);
   assert.match(wait, /proceed=false' "\$GATE_OUT"; then handoff/);
-  assert.match(wait, /gh workflow run vercel-deploy\.yml \|\| \{ echo "::error::[^}]*exit 1; \}/);
+  assert.match(wait, /gh workflow run vercel-deploy\.yml( -f source=rebuild-fast)? \|\| \{ echo "::error::[^}]*exit 1; \}/);
   assert.match(fs.readFileSync(path.join(ROOT, 'scripts/lib/deploy-prewarm-wait.js'), 'utf8'), /gave up after \$\{CAP_MIN\} min`\); process\.exit\(11\)/);
 });
 
