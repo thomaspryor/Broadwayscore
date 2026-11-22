@@ -4072,7 +4072,7 @@ function checkAPICredits() {
         if (remaining <= 0 || isScrapingBeeRideOut()) {
           const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
           if (isScrapingBeeExhaustionAcknowledged()) {
-            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${isScrapingBeeRideOut() ? 'ScrapingBee is a fallback; ride out until renewal' : ack.reason} [${scrapingBeeAckTag()}]` };
+            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${isScrapingBeeRideOut() ? 'ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03)' : ack.reason} [${scrapingBeeAckTag()}]` };
           }
         }
         return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Upgrade plan or reduce scraping.' };

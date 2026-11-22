@@ -35,9 +35,16 @@ function isScrapingBeeExhaustionAcknowledged(today, thresholds) {
   return SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires > todayDate;
 }
 
-/** The "[...]" tag the health checks print after an acknowledged exhaustion. */
-function scrapingBeeAckTag(thresholds) {
-  return isScrapingBeeRideOut(thresholds) ? 'ride-out policy, owner rule 2026-08-03' : `expires ${SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires}`;
+/**
+ * The "[expires YYYY-MM-DD]" tag the health checks print after an acknowledged
+ * exhaustion. digest-autofix.js / start-now-filing.js ACKNOWLEDGED_ROW_RE only
+ * read that exact shape, so under ride-out the expiry rolls to tomorrow: renewed
+ * on every health run, lapsing a day after ride-out is removed.
+ */
+function scrapingBeeAckTag(thresholds, today) {
+  if (!isScrapingBeeRideOut(thresholds)) return `expires ${SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires}`;
+  const base = Date.parse(`${today || new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+  return `expires ${new Date(base + 86400000).toISOString().slice(0, 10)}`;
 }
 
 module.exports = { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged, isScrapingBeeRideOut, scrapingBeeAckTag };
