@@ -236,8 +236,8 @@ async function cmdFetch() {
   let skipped = 0;
   for (const url of todo) {
     const host = new URL(url).hostname;
-    // A SeatPlan level page the theater's main page does not link to is a
-    // not-found page; fetching it costs a paid fallback for nothing.
+    // A SeatPlan level page that almost surely does not exist costs a paid
+    // fallback for nothing (see seatplanLevelLinked).
     if (!cited.has(url) && !seatplanLevelLinked(url)) { skipped++; continue; }
     const wait = (lastHit[host] || 0) + HOST_SPACING_MS - Date.now();
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
@@ -262,7 +262,7 @@ async function cmdFetch() {
     fs.writeFileSync(pageFile(url), JSON.stringify(rec));
     console.log(`  ${rec.ok ? 'ok  ' : 'FAIL'} ${url}${rec.ok ? '' : ` (${rec.error})`}`);
   }
-  if (skipped) console.log(`  skipped ${skipped} SeatPlan level pages whose venue page is missing`);
+  if (skipped) console.log(`  skipped ${skipped} SeatPlan level pages that look missing`);
 }
 
 /** SeatPlan venue sub-pages linked from a page's HTML: absolute https URLs ending in '/'. */
@@ -275,16 +275,23 @@ function seatplanLinks(html) {
 }
 
 /**
- * False only when url is a SeatPlan level page whose venue page was fetched and
- * missing (a wrong slug: every level page 404s too). The venue page does not
- * link every level page (Walter Kerr links only /orchestra/), so links are not
- * a reason to skip.
+ * False when a SeatPlan level page is almost surely a not-found page, so
+ * fetching it would only buy a paid fallback:
+ *   - the venue page was fetched and failed (wrong slug, or a flaky fetch:
+ *     --retry-failed refetches it), or
+ *   - the seating-plan page was fetched and never names the level ("Front
+ *     Mezzanine", "Balcony"). The venue page does not link every level page
+ *     (Walter Kerr links only /orchestra/), so its links are not used.
  */
-function seatplanLevelLinked(url) {
-  const m = url.match(/^(https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/)([a-z0-9-]+\/)$/);
+function seatplanLevelLinked(url, read = readPage) {
+  const m = url.match(/^(https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/)([a-z0-9-]+)\/$/);
   if (!m) return true;
-  const main = readPage(m[1]);
-  return !(main && !main.ok);
+  const main = read(m[1]);
+  if (main && !main.ok) return false;
+  if (!['front-mezzanine', 'rear-mezzanine', 'balcony'].includes(m[2])) return true;
+  const plan = read(m[1] + 'seating-plan/');
+  if (!plan || !plan.ok) return true;
+  return String(plan.text || '').toLowerCase().includes(m[2].replace('-', ' '));
 }
 
 /**
@@ -409,4 +416,4 @@ if (require.main === module) {
   Promise.resolve(run()).catch((e) => { console.error(e.message || e); process.exit(1); });
 }
 
-module.exports = { rowMentions, seatplanLevelLinked, seedPages, seatplanSlug, seatplanLinks, quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };
+module.exports = { SHRINK_LIMIT, rowMentions, seatplanLevelLinked, seedPages, seatplanSlug, seatplanLinks, quoteOnPage, quoteMatchesLocation, groundTheater, shrinkProblems, houseTitles };

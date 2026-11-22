@@ -128,7 +128,7 @@ describe('validateSeatNotes', () => {
   });
 });
 
-const { quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
+const { seatplanLevelLinked, quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles, seedPages, seatplanLinks, rowMentions, seatplanSlug } = require('../../scripts/seat-notes.js');
 const { pageNamesTheater } = require('../../scripts/lib/seat-adjudication.js');
 
 describe('seat-notes grounding helpers', () => {
@@ -284,5 +284,25 @@ describe('seat-note expiry alert decision (BRO-8057)', () => {
     const d = decideSeatNoteExpiryAlert([{ theater: 'T', where: 'Rear', daysLeft: 0, invalid: true }]);
     assert.match(d.alert.description, /verification date missing or invalid/);
     assert.match(d.alert.hint, /price still holds/);
+  });
+});
+
+describe('seatplanLevelLinked (skip SeatPlan level pages that look missing)', () => {
+  const V = 'https://seatplan.com/new-york/x-theatre/';
+  const pages = (o) => (u) => o[u];
+  test('skips every level page when the venue page failed', () => {
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false } })), false);
+  });
+  test('skips front/rear mezzanine and balcony the seating plan never names', () => {
+    const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text: 'Orchestra and Mezzanine seating.' } });
+    assert.equal(seatplanLevelLinked(V + 'balcony/', read), false);
+    assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), false);
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', read), true);
+  });
+  test('fetches a level the seating plan names, or when nothing is cached yet', () => {
+    const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text: 'The Front Mezzanine and Balcony.' } });
+    assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), true);
+    assert.equal(seatplanLevelLinked(V + 'balcony/', read), true);
+    assert.equal(seatplanLevelLinked(V + 'balcony/', pages({})), true);
   });
 });

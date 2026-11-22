@@ -26,7 +26,7 @@ const meta = require(path.join(__dirname, '../../data/theater-metadata.json'));
 const audit = require(path.join(__dirname, '../../data/seat-research-eval/audits/seat-notes.json'));
 const { validateSeatNotes } = require('../../scripts/lib/seat-notes-validators.js');
 const { publishableSeatNotes, latestVerified } = require('../../scripts/lib/seat-notes-publish.js');
-const { houseTitles } = require('../../scripts/seat-notes.js');
+const { houseTitles, SHRINK_LIMIT } = require('../../scripts/seat-notes.js');
 const showsJson = require(path.join(__dirname, '../../data/shows.json'));
 const shows = Array.isArray(showsJson) ? showsJson : showsJson.shows || [];
 
@@ -60,8 +60,8 @@ describe('seat notes in theater-metadata.json', () => {
       if (!Array.isArray(a.published) || !a.published.length) continue;
       const now = rendering(t);
       const wo = (xs) => xs.filter((n) => n.type === 'watch-out').length;
-      if (now.length < Math.ceil(a.published.length * 0.8)) shrunk.push(`${t}: ${now.length} notes, published ${a.published.length}`);
-      else if (wo(now) < Math.ceil(wo(a.published) * 0.8)) shrunk.push(`${t}: ${wo(now)} watch-outs, published ${wo(a.published)}`);
+      if (now.length < a.published.length * (1 - SHRINK_LIMIT)) shrunk.push(`${t}: ${now.length} notes, published ${a.published.length}`);
+      else if (wo(now) < wo(a.published) * (1 - SHRINK_LIMIT)) shrunk.push(`${t}: ${wo(now)} watch-outs, published ${wo(a.published)}`);
     }
     assert.deepEqual(shrunk, []);
   });

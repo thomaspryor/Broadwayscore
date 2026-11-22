@@ -713,7 +713,7 @@
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "rows": "A",
-            "claim": "A safety bar can block the view from Mezzanine row A; rows B to D avoid it.",
+            "claim": "A safety bar in front of Mezzanine row A can block part of the view.",
             "short": "Safety bar can block the view from row A",
             "evidence": [
               {
@@ -4033,7 +4033,7 @@
             "type": "watch-out",
             "hazard": "pillar",
             "level": "balcony",
-            "claim": "Four thin pillars stand between Balcony rows B and C at the edges of the Center Balcony.",
+            "claim": "Four thin pillars stand at the edges of the Center Balcony, between rows B and C, so they sit in front of row C.",
             "short": "Four thin pillars at the Center Balcony edges",
             "rows": "C",
             "evidence": [
@@ -4050,7 +4050,7 @@
             "level": "balcony",
             "side": "center",
             "rows": "A-B",
-            "claim": "Rows A and B of the Center Balcony have the best views on this level and are priced like the cheaper Mezzanine and side Orchestra seats.",
+            "claim": "Rows A and B of the Center Balcony have the best views on this level, and Balcony prices make them a good bargain.",
             "short": "Front Balcony rows are a good bargain",
             "evidence": [
               {
@@ -7325,7 +7325,7 @@
           {
             "type": "note",
             "level": "orchestra",
-            "rows": "K",
+            "rows": "K-U",
             "claim": "The Mezzanine overhangs the Orchestra from row K, but it does not cut into the view even from the last rows.",
             "evidence": [
               {
@@ -7948,8 +7948,8 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "balcony",
-            "claim": "All Balcony seats are sold as partial view, with light fixtures on the Balcony front and the ceiling in some sightlines.",
-            "short": "Partial view, fixtures and the ceiling in the way",
+            "claim": "All Balcony seats are sold as partial view, and fixtures on the Balcony front and the ceiling can get in the sightlines.",
+            "short": "Sold as partial view, some sightlines blocked",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/balcony/",
