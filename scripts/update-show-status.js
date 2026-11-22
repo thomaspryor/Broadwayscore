@@ -786,7 +786,7 @@ async function updateShowStatuses() {
       const fb = previewsFallbackOpening(show, new Date().toISOString().slice(0, 10));
       if (fb) {
         changes.openingDate = { from: null, to: fb.openingDate };
-        changes.note = `no openingDate from any source ${PREVIEWS_FALLBACK_GRACE_DAYS}+ days into previews; using first performance ${fb.openingDate} (source ${fb.openingDateSource}, overwritable)`;
+        changes.note = `no openingDate from any source (${PREVIEWS_FALLBACK_GRACE_DAYS}+ days into previews, or run already closed); using first performance ${fb.openingDate} (source ${fb.openingDateSource}, overwritable)`;
         if (!dryRun) {
           show.openingDate = fb.openingDate;
           show.openingDateSource = fb.openingDateSource;

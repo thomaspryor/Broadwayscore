@@ -26,7 +26,7 @@ test('off-west-end is covered', () => {
 });
 test('attractions older than 120 days, closed/upcoming shows, missing/garbage preview dates → no fallback', () => {
   assert.equal(previewsFallbackOpening(ob({ previewsStartDate: '2024-01-06' }), today), null);
-  assert.equal(previewsFallbackOpening(ob({ status: 'closed' }), today), null);
+  assert.equal(previewsFallbackOpening(ob({ status: 'closed', closingDate: '2026-12-30' }), today), null);
   assert.equal(previewsFallbackOpening(ob({ status: 'upcoming' }), today), null);
   assert.equal(previewsFallbackOpening(ob({ previewsStartDate: null }), today), null);
   assert.equal(previewsFallbackOpening(ob({ previewsStartDate: 'TBA' }), today), null);

@@ -55,7 +55,7 @@ function previewsFallbackOpening(show, todayStr) {
   // OB engagement that closed at status=closed with no press night ever
   // found) will never reach the grace window; the fallback applies at once,
   // otherwise it trips the opening-date-required ratchet.
-  const ended = show.status === 'closed' && /^\d{4}-\d{2}-\d{2}$/.test(show.closingDate || '') && show.closingDate <= todayStr;
+  const ended = show.status === 'closed' && (!show.closingDate || (/^\d{4}-\d{2}-\d{2}$/.test(show.closingDate) && show.closingDate <= todayStr));
   if (age < 0) return null;
   if (show.status === 'closed' && !ended) return null;
   if (!ended && age < PREVIEWS_FALLBACK_GRACE_DAYS) return null;
