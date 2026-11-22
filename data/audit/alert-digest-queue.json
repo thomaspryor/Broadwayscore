@@ -795,5 +795,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T19:55:07.368Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 3 review(s) flagged for anchored re-score (still open — BRO-6121)",
+    "description": "Still firing after 37 notifications since it was filed. Tracked at BRO-6121.\n\n{\"unanchored\":3} across the whole corpus, by market {\"broadway\":177,\"west-end\":321,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] desire-under-the-elms-off-west-end-2026/londonlivinglarge--unknown.json 2/5 stars band 31-50\n- [unanchored] the-little-foxes-off-west-end-2024/thereviewshub--scott-matthewman.json A band 89-94",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6121",
+    "fields": [],
+    "queuedAt": "2026-11-22T20:03:20.444Z"
   }
 ]
