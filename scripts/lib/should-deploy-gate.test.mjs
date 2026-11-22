@@ -326,7 +326,7 @@ test('a committed change to an imported data file is dirty for the real git diff
 });
 
 // ---- BRO-8028: min-interval throttle + urgent lane -------------------------
-const { isUrgent, DEFAULT_MIN_INTERVAL_MIN } = require('./should-deploy-gate.js');
+const { isUrgent, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN } = require('./should-deploy-gate.js');
 const MIN = DEFAULT_MIN_INTERVAL_MIN * 60;
 const fresh = { ...base, eventName: 'schedule', baselineSha: 'aaa', headSha: 'bbb', deployAgeSec: 120, diffResult: 'dirty', dataDiffResult: 'dirty', minIntervalSec: MIN };
 
@@ -353,7 +353,7 @@ test('BRO-8028: minIntervalSec=0 (default) keeps the old behaviour', () => {
 });
 
 test('BRO-8028: urgent lane is explicit sources only; empty/land/unknown are routine', () => {
-  for (const source of ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  for (const source of URGENT_SOURCES) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
   for (const source of ['', undefined, 'land', 'heartbeat', 'whatever']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), false, String(source));
   assert.equal(isUrgent({ eventName: 'schedule', source: 'urgent' }), false);
   assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews (Fast)' }), true);
@@ -371,9 +371,23 @@ test('BRO-8028 class guard: every vercel-deploy dispatcher is classified (urgent
     for (const line of text.split('\n')) {
       if (!/^\s*(run:\s*|if\s+|\w+\s*&&\s*)?gh workflow run vercel-deploy\.yml/.test(line)) continue; // real commands only, not comments/descriptions
       const m = line.match(/-f source=([\w-]+)/);
-      const ok = m ? ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'land'].includes(m[1]) : ROUTINE_OK.has(f) || /wait_for_run/.test(line);
+      const ok = m ? [...URGENT_SOURCES, 'land'].includes(m[1]) : ROUTINE_OK.has(f) || /wait_for_run/.test(line);
       if (!ok) bad.push(`${f}: ${line.trim().slice(0, 100)}`);
     }
   }
   assert.deepEqual(bad, [], 'classify new dispatchers: add -f source=<urgent source> or list the file in ROUTINE_OK');
+});
+
+test('BRO-8028 class guard: every source= literal dispatched to vercel-deploy.yml from scripts/ is urgent or land', async () => {
+  const fs = await import('node:fs');
+  const dir = new URL('../', import.meta.url).pathname;
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.(js|mjs)$/.test(n) && !/test/.test(n))) {
+    const text = fs.readFileSync(dir + f, 'utf8');
+    for (const line of text.split('\n')) {
+      const m = line.match(/vercel-deploy\.yml.*source=([\w-]+)/);
+      if (m && ![...URGENT_SOURCES, 'land'].includes(m[1])) bad.push(`${f}: ${m[1]}`);
+    }
+  }
+  assert.deepEqual(bad, []);
 });

@@ -28,6 +28,7 @@ jobs:
       # BRO-8028: Vercel bills per build; fail loudly if production deploys exceed
       # ~60/day (target <= 48). Does not gate merges, only fails this daily run.
       - name: Production deploy frequency
+        continue-on-error: true  # advisory first (rule 19); must never skip the cron checks below
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/check-deploy-frequency.js

@@ -190,7 +190,7 @@ const CODE_PATHS = [
 // workflow_dispatch `source` values that mean "ship now": /go-live-now,
 // opening-night pipelines, rebuild-fast. An empty or unknown source is routine
 // (throttled), so a NEW dispatcher defaults to cheap, not to a deploy per call.
-const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night'];
+const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'press-night-watchdog'];
 const URGENT_WORKFLOW_RUN = 'Rebuild Reviews (Fast)';
 
 /** Pure: is this trigger an explicit ship-now request? */
