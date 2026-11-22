@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
 import { hasFreshRunReview, freshCutoffFor } from './fresh-run-reviews.mjs';
 import { loadOverrides, activeOverrides, waivesFreshRunGate, displayTitleFor, movedNote } from './editorial-overrides.mjs';
-import { createCompositeScoreLoader } from './composite-score.mjs';
+import { createCompositeScoreLoader, createReviewScoresLoader } from './composite-score.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -292,6 +292,8 @@ function italicizeLede(text, titles = []) {
 const aggregateScore = createCompositeScoreLoader(
   _testCompositesDir || path.join(repo, 'public/data/shows'),
 );
+// The reviews behind each published Critic Score, for the Reception facts.
+const publishedReviewScores = createReviewScoresLoader(_testCompositesDir || path.join(repo, 'public/data/shows'));
 
 function minReviews(category) {
   // Match the site: OB/OWE shows display a Critic Score at 3+ reviews, so a
@@ -3228,17 +3230,18 @@ if (_weekVoice && !process.env.LEDE_OVERRIDE) {
 let _ai = null, _aiOff = null;
 // The whole block is best-effort: any error keeps the template subject.
 try {
-  const { writeSubject, aiSubjectDisabledReason, reusable } = await import('./subject-writer.mjs');
+  const _sw = await import('./subject-writer.mjs');
+  const { writeSubject, aiSubjectDisabledReason, reusable } = _sw;
   _aiOff = aiSubjectDisabledReason();
   // Debug aid: print the fact sheet the writer would get (no API calls).
   if (process.env.NEWSLETTER_PRINT_SUBJECT_FACTS === '1') {
-    const f = buildSubjectFacts();
+    const f = buildSubjectFacts(_sw);
     process.stderr.write(`[newsletter] subject facts:\n${f.lines.map(l => '  - ' + l).join('\n')}\n[newsletter] recent subjects: ${JSON.stringify(await recentSubjects())}\n`);
   }
   if (_aiOff) {
     process.stderr.write(`[newsletter] AI subject off: ${_aiOff}\n`);
   } else {
-    const _facts = buildSubjectFacts();
+    const _facts = buildSubjectFacts(_sw);
     // Sticky per issue: a later run for the same week and edition (Sunday
     // refresh, recovery) keeps the subject the owner previewed while it still
     // checks out against today's facts, and keeps a subject the owner typed
@@ -3287,7 +3290,7 @@ for (const o of _editorialOverrides.filter(x => x.waiveFreshRunGate)) {
 // Facts for the subject writer: only what this email renders, as plain true
 // sentences. Includes every well-reviewed primary-market show closing in the
 // closing window, whatever week it opened (owner, 2026-11-08).
-function buildSubjectFacts() {
+function buildSubjectFacts({ receptionOf, receptionLine }) {
   const body = sectionOrder.join('');
   const inBody = (t) => !!t && (body.includes(t) || body.includes(t.replace(/&/g, '&amp;')));
   const DAY = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -3335,6 +3338,17 @@ function buildSubjectFacts() {
       lines.push(`${kind}: our score for ${x.review.criticName || 'a critic'}${x.review.outlet ? ` (${x.review.outlet})` : ''}'s review of ${x.show.title} is ${x.review.assignedScore} out of 100.`);
     }
   }
+  // How critics felt as a group, for every show the sheet names (owner,
+  // 2026-11-22: a 77 with one pan was written up as "splits the room").
+  const reception = [];
+  for (const t of titles.values()) {
+    const scores = publishedReviewScores(t.id); // the same reviews as the Critic Score shown
+    const r = receptionOf(scores);
+    const line = receptionLine(t.title, scores);
+    if (!r || !line) continue;
+    reception.push({ title: t.title, verdict: r.verdict });
+    lines.push(line);
+  }
   if (upcoming && _upcomingLede && inBody(_upcomingLede.title)) {
     titles.set(_upcomingLede.id, { id: _upcomingLede.id, slug: _upcomingLede.slug, title: _upcomingLede.title });
     lines.push(`Coming up: ${_upcomingLede.title} ${_upcomingLede.eventLabel === 'Opens' ? 'opens' : 'starts previews'} ${DAY(_upcomingLede.eventDate)}.`);
@@ -3365,7 +3379,7 @@ function buildSubjectFacts() {
   const mainCat = IS_WE ? 'west-end' : 'broadway';
   const topLeadTitles = [...seen].map(id => shows.find(x => x.id === id))
     .filter(s => s && s.category === mainCat && !isOperaShow(s) && inWeek(s.openingDate) && !waivesFreshRunGate(_editorialOverrides, s.id)).map(s => s.title);
-  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles, topLeadTitles };
+  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles, topLeadTitles, reception };
 }
 
 // The subject on this issue's Resend draft when it differs from the one this
