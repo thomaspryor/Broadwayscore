@@ -33,6 +33,60 @@ function finalSlug(url) {
   try { return new URL(String(url)).pathname.split('/').filter(Boolean).pop() || ''; } catch { return ''; }
 }
 
+// BRO-8065: url-text rules for the site-search hits the first triage missed (11 of 18 known junk in the
+// 2025-26 queue). The section/awards text rules never fire when the url names THIS show (a stage review filed
+// under a screen-looking section, a Tony-winner's review), so no real review is rejected on url text alone.
+// A screen section on any host (/movies/, /criticism/movies/, /tv/, /film/): a stage cue in the slug keeps it.
+const SCREEN_SEGMENT_RE = /^(?:movies?|films?|tv|television|streaming)$/i;
+const STAGE_CUE_RE = /theat|stage|musical|broadway|west-?end|opera|ballet|panto|off-broadway|playhouse|play-review/i;
+// A TV episode recap ("outlander-blood-of-my-blood-episode-2-review"); 0 scored stage reviews carry it.
+const TV_EPISODE_RE = /(?:^|-)(?:episode-\d+|s\d{1,2}-?e\d{1,2}|season-\d+-episode)(?:-|$)/i;
+// Awards coverage: a live blog (/live/...), predictions, nominees, a "wins the tony" post, readers' voting.
+const AWARDS_SLUG_RE = /(?:^|-)(?:tonys?|oliviers?|drama-desk|obies?|outer-critics-circle)-(?:awards?(?!-winn)|nominations?|nominees|predictions|host|voting|snubs|ceremony|red-carpet)(?:-|$)|(?:^|-)wins?-(?:the-)?(?:tony|olivier)(?:-|$)|(?:^|-)predictions(?:-|$)/i;
+// Watch/TV fan sites the corpus has never scored a review from.
+const NON_THEATRE_HOSTS = new Set(['watchcrunch.com', 'storiesfromthenewworld.com']);
+
+/** Path segments (lowercased, before the final slug). */
+function pathSegments(url) {
+  try { return new URL(String(url)).pathname.split('/').filter(Boolean).map((p) => p.toLowerCase()); } catch { return []; }
+}
+
+/**
+ * The url's own date (/YYYY/MM/DD/, BWW -YYYYMMDD, /YYYY/MM/ month, /YYYY/ year) wholly outside this production's
+ * window, judged by the SAME canonical rule the drain applies to a fetched date (isArticleOutsideProductionWindow),
+ * plus a one-year margin (below), so a pre-fetch junk verdict is one the post-fetch rule would also reach. A month or year counts only when its first and last day are
+ * both outside and on the same side of the run (a year that contains the run is no evidence). Pure.
+ */
+const URL_DATE_MARGIN_DAYS = 365;
+function urlDateOutsideWindowReason(url, show) {
+  if (!show || !(show.openingDate || show.previewsStartDate)) return null;
+  const { extractDateFromUrl } = require('./url-date');
+  const r = extractDateFromUrl(url);
+  if (!r || r.date === '2001-01-01') return null; // BWW's placeholder -20010101 suffix is not a date
+  let first; let last; let label;
+  if (r.date) { first = last = label = r.date; } else {
+    const m = String(url).match(/\/((?:19|20)\d{2})\/(\d{1,2})\//);
+    const y = m ? Number(m[1]) : Number(r.yearOnly);
+    if (!y) return null;
+    const mo = m && Number(m[2]) >= 1 && Number(m[2]) <= 12 ? Number(m[2]) : null;
+    const iso = (d) => d.toISOString().slice(0, 10);
+    first = iso(new Date(Date.UTC(y, mo ? mo - 1 : 0, 1)));
+    last = iso(new Date(Date.UTC(y, mo ? mo : 12, 0)));
+    label = mo ? `${y}-${String(mo).padStart(2, '0')}` : String(y);
+  }
+  if (!isArticleOutsideProductionWindow(show, first) || !isArticleOutsideProductionWindow(show, last)) return null;
+  const anchor = require('./date-guard').earliestShowDate(show);
+  if (!anchor) return null;
+  const end = String(show.closingDate || show.openingDate || anchor);
+  const days = (a, b) => (Date.parse(a) - Date.parse(b)) / 86400000;
+  // Margin: over the 49,907 scored urls the canonical window alone flagged 34 real reviews 9-186 days out
+  // (undeclared earlier runs, late blog posts); a url date more than a year outside flags 4. Nearer ones are left
+  // to the drain, which settles them on the fetched date.
+  const before = days(anchor, last); const after = days(first, end);
+  if (!(before > URL_DATE_MARGIN_DAYS || after > URL_DATE_MARGIN_DAYS)) return null;
+  return `url date ${label} is more than a year outside this production's window`;
+}
+
 function hostKey(url) {
   try { return new URL(String(url)).hostname.replace(/^www\./i, '').toLowerCase(); } catch { return null; }
 }
@@ -112,6 +166,31 @@ function triagePendingStub(data, ctx = {}) {
     if (bad) return { verdict: 'junk', reason: `url year ${bad} is more than a year from the show's ${idYear} (show has no dates)` };
   }
   if (PLAYBILL_ARTICLE_RE.test(url)) return { verdict: 'junk', reason: 'Playbill news article, not a review' };
+  // BRO-8065 rules (see the constants above). None fires when the slug names this show and says "review".
+  // Objective evidence first (a fan-site host, an episode number, the url's own date): these fire even when the
+  // slug names the show, exactly as the drain's post-fetch date rule would (28-years-later-review under The Years).
+  const host = hostKey(url);
+  if (host && NON_THEATRE_HOSTS.has(host)) return { verdict: 'junk', reason: `${host} is a watch/TV fan site, not a theatre review` };
+  if (TV_EPISODE_RE.test(slug)) return { verdict: 'junk', reason: 'TV episode recap, not a review' };
+  const dateReason = urlDateOutsideWindowReason(url, ctx.show);
+  if (dateReason) return { verdict: 'junk', reason: dateReason };
+  // A bare numeric / 1-2 letter / generic title ("44", "G", "The Story") the url never spells out: a site-search
+  // fluke (BRO-7930; the drain applied this before triage, now one rule for both). Owner/manual stubs are exempt.
+  if (ctx.show && ctx.show.title && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
+    const gt = require('./generic-title-guard');
+    if (gt.genericSingleWordTitle(ctx.show.title, { shortNumeric: true })
+        && !gt.passesGenericTitleIdentity(url, ctx.show.title, { shortNumeric: true })) {
+      return { verdict: 'junk', reason: `url has no identity for the bare title "${ctx.show.title}"` };
+    }
+  }
+  // Text rules: never when the url names this show (a stage review filed under /movies/, a Tony-winner's review).
+  if (!urlNamesShow(url, ctx.show)) {
+    const segs = pathSegments(url).slice(0, -1);
+    // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
+    if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return { verdict: 'junk', reason: 'film/TV section URL, not a stage review' };
+    if (segs[0] === 'live') return { verdict: 'junk', reason: 'live-blog URL, not a review' };
+    if (AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
+  }
   if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
   // only settles a stub on a host the corpus has never scored a review from (venue sites such as bam.org).
@@ -175,4 +254,4 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
