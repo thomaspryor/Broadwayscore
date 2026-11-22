@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-21T10:47:14.115Z",
-  "scope": "2 opening window(s): the-snowman-off-west-end-2026 (2026-11-21), cinderella-lyric-hammersmith-off-west-end-2026 (2026-11-21)",
+  "generatedAt": "2026-11-22T10:54:29.235Z",
+  "scope": "2 opening window(s): fantasma-off-broadway-2026 (2026-11-22), the-snowman-off-west-end-2026 (2026-11-21)",
   "degraded": null,
   "windows": [
     {
-      "showId": "the-snowman-off-west-end-2026",
-      "openingDate": "2026-11-21",
-      "from": "2026-11-20T00:00:00.000Z",
-      "to": "2026-11-25T23:59:59.999Z"
+      "showId": "fantasma-off-broadway-2026",
+      "openingDate": "2026-11-22",
+      "from": "2026-11-21T00:00:00.000Z",
+      "to": "2026-11-26T23:59:59.999Z"
     },
     {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "showId": "the-snowman-off-west-end-2026",
       "openingDate": "2026-11-21",
       "from": "2026-11-20T00:00:00.000Z",
       "to": "2026-11-25T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 183650,
-  "logOldestEntryAt": "2026-11-19T19:36:58.963Z",
+  "logEntryCount": 160948,
+  "logOldestEntryAt": "2026-11-20T23:28:34.850Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 2,
+    "inFlight": 0,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,28 +35,5 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "the-snowman-off-west-end-2026",
-      "outletId": "london-theatre",
-      "reviewKey": "london-theatre:marianka-swain:https://www.londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
-      "basis": null,
-      "firstSeenAt": "2026-11-21T00:47:31.716Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "review-first-seen"
-    },
-    {
-      "showId": "the-snowman-off-west-end-2026",
-      "outletId": "broadwayworld",
-      "reviewKey": "broadwayworld:christiana-rose:https://www.broadwayworld.com/westend/article/Review-THE-SNOWMAN-Peacock-Theatre-20231120",
-      "basis": null,
-      "firstSeenAt": "2026-11-21T00:47:32.061Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "review-first-seen"
-    }
-  ]
+  "records": []
 }
