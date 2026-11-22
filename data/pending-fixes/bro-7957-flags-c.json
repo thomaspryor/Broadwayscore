@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7957-flags-c",
+  "planId": "fd8ecec8-5b26-4354-8763-1b4641ef9e31",
+  "status": "pending",
+  "createdAt": "2026-11-22T03:56:44.490Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7957: clear the persisted duplicate flag on 47 NYC-era Chris Jones Daily News copies so the Daily News review is the one credited (part 3 of 4)",
+    "steps": [
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy",
+      "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag",
+      "BRO-7957: clear pointer to the Tribune copy"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "mary-jane-2024/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-jane-2024/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "mary-jane-2024/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "masquerade-off-broadway-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "masquerade-off-broadway-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "masquerade-off-broadway-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mcneal-2024/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mcneal-2024/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "mcneal-2024/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oedipus-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oedipus-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "oedipus-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "oh-mary-2024/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "operation-mincemeat-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "patriots-2024/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "pirates-the-penzance-musical-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prayer-for-the-french-republic-2024/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prayer-for-the-french-republic-2024/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "prayer-for-the-french-republic-2024/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "queen-versailles-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "ragtime-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "real-women-have-curves-2025/nydailynews--chris-jones.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7957: Chris Jones NYC-era pair, Daily News copy is the original (market-aware primacy); clear the old duplicate flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "real-women-have-curves-2025/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "real-women-have-curves-2025/chicagotribune--chris-jones.json",
+        "newValue": null,
+        "description": "BRO-7957: clear pointer to the Tribune copy"
+      }
+    ]
+  }
+}
