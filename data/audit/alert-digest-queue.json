@@ -485,20 +485,6 @@
     "queuedAt": "2026-11-22T18:36:48.243Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-22T19:14:07.104Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-a-midsummer-nights-dream-jentes-regional-2026",
     "title": "Placeholder synopsis on A Midsummer Night's Dream",
     "description": "synopsis for a-midsummer-nights-dream-jentes-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -795,6 +781,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T19:55:07.368Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T20:27:38.546Z"
   },
   {
     "conditionKey": "star-band:regressions",

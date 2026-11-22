@@ -234,10 +234,33 @@ const SCREEN_REVIEW_HOST_RE = /(^|\.)(hollywoodreporter\.com|thewrap\.com)$/i;
 const SCREEN_REVIEW_SECTION_RE = /^\/(?:movies|tv\/tv-reviews|creative-content\/(?:movies|tv))\//i;
 const THEATRE_SLUG_CUE_RE = /theat|stage|broadway|west-?end|musical|opera|ballet|danc|panto|(?:^|-)play(?:-|$)/i;
 
+// BRO-8023: the same title-word site search filed Entertainment Weekly film/TV/
+// music pages and its section indexes (/tv/tv-reviews-recommendations/,
+// /movie-reviews-recommendations/) under same-titled plays, Hollywood Reporter
+// /t/<tag>/ index pages ("classic-reviews"), and Deadline festival film reviews
+// ("pretty-lethal-review-...-sxsw-") as no-byline _pending stubs. EW's real
+// stage reviews under /movies/ and /music/ all carry a theatre cue in the slug
+// (diana-the-musical-review, junk-broadway-review, springsteen-on-broadway), so
+// the same cue exemption applies. Over reviews.json's 49,794 urls: 0 rows match.
+const EW_HOST_RE = /(^|\.)ew\.com$/i;
+const EW_SCREEN_SECTION_RE = /^\/(?:movies|tv|music|books|movie-reviews-recommendations|tv-reviews-recommendations)(?:\/|$)/i;
+const THR_TAG_INDEX_RE = /^\/t\/[^/]+\/?$/i;
+const DEADLINE_HOST_RE = /(^|\.)deadline\.com$/i;
+const FILM_FESTIVAL_SLUG_RE = /-review-[a-z0-9-]*?(?:^|-)(?:sxsw|sundance|cannes|venice|tiff|toronto-film|berlinale|tribeca|telluride)(?:-|$)/i;
+const SCREEN_TRADE_HOST_RE = /(^|\.)(deadline\.com|hollywoodreporter\.com|variety\.com|indiewire\.com|thewrap\.com|ew\.com|collider\.com|screenrant\.com)$/i;
+const SCREEN_BOX_OFFICE_HOST_RE = /(^|\.)(deadline\.com|ew\.com|hollywoodreporter\.com|variety\.com)$/i;
+
 function screenSectionHit(u) {
-  if (!SCREEN_REVIEW_HOST_RE.test(u.hostname) || !SCREEN_REVIEW_SECTION_RE.test(u.pathname)) return false;
   const slug = u.pathname.split('/').filter(Boolean).pop() || '';
-  return !THEATRE_SLUG_CUE_RE.test(slug);
+  if (SCREEN_REVIEW_HOST_RE.test(u.hostname) && SCREEN_REVIEW_SECTION_RE.test(u.pathname)) return !THEATRE_SLUG_CUE_RE.test(slug);
+  if (EW_HOST_RE.test(u.hostname) && EW_SCREEN_SECTION_RE.test(u.pathname)) return !THEATRE_SLUG_CUE_RE.test(slug);
+  if (/(^|\.)hollywoodreporter\.com$/i.test(u.hostname) && THR_TAG_INDEX_RE.test(u.pathname)) return true;
+  if (DEADLINE_HOST_RE.test(u.hostname) && FILM_FESTIVAL_SLUG_RE.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
+  // A screen-trade slug that says what it is ("spellbound-film-review"): the play "Midnight Movie" is why this is host-scoped.
+  if (SCREEN_TRADE_HOST_RE.test(u.hostname) && !/\/legit\//i.test(u.pathname) && /(?:^|-)(?:film|movie|tv|series)-review(?:-|$)/i.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
+  // Box-office grosses stories are news, never a review (deadline broadway-box-office-..., ew box-office-preview-...).
+  if (SCREEN_BOX_OFFICE_HOST_RE.test(u.hostname) && /(?:^|-)box-office(?:-|$)/i.test(slug) && !/(?:^|-)review(?:-|$)/i.test(slug)) return true;
+  return false;
 }
 
 /**

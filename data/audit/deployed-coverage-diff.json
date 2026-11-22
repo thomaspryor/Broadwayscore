@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-22T19:17:12.518Z",
+  "generatedAt": "2026-11-22T20:28:04.620Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 366,
-  "clean": 365,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "openingDate": "2026-11-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.46 vs local 66.56 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-22T19:17:09.190Z"
-    }
-  ],
+  "clean": 366,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
