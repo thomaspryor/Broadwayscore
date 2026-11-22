@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7855",
   "planId": "50f685c4-ca64-4832-ad24-f9a78d8c66ab",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T18:42:27.979Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "a-raisin-in-the-sun-2014/ny1--roma-tore.json: duplicateOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T19:51:59.695Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-raisin-in-the-sun-2014/ny1--roma-tore.json duplicateOf: null -> \"ny1--roma-torre.json\""
+    }
+  ],
+  "executedIn": "ci"
 }
