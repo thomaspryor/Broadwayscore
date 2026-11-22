@@ -15,6 +15,13 @@
 
 set -e
 
+# BRO-8056: show-refresh manifest (gitignored data/show-refresh-manifest.json).
+# Last step on every path, after every data file it hashes is final. Fail-soft:
+# the runner always exits 0 and leaves no manifest on any failure.
+build_show_refresh_manifest() {
+  node scripts/run-show-refresh-manifest.js scripts/build-show-refresh-manifest.ts
+}
+
 # Always run: validation + gitignored output
 node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
@@ -44,6 +51,7 @@ if [ "${CI:-}" != "true" ] && [ "${CI:-}" != "1" ] && \
    [ "${VERCEL:-}" != "1" ] && [ "${VERCEL:-}" != "true" ] && \
    [ "${REGENERATE_BUILD_DATA:-}" != "true" ]; then
   node scripts/generate-stats-shows.js
+  build_show_refresh_manifest
   echo "Using committed build data (local build). Set REGENERATE_BUILD_DATA=true to refresh it."
   exit 0
 fi
@@ -80,6 +88,7 @@ node scripts/lib/prod-data-parity.js --snapshot
 if [ "$SKIP_HEAVY_PREBUILD" = "true" ]; then
   echo "Skipping heavy prebuild (code-only change — committed data files are current)"
   node scripts/generate-stats-shows.js
+  build_show_refresh_manifest
   exit 0
 fi
 
@@ -94,3 +103,4 @@ node scripts/generate-homepage-archive.js
 node scripts/generate-off-broadway-archive.js
 node scripts/generate-off-west-end-archive.js
 node scripts/generate-west-end-archive.js
+build_show_refresh_manifest
