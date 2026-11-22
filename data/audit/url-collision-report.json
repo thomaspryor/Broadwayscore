@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-22T14:41:41.379Z",
+  "generatedAt": "2026-11-22T14:49:46.649Z",
   "summary": {
-    "total": 16,
-    "high": 9,
+    "total": 18,
+    "high": 11,
     "medium": 5,
     "low": 2
   },
@@ -167,6 +167,33 @@
       ],
       "suggestedWinner": "hadestown-west-end-2018",
       "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "normalizedUrl": "https://thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "candidates": [
+        {
+          "showId": "inter-alia-west-end-2025",
+          "file": "times-uk--dominic-maxwell.json",
+          "publishDate": null,
+          "openingDate": "2025-07-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "inter-alia-west-end-2026",
+          "file": "times-uk--dominic-maxwell.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "inter-alia-west-end-2026",
+      "reason": "publishDate 2026-04-07 is 0 days from inter-alia-west-end-2026 opening (2026-04-07)",
       "confidence": "high"
     },
     {
@@ -384,6 +411,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 1 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "normalizedUrl": "https://timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "candidates": [
+        {
+          "showId": "till-the-stars-come-down-west-end-2024",
+          "file": "timeout-london--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-01-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "till-the-stars-come-down-west-end-2025",
+          "file": "timeout-london--isobel-lewis.json",
+          "publishDate": "2025-07-09",
+          "openingDate": "2025-07-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "till-the-stars-come-down-west-end-2025",
+      "reason": "publishDate 2025-07-09 is 0 days from till-the-stars-come-down-west-end-2025 opening (2025-07-09)",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/translations-review",
