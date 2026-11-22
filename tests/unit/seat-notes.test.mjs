@@ -7,12 +7,12 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { publishableSeatNotes, noteLocationLabel, noteSources, latestVerified } = require('../../scripts/lib/seat-notes-publish.js');
+const { publishableSeatNotes, noteLocationLabel, noteSources, latestVerified, seatNotePicks, pickText } = require('../../scripts/lib/seat-notes-publish.js');
 const { validateSeatNotes } = require('../../scripts/lib/seat-notes-validators.js');
 
 const ev = (host = 'seatplan.com') => [{ url: `https://${host}/x/`, quoteHash: 'a1b2c3d4e5f6a7b8', fetchedAt: '2026-11-22' }];
-const watch = { type: 'watch-out', hazard: 'mezz-overhang', level: 'orchestra', rows: 'K-W', claim: 'The mezzanine overhang starts at row K and cuts off the top of the stage.', evidence: ev(), verifiedAt: '2026-11-22' };
-const value = { type: 'value', level: 'mezzanine', side: 'center', rows: 'E-J', claim: 'Cheaper than the front rows while still close, and in front of the overhang.', evidence: ev('tickpick.com'), verifiedAt: '2026-11-22' };
+const watch = { type: 'watch-out', hazard: 'mezz-overhang', level: 'orchestra', rows: 'K-W', claim: 'The mezzanine overhang starts at row K and cuts off the top of the stage.', short: 'Overhang cuts off the top of the stage', evidence: ev(), verifiedAt: '2026-11-22' };
+const value = { type: 'value', level: 'mezzanine', side: 'center', rows: 'E-J', claim: 'Cheaper than the front rows while still close, and in front of the overhang.', short: 'Cheaper, and still close to the stage', evidence: ev('tickpick.com'), verifiedAt: '2026-11-22' };
 const note = { type: 'note', level: 'mezzanine', side: 'left', rows: 'G', claim: 'Row G has an aisle in front of it, so there is extra legroom.', evidence: ev(), verifiedAt: '2026-11-22' };
 
 describe('publishableSeatNotes', () => {
@@ -42,6 +42,21 @@ describe('publishableSeatNotes', () => {
   test('sources are distinct hosts', () => {
     assert.deepStrictEqual(noteSources({ evidence: [...ev(), ...ev(), ...ev('aviewfrommyseat.com')] }), ['seatplan.com', 'aviewfrommyseat.com']);
     assert.strictEqual(latestVerified([watch, { ...note, verifiedAt: '2026-12-01' }]), '2026-12-01');
+  });
+});
+
+describe('closed-card headline picks', () => {
+  test('picks the first watch-out and the first value note', () => {
+    const v2 = { ...value, rows: 'K' };
+    const out = seatNotePicks(publishableSeatNotes([note, v2, value, watch], { today: new Date('2026-11-23') }));
+    assert.strictEqual(out.avoid, watch);
+    assert.strictEqual(out.value, v2);
+    assert.deepStrictEqual(seatNotePicks([watch, note]), { avoid: watch, value: null });
+    assert.deepStrictEqual(seatNotePicks(undefined), { avoid: null, value: null });
+  });
+  test('headline text uses the short line, falls back to the claim, one period', () => {
+    assert.deepStrictEqual(pickText(watch), { where: 'Orchestra, rows K to W', what: 'Overhang cuts off the top of the stage.' });
+    assert.strictEqual(pickText({ ...watch, short: undefined }).what, 'The mezzanine overhang starts at row K and cuts off the top of the stage.');
   });
 });
 
@@ -85,6 +100,13 @@ describe('validateSeatNotes', () => {
     assert.ok(validateSeatNotes('T', [watch, v]).some((x) => /Center Orchestra/.test(x)));
     assert.ok(validateSeatNotes('T', [watch, { ...v, side: undefined, rows: 'A-C' }]).some((x) => /Center Orchestra/.test(x)));
     assert.deepStrictEqual(validateSeatNotes('T', [watch, { ...v, side: 'sides', rows: 'A-C' }]).filter((x) => /Center Orchestra/.test(x)), []);
+  });
+  test('watch-out and value notes need a clean short headline', () => {
+    assert.ok(validateSeatNotes('T', [{ ...watch, short: undefined }, value]).some((x) => /need a short headline/.test(x)));
+    assert.deepStrictEqual(validateSeatNotes('T', [watch, value, { ...note, short: undefined }]), []);
+    assert.ok(validateSeatNotes('T', [{ ...watch, short: 'Overhang cuts off the top.' }, value]).some((x) => /ends with punctuation/.test(x)));
+    assert.ok(validateSeatNotes('T', [{ ...watch, short: 'Too short' }, value]).some((x) => /short headline length/.test(x)));
+    assert.ok(validateSeatNotes('T', [{ ...watch, short: 'You miss the elephant from these seats' }, value]).some((x) => /short headline names a production/.test(x)));
   });
   test('em dashes and quotation marks are refused', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'Cheaper seats — still close to the stage for the price.' }]);

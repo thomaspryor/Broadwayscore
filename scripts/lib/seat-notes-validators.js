@@ -21,6 +21,8 @@ const SOURCE_HOSTS = new Set([
 const PRODUCTION_WORDS = /\b(the set|set piece|scenery|catwalk|elephant|windmill|on-?stage seating|lighting rig|the production|this production|the show's|staging|projections?|cast members?)\b/i;
 const CLAIM_MIN = 20;
 const CLAIM_MAX = 240;
+const SHORT_MIN = 12;
+const SHORT_MAX = 70;
 
 function hostOf(url) {
   try {
@@ -62,6 +64,17 @@ function validateSeatNotes(theater, notes, { showTitles = [] } = {}) {
     }
     for (const c of copyProblems(claim, { forbiddenTitles: showTitles })) p.push(`${at}: ${c}`);
     for (const b of BANNED_CLAIM_PATTERNS) if (b.pattern.test(claim)) p.push(`${at}: ${b.reason}`);
+    // The closed card shows a watch-out and a value note as one-line headlines.
+    if (n.short === undefined) {
+      if (n.type === 'watch-out' || n.type === 'value') p.push(`${at}: watch-out and value notes need a short headline`);
+    } else {
+      const short = String(n.short);
+      if (short.length < SHORT_MIN || short.length > SHORT_MAX) p.push(`${at}: short headline length ${short.length} outside ${SHORT_MIN}-${SHORT_MAX}`);
+      if (/[.!]$/.test(short)) p.push(`${at}: short headline ends with punctuation (the card adds it)`);
+      if (PRODUCTION_WORDS.test(short)) p.push(`${at}: short headline names a production or set piece`);
+      for (const c of copyProblems(short, { forbiddenTitles: showTitles })) p.push(`${at}: short headline: ${c}`);
+      for (const b of BANNED_CLAIM_PATTERNS) if (b.pattern.test(short)) p.push(`${at}: short headline: ${b.reason}`);
+    }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(n.verifiedAt || ''))) p.push(`${at}: verifiedAt must be YYYY-MM-DD`);
     const ev = Array.isArray(n.evidence) ? n.evidence : [];
     if (!ev.length) p.push(`${at}: no evidence (unsourced)`);
