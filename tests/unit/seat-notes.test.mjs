@@ -42,6 +42,10 @@ describe('publishableSeatNotes', () => {
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'O', claim: 'The Mezzanine overhang starts at Orchestra row O, and seats behind it may lose the top.' }), 'Orchestra, row O back');
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'H', claim: 'From row H back in the Orchestra, the Mezzanine hangs over you.' }), 'Orchestra, row H back');
     assert.strictEqual(noteLocationLabel({ level: 'mezzanine', side: 'left', rows: 'G', claim: 'Row G sits behind a cross aisle, so it has extra legroom.' }), 'Left Mezzanine, row G');
+    assert.strictEqual(noteLocationLabel({ level: 'front-mezzanine', rows: 'C', claim: 'The overhang begins over Front Mezzanine row C.' }), 'Front Mezzanine, row C back');
+    // An end row, or a row contrasted with the seats behind it, stays one row.
+    assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'Q', claim: 'The overhang is visible from the back half of the Orchestra and cuts into the stage by row Q.' }), 'Orchestra, row Q');
+    assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'A', claim: 'Row A sits below the stage, while seats behind it have a better angle.' }), 'Orchestra, row A');
   });
   test('sources are distinct hosts', () => {
     assert.deepStrictEqual(noteSources({ evidence: [...ev(), ...ev(), ...ev('aviewfrommyseat.com')] }), ['seatplan.com', 'aviewfrommyseat.com']);
@@ -104,6 +108,13 @@ describe('validateSeatNotes', () => {
   test('a watch-out and a value note on the same rows contradict', () => {
     const p = validateSeatNotes('T', [watch, { ...value, level: 'orchestra', side: 'left', rows: 'J-L' }]);
     assert.ok(p.some((x) => /overlap/.test(x)), p.join('\n'));
+  });
+  test('a "row C back" watch-out overlaps a value note further back on the level', () => {
+    const span = { ...watch, level: 'mezzanine', side: undefined, rows: 'C', claim: 'The Balcony overhang begins at row C of the Mezzanine, so seats behind it lose the top of the stage.' };
+    const p = validateSeatNotes('T', [span, { ...value, level: 'mezzanine', side: 'center', rows: 'D-H' }]);
+    assert.ok(p.some((x) => /overlap/.test(x)), p.join('\n'));
+    const ahead = validateSeatNotes('T', [span, { ...value, level: 'mezzanine', side: 'center', rows: 'A-B' }]);
+    assert.ok(!ahead.some((x) => /overlap/.test(x)), ahead.join('\n'));
   });
   test('row text must be a plain row or range', () => {
     const p = validateSeatNotes('T', [{ ...watch, rows: 'K and back' }, value]);

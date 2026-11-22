@@ -7,7 +7,7 @@
 
 const { HAZARD_TYPES, cleanRowRange, rowSet, copyProblems } = require('./seat-adjudication');
 const { BANNED_CLAIM_PATTERNS } = require('./theater-tips-validators');
-const { NOTE_TYPES, MAX_NOTES, LEVEL_LABEL, publishableSeatNotes, latestVerified, noteSources } = require('./seat-notes-publish');
+const { NOTE_TYPES, MAX_NOTES, LEVEL_LABEL, publishableSeatNotes, latestVerified, noteSources, startsASpan } = require('./seat-notes-publish');
 
 // A claim that names a count of sources must cite at least that many hosts (BRO-8057 ship-check).
 const COUNT_WORDS = { two: 2, both: 2, three: 3, four: 4, several: 3, multiple: 2 };
@@ -103,7 +103,9 @@ function validateSeatNotes(theater, notes, { showTitles = [] } = {}) {
       const types = new Set([a.type, b.type]);
       if (!(types.has('watch-out') && types.has('value'))) continue;
       const ra = a.rows ? rowSet(a.rows) : null, rb = b.rows ? rowSet(b.rows) : null;
-      const overlap = !ra || !rb || [...ra].some((r) => rb.has(r));
+      // "Row C back" (a start row, see startsASpan) covers every row from C on.
+      const hits = (x, sx, other) => (startsASpan(x) ? [...other].some((r) => r >= Math.min(...sx)) : [...sx].some((r) => other.has(r)));
+      const overlap = !ra || !rb || hits(a, ra, rb) || hits(b, rb, ra);
       if (overlap) p.push(`${theater}: watch-out and value notes overlap (seatNotes[${i}] / seatNotes[${j}])`);
     }
   }

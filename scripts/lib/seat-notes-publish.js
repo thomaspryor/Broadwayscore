@@ -65,7 +65,9 @@ function daysBetween(fromIso, to) {
 
 // A claim about a start row and everything behind it ("the overhang starts at
 // row O"). Its single stored row then reads "row O back", not "row O" (BRO-8057).
-const STARTS_A_SPAN = /\b(from (around )?row [A-Z]{1,3} back|(starts|begins) (at|over) (orchestra |mezzanine )?row|overhangs? (from|at) row|seats behind|back half)\b/i;
+const STARTS_A_SPAN = /\b(from (around )?row [A-Z]{1,3} back|(starts|begins) (at|over) ((front |rear )?mezzanine |orchestra |balcony )?row|overhangs? (from|at) row)\b/i;
+/** True when a note's single stored row is where a span starts (it covers the rows behind). */
+const startsASpan = (n) => /^[A-Z]{1,3}$/.test(String((n && n.rows) || '')) && STARTS_A_SPAN.test(String((n && n.claim) || ''));
 
 /** "Center Orchestra, rows E to J" built from the structured location. */
 function noteLocationLabel(n) {
@@ -78,7 +80,7 @@ function noteLocationLabel(n) {
   const r = String(n.rows);
   const m = r.match(/^([A-Z]{1,3})-([A-Z]{1,3})$/);
   if (m) return `${place}, rows ${m[1]} to ${m[2]}`;
-  if (/^[A-Z]{1,3}$/.test(r)) return STARTS_A_SPAN.test(String(n.claim || '')) ? `${place}, row ${r} back` : `${place}, row ${r}`;
+  if (/^[A-Z]{1,3}$/.test(r)) return startsASpan(n) ? `${place}, row ${r} back` : `${place}, row ${r}`;
   return `${place}, ${r}`;
 }
 
@@ -196,5 +198,5 @@ function latestVerified(notes) {
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
   SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
-  seatNotePicks, pickText, valueNotesNearExpiry, eligibleValueNotes, buildToday,
+  seatNotePicks, pickText, valueNotesNearExpiry, eligibleValueNotes, buildToday, startsASpan,
 };
