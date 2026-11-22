@@ -48146,7 +48146,7 @@
       "title": "Test red on main: every shows.json id suffix matches its category [testCodeFailure]",
       "firstSeen": "2026-11-22T09:41:14.867Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.867Z",
-      "lastSeen": "2026-11-22T14:29:39.549Z",
+      "lastSeen": "2026-11-22T14:31:26.648Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.867Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.867Z",
       "notifyCount": 1,
@@ -48160,7 +48160,7 @@
       "title": "Test red on main: broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
       "firstSeen": "2026-11-22T09:41:14.898Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.898Z",
-      "lastSeen": "2026-11-22T14:29:39.464Z",
+      "lastSeen": "2026-11-22T14:31:26.564Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.898Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.898Z",
       "notifyCount": 1,
@@ -48174,7 +48174,7 @@
       "title": "Test red on main: west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
       "firstSeen": "2026-11-22T09:41:14.924Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.924Z",
-      "lastSeen": "2026-11-22T14:29:39.494Z",
+      "lastSeen": "2026-11-22T14:31:26.595Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.924Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.924Z",
       "notifyCount": 1,
@@ -48188,7 +48188,7 @@
       "title": "Test red on main: west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution [testCodeFailure]",
       "firstSeen": "2026-11-22T09:41:14.949Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.949Z",
-      "lastSeen": "2026-11-22T14:29:39.522Z",
+      "lastSeen": "2026-11-22T14:31:26.621Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.949Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.949Z",
       "notifyCount": 1,
@@ -48250,7 +48250,7 @@
       "resolvedAt": "2026-11-22T12:16:41.151Z"
     },
     "land:land/job/linear-BRO-8044-mwrtw0wq": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-8044-mwrtw0wq",
       "firstSeen": "2026-11-22T13:27:44.352Z",
@@ -48261,7 +48261,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-22T14:31:26.426Z"
     },
     "opening-night-remediation-exhausted-empty-cast:the-dead-1904-off-broadway-2026": {
       "status": "open",
