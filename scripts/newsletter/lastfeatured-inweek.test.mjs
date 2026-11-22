@@ -121,7 +121,9 @@ const STALE_STATE = {
 function runGenerator(weekStart, extraEnv = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lastfeatured-inweek-test-'));
   const statePath = path.join(dir, 'newsletter-state.json');
-  fs.copyFileSync(path.join(repoRoot, 'data/newsletter-state.json'), statePath);
+  // The generator keeps only the newest 24 issue rows, so a fixed past WEEK ages
+  // out of a copy of today's state; seed with rows up to WEEK only.
+  fs.writeFileSync(statePath, JSON.stringify({ issues: (JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/newsletter-state.json'), 'utf8')).issues || []).filter((i) => i && i.weekStart <= WEEK) }));
   try {
     execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
       cwd: repoRoot,

@@ -2,7 +2,7 @@
 // network calls stubbed. Requires the real module, no copied logic.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence } from './subject-writer.mjs';
+import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -420,6 +420,7 @@ const tgFacts = {
   lines: [
     ...rxFacts.lines,
     'Opening: Top Gunchained, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21. Never write that readers can still see it or that it is closing.',
+    closedFactLine('Top Gunchained'),
   ],
   titles: [...rxFacts.titles, { id: 't', slug: 't', title: 'Top Gunchained' }],
   leadTitles: [...rxFacts.leadTitles, 'Top Gunchained'],
@@ -449,7 +450,7 @@ test('closed-show check: review cases (comma titles, follow-on sentences, phrasi
   const NOT_ON = ' Never write that readers can still see it or that it is closing.';
   const f = {
     ...rxFacts,
-    lines: [...rxFacts.lines, `Opening: Oh, Mary!, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21.${NOT_ON}`],
+    lines: [...rxFacts.lines, `Opening: Oh, Mary!, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21.${NOT_ON}`, closedFactLine('Oh, Mary!')],
     titles: [...rxFacts.titles, { id: 'o', slug: 'o', title: 'Oh, Mary!' }],
     leadTitles: [...rxFacts.leadTitles, 'Oh, Mary!'],
   };
@@ -477,4 +478,35 @@ test('a reused subject drops saved alternates that today\'s checks reject (BRO-8
   const r = reusable(prev, tgFacts);
   assert.ok(r, 'the kept candidate still passes');
   assert.deepEqual(r.alternates.map(a => a.subject), ['Eurotrash lands at 77/100 from 26 critics']);
+});
+
+test('closed-show check: second review round (attribution by position, phrasings, titles ending in "!", any fact line)', () => {
+  const f = {
+    ...rxFacts,
+    lines: [...rxFacts.lines, 'Rave of the week: our score for A Critic (Outlet)\'s review of Oh, Mary! is 95 out of 100.', closedFactLine('Oh, Mary!')],
+    titles: [...rxFacts.titles, { id: 'o', slug: 'o', title: 'Oh, Mary!' }],
+    leadTitles: [...rxFacts.leadTitles, 'Oh, Mary!'],
+  };
+  const fp = buildPool(f);
+  assert.ok(fp.closedTitles.includes('Oh, Mary!'), 'a closed show named only by a rave line still counts');
+  const ok = { angle: 'best-reviewed opening', subject: 'Eurotrash lands at 77/100 from 26 critics', preheader: 'Goblin also opened this week and sits at 70.', lede: 'Eurotrash was the best-scoring London opening at a solid 77/100. Goblin lands at 70.' };
+  assert.deepEqual(checkCandidate(ok, fp), []);
+  const bad = (field, text) => assert.match(checkCandidate({ ...ok, [field]: text }, fp).join(), /already closed/, text);
+  const fine = (field, text) => assert.doesNotMatch(checkCandidate({ ...ok, [field]: text }, fp).join(), /already closed/, text);
+  // Closing words go with the show named just before them.
+  bad('preheader', 'Eurotrash sits at 77 and Oh, Mary! closes Saturday.');
+  fine('preheader', 'Oh, Mary! drew a rave and Eurotrash closes Saturday, Nov 28.');
+  bad('preheader', 'One rave is closing Saturday: Oh, Mary!');
+  bad('lede', 'Eurotrash sits at 77 and Oh, Mary! drew a rave; both are still running.');
+  for (const t of ['Oh, Mary! ends its West End run Saturday.', 'Oh, Mary! is leaving Saturday.', 'Oh, Mary! is currently playing.', 'Oh, Mary! was extended.', 'Oh, Mary! is wrapping up.', 'Catch Oh, Mary! now.']) bad('preheader', t);
+  for (const t of ['Oh, Mary! played its final performance Saturday.', 'Oh, Mary! had a strong run.', 'The show ends darkly in Oh, Mary!', 'A gag running through Oh, Mary! won critics over.', 'Eurotrash is the closest thing to a hit.']) fine('preheader', t);
+  // A title ending in "!" does not end the lede's first sentence.
+  assert.equal(firstSentence('Oh, Mary! (95) drew a rave. Goblin sits at 70.', ['Oh, Mary!']), 'Oh, Mary! (95) drew a rave.');
+});
+
+test('a title shared by a running and a closed show is never treated as closed', () => {
+  const f = { ...rxFacts, lines: [...rxFacts.lines, closedFactLine('Goblin: The Return')], titles: [...rxFacts.titles, { id: 'g2', slug: 'g2', title: 'Goblin: The Return' }] };
+  const fp = buildPool(f);
+  assert.ok(fp.closedTitles.includes('Goblin: The Return'));
+  assert.ok(!fp.closedTitles.includes('Goblin'), 'short form "Goblin" belongs to the running show too');
 });
