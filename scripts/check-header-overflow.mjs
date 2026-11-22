@@ -13,6 +13,7 @@
 // Exit 0 = no overflow anywhere, 1 = overflow found, 2 = probe error.
 
 import { existsSync } from 'fs';
+import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
 import { probe } from './lib/header-overflow-probe.mjs';
 
@@ -40,9 +41,11 @@ function parseArgs(argv) {
 // Same fallback as scripts/visual-qa.mjs: cloud sandboxes only ship the
 // preinstalled Chromium, not the headless-shell build Playwright asks for.
 const PREINSTALLED_CHROMIUM = process.env.PW_CHROMIUM_EXECUTABLE || '/opt/pw-browsers/chromium';
+const { launchExtras } = createRequire(import.meta.url)('./lib/playwright-exe.js');
 async function launchChromium() {
   try {
-    return await chromium.launch();
+    // launchExtras: {} on the Mac and in GitHub Actions; the image's Chromium in cloud (BRO-7448).
+    return await chromium.launch({ ...launchExtras(chromium) });
   } catch (e) {
     if (!/Executable doesn't exist/.test(String(e?.message)) || !existsSync(PREINSTALLED_CHROMIUM)) throw e;
     return chromium.launch({ executablePath: PREINSTALLED_CHROMIUM });
