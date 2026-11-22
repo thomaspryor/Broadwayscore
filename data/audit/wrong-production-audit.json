@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T06:21:12.732Z",
+  "timestamp": "2026-11-22T07:01:44.138Z",
   "stats": {
     "totalReviews": 83829,
-    "alreadyFlagged": 22427,
+    "alreadyFlagged": 22435,
     "dateGuardCatches": 238,
     "directorMismatch": 3870,
-    "tvFilmSignals": 2405,
-    "londonSignals": 3955,
-    "offBroadwaySignals": 782,
-    "yearMismatch": 394,
-    "noPublishDate": 8232
+    "tvFilmSignals": 2406,
+    "londonSignals": 3959,
+    "offBroadwaySignals": 783,
+    "yearMismatch": 395,
+    "noPublishDate": 8213
   },
   "findings": [
     {
@@ -907,6 +907,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "700-sundays-2013",
+      "file": "latimes--yvonne-villarreal.json",
+      "score": null,
+      "publishDate": "2013-12-04",
+      "url": "https://www.latimes.com/entertainment/tv/la-xpm-2013-dec-04-la-et-st-billy-crystals-hit-broadway-play-700-sundays-coming-to-hbo-20131204-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -75074,6 +75088,24 @@
       ]
     },
     {
+      "showId": "the-invention-of-love-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2024-12-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-invention-of-love-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (1x). 2026 matches production: the-invention-of-love-off-broadway-2026"
+        }
+      ]
+    },
+    {
       "showId": "the-island-regional-2022",
       "file": "around-the-town-chicago--frank-meccia.json",
       "score": 91,
@@ -139854,7 +139886,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -140710,6 +140742,20 @@
     },
     {
       "showId": "the-lady-from-the-sea-west-end-2025",
+      "file": "express-uk--stefan-kyriazis.json",
+      "score": 32,
+      "publishDate": "2025-09-19",
+      "url": "https://www.express.co.uk/entertainment/theatre/2110534/andrew-lincoln-alicia-vikander-lady-from-the-sea-ibsen-joe-alwyn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lady-from-the-sea-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 79,
       "publishDate": "2025-09-18",
@@ -141403,6 +141449,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-foxes-off-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2024-12-15",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-little-foxes-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -144787,6 +144846,19 @@
     },
     {
       "showId": "the-seagull-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-03-22",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 97,
       "publishDate": "2025-03-07",
@@ -147543,6 +147615,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "time-and-the-conways-2017",
+      "file": "cultural-weekly--david-sheward.json",
+      "score": 78,
+      "publishDate": "2017-10-18",
+      "url": "https://www.culturalweekly.com/time-conways-measure-clockwork-orange/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
