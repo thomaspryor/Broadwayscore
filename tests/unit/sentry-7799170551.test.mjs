@@ -9,7 +9,7 @@ test('watchlist user foreign key failure recovers the stale session', async t =>
   const calls = { signOut: [], cleared: 0, events: [] };
   const client = { auth: {
     getUser: async () => ({ data: { user: { id: 'deleted-user' } }, error: null }),
-    getSession: async () => ({ data: { session: { access_token: 'test-token' } } }),
+    getSession: async () => ({ data: { session: { access_token: `x.${Buffer.from(JSON.stringify({ sub: 'deleted-user' })).toString('base64url')}.y` } } }),
     signOut: async options => calls.signOut.push(options),
   } };
   const previousWindow = globalThis.window;
@@ -20,9 +20,15 @@ test('watchlist user foreign key failure recovers the stale session', async t =>
     if (name === './supabase') return { getSupabaseClient: async () => client };
     if (name === './deferred-auth') return { clearPendingAction: () => calls.cleared++ };
     if (name === './ugc-analytics') return {
-      instrumentedFetch: async () => new Response(JSON.stringify({
+      // BRO-8031: the missing-profile repair of a deleted auth user fails on profiles_id_fkey, which signs the user out.
+      instrumentedFetch: async (url) => new Response(JSON.stringify(String(url).includes('/rest/v1/profiles') ? {
+        code: '23503',
+        message: 'insert or update on table "profiles" violates foreign key constraint "profiles_id_fkey"',
+        details: 'Key (id)=(deleted-user) is not present in table "users".',
+      } : {
         code: '23503',
         message: 'insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"',
+        details: 'Key (user_id)=(deleted-user) is not present in table "profiles".',
       }), { status: 409 }),
       reportUgcError: () => {},
     };
