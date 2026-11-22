@@ -893,6 +893,43 @@ function parseSitemapXml(xml, cutoff, urlFilter) {
 }
 
 /**
+ * BRO-8034: outlets whose article URLs are opaque (ft.com/content/<uuid>) and whose
+ * reviews a generic `site:` query never surfaces: the one query for the whole outlet
+ * returns 10 of the outlet's newest theatre pieces, so a given show's review is
+ * usually not among them. financialtimes was missed on 4 openings (Lives of Others,
+ * Cloud 9, Desire Under the Elms, Eurotrash) and only found later by the aggregator
+ * sweep. These outlets are queried once PER SHOW, by title, instead.
+ */
+const PER_SHOW_SERP_OUTLETS = new Set(['financialtimes']);
+// PER_SHOW_SERP_MAX env overrides the cap; 0 switches per-show queries off (kill switch).
+const PER_SHOW_SERP_MAX = (() => { const n = parseInt(process.env.PER_SHOW_SERP_MAX || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })();
+
+const PER_SHOW_PRIORITY_CATEGORIES = new Set(['west-end', 'off-west-end', 'broadway']);
+
+/** `site:ft.com "Eurotrash" review`: the show title in quotes carries the identity the opaque URL lacks. */
+function buildPerShowSerpQuery(domain, show) {
+  const title = String((show && show.title) || '').replace(/["\u201c\u201d]/g, '').replace(/\s+/g, ' ').trim();
+  return title ? `site:${domain} "${title}" review` : null;
+}
+
+/**
+ * The shows to query for a per-show outlet: already opened (a review cannot exist before
+ * the opening), opened within 14 days, west-end/off-west-end/broadway before every other category (FT is a London outlet that also reviews Broadway; 81 shows opened in a recent 14-day window, 30 of them regional), newest opening first, capped. The daily cron is
+ * ~24h apart so the 24h SERP cache rarely hits: the cap is the cost control.
+ */
+function perShowSerpTargets(shows, max = PER_SHOW_SERP_MAX, now = Date.now()) {
+  // Reviews land within days of the opening; the 4 FT misses were found 1-7 days late.
+  const floor = new Date(now - 14 * 864e5).toISOString().slice(0, 10);
+  const today = new Date(now + 864e5).toISOString().slice(0, 10); // +1d: UK press nights run ahead of UTC
+  return (shows || [])
+    .filter(s => s && s.title && s.id && s.openingDate && String(s.openingDate) >= floor && String(s.openingDate) <= today)
+    .slice()
+    .sort((a, b) => (PER_SHOW_PRIORITY_CATEGORIES.has(a.category) ? 0 : 1) - (PER_SHOW_PRIORITY_CATEGORIES.has(b.category) ? 0 : 1)
+      || String(b.openingDate || '').localeCompare(String(a.openingDate || '')))
+    .slice(0, max);
+}
+
+/**
  * Build a SERP site: query for the given domain. UK outlets (.co.uk) use the
  * correct British English spelling "theatre"; US outlets use "theater".
  *
@@ -1056,4 +1093,8 @@ module.exports = {
   parseSitemapXml,
   extractListingUrls,
   buildSerpQuery,
+  buildPerShowSerpQuery,
+  perShowSerpTargets,
+  PER_SHOW_SERP_OUTLETS,
+  PER_SHOW_SERP_MAX,
 };

@@ -117,7 +117,10 @@ test('filter CLI keeps tsx / scripts-lib lists in their lane', () => {
 // already active, when this file itself runs traced).
 function cleanEnv(extra) {
   const env = { ...process.env, ...extra };
-  for (const k of ['NODE_TEST_CONTEXT', 'NODE_OPTIONS', 'LIVE_DATA_TEST']) delete env[k];
+  // The arming variables too (BRO-7101): an exported value on a dev machine or
+  // in a land runner must not flip the advisory case; blocking cases pass it.
+  for (const k of ['NODE_TEST_CONTEXT', 'NODE_OPTIONS', 'LIVE_DATA_TEST', 'LAND_LIVE_DATA_LANE_BLOCKING', 'LAND_LIVE_DATA_LANE_ARMED']) delete env[k];
+  Object.assign(env, Object.fromEntries(Object.entries(extra).filter(([k]) => k.startsWith('LAND_LIVE_DATA_LANE_'))));
   if (!extra.LIVE_DATA_READ_LOG) delete env.LIVE_DATA_READ_LOG;
   return env;
 }
@@ -177,7 +180,13 @@ test('verify-changed CLI: nothing changed vs HEAD exits 0; land gauntlet wires i
   assert.equal(r.status, 0, r.stdout + r.stderr);
   assert.match(r.stdout, /0 changed unit test file/);
   const g = fs.readFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), 'utf8');
-  assert.match(g, /\[ -f scripts\/live-data-lane\.js \][^\n]*\n\s*lwgate live-data-lane node scripts\/live-data-lane\.js --verify-changed --base="\$LAND_BASE"/);
+  assert.match(g, /\[ -f scripts\/live-data-lane\.js \][^\n]*\n\s*lwgate live-data-lane env LAND_LIVE_DATA_LANE_BLOCKING="\$\{LAND_LIVE_DATA_LANE_BLOCKING:-\$\{LAND_LIVE_DATA_LANE_ARMED:-\}\}" node scripts\/live-data-lane\.js --verify-changed --base="\$LAND_BASE"/);
+  // BRO-7101: the arming wire. land.yml passes the repo variable under the
+  // ARMED alias at workflow level (never the blocking name, which the unit
+  // batches would inherit).
+  const y = fs.readFileSync(path.join(ROOT, '.github/workflows/land.yml'), 'utf8');
+  assert.match(y, /\nenv:\n(?:  [^\n]*\n)*  LAND_LIVE_DATA_LANE_ARMED: \$\{\{ vars\.LAND_LIVE_DATA_LANE_BLOCKING \}\}\n/);
+  assert.doesNotMatch(y, /\n\s+LAND_LIVE_DATA_LANE_BLOCKING:/, 'land.yml must not export the blocking name to whole jobs');
 });
 
 test('verify-changed CLI: a bad base warns and exits 0 when advisory, fails when blocking', () => {

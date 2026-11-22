@@ -42,6 +42,48 @@
     "queuedAt": "2026-11-22T09:42:01.839Z"
   },
   {
+    "conditionKey": "coverage-holes:much-ado-about-nothing-2026",
+    "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T10:02:14.043Z"
+  },
+  {
+    "conditionKey": "coverage-holes:hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T10:02:14.334Z"
+  },
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget (still open — BRO-6867)",
+    "description": "Still firing after 63 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-21. Over budget: scrapingbee on pace to run out before renewal: ~9970 credits/day (7-day average) x 13 days to 2026-12-05 = 129610 > 18460 left. 2026-11-21 · Browserbase: $0.8 (123 sessions, 65.78min) · 2026-11-21 · Bright Data: $3.01 (131 serp / 1879 unlocker) · ScrapingBee: 8113 credits (231540 this cycle) · ScrapingDog: 114955 credits (1580731 this cycle) · Browserbase attribution: 98% attributed — top callers (covers 98% of billed calls): collect-review-texts.js 113, bww-rr-discover.js 3, gather-reviews.js:the-stage 2, collect-talkinbroadway-index.js 1, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 77% attributed — top callers (covers 65% of billed calls): audit-show-review-gap.js 363, ingest-review-from-url.js 303, opening-night-poller.js 295, collect-review-texts.js 223, replay-pending-bylines.js 118 · ⚠️ Bright Data top-caller coverage low: 65% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 71% attributed — top callers (covers 55% of billed credits): opening-night-poller.js 1400cr, collect-review-texts.js 1142cr, gather-reviews.js 1110cr, scrape-show-score-audience.js 445cr, check-cookie-health.js 375cr · ⚠️ ScrapingBee top-caller coverage low: 55% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 96% attributed — top callers (covers 81% of billed credits): gather-reviews.js 48508cr, audit-show-review-gap.js 15350cr, discover-opening-night-reviews.js 13552cr, collect-review-texts.js 11474cr, we-major-recovery.js 4285cr · 2026-11-21 · LLM APIs (metered estimate, not the full bill): Claude est $48.05 (6778 calls; 587 repeats) · Gemini est $7.28 (11790 calls; 99 repeats) · OpenAI est $24.21 (5194 calls; 320 search-grounded, 2 repeats) · top: scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $32.50; scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $18.67; scripts/deep-research-commercial.js [Commercial Weekly Orchestrator] $4.86. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~9970 credits/day (7-day average) x 13 days to 2026-12-05 = 129610 > 18460 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "tracked": "BRO-6867",
+    "fields": [],
+    "queuedAt": "2026-11-22T10:29:22.328Z"
+  },
+  {
     "conditionKey": "express-retry-still-thin:peter-pan-off-west-end-2026",
     "title": "Opening Night Express retry still found thin review coverage for peter-pan-off-west-end-2026",
     "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",

@@ -81,6 +81,9 @@ const {
   parseSitemapXml,
   extractListingUrls,
   buildSerpQuery,
+  buildPerShowSerpQuery,
+  perShowSerpTargets,
+  PER_SHOW_SERP_OUTLETS,
   OUTLET_FEED_HEALTH_REL,
   FEED_STALE_DAYS,
   OUTLET_ALIVE_DAYS,
@@ -762,6 +765,28 @@ async function fetchViaListingConfig(outletId, sc) {
   return articles;
 }
 
+// BRO-8034: one SERP query per show for opaque-URL outlets (financialtimes). Results are
+// merged by URL; each item's SERP headline carries the show title, which is what
+// findMatchingShows matches on (the ft.com/content/<uuid> slug has nothing to match).
+async function fetchViaSerpPerShow(outletId, domain, cutoff, opts, shows, serp = serpQuery, now = Date.now()) {
+  const seen = new Map();
+  for (const show of perShowSerpTargets(shows, undefined, now)) {
+    const query = buildPerShowSerpQuery(domain, show);
+    if (!query) continue;
+    console.log(`  [serp-per-show] Query: ${query}`);
+    let results = null;
+    try {
+      results = await serp(query, { dateRange: { dateMin: cutoff, dateMax: new Date() }, nbResults: 10, log: msg => console.log(`    ${msg}`) });
+    } catch (err) { console.warn(`  ⚠ per-show SERP failed for ${show.id}: ${err.message}`); continue; }
+    for (const r of results || []) {
+      const url = r.url || r.link || '';
+      if (url.startsWith('http') && !seen.has(url)) seen.set(url, { url, headline: r.title || '', publishDate: null });
+    }
+  }
+  console.log(`  [serp-per-show] ${seen.size} results`);
+  return [...seen.values()];
+}
+
 async function fetchViaSerp(outletId, domain, cutoff, opts) {
   // UK outlets (thestage, times-uk) use "theatre" spelling; US outlets use "theater"
   const query = buildSerpQuery(domain);
@@ -1101,7 +1126,9 @@ async function main() {
         } else if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
         else try {
           viaSerp = true;
-          articles = await fetchViaSerp(outletId, domain, cutoff, opts);
+          articles = PER_SHOW_SERP_OUTLETS.has(outletId)
+            ? await fetchViaSerpPerShow(outletId, domain, cutoff, opts, (opts.market ? liveShows.filter(s => s.category === opts.market || s.market === opts.market) : liveShows))
+            : await fetchViaSerp(outletId, domain, cutoff, opts);
         } catch (err) {
           console.warn(`  ⚠ SERP failed for ${outletId}: ${err.message}`);
           outletsFailed++;
@@ -1363,5 +1390,5 @@ module.exports = {
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
   fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig, fetchXmlWithProxyRetry,
   confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
-  buildFeedHealthReport,
+  buildFeedHealthReport, fetchViaSerpPerShow,
 };

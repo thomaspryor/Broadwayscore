@@ -592,8 +592,12 @@ lint_workflows() {
   # marker, or main reddens on the next bot data commit. The script exits 0
   # (::warning::) until LAND_LIVE_DATA_LANE_BLOCKING=1 (CLAUDE.md §19). The
   # -f guard keeps the base tree (no script yet) passing.
+  # Armed by repo variable LAND_LIVE_DATA_LANE_BLOCKING=1, which land.yml
+  # passes as LAND_LIVE_DATA_LANE_ARMED (BRO-7101): only THIS process gets
+  # the blocking name, so the unit batches above (live-data-lane.test.mjs
+  # asserts the advisory exit) never inherit it. Kill switch: unset it.
   if [ -n "${LAND_BASE:-}" ] && [ -f scripts/live-data-lane.js ]; then
-    lwgate live-data-lane node scripts/live-data-lane.js --verify-changed --base="$LAND_BASE"
+    lwgate live-data-lane env LAND_LIVE_DATA_LANE_BLOCKING="${LAND_LIVE_DATA_LANE_BLOCKING:-${LAND_LIVE_DATA_LANE_ARMED:-}}" node scripts/live-data-lane.js --verify-changed --base="$LAND_BASE"
   fi
   local g w
   for g in prebuild core-data-pairing private-git-add merge-drivers scraping-fallback scrapingdog-pairing theatr-token demo-flags alert-ledger-commit routealert-linear-key ledger-coverage ledger-step-guard reset-soft-partial-commit; do

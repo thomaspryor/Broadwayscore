@@ -44,7 +44,7 @@ test('workflow wiring: no sleep-poll admit job; Land needs checks (+dispatch-gua
   assert.ok(!/\n  admit:/.test(y), 'no admit job (BRO-5194)');
   assert.ok(!/land-admit/.test(y));
   // BRO-7324: Land also reads dispatch-guard's shard flag; never checks-shard.
-  assert.match(y, /\n  land:\n    name: Land\n(?:    #[^\n]*\n)*    needs: \[dispatch-guard, checks\]\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' && \(needs\.dispatch-guard\.outputs\.shard != 'true' \|\| needs\.checks\.outputs\.node_shard != '' \|\| needs\.checks\.outputs\.skip_gauntlet == 'true'\) \}\}/);
+  assert.match(y, /\n  land:\n    name: Land\n(?:    #[^\n]*\n)*    needs: \[dispatch-guard, checks, e2e-local\]\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' && \(needs\.dispatch-guard\.outputs\.shard != 'true' \|\| needs\.checks\.outputs\.node_shard != '' \|\| needs\.checks\.outputs\.skip_gauntlet == 'true'\) \}\}/);
   const landJob = y.slice(y.indexOf('\n  land:\n'), y.indexOf('\n  alert-red:\n'));
   assert.ok(!/needs:[^\n]*checks-shard/.test(landJob), 'Land never needs checks-shard (A merges or runs part 2)');
   // Runner B is advisory: its red/cancel must never make the run conclusion red.
@@ -149,4 +149,42 @@ test('the always() steps are skipped for a parked run, so it leaves no completed
   const always = land.match(/^ {8}if: always\(\).*$/gm) || [];
   assert.ok(always.length >= 2);
   for (const l of always) assert.match(l, /steps\.admit\.outcome == 'success'/);
+});
+
+// BRO-7101: the browser E2E land gate. Land needs e2e-local and refuses (when
+// LAND_E2E_BROWSER_BLOCKING=1) on any verdict but pass for a site diff; the
+// refusal sits before the mutex, alerts through land-alert.js and does not
+// also fire the generic notify-failure.
+test('workflow wiring: e2e-local verdict gates the land (BRO-7101)', () => {
+  const y = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const e2e = y.slice(y.indexOf('\n  e2e-local:\n'), y.indexOf('\n  land:\n'));
+  for (const o of ['site_diff: ${{ steps.rebase.outputs.site_diff }}', 'verdict: ${{ steps.verdict.outputs.verdict }}', 'new_failures: ${{ steps.verdict.outputs.new_failures }}']) {
+    assert.ok(e2e.includes(`\n      ${o}\n`), `e2e-local exposes ${o}`);
+  }
+  assert.match(e2e, /id: verdict\n[\s\S]*--github-output "\$GITHUB_OUTPUT" \|\| rc=\$\?\n[\s\S]*echo "verdict=\$\(\[ "\$rc" = 0 \] && echo pass \|\| echo fail\)" >> "\$GITHUB_OUTPUT"/);
+  // Armed, e2e-local fails like a gate (so "Re-run failed jobs" re-runs it).
+  assert.equal((e2e.match(/continue-on-error: \$\{\{ vars\.LAND_E2E_BROWSER_BLOCKING != '1' \}\}/g) || []).length, 2, 'job + verdict step continue-on-error only while unarmed');
+  assert.ok(!/continue-on-error: true/.test(e2e.slice(e2e.indexOf('id: verdict'))), 'verdict step is not unconditionally continue-on-error');
+  // A branch whose browser run never completed is never a pass.
+  assert.match(e2e, /INFRA=\$\(grep -E '\^::error::e2e-local gate failed:[^\n]*\| grep -v ' > '[\s\S]*echo "verdict=fail"/, 'per-test lines (file > title) are not infra');
+  // Deploy inputs count as a site diff.
+  for (const p of ['content/', 'tailwind\\.config\\.', 'scripts/(prebuild|generate-)']) assert.ok(e2e.includes(p), `site_diff covers ${p}`);
+  const landJob = y.slice(y.indexOf('\n  land:\n'), y.indexOf('\n  alert-red:\n'));
+  const at = (name) => { const i = landJob.indexOf(`- name: ${name}\n`); assert.ok(i > 0, `land step "${name}" exists`); return i; };
+  assert.ok(at('Generate gitignored manifests') < at('Refuse on new E2E failures'), 'gate runs after checkout + manifests (alert needs the tree)');
+  assert.ok(at('Refuse on new E2E failures') < at('Wait for the landing mutex'), 'gate runs before the mutex and the train');
+  const gate = landJob.slice(at('Refuse on new E2E failures'), at('Wait for the landing mutex'));
+  assert.match(gate, /if: vars\.LAND_E2E_BROWSER_BLOCKING == '1'\n/);
+  assert.match(gate, /\[ "\$SITE_DIFF" = "false" \][^\n]*exit 0/);
+  assert.match(gate, /\[ "\$VERDICT" = "pass" \][^\n]*exit 0/);
+  assert.match(gate, /failed_check=e2e-local[\s\S]*exit 1\n/, 'anything else (fail, empty = crashed/cancelled) refuses');
+  assert.match(gate, /\[ "\$E2E_RESULT" = "cancelled" \][\s\S]*git ls-remote origin "refs\/heads\/\$BRANCH"[\s\S]*\[ "\$NOW" != "\$TIP" \][\s\S]*exit 0/, 'a run superseded by a newer push is left to --expect-tip, not paged');
+  // land-timing-report.js reads the refusal's cause from this shape.
+  const { causeFromMessage } = require('./land-timing-report.js');
+  const msg = /MSG="([^"]*)"/.exec(gate)[1].replace(/\$BRANCH/g, 'land/x').replace(/\$WHY/g, 'the branch newly breaks 2 browser E2E test(s)');
+  assert.equal(causeFromMessage(msg), 'landing refused: e2e-local');
+  const alert = landJob.slice(at('Alert — landing refused'), at('Commit alert-router ledger changes'));
+  assert.match(alert, /failure\(\) && steps\.e2e_gate\.outcome == 'failure'/);
+  assert.match(alert, /steps\.e2e_gate\.outputs\.failed_check/);
+  assert.match(landJob.slice(at('Notify on failure')), /if: failure\(\) && steps\.refused\.outcome != 'failure' && steps\.e2e_gate\.outcome != 'failure'\n/);
 });
