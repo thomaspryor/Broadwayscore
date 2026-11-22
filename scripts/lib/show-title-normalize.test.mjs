@@ -159,3 +159,12 @@ test('BRO-8051: real "by" titles untouched, id slug is NOT an oracle', () => {
   // a director is not a writer
   assert.equal(classifyPlaywrightByline('Hamlet by Ivo van Hove', {}, knownWriters), null);
 });
+
+test('BRO-8051: credit-style titles keep their credit word / writer name', () => {
+  const kw = buildKnownWriters([{ creativeTeam: [
+    { name: 'Cole Porter', role: 'Music & Lyrics' }, { name: 'Stephen Sondheim', role: 'Music & Lyrics' } ] }]);
+  for (const title of ['Words and Music by Cole Porter', 'Music by Cole Porter', 'Written by Cole Porter',
+    'Sondheim on Sondheim by Stephen Sondheim']) {
+    assert.equal(normalizeShowTitle({ id: 'z', title }, { knownWriters: kw }).title, title, title);
+  }
+});

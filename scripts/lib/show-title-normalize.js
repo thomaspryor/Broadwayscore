@@ -63,6 +63,8 @@ const BYLINE_NAME = "[A-Z][\\p{L}'.\\-]*(?:\\s+(?:[A-Z][\\p{L}'.\\-]*|de|van|von
 const PLAYWRIGHT_BYLINE_RE = new RegExp('^(.*\\S)\\s+by\\s+(' + BYLINE_NAME + ')\\s*$', 'u');
 const WRITER_ROLE_RE = /playwright|writer|author|book|music|lyric|libretto|adapt/i;
 
+const CREDIT_WORD_RE = /^(?:(?:words|book|music|lyrics|songs|written|play|plays|story|a play|a musical)(?:\s+(?:and|&)\s+\w+)?)$/i;
+
 function nameKey(s) {
   return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -87,6 +89,9 @@ function classifyPlaywrightByline(title, show, knownWriters) {
   const rest = m[1].trim();
   const key = nameKey(m[2]);
   if (key.split(' ').length < 2) return null;
+  // Revue/credit titles ("Music by Richard Rodgers", "Sondheim on Sondheim by
+  // Stephen Sondheim"): the remainder is a bare credit word or already names the writer.
+  if (CREDIT_WORD_RE.test(rest) || key.split(' ').some(t => t.length > 3 && nameKey(rest).split(' ').includes(t))) return null;
   const own = (show && Array.isArray(show.creativeTeam) ? show.creativeTeam : [])
     .some(c => c && c.name && WRITER_ROLE_RE.test(c.role || '') && nameKey(c.name) === key);
   if (own) return { title: rest, name: m[2], oracle: 'show-credits-writer' };

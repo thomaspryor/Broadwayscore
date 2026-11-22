@@ -70,7 +70,7 @@ test('WE listing slugToTitle no longer mints "Richard Ii"', () => {
 
 test('validate-data.js routes titles through normalizeShowTitle (the gate under test)', () => {
   const src = fs.readFileSync(path.join(here, '..', 'validate-data.js'), 'utf8');
-  assert.match(src, /const result = normalizeShowTitle\(show, \{ venueVocabulary \}\);/);
+  assert.match(src, /const result = normalizeShowTitle\(show, \{ venueVocabulary, knownWriters \}\);/);
 });
 
 test('real shows.json: no stored title has a mis-cased Roman numeral', (t) => {
