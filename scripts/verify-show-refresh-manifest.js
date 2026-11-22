@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { verifyManifest, MANIFEST_FILE } = require('./lib/show-refresh/manifest');
 
 const ROOT = path.join(__dirname, '..');
@@ -52,6 +53,10 @@ function verify({ root = ROOT, env = process.env, log = console } = {}) {
 module.exports = { verify, resolvePublicSha };
 
 if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/verify-show-refresh-manifest.js\nPostbuild check of data/show-refresh-manifest.json (BRO-8056). Always exits 0.');
+    process.exit(0);
+  }
   try { verify(); } catch (e) { console.warn(`[show-refresh-manifest] WARNING: verifier failed (${e && e.message})`); }
   process.exit(0);
 }

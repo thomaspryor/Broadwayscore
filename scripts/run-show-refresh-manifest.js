@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const ROOT = path.join(__dirname, '..');
 const { MANIFEST_FILE } = require('./lib/show-refresh/manifest');
@@ -48,6 +49,10 @@ function run({ builder, root = ROOT, env = process.env, log = console } = {}) {
 module.exports = { run, DEFAULT_TIMEOUT_MS };
 
 if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/run-show-refresh-manifest.js <builder.ts>\nBuilds data/show-refresh-manifest.json fail-soft (BRO-8056). Always exits 0.');
+    process.exit(0);
+  }
   try {
     run({ builder: process.argv[2] });
   } catch (e) {
