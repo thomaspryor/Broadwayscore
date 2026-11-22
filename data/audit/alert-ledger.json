@@ -22786,7 +22786,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22799,7 +22799,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 13,
-      "sweptTracker": "BRO-7012"
+      "sweptTracker": "BRO-7012",
+      "resolvedAt": "2026-11-22T23:23:42.707Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -24120,7 +24122,7 @@
       "resolveReason": "absent"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
@@ -24131,7 +24133,9 @@
       "lastSurfacedAt": "2026-11-22T16:48:54.275Z",
       "notifyCount": 12,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-22T23:23:42.723Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -38005,7 +38009,7 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-11-06T04:56:22.650Z",
@@ -38017,7 +38021,9 @@
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": "BRO-7855",
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-22T23:23:42.739Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -45557,13 +45563,13 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T16:48:53.677Z",
+      "lastSeen": "2026-11-22T23:23:41.401Z",
       "lastNotifiedAt": "2026-11-22T03:42:41.879Z",
       "lastSurfacedAt": "2026-11-21T02:59:59.567Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7916",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
@@ -45750,13 +45756,13 @@
       "firstSeen": "2026-11-18T17:58:55.876Z",
       "incidentOpenedAt": "2026-11-18T17:58:55.876Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T16:48:54.097Z",
+      "lastSeen": "2026-11-22T23:23:42.169Z",
       "lastNotifiedAt": "2026-11-22T07:51:17.710Z",
       "lastSurfacedAt": "2026-11-21T06:33:40.696Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7939",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-7789-compact-sync": {
       "status": "resolved",
@@ -46335,13 +46341,13 @@
       "firstSeen": "2026-11-19T18:03:56.896Z",
       "incidentOpenedAt": "2026-11-19T18:03:56.896Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T16:48:54.009Z",
+      "lastSeen": "2026-11-22T23:23:41.959Z",
       "lastNotifiedAt": "2026-11-22T07:51:12.499Z",
       "lastSurfacedAt": "2026-11-22T07:51:12.499Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8033",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-7847-ledger-persist": {
       "status": "resolved",
@@ -46675,12 +46681,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T16:48:54.075Z",
+      "lastSeen": "2026-11-22T23:23:42.153Z",
       "lastNotifiedAt": "2026-11-22T16:48:54.075Z",
       "lastSurfacedAt": "2026-11-22T16:48:54.075Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -47218,13 +47225,13 @@
       "firstSeen": "2026-11-21T13:03:39.013Z",
       "incidentOpenedAt": "2026-11-21T13:03:39.013Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T16:48:54.732Z",
+      "lastSeen": "2026-11-22T23:23:42.693Z",
       "lastNotifiedAt": "2026-11-22T13:14:04.821Z",
       "lastSurfacedAt": "2026-11-22T13:14:04.821Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro7962-walled": {
       "status": "resolved",
@@ -47459,7 +47466,7 @@
       "resolvedAt": "2026-11-21T19:37:31.362Z"
     },
     "live-data-test:scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) (scripts/newsletter/featured-state-persist-order.test.mjs)",
       "firstSeen": "2026-11-21T19:20:03.045Z",
@@ -47471,10 +47478,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-11-22T23:23:42.757Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:scripts/newsletter/featured-state-persist-order.test.mjs::west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) (scripts/newsletter/featured-state-persist-order.test.mjs)",
       "firstSeen": "2026-11-21T19:20:03.074Z",
@@ -47486,10 +47495,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-11-22T23:23:42.771Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:scripts/newsletter/lastfeatured-inweek.test.mjs::west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution (scripts/newsletter/lastfeatured-inweek.test.mjs)",
       "firstSeen": "2026-11-21T19:20:03.099Z",
@@ -47501,7 +47512,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-11-22T23:23:42.787Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-7511-gemini-callers": {
       "status": "resolved",
