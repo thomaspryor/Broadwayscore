@@ -25,6 +25,10 @@ const { routeAuditDecisions } = require('./lib/audit-alert');
 const META = path.join(__dirname, '..', 'data', 'theater-metadata.json');
 
 async function main(argv) {
+  if (argv.includes('--help') || argv.includes('-h')) {
+    console.log('Usage: node scripts/audit-seat-notes-expiry.js [--warn-days=60] [--strict] [--alert] [--json]');
+    return 0;
+  }
   const warnArg = argv.find((a) => a.startsWith('--warn-days='));
   const warnRaw = warnArg ? warnArg.split('=')[1] : '60';
   const warnDays = warnRaw === '' ? NaN : Number(warnRaw);
