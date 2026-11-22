@@ -15,9 +15,29 @@ const SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION = {
   expires: '2026-08-05',
 };
 
-function isScrapingBeeExhaustionAcknowledged(today) {
+// BRO-7568: owner rule 2026-08-03, ScrapingBee exhaustion is ridden out until the
+// billing reset, never re-triaged as a billing question. The standing policy lives in
+// scripts/config/provider-spend-thresholds.json rideOutPacks (also read by
+// provider-spend-core.js budgetBreaches); while ScrapingBee is listed there its
+// exhaustion stays acknowledged, so the dated expiry above no longer turns the two
+// health checks red every day. Remove it from rideOutPacks to re-arm them.
+function isScrapingBeeRideOut(thresholds) {
+  let cfg = thresholds;
+  if (cfg === undefined) {
+    try { cfg = require('../config/provider-spend-thresholds.json'); } catch { cfg = null; }
+  }
+  return Array.isArray(cfg?.rideOutPacks) && cfg.rideOutPacks.includes('scrapingbee');
+}
+
+function isScrapingBeeExhaustionAcknowledged(today, thresholds) {
+  if (isScrapingBeeRideOut(thresholds)) return true;
   const todayDate = today || new Date().toISOString().slice(0, 10);
   return SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires > todayDate;
 }
 
-module.exports = { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged };
+/** The "[...]" tag the health checks print after an acknowledged exhaustion. */
+function scrapingBeeAckTag(thresholds) {
+  return isScrapingBeeRideOut(thresholds) ? 'ride-out policy, owner rule 2026-08-03' : `expires ${SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires}`;
+}
+
+module.exports = { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged, isScrapingBeeRideOut, scrapingBeeAckTag };

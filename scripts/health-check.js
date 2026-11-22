@@ -54,7 +54,7 @@ const { routeAlert, resolveQuietConditions, resolveAbsentConditions, readDispatc
 const { clearedHealthCheckKeys } = require('./lib/health-row-check-cmd.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
-const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
+const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged, isScrapingBeeRideOut, scrapingBeeAckTag } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
@@ -4068,10 +4068,11 @@ function checkAPICredits() {
       }
 
       if (pctRemaining <= 5) {
-        if (remaining <= 0) {
+        // BRO-7568: under the ride-out policy a nearly empty pack is a warning too, never "upgrade plan".
+        if (remaining <= 0 || isScrapingBeeRideOut()) {
           const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
           if (isScrapingBeeExhaustionAcknowledged()) {
-            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${ack.reason} [expires ${ack.expires}]` };
+            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${isScrapingBeeRideOut() ? 'ScrapingBee is a fallback; ride out until renewal' : ack.reason} [${scrapingBeeAckTag()}]` };
           }
         }
         return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Upgrade plan or reduce scraping.' };
