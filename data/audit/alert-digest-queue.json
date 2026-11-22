@@ -1690,5 +1690,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T02:20:53.446Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8013-rebuild-memo",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8013-rebuild-memo",
+    "description": "land.yml did not land land/bro-8013-rebuild-memo: the unit-tests-node gate went red at 8d4f704de1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44976672408",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8013-rebuild-memo"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8d4f704de1a0455241b06d39d3bee64fac87b0c2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44976672408"
+      }
+    ],
+    "queuedAt": "2026-11-22T02:39:32.968Z"
   }
 ]
