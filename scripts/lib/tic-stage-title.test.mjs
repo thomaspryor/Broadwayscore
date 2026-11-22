@@ -61,6 +61,11 @@ test('the daily run (evaluate) stages the clean title end to end', async () => {
 // the very listing this fix targets would have been skipped forever. Drive the whole
 // run through the real applyAddShow.
 test('RED-THEN-GREEN: runDaily ADDS the normalized listing (add-show accepts the provenance fields)', async () => {
+  // applyAddShow consults the retired-id registry, a live data file; pin it so this test reads no live data.
+  const registry = require('./retired-show-ids.js');
+  const realIsRetired = registry.isRetiredId;
+  registry.isRetiredId = () => false;
+  try {
   const io = { page: async () => page(), detail: async () => detail(DESC), dates: async () => ({ openingDate: '2026-11-12' }) };
   const shows = [];
   const out = await runDaily({ today: '2026-11-22', listing: [{ id: 13622, reviewCount: 3 }], shows, seen: {}, io });
@@ -70,6 +75,7 @@ test('RED-THEN-GREEN: runDaily ADDS the normalized listing (add-show accepts the
   assert.equal(row.titleNormalizedFrom, RAW);
   assert.deepEqual(row.akaTitles, [RAW]);
   assert.match(row.titleNormalizedAt, /^\d{4}-\d{2}-\d{2}T/, 'full ISO, same shape applyNormalizedTitle writes');
+  } finally { registry.isRetiredId = realIsRetired; }
 });
 
 // Class guard: a TIC caller that forgets to pass the corpus oracle, or a writer that
