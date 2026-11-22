@@ -142,7 +142,7 @@ function toplevelScriptDeps(src, fromDir) {
  * edit to such a script ran zero CI (BRO-3087 retro-review, BRO-5261).
  * `exists` is injectable for tests. */
 const PATH_CALL_RE = /path\.(?:join|resolve)\(([^()]*)\)/g;
-const SCRIPT_LITERAL_RE = /(['"`])(scripts\/[\w./-]+\.(?:js|mjs|cjs))\1/g;
+const SCRIPT_LITERAL_RE = /(['"`])(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts|tsx))\1/g;
 function pathJoinedScriptDeps(src, fromDir, exists = (abs) => fs.existsSync(abs) && fs.statSync(abs).isFile()) {
   const code = stripComments(src);
   const out = new Set();
@@ -157,7 +157,7 @@ function pathJoinedScriptDeps(src, fromDir, exists = (abs) => fs.existsSync(abs)
     if (m[1].includes('${')) continue;
     const segs = [...m[1].matchAll(/(['"`])([^'"`]+)\1/g)].map((x) => x[2]);
     const last = segs[segs.length - 1];
-    if (!last || !/\.(js|mjs|cjs)$/.test(last)) continue;
+    if (!last || !/\.(js|mjs|cjs|ts|tsx)$/.test(last)) continue;
     for (const base of [fromDir, ROOT]) if (keep(path.resolve(base, ...segs))) break;
   }
   return Array.from(out).sort();
