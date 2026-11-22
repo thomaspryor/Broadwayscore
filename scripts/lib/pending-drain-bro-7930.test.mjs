@@ -254,7 +254,8 @@ const S1992 = mk('a-streetcar-named-desire-1992', '1992-04-12', '1992-08-30');
 const S2005 = mk('a-streetcar-named-desire-2005', '2005-04-26', '2005-07-24');
 const S2025 = mk('a-streetcar-named-desire-2025', '2025-03-01', '2025-06-01');
 const ALL = [S1992, S2005, S2025];
-const URL_ = 'https://ew.com/theater/a-streetcar-named-desire-review-2025-03-11/';
+// Dateless: a dated url is settled by triage (BRO-8065 url-date rule) before the fetch these tests exercise.
+const URL_ = 'https://ew.com/theater/a-streetcar-named-desire-review/';
 const html = `<html><head><title>A Streetcar Named Desire review</title><script type="application/ld+json">${JSON.stringify({ '@type': 'NewsArticle', datePublished: '2025-03-11T08:00:00Z', author: { '@type': 'Person', name: 'Jane Critic' } })}</script></head><body><article>${'<p>A Streetcar Named Desire is staged with conviction and the cast of A Streetcar Named Desire delivers across both acts.</p>'.repeat(14)}</article></body></html>`;
 
 function seedAll(shows, file = 'ew--6aa1dc39.json') {
