@@ -168,7 +168,7 @@ test('workflow wiring: e2e-local verdict gates the land (BRO-7101)', () => {
   // A branch whose browser run never completed is never a pass.
   assert.match(e2e, /INFRA=\$\(grep -E '\^::error::e2e-local gate failed:[^\n]*\| grep -v ' > '[\s\S]*echo "verdict=fail"/, 'per-test lines (file > title) are not infra');
   // Deploy inputs count as a site diff.
-  for (const p of ['content/', 'tailwind\\.config\\.', 'scripts/prebuild']) assert.ok(e2e.includes(p), `site_diff covers ${p}`);
+  for (const p of ['content/', 'tailwind\\.config\\.', 'scripts/(prebuild|generate-)']) assert.ok(e2e.includes(p), `site_diff covers ${p}`);
   const landJob = y.slice(y.indexOf('\n  land:\n'), y.indexOf('\n  alert-red:\n'));
   const at = (name) => { const i = landJob.indexOf(`- name: ${name}\n`); assert.ok(i > 0, `land step "${name}" exists`); return i; };
   assert.ok(at('Generate gitignored manifests') < at('Refuse on new E2E failures'), 'gate runs after checkout + manifests (alert needs the tree)');
