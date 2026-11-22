@@ -10,6 +10,7 @@ const { isExcludedType, mapShowType } = require('./theatreinchicago');
 const { foldDiacritics } = require('./title-match');
 const { getCity } = require('./tic-cities');
 const { resolveMetro } = require('./venue-metro');
+const { normalizeShowTitle } = require('./show-title-normalize');
 
 const MIN_REVIEWS = 3;
 const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
@@ -146,9 +147,18 @@ function pickYear(openingDate) {
  * Build the add-show `show` object. `dates.openingDate` is the earliest
  * publish date among the fetched reviews (proxy for press opening).
  */
-function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago') }) {
+function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago'), knownWriters }) {
   const year = pickYear(dates.openingDate);
-  const base = slugify(page.title);
+  const venue = venueLine(detail, page, city) || String(page.venue || ''); // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
+  // The site's own title is a display string: theatres list "Title by Playwright"
+  // (BRO-8054, "... A Fantasia in Three Acts by Calamity West" made a 334px card).
+  // Repair it HERE, before the id is slugged from it, with the same function the
+  // validator asks. The site's own description is an independent credit for a
+  // playwright nobody in the corpus credits yet. A shouted title is left as listed
+  // (never guessed at, BRO-3920).
+  const norm = normalizeShowTitle({ title: page.title, venue }, { knownWriters, sourceText: detail && detail.description });
+  const title = norm.changed && !norm.manualReview ? norm.title : page.title;
+  const base = slugify(title);
   const id = `${base}-regional-${year}`;
   const closing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
   const today = discoveredAt.slice(0, 10);
@@ -157,9 +167,9 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   const status = closing ? (closing < today ? 'closed' : 'open') : (daysOld > 120 ? 'closed' : 'open');
   const entry = {
     id,
-    title: page.title,
+    title,
     slug: id,
-    venue: venueLine(detail, page, city) || String(page.venue || ''), // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
+    venue, // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
     status,
     type: mapShowType(detail && detail.showType),
     category: 'regional',
@@ -174,6 +184,13 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
     evidenceUrls: [`${city.base}/${page.slug || 'show'}/${page.id}/`],
   };
   if (closing) entry.closingDate = closing;
+  // Keep what the site printed: search matches title + akaTitles, and a later scrape
+  // of the same listing can see the flip.
+  if (title !== page.title) {
+    entry.titleNormalizedFrom = page.title;
+    entry.titleNormalizedAt = discoveredAt;
+    entry.akaTitles = [page.title];
+  }
   return entry;
 }
 

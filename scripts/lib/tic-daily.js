@@ -13,6 +13,7 @@
 const stage = require('./tic-stage');
 const { applyAddShow } = require('./add-show-action');
 const { getCity } = require('./tic-cities');
+const { buildKnownWriters } = require('./show-title-normalize');
 
 // Chicago and DC ids live in separate numbering spaces: match the city's own host only.
 const idRe = (city) => new RegExp(`${city.host.replace(/\./g, '\\.')}/[^/]+/(\\d+)/`);
@@ -63,7 +64,7 @@ async function evaluate(row, ctx, io) {
   if (!df.ok) return { status: 'rejected', reason: df.reason, retry: false };
   const dates = await io.dates(page);
   if (!dates) return { status: 'rejected', reason: 'no-publish-date', retry: true };
-  const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: ctx.today, city });
+  const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: ctx.today, city, knownWriters: ctx.knownWriters });
   // Short-history launch (BRO-6771): opened before the cutoff and no longer running.
   if (city.since && show.openingDate < city.since && show.status !== 'open') return { status: 'rejected', reason: 'before-since', retry: false };
   const dupe = stage.findDuplicate(show, ctx.shows, city);
@@ -92,6 +93,8 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   const next = { ...seen };
   const added = [];
   const topups = [];
+  // Independent writer credits already in the corpus: the byline oracle (BRO-8054).
+  const knownWriters = buildKnownWriters(shows);
   for (const row of pickTopups(listing, shows, seen, city).slice(0, max)) {
     try {
       const links = stage.linkedReviews(await io.page(row.id)).map((r) => ({ url: r.url, critic: r.critic || null }));
@@ -106,7 +109,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   for (const row of pickCandidates(listing, shows, seen, city).slice(0, max)) {
     let res;
     try {
-      res = await evaluate(row, { shows, today, city }, io);
+      res = await evaluate(row, { shows, today, city, knownWriters }, io);
     } catch (e) {
       log(`id ${row.id}: ERROR ${e.message}`);
       continue; // not remembered: tomorrow retries

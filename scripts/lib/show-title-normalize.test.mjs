@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { normalizeShowTitle, buildVenueVocabulary } = require('./show-title-normalize.js');
+const { normalizeShowTitle, buildVenueVocabulary, applyNormalizedTitle, undoNormalizedTitle, healShowTitles } = require('./show-title-normalize.js');
 
 test('applies the venue strip alone', () => {
   const r = normalizeShowTitle({
@@ -167,4 +167,56 @@ test('BRO-8051: credit-style titles keep their credit word / writer name', () =>
     'Sondheim on Sondheim by Stephen Sondheim']) {
     assert.equal(normalizeShowTitle({ id: 'z', title }, { knownWriters: kw }).title, title, title);
   }
+});
+
+// BRO-8054: the source description is a third oracle, so a first-time playwright
+// (no creative credit yet, not in the corpus) is still recognised.
+const BYLINE = 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West';
+const BYLINE_CLEAN = 'Engines and Instruments of Flight: A Fantasia in Three Acts';
+
+test('BRO-8054: source description naming the writer is an oracle', () => {
+  const r = normalizeShowTitle({ id: 'engines-2026', title: BYLINE }, { sourceText: 'A new play by Calamity West, directed by Ann Lee.' });
+  assert.equal(r.title, BYLINE_CLEAN);
+  assert.ok(r.steps.some((st) => st.oracle === 'source-description'));
+});
+
+test('BRO-8054: no oracle, no strip (description that does not name the writer)', () => {
+  const r = normalizeShowTitle({ id: 'engines-2026', title: BYLINE }, { sourceText: 'A play about flight, directed by Ann Lee.' });
+  assert.equal(r.title, BYLINE);
+  assert.equal(r.changed, false);
+});
+
+test('BRO-8054: a real "by" title is not stripped just because the description repeats it', () => {
+  const r = normalizeShowTitle({ id: 'killed-2026', title: 'Killed by Grace Kelly' }, { sourceText: 'Killed by Grace Kelly is a new comedy.' });
+  assert.equal(r.title, 'Killed by Grace Kelly');
+});
+
+test('BRO-8054: the strip never leaves a one-word title', () => {
+  const r = normalizeShowTitle({ id: 'tender-2026', title: 'Tender by Jane Roe' }, { sourceText: 'Tender by Jane Roe' });
+  assert.equal(r.title, 'Tender by Jane Roe');
+});
+
+test('BRO-8054: apply records provenance + alias, undo restores every field', () => {
+  const show = { id: 'a', title: BYLINE, akaTitles: ['Other'] };
+  const result = normalizeShowTitle(show, { sourceText: 'by Calamity West' });
+  const healed = applyNormalizedTitle(show, result, '2026-11-22T00:00:00.000Z');
+  assert.equal(show.title, BYLINE_CLEAN);
+  assert.equal(show.titleNormalizedFrom, BYLINE);
+  assert.equal(show.titleNormalizedAt, '2026-11-22T00:00:00.000Z');
+  assert.deepEqual(show.akaTitles, ['Other', BYLINE]);
+  undoNormalizedTitle(show, healed);
+  assert.deepEqual(show, { id: 'a', title: BYLINE, akaTitles: ['Other'] });
+});
+
+test('BRO-8054: healShowTitles honours `only`, and skips shouted titles', () => {
+  const writer = [{ name: 'Calamity West', role: 'Playwright' }];
+  const rows = [
+    { id: 'a', title: BYLINE, creativeTeam: writer },
+    { id: 'b', title: BYLINE, creativeTeam: writer },
+    { id: 'c', title: 'AMERICA, WHO HURT YOU?' },
+  ];
+  const healed = healShowTitles(rows, { only: (s) => s.id !== 'b' });
+  assert.deepEqual(healed.map((h) => h.id), ['a']);
+  assert.equal(rows[1].title, BYLINE);
+  assert.equal(rows[2].title, 'AMERICA, WHO HURT YOU?');
 });

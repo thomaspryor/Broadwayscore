@@ -23,9 +23,9 @@ const tic = require('./lib/theatreinchicago');
 const { runDaily } = require('./lib/tic-daily');
 const { getCity, assertRunnable } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const ROOT = path.join(__dirname, '..');
-const SHOWS = path.join(ROOT, 'data', 'shows.json');
 const PROMOTED = path.join(ROOT, 'data', 'audit', 'last-promotion-ids.json');
 
 const flag = (n) => process.argv.includes(`--${n}`);
@@ -40,9 +40,12 @@ const ADDED = path.join(ROOT, CITY.files.added);
 const readJson = (f, def) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return def; } };
 
 async function stageAndAdd() {
-  const raw = readJson(SHOWS, null);
-  if (!raw) { console.log('[tic-daily] data/shows.json missing, nothing to do'); return; }
-  const shows = Array.isArray(raw) ? raw : raw.shows;
+  // Through the write guard (BRO-8054): it locks against concurrent writers and repairs
+  // title artifacts on the rows this run adds. A bare writeFileSync skipped both.
+  let doc = null;
+  try { doc = loadShows(); } catch { /* missing or unreadable: handled below */ }
+  if (!doc || !Array.isArray(doc.shows)) { console.log('[tic-daily] data/shows.json missing, nothing to do'); return; }
+  const shows = doc.shows;
   const seen = readJson(SEEN, {});
   const today = new Date().toISOString().slice(0, 10);
   // Reset first so a failure below can never leave yesterday's list for the ingest step.
@@ -65,7 +68,7 @@ async function stageAndAdd() {
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
   // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
   // whereas audit files written first would claim shows that never landed.
-  if (added.length) fs.writeFileSync(SHOWS, JSON.stringify(raw, null, 2) + '\n');
+  if (added.length) saveShows(doc, { reason: 'tic-daily' });
   fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
   fs.writeFileSync(ADDED, JSON.stringify({ on: today, added, pending }, null, 1) + '\n');
   if (!added.length) return;

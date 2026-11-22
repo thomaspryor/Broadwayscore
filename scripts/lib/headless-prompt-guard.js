@@ -252,6 +252,32 @@ function promptPathsReferencedByLaunchers(repoRoot) {
   return [...refs];
 }
 
+// BRO-8054: clauses a headless prompt must keep. A prompt edit that quietly
+// drops the "fix the cause, not just the row" rule would put the Sunday review
+// back to correcting one draft a week while the writer keeps producing the
+// defect. Each entry is checked against the shipped file in CI.
+const REQUIRED_CLAUSES = [
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'find-the-writer', re: /\*\*Find the writer\.\*\*/ },
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'fix-cause-at-source', re: /Fix the cause where the value is made/ },
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'sweep-cousins', re: /Sweep the cousins/ },
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'class-test', re: /fails\s+when your cause fix is reverted/ },
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'email-cause-status', re: /whether the cause is also fixed/ },
+  { file: 'scripts/newsletter/sunday-review-prompt.md', id: 'stdout-cause-status', re: /cause=fixed/ },
+];
+
+/**
+ * @param {string} rel repo-relative path of the prompt being checked
+ * @param {string} text its contents
+ * @returns {{id: string, why: string}[]} required clauses `text` lacks
+ */
+function findMissingRequiredClauses(rel, text) {
+  const norm = String(rel).replace(/\\/g, '/').replace(/^\.\//, '');
+  return REQUIRED_CLAUSES
+    .filter((c) => norm === c.file || norm.endsWith('/' + c.file))
+    .filter((c) => !c.re.test(String(text)))
+    .map((c) => ({ id: c.id, why: `required clause "${c.id}" is missing from ${c.file}` }));
+}
+
 function main(argv) {
   const repoRoot = path.resolve(__dirname, '..', '..');
   const args = argv.slice(2);
@@ -272,13 +298,18 @@ function main(argv) {
   for (const rel of targets) {
     const abs = path.isAbsolute(rel) ? rel : path.join(repoRoot, rel);
     if (!fs.existsSync(abs)) { console.error(`missing: ${rel}`); bad += 1; continue; }
-    for (const v of findOwnerHandoffViolations(fs.readFileSync(abs, 'utf8'))) {
+    const text = fs.readFileSync(abs, 'utf8');
+    for (const v of findOwnerHandoffViolations(text)) {
       console.error(`${rel}:${v.line}  "${v.match}" — ${v.why}`);
+      bad += 1;
+    }
+    for (const m of findMissingRequiredClauses(rel, text)) {
+      console.error(`${rel}  ${m.why}`);
       bad += 1;
     }
   }
   if (bad) {
-    console.error(`\n${bad} owner-handoff problem(s). Unattended runs land their own fixes.`);
+    console.error(`\n${bad} headless-prompt problem(s). Unattended runs land their own fixes and fix the cause, not only the symptom.`);
     return 1;
   }
   console.log(`✓ ${targets.length} headless prompt(s) clean`);
@@ -287,6 +318,8 @@ function main(argv) {
 
 module.exports = {
   findOwnerHandoffViolations,
+  findMissingRequiredClauses,
+  REQUIRED_CLAUSES,
   discoverHeadlessPromptFiles,
   promptPathsReferencedByLaunchers,
   PROMPT_GLOBS,

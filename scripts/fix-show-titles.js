@@ -36,7 +36,7 @@
 'use strict';
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
-const { normalizeShowTitle, buildVenueVocabulary, buildKnownWriters } = require('./lib/show-title-normalize');
+const { normalizeShowTitle, applyNormalizedTitle, buildVenueVocabulary, buildKnownWriters } = require('./lib/show-title-normalize');
 const { classifyVenueSuffix } = require('./lib/title-venue-suffix');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -113,15 +113,10 @@ function main() {
       openingDate: show.openingDate || null,
     });
 
-    const oldTitle = show.title;
-    if (APPLY) {
-      // Breadcrumb so a later scrape of the same source can't silently shout
-      // or re-venue it again without anyone noticing the flip-flop.
-      show.titleNormalizedFrom = oldTitle;
-      show.titleNormalizedAt = new Date().toISOString();
-      show.title = result.title;
-      rememberOldTitle(show, oldTitle);
-    }
+    // Breadcrumb (titleNormalizedFrom/At) so a later scrape of the same source
+    // can't silently shout or re-venue it again without anyone noticing the
+    // flip-flop, plus the search alias. One shared writer (BRO-8054).
+    if (APPLY) applyNormalizedTitle(show, result);
   }
 
   if (AS_JSON) {
