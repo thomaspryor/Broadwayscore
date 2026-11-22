@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-11-22T06:28:16.428Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-22T06:42:48.345Z",
+  "processed": 34,
+  "failed": 67,
+  "successRate": "33.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 22,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 4,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-22T06:40:40.807Z",
+      "event": "bb-session",
+      "session": "188beb2b",
+      "url": "https://www.nytimes.com/2011/11/21/theater/reviews/seminar-by-theresa-rebeck-wit"
+    },
+    {
+      "t": "2026-11-22T06:40:41.486Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
