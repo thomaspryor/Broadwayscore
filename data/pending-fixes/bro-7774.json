@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7774",
+  "planId": "96f386a1-9b39-416b-b36c-768e3a801064",
+  "status": "pending",
+  "createdAt": "2026-11-22T22:56:19.235Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete the last review file stranded under retired id cloud-9-national-west-end-2026 (Arts Desk duplicate; canonical cloud-9-west-end-2026 already holds it); clears the orphan-review-folders corpus drift row",
+    "steps": [
+      "Delete leftover body-less Arts Desk duplicate stranded under the retired Cloud 9 National id (BRO-5489); cloud-9-west-end-2026 already holds the same review as artsdesk--aleks-sierz.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cloud-9-national-west-end-2026/artsdesk--unknown.json",
+        "description": "Delete leftover body-less Arts Desk duplicate stranded under the retired Cloud 9 National id (BRO-5489); cloud-9-west-end-2026 already holds the same review as artsdesk--aleks-sierz.json"
+      }
+    ]
+  }
+}
