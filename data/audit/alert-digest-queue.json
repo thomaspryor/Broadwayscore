@@ -1819,19 +1819,18 @@
     "queuedAt": "2026-11-22T03:29:22.216Z"
   },
   {
-    "conditionKey": "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
-    "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)\" in scripts/lib/autoclear-vs-ensemble.test.mjs is red against the live corpus.\n\n1 wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n+ actual - expected\n\n+ [\n+   'mexodus-off-broadway-2026/nyt-theater--jonathan-mandell.json (rebuild: priorRuns/tourLegs covers publishDate (was: Pre-opening guard: review dated 2025-10-05 is 90+ days before show starts 2026-03-06))'\n+ ]\n- []\n",
-    "severity": "error",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "testId": "scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
     "fields": [],
-    "queuedAt": "2026-11-22T03:42:42.175Z"
+    "queuedAt": "2026-11-22T07:39:17.515Z"
   },
   {
     "conditionKey": "land:land/bro-7984-bare-node-test-v2",
@@ -1865,17 +1864,32 @@
     "queuedAt": "2026-11-22T06:13:01.034Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
+    "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"is-anything-ok-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"miracle-on-south-division-street-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"stories-from-the-brink-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"heavenly-baba-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"pea-dinneen-raising-her-voice-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'is-anything-ok-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'miracle-on-south-division-street-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'stories-from-the-brink-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'heavenly-baba-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'pea-dinneen-raising-her-voice-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
+    "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
     "fields": [],
-    "queuedAt": "2026-11-22T07:39:17.515Z"
+    "queuedAt": "2026-11-22T07:51:12.479Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+    "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs) — still happening after 3 days",
+    "description": "Filed BRO-8033: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)\" in scripts/lib/autoclear-vs-ensemble.test.mjs is red against the live corpus.\n\n1 wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n+ actual - expected\n\n+ [\n+   'mexodus-off-broadway-2026/nyt-theater--jonathan-mandell.json (rebuild: priorRuns/tourLegs covers publishDate (was: Pre-opening guard: review dated 2025-10-05 is 90+ days before show starts 2026-03-06))'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8033",
+    "fields": [],
+    "queuedAt": "2026-11-22T07:51:17.573Z"
   }
 ]
