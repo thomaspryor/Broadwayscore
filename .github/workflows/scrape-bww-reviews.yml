@@ -207,12 +207,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
-      # files pushed by other jobs since this job's checkout (never files
-      # this job wrote), and record which shows drifted.
-      - name: Sync review-texts drift before rebuild
-        uses: ./.github/actions/sync-review-texts-drift
-
       # BRO-8013: restore the fingerprint memo (saved by rebuild-reviews.yml /
       # rebuild-fast.yml) so this rebuild does not run cold. Restore only.
       - name: Restore fingerprint memo
@@ -224,6 +218,12 @@ jobs:
           key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-batch-${{ github.sha }}
           restore-keys: |
             rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        uses: ./.github/actions/sync-review-texts-drift
 
       - name: Rebuild reviews.json
         id: rebuild_reviews
