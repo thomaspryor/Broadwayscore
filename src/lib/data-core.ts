@@ -8,8 +8,8 @@ import { isLocalOnlyShow } from '@/lib/local-market';
 import { hubPhase, HUB_CITIES } from '@/lib/city-hub';
 import { getTourCity } from './data-tour-cities';
 import { versionedImagePath } from './versioned-image-path';
+import { computeOneShow, type ComputeOneShowDeps } from './compute-one-show';
 import {
-  computeShowData,
   ComputedShow,
   RawShow,
   RawReview,
@@ -36,8 +36,7 @@ import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { differentWorks } from '../../scripts/lib/work-identity';
 import { belongsOnOffBroadwayListing } from '../../scripts/lib/off-broadway-listing';
-import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
-import { coverageHoldReleased } from '../../scripts/lib/coverage-floor';
+import { readCoverageFloorInputs } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -88,6 +87,21 @@ for (const r of reviews) {
   else reviewsByShowId.set(r.showId, [r]);
 }
 
+// BRO-8056: computeOneShow takes a show's critic reviews and its blog reviews
+// separately (show-refresh slices carry them separately). Order within a show
+// is unchanged: critic reviews first, then blog reviews, as in `reviews` above.
+const baseReviewsByShowId = groupByShowId(baseReviews);
+const blogReviewsByShowId = groupByShowId(blogReviewsData.reviews as RawReview[]);
+function groupByShowId(list: RawReview[]): Map<string, RawReview[]> {
+  const m = new Map<string, RawReview[]>();
+  for (const r of list) {
+    const arr = m.get(r.showId);
+    if (arr) arr.push(r);
+    else m.set(r.showId, [r]);
+  }
+  return m;
+}
+
 // Coverage Verdict (S2/S3, tasks #906/#905) — read once at module load by
 // the loader the app feed also uses (scripts/lib/coverage-floor-inputs.js),
 // so the site's show page and the app's cr.pq read the same verdicts, stamps
@@ -119,31 +133,15 @@ let computedShowsCache: ComputedShow[] | null = null;
 export function getAllShows(): ComputedShow[] {
   if (computedShowsCache) return computedShowsCache;
 
+  const deps: Omit<ComputeOneShowDeps, 'blogReviews'> = {
+    audience, buzz, coverageFloorInputs, versionImage: versionedImagePath,
+  };
   computedShowsCache = shows
     .filter((show: any) => !show._devOnly)
-    .map(show => {
-      const computed = computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz);
-      if (computed.images) {
-        computed.images = {
-          ...computed.images,
-          thumbnail: versionedImagePath(computed.images.thumbnail),
-          poster: versionedImagePath(computed.images.poster),
-          hero: versionedImagePath(computed.images.hero),
-        };
-      }
-      const cov = coverageFloorInputs.covByShowId.get(show.id);
-      if (cov) computed.cov = cov;
-      // A stamp from before the show opened is dropped there (stale wrong-production blip).
-      const floorOpts = coverageFloorOptsForShow(coverageFloorInputs, show);
-      if (floorOpts.scorePublicSince) computed.scorePublicSince = floorOpts.scorePublicSince;
-      // BRO-7197: the coverage hold has a ceiling (8+ scored reviews, or 72h after opening). Folded in here, once per
-      // show, so every applyCoverageFloor caller that reads show.coverageAcked gets it without passing the count.
-      if (floorOpts.coverageAcked || coverageHoldReleased({
-        scoredReviewCount: computed.criticScore?.reviewCount ?? 0,
-        openingDate: show.openingDate,
-      })) computed.coverageAcked = true;
-      return computed;
-    });
+    .map(show => computeOneShow(show, baseReviewsByShowId.get(show.id) || [], {
+      ...deps,
+      blogReviews: blogReviewsByShowId.get(show.id) || [],
+    }));
 
   return computedShowsCache;
 }

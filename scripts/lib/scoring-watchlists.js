@@ -34,6 +34,7 @@ const INCLUSION_FILES = [
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
+  'src/lib/compute-one-show.ts', // BRO-8056: per-show compute extracted from data-core
   // Historical miss (task #947): classifyContentTier/validateShowMentioned here
   // drive contentTier and show-match rejections that rebuild-all-reviews.js and
   // recover-serp-text.js both consume for inclusion — CLAUDE.md rule 12 already
