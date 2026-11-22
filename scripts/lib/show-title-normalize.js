@@ -81,8 +81,18 @@ function buildKnownWriters(shows) {
   return out;
 }
 
-/** @returns {{title:string, name:string, oracle:string}|null} */
-function classifyPlaywrightByline(title, show, knownWriters) {
+/**
+ * @param {string} title
+ * @param {object} [show]
+ * @param {Set<string>} [knownWriters]
+ * @param {string} [sourceText] the source's own description of the show. A THIRD,
+ *   weaker oracle for a first-time playwright nobody in the corpus credits yet
+ *   (BRO-8054: TIC's "Calamity West" row). The name must appear in the source's
+ *   own words AND at least two words must remain, so "Killed by Grace Kelly"
+ *   (one word left) is never stripped on this oracle alone.
+ * @returns {{title:string, name:string, oracle:string}|null}
+ */
+function classifyPlaywrightByline(title, show, knownWriters, sourceText) {
   if (!title) return null;
   const m = PLAYWRIGHT_BYLINE_RE.exec(title);
   if (!m) return null;
@@ -96,6 +106,9 @@ function classifyPlaywrightByline(title, show, knownWriters) {
     .some(c => c && c.name && WRITER_ROLE_RE.test(c.role || '') && nameKey(c.name) === key);
   if (own) return { title: rest, name: m[2], oracle: 'show-credits-writer' };
   if (knownWriters && knownWriters.has(key)) return { title: rest, name: m[2], oracle: 'corpus-known-writer' };
+  if (sourceText && rest.split(/\s+/).length >= 2 && (' ' + nameKey(sourceText) + ' ').includes(' ' + key + ' ')) {
+    return { title: rest, name: m[2], oracle: 'source-description' };
+  }
   return null;
 }
 
@@ -107,7 +120,7 @@ const {
 
 /**
  * @param {{id?:string, title:string, venue?:string}} show
- * @param {{venueVocabulary?: string[], knownWriters?: Set<string>}} [ctx]
+ * @param {{venueVocabulary?: string[], knownWriters?: Set<string>, sourceText?: string}} [ctx]
  * @returns {{
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
@@ -165,7 +178,7 @@ function normalizeShowTitle(show, ctx = {}) {
   }
 
   // 1a''. BRO-8051: trailing playwright byline (oracle-gated, see above).
-  const byline = classifyPlaywrightByline(title, show, ctx.knownWriters);
+  const byline = classifyPlaywrightByline(title, show, ctx.knownWriters, ctx.sourceText);
   if (byline) {
     steps.push({ kind: 'playwright-byline', from: title, to: byline.title, oracle: byline.oracle });
     title = byline.title;
@@ -187,8 +200,67 @@ function normalizeShowTitle(show, ctx = {}) {
   return { title, changed: title !== original, manualReview, steps };
 }
 
+/**
+ * Write a normalizeShowTitle() result onto the row, with the provenance a later
+ * scrape needs to spot a flip-flop, and the old title kept as a search alias
+ * (search matches `title` and `akaTitles` only). The one writer for the sweep
+ * (fix-show-titles.js), the ingestion builders and the write guard, so they
+ * cannot disagree about what "healed" looks like.
+ * @returns {{id:string, from:string, to:string, steps:string[], prev:object}}
+ */
+function applyNormalizedTitle(show, result, nowIso = new Date().toISOString()) {
+  const prev = {
+    title: show.title,
+    titleNormalizedFrom: show.titleNormalizedFrom,
+    titleNormalizedAt: show.titleNormalizedAt,
+    akaTitles: Array.isArray(show.akaTitles) ? show.akaTitles.slice() : show.akaTitles,
+  };
+  const oldTitle = show.title;
+  show.titleNormalizedFrom = oldTitle;
+  show.titleNormalizedAt = nowIso;
+  show.title = result.title;
+  const aka = Array.isArray(show.akaTitles) ? show.akaTitles : [];
+  if (oldTitle && !aka.some(t => String(t).trim().toLowerCase() === oldTitle.trim().toLowerCase())) {
+    show.akaTitles = [...aka, oldTitle];
+  }
+  return { id: show.id, from: oldTitle, to: result.title, steps: result.steps.map(st => st.kind + (st.oracle ? ':' + st.oracle : '')), prev };
+}
+
+/** Put back exactly what applyNormalizedTitle() overwrote. */
+function undoNormalizedTitle(show, healed) {
+  for (const [k, v] of Object.entries(healed.prev)) {
+    if (v === undefined) delete show[k]; else show[k] = v;
+  }
+}
+
+/**
+ * Heal the titles of the rows `only` selects (all rows when omitted), using the
+ * SAME normalizeShowTitle() validate-data.js asks, with the whole corpus as
+ * oracle. Shouted titles are never rewritten (BRO-3920): the row is left for a
+ * human. Oracles are built from the PRE-HEAL corpus so healing row A cannot
+ * change what row B is matched against.
+ * @param {object[]} shows
+ * @param {{only?: (show:object)=>boolean, nowIso?: string}} [opts]
+ * @returns {Array} one applyNormalizedTitle() record per row healed
+ */
+function healShowTitles(shows, opts = {}) {
+  const venueVocabulary = buildVenueVocabulary(shows);
+  const knownWriters = buildKnownWriters(shows);
+  const healed = [];
+  for (const show of shows) {
+    if (opts.only && !opts.only(show)) continue;
+    const result = normalizeShowTitle(show, { venueVocabulary, knownWriters });
+    if (!result.changed || result.manualReview) continue;
+    healed.push(applyNormalizedTitle(show, result, opts.nowIso));
+  }
+  return healed;
+}
+
 module.exports = {
   normalizeShowTitle,
+  applyNormalizedTitle,
+  undoNormalizedTitle,
+  healShowTitles,
   MAX_VENUE_STRIP_PASSES,
   GENRE_DISAMBIGUATOR_RE,
   LISTING_YEAR_SUFFIX_RE,

@@ -101,13 +101,37 @@ fi
 echo "$(date -u +%FT%TZ): starting Sunday newsletter content review"
 
 PROMPT_FILE="$REPO_DIR/scripts/newsletter/sunday-review-prompt.md"
-if [ ! -f "$PROMPT_FILE" ]; then
-  echo "$(date -u +%FT%TZ): ERROR prompt file not found: $PROMPT_FILE"
-  exit 1
+PROMPT_REL="scripts/newsletter/sunday-review-prompt.md"
+
+# BRO-8054: read the prompt from origin/main, not from whatever the shared
+# checkout last pulled. A prompt rule that landed on main (for example "fix the
+# cause, not only the row") must govern THIS Sunday's run even when the checkout
+# is behind. Soft-fail on purpose: a flaky network falls back to the checkout
+# file, never to a skipped review. `git fetch` only moves the origin/main ref;
+# it does not touch the working tree or any branch of this shared checkout, and
+# there is no pull, checkout or reset here.
+PROMPT_TEXT=""
+PROMPT_SOURCE=""
+if perl -e 'alarm 60; exec @ARGV' git -C "$REPO_DIR" fetch --quiet origin main 2>/dev/null; then
+  PROMPT_TEXT=$(git -C "$REPO_DIR" show "origin/main:$PROMPT_REL" 2>/dev/null || true)
+  if [ -n "$PROMPT_TEXT" ]; then
+    PROMPT_SOURCE="origin/main@$(git -C "$REPO_DIR" rev-parse --short origin/main 2>/dev/null || echo unknown)"
+  fi
+else
+  echo "$(date -u +%FT%TZ): WARN git fetch origin main failed or timed out; falling back to the checkout's prompt file"
 fi
+if [ -z "$PROMPT_TEXT" ]; then
+  if [ ! -f "$PROMPT_FILE" ]; then
+    echo "$(date -u +%FT%TZ): ERROR prompt file not found: $PROMPT_FILE"
+    exit 1
+  fi
+  PROMPT_TEXT=$(cat "$PROMPT_FILE")
+  PROMPT_SOURCE="checkout:$PROMPT_FILE"
+fi
+echo "$(date -u +%FT%TZ): prompt source: $PROMPT_SOURCE ($(printf '%s' "$PROMPT_TEXT" | wc -c | tr -d ' ') bytes)"
 
 perl -e "alarm $CLAUDE_TIMEOUT_SEC; exec @ARGV" \
-  claude --dangerously-skip-permissions --model opus -p "$(cat "$PROMPT_FILE")" --output-format json
+  claude --dangerously-skip-permissions --model opus -p "$PROMPT_TEXT" --output-format json
 
 CLAUDE_EXIT=$?
 echo "$(date -u +%FT%TZ): claude exited $CLAUDE_EXIT"

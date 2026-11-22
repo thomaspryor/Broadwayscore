@@ -45,6 +45,14 @@ cloud substitutions:
   (`node scripts/linear-brain.js create ... --source routine:sunday-newsletter-review --park "routine record"`) instead.
 - Stop after 60 minutes of work: finish or card what you are on, then send the
   summary last, as the prompt says.
+- Fix the cause, not only the row (prompt step 4, BRO-8054). Correcting a draft
+  or a data row is the first of four parts: find the writer that produced the
+  bad value, fix it at the source or at the shared chokepoint, sweep the other
+  rows with the same defect, and land a test that fails with the cause fix
+  reverted. A row-only correction with no dispatched card for the cause is not
+  a finished fix. `node scripts/lib/headless-prompt-guard.js` fails CI if the
+  prompt loses this rule, so read the prompt from `origin/main` (step 0 does)
+  rather than from an older checkout.
 
 ## Known cloud gaps (BRO-6258, checked 2026-10-26)
 
@@ -61,5 +69,6 @@ cloud substitutions:
 
 ## 3. Reply
 
-Three plain-English lines: what you reviewed, what you fixed, how the owner was
-told. End with `SAFE TO ARCHIVE`.
+Three plain-English lines: what you reviewed, what you fixed (and whether the
+cause of each fix is also fixed, or only the draft was corrected), how the owner
+was told. End with `SAFE TO ARCHIVE`.

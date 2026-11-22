@@ -110,6 +110,30 @@ For each edition that has a draft, read the generated HTML file and check:
   then re-run `refresh-drafts.sh <weekStart>` so the draft picks it up.
   Never hand-edit the generated HTML file directly — it will be
   overwritten by the next refresh and the root cause survives.
+- **Every fix, data or code, has four parts (owner rule 2026-11-22).**
+  Correcting the row or the output is part 1. A fix that stops there means the
+  same defect returns next week, so you are not finished until all four are done:
+  1. **Find the writer.** Which script, cron job or ingestion path produced the
+     bad value? Use `git log -S`, grep for the field, and read the row's
+     `discoverySource` and provenance fields. Name it in your log.
+  2. **Fix the cause where the value is made.** Change the producing code, or
+     the shared chokepoint every writer passes through (for `shows.json` that is
+     `scripts/lib/shows-write-guard.js`; for show titles the one normalizer is
+     `scripts/lib/show-title-normalize.js`). Use the generator-code lane below
+     to land it. Do not add a second, parallel cleanup script.
+  3. **Sweep the cousins.** Search the data and the code for other rows and
+     other writers with the same defect and fix every one in the same pass.
+  4. **Make it stick.** Add a test that `require()`s the real function and
+     fails when your cause fix is reverted. Run it red, then green.
+  Worked example (2026-11-22): a Chicago listing was stored as "... in Three
+  Acts by Calamity West". The earlier run corrected that one row and five older
+  rows, but the staging script that wrote the name kept writing it, so the next
+  new listing would have broken the Broadway card again. The cause fix was in
+  the staging path and in the write guard (BRO-8054). A row-only correction
+  does not count as a fix.
+  If the cause really cannot be fixed inside this run's wall clock, card it and
+  dispatch it (the fallback at the end of this step) and say so in email line 2.
+  "Fixed the row only" with no dispatched card is never an acceptable ending.
 - **Generator code fixes** (pluralization, off-by-one date math, a cap that
   fails open): **you fix the root cause and land it yourself.** A summary
   email that ends by pointing the owner at a branch or a PR is a process
@@ -190,7 +214,10 @@ exactly 3 lines, plain English, no jargon:
 1. What you checked (both editions / just Broadway / just West End) and
    whether the drafts are ready to send as-is.
 2. What you found and fixed (or "nothing wrong found" — say so plainly, don't
-   pad).
+   pad). For each fix, say in plain words whether the cause is also fixed (the
+   thing that produced the bad value, so it cannot come back) or only the
+   draft was corrected. Only the draft corrected, with no dispatched card for
+   the cause, means step 4 is not finished.
 3. Anything still needing the owner's judgment — or "nothing else — ready to
    send." This line is for decisions only the owner can make: a data question
    you couldn't resolve, an editorial call, a fact you can't verify. It is
@@ -214,7 +241,9 @@ path.
 ## 7. Log and finish
 
 Print a final one-line summary to stdout (the launcher captures this in its
-log file): what you reviewed, what you fixed, whether you emailed the owner.
+log file): what you reviewed, what you fixed, whether the cause of each fix is
+fixed (`cause=fixed`, `cause=dispatched BRO-N`, or `cause=n/a` when nothing was
+fixed), and whether you emailed the owner.
 Then stop — do not run `/ship-check`, `/wrap-up`, or open a Notion card
 sequence for this run; it's a scheduled content-review pass, not a coding
 task, unless step 4 required an actual code fix (in which case treat that one

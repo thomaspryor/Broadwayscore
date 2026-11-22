@@ -187,3 +187,29 @@ test('no launcher feeds claude a prompt path the globs do not cover', () => {
     `these launcher prompt paths are outside PROMPT_GLOBS — add a glob:\n${uncovered.join('\n')}`
   );
 });
+
+// BRO-8054: the Sunday review must fix the cause of a defect, not only the row.
+// Dropping the rule from the prompt is caught here, in CI, instead of by the
+// owner noticing the same problem a week later.
+const { findMissingRequiredClauses, REQUIRED_CLAUSES } = require(path.join(REPO, 'scripts/lib/headless-prompt-guard.js'));
+const SUNDAY = 'scripts/newsletter/sunday-review-prompt.md';
+
+test('the shipped Sunday prompt keeps every required cause-fix clause', () => {
+  assert.ok(REQUIRED_CLAUSES.length >= 6, 'clause list was emptied');
+  const text = fs.readFileSync(path.join(REPO, SUNDAY), 'utf8');
+  assert.deepEqual(findMissingRequiredClauses(SUNDAY, text), []);
+});
+
+test('removing any one required clause is flagged by name', () => {
+  const text = fs.readFileSync(path.join(REPO, SUNDAY), 'utf8');
+  for (const c of REQUIRED_CLAUSES.filter((x) => x.file === SUNDAY)) {
+    const stripped = text.split('\n').filter((line) => !c.re.test(line)).join('\n');
+    assert.notEqual(stripped, text, `clause ${c.id} matched no line, so this test cannot prove it`);
+    const missing = findMissingRequiredClauses(SUNDAY, stripped).map((m) => m.id);
+    assert.ok(missing.includes(c.id), `dropping "${c.id}" went undetected`);
+  }
+});
+
+test('clauses apply only to their own prompt file', () => {
+  assert.deepEqual(findMissingRequiredClauses('scripts/newsletter/other-prompt.md', 'anything'), []);
+});
