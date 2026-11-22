@@ -277,8 +277,8 @@ function seatplanLinks(html) {
 /**
  * False when a SeatPlan level page is almost surely a not-found page, so
  * fetching it would only buy a paid fallback:
- *   - the venue page was fetched and failed (wrong slug, or a flaky fetch:
- *     --retry-failed refetches it), or
+ *   - the venue page came back as a not-found page (wrong slug: every level
+ *     page 404s too). Any other failure is unknown, so level pages are fetched, or
  *   - the seating-plan page was fetched and never names the level ("Front
  *     Mezzanine", "Balcony"). The venue page does not link every level page
  *     (Walter Kerr links only /orchestra/), so its links are not used.
@@ -287,11 +287,12 @@ function seatplanLevelLinked(url, read = readPage) {
   const m = url.match(/^(https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/)([a-z0-9-]+)\/$/);
   if (!m) return true;
   const main = read(m[1]);
-  if (main && !main.ok) return false;
+  if (main && !main.ok && main.error === 'not-found page') return false;
   if (!['front-mezzanine', 'rear-mezzanine', 'balcony'].includes(m[2])) return true;
   const plan = read(m[1] + 'seating-plan/');
   if (!plan || !plan.ok) return true;
-  return String(plan.text || '').toLowerCase().includes(m[2].replace('-', ' '));
+  const words = m[2].split('-').join('[\\s\\u00a0-]+');
+  return new RegExp(`\\b${words}\\b`, 'i').test(String(plan.text || ''));
 }
 
 /**

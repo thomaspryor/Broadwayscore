@@ -290,8 +290,17 @@ describe('seat-note expiry alert decision (BRO-8057)', () => {
 describe('seatplanLevelLinked (skip SeatPlan level pages that look missing)', () => {
   const V = 'https://seatplan.com/new-york/x-theatre/';
   const pages = (o) => (u) => o[u];
-  test('skips every level page when the venue page failed', () => {
-    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false } })), false);
+  test('skips every level page when the venue page is a not-found page', () => {
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false, error: 'not-found page' } })), false);
+  });
+  test('a venue page that failed for another reason is unknown, so level pages are still fetched', () => {
+    assert.equal(seatplanLevelLinked(V + 'mezzanine/', pages({ [V]: { ok: false, error: 'timeout' } })), true);
+  });
+  test('level names match across a line break, nonbreaking space or hyphen', () => {
+    for (const text of ['Front\nMezzanine seats', 'Front\u00a0Mezzanine', 'front-mezzanine rows']) {
+      const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text } });
+      assert.equal(seatplanLevelLinked(V + 'front-mezzanine/', read), true, text);
+    }
   });
   test('skips front/rear mezzanine and balcony the seating plan never names', () => {
     const read = pages({ [V]: { ok: true }, [V + 'seating-plan/']: { ok: true, text: 'Orchestra and Mezzanine seating.' } });
