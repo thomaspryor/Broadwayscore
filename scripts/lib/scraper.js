@@ -63,6 +63,24 @@ const _RUN_MEMO_RECORDERS = { scrapingdog: recordSdCall, brightdata: recordBdCal
 const { getSkippedTiers } = require('./domain-tier-skip');
 const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 let _domainTierSkip = null;
+// BRO-7816: the tier ids domain-tier-skip.json may name, so a typo in ignoreDomainSkips throws instead of doing nothing.
+const DOMAIN_SKIP_TIER_IDS = new Set(['cookies-plain', 'direct-cookies', 'amp-variant', 'playwright', 'scrapingdog', 'brightdata', 'scrapingbee']);
+
+/**
+ * PURE. The learned domain skips minus the tiers a caller opts back into (BRO-7816). domain-tier-skip.json is
+ * learned from article-page fetches; a different resource on the same host (washingtonpost.com's sitemap XML,
+ * which Bright Data reads while its articles fail) can opt back in. Only the static config is overridden: the
+ * caller applies the run memo after this, so a tier that fails in this run still latches off.
+ */
+function effectiveDomainSkips(skips, ignore) {
+  const out = new Set(skips);
+  for (const t of ignore || []) {
+    if (!DOMAIN_SKIP_TIER_IDS.has(t)) throw new Error(`ignoreDomainSkips: unknown tier id "${t}"`);
+    out.delete(t);
+  }
+  return out;
+}
+
 function _getDomainSkips(url) {
   if (!_domainTierSkip) {
     try {
@@ -1599,6 +1617,7 @@ function paidTierAvailable(url) {
  * @param {boolean} [options.preferPlaywright]
  * @param {string} [options.playwrightWaitForSelector]
  * @param {string[]} [options.tiers] - only run these chain tiers (e.g. ['brightdata'])
+ * @param {string[]} [options.ignoreDomainSkips] - re-enable tiers domain-tier-skip.json skips for this host (BRO-7816); the run memo still applies
  * @param {boolean} [options.directOnly] - free HTTP only, no paid or browser fallback (section indexes)
  * @param {number} [options.wait] - ms settle time (SD/SB, JS-render only)
  * @param {string} [options.countryCode] - 2-letter geo pin (SD country / SB country_code)
@@ -1643,7 +1662,7 @@ async function fetchPage(url, options = {}) {
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const isBroadwayWorld = url.includes('broadwayworld.com');
-  const skips = _getDomainSkips(url);
+  const skips = effectiveDomainSkips(_getDomainSkips(url), options.ignoreDomainSkips);
   let memoHost = null;
   try { memoHost = new URL(url).hostname.replace(/^www\./, ''); } catch { /* malformed: no memo */ }
   if (!RUN_MEMO_DISABLED && memoHost) {
@@ -2513,6 +2532,7 @@ function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
 }
 
 module.exports = {
+  effectiveDomainSkips,
   fetchPage,
   pageChainOrder,
   freeTiersForUrl,

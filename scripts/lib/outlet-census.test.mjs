@@ -597,3 +597,18 @@ test('BRO-7885: date-resolved path is reached, tags matchVia, and honours held a
   const a2 = { ...arm, closingDate: undefined }; const b2 = { ...stj, closingDate: undefined };
   assert.equal(census.resolveSameTitleByDate([a2, b2], '2024-04-29'), null);
 });
+
+test('BRO-7816: a source can opt proxy tiers back in over learned domain skips; typos throw; the default changes nothing', () => {
+  const { effectiveDomainSkips } = require('./scraper.js');
+  const learned = new Set(['brightdata', 'scrapingbee', 'direct-cookies']);
+  assert.deepEqual([...effectiveDomainSkips(learned, ['brightdata', 'scrapingbee'])], ['direct-cookies']);
+  assert.deepEqual([...effectiveDomainSkips(learned, undefined)].sort(), ['brightdata', 'direct-cookies', 'scrapingbee']);
+  assert.equal(learned.size, 3, 'the learned set is not mutated');
+  assert.throws(() => effectiveDomainSkips(learned, ['bright-data']), /unknown tier id/);
+  // Every census source that opts in names real tiers, and only proxyRetry sources may (they are the ones that reach fetchPage).
+  for (const [id, src] of Object.entries(SOURCES)) {
+    if (!src.ignoreDomainSkips) continue;
+    assert.ok(src.proxyRetry, `${id}: ignoreDomainSkips needs proxyRetry`);
+    effectiveDomainSkips(new Set(), src.ignoreDomainSkips);
+  }
+});

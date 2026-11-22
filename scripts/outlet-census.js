@@ -177,7 +177,8 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
   if (opts.proxyRetry) {
     // A source that opts in (Slant, BRO-7812) reads through the poller's fetcher: direct first, then the
     // shared proxy chain when the site 403s or answers with a challenge page. Throws on a block page.
-    raw = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry: true, timeoutMs: 60000 });
+    // ignoreDomainSkips (BRO-7816, per source): re-enable proxy tiers domain-tier-skip.json learned off from article pages.
+    raw = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry: true, timeoutMs: opts.directTimeoutMs || 60000, ignoreDomainSkips: opts.ignoreDomainSkips });
   } else {
     const { status, body } = await get(url, 60000);
     if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
@@ -278,7 +279,7 @@ async function enumerateSitemap(src, since) {
   } else {
     const got = [];
     for (const u of [].concat(src.url)) {
-      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry }));
+      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry, ignoreDomainSkips: src.ignoreDomainSkips, directTimeoutMs: src.directTimeoutMs }));
     }
     const seen = new Set();
     return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => census.itemFromSitemapEntry(g, src)), notes };

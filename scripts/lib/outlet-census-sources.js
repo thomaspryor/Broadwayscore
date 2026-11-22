@@ -130,6 +130,10 @@ const SOURCES = {
     childFilter: (c, since) => { const m = /sitemap-(\d{4})-(\d{2})\.xml/.exec(c); return !!m && `${m[1]}-${m[2]}` >= String(since).slice(0, 7); },
     urlFilter: /washingtonpost\.com\/(?:entertainment\/theater|theater-dance)\/\d{4}\/\d{2}\/\d{2}\/[^/]+\/?$/, headlineFromSlug: true, requireNycSignal: true,
     ignoreLastmod: true,
+    // Direct fetches of /sitemaps/ hang, and domain-tier-skip.json has Bright Data and ScrapingBee off for the host
+    // (learned from paywalled article pages), so only Playwright ran and failed (HTTP2 error). Bright Data reads
+    // the sitemaps (probed 2026-11-21: 200, a valid sitemapindex), so this source opts those tiers back in.
+    ignoreDomainSkips: ['brightdata', 'scrapingbee'], directTimeoutMs: 15000, childConcurrency: 6,
   },
   // Theatrely: one flat sitemap (2.9k URLs back to 2021-05), reviews under /post/. Reads direct.
   theatrely: { kind: 'sitemap', url: 'https://www.theatrely.com/sitemap.xml', urlFilter: /theatrely\.com\/post\/[^/]+$/, headlineFromSlug: true },

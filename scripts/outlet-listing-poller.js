@@ -616,7 +616,7 @@ function createStub(showId, outletId, outletDisplayName, url, headline, publishD
  * when `isExpected` recognises its XML root, so a block page still throws and the
  * caller falls back to SERP instead of reading "no new reviews".
  */
-async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = true, timeoutMs, health } = {}) {
+async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = true, timeoutMs, health, ignoreDomainSkips } = {}) {
   try {
     const body = await fetchSimple(url, timeoutMs);
     // A 200 challenge/block page (slantmagazine's Cloudflare "Just a moment...",
@@ -628,7 +628,7 @@ async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = tru
     if (!proxyRetry) throw err;
     if (health) health.directBlocked = true;
     console.log(`  [${label}] direct fetch failed (${err.message}); retrying via fetchPage`);
-    const result = await paidFetchPage(url, { renderJs: false });
+    const result = await paidFetchPage(url, { renderJs: false, ...(ignoreDomainSkips ? { ignoreDomainSkips } : {}) });
     if (!isExpected(result && result.content)) {
       throw new Error(`fetchPage returned an unexpected page for ${url}`);
     }
