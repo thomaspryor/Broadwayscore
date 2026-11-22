@@ -332,7 +332,7 @@ test('CLI: same red gates on base and branch → exit 0, gate= empty, summary ap
     assert.match(r.stdout, /PASS {2}unit-tests/);
     assert.match(r.stdout, /pre-existing .*tests\/unit\/a\.test\.mjs::image self-heal/);
     assert.doesNotMatch(r.stdout, /::error::/);
-    assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=\nnew_failures=0\npre_existing=2\nfixed=0\n$/m);
+    assert.match(fs.readFileSync(ghout, 'utf8'), /^gate=\nnew_failures=0\npre_existing=2\nfixed=0\npre_existing_tests=\[.*\]\n$/m);
     assert.match(fs.readFileSync(summary, 'utf8'), /base gauntlet: cache hit/);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
@@ -994,4 +994,56 @@ test('BRO-7324: shardPart / tapRunFinished — the finish rule is TAP-only; time
   assert.deepEqual(shardPart('bash-integration', { exit: 124, text: '' }), { exit: 124, finished: false });
   assert.deepEqual(shardPart('next-lint', { exit: null, text: '' }), { exit: null, finished: false });
   assert.equal(checkShardManifest('unit-tests-node', fullManifest()).complete, true);
+});
+
+// ── BRO-7950: tests red on BOTH branch and base reach the alert router once ──
+// Router paths resolve at its first require, which sendPreExistingAlerts does
+// lazily, so the env is set here, before any call below.
+const PRE_TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preexisting-'));
+process.env.ALERT_LEDGER_PATH = path.join(PRE_TMP, 'ledger.json');
+process.env.ALERT_DIGEST_QUEUE_PATH = path.join(PRE_TMP, 'digest.json');
+process.env.ALERT_ATTEMPTS_LOG_PATH = path.join(PRE_TMP, 'attempts.jsonl');
+
+test('BRO-7950: one pre-existing failure → exactly one digest row; a second landing adds none; verdict unchanged', async () => {
+  const { preExistingAlertRows } = require('./land-gate-delta.js');
+  const { sendPreExistingAlerts } = require('./land-alert.js');
+  const both = [['tests/unit/a.test.mjs', 'image self-heal']];
+  const decision = decideGateDelta({
+    gate: 'unit-tests-node',
+    base: { exit: 1, text: tap(ROOT, both), root: ROOT },
+    branch: { exit: 1, text: tap(ROOT, both), root: ROOT },
+  });
+  assert.equal(decision.verdict, 'pass', 'a pre-existing red must still not block');
+  const rows = preExistingAlertRows([decision, decision]);
+  assert.equal(rows.length, 1, 'deduped by file::name across gates/decisions');
+  const queueLen = () => {
+    try { const q = JSON.parse(fs.readFileSync(process.env.ALERT_DIGEST_QUEUE_PATH, 'utf8')); return (Array.isArray(q) ? q : q.items || q.queue || []).length; } catch { return 0; }
+  };
+  const first = await sendPreExistingAlerts(rows, { branch: 'land/x' });
+  assert.equal(first.length, 1);
+  assert.equal(queueLen(), 1, 'one digest row written');
+  const second = await sendPreExistingAlerts(rows, { branch: 'land/y' });
+  assert.equal(second.length, 1);
+  assert.equal(second[0].action, 'silent', 'repeat hits the router cooldown');
+  assert.equal(queueLen(), 1, 'same red on a later landing adds no row');
+});
+
+test('BRO-7950: no pre-existing failures → no rows, nothing written', async () => {
+  const { preExistingAlertRows } = require('./land-gate-delta.js');
+  const { sendPreExistingAlerts, buildPreExistingAlert, preExistingKeyFor } = require('./land-alert.js');
+  assert.deepEqual(preExistingAlertRows([]), []);
+  const clean = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 0, text: '', root: ROOT }, branch: { exit: 0, text: '', root: ROOT } });
+  assert.deepEqual(preExistingAlertRows([clean]), []);
+  const before = fs.existsSync(process.env.ALERT_LEDGER_PATH) ? fs.readFileSync(process.env.ALERT_LEDGER_PATH, 'utf8') : '';
+  assert.deepEqual(await sendPreExistingAlerts([]), []);
+  const after = fs.existsSync(process.env.ALERT_LEDGER_PATH) ? fs.readFileSync(process.env.ALERT_LEDGER_PATH, 'utf8') : '';
+  assert.equal(after, before);
+  assert.ok(preExistingKeyFor('f', 'x'.repeat(400)).length < 140, 'long names are clipped + hashed');
+  assert.equal(buildPreExistingAlert({ file: 'f', name: 'n' }).disposition, 'digest');
+});
+
+test('BRO-7950: the cap bounds a mass red', () => {
+  const { preExistingAlertRows } = require('./land-gate-delta.js');
+  const many = { gate: 'g', preExisting: Array.from({ length: 50 }, (_, i) => ({ file: 'f', name: `n${i}` })) };
+  assert.equal(preExistingAlertRows([many]).length, 20);
 });

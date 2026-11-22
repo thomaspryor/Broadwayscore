@@ -67,7 +67,56 @@ function resolveLandAlert(branch, { resolve = null } = {}) {
   return resolveCondition(conditionKeyFor(branch));
 }
 
-module.exports = { CONDITION_PREFIX, DEFAULT_COOLDOWN_HOURS, conditionKeyFor, buildLandAlert, sendLandAlert, resolveLandAlert };
+// BRO-7950: a test red on both the branch and origin/main is not blocking, so
+// nothing surfaced it. One digest row per test (conditionKey keyed on file::name,
+// not on the branch) so the same red is one alert, not one per landing; the
+// router's cooldown makes a repeat 'silent'. Never blocks a landing.
+const PRE_EXISTING_PREFIX = 'land-preexisting:';
+const PRE_EXISTING_COOLDOWN_HOURS = 24;
+
+function preExistingKeyFor(file, name) {
+  const raw = `${file}::${name}`.replace(/\s+/g, ' ').trim();
+  if (raw.length <= 120) return `${PRE_EXISTING_PREFIX}${raw}`;
+  const h = require('crypto').createHash('sha1').update(raw).digest('hex').slice(0, 10);
+  return `${PRE_EXISTING_PREFIX}${raw.slice(0, 100)}#${h}`;
+}
+
+function buildPreExistingAlert({ file = '', name = '', gate = '', branch = '', runUrl = '' }) {
+  if (!file && !name) throw new Error('buildPreExistingAlert requires file or name');
+  const label = `${file}::${name}`;
+  return {
+    conditionKey: preExistingKeyFor(file, name),
+    title: `Test red on main: ${String(name || file).slice(0, 120)}`,
+    description: `${label} fails on origin/main itself (${gate || 'a gate'}), so landings pass it as pre-existing. It stays red until someone fixes it.${branch ? ` Seen on ${branch}.` : ''}${runUrl ? ` Run: ${runUrl}` : ''}`,
+    hint: `Fix ${label} on main; landings do not block on it.`,
+    severity: 'warning',
+    disposition: 'digest',
+    cooldownHours: PRE_EXISTING_COOLDOWN_HOURS,
+    fields: [
+      { name: 'gate', value: String(gate) },
+      { name: 'test', value: label.slice(0, 200) },
+      ...(runUrl ? [{ name: 'run', value: String(runUrl) }] : []),
+    ],
+  };
+}
+
+// The router is required lazily, like sendLandAlert: a top-level require would
+// make the alert-ledger-commit / routealert-linear-key lints see this file's
+// callers as router callers.
+async function sendPreExistingAlerts(rows, { route = null, branch = '', runUrl = '' } = {}) {
+  const routeAlert = route || require('./owner-alert-router.js').routeAlert;
+  const seen = new Set();
+  const out = [];
+  for (const r of rows || []) {
+    const alert = buildPreExistingAlert({ ...r, branch, runUrl });
+    if (seen.has(alert.conditionKey)) continue;
+    seen.add(alert.conditionKey);
+    out.push(await routeAlert(alert));
+  }
+  return out;
+}
+
+module.exports = { PRE_EXISTING_PREFIX, preExistingKeyFor, buildPreExistingAlert, sendPreExistingAlerts, CONDITION_PREFIX, DEFAULT_COOLDOWN_HOURS, conditionKeyFor, buildLandAlert, sendLandAlert, resolveLandAlert };
 // land.yml live case (i): docs-only line, landed through land.yml itself.
 // land.yml live case (i), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
 // land.yml live case (c1), 2026-09-21: docs-only line landed through scripts/merge-worktree-to-main.sh → land/** (BRO-3873 step 4).
