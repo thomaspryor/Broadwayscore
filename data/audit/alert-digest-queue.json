@@ -902,5 +902,36 @@
       }
     ],
     "queuedAt": "2026-11-22T21:59:59.459Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8031-profile-heal",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8031-profile-heal",
+    "description": "land.yml did not land land/bro-8031-profile-heal: the unit-tests-node gate went red at 856be3d7da. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45075626738",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8031-profile-heal"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "856be3d7daffffda9ef8bed14fcc082edda1f9b9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45075626738"
+      }
+    ],
+    "queuedAt": "2026-11-22T22:09:48.226Z"
   }
 ]
