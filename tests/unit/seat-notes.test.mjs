@@ -12,7 +12,7 @@ const { validateSeatNotes } = require('../../scripts/lib/seat-notes-validators.j
 
 const ev = (host = 'seatplan.com') => [{ url: `https://${host}/x/`, quoteHash: 'a1b2c3d4e5f6a7b8', fetchedAt: '2026-11-22' }];
 const watch = { type: 'watch-out', hazard: 'mezz-overhang', level: 'orchestra', rows: 'K-W', claim: 'The mezzanine overhang starts at row K and cuts off the top of the stage.', evidence: ev(), verifiedAt: '2026-11-22' };
-const value = { type: 'value', level: 'orchestra', side: 'center', rows: 'E-J', claim: 'Cheaper than the front rows while still close, and in front of the overhang.', evidence: ev('tickpick.com'), verifiedAt: '2026-11-22' };
+const value = { type: 'value', level: 'mezzanine', side: 'center', rows: 'E-J', claim: 'Cheaper than the front rows while still close, and in front of the overhang.', evidence: ev('tickpick.com'), verifiedAt: '2026-11-22' };
 const note = { type: 'note', level: 'mezzanine', side: 'left', rows: 'G', claim: 'Row G has an aisle in front of it, so there is extra legroom.', evidence: ev(), verifiedAt: '2026-11-22' };
 
 describe('publishableSeatNotes', () => {
@@ -34,7 +34,7 @@ describe('publishableSeatNotes', () => {
     assert.deepStrictEqual(publishableSeatNotes([watch, { ...value, evidence: [] }], { today: new Date('2026-11-23') }), []);
   });
   test('location labels', () => {
-    assert.strictEqual(noteLocationLabel(value), 'Center Orchestra, rows E to J');
+    assert.strictEqual(noteLocationLabel(value), 'Center Mezzanine, rows E to J');
     assert.strictEqual(noteLocationLabel(note), 'Left Mezzanine, row G');
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', side: 'sides' }), 'Orchestra, far sides');
     assert.strictEqual(noteLocationLabel({ level: 'orchestra', rows: 'K-W' }), 'Orchestra, rows K to W');
@@ -69,7 +69,7 @@ describe('validateSeatNotes', () => {
     assert.ok(p2.some((x) => /host not allowed/.test(x)), p2.join('\n'));
   });
   test('a watch-out and a value note on the same rows contradict', () => {
-    const p = validateSeatNotes('T', [watch, { ...value, side: undefined, rows: 'J-L' }]);
+    const p = validateSeatNotes('T', [watch, { ...value, level: 'orchestra', side: 'left', rows: 'J-L' }]);
     assert.ok(p.some((x) => /overlap/.test(x)), p.join('\n'));
   });
   test('row text must be a plain row or range', () => {
@@ -79,6 +79,12 @@ describe('validateSeatNotes', () => {
   test('a set that cannot render is refused (store none instead)', () => {
     const p = validateSeatNotes('T', [watch]);
     assert.ok(p.some((x) => /clear the bar/.test(x)), p.join('\n'));
+  });
+  test('a good-value note on the Center Orchestra is refused (top price tier)', () => {
+    const v = { ...value, level: 'orchestra', side: 'center' };
+    assert.ok(validateSeatNotes('T', [watch, v]).some((x) => /Center Orchestra/.test(x)));
+    assert.ok(validateSeatNotes('T', [watch, { ...v, side: undefined, rows: 'A-C' }]).some((x) => /Center Orchestra/.test(x)));
+    assert.deepStrictEqual(validateSeatNotes('T', [watch, { ...v, side: 'sides', rows: 'A-C' }]).filter((x) => /Center Orchestra/.test(x)), []);
   });
   test('em dashes and quotation marks are refused', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'Cheaper seats — still close to the stage for the price.' }]);

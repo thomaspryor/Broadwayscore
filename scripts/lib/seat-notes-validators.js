@@ -55,6 +55,11 @@ function validateSeatNotes(theater, notes, { showTitles = [] } = {}) {
     const claim = String(n.claim || '');
     if (claim.length < CLAIM_MIN || claim.length > CLAIM_MAX) p.push(`${at}: claim length ${claim.length} outside ${CLAIM_MIN}-${CLAIM_MAX}`);
     if (PRODUCTION_WORDS.test(claim)) p.push(`${at}: names a production or set piece (house notes only)`);
+    // Owner 2026-11-22: the Center Orchestra is the top price tier. "Cheaper than
+    // premium" is not good value, so a value note there is refused outright.
+    if (n.type === 'value' && n.level === 'orchestra' && (!n.side || n.side === 'center')) {
+      p.push(`${at}: value note on the Center Orchestra (top price tier; cheaper than premium is not good value)`);
+    }
     for (const c of copyProblems(claim, { forbiddenTitles: showTitles })) p.push(`${at}: ${c}`);
     for (const b of BANNED_CLAIM_PATTERNS) if (b.pattern.test(claim)) p.push(`${at}: ${b.reason}`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(String(n.verifiedAt || ''))) p.push(`${at}: verifiedAt must be YYYY-MM-DD`);
