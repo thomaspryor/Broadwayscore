@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T16:59:33.693Z",
+  "timestamp": "2026-11-22T17:18:19.002Z",
   "stats": {
-    "totalReviews": 83946,
-    "alreadyFlagged": 22460,
-    "dateGuardCatches": 241,
+    "totalReviews": 83948,
+    "alreadyFlagged": 22461,
+    "dateGuardCatches": 240,
     "directorMismatch": 3877,
     "tvFilmSignals": 2411,
     "londonSignals": 3965,
     "offBroadwaySignals": 785,
     "yearMismatch": 394,
-    "noPublishDate": 8263
+    "noPublishDate": 8265
   },
   "findings": [
     {
@@ -126176,17 +126176,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "one-day-the-musical-west-end-2026",
-      "file": "london-box-office--shehrazade-zafar-arif.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 152d before show (2026-06-18 vs 2026-11-17)"
         }
       ]
     },
