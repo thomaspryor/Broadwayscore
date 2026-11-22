@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-22T06:57:27.495Z",
+  "runDate": "2026-11-22T07:13:00.587Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -17,13 +17,13 @@
     "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 2,
+    "scrapingdog": 0,
     "scrapingbee": 4,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 4
   },
@@ -105,8 +105,8 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 34,
-      "failed": 0
+      "processed": 12,
+      "failed": 51
     }
   },
   "processed": [],
@@ -168,6 +168,7 @@
       "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
       "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
       "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/pages-on-stages--mason-pilevsky.json",
       "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
       "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
       "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
@@ -175,30 +176,7 @@
       "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
       "now-you-see-me-live-2026/culturesauce--thom-geier.json",
       "now-you-see-me-live-2026/culturesauce--unknown.json",
-      "downstate-2026/pages-on-stages--mason-pilevsky.json",
-      "the-seagull-west-end-2025/london-box-office--stuart-king.json",
-      "the-invention-of-love-west-end-2024/london-box-office--stuart-king.json",
-      "the-little-foxes-off-west-end-2024/london-box-office--stuart-king.json",
-      "alls-well-that-ends-well-west-end-2024/london-box-office--stuart-king.json",
-      "skeleton-crew-2022/stageandcinema--unknown.json",
-      "straight-white-men-2018/artsfuse--unknown.json",
-      "straight-white-men-2018/bobs-theater-blog--robert-sholiton.json",
-      "time-and-the-conways-2017/cultural-weekly--david-sheward.json",
-      "the-bridges-of-madison-county-2014/exeunt-magazine--unknown.json",
-      "the-bridges-of-madison-county-2014/reuters--frank-scheck.json",
-      "700-sundays-2013/latimes--unknown.json",
-      "the-snow-geese-2013/exeunt-magazine--unknown.json",
-      "the-heiress-2012/huffpost--unknown.json",
-      "the-heiress-2012/nbcny--unknown.json",
-      "the-heiress-2012/reuters--frank-scheck.json",
-      "seminar-2011/nytimes--maya-phillips.json",
-      "seminar-2011/exeunt-magazine--unknown.json",
-      "the-year-of-magical-thinking-2007/timeout--unknown.json",
-      "the-iceman-cometh-1999/culturesauce--unknown.json",
-      "the-heiress-1995/slate--unknown.json",
-      "saint-joan-1993/artsfuse--unknown.json",
-      "the-iceman-cometh-1985/time--unknown.json",
-      "the-elephant-man-1979/newsday--unknown.json"
+      "downstate-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "failed": [
       "kiss-me-kate-2019/usatoday--david-rooney.json",
@@ -257,47 +235,28 @@
   "tierDetails": {
     "playwright": [
       "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/pages-on-stages--mason-pilevsky.json",
       "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
       "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
       "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
       "now-you-see-me-live-2026/culturesauce--thom-geier.json",
       "now-you-see-me-live-2026/culturesauce--unknown.json",
-      "downstate-2026/pages-on-stages--mason-pilevsky.json",
-      "skeleton-crew-2022/stageandcinema--unknown.json",
-      "straight-white-men-2018/artsfuse--unknown.json",
-      "straight-white-men-2018/bobs-theater-blog--robert-sholiton.json",
-      "time-and-the-conways-2017/cultural-weekly--david-sheward.json",
-      "the-bridges-of-madison-county-2014/exeunt-magazine--unknown.json",
-      "the-snow-geese-2013/exeunt-magazine--unknown.json",
-      "the-heiress-2012/huffpost--unknown.json",
-      "the-heiress-2012/nbcny--unknown.json",
-      "seminar-2011/exeunt-magazine--unknown.json",
-      "the-year-of-magical-thinking-2007/timeout--unknown.json",
-      "the-iceman-cometh-1999/culturesauce--unknown.json",
-      "the-heiress-1995/slate--unknown.json",
-      "saint-joan-1993/artsfuse--unknown.json",
-      "the-iceman-cometh-1985/time--unknown.json",
-      "the-elephant-man-1979/newsday--unknown.json"
+      "downstate-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/seminar-2011/nytimes--maya-phillips.json",
-      "seminar-2011/nytimes--maya-phillips.json"
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/downstate-2026/nytimes--unknown.json"
     ],
     "directCookies": [],
-    "scrapingdog": [
-      "the-bridges-of-madison-county-2014/reuters--frank-scheck.json",
-      "the-heiress-2012/reuters--frank-scheck.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [
       "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
       "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
       "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
       "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
     ],
-    "brightdata": [
-      "700-sundays-2013/latimes--unknown.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": [
       "the-seagull-west-end-2025/london-box-office--stuart-king.json",
