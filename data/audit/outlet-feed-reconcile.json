@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T12:00:54.676Z",
+  "generatedAt": "2026-11-22T13:11:15.689Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -104,6 +104,11 @@
       "openingDate": "2026-11-17"
     },
     {
+      "id": "wuthering-heights-off-broadway-2026",
+      "title": "Wuthering Heights",
+      "openingDate": "2026-11-19"
+    },
+    {
       "id": "arrowhead-regional-2026",
       "title": "Arrowhead",
       "openingDate": "2026-11-21"
@@ -166,6 +171,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -186,11 +195,11 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "londontheatre1",
-      "error": "All scraping methods failed"
+      "outletId": "artsfuse",
+      "error": "Timeout fetching https://artsfuse.org/feed/"
     }
   ],
-  "itemsScanned": 880,
+  "itemsScanned": 884,
   "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
