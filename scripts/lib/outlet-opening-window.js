@@ -22,9 +22,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // BRO-7574: outlets that publish well after press night. One Minute Critic posted The Visitors 5
 // days after opening (The Heart and Slanted Floors the day after), past the 0-3 day window, so the
 // sweep found them first. These outlets are matched against shows up to N days past opening.
-// BRO-8035: LondonTheatre1 reviews run up to 12 days after opening (106 reviews since 2026-05: 94% within
-// 3 days, the rest to +12). The Lives of Others (West End, press night 2026-10-29) was reviewed 11-02, day 4,
-// past the 3-day West End window, so the sweep found it first. Same 10-day window as One Minute Critic.
+// BRO-8035: LondonTheatre1 posts late and in bursts (106 reviews since 2026-05: 94% within 3 days, the rest to
+// +12). Lives of Others and The Moth were both posted 2026-11-02 ~00:10 UTC, between the daily poller's runs
+// (16:56 on 11-01, 20:33 on 11-02), so the sweep found them first; The Bridge (posted 11-04 14:14) was the same.
+// The 3-hourly window poller (2026-11-06) now covers the 0-3/0-7 day cases; this 10-day window also covers a
+// West End review posted on day 4+ (Lives of Others, press night 10-29). Same window as One Minute Critic.
 const LATE_PUBLISHER_WINDOW_DAYS = { 'one-minute-critic': 10, londontheatre1: 10 };
 // Markets with a press night. Tours and regional stops have none (BRO-4724).
 const WINDOW_CATEGORIES = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
