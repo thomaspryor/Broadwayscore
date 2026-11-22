@@ -126,3 +126,32 @@ test('BRO-6268: genre words that are part of the real title are left alone', () 
     assert.equal(r.title, t, t);
   }
 });
+
+// BRO-8051: trailing playwright byline, oracle-gated.
+const { classifyPlaywrightByline } = require('./show-title-normalize.js');
+
+test('BRO-8051: strips TIC playwright byline when the id carries the name', () => {
+  const r = normalizeShowTitle({
+    id: 'engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026',
+    title: 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West',
+  });
+  assert.equal(r.title, 'Engines and Instruments of Flight: A Fantasia in Three Acts');
+  assert.deepEqual(r.steps.map(s => s.kind), ['playwright-byline']);
+  const h = normalizeShowTitle({ id: 'hamlet-by-william-shakespeare-regional-2026', title: 'Hamlet by William Shakespeare' });
+  assert.equal(h.title, 'Hamlet');
+});
+
+test('BRO-8051: real "by" titles and oracle-less titles are untouched', () => {
+  for (const [id, title] of [
+    ['side-by-side-by-sondheim-broadway-1977', 'Side by Side by Sondheim'],
+    ['north-by-northwest-west-end-2026', 'North by Northwest'],
+    ['alice-by-heart-broadway-2019', 'Alice By Heart'],
+    ['damned-by-despair-west-end-2024', 'Damned by Despair'],
+    ['stories-by-heart-broadway-2011', 'Stories By Heart'],
+    ['a-play-by-jane-doe-regional-2026', 'A Play by Jane Doe'.replace('Jane Doe', 'Someone Else')], // id/name mismatch
+  ]) {
+    assert.equal(normalizeShowTitle({ id, title }).title, title, title);
+  }
+  // no id => no oracle => never strip
+  assert.equal(classifyPlaywrightByline('Hamlet by William Shakespeare', undefined), null);
+});

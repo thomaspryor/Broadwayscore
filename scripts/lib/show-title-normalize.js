@@ -51,6 +51,44 @@ const GENRE_DISAMBIGUATOR_RE = /\s*\((?:musical|play|opera)\)\s*$/i;
 // underscore (TodayTix 47136 "Berlin_2027", Kiln Theatre). No real title ends
 // in "_<year>"; the id/slug carry the year.
 const LISTING_YEAR_SUFFIX_RE = /_(?:19|20)\d{2}$/;
+// BRO-8051: trailing " by <Full Name>" playwright credit appended by a feed
+// (TIC: "Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West").
+// Pure regex is FP-prone ("Side by Side by Sondheim", "North by Northwest",
+// "Alice By Heart", "Damned by Despair"), so it strips ONLY with an oracle:
+//  (a) the name is 2-4 capitalised words (one-word tails are real title words),
+//  (b) the show id carries those exact name tokens as its trailing slug run
+//      (before an optional market/year tail) - the id was minted from the same
+//      credited string, so title and id agree the credit is part of the feed
+//      string - AND
+//  (c) what remains is at least 2 words or contains ':' (never leave a stub).
+const BYLINE_NAME = "[A-Z][\\p{L}'.\\-]*(?:\\s+(?:[A-Z][\\p{L}'.\\-]*|de|van|von|da|di|la|le)){1,3}";
+const PLAYWRIGHT_BYLINE_RE = new RegExp('^(.*\\S)\\s+by\\s+(' + BYLINE_NAME + ')\\s*$', 'u');
+const ID_TAIL_RE = /-(?:regional|off-broadway|broadway|west-end|off-west-end|touring|tour|uk|us)(?:-\d{4})?$|-\d{4}$/;
+
+function slugTokens(s) {
+  return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/['\u2019.]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+/** @returns {{title:string, name:string}|null} */
+function classifyPlaywrightByline(title, id) {
+  if (!id || !title) return null;
+  const m = PLAYWRIGHT_BYLINE_RE.exec(title);
+  if (!m) return null;
+  const rest = m[1].trim();
+  const name = m[2];
+  const nameToks = slugTokens(name);
+  if (nameToks.length < 2) return null;
+  if (rest.split(/\s+/).length < 2 && !/:/.test(rest)) return null;
+  let idBody = String(id);
+  for (let i = 0; i < 3; i++) idBody = idBody.replace(ID_TAIL_RE, '');
+  const idToks = idBody.split('-').filter(Boolean);
+  const tail = idToks.slice(-nameToks.length).join('-');
+  if (tail !== nameToks.join('-')) return null;
+  if (idToks[idToks.length - nameToks.length - 1] !== 'by') return null;
+  return { title: rest, name };
+}
+
 const {
   isShoutedTitle,
   isExemptFromTitleCase,
@@ -64,7 +102,7 @@ const {
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
  *   manualReview: boolean,    // shouted casing detected — a human owes us a source lookup
- *   steps: Array<{kind:'venue-suffix'|'genre-disambiguator'|'listing-year-suffix'|'roman-numeral-case', from:string, to:string, oracle?:string}>
+ *   steps: Array<{kind:'venue-suffix'|'genre-disambiguator'|'listing-year-suffix'|'playwright-byline'|'roman-numeral-case', from:string, to:string, oracle?:string}>
  * }}
  */
 function normalizeShowTitle(show, ctx = {}) {
@@ -116,6 +154,13 @@ function normalizeShowTitle(show, ctx = {}) {
     }
   }
 
+  // 1a''. BRO-8051: trailing playwright byline (oracle-gated, see above).
+  const byline = classifyPlaywrightByline(title, show.id);
+  if (byline) {
+    steps.push({ kind: 'playwright-byline', from: title, to: byline.title, oracle: 'id-slug-carries-byline' });
+    title = byline.title;
+  }
+
   // 1b. BRO-4567: title-cased Roman numerals ("Richard Ii" -> "Richard II").
   // Deterministic (the numeral's only correct form is upper case), so this
   // repairs rather than flags; validate-data.js errors with the expected
@@ -137,6 +182,7 @@ module.exports = {
   MAX_VENUE_STRIP_PASSES,
   GENRE_DISAMBIGUATOR_RE,
   LISTING_YEAR_SUFFIX_RE,
+  classifyPlaywrightByline,
   buildVenueVocabulary,
   isExemptFromTitleCase,
 };

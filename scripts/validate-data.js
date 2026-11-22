@@ -682,6 +682,11 @@ function validateShowTitles(shows) {
     }
 
     if (!result.changed) continue;
+    // BRO-8051 / CLAUDE.md 19: playwright-byline lands advisory first (0 corpus hits at landing).
+    if (result.steps.every(st => st.kind === 'playwright-byline')) {
+      warn(`Show "${show.title}" (${show.id}) has a trailing playwright byline in its title. Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply`);
+      continue;
+    }
     bad++;
     const how = result.steps.map(st => st.kind).join(' + ');
     error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case, or ROMAN_TITLE_CASE_EXCLUDED in scripts/lib/title-display-case.js for a title-cased Roman numeral.`);
