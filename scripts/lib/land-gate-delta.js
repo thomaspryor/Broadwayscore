@@ -501,6 +501,7 @@ function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) 
  * alert-router digest row) beyond the step-summary table. Pure; never changes
  * a verdict. Capped so a mass red cannot flood the digest.
  */
+// Live proof 2026-11-22: first code landing after BRO-7950 exercised the alert step.
 function preExistingAlertRows(decisions, { limit = 20 } = {}) {
   const seen = new Set();
   const rows = [];
