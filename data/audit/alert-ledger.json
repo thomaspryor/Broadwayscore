@@ -19490,7 +19490,7 @@
       "title": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-22T07:39:02.187Z",
+      "lastSeen": "2026-11-22T08:56:25.223Z",
       "lastNotifiedAt": "2026-11-22T01:06:27.993Z",
       "lastSurfacedAt": null,
       "notifyCount": 67,
@@ -19507,7 +19507,7 @@
         "la-distance-bam-off-broadway-2026",
         "much-ado-about-nothing-2026"
       ],
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -45384,7 +45384,7 @@
       "silentRefires": 2
     },
     "review-gap:opening-window:top-gunchained-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Top Gunchained\" missing 1 cited review(s)",
       "firstSeen": "2026-11-18T06:39:01.212Z",
@@ -45395,7 +45395,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-22T08:56:25.072Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "land:land/bro-7748-near-miss-v2": {
       "status": "open",
