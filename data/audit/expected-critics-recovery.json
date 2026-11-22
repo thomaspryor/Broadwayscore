@@ -289,43 +289,6 @@
         "note": "auto (BRO-7312): 3 targeted searches of theatermania for tristan-and-yseult-off-broadway-2026 found no review (2026-11-11, 2026-11-12, 2026-11-19)"
       }
     },
-    "iphigenie-en-tauride-english-national-opera-west-end-2026::thestage": {
-      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "outletId": "thestage",
-      "openingDate": "2026-11-06",
-      "firstSeenMissingAt": "2026-11-10T20:51:40.422Z",
-      "attempts": [
-        {
-          "at": "2026-11-12T17:45:16.470Z",
-          "outcome": "non_evidence",
-          "collectorOutcome": "rejected",
-          "reason": "no-publish-date",
-          "url": "https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera"
-        },
-        {
-          "at": "2026-11-13T17:22:39.584Z",
-          "outcome": "no_evidence"
-        },
-        {
-          "at": "2026-11-14T15:59:27.290Z",
-          "outcome": "non_evidence",
-          "collectorOutcome": "rejected",
-          "reason": "no-publish-date",
-          "url": "https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera"
-        },
-        {
-          "at": "2026-11-15T16:32:50.662Z",
-          "outcome": "no_evidence"
-        },
-        {
-          "at": "2026-11-21T16:56:58.234Z",
-          "outcome": "non_evidence",
-          "collectorOutcome": "rejected",
-          "reason": "no-publish-date",
-          "url": "https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera"
-        }
-      ]
-    },
     "iphigenie-en-tauride-english-national-opera-west-end-2026::timeout-london": {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "outletId": "timeout-london",
@@ -781,6 +744,162 @@
       "openingDate": "2026-11-17",
       "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
       "attempts": []
+    },
+    "billy-crystal-860-2026::chicagotribune": {
+      "showId": "billy-crystal-860-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:19:33.484Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026::broadwayworld": {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "outletId": "broadwayworld",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.755Z",
+          "outcome": "non_evidence",
+          "collectorOutcome": "rejected",
+          "reason": "http-error",
+          "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924"
+        }
+      ]
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026::london-theatre": {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "outletId": "london-theatre",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.755Z",
+          "outcome": "rejected",
+          "reason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+          "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre"
+        }
+      ]
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026::thestage": {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "outletId": "thestage",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.755Z",
+          "outcome": "rejected",
+          "reason": "file-exists",
+          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original"
+        }
+      ]
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026::timeout-london": {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "outletId": "timeout-london",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.755Z",
+          "outcome": "non_evidence",
+          "collectorOutcome": "rejected",
+          "reason": "http-error",
+          "url": "https://www.timeout.com/london/harry-potter-and-the-cursed-child-review"
+        }
+      ]
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026::whatsonstage": {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "outletId": "whatsonstage",
+      "openingDate": "2026-10-21",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.755Z",
+          "outcome": "rejected",
+          "reason": "cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i",
+          "url": "https://www.whatsonstage.com/news/west-end-vs-broadway-harry-potter-and-the-cursed-child-two-scorpius-malfoys-duel-it-out_1618315/"
+        }
+      ]
+    },
+    "the-imaginary-invalid-2026::chicagotribune": {
+      "showId": "the-imaginary-invalid-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-10-22",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:32.969Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "a-few-good-men-2026::chicagotribune": {
+      "showId": "a-few-good-men-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-10-29",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:33.181Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "wanted-2022::chicagotribune": {
+      "showId": "wanted-2022",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-11-08",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:33.393Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "here-there-are-blueberries-2026::chicagotribune": {
+      "showId": "here-there-are-blueberries-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-11-09",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:33.608Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "downstate-2026::chicagotribune": {
+      "showId": "downstate-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-11-15",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:33.823Z",
+          "outcome": "existing_file"
+        }
+      ]
+    },
+    "the-fantasticks-2026::chicagotribune": {
+      "showId": "the-fantasticks-2026",
+      "outletId": "chicagotribune",
+      "openingDate": "2026-11-16",
+      "firstSeenMissingAt": "2026-11-22T17:19:32.831Z",
+      "attempts": [
+        {
+          "at": "2026-11-22T17:20:34.037Z",
+          "outcome": "existing_file"
+        }
+      ]
     }
   }
 }
