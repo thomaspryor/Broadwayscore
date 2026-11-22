@@ -7,7 +7,7 @@
 - 2015-24: 170 promoted (37 + 25 + 61 + 47), 824 tagged junk. Pushed to broadway-review-texts main (e7c46487779, 2cf2670e645). Every shard hit its 30-minute budget, so a remainder is left.
 - Spend since 2026-11-22T20:38:26Z: 887 paid calls, about $1.02.
 
-## In flight
+## Land status: NOT landed (attempt 3, run 45072537576, refused at gate lint-workflows; this branch changes no workflow file, so check whether main is red on actionlint, then rerun the land script)
 - Land attempt 3: log /tmp/bro8065-land3.log. Attempt 2 was refused by the venue-write audit (a false positive, fixed with a venue-write-guard-ok comment).
 
 ## Remaining
