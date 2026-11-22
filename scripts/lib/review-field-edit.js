@@ -796,7 +796,16 @@ function syndicationPrimacyFlipApplies(record, ctx, show) {
   const outlet = require('./review-normalization').normalizeOutlet(record.outletId || record.outlet || '');
   // A flag the detector left with no pointer on the file that is now the original (the-balusters-2026): nothing to verify.
   // ...but only with the original's counterpart on disk, or nothing would take over from this file's flag.
-  if (typeof record.syndicatedPrimaryFile !== 'string') return outlet === ovr.primary && (ctx.siblings || []).some((f) => /^chicagotribune--chris-jones/.test(f));
+  // ...and only when that counterpart's text matches (>= 50% trigram overlap): a bare sibling proves nothing (proof-2026 scores 39).
+  if (typeof record.syndicatedPrimaryFile !== 'string') {
+    if (outlet !== ovr.primary || !ctx.dir) return false;
+    const fs = require('fs'), path = require('path');
+    const { trigramSimilarity } = require('./trigram-similarity');
+    return (ctx.siblings || []).some((f) => {
+      if (!/^chicagotribune--chris-jones/.test(f)) return false;
+      try { return trigramSimilarity(record.fullText, JSON.parse(fs.readFileSync(path.join(ctx.dir, f), 'utf8')).fullText) >= 50; } catch { return false; }
+    });
+  }
   const target = require('path').basename(record.syndicatedPrimaryFile);
   const slash = record.syndicatedPrimaryFile.indexOf('/');
   if (slash >= 0 && record.syndicatedPrimaryFile.slice(0, slash) !== ctx.folder) return false;
@@ -836,7 +845,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
     try {
       const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
       const show = (Array.isArray(shows) ? shows : shows.shows).find((s) => s.id === ctx.folder);
-      try { ctx.siblings = fs.readdirSync(path.join(reviewTextsDir, ctx.folder)); } catch { ctx.siblings = []; }
+      try { ctx.siblings = fs.readdirSync(path.join(reviewTextsDir, ctx.folder)); ctx.dir = path.join(reviewTextsDir, ctx.folder); } catch { ctx.siblings = []; }
       ctx.syndicationPrimacyFlip = syndicationPrimacyFlipApplies(record, ctx, show);
     } catch { ctx.syndicationPrimacyFlip = false; }
     // The AP scan never flags ap-- files itself (detect-syndicated-duplicates.js skips them), so on an AP-outlet row

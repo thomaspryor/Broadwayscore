@@ -64,7 +64,9 @@ function main() {
         const tPath = path.join(R, id, tf);
         const tr = JSON.parse(fs.readFileSync(tPath, 'utf8'));
         const plan = planPair(ny, tr, byId[id], tf);
-        if (plan.action === 'flip' && (!best || plan.sim > best.plan.sim)) best = { tf, tPath, tr, plan };
+        // The file the detector's pointer names wins over a merely more similar sibling (that one may carry its own duplicateOf).
+        const pointed = String(ny.syndicatedPrimaryFile || '').endsWith(`/${tf}`);
+        if (plan.action === 'flip' && (!best || (pointed && !best.pointed) || (pointed === best.pointed && plan.sim > best.plan.sim))) best = { tf, tPath, tr, plan, pointed };
       }
       if (!best) { tally.skip++; console.log(`SKIP ${id}/${nf}: no same-text Tribune pair`); continue; }
       // The Daily News file must itself survive the gates once its flag is gone, or flagging the Tribune copy drops both.
@@ -90,7 +92,8 @@ function main() {
       best.tr.isSyndicatedDuplicate = true;
       best.tr.syndicatedPrimaryFile = `${id}/${nf}`;
       best.tr.syndicationSimilarity = best.plan.sim;
-      safeWriteReview(best.tPath, best.tr);
+      const w = safeWriteReview(best.tPath, best.tr);
+      if (w && w.wrote === false) { console.log(`  FAILED write ${id}/${best.tf}: skipped (${w.skipped})`); tally.failed = (tally.failed || 0) + 1; continue; }
       tally.written += 2;
     }
   }

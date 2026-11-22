@@ -55,7 +55,7 @@ test('review-field-edit: the flip clears a Daily News flag only on a NYC-era sho
   assert.equal(syndicationPrimacyFlipApplies({ ...ny, syndicatedPrimaryFile: 'y/chicagotribune--chris-jones.json' }, { folder: 'x' }, NYC), false);
   assert.equal(syndicationPrimacyFlipApplies({ ...ny, outletId: 'chicagotribune', syndicatedPrimaryFile: 'x/nydailynews--chris-jones.json' }, { folder: 'x' }, NYC), false);
   const noPtr = { ...ny, syndicatedPrimaryFile: undefined };
-  assert.equal(syndicationPrimacyFlipApplies(noPtr, { folder: 'x', siblings: ['chicagotribune--chris-jones.json'] }, NYC), true);
+  assert.equal(syndicationPrimacyFlipApplies(noPtr, { folder: 'x', siblings: ['chicagotribune--chris-jones.json'] }, NYC), false, 'no dir to compare text: a bare sibling proves nothing');
   assert.equal(syndicationPrimacyFlipApplies(noPtr, { folder: 'x', siblings: [] }, NYC), false, 'no Tribune counterpart on disk: nothing would take over');
 });
 test('migration planPair: same text flips; different text or dates stays', () => {
@@ -81,6 +81,21 @@ test('fuller-secondary fallback follows the market primacy (a stub Daily News co
     assert.equal(synd.hasFullerSecondary(dir, 'nydailynews--chris-jones.json', ny, {}), false);
     // NYC-era: NYDN is the primary; the lookup now considers it (finds the Tribune as its secondary when it is live)
     const r = synd.findFullerSecondaryFile(dir, 'nydailynews--chris-jones.json', ny, { show: NYC });
-    assert.ok(r === null || r === 'chicagotribune--chris-jones.json');
+    assert.equal(r, 'chicagotribune--chris-jones.json');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('field-edit flip with no pointer needs a Tribune sibling whose TEXT matches (a bare sibling proves nothing)', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const { syndicationPrimacyFlipApplies } = await import('../../scripts/lib/review-field-edit.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7957fe-'));
+  const same = 'The staging is a triumph of restraint and the lead performance lands every beat of the second act. '.repeat(8);
+  const other = 'An entirely different essay about the history of the theater district and its landlords across decades. '.repeat(8);
+  const rec = { criticName: 'Chris Jones', outletId: 'nydailynews', isSyndicatedDuplicate: true, fullText: same };
+  try {
+    fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify({ fullText: other }));
+    assert.equal(syndicationPrimacyFlipApplies(rec, { siblings: ['chicagotribune--chris-jones.json'], dir, folder: 'x' }, NYC), false);
+    fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify({ fullText: same }));
+    assert.equal(syndicationPrimacyFlipApplies(rec, { siblings: ['chicagotribune--chris-jones.json'], dir, folder: 'x' }, NYC), true);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

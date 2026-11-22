@@ -363,7 +363,7 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
       if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
       // BRO-7327: a stub primary does not shield the complete secondary it only teases.
-      if (hasFullerSecondary(showDir, f, p)) return false;
+      if (hasFullerSecondary(showDir, f, p, { show: _showFor(path.basename(showDir)) })) return false;
       return isLiveSyndicationPrimary(p, pPath) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
