@@ -350,5 +350,36 @@
       }
     ],
     "queuedAt": "2026-11-22T14:38:37.123Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8030-record-ledgers",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8030-record-ledgers",
+    "description": "land.yml did not land land/bro-8030-record-ledgers: the unit-tests-node gate went red at 2d27f1f3be. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45040396048",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8030-record-ledgers"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2d27f1f3bed8a36f872983c59f9788885a794d95"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45040396048"
+      }
+    ],
+    "queuedAt": "2026-11-22T16:11:45.976Z"
   }
 ]
