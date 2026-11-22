@@ -274,8 +274,8 @@ test('BRO-8030 train scope: members that each landed a session record row get th
     const seed = w.clone('seed-records');
     fs.mkdirSync(path.join(seed, 'data', 'audit'), { recursive: true });
     fs.writeFileSync(path.join(seed, '.gitattributes'), `${RETRO} merge=union\n${COST} merge=keyed-jsonl keyed-jsonl=date,session\n`);
-    fs.writeFileSync(path.join(seed, RETRO), retroBase);
-    fs.writeFileSync(path.join(seed, COST), costBase);
+    fs.writeFileSync(path.join(seed, RETRO), retroBase); // test-data-write-guard-allow: seed is a throwaway clone under makeWorld()'s mkdtemp root
+    fs.writeFileSync(path.join(seed, COST), costBase); // test-data-write-guard-allow: seed is a throwaway clone under makeWorld()'s mkdtemp root
     sh(seed, ['add', '-A']);
     sh(seed, ['commit', '-qm', 'records']);
     sh(seed, ['push', '-q', 'origin', 'HEAD:main']);
