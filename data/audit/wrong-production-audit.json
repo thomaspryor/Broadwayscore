@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-22T12:35:29.592Z",
+  "timestamp": "2026-11-22T12:57:33.929Z",
   "stats": {
-    "totalReviews": 83882,
-    "alreadyFlagged": 22450,
+    "totalReviews": 83883,
+    "alreadyFlagged": 22452,
     "dateGuardCatches": 241,
     "directorMismatch": 3879,
     "tvFilmSignals": 2411,
-    "londonSignals": 3969,
+    "londonSignals": 3963,
     "offBroadwaySignals": 785,
     "yearMismatch": 395,
     "noPublishDate": 8221
@@ -422,17 +422,12 @@
       "file": "britishtheatrecom--unknown.json",
       "score": 82,
       "publishDate": "2015-06-23",
-      "url": "https://www.britishtheatre.com/es/posts/review-1984-playhouse-theatre-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-1984-playhouse-theatre-4stars",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -8156,7 +8151,7 @@
       "file": "britishtheatrecom--julian-eaves.json",
       "score": 82,
       "publishDate": "2017-06-27",
-      "url": "https://www.britishtheatre.com/pt/posts/review-bat-out-of-hell-london-coliseum-5stars",
+      "url": "https://www.britishtheatre.com/posts/review-bat-out-of-hell-london-coliseum-5stars",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29315,7 +29310,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 97,
       "publishDate": "2015-04-16",
-      "url": "https://www.britishtheatre.com/ar/posts/review-gypsy-savoy-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-gypsy-savoy-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -95723,6 +95718,19 @@
     },
     {
       "showId": "anna-west-end-2019",
+      "file": "britishtheatrecom--sophie-adnitt.json",
+      "publishDate": "2019-05-23",
+      "url": "https://www.britishtheatre.com/posts/review-anna-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
       "score": 39,
       "publishDate": null,
@@ -99871,7 +99879,7 @@
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 89,
       "publishDate": "2018-12-21",
-      "url": "https://www.britishtheatre.com/fr/posts/review-caroline-or-change-playhouse-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-caroline-or-change-playhouse-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -106809,12 +106817,12 @@
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 35,
       "publishDate": "2018-07-27",
-      "url": "https://www.britishtheatre.com/ja/posts/review-exit-the-king-national-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-exit-the-king-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -116315,34 +116323,6 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "britishtheatrecom--british-theatre.json",
-      "score": null,
-      "publishDate": "2026-10-07",
-      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "britishtheatrecom--unknown.json",
-      "score": null,
-      "publishDate": "2026-10-07",
-      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "deadline--greg-evans.json",
       "score": null,
       "publishDate": "2026-07-30",
@@ -119086,20 +119066,6 @@
     },
     {
       "showId": "london-tide-west-end-2024",
-      "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 62,
-      "publishDate": "2024-04-22",
-      "url": "https://www.britishtheatre.com/es/posts/review-london-tide-national-theatre-lyttleton",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "london-tide-west-end-2024",
       "file": "broadwayworld--unknown.json",
       "publishDate": "2024-04-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-LONDON-TIDE-National-Theatre-20240418",
@@ -119654,20 +119620,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "made-in-dagenham-west-end-2014",
-      "file": "britishtheatrecom--stephen-collins.json",
-      "score": 82,
-      "publishDate": "2014-11-11",
-      "url": "https://www.britishtheatre.com/pt/posts/review-made-dagenham-adelphi-theatre-4stars",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -123649,7 +123601,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 74,
       "publishDate": "2015-01-24",
-      "url": "https://www.britishtheatre.com/ar/posts/review-my-night-with-reg-apollo-theatre-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-my-night-with-reg-apollo-theatre-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -124849,20 +124801,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "nye-west-end-2024",
-      "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 82,
-      "publishDate": "2024-03-11",
-      "url": "https://www.britishtheatre.com/fr/posts/review-nye-national-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -129643,7 +129581,7 @@
       "file": "britishtheatrecom--british-theatre.json",
       "score": 77,
       "publishDate": "2026-10-09",
-      "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
+      "url": "https://www.britishtheatre.com/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130298,8 +130236,8 @@
       "showId": "roosevelvis-west-end-2015",
       "file": "britishtheatrecom--james-garden.json",
       "score": 83,
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
+      "publishDate": "2015-11-02",
+      "url": "https://www.britishtheatre.com/posts/review-roosevelvis-royal-court-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130313,7 +130251,7 @@
       "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2015-11-02",
-      "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-roosevelvis-royal-court-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -142627,7 +142565,7 @@
       "file": "britishtheatrecom--julian-eaves.json",
       "score": 69,
       "publishDate": null,
-      "url": "https://www.britishtheatre.com/es/posts/review-the-mirror-and-the-light-gielgud-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-the-mirror-and-the-light-gielgud-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -145432,7 +145370,7 @@
       "showId": "the-smile-of-her-off-west-end-2026",
       "file": "britishtheatrecom--susan-novak.json",
       "publishDate": "2026-07-16",
-      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
+      "url": "https://www.britishtheatre.com/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -149920,20 +149858,6 @@
     },
     {
       "showId": "waiting-for-godot-west-end-2024",
-      "file": "britishtheatrecom--susan-novak.json",
-      "score": 90,
-      "publishDate": "2024-09-27",
-      "url": "https://www.britishtheatre.com/es/posts/waiting-for-godot-review-roundup",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 79,
       "publishDate": "2024-09-20",
@@ -151075,7 +150999,7 @@
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 78,
       "publishDate": "2018-10-19",
-      "url": "https://www.britishtheatre.com/ko/posts/review-wise-children-old-vic-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-wise-children-old-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
