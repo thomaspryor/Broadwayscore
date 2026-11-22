@@ -71,3 +71,13 @@ test('coverageInputsFromSlice rebuilds the three maps for this show only', () =>
   assert.equal(c.scorePublicSinceByShowId.size, 0);
   assert.deepEqual([...c.coverageAckedShowIds], ['b']);
 });
+
+test('no slice for a _devOnly row or an unknown id; prototype keys never leak in', () => {
+  const ix = index();
+  assert.equal(sliceFor('dev', ix), null);
+  assert.equal(sliceFor('nope', ix), null);
+  const ix2 = indexForSlices(buildShowInputs({ ...raw(), showsData: { shows: [row('constructor')] } }), { coverageFloorInputs: cfi() });
+  const s = sliceFor('constructor', ix2);
+  assert.equal(s.consensus, null);
+  assert.equal(s.audienceBuzz, null);
+});

@@ -234,7 +234,7 @@ test('getReviewAgeYear: the year behind the list-card note, same rule as the her
 
 test('list cards use the shared review-age rule, not openingDate (Mousetrap card said "1952")', () => {
   const engine = readFileSync(new URL('../../src/lib/engine.ts', import.meta.url), 'utf8');
-  assert.match(engine, /const reviewAgeYear = getReviewAgeYear\(\{ status: normalizedStatus \}, criticScore\?\.reviews\)/);
+  assert.match(engine, /const reviewAgeYear = getReviewAgeYear\(\{ status: normalizedStatus \}, criticScore\?\.reviews(?:\)|, )/);  // optional 3rd arg: injected build clock (BRO-8056)
   assert.match(engine, /reviewYearNote = reviewAgeYear === null \? null : `Most reviews from \$\{reviewAgeYear\}`/);
   assert.doesNotMatch(engine, /openYear/, 'engine.ts must not count review age from openingDate');
 });

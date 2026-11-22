@@ -33,7 +33,10 @@ const { clearSynopsis } = require('./synopsis-source');
 const HEALABLE_SYNOPSIS = new Set(['refusal', 'placeholder', 'stale']);
 
 function healShows(showsData, ctx) {
-  const { today, imagesPresent, imageExists, imageSources = {}, reviewCountByShow = {} } = ctx;
+  const { today, imagesPresent, imageExists, imageSources = {}, reviewCountByShow } = ctx;
+  // London dedup keeps the reviewed duplicate; an empty default would make every
+  // count 0 and could delete the wrong row, so the caller must pass the counts.
+  if (!reviewCountByShow || typeof reviewCountByShow !== 'object') throw new Error('healShows: reviewCountByShow is required');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(today))) throw new Error(`healShows: today must be YYYY-MM-DD, got ${today}`);
   if (typeof imageExists !== 'function') throw new Error('healShows: imageExists is required');
   const messages = [];

@@ -78,4 +78,5 @@ test('a clean input is untouched and reports no change', () => {
 test('rejects a missing clock or image oracle', () => {
   assert.throws(() => healShows({ shows: [] }, ctx([], { today: undefined })), /today/);
   assert.throws(() => healShows({ shows: [] }, ctx([], { imageExists: undefined })), /imageExists/);
+  assert.throws(() => healShows({ shows: [] }, ctx([], { reviewCountByShow: undefined })), /reviewCountByShow/);
 });

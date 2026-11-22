@@ -45,7 +45,8 @@ function indexForSlices(inputs, extras) {
 /** One show's slice, or null when the id has no computable row. */
 function sliceFor(id, index) {
   const row = index.showsById.get(id);
-  if (!row) return null;
+  // getAllShows() never computes _devOnly rows (inputs.computableShows).
+  if (!row || row._devOnly) return null;
   const cfi = index.coverageFloorInputs;
   return {
     sliceVersion: SLICE_VERSION,
@@ -55,8 +56,8 @@ function sliceFor(id, index) {
     blogReviews: index.inputs.blogReviewsByShowId.get(id) || [],
     audience: index.audienceByShowId.get(id) || [],
     buzz: index.buzzByShowId.get(id) || [],
-    consensus: index.consensusById[id] ?? null,
-    audienceBuzz: index.audienceBuzzById[id] ?? null,
+    consensus: Object.hasOwn(index.consensusById, id) ? index.consensusById[id] : null,
+    audienceBuzz: Object.hasOwn(index.audienceBuzzById, id) ? index.audienceBuzzById[id] : null,
     coverage: {
       cov: cfi.covByShowId.get(id) ?? null,
       scorePublicSince: cfi.scorePublicSinceByShowId.get(id) ?? null,
