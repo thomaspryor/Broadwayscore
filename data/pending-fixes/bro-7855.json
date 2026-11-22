@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7855",
+  "planId": "50f685c4-ca64-4832-ad24-f9a78d8c66ab",
+  "status": "pending",
+  "createdAt": "2026-11-22T18:42:27.979Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark the verified NY1 Roma Tore source duplicate of the complete Roma Torre review; canonical.previousUrl equals the duplicate URL.",
+    "steps": [
+      "a-raisin-in-the-sun-2014/ny1--roma-tore.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-raisin-in-the-sun-2014/ny1--roma-tore.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ny1--roma-torre.json",
+        "description": "a-raisin-in-the-sun-2014/ny1--roma-tore.json: duplicateOf"
+      }
+    ]
+  }
+}

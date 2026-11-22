@@ -24,6 +24,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { criticProfileKey } = require('./lib/url-slug');
 const { classifyVariantPair, foldTokens } = require('./lib/critic-variant-match');
+const { newSplitPairs } = require('./lib/critic-split-resolution');
 
 const ROOT = path.join(__dirname, '..');
 const REVIEWS = path.join(ROOT, 'data', 'reviews.json');
@@ -83,7 +84,7 @@ function findSplitPairs(pages, opts = {}) {
       if (res.verdict === 'distinct') continue;
       const [canon, typo] = res.canonical === 'a' ? [a, b] : [b, a];
       out.push({ key, verdict: res.verdict, relation: res.relation, reason: res.reason,
-        canonical: { slug: canon.slug, name: canon.name, count: canon.count },
+        canonical: { slug: canon.slug, name: canon.name, count: canon.count, spellings: [...canon.spell.keys()], outlets: [...canon.outlets] },
         variant: { slug: typo.slug, name: typo.name, count: typo.count, spellings: [...typo.spell.keys()], outlets: [...typo.outlets] } });
     }
   }
@@ -176,22 +177,6 @@ if (require.main === module) {
 /** Pairs still waiting on a merge decision, as a Set of "slugA|slugB". */
 function loadBaseline() {
   return new Set((readJson(BASELINE, { pairs: [] }).pairs) || []);
-}
-
-/**
- * The split pairs the gate fails on: not in the baseline, and not already fixed by
- * an alias (displayCriticName() maps the variant onto the canonical page; reviews.json
- * catches up at the next rebuild). An alias that exists but does not take effect
- * (BRO-6928: "Samuel L." vs the stored "samuel l") stays a failure.
- */
-function newSplitPairs(pairs, baseline) {
-  const { displayCriticName } = require('./lib/critic-display-name');
-  // Every spelling at every outlet must resolve: one that does not keeps the page
-  // alive after the rebuild (an outlet-scoped mapping may cover only one outlet).
-  const resolved = (p) => (p.variant.spellings || [p.variant.name]).every(name =>
-    (p.variant.outlets && p.variant.outlets.length ? p.variant.outlets : [undefined]).every(outlet =>
-      criticProfileKey(displayCriticName(name, outlet)) === p.canonical.slug));
-  return pairs.filter(p => !baseline.has(p.key) && !resolved(p));
 }
 
 /** The confirmed-different-people allowlist as a Set of "slugA|slugB". */
