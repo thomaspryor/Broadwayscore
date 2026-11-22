@@ -126,6 +126,13 @@ function isSweepCommit(c) {
   return n > SWEEP_CEILING || MAINTENANCE_SUBJECT.test(String(c.subject || ''));
 }
 
+// BRO-7145: the scheduled gap-recovery driver (launchd nightly + opening-window
+// runs, scripts/gap-recovery-driver.js checkpoint message) commits under the
+// owner's git identity, so it graded as "hand-commit" and inflated needed-hands
+// (28+ text-gap commits in the 11-06..11-14 window alone). It is automation.
+const AUTOMATED_RECOVERY_SUBJECT = /^feat: gap-recovery driver (?:checkpoint \d+|final) - \d+ accepted\b/;
+function isAutomatedRecoveryCommit(c) { return AUTOMATED_RECOVERY_SUBJECT.test(String((c && c.subject) || '')); }
+
 /** Embargo and hand-evidence window bounds for an opening (shared with grade-openings.js). */
 function openingWindow(show, pressNight) {
   const embargoMs = toMs(pressNight && pressNight.embargoAt) ?? estimateEmbargoMs(show.openingDate, show.category);
@@ -200,6 +207,12 @@ function causeOfSubject(subject) {
   if (/duplic|syndicat/.test(t)) return 'duplicate-identity';
   if (/wrongprod|wrongshow|wrong.show|stale|combinedwith|tour|cross-market|misfiled/.test(t)) return 'wrong-label';
   if (/override|score|rating|isnonreview|non-review|not_a_review|box-office|junk/.test(t)) return /override|score|rating/.test(t) ? 'scoring-by-hand' : 'content-tier';
+  // BRO-7145: the 2-month audit left 21 openings in 'other'; these are the subject families behind them.
+  if (/gather-reviews:/.test(t)) return 'discovery-gap';
+  if (/false flag|adjudicate|blocker|re-?clear|move[d]? .*(production|review)|correct venue|review fixes/.test(t)) return 'wrong-label';
+  if (/blocklist|placeholder|stub|mirror|listing|drop |delete /.test(t)) return 'content-tier';
+  if (/restore|fill .*body|re-?trim|reclean|mislabelled|wrongly rejected/.test(t)) return 'text-gap';
+  if (/name the .* after|critic ?name/.test(t)) return 'attribution';
   return 'other';
 }
 
@@ -240,7 +253,7 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
 
   const signals = [];
   const bySha = new Map((commits || []).map((c) => [String(c.sha).slice(0, 8), c]));
-  const fixCommits = (commits || []).filter((c) => !isSweepCommit(c));
+  const fixCommits = (commits || []).filter((c) => !isSweepCommit(c) && !isAutomatedRecoveryCommit(c));
   const seen = new Set();
   const seenPair = new Set();
   // One signal per (commit, outlet): a commit fixing four outlets is four
@@ -567,6 +580,6 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
 }
 
 module.exports = {
-  MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS, SWEEP_CEILING, STALE_AUDIT_H, isLiveFile, isSweepCommit, openingWindow,
+  MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS, SWEEP_CEILING, STALE_AUDIT_H, isLiveFile, isSweepCommit, isAutomatedRecoveryCommit, AUTOMATED_RECOVERY_SUBJECT, openingWindow,
   estimateEmbargoMs, selectOpenings, CAUSE_LABEL, causeOfFields, causeOfSubject, causeOfSignal, firstPassMisses, mergeMissHistory, MISS_HISTORY_DAYS, outletOfFile, causeSummary, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
 };

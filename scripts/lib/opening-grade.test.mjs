@@ -160,3 +160,37 @@ test('BRO-7471 review: judge the added file itself (live sibling does not rescue
   const renamed = { ...good(3), _file: `${show.id}/timeout--x.json`, outletId: 'timeout-london' };
   assert.equal((run([good(1), renamed], mk('timeout--x.json')).sweepFinds || []).length, 1);
 });
+
+test('BRO-7145: scheduled gap-recovery driver checkpoints are automation, not hand-commits; a person fixing the same file still counts', () => {
+  const mk = (subject) => ({ sha: 'dddd111122', at: iso(embargo + 30 * 3600000), author: 'Tom Pryor', email: 'owner@example.com', subject, files: [`${show.id}/guardian--x.json`], added: [] });
+  const run = (c) => og.gradeOpening({ show, files, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  assert.notEqual(run(mk('feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)')).verdict, 'needed-hands');
+  assert.notEqual(run(mk('feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)')).verdict, 'needed-hands');
+  assert.equal(run(mk('BRO-7041: re-credit Guardian review to the page byline')).verdict, 'needed-hands');
+});
+
+test('BRO-7145 parity: the grader recognises the exact subject gap-recovery-driver.js writes', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  const m = src.match(/message: `([^`]*gap-recovery driver[^`]*)`/);
+  assert.ok(m, 'driver checkpoint message not found; update AUTOMATED_RECOVERY_SUBJECT');
+  const subject = m[1].replace(/\$\{label\}/, 'checkpoint 3').replace(/\$\{accepted\}/, '3');
+  assert.ok(og.isAutomatedRecoveryCommit({ subject }), subject);
+});
+
+test('BRO-7145: subject families that used to fall into "other" get a cause class', () => {
+  const cases = {
+    'gather-reviews: 9 review-text files + 3 pending stubs for safe-house-of': 'discovery-gap',
+    'data: Into the Woods West End review fixes (BRO-4875)': 'wrong-label',
+    'Manual clear of 3 hand-verified false flags on 2026-09-27': 'wrong-label',
+    'fix: adjudicate 2 Data Validation blockers (BRO-3092)': 'wrong-label',
+    'fix(BRO-5484): move WEBF Jane Eyre review to Rose Kingston production': 'wrong-label',
+    'data: School Girls 2026 - blocklist the New Yorker Goings On listing': 'content-tier',
+    'fix(jane-eyre): delete LBO stars-80 empty placeholder': 'content-tier',
+    'data: restore NYSR America Who Hurt You review (3/5) wrongly rejected': 'text-gap',
+    'data: Catarina - fill The Reviews Hub review body (3749 chars)': 'text-gap',
+    'data: School Girls 2026 - name the Chicago Tribune stub after its critic': 'content-tier',
+    'chore: unrelated tidy': 'other',
+  };
+  for (const [subject, cause] of Object.entries(cases)) assert.equal(og.causeOfSubject(subject), cause, subject);
+});
