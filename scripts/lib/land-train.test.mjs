@@ -263,6 +263,57 @@ test('BRO-6276 train scope: verified, disjoint members get the small re-check; a
   } finally { w.cleanup(); }
 });
 
+test('BRO-8030 train scope: members that each landed a session record row get the small re-check, checked on the real merged files', () => {
+  const RETRO = 'data/audit/session-retro.jsonl';
+  const COST = 'data/audit/claude-session-cost.jsonl';
+  const retroBase = '{"ts":"2026-11-01T00:00:00Z","session":"s0"}\n';
+  const costBase = '{"date":"2026-11-01","session":"s0","usd":1}\n';
+  const w = makeWorld();
+  try {
+    // main carries both record files and the repo's own merge attributes
+    const seed = w.clone('seed-records');
+    fs.mkdirSync(path.join(seed, 'data', 'audit'), { recursive: true });
+    fs.writeFileSync(path.join(seed, '.gitattributes'), `${RETRO} merge=union\n${COST} merge=keyed-jsonl keyed-jsonl=date,session\n`);
+    fs.writeFileSync(path.join(seed, RETRO), retroBase);
+    fs.writeFileSync(path.join(seed, COST), costBase);
+    sh(seed, ['add', '-A']);
+    sh(seed, ['commit', '-qm', 'records']);
+    sh(seed, ['push', '-q', 'origin', 'HEAD:main']);
+    const base = w.mainSha();
+    const rows = (n, retroRow = `{"ts":"2026-11-22T00:00:00Z","session":"${n}"}`) => ({
+      [`${n}.txt`]: `${n}\n`,
+      [RETRO]: `${retroBase}${retroRow}\n`,
+      [COST]: `${costBase}{"date":"2026-11-22","session":"${n}","usd":2}\n`,
+    });
+    w.pushBranch('land/h', rows('h'));
+    const tipA = w.pushBranch('land/a', rows('a'));
+    const tipB = w.pushBranch('land/b', rows('b'));
+    const tipCut = w.pushBranch('land/cut', rows('cut', '{"ts":"2026-11-22T00:00:00Z","session":'));
+    const seen = [];
+    const run = (riders) => landBranch({
+      branch: 'land/h', source: 'origin', repoDir: w.clone(`runner-${seen.length}`), riders, holderBase: base,
+      checks: () => [{ name: 'stop', pass: false, detail: 'stop here' }],
+      trainChecks: (o) => {
+        seen.push({ scope: o.recheckScope, retro: fs.readFileSync(path.join(o.cwd, RETRO), 'utf8'), cost: fs.readFileSync(path.join(o.cwd, COST), 'utf8') });
+        return [{ name: 'stop', pass: false, detail: 'stop here' }];
+      },
+      pushMain: () => { throw new Error('must not push'); },
+    });
+    run([{ branch: 'land/a', tip: tipA, base }, { branch: 'land/b', tip: tipB, base }]);
+    assert.equal(seen[0].scope.mode, 'small', seen[0].scope.reason);
+    // the tree the checks got is the merged one: every member's row is there
+    for (const n of ['s0', 'h', 'a', 'b']) {
+      assert.match(seen[0].retro, new RegExp(`"session":"${n}"`), `retro row ${n}`);
+      assert.match(seen[0].cost, new RegExp(`"session":"${n}"`), `cost row ${n}`);
+    }
+    // a rider whose record row is cut off still merges (union), so the merged
+    // file no longer reads correctly: the train keeps the full re-check
+    run([{ branch: 'land/a', tip: tipA, base }, { branch: 'land/cut', tip: tipCut, base }]);
+    assert.equal(seen[1].scope.mode, 'full');
+    assert.match(seen[1].scope.reason, /session-retro\.jsonl/);
+  } finally { w.cleanup(); }
+});
+
 test('train: a conflicting rider is dropped, HEAD returns to the train, the next rider still rides', () => {
   const w = makeWorld();
   try {
