@@ -131,3 +131,16 @@ test('stale syndicated critics cannot establish a secondary cadence without its 
     assert.deepEqual(row(after, 'whatsonstage'), row(before, 'whatsonstage'));
   }
 });
+
+test('BRO-7957: a surviving NY Daily News Chris Jones copy (NYC 2024+) advances the Tribune heartbeat', () => {
+  const trHistory = [
+    review('chicagotribune', 'Original Critic', '2026-01-01'),
+    review('chicagotribune', 'Original Critic', '2026-01-08'),
+  ];
+  const reviews = [...trHistory, pulse, review('nydailynews', 'Chris Jones', '2026-08-25')];
+  const before = buildCadenceReport(reviews.slice(0, -1), outlets);
+  const after = buildCadenceReport(reviews, outlets);
+  assert.equal(row(before, 'chicagotribune').status, 'red');
+  assert.equal(row(after, 'chicagotribune').status, 'green');
+  assert.equal(row(after, 'chicagotribune').lastReviewDate, '2026-08-25');
+});
