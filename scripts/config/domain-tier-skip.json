@@ -390,6 +390,11 @@
       "skip": true,
       "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
       "addedAt": "2026-07-30"
+    },
+    "scrapingbee": {
+      "skip": true,
+      "reason": "41 failures, 0 successes",
+      "addedAt": "2026-11-22"
     }
   },
   "newsvine.com": {
@@ -436,7 +441,7 @@
   "nymag.com": {
     "playwright": {
       "skip": true,
-      "reason": "25 failures, 0 successes",
+      "reason": "24 failures, 0 successes",
       "addedAt": "2026-09-20"
     }
   },
@@ -797,12 +802,12 @@
   "thewrap.com": {
     "browserbase": {
       "skip": true,
-      "reason": "5 failures, 0 successes",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "71 failures, 0 successes",
+      "reason": "69 failures, 0 successes",
       "addedAt": "2026-09-20"
     }
   },
