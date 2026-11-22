@@ -456,18 +456,25 @@ function isBuildCodePath(file, buildScripts = null) {
  * (isMergeableBothSidesLedger, BRO-6519), nor does a session record file
  * whose merged copy reads correctly (BRO-8030).
  * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean, buildScripts?:(Set<string>|null), ledgerOk?:((file:string)=>boolean)|null}} o
- * @returns {{mode:'full'|'small', build:boolean, reason:string}}
+ * @returns {{mode:'full'|'small', build:boolean, reason:string, ledgers?:string[]}} ledgers: the both-sides ledgers a small re-check leaned on
  */
 function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false, buildScripts = null, ledgerOk = null }) {
   if (disabled) return { mode: 'full', build: true, reason: 'small re-check disabled (LAND_SMALL_RECHECK_DISABLED=true)' };
   if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
   if (!Array.isArray(changedFiles)) return { mode: 'full', build: true, reason: 'files the branch changed are unknown' };
   const mine = new Set((changedFiles || []).map(String));
-  const shared = intervening.map(String).filter((f) => mine.has(f) && !isMergeableBothSidesLedger(f, ledgerOk));
+  // One pass: ledgerOk reads the merged file, so each shared file is asked once.
+  const ledgers = [];
+  const shared = [];
+  for (const f of new Set(intervening.map(String).filter((x) => mine.has(x)))) {
+    (isMergeableBothSidesLedger(f, ledgerOk) ? ledgers : shared).push(f);
+  }
   if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
   // runSafeChecks builds only for a src/ change on the branch (hasSrcChange).
   const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(f => isBuildCodePath(f, buildScripts));
-  return { mode: 'small', build, reason: `no file changed on both sides; build ${build ? 'runs (both sides changed build code)' : 'skipped (deploy builds it)'}` };
+  // The log names an exempted ledger, so a small re-check that leaned on one can be told from the log alone.
+  const both = ledgers.length ? `only mergeable ledger(s) changed on both sides (${ledgers.slice(0, 3).join(', ')})` : 'no file changed on both sides';
+  return { mode: 'small', build, ledgers, reason: `${both}; build ${build ? 'runs (both sides changed build code)' : 'skipped (deploy builds it)'}` };
 }
 
 /**
@@ -482,7 +489,7 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
  * ledgerOk (BRO-8030) is asked about the two session record files only: the
  * keyed alert ledger keeps its full re-check in a train, as before.
  * @param {{members:Array<{name:string, base:(string|null), verified:boolean, ancestor:boolean, mainChanged:(string[]|null), files:(string[]|null)}>, disabled?:boolean, buildScripts?:(Set<string>|null), ledgerOk?:((file:string)=>boolean)|null}} o
- * @returns {{mode:'full'|'small', build:boolean, reason:string}}
+ * @returns {{mode:'full'|'small', build:boolean, reason:string, ledgers?:string[]}} ledgers: the both-sides ledgers a small re-check leaned on
  */
 function selectTrainRecheckScope({ members, disabled = false, buildScripts = null, ledgerOk = null }) {
   const full = (reason) => ({ mode: 'full', build: true, reason });
@@ -494,6 +501,7 @@ function selectTrainRecheckScope({ members, disabled = false, buildScripts = nul
   }
   const recordOk = typeof ledgerOk === 'function' ? (f) => SESSION_RECORD_LEDGER_RE.test(String(f)) && ledgerOk(f) === true : null;
   let build = false;
+  const ledgers = new Set();
   for (const m of members) {
     const others = members.filter((x) => x !== m).flatMap((x) => x.files);
     const scope = selectRecheckScope({
@@ -505,8 +513,10 @@ function selectTrainRecheckScope({ members, disabled = false, buildScripts = nul
     });
     if (scope.mode !== 'small') return full(`${m.name}: ${scope.reason}`);
     build = build || scope.build;
+    for (const f of scope.ledgers || []) ledgers.add(f);
   }
-  return { mode: 'small', build, reason: `no file changed by two of the ${members.length} members or by main since their verified bases; build ${build ? 'runs' : 'skipped (deploy builds it)'}` };
+  const apart = ledgers.size ? ` apart from mergeable ledger(s) (${[...ledgers].slice(0, 3).join(', ')})` : '';
+  return { mode: 'small', build, ledgers: [...ledgers], reason: `no file changed by two of the ${members.length} members or by main since their verified bases${apart}; build ${build ? 'runs' : 'skipped (deploy builds it)'}` };
 }
 
 /**
