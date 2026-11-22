@@ -716,7 +716,14 @@ function main(argv = process.argv.slice(2)) {
   const gate = firstFailingGate(decisions);
   if (args['github-output'] && args['github-output'] !== true) {
     const totals = decisions.reduce((t, d) => ({ n: t.n + d.newFailures.length, p: t.p + d.preExisting.length, f: t.f + d.fixed.length }), { n: 0, p: 0, f: 0 });
-    fs.appendFileSync(String(args['github-output']), `gate=${gate}\nnew_failures=${totals.n}\npre_existing=${totals.p}\nfixed=${totals.f}\npre_existing_tests=${JSON.stringify(preExistingAlertRows(decisions))}\n`);
+    fs.appendFileSync(String(args['github-output']), `gate=${gate}\nnew_failures=${totals.n}\npre_existing=${totals.p}\nfixed=${totals.f}\n`);
+    // BRO-7950: the alert list is a second consumer and must never change the exit code
+    // or fail this verdict step; a failure to build or write it only drops the alert.
+    try {
+      fs.appendFileSync(String(args['github-output']), `pre_existing_tests=${JSON.stringify(preExistingAlertRows(decisions))}\n`);
+    } catch (e) {
+      console.log(`::warning::land-gate-delta: pre-existing alert list not written (${e && e.message})`);
+    }
   }
   return gate ? 1 : 0;
 }
