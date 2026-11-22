@@ -324,3 +324,79 @@ test('a committed change to an imported data file is dirty for the real git diff
     fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// ---- BRO-8028: min-interval throttle + urgent lane -------------------------
+const { isUrgent, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN } = require('./should-deploy-gate.js');
+const MIN = DEFAULT_MIN_INTERVAL_MIN * 60;
+const fresh = { ...base, eventName: 'schedule', baselineSha: 'aaa', headSha: 'bbb', deployAgeSec: 120, diffResult: 'dirty', dataDiffResult: 'dirty', minIntervalSec: MIN };
+
+test('BRO-8028: routine churn (scripts/public/data dirty) inside the interval is held', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'clean' }), { proceed: false, reason: 'min-interval' });
+  assert.deepEqual(decide({ ...fresh, baselineSha: 'bbb', codeDiffResult: null }), { proceed: false, reason: 'min-interval' });
+});
+
+test('BRO-8028: src/config/dependency change ships immediately; unknown code diff fails open', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'dirty' }), { proceed: true, reason: 'code-changed' });
+  assert.equal(decide({ ...fresh, codeDiffResult: 'error' }).proceed, true);
+});
+
+test('BRO-8028: past the interval the normal content gate applies; unknown age fails open; kill switch wins', () => {
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, diffResult: 'clean', dataDiffResult: 'clean', codeDiffResult: 'clean' }).proceed, false);
+  assert.equal(decide({ ...fresh, deployAgeSec: null, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, gateDisabled: true, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: decide() with minIntervalSec=0 keeps the old behaviour (main() passes 45 min)', () => {
+  assert.equal(decide({ ...fresh, minIntervalSec: 0, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: urgent lane is explicit sources only; empty/land/unknown are routine', () => {
+  for (const source of URGENT_SOURCES) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  for (const source of ['', undefined, 'land', 'heartbeat', 'whatever']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), false, String(source));
+  assert.equal(isUrgent({ eventName: 'schedule', source: 'urgent' }), false);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews (Fast)' }), true);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews Data' }), false);
+});
+
+test('BRO-8028 class guard: every vercel-deploy dispatcher is classified (urgent source, or on the routine list)', async () => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const dir = new URL('../../.github/workflows/', import.meta.url).pathname;
+  const ROUTINE_OK = new Set(['gather-reviews.yml', 'rebuild-reviews.yml', 'sync-vercel-env.yml', 'weekly-grosses.yml', 'update-show-status.yml', 'commercial-weekly.yml', 'data-health-check.yml', 'update-deploy-watermark.yml', 'check-cron-health.yml', 'llm-ensemble-score.yml', 'scrape-bww-reviews.yml']);
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml') && n !== 'vercel-deploy.yml')) {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const line of text.split('\n')) {
+      if (!/^\s*(run:\s*|if\s+|\w+\s*&&\s*)?gh workflow run vercel-deploy\.yml/.test(line)) continue; // real commands only, not comments/descriptions
+      const m = line.match(/-f source=([\w-]+)/);
+      const ok = m ? [...URGENT_SOURCES, 'land'].includes(m[1]) : ROUTINE_OK.has(f) || /wait_for_run/.test(line);
+      if (!ok) bad.push(`${f}: ${line.trim().slice(0, 100)}`);
+    }
+  }
+  assert.deepEqual(bad, [], 'classify new dispatchers: add -f source=<urgent source> or list the file in ROUTINE_OK');
+});
+
+test('BRO-8028 class guard: every source= literal dispatched to vercel-deploy.yml from scripts/ is urgent or land', async () => {
+  const fs = await import('node:fs');
+  const dir = new URL('../', import.meta.url).pathname;
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.(js|mjs)$/.test(n) && !/test/.test(n))) {
+    const text = fs.readFileSync(dir + f, 'utf8');
+    for (const line of text.split('\n')) {
+      const m = line.match(/vercel-deploy\.yml.*source=([\w-]+)/);
+      if (m && ![...URGENT_SOURCES, 'land'].includes(m[1])) bad.push(`${f}: ${m[1]}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('BRO-8028: a held run asks for a deferred retry, and the workflow wires it', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /deferred-retry:/);
+  assert.match(y, /reason == 'min-interval'/);
+  assert.match(y, /retry_after_sec: \$\{\{ steps\.check\.outputs\.retry_after_sec \}\}/);
+  const g = fs.readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
+  assert.match(g, /retry_after_sec=\$\{retryAfterSec\}/);
+});

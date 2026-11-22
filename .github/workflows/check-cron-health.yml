@@ -20,10 +20,19 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      # BRO-8028: Vercel bills per build; fail loudly if production deploys exceed
+      # ~60/day (target <= 48). Does not gate merges, only fails this daily run.
+      - name: Production deploy frequency
+        timeout-minutes: 2
+        continue-on-error: true  # advisory first (rule 19); must never skip the cron checks below
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/check-deploy-frequency.js
 
       - name: Check critical crons ran recently
         id: check

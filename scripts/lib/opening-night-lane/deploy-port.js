@@ -3,8 +3,8 @@
  * Deploy port for the opening-night lane (BRO-6649, plan v2 Step 3).
  *
  * A lane publish used to wait for the 5-minute deploy cron, which fired hours late on Oct 29-30. Now the publish
- * dispatches vercel-deploy.yml itself with `source=lane-press-night`. vercel-deploy.yml maps any source other than
- * "land" to a plain workflow_dispatch, which should-deploy-gate.js treats as "ship now" (deduped only when HEAD is
+ * dispatches vercel-deploy.yml itself with `source=lane-press-night`. should-deploy-gate.js treats
+ * "lane-press-night" as an urgent source (BRO-8028: empty/unknown sources are routine and throttled), i.e. "ship now" (deduped only when HEAD is
  * live and core data has not advanced; the lane's core-data push has advanced it). The gate only decides, it cannot
  * deploy, so the explicit source value is the press-night reason and the audit trail. The dispatch is made only from a
  * leased lane publish, at most one open dispatch per show (CLAUDE.md section 2: no routine manual deploys).

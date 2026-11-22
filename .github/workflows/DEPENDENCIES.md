@@ -420,7 +420,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
 | `TR_EMAIL` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
 | `TR_PASSWORD` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
-| `VERCEL_TOKEN` | 3 cross-repo writers (of 14 workflows using it): `data-health-check.yml`, `opening-night-poller.yml`, `test.yml` |
+| `VERCEL_TOKEN` | 3 cross-repo writers (of 15 workflows using it): `data-health-check.yml`, `opening-night-poller.yml`, `test.yml` |
 | `VULTURE_COOKIES` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `VULTURE_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `VULTURE_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |

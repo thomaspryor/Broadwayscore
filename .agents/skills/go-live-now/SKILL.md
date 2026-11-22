@@ -98,7 +98,7 @@ cancelled at "Admit to the landing queue", rerun it yourself at once
 ## 4. Deploy yourself and stop stale deploys from overwriting you
 The Land job requests a deploy, but start one too the moment your commit is
 on main: `actions_run_trigger` / `run_workflow`, `workflow_id: vercel-deploy.yml`,
-`ref: main`. Your ASAP is the emergency that dispatching this workflow by
+`ref: main`, `inputs: {source: urgent}` (without it the gate holds routine deploys until the live one is 45 min old, BRO-8028). Your ASAP is the emergency that dispatching this workflow by
 hand is reserved for. Deploy runs run side by side (per-run concurrency group), so an
 older deploy that finishes last can put pre-fix content back. For each
 queued `Deploy to Vercel` run, check

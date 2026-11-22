@@ -1667,7 +1667,7 @@ jobs:
           # build when HEAD and core data are already live, and its 5-min cron really fires
           # every 6-9h, so this dispatch is what ships the data.
           echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+          gh workflow run vercel-deploy.yml -f source=opening-night || echo "Deploy dispatch failed — will deploy on next schedule"
 
       - name: Submit show pages to Google Indexing API
         if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''
