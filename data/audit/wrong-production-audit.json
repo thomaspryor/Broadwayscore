@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T23:27:35.561Z",
+  "timestamp": "2026-11-22T00:27:15.222Z",
   "stats": {
     "totalReviews": 83817,
-    "alreadyFlagged": 22423,
-    "dateGuardCatches": 239,
+    "alreadyFlagged": 22426,
+    "dateGuardCatches": 238,
     "directorMismatch": 3868,
     "tvFilmSignals": 2405,
     "londonSignals": 3949,
     "offBroadwaySignals": 782,
     "yearMismatch": 394,
-    "noPublishDate": 8239
+    "noPublishDate": 8235
   },
   "findings": [
     {
@@ -21681,7 +21681,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 86,
+      "score": 85,
       "publishDate": "2026-11-20",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
       "findings": [
@@ -64488,7 +64488,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-off-west-end-2026",
       "file": "thestage--siobhan-murphy.json",
-      "score": null,
+      "score": 40,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
       "findings": [
@@ -105856,7 +105856,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-11-20",
       "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
       "findings": [
@@ -115207,7 +115207,7 @@
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "file": "artsdesk--david-nice.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-11-10",
       "url": "https://theartsdesk.com/opera/iphigenie-en-tauride-english-national-opera-review-stylised-stylishly-sung-rarity",
       "findings": [
@@ -141451,7 +141451,7 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "londontheatredirect--mrs-norris.json",
+      "file": "londontheatredirect--miranda-barrett.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
@@ -146623,18 +146623,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "the-years-west-end-2025",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
         }
       ]
     },
