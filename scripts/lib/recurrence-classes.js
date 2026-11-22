@@ -540,6 +540,8 @@ function improvementLine(snap) {
 const MISS_KEY_PREFIX = { 'discovery-gap': 'missed-at-first-pass', 'text-gap': 'text-missed-at-first-pass' };
 const MISS_KEY_RE = /^(?:text-)?missed-at-first-pass:/;
 const isMissKey = (key) => MISS_KEY_RE.test(String(key || ''));
+const ALL_MARKETS = '*';
+const ALL_MARKETS_WINDOW_DAYS = 60;
 const missKey = (m) => `${MISS_KEY_PREFIX[m.cause]}:${m.category}:${m.outletId}`;
 
 /**
@@ -553,22 +555,28 @@ const missKey = (m) => `${MISS_KEY_PREFIX[m.cause]}:${m.category}:${m.outletId}`
 function missClasses(misses, cards = [], opts = {}) {
   const now = opts.now != null ? opts.now : Date.now();
   const windowDays = opts.windowDays || 30;
+  const allMarketsWindowDays = opts.allMarketsWindowDays || ALL_MARKETS_WINDOW_DAYS;
   const minShows = opts.minShows || 3;
-  const since = now - windowDays * DAY;
   const byKey = new Map();
+  const add = (key, m, proto) => {
+    if (!byKey.has(key)) byKey.set(key, { key, kind: 'first-pass-miss', cause: m.cause, outletId: m.outletId, shows: new Map(), ...proto });
+    const cls = byKey.get(key);
+    const prev = cls.shows.get(m.showId);
+    if (!prev || String(m.at || '') < String(prev.at || '')) cls.shows.set(m.showId, m);
+  };
   for (const m of misses || []) {
     if (!m || !m.showId || !m.outletId || !m.category || !MISS_KEY_PREFIX[m.cause]) continue;
     const at = ms(m.embargoAt);
     if (!Number.isFinite(at) || at > now) continue;
-    const key = missKey(m);
-    if (!byKey.has(key)) byKey.set(key, { key, kind: 'first-pass-miss', cause: m.cause, category: m.category, outletId: m.outletId, shows: new Map() });
-    const cls = byKey.get(key);
-    const prev = cls.shows.get(m.showId);
-    if (!prev || String(m.at || '') < String(prev.at || '')) cls.shows.set(m.showId, m);
+    add(missKey(m), m, { category: m.category, windowDays });
+    // BRO-8025: the same outlet missed on 2-3 shows in each of several markets
+    // never reaches minShows in any one market, so also count it across all markets.
+    add(missKey({ ...m, category: ALL_MARKETS }), m, { category: ALL_MARKETS, windowDays: allMarketsWindowDays });
   }
   const rootCards = (cards || []).map((c) => ({ card: c, marker: c && rootCauseMarker(c.description) })).filter((r) => r.marker && isMissKey(r.marker.key));
   const out = new Map();
   for (const cls of byKey.values()) {
+    const since = now - cls.windowDays * DAY;
     const instances = [...cls.shows.values()]
       .map((m) => ({ identifier: m.showId, title: m.title, createdAt: new Date(ms(m.embargoAt)).toISOString(), foundAt: m.at || null, via: m.via || null }))
       .sort((a, b) => (a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : (a.identifier < b.identifier ? -1 : 1)));
@@ -576,9 +584,10 @@ function missClasses(misses, cards = [], opts = {}) {
     const marked = rootCards.filter((r) => r.marker.key === cls.key).map((r) => r.card).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
     const live = marked.filter((c) => c.state && c.state.type !== 'canceled' && c.state.type !== 'duplicate');
     const pick = live[0] || marked[0];
-    const reasons = inWindow >= minShows ? [`${inWindow} shows in ${windowDays} days`] : [];
+    const reasons = inWindow >= minShows ? [`${inWindow} shows in ${cls.windowDays} days`] : [];
     out.set(cls.key, {
       key: cls.key, kind: cls.kind, cause: cls.cause, category: cls.category, outletId: cls.outletId,
+      windowDays: cls.windowDays,
       instances, inWindow,
       firstSeen: instances.length ? instances[0].createdAt : null,
       lastSeen: instances.length ? instances[instances.length - 1].createdAt : null,
@@ -588,10 +597,19 @@ function missClasses(misses, cards = [], opts = {}) {
       extraRootCauses: marked.map((c) => c.identifier).filter((id) => pick && id !== pick.identifier),
     });
   }
+  // One root card per gap: an all-markets class stands down while a single-market
+  // class of the same cause+outlet is itself recurring or already has a root card.
+  for (const cls of out.values()) {
+    if (cls.category !== ALL_MARKETS || !cls.recurring || cls.rootCause) continue;
+    const sibling = [...out.values()].some((o) => o.category !== ALL_MARKETS && o.cause === cls.cause && o.outletId === cls.outletId && (o.recurring || o.rootCause));
+    if (sibling) { cls.reasons = []; cls.recurring = false; cls.coveredByMarketClass = true; }
+  }
   return out;
 }
 
 module.exports = {
+  ALL_MARKETS,
+  ALL_MARKETS_WINDOW_DAYS,
   MISS_KEY_RE,
   isMissKey,
   missKey,

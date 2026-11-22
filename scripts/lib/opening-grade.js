@@ -411,8 +411,9 @@ function causeSummary(signals) {
 // ---------- first-pass misses (BRO-7375) ----------
 
 // Kept in opening-grades.json by grade-openings.js (single writer), longer
-// than the 14-day grade window so a 30-day repeat rule can see a month.
-const MISS_HISTORY_DAYS = 45;
+// than the 14-day grade window so a 30-day repeat rule can see a month, and
+// the 60-day all-markets outlet class (BRO-8025) can see two.
+const MISS_HISTORY_DAYS = 65;
 const COMMIT_SIGNAL_KINDS = new Set(['hand-commit', 'ingest-dispatch']);
 
 /** "sha subject" with Linear ids removed: a root card that quotes them would list other cards' cases. */

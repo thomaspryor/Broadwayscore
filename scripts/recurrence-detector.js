@@ -179,7 +179,7 @@ function missesFromGrades(doc, nowMs = Date.now(), keepDays = undefined) {
   return og.mergeMissHistory(doc.firstPassMisses || [], og.firstPassMisses(grades), { nowMs, keepDays, gradedShows: grades.map((g) => g.showId) });
 }
 
-const MARKET_WORDS = { broadway: 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off-West End' };
+const MARKET_WORDS = { '*': 'all markets', broadway: 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off-West End' };
 
 // ---------- snapshot ----------
 
@@ -245,6 +245,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
       cause: cls.cause,
       category: cls.category,
       outletId: cls.outletId,
+      windowDays: cls.windowDays,
       inWindow: cls.inWindow,
       total: cls.instances.length,
       reasons: cls.reasons,
@@ -313,8 +314,8 @@ function readableName(cls) {
 function missCardTitle(cls) {
   const market = MARKET_WORDS[cls.category] || cls.category;
   return cls.cause === 'text-gap'
-    ? `Root cause: first pass keeps getting no full text from ${cls.outletId} (${market}, ${cls.inWindow} shows in ${WINDOW_DAYS} days)`
-    : `Root cause: first pass keeps missing ${cls.outletId} reviews (${market}, ${cls.inWindow} shows in ${WINDOW_DAYS} days)`;
+    ? `Root cause: first pass keeps getting no full text from ${cls.outletId} (${market}, ${cls.inWindow} shows in ${cls.windowDays || WINDOW_DAYS} days)`
+    : `Root cause: first pass keeps missing ${cls.outletId} reviews (${market}, ${cls.inWindow} shows in ${cls.windowDays || WINDOW_DAYS} days)`;
 }
 
 // No card ids anywhere in this text: rootCards() reads every id in a root
@@ -329,7 +330,7 @@ function missCardDescription(cls) {
   return [
     `START-NOW: recurring first-pass miss found by the recurrence detector. Any worker may take it.`,
     '',
-    `${market}: ${cls.outletId} was ${text ? 'without full text after' : 'missed by'} the first pass on ${cls.inWindow} shows that opened in the last ${WINDOW_DAYS} days. ` +
+    `${market}: ${cls.outletId} was ${text ? 'without full text after' : 'missed by'} the first pass on ${cls.inWindow} shows that opened in the last ${cls.windowDays || WINDOW_DAYS} days. ` +
       'Each one was fixed afterwards and nothing was filed, so the same gap stays open for the next opening.',
     '',
     `Class: \`${cls.key}\`. Outlet: \`${cls.outletId}\`. Market: ${cls.category}.`,

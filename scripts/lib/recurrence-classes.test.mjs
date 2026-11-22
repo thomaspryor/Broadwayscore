@@ -1,6 +1,7 @@
 // BRO-7103: recurrence detector rules. Requires the real modules (§15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -535,7 +536,7 @@ const sig = (outletId, extra = {}) => ({ kind: 'ingest-dispatch', at: iso(1), ou
 test('BRO-7375: the same market+outlet missed on 3 shows makes one recurring class; on 2 it does not', () => {
   const three = og.firstPassMisses([grade('a', 5, [sig('nytimes')]), grade('b', 6, [sig('nytimes')]), grade('c', 7, [sig('nytimes'), sig('nytimes', { at: iso(2) })])]);
   const cls = rc.missClasses(three, [], { now: NOW });
-  assert.equal(cls.size, 1);
+  assert.equal([...cls.keys()].filter((k) => !k.includes(':*:')).length, 1);
   const c = cls.get('missed-at-first-pass:off-broadway:nytimes');
   assert.equal(c.recurring, true);
   assert.equal(c.inWindow, 3);
@@ -544,7 +545,47 @@ test('BRO-7375: the same market+outlet missed on 3 shows makes one recurring cla
   assert.equal(rc.missClasses(two, [], { now: NOW }).get('missed-at-first-pass:off-broadway:wsj').recurring, false);
   // Same outlet in another market is another class.
   const mixed = og.firstPassMisses([grade('a', 5, [sig('nytimes')]), grade('b', 6, [sig('nytimes')]), grade('c', 7, [sig('nytimes')], 'broadway')]);
-  assert.equal([...rc.missClasses(mixed, [], { now: NOW }).values()].filter((x) => x.recurring).length, 0);
+  // ...but BRO-8025: 3 shows in 3 markets within 60 days is one recurring all-markets class.
+  const rec = [...rc.missClasses(mixed, [], { now: NOW }).values()].filter((x) => x.recurring);
+  assert.deepEqual(rec.map((x) => x.key), ['missed-at-first-pass:*:nytimes']);
+});
+
+test('BRO-8025: an outlet missing 2 shows in each of 3 markets reaches an all-markets 60-day class', () => {
+  const rows = og.firstPassMisses([
+    grade('a1', 5, [sig('guardian')], 'broadway'), grade('a2', 9, [sig('guardian')], 'broadway'),
+    grade('b1', 20, [sig('guardian')], 'west-end'), grade('b2', 25, [sig('guardian')], 'west-end'),
+    grade('c1', 40, [sig('guardian')], 'off-broadway'), grade('c2', 50, [sig('guardian')], 'off-broadway'),
+  ]);
+  const cls = rc.missClasses(rows, [], { now: NOW });
+  const all = cls.get('missed-at-first-pass:*:guardian');
+  assert.equal(all.recurring, true);
+  assert.equal(all.inWindow, 6);
+  assert.equal(all.windowDays, 60);
+  assert.equal([...cls.values()].filter((x) => x.recurring && x.outletId === 'guardian').length, 1, 'no single-market class reaches 3');
+  // Outside 60 days it does not count.
+  const old = og.firstPassMisses([grade('a', 5, [sig('guardian')], 'broadway'), grade('b', 70, [sig('guardian')], 'west-end'), grade('c', 80, [sig('guardian')], 'off-broadway')]);
+  assert.equal(rc.missClasses(old, [], { now: NOW }).get('missed-at-first-pass:*:guardian').recurring, false);
+});
+
+test('BRO-8025: the all-markets class stands down while a single-market class of the same outlet is recurring or has a root card', () => {
+  const rows = og.firstPassMisses([grade('a', 2, [sig('wsj')]), grade('b', 3, [sig('wsj')]), grade('c', 4, [sig('wsj')]), grade('d', 5, [sig('wsj')], 'west-end')]);
+  const cls = rc.missClasses(rows, [], { now: NOW });
+  assert.equal(cls.get('missed-at-first-pass:off-broadway:wsj').recurring, true);
+  assert.equal(cls.get('missed-at-first-pass:*:wsj').recurring, false);
+  const two = og.firstPassMisses([grade('a', 2, [sig('x1')]), grade('b', 3, [sig('x1')]), grade('c', 4, [sig('x1')], 'west-end')]);
+  const card = { identifier: 'BRO-1', createdAt: iso(1), state: { type: 'started' }, description: rc.markerLine('missed-at-first-pass:off-broadway:x1') };
+  assert.equal(rc.missClasses(two, [card], { now: NOW }).get('missed-at-first-pass:*:x1').recurring, false);
+});
+
+test('BRO-8025: replaying data/audit/opening-grades.json finds repeat outlets no single-market class reaches', () => {
+  const doc = JSON.parse(fs.readFileSync(new URL('../../data/audit/opening-grades.json', import.meta.url), 'utf8'));
+  const rows = doc.firstPassMisses || [];
+  const now = Math.max(...rows.map((r) => Date.parse(r.embargoAt)).filter(Number.isFinite)) + 36e5;
+  const cls = [...rc.missClasses(rows, [], { now }).values()];
+  const perMarket = cls.filter((c) => c.category !== '*' && c.recurring).map((c) => `${c.cause}:${c.outletId}`);
+  const wild = cls.filter((c) => c.category === '*' && c.recurring);
+  const reached = wild.filter((c) => !perMarket.includes(`${c.cause}:${c.outletId}`));
+  assert.ok(reached.length > 0, 'at least one outlet only reaches a class through the all-markets rule');
 });
 
 test('BRO-7375: a commit that only modified the file is a text miss, one that created it is a discovery miss', () => {
@@ -586,7 +627,7 @@ test('BRO-7375: miss history keeps older shows, lets the current grades replace 
   const prev = [
     { showId: 'gone', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(20) },
     { showId: 'regraded', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(5) },
-    { showId: 'ancient', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(60) },
+    { showId: 'ancient', outletId: 'o', category: 'off-broadway', cause: 'discovery-gap', embargoAt: iso(80) },
   ];
   const cur = [{ showId: 'regraded', outletId: 'o', category: 'off-broadway', cause: 'text-gap', embargoAt: iso(5) }];
   const out = og.mergeMissHistory(prev, cur, { nowMs: NOW, gradedShows: ['regraded'] });
