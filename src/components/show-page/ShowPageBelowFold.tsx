@@ -440,6 +440,7 @@ export default function ShowPageBelowFold({
         <SeatingGuidanceCard
           sections={theater.structuredTips?.seating?.sections}
           bestSeats={theater.structuredTips?.seating?.bestSeats}
+          seatNotes={theater.structuredTips?.seating?.seatNotes}
           variant="show"
         />
       )}

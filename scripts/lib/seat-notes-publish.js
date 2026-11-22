@@ -26,6 +26,25 @@ const LEVEL_LABEL = {
   box: 'Box seats',
 };
 const SIDE_LABEL = { center: 'Center', sides: 'far sides', left: 'Left', right: 'Right' };
+// Display names for source hosts (link text on the card).
+const SOURCE_LABEL = {
+  'seatplan.com': 'SeatPlan',
+  'tickpick.com': 'TickPick',
+  'headout.com': 'Headout',
+  'aviewfrommyseat.com': 'A View From My Seat',
+  'rateyourseats.com': 'RateYourSeats',
+  'nytix.com': 'NYTix',
+  'reddit.com': 'Reddit',
+  'old.reddit.com': 'Reddit',
+  'broadwayworld.com': 'BroadwayWorld',
+  'forum.broadwayworld.com': 'BroadwayWorld',
+  'broadwaydirect.com': 'Broadway Direct',
+  'telecharge.com': 'Telecharge',
+  'ticketmaster.com': 'Ticketmaster',
+  'seatgeek.com': 'SeatGeek',
+  'theatermania.com': 'TheaterMania',
+  'playbill.com': 'Playbill',
+};
 
 function daysBetween(fromIso, to) {
   const a = Date.parse(fromIso);
@@ -61,6 +80,20 @@ function noteSources(n) {
 }
 
 /**
+ * One link per source site behind a note: [{ label, url }], first URL per label.
+ */
+function noteSourceLinks(n) {
+  const out = [];
+  for (const e of n.evidence || []) {
+    let h;
+    try { h = new URL(e.url).hostname.replace(/^www\./, ''); } catch { continue; }
+    const label = SOURCE_LABEL[h] || h;
+    if (!out.some((o) => o.label === label)) out.push({ label, url: e.url });
+  }
+  return out;
+}
+
+/**
  * The notes to render, in order, or [] when the theater does not clear the
  * bar (>= 2 notes, at least one watch-out or value).
  */
@@ -87,5 +120,5 @@ function latestVerified(notes) {
 
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
-  noteLocationLabel, noteSources, publishableSeatNotes, latestVerified,
+  SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
 };

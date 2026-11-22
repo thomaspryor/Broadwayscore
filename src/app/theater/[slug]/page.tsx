@@ -294,6 +294,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
           <SeatingGuidanceCard
             sections={theater.structuredTips?.seating?.sections}
             bestSeats={theater.structuredTips?.seating?.bestSeats}
+          seatNotes={theater.structuredTips?.seating?.seatNotes}
           />
 
           {/* Tips */}
