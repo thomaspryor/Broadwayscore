@@ -18,6 +18,7 @@ for (const show of fs.readdirSync(dir)) {
     const before = d.url; d.url = canonicalBritishTheatreUrl(before);
     d._urlLocaleRewrittenFrom = before;
     delete d.fetchRetryAfter;
+    delete d.fetchDiscoveryAbandoned; // abandoned flag was set against the locale URL and blocks refetch
     changed.push(`${show}/${f}`);
     if (apply) fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
   }
