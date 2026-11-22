@@ -182,7 +182,7 @@ export function landedCodeEdit(events, from, lastLand) {
       const m = /\/\.claude\/projects\//.test(p) ? null : CODE_PATH_RE.exec(p);
       if (m && isProductCode(m[1])) return m[1];
     } else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
-      for (const m of String(e.input?.command || '').matchAll(CODE_IN_CMD_RE)) if (isProductCode(m[1])) return m[1];
+      for (const m of (runShellCode(String(e.input?.command || '')) || '').matchAll(CODE_IN_CMD_RE)) if (isProductCode(m[1])) return m[1];
     }
   }
   return null;
