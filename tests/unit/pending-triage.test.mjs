@@ -267,3 +267,109 @@ describe('BRO-8023: processShow settles same-url stubs against the filed primary
     assert.equal(kept.pendingFetchAttemptResult, 'target-exists:culturesauce--thom-geier.json', 'why it stays open is recorded');
   });
 });
+
+// BRO-8065: the 18 known-junk 2025-26 queue urls (session 12bb3cbc sample) and the 6 real reviews beside them.
+// Show records carry the real shows.json dates so the url-date rule is exercised as the drain sees it.
+const S8065 = {
+  'punch-west-end-2025': PUNCH,
+  'girl-interrupted-off-broadway-2026': { title: 'Girl, Interrupted', previewsStartDate: '2026-05-13', openingDate: '2026-06-04', closingDate: '2026-07-12', category: 'off-broadway' },
+  'the-story-west-end-2026': { title: 'The Story', previewsStartDate: '2026-08-27', openingDate: '2026-09-03', closingDate: '2026-10-24', category: 'west-end' },
+  'fire-fire-off-west-end-2026': { title: 'Fire Fire', previewsStartDate: '2026-09-09', openingDate: '2026-09-11', closingDate: '2026-10-03', category: 'off-west-end' },
+  'girls-off-west-end-2026': { title: 'Girls', previewsStartDate: '2026-10-22', openingDate: '2026-10-27', closingDate: '2026-11-21', category: 'off-west-end' },
+  'the-years-west-end-2025': { title: 'The Years', previewsStartDate: '2025-01-24', openingDate: '2025-02-04', closingDate: '2025-04-19', category: 'west-end' },
+  'endgame-off-broadway-2025': { title: 'Endgame', previewsStartDate: '2025-10-22', openingDate: '2025-10-26', closingDate: '2025-11-23', category: 'off-broadway' },
+  'are-you-mad-at-me-off-broadway-2026': { title: 'Are You Mad At Me??', previewsStartDate: '2026-07-10', openingDate: '2026-07-20', closingDate: '2026-08-15', category: 'off-broadway' },
+  'anonymous-off-broadway-2026': { title: 'Anonymous', openingDate: '2026-01-29', closingDate: '2026-03-07', category: 'off-broadway' },
+  'catch-of-the-day-off-broadway-2026': { title: 'Catch of the Day', openingDate: '2026-06-10', closingDate: '2026-06-28', category: 'off-broadway' },
+  'blood-of-my-blood-west-end-2026': { title: 'Blood of my Blood', previewsStartDate: '2026-10-01', openingDate: '2026-10-07', closingDate: '2026-11-07', category: 'west-end' },
+  'spellbound-off-broadway-2026': { title: 'Spellbound', openingDate: '2026-08-19', closingDate: '2026-09-06', category: 'off-broadway' },
+  '44-off-broadway-2025': { title: '44', previewsStartDate: '2025-10-14', openingDate: '2025-11-06', closingDate: '2026-01-04', category: 'off-broadway' },
+  'jerome-off-broadway-2025': { title: 'Jerome', previewsStartDate: '2026-05-14', openingDate: '2026-06-02', closingDate: '2026-06-21', category: 'off-broadway' },
+  'erebus-off-broadway-2026': { title: 'Erebus', previewsStartDate: '2026-10-28', closingDate: '2026-10-30', category: 'off-broadway' },
+  'tosca-off-broadway-2026': { title: 'Tosca', previewsStartDate: '2026-11-01', openingDate: '2026-11-01', closingDate: '2027-05-27', category: 'off-broadway', venue: 'Metropolitan Opera House' },
+  'the-cherry-orchard-west-end-2026': { title: 'The Cherry Orchard', previewsStartDate: '2026-10-03', openingDate: '2026-10-13', closingDate: '2027-01-09', category: 'west-end' },
+  'iphigenie-en-tauride-english-national-opera-west-end-2026': { title: 'Iphigenie en Tauride - English National Opera', previewsStartDate: '2026-11-06', openingDate: '2026-11-06', closingDate: '2026-11-14', category: 'west-end' },
+  'murder-cathedral-off-west-end-2026': { title: 'Murder in the Cathedral', previewsStartDate: '2026-10-12', openingDate: '2026-10-19', closingDate: '2026-11-07', category: 'off-west-end' },
+  'an-evening-with-an-immigrant-off-west-end-2026': { title: 'An Evening With An Immigrant', previewsStartDate: '2026-10-06', openingDate: '2026-10-06', closingDate: '2026-10-07', category: 'off-west-end' },
+  'the-hope-theory-off-broadway-2026': { title: 'The Hope Theory', previewsStartDate: '2026-09-09', openingDate: '2026-09-17', closingDate: '2026-12-06', category: 'off-broadway' },
+  'cinderella-lyric-hammersmith-off-west-end-2026': { title: 'Cinderella', previewsStartDate: '2026-11-14', openingDate: '2026-11-21', closingDate: '2027-01-03', category: 'off-west-end' },
+};
+
+// 15 settle with no fetch (7 caught before BRO-8065, 8 by its rules).
+const JUNK_8065 = [
+  ['punch-west-end-2025', 'https://www.thetimes.com/culture/theatre-dance/article/james-graham-interview-punch-dear-england-87xz2w8rj'],
+  ['girl-interrupted-off-broadway-2026', 'https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html'],
+  ['the-story-west-end-2026', 'https://www.hollywoodreporter.com/movies/movie-features/katie-lee-biegel-interview-windows-on-the-world-cnn-kitchen-1236690000'],
+  ['fire-fire-off-west-end-2026', 'https://www.hollywoodreporter.com/movies/movie-reviews/earth-wind-and-fire-review-questlove-documentary-hbo-1236610757'],
+  ['girls-off-west-end-2026', 'https://www.hollywoodreporter.com/movies/movie-reviews/destroy-all-girls-review-1236665457'],
+  ['endgame-off-broadway-2025', 'https://www.hollywoodreporter.com/movies/movie-news/avengers-endgame-encore-box-office-previews-primetime-beast-1236709715'],
+  ['catch-of-the-day-off-broadway-2026', 'https://www.nytimes.com/2026/06/07/theater/june-squibb-tony-awards.html'],
+  ['the-story-west-end-2026', 'https://www.indiewire.com/criticism/movies/iron-boy-review-1235216358/'],
+  ['catch-of-the-day-off-broadway-2026', 'https://www.nytimes.com/live/2026/06/07/theater/tony-awards-2026/lesley-manville-wins-the-tony-for-best-actress-in-a-play'],
+  ['blood-of-my-blood-west-end-2026', 'https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/'],
+  ['spellbound-off-broadway-2026', 'https://deadline.com/2024/11/spellbound-film-review-1236185047/'],
+  ['44-off-broadway-2025', 'https://www.vulture.com/article/ayo-edebiri-snoopy-youre-a-good-man-charlie-brown.html'],
+  ['jerome-off-broadway-2025', 'https://www.hollywoodreporter.com/movies/movie-reviews/unstoppable-review-jharrel-jerome-jennifer-lopez-1235994309/'],
+  ['erebus-off-broadway-2026', 'https://watchcrunch.com/sean283/reviews/erebus-origin-review-340947'],
+  ['tosca-off-broadway-2026', 'https://www.broadwayworld.com/bwwopera/article/review-met-audience-tips-its-hat-to-fedora-on-new-years-eve-20230101'],
+];
+
+// 3 stay fetch candidates on purpose; the fetching drain settled each on its fetched date/body. Url text alone
+// cannot settle them without rejecting real reviews (measured over the 49,907 scored urls, BRO-8065):
+//  - 28-years-later names "Years" + "review" and is 57 days past close: a url-date rule that near flags 34 real reviews.
+//  - diego-andres-rodriguez-anonymous-content names "Anonymous", 136 days before opening (inside the OB 180-day lead).
+//  - les-miserables-valjean-javert shares no word with the show: the card's own rule is "needs fetch, not junk"
+//    (an opaque or descriptive slug is how FT/Times reviews look); an other-show-title rule flagged 26 real reviews.
+const NEEDS_FETCH_8065 = [
+  ['the-years-west-end-2025', 'https://deadline.com/2025/06/28-years-later-review-danny-boyle-jodie-comer-zombie-horror-1236436839/'],
+  ['anonymous-off-broadway-2026', 'https://deadline.com/2025/09/diego-andres-rodriguez-anonymous-content-1236553226/'],
+  ['are-you-mad-at-me-off-broadway-2026', 'https://www.nytimes.com/2026/07/21/theater/les-miserables-valjean-javert.html'],
+];
+
+const REAL_8065 = [
+  ['the-cherry-orchard-west-end-2026', 'https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-skittish-revival-kenneth-branagh-x1'],
+  ['iphigenie-en-tauride-english-national-opera-west-end-2026', 'https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera'],
+  ['murder-cathedral-off-west-end-2026', 'https://www.telegraph.co.uk/theatre/what-to-see/murder-cathedral-review-southwark-cathedraltough-brain-butt/'],
+  ['an-evening-with-an-immigrant-off-west-end-2026', 'https://www.afridiziak.com/reviews/an-evening-with-an-immigrant/'],
+  ['the-hope-theory-off-broadway-2026', 'https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/'],
+  ['cinderella-lyric-hammersmith-off-west-end-2026', 'https://www.thetimes.com/culture/theatre-dance/article/cinderella-pantomime-reviews-lyric-hammersmith-x2'],
+  // Scored corpus rows the BRO-8065 rules must leave alone (stage reviews under screen/awards-looking urls).
+  ['a-few-good-men-2026', 'https://www.usatoday.com/story/entertainment/movies/2026/10/29/a-few-good-men-broadway-tom-blyth-review/92444731007/'],
+  ['journeys-end-2007', 'https://variety.com/2007/film/awards/journey-s-end-1200510125/'],
+  ['carousel-2018', 'https://www.showbiz411.com/2018/04/13/broadway-amy-adams-uma-thurman-hit-opening-night-of-magnificent-carousel-revival-with-joshua-henry-sealing-the-deal-on-a-tony-award'],
+  ['yellow-face-2024', 'https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow'],
+];
+const SHOWS_8065 = { ...S8065,
+  'a-few-good-men-2026': { title: 'A Few Good Men', openingDate: '2026-11-03', category: 'broadway' },
+  'journeys-end-2007': { title: "Journey's End", openingDate: '2007-02-22', closingDate: '2007-06-10', category: 'broadway' },
+  'carousel-2018': { title: 'Carousel', openingDate: '2018-04-12', closingDate: '2018-09-16', category: 'broadway' },
+  'yellow-face-2024': { title: 'Yellow Face', openingDate: '2024-10-01', closingDate: '2024-11-24', category: 'broadway' },
+};
+
+describe('triagePendingStub BRO-8065 fixtures', () => {
+  const ctx = (showId) => ({ showId, show: SHOWS_8065[showId], heldIndex: new Map() });
+  for (const [showId, url] of JUNK_8065) {
+    test(`junk without a fetch: ${url}`, () => {
+      const v = T.triagePendingStub({ url }, ctx(showId));
+      assert.equal(v.verdict, 'junk', JSON.stringify(v));
+    });
+  }
+  for (const [showId, url] of [...NEEDS_FETCH_8065, ...REAL_8065]) {
+    test(`stays a fetch candidate: ${url}`, () => {
+      assert.equal(T.triagePendingStub({ url }, ctx(showId)).verdict, 'candidate');
+    });
+  }
+  test('url date: a year+ outside the run settles; inside the margin, a containing year, or no show dates does not', () => {
+    const tosca = SHOWS_8065['tosca-off-broadway-2026'];
+    assert.match(T.urlDateOutsideWindowReason('https://x.com/2023/01/tosca-review/', tosca), /more than a year/);
+    assert.equal(T.urlDateOutsideWindowReason('https://x.com/2026/11/tosca-review/', tosca), null);
+    assert.equal(T.urlDateOutsideWindowReason('https://x.com/2026/tosca-review/', tosca), null);
+    assert.equal(T.urlDateOutsideWindowReason('https://x.com/2026/03/tosca-review/', tosca), null);
+    assert.equal(T.urlDateOutsideWindowReason('https://x.com/2020/03/tosca-review/', { title: 'Tosca' }), null);
+    assert.equal(T.urlDateOutsideWindowReason('https://www.broadwayworld.com/x/article/Review-TOSCA-20010101', tosca), null);
+  });
+  test('the bare-title rule exempts owner/manual stubs', () => {
+    const url = 'https://www.vulture.com/article/ayo-edebiri-snoopy-youre-a-good-man-charlie-brown.html';
+    assert.equal(T.triagePendingStub({ url, source: 'manual-user-request' }, ctx('44-off-broadway-2025')).verdict, 'candidate');
+  });
+});
