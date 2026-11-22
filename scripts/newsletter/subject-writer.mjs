@@ -41,8 +41,11 @@ const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // First sentence of a lede. Does not split after an abbreviation ("St. Ann's
 // Warehouse", "Ms. Blakk for President"), which would cut the sentence before
 // its Critic Score and reject a good lede (ship-check, 2026-11-15).
+// A sentence ends at . ! or ? followed by a space and a word that is not lowercase,
+// so a title like "Oh, Mary!" mid-sentence ("Oh, Mary! was the best ...") does not end it.
+export const SENTENCE_BREAK = /(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+(?![a-z])/;
 export function firstSentence(text) {
-  return String(text || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/)[0] || '';
+  return String(text || '').split(SENTENCE_BREAK)[0] || '';
 }
 
 // How the critics as a group received a show, from its per-review scores
@@ -170,7 +173,7 @@ export function titleForms(title) {
 }
 
 // Wording that treats a run as still going (BRO-8053).
-const STILL_ON_RE = /\b(?:final (?:performance|show|curtain) (?:is|comes|falls|will)|last (?:chance|performance is|week)|before it closes|closes|closing|(?:is )?still (?:playing|running|on)|plays (?:its|until|through)|runs (?:until|through)|book (?:now|it|tickets)|catch it|while you can|ends (?:on|this|Saturday|Sunday))\b/i;
+const STILL_ON_RE = /\b(?:final (?:performances?|shows?|curtain|week(?:end)?|days?)\b(?! (?:was|were|came|played))|last (?:chance|performances?|days|weekend)\b|(?:its|the) last week\b|before it (?:closes|ends)|closes|closing|(?:still|now) (?:playing|running|on)\b|plays (?:its|until|through)|(?:runs|playing|running|on) (?:until|through)|(?:show|run) ends|ends (?:on|this|tonight|today|tomorrow|(?:mon|tues|wednes|thurs|fri|satur|sun)day|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*)\b|wraps|book(?:ing)? (?:now|it|tickets|before)|tickets|catch it|while you can|don'?t miss|hurry|(?:you )?(?:have|has) until)/i;
 
 export function buildPool(facts) {
   const sheet = facts.lines.map(l => `- ${l}`).join('\n');
@@ -206,10 +209,8 @@ export function buildPool(facts) {
     // venue, and the lede is not the place for a critic (owner, 2026-11-15).
     venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
     // Openings whose run ended before the email goes out (BRO-8053).
-    closedTitles: facts.lines.flatMap(l => {
-      const m = l.match(/^Opening: (.+?), .* It has already closed: /);
-      return m ? titleForms(m[1]) : [];
-    }),
+    // Matched against the known titles, not parsed, so a comma in a title is fine.
+    closedTitles: facts.titles.filter(({ title }) => facts.lines.some(l => l.startsWith(`Opening: ${title},`) && l.includes(' Never write that readers can still see it or that it is closing.'))).flatMap(({ title }) => titleForms(title)),
     // Shows whose reception line says critics split (owner, 2026-11-22).
     splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
     // Single-review scores that misrepresent their show: the pan of a show
@@ -296,7 +297,7 @@ export function checkCandidate(c, pool, recent = []) {
   // Critics split only when a reception line says so (owner, 2026-11-22).
   // The sentence must name a split show and no other show.
   const splits = pool.splitTitles || [];
-  const sentencesOf = (t) => String(t || '').split(/(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+/);
+  const sentencesOf = (t) => String(t || '').split(SENTENCE_BREAK);
   for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
     for (const sentence of sentencesOf(text)) {
       if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
@@ -311,10 +312,15 @@ export function checkCandidate(c, pool, recent = []) {
   const closed = pool.closedTitles || [];
   if (closed.length) {
     for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
-      const bad = sentencesOf(text).find(sentence => {
-        const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
-        const about = named.length ? named.some(t => closed.includes(t)) : closed.some(t => mentions(subject, t));
-        return about && STILL_ON_RE.test(stripTitles(sentence, pool.titleNames || []));
+      // A sentence that names no show is about the last show named before it
+      // ("Top Gunchained scored 79. Its final performance is Saturday."), or the subject's.
+      // Clause by clause, so "X led at 79, and Y is closing Saturday" is about Y.
+      let last = (pool.titleNames || []).filter(t => mentions(subject, t));
+      const clausesOf = (t) => sentencesOf(t).flatMap(x => x.split(/,\s+(?:and|but|while|as)\s+|;\s+|\s+(?:while|whereas)\s+/));
+      const bad = clausesOf(text).find(clause => {
+        const named = (pool.titleNames || []).filter(t => mentions(clause, t));
+        if (named.length) last = named;
+        return last.some(t => closed.includes(t)) && STILL_ON_RE.test(stripTitles(clause, pool.titleNames || []));
       });
       if (bad) { p.push(`${field} talks about a show that has already closed as if it were still running or about to close: "${bad.slice(0, 80)}"`); }
     }
@@ -483,7 +489,10 @@ export function reusable(prev, facts) {
   try {
     const pool = buildPool(facts);
     if (checkCandidate(prev, pool, []).length) return null;
-    return { ...prev, showRefs: showsNamed(`${prev.subject} ${prev.preheader} ${prev.lede}`, pool), reused: true, alternates: prev.alternates || [] };
+    // Saved alternates face today's checks too (with the kept lede), so a rule added
+    // since they were written drops them from the owner's preview (BRO-8053).
+    const alternates = (prev.alternates || []).filter(a => a && a.subject && !checkCandidate({ ...a, lede: prev.lede }, pool, []).length);
+    return { ...prev, showRefs: showsNamed(`${prev.subject} ${prev.preheader} ${prev.lede}`, pool), reused: true, alternates };
   } catch { return null; }
 }
 

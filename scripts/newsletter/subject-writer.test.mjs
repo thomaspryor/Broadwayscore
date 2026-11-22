@@ -444,3 +444,37 @@ test('a show that already closed may be praised but never called still on or clo
   // Nothing closed: the check is off (base fixture says "ends Wednesday" of a running show).
   assert.deepEqual(pool.closedTitles, []);
 });
+
+test('closed-show check: review cases (comma titles, follow-on sentences, phrasings, other shows, alternates)', () => {
+  const NOT_ON = ' Never write that readers can still see it or that it is closing.';
+  const f = {
+    ...rxFacts,
+    lines: [...rxFacts.lines, `Opening: Oh, Mary!, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21.${NOT_ON}`],
+    titles: [...rxFacts.titles, { id: 'o', slug: 'o', title: 'Oh, Mary!' }],
+    leadTitles: [...rxFacts.leadTitles, 'Oh, Mary!'],
+  };
+  const fp = buildPool(f);
+  assert.ok(fp.closedTitles.includes('Oh, Mary!'), 'a comma in the title does not cut it short');
+  const ok = { angle: 'best-reviewed opening', subject: 'Oh, Mary! hits 79/100 from 6 critics', preheader: 'It topped London this week. Eurotrash sits at 77.', lede: 'Oh, Mary! was the best-scoring London opening at a solid 79/100. Eurotrash is close behind at 77, and Goblin lands at 70.' };
+  assert.deepEqual(checkCandidate(ok, fp), []);
+  const bad = (field, text) => assert.match(checkCandidate({ ...ok, [field]: text }, fp).join(), /already closed/, text);
+  bad('subject', 'Last chance: Oh, Mary! hits 79/100');
+  // A follow-on sentence that names no show is about the show named before it.
+  bad('lede', 'Eurotrash sits at 77. Oh, Mary! scored 79/100. Its final performance is Saturday, Nov 21.');
+  for (const t of ['Its final performance Saturday, Nov 21.', 'Final performances end Saturday.', 'It is in its final weekend.', 'It ends Nov 21.', "Don't miss it.", 'Hurry, it wraps up Saturday.', 'You have until Saturday.', 'Its final performance takes place Saturday.']) bad('preheader', t);
+  // Not about the run continuing, or about another show.
+  const fine = (field, text) => assert.doesNotMatch(checkCandidate({ ...ok, [field]: text }, fp).join(), /already closed/, text);
+  fine('preheader', 'It opened last week to strong reviews. Eurotrash sits at 77.');
+  fine('preheader', 'Its final performance was Saturday. Eurotrash sits at 77.');
+  fine('lede', 'Oh, Mary! led London at a solid 79/100, and Eurotrash is closing Saturday, Nov 28. Goblin lands at 70.');
+});
+
+test('a reused subject drops saved alternates that today\'s checks reject (BRO-8053)', () => {
+  const prev = { ...tgGood, alternates: [
+    { subject: 'Top Gunchained hits 79/100, final performance Saturday', preheader: 'Eurotrash is close behind and sits at 77.', angle: 'last chance' },
+    { subject: 'Eurotrash lands at 77/100 from 26 critics', preheader: 'Goblin also opened this week and sits at 70.', angle: 'best-reviewed opening' },
+  ] };
+  const r = reusable(prev, tgFacts);
+  assert.ok(r, 'the kept candidate still passes');
+  assert.deepEqual(r.alternates.map(a => a.subject), ['Eurotrash lands at 77/100 from 26 critics']);
+});

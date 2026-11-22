@@ -3303,9 +3303,16 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
   // BRO-8053: the email is read from the end of its week (Sunday) on, so a run that ended
   // before then is over by the time anyone reads it. Say so, or the writer tells readers a
   // closed show's "final performance is Saturday" (Top Gunchained, 2026-11-16 West End).
-  const closingNote = (d) => !d || d > horizon7Str ? ''
-    : d < weekEndStr ? ` It has already closed: its final performance was ${DAY(d)}. Never write that readers can still see it or that it is closing.`
-    : ` Final performance ${DAY(d)}.`;
+  const NOT_ON = ' Never write that readers can still see it or that it is closing.';
+  const closingNote = (s) => {
+    const d = s.closingDate;
+    if (!d) return s.status === 'closed' ? ` It has already closed.${NOT_ON}` : '';
+    if (d > horizon7Str) return '';
+    if (d < weekEndStr) return ` It has already closed: its final performance was ${DAY(d)}.${NOT_ON}`;
+    // The email body treats a run ending on the send day as over (closingDate <= weekEndStr).
+    if (d === weekEndStr) return ` Its final performance is ${DAY(d)}, the day this email goes out, so treat its run as over.${NOT_ON}`;
+    return ` Final performance ${DAY(d)}.`;
+  };
   const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)}/100 from ${a.count} critics`;
   lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
   lines.push(IS_WE
@@ -3326,7 +3333,7 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
       lines.push(`Transfer, not a new opening: ${s.title} is a transferred production. Do not call it an opening, do not lead with it, and do not name its theatres. The email adds its own sentence about the transfer, so do not repeat its score.`);
       continue;
     }
-    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${closingNote(s.closingDate)}`);
+    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${closingNote(s)}`);
   }
   const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate >= weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
     .map(s => ({ s, a: aggregateScore(s.id) }))
