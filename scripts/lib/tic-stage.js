@@ -188,7 +188,8 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   // of the same listing can see the flip.
   if (title !== page.title) {
     entry.titleNormalizedFrom = page.title;
-    entry.titleNormalizedAt = discoveredAt;
+    // Same full-ISO shape applyNormalizedTitle() writes (discoveredAt is date-only).
+    entry.titleNormalizedAt = /^\d{4}-\d{2}-\d{2}$/.test(String(discoveredAt)) ? `${discoveredAt}T00:00:00.000Z` : discoveredAt;
     entry.akaTitles = [page.title];
   }
   return entry;

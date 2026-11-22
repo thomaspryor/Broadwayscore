@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const stage = require('./tic-stage.js');
-const { evaluate } = require('./tic-daily.js');
+const { evaluate, runDaily } = require('./tic-daily.js');
 
 const RAW = 'Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West';
 const CLEAN = 'Engines and Instruments of Flight: A Fantasia in Three Acts';
@@ -54,6 +54,22 @@ test('the daily run (evaluate) stages the clean title end to end', async () => {
   const res = await evaluate({ id: 13622 }, { shows: [], today: '2026-11-22', knownWriters: new Set() }, io);
   assert.equal(res.status, 'accepted');
   assert.equal(res.show.title, CLEAN);
+});
+
+// The reviewer's blocker (BRO-8054): the normalized entry carries provenance fields, and
+// add-show refuses fields outside its allowlist. A refusal is stored retry:false, so
+// the very listing this fix targets would have been skipped forever. Drive the whole
+// run through the real applyAddShow.
+test('RED-THEN-GREEN: runDaily ADDS the normalized listing (add-show accepts the provenance fields)', async () => {
+  const io = { page: async () => page(), detail: async () => detail(DESC), dates: async () => ({ openingDate: '2026-11-12' }) };
+  const shows = [];
+  const out = await runDaily({ today: '2026-11-22', listing: [{ id: 13622, reviewCount: 3 }], shows, seen: {}, io });
+  assert.equal(out.added.length, 1, JSON.stringify(out.seen));
+  const row = shows.find((s) => s.title === CLEAN);
+  assert.ok(row, 'row stored under the clean title');
+  assert.equal(row.titleNormalizedFrom, RAW);
+  assert.deepEqual(row.akaTitles, [RAW]);
+  assert.match(row.titleNormalizedAt, /^\d{4}-\d{2}-\d{2}T/, 'full ISO, same shape applyNormalizedTitle writes');
 });
 
 // Class guard: a TIC caller that forgets to pass the corpus oracle, or a writer that
