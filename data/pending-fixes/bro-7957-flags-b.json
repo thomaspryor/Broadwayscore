@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7957-flags-b",
   "planId": "3b88b6e1-6458-462f-84e6-e2781b7f355b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T03:56:44.490Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-7957: clear pointer to the Tribune copy"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T04:25:38.995Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-night-and-good-luck-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-night-and-good-luck-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"good-night-and-good-luck-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heart-of-rock-and-roll-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"heart-of-rock-and-roll-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"hells-kitchen-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"here-there-are-blueberries-2026/chicagotribune--chris-jones--on-2026-11-09.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"home-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"john-proctor-is-the-villain-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"just-in-time-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lempicka-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lempicka-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"lempicka-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "liberation-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "liberation-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"liberation-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-bear-ridge-road-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-bear-ridge-road-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"little-bear-ridge-road-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"mamma-mia-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"marjorie-prime-2025/chicagotribune--chris-jones.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
