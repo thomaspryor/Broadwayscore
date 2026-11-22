@@ -500,7 +500,13 @@ test('the Land job cap (BRO-6184, BRO-8027): above the 8 min that killed runner 
   const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
   const outer = Number(/MERGED_TREE_TIMEOUT_MS = (\d+) \* 60 \* 1000/.exec(land)[1]) * 60 * 1000;
   assert.ok(outer >= 2 * TEST_GATE_CI_TIMEOUT_MS + 2 * 60 * 1000, 'outer land cap must cover a merged and a baseline spawn at the cap the Land job really uses');
-  assert.ok(outer >= 3 * TEST_GATE_TIMEOUT_MS + 2 * 60 * 1000, 'and merged + retry + baseline at the measured spawn time (under 8 min)');
+  assert.ok(outer >= 3 * TEST_GATE_TIMEOUT_MS + 2 * 60 * 1000, 'and merged + retry + baseline at the 8 min fallback cap (defaultExec only; real spawns get 12-14 min)');
+  // The slowest of four single-spawn full runs on the Land runner (1855 files):
+  // 10m20s (run 44973627187), 10m43s (44980329472), 10m45s and 11m2s (both in
+  // 44947806474). The first BRO-8027 cap, 12 min, sat 9% above it; 14 min sits
+  // 27% above. Three spawns at this time (about 33 min) get the outer kill.
+  const MEASURED_CI_SPAWN_MS = 662 * 1000;
+  assert.ok(TEST_GATE_CI_TIMEOUT_MS >= 1.25 * MEASURED_CI_SPAWN_MS, 'the Land job cap needs a quarter of headroom over the measured spawn: a kill blocks a whole merge train');
   // One attempt = this suite + the build; land-branch.js budgets it against the deadman.
   const deadline = Number(/DEFAULT_LAND_DEADLINE_MS = (\d+) \* 60 \* 1000/.exec(land)[1]);
   assert.ok(outer / 60000 + 20 <= deadline, 'a longer outer cap needs the deadman maths in land.yml and DEFAULT_LAND_DEADLINE_MS raised with it');

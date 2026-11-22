@@ -145,6 +145,9 @@ const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('
 // per spawn (BRO-6184: a merged run was killed at 5 min / 648s on a loaded
 // runner before the baseline was consulted); the outer land cap (land-branch.js MERGED_TREE_TIMEOUT_MS) is 30 min, enough
 // for 3 spawns (merged + retry + baseline); the land.yml job budget is 125 min.
+// BRO-8027: this 8 min is now only defaultExec's fallback. computeTestGateTimeoutMs
+// gives every real spawn 12-14 min, and at the measured spawn time three spawns
+// no longer fit the 30 min outer cap (see TEST_GATE_CI_TIMEOUT_MS below).
 const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 
 // BRO-7947: the fixed 8 min cap killed the ~1550-file suite (7,500+ tests) on
@@ -152,8 +155,8 @@ const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 // 23-34 on 14 cores, 7:13 and then a >8:00 kill at load avg ~7-10 (load BELOW the
 // core count, so the load factor alone never helped; the local floor is 12 min), ~22 CPU-min total, every test before the kill `ok`. A kill
 // is still a fail-safe BLOCK, so the cap must track the machine's load, not a
-// constant. Cap = max(8 min floor, files x 250 ms) x max(1, load1 / cores),
-// clamped to [8 min, 12 min]. The 12 min ceiling sits under push-mutex.sh's
+// constant. Cap = max(12 min floor, files x 250 ms) x max(1, load1 / cores),
+// clamped to [12 min, 14 min]. The 14 min ceiling sits under push-mutex.sh's
 // PUSH_LOCK_TIMEOUT_SEC (900 s): the local floor runs while the push lock is held,
 // and waiters fail open past 15 min. Land's CI job opts out of load scaling
 // (MERGE_TEST_GATE_NO_LOAD_SCALING=1) and takes the fixed
@@ -162,14 +165,17 @@ const TEST_GATE_LOCAL_MIN_TIMEOUT_MS = 12 * 60 * 1000;
 const TEST_GATE_MAX_TIMEOUT_MS = 14 * 60 * 1000;
 const TEST_GATE_PER_FILE_MS = 250;
 // BRO-8027: the Land job's fixed per-spawn cap. It was the 8 min default, and
-// one spawn of the suite takes 5.5-7.5 min on the 4-vCPU runner: on 2026-11-22
-// three of four full merged runs were killed at exactly 8m0s (two red merge
-// trains and one refused data-only landing, runs 44961076998 and 44963945276).
-// 12 min matches the local floor. land-branch.js MERGED_TREE_TIMEOUT_MS stays
-// 30 min so one attempt keeps fitting land.yml's deadman maths: that covers
-// two spawns at the full cap (merged + baseline) and three at the measured
-// 7.5 min; slower than that and the outer kill blocks, as any kill does.
-const TEST_GATE_CI_TIMEOUT_MS = 12 * 60 * 1000;
+// across 2026-11-21 and 22 ten full merged runs were killed at exactly 8m0s (red merge
+// trains and refused landings, e.g. runs 44961076998 and 44963945276). One
+// spawn of the 1855-file suite really takes 10m20s-11m2s on the 4-vCPU runner
+// (runs 44973627187, 44980329472, 44947806474), so the first fix's 12 min left
+// only 9-16% headroom. 14 min is the most land-branch.js MERGED_TREE_TIMEOUT_MS
+// (30 min, fixed by land.yml's deadman maths) allows for two spawns at the full
+// cap (merged + baseline). Three spawns at the measured time (about 33 min) do
+// not fit: that rare triple run gets the outer kill, which blocks like any kill.
+// Nothing scales this with the file count, so suite growth of about a quarter
+// needs a faster suite, not a bigger number here.
+const TEST_GATE_CI_TIMEOUT_MS = 14 * 60 * 1000;
 
 function computeTestGateTimeoutMs({ fileCount = 0, loadAvg = 0, cores = 1, env = {} } = {}) {
   if (env.MERGE_TEST_GATE_NO_LOAD_SCALING === '1') return TEST_GATE_CI_TIMEOUT_MS;

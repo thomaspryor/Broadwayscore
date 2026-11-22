@@ -92,13 +92,13 @@ const DEFAULT_LAND_DEADLINE_MS = 55 * 60 * 1000;
 const MAX_CHURN_SKIPS = 10;
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
-// The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
+// The merged-tree suite is minutes, not seconds (10-11 min for the full suite on the runner, per
 // merge-post-merge-test-gate.js) — it gets the build's budget, not a check's.
-// 30 min (BRO-6184, BRO-8027): the usual case is ONE spawn of the gate (5.5-7.5 min measured on the runner,
-// capped at TEST_GATE_CI_TIMEOUT_MS, 12 min). A red test adds a baseline spawn and an unparseable run adds a
-// retry: 30 min covers two spawns at the full cap and three at the measured time. It stays 30 because
-// DEFAULT_LAND_DEADLINE_MS above and land.yml's deadman budget one attempt at 30 + 20 (build); a slower
-// triple run gets this outer kill, which blocks like any other kill.
+// 30 min (BRO-6184, BRO-8027): the usual case is ONE spawn of the gate (10m20s-11m2s measured on the runner,
+// capped at TEST_GATE_CI_TIMEOUT_MS, 14 min). A red test adds a baseline spawn and an unparseable run adds a
+// retry: 30 min covers two spawns at the full cap, and no longer three at the measured time (about 33 min).
+// It stays 30 because DEFAULT_LAND_DEADLINE_MS above and land.yml's deadman budget one attempt at 30 + 20
+// (build); a triple run gets this outer kill, which blocks like any other kill.
 const MERGED_TREE_TIMEOUT_MS = 30 * 60 * 1000;
 const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
