@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-8039",
+  "planId": "e3b8c38b-e63f-498e-b2e5-381afec7c962",
+  "status": "pending",
+  "createdAt": "2026-11-22T11:01:18.299Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Eurotrash (Reviews Hub): the outlet's own rating of 100% (5 stars) sits only on the duplicate twin thereviewshub--unknown.json; copy it as 5/5 stars onto the published record so the score (88 now) matches the critic's rating",
+    "steps": [
+      "eurotrash-off-west-end-2026/thereviewshub--richard-maguire.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "eurotrash-off-west-end-2026/thereviewshub--richard-maguire.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5 stars",
+        "description": "eurotrash-off-west-end-2026/thereviewshub--richard-maguire.json: originalScore"
+      }
+    ]
+  }
+}
