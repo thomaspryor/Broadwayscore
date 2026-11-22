@@ -1675,5 +1675,20 @@
       }
     ],
     "queuedAt": "2026-11-22T01:20:51.399Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/outlet-registry-live-data.test.mjs::no census host is an unresolved probable move of a registered outlet",
+    "title": "Live-data test failing: no census host is an unresolved probable move of a registered outlet (tests/unit/outlet-registry-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no census host is an unresolved probable move of a registered outlet\" in tests/unit/outlet-registry-live-data.test.mjs is red against the live corpus.\n\nunresolved domain move(s): add the host to that outlet's domainAliases (moved) or notDomainMoves (different paper)\n+ actual - expected\n\n+ [\n+   'hackneycitizen.ghost.io -> hackneycitizen'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/outlet-registry-live-data.test.mjs::no census host is an unresolved probable move of a registered outlet",
+    "fields": [],
+    "queuedAt": "2026-11-22T01:44:47.667Z"
   }
 ]
