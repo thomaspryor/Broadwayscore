@@ -121,19 +121,43 @@ function publishableSeatNotes(notes, { today = buildToday() } = {}) {
   return live;
 }
 
-/**
- * Value notes that are expired or expire within warnDays: [{ theater, where, daysLeft }].
- * `meta` is data/theater-metadata.json. Used by scripts/audit-seat-notes-expiry.js.
- */
-function valueNotesNearExpiry(meta, { today = new Date(), warnDays = 60 } = {}) {
+/** Noon UTC of the calendar day of `d`: the same clock buildToday() gives the site. */
+function noonUtc(d) {
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 12));
+}
+
+/** Value notes that could be shown (same eligibility as publishableSeatNotes). */
+function eligibleValueNotes(meta) {
   const out = [];
   for (const [theater, v] of Object.entries(meta || {})) {
     const notes = v && v.structuredTips && v.structuredTips.seating && v.structuredTips.seating.seatNotes;
     if (!Array.isArray(notes)) continue;
     for (const n of notes) {
-      if (!n || n.type !== 'value') continue;
-      const daysLeft = Math.floor(VALUE_MAX_AGE_DAYS - daysBetween(n.verifiedAt, today));
-      if (daysLeft <= warnDays) out.push({ theater, where: noteLocationLabel(n), daysLeft });
+      if (n && n.type === 'value' && n.claim && noteSources(n).length > 0) out.push({ theater, n });
+    }
+  }
+  return out;
+}
+
+/**
+ * Value notes that are expired or expire within warnDays:
+ * [{ theater, where, daysLeft, invalid? }]. `meta` is data/theater-metadata.json.
+ * Counts whole days against noon UTC of `today`, so daysLeft <= 0 exactly when
+ * publishableSeatNotes hides the note. A missing or unparseable verifiedAt is
+ * reported as invalid and expired (the site hides it too).
+ * Used by scripts/audit-seat-notes-expiry.js.
+ */
+function valueNotesNearExpiry(meta, { today = new Date(), warnDays = 60 } = {}) {
+  const t = noonUtc(today);
+  const out = [];
+  for (const { theater, n } of eligibleValueNotes(meta)) {
+    const age = daysBetween(n.verifiedAt, t);
+    const invalid = !Number.isFinite(age);
+    const daysLeft = invalid ? 0 : VALUE_MAX_AGE_DAYS - Math.floor(age);
+    if (daysLeft <= warnDays) {
+      const row = { theater, where: noteLocationLabel(n), daysLeft };
+      if (invalid) row.invalid = true;
+      out.push(row);
     }
   }
   return out;
@@ -168,5 +192,5 @@ function latestVerified(notes) {
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
   SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
-  seatNotePicks, pickText, valueNotesNearExpiry, buildToday,
+  seatNotePicks, pickText, valueNotesNearExpiry, eligibleValueNotes, buildToday,
 };

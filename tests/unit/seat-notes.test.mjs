@@ -177,6 +177,26 @@ describe('value note expiry warning (BRO-8057)', () => {
     assert.ok(valueNotesNearExpiry(meta, { today: day })[0].daysLeft < 0);
     assert.deepStrictEqual(publishableSeatNotes([watch, value], { today: day }), []);
   });
+  test('audit and site agree on the exact hide day, around the 270-day boundary', () => {
+    for (let n = 265; n <= 275; n++) {
+      const day = new Date(Date.parse('2026-11-22') + n * 86400000 + 5 * 3600000); // any time that day
+      const hidden = publishableSeatNotes([watch, value], { today: new Date(Date.parse('2026-11-22') + n * 86400000 + 12 * 3600000) }).length === 0;
+      const f = valueNotesNearExpiry(meta, { today: day, warnDays: 0 });
+      assert.strictEqual(f.length > 0, hidden, `day ${n}`);
+    }
+  });
+  test('a missing or invalid verifiedAt is reported as invalid, not Infinity days', () => {
+    const bad = { ...value, verifiedAt: 'not-a-date' };
+    const f = valueNotesNearExpiry({ T: { structuredTips: { seating: { seatNotes: [watch, bad] } } } }, { today: new Date('2026-12-01') });
+    assert.strictEqual(f.length, 1);
+    assert.strictEqual(f[0].invalid, true);
+    assert.strictEqual(f[0].daysLeft, 0);
+  });
+  test('value notes the site would never show are not audited', () => {
+    const noClaim = { ...value, claim: '' };
+    const f = valueNotesNearExpiry({ T: { structuredTips: { seating: { seatNotes: [watch, noClaim] } } } }, { today: new Date('2030-01-01') });
+    assert.deepStrictEqual(f, []);
+  });
   test('buildToday follows NEXT_PUBLIC_BUILD_DATE so server and client agree', () => {
     process.env.NEXT_PUBLIC_BUILD_DATE = '2027-01-05';
     try { assert.strictEqual(buildToday().toISOString().slice(0, 10), '2027-01-05'); }
@@ -196,5 +216,10 @@ describe('seat-note expiry alert decision (BRO-8057)', () => {
     assert.strictEqual(d.alert.severity, 'warning');
     assert.match(d.alert.description, /Test Theatre \(Center Mezzanine\): hides in 12d/);
     assert.match(d.alert.description, /Old Theatre \(Center Mezzanine\): expired 3d ago/);
+  });
+  test('invalid dates read as such, and the hint demands a price check', () => {
+    const d = decideSeatNoteExpiryAlert([{ theater: 'T', where: 'Rear', daysLeft: 0, invalid: true }]);
+    assert.match(d.alert.description, /verification date missing or invalid/);
+    assert.match(d.alert.hint, /price still holds/);
   });
 });

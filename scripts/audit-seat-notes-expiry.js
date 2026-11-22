@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { valueNotesNearExpiry, VALUE_MAX_AGE_DAYS } = require('./lib/seat-notes-publish');
+const { valueNotesNearExpiry, eligibleValueNotes, VALUE_MAX_AGE_DAYS } = require('./lib/seat-notes-publish');
 const { decideSeatNoteExpiryAlert } = require('./lib/seat-notes-expiry-alert');
 const { routeAuditDecisions } = require('./lib/audit-alert');
 
@@ -26,19 +26,28 @@ const META = path.join(__dirname, '..', 'data', 'theater-metadata.json');
 
 async function main(argv) {
   const warnArg = argv.find((a) => a.startsWith('--warn-days='));
-  const warnDays = warnArg ? Number(warnArg.split('=')[1]) : 60;
+  const warnRaw = warnArg ? warnArg.split('=')[1] : '60';
+  const warnDays = warnRaw === '' ? NaN : Number(warnRaw);
   if (!Number.isFinite(warnDays) || warnDays < 0) { console.error('audit-seat-notes-expiry: --warn-days must be a non-negative number'); return 2; }
   const strict = argv.includes('--strict');
   const meta = JSON.parse(fs.readFileSync(META, 'utf8'));
   const found = valueNotesNearExpiry(meta, { today: new Date(), warnDays });
 
-  if (argv.includes('--json')) console.log(JSON.stringify(found, null, 2));
+  const total = eligibleValueNotes(meta).length;
+  const json = argv.includes('--json');
+  if (json) console.log(JSON.stringify(found, null, 2));
+  const say = json ? (m) => console.error(m) : (m) => console.log(m);
   for (const f of found) {
-    const when = f.daysLeft <= 0 ? `expired ${-f.daysLeft} days ago and is now hidden` : `expires in ${f.daysLeft} days`;
-    console.log(`::warning::Seat-note value tip for ${f.theater} (${f.where}) ${when}. Re-verify with scripts/seat-notes.js.`);
+    const when = f.invalid ? 'has a missing or invalid verification date and is hidden'
+      : f.daysLeft <= 0 ? 'has expired and is now hidden' : `hides in ${f.daysLeft} days`;
+    say(`::warning::Seat-note value tip for ${f.theater} (${f.where}) ${when}. Re-verify with scripts/seat-notes.js.`);
   }
-  if (!found.length) console.log(`Seat-note value tips: none expiring within ${warnDays} days (max age ${VALUE_MAX_AGE_DAYS}).`);
-  if (argv.includes('--alert')) await routeAuditDecisions(decideSeatNoteExpiryAlert(found), 'audit-seat-notes-expiry');
+  if (!found.length) say(`Seat-note value tips: none expiring within ${warnDays} days (max age ${VALUE_MAX_AGE_DAYS}, ${total} checked).`);
+  if (argv.includes('--alert')) {
+    // An empty corpus (wiped or reshaped metadata) must never close a real card.
+    if (total === 0) say('::warning::Seat-note expiry audit found no value notes at all; not touching the alert card.');
+    else await routeAuditDecisions(decideSeatNoteExpiryAlert(found), 'audit-seat-notes-expiry');
+  }
   return strict && found.length ? 1 : 0;
 }
 
