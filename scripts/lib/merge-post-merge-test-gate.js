@@ -155,16 +155,24 @@ const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 // constant. Cap = max(8 min floor, files x 250 ms) x max(1, load1 / cores),
 // clamped to [8 min, 12 min]. The 12 min ceiling sits under push-mutex.sh's
 // PUSH_LOCK_TIMEOUT_SEC (900 s): the local floor runs while the push lock is held,
-// and waiters fail open past 15 min. Land's CI job opts out
-// (MERGE_TEST_GATE_NO_LOAD_SCALING=1): its outer cap (land-branch.js
-// MERGED_TREE_TIMEOUT_MS, 30 min) and the land.yml retry margin are sized for
-// three 8-min spawns, and a 4-vCPU runner's load is not other workers.
+// and waiters fail open past 15 min. Land's CI job opts out of load scaling
+// (MERGE_TEST_GATE_NO_LOAD_SCALING=1) and takes the fixed
+// TEST_GATE_CI_TIMEOUT_MS below: a 4-vCPU runner's load is not other workers.
 const TEST_GATE_LOCAL_MIN_TIMEOUT_MS = 12 * 60 * 1000;
 const TEST_GATE_MAX_TIMEOUT_MS = 14 * 60 * 1000;
 const TEST_GATE_PER_FILE_MS = 250;
+// BRO-8027: the Land job's fixed per-spawn cap. It was the 8 min default, and
+// one spawn of the suite takes 5.5-7.5 min on the 4-vCPU runner: on 2026-11-22
+// three of four full merged runs were killed at exactly 8m0s (two red merge
+// trains and one refused data-only landing, runs 44961076998 and 44963945276).
+// 12 min matches the local floor. land-branch.js MERGED_TREE_TIMEOUT_MS stays
+// 30 min so one attempt keeps fitting land.yml's deadman maths: that covers
+// two spawns at the full cap (merged + baseline) and three at the measured
+// 7.5 min; slower than that and the outer kill blocks, as any kill does.
+const TEST_GATE_CI_TIMEOUT_MS = 12 * 60 * 1000;
 
 function computeTestGateTimeoutMs({ fileCount = 0, loadAvg = 0, cores = 1, env = {} } = {}) {
-  if (env.MERGE_TEST_GATE_NO_LOAD_SCALING === '1') return TEST_GATE_TIMEOUT_MS;
+  if (env.MERGE_TEST_GATE_NO_LOAD_SCALING === '1') return TEST_GATE_CI_TIMEOUT_MS;
   // Operator override: validated (NaN/0/negative fall through; spawnSync treats
   // timeout 0 as NO timeout, so the rounded value must be >= 1 s) and bounded.
   const override = Math.round(Number(env.MERGE_TEST_GATE_TIMEOUT_MS));
@@ -514,6 +522,32 @@ function selectTestFiles(cwd, changedFiles, { onlyListed = false } = {}) {
   return [...new Set(files)].filter((rel) => !tsxManifest.has(rel)).sort();
 }
 
+// BRO-8027: the environment the gate hands to the tests it runs. The gate's own
+// knobs (every MERGE_TEST_GATE_* variable) configure the GATE, never a test:
+// land-branch.js sets MERGE_TEST_GATE_NO_LOAD_SCALING=1 for the Land job, and
+// while that leaked through, a test that reads the cap from process.env was
+// red on merged AND baseline in every Land run, so each full re-check silently
+// ran the whole suite twice. Pure; never mutates its input.
+function testChildEnv(env = process.env) {
+  const out = {};
+  for (const [k, v] of Object.entries(env || {})) {
+    if (k === 'NODE_TEST_CONTEXT' || k.startsWith('MERGE_TEST_GATE_')) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
+// The gate's one-line verdict as its CLI prints it, picked out of the full
+// stdout (TAP plus notes) so a caller can log it on a pass. Pure.
+function floorSummaryLine(stdout) {
+  const lines = String(stdout || '').split('\n');
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const m = /^post-merge test floor: (passed|skipped) \((.*)\)\s*$/.exec(lines[i]);
+    if (m) return `${m[1]} (${m[2]})`;
+  }
+  return null;
+}
+
 function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
   // NODE_TEST_CONTEXT (set by node's own --test runner on itself) makes a
   // NESTED `node --test` child assume it's a subtest reporting results back
@@ -522,8 +556,7 @@ function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
   // .test.mjs (running under `node --test` already) or, in principle, this
   // gate invoked from inside some other test-runner wrapper — strip it so
   // the child always reports its own real exit code.
-  const env = { ...process.env };
-  delete env.NODE_TEST_CONTEXT;
+  const env = testChildEnv(process.env);
   // --test-reporter=tap (not the default spec reporter) so parseTapOutput()
   // can key failures by <repo-relative-file>::<test name> for the baseline
   // diff below. `not ok N - <test name>` still carries the literal test name,
@@ -683,7 +716,7 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies, env = process.env } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
@@ -721,7 +754,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   }
   // Computed ONCE so the merged, retry and baseline spawns share one cap (the
   // 1-min load average would otherwise differ between them).
-  const timeoutMs = currentTestGateTimeoutMs(testFiles.length);
+  const timeoutMs = currentTestGateTimeoutMs(testFiles.length, env);
   const startedAt = Date.now();
   const wallSec = () => ((Date.now() - startedAt) / 1000).toFixed(0);
   let result = execFn(cwd, testFiles, timeoutMs);
@@ -925,6 +958,9 @@ module.exports = {
   TEST_GATE_TIMEOUT_MS,
   TEST_GATE_MAX_TIMEOUT_MS,
   TEST_GATE_LOCAL_MIN_TIMEOUT_MS,
+  TEST_GATE_CI_TIMEOUT_MS,
+  testChildEnv,
+  floorSummaryLine,
   computeTestGateTimeoutMs,
   REQUIRED_WORKFLOW_GUARDS,
   EXCLUDED_WORKFLOW_GUARDS,
@@ -985,9 +1021,13 @@ if (require.main === module) {
     makeBaselineCheckout,
     removeBaselineCheckout,
     onlyListed: process.env.MERGE_TEST_GATE_ONLY_LISTED === '1',
+    env: process.env,
   });
   if (ran) {
     process.stdout.write(output);
+    // The pre-existing and retry notes end without a newline; the verdict line
+    // must start its own line so floorSummaryLine() (and a reader) can find it.
+    if (output && !output.endsWith('\n')) process.stdout.write('\n');
     if (passed) console.log(`post-merge test floor: passed (${reason})`);
   } else {
     console.log(`post-merge test floor: skipped (${reason})`);

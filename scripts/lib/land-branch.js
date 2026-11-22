@@ -78,7 +78,7 @@ const { execFileSync } = require('child_process');
 
 const { defaultDetail, tapDetail, runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
-const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
+const { isRunnableTestFile, floorSummaryLine } = require('./merge-post-merge-test-gate.js');
 const { segmentHeads } = require('./land-train.js');
 const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
 const { collectBuildScriptDependencies } = require('./build-script-dependencies.js');
@@ -94,8 +94,11 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 // The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
 // merge-post-merge-test-gate.js) — it gets the build's budget, not a check's.
-// 30 min (BRO-6184): the gate's worst case is merged run + unparseable retry + baseline run,
-// 3 spawns x TEST_GATE_TIMEOUT_MS (8 min) = 24 min plus checkout setup.
+// 30 min (BRO-6184, BRO-8027): the usual case is ONE spawn of the gate (5.5-7.5 min measured on the runner,
+// capped at TEST_GATE_CI_TIMEOUT_MS, 12 min). A red test adds a baseline spawn and an unparseable run adds a
+// retry: 30 min covers two spawns at the full cap and three at the measured time. It stays 30 because
+// DEFAULT_LAND_DEADLINE_MS above and land.yml's deadman budget one attempt at 30 + 20 (build); a slower
+// triple run gets this outer kill, which blocks like any other kill.
 const MERGED_TREE_TIMEOUT_MS = 30 * 60 * 1000;
 const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
@@ -589,7 +592,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     const run = (name, argv, opts = {}) => {
       const startedAt = Date.now();
       try {
-        execFileSync(argv[0], argv.slice(1), {
+        const stdout = execFileSync(argv[0], argv.slice(1), {
           cwd, stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8',
           timeout: opts.timeoutMs || CHECK_TIMEOUT_MS, env: opts.env || env, input: opts.input,
           // The merged-tree floor emits ~50k TAP lines (>1MB). Node's default
@@ -598,7 +601,12 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
           // dry-run of this lib (BRO-3873).
           maxBuffer: CHECK_OUTPUT_MAX_BYTES,
         });
-        extra.push({ name, pass: true, ms: Date.now() - startedAt });
+        // BRO-8027: a pass used to drop the check's output, so a test that was
+        // red on merged AND baseline (a second full spawn every landing) never
+        // showed in a Land log. Keep the check's own one-line verdict.
+        let summary = null;
+        try { summary = opts.summary ? (opts.summary(stdout) || 'passed (no verdict line in its output)') : null; } catch { summary = null; }
+        extra.push({ name, pass: true, ms: Date.now() - startedAt, ...(summary ? { summary } : {}) });
       } catch (err) {
         if (err && err.code === 'ENOBUFS') err.stderr = `${err.stderr || ''}\ncheck output exceeded CHECK_OUTPUT_MAX_BYTES (${CHECK_OUTPUT_MAX_BYTES}) — the check was killed, this is NOT a verdict on the code`;
         // Keep the full output: the detail string is a summary, and a merged-
@@ -630,6 +638,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
         timeoutMs: MERGED_TREE_TIMEOUT_MS,
         env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '', MERGE_TEST_GATE_NO_LOAD_SCALING: '1', ...(small ? { MERGE_TEST_GATE_ONLY_LISTED: '1' } : {}) },
         detail: tapDetail,
+        summary: floorSummaryLine,
       });
     }
 
@@ -641,6 +650,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     // BRO-6276: the in-lock re-check is the landing queue's throughput cap
     // (14-18 min per train on 2026-10-25); say where the time went.
     log(`[land] check timings: ${checkTimings({ safeMs: safeEnd - safeStart, extra })}`);
+    for (const r of extra) if (r.pass && r.summary) log(`[land] ${r.name}: ${r.summary}`);
     return merged;
   } finally {
     try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
