@@ -439,5 +439,36 @@
     "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
     "fields": [],
     "queuedAt": "2026-11-22T16:48:54.716Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8054-title-byline-sticks",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8054-title-byline-sticks",
+    "description": "land.yml did not land land/bro-8054-title-byline-sticks: the unit-tests-node gate went red at cce45670d5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45045314059",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8054-title-byline-sticks"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cce45670d53eb741e67b8b03dd7486ce64685796"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45045314059"
+      }
+    ],
+    "queuedAt": "2026-11-22T17:01:44.885Z"
   }
 ]
