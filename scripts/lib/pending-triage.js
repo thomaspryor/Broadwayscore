@@ -143,7 +143,8 @@ function urlMissesShortTitle(url, title) {
   // 3+ parts: "N/A" (2) has opaque review urls (lightingandsoundamerica story.asp?ID=) in the scored corpus.
   if (parts.length < 3 || parts.some((w) => w.length >= 3 || /\d/.test(w))) return false;
   // Only a descriptive slug (3+ words) can be judged: an opaque url (FT /content/<uuid>, ?id=) says nothing.
-  const words = finalSlug(url).toLowerCase().replace(/\.html?$/i, '').split(/[^a-z]+/).filter((w) => w.length >= 3);
+  // Whole hyphen/underscore parts of 3+ letters, hex-only parts excluded (a uuid's "abcdef" is no word).
+  const words = finalSlug(url).toLowerCase().replace(/\.html?$/i, '').split(/[-_.]+/).filter((w) => /^[a-z]{3,}$/.test(w) && !/^[a-f]+$/.test(w));
   if (words.length < 3) return false;
   const re = new RegExp(`(?:^|[^a-z0-9])${parts.slice(0, 3).join('[-_]?')}(?:[^a-z0-9]|$)`);
   return !re.test(String(url || '').toLowerCase());
@@ -258,7 +259,7 @@ function triagePendingStub(data, ctx = {}) {
     // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
     if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return { verdict: 'junk', reason: 'film/TV section URL, not a stage review' };
     if (segs[0] === 'live') return { verdict: 'junk', reason: 'live-blog URL, not a review' };
-    if (!REVIEW_TOKEN_RE.test(slug) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
+    if (!REVIEW_TOKEN_RE.test(slug.replace(/\.html?$/i, '')) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
   }
   if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it

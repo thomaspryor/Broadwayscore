@@ -385,6 +385,7 @@ describe('BRO-8065: bot-wall (sgcaptcha) urls', () => {
     assert.equal(N.unwrapChallengeUrl('https://x.com/.well-known/captcha/?y=1'), null);
     assert.equal(N.unwrapChallengeUrl('https://example.com/.well-known/captcha/?r=%2F%5Cother.example%2Freview'), null, 'never a slash-backslash hop off-site');
     assert.equal(N.unwrapChallengeUrl('https://example.com/.well-known/captcha/?r=%2F'), null, 'a bare root is no article');
+    assert.equal(N.unwrapChallengeUrl('https://example.com/.well-known/captcha/?r=%2F%3Fp%3D10339'), 'https://example.com/?p=10339', 'a query-routed post is an article');
     assert.ok(N.isChallengeUrl(WALL));
   });
   test('maybeUpgradeUrl never adopts a bot-wall url', () => {
@@ -456,6 +457,9 @@ test('BRO-8065: the flip-flop breaker never keeps (or pins) a bot-wall url over 
   if (typeof _flipFlopShouldTakeIncoming === 'function') {
     assert.equal(_flipFlopShouldTakeIncoming(WALL, 'https://www.othersite.com/reviews/girls/'), false);
     assert.equal(_flipFlopShouldTakeIncoming(WALL, REAL), true);
+    const QW = 'https://www.lsa.com/.well-known/captcha/?r=%2Fnews%2Fstory.asp%3FID%3D1111';
+    assert.equal(_flipFlopShouldTakeIncoming(QW, 'https://www.lsa.com/news/story.asp?ID=2222'), false, 'a different query-routed article');
+    assert.equal(_flipFlopShouldTakeIncoming(QW, 'https://www.lsa.com/news/story.asp?ID=1111'), true);
   }
 });
 
@@ -463,7 +467,8 @@ describe('BRO-8065 ship-check: rules that must not settle on url text alone', ()
   test('an opaque url never settles a short title; a range url date never settles a show with a declared earlier run', () => {
     const NOID = { title: 'No I.D.', openingDate: '2023-04-19', closingDate: '2023-05-06' };
     assert.equal(T.triagePendingStub({ url: 'https://www.ft.com/content/0b6c1d6e-3d2a-4c1e-9f1e-123456789abc', title: 'No I.D. review' }, { showId: 'no-i-d-west-end-2023', show: NOID }).verdict, 'candidate');
-    const S = { title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01', priorRuns: [{ startDate: '2023-06-01', endDate: '2023-06-30', venue: 'Almeida' }] };
+    assert.equal(T.triagePendingStub({ url: 'https://www.ft.com/content/abcdef12-abcd-4abc-9abc-abcdef123456' }, { showId: 'no-i-d-west-end-2023', show: NOID }).verdict, 'candidate');
+    const S = { title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01', priorRuns: [{ openingDate: '2023-06-01', closingDate: '2023-06-30', venue: 'Almeida' }] };
     assert.equal(T.urlDateOutsideWindowReason('https://x.com/2023/review-of-a-show/', S), null);
     assert.equal(T.urlDateOutsideWindowReason('https://foo.blogspot.com/2023/06/review.html', S), null);
     const S2 = { title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01' };
@@ -472,6 +477,7 @@ describe('BRO-8065 ship-check: rules that must not settle on url text alone', ()
   test('an awards slug that is itself a review, and a transfer slug, stay candidates', () => {
     const show = { title: 'Hamlet', openingDate: '2026-03-01', venue: 'Olivier Theatre' };
     assert.equal(T.triagePendingStub({ url: 'https://www.examplenews.com/theatre/tony-awards-contender-review-a-new-play/' }, { showId: 'h', show }).verdict, 'candidate');
+    assert.equal(T.triagePendingStub({ url: 'https://www.examplenews.com/theatre/tony-awards-contender-review.html' }, { showId: 'h', show }).verdict, 'candidate');
     const sib = [{ id: 'hamlet-off-west-end-2025', venue: 'Young Vic' }];
     assert.equal(T.triagePendingStub({ url: 'https://www.examplenews.com/hamlet-transfers-from-the-young-vic-review' }, { showId: 'h', show, sameTitleShows: sib }).verdict, 'candidate');
   });
@@ -504,4 +510,21 @@ describe('BRO-8065: short titles and same-title sibling venues (2015-24 queue)',
     const crucible = { title: 'The Crucible', openingDate: '2016-03-31', venue: 'Walter Kerr Theatre' };
     assert.equal(T.triagePendingStub({ url: 'http://www.hollywoodreporter.com/review/saoirse-ronan-crucible-theater-review-879646' }, { showId: 'the-crucible-2016', show: crucible, sameTitleShows: [{ id: 'the-crucible-crucible-regional-2024', venue: 'Crucible Theatre, Sheffield' }] }).verdict, 'candidate');
   });
+});
+
+test('BRO-8065 review: the drain never deletes a stub whose url year is a declared earlier run', async () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const show = { id: 'some-play-west-end-2026', title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01', category: 'west-end',
+    priorRuns: [{ openingDate: '2023-06-01', closingDate: '2023-06-30', venue: 'Almeida Theatre' }] };
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8065y-'));
+  const dir = path.join(root, '_pending', show.id);
+  fs.mkdirSync(dir, { recursive: true });
+  const f = path.join(dir, 'guardian--1.json');
+  fs.writeFileSync(f, JSON.stringify({ outletId: 'guardian', criticName: 'Unknown', url: 'https://www.theguardian.com/stage/2023/jun/10/some-play-review-almeida' }));
+  const r = await processShow(show.id, { root, show, dryRun: false, triageOnly: true, heldIndex: new Map(), explicitScope: false,
+    fetch: async () => { throw new Error('no fetch'); }, alert: async () => {}, resolve: () => {}, emit: () => {},
+    budget: { exceeded: () => false, minutes: 5 } });
+  assert.ok(fs.existsSync(f), 'kept on disk');
+  assert.equal(r.rejected || 0, 0);
+  assert.ok(!JSON.parse(fs.readFileSync(f, 'utf8')).promoteSkippedReason);
 });

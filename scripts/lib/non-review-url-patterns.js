@@ -285,8 +285,8 @@ function unwrapChallengeUrl(url) {
   let out;
   try { out = new URL(r, u.origin); } catch { return null; }
   // Same origin only (a "/\\other.host" r= would otherwise resolve off-site),
-  // and a bare root is a homepage, not an article.
-  if (out.origin !== u.origin || out.pathname === '/' || isChallengeUrl(out.href)) return null;
+  // and a bare root is a homepage, not an article (a query-routed /?p=123 WordPress post is one).
+  if (out.origin !== u.origin || (out.pathname === '/' && !out.search) || isChallengeUrl(out.href)) return null;
   return out.href;
 }
 /** Is this url a bot-wall interstitial rather than an article? Pure. */
