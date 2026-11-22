@@ -85,3 +85,40 @@ describe('validateSeatNotes', () => {
     assert.ok(p.some((x) => /em dash/.test(x)), p.join('\n'));
   });
 });
+
+const { quoteOnPage, quoteMatchesLocation, shrinkProblems, houseTitles } = require('../../scripts/seat-notes.js');
+const { pageNamesTheater } = require('../../scripts/lib/seat-adjudication.js');
+
+describe('seat-notes grounding helpers', () => {
+  const page = 'The Mezzanine overhang starts at Orchestra row K; seats beyond this may experience cut-off.';
+  test('a quote must appear on the page on word boundaries', () => {
+    assert.strictEqual(quoteOnPage('overhang starts at Orchestra row K', page), true);
+    assert.strictEqual(quoteOnPage('verhang starts at Orchestra row K', page), false);
+    assert.strictEqual(quoteOnPage('short', page), false);
+  });
+  test('the quote has to name the level or one of the rows', () => {
+    assert.strictEqual(quoteMatchesLocation('starts at Orchestra row K', { level: 'orchestra' }), true);
+    assert.strictEqual(quoteMatchesLocation('Seats in rows E-L are a little cheaper', { level: 'mezzanine', rows: 'E-J' }), true);
+    assert.strictEqual(quoteMatchesLocation('Seats in rows E-L are a little cheaper', { level: 'mezzanine', rows: 'M-P' }), false);
+    assert.strictEqual(quoteMatchesLocation('a little cheaper overall', { level: 'balcony' }), false);
+  });
+  test('the writer refuses a large drop in notes or watch-outs', () => {
+    const n = (type) => ({ type });
+    assert.deepStrictEqual(shrinkProblems('T', [n('watch-out'), n('value')], [n('watch-out'), n('value')]), []);
+    assert.ok(shrinkProblems('T', [n('watch-out'), n('watch-out'), n('value')], [n('value')]).some((x) => /watch-outs would drop/.test(x)));
+    assert.deepStrictEqual(shrinkProblems('T', undefined, [n('value')]), []);
+  });
+  test('only titles of shows at this house count as show names', () => {
+    const shows = [
+      { title: 'Still', venue: 'DR2 Theatre' },
+      { title: 'Moulin Rouge! The Musical', venue: 'Al Hirschfeld Theatre' },
+      { title: 'Kinky Boots', venue: 'Hirschfeld Theatre' },
+    ];
+    assert.deepStrictEqual(houseTitles(shows, 'Al Hirschfeld Theatre'), ['Moulin Rouge! The Musical', 'Kinky Boots']);
+  });
+  test('seat guides that use the short theater name still count as naming it', () => {
+    assert.strictEqual(pageNamesTheater('Photos at Barrymore Theatre', 'Ethel Barrymore Theatre'), true);
+    assert.strictEqual(pageNamesTheater('the Kerr Theater seating chart', 'Walter Kerr Theatre'), true);
+    assert.strictEqual(pageNamesTheater('the Lyric Theatre', 'Ethel Barrymore Theatre'), false);
+  });
+});

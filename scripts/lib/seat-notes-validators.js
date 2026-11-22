@@ -13,7 +13,7 @@ const SIDES = new Set(['center', 'left', 'right', 'sides']);
 // Pages a note may cite. Anything else (an arbitrary page a model surfaced) is refused.
 const SOURCE_HOSTS = new Set([
   'seatplan.com', 'tickpick.com', 'headout.com', 'aviewfrommyseat.com', 'rateyourseats.com',
-  'nytix.com', 'reddit.com', 'old.reddit.com', 'broadwayworld.com', 'broadwaydirect.com',
+  'nytix.com', 'reddit.com', 'old.reddit.com', 'broadwayworld.com', 'forum.broadwayworld.com', 'broadwaydirect.com',
   'telecharge.com', 'ticketmaster.com', 'seatgeek.com', 'theatermania.com', 'playbill.com',
 ]);
 // House notes only (owner-approved plan v4): a claim about one production's
