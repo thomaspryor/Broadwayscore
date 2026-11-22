@@ -1,39 +1,21 @@
 {
-  "updatedAt": "2026-11-22T00:36:35.586Z",
-  "processed": 13,
-  "failed": 15,
-  "successRate": "46.4%",
+  "updatedAt": "2026-11-22T01:01:59.885Z",
+  "processed": 370,
+  "failed": 252,
+  "successRate": "59.5%",
   "tierBreakdown": {
-    "playwright": 9,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 207,
+    "amp": 1,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 39,
+    "scrapingbee": 23,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 107
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-11-21T22:35:04.094Z",
-      "event": "bb-session",
-      "session": "725cd94b",
-      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
-    },
-    {
-      "t": "2026-11-21T22:35:24.031Z",
-      "event": "bb-session",
-      "session": "5fa6c7de",
-      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
-    },
-    {
-      "t": "2026-11-21T22:44:54.086Z",
-      "event": "bb-session",
-      "session": "d6da84f3",
-      "url": "https://parterre.com/broadcast/109261/la-boheme/"
-    },
     {
       "t": "2026-11-21T23:00:36.159Z",
       "event": "bb-session",
@@ -131,6 +113,23 @@
       "event": "bb-session",
       "session": "624088d6",
       "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
+    },
+    {
+      "t": "2026-11-22T00:40:14.860Z",
+      "event": "bb-session",
+      "session": "9e1dbd38",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-22T00:40:15.773Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T01:00:10.167Z",
+      "event": "bb-session",
+      "session": "47360c15",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/beaches-musical-to-close-2026-t"
     }
   ]
 }
