@@ -1449,51 +1449,6 @@
     "queuedAt": "2026-11-21T22:54:52.934Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-21.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-21T23:05:28.690Z"
-  },
-  {
-    "conditionKey": "land:land/bro-7324-ledger-truth",
-    "title": "Landing blocked: resolve red on land/bro-7324-ledger-truth",
-    "description": "land.yml did not land land/bro-7324-ledger-truth: the resolve gate went red at b1df46b4ec. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/bro-7324-ledger-truth tip is a140139c9b (origin/land/bro-7324-ledger-truth), not the verified tip b1df46b4ec — a newer push superseded this landing; nothing pushed (attempts 0, 33.2s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44957621476",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-7324-ledger-truth"
-      },
-      {
-        "name": "gate",
-        "value": "resolve"
-      },
-      {
-        "name": "tip",
-        "value": "b1df46b4ec24b00fac43767f8b92fa21983a7aa5"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44957621476"
-      }
-    ],
-    "queuedAt": "2026-11-21T23:58:28.496Z"
-  },
-  {
     "conditionKey": "land:land/bro-7324-retro",
     "title": "Landing blocked: deadline red on land/bro-7324-retro",
     "description": "land.yml did not land land/bro-7324-retro: the deadline gate went red at d7b1c455bf. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7324-retro @ d7b1c455bf (origin/land/bro-7324-retro) → origin/main @ de096e8a32 [land] attempt 1/3: rebased onto de096e8a32, 1 file(s) changed — running checks [land] verified-base: main moved 4837529558 → de096e8a32 across 292 file(s), substantive — re-checking on the merged tree (+5 test file(s) changed on main since the verified base); full re-check: branch and main both changed Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44954737714",
@@ -1554,6 +1509,51 @@
       }
     ],
     "queuedAt": "2026-11-21T23:17:10.813Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T00:13:35.306Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7324-ledger-truth",
+    "title": "Landing blocked: resolve red on land/bro-7324-ledger-truth",
+    "description": "land.yml did not land land/bro-7324-ledger-truth: the resolve gate went red at b1df46b4ec. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/bro-7324-ledger-truth tip is a140139c9b (origin/land/bro-7324-ledger-truth), not the verified tip b1df46b4ec — a newer push superseded this landing; nothing pushed (attempts 0, 33.2s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44957621476",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7324-ledger-truth"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "b1df46b4ec24b00fac43767f8b92fa21983a7aa5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44957621476"
+      }
+    ],
+    "queuedAt": "2026-11-21T23:58:28.496Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-deep-blue-sea-west-end-2025",

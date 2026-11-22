@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T23:08:46.012Z",
+  "generatedAt": "2026-11-22T00:14:02.181Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,11 @@
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "openingDate": "2026-11-23"
     },
     {
       "id": "the-snowman-off-west-end-2026",
@@ -52,11 +57,6 @@
       "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
       "title": "Bigfoot Ripped My Dog In Half I Saw It",
       "openingDate": "2026-11-20"
-    },
-    {
-      "id": "downstate-2026",
-      "title": "Downstate",
-      "openingDate": "2026-11-15"
     },
     {
       "id": "now-you-see-me-live-2026",
@@ -109,21 +109,6 @@
       "openingDate": "2026-11-21"
     },
     {
-      "id": "our-town-regional-2026",
-      "title": "Our Town",
-      "openingDate": "2026-11-15"
-    },
-    {
-      "id": "radio-galaxy-regional-2026",
-      "title": "Radio Galaxy",
-      "openingDate": "2026-11-15"
-    },
-    {
-      "id": "nixon-in-china-regional-2026",
-      "title": "Nixon in China",
-      "openingDate": "2026-11-15"
-    },
-    {
       "id": "entre-dos-sombras-regional-2026",
       "title": "Entre Dos Sombras",
       "openingDate": "2026-11-16"
@@ -132,11 +117,6 @@
       "id": "takes-all-kinds-regional-2026",
       "title": "Takes All Kinds",
       "openingDate": "2026-11-16"
-    },
-    {
-      "id": "the-winters-tale-mrs-regional-2026",
-      "title": "The Winter's Tale",
-      "openingDate": "2026-11-15"
     },
     {
       "id": "my-english-persian-kitchen-regional-2026",
@@ -171,6 +151,10 @@
   ],
   "skipped": [
     {
+      "showId": "seven-guitars-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "fantasma-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -187,7 +171,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -206,22 +190,23 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 830,
-  "matchedGaps": 0,
+  "itemsScanned": 892,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/eurotrash-young-vic/",
+      "headline": "Eurotrash &#8211; The Young Vic",
+      "publishDate": "2026-11-21"
+    },
     {
       "showId": "elektra-off-broadway-2026",
       "title": "Elektra",
