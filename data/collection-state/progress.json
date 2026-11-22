@@ -1,23 +1,125 @@
 {
   "processed": [
-    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json"
+    "in-the-next-room-2009/sfgate--lily-janiak.json",
+    "in-the-next-room-2009/whatsonstage--unknown.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json"
+      "in-the-next-room-2009/whatsonstage--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json",
+      "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "rent-west-end-2026/ground--unknown.json",
+      "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
+      "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    ],
+    "scrapingbee": [
+      "high-school-musical-off-west-end-2026/ground--unknown.json",
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-22T17:29:36.584Z",
-  "lastProcessed": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
-  "log": []
+  "startTime": "2026-11-22T17:18:45.470Z",
+  "lastProcessed": "downstate-2026/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-22T17:32:26.775Z",
+      "event": "bb-session",
+      "session": "da4ed712",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-22T17:32:27.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T17:34:03.359Z",
+      "event": "bb-session",
+      "session": "27d9e203",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-22T17:34:04.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T17:34:22.471Z",
+      "event": "bb-session",
+      "session": "f9de8e26",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-22T17:34:23.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T17:37:28.113Z",
+      "event": "bb-session",
+      "session": "e3fe4439",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T17:37:28.959Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T17:37:46.229Z",
+      "event": "bb-session",
+      "session": "f2e633ec",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T17:37:47.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ],
+  "failed": [
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json"
+  ]
 }
