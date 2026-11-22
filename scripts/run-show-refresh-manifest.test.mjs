@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { run } = require('./run-show-refresh-manifest.js');
 const { verify } = require('./verify-show-refresh-manifest.js');
-const { buildManifest, MANIFEST_FILE } = require('./lib/show-refresh/manifest.js');
+const { buildManifest, isUsableManifest, MANIFEST_FILE } = require('./lib/show-refresh/manifest.js');
 
 const quiet = { log() {}, warn() {} };
 
@@ -75,7 +75,7 @@ function realManifest(dataFiles, publicSha) {
   });
 }
 
-test('verifier keeps a manifest whose data is unchanged and removes one whose data moved', t => {
+test('verifier keeps a manifest whose data is unchanged and marks invalid (never deletes) one whose data moved', t => {
   const root = tempRoot(t, null);
   fs.writeFileSync(path.join(root, 'data', 'shows.json'), '{"a":1}');
   fs.writeFileSync(manifestAt(root), JSON.stringify(realManifest({ 'shows.json': '{"a":1}' }, null)));
@@ -84,14 +84,28 @@ test('verifier keeps a manifest whose data is unchanged and removes one whose da
   const r = verify({ root, log: quiet, env: {} });
   assert.equal(r.ok, false);
   assert.match(r.problems[0], /shows\.json changed during the build/);
-  assert.equal(fs.existsSync(manifestAt(root)), false);
+  // Never deleted: Next already traced the file into functions.
+  const after = JSON.parse(fs.readFileSync(manifestAt(root), 'utf8'));
+  assert.equal(after.invalid, true);
+  assert.equal(isUsableManifest(after), false);
 });
 
-test('verifier removes a manifest built from another commit', t => {
+test('verifier marks invalid a manifest built from another commit', t => {
   const root = tempRoot(t, null);
   fs.writeFileSync(manifestAt(root), JSON.stringify(realManifest({}, 'a'.repeat(40))));
   // temp root is not a git repo, so the verifier falls back to the CI sha
   const r = verify({ root, log: quiet, env: { GITHUB_SHA: 'b'.repeat(40) } });
   assert.equal(r.ok, false);
   assert.match(r.problems.join(';'), /publicSha/);
+});
+
+test('verifier that throws marks the manifest invalid and does not throw', t => {
+  const root = tempRoot(t, null);
+  fs.writeFileSync(manifestAt(root), JSON.stringify(realManifest({ 'shows.json': '{"a":1}' }, null)));
+  // a directory where a data file should be makes readFileSync throw
+  fs.mkdirSync(path.join(root, 'data', 'shows.json'));
+  const r = verify({ root, log: quiet, env: {} });
+  assert.equal(r.ok, false);
+  assert.match(r.problems[0], /verifier failed/);
+  assert.equal(JSON.parse(fs.readFileSync(manifestAt(root), 'utf8')).invalid, true);
 });

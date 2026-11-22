@@ -42,6 +42,7 @@ function imagesSig(images) {
  * @param {string|null} a.publicSha - this repo's commit
  * @param {object} a.registryFile - parsed data/outlet-registry.json
  * @param {Record<string, Buffer|string>} a.dataFiles - tracked core files by name (core-data-blob-meta DATA_TRACKED_FILES)
+ * @param {string[]} [a.absentFiles] - optional inputs that did not exist at prebuild; verified still absent
  * @param {string[]} a.imageKeys - keys of data/site-image-versions.json
  * @param {Array<{id: string, slug: string, images?: object}>} a.shows - computed shows that were prerendered
  * @param {Map<string, string>} a.sliceHashById
@@ -61,6 +62,7 @@ function buildManifest(a) {
   }
   const dataShas = {};
   for (const name of Object.keys(a.dataFiles).sort()) dataShas[name] = gitBlobSha(a.dataFiles[name]);
+  const absentFiles = [...new Set(a.absentFiles || [])].filter((n) => !(n in a.dataFiles)).sort();
   return {
     schema: MANIFEST_SCHEMA,
     sliceVersion: SLICE_VERSION,
@@ -71,6 +73,7 @@ function buildManifest(a) {
     publicSha: a.publicSha || null,
     registrySha: registrySha(a.registryFile),
     dataShas,
+    absentFiles,
     imageKeysSha: hash16(stable([...a.imageKeys].sort())),
     showCount: Object.keys(shows).length,
     shows,
@@ -83,7 +86,12 @@ function buildManifest(a) {
  */
 function verifyManifest(manifest, { dataFiles, publicSha }) {
   const problems = [];
-  if (!manifest || manifest.schema !== MANIFEST_SCHEMA) return [`manifest schema ${manifest && manifest.schema} != ${MANIFEST_SCHEMA}`];
+  if (!isUsableManifest(manifest)) return [`manifest unusable (schema ${manifest && manifest.schema}, invalid ${!!(manifest && manifest.invalid)})`];
+  // An optional input that appeared mid-build switches its loader to new data
+  // (e.g. the coverage floor reads the gap audit over the snapshot).
+  for (const name of manifest.absentFiles || []) {
+    if (name in dataFiles) problems.push(`${name} appeared during the build`);
+  }
   for (const [name, sha] of Object.entries(manifest.dataShas || {})) {
     if (!(name in dataFiles)) { problems.push(`${name} missing at postbuild`); continue; }
     const now = gitBlobSha(dataFiles[name]);
@@ -93,4 +101,19 @@ function verifyManifest(manifest, { dataFiles, publicSha }) {
   return problems;
 }
 
-module.exports = { MANIFEST_SCHEMA, MANIFEST_FILE, gitBlobSha, registrySha, imagesSig, buildManifest, verifyManifest };
+/**
+ * The only test a reader may use before trusting a manifest. The postbuild
+ * verifier never deletes a manifest the build already traced into functions
+ * (Vercel packages after postbuild); it overwrites it with invalidManifest().
+ */
+function isUsableManifest(m) {
+  return !!m && typeof m === 'object' && m.schema === MANIFEST_SCHEMA && m.invalid !== true
+    && !!m.shows && typeof m.shows === 'object' && !!m.dataShas && typeof m.dataShas === 'object';
+}
+
+/** The marker written over a manifest that failed verification. */
+function invalidManifest(problems) {
+  return { schema: MANIFEST_SCHEMA, invalid: true, problems: [...(problems || [])].map(String) };
+}
+
+module.exports = { MANIFEST_SCHEMA, MANIFEST_FILE, gitBlobSha, registrySha, imagesSig, buildManifest, verifyManifest, isUsableManifest, invalidManifest };

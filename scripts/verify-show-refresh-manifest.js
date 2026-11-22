@@ -3,9 +3,10 @@
 /**
  * BRO-8056 phase 1b: postbuild check that the data this build compiled is the
  * data its show-refresh manifest describes (no slice input changed during the
- * build, manifest built from this commit). On a mismatch the manifest is
- * deleted, so show refresh is off for this build instead of trusting a
- * manifest that describes other data. Never fails the build (package.json
+ * build, manifest built from this commit). On a mismatch, or if verifying
+ * throws, the manifest is overwritten with an invalid marker (never deleted:
+ * next build already traced it into functions and Vercel packages after
+ * postbuild), so show refresh is off for this build. Never fails the build (package.json
  * postbuild runs it with `|| true`, and it exits 0 itself).
  *
  *   node scripts/verify-show-refresh-manifest.js
@@ -14,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
-const { verifyManifest, MANIFEST_FILE } = require('./lib/show-refresh/manifest');
+const { verifyManifest, invalidManifest, MANIFEST_FILE } = require('./lib/show-refresh/manifest');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -27,8 +28,25 @@ function resolvePublicSha(env = process.env, cwd = ROOT) {
   return env.VERCEL_GIT_COMMIT_SHA || env.GITHUB_SHA || null;
 }
 
+function invalidate(manifestPath, problems) {
+  const tmp = `${manifestPath}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(invalidManifest(problems)));
+  fs.renameSync(tmp, manifestPath);
+}
+
 function verify({ root = ROOT, env = process.env, log = console } = {}) {
   const manifestPath = path.join(root, MANIFEST_FILE);
+  try {
+    return verifyOrThrow({ root, env, log, manifestPath });
+  } catch (e) {
+    const problem = `verifier failed: ${e && e.message}`;
+    try { invalidate(manifestPath, [problem]); } catch { /* nothing more we can do */ }
+    log.warn(`[show-refresh-manifest] WARNING: ${problem}; manifest marked invalid (show refresh off).`);
+    return { ok: false, problems: [problem] };
+  }
+}
+
+function verifyOrThrow({ root, env, log, manifestPath }) {
   if (!fs.existsSync(manifestPath)) {
     log.warn('[show-refresh-manifest] no manifest at postbuild (prebuild did not build one); show refresh is off for this build.');
     return { ok: false, problems: ['no manifest'] };
@@ -36,14 +54,14 @@ function verify({ root = ROOT, env = process.env, log = console } = {}) {
   let manifest;
   try { manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')); } catch (e) { manifest = null; }
   const dataFiles = {};
-  for (const name of Object.keys((manifest && manifest.dataShas) || {})) {
+  for (const name of [...Object.keys((manifest && manifest.dataShas) || {}), ...((manifest && manifest.absentFiles) || [])]) {
     const file = path.join(root, 'data', name);
     if (fs.existsSync(file)) dataFiles[name] = fs.readFileSync(file);
   }
   const problems = verifyManifest(manifest, { dataFiles, publicSha: resolvePublicSha(env, root) });
   if (problems.length) {
-    fs.rmSync(manifestPath, { force: true });
-    log.warn(`[show-refresh-manifest] WARNING: manifest does not match this build, removed (show refresh off): ${problems.join('; ')}`);
+    invalidate(manifestPath, problems);
+    log.warn(`[show-refresh-manifest] WARNING: manifest does not match this build, marked invalid (show refresh off): ${problems.join('; ')}`);
     return { ok: false, problems };
   }
   log.log(`[show-refresh-manifest] verified: ${manifest.showCount} shows, ${Object.keys(manifest.dataShas).length} data files unchanged`);

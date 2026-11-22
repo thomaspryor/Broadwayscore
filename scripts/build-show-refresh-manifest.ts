@@ -64,17 +64,19 @@ export function resolvePublicSha(env: NodeJS.ProcessEnv = process.env, cwd = ROO
   return env.VERCEL_GIT_COMMIT_SHA || env.GITHUB_SHA || null;
 }
 
-function readDataFiles(dataDir: string): Record<string, Buffer> {
-  const out: Record<string, Buffer> = {};
+function readDataFiles(dataDir: string): { files: Record<string, Buffer>; absent: string[] } {
+  const files: Record<string, Buffer> = {};
+  const absent: string[] = [];
   for (const name of SLICE_INPUT_FILES) {
     const file = path.join(dataDir, name);
     if (!fs.existsSync(file)) {
       if (SLICE_REQUIRED_FILES.includes(name)) throw new Error(`required data file missing: data/${name}`);
+      absent.push(name);
       continue;
     }
-    out[name] = fs.readFileSync(file);
+    files[name] = fs.readFileSync(file);
   }
-  return out;
+  return { files, absent };
 }
 
 function writeAtomic(file: string, text: string) {
@@ -90,7 +92,7 @@ export function main(argv = process.argv.slice(2)) {
   }
   const dataDir = path.join(ROOT, 'data');
   const buildInstant = Date.now();
-  const dataFiles = readDataFiles(dataDir);
+  const { files: dataFiles, absent: absentFiles } = readDataFiles(dataDir);
   const json = (name: string) => JSON.parse(dataFiles[name].toString('utf8'));
 
   const inputs = buildShowInputs({
@@ -154,6 +156,7 @@ export function main(argv = process.argv.slice(2)) {
     publicSha: resolvePublicSha(),
     registryFile,
     dataFiles,
+    absentFiles,
     imageKeys: Object.keys(imageVersions),
     shows,
     sliceHashById,

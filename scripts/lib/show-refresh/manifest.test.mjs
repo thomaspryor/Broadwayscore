@@ -57,3 +57,21 @@ test('verifyManifest flags data that changed mid-build and a wrong HEAD', () => 
   const probs = verifyManifest(m, { dataFiles: { 'shows.json': '{"a":2}' }, publicSha: 'q'.repeat(40) });
   assert.equal(probs.length, 3, probs.join('; '));
 });
+
+test('an optional input that appears mid-build fails verification', () => {
+  const a = base(); a.absentFiles = ['audit/show-review-gap.json'];
+  const m = buildManifest(a);
+  assert.deepEqual(m.absentFiles, ['audit/show-review-gap.json']);
+  assert.deepEqual(verifyManifest(m, { dataFiles: base().dataFiles, publicSha: 'p'.repeat(40) }), []);
+  const probs = verifyManifest(m, { dataFiles: { ...base().dataFiles, 'audit/show-review-gap.json': '{}' }, publicSha: 'p'.repeat(40) });
+  assert.equal(probs.length, 1, probs.join('; '));
+  assert.match(probs[0], /appeared/);
+});
+
+test('an invalid marker is never a usable manifest', () => {
+  const { isUsableManifest, invalidManifest } = require('./manifest.js');
+  assert.equal(isUsableManifest(buildManifest(base())), true);
+  const bad = invalidManifest(['x']);
+  assert.equal(isUsableManifest(bad), false);
+  assert.equal(verifyManifest(bad, { dataFiles: {}, publicSha: null }).length, 1);
+});

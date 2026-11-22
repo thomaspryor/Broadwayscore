@@ -19,7 +19,9 @@ set -e
 # Last step on every path, after every data file it hashes is final. Fail-soft:
 # the runner always exits 0 and leaves no manifest on any failure.
 build_show_refresh_manifest() {
-  node scripts/run-show-refresh-manifest.js scripts/build-show-refresh-manifest.ts
+  # `|| echo`: even a runner that fails to load must not stop the site build under set -e.
+  node scripts/run-show-refresh-manifest.js scripts/build-show-refresh-manifest.ts \
+    || echo '[show-refresh-manifest] WARNING: runner failed to start; show refresh is off for this build.'
 }
 
 # Always run: validation + gitignored output
