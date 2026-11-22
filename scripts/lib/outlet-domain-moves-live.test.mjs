@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: asserts the committed data/outlet-registry.json keeps resolved domain aliases; a bot registry commit must not turn main red
 // BRO-8044 class guard. Pinned census fixture (NOT the live CI-rewritten census,
 // which would turn unrelated pushes red): hosts that were flagged as probable
 // domain moves and resolved must stay resolved in the committed registry.
