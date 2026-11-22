@@ -327,7 +327,20 @@
     "hadestown-west-end-2024/ew--unknown.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/times-square-chronicles--unknown.json",
-    "and-juliet-2022/exeunt-magazine--unknown.json"
+    "and-juliet-2022/exeunt-magazine--unknown.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -548,52 +561,6 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-      "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
-      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json",
-      "orlando-off-west-end-2026/thelivereview--unknown.json",
-      "rock-of-ages-2009/the-globe-and-mail--kelly-nestruck.json",
-      "mrs-doubtfire-2021/musical-theatre-review--unknown.json",
-      "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "nacho-ate-spiderman-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "assassins-regional-2026/musical-theatre-review--unknown.json",
-      "passing-strange-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-      "the-laugh-track-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
-      "theater-of-the-mind-regional-2026/axios--monica-eng.json",
-      "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
-      "high-school-musical-off-west-end-2026/ground--unknown.json",
-      "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/ground--unknown.json",
-      "boop-tour-2026/rochesterfirst--sarah-zimmerman.json",
-      "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
-      "the-lion-king-tour-2021/ground--unknown.json",
-      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
-      "the-steel-man-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "king-of-the-yees-off-broadway-2026/the-100-word-review--unknown.json",
-      "heartbreak-house-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "dog-mom-off-west-end-2026/ground--unknown.json",
-      "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/mommypoppins--unknown.json",
-      "fences-off-west-end-2026/ground--unknown.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-      "the-secret-circus-musical-off-broadway-2026/flopbox--unknown.json",
-      "the-last-ship-west-end-2026/ground--unknown.json",
-      "gimme-a-sign-off-broadway-2026/thecomedybureau--unknown.json",
-      "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
-      "kimberly-akimbo-off-west-end-2026/ground--unknown.json",
-      "the-story-west-end-2026/ground--unknown.json",
-      "a-month-in-the-country-off-west-end-2026/sueterryvoices--unknown.json",
-      "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "jeeves-takes-charge-off-west-end-2026/ground--unknown.json",
-      "the-hen-night-oran-mor-regional-2026/herald--neil-cooper.json",
-      "becky-shaw-2026/cote-notices--david-cote.json",
-      "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "bug-2026/new-york-notebook--sandy-macdonald.json",
-      "wanted-2022/exeunt-magazine--lorin-wertheimer.json"
-    ],
-    "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
       "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
@@ -746,7 +713,7 @@
     ]
   },
   "startTime": "2026-11-21T20:32:23.379Z",
-  "lastProcessed": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-22T02:47:18.622Z",
@@ -778,6 +745,72 @@
     },
     {
       "t": "2026-11-22T02:50:58.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:47:45.246Z",
+      "event": "bb-session",
+      "session": "e33ddf66",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-22T03:47:45.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:48:02.942Z",
+      "event": "bb-session",
+      "session": "669b59a4",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-22T03:48:03.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:49:05.427Z",
+      "event": "bb-session",
+      "session": "dfcb5914",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-22T03:49:06.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:49:23.156Z",
+      "event": "bb-session",
+      "session": "3fd02745",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-22T03:49:23.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:50:51.853Z",
+      "event": "bb-session",
+      "session": "f2eba363",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T03:50:52.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T03:51:10.467Z",
+      "event": "bb-session",
+      "session": "4aaaab31",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T03:51:11.044Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
