@@ -1632,6 +1632,20 @@
     "queuedAt": "2026-11-22T01:10:34.029Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-22.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T01:29:36.945Z"
+  },
+  {
     "conditionKey": "land:land/seating-expansion-data-v2",
     "title": "Landing blocked: merged-tree-tests red on land/seating-expansion-data-v2",
     "description": "land.yml did not land land/seating-expansion-data-v2: the merged-tree-tests gate went red at 14656f22db. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/seating-expansion-data-v2 @ 14656f22db (origin/land/seating-expansion-data-v2) → origin/main @ b36873f717 [land] train: + land/bro-7324-retro @ 844502df4b (2 commit(s)) [land] train: + land/bro-7324-ledger-truth @ a140139c9b (2 commit(s)) [land] train: + land/retro-bro-8011 @ c1f88a79df (1 commit(s)) [land] attempt 1/3: rebased onto b36873f717, 23 file(s) changed (train: land/seating-e Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44963945276",
