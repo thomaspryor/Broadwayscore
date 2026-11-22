@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T14:50:06.248Z",
+  "timestamp": "2026-11-22T15:27:37.738Z",
   "stats": {
-    "totalReviews": 83894,
+    "totalReviews": 83893,
     "alreadyFlagged": 22457,
     "dateGuardCatches": 241,
     "directorMismatch": 3878,
-    "tvFilmSignals": 2410,
-    "londonSignals": 3962,
+    "tvFilmSignals": 2412,
+    "londonSignals": 3965,
     "offBroadwaySignals": 785,
     "yearMismatch": 395,
-    "noPublishDate": 8219
+    "noPublishDate": 8218
   },
   "findings": [
     {
@@ -17441,6 +17441,20 @@
       ]
     },
     {
+      "showId": "dear-evan-hansen-la-regional-2026",
+      "file": "socal-thrills--russell-tom.json",
+      "score": 71,
+      "publishDate": "2026-11-02",
+      "url": "https://socalthrills.com/theatre-review-dear-evan-hansen-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "dear-evan-hansen-off-broadway-2016",
       "file": "ew--isabella-biedenharn.json",
       "score": 79,
@@ -21735,7 +21749,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "2026-11-19",
       "url": "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
       "findings": [
@@ -21833,6 +21847,24 @@
       "showId": "eurotrash-off-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 82,
+      "publishDate": "2026-11-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/eurotrash-young-vic-review-ben-whishaw/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "telegraph--unknown.json",
       "publishDate": "2026-11-20",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/eurotrash-young-vic-review-ben-whishaw/",
       "findings": [
@@ -25996,7 +26028,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "thestage--dave-fargnoli.json",
-      "score": 59,
+      "score": 60,
       "publishDate": "2024-09-27",
       "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt",
       "findings": [
@@ -44130,7 +44162,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "thestage--holly-omahony.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-05-12",
       "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer",
       "findings": [
@@ -76510,7 +76542,7 @@
     {
       "showId": "the-little-foxes-off-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 51,
+      "score": 54,
       "publishDate": "2024-12-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-little-foxes-young-vic-review/",
       "findings": [
@@ -81504,7 +81536,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2025-03-07",
       "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
       "findings": [
@@ -81523,7 +81555,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "guardian--susannah-clapp.json",
-      "score": 79,
+      "score": 76,
       "publishDate": "2025-03-07",
       "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
       "findings": [
@@ -100868,6 +100900,20 @@
       ]
     },
     {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 81,
+      "publishDate": "2026-11-22",
+      "url": "https://theatreandtonic.co.uk/blog/cinderella-at-lyric-hammersmith-review-2026",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "cinderella-west-end-2021",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 74,
@@ -106348,8 +106394,22 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
+      "file": "standard--tim-bano.json",
+      "score": 79,
+      "publishDate": "2026-11-22",
+      "url": "https://www.standard.co.uk/culture/theatre/eurotrash-review-b1305883.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "2026-11-20",
       "url": null,
       "findings": [
@@ -140158,7 +140218,7 @@
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
       "file": "revstanstheatreblog--rightrevstan.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-10-06",
       "url": "https://revstanstheatreblog.co.uk/2026/10/06/review-the-hungry-ghost-bush-theatre/",
       "findings": [
@@ -141036,7 +141096,7 @@
     {
       "showId": "the-lady-from-the-sea-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
+      "score": 76,
       "publishDate": "2025-09-18",
       "url": "https://www.whatsonstage.com/news/the-lady-from-the-sea-with-alicia-vikander-and-andrew-lincoln-at-the-bridge-theatre-review_1695365/",
       "findings": [
@@ -141734,7 +141794,7 @@
     {
       "showId": "the-little-foxes-off-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2024-12-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-little-foxes-review",
       "findings": [
@@ -145127,7 +145187,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2025-03-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
       "findings": [
@@ -147860,7 +147920,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2025",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 97,
+      "score": 94,
       "publishDate": "July 14th, 2025",
       "url": "https://theartsdesk.com/theatre/till-stars-come-down-theatre-royal-haymarket-review-family-hilariously-and-tragically-war",
       "findings": [
@@ -147874,7 +147934,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2025",
       "file": "london-theatre--julia-rank.json",
-      "score": 84,
+      "score": 85,
       "publishDate": "2025-07-10",
       "url": "https://www.londontheatre.co.uk/reviews/till-the-stars-come-down-review-theatre-royal-haymarket",
       "findings": [
@@ -147888,7 +147948,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 99,
+      "score": 100,
       "publishDate": "2025-07-10",
       "url": "https://theatreweekly.com/review-till-the-stars-come-down-at-theatre-royal-haymarket/",
       "findings": [
@@ -148028,7 +148088,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2025-01-10",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14268825/PATRICK-MARMION-reviews-Titanique-Criterion-Theatre-London-Titanic-fun-Celines-doppelganger.html",
       "findings": [
