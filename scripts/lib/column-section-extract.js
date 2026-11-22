@@ -23,12 +23,17 @@ const { sectionTitleVariants, normSectionText: norm } = require('./multi-show-se
 // Outlets whose multi-show critic columns we isolate. Add a host only for a
 // critic's own column; the roundup guard below still applies to it.
 const COLUMN_POST_HOSTS = [/(^|\.)washingtonpost\.com$/i];
+// Hosts whose STORED multi-show columns the scorer cuts to this show's section at score time (scoreTimeColumnSection).
+// Vulture runs several reviews in one "theater-reviews" piece (the Ava / Can I Be Frank? / Well, I'll Let You Go
+// column scored 65 as Ava on the whole page, BRO-7877).
+const SCORE_COLUMN_HOSTS = [...COLUMN_POST_HOSTS, /(^|\.)vulture\.com$/i];
 
 const OPENER_CHARS = 160;      // a section opener names its show this early
 const MIN_SECTION_WORDS = 60;  // each section of a real column is a review, not an aside
 const MIN_TARGET_WORDS = 60;
 const MIN_TITLE_MENTIONS = 2;  // a passing "like Hamilton" opener is not a section; a reviewed show is named again
 const ROUNDUP_ATTRIBUTIONS = 2;
+const MIN_SCORE_SECTION_WORDS = 300; // scoreTimeColumnSection: shorter kept text is a caption or credits, not a review
 
 function isColumnPostUrl(url) {
   try {
@@ -82,6 +87,20 @@ function findMentions(normText, titleDefs) {
 }
 
 /**
+ * Column title variants: the shared ones plus the part after a "Name: " prefix ("Morgan Bassichis: Can I Be Frank?" is
+ * printed "Can I Be Frank?") when it is two words or longer (BRO-7877).
+ */
+function knownTitleVariants(title, aliases = []) {
+  const out = new Set(sectionTitleVariants(title, aliases));
+  const m = String(title || '').match(/^[^:]{3,}:\s*(.+)$/);
+  if (m) {
+    const tail = norm(m[1]);
+    if (tail && tail.split(' ').length >= 2 && tail.length >= 8) out.add(tail);
+  }
+  return [...out];
+}
+
+/**
  * @param {string} text column text, paragraphs separated by newlines
  * @param {string} showTitle target show
  * @param {{aliases?:string[], knownTitles?:string[]}} [opts] knownTitles: every show title that may head a section
@@ -97,7 +116,7 @@ function isolateColumnSection(text, showTitle, { aliases = [], knownTitles = [] 
   }
 
   const targetKey = norm(showTitle);
-  const targetVariants = sectionTitleVariants(showTitle, aliases);
+  const targetVariants = knownTitleVariants(showTitle, aliases);
   const defs = [{ key: targetKey, variants: targetVariants, target: true }];
   const seen = new Set([targetKey]);
   const fullNorm = norm(text);
@@ -105,8 +124,10 @@ function isolateColumnSection(text, showTitle, { aliases = [], knownTitles = [] 
     const key = norm(t);
     if (!key || key.length < 6 || seen.has(key) || targetVariants.includes(key)) continue;
     seen.add(key);
-    if (!mentionRe(key).test(fullNorm)) continue; // not named anywhere in this column
-    const variants = sectionTitleVariants(t).filter((v) => !targetVariants.includes(v));
+    const variants = knownTitleVariants(t).filter((v) => !targetVariants.includes(v));
+    // Not named anywhere in this column. Any variant counts: the Vulture column prints "Can I Be Frank?", never the
+    // catalogue's "Morgan Bassichis: Can I Be Frank?" (BRO-7877).
+    if (!variants.some((v) => mentionRe(v).test(fullNorm))) continue;
     if (variants.length) defs.push({ key, variants });
   }
   for (const d of defs) d.variants.sort((a, b) => b.length - a.length);
@@ -326,7 +347,31 @@ function columnSectionAfterRoundupRejection({ url, text, show, allShows = [], ve
   return { isolated: true, text: r.text, sectionCount: r.sectionCount };
 }
 
+/**
+ * Score-time section for a stored critic column (BRO-7877): the scorer reads only this show's section.
+ * Known titles are the New York shows opening within the lane's column window, as the store-time path uses, so
+ * everyday-word titles from other years ("People", "Summer") cannot open a section.
+ * @param {{url:string, text:string, show:{id?:string,title:string,openingDate?:string}, allShows?:object[], aliases?:string[]}} args
+ * @returns {{ isolated: true, text: string, sectionCount?: number } | { isolated: false, reason: string }}
+ */
+function scoreTimeColumnSection({ url, text, show, allShows = [], aliases = [] } = {}) {
+  if (!text || !show || !show.title) return { isolated: false, reason: 'no-text' };
+  let host = '';
+  try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { return { isolated: false, reason: 'not-column-host' }; }
+  if (!SCORE_COLUMN_HOSTS.some((re) => re.test(host))) return { isolated: false, reason: 'not-column-host' };
+  const lane = require('./opening-night-lane/lane-guards');
+  const knownTitles = lane.nearbyShowTitles(show, allShows, { raw: true });
+  if (!knownTitles.length) return { isolated: false, reason: 'no-nearby-shows' };
+  const r = isolateColumnSection(text, show.title, { aliases, knownTitles });
+  if (r.action !== 'isolated' || !r.text) return { isolated: false, reason: r.reason || r.action };
+  // A real column section is a review. A kept caption or credit block (washpost cat-on-a-hot-tin-roof-2013 kept 95
+  // words of credits; vulture waiting-for-godot-2013, one review of two plays in rep, kept a 138-word caption) is not:
+  // score the whole page as before.
+  if (wordCount(r.text) < MIN_SCORE_SECTION_WORDS) return { isolated: false, reason: 'section-too-short' };
+  return { isolated: true, text: r.text, sectionCount: r.sectionCount };
+}
+
 module.exports = {
-  COLUMN_POST_HOSTS, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions, isolateFlatColumnSection, splitSentences,
+  COLUMN_POST_HOSTS, SCORE_COLUMN_HOSTS, scoreTimeColumnSection, knownTitleVariants, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions, isolateFlatColumnSection, splitSentences,
   isMultiShowRejection, columnSectionAfterRoundupRejection,
 };

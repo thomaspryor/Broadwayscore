@@ -132,6 +132,9 @@ const LLM_INPUT_FILES = [
   'scripts/lib/multi-show-asterisk-divider.js',
   'scripts/llm-scoring/trim-multi-show.ts',
   'scripts/llm-scoring/multi-show-detector.ts',
+  // BRO-7877: trim-multi-show.ts cuts Vulture / Washington Post columns with these (section + nearby titles).
+  'scripts/lib/column-section-extract.js',
+  'scripts/lib/opening-night-lane/lane-guards.js',
   'scripts/lib/prior-runs-note.js',
   // BRO-6000: prompt note for multi-show split sections, assembled by input-builder.ts.
   'scripts/lib/split-excerpt-note.js',

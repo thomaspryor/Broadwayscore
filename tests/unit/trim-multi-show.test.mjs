@@ -13,7 +13,7 @@ const source = { outletId: 'huffpost', criticName: 'David Finkle' };
 
 test('scoring-delta requires an A/B check for section selection changes', () => {
   const { LLM_INPUT_FILES } = require('../../scripts/lib/scoring-watchlists.js');
-  for (const file of ['scripts/lib/multi-show-asterisk-divider.js', 'scripts/llm-scoring/trim-multi-show.ts', 'scripts/llm-scoring/multi-show-detector.ts']) {
+  for (const file of ['scripts/lib/multi-show-asterisk-divider.js', 'scripts/llm-scoring/trim-multi-show.ts', 'scripts/llm-scoring/multi-show-detector.ts', 'scripts/lib/column-section-extract.js', 'scripts/lib/opening-night-lane/lane-guards.js']) {
     assert.ok(LLM_INPUT_FILES.includes(file), `${file} must be an LLM input dependency`);
   }
 });

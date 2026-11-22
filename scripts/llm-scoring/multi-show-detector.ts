@@ -10,7 +10,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { extractVenueBoxSectionForShowId } from './venue-box-sections';
-import { ReviewColumnSource } from './trim-multi-show';
+import { ReviewColumnSource, trimByColumnSection } from './trim-multi-show';
 const { trimByAsteriskDivider } = require('../lib/multi-show-asterisk-divider');
 
 // ========================================
@@ -149,6 +149,10 @@ export function detectMultiShow(
   // times. Check before the generic roundup heuristic so these can be scored.
   if (targetTitle && trimByAsteriskDivider(text, targetTitle, source).trimmed) {
     return { isMultiShowReview: true, otherShows: [], recommendation: 'warn', reason: 'Review column: asterisk-divider section' };
+  }
+  // A Vulture / Washington Post column whose other reviews name their shows only 2-4 times (BRO-7877).
+  if (trimByColumnSection(text, targetShowId, source)) {
+    return { isMultiShowReview: true, otherShows: [], recommendation: 'warn', reason: 'Review column: column-section' };
   }
 
   // Also extract key words from the target show ID for fuzzy exclusion

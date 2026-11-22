@@ -1,5 +1,8 @@
 import { extractVenueBoxSectionForShowId } from './venue-box-sections';
 const { getTitleVariants, trimByAsteriskDivider } = require('../lib/multi-show-asterisk-divider');
+const { scoreTimeColumnSection } = require('../lib/column-section-extract');
+const fs = require('fs');
+const path = require('path');
 /**
  * Multi-Show Text Trimmer
  *
@@ -12,7 +15,7 @@ export interface TrimResult {
   text: string;
   trimmed: boolean;
   trimFailed: boolean;
-  method: 'heading' | 'asterisk-divider' | 'venue-box' | 'none';
+  method: 'heading' | 'asterisk-divider' | 'venue-box' | 'column-section' | 'none';
   originalLength: number;
   trimmedLength: number;
 }
@@ -20,6 +23,38 @@ export interface TrimResult {
 export interface ReviewColumnSource {
   outletId?: string;
   criticName?: string;
+  url?: string | null;
+}
+
+let cachedShows: any[] | null = null;
+function loadShows(): any[] {
+  if (cachedShows) return cachedShows;
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/shows.json'), 'utf-8'));
+    cachedShows = (raw.shows || raw) as any[];
+  } catch { cachedShows = []; }
+  return cachedShows;
+}
+
+/**
+ * This show's section of a stored critic column on a column host (Vulture, Washington Post), from paragraph
+ * openers that name the show (BRO-7877). null when the page is not such a column or cannot be split.
+ */
+export function trimByColumnSection(fullText: string, targetShowId: string, source?: ReviewColumnSource): TrimResult | null {
+  if (!fullText || !targetShowId || !source?.url) return null;
+  const shows = loadShows();
+  const show = shows.find((s: any) => s && s.id === targetShowId);
+  if (!show) return null;
+  const r = scoreTimeColumnSection({ url: source.url, text: fullText, show, allShows: shows });
+  if (!r.isolated || !r.text) return null;
+  return {
+    text: r.text,
+    trimmed: true,
+    trimFailed: false,
+    method: 'column-section',
+    originalLength: fullText.length,
+    trimmedLength: r.text.length,
+  };
 }
 
 /**
@@ -90,7 +125,7 @@ export function trimMultiShowText(
   if (headingRemovedText || !targetShowId) return byHeading;
   // WSJ-style columns carry no headings; each review has a production box (BRO-5294).
   const box = extractVenueBoxSectionForShowId(fullText, targetShowId);
-  if (!box.ok || !box.text) return byHeading;
+  if (!box.ok || !box.text) return trimByColumnSection(fullText, targetShowId, source) || byHeading;
   return {
     text: box.text,
     trimmed: true,

@@ -67,8 +67,9 @@ function isColumnHost(url) {
  * would cover. Two-word titles and longer only ("Company" is everyday prose); none that contains the show's own title or
  * is contained in it.
  * @returns {string[]} titles as critics write them: case kept, no leading article or parenthetical subtitle
+ *   ({raw:true}: the catalogue titles instead)
  */
-function nearbyShowTitles(show, allShows = []) {
+function nearbyShowTitles(show, allShows = [], { raw = false } = {}) {
   const at = Date.parse((show && show.openingDate) || '');
   if (!show || !at) return [];
   const own = normTitle(show.title);
@@ -81,7 +82,8 @@ function nearbyShowTitles(show, allShows = []) {
     const n = columnTitle(s.title);
     const low = normTitle(s.title);
     if (n.split(' ').length < 2 || own.includes(low) || low.includes(own)) continue;
-    out.add(n);
+    // raw: the catalogue title, colon kept, so a caller can derive its "Name: Title" short form (BRO-7877).
+    out.add(raw ? s.title : n);
   }
   return [...out];
 }
