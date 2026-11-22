@@ -187,7 +187,7 @@ async function checkOpenRouter() {
   }
 }
 
-const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged, scrapingBeeAckTag } = require('./lib/scrapingbee-ack');
+const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged, isScrapingBeeRideOut, scrapingBeeAckTag } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
 
@@ -209,7 +209,7 @@ async function checkScrapingBee() {
       if (remaining <= 0) {
         const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
         if (isScrapingBeeExhaustionAcknowledged()) {
-          return { name: 'ScrapingBee', status: 'warn', message: `Credits exhausted (${used}/${max} used) — acknowledged: ${ack.reason} [${scrapingBeeAckTag()}]` };
+          return { name: 'ScrapingBee', status: 'warn', message: `Credits exhausted (${used}/${max} used) — acknowledged: ${isScrapingBeeRideOut() ? 'ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03)' : ack.reason} [${scrapingBeeAckTag()}]` };
         }
         return { name: 'ScrapingBee', status: 'fail', message: `Credits exhausted (${used}/${max} used) — acknowledgment expired ${ack.expires}, re-triage` };
       }

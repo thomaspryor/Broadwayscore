@@ -200,6 +200,15 @@ function budgetBreaches(record, thresholds, history = []) {
     const entry = p[key];
     if (!entry || entry.status === 'unknown') { unmeasured.push(key); continue; }
     if (entry.status === 'baseline') continue; // measured; delta arrives tomorrow
+    // Ride-out holds only until the renewal: a pack still empty after its renewal
+    // date did not renew, and that is an alarm (Codex review, BRO-7568).
+    const renewalOverdue = entry.cap > 0 && entry.cycleUsed >= entry.cap
+      && typeof entry.renewalDate === 'string' && /^\d{4}-\d{2}-\d{2}/.test(entry.renewalDate)
+      && entry.renewalDate.slice(0, 10) < String(entry.readAt || record.day).slice(0, 10);
+    if (rideOut.has(key) && renewalOverdue) {
+      overspend.push(`${key} still exhausted after its renewal date ${entry.renewalDate.slice(0, 10)} (${entry.cycleUsed} of ${entry.cap} credits used)`);
+      continue;
+    }
     const sink = rideOut.has(key) ? notices : overspend;
     const pace = packPaceBreach(key, entry, record, history);
     if (pace !== undefined) { if (pace) sink.push(pace); continue; }

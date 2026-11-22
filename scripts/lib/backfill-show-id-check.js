@@ -24,6 +24,9 @@ const path = require('path');
 
 const FORM_RE = /^node scripts\/lib\/verify-data-backfill\.js --show=([a-z0-9,-]+)/;
 const HAS_YEAR_RE = /-\d{4}(?:-|$)/;
+// BRO-7568: a market prefix plus a season (we-2011-12, bw-2010-2011) has a year but is
+// never a show id (BRO-6503 filed one and its VERIFY could never pass). Certain-wrong.
+const SEASON_TOKEN_RE = /^(?:we|bw|ob|owe|broadway|west-end)-\d{4}-(?:\d{2}|\d{4})$/;
 const MARKET_SUFFIX_RE = /-(?:off-off-broadway|off-broadway|off-west-end|west-end|regional|tour|bway)$/;
 
 /** { core: ['laowang'], year: 2026 } from an id; the year is null when absent. */
@@ -88,7 +91,8 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
   for (const id of new Set(m[1].split(',').filter(Boolean))) {
     if (knownSet.has(id) || hubs.has(id)) continue;
     const suggestions = nearMissIds(id, known);
-    if (suggestions.length || !HAS_YEAR_RE.test(id)) misses.push({ id, suggestions });
+    const season = SEASON_TOKEN_RE.test(id);
+    if (suggestions.length || !HAS_YEAR_RE.test(id) || season) misses.push(season ? { id, suggestions, season } : { id, suggestions });
   }
   if (!misses.length) return null;
   return {
@@ -97,7 +101,7 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
     // A title-prefix near miss may be a new production of a classic title
     // (ship-check: 383 synthetic next-year/off-Broadway ids matched a
     // regional id), so it warns at filing and never refuses a dispatch.
-    blocking: misses.some((x) => !HAS_YEAR_RE.test(x.id)),
+    blocking: misses.some((x) => !HAS_YEAR_RE.test(x.id) || x.season),
     reason: `verify-data-backfill names show id(s) that do not exist: ${misses.map((x) => (x.suggestions.length ? `${x.id} (did you mean ${x.suggestions.join(' or ')}?)` : `${x.id} (not a show id: ids end in their year)`)).join('; ')}`,
   };
 }
@@ -111,4 +115,4 @@ function readHubSlugs(repoRoot) {
   }
 }
 
-module.exports = { backfillShowIdNearMisses, nearMissIds, idCore };
+module.exports = { SEASON_TOKEN_RE, backfillShowIdNearMisses, nearMissIds, idCore };

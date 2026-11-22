@@ -105,3 +105,10 @@ test('BRO-7265: a city-hub slug is a valid --images target, and only with --imag
   const bare = backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=washington-dc', { showIds: KNOWN, hubSlugs });
   assert.equal(bare.blocking, true);
 });
+
+// BRO-7568: BRO-6503 filed --show=we-2011-12,we-2010-11; season tokens are refused at filing.
+test('a season token is a blocking miss at filing', () => {
+  const r = backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=we-2011-12,we-2010-2011', { showIds: KNOWN });
+  assert.ok(r && r.blocking);
+  assert.deepStrictEqual(r.misses.map((x) => x.id), ['we-2011-12', 'we-2010-2011']);
+});

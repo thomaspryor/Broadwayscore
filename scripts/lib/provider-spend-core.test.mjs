@@ -539,6 +539,15 @@ test('BRO-3023: records without readAt keep the legacy calendar-day behaviour', 
     assert.match(budgetBreaches(empty, { ...TH, rideOutPacks: 'scrapingbee' }, []).overspend.join(), /scrapingbee pack exhausted/);
   });
 
+  test('rideOutPacks: a pack still empty after its renewal date is an overspend again', () => {
+    const RO = { ...TH, rideOutPacks: ['scrapingbee'] };
+    const sd = { dayCredits: 1, cycleUsed: 1, cap: 10 };
+    const late = rec('2026-12-07', { dayCredits: 0, cycleUsed: 250000, cap: 250000, renewalDate: '2026-12-05', readAt: '2026-12-08T08:00:00Z' }, sd);
+    assert.match(budgetBreaches(late, RO, []).overspend.join(), /scrapingbee still exhausted after its renewal date 2026-12-05/);
+    const onTime = rec('2026-12-04', { dayCredits: 0, cycleUsed: 250000, cap: 250000, renewalDate: '2026-12-05', readAt: '2026-12-04T08:00:00Z' }, sd);
+    assert.deepStrictEqual(budgetBreaches(onTime, RO, []).overspend, []);
+  });
+
   test('the committed thresholds file rides out ScrapingBee and only ScrapingBee', () => {
     const cfg = require('../config/provider-spend-thresholds.json');
     assert.deepStrictEqual(cfg.rideOutPacks, ['scrapingbee']);

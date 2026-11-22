@@ -22,8 +22,7 @@ const { hasHelpFlag } = require('./cli-help.js');
 // a literal id, so the check could only ever print "FAIL all: show missing" and the
 // card bounced. Selector words are never show ids; refuse them as invalid arguments.
 const RESERVED_SELECTOR_IDS = new Set(['all', 'any', 'every', 'none']);
-// A market prefix plus a season (we-2011-12, bw-2010-2011): never a show id.
-const SEASON_TOKEN_RE = /^(?:we|bw|ob|owe|broadway|west-end)-\d{4}-(?:\d{2}|\d{4})$/;
+const { SEASON_TOKEN_RE } = require('./backfill-show-id-check.js');
 
 function parseArgs(args) {
   const command = args.join(' ');
