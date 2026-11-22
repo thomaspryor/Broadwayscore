@@ -156,3 +156,10 @@ describe('seating guidance UI is wired to structuredTips.seating.sections', () =
     assert.match(src, /theater\.structuredTips\?\.seating\?\.sections/);
   });
 });
+
+describe('closed productions do not show the house seat advice (BRO-8018)', () => {
+  test('show page gates SeatingGuidanceCard on an open production', () => {
+    const src = fs.readFileSync(path.join(__dirname, '../../src/components/show-page/ShowPageBelowFold.tsx'), 'utf8');
+    assert.match(src, /theater && show\.status !== 'closed' && \(\s*<SeatingGuidanceCard/);
+  });
+});

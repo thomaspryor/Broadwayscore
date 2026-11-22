@@ -1,0 +1,51 @@
+diff --git a/src/components/SeatingGuidance.tsx b/src/components/SeatingGuidance.tsx
+index 3a15c423e..0dfdd577f 100644
+--- a/src/components/SeatingGuidance.tsx
++++ b/src/components/SeatingGuidance.tsx
+@@ -128,7 +128,7 @@ function SectionRow({
+               {priceLabel && <span className="text-fg-muted text-xs">· {priceLabel}</span>}
+               {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
+                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-pill text-[10px] font-medium bg-surface-overlay text-gray-400 border border-white/5">
+-                  · {section.dataPoints} report{section.dataPoints === 1 ? '' : 's'}
++                  · {section.dataPoints} source{section.dataPoints === 1 ? '' : 's'}
+                 </span>
+               )}
+             </div>
+@@ -240,7 +240,7 @@ function SectionRow({
+             </div>
+           )}
+           {typeof section.dataPoints === 'number' && section.dataPoints > 0 && (
+-            <p className="text-[10px] text-fg-muted">{section.dataPoints} audience report{section.dataPoints === 1 ? '' : 's'}</p>
++            <p className="text-[10px] text-fg-muted">{section.dataPoints} source{section.dataPoints === 1 ? '' : 's'}</p>
+           )}
+         </div>
+       )}
+diff --git a/src/components/SeatingGuidanceCard.tsx b/src/components/SeatingGuidanceCard.tsx
+index ecec737d5..f462eb912 100644
+--- a/src/components/SeatingGuidanceCard.tsx
++++ b/src/components/SeatingGuidanceCard.tsx
+@@ -41,7 +41,7 @@ export default function SeatingGuidanceCard({ sections, bestSeats, variant = 'th
+       <SeatingGuidance sections={sections} bestSeats={bestSeats} compactRationale={config.compactRationale} />
+ 
+       <p className="text-[10px] text-fg-muted mt-4 pt-3 border-t border-white/5 leading-relaxed">
+-        Based on aggregated audience reports and editorial judgment. Sightlines vary by show and seat.
++        Drawn from published seating guides and theatergoer posts. Sightlines vary by show and seat.
+       </p>
+     </section>
+   );
+diff --git a/src/components/show-page/ShowPageBelowFold.tsx b/src/components/show-page/ShowPageBelowFold.tsx
+index 68b7fe6d5..feb79f7fc 100644
+--- a/src/components/show-page/ShowPageBelowFold.tsx
++++ b/src/components/show-page/ShowPageBelowFold.tsx
+@@ -436,7 +436,10 @@ export default function ShowPageBelowFold({
+ 
+       {/* Seating Scorecard — directly under Theater Scorecard */}
+       <div id="seating-scorecard" className="scroll-mt-20" />
+-      {theater && (
++      {/* Hidden once a production closes: a closed show may have used a different stage
++          configuration (Cabaret's Kit Kat Club, Here Lies Love), so the house's seat advice
++          need not apply to it (BRO-8018). The theater page keeps the card. */}
++      {theater && show.status !== 'closed' && (
+         <SeatingGuidanceCard
+           sections={theater.structuredTips?.seating?.sections}
+           bestSeats={theater.structuredTips?.seating?.bestSeats}
