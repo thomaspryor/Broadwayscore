@@ -643,7 +643,7 @@ async function runOutlet(outletId, o, shared) {
   let prevReport = null;
   try { prevReport = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
   if (census.shouldKeepPreviousReport(prevReport, report)) {
-    console.log(`  KEEP previous report: this run could not read the listing (${report.source.reason || 'unreadable'})`);
+    console.log(`  KEEP previous report: this run could not read the listing (${report.source.status}: ${(report.source.notes || [])[0] || report.source.reason || "no reason"})`);
   } else {
     census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.manifest.json`), manifest, 1);
     census.writeJsonUnlessOnlyStampChanged(reportPath, report, 2);

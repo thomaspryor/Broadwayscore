@@ -1,27 +1,27 @@
 {
   "outletId": "vulture",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:21:39.961Z",
+  "generatedAt": "2026-11-22T03:54:29.975Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap-years",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 3188,
-    "inWindow": 2919,
+    "enumerated": 3192,
+    "inWindow": 2923,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 2359,
-      "held": 315,
+      "not-review": 2360,
+      "held": 319,
       "catalog-gap": 27,
       "held-unmatched": 35,
-      "out-of-window": 159,
-      "gap": 6,
+      "out-of-window": 161,
+      "gap": 3,
       "held-alt-url": 15,
       "misfile": 2,
       "ambiguous": 1
@@ -32,8 +32,8 @@
       "held-alt-url": 2,
       "misfile": 1
     },
-    "recall": 0.976,
-    "recallWithCatalog": 0.904
+    "recall": 0.985,
+    "recallWithCatalog": 0.913
   },
   "seasons": {
     "2021-22": {
@@ -53,15 +53,15 @@
     "2022-23": {
       "not-review": 384,
       "held-unmatched": 6,
-      "held": 50,
-      "gap": 2,
+      "held": 51,
+      "gap": 1,
       "out-of-window": 15,
       "catalog-gap": 6,
       "held-alt-url": 2
     },
     "2023-24": {
-      "not-review": 425,
-      "out-of-window": 31,
+      "not-review": 424,
+      "out-of-window": 32,
       "held": 70,
       "catalog-gap": 3,
       "held-unmatched": 5,
@@ -71,9 +71,9 @@
     },
     "2024-25": {
       "not-review": 466,
-      "held": 61,
+      "held": 62,
       "out-of-window": 52,
-      "gap": 2,
+      "gap": 1,
       "held-unmatched": 9,
       "held-alt-url": 3,
       "catalog-gap": 4,
@@ -81,7 +81,7 @@
       "ambiguous": 1
     },
     "2025-26": {
-      "not-review": 351,
+      "not-review": 349,
       "out-of-window": 19,
       "held": 71,
       "held-alt-url": 6,
@@ -89,26 +89,20 @@
       "held-unmatched": 2
     },
     "2026-27": {
-      "gap": 1,
-      "not-review": 103,
+      "not-review": 107,
+      "held": 21,
+      "out-of-window": 8,
       "held-unmatched": 7,
-      "held": 19,
-      "out-of-window": 7,
       "catalog-gap": 1,
       "held-alt-url": 1
     }
   },
   "corpusSide": {
-    "rowsInWindow": 748,
-    "notEnumerated": 43,
+    "rowsInWindow": 753,
+    "heldExcludedRows": 0,
+    "notEnumerated": 41,
     "noUrl": 4,
     "samples": [
-      {
-        "showId": "a-bronx-tale-the-musical-2016",
-        "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
       {
         "showId": "a-christmas-carol-2022",
         "url": "https://www.vulture.com/article/this-christmas-carol-tries-to-put-scrooge-on-the-couch.html#:~:text=If%20you%20want%20a%20big%2Dhearted%2C,community%2Dminded%2C%20UK%2Ddeveloped%20musical&text=Theater%20Review%3A%20A%20Christmas%20Carol,Tags%3A",
@@ -260,12 +254,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "private-lives-2011",
-        "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "romeo-and-juliet-off-broadway-2026",
         "url": "https://www.vulture.com/article/romeo-and-juliet-shakespeare-park-saheem-ali-public.html",
         "publishDate": "2026-06-12",
@@ -342,6 +330,18 @@
         "url": "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
         "publishDate": "2026-11-05",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "this-world-of-tomorrow-off-broadway-2025",
+        "url": "https://www.vulture.com/article/dawn-of-a-dull-day-tom-hanks-in-this-world-of-tomorrow.html",
+        "publishDate": "2025-11-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "twelfth-night-2013",
+        "url": "http://www.vulture.com/2013/11/theater-review-richard-iii.html",
+        "publishDate": null,
+        "why": "not-enumerated"
       }
     ]
   },
@@ -358,17 +358,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.vulture.com/2022/10/theater-review-cost-of-living-mtc-majok-broadway.html",
-      "headline": "theater review cost of living mtc majok broadway",
-      "publishDate": "2022-10-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cost-of-living-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.vulture.com/article/review-disneys-lifeless-bland-mufasa-the-lion-king.html",
       "headline": "review disneys lifeless bland mufasa the lion king",
       "publishDate": "2024-12-19",
@@ -378,19 +367,6 @@
         "the-lion-king-1997"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.vulture.com/article/the-counter-dirty-laundry-theater-review.html",
-      "headline": "the counter dirty laundry theater review",
-      "publishDate": "2024-10-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-counter-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "dirty-laundry-off-broadway-2024"
-      ]
     },
     {
       "url": "https://www.vulture.com/article/review-once-upon-a-mattress-sutton-foster-theater-encores.html",
@@ -404,17 +380,6 @@
       "outOfWindow": [
         "once-upon-a-mattress-1996"
       ]
-    },
-    {
-      "url": "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles.html",
-      "headline": "theater review the charioteer dan giles",
-      "publishDate": "2026-11-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-charioteer-off-broadway-2026"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
@@ -1836,6 +1801,17 @@
       ]
     },
     {
+      "url": "https://www.vulture.com/article/fellow-travelers-review-showtime.html",
+      "headline": "fellow travelers review showtime",
+      "publishDate": "2023-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fellow-travelers-off-broadway-2027"
+      ]
+    },
+    {
       "url": "https://www.vulture.com/article/aggro-dr1ft-review-harmony-korine.html",
       "headline": "aggro dr1ft review harmony korine",
       "publishDate": "2023-09-02",
@@ -2852,6 +2828,17 @@
       ]
     },
     {
+      "url": "https://www.vulture.com/article/the-altruists-netflix-review-sbf-caroline-ellison.html",
+      "headline": "the altruists netflix review sbf caroline ellison",
+      "publishDate": "2026-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "caroline-off-broadway-2026"
+      ]
+    },
+    {
       "url": "https://www.vulture.com/article/a-court-of-splintered-harmony-review-sarah-j-maas-acotar-6.html",
       "headline": "a court of splintered harmony review sarah j maas acotar 6",
       "publishDate": "2026-10-28",
@@ -3100,5 +3087,9 @@
         "kingdoms-1981"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }
