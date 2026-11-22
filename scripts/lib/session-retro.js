@@ -92,6 +92,7 @@ async function dryRunGates(transcriptPath, env = process.env) {
   const root = env.SESSION_RETRO_REPO_ROOT || path.join(__dirname, '..', '..');
   for (const g of STOP_GATES.filter((x) => x.module)) {
     try {
+      // build-deps: ./live-run-stop.mjs, ./effect-pending-stop.mjs
       const m = await import(g.module);
       const index = m.workflowScriptIndex && m.loadWorkflows ? m.workflowScriptIndex(m.loadWorkflows(root)) : undefined;
       const d = m.stopHookDecision({ lastMessage: DRY_RUN_CLOSE, events, env, ...(index ? { index } : {}) });

@@ -1,4 +1,5 @@
 #!/bin/bash
+# build-deps-file: scripts/lib/core-data-clone-guard.sh, scripts/lib/clone-failure.sh, scripts/lib/merge-keyed-jsonl.js
 # Setup local data files from private repos
 # Run this after cloning the public repo to get the data files needed for local dev.
 #

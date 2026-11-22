@@ -379,7 +379,9 @@ function nodeUnitTestsForTree(root) {
     // caller runs from a different checkout (daily-runner judges a Codex
     // worktree; the merge gate judges a merged tree).
     if (path.resolve(own) === path.resolve(__filename)) return collectNodeUnitTests(root);
+    // build-deps: ./unit-test-collection.js
     delete require.cache[require.resolve(own)];
+    // build-deps: ./unit-test-collection.js
     return require(own).collectNodeUnitTests(root);
   }
   const manifest = path.join(root, NODE_MANIFEST_REL);
