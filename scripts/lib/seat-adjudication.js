@@ -34,17 +34,26 @@ const MIN_SECTIONS_PER_THEATER = 3;
 
 // Former names that sources still use. A page only counts as evidence for a theater when it
 // names that theater (current or former name), so a roundup of another house can't "support" it.
+// Former names, plus the short names seat guides use (SeatPlan's "Barrymore
+// Theatre", A View From My Seat's "Barrymore Theatre"). theaterNamePatterns()
+// adds the Theater/Theatre spelling of each.
 const FORMER_NAMES = {
+  'Ethel Barrymore Theatre': ['Barrymore Theatre'],
+  'Richard Rodgers Theatre': ['Rodgers Theatre', '46th Street Theatre'],
+  "Eugene O'Neill Theatre": ["O'Neill Theatre"],
+  'Walter Kerr Theatre': ['Kerr Theatre', 'Ritz Theatre'],
+  'John Golden Theatre': ['Golden Theatre'],
+  'Marquis Theatre': ['Marriott Marquis Theatre'],
   'Lena Horne Theatre': ['Brooks Atkinson'],
   'James Earl Jones Theatre': ['Cort Theatre', 'Cort Theater'],
-  'Todd Haimes Theatre': ['American Airlines Theatre', 'American Airlines Theater'],
+  'Todd Haimes Theatre': ['American Airlines Theatre', 'American Airlines Theater', 'Haimes Theatre'],
   'Helen Hayes Theater': ['Hayes Theater', 'Hayes Theatre', 'Little Theatre'],
-  'Stephen Sondheim Theatre': ["Henry Miller's Theatre", 'Henry Millers Theatre'],
-  'Gerald Schoenfeld Theatre': ['Plymouth Theatre'],
+  'Stephen Sondheim Theatre': ["Henry Miller's Theatre", 'Henry Millers Theatre', 'Sondheim Theatre'],
+  'Gerald Schoenfeld Theatre': ['Plymouth Theatre', 'Schoenfeld Theatre'],
   'Bernard B. Jacobs Theatre': ['Royale Theatre', 'Jacobs Theatre', 'Jacobs Theater'],
   'Samuel J. Friedman Theatre': ['Biltmore Theatre', 'Friedman Theatre', 'Friedman Theater'],
   'Lyric Theatre': ['Foxwoods Theatre', 'Hilton Theatre', 'Ford Center for the Performing Arts'],
-  'Al Hirschfeld Theatre': ['Martin Beck Theatre'],
+  'Al Hirschfeld Theatre': ['Martin Beck Theatre', 'Hirschfeld Theatre'],
   'Neil Simon Theatre': ['Alvin Theatre'],
   'August Wilson Theatre': ['Virginia Theatre'],
   'Vivian Beaumont Theater': ['Vivian Beaumont Theatre', 'Beaumont Theater', 'Beaumont Theatre'],
@@ -91,7 +100,10 @@ function theaterNamePatterns(theaterName) {
     names.add(`${core} Theatre`);
     names.add(`${core} Theater`);
   }
-  for (const n of FORMER_NAMES[theaterName] || []) names.add(n);
+  for (const n of FORMER_NAMES[theaterName] || []) {
+    names.add(n);
+    names.add(n.replace(/\bTheatre$/i, 'Theater'));
+  }
   return [...names].map(normalizeText).filter(Boolean);
 }
 
