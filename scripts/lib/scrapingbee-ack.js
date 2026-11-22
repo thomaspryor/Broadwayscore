@@ -41,10 +41,11 @@ function isScrapingBeeExhaustionAcknowledged(today, thresholds) {
  * read that exact shape, so under ride-out the expiry rolls forward from each
  * health run. RIDE_OUT_ACK_DAYS = 3 covers a dropped daily run plus the digest's
  * 36h snapshot window (digest-snapshots.js maxAgeH), and lapses ~3 days after
- * ride-out is removed.
+ * ride-out is removed. Same (today, thresholds) order as
+ * isScrapingBeeExhaustionAcknowledged.
  */
 const RIDE_OUT_ACK_DAYS = 3;
-function scrapingBeeAckTag(thresholds, today) {
+function scrapingBeeAckTag(today, thresholds) {
   if (!isScrapingBeeRideOut(thresholds)) return `expires ${SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION.expires}`;
   const base = Date.parse(`${today || new Date().toISOString().slice(0, 10)}T00:00:00Z`);
   return `expires ${new Date(base + RIDE_OUT_ACK_DAYS * 86400000).toISOString().slice(0, 10)}`;

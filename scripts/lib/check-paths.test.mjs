@@ -76,3 +76,12 @@ test('registered card probes arm; vacuous thresholds and extra flags do not', ()
     'node scripts/audit-imageless-scored-shows.js --check-regional --dry-run',
   ]) assert.equal(isSafeCheckCommand(c), false, c);
 });
+
+// BRO-7568: the West End season gate is a filable acceptance check; loose forms are not.
+test('audit-we-historical-season.js --season=YYYY-YYYY is a safe check, other forms are not', () => {
+  const { isSafeCheckCommand } = require('./check-paths.js');
+  assert.equal(isSafeCheckCommand('node scripts/audit-we-historical-season.js --season=2011-2012'), true);
+  assert.equal(isSafeCheckCommand('node scripts/audit-we-historical-season.js --season=2011-12'), false);
+  assert.equal(isSafeCheckCommand('node scripts/audit-we-historical-season.js --season=2011-2012 --ids=a'), false);
+  assert.equal(isSafeCheckCommand('node scripts/audit-we-historical-season.js'), false);
+});

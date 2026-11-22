@@ -4067,12 +4067,16 @@ function checkAPICredits() {
         }
       }
 
+      // BRO-7568: under the ride-out policy a low or empty pack is an acknowledged
+      // warning, never "upgrade plan" (digest-autofix skips acknowledged rows).
+      if (pctRemaining <= 15 && isScrapingBeeRideOut()) {
+        return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03) [${scrapingBeeAckTag()}]` };
+      }
       if (pctRemaining <= 5) {
-        // BRO-7568: under the ride-out policy a nearly empty pack is a warning too, never "upgrade plan".
-        if (remaining <= 0 || isScrapingBeeRideOut()) {
+        if (remaining <= 0) {
           const ack = SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION;
           if (isScrapingBeeExhaustionAcknowledged()) {
-            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${isScrapingBeeRideOut() ? 'ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03)' : ack.reason} [${scrapingBeeAckTag()}]` };
+            return { name: 'Credits: ScrapingBee', status: 'warn', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg} — acknowledged: ${ack.reason} [${scrapingBeeAckTag()}]` };
           }
         }
         return { name: 'Credits: ScrapingBee', status: 'error', message: `${remainingK}k credits left (${pctRemaining}%)${exhaustionMsg}`, hint: 'Upgrade plan or reduce scraping.' };
@@ -5845,6 +5849,12 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         // MAX_CARD_DISPATCHES_PER_RUN cap just below.
         if (entry.ledger && isLedgerFrozenNow(entry.ledger)) {
           console.log(`[Alert Router] ${freezeSkipMessage(entry.ledger)} — skipping "${r.name}"`);
+          continue;
+        }
+        // BRO-7568: ScrapingBee run-out is ridden out (owner rule 2026-08-03); its
+        // acknowledged row must not file a "consider upgrading" card after 72h.
+        if (r.name === 'Credits: ScrapingBee' && isScrapingBeeRideOut()) {
+          console.log(`[Alert Router] ScrapingBee ride-out policy — skipping "${r.name}"`);
           continue;
         }
         if (dispatchBudget <= 0) { dispatchCapped = true; continue; }
