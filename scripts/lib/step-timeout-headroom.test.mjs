@@ -28,7 +28,10 @@ jobs:
       - name: "Quoted step"
         timeout-minutes: \${{ inputs.t }}
       - name: Uncapped step
-        run: echo hi
+        run: |
+          echo hi
+      - name: Last step
+# a column-zero comment between jobs must not end the jobs block
   express:
     name: Opening Night Express — \${{ inputs.show_id }}
     steps:
@@ -52,6 +55,7 @@ test('parseWorkflowCaps reads job and step caps, default job cap, expression cap
     ['Rebuild reviews.json locally (for readiness check)', 10],
     ['Quoted step', null],
     ['Uncapped step', null],
+    ['Last step', null],
   ]);
   assert.equal(caps[1].timeoutMin, h.DEFAULT_JOB_TIMEOUT_MIN);
   assert.deepEqual(caps[1].steps, [{ name: 'Cap first', timeoutMin: 3 }]);
@@ -100,7 +104,9 @@ test('alert: one card while near cap, resolve when clean, nothing when input mis
   assert.match(route.alert.title, /1 step near its timeout cap/);
   assert.match(route.alert.hint, /Do NOT dispatch opening-night-poller\.yml/);
   assert.equal(h.decideHeadroomAlerts({ warnRatio: 0.8, findings: [] })[0].action, 'resolve');
-  assert.deepEqual(h.decideHeadroomAlerts({ inputMissing: true, findings: [] }), []);
+  assert.deepEqual(h.decideHeadroomAlerts({ inputMissing: true, findings: [] }), [], 'incomplete input never clears the card');
+  const partial = h.decideHeadroomAlerts({ inputMissing: true, warnRatio: 0.8, findings: near.map((n) => ({ workflow: 'w.yml', ...n })) });
+  assert.equal(partial[0].action, 'route', 'a finding still files when other inputs were unreadable');
 });
 
 test('every capped step in the real opening-night workflows parses with a name', () => {
@@ -113,4 +119,23 @@ test('every capped step in the real opening-night workflows parses with a name',
   }
   const poll = h.parseWorkflowCaps(fs.readFileSync(path.join(ROOT, '.github/workflows/opening-night-poller.yml'), 'utf8')).find((j) => j.key === 'poll');
   assert.ok(poll.steps.some((s) => s.name === 'Rebuild reviews.json locally (for readiness check)' && s.timeoutMin), 'the BRO-8010 step must stay measurable');
+});
+
+test('by-design near-cap steps flag only when they reach the cap; read completeness', () => {
+  const m = [{ kind: 'step', job: 'poll', step: 'Wait for deploy to go live (fast_path)', capMin: 9, maxMin: 8.2, samples: 5, worstRun: { runId: 1 } }];
+  assert.deepEqual(h.nearCap(m, 0.8, 'opening-night-poller.yml'), [], 'designed wait at 91% is normal');
+  assert.equal(h.nearCap(m, 0.8, 'other.yml').length, 1, 'same name in another workflow is not exempt');
+  assert.equal(h.nearCap([{ ...m[0], maxMin: 9.1 }], 0.8, 'opening-night-poller.yml').length, 1, 'hitting the cap still flags');
+  assert.equal(h.readIncomplete({ runsListed: 30, jobsRead: 29 }), false);
+  assert.equal(h.readIncomplete({ runsListed: 30, jobsRead: 26 }), true);
+  assert.equal(h.readIncomplete({ runsListed: 0, jobsRead: 0 }), true);
+});
+
+test('every BY_DESIGN_NEAR_CAP step still exists with a cap in its workflow', () => {
+  for (const [wf, steps] of Object.entries(h.BY_DESIGN_NEAR_CAP)) {
+    const caps = h.parseWorkflowCaps(fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8'));
+    for (const name of Object.keys(steps)) {
+      assert.ok(caps.some((j) => j.steps.some((s) => s.name === name && s.timeoutMin)), `${wf}: "${name}" renamed or uncapped; update BY_DESIGN_NEAR_CAP`);
+    }
+  }
 });

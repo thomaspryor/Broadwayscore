@@ -19,7 +19,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { fetchGitHubJSON } = require('./lib/gh-api-client');
-const { parseWorkflowCaps, measure, nearCap, decideHeadroomAlerts, rowText, DEFAULT_WARN_RATIO } = require('./lib/step-timeout-headroom');
+const { parseWorkflowCaps, measure, nearCap, readIncomplete, decideHeadroomAlerts, rowText, DEFAULT_WARN_RATIO } = require('./lib/step-timeout-headroom');
 
 const argv = process.argv.slice(2);
 const flagVal = (n) => { const a = argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
@@ -62,7 +62,7 @@ async function recentRuns(wf) {
   let read = 0;
   for (const wf of WORKFLOWS) {
     let caps;
-    try { caps = parseWorkflowCaps(readYaml(wf)); } catch (e) { console.log(`${wf}: workflow file unreadable (${e.message}); skipped`); continue; }
+    try { caps = parseWorkflowCaps(readYaml(wf)); } catch (e) { console.log(`${wf}: workflow file unreadable (${e.message})`); inputMissing = true; continue; }
     let runs;
     try { runs = await recentRuns(wf); } catch (e) { console.log(`${wf}: runs unreadable (${e.message})`); inputMissing = true; continue; }
     const withJobs = [];
@@ -73,15 +73,16 @@ async function recentRuns(wf) {
       } catch (e) { console.log(`${wf}: jobs for run ${r.id} unreadable (${e.message})`); }
     }
     read += withJobs.length;
+    if (readIncomplete({ runsListed: runs.length, jobsRead: withJobs.length })) { console.log(`${wf}: only ${withJobs.length}/${runs.length} runs' timings read`); inputMissing = true; }
     const measured = measure(caps, withJobs);
-    const near = nearCap(measured, WARN);
+    const near = nearCap(measured, WARN, wf);
     console.log(`${wf}: ${withJobs.length} runs read, ${measured.length} capped steps/jobs measured, ${near.length} at >= ${Math.round(WARN * 100)}% of cap`);
     for (const m of measured.sort((a, b) => b.maxMin / b.capMin - a.maxMin / a.capMin).slice(0, 5)) {
       console.log(`  ${(m.maxMin / m.capMin * 100).toFixed(0).padStart(3)}%  ${m.kind === 'job' ? `job ${m.job}` : m.step}  max ${m.maxMin.toFixed(1)}/${m.capMin} min`);
     }
     for (const n of near) { findings.push({ workflow: wf, ...n }); console.log(`NEAR CAP  ${rowText(wf, n)}`); }
   }
-  if (!read && !inputMissing) inputMissing = true;
+  if (!read) inputMissing = true;
   const out = { generatedAt: new Date().toISOString(), inputMissing, warnRatio: WARN, runsRead: read, findings };
   const j = flagVal('json');
   if (j) fs.writeFileSync(j, JSON.stringify(out, null, 2));
@@ -89,7 +90,11 @@ async function recentRuns(wf) {
     const { routeAuditDecisions } = require('./lib/audit-alert');
     await routeAuditDecisions(decideHeadroomAlerts(out), 'audit-step-timeout-headroom');
   }
-  if (inputMissing) { console.log('audit-step-timeout-headroom: INPUT MISSING (no run timings read); nothing checked'); process.exitCode = 3; return; }
+  if (inputMissing) {
+    console.log(`audit-step-timeout-headroom: INPUT INCOMPLETE (${read} runs read; some workflow, run list or job timings unreadable); the card is not cleared`);
+    process.exitCode = findings.length && argv.includes('--strict') ? 1 : 3;
+    return;
+  }
   process.exitCode = argv.includes('--strict') && findings.length ? 1 : 0;
 })().catch((err) => {
   console.error(`audit-step-timeout-headroom: failed: ${err.stack || err.message}`);

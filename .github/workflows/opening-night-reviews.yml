@@ -212,6 +212,7 @@ jobs:
       - name: Discover reviews via SERP (scheduled days, heavy ticks only)
         if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
         continue-on-error: true
+        timeout-minutes: 65
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
@@ -226,9 +227,22 @@ jobs:
           fi
           IFS=',' read -ra SHOWS <<< "$SERP_SHOWS"
           echo "SERP searching ${#SHOWS[@]} shows (scheduled search day)"
+          # BRO-7117: this serial loop had no bound and took 83 of the job's 90 min
+          # (run 43763350515); a job-timeout kill skips the review-texts push below and
+          # loses every discovery. Stop starting shows after 60 min, 15 min per show;
+          # shows not reached are searched on the next heavy tick.
+          LOOP_DEADLINE=$(( $(date +%s) + 3600 ))
+          DONE=0
           for SHOW in "${SHOWS[@]}"; do
-            echo "=== Discovering reviews for $SHOW ==="
-            node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
+            LEFT=$(( LOOP_DEADLINE - $(date +%s) ))
+            if [ "$LEFT" -le 60 ]; then
+              echo "::warning::SERP loop budget spent after $DONE/${#SHOWS[@]} shows; the rest wait for the next heavy tick"
+              break
+            fi
+            PER_SHOW=$(( LEFT < 900 ? LEFT : 900 ))
+            echo "=== Discovering reviews for $SHOW (cap ${PER_SHOW}s) ==="
+            timeout "$PER_SHOW" node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
+            DONE=$(( DONE + 1 ))
             sleep 2
           done
 

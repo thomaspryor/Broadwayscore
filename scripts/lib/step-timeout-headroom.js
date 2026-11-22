@@ -12,6 +12,8 @@
  * step timings from the GitHub API and flags any step (or job) whose slowest
  * recent run used >= warnRatio of its cap, while it is still green.
  *
+ * Failed runs count: a step that already hit its cap is the clearest finding.
+ * A fixed step keeps showing until its slow runs age out of the --runs window.
  * Pure functions here; IO lives in scripts/audit-step-timeout-headroom.js.
  */
 
@@ -21,64 +23,38 @@ const DEFAULT_JOB_TIMEOUT_MIN = 360; // GitHub's default when a job sets none
 const DEFAULT_WARN_RATIO = 0.8;
 const ALERT_KEY = 'step-timeout-headroom:near-cap';
 
-function unquote(s) {
-  const t = String(s).trim().replace(/\s+#.*$/, '');
-  if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) return t.slice(1, -1);
-  return t;
-}
+// Steps whose own budget sits near the cap on purpose: flagged only once a run
+// actually reaches the cap (ratio >= 1), not at warnRatio. Keep the reason
+// pointing at the budget so a reader can re-check it when the cap moves.
+const BY_DESIGN_NEAR_CAP = {
+  'opening-night-poller.yml': {
+    'Wait for deploy to go live (fast_path)': 'check-prod-deploy.js --wait=480 inside a 9-min cap',
+    'Collect full text inline': 'MAX_DURATION_MS=540000 plus one in-flight review (~3 min) inside a 12-min cap',
+  },
+};
 
 function minutes(v) {
-  const n = Number(unquote(v));
+  const n = Number(v);
   return Number.isFinite(n) && n > 0 ? n : null; // `${{ }}` expressions -> null (unknown cap)
 }
 
 /**
- * PURE. Job and step timeout caps from a workflow's YAML text. Line-based on
- * purpose (no YAML dependency): GitHub workflows here use 2-space job keys,
- * 4-space job fields and `      - ` step items with 8-space step fields.
- * @returns {Array<{key:string,name:string,timeoutMin:number,steps:Array<{name:string,timeoutMin:number|null}>}>}
+ * PURE. Job and step timeout caps from a workflow's YAML text (js-yaml, the
+ * parser scripts/lib/critical-workflow-notify-cancelled.js uses), so comments
+ * and indentation never drop a step silently.
+ * @returns {Array<{key:string,name:string,timeoutMin:number,steps:Array<{name:string|null,timeoutMin:number|null}>}>}
  */
 function parseWorkflowCaps(yamlText) {
-  const lines = String(yamlText || '').split('\n');
-  const jobs = [];
-  let inJobs = false;
-  let job = null;
-  let step = null;
-  let inSteps = false;
-  for (const raw of lines) {
-    const line = raw.replace(/\r$/, '');
-    if (/^\S/.test(line)) { inJobs = /^jobs:\s*$/.test(line); job = null; step = null; continue; }
-    if (!inJobs || /^\s*#/.test(line) || !line.trim()) continue;
-    let m;
-    if ((m = line.match(/^ {2}([A-Za-z0-9_-]+):\s*$/))) {
-      job = { key: m[1], name: m[1], timeoutMin: null, steps: [] };
-      jobs.push(job);
-      step = null; inSteps = false;
-      continue;
-    }
-    if (!job) continue;
-    if ((m = line.match(/^ {4}([a-z-]+):\s*(.*)$/))) {
-      inSteps = m[1] === 'steps';
-      step = null;
-      if (m[1] === 'name' && m[2]) job.name = unquote(m[2]);
-      if (m[1] === 'timeout-minutes') job.timeoutMin = minutes(m[2]);
-      continue;
-    }
-    if (!inSteps) continue;
-    if ((m = line.match(/^ {6}- (?:([a-z-]+):\s*(.*))?$/))) {
-      step = { name: null, timeoutMin: null };
-      job.steps.push(step);
-      if (m[1] === 'name') step.name = unquote(m[2]);
-      if (m[1] === 'timeout-minutes') step.timeoutMin = minutes(m[2]);
-      continue;
-    }
-    if (step && (m = line.match(/^ {8}([a-z-]+):\s*(.*)$/))) {
-      if (m[1] === 'name') step.name = unquote(m[2]);
-      if (m[1] === 'timeout-minutes') step.timeoutMin = minutes(m[2]);
-    }
-  }
-  for (const j of jobs) if (j.timeoutMin === null) j.timeoutMin = DEFAULT_JOB_TIMEOUT_MIN;
-  return jobs;
+  const doc = require('js-yaml').load(String(yamlText || '')) || {};
+  return Object.entries(doc.jobs || {}).map(([key, job]) => ({
+    key,
+    name: typeof (job && job.name) === 'string' ? job.name : key,
+    timeoutMin: minutes(job && job['timeout-minutes']) || DEFAULT_JOB_TIMEOUT_MIN,
+    steps: ((job && job.steps) || []).map((st) => ({
+      name: typeof (st && st.name) === 'string' ? st.name : null,
+      timeoutMin: minutes(st && st['timeout-minutes']),
+    })),
+  }));
 }
 
 function durMin(a, b) {
@@ -140,12 +116,22 @@ function measure(caps, runs) {
   return [...acc.values()];
 }
 
-/** PURE. Rows whose slowest run used >= warnRatio of the cap, worst first. */
-function nearCap(measured, warnRatio = DEFAULT_WARN_RATIO) {
+/**
+ * PURE. Rows whose slowest run used >= warnRatio of the cap (>= 1 for a
+ * BY_DESIGN_NEAR_CAP step of `workflow`), worst first.
+ */
+function nearCap(measured, warnRatio = DEFAULT_WARN_RATIO, workflow = null, byDesign = BY_DESIGN_NEAR_CAP) {
+  const designed = (workflow && byDesign[workflow]) || {};
   return (measured || [])
     .map((r) => ({ ...r, ratio: r.capMin ? r.maxMin / r.capMin : 0 }))
-    .filter((r) => r.ratio >= warnRatio)
+    .filter((r) => r.ratio >= (r.kind === 'step' && designed[r.step] ? 1 : warnRatio))
     .sort((a, b) => b.ratio - a.ratio);
+}
+
+/** PURE. Too little run data to call a workflow clean: no runs, or > 10% of job reads failed. */
+function readIncomplete({ runsListed, jobsRead }) {
+  if (!jobsRead) return true;
+  return runsListed - jobsRead > Math.floor(runsListed * 0.1);
 }
 
 function rowText(workflow, r) {
@@ -156,22 +142,24 @@ function rowText(workflow, r) {
 /**
  * PURE. audit-alert decisions: one worker card while any step is near its cap,
  * cleared when none is. An unreadable input returns no decision (never clears).
- * @param {{inputMissing?:boolean, findings:Array<{workflow:string}&object>, warnRatio:number}} out
+ * @param {{inputMissing?:boolean, findings:Array<{workflow:string}&object>, warnRatio:number}} out inputMissing = any workflow, run list or run's jobs unreadable
  */
 function decideHeadroomAlerts(out) {
-  if (!out || out.inputMissing) return [];
+  if (!out) return [];
   const rows = (out.findings || []).map((f) => rowText(f.workflow, f));
+  // Some run data unreadable: a finding still files, but "clean" is unproven, so never clear the card.
+  if (out.inputMissing && !rows.length) return [];
   return [buildAuditAlert({
     conditionKey: ALERT_KEY,
     rows,
     title: (n) => `Opening-night timeout headroom: ${n} step${n === 1 ? '' : 's'} near ${n === 1 ? 'its' : 'their'} timeout cap`,
-    intro: `The daily headroom audit found ${rows.length} opening-night step${rows.length === 1 ? '' : 's'} whose slowest recent run used at least ${Math.round((out.warnRatio || DEFAULT_WARN_RATIO) * 100)}% of its timeout-minutes cap. They are still green; the next slow run times out and pages "Opening Night Poller Failed" (BRO-7117: 3 of 12 cases in 30 days were this).`,
+    intro: `The daily headroom audit found ${rows.length} opening-night step${rows.length === 1 ? '' : 's'} whose slowest recent run (green or failed) used at least ${Math.round((out.warnRatio || DEFAULT_WARN_RATIO) * 100)}% of its timeout-minutes cap. A step over 100% already hit its cap; the others are one slow run away, and a timeout pages "Opening Night Poller Failed" (BRO-7117: 3 of 12 cases in 30 days were this).`,
     hint: 'Make the step faster or bound its work (time budget, cache, skip duplicate work), and only then raise its timeout-minutes and the job timeout to match. Do NOT dispatch opening-night-poller.yml or opening-night-broadcast.yml by hand (CLAUDE.md section 17). Done when node scripts/audit-step-timeout-headroom.js --strict exits 0.',
     resolveReason: 'every opening-night step is under its headroom threshold',
   })];
 }
 
 module.exports = {
-  parseWorkflowCaps, measure, nearCap, decideHeadroomAlerts, matchJob, matchStep, namePattern, rowText,
+  parseWorkflowCaps, measure, nearCap, readIncomplete, BY_DESIGN_NEAR_CAP, decideHeadroomAlerts, matchJob, matchStep, namePattern, rowText,
   DEFAULT_WARN_RATIO, DEFAULT_JOB_TIMEOUT_MIN, ALERT_KEY,
 };

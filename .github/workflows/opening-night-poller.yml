@@ -984,7 +984,8 @@ jobs:
         env:
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
-          timeout 60 git fetch --quiet --depth=1 origin main || true
+          # No fetch here: a depth-1 fetch truncates the full-history checkout
+          # push-with-retry.sh needs. origin/main is the ref the last push updated.
           if [ -n "$(git log origin/main..HEAD --oneline 2>/dev/null | head -1)" ]; then
             bash scripts/lib/push-with-retry.sh 5 main
           else
