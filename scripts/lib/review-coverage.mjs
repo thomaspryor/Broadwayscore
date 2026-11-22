@@ -62,6 +62,9 @@ import { isMainModule } from './is-main-module.mjs';
 const { evaluateGapAnswers, answerInstructions, ranBeforeLastEditAdvice } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
+const { ISSUE_ID_MARKER_PREFIX } = createRequire(import.meta.url)('./linear-session-reporting.js');
+// `linear-session.js report` prints this right after the comment is created (BRO-8072).
+const POSTED_REPORT_RE = new RegExp(`${ISSUE_ID_MARKER_PREFIX}[0-9a-f-]{8,}`, 'i');
 
 export const STRONG_SKILLS = ['ship-check', 'code-review'];
 // By-hand fallback when the Skill call fails with "Unknown skill" (BRO-5068):
@@ -439,14 +442,23 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
     const lands = landedPushIndices(events);
     const lastLand = lands.length ? lands[lands.length - 1] : -1;
     let lastDone = -1;
+    // BRO-8072: a fix whose effect shows later is paused with a RECHECK-AFTER report, never Done.
+    // Posted after the last landing, that report is the close-out; before it, it is not one.
+    let lastPaused = -1;
+    const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
+    // Proof it posted: the report prints its issue marker only once the comment exists. A refused report
+    // (exit 6 or 7) never prints it, and neither does one whose refusal a pipe turned into exit 0.
+    const posted = (e) => { const r = answers.get(e.id); return !!r && !r.isError && POSTED_REPORT_RE.test(String(r.content || '')); };
     events.forEach((e, i) => {
       if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
-      if (linearCommands(e.input?.command).some(({ script, verb, args }) => (
+      const cmds = linearCommands(e.input?.command);
+      if (cmds.some(({ script, verb, args }) => (
         (script === 'linear-brain.js' && verb === 'update' && /^BRO-\d+$/i.test(args._[0] || '') && /^done$/i.test(args.state)) ||
         (script === 'linear-session.js' && verb === 'report' && /^done$/i.test(args.status))
       ))) lastDone = i;
+      if (posted(e) && cmds.some(({ script, verb, args }) => script === 'linear-session.js' && verb === 'report' && /^paused$/i.test(args.status))) lastPaused = i;
     });
-    if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
+    if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand && lastPaused <= lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
   }
   return problems;
 }

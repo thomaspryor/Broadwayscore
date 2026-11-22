@@ -373,7 +373,8 @@ test('finish chain: only an actual Done flag on the Linear command closes it (BR
   )];
   const commands = [
     `node scripts/linear-brain.js update BRO-7621 --comment "Example: --state Done"`,
-    `node scripts/linear-session.js report --status=paused --summary "Example: --status done"`,
+    // blocked, not paused: a paused report after the landing is itself a close-out (BRO-8072)
+    `node scripts/linear-session.js report --status=blocked --summary "Example: --status done"`,
     `node scripts/linear-brain.js update BRO-7621 --comment "$(cat <<'EOF'\nExample: --state Done\nEOF\n)"`,
     `cat <<'EOF'\nnode scripts/linear-brain.js update BRO-7621 --state Done\nEOF`,
     'echo node scripts/linear-brain.js update BRO-7621 --state Done',
@@ -497,6 +498,35 @@ test('close-out ordering only counts landings that really ran, and only a real D
   }
   const doneRep = mk('node scripts/linear-session.js report --status=done --issue=BRO-1');
   assert.match(problem([...base, ...ev(doneRep), ...ev(mk(landCmd))]), /close-out was posted before/, '--status=done counts');
+});
+
+test('BRO-8072: a paused report that really posted after the last landing is the close-out', () => {
+  const base = fullChain();
+  const mk = (cmd) => tool('Bash', { command: cmd });
+  const done = mk('node scripts/linear-brain.js update BRO-1 --state Done --comment x');
+  const land = mk('git push origin HEAD:refs/heads/land/bro-2-x');
+  const pausedCmd = 'node scripts/linear-session.js report --issue=BRO-2 --status=paused --summary="RECHECK-AFTER: 2026-11-25"';
+  // what a report prints once its comment exists (linear-session.js): the issue marker, then the JSON line
+  const POSTED = '__LINEAR_ISSUE_ID__=7d284139-97dd-4c5d-b080-53e7b7389cc3\n{"identifier":"BRO-2","status":"paused","stateName":"Paused"}';
+  const ok = (cmd = pausedCmd, out = POSTED, isError = false) => { const u = mk(cmd); return [u, res(u, out, isError)]; };
+  const flagged = (events, why) => assert.match(evaluateChain([...base, ...ev(done), ...events]).join('|'), /close-out was posted before the last landing/, why);
+  // card 1 Done, then card 2 lands and is paused after the landing: clean
+  assert.deepEqual(evaluateChain([...base, ...ev(done, land), ...ok()]), [], 'paused after the landing');
+  assert.deepEqual(evaluateChain([...base, ...ev(done, land), ...ok(`${pausedCmd} 2>&1 | tail -3`)]), [], 'the marker survives a pipe');
+  // the same report posted before the landing does not cover it
+  flagged([...ok(), ...ev(land)], 'paused before the landing');
+  flagged(ok(`${pausedCmd}; git push origin HEAD:refs/heads/land/bro-2-x`), 'report and push in one call: the landing is not verified yet');
+  // nothing posted: refused, refused behind a pipe that hides the refusal line, errored, no marker, no result
+  flagged([...ev(land), ...ok(pausedCmd, '\u274c REFUSED (hidden-owner-question): nothing was posted.', true)], 'refused');
+  flagged([...ev(land), ...ok(`${pausedCmd} 2>&1 | tail -3`, 'reads as a question for the owner.\nSay what blocks it instead.')], 'refusal hidden by a pipe');
+  flagged([...ev(land), ...ok(pausedCmd, `${POSTED}\nLinear HTTP 500`, true)], 'comment posted but the call failed');
+  flagged([...ev(land), ...ev(mk(pausedCmd))], 'no marker in the output');
+  flagged([...ev(land), mk(pausedCmd)], 'no result');
+  // a posted report whose preview echoes the word REFUSED still counts
+  assert.deepEqual(evaluateChain([...base, ...ev(done, land), ...ok(pausedCmd, `the nightly recheck is set to run: grep -c REFUSED log\n${POSTED}`)]), [], 'REFUSED in an echoed command');
+  // blocked and in-review reports are still not close-outs, and a later landing reopens the question
+  for (const st of ['blocked', 'in-review']) flagged([...ev(land), ...ok(pausedCmd.replace('paused', st))], st);
+  flagged([...ev(land), ...ok(), ...ev(mk('git push origin HEAD:refs/heads/land/bro-2-y'))], 'landing after the paused report');
 });
 
 test('what-else: any Linear list_issues tool name reads the board (lens list shape is not checked)', () => {
