@@ -628,7 +628,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           echo "Triggering production deploy..."
-          gh workflow run vercel-deploy.yml || echo "::warning::Deploy dispatch failed — trigger manually: gh workflow run vercel-deploy.yml"
+          gh workflow run vercel-deploy.yml -f source=opening-night || echo "::warning::Deploy dispatch failed — trigger manually: gh workflow run vercel-deploy.yml"
 
       # BRO-2402: the evaluate step above only runs when gather + collect both
       # succeed, and its queue write is only committed by "Commit and push"

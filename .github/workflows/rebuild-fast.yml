@@ -714,7 +714,7 @@ jobs:
             exit 0
           fi
           echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
+          gh workflow run vercel-deploy.yml -f source=rebuild-fast || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 
       - name: Publish live score payloads (BRO-7803)
         # BRO-7803: publish the hot shows' score payloads to the public live-scores

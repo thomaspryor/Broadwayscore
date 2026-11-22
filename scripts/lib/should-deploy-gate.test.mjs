@@ -324,3 +324,56 @@ test('a committed change to an imported data file is dirty for the real git diff
     fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// ---- BRO-8028: min-interval throttle + urgent lane -------------------------
+const { isUrgent, DEFAULT_MIN_INTERVAL_MIN } = require('./should-deploy-gate.js');
+const MIN = DEFAULT_MIN_INTERVAL_MIN * 60;
+const fresh = { ...base, eventName: 'schedule', baselineSha: 'aaa', headSha: 'bbb', deployAgeSec: 120, diffResult: 'dirty', dataDiffResult: 'dirty', minIntervalSec: MIN };
+
+test('BRO-8028: routine churn (scripts/public/data dirty) inside the interval is held', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'clean' }), { proceed: false, reason: 'min-interval' });
+  assert.deepEqual(decide({ ...fresh, baselineSha: 'bbb', codeDiffResult: null }), { proceed: false, reason: 'min-interval' });
+});
+
+test('BRO-8028: src/config/dependency change ships immediately; unknown code diff fails open', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'dirty' }), { proceed: true, reason: 'code-changed' });
+  assert.equal(decide({ ...fresh, codeDiffResult: 'error' }).proceed, true);
+  assert.equal(decide({ ...fresh, codeDiffResult: null }).proceed, true);
+});
+
+test('BRO-8028: past the interval the normal content gate applies; unknown age fails open; kill switch wins', () => {
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, diffResult: 'clean', dataDiffResult: 'clean', codeDiffResult: 'clean' }).proceed, false);
+  assert.equal(decide({ ...fresh, deployAgeSec: null, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, gateDisabled: true, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: minIntervalSec=0 (default) keeps the old behaviour', () => {
+  assert.equal(decide({ ...fresh, minIntervalSec: 0, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: urgent lane is explicit sources only; empty/land/unknown are routine', () => {
+  for (const source of ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  for (const source of ['', undefined, 'land', 'heartbeat', 'whatever']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), false, String(source));
+  assert.equal(isUrgent({ eventName: 'schedule', source: 'urgent' }), false);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews (Fast)' }), true);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews Data' }), false);
+});
+
+test('BRO-8028 class guard: every vercel-deploy dispatcher is classified (urgent source, or on the routine list)', async () => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const dir = new URL('../../.github/workflows/', import.meta.url).pathname;
+  const ROUTINE_OK = new Set(['gather-reviews.yml', 'rebuild-reviews.yml', 'sync-vercel-env.yml', 'weekly-grosses.yml', 'update-show-status.yml', 'commercial-weekly.yml', 'data-health-check.yml', 'update-deploy-watermark.yml', 'check-cron-health.yml', 'llm-ensemble-score.yml', 'scrape-bww-reviews.yml']);
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml') && n !== 'vercel-deploy.yml')) {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const line of text.split('\n')) {
+      if (!/^\s*(run:\s*|if\s+|\w+\s*&&\s*)?gh workflow run vercel-deploy\.yml/.test(line)) continue; // real commands only, not comments/descriptions
+      const m = line.match(/-f source=([\w-]+)/);
+      const ok = m ? ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'land'].includes(m[1]) : ROUTINE_OK.has(f) || /wait_for_run/.test(line);
+      if (!ok) bad.push(`${f}: ${line.trim().slice(0, 100)}`);
+    }
+  }
+  assert.deepEqual(bad, [], 'classify new dispatchers: add -f source=<urgent source> or list the file in ROUTINE_OK');
+});
