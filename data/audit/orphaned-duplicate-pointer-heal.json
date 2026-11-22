@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-22T17:23:45.504Z",
+  "generated": "2026-11-22T17:43:34.455Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 47,
+  "count": 46,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -324,13 +324,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-king-and-i-west-end-2024",
-      "loserFile": "thestage--unknown.json",
-      "targetFile": "thestage--paul-vale.json",
-      "reason": "orphaned-duplicate-heal: thestage--paul-vale.json was flagged invalid after thestage--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
