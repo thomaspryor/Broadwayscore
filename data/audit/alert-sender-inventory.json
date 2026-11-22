@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-22T07:05:00.396Z",
+  "generatedAt": "2026-11-22T20:55:28.926Z",
   "counts": {
-    "router": 233,
+    "router": 234,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -324,21 +324,21 @@
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3555,
+      "line": 3561,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3683,
+      "line": 3689,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 3777,
+      "line": 3783,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -905,28 +905,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5852,
+      "line": 5863,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5887,
+      "line": 5898,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 6348,
+      "line": 6359,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 6349,
+      "line": 6360,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -1430,17 +1430,24 @@
     },
     {
       "file": "scripts/replay-pending-bylines.js",
-      "line": 285,
+      "line": 318,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/replay-pending-bylines.js",
-      "line": 457,
+      "line": 537,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
+    },
+    {
+      "file": "scripts/replay-pending-bylines.js",
+      "line": 1072,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
     },
     {
       "file": "scripts/report-discovery-share.js",
