@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseArgs, evaluate, isSkippableCancel, cancelKindFrom, classifyCancels, MAX_SKIPPED_CANCELS, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO } = require('./check-workflow-run-status.js');
+const { parseArgs, evaluate, isSkippableCancel, cancelKindFrom, classifyCancels, MAX_SKIPPED_CANCELS, MAX_SKIPPED_RAN_CANCELS, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO } = require('./check-workflow-run-status.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 
 const r = (c) => ({ conclusion: c, status: 'completed', url: 'u' });
@@ -194,56 +194,77 @@ test('proxyAwareFetch: plain fetch without a proxy, proxy-honouring wrapper behi
 // concurrency supersede / external cancel, not a verdict on the code.
 const c = (kind, extra = {}) => ({ conclusion: 'cancelled', status: 'completed', url: 'c', cancelKind: kind, ...extra });
 
-test('BRO-8010: proven supersede/external cancels are skipped in single-run mode', () => {
-  const res = evaluate([c('not-timeout'), c('not-timeout'), { ...r('success'), url: 'green' }], { expect: 'success' });
+test('BRO-8010: queued supersedes and external mid-run cancels are skipped in single-run mode', () => {
+  const res = evaluate([c('queued'), c('ran'), { ...r('success'), url: 'green' }], { expect: 'success' });
   assert.equal(res.ok, true, res.message);
   assert.match(res.message, /green/);
-  assert.match(res.message, /skipped 2 newer cancel/);
+  assert.match(res.message, /skipped 2 newer cancel\(s\): 1 never started, 1 cancelled mid-run/);
 });
 
 test('BRO-8010: timeouts, unclassified cancels and re-run attempts still decide', () => {
   assert.equal(evaluate([c('timeout'), r('success')], { expect: 'success' }).ok, false, 'a job timeout reports as cancelled');
   assert.equal(evaluate([c('unknown'), r('success')], { expect: 'success' }).ok, false, 'classification failed: fail closed');
   assert.equal(evaluate([c(undefined), r('success')], { expect: 'success' }).ok, false, 'never classified');
-  assert.equal(evaluate([c('not-timeout', { attempt: 2 }), r('success')], { expect: 'success' }).ok, false, 'a cancelled re-run may hide its failed first attempt');
+  assert.equal(evaluate([c('queued', { attempt: 2 }), r('success')], { expect: 'success' }).ok, false, 'a cancelled re-run may hide its failed first attempt');
 });
 
 test('BRO-8010: skipped cancels never hide a failure; storms and long streaks are not a pass', () => {
-  assert.equal(evaluate([c('not-timeout'), r('failure'), r('success')], { expect: 'success' }).ok, false);
-  const storm = evaluate([c('not-timeout'), c('not-timeout')], { expect: 'success' });
+  assert.equal(evaluate([c('queued'), r('failure'), r('success')], { expect: 'success' }).ok, false);
+  const storm = evaluate([c('queued'), c('queued')], { expect: 'success' });
   assert.equal(storm.ok, false);
   assert.match(storm.message, /cancel storm/);
-  const long = Array.from({ length: MAX_SKIPPED_CANCELS + 1 }, () => c('not-timeout'));
+  const long = Array.from({ length: MAX_SKIPPED_CANCELS + 1 }, () => c('queued'));
   assert.equal(evaluate([...long, r('success')], { expect: 'success' }).ok, false);
   assert.equal(evaluate([...long.slice(1), r('success')], { expect: 'success' }).ok, true);
 });
 
+test('BRO-8010: more than MAX_SKIPPED_RAN_CANCELS mid-run cancels could be superseded hangs: not a pass', () => {
+  const ran = Array.from({ length: MAX_SKIPPED_RAN_CANCELS }, () => c('ran'));
+  assert.equal(evaluate([...ran, c('queued'), r('success')], { expect: 'success' }).ok, true);
+  const res = evaluate([...ran, c('ran'), r('success')], { expect: 'success' });
+  assert.equal(res.ok, false);
+  assert.match(res.message, /could be hangs/);
+});
+
 test('BRO-8010: --expect=cancelled and multi-run mode keep every cancel', () => {
-  assert.equal(evaluate([c('not-timeout'), r('success')], { expect: 'cancelled' }).ok, true);
-  assert.equal(evaluate([c('not-timeout'), r('success'), r('success')], { expect: 'cancelled', limit: 3, maxMatch: 0 }).ok, false);
+  assert.equal(evaluate([c('queued'), r('success')], { expect: 'cancelled' }).ok, true);
+  assert.equal(evaluate([c('queued'), r('success'), r('success')], { expect: 'cancelled', limit: 3, maxMatch: 0 }).ok, false);
 });
 
-test('BRO-8010: cancelKindFrom reads the timeout annotation', () => {
-  assert.equal(cancelKindFrom([]), 'not-timeout', 'no jobs = superseded while queued');
-  assert.equal(cancelKindFrom([{ annotations: ['The run was canceled by @x.', 'The operation was canceled.'] }]), 'not-timeout');
-  assert.equal(cancelKindFrom([{ annotations: [] }, { annotations: ['The job running on runner GitHub Actions 7 has exceeded the maximum execution time of 30 minutes.'] }]), 'timeout');
+test('BRO-8010: cancelKindFrom reads job starts and the timeout annotation', () => {
+  assert.equal(cancelKindFrom([]), 'queued', 'no jobs = superseded while queued');
+  assert.equal(cancelKindFrom([{ started: false, annotations: [] }]), 'queued');
+  assert.equal(cancelKindFrom([{ started: true, annotations: ['The run was canceled by @x.', 'The operation was canceled.'] }]), 'ran');
+  assert.equal(cancelKindFrom([{ started: true, annotations: [] }, { started: true, annotations: ['The job running on runner GitHub Actions 7 has exceeded the maximum execution time of 30 minutes.'] }]), 'timeout');
   assert.equal(cancelKindFrom(undefined), 'unknown');
-  assert.equal(isSkippableCancel({ conclusion: 'failure', cancelKind: 'not-timeout' }), false);
+  assert.equal(isSkippableCancel({ conclusion: 'failure', cancelKind: 'queued' }), false);
 });
 
-test('BRO-8010: classifyCancels classifies only the leading cancels and fails closed on API errors', async () => {
+test('BRO-8010: classifyCancels classifies only the leading cancels and fails closed', async () => {
   const calls = [];
   const api = async (path) => {
     calls.push(path);
-    if (path.includes('/runs/1/')) return { jobs: [] };
-    if (path.includes('/runs/2/')) return { jobs: [{ id: 20 }] };
+    if (path.includes('/runs/1/')) return { total_count: 0, jobs: [] };
+    if (path.includes('/runs/2/')) return { total_count: 1, jobs: [{ id: 20, started_at: 't' }] };
     if (path.includes('/check-runs/20/')) return [{ message: 'has exceeded the maximum execution time of 15m0s' }];
+    if (path.includes('/runs/3/')) return { total_count: 1, jobs: [{ id: 30, started_at: null }] };
+    if (path.includes('/runs/6/')) return { total_count: 150, jobs: [{ id: 60, started_at: null }] };
     throw new Error('HTTP 403');
   };
-  const runs = [{ conclusion: '', id: 0 }, c(undefined, { id: 1 }), c(undefined, { id: 2 }), c(undefined, { id: 3 }), { ...r('success'), id: 4 }, c(undefined, { id: 5 })];
+  const runs = [{ conclusion: '', id: 0 }, c(undefined, { id: 1 }), c(undefined, { id: 2 }), c(undefined, { id: 3 }), c(undefined, { id: 6 }), c(undefined, { id: 7 }), { ...r('success'), id: 4 }, c(undefined, { id: 5 })];
   await classifyCancels(runs, api);
-  assert.deepEqual(runs.map((x) => x.cancelKind), [undefined, 'not-timeout', 'timeout', 'unknown', undefined, undefined]);
+  assert.deepEqual(runs.map((x) => x.cancelKind), [undefined, 'queued', 'timeout', 'queued', 'unknown', 'unknown', undefined, undefined]);
   assert.equal(calls.some((p) => p.includes('/runs/5/')), false, 'stops at the first non-cancel');
+  assert.equal(calls.some((p) => p.includes('/check-runs/30/')), false, 'no annotation call for a job that never started');
+});
+
+test('BRO-8010: classifyCancels stops at its API budget (token-free 60/hr quota)', async () => {
+  let calls = 0;
+  const api = async () => { calls++; return { total_count: 1, jobs: [{ id: 1, started_at: 't' }] }; };
+  const runs = Array.from({ length: 8 }, (_, i) => c(undefined, { id: i + 1 }));
+  await classifyCancels(runs, async (p) => (p.includes('check-runs') ? (calls++, []) : api(p)), { maxCalls: 5 });
+  assert.equal(calls, 5);
+  assert.equal(runs.filter((x) => x.cancelKind === 'unknown').length >= 5, true);
 });
 
 test('BRO-8010: REST runs carry id + attempt', () => {

@@ -63,23 +63,27 @@ function parseCount(v, name, min) {
   return Number(v);
 }
 
-const MAX_SKIPPED_CANCELS = 10;
+const MAX_SKIPPED_CANCELS = 10;     // leading skippable cancels of any kind
+const MAX_SKIPPED_RAN_CANCELS = 3;  // of which a job actually ran (could be a hang a newer run superseded)
+const MAX_CLASSIFY_API_CALLS = 15;  // the token-free path shares a 60/hr quota with the done-gate
 const TIMEOUT_ANNOTATION = /maximum execution time/i;
 
 /** PURE. A cancel classifyCancels proved was not a timeout, on a first attempt (a re-run attempt's cancel could hide its failed first attempt). */
 function isSkippableCancel(r) {
-  return r.conclusion === 'cancelled' && r.cancelKind === 'not-timeout' && !(Number(r.attempt) > 1);
+  return r.conclusion === 'cancelled' && (r.cancelKind === 'queued' || r.cancelKind === 'ran') && !(Number(r.attempt) > 1);
 }
 
 /**
- * PURE. Classify one cancelled run from its jobs and their annotation messages
- * ({ jobs: [{ annotations: [msg] }] }). 'timeout' when any job hit
- * timeout-minutes, else 'not-timeout' (no jobs = superseded while queued;
- * jobs without a timeout annotation = cancelled from outside).
+ * PURE. Classify one cancelled run from its jobs ({ started, annotations: [msg] }).
+ * 'timeout' when any job hit timeout-minutes; 'queued' when no job ever
+ * started (superseded or cancelled while waiting: proves nothing about the
+ * code); 'ran' when a job ran and was cancelled from outside (a supersede or
+ * a manual/press-night cancel, but possibly a hang, hence its own lower cap).
  */
 function cancelKindFrom(jobs) {
   if (!Array.isArray(jobs)) return 'unknown';
-  return jobs.some((j) => (j.annotations || []).some((m) => TIMEOUT_ANNOTATION.test(m || ''))) ? 'timeout' : 'not-timeout';
+  if (jobs.some((j) => (j.annotations || []).some((m) => TIMEOUT_ANNOTATION.test(m || '')))) return 'timeout';
+  return jobs.some((j) => j.started) ? 'ran' : 'queued';
 }
 
 /**
@@ -88,17 +92,27 @@ function cancelKindFrom(jobs) {
  * api(path) returns parsed JSON for a REST path; any error leaves the run
  * unclassified, so it still decides (fail closed).
  */
-async function classifyCancels(runs, api) {
+async function classifyCancels(runs, api, { maxCalls = MAX_CLASSIFY_API_CALLS } = {}) {
   let n = 0;
+  let calls = 0;
+  const call = (path) => {
+    if (++calls > maxCalls) throw new Error('classify API budget spent');
+    return api(path);
+  };
   for (const run of runs) {
     if (!run.conclusion) continue;
     if (run.conclusion !== 'cancelled' || n++ > MAX_SKIPPED_CANCELS || !run.id) break;
     try {
-      const body = await api(`/repos/${PUBLIC_REPO}/actions/runs/${run.id}/jobs?per_page=100`);
+      const body = await call(`/repos/${PUBLIC_REPO}/actions/runs/${run.id}/jobs?per_page=100`);
+      const list = body.jobs || [];
+      // A second page could hold the timed-out job: unknown, fail closed.
+      if (Number(body.total_count) > list.length) throw new Error('jobs list truncated');
       const jobs = [];
-      for (const j of body.jobs || []) {
-        const ann = await api(`/repos/${PUBLIC_REPO}/check-runs/${j.id}/annotations?per_page=100`);
-        jobs.push({ annotations: (Array.isArray(ann) ? ann : []).map((a) => a.message) });
+      for (const j of list) {
+        // A job that never started cannot have timed out; no annotation call needed.
+        if (!j.started_at) { jobs.push({ started: false, annotations: [] }); continue; }
+        const ann = await call(`/repos/${PUBLIC_REPO}/check-runs/${j.id}/annotations?per_page=100`);
+        jobs.push({ started: true, annotations: (Array.isArray(ann) ? ann : []).map((a) => a.message) });
       }
       run.cancelKind = cancelKindFrom(jobs);
     } catch {
@@ -132,12 +146,16 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
     const skippable = (r) => expect !== 'cancelled' && isSkippableCancel(r);
     const idx = finished.findIndex((r) => !skippable(r));
     const skipped = idx === -1 ? finished.length : idx;
+    const ran = finished.slice(0, skipped).filter((r) => r.cancelKind === 'ran').length;
+    if (ran > MAX_SKIPPED_RAN_CANCELS) {
+      return { ok: false, message: `MISMATCH — ${ran} of the newest finished runs were cancelled mid-run (more than ${MAX_SKIPPED_RAN_CANCELS}; could be hangs, nothing proves '${expect}')` };
+    }
     if (idx === -1 || skipped > MAX_SKIPPED_CANCELS) {
       return { ok: false, message: `MISMATCH — the ${skipped} most recent finished run(s) were all cancelled (cancel storm; nothing proves '${expect}')` };
     }
     const run = finished[idx];
     const ok = run.conclusion === expect;
-    const note = skipped ? ` (skipped ${skipped} newer cancel(s) that were supersedes/external cancels, not timeouts)` : '';
+    const note = skipped ? ` (skipped ${skipped} newer cancel(s): ${skipped - ran} never started, ${ran} cancelled mid-run without a timeout)` : '';
     return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})${note}` };
   }
   // Only finished runs count: an in-progress/queued run has no conclusion yet
@@ -307,4 +325,4 @@ if (require.main === module) {
   main(process.argv.slice(2)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { parseArgs, evaluate, isSkippableCancel, cancelKindFrom, classifyCancels, MAX_SKIPPED_CANCELS, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
+module.exports = { parseArgs, evaluate, isSkippableCancel, cancelKindFrom, classifyCancels, MAX_SKIPPED_CANCELS, MAX_SKIPPED_RAN_CANCELS, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
