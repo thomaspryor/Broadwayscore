@@ -60,7 +60,7 @@ const LISTING_YEAR_SUFFIX_RE = /_(?:19|20)\d{2}$/;
 //      (before an optional market/year tail) - the id was minted from the same
 //      credited string, so title and id agree the credit is part of the feed
 //      string - AND
-//  (c) what remains is at least 2 words or contains ':' (never leave a stub).
+//  (c) something non-empty remains before " by ".
 const BYLINE_NAME = "[A-Z][\\p{L}'.\\-]*(?:\\s+(?:[A-Z][\\p{L}'.\\-]*|de|van|von|da|di|la|le)){1,3}";
 const PLAYWRIGHT_BYLINE_RE = new RegExp('^(.*\\S)\\s+by\\s+(' + BYLINE_NAME + ')\\s*$', 'u');
 const ID_TAIL_RE = /-(?:regional|off-broadway|broadway|west-end|off-west-end|touring|tour|uk|us)(?:-\d{4})?$|-\d{4}$/;
@@ -79,7 +79,6 @@ function classifyPlaywrightByline(title, id) {
   const name = m[2];
   const nameToks = slugTokens(name);
   if (nameToks.length < 2) return null;
-  if (rest.split(/\s+/).length < 2 && !/:/.test(rest)) return null;
   let idBody = String(id);
   for (let i = 0; i < 3; i++) idBody = idBody.replace(ID_TAIL_RE, '');
   const idToks = idBody.split('-').filter(Boolean);
