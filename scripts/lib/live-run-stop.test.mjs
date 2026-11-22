@@ -2,7 +2,7 @@
 // must block; a dispatch of its workflow plus a read of the run, or a direct run of the script, must allow.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows, defersProof } from './live-run-stop.mjs';
+import { landedCodeEdit, workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows, defersProof } from './live-run-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true' };
 const SAFE = 'Done.\n\nSAFE TO ARCHIVE — all landed';
@@ -310,4 +310,17 @@ test('a wrapper before the interpreter still counts as a direct run; text that m
 test('a wrapped cloud-dispatch of the workflow counts as a dispatch', () => {
   const ev = [...edit('.github/workflows/sentry-triage.yml'), ...landed()];
   assert.equal(decide([...ev, ...bash('timeout 600 node scripts/cloud-dispatch.js sentry-triage.yml --wait')]).decision, 'allow');
+});
+
+test('landedCodeEdit reads edited paths from shell code, not heredoc bodies (BRO-8026 class guard)', () => {
+  const ev = (c) => [{ kind: 'x' }, { kind: 'assistant_tool_use', name: 'Bash', input: { command: c } }, { kind: 'x' }];
+  assert.equal(landedCodeEdit(ev('cat > scripts/lib/a.test.mjs <<EOF\n// see scripts/lib/real-code.js\nEOF'), 0, 2), null, 'heredoc body path is text');
+  assert.equal(landedCodeEdit(ev('cat > scripts/lib/real-code.js <<EOF\nx\nEOF'), 0, 2), 'scripts/lib/real-code.js', 'redirect target counts');
+});
+
+test('script writes (python/node, quoted args with spaces) still count as edits (BRO-8026 review regression guard)', () => {
+  const py = "python3 -c \"open('scripts/fixture-job.js', 'w').write(x)\"";
+  const nd = "node -e \"require('fs').writeFileSync('scripts/fixture-job.js', s)\"";
+  const pyHere = "python3 - <<'EOF'\nopen('scripts/fixture-job.js', 'w').write(x)\nEOF";
+  for (const c of [py, nd, pyHere]) assert.equal(decide([...bash(c), ...landed()]).decision, 'block', c.slice(0, 30));
 });

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T12:17:08.165Z",
+  "timestamp": "2026-11-22T13:11:56.959Z",
   "stats": {
-    "totalReviews": 83882,
-    "alreadyFlagged": 22450,
+    "totalReviews": 83883,
+    "alreadyFlagged": 22455,
     "dateGuardCatches": 241,
     "directorMismatch": 3879,
     "tvFilmSignals": 2411,
-    "londonSignals": 3969,
+    "londonSignals": 3963,
     "offBroadwaySignals": 785,
     "yearMismatch": 395,
-    "noPublishDate": 8221
+    "noPublishDate": 8219
   },
   "findings": [
     {
@@ -422,17 +422,12 @@
       "file": "britishtheatrecom--unknown.json",
       "score": 82,
       "publishDate": "2015-06-23",
-      "url": "https://www.britishtheatre.com/es/posts/review-1984-playhouse-theatre-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-1984-playhouse-theatre-4stars",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -2767,7 +2762,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2025-03-11",
       "url": "https://nystagereview.com/2025/03/11/a-streetcar-named-desire-a-healthy-shot-of-southern-discomfort/",
       "findings": [
@@ -2781,6 +2776,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "timeout--adam-feldman.json",
+      "score": 60,
       "publishDate": "2025-03-17",
       "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
       "findings": [
@@ -2794,7 +2790,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
-      "score": null,
+      "score": 93,
       "publishDate": "2025-03-11",
       "url": "https://www.vulture.com/article/theater-review-streetcar-named-desire-williams-frecknall-mescal-ferran.html",
       "findings": [
@@ -8156,7 +8152,7 @@
       "file": "britishtheatrecom--julian-eaves.json",
       "score": 82,
       "publishDate": "2017-06-27",
-      "url": "https://www.britishtheatre.com/pt/posts/review-bat-out-of-hell-london-coliseum-5stars",
+      "url": "https://www.britishtheatre.com/posts/review-bat-out-of-hell-london-coliseum-5stars",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26000,7 +25996,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "thestage--dave-fargnoli.json",
-      "score": null,
+      "score": 59,
       "publishDate": "2024-09-27",
       "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt",
       "findings": [
@@ -29315,7 +29311,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 97,
       "publishDate": "2015-04-16",
-      "url": "https://www.britishtheatre.com/ar/posts/review-gypsy-savoy-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-gypsy-savoy-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34956,7 +34952,7 @@
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 78,
       "publishDate": "2018-04-15",
-      "url": "https://www.britishtheatre.com/hi/posts/review-instructions-for-correct-assembly-royal-court-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-instructions-for-correct-assembly-royal-court-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39378,6 +39374,7 @@
     {
       "showId": "kenrex-sheffield-regional-2024",
       "file": "thestage--holly-williams.json",
+      "score": 78,
       "publishDate": "2024-11-01",
       "url": "https://www.thestage.co.uk/reviews/kenrex-review-tanya-moiseiwitsch-playhouse-sheffield-jack-holden-ed-stambollouian-ken-rex-mcelroy",
       "findings": [
@@ -44119,6 +44116,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "standard--nick-curtis.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/marie-rosetta-rose-theatre-kingston-review-beverley-knight-b1226992.html",
       "findings": [
@@ -44132,6 +44130,7 @@
     {
       "showId": "marie-and-rosetta-west-end-2025",
       "file": "thestage--holly-omahony.json",
+      "score": 79,
       "publishDate": "2025-05-12",
       "url": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer",
       "findings": [
@@ -47605,7 +47604,7 @@
     {
       "showId": "mrs-warrens-profession-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2025-05-27",
       "url": "https://playsinternational.org.uk/mrs-warrens-profession-garrick-theatre/",
       "findings": [
@@ -71079,6 +71078,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "independent--tim-bano.json",
+      "score": 57,
       "publishDate": "2024-06-26",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-constituent-review-james-corden-anna-maxwell-martin-b2569068.html",
       "findings": [
@@ -71433,42 +71433,42 @@
     {
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
-      "publishDate": "November 26th, 2024",
+      "score": 81,
+      "publishDate": "2024-11-26",
       "url": "https://culturesauce.com/2024/11/26/the-dead-1904-joyce-off-broadway-review-irish-rep/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
     {
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "nysr--elysa-gardner.json",
-      "score": null,
-      "publishDate": "November 26th, 2024",
+      "score": 79,
+      "publishDate": "2024-11-26",
       "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
     {
       "showId": "the-dead-1904-off-broadway-2026",
       "file": "nysr--steven-suskin.json",
-      "score": null,
-      "publishDate": "November 26th, 2024",
+      "score": 59,
+      "publishDate": "2024-11-26",
       "url": "https://nystagereview.com/2024/11/26/the-dead-1904-james-joyce-and-the-living-2024/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 725d before show (November 26th, 2024 vs 2026-11-21)"
+          "detail": "Published 725d before show (2024-11-26 vs 2026-11-21)"
         }
       ]
     },
@@ -75293,6 +75293,7 @@
     {
       "showId": "the-invention-of-love-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 77,
       "publishDate": "2024-12-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-invention-of-love-review",
       "findings": [
@@ -87409,6 +87410,7 @@
     {
       "showId": "war-horse-lowry-regional-2024",
       "file": "thestage--chris-bartlett.json",
+      "score": 94,
       "publishDate": "2024-09-24",
       "url": "https://www.thestage.co.uk/reviews/war-horse-review-the-lowry-salford-tom-sturgess-michael-morpurgo-nick-stafford-katie-henry",
       "findings": [
@@ -93155,7 +93157,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-03-11",
       "url": "https://culturesauce.com/2025/03/11/paul-mescal-streetcar-named-desire-off-broadway-review/",
       "findings": [
@@ -93169,6 +93171,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "ew--dalton-ross.json",
+      "score": 85,
       "publishDate": "2025-03-11",
       "url": "https://ew.com/a-streetcar-named-desire-review-paul-mescal-far-from-common-11693721",
       "findings": [
@@ -93182,6 +93185,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "latimes--charles-mcnulty.json",
+      "score": 95,
       "publishDate": "2025-03-12",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
       "findings": [
@@ -93195,6 +93199,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "nytg--joe-dziemianowicz.json",
+      "score": 90,
       "publishDate": "2025-03-11",
       "url": "https://www.newyorktheatreguide.com/reviews/a-streetcar-named-desire-off-broadway-review-paul-mescal",
       "findings": [
@@ -93208,6 +93213,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "slantmagazine--dan-rubins.json",
+      "score": 72,
       "publishDate": "2025-03-11",
       "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
       "findings": [
@@ -93221,6 +93227,7 @@
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "theatermania--zachary-stewart.json",
+      "score": 92,
       "publishDate": null,
       "url": "http://www.theatermania.com/off-broadway/reviews/a-streetcar-named-desire_76914.html",
       "findings": [
@@ -95723,6 +95730,20 @@
     },
     {
       "showId": "anna-west-end-2019",
+      "file": "britishtheatrecom--sophie-adnitt.json",
+      "score": 89,
+      "publishDate": "2019-05-23",
+      "url": "https://www.britishtheatre.com/posts/review-anna-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
       "score": 39,
       "publishDate": null,
@@ -96328,7 +96349,7 @@
       "file": "britishtheatrecom--susan-novak.json",
       "score": 78,
       "publishDate": "2026-04-18",
-      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "url": "https://www.britishtheatre.com/posts/avenue-q-review-the-puppets-are-onto-something",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -99871,7 +99892,7 @@
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 89,
       "publishDate": "2018-12-21",
-      "url": "https://www.britishtheatre.com/fr/posts/review-caroline-or-change-playhouse-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-caroline-or-change-playhouse-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -106809,12 +106830,12 @@
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 35,
       "publishDate": "2018-07-27",
-      "url": "https://www.britishtheatre.com/ja/posts/review-exit-the-king-national-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-exit-the-king-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -113400,7 +113421,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 65,
       "publishDate": "2015-05-14",
-      "url": "https://www.britishtheatre.com/nl/posts/review-high-society-old-vic-theatre-3stars",
+      "url": "https://www.britishtheatre.com/posts/review-high-society-old-vic-theatre-3stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -116315,34 +116336,6 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "britishtheatrecom--british-theatre.json",
-      "score": null,
-      "publishDate": "2026-10-07",
-      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "britishtheatrecom--unknown.json",
-      "score": null,
-      "publishDate": "2026-10-07",
-      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "deadline--greg-evans.json",
       "score": null,
       "publishDate": "2026-07-30",
@@ -119086,20 +119079,6 @@
     },
     {
       "showId": "london-tide-west-end-2024",
-      "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 62,
-      "publishDate": "2024-04-22",
-      "url": "https://www.britishtheatre.com/es/posts/review-london-tide-national-theatre-lyttleton",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "london-tide-west-end-2024",
       "file": "broadwayworld--unknown.json",
       "publishDate": "2024-04-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-LONDON-TIDE-National-Theatre-20240418",
@@ -119654,20 +119633,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "made-in-dagenham-west-end-2014",
-      "file": "britishtheatrecom--stephen-collins.json",
-      "score": 82,
-      "publishDate": "2014-11-11",
-      "url": "https://www.britishtheatre.com/pt/posts/review-made-dagenham-adelphi-theatre-4stars",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -123649,7 +123614,7 @@
       "file": "britishtheatrecom--stephen-collins.json",
       "score": 74,
       "publishDate": "2015-01-24",
-      "url": "https://www.britishtheatre.com/ar/posts/review-my-night-with-reg-apollo-theatre-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-my-night-with-reg-apollo-theatre-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -124849,20 +124814,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "nye-west-end-2024",
-      "file": "britishtheatrecom--paul-t-davies.json",
-      "score": 82,
-      "publishDate": "2024-03-11",
-      "url": "https://www.britishtheatre.com/fr/posts/review-nye-national-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -129643,7 +129594,7 @@
       "file": "britishtheatrecom--british-theatre.json",
       "score": 77,
       "publishDate": "2026-10-09",
-      "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
+      "url": "https://www.britishtheatre.com/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130298,8 +130249,8 @@
       "showId": "roosevelvis-west-end-2015",
       "file": "britishtheatrecom--james-garden.json",
       "score": 83,
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
+      "publishDate": "2015-11-02",
+      "url": "https://www.britishtheatre.com/posts/review-roosevelvis-royal-court-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130313,7 +130264,7 @@
       "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2015-11-02",
-      "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
+      "url": "https://www.britishtheatre.com/posts/review-roosevelvis-royal-court-4stars",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -141816,6 +141767,7 @@
     {
       "showId": "the-little-foxes-off-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 76,
       "publishDate": "2024-12-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-little-foxes-review",
       "findings": [
@@ -142627,7 +142579,7 @@
       "file": "britishtheatrecom--julian-eaves.json",
       "score": 69,
       "publishDate": null,
-      "url": "https://www.britishtheatre.com/es/posts/review-the-mirror-and-the-light-gielgud-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-the-mirror-and-the-light-gielgud-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -145208,6 +145160,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 78,
       "publishDate": "2025-03-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
       "findings": [
@@ -145432,7 +145385,7 @@
       "showId": "the-smile-of-her-off-west-end-2026",
       "file": "britishtheatrecom--susan-novak.json",
       "publishDate": "2026-07-16",
-      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
+      "url": "https://www.britishtheatre.com/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -149920,20 +149873,6 @@
     },
     {
       "showId": "waiting-for-godot-west-end-2024",
-      "file": "britishtheatrecom--susan-novak.json",
-      "score": 90,
-      "publishDate": "2024-09-27",
-      "url": "https://www.britishtheatre.com/es/posts/waiting-for-godot-review-roundup",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 79,
       "publishDate": "2024-09-20",
@@ -151075,7 +151014,7 @@
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 78,
       "publishDate": "2018-10-19",
-      "url": "https://www.britishtheatre.com/ko/posts/review-wise-children-old-vic-theatre",
+      "url": "https://www.britishtheatre.com/posts/review-wise-children-old-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

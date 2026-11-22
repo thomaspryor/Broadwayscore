@@ -36,7 +36,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, CMD_WRAPPER_PREFIX } from './review-coverage.mjs';
-import { shellEditsCode } from './retro-coverage-stop.mjs';
+import { shellEditsCode, editPathText } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
 import { isMainModule } from './is-main-module.mjs';
@@ -116,7 +116,7 @@ export function liveEdits(events, from, index) {
     // Edits made in the shell (sed -i, > redirect, python writes): every live path the editing command names (what-else gap).
     else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
       // BRO-8026: heredoc bodies are text, not edits; read paths from the shell code only (runShellCode drops them).
-      const c = runShellCode(String(e.input?.command || '')) || '';
+      const c = editPathText(e.input?.command);
       paths = [...c.matchAll(/(?:^|[\s'"=(/])((?:\.github\/workflows\/[\w.-]+\.ya?ml)|(?:scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py)))\b/g)].map((m) => m[1]);
     }
     for (const p of paths) add(p, i);
@@ -182,7 +182,7 @@ export function landedCodeEdit(events, from, lastLand) {
       const m = /\/\.claude\/projects\//.test(p) ? null : CODE_PATH_RE.exec(p);
       if (m && isProductCode(m[1])) return m[1];
     } else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
-      for (const m of String(e.input?.command || '').matchAll(CODE_IN_CMD_RE)) if (isProductCode(m[1])) return m[1];
+      for (const m of editPathText(e.input?.command).matchAll(CODE_IN_CMD_RE)) if (isProductCode(m[1])) return m[1];
     }
   }
   return null;

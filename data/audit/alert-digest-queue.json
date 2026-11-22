@@ -140,20 +140,6 @@
     "queuedAt": "2026-11-22T11:02:41.949Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-22T12:00:34.173Z"
-  },
-  {
     "conditionKey": "land:land/bro-7568-recheck",
     "title": "Landing blocked: unit-tests-node red on land/bro-7568-recheck",
     "description": "land.yml did not land land/bro-7568-recheck: the unit-tests-node gate went red at 89a492513d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45019011865",
@@ -183,5 +169,62 @@
       }
     ],
     "queuedAt": "2026-11-22T11:53:06.745Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-22.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T13:08:03.724Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-22.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-22T12:56:39.109Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs) — already tracked at BRO-7973",
+    "description": "This condition already has an open tracker (BRO-7973); not filing a duplicate. It will go quiet in the digest from here.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7973",
+    "fields": [],
+    "queuedAt": "2026-11-22T13:14:04.068Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category",
+    "title": "Live-data test failing: every shows.json id suffix matches its category (tests/unit/show-id-market-suffix.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every shows.json id suffix matches its category\" in tests/unit/show-id-market-suffix.test.mjs is red against the live corpus.\n\nnew id/category mismatch: fix the id (scripts/rename-show-id.js) or the category\n+ actual - expected\n\n+ [\n+   'the-seagull-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-three-sisters-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'brigadoon-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-glass-menagerie-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alice-in-wonderland-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-invention-of-love-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-maids-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'in-praise-of-love-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'the-lady-from-the-sea-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'alls-well-that-ends-well-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cymbeline-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'cyrano-west-end-2024: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'marie-and-rosetta-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'an-oak-tree-west-end-2025: a off-west-end row needs an id ending -off-west-end[-YYYY]',\n+   'hold-on-to-your-butts-west-end-",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category",
+    "fields": [],
+    "queuedAt": "2026-11-22T13:14:04.821Z"
   }
 ]
