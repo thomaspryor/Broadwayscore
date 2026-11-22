@@ -47975,7 +47975,7 @@
       "silentRefires": 2
     },
     "land:land/bro-7101-arm-gates": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: merged-tree-tests red on land/bro-7101-arm-gates",
       "firstSeen": "2026-11-22T03:03:24.044Z",
@@ -47985,7 +47985,8 @@
       "lastSurfacedAt": "2026-11-22T03:03:24.044Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-22T10:24:51.272Z"
     },
     "land:land/bro-7511-ai-feedback-summary": {
       "status": "resolved",
@@ -48130,13 +48131,13 @@
       "title": "Test red on main: every shows.json id suffix matches its category [testCodeFailure]",
       "firstSeen": "2026-11-22T09:41:14.867Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.867Z",
-      "lastSeen": "2026-11-22T10:14:25.702Z",
+      "lastSeen": "2026-11-22T10:24:51.392Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.867Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.867Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land-preexisting:scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it#31ea20cf8f": {
       "status": "open",
@@ -48144,13 +48145,13 @@
       "title": "Test red on main: broadway edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
       "firstSeen": "2026-11-22T09:41:14.898Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.898Z",
-      "lastSeen": "2026-11-22T10:14:25.619Z",
+      "lastSeen": "2026-11-22T10:24:51.422Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.898Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.898Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land-preexisting:scripts/newsletter/featured-state-persist-order.test.mjs::west-end edition persists every opening it#7eb2367617": {
       "status": "open",
@@ -48158,13 +48159,13 @@
       "title": "Test red on main: west-end edition persists every opening it rendered into featuredShowIds (state write stays below markFeatured) [testCod",
       "firstSeen": "2026-11-22T09:41:14.924Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.924Z",
-      "lastSeen": "2026-11-22T10:14:25.649Z",
+      "lastSeen": "2026-11-22T10:24:51.447Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.924Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.924Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land-preexisting:scripts/newsletter/lastfeatured-inweek.test.mjs::west-end edition run records only the Broadway ids #492686bd24": {
       "status": "open",
@@ -48172,13 +48173,13 @@
       "title": "Test red on main: west-end edition run records only the Broadway ids it actually rendered — never bwO/obO pollution [testCodeFailure]",
       "firstSeen": "2026-11-22T09:41:14.949Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.949Z",
-      "lastSeen": "2026-11-22T10:14:25.675Z",
+      "lastSeen": "2026-11-22T10:24:51.473Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.949Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.949Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "express-retry-still-thin:club-nvrlnd-off-west-end-2026": {
       "status": "open",
