@@ -3614,6 +3614,10 @@ on:
       - 'scripts/replay-slow-market-openings.js'
       # BRO-5259 byline-evidence CLI (scripts/check-byline-evidence.test.mjs); a solo edit would otherwise trigger zero CI.
       - 'scripts/check-byline-evidence.js'
+      # BRO-8056 show-refresh manifest runner/verifier/builder (scripts/*-show-refresh-manifest.test.mjs); a solo edit would otherwise trigger zero CI.
+      - 'scripts/run-show-refresh-manifest.js'
+      - 'scripts/verify-show-refresh-manifest.js'
+      - 'scripts/build-show-refresh-manifest.ts'
   pull_request:
     branches: [main]
   schedule:
