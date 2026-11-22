@@ -1,7 +1,7 @@
 {
   "theaters": {
     "Al Hirschfeld Theatre": {
-      "appliedAt": "2026-11-22T17:25:11.044Z",
+      "appliedAt": "2026-11-22T18:18:37.151Z",
       "published": [
         {
           "type": "watch-out",
@@ -64,17 +64,6 @@
         },
         {
           "type": "value",
-          "level": "orchestra",
-          "evidence": [
-            {
-              "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
-              "quoteHash": "5986701e6269",
-              "fetchedAt": "2026-11-22"
-            }
-          ]
-        },
-        {
-          "type": "value",
           "level": "mezzanine",
           "evidence": [
             {
@@ -112,10 +101,11 @@
           ]
         }
       ],
-      "dropped": 0
+      "dropped": 0,
+      "allowShrink": "owner 2026-11-22: center orchestra is not good value"
     },
     "Ethel Barrymore Theatre": {
-      "appliedAt": "2026-11-22T17:25:11.045Z",
+      "appliedAt": "2026-11-22T18:18:37.153Z",
       "published": [
         {
           "type": "watch-out",
@@ -151,22 +141,6 @@
             {
               "url": "https://forum.broadwayworld.com/thread/Ethel-Barrymore-Theatre-Mezzanine-Seating",
               "quoteHash": "5728dd84895d",
-              "fetchedAt": "2026-11-22"
-            }
-          ]
-        },
-        {
-          "type": "value",
-          "level": "orchestra",
-          "evidence": [
-            {
-              "url": "https://www.headout.com/blog/ethel-barrymore-theatre-seating-chart/",
-              "quoteHash": "b5e558966143",
-              "fetchedAt": "2026-11-22"
-            },
-            {
-              "url": "https://seatplan.com/new-york/barrymore-theatre/seating-plan/",
-              "quoteHash": "4c9238a35f7f",
               "fetchedAt": "2026-11-22"
             }
           ]
@@ -236,7 +210,8 @@
           ]
         }
       ],
-      "dropped": 0
+      "dropped": 0,
+      "allowShrink": "owner 2026-11-22: center orchestra is not good value"
     }
   }
 }
