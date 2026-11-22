@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-22T07:15:21.176Z",
+  "timestamp": "2026-11-22T07:48:22.624Z",
   "stats": {
-    "totalReviews": 83829,
+    "totalReviews": 83831,
     "alreadyFlagged": 22435,
     "dateGuardCatches": 238,
-    "directorMismatch": 3872,
-    "tvFilmSignals": 2407,
-    "londonSignals": 3960,
+    "directorMismatch": 3875,
+    "tvFilmSignals": 2408,
+    "londonSignals": 3963,
     "offBroadwaySignals": 783,
     "yearMismatch": 395,
     "noPublishDate": 8213
@@ -25887,6 +25887,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "thestage--dave-fargnoli.json",
+      "score": null,
+      "publishDate": "2024-09-27",
+      "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
         }
       ]
     },
@@ -70956,6 +70970,19 @@
       ]
     },
     {
+      "showId": "the-constituent-west-end-2024",
+      "file": "independent--tim-bano.json",
+      "publishDate": "2024-06-26",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-constituent-review-james-corden-anna-maxwell-martin-b2569068.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-cottage-2023",
       "file": "culturesauce--thom-geier.json",
       "score": 40,
@@ -87232,6 +87259,24 @@
     },
     {
       "showId": "war-horse-lowry-regional-2024",
+      "file": "thestage--chris-bartlett.json",
+      "publishDate": "2024-09-24",
+      "url": "https://www.thestage.co.uk/reviews/war-horse-review-the-lowry-salford-tom-sturgess-michael-morpurgo-nick-stafford-katie-henry",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tom morris\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-lowry-regional-2024",
       "file": "theweek--irenie-forshaw-the-week-uk.json",
       "score": 88,
       "publishDate": "2024-09-26",
@@ -98276,6 +98321,20 @@
       "score": 57,
       "publishDate": "2024-05-27",
       "url": "https://www.nytimes.com/2024/05/27/theater/bluets-royal-court-theater-ben-whishaw.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bluets-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 83,
+      "publishDate": "May 28th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/bluets-at-the-royal-court-review-ben-whishaw-emma-darcy-b1160441.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -122473,6 +122532,20 @@
     },
     {
       "showId": "mnemonic-west-end-2024",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 95,
+      "publishDate": "July 3rd, 2024",
+      "url": "https://www.thestage.co.uk/reviews/mnemonic-review-at-the-olivier-national-theatre-complicite",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mnemonic-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
       "score": 82,
       "publishDate": "July 3rd, 2024",
@@ -127362,6 +127435,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 96,
+      "publishDate": "May 15th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/people-places-things-trafalgar-theatre-review-denise-gough-b1157838.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
