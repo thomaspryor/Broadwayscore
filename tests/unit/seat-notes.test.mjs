@@ -68,6 +68,13 @@ describe('validateSeatNotes', () => {
     const p = validateSeatNotes('T', [watch, { ...value, claim: 'You miss the elephant on the left side of the stage from here.' }]);
     assert.ok(p.some((x) => /production or set piece/.test(x)), p.join('\n'));
   });
+
+  test('refuses production words in the plural too (lighting rigs, set pieces)', () => {
+    for (const claim of ['Lighting rigs on the Balcony front get in the way here.', 'Set pieces at the side block part of the stage.']) {
+      const p = validateSeatNotes('T', [watch, { ...value, claim }]);
+      assert.ok(p.some((x) => /production or set piece/.test(x)), claim);
+    }
+  });
   test('a claim naming more sources than it cites is refused', () => {
     const claim = 'Rows A to C are very close, and two seat guides say you can miss action at the sides.';
     const p = validateSeatNotes('T', [{ ...watch, claim }, value]);
