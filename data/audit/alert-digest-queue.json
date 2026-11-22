@@ -1599,5 +1599,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-22T01:06:46.752Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7101-probe-livedata",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7101-probe-livedata",
+    "description": "land.yml did not land land/bro-7101-probe-livedata: the scripts-lib-tests gate went red at ea47320d1a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44969717942",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7101-probe-livedata"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ea47320d1a497a00f2934269c2e1bd8c36927db0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44969717942"
+      }
+    ],
+    "queuedAt": "2026-11-22T01:10:34.029Z"
   }
 ]
