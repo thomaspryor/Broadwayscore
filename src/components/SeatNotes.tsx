@@ -19,7 +19,7 @@ export default function SeatNotes({ notes }: { notes: SeatNote[] }) {
         if (!items.length) return null;
         return (
           <div key={g.type} className="grid gap-3 py-3.5 border-t border-white/5 first:border-t-0 first:pt-1">
-            <span className={`inline-flex items-center gap-1.5 w-max px-2.5 py-0.5 rounded-full border text-[11px] font-bold uppercase tracking-[0.08em] ${g.pill}`}>
+            <span className={`inline-flex items-center gap-1.5 w-max px-2.5 py-0.5 rounded-full border text-xs font-bold uppercase tracking-[0.08em] ${g.pill}`}>
               <span aria-hidden="true">{g.mark}</span>
               {g.label}
             </span>
@@ -31,7 +31,7 @@ export default function SeatNotes({ notes }: { notes: SeatNote[] }) {
                     <span className="text-[15px] font-bold text-white">{noteLocationLabel(n)}</span>
                     <span className="text-sm text-gray-300 leading-relaxed">{n.claim}</span>
                     {links.length > 0 && (
-                      <span className="text-[11px] text-fg-muted">
+                      <span className="text-xs text-fg-muted">
                         {links.length > 1 ? `${links.length} sources · ` : ''}
                         {links.map((l, j) => (
                           <span key={l.url}>

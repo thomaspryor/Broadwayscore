@@ -67,7 +67,7 @@ export default function SeatingGuidanceCard({ sections, bestSeats, seatNotes, va
                 <span aria-hidden="true" className={`row-span-2 w-[22px] h-[22px] rounded-full grid place-items-center text-xs font-extrabold ${tone.icon}`}>
                   {tone.mark}
                 </span>
-                <span className={`text-[11px] font-bold uppercase tracking-[0.08em] ${tone.label}`}>{label}</span>
+                <span className={`text-xs font-bold uppercase tracking-[0.08em] ${tone.label}`}>{label}</span>
                 <span className="text-sm text-white leading-snug">
                   {t.where}. <span className="text-gray-300">{t.what}</span>
                 </span>
@@ -77,7 +77,7 @@ export default function SeatingGuidanceCard({ sections, bestSeats, seatNotes, va
         </div>
 
         <details className="group mt-3">
-          <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer flex items-center justify-center gap-1.5 rounded-lg bg-white/5 hover:bg-white/10 py-2.5 text-[13px] font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40">
+          <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer flex items-center justify-center gap-1.5 rounded-lg bg-white/5 hover:bg-white/10 min-h-[44px] py-2.5 text-[13px] font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40">
             <span className="group-open:hidden">See all {notes.length} tips</span>
             <span className="hidden group-open:inline">Show less</span>
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" className="text-fg-muted transition-transform group-open:rotate-180 motion-reduce:transition-none">
@@ -89,7 +89,7 @@ export default function SeatingGuidanceCard({ sections, bestSeats, seatNotes, va
           </div>
         </details>
 
-        <p className="text-[10px] text-fg-muted mt-3 pt-3 border-t border-white/5 leading-relaxed">
+        <p className="text-xs text-fg-muted mt-3 pt-3 border-t border-white/5 leading-relaxed">
           From public seat guides and theatergoer reviews{checked ? `, checked ${checked}` : ''}.
         </p>
       </section>
