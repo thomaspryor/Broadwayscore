@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseArgs, evaluate, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO } = require('./check-workflow-run-status.js');
+const { parseArgs, evaluate, runMinutes, hungCancelMinutes, readWorkflowYaml, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO } = require('./check-workflow-run-status.js');
 const { isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 
 const r = (c) => ({ conclusion: c, status: 'completed', url: 'u' });
@@ -187,4 +187,50 @@ test('proxyAwareFetch: plain fetch without a proxy, proxy-honouring wrapper behi
   assert.notEqual(wrapped, globalThis.fetch);
   // Dead proxy port: the child reports a connection error, never a pass.
   await assert.rejects(wrapped('https://127.0.0.1:9/'), /fetch https:\/\/127\.0\.0\.1:9\/ failed/);
+});
+
+// BRO-8010: opening-night-poller.yml was fixed (35 success, 0 failure after the
+// fix) but VERIFY kept reading MISMATCH because the newest finished run was a
+// concurrency supersede / external cancel, not a verdict on the code.
+const at = (c, min, url = 'u') => ({ conclusion: c, status: 'completed', url, createdAt: '2026-11-22T10:00:00Z', startedAt: '2026-11-22T10:00:00Z', updatedAt: new Date(Date.parse('2026-11-22T10:00:00Z') + min * 60000).toISOString() });
+
+test('BRO-8010: short cancels are skipped in single-run mode when the hang threshold is known', () => {
+  const runs = [at('cancelled', 1), at('cancelled', 52), at('success', 40, 'green')];
+  const res = evaluate(runs, { expect: 'success', hungCancelMin: 144 });
+  assert.equal(res.ok, true, res.message);
+  assert.match(res.message, /green/);
+  assert.match(res.message, /skipped 2 newer short cancel/);
+});
+
+test('BRO-8010: a cancel that ran up to the job timeout is a hang and still decides', () => {
+  assert.equal(evaluate([at('cancelled', 160), at('success', 40)], { expect: 'success', hungCancelMin: 144 }).ok, false);
+});
+
+test('BRO-8010: short cancels never hide a failure, and an all-cancel window is not a pass', () => {
+  assert.equal(evaluate([at('cancelled', 2), at('failure', 30)], { expect: 'success', hungCancelMin: 144 }).ok, false);
+  const storm = evaluate([at('cancelled', 2), at('cancelled', 3)], { expect: 'success', hungCancelMin: 144 });
+  assert.equal(storm.ok, false);
+  assert.match(storm.message, /cancel storm/);
+});
+
+test('BRO-8010: without a known threshold, or when asking about cancels, every cancel still decides (old behaviour)', () => {
+  assert.equal(evaluate([at('cancelled', 1), at('success', 40)], { expect: 'success' }).ok, false);
+  assert.equal(evaluate([at('cancelled', 1), at('success', 40)], { expect: 'cancelled', hungCancelMin: 144 }).ok, true);
+  const noTimes = { conclusion: 'cancelled', status: 'completed', url: 'u' };
+  assert.equal(evaluate([noTimes, at('success', 40)], { expect: 'success', hungCancelMin: 144 }).ok, false, 'unknown duration is never skipped');
+});
+
+test('BRO-8010: hang threshold = 90% of the largest timeout-minutes, GitHub default when unset, undefined when unreadable', () => {
+  assert.equal(hungCancelMinutes('jobs:\n  a:\n    timeout-minutes: 160\n    steps:\n      - run: x\n        timeout-minutes: 15 # step\n'), 144);
+  assert.equal(hungCancelMinutes('jobs:\n  a:\n    steps: []\n'), 324);
+  assert.equal(hungCancelMinutes('    timeout-minutes: 5\n'), 10, 'floor of 10');
+  assert.equal(hungCancelMinutes(undefined), undefined);
+  assert.equal(readWorkflowYaml('Opening Night Poller'), undefined, 'display names are not read');
+  assert.equal(readWorkflowYaml('../package.json'), undefined, 'no path traversal');
+  assert.equal(hungCancelMinutes(readWorkflowYaml('opening-night-poller.yml')) >= 10, true);
+});
+
+test('BRO-8010: REST runs carry the timestamps runMinutes needs', () => {
+  const n = normalizeRestRun({ conclusion: 'cancelled', status: 'completed', head_branch: 'main', html_url: 'h', created_at: '2026-11-22T10:00:00Z', run_started_at: '2026-11-22T10:00:00Z', updated_at: '2026-11-22T10:03:00Z' });
+  assert.equal(runMinutes(n), 3);
 });

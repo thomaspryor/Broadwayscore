@@ -63,8 +63,38 @@ function parseCount(v, name, min) {
   return Number(v);
 }
 
+/** Minutes from start (or creation) to last update; null when timestamps are missing. */
+function runMinutes(run) {
+  const start = Date.parse(run.startedAt || run.createdAt || '');
+  const end = Date.parse(run.updatedAt || '');
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
+  return (end - start) / 60000;
+}
+
+const GITHUB_DEFAULT_JOB_TIMEOUT_MIN = 360;
+const MAX_SKIPPED_CANCEL_SCAN = 20; // single-run mode reads this many runs so short cancels can be skipped
+
+/**
+ * Cancel duration (minutes) at or above which a cancel counts as a hang:
+ * 90% of the workflow's largest timeout-minutes (job timeouts dominate step
+ * ones), floor 10. GitHub's 360-min default when the file sets none.
+ * undefined when the workflow file can't be read (display name, other repo):
+ * every cancel then decides, the old behaviour.
+ */
+function hungCancelMinutes(yamlText) {
+  if (typeof yamlText !== 'string') return undefined;
+  const vals = [...yamlText.matchAll(/^\s*timeout-minutes:\s*(\d+)\s*(?:#.*)?$/gm)].map((m) => Number(m[1]));
+  const max = vals.length ? Math.max(...vals) : GITHUB_DEFAULT_JOB_TIMEOUT_MIN;
+  return Math.max(10, Math.floor(max * 0.9));
+}
+
+function readWorkflowYaml(workflow) {
+  if (!/^[\w.-]+\.ya?ml$/.test(workflow)) return undefined;
+  try { return require('fs').readFileSync(require('path').join(__dirname, '..', '.github', 'workflows', workflow), 'utf8'); } catch { return undefined; }
+}
+
 /** Pure verdict: runs is gh's newest-first array. Returns { ok, message }. */
-function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
+function evaluate(runs, { expect, limit, minMatch, maxMatch, hungCancelMin }) {
   if (!Array.isArray(runs) || runs.length === 0) return { ok: false, message: 'No runs found' };
   if (limit === undefined) {
     // The newest FINISHED run. A queued/in-progress run has no conclusion yet,
@@ -73,10 +103,26 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
     // back to back, 2026-11-08 flaky simulation).
     // A stuck run is hidden only until GitHub ends it (job timeout 6h, queue
     // 24h); it then concludes 'cancelled' and this check reports it.
-    const run = runs.find((r) => r.conclusion);
-    if (!run) return { ok: false, message: 'No finished runs found' };
+    //
+    // BRO-8010: a SHORT cancel is skipped too. Concurrency-group supersedes
+    // (a queued dispatch replaced before it got a job) and external cancels
+    // (press-night priority, runner freeing) end as 'cancelled' but say
+    // nothing about the code; opening-night-poller.yml had 35 success, 0
+    // failure, 12 such cancels after its fix and this check still read
+    // MISMATCH. A cancel that lasted up to the job's timeout-minutes is a
+    // HANG (Actions reports a timeout as 'cancelled', see ci-green-rate.js)
+    // and still decides. Only when hungCancelMin is known (the workflow file
+    // was readable) and never when the caller is asking about cancels.
+    const finished = runs.filter((r) => r.conclusion);
+    if (finished.length === 0) return { ok: false, message: 'No finished runs found' };
+    const skippable = (r) => hungCancelMin !== undefined && expect !== 'cancelled'
+      && r.conclusion === 'cancelled' && runMinutes(r) !== null && runMinutes(r) < hungCancelMin;
+    const run = finished.find((r) => !skippable(r));
+    const skipped = run ? finished.indexOf(run) : finished.length;
+    if (!run) return { ok: false, message: `MISMATCH — the ${skipped} most recent finished run(s) were all cancelled before finishing (cancel storm; nothing proves '${expect}')` };
     const ok = run.conclusion === expect;
-    return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})` };
+    const note = skipped ? ` (skipped ${skipped} newer short cancel(s), under ${hungCancelMin} min)` : '';
+    return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})${note}` };
   }
   // Only finished runs count: an in-progress/queued run has no conclusion yet
   // and must not be credited as "not failed". Fewer finished runs than --limit
@@ -108,7 +154,12 @@ function isGhAuthError(err) {
 
 /** REST run → the gh `--json conclusion,status,headBranch,url` shape evaluate() reads. */
 function normalizeRestRun(run) {
-  return { conclusion: run.conclusion || '', status: run.status, headBranch: run.head_branch, url: run.html_url };
+  const out = { conclusion: run.conclusion || '', status: run.status, headBranch: run.head_branch, url: run.html_url };
+  // Timestamps feed runMinutes (BRO-8010 short-cancel skip); added only when present.
+  if (run.created_at) out.createdAt = run.created_at;
+  if (run.run_started_at) out.startedAt = run.run_started_at;
+  if (run.updated_at) out.updatedAt = run.updated_at;
+  return out;
 }
 
 /** Workflow id from the list API: match file basename (x.yml) or display name. null when absent. */
@@ -195,7 +246,9 @@ async function main(argv) {
     process.exit(2);
   }
 
-  const args = ['run', 'list', '--workflow', workflow, '--limit', String(limit || 1), '--json', 'conclusion,status,headBranch,url'];
+  const hungCancelMin = limit === undefined ? hungCancelMinutes(readWorkflowYaml(workflow)) : undefined;
+  const fetchLimit = limit || (hungCancelMin !== undefined ? MAX_SKIPPED_CANCEL_SCAN : 1);
+  const args = ['run', 'list', '--workflow', workflow, '--limit', String(fetchLimit), '--json', 'conclusion,status,headBranch,url,createdAt,startedAt,updatedAt'];
   args.push('--status', 'completed');
   if (branch) args.push('--branch', branch);
 
@@ -209,7 +262,7 @@ async function main(argv) {
       process.exit(1);
     }
     try {
-      runs = await fetchWorkflowRuns({ workflow, branch, limit: limit || 1, completedOnly: true });
+      runs = await fetchWorkflowRuns({ workflow, branch, limit: fetchLimit, completedOnly: true });
       console.error('(gh not authenticated; read runs from the public GitHub API)');
     } catch (e) {
       console.error(`gh not authenticated and public API fallback failed: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ''}`);
@@ -226,7 +279,7 @@ async function main(argv) {
     }
   }
 
-  const { ok, message } = evaluate(runs, { expect, limit, minMatch, maxMatch });
+  const { ok, message } = evaluate(runs, { expect, limit, minMatch, maxMatch, hungCancelMin });
   const label = `${workflow}${branch ? `@${branch}` : ''}`;
   (ok ? console.log : console.error)(`${label}: ${message}`);
   process.exit(ok ? 0 : 1);
@@ -236,4 +289,4 @@ if (require.main === module) {
   main(process.argv.slice(2)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { parseArgs, evaluate, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
+module.exports = { parseArgs, evaluate, runMinutes, hungCancelMinutes, readWorkflowYaml, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
