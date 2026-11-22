@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261122-r14",
   "planId": "506e2143-517a-4c6f-b39f-6b071c7ef8e6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T18:21:26.982Z",
   "submitter": {
     "name": null,
@@ -194,5 +194,39 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T18:26:45.482Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-shop-of-horrors-biograph-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added when-we-were-young-and-unafraid-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-jentes-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added carrie-the-musical-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dracula-a-comedy-of-terrors-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dr-jekyll-and-mr-hyde-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
