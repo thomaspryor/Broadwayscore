@@ -70,6 +70,10 @@ Options:
                              land otherwise never drains — audit S7-T7)
   --time-budget-min=N        stop cleanly after N minutes (remaining shows deferred)
   --dry-run                  report what would be promoted, write nothing
+  --triage-only              (BRO-8023) settle every stub a URL/date rule can judge,
+                             fetch nothing; report the fetch candidates left
+  --era=2025-26|2015-24|pre-2015  restrict the scope to shows of that era
+  --shard=i/n                split the scope across n parallel processes (local batch)
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -134,6 +138,9 @@ const allOpera = args.includes('--all-opera');
 const allOpen = args.includes('--all-open');
 const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
+const triageOnly = args.includes('--triage-only');
+const eraArg = args.find(a => a.startsWith('--era='))?.split('=')[1] || null;
+const pendingTriage = require('./lib/pending-triage');
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 /**
@@ -228,7 +235,21 @@ function listOpenShowIdsWithPending() {
   return listShowIdsWithPending().filter(id => isPendingDrainEligible(showById.get(id), closedWithinDays));
 }
 
+// --shard=i/n (BRO-8023): split one scope across n parallel local batch processes by a stable id hash.
+const shardArg = (args.find(a => a.startsWith('--shard='))?.split('=')[1] || '').match(/^(\d+)\/(\d+)$/);
+function inShard(id, i, n) {
+  let h = 0;
+  for (const c of String(id)) h = ((h << 5) - h + c.charCodeAt(0)) | 0;
+  return Math.abs(h) % n === i;
+}
 function showIds() {
+  let ids = scopeShowIds();
+  if (eraArg) ids = ids.filter(id => pendingTriage.showEra(id) === eraArg);
+  if (shardArg) ids = ids.filter(id => inShard(id, Number(shardArg[1]), Number(shardArg[2])));
+  return ids;
+}
+
+function scopeShowIds() {
   if (showArg) return [showArg];
   if (showsArg) return showsArg.split(',').map(s => s.trim()).filter(Boolean);
   if (allOpera) return listOperaShowIds();
@@ -279,6 +300,18 @@ function findExistingFileForUrl(showId, outletId, url, root = REVIEW_TEXTS_ROOT)
 }
 
 const PENDING_UNRECOVERABLE_STAGE = 'pending-unrecoverable';
+
+// BRO-8023: scored urls by show, for the no-fetch triage (a stub whose url another show already scores).
+let _heldIndexMemo = null;
+function loadHeldIndex() {
+  if (!_heldIndexMemo) {
+    try {
+      const r = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/reviews.json'), 'utf8'));
+      _heldIndexMemo = pendingTriage.buildHeldUrlIndex(r.reviews || r);
+    } catch (e) { console.log(`  held-url index unavailable (${e.message}) — cross-show and host checks skipped`); _heldIndexMemo = null; return null; }
+  }
+  return _heldIndexMemo;
+}
 
 // Lazy: the router pulls in Resend/Linear plumbing; tests inject a fake.
 async function defaultRouteAlert(opts) {
@@ -335,6 +368,36 @@ function isRedundantPendingStub(data, landedFile) {
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
+/** BRO-8023: a filed primary whose body the rebuild would score (a real tier, no exclusion/body flag). Pure. */
+function primaryBodyIsSound(primary) {
+  if (!primary || typeof primary.fullText !== 'string' || !primary.fullText.trim()) return false;
+  if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf || primary.fullTextWrongAuthor) return false;
+  return ['complete', 'truncated'].includes(primary.contentTier);
+}
+const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore'];
+const present = (v) => v != null && v !== '';
+/**
+ * BRO-8023: why a text-bearing stub whose article a sound primary already files can be SETTLED (tagged, kept on
+ * disk, never re-fetched), or null. 40 such 2025-26 stubs sat in _pending forever (the-heart thewrap--536994cc vs
+ * thewrap--robert-hofler). Never deletes: two extractions of one article can differ, so the stub stays for a merge.
+ * Same article = the canonical key (id query params kept); a score field the primary lacks keeps the stub open. Pure.
+ */
+function sameArticleSettleReason(data, primary, primaryFile) {
+  if (!data || !primaryBodyIsSound(primary)) return null;
+  // A named critic other than the primary's may be a second critic on one url (the duplicateOf path files that).
+  const { foldDiacritics } = require('./lib/title-match');
+  const who = (x) => foldDiacritics(String(x || '')).toLowerCase().replace(/[^a-z]+/g, '');
+  if (who(data.criticName) && who(data.criticName) !== 'unknown' && who(data.criticName) !== who(primary.criticName)) return null;
+  const { normalizeArticleUrl } = require('./lib/combined-review-utils');
+  const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
+  if (!a || a !== b) return null;
+  if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
+  // An excerpt (a scoring fallback) the primary lacks keeps it open too.
+  if (Object.keys(data).some((k) => /Excerpt$/.test(k) && typeof data[k] === 'string' && data[k].trim() && !present(primary[k]))) return null;
+  const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
+  return `same article already filed as ${primaryFile} (stub body ${len(data.fullText)} chars vs primary ${len(primary.fullText)}; not merged) (BRO-8023)`;
+}
+
 // BRO-7078: failed fetches before a no-identity rss stub is tagged.
 const RSS_IDENTITY_FETCH_STRIKES = 3;
 
@@ -343,6 +406,17 @@ const RSS_IDENTITY_FETCH_STRIKES = 3;
  * e.g. paul-mccartney-upcoming-beatles-biopics. Numeric ids and short slugs
  * carry no evidence either way (BRO-7078).
  */
+/**
+ * BRO-8023: record that the drain fetched this stub and could not promote it (first time only, so a weekly
+ * re-try does not churn the file). The floors report counts such a stub as an attempted gap, not a never-worked one.
+ */
+function stampFetchAttempt(filepath, data, dry, nowIso, why) {
+  if (dry || !data || data.pendingFetchAttemptedAt) return;
+  data.pendingFetchAttemptedAt = nowIso;
+  data.pendingFetchAttemptResult = why;
+  try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not stamp fetch attempt: ${e.message}`); }
+}
+
 function isDescriptiveNonReviewSlug(url) {
   let parts;
   try { parts = new URL(String(url || '')).pathname.split('/').filter(Boolean); } catch { return false; }
@@ -367,10 +441,13 @@ async function processShow(showId, deps = {}) {
   const budget = deps.budget || timeBudget;
   const explicitScope = deps.explicitScope !== undefined ? deps.explicitScope : !!(showArg || showsArg);
   const now = deps.now || (() => new Date());
+  const triageOnlyRun = deps.triageOnly !== undefined ? deps.triageOnly : triageOnly;
+  // Tests that inject a root also inject (or skip) the index; never read the live reviews.json for them.
+  const heldIndex = deps.heldIndex !== undefined ? deps.heldIndex : (deps.root ? null : loadHeldIndex());
   const pendingDir = path.join(root, '_pending', showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
-    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0, tagged: 0, inspected: 0, lastFile: null };
+    return { promoted: 0, kept: 0, rejected: 0, unrecoverable: 0, refetched: 0, tagged: 0, inspected: 0, candidates: 0, lastFile: null };
   }
   const show = deps.show !== undefined ? deps.show : loadShow(showId);
   const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
@@ -381,6 +458,7 @@ async function processShow(showId, deps = {}) {
   // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
   // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
   let tagged = 0, inspected = 0, lastFile = null;
+  let candidates = 0; // BRO-8023: stubs only a fetch can judge (left untouched by --triage-only)
   const redundantCopies = {}; // BRO-7945: settled out-of-window copies by kind (sibling | outside-all)
   // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
   // after the loop — never a silent "keep".
@@ -418,8 +496,10 @@ async function processShow(showId, deps = {}) {
     }
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
+    stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -555,10 +635,40 @@ async function processShow(showId, deps = {}) {
     // roundup created nysr--steven-suskin / nysr--frank-scheck from the same
     // urls; they had to be deleted by hand. A stub with text is kept.
     const landed = findExistingFileForUrl(showId, data.outletId, url, root);
+    let landedData = null;
+    if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
     if (isRedundantPendingStub(data, landed)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
+      continue;
+    }
+
+    const settle = landed ? sameArticleSettleReason(data, landedData, landed) : null;
+    if (settle) {
+      console.log(`  [${file}] ${settle} — tagged, not fetched`);
+      if (!dry) {
+        data.promoteSkippedReason = settle;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
+    }
+
+    // BRO-8023: the no-fetch triage. A url another show already scores, a non-review section/listing, or a
+    // stub date outside the production window is settled here (tagged, KEPT), never fetched.
+    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
+    if (tri.verdict === 'junk') {
+      console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
+      if (!dry) {
+        data.promoteSkippedReason = `${tri.reason} (BRO-8023 triage)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
       continue;
     }
 
@@ -579,6 +689,8 @@ async function processShow(showId, deps = {}) {
       }
     }
 
+    if (triageOnlyRun) { candidates++; kept++; continue; } // BRO-8023: a fetch candidate, left for the fetching drain
+
     let byline = null;
     let html = null;
     let publishDate = null;
@@ -589,6 +701,7 @@ async function processShow(showId, deps = {}) {
       html = result?.content;
       if (!html) {
         console.log(`  [${file}] fetch returned no content — keep`);
+        stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-content');
         if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'fetch returned no content');
         kept++;
         continue;
@@ -636,6 +749,7 @@ async function processShow(showId, deps = {}) {
     } catch (e) {
       const msg = String((e && e.message) || e).slice(0, 80);
       console.log(`  [${file}] fetch failed: ${msg} — keep`);
+        stampFetchAttempt(filepath, data, dry, now().toISOString(), 'fetch-failed');
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, `fetch failed: ${msg}`);
       kept++;
       continue;
@@ -656,11 +770,26 @@ async function processShow(showId, deps = {}) {
       }
     }
 
+    // BRO-8023: the byline is the show's own playwright/composer: a venue or listing page, never a review.
+    if (byline && pendingTriage.bylineIsShowCreator(byline, show)) {
+      console.log(`  [${file}] byline "${byline}" is on the show's creative team — not a review, tagged`);
+      if (!dry) {
+        data.promoteSkippedReason = `page byline "${byline}" is the show's own creative team, not a critic (BRO-8023)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
+    }
+
     if (!byline || byline === 'Unknown') {
       if (isUnrecoverablePendingStub(data, null)) {
         noteUnrecoverable(file, filepath, data, 'no byline in page and no recoverable body');
       } else {
         console.log(`  [${file}] no byline detected — keep in pending`);
+        if (!data.pendingRefetchedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-byline');
+        else if (!data.pendingFetchAttemptedAt && !dry) { data.pendingFetchAttemptedAt = now().toISOString(); data.pendingFetchAttemptResult = 'no-byline'; } // written just below
         // A rebuilt body is still progress: persist it so the next run (or a
         // human) starts from the text, not an empty stub.
         if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
@@ -698,7 +827,22 @@ async function processShow(showId, deps = {}) {
         kept++;
         continue;
       }
+      const settleAfter = verdict === 'same-article' ? sameArticleSettleReason(data, existing, newFilename) : null;
+      if (settleAfter) {
+        console.log(`  [${file}] ${settleAfter} — tagged`);
+        if (!dry) {
+          data.promoteSkippedReason = settleAfter;
+          data.promoteSkippedAt = now().toISOString();
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        tagged++;
+        kept++;
+        continue;
+      }
       console.log(`  [${file}] would-be target ${newFilename} already exists — keep pending`);
+      // BRO-8023: record why it stays open (a score/excerpt/body the primary lacks needs a merge), so the floors
+      // report counts it as attempted rather than an untouched gap.
+      if (!data.pendingFetchAttemptedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), `target-exists:${newFilename}`);
       if (data.pendingRefetchedAt && !dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); // keep the rebuilt body
       kept++;
       continue;
@@ -808,10 +952,13 @@ async function raiseDrainHealthAlerts(history, deps = {}) {
 }
 
 module.exports = {
+  inShard,
   pendingPromoteRejectReason,
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
   isRedundantPendingStub,
+  primaryBodyIsSound,
+  sameArticleSettleReason,
   // Liveness of the --all-open scope (audit S7-T7) — exported for
   // tests/unit/show-liveness.test.mjs.
   PENDING_DRAIN_LIVE_STATUSES,
@@ -842,17 +989,20 @@ if (require.main === module) {
       : ids;
     // --skip-empty-body-retry (BRO-7004): the poller's per-show press-night drain shares timeBudget
     // with this phase, so a retry pass could spend the whole budget before the first _pending stub.
-    if (!args.includes('--skip-empty-body-retry')) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
+    // A shard runs beside its siblings: the shared retry phase would fetch the same stubs n times (BRO-8023).
+    if (!args.includes('--skip-empty-body-retry') && !triageOnly && !shardArg) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
       cooldownHours: showArg || showsArg ? 1 : 6,
       budget: createRunBudget(Math.min(2, timeBudget.minutes || 2)) });
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0;
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0, totalCandidates = 0;
     const alertPromises = [];
     const settledTotals = {}; // BRO-7945: out-of-window copies settled this run (sibling | outside-all)
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
-    const sweep = allOpen || allPending;
+    // BRO-8023: a triage-only or era-scoped batch is not a sweep: it must not move the rotation cursors or
+    // write a drain-health history row (a no-fetch run would read as a zero-promote sweep).
+    const sweep = (allOpen || allPending) && !triageOnly && !eraArg && !shardArg;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
     const cursorPrefix = allPending ? '' : 'open_';
     // Recent = opened in the last 2 years (the owner's no-gaps scope), through the shared show data.
@@ -870,7 +1020,8 @@ if (require.main === module) {
     const reached = { recent: null, other: null };
     let completedPass = true;
     for (const { showId: id, files } of plan) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise } = await processShow(id, { files });
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise, candidates } = await processShow(id, { files });
+      totalCandidates += candidates || 0;
       for (const [k, n] of Object.entries(redundantCopies || {})) settledTotals[k] = (settledTotals[k] || 0) + n;
       totalPromoted += promoted;
       totalKept += kept;
@@ -895,6 +1046,7 @@ if (require.main === module) {
     console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
     console.log(`  out-of-window copies settled (BRO-7945): ${JSON.stringify(settledTotals)}; fetch requests ${runFetchCache.stats().calls}, unique URLs fetched ${runFetchCache.stats().unique} (cache hits ${runFetchCache.stats().cacheHits})`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
+    if (triageOnly) console.log(`  of which fetch candidates (triage-only, not fetched): ${totalCandidates}`);
 
     if (sweep) {
       // A tier that reached its last file finished its pass: its cursor resets so the next run starts at the top.
