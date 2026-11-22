@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7207",
+  "planId": "b028e932-0b0b-4f8a-aa18-1ded289b98a7",
+  "status": "pending",
+  "createdAt": "2026-11-22T08:57:09.590Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct Good People TheaterMania review attribution to David Finkle, supported by the Forward Theater quotation of the same article.",
+    "steps": [
+      "good-people-2011/theatermania--ben-brantley.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "good-people-2011/theatermania--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "David Finkle",
+        "description": "good-people-2011/theatermania--ben-brantley.json: criticName"
+      }
+    ]
+  }
+}
