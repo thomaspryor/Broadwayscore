@@ -18,6 +18,7 @@
  */
 import { track } from '@vercel/analytics';
 import { isStaleDeployError, reloadOnStaleDeploy } from './stale-deploy-reload';
+import { isMissingAuthUserFk, isMissingProfileFk } from './missing-profile';
 
 type Primitive = string | number | boolean | null;
 export type UgcProps = Record<string, Primitive | undefined>;
@@ -178,13 +179,16 @@ export function ignoredUgcError(op: string, info: UgcErrorInfo): boolean {
 }
 // Reported to PostHog (counted) but not Sentry: user-side or already handled.
 // account_gone is the REST helper's handled sign-out/re-auth outcome. Keep
-// the raw database error (e.g. 23503) visible if one triggered the recovery.
+// other raw database errors (e.g. 23503 on show_id) visible.
 const QUIET_CODES = new Set(['network', 'no_session', 'account_gone', '23505']);
 const SENTRY_THROTTLE_MS = 60_000;
 const lastSentry = new Map<string, number>();
 
 export function sentryWorthy(op: string, info: UgcErrorInfo): boolean {
   if (info.code && QUIET_CODES.has(info.code)) return false;
+  // Missing profile row (BRO-8031): supabase-rest recreates it and retries;
+  // a failed repair is reported there as profile_heal_failed.
+  if (isMissingProfileFk(info) || isMissingAuthUserFk(info)) return false;
   const s = info.status ?? 0;
   // 401 = expired/revoked session. A 4xx from the auth server (stale refresh
   // token after a sign-out elsewhere, expired JWT) is normal session

@@ -10,6 +10,7 @@
 import { getSupabaseClient } from './supabase';
 import { instrumentedFetch, reportUgcError } from './ugc-analytics';
 import { clearPendingAction } from './deferred-auth';
+import { isMissingAuthUserFk, isMissingProfileFk } from './missing-profile';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -74,10 +75,59 @@ async function accountGone(op: string, status?: number): Promise<RestResult<neve
 async function restError(res: Response, op: string): Promise<RestResult<never>> {
   const body = await res.json().catch(() => ({}));
   // Other FKs (show_id, list_id, etc.) are save errors, not deleted accounts.
-  const missingUser = body.code === '23503'
-    && /foreign key constraint "[^"\n]+_user_id_fkey"/.test(body.message || '');
-  if (res.status === 401 || missingUser) return accountGone(op, res.status);
+  // A user_id FK that survived sendWithProfileHeal() means the profile could
+  // not be recreated, so the account really is unusable on this device.
+  if (res.status === 401 || isMissingProfileFk(body)) return accountGone(op, res.status);
   return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
+}
+
+/**
+ * Recreate the signed-in user's missing profiles row (BRO-8031). Every UGC
+ * user_id references profiles(id); an auth user without one fails every save
+ * with 23503. Returns true when the row now exists.
+ */
+async function healProfile(op: string, accessToken: string): Promise<boolean> {
+  const client = await getSupabaseClient();
+  const user = client ? (await client.auth.getSession()).data.session?.user : null;
+  if (!user?.id) return false;
+  const meta = (user.user_metadata || {}) as Record<string, unknown>;
+  try {
+    const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/profiles?on_conflict=id`, {
+      method: 'POST',
+      headers: headers(accessToken, 'return=minimal,resolution=ignore-duplicates'),
+      body: JSON.stringify({
+        id: user.id,
+        display_name: String(meta.full_name || meta.name || ''),
+        avatar_url: (meta.avatar_url || meta.picture || null) as string | null,
+      }),
+    });
+    if (res.ok) return true;
+    const body = await res.json().catch(() => ({}));
+    // The auth user itself is gone: accountGone() handles it, nothing to report.
+    if (res.status !== 401 && !isMissingAuthUserFk(body)) {
+      reportUgcError(op, { message: `profile repair failed: ${body.message || `HTTP ${res.status}`}`, code: 'profile_heal_failed', status: res.status });
+    }
+  } catch {
+    // Network failure is already counted by instrumentedFetch.
+  }
+  return false;
+}
+
+/**
+ * Send a write; if it fails only because the user's profile row is missing,
+ * recreate the profile and send it once more. The caller handles !res.ok.
+ */
+async function sendWithProfileHeal(op: string, accessToken: string, send: () => Promise<Response>): Promise<Response> {
+  const res = await send();
+  if (res.ok) return res;
+  const body = await res.clone().json().catch(() => ({}));
+  if (!isMissingProfileFk(body)) return res;
+  if (!(await healProfile(op, accessToken))) return res;
+  const retry = await send();
+  if (!retry.ok && isMissingProfileFk(await retry.clone().json().catch(() => ({})))) {
+    reportUgcError(op, { message: 'profile row still missing after repair', code: 'profile_heal_failed', status: retry.status });
+  }
+  return retry;
 }
 
 /** The request never left the browser: the session expired or was revoked. */
@@ -105,11 +155,11 @@ export async function supabaseRestInsert<T = Record<string, unknown>>(
   const accessToken = await getAccessToken(`insert ${table}`);
   if (typeof accessToken !== 'string') return accessToken;
 
-  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+  const res = await sendWithProfileHeal(`insert ${table}`, accessToken, () => instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
     headers: headers(accessToken, `return=${opts.returning ?? 'representation'}`),
     body: JSON.stringify(row),
-  });
+  }));
 
   if (!res.ok) {
     return restError(res, `insert ${table}`);
@@ -136,11 +186,11 @@ export async function supabaseRestUpsert(
 
   const resolution = opts?.ignoreDuplicates ? 'ignore-duplicates' : 'merge-duplicates';
   const conflictParam = onConflict ? `?on_conflict=${encodeURIComponent(onConflict)}` : '';
-  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}${conflictParam}`, {
+  const res = await sendWithProfileHeal(`insert ${table}`, accessToken, () => instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}${conflictParam}`, {
     method: 'POST',
     headers: headers(accessToken, `return=representation,resolution=${resolution}`),
     body: JSON.stringify(row),
-  });
+  }));
 
   if (!res.ok) {
     return restError(res, `insert ${table}`);
@@ -159,11 +209,11 @@ export async function supabaseRestUpdate<T = Record<string, unknown>>(
   const accessToken = await getAccessToken(`update ${table}`);
   if (typeof accessToken !== 'string') return accessToken;
 
-  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+  const res = await sendWithProfileHeal(`update ${table}`, accessToken, () => instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
     method: 'PATCH',
     headers: headers(accessToken, 'return=representation'),
     body: JSON.stringify(updates),
-  });
+  }));
 
   if (!res.ok) {
     return restError(res, `update ${table}`);
@@ -203,11 +253,11 @@ export async function supabaseRestRpc<T = unknown>(
   const accessToken = await getAccessToken(`rpc ${fn}`);
   if (typeof accessToken !== 'string') return accessToken;
 
-  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+  const res = await sendWithProfileHeal(`rpc ${fn}`, accessToken, () => instrumentedFetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
     method: 'POST',
     headers: headers(accessToken),
     body: JSON.stringify(args),
-  });
+  }));
 
   if (!res.ok) {
     return restError(res, `rpc ${fn}`);
