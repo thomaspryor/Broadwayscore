@@ -16,7 +16,9 @@ const MIN_COVERAGE = 0.75;
 
 function libsFrom(dir) {
   return {
+    // build-deps: ./model-return-v2.js
     classifyTier: require(path.join(dir, 'model-return-v2.js')).classifyTier,
+    // build-deps: ./recoupment-model.js
     calculateRecoupment: require(path.join(dir, 'recoupment-model.js')).calculateRecoupment,
   };
 }

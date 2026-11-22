@@ -1,4 +1,5 @@
 'use strict';
+// build-deps-file: ./duplicate-of-exclusion.js, ./cross-outlet-cycle.js, ./syndication-pairs.js, ./review-normalization.js
 
 const fs = require('fs');
 const path = require('path');

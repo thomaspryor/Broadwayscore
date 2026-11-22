@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# build-deps-file: scripts/generate-workflow-dependencies.js, scripts/lib/land-merge-drivers.js, scripts/lib/promisor-fetch-failure.js
 # land-rebase.sh — land.yml's "Rebase onto origin/main" core (BRO-4165).
 #
 #   bash land-rebase.sh <base-sha> [<label>]

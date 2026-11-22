@@ -120,7 +120,9 @@ function createRealPublishPorts({
   const dispatcher = dispatchDeploy || (env.OPENING_NIGHT_LANE_DEPLOY_DISPATCH === '1' ? deployPort.ghDispatcher({ sleep }) : null);
   // The path is built at run time on purpose: laneCodeFiles() follows literal require()s into the arm hash, and an alert
   // router edit must not disarm the lane (driver.test.mjs).
+  // build-deps: ../owner-alert-router.js
   const pageAlert = page || ((o) => require(['..', 'owner-alert-router'].join('/')).routeAlert({ severity: 'critical', disposition: 'human', cooldownHours: 12, ...o }));
+  // build-deps: ../auto-fix-first.js
   const autoFixGate = autoFixFirstGate || ((o) => require(['..', 'auto-fix-first'].join('/')).gate(o));
   const deployer = dispatcher ? deployPort.createDeployPort({ show, night, dispatch: dispatcher, page: pageAlert, now }) : null;
   const liveFetch = publish.fetchLiveShowFrom(baseUrl, fetchImpl ? { fetchImpl } : {});
