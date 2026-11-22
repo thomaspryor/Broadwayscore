@@ -212,6 +212,7 @@ function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsB
   const pend = path.join(base, '_pending');
   let dirs = [];
   try { dirs = fs.readdirSync(pend); } catch { return { byOutlet, rows }; }
+  const allShows = [...showsById.values()];
   for (const s of dirs) {
     if (!isRecentProductionShow(s)) continue;
     let fl; try { fl = fs.readdirSync(path.join(pend, s)); } catch { continue; }
@@ -220,7 +221,11 @@ function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsB
       const r = readJson(path.join(pend, s, f));
       const o = r && (r.outletId || f.split('--')[0]);
       if (!r || !want.has(o) || T.isSettledPendingStub(r)) continue;
-      const v = T.triagePendingStub(r, { showId: s, show: showsById.get(s), heldIndex, showTitleOf: (id) => (showsById.get(id) || {}).title });
+      // Same evidence the drain uses (BRO-8065): the article behind a bot-wall url, and same-title sibling entries.
+      const unwrapped = require('./non-review-url-patterns').unwrapChallengeUrl(r.url);
+      const show = showsById.get(s);
+      const v = T.triagePendingStub(unwrapped ? { ...r, url: unwrapped } : r, { showId: s, show, heldIndex,
+        sameTitleShows: T.sameTitleShowsFrom(show, allShows), showTitleOf: (id) => (showsById.get(id) || {}).title });
       if (v.verdict !== 'candidate') continue;
       const b = byOutlet[o] || (byOutlet[o] = { n: 0, attempted: 0 });
       b.n++;
