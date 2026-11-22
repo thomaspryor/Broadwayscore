@@ -24,7 +24,7 @@ const review = (i: number, score: number, outletId = `outlet-${i}`): RawReview =
 
 const critic = [review(1, 82, 'nytimes'), review(2, 74), review(3, 65)];
 const blog = [review(9, 90, 'fixture-blog')];
-const noCoverage = buildCoverageFloorInputs({ gapAudit: { shows: [] }, stamps: {}, acks: {} }, {});
+const noCoverage = buildCoverageFloorInputs({ gapAudit: { shows: [] }, stamps: {}, acks: {} }, {} as NodeJS.ProcessEnv);
 const deps = (extra: Partial<ComputeOneShowDeps> = {}): ComputeOneShowDeps => ({
   audience: [], buzz: [], coverageFloorInputs: noCoverage,
   versionImage: <T extends string | null | undefined>(p: T) => p, ...extra,
