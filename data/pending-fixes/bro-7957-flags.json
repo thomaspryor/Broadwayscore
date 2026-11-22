@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7957-flags",
   "planId": "190f5bf3-cef9-4ae4-9b0d-91bd70797bde",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-22T03:56:44.490Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-7957: clear pointer to the Tribune copy"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-22T04:20:27.393Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"art-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becky-shaw-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becky-shaw-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"becky-shaw-2026/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "boop-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "boop-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"boop-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"bug-2026/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chess-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chess-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"chess-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"cult-of-love-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dead-outlaw-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dead-outlaw-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"dead-outlaw-2025/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-day-afternoon-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-day-afternoon-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "downstate-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "downstate-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"downstate-2026/chicagotribune--chris-jones--on-2026-11-15.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eureka-day-2024/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eureka-day-2024/nydailynews--chris-jones.json syndicatedPrimaryFile: \"eureka-day-2024/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/nydailynews--chris-jones.json syndicatedPrimaryFile: \"every-brilliant-thing-2026/chicagotribune--chris-jones.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "floyd-collins-2025/nydailynews--chris-jones.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "floyd-collins-2025/nydailynews--chris-jones.json syndicatedPrimaryFile: \"floyd-collins-2025/chicagotribune--chris-jones.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
