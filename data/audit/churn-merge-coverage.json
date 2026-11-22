@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-22T01:26:09.216Z",
+    "generatedAt": "2026-11-22T03:25:21.246Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,21 +10,21 @@
     "minChurn": 30,
     "flaggedCount": 9,
     "exemptCount": 18,
-    "coveredCount": 52,
-    "highChurnTracked": 79
+    "coveredCount": 51,
+    "highChurnTracked": 78
   },
   "flagged": [
     {
       "path": "data/audit/simulated-opening-night.json",
-      "churn": 138
+      "churn": 137
     },
     {
       "path": "data/audit/indexing-api-usage.json",
-      "churn": 111
+      "churn": 105
     },
     {
       "path": "data/audit/reddit-post-drafts.json",
-      "churn": 69
+      "churn": 70
     },
     {
       "path": "data/audit/lane-rehearsal-recorded.json",
@@ -35,30 +35,30 @@
       "churn": 43
     },
     {
+      "path": "data/audit/serp-session-ledger.json",
+      "churn": 40
+    },
+    {
       "path": "data/nyt-critics-picks.json",
+      "churn": 38
+    },
+    {
+      "path": "data/audit/nyt-spotlight-check.json",
       "churn": 36
     },
     {
       "path": "data/show-score-candidates.json",
-      "churn": 36
-    },
-    {
-      "path": "data/audit/serp-session-ledger.json",
       "churn": 35
-    },
-    {
-      "path": "data/audit/nyt-spotlight-check.json",
-      "churn": 34
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 567
+      "churn": 570
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 280
+      "churn": 250
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 159
+      "churn": 167
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -82,19 +82,23 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 96
+      "churn": 97
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-2026.json",
-      "churn": 68
+      "churn": 71
     },
     {
       "path": "public/data/shows/eurotrash-off-west-end-2026.json",
-      "churn": 67
+      "churn": 64
     },
     {
       "path": "public/data/shows/translations-west-end-2018.json",
-      "churn": 61
+      "churn": 58
+    },
+    {
+      "path": "public/data/shows/downstate-2026.json",
+      "churn": 44
     },
     {
       "path": "data/audit/t1-outlet-breaker.json",
@@ -105,81 +109,72 @@
       "churn": 43
     },
     {
-      "path": "public/data/shows/downstate-2026.json",
-      "churn": 42
+      "path": "public/data/shows/its-a-wonderful-life-a-live-radio-play-2026.json",
+      "churn": 36
     },
     {
       "path": "public/data/shows/the-fantasticks-2026.json",
-      "churn": 35
+      "churn": 36
     },
     {
       "path": "public/data/shows/the-ugly-one-off-west-end-2026.json",
-      "churn": 35
+      "churn": 36
     },
     {
-      "path": "public/data/shows/its-a-wonderful-life-a-live-radio-play-2026.json",
-      "churn": 34
-    },
-    {
-      "path": "public/data/shows/desire-under-the-elms-off-west-end-2026.json",
-      "churn": 30
+      "path": "public/data/shows/elektra-off-broadway-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 964,
+      "churn": 925,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 620,
+      "churn": 622,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 518,
+      "churn": 506,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 458,
+      "churn": 463,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 380,
+      "churn": 381,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 380,
+      "churn": 381,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 380,
+      "churn": 381,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 291,
+      "churn": 263,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 255,
+      "churn": 256,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 247,
+      "churn": 246,
       "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 217,
-      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-a-christmas-story-the-musical-tour-2026.json",
@@ -192,97 +187,102 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/exclusion-daily-totals.json",
+      "churn": 211,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/collection-state/live-progress.json",
-      "churn": 166,
+      "churn": 167,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 166,
+      "churn": 167,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 147,
+      "churn": 146,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation-baseline.json",
+      "churn": 70,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 68,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
       "churn": 68,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/session-retro.jsonl",
-      "churn": 67,
+      "churn": 63,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 66,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 66,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026.json",
-      "churn": 56,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
-      "churn": 56,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
+      "churn": 53,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/score-public-since.json",
       "churn": 52,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/lane-rehearsal.json",
-      "churn": 50,
+      "path": "data/audit/poller-backoff/elektra-off-broadway-2026.json",
+      "churn": 51,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/elektra-off-broadway-2026.json",
+      "path": "data/audit/lane-rehearsal.json",
       "churn": 50,
       "mergeAttr": "ours"
     },
@@ -337,28 +337,23 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/gather-collisions.json",
       "churn": 39,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/bww-roundup-miss-ledger.jsonl",
-      "churn": 37,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/poller-backoff/much-ado-about-nothing-2026.json",
-      "churn": 34,
+      "path": "data/audit/poller-backoff/a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026.json",
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/bww-roundup-miss-ledger.jsonl",
+      "churn": 35,
+      "mergeAttr": "union"
+    },
+    {
       "path": "data/audit/poller-backoff/west-side-story-west-end-2026.json",
-      "churn": 34,
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
@@ -367,23 +362,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/cinderella-lyric-hammersmith-off-west-end-2026.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/much-ado-about-nothing-2026.json",
+      "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/validation/collection-report-2026-11-20.json",
       "churn": 32,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/club-nvrlnd-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/peter-pan-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/santas-first-christmas-off-west-end-2026.json",
-      "churn": 30,
+      "path": "data/audit/poller-backoff/the-snowman-off-west-end-2026.json",
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
