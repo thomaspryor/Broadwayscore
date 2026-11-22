@@ -387,7 +387,7 @@ function findGaps() {
   // by path (literal or joined), plus scripts/lib/*.test.mjs (run by test.yml's own glob,
   // not the manifest).
   const libTests = fs.readdirSync(path.join(ROOT, 'scripts', 'lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
-  const collected = readManifestLines().map((l) => l.trim()).filter((t) => t && /\.test\.(mjs|cjs|js|ts)$/.test(t));
+  const collected = readManifestLines().map((l) => l.trim()).filter((t) => t && /\.test\.(mjs|cjs|js|ts|tsx)$/.test(t));
   for (const testRelPath of [...new Set([...collected, ...libTests])]) {
     const abs = path.join(ROOT, testRelPath);
     if (!fs.existsSync(abs)) continue;

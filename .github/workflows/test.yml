@@ -450,10 +450,11 @@ on:
       # zero CI is the worst version of this gap.
       - 'scripts/llm-scoring/input-builder.ts'
       - 'scripts/llm-scoring/is-scoreable.ts'
-      # BRO-8070: the audit's path-named shape ignored .ts literals, so 13 more
-      # sources a collected test names by path were missed (10 here, 4 below).
-      # llm-scoring is globbed because ~30 of its 48 files were already listed
-      # one by one and every new .ts there reopened the gap (task #1745 lesson).
+      # BRO-8070: the audit's path-named shape ignored .ts literals, so 13
+      # sources a collected test names by path were missed (9 under llm-scoring,
+      # 4 top-level just below). llm-scoring is globbed because about half its
+      # files were already listed one by one and every new .ts there reopened
+      # the gap (task #1745 lesson). The single llm-scoring entries stay: harmless.
       - 'scripts/llm-scoring/**'
       - 'scripts/publish-live-scores.ts'
       - 'scripts/verify-reviews.ts'

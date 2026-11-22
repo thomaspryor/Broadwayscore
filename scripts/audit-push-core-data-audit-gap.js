@@ -67,7 +67,7 @@ function findInvokedScripts(raw) {
   for (const line of raw.split('\n')) {
     const stripped = line.trimStart();
     if (stripped.startsWith('#')) continue;
-    const re = /\bscripts\/[\w-]+(?:\/[\w-]+)*\.(?:js|mjs)\b/g;
+    const re = /\bscripts\/[\w-]+(?:\/[\w-]+)*\.(?:js|mjs|ts)\b/g;
     let m;
     while ((m = re.exec(line))) scripts.add(m[0]);
   }
