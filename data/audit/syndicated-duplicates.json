@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-22T08:30:01.822Z",
+  "generatedAt": "2026-11-22T09:25:44.027Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 60,
+    "avgScoreDiff": 2
   },
   "syndicationPairs": [
     {
@@ -25,7 +25,7 @@
       "secondaryOutlets": [
         "front-row-center"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "tulis mccall",
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Kathleen Campion",
+      "showId": "the-elephant-man-2014",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--kathleen-campion.json",
+      "secondaryFile": "front-row-center--kathleen-campion.json",
+      "similarity": 60,
+      "primaryScore": 83,
+      "secondaryScore": 85,
+      "scoreDiff": 2
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

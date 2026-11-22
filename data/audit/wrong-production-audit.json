@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T08:40:30.457Z",
+  "timestamp": "2026-11-22T09:36:35.754Z",
   "stats": {
-    "totalReviews": 83839,
-    "alreadyFlagged": 22436,
+    "totalReviews": 83875,
+    "alreadyFlagged": 22450,
     "dateGuardCatches": 238,
     "directorMismatch": 3879,
-    "tvFilmSignals": 2409,
-    "londonSignals": 3965,
-    "offBroadwaySignals": 784,
+    "tvFilmSignals": 2411,
+    "londonSignals": 3968,
+    "offBroadwaySignals": 785,
     "yearMismatch": 395,
-    "noPublishDate": 8213
+    "noPublishDate": 8221
   },
   "findings": [
     {
@@ -2766,6 +2766,20 @@
     },
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": null,
+      "publishDate": "2025-03-11",
+      "url": "https://nystagereview.com/2025/03/11/a-streetcar-named-desire-a-healthy-shot-of-southern-discomfort/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "timeout--adam-feldman.json",
       "publishDate": "2025-03-17",
       "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
@@ -2774,6 +2788,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "2025-03-11",
+      "url": "https://www.vulture.com/article/theater-review-streetcar-named-desire-williams-frecknall-mescal-ferran.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -3078,7 +3111,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-west-end-2015",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--sarah-hemming.json",
       "score": 92,
       "publishDate": "2015-02-17",
       "url": "https://www.ft.com/content/ae5845a6-b698-11e4-95dc-00144feab7de?syn-25a6b1a6=1",
@@ -22807,7 +22840,7 @@
     },
     {
       "showId": "farinelli-and-the-king-west-end-2015",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--sarah-hemming.json",
       "score": 86,
       "publishDate": "2015-09-30",
       "url": "https://www.ft.com/content/72b255e4-6761-11e5-97d0-1456a776a4f5?syn-25a6b1a6=1",
@@ -26329,7 +26362,7 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2025",
-      "file": "all-that-dazzles-uk--unknown.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 63,
       "publishDate": "2025-07-10",
       "url": "https://www.allthatdazzles.co.uk/post/review-girl-from-the-north-country-the-old-vic",
@@ -26371,7 +26404,7 @@
     },
     {
       "showId": "girl-from-the-north-country-west-end-2025",
-      "file": "essentialsurrey--unknown.json",
+      "file": "essentialsurrey--sophie-farrah.json",
       "score": 80,
       "publishDate": "2025-07-23",
       "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/girl-from-the-north-country/",
@@ -44236,7 +44269,7 @@
     },
     {
       "showId": "master-class-2011",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "score": 41,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/world/MasterClass2011.html",
@@ -47072,7 +47105,7 @@
     },
     {
       "showId": "mrs-doubtfire-2021",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--howard-miller.json",
       "score": 35,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/page/world/MrsDoubtfire.html",
@@ -50023,7 +50056,7 @@
     },
     {
       "showId": "of-mice-and-men-2014",
-      "file": "npr--unknown.json",
+      "file": "npr--fresh-air.json",
       "score": null,
       "publishDate": "2014-05-29",
       "url": "https://www.npr.org/2014/05/29/317038734/from-the-screen-to-broadway-chris-odowd-takes-on-of-mice-and-men",
@@ -59153,7 +59186,7 @@
     },
     {
       "showId": "rock-of-ages-2009",
-      "file": "thewrap--unknown.json",
+      "file": "thewrap--jeremy-blacklow.json",
       "score": null,
       "publishDate": "2014-10-21",
       "url": "https://www.thewrap.com/big-brothers-frankie-grande-heading-to-broadways-rock-of-ages/",
@@ -93079,6 +93112,33 @@
     },
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2025-03-11",
+      "url": "https://culturesauce.com/2025/03/11/paul-mescal-streetcar-named-desire-off-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "ew--dalton-ross.json",
+      "publishDate": "2025-03-11",
+      "url": "https://ew.com/a-streetcar-named-desire-review-paul-mescal-far-from-common-11693721",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
       "file": "latimes--charles-mcnulty.json",
       "publishDate": "2025-03-12",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
@@ -93105,9 +93165,22 @@
     },
     {
       "showId": "a-streetcar-named-desire-off-broadway-2025",
-      "file": "theatermania--zachary-stewart.json",
+      "file": "slantmagazine--dan-rubins.json",
       "publishDate": "2025-03-11",
-      "url": "https://www.theatermania.com/news/review-paul-mescal-led-a-streetcar-named-desire-violently-crashes-into-2025_1767057/",
+      "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": null,
+      "url": "http://www.theatermania.com/off-broadway/reviews/a-streetcar-named-desire_76914.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -121728,7 +121801,7 @@
     },
     {
       "showId": "medea-west-end-2014",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--ian-shuttleworth.json",
       "score": 71,
       "publishDate": "2014-07-22",
       "url": "https://www.ft.com/content/0bc57680-1182-11e4-b356-00144feabdc0?syn-25a6b1a6=1",
