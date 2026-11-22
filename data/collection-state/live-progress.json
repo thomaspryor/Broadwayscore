@@ -1,26 +1,64 @@
 {
-  "updatedAt": "2026-11-22T19:38:59.648Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-22T19:42:39.877Z",
+  "processed": 11,
+  "failed": 10,
+  "successRate": "52.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-11-22T19:29:55.929Z",
+      "t": "2026-11-22T19:36:47.192Z",
       "event": "bb-session",
-      "session": "3e56382f",
-      "url": "https://timeandleisure.co.uk/competitions/peter-pan-polka-theatre"
+      "session": "85d5c01c",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-22T19:36:48.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T19:39:16.045Z",
+      "event": "bb-session",
+      "session": "3957ea74",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-22T19:39:16.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T19:41:55.873Z",
+      "event": "bb-session",
+      "session": "14981318",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T19:41:56.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-22T19:42:14.339Z",
+      "event": "bb-session",
+      "session": "8b625f14",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-22T19:42:15.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
