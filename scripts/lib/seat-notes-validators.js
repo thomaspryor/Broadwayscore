@@ -1,0 +1,87 @@
+'use strict';
+/**
+ * Shape and copy rules for structuredTips.seating.seatNotes (BRO-8057). Pure.
+ * The writer refuses notes that fail; tests/unit/seat-notes.test.mjs pins the
+ * rules and the live-data check runs them over data/theater-metadata.json.
+ */
+
+const { HAZARD_TYPES, cleanRowRange, rowSet, copyProblems } = require('./seat-adjudication');
+const { BANNED_CLAIM_PATTERNS } = require('./theater-tips-validators');
+const { NOTE_TYPES, MAX_NOTES, LEVEL_LABEL, publishableSeatNotes, latestVerified } = require('./seat-notes-publish');
+
+const SIDES = new Set(['center', 'left', 'right', 'sides']);
+// Pages a note may cite. Anything else (an arbitrary page a model surfaced) is refused.
+const SOURCE_HOSTS = new Set([
+  'seatplan.com', 'tickpick.com', 'headout.com', 'aviewfrommyseat.com', 'rateyourseats.com',
+  'nytix.com', 'reddit.com', 'old.reddit.com', 'broadwayworld.com', 'broadwaydirect.com',
+  'telecharge.com', 'ticketmaster.com', 'seatgeek.com', 'theatermania.com', 'playbill.com',
+]);
+// House notes only (owner-approved plan v4): a claim about one production's
+// set or staging is not a fact about the seat, and goes stale when it closes.
+const PRODUCTION_WORDS = /\b(the set|set piece|scenery|catwalk|elephant|windmill|on-?stage seating|lighting rig|the production|this production|the show's|staging|projections?|cast members?)\b/i;
+const CLAIM_MIN = 20;
+const CLAIM_MAX = 240;
+
+function hostOf(url) {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== 'https:') return null;
+    return u.hostname.replace(/^www\./, '');
+  } catch { return null; }
+}
+
+/**
+ * @param {string} theater
+ * @param {object[]} notes
+ * @param {{showTitles?: string[]}} opts  every Broadway show title; house notes may name none
+ * @returns {string[]} problems, empty when fine
+ */
+function validateSeatNotes(theater, notes, { showTitles = [] } = {}) {
+  const p = [];
+  if (!Array.isArray(notes)) return [`${theater}: seatNotes is not an array`];
+  if (notes.length > MAX_NOTES) p.push(`${theater}: ${notes.length} seat notes, max ${MAX_NOTES}`);
+  // Judged as of the newest check, so an old value note expiring later is not a data error.
+  if (notes.length && !publishableSeatNotes(notes, { today: new Date(latestVerified(notes) || 0) }).length) {
+    p.push(`${theater}: seat notes do not clear the bar (>=2, with a watch-out or value); store none instead`);
+  }
+  notes.forEach((n, i) => {
+    const at = `${theater} / seatNotes[${i}]`;
+    if (!n || typeof n !== 'object') { p.push(`${at}: not an object`); return; }
+    if (!NOTE_TYPES.includes(n.type)) p.push(`${at}: bad type ${n.type}`);
+    if (!LEVEL_LABEL[n.level]) p.push(`${at}: bad level ${n.level}`);
+    if (n.side !== undefined && !SIDES.has(n.side)) p.push(`${at}: bad side ${n.side}`);
+    if (n.rows !== undefined && cleanRowRange(n.rows) !== n.rows) p.push(`${at}: rows is not a plain row or range: ${n.rows}`);
+    if (n.hazard !== undefined && (!HAZARD_TYPES.has(n.hazard) || n.type !== 'watch-out')) p.push(`${at}: hazard only on watch-out, from the known list`);
+    const claim = String(n.claim || '');
+    if (claim.length < CLAIM_MIN || claim.length > CLAIM_MAX) p.push(`${at}: claim length ${claim.length} outside ${CLAIM_MIN}-${CLAIM_MAX}`);
+    if (PRODUCTION_WORDS.test(claim)) p.push(`${at}: names a production or set piece (house notes only)`);
+    for (const c of copyProblems(claim, { forbiddenTitles: showTitles })) p.push(`${at}: ${c}`);
+    for (const b of BANNED_CLAIM_PATTERNS) if (b.pattern.test(claim)) p.push(`${at}: ${b.reason}`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(n.verifiedAt || ''))) p.push(`${at}: verifiedAt must be YYYY-MM-DD`);
+    const ev = Array.isArray(n.evidence) ? n.evidence : [];
+    if (!ev.length) p.push(`${at}: no evidence (unsourced)`);
+    for (const e of ev) {
+      const h = e && hostOf(e.url);
+      if (!h) p.push(`${at}: evidence url must be https: ${e && e.url}`);
+      else if (!SOURCE_HOSTS.has(h)) p.push(`${at}: evidence host not allowed: ${h}`);
+      if (!e || !/^[0-9a-f]{8,64}$/.test(String(e.quoteHash || ''))) p.push(`${at}: evidence missing quoteHash`);
+      if (!e || !/^\d{4}-\d{2}-\d{2}/.test(String(e.fetchedAt || ''))) p.push(`${at}: evidence missing fetchedAt`);
+    }
+  });
+  // A watch-out and a value note on overlapping rows of the same block contradict each other.
+  for (let i = 0; i < notes.length; i++) {
+    for (let j = i + 1; j < notes.length; j++) {
+      const a = notes[i], b = notes[j];
+      // No side means the whole level, so it can collide with any side.
+      if (!a || !b || a.level !== b.level || (a.side && b.side && a.side !== b.side)) continue;
+      const types = new Set([a.type, b.type]);
+      if (!(types.has('watch-out') && types.has('value'))) continue;
+      const ra = a.rows ? rowSet(a.rows) : null, rb = b.rows ? rowSet(b.rows) : null;
+      const overlap = !ra || !rb || [...ra].some((r) => rb.has(r));
+      if (overlap) p.push(`${theater}: watch-out and value notes overlap (seatNotes[${i}] / seatNotes[${j}])`);
+    }
+  }
+  return p;
+}
+
+module.exports = { validateSeatNotes, SOURCE_HOSTS, PRODUCTION_WORDS };
