@@ -180,7 +180,9 @@ function publisherUrlFromPage(content, sourceUrl, finalUrl) {
   const $ = cheerio.load(content);
   const accept = value => {
     try {
-      const url = new URL(value);
+      // BRO-8065: a bot-wall interstitial (/.well-known/captcha/?r=<path>) is not the article; keep the guarded url.
+      const url = new URL(require('./non-review-url-patterns').unwrapChallengeUrl(value) || value);
+      if (require('./non-review-url-patterns').isChallengeUrl(url.href)) return null;
       if (!['https:', 'http:'].includes(url.protocol)
           || !domainMatchesExpected(expected, url.hostname)
           || url.hostname === 'news.google.com' || url.pathname === '/') return null;

@@ -141,6 +141,15 @@ const dryRun = args.includes('--dry-run');
 const triageOnly = args.includes('--triage-only');
 const eraArg = args.find(a => a.startsWith('--era='))?.split('=')[1] || null;
 const pendingTriage = require('./lib/pending-triage');
+// BRO-8065: one verdict per stub in scope, printed as a histogram at the end (a dry run must say what it would do
+// with every stub, including the ones an earlier run already settled).
+const VERDICTS = new Map();
+const verdictBucket = (reason) => String(reason || '').replace(/\s*\((?:BRO-\d+[^)]*|stub date, no fetch)\)/g, '')
+  .replace(/"[^"]*"/g, '"…"').replace(/\b[a-z0-9]+(?:-[a-z0-9]+)*-\d{4}\b/g, '<show>').replace(/[a-z0-9-]+--[a-z0-9-]+\.json/g, '<file>')
+  .replace(/\d{4}-\d{2}(?:-\d{2})?/g, '<date>').replace(/\d+/g, 'N').slice(0, 80);
+function verdictCount(key) { VERDICTS.set(key, (VERDICTS.get(key) || 0) + 1); }
+// A skip decided from the url text alone; re-opened when the url turns out to have been a bot-wall page (BRO-8065).
+const URL_ONLY_SKIP_RE = /url-token-mismatch|no-significant-title-tokens|url has no identity|non-review host/;
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 /**
@@ -552,12 +561,28 @@ async function processShow(showId, deps = {}) {
     try { data = JSON.parse(fs.readFileSync(filepath, 'utf8')); } catch (e) {
       // BRO-7930: one unreadable stub must not wedge the sweep before its cursor is saved.
       console.log(`  [${file}] unreadable (${e.message}) — skipped`);
+      verdictCount('unreadable');
       kept++;
       continue;
+    }
+    // BRO-8065: a stub whose url is a bot-wall interstitial gets the guarded article url back. A skip that was
+    // decided from the wall's url alone (it named no show) is re-opened, so the real review is fetched.
+    const unwrapped = require('./lib/non-review-url-patterns').unwrapChallengeUrl(data.url);
+    if (unwrapped) {
+      console.log(`  [${file}] url was a bot-wall page — restored ${unwrapped}${dry ? ' (DRY)' : ''}`);
+      data.challengeUrlUnwrappedFrom = data.url;
+      data.url = unwrapped;
+      if (URL_ONLY_SKIP_RE.test(String(data.promoteSkippedReason || ''))) {
+        data.reopenedFromSkip = data.promoteSkippedReason;
+        data.promoteSkippedReason = null; data.promoteSkippedAt = null; // null, not delete: the write guard merges absent keys back
+      }
+      if (!dry) { try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not restore url: ${e.message}`); } }
+      verdictCount('restored:bot-wall url');
     }
     // Already evaluated and skipped on a prior run — don't re-fetch the URL. Not counted as inspected:
     // settled junk stays in _pending forever and would make a healthy quiet drain look stalled.
     if (data.promoteSkippedReason) {
+      verdictCount(`settled earlier: ${verdictBucket(data.promoteSkippedReason)}`);
       kept++;
       continue;
     }
@@ -568,6 +593,7 @@ async function processShow(showId, deps = {}) {
     // fail the identity check permanently — never fetch, never count as
     // drain candidates.
     if (data.rssIdentityRejected) {
+      verdictCount('settled earlier: rss identity reject');
       kept++;
       continue;
     }
@@ -577,6 +603,7 @@ async function processShow(showId, deps = {}) {
     const offTopic = require('./lib/non-review-url-patterns').offTopicSectionReason(data.url);
     if (offTopic) {
       console.log(`  [${file}] ${offTopic} URL — not a review, skipped without fetch`);
+      verdictCount(`junk: ${offTopic} URL`);
       if (!dry) {
         data.promoteSkippedReason = `${offTopic} URL, not a review (BRO-7078)`;
         data.promoteSkippedAt = now().toISOString();
@@ -595,6 +622,7 @@ async function processShow(showId, deps = {}) {
       const identityOk = require('./lib/rss-discovery').rssStubIdentityOk(data, show.title);
       if (!identityOk) {
         console.log(`  [${file}] rss identity reject (no title/slug match to "${show.title}") — tagged, not a stuck review`);
+        verdictCount('junk: rss identity reject');
         if (!dry) {
           data.rssIdentityRejected = true;
           data.rssIdentityRejectedReason = 'no title/slug match to show at replay (BRO-6321)';
@@ -612,6 +640,7 @@ async function processShow(showId, deps = {}) {
         && !require('./lib/generic-title-guard').passesGenericTitleIdentity(data.url || '', show.title, { shortNumeric: true })
         && !(data.source === 'submit-review-form' || data.source === 'manual-user-request')) {
       console.log(`  [${file}] url carries no identity for the bare title "${show.title}" — tagged, not a stuck review (BRO-7930)`);
+      verdictCount('junk: url has no identity for the bare title');
       if (!dry) {
         data.promoteSkippedReason = `url has no identity for the bare title "${show.title}" (BRO-7930)`;
         data.promoteSkippedAt = now().toISOString();
@@ -624,6 +653,7 @@ async function processShow(showId, deps = {}) {
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);
+      verdictCount('no url');
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'no URL to re-fetch');
       kept++;
       continue;
@@ -639,6 +669,7 @@ async function processShow(showId, deps = {}) {
     if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
     if (isRedundantPendingStub(data, landed)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
+      verdictCount('duplicate: url already filed for this show');
       if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
       continue;
@@ -647,6 +678,7 @@ async function processShow(showId, deps = {}) {
     const settle = landed ? sameArticleSettleReason(data, landedData, landed) : null;
     if (settle) {
       console.log(`  [${file}] ${settle} — tagged, not fetched`);
+      verdictCount(`settled: ${verdictBucket(settle)}`);
       if (!dry) {
         data.promoteSkippedReason = settle;
         data.promoteSkippedAt = now().toISOString();
@@ -662,6 +694,7 @@ async function processShow(showId, deps = {}) {
     const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
     if (tri.verdict === 'junk') {
       console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
+      verdictCount(`junk: ${verdictBucket(tri.reason)}`);
       if (!dry) {
         data.promoteSkippedReason = `${tri.reason} (BRO-8023 triage)`;
         data.promoteSkippedAt = now().toISOString();
@@ -675,6 +708,7 @@ async function processShow(showId, deps = {}) {
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
     if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((show || {}).venue)).rejected) {
       console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+      verdictCount('rejected: non-Met opera house url');
       if (!dry) fs.unlinkSync(filepath);
       rejected++;
       continue;
@@ -683,13 +717,15 @@ async function processShow(showId, deps = {}) {
       const badYear = require('./lib/url-year-guard').urlYearConflict(url, openingYear, show?.title);
       if (badYear) {
         console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+        verdictCount('rejected: url year more than a year from opening');
         if (!dry) fs.unlinkSync(filepath);
         rejected++;
         continue;
       }
     }
 
-    if (triageOnlyRun) { candidates++; kept++; continue; } // BRO-8023: a fetch candidate, left for the fetching drain
+    if (triageOnlyRun) { candidates++; kept++; verdictCount(tri.verdict === 'duplicate' ? 'duplicate: url already scored for this show (needs fetch to settle)' : 'candidate: needs a fetch'); continue; }
+    verdictCount('fetched'); // BRO-8023: a fetch candidate, left for the fetching drain
 
     let byline = null;
     let html = null;
@@ -1047,6 +1083,12 @@ if (require.main === module) {
     console.log(`  out-of-window copies settled (BRO-7945): ${JSON.stringify(settledTotals)}; fetch requests ${runFetchCache.stats().calls}, unique URLs fetched ${runFetchCache.stats().unique} (cache hits ${runFetchCache.stats().cacheHits})`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
     if (triageOnly) console.log(`  of which fetch candidates (triage-only, not fetched): ${totalCandidates}`);
+    if (VERDICTS.size) {
+      const total = [...VERDICTS].filter(([k]) => !k.startsWith('restored:')).reduce((a, [, n]) => a + n, 0); // a restore also gets a verdict
+      const junk = [...VERDICTS].filter(([k]) => /^(?:junk|settled|rejected|duplicate)/.test(k) && !/needs fetch/.test(k)).reduce((a, [, n]) => a + n, 0);
+      console.log(`\nVerdict per stub (${total} stubs; settled/junk/duplicate ${junk} = ${total ? Math.round(100 * junk / total) : 0}%):`);
+      for (const [k, n] of [...VERDICTS].sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(6)}  ${k}`);
+    }
 
     if (sweep) {
       // A tier that reached its last file finished its pass: its cursor resets so the next run starts at the top.

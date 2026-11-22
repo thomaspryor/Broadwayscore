@@ -373,3 +373,54 @@ describe('triagePendingStub BRO-8065 fixtures', () => {
     assert.equal(T.triagePendingStub({ url, source: 'manual-user-request' }, ctx('44-off-broadway-2025')).verdict, 'candidate');
   });
 });
+
+// BRO-8065: 15 queue stubs (and 1 primary) stored a SiteGround bot-wall page as the article url.
+describe('BRO-8065: bot-wall (sgcaptcha) urls', () => {
+  const N = require('../../scripts/lib/non-review-url-patterns.js');
+  const WALL = 'https://www.londontheatre1.com/.well-known/captcha/?y=ipr:4.236.167.0:1793232769.555&r=%2Freviews%2Fmemoriam-southwark-playhouse-borough%2F';
+  test('unwrapChallengeUrl returns the guarded article url; anything else is null', () => {
+    assert.equal(N.unwrapChallengeUrl(WALL), 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/');
+    assert.equal(N.unwrapChallengeUrl('https://www.londontheatre1.com/reviews/memoriam/'), null);
+    assert.equal(N.unwrapChallengeUrl('https://x.com/.well-known/captcha/?r=%2F%2Fevil.com%2Fa'), null, 'never a protocol-relative hop');
+    assert.equal(N.unwrapChallengeUrl('https://x.com/.well-known/captcha/?y=1'), null);
+    assert.ok(N.isChallengeUrl(WALL));
+  });
+  test('maybeUpgradeUrl never adopts a bot-wall url', () => {
+    const { maybeUpgradeUrl } = require('../../scripts/lib/review-normalization.js');
+    const rec = { url: 'https://www.londontheatre1.com/reviews/girls-young-vic/', contentTier: 'stub' };
+    assert.equal(maybeUpgradeUrl(rec, WALL, 'google-news-rss'), false);
+    assert.equal(rec.url, 'https://www.londontheatre1.com/reviews/girls-young-vic/');
+  });
+  test('the drain restores the url and re-opens a skip decided from the wall url alone', async () => {
+    const { processShow } = require('../../scripts/replay-pending-bylines.js');
+    const show = { id: 'memoriam-off-west-end-2026', title: 'Memoriam', previewsStartDate: '2026-10-20', openingDate: '2026-10-24', closingDate: '2026-11-14', category: 'off-west-end' };
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8065-'));
+    const dir = path.join(root, '_pending', show.id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'londontheatre1--1.json'), JSON.stringify({ outletId: 'londontheatre1', criticName: 'Unknown', url: WALL, promoteSkippedReason: 'not this show (url-token-mismatch)' }));
+    fs.writeFileSync(path.join(dir, 'londontheatre1--2.json'), JSON.stringify({ outletId: 'londontheatre1', criticName: 'Unknown', url: WALL, promoteSkippedReason: 'byline resolves to x.json, which already holds a different article' }));
+    const r = await processShow(show.id, { root, show, dryRun: false, triageOnly: true, heldIndex: new Map(), explicitScope: false,
+      fetch: async () => { throw new Error('no fetch in triage-only'); }, alert: async () => {}, resolve: () => {}, emit: () => {},
+      budget: { exceeded: () => false, minutes: 5 } });
+    const a = JSON.parse(fs.readFileSync(path.join(dir, 'londontheatre1--1.json'), 'utf8'));
+    assert.equal(a.url, 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/');
+    assert.equal(a.challengeUrlUnwrappedFrom, WALL);
+    assert.ok(!a.promoteSkippedReason, 'url-only skip re-opened: ' + JSON.stringify(a));
+    assert.equal(r.candidates, 1);
+    const b = JSON.parse(fs.readFileSync(path.join(dir, 'londontheatre1--2.json'), 'utf8'));
+    assert.match(b.promoteSkippedReason, /byline resolves/, 'a skip decided from the page itself stands');
+    assert.equal(b.url, 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/');
+  });
+});
+
+test('BRO-8065: safeWriteReview stores the guarded article url, never the bot-wall page', () => {
+  const { safeWriteReview } = require('../../scripts/lib/review-write-guard.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8065w-'));
+  const f = path.join(dir, 'girls-off-west-end-2026', 'londontheatre1--unknown.json');
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  safeWriteReview(f, { showId: 'girls-off-west-end-2026', outletId: 'londontheatre1', criticName: 'Unknown',
+    url: 'https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:1793302839.755&r=%2Freviews%2Fgirls-young-vic%2F' });
+  const out = JSON.parse(fs.readFileSync(f, 'utf8'));
+  assert.equal(out.url, 'https://www.londontheatre1.com/reviews/girls-young-vic/');
+  assert.match(out.challengeUrlUnwrappedFrom, /well-known\/captcha/);
+});

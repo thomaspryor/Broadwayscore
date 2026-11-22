@@ -2962,6 +2962,8 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // Reject invalid replacement URLs (relative paths, profile pages)
   if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
   if (isProfileUrl(newUrl)) return false;
+  // BRO-8065: never adopt a bot-wall interstitial (/.well-known/captcha/) as the article url.
+  if (require('./non-review-url-patterns').isChallengeUrl(newUrl)) return false;
   // BRO-4414: never adopt a URL an earlier merge folded into this record.
   // BRO-6742: an interview holding the slot is a different article, so its
   // review is not a merged duplicate of it even when an earlier write folded
