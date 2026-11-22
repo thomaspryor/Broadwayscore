@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-22T07:01:44.138Z",
+  "timestamp": "2026-11-22T07:15:21.176Z",
   "stats": {
     "totalReviews": 83829,
     "alreadyFlagged": 22435,
     "dateGuardCatches": 238,
-    "directorMismatch": 3870,
-    "tvFilmSignals": 2406,
-    "londonSignals": 3959,
+    "directorMismatch": 3872,
+    "tvFilmSignals": 2407,
+    "londonSignals": 3960,
     "offBroadwaySignals": 783,
     "yearMismatch": 395,
     "noPublishDate": 8213
@@ -10747,7 +10747,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 59,
+      "score": 58,
       "publishDate": null,
       "url": "https://www.thetimes.co.uk/article/boys-from-the-blackstuff-review-biting-scouse-wit-brings-a-tender-tribute-to-life-j0kfj769n",
       "findings": [
@@ -28420,6 +28420,20 @@
     },
     {
       "showId": "gypsy-2024",
+      "file": "culturesauce--thom-geier.json",
+      "score": 80,
+      "publishDate": "December 20th, 2024",
+      "url": "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
       "file": "dailybeast--tim-teeman.json",
       "score": 77,
       "publishDate": null,
@@ -39232,6 +39246,19 @@
       "score": 91,
       "publishDate": null,
       "url": "https://www.theatre-news.com/review/UK/5967/Theatre/KENREX-The-Crucible",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ed stambollouian\" from kenrex-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "kenrex-sheffield-regional-2024",
+      "file": "thestage--holly-williams.json",
+      "publishDate": "2024-11-01",
+      "url": "https://www.thestage.co.uk/reviews/kenrex-review-tanya-moiseiwitsch-playhouse-sheffield-jack-holden-ed-stambollouian-ken-rex-mcelroy",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57977,7 +58004,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2025-03-07",
       "url": "https://www.whatsonstage.com/news/punch-at-the-young-vic-review_1668215/",
       "findings": [
@@ -81294,6 +81321,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 64,
+      "publishDate": "2025-03-07",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -146654,7 +146700,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "2025-02-10",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-years-harold-pinter-review",
       "findings": [
@@ -146841,7 +146887,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 99,
+      "score": 95,
       "publishDate": "2025-02-10",
       "url": "https://www.whatsonstage.com/news/the-years-west-end-review-this-play-cannot-be-missed_1663948/",
       "findings": [
