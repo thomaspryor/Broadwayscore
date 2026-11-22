@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -405,11 +405,6 @@
       "bucket": "b",
       "rank": 0,
       "reason": "Retroactive roundup-URL investigation mixes URL-title guesses, cached archives and potentially paid fetchPage validation; needs a bounded scope and content-based evidence before recurring use, not a default daily sweep."
-    },
-    "audit-we-historical-season.js": {
-      "bucket": "b",
-      "rank": 0,
-      "reason": "Manual release gate for a specified West End backfill --season about seven days after scoring; displayability, run windows, duplicates and provenance determine whether the next season can start, not daily catalog health."
     },
     "audit-we-market-misroutes.js": {
       "bucket": "b",
