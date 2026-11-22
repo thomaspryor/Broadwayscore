@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-21T09:56:54.808Z",
+  "lastChecked": "2026-11-22T09:54:48.952Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Data: UK regional opening dates",
-      "status": "pass",
-      "message": "No UK regional opening date sits after its earliest review"
+      "status": "warn",
+      "message": "1 UK regional show(s) have a review dated before the review-seeded opening date (e.g. the-little-mermaid-bristol-old-vic-regional-2025)."
     },
     {
       "name": "Data: OB shows no closing signal can detect",
@@ -73,43 +73,43 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: stranger-things-the-first-shadow-west-end-2023 (1 stranded)"
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
-      "status": "pass",
-      "message": "No Linear card carries an acceptance check that cannot tell done from not done"
+      "status": "warn",
+      "message": "1 Linear card(s) carry an acceptance check that cannot tell done from not done (1 can never fail, 0 can never pass). First: BRO-6917 Web sign-up flow: light-touch onboarding (anonymous ratings, quieter bookmark prompt, opt-in quiz after Sign-in-button sign-ups)"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "24 of 411 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7899 Opening-night audit 2026-11-20"
+      "message": "13 of 425 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7926 iOS app: tell the user when a queued offline change is dropped, and queue the favorites write"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-20"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-21"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "84 review(s) with no usable text, 68 rejected although verified as a review, 29 never scored, 39 with a blocked URL (0 published on the site), across 739 current shows"
+      "message": "82 review(s) with no usable text, 68 rejected although verified as a review, 18 never scored, 15 with a blocked URL (0 published on the site), across 746 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
-      "status": "pass",
-      "message": "No published review score contradicts the critic's rating (49959 checked)"
+      "status": "warn",
+      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 50177 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "5 early publish date(s) awaiting recheck (limit 40); 219 already attempted and not yet confirmed"
+      "message": "3 early publish date(s) awaiting recheck (limit 40); 215 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
-      "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3835 files with approvals"
+      "status": "warn",
+      "message": "4 unexplained approved-fix drift(s) across 3961 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,12 +119,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 562 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 563 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"THE GOOD THIEF at Irish Repertory Theatre\" (bww-roundup — missing 0d)"
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"THE GOOD THIEF at Irish Repertory Theatre\" (bww-roundup — missing 1d)"
     }
   ]
 }

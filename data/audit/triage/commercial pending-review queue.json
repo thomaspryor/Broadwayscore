@@ -1,15 +1,15 @@
 {
   "system": "commercial pending-review queue",
-  "status": "pass",
-  "lastChecked": "2026-11-21T09:56:54.809Z",
+  "status": "error",
+  "lastChecked": "2026-11-22T09:54:48.953Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial pending-review queue",
-      "status": "pass",
-      "message": "Pending-review backlog: 0 entries."
+      "status": "error",
+      "message": "Pending-review backlog: 56 entries, oldest 147 days (the-lost-boys-2026, 2026-06-27). Over the limit: 56 entries wait (limit 25); oldest entry is 147 days old (limit 14): the-lost-boys-2026."
     }
   ]
 }

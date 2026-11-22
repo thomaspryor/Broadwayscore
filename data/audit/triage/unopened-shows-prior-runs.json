@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-21T10:44:15.838Z",
+  "generatedAt": "2026-11-22T10:50:06.069Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6098,
-  "flaggedShows": 46,
-  "flaggedFiles": 159,
+  "scannedShows": 6130,
+  "flaggedShows": 42,
+  "flaggedFiles": 142,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -17,8 +17,8 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 26,
-    "needs-human-review": 20
+    "likely-contamination": 24,
+    "needs-human-review": 18
   },
   "shows": [
     {
@@ -465,186 +465,6 @@
       ]
     },
     {
-      "showId": "the-seagull-globe-off-west-end-2026",
-      "title": "The Seagull",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Sam Wanamaker Playhouse",
-      "previewsStartDate": "2027-01-15",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "11/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 12,
-        "distinctYears": [
-          2022,
-          2025
-        ],
-        "spanDays": 975,
-        "flaggedCount": 11,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "daily-mail--patrick-marmion.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Patrick Marmion",
-          "publishDate": "2025-03-07",
-          "url": "https://www.dailymail.com/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2022-07-15",
-          "url": "https://www.express.co.uk/entertainment/theatre/1641045/the-seagull-emilia-clark-Harold-Pinter-Theatre-west-end-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2025-03-07",
-          "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2025-03-07",
-          "url": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?srsltid=AU7gw4WlaMfrpha3vC5V-343wduojcWXhET5qH4oN__8u8kHOCUnfaPa",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--jessie-thompson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Jessie Thompson",
-          "publishDate": "2022-07-08",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/emilia-clarke-the-seagull-review-b2118781.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "observer--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "observer",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2025-03-07",
-          "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Alice Saville",
-          "publishDate": "2022-07-27",
-          "url": "https://www.standard.co.uk/culture/theatre/the-seagull-harold-pinter-theatre-london-review-emilia-clarke-b1011031.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2022-07-07",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/seagull-review-emelia-clarkes-wings-clipped-ascetic-chekhov/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2025-03-07",
-          "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-chekhov-cate-blanchett-thomas-ostermeier-duncan-macmillan",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2022-07-06",
-          "url": "https://www.timeout.com/london/theatre/the-seagull-review-1",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2025-03-07",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-seagull-review-cate-blanchett-barbican-32nz73mjv",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2025-03-06",
-          "url": "https://www.whatsonstage.com/news/the-seagull-review-cate-blanchett-leads-an-all-star-production-with-vaping-and-rock-songs_1668200/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "a-christmas-carol-off-broadway-2026",
       "title": "A Christmas Carol",
       "market": "broadway",
@@ -785,6 +605,147 @@
       ]
     },
     {
+      "showId": "the-seagull-globe-off-west-end-2026",
+      "title": "The Seagull",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Sam Wanamaker Playhouse",
+      "previewsStartDate": "2027-01-15",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "8/9 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 9,
+        "distinctYears": [
+          2022,
+          2025
+        ],
+        "spanDays": 975,
+        "flaggedCount": 8,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "daily-mail--patrick-marmion.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "daily-mail",
+          "criticName": "Patrick Marmion",
+          "publishDate": "2025-03-07",
+          "url": "https://www.dailymail.com/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "express-uk--neil-norman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2022-07-15",
+          "url": "https://www.express.co.uk/entertainment/theatre/1641045/the-seagull-emilia-clark-Harold-Pinter-Theatre-west-end-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--arifa-akbar.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2025-03-07",
+          "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--jessie-thompson.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Jessie Thompson",
+          "publishDate": "2022-07-08",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/emilia-clarke-the-seagull-review-b2118781.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--alice-saville.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Alice Saville",
+          "publishDate": "2022-07-27",
+          "url": "https://www.standard.co.uk/culture/theatre/the-seagull-harold-pinter-theatre-london-review-emilia-clarke-b1011031.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2022-07-07",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/seagull-review-emelia-clarkes-wings-clipped-ascetic-chekhov/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--sam-marlowe.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "urlYearReroute",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2025-03-07",
+          "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-chekhov-cate-blanchett-thomas-ostermeier-duncan-macmillan",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2022-07-06",
+          "url": "https://www.timeout.com/london/theatre/the-seagull-review-1",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "publishDate": "2025-03-06",
+          "url": "https://www.whatsonstage.com/news/the-seagull-review-cate-blanchett-leads-an-all-star-production-with-vaping-and-rock-songs_1668200/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "legally-blonde-west-end-2027",
       "title": "Legally Blonde",
       "market": "west-end",
@@ -918,148 +879,6 @@
           "criticName": "Sarah Crompton",
           "publishDate": "2022-05-25",
           "url": "https://www.whatsonstage.com/london-theatre/reviews/legally-blonde-at-regents-park-open-air_56581.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "peter-pan-off-west-end-2026",
-      "title": "Peter Pan",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Polka Theatre",
-      "previewsStartDate": "2026-11-14",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "9/9 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 9,
-        "distinctYears": [
-          2019,
-          2023,
-          2025
-        ],
-        "spanDays": 2286,
-        "flaggedCount": 9,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "i-paper--anya-ryan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Anya Ryan",
-          "publishDate": "2023-12-14",
-          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Anya Ryan",
-          "publishDate": "2023-12-14",
-          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--isabella-james.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Isabella James",
-          "publishDate": "2019-07-27",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-10-29",
-          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--bruce-dessau.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Bruce Dessau",
-          "publishDate": "2023-12-14",
-          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Bruce Dessau",
-          "publishDate": "2023-12-14",
-          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--marianka-swain.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Marianka Swain",
-          "publishDate": "2023-12-14",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/julian-clary-peter-pan-london-palladium-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--paul-vale.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Paul Vale",
-          "publishDate": "2023-12-14",
-          "url": "https://www.thestage.co.uk/reviews/peter-pan-review-london-palladium-jennifer-saunders-julian-clary-paul-zerdin-nigel-havers-gary-willmot-crossroads",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--tom-millward.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Tom Millward",
-          "publishDate": "2023-12-14",
-          "url": "https://www.whatsonstage.com/news/peter-pan-at-the-london-palladium-review-high-flying-adored-pantomime_1558291/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1568,7 +1387,7 @@
       "showId": "jack-and-the-beanstalk-off-west-end-2026",
       "title": "Jack and The Beanstalk",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Hackney Empire",
       "previewsStartDate": "2026-11-21",
       "openingDate": null,
@@ -1904,69 +1723,6 @@
       ]
     },
     {
-      "showId": "the-snowman-off-west-end-2026",
-      "title": "The Snowman",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Peacock Theatre",
-      "previewsStartDate": "2026-11-21",
-      "openingDate": "2026-11-21",
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2023,
-          2025
-        ],
-        "spanDays": 660,
-        "flaggedCount": 3,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--christiana-rose.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Christiana Rose",
-          "publishDate": "2023-11-20",
-          "url": "https://www.broadwayworld.com/westend/article/Review-THE-SNOWMAN-Peacock-Theatre-20231120",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre--marianka-swain.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-theatre",
-          "criticName": "Marianka Swain",
-          "publishDate": "2023-11-26",
-          "url": "https://www.londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--caroline-mcginn.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Caroline McGinn",
-          "publishDate": "2025-09-10",
-          "url": "https://www.timeout.com/london/theatre/the-snowman-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "trouble-struggle-bubble-and-squeak-off-broadway-2026",
       "title": "Trouble, Struggle, Bubble and Squeak",
       "market": "broadway",
@@ -2158,7 +1914,7 @@
       "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
       "title": "Robin Hood and the Merry Mandem",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Theatre Royal Stratford East",
       "previewsStartDate": "2026-11-21",
       "openingDate": null,
@@ -2949,78 +2705,6 @@
           "criticName": "Phil Willmott",
           "publishDate": "2019-10-09",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-gentlemen-prefer-blondes",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "club-nvrlnd-off-west-end-2026",
-      "title": "Club NVRLND",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Vaults Theatre",
-      "previewsStartDate": "2026-11-14",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Vaults Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "thestage--lyn-gardner.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Lyn Gardner",
-          "publishDate": "2025-08-05",
-          "url": "https://www.thestage.co.uk/reviews/club-nvrlnd-review-assembly-checkpoint-edinburgh-le-fil-jack-holden",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Lyric Hammersmith Theatre",
-      "previewsStartDate": "2026-11-14",
-      "openingDate": "2026-11-21",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Lyric Hammersmith Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2023
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "ew--emlyn-travis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "ew",
-          "criticName": "Emlyn Travis",
-          "publishDate": "2023-03-24",
-          "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "warn",
-  "lastChecked": "2026-11-21T09:56:54.809Z",
+  "lastChecked": "2026-11-22T09:54:48.953Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Data quality: provider spend ledger",
       "status": "pass",
-      "message": "Newest entry (day=2026-11-19) 1d past its end-of-day"
+      "message": "Newest entry (day=2026-11-20) 1d past its end-of-day"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
@@ -19,37 +19,37 @@
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
       "status": "warn",
-      "message": "2 NEW unhandled CV.wrongProduction review(s) since last run (153 total across 124 show(s), 23h ago)"
+      "message": "1 NEW unhandled CV.wrongProduction review(s) since last run (154 total across 125 show(s), 23h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
       "status": "warn",
-      "message": "1 unmatched review(s) with contamination evidence open (1 new since last run; 786 total across 563 show(s), 23h ago)"
+      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 796 total across 570 show(s), 23h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
       "status": "warn",
-      "message": "1 cross-show URL mismatch(es) with contamination evidence open (0 new since last run; 232 total across 203 show(s), 23h ago)"
+      "message": "1 cross-show URL mismatch(es) with contamination evidence open (0 new since last run; 231 total across 202 show(s), 23h ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (38 known baseline across 4899 show(s), 23h ago)"
+      "message": "No new violations since last run (38 known baseline across 4910 show(s), 23h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
       "status": "pass",
-      "message": "No open violations with a same-title earlier production (3 known baseline across 4899 show(s), 23h ago)"
+      "message": "No open violations with a same-title earlier production (3 known baseline across 4910 show(s), 23h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
       "status": "warn",
-      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 7 more were covered by a weekly round-up, 23h ago)"
+      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 6 more were covered by a weekly round-up, 23h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "status": "pass",
-      "message": "9 show(s) flagged < 2d, waiting on the status flip (12 silenced by contamination, 23h ago)"
+      "status": "warn",
+      "message": "1 show(s) stuck announced/upcoming/previews 2+ days after apparently opening: santas-first-christmas-off-west-end-2026 (8 newer still settling, 11 silenced by contamination, 23h ago)"
     }
   ]
 }
