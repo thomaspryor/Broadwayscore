@@ -162,6 +162,8 @@ export interface UgcErrorInfo {
   message: string;
   code?: string | null;
   status?: number | null;
+  /** Postgres detail line (names the referenced table of a foreign key failure). */
+  details?: string | null;
 }
 
 // PostgREST "0 rows for .single()" (loadProfile on a brand-new user) is an
@@ -342,7 +344,7 @@ export const instrumentedFetch: typeof fetch = async (input, init) => {
     const body = await res.clone().json().catch(() => ({})) as Record<string, unknown>;
     const message = String(body.message || body.error_description || body.msg || body.error || `HTTP ${res.status}`);
     const code = (body.code ?? body.error_code ?? null) as string | null;
-    reportUgcError(op, { message, code: code != null ? String(code) : null, status: res.status });
+    reportUgcError(op, { message, code: code != null ? String(code) : null, status: res.status, details: typeof body.details === 'string' ? body.details : null });
   }
   return res;
 };

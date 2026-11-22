@@ -11,7 +11,7 @@ function setup(t, { status = 409, body = {}, userError = null, refreshError = nu
   const client = { auth: {
     getUser: async () => ({ data: { user: userError ? null : { id: 'deleted-user' } }, error: userError }),
     refreshSession: async () => ({ error: refreshError }),
-    getSession: async () => ({ data: { session: { access_token: 'test-token' } } }),
+    getSession: async () => ({ data: { session: { access_token: `x.${Buffer.from(JSON.stringify({ sub: 'deleted-user' })).toString('base64url')}.y` } } }),
     signOut: async (options) => { calls.signOut.push(options); },
   } };
   const previousWindow = globalThis.window;
@@ -24,6 +24,10 @@ function setup(t, { status = 409, body = {}, userError = null, refreshError = nu
     if (name === './ugc-analytics') return {
       instrumentedFetch: async (url, options) => {
         calls.requests.push({ url, ...options });
+        // BRO-8031: the profile repair of a deleted auth user fails on profiles_id_fkey.
+        if (String(url).includes('/rest/v1/profiles') && options?.method === 'POST') {
+          return new Response(JSON.stringify({ code: '23503', message: 'insert or update on table "profiles" violates foreign key constraint "profiles_id_fkey"', details: 'Key (id)=(deleted-user) is not present in table "users".' }), { status: 409 });
+        }
         return new Response(status === 204 ? null : JSON.stringify(body), { status });
       },
       reportUgcError: (...args) => calls.reports.push(args),
@@ -40,6 +44,7 @@ function setup(t, { status = 409, body = {}, userError = null, refreshError = nu
 const userFk = {
   code: '23503',
   message: 'insert or update on table "watchlist" violates foreign key constraint "watchlist_user_id_fkey"',
+  details: 'Key (user_id)=(deleted-user) is not present in table "profiles".',
 };
 
 test('deleted-account watchlist insert clears the local session and pending action, notifies and reports', async t => {

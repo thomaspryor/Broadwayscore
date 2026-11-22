@@ -15,12 +15,18 @@
  * supabase-rest.ts (recovery) share one definition.
  */
 
-interface PgError { code?: unknown; message?: unknown }
+interface PgError { code?: unknown; message?: unknown; details?: unknown }
 
-/** 23503 on <table>_user_id_fkey: the user's profiles row is missing. */
+/**
+ * 23503 on <table>_user_id_fkey whose key is missing from table "profiles":
+ * the user's profiles row is missing. Postgres puts the referenced table in
+ * details ('Key (user_id)=(..) is not present in table "profiles".'), so an FK
+ * to auth.users or to another user's id does not match (review, BRO-8031).
+ */
 export function isMissingProfileFk(body: PgError | null | undefined): boolean {
   return body?.code === '23503'
-    && /foreign key constraint "[^"\n]+_user_id_fkey"/.test(String(body.message ?? ''));
+    && /foreign key constraint "[^"\n]+_user_id_fkey"/.test(String(body.message ?? ''))
+    && /not present in table "profiles"/.test(String(body.details ?? ''));
 }
 
 /** 23503 on profiles_id_fkey: inserting the profile failed because the auth user is gone. */

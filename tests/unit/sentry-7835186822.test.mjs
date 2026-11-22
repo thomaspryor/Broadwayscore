@@ -10,6 +10,9 @@ import Module, { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 require('tsx/cjs/api').register();
 
+// A real-shaped JWT whose sub is the test user: the repair takes the user id from the token it sends.
+const jwt = (sub) => `x.${Buffer.from(JSON.stringify({ sub })).toString('base64url')}.y`;
+
 const fk = (table, constraint) => ({
   code: '23503',
   message: `insert or update on table "${table}" violates foreign key constraint "${constraint}"`,
@@ -18,11 +21,11 @@ const fk = (table, constraint) => ({
 
 // Real supabase-rest + ugc-analytics; only the Supabase client, network and
 // browser globals are replaced. `respond(table, n)` answers the nth request.
-function setup(t, respond) {
+function setup(t, respond, opts = {}) {
   const calls = { sentry: [], posthog: [], signOut: [], requests: [] };
   const client = { auth: {
     getUser: async () => ({ data: { user: { id: 'test-user' } }, error: null }),
-    getSession: async () => ({ data: { session: { access_token: 'test-token', user: { id: 'test-user', user_metadata: { full_name: 'Test User' } } } } }),
+    getSession: async () => ({ data: { session: { access_token: opts.token || jwt('test-user'), user: { id: 'test-user', user_metadata: { full_name: 'Test User' } } } } }),
     signOut: async options => { calls.signOut.push(options); },
   } };
   for (const [key, value] of Object.entries({
@@ -72,7 +75,9 @@ for (const [label, run, table] of [
     const result = await run(rest);
     assert.deepEqual(result, { data: { id: 'saved' }, error: null });
     assert.deepEqual(calls.requests.map(r => r.table), [table, 'profiles', table]);
-    assert.deepEqual(calls.requests[1].body, { id: 'test-user', display_name: 'Test User', avatar_url: null });
+    const { onboarding_seen_at: seen, ...profile } = calls.requests[1].body;
+    assert.deepEqual(profile, { id: 'test-user', display_name: 'Test User', avatar_url: null });
+    assert.ok(!Number.isNaN(Date.parse(seen)), 'a healed user is not shown the welcome sheet again');
     assert.deepEqual(calls.signOut, []);
     assert.deepEqual(calls.sentry, []);
     // Still counted in PostHog, so the rate stays visible.
@@ -91,12 +96,42 @@ test('auth user gone at repair: handled sign-out, no Sentry event', async t => {
   assert.deepEqual(calls.sentry, []);
 });
 
-test('repair refused for another reason is reported once as profile_heal_failed', async t => {
+test('repair refused for another reason: reported, user stays signed in with a retryable error', async t => {
   const { calls, rest } = setup(t, tbl => tbl === 'profiles'
     ? [403, { code: '42501', message: 'new row violates row-level security policy for table "profiles"' }]
     : [409, fk(tbl, `${tbl}_user_id_fkey`)]);
-  await rest.supabaseRestInsert('reviews', { user_id: 'test-user' });
+  const result = await rest.supabaseRestInsert('reviews', { user_id: 'test-user' });
+  assert.equal(result.error.code, 'profile_missing');
+  assert.deepEqual(calls.signOut, []);
   assert.deepEqual(calls.sentry.map(({ context }) => context.tags.ugc_code).sort(), ['42501', 'profile_heal_failed']);
+});
+
+test('a user_id FK to auth.users (not profiles) is not repaired or reported as a missing profile', async t => {
+  const { calls, rest } = setup(t, tbl => [409, { ...fk(tbl, `${tbl}_user_id_fkey`), details: 'Key (user_id)=(test-user) is not present in table "users".' }]);
+  const result = await rest.supabaseRestInsert('score_calls', { user_id: 'test-user' });
+  assert.equal(result.error.code, '23503');
+  assert.deepEqual(calls.requests.map(r => r.table), ['score_calls']);
+  assert.deepEqual(calls.signOut, []);
+});
+
+test('parallel saves share one profile repair', async t => {
+  let reviewsSeen = 0;
+  const { calls, rest } = setup(t, (tbl) => {
+    if (tbl === 'profiles') return [201, null];
+    reviewsSeen += 1;
+    return reviewsSeen <= 3 ? [409, fk(tbl, `${tbl}_user_id_fkey`)] : [201, [{ id: 'saved' }]];
+  });
+  const out = await Promise.all([1, 2, 3].map(() => rest.supabaseRestInsert('reviews', { user_id: 'test-user' })));
+  assert.ok(out.every(r => r.error === null));
+  assert.equal(calls.requests.filter(r => r.table === 'profiles').length, 1);
+});
+
+test('a token with no user id skips the repair and keeps the user signed in', async t => {
+  const { calls, rest } = setup(t, tbl => [409, fk(tbl, `${tbl}_user_id_fkey`)], { token: 'not-a-jwt' });
+  const result = await rest.supabaseRestInsert('reviews', { user_id: 'test-user' });
+  assert.equal(result.error.code, 'profile_missing');
+  assert.deepEqual(calls.requests.map(r => r.table), ['reviews']);
+  assert.deepEqual(calls.signOut, []);
 });
 
 test('other foreign keys are not repaired and stay actionable in Sentry', async t => {

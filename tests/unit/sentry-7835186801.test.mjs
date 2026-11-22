@@ -69,7 +69,7 @@ for (const status of [undefined, 401, 403, 409]) {
 for (const scenario of [
   { name: 'deleted user at auth validation', userError: { code: 'user_not_found', status: 403 }, requests: 0, rawCodes: [] },
   { name: 'expired JWT at save', status: 401, body: { message: 'JWT expired' }, requests: 1, rawCodes: [] },
-  { name: 'deleted user at save', status: 409, body: { code: '23503', message: 'insert or update on table "reviews" violates foreign key constraint "reviews_user_id_fkey"' }, requests: 1, rawCodes: [] },
+  // BRO-8031: a user_id FK on a missing profile row is repaired, not a sign-out; see sentry-7835186822.test.mjs.
 ]) {
   test(`${scenario.name}: recovery still clears the session and draft and prompts sign-in`, async t => {
     const { calls, rest } = setup(t, scenario);
@@ -81,8 +81,7 @@ for (const scenario of [
     assert.deepEqual(calls.events, [rest.ACCOUNT_GONE_EVENT]);
     assert.equal(calls.requests, scenario.requests);
     assert.equal(calls.posthog.filter(({ props }) => props.error_code === 'account_gone').length, 1);
-    // A user_id FK (missing profile row) is handled recovery, not a Sentry
-    // event (BRO-8031); other raw database errors stay actionable below.
+    // Raw database errors remain actionable, including the original 23503.
     assert.deepEqual(calls.sentry.map(({ context }) => context.tags.ugc_code), scenario.rawCodes);
   });
 }

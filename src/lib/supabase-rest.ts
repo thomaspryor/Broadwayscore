@@ -75,42 +75,79 @@ async function accountGone(op: string, status?: number): Promise<RestResult<neve
 async function restError(res: Response, op: string): Promise<RestResult<never>> {
   const body = await res.json().catch(() => ({}));
   // Other FKs (show_id, list_id, etc.) are save errors, not deleted accounts.
-  // A user_id FK that survived sendWithProfileHeal() means the profile could
-  // not be recreated, so the account really is unusable on this device.
-  if (res.status === 401 || isMissingProfileFk(body)) return accountGone(op, res.status);
+  // A user_id FK that survived sendWithProfileHeal() is a retryable save error;
+  // only a repair that finds the auth user itself gone (profiles_id_fkey)
+  // signs the user out.
+  if (res.status === 401 || profileRepairFoundAccountGone.has(res)) return accountGone(op, res.status);
+  if (isMissingProfileFk(body)) {
+    // Repair failed for a reason that does not prove the account is gone
+    // (network, RLS, session switch): keep the user signed in and the draft.
+    return { data: null, error: { message: 'Could not save right now. Please try again.', code: 'profile_missing' } };
+  }
   return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
 }
 
+const profileRepairFoundAccountGone = new WeakSet<Response>();
+type HealResult = 'ok' | 'gone' | 'failed';
+const healInFlight = new Map<string, Promise<HealResult>>();
+
+/** The user id the access token was issued for (JWT sub), so the repair and the token cannot disagree. */
+function tokenUserId(accessToken: string): string | null {
+  try {
+    const part = accessToken.split('.')[1];
+    if (!part) return null;
+    const json = atob(part.replace(/-/g, '+').replace(/_/g, '/'));
+    const sub = JSON.parse(json).sub;
+    return typeof sub === 'string' && sub ? sub : null;
+  } catch {
+    return null;
+  }
+}
+
 /**
- * Recreate the signed-in user's missing profiles row (BRO-8031). Every UGC
- * user_id references profiles(id); an auth user without one fails every save
- * with 23503. Returns true when the row now exists.
+ * Recreate the signed-in user's missing profiles row (BRO-8031). Most UGC
+ * user_id columns reference profiles(id); an auth user without one fails every
+ * save with 23503. Single-flight per user so parallel saves share one repair.
  */
-async function healProfile(op: string, accessToken: string): Promise<boolean> {
+function healProfile(op: string, accessToken: string): Promise<HealResult> {
+  const uid = tokenUserId(accessToken);
+  if (!uid) {
+    reportUgcError(op, { message: 'profile repair skipped: no user id in token', code: 'profile_heal_failed' });
+    return Promise.resolve('failed');
+  }
+  const running = healInFlight.get(uid);
+  if (running) return running;
+  const p = doHealProfile(op, accessToken, uid).finally(() => healInFlight.delete(uid));
+  healInFlight.set(uid, p);
+  return p;
+}
+
+async function doHealProfile(op: string, accessToken: string, uid: string): Promise<HealResult> {
   const client = await getSupabaseClient();
-  const user = client ? (await client.auth.getSession()).data.session?.user : null;
-  if (!user?.id) return false;
-  const meta = (user.user_metadata || {}) as Record<string, unknown>;
+  const sessionUser = client ? (await client.auth.getSession()).data.session?.user : null;
+  // Metadata only when the session still belongs to the token's user.
+  const meta = (sessionUser?.id === uid ? (sessionUser.user_metadata || {}) : {}) as Record<string, unknown>;
   try {
     const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/profiles?on_conflict=id`, {
       method: 'POST',
       headers: headers(accessToken, 'return=minimal,resolution=ignore-duplicates'),
       body: JSON.stringify({
-        id: user.id,
+        id: uid,
         display_name: String(meta.full_name || meta.name || ''),
         avatar_url: (meta.avatar_url || meta.picture || null) as string | null,
+        // A user who is saving content is not new: do not show the welcome sheet again.
+        onboarding_seen_at: new Date().toISOString(),
       }),
     });
-    if (res.ok) return true;
+    if (res.ok) return 'ok';
     const body = await res.json().catch(() => ({}));
-    // The auth user itself is gone: accountGone() handles it, nothing to report.
-    if (res.status !== 401 && !isMissingAuthUserFk(body)) {
-      reportUgcError(op, { message: `profile repair failed: ${body.message || `HTTP ${res.status}`}`, code: 'profile_heal_failed', status: res.status });
-    }
+    // The auth user itself is gone: the caller signs out, nothing to report.
+    if (res.status === 401 || isMissingAuthUserFk(body)) return 'gone';
+    reportUgcError(op, { message: `profile repair failed: ${body.message || `HTTP ${res.status}`}`, code: 'profile_heal_failed', status: res.status });
   } catch {
-    // Network failure is already counted by instrumentedFetch.
+    reportUgcError(op, { message: 'profile repair failed: network error', code: 'profile_heal_failed' });
   }
-  return false;
+  return 'failed';
 }
 
 /**
@@ -122,7 +159,12 @@ async function sendWithProfileHeal(op: string, accessToken: string, send: () => 
   if (res.ok) return res;
   const body = await res.clone().json().catch(() => ({}));
   if (!isMissingProfileFk(body)) return res;
-  if (!(await healProfile(op, accessToken))) return res;
+  const healed = await healProfile(op, accessToken);
+  if (healed === 'gone') {
+    profileRepairFoundAccountGone.add(res);
+    return res;
+  }
+  if (healed !== 'ok') return res;
   const retry = await send();
   if (!retry.ok && isMissingProfileFk(await retry.clone().json().catch(() => ({})))) {
     reportUgcError(op, { message: 'profile row still missing after repair', code: 'profile_heal_failed', status: retry.status });
