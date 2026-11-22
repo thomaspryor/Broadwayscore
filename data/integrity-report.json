@@ -1,36 +1,26 @@
 {
-  "timestamp": "2026-11-15T10:40:50.362Z",
+  "timestamp": "2026-11-22T11:03:16.469Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-11-22",
+    "totalReviews": 83836,
+    "unknownOutlets": 31,
+    "duplicates": 31,
+    "syncDelta": 31363
+  },
+  "previous": {
     "date": "2026-11-15",
     "totalReviews": 82110,
     "unknownOutlets": 59,
     "duplicates": 25,
     "syncDelta": 31370
   },
-  "previous": {
-    "date": "2026-11-08",
-    "totalReviews": 80478,
-    "unknownOutlets": 46,
-    "duplicates": 24,
-    "syncDelta": 30772
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "59 reviews have unknown outlets",
+      "message": "31 reviews have unknown outlets",
       "examples": [
-        {
-          "file": "data/review-texts/a-few-good-men-2026/globalnews2--unknown.json",
-          "outletId": "globalnews2",
-          "outlet": "globalnews2"
-        },
-        {
-          "file": "data/review-texts/afterglow-off-broadway-2017/beauty-news-nyc--pk-greenfield.json",
-          "outletId": "beauty-news-nyc",
-          "outlet": "beauty-news-nyc"
-        },
         {
           "file": "data/review-texts/afterglow-off-broadway-2017/boyculture--matthew-rettenmund.json",
           "outletId": "boyculture",
@@ -52,35 +42,45 @@
           "outlet": "stagedoor"
         },
         {
-          "file": "data/review-texts/beetlejuice-tour-2022/gaydesertguide--stephen-radosh.json",
-          "outletId": "gaydesertguide",
-          "outlet": "gaydesertguide"
-        },
-        {
           "file": "data/review-texts/beetlejuice-tour-2022/guide4moms--mandipie4u.json",
           "outletId": "guide4moms",
           "outlet": "guide4moms"
         },
         {
-          "file": "data/review-texts/beetlejuice-tour-2022/inthespotlightinc--jarice-hanson.json",
-          "outletId": "inthespotlightinc",
-          "outlet": "inthespotlightinc"
+          "file": "data/review-texts/call-me-izzy-2025/new-york-stage-reviewpp--unknown.json",
+          "outletId": "new-york-stage-reviewpp",
+          "outlet": "new-york-stage-reviewpp"
         },
         {
-          "file": "data/review-texts/beetlejuice-tour-2022/sdstageandscreen--jean-lowerison.json",
-          "outletId": "sdstageandscreen",
-          "outlet": "sdstageandscreen"
+          "file": "data/review-texts/copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/garry-starr-classic-penguins-off-west-end-2026/frombroadway--helen-shaw.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/glengarry-glen-ross-2025/purlie-victorious--wilders-our-town.json",
+          "outletId": "purlie-victorious",
+          "outlet": "purlie-victorious"
+        },
+        {
+          "file": "data/review-texts/heathers-the-musical-off-west-end-2026/show-score--unknown.json",
+          "outletId": "show-score",
+          "outlet": "show-score"
         }
       ]
     },
     {
       "type": "duplicates",
       "severity": "critical",
-      "message": "25 duplicate reviews detected",
+      "message": "31 duplicate reviews detected",
       "examples": [
         {
           "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--sarah-armer.json",
-          "key": "affluenza-off-west-end-2026|londontheatredirect|katie devlin"
+          "key": "affluenza-off-west-end-2026|londontheatredirect|barbara großmann"
         },
         {
           "file": "data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
@@ -89,6 +89,10 @@
         {
           "file": "data/review-texts/baghdaddy-west-end-2022/times-uk--unknown.json",
           "key": "baghdaddy-west-end-2022|times-uk|dominic maxwell"
+        },
+        {
+          "file": "data/review-texts/brigadoon-west-end-2025/thestage--holly-omahony.json",
+          "key": "brigadoon-west-end-2025|thestage|holly o'mahony"
         },
         {
           "file": "data/review-texts/camp-siegfried-west-end-2021/whatsonstage--unknown.json",
@@ -111,30 +115,26 @@
           "key": "good-time-charlie-off-broadway-2026|cititour|brian scott lipton"
         },
         {
-          "file": "data/review-texts/im-every-woman-off-west-end-2026/theupcoming--unknown.json",
-          "key": "im-every-woman-off-west-end-2026|theupcoming|emilia gould"
-        },
-        {
-          "file": "data/review-texts/labour-of-love-west-end-2017/standard--henry-hitchings.json",
-          "key": "labour-of-love-west-end-2017|standard|henry hitchings"
+          "file": "data/review-texts/im-every-woman-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+          "key": "im-every-woman-off-west-end-2026|thereviewshub|sonny waheed"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (82110) and reviews.json (50740) are out of sync by 31370 reviews"
+      "message": "review-texts (83836) and reviews.json (52473) are out of sync by 31363 reviews"
     },
     {
-      "type": "unknown_outlets_degradation",
+      "type": "duplicates_degradation",
       "severity": "warning",
-      "message": "Unknown outlets increased from 46 to 59"
+      "message": "Duplicates increased from 25 to 31"
     }
   ],
   "summary": {
-    "totalReviews": 82110,
-    "unknownOutlets": 59,
-    "duplicates": 25,
-    "syncDelta": 31370
+    "totalReviews": 83836,
+    "unknownOutlets": 31,
+    "duplicates": 31,
+    "syncDelta": 31363
   }
 }
