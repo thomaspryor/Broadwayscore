@@ -270,6 +270,25 @@ function screenSectionHit(u) {
  * @param {string} url
  * @returns {string|null}
  */
+/**
+ * BRO-8065: a bot-wall interstitial (SiteGround sgcaptcha: /.well-known/captcha/?y=...&r=<encoded path>) recorded as
+ * if it were the article. Google News RSS resolution and a url "upgrade" stored 15 such urls; the slug then named no
+ * show, so the drain settled real reviews as url-token-mismatch. Returns the article url the wall was guarding
+ * (origin + decoded r=), or null when the url is not a challenge page. Pure.
+ */
+function unwrapChallengeUrl(url) {
+  let u;
+  try { u = new URL(String(url || '')); } catch { return null; }
+  if (!/^\/\.well-known\/(?:sg)?captcha\/?$/i.test(u.pathname)) return null;
+  const r = u.searchParams.get('r');
+  if (!r || !r.startsWith('/') || r.startsWith('//')) return null;
+  try { return new URL(r, u.origin).href; } catch { return null; }
+}
+/** Is this url a bot-wall interstitial rather than an article? Pure. */
+function isChallengeUrl(url) {
+  try { return /^\/\.well-known\/(?:sg)?captcha\b/i.test(new URL(String(url || '')).pathname); } catch { return false; }
+}
+
 function offTopicSectionReason(url) {
   if (typeof url !== 'string' || !url) return null;
   try {
@@ -1233,6 +1252,8 @@ function ingestRefusalReason(url) {
 }
 
 module.exports = {
+  unwrapChallengeUrl,
+  isChallengeUrl,
   publicationHostOf,
   wordpressAttachmentParentUrl,
   INGEST_REFUSED_URL_REASONS,

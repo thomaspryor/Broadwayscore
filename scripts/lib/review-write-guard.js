@@ -1667,6 +1667,16 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-8065: a SiteGround bot-wall page (/.well-known/captcha/?r=<path>) stored as the url; 16 files carried one
+  // (Google News RSS resolution, a url upgrade) and their slug then named no show. Store the guarded article url.
+  if (newData && typeof newData.url === 'string' && newData.url.includes('/.well-known/')) {
+    const unwrapped = require('./non-review-url-patterns').unwrapChallengeUrl(newData.url);
+    if (unwrapped) {
+      newData = { ...newData, url: unwrapped, challengeUrlUnwrappedFrom: newData.url };
+      console.log(`[review-write-guard] ${path.basename(filePath)}: unwrapped bot-wall url → ${unwrapped}`);
+    }
+  }
+
   // BRO-5198: Dow Jones page chrome (WSJ registration interstitial, nav rail,
   // print header) ahead of the review. collect-review-texts cuts it at fetch
   // time (stripExemptedChrome); this catches every other writer.
