@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T22:38:20.118Z",
+  "generatedAt": "2026-11-22T22:55:11.303Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,7 +13,7 @@
       "slug": "fantasma-off-broadway",
       "thumbnail": "/images/shows/fantasma-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 57,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 4,
@@ -22,8 +22,8 @@
       "t1": 0,
       "t2": 0,
       "t3": 1,
-      "positive": 0,
-      "mixed": 1,
+      "positive": 1,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -31,9 +31,9 @@
           "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -389,6 +389,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-22T22:55:11.303Z",
+          "rc": 1,
+          "s": 57,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -560,9 +572,9 @@
       "status": "open",
       "slug": "cinderella-lyric-hammersmith-off-west-end",
       "thumbnail": "/images/shows/cinderella-lyric-hammersmith-off-west-end-2026/thumbnail.webp",
-      "siteScore": 66.78,
+      "siteScore": 66.7,
       "liveScore": 67,
-      "scoreDrift": 0.21999999999999886,
+      "scoreDrift": 0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -795,6 +807,18 @@
           "t": "2026-11-22T22:38:20.118Z",
           "rc": 8,
           "s": 66.78,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 7,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-22T22:55:11.303Z",
+          "rc": 8,
+          "s": 66.7,
           "t1": 1,
           "t2": 3,
           "t3": 4,
