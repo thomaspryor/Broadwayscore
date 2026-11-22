@@ -1,23 +1,30 @@
 {
   "processed": [
-    "elektra-off-broadway-2026/new-york-sun--unknown.json"
+    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+  ],
+  "failed": [
+    "eurotrash-off-west-end-2026/london-unattached--unknown.json",
+    "eurotrash-off-west-end-2026/telegraph--unknown.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "elektra-off-broadway-2026/new-york-sun--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-22T01:27:42.144Z",
-  "lastProcessed": "elektra-off-broadway-2026/new-york-sun--unknown.json",
+  "startTime": "2026-11-22T01:28:05.713Z",
+  "lastProcessed": "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
   "log": []
 }
