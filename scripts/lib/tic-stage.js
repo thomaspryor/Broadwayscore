@@ -156,7 +156,11 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   // validator asks. The site's own description is an independent credit for a
   // playwright nobody in the corpus credits yet. A shouted title is left as listed
   // (never guessed at, BRO-3920).
-  const norm = normalizeShowTitle({ title: page.title, venue }, { knownWriters, sourceText: detail && detail.description });
+  // Kill switch shared with the write guard heal (SHOWS_TITLE_HEAL_DISABLED=true), so one switch stops
+  // both automatic title writers. minRemainderWords 2: an automatic writer never leaves a one-word title.
+  const norm = process.env.SHOWS_TITLE_HEAL_DISABLED === 'true'
+    ? { changed: false }
+    : normalizeShowTitle({ title: page.title, venue }, { knownWriters, sourceText: detail && detail.description, minRemainderWords: 2 });
   const title = norm.changed && !norm.manualReview ? norm.title : page.title;
   const base = slugify(title);
   const id = `${base}-regional-${year}`;

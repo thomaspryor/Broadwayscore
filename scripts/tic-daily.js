@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
-const { runDaily } = require('./lib/tic-daily');
+const { runDaily, saveAddedShows } = require('./lib/tic-daily');
 const { getCity, assertRunnable } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -42,8 +42,10 @@ const readJson = (f, def) => { try { return JSON.parse(fs.readFileSync(f, 'utf8'
 async function stageAndAdd() {
   // Through the write guard (BRO-8054): it locks against concurrent writers and repairs
   // title artifacts on the rows this run adds. A bare writeFileSync skipped both.
+  // A missing file is a quiet no-op; a file that exists but will not load (corrupt JSON, lock
+  // timeout) is a failure and must say so instead of looking like a quiet day.
   let doc = null;
-  try { doc = loadShows(); } catch { /* missing or unreadable: handled below */ }
+  try { doc = loadShows(); } catch (e) { if (e && e.code !== 'ENOENT') throw e; }
   if (!doc || !Array.isArray(doc.shows)) { console.log('[tic-daily] data/shows.json missing, nothing to do'); return; }
   const shows = doc.shows;
   const seen = readJson(SEEN, {});
@@ -68,28 +70,15 @@ async function stageAndAdd() {
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
   // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
   // whereas audit files written first would claim shows that never landed.
-  if (added.length) {
-    try {
-      saveShows(doc, { reason: 'tic-daily' });
-    } catch (e) {
-      // The write guard refused (e.g. a new row duplicates an existing one). Remember the ids with the
-      // reason so tomorrow does not pick the same candidates and throw again; nothing reached disk.
-      const why = String(e.message).split('\n')[0].slice(0, 200);
-      console.log(`::warning::tic-daily: shows write refused, ${added.length} candidate(s) not added: ${why}`);
-      const refusedIds = new Set(added.map((a) => a.id));
-      for (const k of Object.keys(nextSeen)) {
-        if (nextSeen[k] && nextSeen[k].reason === 'added' && refusedIds.has(nextSeen[k].id)) nextSeen[k] = { reason: `write-refused:${why}`, retry: false, on: today };
-      }
-      fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
-      return;
-    }
-  }
+  // Rows the guard refused or could not write drop out of `landed`; the rest still ship, and their
+  // seen entries are settled per row (see saveAddedShows).
+  const landed = added.length ? saveAddedShows(doc, added, { save: (d) => saveShows(d, { reason: 'tic-daily' }), nextSeen, today, log: (m) => console.log(`::warning::tic-daily: ${m}`) }) : added;
   fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
-  fs.writeFileSync(ADDED, JSON.stringify({ on: today, added, pending }, null, 1) + '\n');
-  if (!added.length) return;
+  fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: landed, pending }, null, 1) + '\n');
+  if (!landed.length) return;
   // Let the existing image-fetch step pick the new ids up.
   const prev = readJson(PROMOTED, { promoted: [] });
-  prev.promoted = (prev.promoted || []).concat(added.map((a) => ({ id: a.id, source: CITY.discoverySource })));
+  prev.promoted = (prev.promoted || []).concat(landed.map((a) => ({ id: a.id, source: CITY.discoverySource })));
   fs.writeFileSync(PROMOTED, JSON.stringify(prev, null, 2) + '\n');
 }
 

@@ -113,3 +113,23 @@ test('kill switch SHOWS_TITLE_HEAL_DISABLED=true leaves titles alone', () => {
   g.saveShows(data);
   assert.equal(onDisk('engines-regional-2026').title, RAW);
 });
+
+test('a row only the guard itself edits (stale upcoming tag) is not re-titled', () => {
+  seed([{ ...row(), slug: 'engines-regional-2026', tags: ['upcoming'], creativeTeam: [WRITER] }]);
+  const g = createShowsWriteGuard(file);
+  const data = g.loadShows();
+  g.saveShows(data); // caller changed nothing; the guard strips the stale tag on its own
+  const s = onDisk('engines-regional-2026');
+  assert.deepEqual(s.tags, [], 'guard step ran');
+  assert.equal(s.title, RAW, 'but the unchanged row keeps its title');
+});
+
+test('an unrelated duplicate does not undo a heal on a different row', () => {
+  seed([{ id: 'dup-a', slug: 'dup-a', title: 'Same Name', status: 'open', type: 'play', category: 'regional', venue: 'Broadway Armory, Chicago, IL', openingDate: '2026-11-12' }]);
+  const g = createShowsWriteGuard(file);
+  const data = g.loadShows();
+  data.shows.push(row({ id: 'dup-b', title: 'Same Name' }));
+  data.shows.push({ ...row(), creativeTeam: [WRITER] });
+  assert.throws(() => g.saveShows(data), /duplicate/);
+  assert.equal(data.shows.find((s) => s.id === 'engines-regional-2026').title, CLEAN, 'the unrelated heal was not rolled back');
+});

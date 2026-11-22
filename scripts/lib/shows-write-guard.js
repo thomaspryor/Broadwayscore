@@ -135,9 +135,12 @@ function readOnDiskShows(filePath) {
  */
 function healChangedTitles(shows, onDiskRows, { dryRun = false } = {}) {
   if (process.env.SHOWS_TITLE_HEAL_DISABLED === 'true') return [];
+  // "Changed" means the inputs of the byline decision differ from disk (the row is new, or its
+  // title, venue or credited team moved), not that the guard's own earlier steps touched the row.
+  const key = (s) => JSON.stringify([s.title, s.venue, s.creativeTeam]);
   const before = new Map();
-  for (const s of onDiskRows()) if (s && s.id) before.set(s.id, JSON.stringify(s));
-  const healed = healShowTitles(shows, { only: (show) => before.get(show.id) !== JSON.stringify(show) });
+  for (const s of onDiskRows()) if (s && s.id) before.set(s.id, key(s));
+  const healed = healShowTitles(shows, { only: (show) => before.get(show.id) !== key(show) });
   if (dryRun) for (const h of healed.slice().reverse()) undoNormalizedTitle(shows.find((x) => x.id === h.id), h);
   return healed;
 }
@@ -214,12 +217,14 @@ function createShowsWriteGuard(showsPath, options = {}) {
           ...newRowFragmentFindings(readBefore, finalData.shows),
         ];
         let added = findDuplicates();
-        if (added.length && healed.length) {
-          // The heal may have created the pair. Keep the unhealed titles and let
-          // validate-data / fix-show-titles.js flag them: an unrelated cron's
-          // save must not fail because of a title repair it did not ask for.
-          for (const h of healed.slice().reverse()) undoNormalizedTitle(finalData.shows.find((x) => x.id === h.id), h);
-          console.log(`::warning::shows-write-guard: undid ${healed.length} title heal(s) because they created a duplicate row; titles left as written`);
+        const involved = new Set(added.flatMap((f) => [f.show && f.show.id, f.existing && f.existing.id]));
+        const toUndo = healed.filter((h) => involved.has(h.id));
+        if (toUndo.length) {
+          // The heal may have created the pair. Keep the unhealed titles (only those rows) and let
+          // validate-data / fix-show-titles.js flag them: an unrelated cron's save must not fail
+          // because of a title repair it did not ask for.
+          for (const h of toUndo.slice().reverse()) undoNormalizedTitle(finalData.shows.find((x) => x.id === h.id), h);
+          console.log(`::warning::shows-write-guard: undid ${toUndo.length} title heal(s) because they created a duplicate row; titles left as written`);
           added = findDuplicates();
         }
         if (added.length) {
