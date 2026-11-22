@@ -99,3 +99,8 @@ test('the BRO-6056 candidate outlets no longer fill blank bylines from defaultCr
     assert.equal(shouldFillDefaultCritic(reg[id]), true, id);
   }
 });
+
+test('Gay City News does not fill missing bylines with its default critic', () => {
+  const reg = JSON.parse(readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8')).outlets;
+  assert.equal(shouldFillDefaultCritic(reg['gay-city-news']), false);
+});
