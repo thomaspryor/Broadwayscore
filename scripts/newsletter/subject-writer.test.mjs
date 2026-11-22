@@ -337,7 +337,7 @@ test('the 2026-11-16 West End and Broadway outputs are rejected', () => {
   };
   const p = checkCandidate(we, rxPool).join('\n');
   assert.match(p, /subject says critics were split/);
-  assert.match(p, /preheader says critics were split/);
+  assert.match(p, /preheader (?:says critics were split|uses one review's score \(16\))/);
   assert.match(p, /lede says critics were split/);
   // Broadway pattern: lead the preview with the pan, "not every critic was on board".
   assert.match(checkCandidate({ ...rxGood, preheader: 'It also drew the harshest review of the week, which we score at 16/100.' }, rxPool).join(), /one review's score \(16\)/);
@@ -361,4 +361,21 @@ test('the writer prompt offers the split angle only when a show was split', () =
   assert.doesNotMatch(writerPrompt(rxPool), /the split verdict/);
   assert.match(writerPrompt(buildPool({ ...rxFacts, reception: [{ title: 'Eurotrash', verdict: 'split' }] })), /the split verdict/);
   assert.match(writerPrompt(rxPool), /Reception/);
+});
+
+test('second-opinion cases: honest copy passes, other split phrasings are caught, one outlier keeps a consensus', () => {
+  // One pan among six reviews is still a show critics liked.
+  assert.equal(receptionOf([90, 90, 90, 90, 90, 30]).verdict, 'liked');
+  assert.equal(receptionOf([80, 80, 40, 40]).verdict, 'split');
+  assert.doesNotMatch(receptionLine('X', [75, 75, 72, 60, 60, 40, 30]), /middling/);
+  const check = (field, text) => checkCandidate({ ...rxGood, [field]: text }, rxPool).filter(x => /split/.test(x));
+  for (const ok of ['Eurotrash, a family divided by war, lands at a solid 77/100', 'Goblin sits at 70. Not everyone will want three hours.', 'Goblin sits at 70, a split-level set and all.']) {
+    assert.deepEqual(check('preheader', ok), [], ok);
+  }
+  for (const bad of ['Critics disagreed on Goblin, which sits at 70.', 'Goblin is a love it or loathe it show at 70.', 'Critics at odds over Goblin at 70.', 'Goblin divides critics and sits at 70.', 'Goblin was not unanimous and sits at 70.']) {
+    assert.ok(check('preheader', bad).length, bad);
+  }
+  // A real Critic Score that equals the pan's number is not the pan.
+  const f = { ...rxFacts, lines: [...rxFacts.lines, 'Opening: Gloom, Off West End, play, opened this week, on Friday, Nov 20. Critic Score 16/100 from 5 critics.'], titles: [...rxFacts.titles, { id: 'gl', slug: 'gl', title: 'Gloom' }] };
+  assert.ok(!checkCandidate({ ...rxGood, preheader: 'Goblin sits at 70 and Gloom sinks to 16/100.' }, buildPool(f)).some(x => /one review/.test(x)));
 });

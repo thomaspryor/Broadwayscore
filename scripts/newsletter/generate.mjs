@@ -3341,7 +3341,7 @@ function buildSubjectFacts({ receptionOf, receptionLine }) {
   const reception = [];
   for (const t of titles.values()) {
     const scores = reviewsForShow(t.id)
-      .filter(r => r.assignedScore != null && !r.wrongProduction && !r.wrongShow && !r.isRoundupArticle)
+      .filter(r => r.assignedScore != null) // same review set the Critic Score uses (flagged reviews are dropped when reviews.json is built)
       .map(r => r.assignedScore);
     const r = receptionOf(scores);
     const line = receptionLine(t.title, scores);

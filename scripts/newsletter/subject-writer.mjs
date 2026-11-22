@@ -56,16 +56,18 @@ export function receptionOf(scores) {
   const xs = (scores || []).map(Number).filter(Number.isFinite);
   const n = xs.length;
   if (n < 3) return null;
-  const pos = xs.filter(x => x >= RECEPTION_POSITIVE).length / n;
-  const neg = xs.filter(x => x < RECEPTION_NEGATIVE).length / n;
-  // Split: a real share on each side, not one outlier (5+ reviews).
-  if (n >= 5 && pos >= 0.25 && neg >= 0.25) return { verdict: 'split', pos, neg, n };
-  if (pos >= 0.5 && neg <= 0.15) return { verdict: 'liked', pos, neg, n };
-  if (neg >= 0.5 && pos <= 0.15) return { verdict: 'disliked', pos, neg, n };
+  const posN = xs.filter(x => x >= RECEPTION_POSITIVE).length;
+  const negN = xs.filter(x => x < RECEPTION_NEGATIVE).length;
+  const pos = posN / n, neg = negN / n;
+  // Split: a real share on each side (2+ reviews each), not one outlier.
+  if (n >= 4 && posN >= 2 && negN >= 2 && pos >= 0.25 && neg >= 0.25) return { verdict: 'split', pos, neg, n };
+  // One outlier never undoes a consensus (a single pan among six reviews).
+  if (pos >= 0.5 && (neg <= 0.15 || negN <= 1)) return { verdict: 'liked', pos, neg, n };
+  if (neg >= 0.5 && (pos <= 0.15 || posN <= 1)) return { verdict: 'disliked', pos, neg, n };
   return { verdict: 'mixed', pos, neg, n };
 }
 
-const share = (x) => (x >= 0.9 ? 'nearly every review' : x >= 0.75 ? 'most reviews' : x >= 0.5 ? 'more than half the reviews' : x >= 0.25 ? 'a sizeable minority of reviews' : x > 0 ? 'a few reviews' : 'no reviews');
+const share = (x) => (x >= 0.9 ? 'nearly every review' : x >= 0.75 ? 'most reviews' : x > 0.5 ? 'more than half the reviews' : x === 0.5 ? 'half the reviews' : x >= 0.25 ? 'a sizeable minority of reviews' : x > 0 ? 'a few reviews' : 'no reviews');
 
 /** One plain fact-sheet sentence about a show's reception, or null. */
 export function receptionLine(title, scores) {
@@ -73,13 +75,22 @@ export function receptionLine(title, scores) {
   if (!r) return null;
   const desc = `${share(r.pos)} positive, ${share(r.neg)} negative`;
   if (r.verdict === 'split') return `Reception: ${title}: critics were split (${desc}).`;
-  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : 'reviews were mostly middling';
+  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : (r.pos >= 0.5 ? 'critics leaned positive with real reservations' : r.neg >= 0.5 ? 'critics leaned negative' : 'reviews were mostly middling');
   return `Reception: ${title}: ${word} (${desc}); not split.`;
 }
 
 // Words that say critics disagreed. Allowed only about a show whose reception
 // line says split.
-export const SPLIT_RE = /\b(?:split(?:s|ting)?|divid(?:ed|es|ing)|divisive|polari[sz](?:ing|ed|es)?|love[- ]it[- ]or[- ]hate|far from (?:settled|unanimous)|not (?:every|all) (?:the )?(?:critics?|reviewers?|reviews?)|not everyone|(?:critics?|reviewers?) (?:disagree|clash|are torn|were torn)|torn critics|mixed bag|run(?:s|ning)? (?:all the way )?from (?:a )?\d{1,3}\b[^.]{0,25}\b(?:to|down to|up to) (?:a )?\d{1,3}|one to read up on)\b/i;
+export const SPLIT_RE = new RegExp([
+  // split/divide aimed at the critics or the room, not a plot ("a family divided")
+  String.raw`\b(?:split(?:s|ting)?|divid(?:ed|es|ing)|polari[sz](?:es|ed|ing))\s+(?:the\s+)?(?:room|critics?|reviewers?|opinions?|verdicts?|the press|press)\b`,
+  String.raw`\b(?:critics?|reviewers?|reviews?|verdicts?|opinions?|the press)\s+(?:(?:were|are|was|is|seem(?:ed)?|stay(?:ed)?|remain(?:ed)?)\s+)?(?:split|divided|torn|polari[sz]ed|at odds|all over the (?:map|place))\b`,
+  String.raw`\b(?:critics?|reviewers?)\s+(?:disagree[ds]?|clash(?:ed|es)?|can'?t agree|couldn'?t agree|could not agree)\b`,
+  String.raw`\b(?:split (?:verdict|decision|reviews?)|divisive|polari[sz]ing|contentious|love[- ]it[- ]or[- ](?:hate|loathe)[- ]it|love it or (?:hate|loathe) it)\b`,
+  String.raw`\bnot (?:every|all)(?: the| of the)? (?:critics?|reviewers?)\b|\bnot unanimous\b|\bfar from (?:settled|unanimous)\b`,
+  String.raw`\bnot (?:everyone|everybody) was (?:won over|on board|convinced|a fan)\b|\b(?:wasn'?t|weren'?t|was not|were not) (?:all )?on board\b`,
+  String.raw`\bone to read up on\b`,
+].join('|'), 'i');
 
 // Phrasing the template used, plus AI tells. Any hit rejects the candidate.
 const BANNED = [
@@ -194,12 +205,12 @@ export function buildPool(facts) {
     splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
     // Single-review scores that misrepresent their show: the pan of a show
     // critics liked, the rave of one they disliked.
-    misleadingReviewScores: new Set(facts.lines.flatMap(l => {
+    misleadingReviewScores: new Map(facts.lines.flatMap(l => {
       const m = l.match(/^(Rave|Pan) of the week: .*'s review of (.+) is (\d{1,3}) out of 100\.$/);
       if (!m) return [];
       const r = (facts.reception || []).find(x => x.title === m[2]);
       if (!r) return [];
-      return (m[1] === 'Pan' && r.verdict === 'liked') || (m[1] === 'Rave' && r.verdict === 'disliked') ? [String(Number(m[3]))] : [];
+      return (m[1] === 'Pan' && r.verdict === 'liked') || (m[1] === 'Rave' && r.verdict === 'disliked') ? [[String(Number(m[3])), m[2]]] : [];
     })),
     criticNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:Rave|Pan) of the week: our score for (.+?) \((.+?)\)'s review of /g)].flatMap(m => [m[1], m[2]])))].filter(n => n.trim().toLowerCase() !== 'a critic'),
   };
@@ -272,17 +283,21 @@ export function checkCandidate(c, pool, recent = []) {
   for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
     for (const sentence of String(text).split(/(?<=[.!?])\s+/)) {
       if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
-      if (splits.some(t => mentions(sentence, t))) continue;
+      if (splits.some(t => mentions(text, t))) continue;
       p.push(`${field} says critics were split or not all on board, but the Reception facts say they were not: "${sentence.slice(0, 80)}"`);
       break;
     }
   }
   // A single pan of a show critics liked is not a headline (both editions led
   // with one on 2026-11-16).
-  const misleading = pool.misleadingReviewScores || new Set();
-  for (const [field, text] of [['subject', subject], ['preheader', pre]]) {
-    const hit = numbersIn(stripTitles(text, pool.titleNames || [])).find(n => misleading.has(n));
-    if (hit) p.push(`${field} leads with one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
+  // Only when the show is named (here or in the subject) and the number is not
+  // also a real Critic Score in the facts (another show at 16/100).
+  const misleading = pool.misleadingReviewScores || new Map();
+  for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+    const hit = numbersIn(stripTitles(text, pool.titleNames || [])).find(n => misleading.has(n)
+      && !(pool.scoreNumbers && pool.scoreNumbers.has(n))
+      && titleForms(misleading.get(n)).some(t => mentions(text, t) || mentions(subject, t)));
+    if (hit) p.push(`${field} uses one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
   }
   const leads = pool.leadTitles || [];
   if (leads.length) {
