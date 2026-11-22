@@ -3,13 +3,14 @@
 // Usage: node scripts/fix-britishtheatre-locale-urls.js [--dir=<review-texts dir>] [--apply]
 // Rewritten files get urlCorrectedFrom + needsRefetch so the collector refetches despite existing text.
 const fs = require('fs'), path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { canonicalBritishTheatreUrl, hasBritishTheatreLocalePrefix } = require('./lib/britishtheatre-locale-url');
 const dir = (process.argv.find(a => a.startsWith('--dir=')) || '').slice(6) || path.join(__dirname, '..', 'data', 'review-texts');
 const apply = process.argv.includes('--apply');
 const changed = [];
-for (const show of fs.readdirSync(dir)) {
+for (const show of listShowDirs(dir, { silent: true })) {
   const sd = path.join(dir, show);
-  if (!fs.statSync(sd).isDirectory()) continue;
   for (const f of fs.readdirSync(sd)) {
     if (!/^britishtheatrecom--.*\.json$/.test(f)) continue;
     const p = path.join(sd, f);
@@ -20,7 +21,7 @@ for (const show of fs.readdirSync(dir)) {
     delete d.fetchRetryAfter;
     delete d.fetchDiscoveryAbandoned; // abandoned flag was set against the locale URL and blocks refetch
     changed.push(`${show}/${f}`);
-    if (apply) fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
+    if (apply) safeWriteReview(p, d);
   }
 }
 console.log(`${apply ? 'rewrote' : 'would rewrite'} ${changed.length} files`);
