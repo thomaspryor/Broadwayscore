@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T13:11:15.689Z",
+  "generatedAt": "2026-11-22T14:53:36.813Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,11 +39,6 @@
       "openingDate": "2026-11-18"
     },
     {
-      "id": "florence-off-west-end-2026",
-      "title": "Florence",
-      "openingDate": "2026-11-18"
-    },
-    {
       "id": "goblin-off-west-end-2026",
       "title": "Goblin",
       "openingDate": "2026-11-19"
@@ -77,11 +72,6 @@
       "id": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
       "openingDate": "2026-11-21"
-    },
-    {
-      "id": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
-      "openingDate": "2026-11-17"
     },
     {
       "id": "elektra-off-broadway-2026",
@@ -145,7 +135,7 @@
     },
     {
       "id": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
-      "title": "Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity West",
+      "title": "Engines and Instruments of Flight: A Fantasia in Three Acts",
       "openingDate": "2026-11-18"
     },
     {
@@ -171,16 +161,16 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -193,33 +183,29 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "artsfuse",
-      "error": "Timeout fetching https://artsfuse.org/feed/"
     }
   ],
-  "itemsScanned": 884,
-  "matchedGaps": 1,
-  "possibleGaps": 2,
+  "itemsScanned": 896,
+  "matchedGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
       "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-hammersmith",
-      "headline": "Panto Review: Cinderella (Lyric Hammersmith)",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-26230",
+      "headline": "Cinderella",
       "publishDate": "2026-11-22"
     },
     {
-      "showId": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "level": "possible",
-      "outletId": "operawire",
-      "url": "https://operawire.com/san-francisco-opera-2026-27-review-strauss-in-concert/",
-      "headline": "San Francisco Opera 2026-27 Review: Strauss in Concert",
-      "publishDate": "2026-11-21"
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/its-a-wonderful-life-a-live-radio-play/",
+      "headline": "&#8216;It’s a Wonderful Life&#8217; &#8211; A Live Radio Play",
+      "publishDate": "2026-11-22"
     },
     {
       "showId": "much-ado-about-nothing-2026",

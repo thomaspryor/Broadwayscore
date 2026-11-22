@@ -1,13 +1,34 @@
 {
-  "generatedAt": "2026-11-22T13:11:15.221Z",
+  "generatedAt": "2026-11-22T14:53:36.325Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 376,
-  "clean": 376,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 362,
+  "clean": 361,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "the-lion-king-1997",
+      "title": "The Lion King",
+      "openingDate": "1997-11-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: jasonraize"
+        }
+      ],
+      "missingFromProd": [
+        "jasonraize"
+      ],
+      "localCount": 24,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-22T14:53:30.216Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
