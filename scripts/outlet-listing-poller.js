@@ -1055,7 +1055,7 @@ async function main() {
     const isPaid = accessModel === 'paywalled';
 
     console.log(`\n--- ${displayName} (${outletId}) ---`);
-    if (win && !PER_SHOW_SERP_OUTLETS.has(outletId) && !ow.windowStrategyFor(outletId, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG)) { console.log('  Skipping: SERP-only outlet (not polled in opening-window mode)'); continue; }
+    if (win && !ow.windowStrategyFor(outletId, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG)) { console.log('  Skipping: SERP-only outlet (not polled in opening-window mode)'); continue; }
     windowFetches++;
 
     let articles = [];
@@ -1127,7 +1127,7 @@ async function main() {
         else try {
           viaSerp = true;
           articles = PER_SHOW_SERP_OUTLETS.has(outletId)
-            ? await fetchViaSerpPerShow(outletId, domain, cutoff, opts, win ? activeShows : liveShows)
+            ? await fetchViaSerpPerShow(outletId, domain, cutoff, opts, (opts.market ? liveShows.filter(s => s.category === opts.market || s.market === opts.market) : liveShows))
             : await fetchViaSerp(outletId, domain, cutoff, opts);
         } catch (err) {
           console.warn(`  ⚠ SERP failed for ${outletId}: ${err.message}`);

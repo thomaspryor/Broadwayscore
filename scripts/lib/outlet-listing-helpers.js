@@ -893,15 +893,6 @@ function parseSitemapXml(xml, cutoff, urlFilter) {
 }
 
 /**
- * Build a SERP site: query for the given domain. UK outlets (.co.uk) use the
- * correct British English spelling "theatre"; US outlets use "theater".
- *
- * Exported for unit testing.
- *
- * @param {string} domain  e.g. "thestage.co.uk" or "theatermania.com"
- * @returns {string}
- */
-/**
  * BRO-8034: outlets whose article URLs are opaque (ft.com/content/<uuid>) and whose
  * reviews a generic `site:` query never surfaces: the one query for the whole outlet
  * returns 10 of the outlet's newest theatre pieces, so a given show's review is
@@ -910,7 +901,10 @@ function parseSitemapXml(xml, cutoff, urlFilter) {
  * sweep. These outlets are queried once PER SHOW, by title, instead.
  */
 const PER_SHOW_SERP_OUTLETS = new Set(['financialtimes']);
-const PER_SHOW_SERP_MAX = 25;
+// PER_SHOW_SERP_MAX env overrides the cap; 0 switches per-show queries off (kill switch).
+const PER_SHOW_SERP_MAX = (() => { const n = parseInt(process.env.PER_SHOW_SERP_MAX || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })();
+
+const PER_SHOW_PRIORITY_CATEGORIES = new Set(['west-end', 'off-west-end', 'broadway']);
 
 /** `site:ft.com "Eurotrash" review`: the show title in quotes carries the identity the opaque URL lacks. */
 function buildPerShowSerpQuery(domain, show) {
@@ -919,19 +913,31 @@ function buildPerShowSerpQuery(domain, show) {
 }
 
 /**
- * The shows to query for a per-show outlet: newest opening first, capped so one poll
- * stays inside the SERP budget (24h SERP cache makes repeat polls free).
+ * The shows to query for a per-show outlet: already opened (a review cannot exist before
+ * the opening), opened within 14 days, west-end/off-west-end/broadway before every other category (FT is a London outlet that also reviews Broadway; 81 shows opened in a recent 14-day window, 30 of them regional), newest opening first, capped. The daily cron is
+ * ~24h apart so the 24h SERP cache rarely hits: the cap is the cost control.
  */
 function perShowSerpTargets(shows, max = PER_SHOW_SERP_MAX, now = Date.now()) {
-  // Reviews land around the opening; a show opened >30 days ago is not worth a paid query.
-  const floor = new Date(now - 30 * 864e5).toISOString().slice(0, 10);
+  // Reviews land within days of the opening; the 4 FT misses were found 1-7 days late.
+  const floor = new Date(now - 14 * 864e5).toISOString().slice(0, 10);
+  const today = new Date(now + 864e5).toISOString().slice(0, 10); // +1d: UK press nights run ahead of UTC
   return (shows || [])
-    .filter(s => s && s.title && s.id && (!s.openingDate || String(s.openingDate) >= floor))
+    .filter(s => s && s.title && s.id && s.openingDate && String(s.openingDate) >= floor && String(s.openingDate) <= today)
     .slice()
-    .sort((a, b) => String(b.openingDate || '').localeCompare(String(a.openingDate || '')))
+    .sort((a, b) => (PER_SHOW_PRIORITY_CATEGORIES.has(a.category) ? 0 : 1) - (PER_SHOW_PRIORITY_CATEGORIES.has(b.category) ? 0 : 1)
+      || String(b.openingDate || '').localeCompare(String(a.openingDate || '')))
     .slice(0, max);
 }
 
+/**
+ * Build a SERP site: query for the given domain. UK outlets (.co.uk) use the
+ * correct British English spelling "theatre"; US outlets use "theater".
+ *
+ * Exported for unit testing.
+ *
+ * @param {string} domain  e.g. "thestage.co.uk" or "theatermania.com"
+ * @returns {string}
+ */
 function buildSerpQuery(domain) {
   const isUk = domain.endsWith('.co.uk');
   return `site:${domain} ${isUk ? 'theatre' : 'theater'} review`;
