@@ -29,7 +29,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, landedPushIndices, findSessionTranscript, isSkepticReviewCall, SKEPTIC_VERDICT_RE, evaluateCoverage } from './review-coverage.mjs';
-import { shellEditsCode } from './retro-coverage-stop.mjs';
+import { shellEditsCode, editPathText } from './retro-coverage-stop.mjs';
 import { defersProof } from './live-run-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 import { isMainModule } from './is-main-module.mjs';
@@ -123,7 +123,7 @@ export function buildReviewInput(events, from, lastMessage, previousGaps = []) {
     } else if (e.name === 'Bash') {
       const cmd = String(e.input?.command || '');
       if (shellEditsCode(cmd)) {
-        for (const m of runShellCode(cmd).matchAll(/(?:^|[\s'"=(/])((?:src|scripts|\.github|\.claude\/hooks|supabase|tests)\/[\w./-]+)/g)) if (isCodePath(m[1])) files.add(m[1]);
+        for (const m of editPathText(cmd).matchAll(/(?:^|[\s'"=(/])((?:src|scripts|\.github|\.claude\/hooks|supabase|tests)\/[\w./-]+)/g)) if (isCodePath(m[1])) files.add(m[1]);
         edits.push(`SHELL EDIT\n${clip(cmd, CAPS.perSnippet)}`);
       }
       const out = PRIVATE_SOURCE_RE.test(cmd) ? '[private review text omitted]' : tailOf(resultText(r), CAPS.tail);

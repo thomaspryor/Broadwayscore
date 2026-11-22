@@ -317,3 +317,10 @@ test('landedCodeEdit reads edited paths from shell code, not heredoc bodies (BRO
   assert.equal(landedCodeEdit(ev('cat > scripts/lib/a.test.mjs <<EOF\n// see scripts/lib/real-code.js\nEOF'), 0, 2), null, 'heredoc body path is text');
   assert.equal(landedCodeEdit(ev('cat > scripts/lib/real-code.js <<EOF\nx\nEOF'), 0, 2), 'scripts/lib/real-code.js', 'redirect target counts');
 });
+
+test('script writes (python/node, quoted args with spaces) still count as edits (BRO-8026 review regression guard)', () => {
+  const py = "python3 -c \"open('scripts/fixture-job.js', 'w').write(x)\"";
+  const nd = "node -e \"require('fs').writeFileSync('scripts/fixture-job.js', s)\"";
+  const pyHere = "python3 - <<'EOF'\nopen('scripts/fixture-job.js', 'w').write(x)\nEOF";
+  for (const c of [py, nd, pyHere]) assert.equal(decide([...bash(c), ...landed()]).decision, 'block', c.slice(0, 30));
+});

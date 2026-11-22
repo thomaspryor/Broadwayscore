@@ -106,6 +106,16 @@ export function shellEditsCode(command) {
   return SCRIPT_WRITE_RE.test(raw) && TARGET_RE.test(raw);
 }
 
+/**
+ * PURE (BRO-8026). The command text to read edited PATHS from. Shell edits (sed -i, redirects) read from the shell code
+ * only, so a path named inside a heredoc body is text, not an edit. A python/node script write keeps the raw command:
+ * its target lives inside the quoted script body, which runShellCode drops.
+ */
+export function editPathText(command) {
+  const raw = String(command || '');
+  return SCRIPT_WRITE_RE.test(normalizePaths(raw)) ? raw : (runShellCode(normalizePaths(raw)) || '');
+}
+
 /** PURE. Did the session edit tracked code (not only data/ or memory)? */
 export function editedCode(events) {
   return events.some((e) => e.kind === 'assistant_tool_use' && (
