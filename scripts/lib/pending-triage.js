@@ -64,8 +64,12 @@ function urlDateOutsideWindowReason(url, show) {
   const r = extractDateFromUrl(url);
   if (!r || r.date === '2001-01-01') return null; // BWW's placeholder -20010101 suffix is not a date
   let first; let last; let label;
-  if (r.date) { first = last = label = r.date; } else {
-    const m = String(url).match(/\/((?:19|20)\d{2})\/(\d{1,2})\//);
+  if (r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date)) { first = last = label = r.date; } else {
+    // A range (blogspot "YYYY-MM", /YYYY/MM/, /YYYY/): a declared earlier run or tour leg inside it could be the
+    // review's own production, and the canonical guard only tests single days, so leave these shows to the drain.
+    if ((show.priorRuns || []).length || (show.tourLegs || []).length) return null;
+    const ym = r.date && String(r.date).match(/^(\d{4})-(\d{2})$/);
+    const m = ym ? [null, ym[1], ym[2]] : String(url).match(/\/((?:19|20)\d{2})\/(\d{1,2})\//);
     const y = m ? Number(m[1]) : Number(r.yearOnly);
     if (!y) return null;
     const mo = m && Number(m[2]) >= 1 && Number(m[2]) <= 12 ? Number(m[2]) : null;
@@ -105,10 +109,21 @@ function siblingVenueReason(url, show, sameTitleShows) {
   const slug = `-${finalSlug(url).toLowerCase().replace(/\.html?$/i, '')}-`;
   const mine = venuePhrase(show.venue);
   if (mine && slug.includes(`-${mine}-`)) return null;
+  if (/-transfer/.test(slug)) return null; // "transfers-from-the-young-vic": continuity, not another production
+  // A tour plays many venues; its reviews name each one.
+  if (/tour/i.test(`${show.category || ''} ${show.venue || ''}`)) return null;
+  const start = (x) => Date.parse(String((x && (x.previewsStartDate || x.openingDate)) || ''));
   const own = new Set([mine, ...((show.priorRuns || []).map((r) => venuePhrase(r && r.venue))), ...((show.tourLegs || []).map((r) => venuePhrase(r && r.venue)))].filter(Boolean));
   for (const o of sameTitleShows) {
     const p = venuePhrase(o && o.venue);
     if (!p || own.has(p) || (mine && (mine.includes(p) || p.includes(mine)))) continue;
+    // The production this one transferred from/to (declared, or a same-title entry opening up to two years
+    // earlier): its reviews are continuity coverage the corpus scores (1536 Almeida -> Ambassadors).
+    const linked = (a, b) => !!a && a === b;
+    if (linked(o.id, show.transferOf) || linked(o.id, show.transferredTo) || linked(o.transferredTo, show.id) || linked(o.transferOf, show.id)) continue;
+    const gap = (start(show) - start(o)) / 86400000;
+    if (gap >= 0 && gap <= 730) continue;
+    if (/tour/i.test(`${o.category || ''} ${o.venue || ''}`)) continue;
     if (`-${titleParts(show.title).join('-')}-`.includes(`-${p}-`)) continue; // "crucible": venue word inside the title
     // Venue context only ("at-the-young-vic", "almeida-theatre"): a bare "harold-pinter" / "noel-coward" is as
     // often the playwright, and "broadway" / "palace" are ordinary words (corpus audit, BRO-8065).
@@ -127,6 +142,9 @@ function urlMissesShortTitle(url, title) {
   const parts = titleParts(title);
   // 3+ parts: "N/A" (2) has opaque review urls (lightingandsoundamerica story.asp?ID=) in the scored corpus.
   if (parts.length < 3 || parts.some((w) => w.length >= 3 || /\d/.test(w))) return false;
+  // Only a descriptive slug (4+ words) can be judged: an opaque url (FT /content/<uuid>, ?id=) says nothing.
+  const words = finalSlug(url).toLowerCase().replace(/\.html?$/i, '').split(/[^a-z]+/).filter((w) => w.length >= 3);
+  if (words.length < 4) return false;
   const re = new RegExp(`(?:^|[^a-z0-9])${parts.slice(0, 3).join('[-_]?')}(?:[^a-z0-9]|$)`);
   return !re.test(String(url || '').toLowerCase());
 }
@@ -240,7 +258,7 @@ function triagePendingStub(data, ctx = {}) {
     // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
     if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return { verdict: 'junk', reason: 'film/TV section URL, not a stage review' };
     if (segs[0] === 'live') return { verdict: 'junk', reason: 'live-blog URL, not a review' };
-    if (AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
+    if (!REVIEW_TOKEN_RE.test(slug) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
   }
   if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
@@ -305,4 +323,20 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+const _sameTitleMemo = new WeakMap();
+/** Other shows.json entries sharing this show's title (the fields siblingVenueReason reads). Memoized per array. */
+function sameTitleShowsFrom(show, allShows) {
+  if (!show || !show.title || !Array.isArray(allShows)) return [];
+  const key = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!_sameTitleMemo.has(allShows)) {
+    const idx = new Map();
+    for (const x of allShows) {
+      const k = key(x && x.title); if (!k) continue;
+      if (!idx.has(k)) idx.set(k, []);
+      idx.get(k).push({ id: x.id, venue: x.venue, openingDate: x.openingDate, previewsStartDate: x.previewsStartDate, category: x.category, transferOf: x.transferOf, transferredTo: x.transferredTo });
+    }
+    _sameTitleMemo.set(allShows, idx);
+  }
+  return (_sameTitleMemo.get(allShows).get(key(show.title)) || []).filter((o) => o.id !== show.id);
+}
+module.exports = { sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

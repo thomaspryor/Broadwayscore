@@ -383,6 +383,8 @@ describe('BRO-8065: bot-wall (sgcaptcha) urls', () => {
     assert.equal(N.unwrapChallengeUrl('https://www.londontheatre1.com/reviews/memoriam/'), null);
     assert.equal(N.unwrapChallengeUrl('https://x.com/.well-known/captcha/?r=%2F%2Fevil.com%2Fa'), null, 'never a protocol-relative hop');
     assert.equal(N.unwrapChallengeUrl('https://x.com/.well-known/captcha/?y=1'), null);
+    assert.equal(N.unwrapChallengeUrl('https://example.com/.well-known/captcha/?r=%2F%5Cother.example%2Freview'), null, 'never a slash-backslash hop off-site');
+    assert.equal(N.unwrapChallengeUrl('https://example.com/.well-known/captcha/?r=%2F'), null, 'a bare root is no article');
     assert.ok(N.isChallengeUrl(WALL));
   });
   test('maybeUpgradeUrl never adopts a bot-wall url', () => {
@@ -399,6 +401,8 @@ describe('BRO-8065: bot-wall (sgcaptcha) urls', () => {
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'londontheatre1--1.json'), JSON.stringify({ outletId: 'londontheatre1', criticName: 'Unknown', url: WALL, promoteSkippedReason: 'not this show (url-token-mismatch)' }));
     fs.writeFileSync(path.join(dir, 'londontheatre1--2.json'), JSON.stringify({ outletId: 'londontheatre1', criticName: 'Unknown', url: WALL, promoteSkippedReason: 'byline resolves to x.json, which already holds a different article' }));
+    // The write guard unwrapped this one first (url already real), but its url-only skip came from the wall url.
+    fs.writeFileSync(path.join(dir, 'londontheatre1--3.json'), JSON.stringify({ outletId: 'londontheatre1', criticName: 'Unknown', url: 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/', challengeUrlUnwrappedFrom: WALL, promoteSkippedReason: 'not this show (url-token-mismatch)' }));
     const r = await processShow(show.id, { root, show, dryRun: false, triageOnly: true, heldIndex: new Map(), explicitScope: false,
       fetch: async () => { throw new Error('no fetch in triage-only'); }, alert: async () => {}, resolve: () => {}, emit: () => {},
       budget: { exceeded: () => false, minutes: 5 } });
@@ -406,7 +410,9 @@ describe('BRO-8065: bot-wall (sgcaptcha) urls', () => {
     assert.equal(a.url, 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/');
     assert.equal(a.challengeUrlUnwrappedFrom, WALL);
     assert.ok(!a.promoteSkippedReason, 'url-only skip re-opened: ' + JSON.stringify(a));
-    assert.equal(r.candidates, 1);
+    const c = JSON.parse(fs.readFileSync(path.join(dir, 'londontheatre1--3.json'), 'utf8'));
+    assert.ok(!c.promoteSkippedReason, 'a skip from the wall url is re-opened even when another writer unwrapped first');
+    assert.equal(r.candidates, 2);
     const b = JSON.parse(fs.readFileSync(path.join(dir, 'londontheatre1--2.json'), 'utf8'));
     assert.match(b.promoteSkippedReason, /byline resolves/, 'a skip decided from the page itself stands');
     assert.equal(b.url, 'https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/');
@@ -445,6 +451,30 @@ test('BRO-8065: the flip-flop breaker never keeps (or pins) a bot-wall url over 
   const out2 = JSON.parse(fs.readFileSync(f, 'utf8'));
   assert.equal(out2.url, REAL);
   assert.notEqual(out2.urlVerified, true);
+  // Only the guarded article releases a pin: an unrelated url is not the "correction".
+  const { _flipFlopShouldTakeIncoming } = require('../../scripts/lib/review-write-guard.js');
+  if (typeof _flipFlopShouldTakeIncoming === 'function') {
+    assert.equal(_flipFlopShouldTakeIncoming(WALL, 'https://www.othersite.com/reviews/girls/'), false);
+    assert.equal(_flipFlopShouldTakeIncoming(WALL, REAL), true);
+  }
+});
+
+describe('BRO-8065 ship-check: rules that must not settle on url text alone', () => {
+  test('an opaque url never settles a short title; a range url date never settles a show with a declared earlier run', () => {
+    const NOID = { title: 'No I.D.', openingDate: '2023-04-19', closingDate: '2023-05-06' };
+    assert.equal(T.triagePendingStub({ url: 'https://www.ft.com/content/0b6c1d6e-3d2a-4c1e-9f1e-123456789abc', title: 'No I.D. review' }, { showId: 'no-i-d-west-end-2023', show: NOID }).verdict, 'candidate');
+    const S = { title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01', priorRuns: [{ startDate: '2023-06-01', endDate: '2023-06-30', venue: 'Almeida' }] };
+    assert.equal(T.urlDateOutsideWindowReason('https://x.com/2023/review-of-a-show/', S), null);
+    assert.equal(T.urlDateOutsideWindowReason('https://foo.blogspot.com/2023/06/review.html', S), null);
+    const S2 = { title: 'Some Play', openingDate: '2026-03-01', closingDate: '2026-05-01' };
+    assert.match(T.urlDateOutsideWindowReason('https://foo.blogspot.com/2023/06/review.html', S2), /2023-06/);
+  });
+  test('an awards slug that is itself a review, and a transfer slug, stay candidates', () => {
+    const show = { title: 'Hamlet', openingDate: '2026-03-01', venue: 'Olivier Theatre' };
+    assert.equal(T.triagePendingStub({ url: 'https://www.examplenews.com/theatre/tony-awards-contender-review-a-new-play/' }, { showId: 'h', show }).verdict, 'candidate');
+    const sib = [{ id: 'hamlet-off-west-end-2025', venue: 'Young Vic' }];
+    assert.equal(T.triagePendingStub({ url: 'https://www.examplenews.com/hamlet-transfers-from-the-young-vic-review' }, { showId: 'h', show, sameTitleShows: sib }).verdict, 'candidate');
+  });
 });
 
 describe('BRO-8065: short titles and same-title sibling venues (2015-24 queue)', () => {

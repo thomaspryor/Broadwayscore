@@ -4028,8 +4028,13 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   if (!wellFormed(existingUrl) && wellFormed(incomingUrl)) return true;
   // BRO-8065: a bot-wall interstitial (/.well-known/captcha/) is never the article; the url it guards always wins
   // (the breaker pinned girls-off-west-end-2026's londontheatre1 file onto its sgcaptcha url).
-  const { isChallengeUrl } = require('./non-review-url-patterns');
-  if (isChallengeUrl(existingUrl) && wellFormed(incomingUrl) && !isChallengeUrl(incomingUrl)) return true;
+  // Only the exact article the interstitial's r= names: any other url could release an auto-pin onto another outlet.
+  const { isChallengeUrl, unwrapChallengeUrl } = require('./non-review-url-patterns');
+  if (isChallengeUrl(existingUrl)) {
+    const dest = unwrapChallengeUrl(existingUrl);
+    const canon = (u) => { try { const x = new URL(u); return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '')).toLowerCase(); } catch { return null; } };
+    if (dest && wellFormed(incomingUrl) && canon(incomingUrl) === canon(dest)) return true;
+  }
   // Same site only: a host-wide named pattern can sit over real reviews
   // elsewhere, so never let this hop an auto-pin to a different outlet.
   const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };

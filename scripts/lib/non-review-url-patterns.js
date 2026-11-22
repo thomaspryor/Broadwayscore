@@ -281,8 +281,13 @@ function unwrapChallengeUrl(url) {
   try { u = new URL(String(url || '')); } catch { return null; }
   if (!/^\/\.well-known\/(?:sg)?captcha\/?$/i.test(u.pathname)) return null;
   const r = u.searchParams.get('r');
-  if (!r || !r.startsWith('/') || r.startsWith('//')) return null;
-  try { return new URL(r, u.origin).href; } catch { return null; }
+  if (!r || !r.startsWith('/') || r.startsWith('//') || r.includes('\\')) return null;
+  let out;
+  try { out = new URL(r, u.origin); } catch { return null; }
+  // Same origin only (a "/\\other.host" r= would otherwise resolve off-site),
+  // and a bare root is a homepage, not an article.
+  if (out.origin !== u.origin || out.pathname === '/' || isChallengeUrl(out.href)) return null;
+  return out.href;
 }
 /** Is this url a bot-wall interstitial rather than an article? Pure. */
 function isChallengeUrl(url) {

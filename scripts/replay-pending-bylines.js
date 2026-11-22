@@ -148,18 +148,8 @@ const verdictBucket = (reason) => String(reason || '').replace(/\s*\((?:BRO-\d+[
   .replace(/"[^"]*"/g, '"…"').replace(/\b[a-z0-9]+(?:-[a-z0-9]+)*-\d{4}\b/g, '<show>').replace(/[a-z0-9-]+--[a-z0-9-]+\.json/g, '<file>')
   .replace(/\d{4}-\d{2}(?:-\d{2})?/g, '<date>').replace(/\d+/g, 'N').slice(0, 80);
 // BRO-8065: other shows.json entries with this show's title (for the sibling-venue triage rule), memoized per show list.
-const _titleIndexMemo = new WeakMap();
 function sameTitleShowsOf(show, deps = {}) {
-  if (!show || !show.title) return [];
-  const all = deps.allShows || (deps.root ? [] : loadAllShows());
-  if (!_titleIndexMemo.has(all)) {
-    const idx = new Map();
-    const key = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    for (const s of all) { const k = key(s.title); if (!k) continue; if (!idx.has(k)) idx.set(k, []); idx.get(k).push({ id: s.id, venue: s.venue }); }
-    _titleIndexMemo.set(all, { idx, key });
-  }
-  const { idx, key } = _titleIndexMemo.get(all);
-  return (idx.get(key(show.title)) || []).filter((o) => o.id !== show.id);
+  return pendingTriage.sameTitleShowsFrom(show, deps.allShows || (deps.root ? [] : loadAllShows()));
 }
 function verdictCount(key) { VERDICTS.set(key, (VERDICTS.get(key) || 0) + 1); }
 // A skip decided from the url text alone; re-opened when the url turns out to have been a bot-wall page (BRO-8065).
@@ -581,17 +571,28 @@ async function processShow(showId, deps = {}) {
     }
     // BRO-8065: a stub whose url is a bot-wall interstitial gets the guarded article url back. A skip that was
     // decided from the wall's url alone (it named no show) is re-opened, so the real review is fetched.
+    // Another writer (the write guard) may have unwrapped the url first: the url-only skip is re-opened either way.
     const unwrapped = require('./lib/non-review-url-patterns').unwrapChallengeUrl(data.url);
-    if (unwrapped) {
-      console.log(`  [${file}] url was a bot-wall page — restored ${unwrapped}${dry ? ' (DRY)' : ''}`);
-      data.challengeUrlUnwrappedFrom = data.url;
-      data.url = unwrapped;
-      if (URL_ONLY_SKIP_RE.test(String(data.promoteSkippedReason || ''))) {
+    const wallSkip = (unwrapped || data.challengeUrlUnwrappedFrom) && !data.reopenedFromSkip
+      && URL_ONLY_SKIP_RE.test(String(data.promoteSkippedReason || ''));
+    if (unwrapped || wallSkip) {
+      if (unwrapped) {
+        console.log(`  [${file}] url was a bot-wall page — restored ${unwrapped}${dry ? ' (DRY)' : ''}`);
+        data.challengeUrlUnwrappedFrom = data.url;
+        data.url = unwrapped;
+      }
+      if (wallSkip) {
         data.reopenedFromSkip = data.promoteSkippedReason;
         data.promoteSkippedReason = null; data.promoteSkippedAt = null; // null, not delete: the write guard merges absent keys back
       }
-      if (!dry) { try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not restore url: ${e.message}`); } }
-      verdictCount('restored:bot-wall url');
+      if (!dry) {
+        try {
+          require('./lib/review-write-guard').safeWriteReview(filepath, data);
+          // Re-read: the guard clears url-derived fields and may refuse the url (a human pin); work from disk.
+          data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+        } catch (e) { console.log(`  [${file}] could not restore url: ${e.message}`); }
+      }
+      verdictCount(unwrapped && !require('./lib/non-review-url-patterns').isChallengeUrl(data.url) ? 'restored:bot-wall url' : 'restored:bot-wall skip re-opened');
     }
     // Already evaluated and skipped on a prior run — don't re-fetch the URL. Not counted as inspected:
     // settled junk stays in _pending forever and would make a healthy quiet drain look stalled.
