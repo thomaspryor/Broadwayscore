@@ -87,6 +87,50 @@ function urlDateOutsideWindowReason(url, show) {
   return `url date ${label} is more than a year outside this production's window`;
 }
 
+/** A venue as a slug phrase: "Royal Exchange Theatre, Manchester" -> "royal-exchange"; "The Old Vic" -> "old-vic". Pure. */
+function venuePhrase(venue) {
+  const head = String(venue || '').split(/[,(]/)[0].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/['’.]/g, '');
+  const words = head.split(/[^a-z0-9]+/).filter((w) => w && !['the', 'theatre', 'theater', 'playhouse'].includes(w));
+  const phrase = words.join('-');
+  return phrase.length >= 5 ? phrase : null;
+}
+/**
+ * The slug names the venue of ANOTHER shows.json entry with this title (twelfth-night-at-the-young-vic filed under
+ * the Olivier 2017 run) and not this show's own venue: that entry's review. Only same-title entries count, so an
+ * undeclared pre-transfer venue (Death of a Salesman: Young Vic -> Piccadilly) never settles a stub. Pure.
+ * @param {{id:string, venue:string}[]} sameTitleShows  other entries sharing this show's title
+ */
+function siblingVenueReason(url, show, sameTitleShows) {
+  if (!show || !Array.isArray(sameTitleShows) || !sameTitleShows.length) return null;
+  const slug = `-${finalSlug(url).toLowerCase().replace(/\.html?$/i, '')}-`;
+  const mine = venuePhrase(show.venue);
+  if (mine && slug.includes(`-${mine}-`)) return null;
+  const own = new Set([mine, ...((show.priorRuns || []).map((r) => venuePhrase(r && r.venue))), ...((show.tourLegs || []).map((r) => venuePhrase(r && r.venue)))].filter(Boolean));
+  for (const o of sameTitleShows) {
+    const p = venuePhrase(o && o.venue);
+    if (!p || own.has(p) || (mine && (mine.includes(p) || p.includes(mine)))) continue;
+    if (`-${titleParts(show.title).join('-')}-`.includes(`-${p}-`)) continue; // "crucible": venue word inside the title
+    // Venue context only ("at-the-young-vic", "almeida-theatre"): a bare "harold-pinter" / "noel-coward" is as
+    // often the playwright, and "broadway" / "palace" are ordinary words (corpus audit, BRO-8065).
+    if (new RegExp(`-at-(?:the-)?${p}-|-${p}-(?:theatre|theater|playhouse)-`).test(slug)) return `url names the ${o.venue} production (${o.id}), not this one`;
+  }
+  return null;
+}
+const titleParts = (title) => String(title || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .replace(/['’]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+/**
+ * A letters-only title with no word of 3+ letters ("No I.D."): no slug word can match it, so site search files any
+ * page under it (67 Daily Mail stubs). True when the rule applies and the url does not spell the title out
+ * ("no-i-d", "no-id", "noid"; the first three parts). Digit titles ("9 to 5", "44") are generic-title-guard's. Pure.
+ */
+function urlMissesShortTitle(url, title) {
+  const parts = titleParts(title);
+  // 3+ parts: "N/A" (2) has opaque review urls (lightingandsoundamerica story.asp?ID=) in the scored corpus.
+  if (parts.length < 3 || parts.some((w) => w.length >= 3 || /\d/.test(w))) return false;
+  const re = new RegExp(`(?:^|[^a-z0-9])${parts.slice(0, 3).join('[-_]?')}(?:[^a-z0-9]|$)`);
+  return !re.test(String(url || '').toLowerCase());
+}
+
 function hostKey(url) {
   try { return new URL(String(url)).hostname.replace(/^www\./i, '').toLowerCase(); } catch { return null; }
 }
@@ -183,6 +227,13 @@ function triagePendingStub(data, ctx = {}) {
       return { verdict: 'junk', reason: `url has no identity for the bare title "${ctx.show.title}"` };
     }
   }
+  // A title with no word of 3+ letters ("No I.D.") cannot be matched by any slug word: the url must spell it out.
+  if (ctx.show && ctx.show.title && urlMissesShortTitle(url, ctx.show.title)
+      && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
+    return { verdict: 'junk', reason: `url never spells out the short title "${ctx.show.title}"` };
+  }
+  const sibling = siblingVenueReason(url, ctx.show, ctx.sameTitleShows);
+  if (sibling) return { verdict: 'junk', reason: sibling };
   // Text rules: never when the url names this show (a stage review filed under /movies/, a Tony-winner's review).
   if (!urlNamesShow(url, ctx.show)) {
     const segs = pathSegments(url).slice(0, -1);
@@ -254,4 +305,4 @@ function showEra(showId) {
   return 'pre-2015';
 }
 
-module.exports = { urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
