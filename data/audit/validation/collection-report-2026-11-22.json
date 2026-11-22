@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-11-22T19:15:48.988Z",
+  "runDate": "2026-11-22T19:35:10.996Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "eurotrash-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "the-snowman-off-west-end-2026,goblin-off-west-end-2026,much-ado-about-nothing-2026,bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026,a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026,cinderella-lyric-hammersmith-off-west-end-2026,elektra-off-broadway-2026,the-ugly-one-off-west-end-2026,the-unauthorized-hallmark-ish-parody-musical-tour-2026,wuthering-heights-off-broadway-2026,arrowhead-regional-2026,fiddler-on-the-roof-regional-2026,the-beauty-queen-of-leenane-regional-2026,the-farce-awakens-feydeau-x-2-regional-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
     "processed": 3,
-    "failed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "75.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -55,9 +55,11 @@
   },
   "thisRun": {
     "processed": 3,
-    "failed": 1,
+    "failed": 3,
     "shows": [
-      "eurotrash-off-west-end-2026"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "much-ado-about-nothing-2026",
+      "wuthering-heights-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,38 +68,51 @@
     }
   },
   "processed": [
-    "eurotrash-off-west-end-2026/plays-international--unknown.json",
-    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
+    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "eurotrash-off-west-end-2026/plays-international--unknown.json",
-      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json"
     ],
     "failed": [
-      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+      "much-ado-about-nothing-2026/timeout--unknown.json",
+      "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+      "wuthering-heights-off-broadway-2026/letterboxd--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "eurotrash-off-west-end-2026/plays-international--unknown.json",
-      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--mr-trevor-n-staines.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "columbiaspectator-com": {
+      "count": 1,
+      "domain": "columbiaspectator.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
