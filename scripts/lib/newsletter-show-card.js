@@ -49,6 +49,25 @@ function criticsTakeHtml(take, href) {
 }
 
 /**
+ * Font size (px) for a show card's title. A 77-character regional title
+ * ("Engines and Instruments of Flight: A Fantasia in Three Acts by Calamity
+ * West") wrapped to seven 16px lines in the ~117px info column at 320px, made
+ * its card 334px tall and failed the mobile gate, so the 2026-11-22 New York
+ * preview never reached the owner. Very long titles step down in size instead
+ * of being cut: pre-send-check and the subject writer look for the FULL title
+ * in the rendered email (newsletter-render-invariants.js, buildSubjectFacts),
+ * so a truncated card title would fail those or drop the show from the subject.
+ * @param {string} title
+ * @returns {number}
+ */
+function cardTitleFontSize(title) {
+  const n = String(title || '').trim().length;
+  if (n > 90) return 12;
+  if (n > 55) return 13;
+  return 16;
+}
+
+/**
  * @param {object} p
  * @param {string} p.posterHtml  poster/thumbnail markup
  * @param {string} p.infoHtml    title, pills, date and venue lines
@@ -75,4 +94,4 @@ function showCardHtml({ posterHtml, infoHtml, scoreColHtml, takeHtml = '' }) {
   </table>`;
 }
 
-module.exports = { showCardHtml, criticsTakeHtml, POSTER_W, POSTER_H, POSTER_COL_W, SCORE_COL_W, SCORE_BADGE };
+module.exports = { showCardHtml, cardTitleFontSize, criticsTakeHtml, POSTER_W, POSTER_H, POSTER_COL_W, SCORE_COL_W, SCORE_BADGE };

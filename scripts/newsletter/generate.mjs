@@ -37,7 +37,7 @@ const { getScoreTierId, SCORE_TIER_LABELS } = cjsRequire('../lib/score-tiers.js'
 const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
-const { showCardHtml, criticsTakeHtml, POSTER_W, POSTER_H, SCORE_COL_W, SCORE_BADGE } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
+const { showCardHtml, cardTitleFontSize, criticsTakeHtml, POSTER_W, POSTER_H, SCORE_COL_W, SCORE_BADGE } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
 const { announcedShowIds, loadSentShows, isNotableRevival } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-announced'));
 const { upcomingLinks } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-upcoming-links'));
 const { selectComingUp } = cjsRequire(path.join(repo, 'scripts/lib/coming-up-select'));
@@ -749,7 +749,7 @@ function showRow(show, opts = {}) {
   return showCardHtml({
     posterHtml: posterOrThumb({ ...show, title: cardTitle(show) }, POSTER_W, POSTER_H),
     infoHtml: `
-        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, cardTitle(show))}</div>
+        <div style="font-size:${cardTitleFontSize(cardTitle(show))}px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, cardTitle(show))}</div>
         <div style="margin-top:5px;line-height:1.75;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:4px;line-height:1.35;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>`,
