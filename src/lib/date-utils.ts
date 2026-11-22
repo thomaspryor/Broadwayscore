@@ -26,11 +26,13 @@ export function isIsoCalendarDate(value: string): boolean {
  * Using UTC causes off-by-one when builds run after midnight UTC but before
  * midnight local time (e.g., 1am UTC = 9pm ET the previous day).
  */
-export function getMarketDate(category?: string): string {
+export function getMarketDate(category?: string, now?: Date | number): string {
   const tz = (category === 'west-end' || category === 'off-west-end')
     ? 'Europe/London'
     : 'America/New_York';
-  return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date());
+  // BRO-8056: `now` is an injected instant (show-refresh renders at the build's
+  // instant); each market still gets its own local date from it.
+  return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(now == null ? new Date() : new Date(now));
 }
 
 /**

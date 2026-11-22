@@ -33,7 +33,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
-import { partitionShowRows } from '../../scripts/lib/show-row-guard';
+import { buildShowInputs, computableShows, groupByShowId } from '../../scripts/lib/show-refresh/inputs';
 import { differentWorks } from '../../scripts/lib/work-identity';
 import { belongsOnOffBroadwayListing } from '../../scripts/lib/off-broadway-listing';
 import { readCoverageFloorInputs } from '../../scripts/lib/coverage-floor-inputs';
@@ -61,14 +61,22 @@ import { getShowYear } from './date-utils';
 // Type the imported data
 // BRO-5954: rows that page generation would crash on are dropped here (and named
 // in the prebuild log by scripts/validate-shows-prebuild.js) rather than failing the build.
-const showRowPartition = partitionShowRows(showsData.shows);
-for (const s of showRowPartition.skipped) {
+// BRO-8056: raw files -> computeOneShow inputs through the same builder the
+// show-refresh publisher uses (scripts/lib/show-refresh/inputs.js).
+const showInputs = buildShowInputs({
+  showsData,
+  reviews: reviewsData.reviews,
+  blogReviews: blogReviewsData.reviews,
+  audience: audienceData.audience,
+  buzz: buzzData.threads,
+});
+for (const s of showInputs.skipped) {
   console.warn(`[data-core] skipping malformed shows.json row ${s.id}: ${s.problems.join('; ')}`);
 }
-const shows: RawShow[] = showRowPartition.valid as RawShow[];
+const shows: RawShow[] = showInputs.shows as RawShow[];
 const baseReviews: RawReview[] = reviewsData.reviews as RawReview[];
-const audience: RawAudience[] = audienceData.audience as RawAudience[];
-const buzz: RawBuzzThread[] = buzzData.threads as RawBuzzThread[];
+const audience: RawAudience[] = showInputs.audience as RawAudience[];
+const buzz: RawBuzzThread[] = showInputs.buzz as RawBuzzThread[];
 
 // Inject blog reviews as Tier 3 critic reviews
 const reviews: RawReview[] = [
@@ -76,31 +84,14 @@ const reviews: RawReview[] = [
   ...(blogReviewsData.reviews as RawReview[]),
 ];
 
-// Pre-index reviews by showId so computeShowData skips its O(N×M) per-show filter.
-// Matches the eager pattern in src/lib/data-reviews.ts (outletReviewsMap/criticReviewsMap)
-// and the byShowId index in src/lib/data-tony-noms.ts. Node scripts like
-// scripts/compute-gold-lists.js already use this lookup; the web app is catching up.
-const reviewsByShowId = new Map<string, RawReview[]>();
-for (const r of reviews) {
-  const arr = reviewsByShowId.get(r.showId);
-  if (arr) arr.push(r);
-  else reviewsByShowId.set(r.showId, [r]);
-}
+// Pre-index reviews by showId (critic + blog), for the date lookups below.
+const reviewsByShowId = groupByShowId(reviews) as Map<string, RawReview[]>;
 
-// BRO-8056: computeOneShow takes a show's critic reviews and its blog reviews
-// separately (show-refresh slices carry them separately). Order within a show
-// is unchanged: critic reviews first, then blog reviews, as in `reviews` above.
-const baseReviewsByShowId = groupByShowId(baseReviews);
-const blogReviewsByShowId = groupByShowId(blogReviewsData.reviews as RawReview[]);
-function groupByShowId(list: RawReview[]): Map<string, RawReview[]> {
-  const m = new Map<string, RawReview[]>();
-  for (const r of list) {
-    const arr = m.get(r.showId);
-    if (arr) arr.push(r);
-    else m.set(r.showId, [r]);
-  }
-  return m;
-}
+// computeOneShow takes a show's critic reviews and its blog reviews separately
+// (show-refresh slices carry them separately). Order within a show is
+// unchanged: critic reviews first, then blog reviews, as in `reviews` above.
+const baseReviewsByShowId = showInputs.reviewsByShowId as Map<string, RawReview[]>;
+const blogReviewsByShowId = showInputs.blogReviewsByShowId as Map<string, RawReview[]>;
 
 // Coverage Verdict (S2/S3, tasks #906/#905) — read once at module load by
 // the loader the app feed also uses (scripts/lib/coverage-floor-inputs.js),
@@ -136,8 +127,7 @@ export function getAllShows(): ComputedShow[] {
   const deps: Omit<ComputeOneShowDeps, 'blogReviews'> = {
     audience, buzz, coverageFloorInputs, versionImage: versionedImagePath,
   };
-  computedShowsCache = shows
-    .filter((show: any) => !show._devOnly)
+  computedShowsCache = (computableShows(showInputs) as RawShow[])
     .map(show => computeOneShow(show, baseReviewsByShowId.get(show.id) || [], {
       ...deps,
       blogReviews: blogReviewsByShowId.get(show.id) || [],

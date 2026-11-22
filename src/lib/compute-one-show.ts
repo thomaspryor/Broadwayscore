@@ -2,10 +2,10 @@
 // getAllShows() (data-core.ts) maps every show through this. Show-refresh
 // (later phases) calls it with one show's slice.
 // Contract: rawReviews and deps.blogReviews must be THIS show's reviews only
-// (checked below). Not yet injected, so a caller must hold them equal to the
-// full build's: the outlet registry (engine -> getOutletRegistry(), a cached
-// file read), the market date used for status, and computedAt (real clock).
-// coverage-floor-inputs is a server-only module (it imports fs).
+// (checked below). Pass deps.registry and deps.now to make the result a pure
+// function of its arguments (no file read, no clock; compute-one-show.test).
+// coverage-floor-inputs is a server-only module (it imports fs) but
+// coverageFloorOptsForShow itself reads none.
 import {
   computeShowData,
   ComputedShow,
@@ -27,8 +27,14 @@ export interface ComputeOneShowDeps {
   coverageFloorInputs: CoverageFloorInputs;
   /** Maps an image path to its versioned URL (versioned-image-path.ts). */
   versionImage: <T extends string | null | undefined>(imagePath: T) => T;
-  /** Clock for the coverage-hold ceiling; defaults to Date.now(). */
+  /**
+   * Clock (ms epoch) for market dates, status, review age, computedAt and the
+   * coverage-hold ceiling; defaults to the real clock. Show-refresh passes the
+   * build's instant so an overlay render matches the build.
+   */
   now?: number;
+  /** Outlet registry (outlets map); defaults to the cached data/outlet-registry.json read. */
+  registry?: Record<string, unknown>;
 }
 
 export function computeOneShow(show: RawShow, rawReviews: RawReview[], deps: ComputeOneShowDeps): ComputedShow {
@@ -40,7 +46,7 @@ export function computeOneShow(show: RawShow, rawReviews: RawReview[], deps: Com
   const showReviews = deps.blogReviews.length
     ? [...rawReviews, ...deps.blogReviews]
     : rawReviews;
-  const computed = computeShowData(show, showReviews, deps.audience, deps.buzz);
+  const computed = computeShowData(show, showReviews, deps.audience, deps.buzz, { registry: deps.registry, now: deps.now });
   if (computed.images) {
     computed.images = {
       ...computed.images,
