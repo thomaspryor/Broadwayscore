@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-22T01:32:30.008Z",
+  "runDate": "2026-11-22T02:37:14.476Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "eurotrash-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "stranger-things-the-first-shadow-west-end-2023",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
     "processed": 2,
-    "failed": 3,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "40.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,27 +25,27 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -55,9 +55,9 @@
   },
   "thisRun": {
     "processed": 2,
-    "failed": 3,
+    "failed": 2,
     "shows": [
-      "eurotrash-off-west-end-2026"
+      "stranger-things-the-first-shadow-west-end-2023"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,30 +66,25 @@
     }
   },
   "processed": [
-    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "stranger-things-the-first-shadow-west-end-2023/telegraph--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/london-unattached--unknown.json",
-    "eurotrash-off-west-end-2026/telegraph--unknown.json",
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json",
+    "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json"
     ],
     "failed": [
-      "eurotrash-off-west-end-2026/london-unattached--unknown.json",
-      "eurotrash-off-west-end-2026/telegraph--unknown.json",
-      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+      "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json",
+      "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -97,23 +92,11 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "stranger-things-the-first-shadow-west-end-2023/telegraph--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--unknown.json"
+    ]
   },
-  "failuresByOutlet": {
-    "London Unattached": {
-      "count": 1,
-      "domain": "london-unattached.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
