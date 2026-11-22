@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T01:34:41.987Z",
+  "timestamp": "2026-11-22T02:36:28.183Z",
   "stats": {
-    "totalReviews": 83820,
+    "totalReviews": 83826,
     "alreadyFlagged": 22426,
     "dateGuardCatches": 238,
     "directorMismatch": 3868,
     "tvFilmSignals": 2405,
-    "londonSignals": 3950,
+    "londonSignals": 3951,
     "offBroadwaySignals": 782,
     "yearMismatch": 394,
-    "noPublishDate": 8234
+    "noPublishDate": 8235
   },
   "findings": [
     {
@@ -105859,6 +105859,19 @@
       "score": 76,
       "publishDate": "2026-11-20",
       "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "london-unattached--unknown.json",
+      "publishDate": "2026-11-21",
+      "url": "https://www.london-unattached.com/eurotrash-young-vic/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
