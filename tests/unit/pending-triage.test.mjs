@@ -1342,3 +1342,14 @@ describe('BRO-8090 audit 2026-11-23: a fitting date is not enough when the stub 
     assert.notEqual(v.verdict, 'rehome', JSON.stringify(v));
   });
 });
+
+// BRO-8090 cousin in BRO-8089's on-arrival settler: intakeVerdict called the triage without allShows, so a review
+// of a same-title sibling (2026 Ambassadors 1536 under the 2025 Almeida entry) was settled as out-of-window junk the
+// moment it was written. Red with the allShows argument removed from pending-intake.js.
+test('BRO-8090: intake triage does not junk a review that a same-title sibling owns', () => {
+  const { intakeVerdict } = require('../../scripts/lib/pending-intake.js');
+  const ctx = { byId: new Map([[A1536.id, A1536], [B1536.id, B1536]]), allShows: [A1536, B1536], heldIndex: new Map() };
+  const stub = { outletId: 'standard', criticName: 'Unknown', url: 'https://www.standard.co.uk/culture/theatre/1536-ambassadors-theatre-review-b1234567.html', publishDate: '2026-05-13' };
+  const v = intakeVerdict(stub, A1536.id, { ctx });
+  assert.notEqual(v.verdict, 'junk', JSON.stringify(v));
+});
