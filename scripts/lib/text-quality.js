@@ -106,7 +106,9 @@ const CORRUPTION_PATTERNS = [
   /\bsave\s+(article|story)\b/i,
 
   // Photo/media credits mixed in
-  /\(?\s*(photo|image|credit|getty|ap photo|reuters)\s*:?/i,
+  // BRO-8117: needs a word boundary and a "(" or ":" marker. The bare substring
+  // matched "imagery", "credited", "photography" in ordinary prose.
+  /\(\s*(?:photo|image|credit|getty(?: images)?|ap photo|reuters)\b\s*:?|\b(?:photo|image|credit|getty(?: images)?|ap photo|reuters)\s*:/i,
   /\bcredit\s*\.\.\./i,
 
   // Cookie/privacy notices

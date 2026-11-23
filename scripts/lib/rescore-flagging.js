@@ -44,7 +44,8 @@ const { assessFullText, getBestTextForScoring } = require('./text-quality');
  * what the selector picks: each file is then re-flagged once, and the loop guard
  * holds again after a rescore that ran on the new selector.
  */
-const TEXT_SELECTOR_CHANGED_AT = '2026-11-10T12:00:00Z';
+// BRO-8117: text-quality.js photo-credit corruption regex tightened (114 complete full texts were read as 'corrupted').
+const TEXT_SELECTOR_CHANGED_AT = '2026-11-23T12:00:00Z';
 
 /**
  * Scored from an excerpt by an OLD selector, and the CURRENT selector now picks
