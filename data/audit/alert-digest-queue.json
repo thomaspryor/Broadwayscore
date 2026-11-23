@@ -99,5 +99,36 @@
       }
     ],
     "queuedAt": "2026-11-23T13:24:46.154Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8136-trace-excludes",
+    "title": "Landing blocked: lint-workflows red on land/bro-8136-trace-excludes",
+    "description": "land.yml did not land land/bro-8136-trace-excludes: the lint-workflows gate went red at d26b3692d6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45183119248",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8136-trace-excludes"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "d26b3692d6cab99bba2d3e919e22c43c859c8cda"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45183119248"
+      }
+    ],
+    "queuedAt": "2026-11-23T13:46:06.074Z"
   }
 ]
