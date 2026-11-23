@@ -115,6 +115,23 @@ function verifiedVenueAddress(category: string | undefined, venue: string | unde
   return name ? VENUE_INFO[`${market}/${urlSlugify(name)}`]?.fields.address : undefined;
 }
 
+/**
+ * Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
+ * address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
+ * Fill a missing address, or replace one that is plainly in the other city (a London
+ * show carrying a New York ZIP). A production-specific address is otherwise kept: a
+ * company that moved, or two spaces sharing a name, must not be sent to the wrong door.
+ * Every computeOneShow result that reaches a page goes through this, the build's
+ * getAllShows and the show-refresh slice render alike (BRO-8056 render parity).
+ */
+export function withVerifiedVenueAddress<T extends { category?: string; venue?: string | null; theaterAddress?: string | null }>(show: T): T {
+  const verified = verifiedVenueAddress(show.category, show.venue);
+  if (!verified || verified === show.theaterAddress) return show;
+  return !show.theaterAddress || addressInOtherCity(show.category, show.theaterAddress)
+    ? { ...show, theaterAddress: verified }
+    : show;
+}
+
 // Type the imported data
 // BRO-5954: rows that page generation would crash on are dropped here (and named
 // in the prebuild log by scripts/validate-shows-prebuild.js) rather than failing the build.
@@ -189,18 +206,7 @@ export function getAllShows(): ComputedShow[] {
       ...deps,
       blogReviews: blogReviewsByShowId.get(show.id) || [],
     }))
-    // Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
-    // address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
-    .map(show => {
-      // Fill a missing address, or replace one that is plainly in the other city (a London
-      // show carrying a New York ZIP). A production-specific address is otherwise kept: a
-      // company that moved, or two spaces sharing a name, must not be sent to the wrong door.
-      const verified = verifiedVenueAddress(show.category, show.venue);
-      if (!verified || verified === show.theaterAddress) return show;
-      return !show.theaterAddress || addressInOtherCity(show.category, show.theaterAddress)
-        ? { ...show, theaterAddress: verified }
-        : show;
-    });
+    .map(withVerifiedVenueAddress);
 
   return computedShowsCache;
 }
