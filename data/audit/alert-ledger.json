@@ -45313,21 +45313,18 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
       "firstSeen": "2026-11-18T03:32:27.712Z",
-      "incidentOpenedAt": "2026-11-18T03:32:27.712Z",
+      "incidentOpenedAt": "2026-11-23T02:00:13.240Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:20.332Z",
-      "lastNotifiedAt": "2026-11-18T03:32:27.712Z",
-      "lastSurfacedAt": "2026-11-18T03:32:27.712Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-23T02:00:13.240Z",
+      "lastNotifiedAt": "2026-11-23T02:00:13.240Z",
+      "lastSurfacedAt": "2026-11-23T02:00:13.240Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-18T16:51:19.548Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "pending-unrecoverable:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -45563,13 +45560,13 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T23:23:41.401Z",
+      "lastSeen": "2026-11-23T02:00:00.689Z",
       "lastNotifiedAt": "2026-11-22T03:42:41.879Z",
       "lastSurfacedAt": "2026-11-21T02:59:59.567Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7916",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
@@ -45756,13 +45753,13 @@
       "firstSeen": "2026-11-18T17:58:55.876Z",
       "incidentOpenedAt": "2026-11-18T17:58:55.876Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T23:23:42.169Z",
+      "lastSeen": "2026-11-23T02:00:13.053Z",
       "lastNotifiedAt": "2026-11-22T07:51:17.710Z",
       "lastSurfacedAt": "2026-11-21T06:33:40.696Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7939",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-7789-compact-sync": {
       "status": "resolved",
@@ -46341,13 +46338,13 @@
       "firstSeen": "2026-11-19T18:03:56.896Z",
       "incidentOpenedAt": "2026-11-19T18:03:56.896Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T23:23:41.959Z",
+      "lastSeen": "2026-11-23T02:00:00.934Z",
       "lastNotifiedAt": "2026-11-22T07:51:12.499Z",
       "lastSurfacedAt": "2026-11-22T07:51:12.499Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8033",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-7847-ledger-persist": {
       "status": "resolved",
@@ -46676,18 +46673,17 @@
     },
     "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: audit-aggregator-archive-integrity.js: baseline holds no stale entries (tests/unit/audit-stale-baseline-detection.test.mjs)",
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T23:23:42.153Z",
-      "lastNotifiedAt": "2026-11-22T16:48:54.075Z",
-      "lastSurfacedAt": "2026-11-22T16:48:54.075Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-23T02:00:01.244Z",
+      "lastNotifiedAt": "2026-11-23T02:00:01.244Z",
+      "lastSurfacedAt": "2026-11-23T02:00:01.244Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": "BRO-8101"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -47225,13 +47221,13 @@
       "firstSeen": "2026-11-21T13:03:39.013Z",
       "incidentOpenedAt": "2026-11-21T13:03:39.013Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T23:23:42.693Z",
+      "lastSeen": "2026-11-23T02:00:13.261Z",
       "lastNotifiedAt": "2026-11-22T13:14:04.821Z",
       "lastSurfacedAt": "2026-11-22T13:14:04.821Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro7962-walled": {
       "status": "resolved",

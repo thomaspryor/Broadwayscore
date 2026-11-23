@@ -382,21 +382,6 @@
     "queuedAt": "2026-11-22T16:37:49.211Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
-    "title": "Live-data test failing: audit-aggregator-archive-integrity.js: baseline holds no stale entries (tests/unit/audit-stale-baseline-detection.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"audit-aggregator-archive-integrity.js: baseline holds no stale entries\" in tests/unit/audit-stale-baseline-detection.test.mjs is red against the live corpus.\n\naudit-aggregator-archive-integrity.js --check-stale exited 1; prune with: node scripts/audit-aggregator-archive-integrity.js --prune-stale\n- bww-reviews/the-oresteia-off-west-end-2026\n- bww-reviews/the-play-that-goes-wrong-2017\n- bww-reviews/the-rat-trap-off-west-end-2026\n- bww-reviews/the-story-west-end-2026\n- bww-reviews/the-threepenny-opera-2006\n- bww-reviews/the-water-engine-1978\n- bww-reviews/titanique-2026\n- bww-reviews/tru-off-west-end-2026\n- bww-reviews/twelfth-night-2013\n- bww-reviews/vivat-vivat-regina-1972\n- bww-reviews/woman-in-mind-west-end-2025\n- bww-roundups/an-enemy-of-the-people-west-end-2024\n- bww-roundups/illinoise-off-broadway-2024\n… and 43 more\nA stale entry would silently re-excuse the same regression later. Prune: node scripts/audit-aggregator-archive-integrity.js --prune-stale (or --update-baseline when the scan has no new bad archives)\n\n1 !== 0\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
-    "fields": [],
-    "queuedAt": "2026-11-22T16:48:54.075Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
     "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nnew same-show/same-outlet critic-name near-duplicate(s) found — this is the Markoski/Markosky double-count shape (BRO-4156). Either merge the duplicate files (keep the richer/real-URL record, dedupe criticName to the outlet's own byline spelling), or if this is a genuine two-different-critics collision, add it to KNOWN_BACKLOG/allow-list with a note why.\n+ actual - expected\n\n+ [\n+   [\n+     'a-raisin-in-the-sun-2014',\n+     'ny1',\n+     'Roma Tore',\n+     'Roma Torre'\n+   ]\n+ ]\n- []\n",
@@ -1109,6 +1094,35 @@
       }
     ],
     "queuedAt": "2026-11-23T01:43:34.535Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-aggregator-archive-integrity.js: baseline holds no stale entries",
+    "title": "Live-data test failing: audit-aggregator-archive-integrity.js: baseline holds no stale entries (tests/unit/audit-stale-baseline-detection.test.mjs) — still happening after 3 days",
+    "description": "Filed BRO-8101: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"audit-aggregator-archive-integrity.js: baseline holds no stale entries\" in tests/unit/audit-stale-baseline-detection.test.mjs is red against the live corpus.\n\naudit-aggregator-archive-integrity.js --check-stale exited 1; prune with: node scripts/audit-aggregator-archive-integrity.js --prune-stale\n- bww-reviews/the-oresteia-off-west-end-2026\n- bww-reviews/the-play-that-goes-wrong-2017\n- bww-reviews/the-rat-trap-off-west-end-2026\n- bww-reviews/the-story-west-end-2026\n- bww-reviews/the-threepenny-opera-2006\n- bww-reviews/the-water-engine-1978\n- bww-reviews/titanique-2026\n- bww-reviews/tru-off-west-end-2026\n- bww-reviews/twelfth-night-2013\n- bww-reviews/vivat-vivat-regina-1972\n- bww-reviews/woman-in-mind-west-end-2025\n- bww-roundups/an-enemy-of-the-people-west-end-2024\n- bww-roundups/illinoise-off-broadway-2024\n… and 43 more\nA stale entry would silently re-excuse the same regression later. Prune: node scripts/audit-aggregator-archive-integrity.js --prune-stale (or --update-baseline when the scan has no new bad archives)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8101",
+    "fields": [],
+    "queuedAt": "2026-11-23T02:00:13.028Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
+    "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"open hub shows are not past a sourced closing date\" in tests/unit/hub-closing-dates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '9-circles-regional-2026',\n+   'the-wash-regional-2026',\n+   'the-beauty-queen-of-leenane-regional-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
+    "fields": [],
+    "queuedAt": "2026-11-23T02:00:13.241Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-8079-mwsj1zs9",
