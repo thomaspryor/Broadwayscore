@@ -943,3 +943,54 @@ describe('leading parenthetical aside is cut or ranked last (BRO-7675)', () => {
     assert.equal(g.hasUsableLlmQuote({ llmPullQuote: '(Lewis’s existence also happens to save the show.)' }), false);
   });
 });
+
+
+// BRO-8105: photo credit / caption / page-header chrome inside a shipped quote. Synthetic prose, real shapes.
+describe('stripCaptionChrome (BRO-8105)', () => {
+  const { stripCaptionChrome } = require('../../scripts/lib/pull-quote-guards.js');
+  const BODY = ' There is precious little to admire in this staging, and the cast cannot rescue a script that never finds its footing.';
+
+  test('cuts each shipped caption shape and keeps the prose', () => {
+    const heads = [
+      'The Cast Photo by Evan Zimmerman',
+      'Friedman Theatre (Photo credit: Matthew Murphy)',
+      'Photo by Victoria Wai',
+      '...Music Box Theatre. Credit: Cylla von Tiedemann/',
+      'Photo by T. Charles Erickson',
+      'Photo by Jos\u00e9 Garc\u00eda',
+    ];
+    for (const h of heads) {
+      const out = stripCaptionChrome(h + BODY);
+      assert.equal(out, BODY.trim(), h);
+    }
+  });
+
+  test('amNY page header + caption line + "/Provided" tail', () => {
+    const raw = 'Broadway Review | \u2018Some Show\u2019 brings the circus to Broadway By Jane Doe \u2026 Comments Posted on March 24, 2024. '
+      + 'Two Actors in "Some Show" on Broadway. Photo by Matthew Murphy/Provided I do not know about you, but I prefer the circus itself.';
+    assert.equal(stripCaptionChrome(raw), 'I do not know about you, but I prefer the circus itself.');
+  });
+
+  test('never deletes critic prose: leaves it, ends the quote before a late credit, or drops the candidate', () => {
+    // untouched: no credit, a bare ellipsis, plural "Photos by" prose, a credit whose name cannot be told from the next sentence
+    for (const clean of [
+      'He praised the photo by the window, a lovely image, in a thoroughly satisfying evening.',
+      '...Some Show aspires to the kind of emotional sweep we associate with the greats.',
+      'The exhibit Photos by Richard Avedon Inspired the set, and it is a triumph for everyone involved.',
+      'Photo by Zimmerman There is precious little here to admire, honestly speaking.',
+    ]) assert.equal(stripCaptionChrome(clean), clean);
+    // a credit after a full sentence ends the quote there; the sentence is kept verbatim
+    assert.equal(stripCaptionChrome('The production is magnificent and moving. Photo by Jane Smith captures its magic.'), 'The production is magnificent and moving.');
+    // a parenthetical credit inside a sentence, and a caption-only candidate, leave nothing quotable
+    assert.equal(stripCaptionChrome('The leads are great (Photo credit: Matthew Murphy) and the score is too, which helps.'), '');
+    assert.equal(stripCaptionChrome('(Photo by Joan Marcus)'), '');
+  });
+
+  test('output is always a substring of the input; several credits are all removed', () => {
+    const multi = 'Photo by Jane Smith Photo by John Brown The show is lovely and the cast is wonderful here.';
+    assert.equal(stripCaptionChrome(multi), 'The show is lovely and the cast is wonderful here.');
+    for (const t of [multi, 'Friedman Theatre (Photo credit: Matthew Murphy)' + BODY, 'The production is magnificent and moving. Photo by Jane Smith captures its magic.']) {
+      assert.ok(t.includes(stripCaptionChrome(t)));
+    }
+  });
+});

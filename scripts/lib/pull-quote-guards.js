@@ -1312,38 +1312,52 @@ function stripLeadingChrome(fullText, opts = {}) {
 // fullText steps of selectBestExcerpt, whose line-based chrome strip cannot
 // see a credit that shares a line with prose.
 //
-// stripCaptionChrome cuts the caption (and anything before it, when the credit
-// sits at the head of the quote) and returns the rest, still a substring of
-// the input. A name is First [M./von/de] Last, so the capitalised first word
-// of the prose that follows ("There", "Unfortunately") is never eaten.
-const CREDIT_NAME = "[A-Z][\\w'\u2019.-]+(?:\\s+(?:[A-Z]\\.|van|von|de|der|del|la|le|da|di|Mc[A-Z]\\w+))?\\s+[A-Z][\\w'\u2019.-]+";
-const CREDIT_PAREN_RE = new RegExp("\\(\\s*(?:Photos?(?:\\s+credit)?|Credit|Courtesy|Photographer)\\s*(?:by|:)\\s*[^()]{1,80}\\)\\s*", 'i');
-const CREDIT_PHOTO_BY_RE = new RegExp("(?:\\b(?:The\\s+)?(?:Cast\\s+|Company\\s+)?Photos?\\s+(?:by|credit:?)\\s+" + CREDIT_NAME + "|\\bCredit:\\s*" + CREDIT_NAME + "\\s*/)(?:\\s*\\/\\s*(?:Provided|Courtesy)\\b)?\\s*");
+// stripCaptionChrome is deliberately conservative (three reviewers, ship-check
+// 2026-11-23): it only ever returns a SUBSTRING of its input, and it only cuts
+//   - a page header at the very start,
+//   - a credit at the head of the quote, together with the text before it only
+//     when that text looks like a caption (capitalised words: a venue name),
+//   - a credit later in the quote, by ending the quote just before it.
+// Prose before a credit, and a credit whose name cannot be told from the next
+// sentence, are left alone: a leftover caption is a visible, auditable defect,
+// a deleted critic sentence is not.
+const NAME_STOP = '(?!(?:The|There|This|That|These|It|Its|In|A|An|He|She|They|We|I|As|At|On|If|But|And|When|While|After|Unfortunately|Seen|Maybe|With|For|Of|By|From|Photo)\\b)';
+const NAME_WORD = "\\p{Lu}[\\p{L}'\u2019.-]+";
+const CREDIT_NAME = NAME_STOP + '(?:\\p{Lu}\\.\\s+' + NAME_WORD + '\\s+' + NAME_STOP + NAME_WORD
+  + '|' + NAME_WORD + '(?:\\s+(?:\\p{Lu}\\.|van|von|de|der|del|la|le|da|di|Mc\\p{Lu}\\p{L}+))?\\s+' + NAME_STOP + NAME_WORD + ')';
+const CREDIT_PAREN_RE = new RegExp('\\(\\s*(?:Photos?(?:\\s+credit)?|Credit|Courtesy|Photographer)\\s*(?:by|:)\\s*[^()]{1,80}\\)\\s*', 'iu');
+const CREDIT_PHOTO_BY_RE = new RegExp('(?:\\b(?:The\\s+)?(?:Cast\\s+|Company\\s+)?Photo\\s+(?:by|credit:?)\\s+' + CREDIT_NAME + '|\\bCredit:\\s*' + CREDIT_NAME + '\\s*/)(?:\\s*\\/?\\s*(?:Provided|Courtesy)\\b)?\\s*', 'u');
 // An outlet's page header ("Broadway Review | Title ... By X ... Comments
 // Posted on March 24, 2024.") that runs into the first sentence.
 const PAGE_HEADER_RE = /^[\s"'\u201c\u2018]*(?:Broadway|Off-Broadway|Theat(?:er|re))\s+Review\s*\|.{0,400}?\bPosted\s+on\s+[A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4}\.?\s*/;
-const CAPTION_HEAD_WINDOW = 240;
+// Text before a head credit that reads as a caption, not a sentence: capitalised
+// words and a few joiners ("Friedman Theatre", "...Music Box Theatre.").
+const CAPTION_HEAD_RE = /^[\s\u2026."'\u201c\u2018]*(?:(?:\p{Lu}[\p{L}'\u2019.&-]*|of|the|at|and|in|for|on)[\s.,]*){0,8}$/u;
+const MIN_QUOTE_AFTER_STRIP = 30;
 
 function stripCaptionChrome(excerpt) {
   if (typeof excerpt !== 'string' || !excerpt) return excerpt;
   let out = excerpt;
-  let cut = false;
   const hdr = out.match(PAGE_HEADER_RE);
-  if (hdr) { out = out.slice(hdr[0].length); cut = true; }
-  for (const re of [CREDIT_PAREN_RE, CREDIT_PHOTO_BY_RE]) {
-    const m = out.match(re);
-    if (!m) continue;
-    cut = true;
-    const end = m.index + m[0].length;
-    // Credit at the head of the quote: the caption text before it goes too.
-    // A credit deeper in the quote is removed on its own.
-    out = end <= CAPTION_HEAD_WINDOW ? out.slice(end) : (out.slice(0, m.index) + out.slice(end));
+  if (hdr) out = out.slice(hdr[0].length);
+  // After a page header, the text up to the first credit is the photo's caption line.
+  let afterHeader = !!hdr;
+  for (let pass = 0; pass < 3; pass++) {
+    let hit = null;
+    for (const re of [CREDIT_PAREN_RE, CREDIT_PHOTO_BY_RE]) {
+      const m = out.match(re);
+      if (m && (!hit || m.index < hit.index)) hit = m;
+    }
+    if (!hit) break;
+    const head = out.slice(0, hit.index);
+    if (afterHeader || CAPTION_HEAD_RE.test(head)) out = out.slice(hit.index + hit[0].length);
+    else out = head.trim(); // credit after real prose: the quote ends where the caption starts
+    afterHeader = false;
   }
-  // Only tidy the seam when a caption was cut: a quote that opens "..." on its own keeps it.
-  return cut ? out.replace(/^[\s\u2026./]+(?=["\u201c\u2018']?[A-Z])/, '').trim() : excerpt;
-}
-function hasCaptionChrome(excerpt) {
-  return typeof excerpt === 'string' && stripCaptionChrome(excerpt) !== excerpt.trim();
+  if (out === excerpt) return excerpt;
+  out = out.replace(/^[\s\u2026./]+(?=["\u201c\u2018']?\p{Lu})/u, '').trim();
+  // Nothing worth quoting is left (a caption-only candidate): the caller drops it.
+  return out.length >= MIN_QUOTE_AFTER_STRIP ? out : '';
 }
 
 // ---------------------------------------------------------------------------
@@ -1505,7 +1519,6 @@ module.exports = {
   isNarrativeLine,
   stripLeadingChrome,
   stripCaptionChrome,
-  hasCaptionChrome,
   // Listing / credits chrome
   LISTING_CHROME_PATTERNS,
   LISTING_TERMINATOR_RE,
