@@ -91,3 +91,32 @@ test('columns prop maps to literal Tailwind classes', () => {
   assert.match(html({ columns: 3, stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-3 /);
   assert.match(html({ stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-2 sm:grid-cols-4 /);
 });
+
+// --- Avg Score sample-size label (owner decision: keep the score, say how many shows it rests on) ---
+function loadAvgScoreHelper() {
+  const src = fs.readFileSync(path.join(root, 'src', 'lib', 'theater-avg-score.ts'), 'utf8');
+  const out = ts.transpileModule(src, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
+  const mod = { exports: {} };
+  new Function('exports', 'module', out)(mod.exports, mod);
+  return mod.exports.getTheaterAvgScore;
+}
+
+test('getTheaterAvgScore: mean of scored shows, labeled with the sample size', () => {
+  const get = loadAvgScoreHelper();
+  const one = get([{ criticScore: { score: 78 } }, { criticScore: null }, {}]);
+  assert.deepEqual(one, { avgScore: 78, sampleLabel: 'based on 1 show' });
+  const many = get([{ criticScore: { score: 70 } }, { criticScore: { score: 81 } }, { criticScore: { score: 0 } }]);
+  assert.equal(many.avgScore, 50);
+  assert.equal(many.sampleLabel, 'based on 3 shows');
+  assert.deepEqual(get([{ criticScore: null }, {}]), { avgScore: null });
+});
+
+for (const p of pages) {
+  const rel = path.relative(root, p);
+  test(`${rel} labels Avg Score with the sample size`, () => {
+    const src = fs.readFileSync(p, 'utf8');
+    assert.match(src, /getTheaterAvgScore\(theater\.allShows\)/);
+    assert.match(src, /label: 'Avg Score'[^\n]*subtitle: avgScoreLabel/);
+    assert.doesNotMatch(src, /scoredShows\s*=/, 'compute the average via getTheaterAvgScore, not inline');
+  });
+}

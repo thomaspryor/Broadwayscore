@@ -8,6 +8,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { ScoreBadge, StatGrid, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getTheaterAvgScore } from '@/lib/theater-avg-score';
 import { versionedImagePath } from '@/lib/versioned-image-path';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
@@ -128,10 +129,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
 
   // Compute stats
   const pastShowCount = theater.allShows.filter(s => s.status === 'closed').length;
-  const scoredShows = theater.allShows.filter(s => s.criticScore?.score != null);
-  const avgScore = scoredShows.length > 0
-    ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)
-    : null;
+  const { avgScore, sampleLabel: avgScoreLabel } = getTheaterAvgScore(theater.allShows);
 
   // Serialize shows for client component
   const theaterShows = theater.allShows.map(show => {
@@ -233,7 +231,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
             stats={[
               ...(theater.capacity ? [{ label: 'Seats', value: theater.capacity.toLocaleString('en-US') }] : []),
               { label: 'Past Shows', value: theater.allShows.length, subtitle: '1970 to present' },
-              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" /> },
+              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" />, subtitle: avgScoreLabel },
             ]}
           />
 
