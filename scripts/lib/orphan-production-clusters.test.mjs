@@ -61,3 +61,43 @@ test('urlKey keeps identifying query params but drops tracking ones; titlesCompa
   assert.ok(L.titlesCompatible('imeverywoman', 'imeverywomanthechakakhanmusical'));
   assert.ok(!L.titlesCompatible('seagull', 'threesisters'));
 });
+
+// BRO-8093 class guard: the gate decision end to end (findOrphans -> clusterOrphans -> gateKeyTotals -> gateFailures).
+// Reverting a rehome (production not in shows.json, reviews parked flagged on the old same-title show) must turn the gate red.
+test('gate: a missing production fails, adding it + rehoming passes, and the revert view fails again', () => {
+  const nowG = Date.parse('2026-11-20');
+  const host = { id: 'good-night-oscar-2023', title: 'Good Night, Oscar', previewsStartDate: '2023-04-07', openingDate: '2023-04-24', closingDate: '2023-08-27' };
+  const added = { id: 'good-night-oscar-off-west-end-2025', title: 'Good Night, Oscar', previewsStartDate: '2025-07-26', openingDate: '2025-08-06', closingDate: '2025-10-04' };
+  const outlets = { guardian: { region: 'london' } };
+  const parked = [1, 2, 3, 4].map((n) => [host.id, `guardian--c${n}.json`, { wrongProduction: true, publishDate: `2025-08-0${n + 4}`, outletId: 'guardian', url: `https://x.co.uk/r${n}` }]);
+  const runGate = (records, shows) => L.gateFailures(L.gateKeyTotals(L.clusterOrphans(L.findOrphans(records, shows, outlets, nowG)), 3), {});
+  // before the fix: 4 parked reviews, no 2025 production -> red
+  const red = runGate(parked, [host]);
+  assert.equal(red.length, 1);
+  assert.equal(red[0].key, 'goodnightoscar|west-end');
+  assert.equal(red[0].count, 4);
+  // after the fix: show added, reviews moved with reroutedFrom -> green
+  const fixed = parked.map(([, f, j]) => [added.id, f, { ...j, wrongProduction: false, reroutedFrom: host.id }]);
+  assert.deepEqual(runGate(fixed, [host, added]), []);
+  // the show added but reviews still parked are covered by its window -> green too
+  assert.deepEqual(runGate(parked, [host, added]), []);
+  // revertRehome of the fixed state reproduces the red, without mutating its inputs
+  const v = L.revertRehome(fixed, [host, added], new Set([added.id]), new Set([added.id]));
+  assert.equal(runGate(v.records, v.shows).length, 1);
+  assert.equal(fixed[0][2].wrongProduction, false);
+  // a pre-existing rehome target kept in shows (--keep-shows) covers its own window -> no false red
+  const k = L.revertRehome(fixed, [host, added], new Set(), new Set([added.id]));
+  assert.deepEqual(runGate(k.records, k.shows), []);
+});
+
+test('gate: a flagged copy whose URL is live elsewhere is not counted; baseline ratchet allows equal, fails growth', () => {
+  const nowG = Date.parse('2026-11-20');
+  const host = { id: 'h-2010', title: 'When We Are Married', openingDate: '2010-01-01', closingDate: '2010-03-01' };
+  const other = { id: 'h-other-2023', title: 'When We Are Married', openingDate: '2023-01-01', closingDate: '2023-02-01' };
+  const recs = [0, 1, 2].map((n) => [host.id, `o--c${n}.json`, { wrongProduction: true, publishDate: '2025-06-10', outletId: 'o', url: `https://a.co.uk/${n}` }]);
+  const live = recs.map(([, f, j]) => [other.id, `live-${f}`, { url: j.url, publishDate: '2023-01-10' }]);
+  assert.equal(L.findOrphans([...recs, ...live], [host, other], {}, nowG).length, 0);
+  const totals = L.gateKeyTotals(L.clusterOrphans(L.findOrphans(recs, [host, other], {}, nowG)), 3);
+  assert.deepEqual(L.gateFailures(totals, { 'whenwearemarried|west-end': 3 }), []);
+  assert.equal(L.gateFailures(totals, { 'whenwearemarried|west-end': 2 }).length, 1);
+});
