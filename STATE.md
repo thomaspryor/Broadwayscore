@@ -1,14 +1,17 @@
-# BRO-8110 state (headless job, 2026-11-23)
+# BRO-8065 state (headless job, 2026-11-22 16:31 EST)
 
-## Done (committed on job/linear-BRO-8110-mwtd8y7f)
-- Hook half (planning-tier symlinked /tmp) and mexodus data half were already landed by an earlier run (a4be985, review-texts 998d5c7 + 24e698f). Both tests pass on main.
-- Root cause of the land-floor blocks: the local post-merge floor's origin/main baseline checkout has no gitignored data dirs (data/review-texts), so a corpus test red on main skipped green on the baseline and read as NEW.
-- Fix in scripts/lib/merge-post-merge-test-gate.js: baseline run gets REVIEW_TEXTS_DIR = merged tree's corpus (honouring corpus tests judged fairly; regressions still block); other LIVE-DATA-LANE files are reported, not blocking, only when the trees' gitignored data differ. land.yml unaffected (no corpus either side).
-- Tests: merge-post-merge-test-gate.test.mjs 110/110 (6 BRO-8110 cases, 2 red on origin/main), bash harness 10/10, land-preflight-refusals 2/2.
-- E2E: real gate CLI on pre-settlement mexodus corpus: origin/main gate EXIT=1 "1 new"; branch gate EXIT=0 "0 new, 1 pre-existing".
-- Land attempt 1 refused by the floor for audit-unsafe-show-dir-listing (statSync().isDirectory() on one line); fixed in the last commit, land-preflight-refusals passes.
+## Done
+- Code: classifier rules, bot-wall unwrap, drain verdict histogram, shard fix, review fixes. Committed on job/linear-BRO-8065-mws9qg5d with a ship-check receipt.
+- Tests: `node --test tests/unit/pending-triage.test.mjs` passes 93/93.
+- 2025-26: dry run 98% settled/junk/duplicate; fetch promoted 0. Pushed to broadway-review-texts.
+- 2015-24: 170 promoted (37 + 25 + 61 + 47), 824 tagged junk. Pushed to broadway-review-texts main (e7c46487779, 2cf2670e645). Every shard hit its 30-minute budget, so a remainder is left.
+- Spend since 2026-11-22T20:38:26Z: 887 paid calls, about $1.02.
+
+## Land status: NOT landed (attempt 3, run 45072537576, refused at gate lint-workflows; this branch changes no workflow file, so check whether main is red on actionlint, then rerun the land script)
+- Land attempt 3: log /tmp/bro8065-land3.log. Attempt 2 was refused by the venue-write audit (a false positive, fixed with a venue-write-guard-ok comment).
 
 ## Remaining
-1. From this worktree: `bash scripts/merge-worktree-to-main.sh` (full floor ~15 min), follow the Land run to green.
-2. On main: `node --test scripts/tests/planning-tier.test.mjs` and `node --test scripts/lib/merge-post-merge-test-gate.test.mjs`.
-3. `node scripts/linear-session.js report --issue=BRO-8110 --status=done ...`
+1. If land 3 is refused, read its log, fix, and rerun `bash scripts/merge-worktree-to-main.sh`.
+2. On up-to-date main: `node --test tests/unit/pending-triage.test.mjs`.
+3. Finish the 2015-24 remainder. Use the data worktree /private/tmp/brt-8065 (pull first), with `REVIEW_TEXTS_DIR=/private/tmp/brt-8065`, and run this for i in 1..4: `node --env-file=.env scripts/replay-pending-bylines.js --all-pending --era=2015-24 --shard=$i/4 --time-budget-min=30`.
+4. Pre-2015: triage first (`--triage-only`), then a sharded fetch.
