@@ -24,9 +24,18 @@ function readRows(p) {
   // default view adds this machine's session rows.
   if (p) return readFile(p);
   const base = process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH;
-  // Committed cloud-session rows (BRO-8108) plus this machine's own, each file once.
+  // Committed session rows (BRO-8108) plus this machine's own, each file once. A row folded
+  // into the tracked file at wrap-up stays in the Mac's home file too: count it once.
   const files = [...new Set([base, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath()])];
-  return files.flatMap(readFile);
+  const [first, ...rest] = files.map(readFile);
+  const seen = new Set(rest.length ? first.filter((r) => r.kind === 'session').map((r) => JSON.stringify(r)) : []);
+  const out = first.slice();
+  for (const rows of rest) for (const r of rows) {
+    const k = JSON.stringify(r);
+    if (seen.has(k)) continue;
+    seen.add(k); out.push(r);
+  }
+  return out;
 }
 
 /** rows -> { providers: {name: totals}, callers: [{provider, workflow, script, ...totals}] } */

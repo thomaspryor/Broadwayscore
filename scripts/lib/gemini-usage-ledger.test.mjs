@@ -212,3 +212,20 @@ test('the usage summary reads committed cloud-session rows', () => {
   assert.match(src, /TRACKED_SESSION_LEDGER_PATH/);
   assert.equal(typeof S.readRows, 'function');
 });
+
+test('a session row folded into the tracked file and still in the home file counts once', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-dup-'));
+  const home = path.join(dir, 'home'); fs.mkdirSync(path.join(home, '.claude', 'state'), { recursive: true });
+  const row = JSON.stringify({ ts: '2026-11-23T00:00:00.000Z', provider: 'gemini', kind: 'session', caller: 'ship-check', model: 'gemini-3.8-flash', calls: 1, costUsd: 0.5 });
+  fs.writeFileSync(path.join(home, '.claude', 'state', 'llm-session-usage.jsonl'), row + '\n');
+  const base = path.join(dir, 'base.jsonl'); fs.writeFileSync(base, '');
+  const code = `const L=require(process.argv[1]);const fs=require('fs');fs.mkdirSync(require('path').dirname(L.TRACKED_SESSION_LEDGER_PATH),{recursive:true});` +
+    `const S=require(process.argv[2]);const n=S.readRows().filter(r=>r.caller==='ship-check'&&r.ts==='2026-11-23T00:00:00.000Z').length;process.stdout.write(String(n));`;
+  // The same row in an earlier-read file (here the base ledger) and in the machine's home file.
+  fs.writeFileSync(base, row + '\n');
+  const r = spawnSync(process.execPath, ['-e', code, require.resolve('./gemini-usage-ledger.js'), require.resolve('./llm-usage-summary.js')],
+    { env: { PATH: process.env.PATH, HOME: home, GEMINI_USAGE_LEDGER_PATH: base, LLM_SESSION_LEDGER_PATH: path.join(home, '.claude', 'state', 'llm-session-usage.jsonl') }, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(r.stdout, '1');
+});
