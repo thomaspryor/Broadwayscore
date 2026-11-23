@@ -73,3 +73,8 @@ test('reader routes alone declare the isolating maxDuration', () => {
     }
   }
 });
+
+test('a tree without src/app yields no routes instead of throwing (next.config.js loads in scratch trees)', () => {
+  assert.deepEqual(listAppRoutes(join(ROOT, 'no-such-dir', 'app')), []);
+  assert.deepEqual(redundantInlinedJsonExcludes({ appDir: join(ROOT, 'no-such-dir', 'app') }), {});
+});

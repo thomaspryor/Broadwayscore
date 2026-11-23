@@ -63,6 +63,10 @@ function escapeGlob(s) {
 /** Every app-router route under appDir, named the way Next names an entry. */
 function listAppRoutes(appDir) {
   const routes = new Set();
+  // next.config.js is also loaded from scratch trees with no src/app (tests that
+  // stage a minimal checkout, BRO-5042's push-core-data refusal test). No app
+  // dir means no routes to exclude; a real build always has one (unit-tested).
+  if (!fs.existsSync(appDir)) return [];
   (function walk(dir, segs) {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
       if (e.isDirectory()) {
