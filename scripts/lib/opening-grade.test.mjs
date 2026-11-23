@@ -207,9 +207,19 @@ test('BRO-7145: hand deletions and approved-fix ingests get a cause class, not "
   assert.equal(del('f2d868d6 on-monitor: drop same-URL duplicate nyt-theater--jonathan.json'), 'duplicate-identity');
   assert.equal(del('1bdad414 on-monitor: drop Vulture slam-frank stub superseded by full-text vulture--jackson'), 'duplicate-identity');
   assert.equal(del('773ff6ed fix(reviews): remove Air Mail event-listing page mis-ingested as PEC review'), 'content-tier');
+  assert.equal(del('on-monitor: ingest cleanup, drop old file'), 'removed-by-hand');
+  assert.equal(del('on-monitor: drop cross-outlet duplicate'), 'attribution');
+  assert.equal(og.causeOfSubject('drop cross-outlet duplicate'), 'attribution');
   assert.equal(og.causeOfSubject('14b07e94 BRO-4695: triage 5 more cross-outlet suspects'), 'attribution');
   assert.equal(og.causeOfSubject('4a77e3b5 revert: cloud-9 times-uk was an interview, not a review (BRO-7569 non_review_url gate)'), 'content-tier');
   assert.equal(og.causeOfFields(['ingest:execute-approved-fix']), 'discovery-gap');
+  // mixed-intent subjects: the specific family wins over ingest/refetch words
+  assert.equal(og.causeOfSubject('refetch cross-outlet review'), 'attribution');
+  assert.equal(og.causeOfSubject('revert ingested interview, not a review'), 'content-tier');
+  assert.equal(og.causeOfSubject('drop same-URL copy'), 'duplicate-identity');
+  // a hand step's cause is for the grade line; it never feeds the first-pass recurrence classes
+  const g = { showId: 's', category: 'off-broadway', signals: [{ kind: 'hand-step', outletId: 'x', cause: 'discovery-gap', at: '2026-11-01T00:00:00Z' }] };
+  assert.equal(og.firstPassMisses([g]).length, 0);
   assert.equal(og.causeOfFields(['approvedFix:publishDate', 'ingest:execute-approved-fix']), 'date-guard');
 });
 

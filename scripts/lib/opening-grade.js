@@ -153,6 +153,7 @@ const CAUSE_LABEL = {
   'scoring-by-hand': 'score set by hand',
   'content-tier': 'content tier or non-review flag',
   'false-alarm': 'hand ingest of a review already live',
+  'removed-by-hand': 'unwanted file removed by hand',
   other: 'other fix',
 };
 const CAUSE_BY_FIELD = {
@@ -202,16 +203,20 @@ function causeOfSignal({ kind, source, fileChange } = {}) {
 /** Cause class of a hand commit that only deleted the outlet's file (BRO-7145). */
 function causeOfDeletion(subject) {
   const t = String(subject || '').toLowerCase();
-  if (/duplic|same-url|superseded|syndicat|dedupe/.test(t)) return 'duplicate-identity';
   if (/cross-outlet|attribut|byline|re-credit/.test(t)) return 'attribution';
-  if (/wrongprod|wrongshow|wrong.show|other production|misfiled/.test(t)) return 'wrong-label';
-  return 'content-tier';
+  if (/duplic|same-url|superseded|syndicat|dedupe/.test(t)) return 'duplicate-identity';
+  if (/mirror|listing|placeholder|\bstub\b|junk|non.?review|not a review|event page|mis-ingested/.test(t)) return 'content-tier';
+  return 'removed-by-hand';
 }
 
 /** Cause class of a hand commit or log line, from its subject. */
 function causeOfSubject(subject) {
   const t = String(subject || '').toLowerCase();
   if (/wrongprod|wrongshow|wrong.show/.test(t)) return 'wrong-label';
+  // BRO-7145 ship-check: a non-review or a cross-outlet copy outranks the
+  // ingest/refetch words it is usually phrased with.
+  if (/isnonreview|non-review|non_review|not_a_review|not a review/.test(t)) return 'content-tier';
+  if (/cross-outlet/.test(t)) return 'attribution';
   // BRO-7375: a text recovery ("NYT browser recovery", the gap-recovery
   // driver's "accepted" checkpoints) fixed the text of a review the first pass
   // already found; it is not a review discovery missed.
@@ -221,7 +226,7 @@ function causeOfSubject(subject) {
   if (/ingest|missed|discovery|on-monitor|opening.night monitor|\bdirect\b|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
   if (/byline|criticname|re-credit|attribut|outletid|cross-outlet/.test(t)) return 'attribution';
   if (/publishdate|date guard/.test(t)) return 'date-guard';
-  if (/duplic|syndicat/.test(t)) return 'duplicate-identity';
+  if (/duplic|syndicat|same-url|superseded/.test(t)) return 'duplicate-identity';
   if (/wrongprod|wrongshow|wrong.show|stale|combinedwith|tour|cross-market|misfiled/.test(t)) return 'wrong-label';
   if (/override|score|rating|isnonreview|non-review|non_review|not_a_review|not a review|box-office|junk/.test(t)) return /override|score|rating/.test(t) ? 'scoring-by-hand' : 'content-tier';
   // BRO-7145: the 2-month audit left 21 openings in 'other'; these are the subject families behind them.
@@ -533,6 +538,10 @@ function firstPassMisses(grades) {
     if (!g || !g.showId || !g.category) continue;
     for (const s of [...(g.signals || []), ...(g.sweepFinds || [])]) {
       if (!s || !s.outletId) continue;
+      // Hand steps name a cause for the grade line only; their timing is not
+      // checked against the poller's grace window, so they never feed the
+      // first-pass recurrence classes (BRO-7145 ship-check).
+      if (s.kind === 'hand-step') continue;
       let cause = s.cause || null;
       if (COMMIT_SIGNAL_KINDS.has(s.kind) && s.source) cause = causeOfSignal(s);
       else if (s.kind === 'hand-created-file') cause = 'discovery-gap';
