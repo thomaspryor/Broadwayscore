@@ -48625,13 +48625,13 @@
       "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
       "firstSeen": "2026-11-23T00:31:00.296Z",
       "incidentOpenedAt": "2026-11-23T00:31:00.296Z",
-      "lastSeen": "2026-11-23T13:24:46.624Z",
+      "lastSeen": "2026-11-23T13:43:43.403Z",
       "lastNotifiedAt": "2026-11-23T00:31:00.296Z",
       "lastSurfacedAt": "2026-11-23T00:31:00.296Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 41
+      "silentRefires": 42
     },
     "land:land/bro-8065-takeover": {
       "status": "resolved",
@@ -48990,7 +48990,7 @@
       "linearIdentifier": "BRO-8131"
     },
     "land:land/bro-8125-nyt": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: toplevel-regression red on land/bro-8125-nyt",
       "firstSeen": "2026-11-23T13:24:46.154Z",
@@ -49000,7 +49000,8 @@
       "lastSurfacedAt": "2026-11-23T13:24:46.154Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T13:43:43.306Z"
     }
   }
 }
