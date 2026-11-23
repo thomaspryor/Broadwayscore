@@ -226,21 +226,35 @@ test('BRO-8105: stripCaptionChrome cuts each caption shape and leaves the prose'
   assert.equal(stripCaptionChrome(clean), clean);
 });
 
-test('BRO-8105: selectBestExcerpt never ships a quote that opens with a photo credit (fullText steps 6 and 7)', () => {
-  const para = 'There is precious little to admire in this staging, and the cast cannot rescue a script that never finds its footing. '
-    + 'The second half repeats the first with louder music, and the design, handsome as it is, serves a story nobody asked to hear again. '
-    + 'It runs long, and the ending arrives well after the point has been made twice over.';
-  for (const head of ['The Cast Photo by Evan Zimmerman ', 'Friedman Theatre (Photo credit: Matthew Murphy) ', 'Photo by Victoria Wai ']) {
-    const q = selectBestExcerpt({ showId: 'some-show-2026', fullText: head + para + '\n\n' + para });
-    assert.ok(q, `fixture must still produce a quote for ${head}`);
-    assert.doesNotMatch(q, /Photo|Credit|Zimmerman|Murphy|Victoria Wai/, q);
-  }
-});
-
 test('BRO-8105: amNY page header + photo caption with a "/Provided" tail; a leading ellipsis alone is kept', () => {
   const raw = 'Broadway Review | ‘Some Show’ brings the circus to Broadway By Jane Doe … Comments Posted on March 24, 2024. '
     + 'Two Actors in "Some Show" on Broadway. Photo by Matthew Murphy/Provided I do not know about you, but I prefer the circus itself.';
   assert.equal(stripCaptionChrome(raw), 'I do not know about you, but I prefer the circus itself.');
   const ell = '...Some Show aspires to the kind of emotional sweep we associate with the greats.';
   assert.equal(stripCaptionChrome(ell), ell);
+});
+
+// BRO-8105: an LLM quote snapped back to its source sentence picks up the caption that precedes it
+// (a non-contiguous quote snaps to its source sentence; the-moth-off-west-end-2026/london-box-office: single-line page, "...Finborough Theatre. Photo by Victoria Wai Unfortunately ...").
+test('BRO-8105: a snapped llmPullQuote does not pull in the photo credit before its sentence', () => {
+  const quote = 'Unfortunately what was originally a striking monologue assumes an altogether more stodgy consistency as a clunkily overwritten play of two meandering hours.';
+  const fullText = 'Home Theatre News Reviews Review: A PLAY at Finborough Theatre Review: A PLAY at Finborough Theatre Jane Roe 30 October, 2026, 00:00 '
+    + 'Originally commissioned for video as part of a series of monologues, the piece was partly based on conversations with a former conscript. '
+    + 'The writer is also a film director and a capable teller of stories, some of which are partially assimilated here. '
+    + 'A Play at Finborough Theatre. Photo by Victoria Wai ' + quote.replace('assumes an', 'assumes, in the end, an')
+    + ' The cast do what they can with it, and the direction is brisk, but the evening still feels long and the closing scene arrives too late to matter.';
+  const q = selectBestExcerpt({ showId: 'some-show-2026', llmPullQuote: quote, fullText, textStatus: 'complete' });
+  assert.ok(q, 'fixture must produce a quote');
+  assert.doesNotMatch(q, /Photo by|Victoria Wai/, q);
+});
+
+// A candidate that itself opens with the caption (the shipped bug-2026 / the-outsiders-2024 shape) is cleaned in validateExcerpt.
+test('BRO-8105: a candidate that opens with a photo credit ships without it', () => {
+  const prose = 'Seen first in London, the play has been staged with a restless energy that the cast sustains for two full hours. '
+    + 'The writing is sharp, the design is handsome, and the second act lands with real force.';
+  for (const head of ['Friedman Theatre (Photo credit: Matthew Murphy) ', 'Photo by Victoria Wai ']) {
+    const q = selectBestExcerpt({ showId: 'some-show-2026', llmPullQuote: head + prose, fullText: head + prose + ' ' + prose + ' ' + prose, textStatus: 'complete' });
+    assert.ok(q, 'fixture must produce a quote for ' + head);
+    assert.doesNotMatch(q, /Photo|Murphy|Victoria Wai/, q);
+  }
 });
