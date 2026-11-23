@@ -254,3 +254,17 @@ test('check-corpus-drift live step: each lane source is exit-checked and floored
   assert.match(y, /tsx_out=\$\(lane_src tsx-manifest \d+ /);
   assert.match(y, /grep -q '\^# tests \[0-9\]' "\$RUNNER_TEMP\/live-data-tsx\.tap"/);
 });
+
+// BRO-8107: the local pre-flight traces under the env land.yml runs in. Without
+// CI/GITHUB_ACTIONS, owner-alert-router and gap-recovery-ledger take their
+// local-only paths and a CI-only live read (pending-drain-bro-7930's alert
+// ledger, land run 45116819850) passed locally and was refused at land.
+test('traceEnv: tracer runs with CI env, its own log, and no inherited test-runner context', () => {
+  const env = L.traceEnv({ PATH: '/bin', NODE_TEST_CONTEXT: 'child-v8', LIVE_DATA_TEST: 'x.test.mjs', CI: '' }, '/tmp/r.jsonl');
+  assert.equal(env.CI, 'true');
+  assert.equal(env.GITHUB_ACTIONS, 'true');
+  assert.equal(env.LIVE_DATA_READ_LOG, '/tmp/r.jsonl');
+  assert.equal(env.PATH, '/bin');
+  assert.equal('NODE_TEST_CONTEXT' in env, false);
+  assert.equal('LIVE_DATA_TEST' in env, false);
+});

@@ -86,6 +86,7 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
       const { getMatchableTitles } = require(lib + '/excerpt-validation.js');
       const { curtainupSuffixYear } = require(lib + '/content-filters.js');
       const { resolveShowMeta } = require(lib + '/show-identity.js');
+      const { getShowSlugIndex } = require(lib + '/cross-show-url.js');
       const texts = ${JSON.stringify(texts)};
       const review = { showId: 'example-show-2026', outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Jesse Green', url: 'https://www.nytimes.com/2026/03/02/theater/example-show-review.html', publishDate: '2026-03-02', fullText: 'Example Show is a review. '.repeat(40) };
       const out = {};
@@ -100,6 +101,7 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
           getMatchableTitles: () => getMatchableTitles(),
           curtainupSuffixYear: () => curtainupSuffixYear('https://www.curtainup.com/example' + (tag === 'A' ? '22' : '23') + '.html'),
           resolveShowMeta: () => resolveShowMeta('example-show-2026'),
+          getShowSlugIndex: () => getShowSlugIndex(),
           createOrMergeReviewFile: () => createOrMergeReviewFile('example-show-2026', { outletId: 'variety', outlet: 'Variety', criticName: 'Frank Rizzo', url: 'https://variety.com/2026/legit/reviews/example-show-' + tag + '.html', source: 'test' }, { reviewTextsDir: texts, knownShowIds: ['example-show-2026'] }),
         };
         out[tag] = {};

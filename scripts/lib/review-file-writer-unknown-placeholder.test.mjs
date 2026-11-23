@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7569: an Unknown-critic, no-url placeholder (NYC Theatre roundup excerpt) must not be
 // created beside a usable named review by the same outlet; it stays creatable when none exists.
 import { test } from 'node:test';

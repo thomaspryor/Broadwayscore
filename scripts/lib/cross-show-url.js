@@ -21,7 +21,8 @@ const { foldDiacritics } = require('./title-match');
 const { toDateMs } = require('./date-utils');
 const { earliestShowDate } = require('./date-guard');
 
-const DEFAULT_SHOWS_PATH = require('./shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures)
+// BRO-8107: resolved at call time (SHOWS_JSON_PATH-aware), so a shows fixture is honoured.
+const defaultShowsPath = () => require('./shows-json-path').showsJsonPath();
 
 function slugify(text) {
   return String(text || '').toLowerCase()
@@ -198,7 +199,7 @@ function buildShowSlugIndex(shows) {
 /**
  * Cached slug index keyed by shows.json path.
  */
-function getShowSlugIndex(showsPath = DEFAULT_SHOWS_PATH) {
+function getShowSlugIndex(showsPath = defaultShowsPath()) {
   if (_indexCache.has(showsPath)) return _indexCache.get(showsPath);
   let index = [];
   try {
@@ -216,7 +217,7 @@ const URL_WORD_TITLES = new Set(['broadway', 'west-end']);
  * {id, title, slug, generic: true} for a show titled with a bare URL path
  * word ("Broadway"), which the index leaves out; else null.
  */
-function getGenericTitleShow(showId, showsPath = DEFAULT_SHOWS_PATH) {
+function getGenericTitleShow(showId, showsPath = defaultShowsPath()) {
   if (!_genericCache.has(showsPath)) {
     const m = new Map();
     try {
@@ -248,7 +249,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     const parsed = new URL(url);
     const urlPath = stripBwwSection(parsed.hostname.toLowerCase(), parsed.pathname.toLowerCase());
     const reviewYear = opts.publishDate ? yearOf(opts.publishDate) : null;
-    const index = opts.index || getShowSlugIndex(opts.showsPath || DEFAULT_SHOWS_PATH);
+    const index = opts.index || getShowSlugIndex(opts.showsPath || defaultShowsPath());
     let thisShow = index.find(s => s.id === showId);
     // A show whose title is itself a generic URL word ("Broadway", 1987) is
     // left out of the index, which used to switch this guard off for it
@@ -256,7 +257,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     // of-rock-and-roll-broadway-review") sat live on Broadway (1987), BRO-4977.
     // Look such a show up anyway; its own generic slug just can't vouch.
     if (!thisShow && !opts.index) {
-      const generic = getGenericTitleShow(showId, opts.showsPath || DEFAULT_SHOWS_PATH);
+      const generic = getGenericTitleShow(showId, opts.showsPath || defaultShowsPath());
       if (generic) thisShow = generic;
     }
     if (!thisShow) return null;

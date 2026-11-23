@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7171 Stage 2: gap-strategies outcome mapping (evidence vs non-evidence),
 // with every network dependency stubbed. Run: node --test scripts/lib/gap-strategies.test.mjs
 import { test } from 'node:test';

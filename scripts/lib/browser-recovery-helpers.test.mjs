@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
@@ -8,7 +7,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 // Point the module's show lookup at a scratch shows.json BEFORE requiring it
-// — SHOWS_JSON_PATH is read once at module-load time.
+// (SHOWS_JSON_PATH; the shared guards read it at call time, BRO-8107).
 const tmpShowsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-shows-'));
 const tmpShowsPath = path.join(tmpShowsDir, 'shows.json');
 fs.writeFileSync(tmpShowsPath, JSON.stringify([

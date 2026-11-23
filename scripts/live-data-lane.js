@@ -195,11 +195,30 @@ function traceTimeoutMs(env = process.env) {
   return Number.isFinite(n) && n >= 1000 ? n : 10 * 60 * 1000;
 }
 
+/**
+ * PURE. The tracer's environment. CI and GITHUB_ACTIONS are set because
+ * land.yml runs under them: libraries pick CI-only paths (owner-alert-router
+ * merges the tracked data/audit/alert-ledger.json, gap-recovery-ledger drops its
+ * ~/.broadwayscore-state copy), so a local trace without them missed the read
+ * that refused BRO-8107's own landing (land run 45116819850).
+ */
+function traceEnv(base, log) {
+  const env = { ...base, LIVE_DATA_READ_LOG: log, CI: 'true', GITHUB_ACTIONS: 'true' };
+  for (const k of ['NODE_TEST_CONTEXT', 'LIVE_DATA_TEST']) delete env[k];
+  return env;
+}
+
+/** Tracked files with local modifications (porcelain v1 paths). */
+function dirtyTracked(root = ROOT) {
+  try {
+    return new Set(execFileSync('git', ['diff', '--name-only'], { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean));
+  } catch { return null; }
+}
+
 function traceRun(files, runner, log, root = ROOT) {
   if (!files.length) return true;
   const hook = path.join(root, 'scripts/lib/live-data-read-hook.mjs');
-  const env = { ...process.env, LIVE_DATA_READ_LOG: log };
-  for (const k of ['NODE_TEST_CONTEXT', 'LIVE_DATA_TEST']) delete env[k];
+  const env = traceEnv(process.env, log);
   const args = ['--import', hook, '--test', '--test-reporter=dot', '--test-timeout', '300000', ...files];
   const r = runner === 'tsx'
     ? spawnSync('npx', ['tsx', ...args], { cwd: root, env, stdio: ['ignore', 'ignore', 'inherit'], timeout: traceTimeoutMs() })
@@ -267,7 +286,18 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   }
   const log = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'live-lane-')), 'reads.jsonl');
   fs.writeFileSync(log, '');
+  // Local pre-flight: the trace runs under CI env, where some libraries write
+  // tracked ledgers; put back any tracked file that was clean before it, so the
+  // merge that follows does not carry trace side effects.
+  const before = refuseUndeclared ? dirtyTracked() : null;
   const complete = [traceRun(node, 'node', log), traceRun(tsx, 'tsx', log)].every(Boolean);
+  if (before) {
+    const after = dirtyTracked() || new Set();
+    const touched = [...after].filter((f) => !before.has(f));
+    if (touched.length) {
+      try { execFileSync('git', ['checkout', '--', ...touched], { cwd: ROOT, stdio: 'ignore' }); console.log(`# restored ${touched.length} tracked file(s) the trace modified: ${touched.join(', ')}`); } catch { console.log(`::warning::live-data-lane: the trace modified ${touched.join(', ')}; restore them before merging.`); }
+    }
+  }
   if (!complete) {
     console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: a trace run timed out or was killed, so its reads are incomplete; a clean result below proves nothing.${refuseUndeclared ? ' NOT VERIFIED locally: land.yml will judge it.' : ''}`);
   }
@@ -283,7 +313,7 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   return (undeclared.length || !complete) && blocking ? 1 : 0;
 }
 
-module.exports = { fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
+module.exports = { traceEnv, fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
 
 const USAGE = 'Usage: live-data-lane.js --filter=blocking|live [files] | --classify|--check|--mark <trace.jsonl>... | --verify-changed [--base=<sha>]';
 
