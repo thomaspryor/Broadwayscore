@@ -13,6 +13,7 @@ import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
 import TheaterTipsCard from '@/components/TheaterTipsCard';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import VenueInfoCard from '@/components/VenueInfoCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -313,6 +314,9 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
               </div>
             </Link>
           )}
+
+          {/* Year opened + official website (BRO-8112); the other facts already have their own cards above */}
+          <VenueInfoCard theater={{ name: theater.name, website: theater.website, yearBuilt: theater.yearBuilt }} />
 
           {/* Seating Chart Scorecard */}
           <SeatingGuidanceCard

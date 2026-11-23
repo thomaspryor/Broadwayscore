@@ -151,8 +151,14 @@ export interface TheaterAccessibility {
   hearingLoop?: boolean;
   elevator?: boolean;
   assistiveListening?: boolean;
+  /** Step-free / level access into the auditorium (Off-Broadway + London, BRO-8112). */
+  stepFree?: boolean;
   verified?: boolean;
   notes?: string;
+  /** Facts the venue's own page says it does NOT offer (never inferred from silence). */
+  denied?: Array<'wheelchair' | 'stepFree' | 'elevator' | 'hearingLoop' | 'assistiveListening'>;
+  /** The venue's own page the facts were read from (BRO-8112). */
+  sourceUrl?: string;
 }
 
 export interface TheaterExternalLinks {

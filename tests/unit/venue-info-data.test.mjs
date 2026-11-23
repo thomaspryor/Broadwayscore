@@ -68,3 +68,87 @@ test('every Broadway theater with a curated exterior photo has its image file (h
     assert.ok(fs.existsSync(file), `${name}: missing ${path.relative(ROOT, file)}`);
   }
 });
+
+// ---- BRO-8112: access facts, seat-view links and Broadway websites ----------------------------
+const access = require('../../data/venue-access.json');
+const { TOPIC, quoteInText } = require('../../scripts/lib/venue-access-agree.js');
+const { siteHost } = require('../../scripts/lib/venue-info-agree.js');
+const { slugify: slugifyName } = require('../../scripts/lib/url-slug.js');
+const FLAGS = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
+const accessEntries = Object.entries(access.venues).filter(([, v]) => v.access);
+const hostMatches = (a, b) => {
+  const x = siteHost(a); const y = siteHost(b);
+  return !!x && !!y && (x === y || x.endsWith(`.${y}`) || y.endsWith(`.${x}`));
+};
+
+test('access facts exist for a meaningful set of venues (floor from the first run)', () => {
+  assert.ok(accessEntries.length >= 40, `only ${accessEntries.length} venues have verified access facts`);
+});
+
+test('every published access fact is backed by a verbatim, on-topic quote from the venue\'s own site', () => {
+  for (const [key, v] of accessEntries) {
+    assert.match(key, /^(off-broadway|london)\/[a-z0-9-]+$/, `${key}: access is only for Off-Broadway/London pages`);
+    assert.equal(v.access.verified, true, key);
+    const site = info.venues[key]?.fields?.website;
+    assert.ok(site, `${key}: access published for a venue with no verified official website`);
+    assert.ok(v.access.sourceUrl && hostMatches(v.access.sourceUrl, site), `${key}: sourceUrl ${v.access.sourceUrl} is not on the venue's own site ${site}`);
+    const flags = FLAGS.filter((f) => typeof v.access[f] === 'boolean');
+    assert.ok(flags.length > 0, `${key}: access block with no fact`);
+    for (const f of flags) {
+      const ev = v.access.evidence?.[f];
+      assert.ok(ev && ev.quote && ev.url, `${key}.${f}: no evidence`);
+      assert.ok(ev.quote.split(/\s+/).length >= 3, `${key}.${f}: quote too short to prove anything`);
+      assert.ok(TOPIC[f].test(ev.quote), `${key}.${f}: quote is off topic: "${ev.quote}"`);
+      assert.ok(hostMatches(ev.url, site), `${key}.${f}: evidence url ${ev.url} is not on the venue's own site`);
+    }
+    for (const k of Object.keys(v.access)) {
+      assert.ok([...FLAGS, 'note', 'verified', 'sourceUrl', 'evidence', 'verifiedAt'].includes(k), `${key}: unexpected access field ${k}`);
+    }
+    if (v.access.note) {
+      assert.ok(v.access.evidence?.note?.quote === v.access.note, `${key}: note is not the verified quote`);
+      assert.ok(v.access.note.length <= 240, `${key}: note too long`);
+    }
+  }
+});
+
+test('quote checker really rejects invented evidence (guard on the guard)', () => {
+  assert.ok(!quoteInText('Full wheelchair access throughout the building', 'We have two wheelchair spaces in the stalls.'));
+});
+
+test('seat-view links are venue pages on the two sites, never search or index pages', () => {
+  let n = 0;
+  for (const [key, v] of Object.entries(access.venues)) {
+    if (!v.seatLinks) continue;
+    n++;
+    assert.match(key, /^(off-broadway|london)\//, key);
+    const { seatplan, aviewfrommyseat } = v.seatLinks;
+    if (seatplan) assert.match(seatplan, key.startsWith('london/') ? /^https:\/\/seatplan\.com\/london\/[a-z0-9-]+\/$/ : /^https:\/\/seatplan\.com\/new-york\/[a-z0-9-]+\/$/, `${key}: seatplan`);
+    if (aviewfrommyseat) assert.match(aviewfrommyseat, /^https:\/\/aviewfrommyseat\.com\/venue\/[A-Za-z0-9%+.'-]+\/$/, `${key}: aviewfrommyseat`);
+    assert.ok(!/search|\?/.test(`${seatplan || ''}${aviewfrommyseat || ''}`), `${key}: a search URL`);
+  }
+  assert.ok(n >= 5, `only ${n} venues have seat links`);
+});
+
+test('Broadway houses carry an agreed official website; every key is a real Broadway house', () => {
+  const houses = new Set(Object.keys(theaterMeta).filter((k) => k !== '_meta').map(slugifyName));
+  const sites = Object.entries(access.venues).filter(([k]) => k.startsWith('broadway/'));
+  assert.ok(sites.length >= 28, `only ${sites.length} Broadway houses have an official website (first run: 32 of 41)`);
+  for (const [key, v] of sites) {
+    assert.ok(houses.has(key.slice('broadway/'.length)), `${key} is not a Broadway house in theater-metadata.json`);
+    assert.match(v.website, /^https:\/\/[^/\s]+\.[a-z]{2,}(\/[^\s]*)?$/i, `${key}: bad website ${v.website}`);
+    assert.equal(v.how?.website, 'gemini+openai', `${key}: website has no two-model record`);
+    assert.ok(v.sources?.length > 0, `${key}: no sources`);
+  }
+});
+
+test('Broadway page shows Year opened + official website; all three market pages share the access and seat components', () => {
+  const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
+  const broadway = read('src/app/theater/[slug]/page.tsx');
+  assert.ok(broadway.includes('<VenueInfoCard') && /yearBuilt: theater\.yearBuilt/.test(broadway) && /website: theater\.website/.test(broadway), 'Broadway page lost Year opened / website');
+  const card = read('src/components/VenueInfoCard.tsx');
+  assert.ok(card.includes("label: 'Year opened'") && card.includes('<AccessibilityBadges') && card.includes('<SeatViewLinks'), 'VenueInfoCard lost year/access/seat rows');
+  const scorecard = read('src/components/TheaterScorecardCard.tsx');
+  assert.ok(scorecard.includes('<AccessibilityBadges') && scorecard.includes('<SeatViewLinks'), 'Broadway scorecard no longer uses the shared components');
+  const core = read('src/lib/data-core.ts');
+  assert.ok(core.includes('venue-access.json') && /broadway\/\$\{slugify\(name\)\}/.test(core), 'data-core no longer reads venue-access.json for Broadway websites');
+});
