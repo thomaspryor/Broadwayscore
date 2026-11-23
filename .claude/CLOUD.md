@@ -108,7 +108,7 @@ The environment has production keys (read+write) for PostHog, Sentry and Supabas
 
 ## Newsletter copy edits (BRO-8109)
 
-The owner asks to change a newsletter subject, intro or other copy → run the `newsletter-edit` skill first. This week's draft gets fixed in about 3 minutes by re-dispatching `newsletter-draft.yml` with `subjectOverride`/`ledeOverride`. That PATCHes the Resend draft and never sends. Never call Resend directly. Do the code fix for future weeks after the draft is fixed, never before (BRO-8064 lost four hours doing it the other way round).
+Newsletter subject or intro change: `newsletter-edit` skill first (3-minute draft fix, then rules).
 
 ## Opening-night lane switch (BRO-6622)
 
