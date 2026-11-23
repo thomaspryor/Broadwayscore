@@ -112,6 +112,23 @@ const nextConfig = {
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',
+      // BRO-8147: pipeline-only bulk dirs. Server routes that load scripts/lib
+      // (admin ingest -> review-normalization -> ... -> rebuild-all-reviews.js)
+      // reach modules whose static path.join(__dirname,'..','data') makes NFT
+      // trace ALL of data/ into the function. api/admin/ingest-review/detect hit
+      // 341MB > 250MB and every prod deploy failed from 2026-11-23 07:17Z.
+      // No src/ code reads these at runtime. Guard:
+      // tests/unit/trace-excludes-bulk-data.test.mjs (every tracked data/ dir
+      // over 1MB must be excluded here or allowlisted as a runtime read).
+      'data/video-reviews-transcripts/**',
+      'data/video-reviews-discovery/**',
+      'data/pending-fixes/**',
+      'data/archive/**',
+      'data/llm-scores/**',
+      'data/backups/**',
+      'data/opening-night-monitor/**',
+      'data/opening-night-timeline/**',
+      'data/aggregator-archive/**',
     ],
   },
 }
