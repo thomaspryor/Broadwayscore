@@ -363,6 +363,48 @@ test('runTestGate (BRO-8110): a live test the branch adds (absent from the basel
   assert.equal(result.passed, false);
   assert.match(result.output, /NEW since origin\/main/);
 });
+// Corpus tests honouring REVIEW_TEXTS_DIR (autoclear-vs-ensemble does) are
+// run on the baseline against the merged tree's corpus, so they are judged:
+// a pre-existing corpus failure reads pre-existing, a code regression blocks.
+function bridgedTrees({ baselineAssert, mergedAssert }) {
+  const src = (assertLine) => '// LIVE-DATA-LANE: reads data/review-texts\n'
+    + "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport path from 'node:path';\n"
+    + "const DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.cwd(), 'data', 'review-texts');\n"
+    + "test('corpus: autoclear', (t) => {\n  if (!fs.existsSync(DIR)) { t.skip('no corpus'); return; }\n  const n = fs.readdirSync(DIR).length;\n  " + assertLine + "\n});\n";
+  const mk = (assertLine) => {
+    const d = makeScratchRepo();
+    spawnSync('git', ['init', '-q'], { cwd: d });
+    fs.writeFileSync(path.join(d, '.gitignore'), '/data/review-texts\n');
+    fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), src(assertLine));
+    return d;
+  };
+  const baselineDir = mk(baselineAssert);
+  const mergedDir = mk(mergedAssert);
+  fs.mkdirSync(path.join(mergedDir, 'data', 'review-texts'), { recursive: true });
+  fs.writeFileSync(path.join(mergedDir, 'data', 'review-texts', 'mexodus.json'), '{}');
+  const { REVIEW_TEXTS_DIR: _drop, ...env } = process.env;
+  const saved = process.env.REVIEW_TEXTS_DIR;
+  delete process.env.REVIEW_TEXTS_DIR;
+  try {
+    return runTestGate({
+      cwd: mergedDir, env,
+      changedFiles: ['scripts/lib/review-file-writer.js'],
+      makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+      removeBaselineCheckout: () => {},
+    });
+  } finally { if (saved !== undefined) process.env.REVIEW_TEXTS_DIR = saved; }
+}
+test('runTestGate (BRO-8110): a REVIEW_TEXTS_DIR corpus failure already on origin/main reads pre-existing (baseline sees the same corpus)', () => {
+  const result = bridgedTrees({ baselineAssert: "assert.equal(n, 0, 'auto-cleared');", mergedAssert: "assert.equal(n, 0, 'auto-cleared');" });
+  assert.equal(result.passed, true, result.output);
+  assert.match(result.output, /pre-existing on origin\/main/);
+  assert.doesNotMatch(result.output, /NOT judged here/);
+});
+test('runTestGate (BRO-8110): a code regression in a REVIEW_TEXTS_DIR corpus test still blocks', () => {
+  const result = bridgedTrees({ baselineAssert: "assert.ok(n >= 0);", mergedAssert: "assert.equal(n, 0, 'regressed');" });
+  assert.equal(result.passed, false);
+  assert.match(result.output, /NEW since origin\/main/);
+});
 test('runTestGate (BRO-8110): with the same data on both sides (land.yml) a live failure is judged as before', () => {
   const { result } = corpusTrees({ corpus: false });
   assert.doesNotMatch(result.output, /NOT judged here/);
