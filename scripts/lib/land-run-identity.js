@@ -41,9 +41,11 @@ function pendingIdentity(run) {
   return named ? { ...run, head_branch: named[1], head_sha: null, identityPending: true } : null;
 }
 
+const dispatchKey = (run) => `dispatch:${run.id}:${run.run_attempt}:${run.updated_at}`;
+
 function resolveLandRun(run, { repo, read, readText, cache = new Map() }) {
   if (!run || run.event !== 'workflow_dispatch') return run;
-  const key = `dispatch:${run.id}:${run.run_attempt}:${run.updated_at}`;
+  const key = dispatchKey(run);
   if (cache.has(key)) {
     const identity = cache.get(key);
     return { ...run, head_branch: identity.branch, head_sha: identity.sha };
@@ -89,7 +91,7 @@ function readLatestLandRun(ref, options) {
     const runs = read(`repos/${repo}/actions/workflows/land.yml/runs?event=workflow_dispatch&per_page=100&page=${page}`).workflow_runs || [];
     for (const run of runs) {
       if (latest && Date.parse(run.created_at) < Date.parse(latest.created_at)) return latest;
-      if (run.event === 'workflow_dispatch' && !cache.has(`dispatch:${run.id}:${run.run_attempt}:${run.updated_at}`)) {
+      if (run.event === 'workflow_dispatch' && !cache.has(dispatchKey(run))) {
         uncached += 1;
         if (uncached > maxUncached) return latest;
       }

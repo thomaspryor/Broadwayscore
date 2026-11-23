@@ -541,5 +541,5 @@ test('a ref with no push run resolves a bounded number of hand dispatches, not a
   };
   const got = readLatestLandRun('land/does-not-exist-123', { repo: 'o/r', read, readText: () => '', cache: new Map(), maxUncachedResolves: 25 });
   assert.equal(got, null);
-  assert.ok(resolves <= 25, `expected at most 25 job lookups, made ${resolves}`);
+  assert.equal(resolves, 25, `expected exactly 25 job lookups, made ${resolves}`);
 });
