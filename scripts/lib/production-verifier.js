@@ -507,7 +507,7 @@ function quickDateCheck(showId, url, publishDate, openingDate) {
  */
 function getShowData(showId) {
   try {
-    const showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json');
+    const showsPath = require('./shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures)
     const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
     const shows = showsData.shows || showsData;
     return shows.find(s => s.id === showId);

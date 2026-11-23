@@ -59,7 +59,7 @@ function main() {
   const root = args.root; if (!root) { console.error('--root required'); process.exit(2); }
   const apply = !!args.apply; const limit = Number(args.limit) || Infinity; const sampleN = Number(args.sample) || 0;
   const rd = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
-  const sj = rd(args['shows-json'] || path.join(__dirname, '../data/shows.json')); const allShows = sj.shows || sj;
+  const sj = rd(args['shows-json'] || require('./lib/shows-json-path').showsJsonPath()); const allShows = sj.shows || sj;
   const byId = new Map(allShows.map((s) => [s.id, s]));
   let held = null;
   try { const rj = rd(args['reviews-json'] || path.join(__dirname, '../data/reviews.json')); held = buildHeldUrlIndex(rj.reviews || rj); } catch (e) { console.error(`held index unavailable: ${e.message}`); }

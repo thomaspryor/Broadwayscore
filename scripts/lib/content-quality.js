@@ -854,7 +854,7 @@ function loadBroadwayShows() {
   // Try loading from shows.json
   try {
     const fs = require('fs');
-    const showsPath = require('path').join(__dirname, '../../data/shows.json');
+    const showsPath = require('./shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures)
     const raw = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
     const shows = raw.shows || raw;
     // shows.json is a per-PRODUCTION list, so a frequently-revived title

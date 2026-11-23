@@ -199,7 +199,7 @@ try {
 }
 
 // Paths
-const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const SHOWS_PATH = require('./lib/shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures); default data/shows.json
 const { gatherPurposeForShow, pressNightPurposeForShow, emptySerpAuthoritativeForGather } = require('./lib/spend-purpose');
 const { serpSecondOpinionForShow } = require('./lib/serp-second-opinion-policy');
 // A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
@@ -3691,7 +3691,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   let _showMeta = null;
   let _allShows = null;
   try {
-    const showsJSON = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    const showsJSON = JSON.parse(fs.readFileSync(require('./lib/shows-json-path').showsJsonPath(), 'utf8')); // honours SHOWS_JSON_PATH (test fixtures)
     _allShows = showsJSON.shows || [];
     _showMeta = _allShows.find(s => s.id === showId) || null;
   } catch (e) {}
