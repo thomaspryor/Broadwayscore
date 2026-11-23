@@ -163,6 +163,7 @@ log() { echo "[$(ts)] $*" | tee -a "$LOG"; }
 # All repos here live on the same local disk, so one check covers them all.
 disk_free_gb() {
   local repo_path="${1:-$PRIMARY_REPO}"
+  [ -d "$repo_path" ] || repo_path="$SCRIPT_DIR"
   gc_probe 5 df -Pk "$repo_path" | awk 'NR==2 {print int($4/1024/1024)}'
 }
 
@@ -171,7 +172,7 @@ disk_free_gb() {
 # removals, which must finish before the shared GC lock is released.
 gc_probe() {
   local seconds="$1"; shift
-  python3 "$SCRIPT_DIR/lib/gc-read-probe.py" "$seconds" "$@"
+  printf '%s\0' "$@" | python3 "$SCRIPT_DIR/lib/gc-read-probe.py" "$seconds" --stdin
 }
 
 gc_pin() {
@@ -488,6 +489,7 @@ check_disk_floor() {
   local before after floor_freed=0
   LAST_FLOOR_FREED_KB=0
   before=$(disk_free_gb "$PRIMARY_REPO")
+  [[ "$before" =~ ^[0-9]+$ ]] || { log "WARN  disk free space could not be measured; skipping emergency cleanup"; return 0; }
   if [ "$before" -ge "$DISK_FLOOR_GB" ]; then
     return 0
   fi

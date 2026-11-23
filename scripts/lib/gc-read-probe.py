@@ -9,6 +9,13 @@ import tempfile
 
 def main():
     deadline, *command = sys.argv[1:]
+    if command == ['--stdin']:
+        # The ownership check scans process arguments for paths in use.
+        # Keep the supervisor's arguments path-free to avoid pinning its
+        # own subject. The spawned probe still sees its original argv.
+        command = [os.fsdecode(word) for word in sys.stdin.buffer.read().split(b'\0')[:-1]]
+    if not command:
+        return 125
     # Using a pipe would make the caller wait for EOF from a stuck child.
     # Mutating commands must never be passed here.
     with tempfile.TemporaryFile() as output:
