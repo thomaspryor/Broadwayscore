@@ -164,6 +164,9 @@ jobs:
           # BRO-8150: fail the build, naming the function, when one is over
           # Vercel's 250MB uncompressed limit (see vercel-deploy.yml Build).
           VERCEL_ANALYZE_BUILD_OUTPUT: ${{ vars.FUNCTION_SIZE_BLOCK_DISABLED == 'true' && '0' || '1' }}
+          # BRO-8172 (BRO-8155 cap, same value as vercel-deploy.yml Build): @vercel/next packs routes into
+          # functions until this cap - 25MiB, so lambdas stay well under Vercel's 250MiB limit.
+          MAX_UNCOMPRESSED_LAMBDA_SIZE: '178257920'
         run: |
           # /what-else sweep after card #90 (vercel-deploy.yml): this job has
           # NO job-level timeout-minutes at all, so if Vercel server-side

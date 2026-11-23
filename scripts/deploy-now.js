@@ -95,7 +95,7 @@ function deploy() {
 
   // BRO-8150: same function-size check as vercel-deploy.yml's Build step: a
   // function over Vercel's 250MB limit fails `vercel build` here, by name.
-  const env = { ...process.env, VERCEL_TOKEN: token, VERCEL_ANALYZE_BUILD_OUTPUT: process.env.FUNCTION_SIZE_BLOCK_DISABLED === 'true' ? '0' : '1' };
+  const env = { ...process.env, VERCEL_TOKEN: token, VERCEL_ANALYZE_BUILD_OUTPUT: process.env.FUNCTION_SIZE_BLOCK_DISABLED === 'true' ? '0' : '1', MAX_UNCOMPRESSED_LAMBDA_SIZE: '178257920' }; // BRO-8172: same cap as vercel-deploy.yml (BRO-8155)
   const t0 = Date.now();
 
   console.log('→ vercel pull (fetching production env)...');

@@ -21,3 +21,23 @@ test('playwright and musl sharp stay out of function traces', () => {
     assert.ok(c.includes(g), `next.config.js must exclude ${g}`);
   }
 });
+
+// BRO-8172: every workflow/script that actually runs `vercel build` must carry the cap.
+test('every workflow step and script that runs `vercel build` sets MAX_UNCOMPRESSED_LAMBDA_SIZE <= 175MiB', async () => {
+  const { readdirSync } = await import('node:fs');
+  const wfDir = join(ROOT, '.github/workflows');
+  const files = readdirSync(wfDir).filter((f) => /\.ya?ml$/.test(f)).map((f) => join(wfDir, f));
+  files.push(join(ROOT, 'scripts/deploy-now.js'));
+  const runners = [];
+  for (const f of files) {
+    const t = readFileSync(f, 'utf8');
+    // executed invocation only: not comments, not echo/error strings
+    const runs = t.split('\n').some((l) => /^\s*(timeout \d+ )?(npx( --yes)? )?vercel build\b/.test(l) || /execSync\(`npx --yes vercel build/.test(l));
+    if (!runs) continue;
+    runners.push(f);
+    const m = t.match(/MAX_UNCOMPRESSED_LAMBDA_SIZE:\s*'?(\d+)'?/);
+    assert.ok(m, `${f} runs vercel build without MAX_UNCOMPRESSED_LAMBDA_SIZE`);
+    assert.ok(Number(m[1]) <= 175 * 1024 * 1024, `${f} cap ${m[1]} exceeds 175MiB`);
+  }
+  assert.ok(runners.length >= 4, `expected >=4 vercel-build runners, found ${runners.length}: ${runners.join(', ')}`);
+});
