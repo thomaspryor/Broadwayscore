@@ -371,7 +371,7 @@ test('BRO-8079 ship-check: ordinary titles are not data-count cards; weak count 
 
 test('BRO-8079 ship-check: the nightly recheck auto-close of a Paused RECHECK-AFTER card is warned, not refused', () => {
   const gate = checkLinearDoneTransition({
-    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs\nRECHECK-AFTER: 2026-11-25',
+    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node scripts/validate-data.js\nRECHECK-AFTER: 2026-11-25',
     commentText: 'Auto-closed by the nightly acceptance re-check: `node scripts/count-pending.js --max=500` passed on main.',
     verifyCmdEvidence: passingVerify, env: {},
   });
@@ -428,7 +428,7 @@ test('BRO-8079 reopen: the same five cards are ALLOWED with a measured EFFECT li
       commentText: 'Outcome: fixed.\nEFFECT: open candidates 946 -> 120, measured by `node scripts/count-pending.js --by-era`\nNO-SAMPLE-AUDIT: fixture, no rate claimed here',
       verifyCmdEvidence: passingVerify, env: {},
     });
-    assert.equal(gate.verdict === 'data-effect-unmeasured', false, `${id}: ${gate.reason}`);
+    assert.equal(gate.allowed, true, `${id}: ${gate.verdict} ${gate.reason}`);
   }
 });
 
@@ -452,4 +452,36 @@ test('BRO-8079 reopen: a number >= 10 next to a data noun, in either order, is s
     const m = dataCountMatch({ title: t });
     assert.equal(Boolean(m && m.strong), false, t);
   }
+});
+
+test('BRO-8079 reopen ship-check: settings, samples, line numbers, prose "Effect:" and fenced templates are not strong', () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  for (const t of ['Add 12 new outlets to scraper config', 'Visual QA: test on 20 shows', 'Limit to 50 links per page', 'Page size 100 entries', 'Sitemap 50,000 URLs cap', '10 critics tier map', 'sample 25 reviews, 0 wrong', 'Fix line 360 reviews']) {
+    const m = dataCountMatch({ title: t });
+    assert.equal(Boolean(m && m.strong), false, t);
+  }
+  for (const description of ['Effect: the homepage loads faster', '**Effect:** UI only', '```\nEFFECT: 6,838 -> 0 via `node x`\n```']) {
+    assert.equal(dataCountMatch({ title: 'Tidy the drain script', description }), null, description);
+  }
+  for (const description of ['1. EFFECT: queue before -> after', '- [ ] EFFECT: queue before -> after']) {
+    assert.equal(dataCountMatch({ title: 'Tidy the drain script', description }).strong, true, description);
+  }
+  for (const t of ['Fix 1039 broken show page links', 'Repair reviews: 2000']) assert.equal(dataCountMatch({ title: t }).strong, true, t);
+});
+
+test('BRO-8079 reopen ship-check: a machine close on a unit-test-only check does not clear a data card (the BRO-7930 loop)', () => {
+  const card = REAL_CARDS['BRO-8091'];
+  const base = { targetStateType: 'completed', identifier: 'BRO-8091', title: card.title, description: card.description, verifyCmdEvidence: passingVerify, env: {} };
+  const unitTest = checkLinearDoneTransition({ ...base, commentText: 'Auto-closed by the nightly acceptance re-check: `node --test tests/unit/pending-triage.test.mjs` passed on main.' });
+  assert.equal(unitTest.allowed, false, 'unit-test-only machine close must be refused');
+  assert.equal(unitTest.verdict, 'data-effect-unmeasured');
+});
+
+test('BRO-8079 reopen ship-check: DATA_EFFECT_COUNT_NOUN_GATE=advisory rolls back only the inferred rules', () => {
+  const card = REAL_CARDS['BRO-8091'];
+  const inferred = checkLinearDoneTransition({ targetStateType: 'completed', identifier: 'BRO-8091', title: card.title, description: card.description, verifyCmdEvidence: passingVerify, env: { DATA_EFFECT_COUNT_NOUN_GATE: 'advisory' } });
+  assert.notEqual(inferred.verdict, 'data-effect-unmeasured');
+  assert.match(inferred.warning || '', /data count/);
+  const original = checkLinearDoneTransition({ targetStateType: 'completed', identifier: 'BRO-7930', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs', verifyCmdEvidence: passingVerify, env: { DATA_EFFECT_COUNT_NOUN_GATE: 'advisory' } });
+  assert.equal(original.allowed, false);
 });

@@ -57,37 +57,46 @@ function acceptanceSection(description) {
 // BRO-8079 reopen: keyword guessing on phrase order missed real cards ("Drain the _pending fetch
 // candidates: 33 (2025-26), 166 ..." matched nothing; "29 opaque URLs" only warned). A number >= 10 next
 // to a data noun, in EITHER order, is strong. Years (19xx/20xx) are not counts.
-const DATA_NOUN = String.raw`(?:reviews?|stubs?|candidates?|gaps?|files?|urls?|links?|records?|shows?|entries|outlets?|critics?)`;
+// The owner's list (BRO-8079 reopen). entries/outlets/critics stay weak: "Add 12 new outlets to scraper config".
+const DATA_NOUN = String.raw`(?:reviews?|stubs?|candidates?|gaps?|files?|urls?|links?|records?|shows?)`;
+// Sizes, caps, samples and line numbers are settings, not backlogs: "limit to 50 links per page",
+// "sitemap 50,000 URLs cap", "sample 25 reviews", "test on 20 shows", "line 360 reviews".
+const SIZE_BEFORE_RE = /\b(?:limit(?:ed)?\s+to|page\s+size|max(?:imum)?|up\s+to|at\s+most|cap(?:ped)?\s+(?:at|to)|sample[ds]?|sampling|test(?:ed)?\s+on|lines?|top|first|last|every|each)\s+$/i;
+const SIZE_AFTER_RE = /^[ \t]*,?[ \t]*(?:per\b|cap\b|limit\b|max\b|at\s+a\s+time\b)/i;
 // "1039 show pages", "360 data testid review card" (screenshot width) count UI, not data; "file.tsx:360" is a line number.
-const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}\s+(?:[a-z_-]+\s+){0,2}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
+const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}\s+(?:[a-z_-]+\s+){0,3}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
 const DATA_REV_RE = new RegExp(String.raw`\b${DATA_NOUN}\s*[:=]\s*~?(\d[\d,]*)\b`, 'gi');
 // An EFFECT: line in the card's own description (any line, bulleted or not) means its author asked for a
 // measured result at close; inline prose quoting `EFFECT: ...` and NO-DATA-EFFECT / NO-EFFECT-CHECK do not count.
-const DESC_EFFECT_RE = /^[ \t>*_+-]*(?:\*\*|__)?EFFECT(?:\*\*|__)?[ \t]*:/im;
+// Bullets, numbered items ("1. EFFECT:") and checkboxes ("- [ ] EFFECT:") all count.
+const LINE_PREFIX = String.raw`^[ \t>*_+-]*(?:\d+[.)][ \t]*)?(?:\[[ xX]\][ \t]*)?`;
+// Uppercase only ("Effect: the page loads faster" is prose), never inside a fenced code block (a quoted template).
+const DESC_EFFECT_RE = new RegExp(String.raw`${LINE_PREFIX}(?:\*\*|__)?EFFECT(?:\*\*|__)?[ \t]*:`, 'm');
+const stripFences = (t) => String(t || '').replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1[^\n]*$/gm, '');
 
 function bigDataCount(text) {
-  const ok = (raw) => {
-    const n = Number(String(raw).replace(/[^\d]/g, ''));
-    return n >= 10 && !(/^(?:19|20)\d\d$/.test(String(raw).trim()));
-  };
+  const big = (raw) => Number(String(raw).replace(/[^\d]/g, '')) >= 10;
+  // "2026 shows" is a season, not a count; only the forward order reads that way ("reviews: 2000" is a count).
+  const year = (raw) => /^(?:19|20)\d\d$/.test(String(raw).trim());
+  const sized = (m) => SIZE_BEFORE_RE.test(text.slice(Math.max(0, m.index - 30), m.index)) || SIZE_AFTER_RE.test(text.slice(m.index + m[0].length));
   for (const m of text.matchAll(DATA_FWD_RE)) {
     const lead = /\d[\d,]*/.exec(m[0]);
-    if (lead && ok(lead[0])) return m[0].trim();
+    if (lead && big(lead[0]) && !year(lead[0]) && !sized(m)) return m[0].trim();
   }
-  for (const m of text.matchAll(DATA_REV_RE)) if (ok(m[1])) return m[0].trim();
+  for (const m of text.matchAll(DATA_REV_RE)) if (big(m[1]) && !sized(m)) return m[0].trim();
   return null;
 }
 
 /** PURE. {phrase, strong} for the phrase that makes this a data-count card, or null. */
 function dataCountMatch({ title = '', description = '' } = {}) {
-  if (DESC_EFFECT_RE.test(String(description || ''))) return { phrase: 'the card asks for an EFFECT: line', strong: true };
+  if (DESC_EFFECT_RE.test(stripFences(description))) return { phrase: 'the card asks for an EFFECT: line', strong: true, inferred: true };
   const text = [String(title || ''), acceptanceSection(description)].join('\n').replace(NOT_DATA_RE, ' ');
   for (const re of [VERB_COUNT_RE, QUEUE_RE, STRONG_COUNT_RE]) {
     const m = re.exec(text);
     if (m) return { phrase: m[0].trim(), strong: true };
   }
   const big = bigDataCount(text);
-  if (big) return { phrase: big, strong: true };
+  if (big) return { phrase: big, strong: true, inferred: true };
   for (const re of [PCT_RE, WEAK_COUNT_RE]) {
     const m = re.exec(text);
     if (m) return { phrase: m[0].trim(), strong: false };
@@ -101,7 +110,7 @@ function dataCountPhrase(args) {
   return m ? m.phrase : null;
 }
 
-const LINE_RE = (name) => new RegExp(String.raw`^[ \t>*_-]*${name}(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.+)$`, 'gim');
+const LINE_RE = (name) => new RegExp(String.raw`^[ \t>*_+-]*(?:\d+[.)][ \t]*)?(?:\[[ xX]\][ \t]*)?${name}(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.+)$`, 'gim');
 function lastValue(texts, name) {
   let val = null;
   for (const t of texts) for (const m of String(t || '').matchAll(LINE_RE(name))) if (m[1].trim()) val = m[1].trim();
@@ -138,15 +147,15 @@ function effectIsMeasured(value) {
 function checkDataEffect({ title = '', description = '', texts = [] } = {}) {
   const match = dataCountMatch({ title, description });
   if (!match) return null;
-  const { phrase, strong } = match;
+  const { phrase, strong, inferred = false } = match;
   const all = [description, ...texts];
   const bypass = lastValue(all, 'NO-DATA-EFFECT');
   if (bypass && bypass.length >= 10) return null;
   // EFFECT lines on the description are the card author's wish, not a measurement: comments only.
   const effect = lastValue(texts, 'EFFECT');
-  if (!effect) return { ok: false, phrase, strong, effect: null, notes: ['no EFFECT: line on the close'] };
+  if (!effect) return { ok: false, phrase, strong, inferred, effect: null, notes: ['no EFFECT: line on the close'] };
   const m = effectIsMeasured(effect);
-  return { ok: m.ok, phrase, strong, effect, notes: m.notes };
+  return { ok: m.ok, phrase, strong, inferred, effect, notes: m.notes };
 }
 
 // "98% settled/junk/duplicate", "92.5% classified correctly", "settle rate 97%"
