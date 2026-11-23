@@ -18,6 +18,22 @@ function runOfflineProbe() {
       return '';
     };
   }
+  // BRO-8094: the probe runs every core check, and the corpus checks parse the
+  // 45MB reviews.json ~7x and shows.json ~13x (~5s idle). Under land-floor
+  // load that hit the spawn timeout twice and refused good landings. None of
+  // this test's assertions read the corpus, so serve empty stand-ins for it.
+  const fs = require('node:fs');
+  const CORPUS_STANDIN = /(?:^|[\\/])(reviews|shows)\.json$/;
+  const realReadFileSync = fs.readFileSync;
+  const corpusStandinReads = [];
+  fs.readFileSync = function readFileSyncWithCorpusStandin(file, ...rest) {
+    const m = typeof file === 'string' && file.match(CORPUS_STANDIN);
+    if (!m) return realReadFileSync.call(fs, file, ...rest);
+    corpusStandinReads.push(m[1]);
+    const body = JSON.stringify({ _meta: { lastUpdated: new Date().toISOString() }, [m[1]]: [] });
+    const enc = typeof rest[0] === 'string' ? rest[0] : rest[0] && rest[0].encoding;
+    return enc ? body : Buffer.from(body);
+  };
   global.fetch = async () => { throw new Error('offline probe'); };
   require('node:https').request = () => { throw new Error('offline probe'); };
   const gh = require('./scripts/lib/gh-api-cache.js');
@@ -53,7 +69,7 @@ function runOfflineProbe() {
     const name = 'Autofix: daily canary (dispatch pipeline proof)';
     const result = await probeHealthRowLive(name);
     const row = { name, verdict: result.verdict, status: result.matched?.status };
-    console.log(JSON.stringify({ gitFetchCalls, assessmentCalls, row, deadmanRows }));
+    console.log(JSON.stringify({ gitFetchCalls, assessmentCalls, row, deadmanRows, corpusStandinReads: corpusStandinReads.length, ms: Math.round(process.uptime() * 1000) }));
   })();
 }
 
@@ -66,10 +82,13 @@ test('BRO-3823: the real live probe assesses the autofix canary without git fetc
     timeout: 120000,
   });
   assert.equal(result.status, 0, result.stderr || String(result.error || 'probe failed'));
-  const { gitFetchCalls, assessmentCalls, row, deadmanRows } = JSON.parse(result.stdout);
+  const { gitFetchCalls, assessmentCalls, row, deadmanRows, corpusStandinReads, ms } = JSON.parse(result.stdout);
+  // The stand-in must actually intercept, or the corpus cost (and the
+  // load-dependent timeout) silently comes back.
+  assert.ok(corpusStandinReads > 0, 'corpus reads must hit the stand-in');
   assert.deepEqual(assessmentCalls, { assessCanaryRow: 1, assessThroughputRow: 1 });
   assert.ok(row.status, 'the real canary health row must be evaluated');
-  t.diagnostic(JSON.stringify({ row, gitFetchCalls: gitFetchCalls.length }));
+  t.diagnostic(JSON.stringify({ row, gitFetchCalls: gitFetchCalls.length, corpusStandinReads, ms }));
   assert.deepEqual(gitFetchCalls, [], 'the side-effect-free live probe must never invoke git fetch');
   assert.deepEqual(deadmanRows, [{ unreadable: true, status: 'warn' }],
     'a ledger that cannot be fetched during a probe must remain unmeasurable');
