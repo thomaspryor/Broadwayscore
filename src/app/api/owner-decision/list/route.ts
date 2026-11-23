@@ -65,7 +65,10 @@ export async function GET(req: NextRequest) {
     const token = mintDecisionToken({ id: d.identifier, hash: d.hash, secret, listExpires: v.expires });
     const base = `/api/owner-decision?t=${encodeURIComponent(token)}`;
     const b = d.block;
-    const options = b.options.length >= 2
+    // BRO-8199: an unclear question gets only "Reply in my own words", as in the digest.
+    const options = d.unclear
+      ? '<p class="small">This question was written unclearly and has been sent back to be reworded. Reply in your own words if you want to ask what it means.</p>'
+      : b.options.length >= 2
       ? b.options.map((o: any) => `<p class="opt">${esc(o.label)}: ${esc(o.name)}</p>${o.upside ? `<p class="up">Upside: ${esc(o.upside)}</p>` : ''}${o.downside ? `<p class="down">Downside: ${esc(o.downside)}</p>` : ''}<a class="btn" href="${base}&o=${encodeURIComponent(o.key)}">Choose ${esc(o.label)}</a>`).join('')
       : d.choices.map((c: any) => `<a class="btn" href="${base}&o=${encodeURIComponent(c.key)}">${esc(c.label)}</a>`).join('');
     return `<section class="box"><p class="q">${esc(link.displayQuestion(d.question))}</p>

@@ -201,15 +201,39 @@ const JARGON_RES = [
   [/\b[a-z]{2,}[A-Z][a-z]+[A-Za-z]*\b/, 'a code name in camelCase'],
   [/\b[A-Za-z0-9]+_[A-Za-z0-9_]+\b/, 'a code name with underscores'],
   [/\b[\w.-]+\/[\w./-]+\.(?:js|mjs|ts|tsx|json|md|yml|sh)\b/, 'a file path'],
-  [/\b(?:Codex|backtest|worktree|checker ruling)\b/i, 'internal tool words'],
+  [/\b(?:Codex|worktree|checker ruling)\b/i, 'internal tool words'],
   [/\bVERIFY:|\bRECHECK-AFTER\b/, 'internal tool words'],
 ];
 const CLEAR_QUESTION_MAX = 300;
+// Links are not jargon: a task may say "open https://dash.example.com/api_tokens"; markdown escapes
+// (Linear stores page\\_views) are undone first so an escaped code name is still seen.
+const URL_RE = /<?https?:\/\/[^\s)>]+>?/g;
 function jargonIn(text) {
-  const t = String(text || '');
+  const t = unescapeMarkdown(String(text || '')).replace(URL_RE, ' ');
   return [...new Set(JARGON_RES.filter(([re]) => re.test(t)).map(([, what]) => what))];
 }
-function decisionClarityProblems({ question, description }) {
+// The first real "DECISION NEEDED: <q>" line as written (fence-aware, inline code KEPT), so code
+// names in backticks are judged instead of silently stripped into a question with a hole in it.
+function rawDecisionQuestion(text) {
+  let inFence = false;
+  for (const line of String(text || '').replace(/\r\n?/g, '\n').split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; continue; }
+    if (inFence) continue;
+    const m = MARKER_RE.exec(line.slice(0, 4000));
+    if (m && !isPlaceholderQuestion(m[1].replace(/`[^`]*`/g, '').trim())) return m[1];
+  }
+  return null;
+}
+// A one-tap action ("Tap <signed admin link> and press Allow") is its own instruction.
+const ONE_TAP_RE = /https:\/\/broadwayscorecard\.com\/api\/admin\//;
+function decisionClarityProblems({ question, description, rawText }) {
+  if (typeof process !== 'undefined' && process.env && process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED === '1') return []; // kill switch, every caller
+  if (ONE_TAP_RE.test(String(question || ''))) return [];
+  const raw = rawDecisionQuestion(rawText != null ? rawText : description);
+  if (raw && /`/.test(raw)) {
+    // Inline code was stripped from `question`; judge the line the author wrote.
+    question = raw.replace(/`([^`]*)`/g, '`$1`');
+  }
   // A visual approval is written by visual-approval.js with a signed ref; hand edits would break
   // the approval, and the screenshot carries the meaning.
   if (parseVisualApproval(description)) return [];
@@ -712,6 +736,8 @@ function listOpenDecisions(issues) {
       createdAt: String(issue.createdAt || ''),
       block: parseDecisionBlock(issue.description),
       choices: answerChoices(issue.description),
+      // BRO-8199: an unclear question gets only "Reply in my own words" on the list page, as in the digest.
+      unclear: real ? decisionClarityProblems({ question: real.question, description: issue.description }).length > 0 : false,
     });
   }
   out.sort((a, b) => a.priority - b.priority || a.createdAt.localeCompare(b.createdAt) || a.identifier.localeCompare(b.identifier));
@@ -722,7 +748,7 @@ function listOpenDecisions(issues) {
 
 module.exports = {
   LIST_TTL_MS, LIST_QUERY, MAX_LISTED,
-  decisionClarityProblems, jargonIn, signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
+  decisionClarityProblems, jargonIn, rawDecisionQuestion, signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES, mockupLinks, relatedCardIds, isVisualQuestion,

@@ -164,10 +164,45 @@ test('BRO-8199 review: the full card question is judged, not the 220-character c
   assert.match(clarityHold({ question: long.slice(0, 219) + '…', description: desc }) || '', /characters/);
 });
 
-test('BRO-8199 review: the digest offers no answer buttons on an unclear question', () => {
+test('BRO-8199 review: the digest offers only "Reply in my own words" on an unclear question', () => {
   const { answerButtonsFor } = require('./digest-answer-buttons.js');
   const issue = { identifier: 'BRO-5123', title: 'Star deals', description: BRO5123_DESC, labels: { nodes: [] } };
-  assert.equal(answerButtonsFor(issue, { secret, now: 0 }), null);
+  const held = answerButtonsFor(issue, { secret, now: 0 });
+  assert.deepEqual(held.map((b) => b.key), ['own']);
   const ok = answerButtonsFor({ ...issue, description: CLEAR_DESC }, { secret, now: 0 });
   assert.ok(Array.isArray(ok) && ok.length >= 3, 'a clear question keeps its buttons');
+});
+
+test('BRO-8199 ship-check: code names in backticks are judged, not stripped into a hole', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  const rest = '\nWhy this is your call: x.\nOption A - yes: a / b\nOption B - no: a / b\nMy recommendation: A because x.';
+  const desc = 'DECISION NEEDED: Should we turn on `sourcedStarDeals` now?' + rest;
+  // findDecisionQuestion hands the emailer the stripped line ("Should we turn on  now?").
+  assert.match(clarityHold({ question: 'Should we turn on  now?', description: desc }) || '', /backticks/);
+  const { listOpenDecisions } = require('../../src/lib/owner-decision-link.js');
+  const [row] = listOpenDecisions([{ identifier: 'BRO-1', title: 't', description: desc }]);
+  assert.equal(row.unclear, true, 'the list page sees it as unclear too');
+  const [okRow] = listOpenDecisions([{ identifier: 'BRO-2', title: 't', description: CLEAR_DESC }]);
+  assert.equal(okRow.unclear, false);
+});
+
+test('BRO-8199 ship-check: escaped underscores are caught; plain links and "backtest" are not jargon', () => {
+  const { jargonIn } = require('../../src/lib/owner-decision-link.js');
+  assert.deepEqual(jargonIn('Turn on page\\_views now?'), ['a code name with underscores']);
+  assert.deepEqual(jargonIn('Open https://dash.cloudflare.com/profile/api_tokens and make a token.'), []);
+  assert.deepEqual(jargonIn('Open <https://example.com/docs/setup.md> and read it.'), []);
+  assert.deepEqual(jargonIn('Should we backtest the formula?'), []);
+});
+
+test('BRO-8199 ship-check: the kill switch also lifts the report-time refusal', async () => {
+  const { unclearBlock } = require('./report-owner-question-guard.js');
+  assert.ok(unclearBlock(BRO5123_DESC).length);
+  process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED = '1';
+  try { assert.deepEqual(unclearBlock(BRO5123_DESC), []); }
+  finally { delete process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED; }
+});
+
+test('BRO-8199 ship-check: a one-tap signed link is not refused at report time either', () => {
+  const { unclearBlock } = require('./report-owner-question-guard.js');
+  assert.deepEqual(unclearBlock('DECISION NEEDED: Tap https://broadwayscorecard.com/api/admin/gmail-reauth?t=abc_def and press Allow.'), []);
 });

@@ -96,8 +96,8 @@ function clarityHold({ question, description }) {
   const full = findDecisionQuestion(String(description || ''));
   // A label-only card (awaiting-owner, no DECISION NEEDED block) has nothing to judge; it keeps its buttons.
   if (!full) return null;
-  // A one-tap action ("Tap <signed link> and press Allow") is its own instruction, with nothing to choose.
-  if (require('./owner-decision-notify.js').questionLink(full.question)) return null;
+  // One-tap signed links and the kill switch are handled inside decisionClarityProblems, shared with the
+  // report-time guard and the list page.
   const problems = decisionClarityProblems({ question: full.question, description });
   return problems.length ? problems.join('; ') : null;
 }

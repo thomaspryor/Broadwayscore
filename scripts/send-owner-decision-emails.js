@@ -136,17 +136,33 @@ async function main(argv = process.argv.slice(2)) {
 
   const hasComment = (d, marker) => ((byId.get(d.identifier).comments || {}).nodes || []).some((c) => link.bodyHasMarker(c.body, marker));
 
+  // BRO-8199: one note per question-and-problem set, so a rewrite that is still unclear (or unclear in a
+  // new way) gets its own note. Returns false when the note could not be written.
+  const noteUnclear = async (d, muddled) => {
+    const mark = `${CLARITY_NEEDED_MARK} ${link.questionHash(`${d.question || d.title}\n${muddled}`).slice(0, 12)}`;
+    if (hasComment(d, mark)) return true;
+    try {
+      const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
+      await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
+        { input: { issueId: issue.issue.id, body: `${mark} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it. Until then the digest lists it with only a "Reply in my own words" button.` } });
+      return true;
+    } catch (err) { console.error(`[owner-decision-emails] could not note the unclear question on ${d.identifier}: ${err.message}`); return false; }
+  };
+
   // 2. Roundup reminder: decisions emailed more than 3 days ago and still open.
   if (opts.roundup) {
+    const roundupUnclear = [];
     const stale = decisions.filter((d) => {
       // BRO-6266: the same already-answered test as the per-card email and the digest.
       const hold = holdReason(byId.get(d.identifier), d, { secret });
       if (hold && hold.reason !== 'recent-activity') { console.log(`[roundup] skip ${d.identifier}: ${hold.detail}`); return false; }
       const muddled = clarityHold({ question: d.question || d.title, description: byId.get(d.identifier).description });
-      if (muddled) { console.log(`[roundup] skip ${d.identifier} (unclear-question): ${muddled}`); return false; }
+      if (muddled) { console.log(`[roundup] skip ${d.identifier} (unclear-question): ${muddled}`); roundupUnclear.push({ d, muddled }); return false; }
       const c = ((byId.get(d.identifier).comments || {}).nodes || []).find((x) => link.bodyHasMarker(x.body, link.emailMarker(refOf(d))));
       return c && Date.now() - new Date(c.createdAt).getTime() > ROUNDUP_AFTER_MS;
     }).slice(0, 20);
+    // A decision emailed before BRO-8199 that now reads as unclear drops out of reminders; say so on its card.
+    if (!opts.dryRun) for (const { d, muddled } of roundupUnclear) { if (!(await noteUnclear(d, muddled))) failures++; }
     if (!stale.length) { console.log('[roundup] nothing has waited more than 3 days'); return 0; }
     const email = buildRoundupEmail({ decisions: stale, secret });
     if (opts.dryRun) { console.log(`[roundup] would email: ${email.subject}`); return 0; }
@@ -194,16 +210,7 @@ async function main(argv = process.argv.slice(2)) {
   });
   // BRO-8199: said once on the card, so the next session on it rewrites the block; the next run then emails it.
   if (!opts.dryRun) {
-    for (const { d, muddled } of unclear) {
-      // Keyed on the question, so a rewrite that is still unclear gets its own note.
-      const mark = `${CLARITY_NEEDED_MARK} ${link.questionHash(d.question || d.title).slice(0, 12)}`;
-      if (hasComment(d, mark)) continue;
-      try {
-        const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
-        await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
-          { input: { issueId: issue.issue.id, body: `${mark} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it.` } });
-      } catch (err) { console.error(`[owner-decision-emails] could not note the unclear question on ${d.identifier}: ${err.message}`); }
-    }
+    for (const { d, muddled } of unclear) { if (!(await noteUnclear(d, muddled))) failures++; }
   }
   // Said once on the card, so whoever owns it adds a screenshot or mockup link; the next run then emails it.
   if (!opts.dryRun) {

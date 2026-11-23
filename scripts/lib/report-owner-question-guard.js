@@ -87,6 +87,7 @@ const TEMPLATE =
 // The clarity problems of the first real DECISION NEEDED in text, judged the way the emailer
 // will see it once promoted: from that line to the end.
 function unclearBlock(text) {
+  if (process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED === '1') return []; // same kill switch as the emailer
   const { findDecisionQuestion } = require('./decision-card-parse.js');
   const { decisionClarityProblems } = require('../../src/lib/owner-decision-link.js');
   const lines = stripCode(text);
@@ -100,7 +101,7 @@ function unclearBlock(text) {
     question = INLINE.exec(lines[i])[1];
     block = [question, ...lines.slice(i + 1)].join('\n');
   }
-  return decisionClarityProblems({ question, description: block });
+  return decisionClarityProblems({ question, description: block, rawText: text });
 }
 
 // BRO-8152: the guard above is satisfied by a block in the REPORT, but the report posts as a comment

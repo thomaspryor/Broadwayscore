@@ -187,7 +187,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date(), secret = pro
       const ageDays = d.createdAt ? Math.floor((now.getTime() - new Date(d.createdAt).getTime()) / 86400000) : null;
       return {
         title: d.question,
-        detail: `${d.identifier}: ${d.title}${holds.get(d.identifier) && holds.get(d.identifier).reason === 'maybe-answered' ? ' (you may have answered this already in a comment)' : ''}${unclear ? ' (being reworded so it reads plainly; no need to answer yet)' : ''}`,
+        detail: `${d.identifier}: ${d.title}${holds.get(d.identifier) && holds.get(d.identifier).reason === 'maybe-answered' ? ' (you may have answered this already in a comment)' : ''}${unclear ? ' (written unclearly, so it was sent back to be reworded; tap Reply in my own words if you want to ask what it means)' : ''}`,
         url: d.actionLink || d.url,
         // BRO-6131: what the digest card shows. cardUrl is the Linear card even
         // when `url` is a signed one-tap link taken from the question.

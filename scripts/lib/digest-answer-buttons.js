@@ -26,11 +26,13 @@ function answerButtonsFor(issue, { secret = process.env.APPROVAL_HMAC_SECRET, no
   let open;
   try { [open] = link.listOpenDecisions([{ ...issue, description: issue.description || '' }]); } catch { return null; }
   if (!open || !open.choices || !open.choices.length) return null;
-  // BRO-8199: no answer buttons on a question held as unclear (bare Approved/Rejected on a garbled question).
-  if (clarityHold({ question: open.question, description: issue.description })) return null;
   const token = link.signToken({ id: open.identifier, hash: open.hash, secret, now });
+  const own = { key: 'own', label: 'Reply in my own words', url: answerUrl(token, 'own', baseUrl) };
+  // BRO-8199: a question held as unclear gets no option buttons (bare Approved/Rejected on a garbled
+  // question), only "Reply in my own words", so the owner can still ask what it means or answer anyway.
+  if (clarityHold({ question: open.question, description: issue.description })) return [own];
   const buttons = open.choices.map((c) => ({ key: c.key, label: c.label, url: answerUrl(token, c.key, baseUrl) }));
-  buttons.push({ key: 'own', label: 'Reply in my own words', url: answerUrl(token, 'own', baseUrl) });
+  buttons.push(own);
   return buttons;
 }
 
