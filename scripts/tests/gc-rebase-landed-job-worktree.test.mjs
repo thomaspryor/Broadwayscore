@@ -218,3 +218,12 @@ test('parity: every file setup-local-data.sh copies into data/ is a known setup 
     }
   }
 });
+
+test('morning-digest Mac disk line: free, worktree counts, top 3 by size', () => {
+  const { macDiskLine } = require('../lib/mac-disk-digest.js');
+  const line = macDiskLine({ freeGb: 38, worktrees: { total: 102, job: 61 }, sizes: [
+    { label: 'a', kb: 1 * 1024 * 1024 }, { label: 'big', kb: 11 * 1024 * 1024 }, { label: 'mid', kb: 2.4 * 1024 * 1024 }, { label: 'c', kb: 2 * 1024 * 1024 },
+  ] });
+  assert.equal(line, 'Mac disk: 38GB free, 102 worktrees (61 job); biggest: big 11GB, mid 2.4GB, c 2.0GB.');
+  assert.match(macDiskLine({ freeGb: null, worktrees: { total: 0, job: 0 }, sizes: null }), /free space unknown.*biggest consumers unavailable/);
+});

@@ -803,6 +803,9 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
     const ms = sections.macLocalSkipped;
     (ms.alarm ? alarms : parts).push(`<p style="font-size:12px;color:${ms.alarm ? '#b91c1c' : '#666'};margin:0 0 12px;">${ms.alarm ? '⚠️ ' : ''}${esc(ms.text)}</p>`);
   }
+  if (sections.macDisk) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(sections.macDisk.text)}</p>`);
+  }
   // Dead cmux tab triage (BRO-3050): rendered only when main() collected it.
   // The line itself (incl. "no verdict" for degraded/unavailable runs) is
   // decided in lib/cmux-triage-digest.js, never here.
@@ -1249,6 +1252,17 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN could not read this Mac's free disk: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // BRO-8178: informational disk line (free GB, worktree count, top 3
+  // consumers) every morning, so worktree growth shows before dispatch refuses.
+  if (!skipMacLocal) try {
+    const { macDiskLine, collectMacDisk } = require('./lib/mac-disk-digest.js');
+    const repos = require('./lib/worktree-gc-repos.js').getGcRepos().map((r) => r.path).filter((p) => fs.existsSync(p));
+    sections.macDisk = { text: macDiskLine(collectMacDisk({ repos: repos.length ? repos : [REPO] })) };
+    console.log(`[digest] ${sections.macDisk.text}`);
+  } catch (err) {
+    console.error(`[digest] WARN could not build the Mac disk line: ${String(err.message).slice(0, 120)}`);
   }
 
   // BRO-2049: the shared checkout going shallow (a --shallow-since fetch) silently broke every session's
