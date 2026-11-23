@@ -153,6 +153,11 @@ function _syncShowCaches() {
   }
   return p;
 }
+// Parsed once per path through require()'s cache; accepts {shows} or a bare array.
+function _requireShows() {
+  const raw = require(_syncShowCaches());
+  return Array.isArray(raw) ? raw : raw.shows;
+}
 // BSC_CRITIC_REGISTRY_PATH lets tests point Guard G at a fixture registry; the live
 // file is rewritten by rebuild bots, so assertions against it drift (BRO-4550).
 const CRITIC_REGISTRY_PATH = process.env.BSC_CRITIC_REGISTRY_PATH
@@ -183,7 +188,7 @@ function _getSiblingIndex() {
   _syncShowCaches();
   if (_siblingIndexCache) return _siblingIndexCache;
   try {
-    const shows = require(_syncShowCaches()).shows;
+    const shows = _requireShows();
     _siblingIndexCache = buildSiblingIndex(shows);
   } catch {
     _siblingIndexCache = new Map();
@@ -197,7 +202,7 @@ function _getSiblingData() {
   _syncShowCaches();
   if (_siblingCache) return _siblingCache;
   try {
-    const shows = require(_syncShowCaches()).shows;
+    const shows = _requireShows();
     // Group by normalized title
     const byTitle = {};
     for (const s of shows) {
@@ -244,7 +249,7 @@ function _getShowCategory(showId) {
   _syncShowCaches();
   if (!_showCategoryCache) {
     try {
-      const shows = require(_syncShowCaches()).shows;
+      const shows = _requireShows();
       _showCategoryCache = {};
       for (const s of shows) {
         if (s.id && s.category) _showCategoryCache[s.id] = s.category;
@@ -266,7 +271,7 @@ function _getShowTitle(showId) {
   _syncShowCaches();
   if (!_showTitleCache) {
     try {
-      const shows = require(_syncShowCaches()).shows;
+      const shows = _requireShows();
       _showTitleCache = {};
       for (const s of shows) {
         if (s.id && s.title) _showTitleCache[s.id] = s.title;
@@ -284,7 +289,7 @@ function _getShowById(showId) {
   _syncShowCaches();
   if (!_showByIdCache) {
     try {
-      const shows = require(_syncShowCaches()).shows;
+      const shows = _requireShows();
       _showByIdCache = {};
       for (const s of shows) {
         if (s.id) _showByIdCache[s.id] = s;
@@ -314,7 +319,7 @@ function _isKnownShowId(showId) {
     const showsPath = _syncShowCaches();
     const mtime = fs.statSync(showsPath).mtimeMs;
     if (!_freshShowIds || mtime !== _freshShowIdsMtime) {
-      const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows || [];
+      const shows = require('./shows-json-path').readShowsList(showsPath);
       _freshShowIds = new Set(shows.map((s) => s && s.id).filter(Boolean));
       _freshShowIdsMtime = mtime;
     }

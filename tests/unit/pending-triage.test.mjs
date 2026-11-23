@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/review-texts (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-8023: no-fetch _pending triage. Fixtures are the real queue rows from the
  * 2026-11-21 sample: title-word site-search hits (film/TV reviews, section
@@ -13,6 +12,9 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
+// BRO-8107: the shared guards this reaches read shows from a fixture, not the live
+// data/shows.json, so this test stays in test.yml's blocking batch.
+process.on('exit', require('../../scripts/lib/shows-json-path.js').useShowsFixture([]));
 const T = require('../../scripts/lib/pending-triage.js');
 const { offTopicSectionReason } = require('../../scripts/lib/non-review-url-patterns.js');
 

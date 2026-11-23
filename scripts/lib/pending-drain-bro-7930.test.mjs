@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7930: _pending drain rotation, mtime fallback, collision settling, bare-title guard, health alerts,
 // and the limbo gate. Every test requires the REAL module (CLAUDE.md §15); nothing is restated.
 import test from 'node:test';
@@ -8,6 +7,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
+// BRO-8107: the shared guards this reaches read shows from a fixture, not the live
+// data/shows.json, so this test stays in test.yml's blocking batch.
+process.on('exit', require('./shows-json-path.js').useShowsFixture([]));
 const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./pending-drain-order.js');
 const { urlsSameArticle, classifyTargetCollision, promotionBlockRule } = require('./pending-drain-collision.js');
 const { evaluateDrainHealth, loadState, saveState } = require('./pending-drain-state.js');
