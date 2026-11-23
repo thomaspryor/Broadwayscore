@@ -425,7 +425,7 @@ const guardianFeed = ALL_FEEDS.find(f => f.name === 'Guardian Stage');
 assert(varietyFeed && varietyFeed.openingWindow === true, 'Variety Legit: openingWindow=true');
 assert(varietyFeed && varietyFeed.market === 'broadway', 'Variety Legit: market=broadway');
 assert(nytFeed && nytFeed.openingWindow === true, 'NYT Theater: openingWindow=true');
-assert(nytFeed && nytFeed.market === 'broadway', 'NYT Theater: market=broadway');
+assert(nytFeed && nytFeed.market === undefined, 'NYT Theater: no market pin (BRO-8125: read for every market)');
 assert(wosFeed && !wosFeed.openingWindow, 'WhatsOnStage: no openingWindow (WE feed — always title-matches)');
 assert(wosFeed && wosFeed.market === 'west-end', 'WhatsOnStage: market=west-end');
 assert(standardFeed && !standardFeed.openingWindow, 'Evening Standard: no openingWindow (WE feed)');

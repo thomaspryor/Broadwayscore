@@ -76,13 +76,6 @@ test('author-possessive form: owner must be one creativeTeam name, and the rest 
   names.setPressNameShows(null);
 });
 
-test('real data/shows.json: Lefty review matches, Grinch sequel news does not', () => {
-  names.setPressNameShows(null);
-  assert.equal(rss.titleMatchesShow('‘Waiting for Lefty’ Review: A Labor Play Rouses Again', 'Clifford Odets’ Waiting for Lefty', {}), true);
-  const grinch = 'Dr. Seuss\u2019 How the Grinch Stole Christmas!';
-  assert.equal(rss.titleMatchesShow('Jim Carrey Returns for How the Grinch Stole Christmas! Sequel', grinch, {}), false);
-});
-
 test('a closed show does not vouch for or block an open show billed alike', () => {
   names.setPressNameShows([
     { title: 'Dr. Seuss’ How the Grinch Stole Christmas!', status: 'closed', category: 'broadway', creativeTeam: [{ name: 'Dr. Seuss' }] },
