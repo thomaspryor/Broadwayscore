@@ -90,7 +90,7 @@ setup() {
   # Any future sibling require() of the gate needs its own cp line here.
   cp "$REPO_ROOT/scripts/lib/exec-error-detail.js" "$d/main/scripts/lib/"
   # scopedTestTmpdir() for the per-run throwaway TMPDIR (BRO-8179).
-  cp "$REPO_ROOT/scripts/lib/test-tmpdir.js" "$d/main/scripts/lib/"
+  cp "$REPO_ROOT/scripts/lib/tmpdir-for-tests.js" "$d/main/scripts/lib/"
   # readTsxManifest() for the tsx-manifest skip in selectTestFiles (BRO-4842).
   cp "$REPO_ROOT/scripts/lib/autonomous-checks.js" "$d/main/scripts/lib/"
   # nodeUnitTestsForTree() for workflow-guard discovery (BRO-2483).

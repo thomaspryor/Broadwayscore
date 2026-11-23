@@ -302,7 +302,7 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
   const t0 = Date.now();
   // BRO-8179: throwaway TMPDIR per run (removed on close) so legacy tests'
   // mkdtemp litter does not pile up in /private/tmp. Off: BRO_KEEP_TEST_TMPDIR=1.
-  const tmpScope = env.BRO_KEEP_TEST_TMPDIR === '1' ? { env: {}, cleanup: () => {} } : require('./test-tmpdir.js').scopedTestTmpdir('bro-testrun-');
+  const tmpScope = env.BRO_KEEP_TEST_TMPDIR === '1' ? { env: {}, cleanup: () => {} } : require('./tmpdir-for-tests.js').scopedTestTmpdir('bro-testrun-');
   liveCleanups.add(tmpScope.cleanup); // SIGTERM path (onTerm) removes it too
   const doneTmp = () => { liveCleanups.delete(tmpScope.cleanup); tmpScope.cleanup(); };
   return new Promise((resolve) => {

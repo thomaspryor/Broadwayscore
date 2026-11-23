@@ -161,7 +161,7 @@ if [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] || [ -n "${TMP_REAP_ROOT:-}" ]; then
   if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/reap-stale-tmp.js" ]; then
     _str_args=(--budget-min "${TMP_REAP_BUDGET_MIN:-20}" --no-measure)
     [ "$DRY_RUN" = "1" ] && _str_args+=(--dry-run)
-    node "$SCRIPT_DIR/lib/reap-stale-tmp.js" "${_str_args[@]}" 2>&1 \
+    node "$SCRIPT_DIR/lib/reap-stale-tmp.js" ${_str_args[@]+"${_str_args[@]}"} 2>&1 \
       | while IFS= read -r _str_line; do echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] $_str_line"; done | tee -a "$LOG" || true
   fi
 fi

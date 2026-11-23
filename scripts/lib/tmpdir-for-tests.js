@@ -14,7 +14,7 @@
  *    dir the suite makes lands inside it, then call cleanup() once the run
  *    returns. Catches every legacy test without migrating it.
  *
- * scripts/lib/test-tmpdir-cleanup-audit.js flags new test files that mkdtemp
+ * scripts/lib/tmpdir-cleanup-audit.js flags new test files that mkdtemp
  * without any cleanup.
  */
 const fs = require('fs');
