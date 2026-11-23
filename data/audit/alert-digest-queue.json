@@ -1224,6 +1224,34 @@
     "queuedAt": "2026-11-23T20:39:15.993Z"
   },
   {
+    "conditionKey": "traffic:ga4-engaged-sessions",
+    "title": "Traffic (7d): 5,578 engaged sessions; 10.8x raw-session inflation (59,993 raw sessions). Weekly update 2026-11-23.",
+    "description": "GA4 engaged sessions across all channels for the seven completed days ending yesterday. Inflation is raw sessions divided by engaged sessions.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T20:52:04.431Z"
+  },
+  {
+    "conditionKey": "geo-bots:Mexico",
+    "title": "New bot country detected: Mexico — still happening after 7 days",
+    "description": "Filed BRO-8197: this has been happening for 7+ days without clearing.\n\nWeekly geo audit found Mexico matching the bot signature in PostHog. PostHog: [MX] 101 PostHog sessions • 101 users (1.00 users/session) • 1.05 pageviews/session (thresholds: ≥100 sessions, ≥0.98 users/session, ≤1.05 pageviews/session) Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + REAL_USERS_WHERE in scripts/lib/posthog-query.js (by ISO code) + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8197",
+    "fields": [],
+    "queuedAt": "2026-11-23T20:52:09.894Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-8178-mwtmn2tj",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8178-mwtmn2tj",
     "description": "land.yml did not land land/job/linear-BRO-8178-mwtmn2tj: the unit-tests-node gate went red at 51be0eb4d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45259987359",
