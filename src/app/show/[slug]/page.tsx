@@ -1034,6 +1034,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 totalCount: reviewItems.length,
                 hasTierChips: reviewItems.some(r => r.tier),
                 hasStops: reviewItems.some(r => r.stopLabel),
+                // BRO-8170 gap 3: rows from another revision are never mixed in.
+                ...(showRefreshEnabled() ? { rev: render.rev } : {}),
               } : undefined}
               initialCount={REVIEWS_INLINE_COUNT}
               category={show.category}
