@@ -89,47 +89,61 @@ function fsStatSize(abs) {
 function sizeFuncDir(funcDir, { repoRoot = process.cwd(), topN = 10, fsx = fs } = {}) {
   const seenReal = new Set();
   const sized = [];
+  const errors = [];
   const addFile = (abs, label) => {
     let real;
     let st;
-    try { real = fsx.realpathSync(abs); st = fsx.statSync(real); } catch { return; }
+    try { real = fsx.realpathSync(abs); st = fsx.statSync(real); } catch (e) { errors.push(`stat ${abs}: ${e.code || e.message}`); return; }
     if (!st.isFile() || seenReal.has(real)) return;
     seenReal.add(real);
     sized.push({ file: label || abs, bytes: st.size });
   };
   const walk = (dir) => {
     let real;
-    try { real = fsx.realpathSync(dir); } catch { return; }
+    try { real = fsx.realpathSync(dir); } catch (e) { errors.push(`realpath ${dir}: ${e.code || e.message}`); return; }
     if (seenReal.has('dir:' + real)) return; // symlink cycle or dir reached twice
     seenReal.add('dir:' + real);
     let entries;
-    try { entries = fsx.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    try { entries = fsx.readdirSync(dir, { withFileTypes: true }); } catch (e) { errors.push(`readdir ${dir}: ${e.code || e.message}`); return; }
     for (const e of entries) {
       const p = path.join(dir, e.name);
       if (e.isDirectory()) walk(p);
       else if (e.isSymbolicLink()) {
         let st;
-        try { st = fsx.statSync(p); } catch { continue; }
+        try { st = fsx.statSync(p); } catch (err) { errors.push(`dangling link ${p}: ${err.code || err.message}`); continue; }
         if (st.isDirectory()) walk(p); else addFile(p);
       } else addFile(p);
     }
   };
   walk(funcDir);
-  try {
-    const cfg = JSON.parse(fsx.readFileSync(path.join(funcDir, '.vc-config.json'), 'utf8'));
-    for (const target of Object.values((cfg && cfg.filePathMap) || {})) {
-      if (typeof target === 'string') addFile(path.resolve(repoRoot, target), path.resolve(repoRoot, target));
-    }
-  } catch { /* no config or no filePathMap: nothing extra to count */ }
+  // filePathMap: {<path inside the lambda>: <repo-relative source>}. Each KEY is a
+  // separate packaged file, so one source mapped to two keys counts twice.
+  let cfg = null;
+  try { cfg = JSON.parse(fsx.readFileSync(path.join(funcDir, '.vc-config.json'), 'utf8')); } catch (e) {
+    if (e.code !== 'ENOENT') errors.push(`.vc-config.json in ${funcDir}: ${e.code || e.message}`);
+  }
+  for (const [dest, target] of Object.entries((cfg && cfg.filePathMap) || {})) {
+    if (typeof target !== 'string') continue;
+    const abs = path.resolve(repoRoot, target);
+    try {
+      const st = fsx.statSync(abs);
+      if (st.isFile()) sized.push({ file: abs, bytes: st.size, dest });
+    } catch (e) { errors.push(`filePathMap ${dest} -> ${target}: ${e.code || e.message}`); }
+  }
   const totalBytes = sized.reduce((sum, f) => sum + f.bytes, 0);
   sized.sort((a, b) => b.bytes - a.bytes || (a.file < b.file ? -1 : 1));
-  return { totalBytes, fileCount: sized.length, top: sized.slice(0, topN) };
+  return { totalBytes, fileCount: sized.length, top: sized.slice(0, topN), errors };
 }
 
 /** Every *.func directory under functionsDir (not descending into one), sorted. */
 function findFuncDirs(functionsDir) {
   const out = [];
+  const visited = new Set();
   const walk = (d) => {
+    let real;
+    try { real = fs.realpathSync(d); } catch { return; }
+    if (visited.has(real)) return; // symlink cycle
+    visited.add(real);
     let entries;
     try { entries = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
     for (const e of entries) {
@@ -137,7 +151,7 @@ function findFuncDirs(functionsDir) {
       let isDir = e.isDirectory();
       if (!isDir && e.isSymbolicLink()) { try { isDir = fs.statSync(p).isDirectory(); } catch { isDir = false; } }
       if (!isDir) continue;
-      if (e.name.endsWith('.func')) out.push(p); else if (!e.isSymbolicLink()) walk(p);
+      if (e.name.endsWith('.func')) out.push(p); else walk(p); // symlinked route dirs too
     }
   };
   walk(functionsDir);
@@ -241,10 +255,17 @@ function mainVercelOutput(outDirArg, limitMb, limitArg) {
     bail(`largest packaged function is only ${(ranked[0].totalBytes / MB).toFixed(1)} MB (< ${minLargestMb} MB): the measurement is broken, not healthy`);
   }
   const over = ranked.filter((r) => r.over);
+  const unmeasured = ranked.filter((r) => r.errors && r.errors.length);
+  for (const r of unmeasured) {
+    console.log(`::warning title=Packaged function not fully measured::${r.name}: ${r.errors.length} problem(s), first: ${r.errors[0]}`);
+  }
   for (const r of over) {
     console.log(`::warning title=Packaged function over ${limitMb} MB::${r.name} is ${(r.totalBytes / MB).toFixed(1)} MB`);
     console.log(`FAIL ${r.name}: ${(r.totalBytes / MB).toFixed(1)} MB across ${r.fileCount} files (limit ${limitMb} MB)`);
     for (const f of r.top) console.log(`       ${(f.bytes / MB).toFixed(1).padStart(7)} MB  ${path.relative(repoRoot, f.file).split(path.sep).join('/')}`);
+  }
+  if (!over.length && unmeasured.length) {
+    bail(`${unmeasured.length} packaged function(s) could not be fully measured (see warnings); a total that skips files cannot prove the size is under the limit`);
   }
   process.exit(over.length ? 1 : 0);
 }

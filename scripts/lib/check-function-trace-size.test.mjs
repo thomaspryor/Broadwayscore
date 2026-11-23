@@ -196,3 +196,47 @@ test('CLI --vercel-output fails closed (exit 2): missing output, no .func dirs, 
     rmSync(empty, { recursive: true, force: true });
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test('BRO-8165 review: one source mapped to two lambda paths counts twice; unreadable inputs are reported, not hidden', () => {
+  const root = mkdtempSync(join(tmpdir(), 'func-map-'));
+  try {
+    const fns = join(root, '.vercel', 'output', 'functions');
+    mkdirSync(join(fns, 'm.func'), { recursive: true });
+    writeFileSync(join(root, 'src.bin'), Buffer.alloc(100 * KB));
+    writeFileSync(join(fns, 'm.func', '.vc-config.json'), JSON.stringify({ filePathMap: { 'one/src.bin': 'src.bin', 'two/src.bin': 'src.bin', 'gone.bin': 'missing.bin' } }));
+    const r = sizeFuncDir(join(fns, 'm.func'), { repoRoot: root });
+    const cfgBytes = Buffer.byteLength(JSON.stringify({ filePathMap: { 'one/src.bin': 'src.bin', 'two/src.bin': 'src.bin', 'gone.bin': 'missing.bin' } }));
+    assert.equal(r.totalBytes, 200 * KB + cfgBytes, 'two destinations = two copies');
+    assert.equal(r.errors.length, 1);
+    assert.match(r.errors[0], /missing\.bin/);
+    // corrupt config is an error too
+    writeFileSync(join(fns, 'm.func', '.vc-config.json'), '{not json');
+    assert.match(sizeFuncDir(join(fns, 'm.func'), { repoRoot: root }).errors[0], /vc-config/);
+    // dangling symlink
+    symlinkSync(join(root, 'nowhere'), join(fns, 'm.func', 'dangling'));
+    assert.ok(sizeFuncDir(join(fns, 'm.func'), { repoRoot: root }).errors.some((e) => /dangling/.test(e)));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('BRO-8165 review: functions under a symlinked route directory are found; unmeasurable functions exit 2 unless one is over', () => {
+  const root = mkdtempSync(join(tmpdir(), 'func-symdir-'));
+  try {
+    const out = join(root, '.vercel', 'output');
+    const fns = join(out, 'functions');
+    mkdirSync(join(root, 'real-routes', 'z.func'), { recursive: true });
+    writeFileSync(join(root, 'real-routes', 'z.func', 'z.bin'), '');
+    truncateSync(join(root, 'real-routes', 'z.func', 'z.bin'), 6 * MB);
+    mkdirSync(fns, { recursive: true });
+    symlinkSync(join(root, 'real-routes'), join(fns, 'api'));
+    const found = scanFuncOutput(fns, { limitBytes: 250 * MB, repoRoot: root });
+    assert.deepEqual(found.map((f) => f.name), ['api/z']);
+    // healthy but one unreadable config: exit 2 (cannot prove under the limit)
+    writeFileSync(join(root, 'real-routes', 'z.func', '.vc-config.json'), '{bad');
+    const bad = spawnSync('node', [SCRIPT, '--vercel-output', out], { encoding: 'utf8' });
+    assert.equal(bad.status, 2, bad.stdout);
+    assert.match(bad.stdout, /not fully measured/);
+    // same, but over the limit: the real failure (exit 1) wins
+    const over = spawnSync('node', [SCRIPT, '--vercel-output', out, '--limit-mb=5'], { encoding: 'utf8' });
+    assert.equal(over.status, 1, over.stdout);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

@@ -115,6 +115,8 @@ test('top-level rule: red on an unexcluded big file, green once excluded or decl
   assert.deepEqual(topLevelDataOffenders(big, [], ['data/new-bulk-dump.json'], TOP_LEVEL_LIMIT_BYTES), []);
   // glob excludes used in next.config.js
   assert.deepEqual(topLevelDataOffenders([{ path: 'data/reviews.json.pre-symlink-backup', bytes: 13_500_000 }], ['data/*.pre-symlink-backup'], [], TOP_LEVEL_LIMIT_BYTES), []);
+  // recursive globs match zero directories too (BRO-8165 review)
+  assert.deepEqual(topLevelDataOffenders([{ path: 'data/large.json', bytes: 20_000_000 }], ['data/**/*.json'], [], TOP_LEVEL_LIMIT_BYTES), []);
   // exactly at the limit passes
   assert.deepEqual(topLevelDataOffenders([{ path: 'data/x.json', bytes: TOP_LEVEL_LIMIT_BYTES }], [], [], TOP_LEVEL_LIMIT_BYTES), []);
 });

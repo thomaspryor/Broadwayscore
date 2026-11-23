@@ -51,8 +51,8 @@ export function rootDirHits(src) {
   // directory itself whatever the first argument is (__dirname, ROOT, a const). Same
   // pattern as tests/unit/trace-excludes-data-dirs.test.mjs (scripts/lib graph); this
   // runs it over src/ on comment-stripped code.
-  const dataArg = String.raw`['"](?:\.{1,2}\/)*data\/?['"]`;
-  const dirOnly = new RegExp(String.raw`path\.(?:join|resolve)\([^;]*?${dataArg}\s*(?:\)|,\s*[^'"\s])`, 'g');
+  const dataArg = String.raw`['"\x60](?:\.{1,2}\/)*data\/?['"\x60]`;
+  const dirOnly = new RegExp(String.raw`path\.(?:join|resolve)\s*\([^;\n]*?${dataArg}\s*(?:\)|,\s*[^'"\x60\s])`, 'g');
   for (const m of code.matchAll(dirOnly)) hits.push(m[0]);
   return [...new Set(hits)];
 }
@@ -72,6 +72,10 @@ test('detector: roots caught, files and subfolders allowed, comments ignored', (
   assert.ok(rootDirHits("path.join(ROOT, 'data', sub)").length >= 1);
   assert.equal(rootDirHits("path.join(__dirname, '..', 'data', 'shows.json')").length, 0);
   assert.equal(rootDirHits("// path.join(__dirname, '..', 'data')").length, 0);
+  // BRO-8165 review: backtick literal and a space before the paren
+  assert.ok(rootDirHits("path.join(ROOT, `data`)").length >= 1);
+  assert.ok(rootDirHits("path.join (ROOT, 'data')").length >= 1);
+  assert.equal(rootDirHits("path.join(ROOT, `data`, 'x.json')").length, 0);
 });
 
 test('no server code under src/ names the data/ or public/ root', () => {

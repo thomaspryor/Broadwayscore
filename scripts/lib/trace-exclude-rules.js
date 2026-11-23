@@ -8,10 +8,10 @@
  * the test feeds this both tracked blobs and any on-disk files it finds.
  */
 
-/** Minimal glob: `*` = any run without '/', `**` = anything. Anchored. */
+// Minimal glob: star = any run without a slash, double-star-slash = zero or more dirs, double-star = anything. Anchored.
 function globToRegExp(glob) {
   const esc = glob.replace(/[.+^${}()|[\]\\?]/g, '\\$&');
-  return new RegExp('^' + esc.replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0000/g, '.*') + '$');
+  return new RegExp('^' + esc.replace(/\*\*\//g, '\u0001').replace(/\*\*/g, '\u0000').replace(/\*/g, '[^/]*').replace(/\u0001/g, '(?:.*/)?').replace(/\u0000/g, '.*') + '$');
 }
 
 /**
