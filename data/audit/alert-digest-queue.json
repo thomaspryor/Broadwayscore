@@ -1109,5 +1109,36 @@
       }
     ],
     "queuedAt": "2026-11-23T01:43:34.535Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8079-mwsj1zs9",
+    "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-8079-mwsj1zs9",
+    "description": "land.yml did not land land/job/linear-BRO-8079-mwsj1zs9: the lint-workflows gate went red at 238a5a5417. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45094293605",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8079-mwsj1zs9"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "238a5a54171661b3f396bdd6f66fc8d9a1ea7060"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45094293605"
+      }
+    ],
+    "queuedAt": "2026-11-23T01:45:49.752Z"
   }
 ]
