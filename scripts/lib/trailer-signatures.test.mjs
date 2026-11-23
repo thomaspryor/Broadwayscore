@@ -603,6 +603,46 @@ test('CMS footer: Standard "in pictures" caption and GO London ticket line (real
   assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys x', 'standard').contentTier, 'truncated');
 });
 
+// BRO-8084: a review tiered "truncated" only because a page trailer has no full stop is read through
+// trailerSafeBody(), never raw; the predicate is the single gate for it. (Pure: no review data needed.)
+test('BRO-8084: isTrailerOnlyTruncation / trailerSafeBody contract', () => {
+  const { TRAILER_ONLY_SIGNALS, isTrailerOnlyTruncation, trailerSafeBody } = T;
+  assert.deepEqual([...TRAILER_ONLY_SIGNALS].sort(), ['has_footer_junk', 'no_ending_punctuation']);
+  const base = { textStatus: 'truncated', truncationSignals: ['no_ending_punctuation'] };
+  assert.equal(isTrailerOnlyTruncation(base), true);
+  assert.equal(isTrailerOnlyTruncation(null), false);
+  assert.equal(isTrailerOnlyTruncation({ ...base, textStatus: 'complete' }), false);
+  assert.equal(isTrailerOnlyTruncation({ ...base, truncationSignals: [] }), false, 'no signal = unknown cause');
+  assert.equal(isTrailerOnlyTruncation({ ...base, truncationSignals: ['no_ending_punctuation', 'paywall_or_login_prompt'] }), false);
+  for (const contentTier of ['stub', 'excerpt', 'invalid']) assert.equal(isTrailerOnlyTruncation({ ...base, contentTier }), false, contentTier);
+  assert.equal(isTrailerOnlyTruncation({ ...base, contentTier: 'truncated' }), true);
+  assert.equal(isTrailerOnlyTruncation({ ...base, contentTierReason: 'Short text (120 words)' }), false);
+  assert.equal(isTrailerOnlyTruncation({ ...base, contentTierReason: 'Paywall truncation: hard paywall' }), false);
+  const prev = process.env.TRAILER_FIXES_DISABLED; process.env.TRAILER_FIXES_DISABLED = 'true';
+  try { assert.equal(isTrailerOnlyTruncation(base), false, 'kill switch'); }
+  finally { if (prev === undefined) delete process.env.TRAILER_FIXES_DISABLED; else process.env.TRAILER_FIXES_DISABLED = prev; }
+
+  const run = '★★★★ 4 stars Some Show runz at The Theatre, 1 Main Street until 31 January 2027';
+  const safe = trailerSafeBody(`${BODY} Delightfully deranged ${run}`, 'the-recs');
+  assert.ok(safe.length > 200 && /[.!?]$/.test(safe), 'cuts back to a sentence end');
+  assert.doesNotMatch(safe, /runz at|★|4 stars|until 31 January/);
+  assert.equal(trailerSafeBody('short body.', 'the-recs'), '');
+  // a known classify-only trailer longer than the 300-char window comes off before the window is applied
+  const guardian = `${BODY} • At the Almeida, London, until 7 June • This article was amended on 22 December 2022 to correct the spelling of a name in the cast list that appeared in an earlier version of this review`;
+  assert.doesNotMatch(trailerSafeBody(guardian, 'guardian'), /Almeida|amended/);
+});
+
+// BRO-8084 (Gemini): detectTruncationSignals scans paywall prompts only in the first 70% of a 1500+ char body, so a
+// prompt that ends a long preview leaves trailer-only signals. isTrailerOnlyTruncation must still refuse it.
+test('BRO-8084: isTrailerOnlyTruncation refuses a body that ends in a paywall prompt', () => {
+  const body = 'The cast of six plays every role between them and the staging moves without a break from scene to scene. '.repeat(20);
+  const base = { textStatus: 'truncated', contentTier: 'truncated', truncationSignals: ['no_ending_punctuation'] };
+  assert.equal(T.isTrailerOnlyTruncation({ ...base, fullText: body + 'Delightfully deranged ★★★★ 4 stars Some Show runs until 31 January 2027' }), true);
+  for (const tail of ['Subscribe to continue reading', 'Sign in to read the rest', 'Continue reading', 'for subscribers only. Log in to continue']) {
+    assert.equal(T.isTrailerOnlyTruncation({ ...base, fullText: body + tail }), false, tail);
+  }
+});
+
 // ---------------------------------------------------------------------------
 // BRO-8012: literal pre-filter. Each pre-filtered furniture regex names the
 // literals it cannot match without; furnitureMatch skips the regex (a full-text

@@ -695,7 +695,63 @@ function stripKnownTrailers(text, outletId) {
   return stripFurnitureTail(stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(stripCmsWidgetFooters(text))), outletId, { forClassify: true })));
 }
 
+// Truncation signals that a page trailer alone can cause. Any other signal
+// (paywall prompt, bot stub, mid-article cut) means a real truncation.
+// One definition for text-gap-classify (gap triage) and the pull-quote selector.
+const TRAILER_ONLY_SIGNALS = new Set(['no_ending_punctuation', 'has_footer_junk']);
+
+/**
+ * A review file stored as "truncated" whose only evidence is the ending of the
+ * page (a run-info / star-rating / listing line with no full stop), not a cut
+ * body. BRO-8084: The Recs "... Delightfully deranged \u2605\u2605\u2605\u2605 4 stars Traitorz runz at
+ * St. Luke's Theatre ... until 31 January 2027" is a whole review, but the pull-quote
+ * selector refused to read from any truncated text, so ~50 live reviews shipped
+ * with no quote. Conservative: needs at least one signal, every signal trailer-only,
+ * no "Short text" or paywall verdict. The signals alone cannot prove a trailer exists
+ * (no_ending_punctuation also describes a body cut mid-sentence), so a caller must
+ * quote only from trailerSafeBody(), never from the raw text.
+ * Kill switch: TRAILER_FIXES_DISABLED=true (the same switch as every trailer fix).
+ */
+function isTrailerOnlyTruncation(data) {
+  if (!trailerFixesEnabled()) return false;
+  if (!data || data.textStatus !== 'truncated') return false;
+  if (data.contentTier && data.contentTier !== 'truncated') return false; // stub / excerpt / invalid are not whole bodies
+  if (/^Short text|paywall/i.test(data.contentTierReason || data.tierReason || '')) return false;
+  const signals = Array.isArray(data.truncationSignals) ? data.truncationSignals : [];
+  if (!(signals.length > 0 && signals.every((s) => TRAILER_ONLY_SIGNALS.has(s)))) return false;
+  // detectTruncationSignals scans severe (paywall / "continue reading") patterns only in the first 70% of a 1500+ char
+  // body, so a paywall prompt that ends a long preview leaves just the trailer-only signals (Gemini ship-check).
+  // Looked up lazily: content-quality and this file require each other.
+  const severe = require('./content-quality').TRUNCATION_SIGNALS.severe;
+  const tail = String(data.fullText || '').slice(-600);
+  return !severe.some((re) => re.test(tail));
+}
+
+const TRAILER_SAFE_TAIL = 500; // the footer-junk scan reads the last 500 chars, so nothing it can see is quotable (BRO-8084)
+const SENTENCE_END_G = /[.!?]["'\u201d\u2019)]?(?=\s|$)/g;
+
+/**
+ * The part of a trailer-only truncated body that is safe to quote from: the text
+ * left after stripKnownTrailers() and before its last TRAILER_SAFE_TAIL characters, cut back to the last sentence end.
+ * That removes the star / run-info / listing line, anything glued to it, and a
+ * final sentence cut off mid-way, which are the only places the cause of the
+ * truncation signal can sit. A body too short to leave a sentence returns ''.
+ */
+function trailerSafeBody(fullText, outletId) {
+  // Known classify-only trailers (a Guardian bullet list, Standard shopping block, furniture codes) run past the
+  // 300-char window, so they come off first; the window then covers a trailer nobody has a signature for.
+  const t = stripKnownTrailers(String(fullText || ''), outletId).trim();
+  if (t.length <= TRAILER_SAFE_TAIL) return '';
+  const head = t.slice(0, t.length - TRAILER_SAFE_TAIL);
+  let end = -1;
+  for (const m of head.matchAll(SENTENCE_END_G)) end = m.index + m[0].length;
+  return end > 0 ? head.slice(0, end) : '';
+}
+
 module.exports = {
+  TRAILER_ONLY_SIGNALS,
+  isTrailerOnlyTruncation,
+  trailerSafeBody,
   stripWsjToolbarTail,
   stripUkListingBullets,
   stripFourthWalshInfoBlock,
