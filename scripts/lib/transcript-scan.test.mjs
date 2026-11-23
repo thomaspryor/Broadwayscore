@@ -1236,7 +1236,8 @@ test('BRO-8156 push scope (pure): headCurrent needs a passing verdict that scree
 // The REAL scripts/hooks/commit-msg in a throwaway repo whose scripts/ is this repo's scripts/.
 function commitRepo() {
   const d = mkdtempSync(join(tmpdir(), 'commit-msg-8156-'));
-  const env = { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
+  writeFileSync(join(d, '.empty-gitconfig'), ''); // hermetic: an empty global config (no bare remote here)
+  const env = { ...process.env, GIT_CONFIG_GLOBAL: join(d, '.empty-gitconfig'), GIT_CONFIG_NOSYSTEM: '1' };
   for (const k of Object.keys(env)) if (k.startsWith('GIT_') && !['GIT_CONFIG_GLOBAL', 'GIT_CONFIG_NOSYSTEM'].includes(k)) delete env[k];
   const g = (...a) => __ex8156('git', a, { cwd: d, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   g('init', '-q', '-b', 'main');
