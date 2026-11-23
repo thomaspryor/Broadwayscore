@@ -352,3 +352,25 @@ describe('seatplanLevelLinked (skip SeatPlan level pages that look missing)', ()
     assert.equal(seatplanLevelLinked(V + 'balcony/', pages({})), true);
   });
 });
+
+describe('mobileSeatNotes (BRO-8075)', () => {
+  const { mobileSeatNotes } = require('../../scripts/lib/seat-notes-publish.js');
+  const today = new Date('2026-11-23');
+  test('compact shape: label, short, source links, no evidence quotes', () => {
+    const out = mobileSeatNotes([note, value, watch], { today });
+    assert.deepStrictEqual(out.map((n) => n.t), ['watch-out', 'value', 'note']);
+    assert.strictEqual(out[1].lo, 'Center Mezzanine, rows E to J');
+    assert.strictEqual(out[1].sh, 'Cheaper, and still close to the stage');
+    assert.deepStrictEqual(out[1].l, [{ n: 'TickPick', u: 'https://tickpick.com/x/' }]);
+    assert.strictEqual(out[2].sh, undefined);
+    assert.ok(!JSON.stringify(out).includes('quoteHash'));
+  });
+  test('same bar as the site: too few notes gives []', () => {
+    assert.deepStrictEqual(mobileSeatNotes([watch], { today }), []);
+    assert.deepStrictEqual(mobileSeatNotes(undefined, { today }), []);
+  });
+  test('stale value notes are dropped like on the site', () => {
+    const stale = { ...value, verifiedAt: '2025-01-01' };
+    assert.deepStrictEqual(mobileSeatNotes([watch, stale], { today }), []);
+  });
+});

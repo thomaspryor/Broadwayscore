@@ -188,6 +188,25 @@ function pickText(n) {
   return { where: noteLocationLabel(n), what: head ? `${head}.` : '' };
 }
 
+/**
+ * Compact per-show shape for the mobile app (BRO-8075). Same publish rule and
+ * order as the web card (publishableSeatNotes), no evidence quotes:
+ *   { t: 'watch-out'|'value'|'note', lo: 'Center Orchestra, rows A to C',
+ *     lv, sd?, rw?, c: claim, sh?: short, l: [{ n: label, u: url }] }
+ * Returns [] when the theater does not clear the bar, so the app falls back to
+ * the old seating sections. `today` is passed through for tests.
+ */
+function mobileSeatNotes(notes, opts) {
+  return publishableSeatNotes(notes, opts).map((n) => {
+    const o = { t: n.type, lo: noteLocationLabel(n), lv: n.level, c: n.claim };
+    if (n.side) o.sd = n.side;
+    if (n.rows) o.rw = String(n.rows);
+    if (n.short) o.sh = n.short;
+    o.l = noteSourceLinks(n).map((x) => ({ n: x.label, u: x.url }));
+    return o;
+  });
+}
+
 /** Latest verifiedAt across the notes shown, for "checked Nov 2026". */
 function latestVerified(notes) {
   let best = null;
@@ -198,5 +217,5 @@ function latestVerified(notes) {
 module.exports = {
   NOTE_TYPES, MAX_NOTES, MIN_NOTES, VALUE_MAX_AGE_DAYS, LEVEL_LABEL,
   SOURCE_LABEL, noteLocationLabel, noteSources, noteSourceLinks, publishableSeatNotes, latestVerified,
-  seatNotePicks, pickText, valueNotesNearExpiry, eligibleValueNotes, buildToday, startsASpan,
+  seatNotePicks, pickText, mobileSeatNotes, valueNotesNearExpiry, eligibleValueNotes, buildToday, startsASpan,
 };

@@ -31,6 +31,7 @@ const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { sanitizeShowScoreUrl } = require('./lib/show-score-link');
+const { mobileSeatNotes } = require('./lib/seat-notes-publish');
 const { scoredShowIds, isDetailVisible } = require('./lib/mobile-detail-visibility');
 
 const dataDir = path.join(__dirname, '../data');
@@ -40,7 +41,8 @@ const outputDir = path.join(__dirname, '../public/data/shows');
 // v2 (task #906): added `cov` (Coverage Verdict public summary)
 // v3 (card parity): added `aw` (award score/tier/Pulitzer/other ceremonies),
 //   `vs.sum`, `acc`, `tlk`; vr thumbnails absolutized + numeric scores
-const DETAIL_SCHEMA_VERSION = 3;
+//   v4 (BRO-8075): added `sn` (publishable seat notes, compact Where to Sit card)
+const DETAIL_SCHEMA_VERSION = 4;
 
 // ===========================================
 // HASH-GATE (two-layer, per-show)
@@ -812,6 +814,11 @@ for (const show of visibleShows) {
         dp: s.dataPoints || 0,
         rr: s.rowRange || null,
       }));
+    }
+    // BRO-8075: sourced seat notes for the compact Where to Sit card (same closed-show rule and publish bar as the site).
+    if (show.status !== 'closed') {
+      const sn = mobileSeatNotes(theater.structuredTips?.seating?.seatNotes);
+      if (sn.length > 0) detail.sn = sn;
     }
     if (theater.venueScores) {
       const raw = theater.venueScores;
