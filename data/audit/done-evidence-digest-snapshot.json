@@ -1,21 +1,26 @@
 {
-  "generatedAt": "2026-11-23T11:35:56.528Z",
-  "bannerText": "223/255 Done(14d) verified on main · 9 FAILED · 0 vacuous · 30 stuck-but-done · 1 mis-armed, needs re-arming (BRO-7841) — PARTIAL RUN: 1 check not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-23T21:15:08.724Z",
+  "bannerText": "204/254 Done(14d) verified on main · 9 FAILED · 0 vacuous · 26 stuck-but-done · 2 mis-armed, needs re-arming (BRO-8112, BRO-7841) — PARTIAL RUN: 33 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-8039 — BSC Daily: Data: published scores outside the critic's rating",
-      "detail": "[check-health-row-absent] FAIL: \"Data: published scores outside the critic's rating\" still listed in the 2026-11-23T10:55:36.286Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8039/bsc-daily-data-published-scores-outside-the-critics-rating"
+      "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
+      "detail": "gap audit generated 2026-11-23T20:38:54.108Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
     },
     {
-      "title": "FAILED BRO-7836 — BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: cv-wrongproduction lifetime sweep\" still listed in the 2026-11-23T10:55:36.286Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7836/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep"
+      "title": "FAILED BRO-8133 — Recheck 2026-11-23: 1 done claim no longer hold on main",
+      "detail": "gap audit generated 2026-11-23T20:38:54.108Z PASS wanted-2022: 30 live, 0 cited not live; info: 6 census candidate(s), 1 exclusion(s) confirmed correct; audited 2026-11-23T04:27:2…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8133/recheck-2026-11-23-1-done-claim-no-longer-hold-on-main"
     },
     {
       "title": "FAILED BRO-7818 — Quarantine 4 poisoned aggregator-archive pages that fail audit --strict (+ 93 cross-market pages awaiting quarantine)",
       "detail": "❌ scanned 0 archive files — data/aggregator-archive is missing or empty (private data not set up). The gate cannot pass vacuously; run scripts/setup-local-data.sh first.",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7818/quarantine-4-poisoned-aggregator-archive-pages-that-fail-audit-strict"
+    },
+    {
+      "title": "FAILED BRO-7762 — BSC Daily: Data: BWW roundup discovery misses near opening",
+      "detail": "[check-health-row-absent] FAIL: \"Data: BWW roundup discovery misses near opening\" still listed in the 2026-11-23T20:39:17.401Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7762/bsc-daily-data-bww-roundup-discovery-misses-near-opening"
     },
     {
       "title": "FAILED BRO-7730 — Land-follow check reads land pushes inside heredocs and test fixtures as real pushes",
@@ -29,19 +34,14 @@
     },
     {
       "title": "FAILED BRO-7666 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-11-23T10:55:36.286Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-11-23T20:39:17.401Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7666/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
     },
     {
-      "title": "FAILED BRO-7483 — BSC Daily: Data audit failing: Audit review contamination",
-      "detail": "[check-health-row-absent] FAIL: \"Data audit failing: Audit review contamination\" still listed in the 2026-11-23T10:55:36.286Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7483/bsc-daily-data-audit-failing-audit-review-contamination"
-    },
-    {
-      "title": "FAILED BRO-7449 — BSC Daily: Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7449/bsc-daily-live-data-test-failing-no-unreviewed-cross-outlet"
+      "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
+      "detail": "not ok: BRO-7531: ScrapingBee daily credits fell to a median of 10,…; BRO-7531: Scrapingdog stayed inside its plan (median day 10… | first failure: ScrapingBee median day is 10341…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
     }
   ],
-  "moreCount": 31
+  "moreCount": 27
 }
