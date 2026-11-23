@@ -55,6 +55,28 @@ test('verifyRan: needs a successful run naming the gap\'s file, as a command (no
   assert.equal(verifyRan('node scripts/lib/image-source-match.js --role=hero', gap, events, 1).ok, false, 'ran before the window');
 });
 
+test('BRO-8095: a | && ; inside quotes is not a command separator', () => {
+  const gap = { n: 1, what: 'x', check: 'node --test scripts/newsletter/subject-writer.test.mjs' };
+  const bash = (id, command) => ({ kind: 'assistant_tool_use', name: 'Bash', id, input: { command } });
+  const ok = (id) => ({ kind: 'tool_result', tool_use_id: id, content: '# pass 3\n# fail 0', isError: false });
+  const claim = "node --test --test-name-pattern='lead|pickLead' scripts/newsletter/subject-writer.test.mjs";
+  assert.equal(verifyRan(claim, gap, [bash('a', claim), ok('a')], -1).ok, true, 'quoted pipe stays inside the command');
+  assert.equal(verifyRan(claim.replace(/'/g, '"'), gap, [bash('a', claim.replace(/'/g, '"')), ok('a')], -1).ok, true, 'double quotes too');
+  // an echoed string holding a fake command is still not a run (it used to pass: the split made a segment inside the quotes)
+  const echoed = "echo 'x | node --test scripts/newsletter/subject-writer.test.mjs'";
+  assert.equal(verifyRan('node --test scripts/newsletter/subject-writer.test.mjs', gap, [bash('b', echoed), ok('b')], -1).ok, false, 'echo is not a run');
+  // unquoted pipe and && still split
+  assert.equal(verifyRan('node --test scripts/newsletter/subject-writer.test.mjs', gap, [bash('c', 'cd /w && node --test scripts/newsletter/subject-writer.test.mjs | tail -3'), ok('c')], -1).ok, true);
+  // a stray apostrophe (a `# it's` comment) must not re-open the echo hole or break a quoted pipe
+  const T = 'node --test scripts/newsletter/subject-writer.test.mjs';
+  assert.equal(verifyRan(T, gap, [bash('e', `echo 'x | ${T}' # it's`), ok('e')], -1).ok, false, 'stray apostrophe: echo still not a run');
+  assert.equal(verifyRan(claim, gap, [bash('f', `${claim} # reviewer's check`), ok('f')], -1).ok, true, 'stray apostrophe: quoted pipe still one command');
+  assert.equal(verifyRan(T, gap, [bash('g', `echo "a;b||c" || ${T}`), ok('g')], -1).ok, true, '; and || inside quotes do not split');
+  assert.equal(verifyRan(T, gap, [bash('h', `echo a \\| ${T}`), ok('h')], -1).ok, false, 'an escaped pipe is not a separator');
+  // an apostrophe that never closes must not swallow a later &&
+  assert.equal(verifyRan('node --test scripts/newsletter/subject-writer.test.mjs', gap, [bash('d', "echo it's fine && node --test scripts/newsletter/subject-writer.test.mjs"), ok('d')], -1).ok, true, 'unbalanced quote falls back to the plain split');
+});
+
 test('skepticStats counts runs, gaps found/answered and unavailable runs', () => {
   const call = (id) => ({ kind: 'assistant_tool_use', name: 'Bash', id, input: { command: 'node scripts/lib/skeptic-review-stop.mjs --ship-check' } });
   const out = (id, content) => ({ kind: 'tool_result', tool_use_id: id, content, isError: false });

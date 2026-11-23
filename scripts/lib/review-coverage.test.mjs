@@ -705,6 +705,12 @@ test('BRO-7872: weak answers are refused', () => {
   const u = (t) => evaluateCoverage([...evs, text(t)]).unansweredGaps;
   assert.match(u('GAP 1: ran node scripts/archive-show-images.js --force --show=x')[0].why, /no successful command/, 'a failed run is not an answer');
   assert.match(u('GAP 1: ran node scripts/other.js --show=x')[0].why, /names none of the files/, 'a different script is not an answer');
+  // BRO-8095: a quoted `|` in the claim is not a pipe; the claim must not be cut at it
+  const subj = tool('Bash', { command: "node --test --test-name-pattern='lead|pickLead' scripts/newsletter/subject-writer.test.mjs" });
+  const gapsQ = '1. subject writer lead path never ran. (x)\n   check: node --test scripts/newsletter/subject-writer.test.mjs';
+  const sk = skepticCall();
+  const quoted = [...ev(skill(), agent(), curl()), sk, res(sk, `SKEPTIC REVIEW: 1 material gap(s).\n${gapsQ}`), ...ev(subj)];
+  assert.deepEqual(evaluateCoverage([...quoted, text("GAP 1: ran node --test --test-name-pattern='lead|pickLead' scripts/newsletter/subject-writer.test.mjs")]).unansweredGaps, [], 'quoted pipe: answer accepted');
   assert.match(u('GAP 1: ran node')[0].why, /too short/);
   assert.match(u('GAP 1: cannot run here: we will know after the next nightly run')[0].why, /reason not accepted/);
   assert.match(u('GAP 1: not a gap: <why the reviewer is wrong>')[0].why, /reason not accepted/, 'the echoed template');
