@@ -1454,6 +1454,10 @@
           }
         },
         "verifiedAt": "2026-11-23"
+      },
+      "seatLinks": {
+        "seatplan": "https://seatplan.com/london/lyric-hammersmith-theatre/",
+        "aviewfrommyseat": "https://aviewfrommyseat.com/venue/Lyric+Hammersmith+Theatre/"
       }
     },
     "london/lyric-hammersmith-theatre": {
@@ -6145,6 +6149,61 @@
           "note": {
             "quote": "The Theatre at St. Jean's offers accessible seating, accessible restrooms, and elevator access.",
             "url": "https://yorktheatre.org/faqs-5"
+          }
+        },
+        "verifiedAt": "2026-11-23"
+      }
+    },
+    "off-broadway/public-theater-martinson-hall": {
+      "name": "The Public Theater/Martinson Hall",
+      "access": {
+        "wheelchair": true,
+        "assistiveListening": true,
+        "verified": true,
+        "sourceUrl": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services",
+        "evidence": {
+          "wheelchair": {
+            "quote": "All venues have wheelchair- and scooter-accessible locations where patrons can remain in their wheelchairs or transfer to theater seats.",
+            "url": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services"
+          },
+          "assistiveListening": {
+            "quote": "FM radio assistive listening systems are installed in all of our theaters, and headsets may be used at any seat.",
+            "url": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services"
+          }
+        },
+        "verifiedAt": "2026-11-23"
+      }
+    },
+    "off-broadway/public-theater-newman-theater": {
+      "name": "The Public Theater/Newman Theater",
+      "access": {
+        "assistiveListening": true,
+        "note": "All entrances to the building, theaters, and restaurants are accessible.",
+        "verified": true,
+        "sourceUrl": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services",
+        "evidence": {
+          "assistiveListening": {
+            "quote": "FM radio assistive listening systems are installed in all of our theaters, and headsets may be used at any seat.",
+            "url": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services"
+          },
+          "note": {
+            "quote": "All entrances to the building, theaters, and restaurants are accessible.",
+            "url": "https://www.publictheater.org/plan-your-visit/accessibility-pages/accessibility-services"
+          }
+        },
+        "verifiedAt": "2026-11-23"
+      }
+    },
+    "off-broadway/sheen-center": {
+      "name": "The Sheen Center",
+      "access": {
+        "wheelchair": true,
+        "verified": true,
+        "sourceUrl": "https://www.sheencenter.org/plan-your-visit",
+        "evidence": {
+          "wheelchair": {
+            "quote": "Accessible seating is available in certain areas of the Loreto Theater, the Frank Shiner Theater and our Studio spaces.",
+            "url": "https://www.sheencenter.org/plan-your-visit"
           }
         },
         "verifiedAt": "2026-11-23"

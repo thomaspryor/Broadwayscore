@@ -30,3 +30,19 @@ test('suite part stays in streetAddress', () => {
   assert.equal(s.address.addressLocality, 'New York');
   assert.equal(s.address.postalCode, '10011');
 });
+
+// BRO-8173: map position and seat count reach search engines, and only beside a real address.
+test('theater schema carries geo and seat count when known', () => {
+  const s = generateTheaterSchema({
+    name: 'The Players Theatre', slug: 'the-players-theatre', path: '/off-broadway/theater/the-players-theatre',
+    address: '115 MacDougal St, New York, NY 10012', geo: { lat: 40.7301, lng: -74.0004 }, capacity: 248, pastShows: [],
+  });
+  assert.deepEqual(s.geo, { '@type': 'GeoCoordinates', latitude: 40.7301, longitude: -74.0004 });
+  assert.equal(s.maximumAttendeeCapacity, 248);
+});
+
+test('geo is dropped without an address, and a zero/absent capacity is omitted', () => {
+  const s = generateTheaterSchema({ name: 'X', slug: 'x', geo: { lat: 1, lng: 2 }, capacity: 0, pastShows: [] });
+  assert.equal(s.geo, undefined);
+  assert.equal(s.maximumAttendeeCapacity, undefined);
+});

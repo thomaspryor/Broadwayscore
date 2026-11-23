@@ -54,7 +54,10 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const currentShowText = theater.currentShow
     ? `Currently showing: ${theater.currentShow.title}.`
     : 'View show history and information.';
-  const description = `${theater.name} in London. ${currentShowText} See all ${theater.showCount} shows, scores, and theatre details.`;
+  // Address and seat count lead (BRO-8173): what people search a venue for.
+  const where = theater.address ? `, a London theatre at ${theater.address}` : ' in London';
+  const capacityText = theater.capacity ? ` ${theater.capacity.toLocaleString()} seats.` : '';
+  const description = `${theater.name}${where}.${capacityText} ${currentShowText} See all ${theater.showCount} shows, scores, and theatre details.`;
 
   return {
     title: { absolute: `${theater.name}: West End Theatre` },
@@ -98,6 +101,8 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
     country: 'GB',
     address: theater.address,
     website: theater.website,
+    geo: theater.geo,
+    capacity: theater.capacity,
     pastShows: [],
   });
 

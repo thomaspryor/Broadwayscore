@@ -32,7 +32,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     ? `Currently showing: ${theater.currentShow.title}.`
     : 'View show history and information.';
   const capacityText = theater.capacity ? ` ${theater.capacity.toLocaleString()} seats.` : '';
-  const description = `${theater.name} on Broadway.${capacityText} ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
+  // Address leads (BRO-8173): what people search a venue for.
+  const where = theater.address ? `, a Broadway theater at ${theater.address}` : ' on Broadway';
+  const description = `${theater.name}${where}.${capacityText} ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
 
   return {
     title: `${theater.name} - Broadway Theater`,
@@ -91,6 +93,8 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
     slug: theater.slug,
     address: theater.address,
     website: theater.website,
+    geo: theater.geo,
+    capacity: theater.capacity,
     currentShow: theater.currentShow ? {
       title: theater.currentShow.title,
       slug: theater.currentShow.slug,

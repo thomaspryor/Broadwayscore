@@ -407,6 +407,10 @@ export function generateTheaterSchema(theater: {
   country?: 'US' | 'GB';
   /** The venue's verified official website (schema.org sameAs). */
   website?: string;
+  /** Map position of the address (schema.org geo). Ignored without an address. */
+  geo?: { lat: number; lng: number };
+  /** Seat count (schema.org maximumAttendeeCapacity). */
+  capacity?: number;
 }) {
   const country = theater.country ?? 'US';
   return {
@@ -415,6 +419,10 @@ export function generateTheaterSchema(theater: {
     name: theater.name,
     url: `${BASE_URL}${theater.path ?? `/theater/${theater.slug}`}`,
     ...(theater.address && { address: toPostalAddress(theater.address, country) }),
+    ...(theater.address && theater.geo && {
+      geo: { '@type': 'GeoCoordinates', latitude: theater.geo.lat, longitude: theater.geo.lng },
+    }),
+    ...(theater.capacity && theater.capacity > 0 && { maximumAttendeeCapacity: theater.capacity }),
     ...(theater.website && { sameAs: [theater.website] }),
     // Event.location requires an address per Google's structured data spec
     // (GSC flags "Missing field 'address' (in 'location')" otherwise). Venues

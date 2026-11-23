@@ -68,6 +68,9 @@ import { getShowYear } from './date-utils';
 type VenueInfoMarket = 'off-broadway' | 'london';
 type VenueInfoEntry = {
   fields: { address?: string; website?: string; capacity?: number; yearOpened?: number; operator?: string };
+  /** Geocode of fields.address (tests/unit/venue-info-data.test.mjs keeps it inside the right city). */
+  lat?: number;
+  lng?: number;
 };
 const VENUE_INFO = (venueInfoData as unknown as { venues: Record<string, VenueInfoEntry> }).venues;
 
@@ -954,7 +957,7 @@ export function getAllTheaters(): Theater[] {
     theaterMap.set(venueName, existing);
   }
 
-  const meta = theaterMetaData as unknown as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
+  const meta = theaterMetaData as unknown as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks; lat?: number; lng?: number }>;
 
   _theatersCache = Array.from(theaterMap.entries())
     .map(([name, data]) => {
@@ -977,6 +980,8 @@ export function getAllTheaters(): Theater[] {
         slug: slugify(name),
         address: data.address,
         website: VENUE_ACCESS[`broadway/${slugify(name)}`]?.website,
+        // Curated map position of the building (data/theater-metadata.json); schema.org geo.
+        geo: data.address && theaterMeta?.lat != null && theaterMeta?.lng != null ? { lat: theaterMeta.lat, lng: theaterMeta.lng } : undefined,
         capacity: theaterMeta?.capacity,
         yearBuilt: theaterMeta?.yearBuilt,
         operator: theaterMeta?.operator,
@@ -1092,7 +1097,10 @@ export function getAllTheaterSlugs(): string[] {
  * address wins over shows.json theaterAddress (freeform, unaudited for these markets).
  */
 export function applyVenueInfo<T extends Theater>(theater: T, market: VenueInfoMarket): T {
-  const info = VENUE_INFO[`${market}/${theater.slug}`]?.fields;
+  const entry = VENUE_INFO[`${market}/${theater.slug}`];
+  const info = entry?.fields;
+  // The geocode belongs to the verified address, so it travels only with that address.
+  const verifiedGeo = info?.address && entry?.lat != null && entry?.lng != null ? { lat: entry.lat, lng: entry.lng } : undefined;
   const extra = VENUE_ACCESS[`${market}/${theater.slug}`];
   const accessibility = accessibilityFor(extra);
   const externalLinks = extra?.seatLinks && (extra.seatLinks.seatplan || extra.seatLinks.aviewfrommyseat) ? extra.seatLinks : undefined;
@@ -1100,6 +1108,7 @@ export function applyVenueInfo<T extends Theater>(theater: T, market: VenueInfoM
   return {
     ...theater,
     address: info?.address ?? theater.address,
+    geo: info?.address ? verifiedGeo : theater.geo,
     website: info?.website ?? theater.website,
     capacity: info?.capacity ?? theater.capacity,
     yearBuilt: info?.yearOpened ?? theater.yearBuilt,
@@ -1231,13 +1240,15 @@ function buildComplexIndex(theaters: Theater[], defs: Record<string, VenueComple
     // Southbank Centre) have no ownTheater to source an address from — fall
     // back to the first sub-venue that has one, rather than shipping every
     // synthetic complex page with no map link.
-    const address = ownTheater?.address ?? subVenues.find(t => t.address)?.address;
+    const addressSource = ownTheater?.address ? ownTheater : subVenues.find(t => t.address);
+    const address = addressSource?.address;
 
     // Own-slug venue facts first (verified for the building), else the own theater's.
     return applyVenueInfo({
       name: def.name,
       slug: complexSlug,
       address,
+      geo: addressSource?.geo,
       website: ownTheater?.website,
       capacity: ownTheater?.capacity,
       yearBuilt: ownTheater?.yearBuilt,

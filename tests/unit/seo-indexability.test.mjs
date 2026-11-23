@@ -70,6 +70,16 @@ test('a missing or empty search-landings list fails open (nothing becomes noinde
 test('venue folds do not chain and every vercel redirect destination is a fold target', () => {
   const { VENUE_PAGE_NAME_FOLDS } = require('../../scripts/lib/page-name-sources.js');
   for (const target of Object.values(VENUE_PAGE_NAME_FOLDS)) assert.equal(VENUE_PAGE_NAME_FOLDS[target], undefined, target);
+  // BRO-8173: a folded spelling's old page was indexed; it must 308 to the merged page, not 404.
+  const { slugify } = require('../../scripts/lib/url-slug.js');
+  const redirects = JSON.parse(fs.readFileSync(new URL('../../vercel.json', import.meta.url), 'utf8')).redirects;
+  for (const [from, to] of Object.entries(VENUE_PAGE_NAME_FOLDS)) {
+    const a = slugify(from), b = slugify(to);
+    if (a === b) continue;
+    const hit = redirects.find((r) => /\/theater\/[^/]+$/.test(r.source) && r.source.endsWith(`/theater/${a}`));
+    assert.ok(hit, `fold "${from}" retired /theater/${a} with no vercel.json redirect`);
+    assert.ok(hit.destination.endsWith(`/theater/${b}`), `${hit.source} redirects to ${hit.destination}, expected .../theater/${b}`);
+  }
 });
 
 test('thin rules are off by default and only SEO_THIN_NOINDEX=1 turns them on', () => {
