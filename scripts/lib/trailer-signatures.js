@@ -635,6 +635,18 @@ function looksLikeListing(seg) {
   return caps >= 1 && other <= 1 && caps >= 2 * other;
 }
 
+// BRO-8081: WSJ article-toolbar chrome re-gathered at the very end of the text:
+// "Save Article Sign In to Save Subscribe to WSJ Text Size Regular Medium Large Google+ Print".
+// Anchored on the "Save Article ... Subscribe to WSJ" run plus only toolbar words to the end.
+const WSJ_TOOLBAR_TAIL_RE = /\s*\bSave Article\s+Sign In to Save\s+Subscribe to WSJ(?:\s+(?:Text Size|Regular|Medium|Large|Small|Google\+|Facebook|Twitter|Email|Print|Share|Comments?|Listen|Resize))*\s*$/;
+function stripWsjToolbarTail(text) {
+  if (!text || typeof text !== 'string') return text;
+  const m = WSJ_TOOLBAR_TAIL_RE.exec(text);
+  if (!m) return text;
+  const next = text.slice(0, m.index).trimEnd();
+  return next.length < RELATED_MIN_REMAINING ? text : next;
+}
+
 // Outlet-scoped strippers (outletId is the registry id on the review file).
 const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   'times-uk': stripTimesFooter,
@@ -644,6 +656,7 @@ const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   thestage: stripStageCriticBio,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
+  wsj: stripWsjToolbarTail,
 });
 
 // Strippers that only feed the tier classifier and never edit saved text: the
@@ -683,6 +696,7 @@ function stripKnownTrailers(text, outletId) {
 }
 
 module.exports = {
+  stripWsjToolbarTail,
   stripUkListingBullets,
   stripFourthWalshInfoBlock,
   stripRelatedPostHeadlines,
