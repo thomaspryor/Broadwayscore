@@ -406,7 +406,7 @@ async function main() {
 
     // Review records with file names and urls (BRO-8209): the planner needs them to plan a review-field-edit.
     const reviewTextsDir = path.join(ROOT, 'data/review-texts');
-    const recordCtx = buildReviewRecordContext(show, allReviews, { reviewTextsDir: fs.existsSync(reviewTextsDir) ? reviewTextsDir : null });
+    const recordCtx = buildReviewRecordContext(show, allReviews, { reviewTextsDir: fs.existsSync(reviewTextsDir) ? reviewTextsDir : null, focusText: `${diagnosis.originalMessage || ''} ${diagnosis.summary || ''} ${diagnosis.whatsHappening || ''}` });
     if (recordCtx) contextParts.push(recordCtx);
   }
 
@@ -526,7 +526,7 @@ ${diagnosis.originalMessage
   }
 
   // 3b. Verify plan with GPT-4o (second-LLM fact-check)
-  const showContextForVerification = contextParts.filter(p => p.startsWith('## Show Data')).join('\n\n');
+  const showContextForVerification = contextParts.filter(p => p.startsWith('## Show Data') || p.startsWith('## Review Records')).join('\n\n');
   const verification = await verifyPlanWithGPT(plan, diagnosis, showContextForVerification);
 
   // 4. Save plan to data/pending-fixes/
