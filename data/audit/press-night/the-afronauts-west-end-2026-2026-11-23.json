@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-afronauts-west-end-2026",
+  "night": "2026-11-23",
+  "market": "west-end",
+  "embargoAt": "2026-11-23T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-23T20:30:05.341Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-23T22:55:14.898Z",
+    "lastOkSampleAt": "2026-11-23T22:55:14.898Z"
+  },
+  "firstLiveAt": "2026-11-23T20:30:05.341Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-23T20:30:05.341Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-23T22:00:11.433Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "monstagigz|unknown",
+      "outlet": "Monstagigz",
+      "critic": null,
+      "tier": 4,
+      "publishAt": "2026-11-15",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-23T20:30:05.341Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-23T23:00:28.939Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-23T23:00:29.006Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-23T23:00:29.911Z",
+    "files": [
+      {
+        "file": "bestoftheatre--alan-ingram.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Alan Ingram",
+        "firstSeenAt": "2026-11-23T20:35:49.404Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-17",
+        "url": "bestoftheatre.co.uk/blog/post/the-afronauts-in-pictures-lucian-msamati-and-ama-qamata-at-the-royal-court",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "monstagigz--unknown.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-15T17:33:27.394Z",
+        "scoredAt": "2026-11-15T21:29:43.199Z",
+        "publishDate": "2026-11-15",
+        "url": "monstagigz.com/2026/11/15/theatre-review-the-afronauts-starring-lucian-msamati-ivanno-jeremiah-and-pamela-nomvete-by-ryan-calais-cameron-at-the-royal-court",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "rolandcat--unknown.json",
+        "outletId": "rolandcat",
+        "outlet": "Rolandcat Reviews",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-17T19:40:51.081Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-17",
+        "url": "rolandcat.substack.com/p/review-the-afronauts-the-royal-court",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatremonkey--unknown.json",
+        "outletId": "theatremonkey",
+        "outlet": "TheatreMonkey",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-23T00:39:42.724Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "theatremonkey.com/show/the-afronauts",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--jamie-body.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Jamie Body",
+        "firstSeenAt": "2026-11-23T18:15:15.168Z",
+        "scoredAt": null,
+        "publishDate": "2026-08-18",
+        "url": "thestage.co.uk/reviews/afronauts-review-underbelly-george-square-edinburgh-circus-zambia",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout-london--unknown.json",
+        "outletId": "timeout-london",
+        "outlet": "Time Out London",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-23T20:38:20.431Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23",
+        "url": "timeout.com/london/theatre/the-afronauts",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "whatsonstage--unknown.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Guest Contributor",
+        "firstSeenAt": "2026-11-23T00:38:39.577Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-18",
+        "url": "whatsonstage.com/news/five-reasons-you-need-to-see-the-afronauts-at-the-royal-court_1737279",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
