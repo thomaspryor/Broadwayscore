@@ -167,6 +167,8 @@ const field = (x) => String(x).replace(/^approvedFix:/, '');
 /** Cause class of a set of gating fields / hand steps (first known field wins). */
 function causeOfFields(fields) {
   for (const f of fields || []) { const c = CAUSE_BY_FIELD[field(f)]; if (c) return c; }
+  // A file a hand caller created (ingest:execute-approved-fix, ...) is a review discovery missed.
+  if ((fields || []).some((f) => /^ingest:/.test(String(f)))) return 'discovery-gap';
   return 'other';
 }
 
@@ -189,10 +191,21 @@ const SWEEP_GRACE_H = 6;
 function causeOfSignal({ kind, source, fileChange } = {}) {
   const base = kind === 'ingest-dispatch' ? 'discovery-gap' : causeOfSubject(source);
   if (!FIRST_PASS_CAUSES.has(base)) return base;
-  if (fileChange === 'deleted') return 'other';
+  // A hand deletion removed something that should not have been live: a
+  // duplicate, a misattributed copy, or junk (mirror, listing page, stub).
+  if (fileChange === 'deleted') return causeOfDeletion(source);
   if (fileChange === 'added') return 'discovery-gap';
   if (fileChange === 'modified') return 'text-gap';
   return base;
+}
+
+/** Cause class of a hand commit that only deleted the outlet's file (BRO-7145). */
+function causeOfDeletion(subject) {
+  const t = String(subject || '').toLowerCase();
+  if (/duplic|same-url|superseded|syndicat|dedupe/.test(t)) return 'duplicate-identity';
+  if (/cross-outlet|attribut|byline|re-credit/.test(t)) return 'attribution';
+  if (/wrongprod|wrongshow|wrong.show|other production|misfiled/.test(t)) return 'wrong-label';
+  return 'content-tier';
 }
 
 /** Cause class of a hand commit or log line, from its subject. */
@@ -206,11 +219,11 @@ function causeOfSubject(subject) {
   // refetches" is a byline fix (ship-check).
   if (/recover|full.?text|refetch|gap-recovery driver/.test(t) && !/\bmissed\b|discover|ingest-urls|byline|criticname|re-credit|attribut|outletid|publishdate|date guard|duplic|dedupe|syndicat/.test(t)) return 'text-gap';
   if (/ingest|missed|discovery|on-monitor|opening.night monitor|\bdirect\b|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
-  if (/byline|criticname|re-credit|attribut|outletid/.test(t)) return 'attribution';
+  if (/byline|criticname|re-credit|attribut|outletid|cross-outlet/.test(t)) return 'attribution';
   if (/publishdate|date guard/.test(t)) return 'date-guard';
   if (/duplic|syndicat/.test(t)) return 'duplicate-identity';
   if (/wrongprod|wrongshow|wrong.show|stale|combinedwith|tour|cross-market|misfiled/.test(t)) return 'wrong-label';
-  if (/override|score|rating|isnonreview|non-review|not_a_review|box-office|junk/.test(t)) return /override|score|rating/.test(t) ? 'scoring-by-hand' : 'content-tier';
+  if (/override|score|rating|isnonreview|non-review|non_review|not_a_review|not a review|box-office|junk/.test(t)) return /override|score|rating/.test(t) ? 'scoring-by-hand' : 'content-tier';
   // BRO-7145: the 2-month audit left 21 openings in 'other'; these are the subject families behind them.
   if (/gather-reviews:/.test(t)) return 'discovery-gap';
   if (/false flag|adjudicate|blocker|re-?clear|move[d]? .*(production|review)|correct venue|review fixes/.test(t)) return 'wrong-label';

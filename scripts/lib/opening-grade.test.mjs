@@ -201,6 +201,18 @@ test('BRO-7145: subject families that used to fall into "other" get a cause clas
   for (const [subject, cause] of Object.entries(cases)) assert.equal(og.causeOfSubject(subject), cause, subject);
 });
 
+test('BRO-7145: hand deletions and approved-fix ingests get a cause class, not "other"', () => {
+  const del = (source) => og.causeOfSignal({ kind: 'hand-commit', source, fileChange: 'deleted' });
+  assert.equal(del('1ad5333b BRO-5823: delete Time Out mirror ingested as outlet harunaenterprisesltd'), 'content-tier');
+  assert.equal(del('f2d868d6 on-monitor: drop same-URL duplicate nyt-theater--jonathan.json'), 'duplicate-identity');
+  assert.equal(del('1bdad414 on-monitor: drop Vulture slam-frank stub superseded by full-text vulture--jackson'), 'duplicate-identity');
+  assert.equal(del('773ff6ed fix(reviews): remove Air Mail event-listing page mis-ingested as PEC review'), 'content-tier');
+  assert.equal(og.causeOfSubject('14b07e94 BRO-4695: triage 5 more cross-outlet suspects'), 'attribution');
+  assert.equal(og.causeOfSubject('4a77e3b5 revert: cloud-9 times-uk was an interview, not a review (BRO-7569 non_review_url gate)'), 'content-tier');
+  assert.equal(og.causeOfFields(['ingest:execute-approved-fix']), 'discovery-gap');
+  assert.equal(og.causeOfFields(['approvedFix:publishDate', 'ingest:execute-approved-fix']), 'date-guard');
+});
+
 test('BRO-7145 review: driver commits stay first-pass-miss evidence (text-gap / discovery-gap) without making the opening needed-hands', () => {
   const mk = (added) => ({ sha: 'eeee222233', at: iso(embargo + 30 * 3600000), author: 'Tom Pryor', email: 'owner@example.com', subject: 'feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)', files: [`${show.id}/guardian--x.json`], added: added ? [`${show.id}/guardian--x.json`] : [] });
   const run = (c) => og.gradeOpening({ show, files, commits: [c], gapResult, missingCited: 0, nowMs: closed });
