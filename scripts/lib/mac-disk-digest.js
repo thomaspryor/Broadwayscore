@@ -144,9 +144,10 @@ function postCli(argv) {
 }
 
 if (require.main === module) {
-  try { process.exit(process.argv.includes('--post') ? postCli(process.argv.slice(2)) : 2); } catch (err) {
+  const { exitFlushed } = require('./exit-flushed.js');
+  try { exitFlushed(process.argv.includes('--post') ? postCli(process.argv.slice(2)) : 2); } catch (err) {
     console.error(`mac/disk post failed: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
-    process.exit(1);
+    exitFlushed(1);
   }
 }
 

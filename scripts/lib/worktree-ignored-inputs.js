@@ -154,6 +154,6 @@ function main(argv) {
   return 0;
 }
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
 
 module.exports = { classifyIgnoredEntry, decideIgnoredInputs, gatherIgnoredInputs, SETUP_COPIED_DATA_FILES, DISPOSABLE_PATTERNS };

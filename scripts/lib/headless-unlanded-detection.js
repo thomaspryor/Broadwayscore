@@ -314,9 +314,10 @@ function cli(argv) {
 }
 
 if (require.main === module) {
-  try { process.exit(cli(process.argv.slice(2))); } catch (err) {
+  const { exitFlushed } = require('./exit-flushed.js');
+  try { exitFlushed(cli(process.argv.slice(2))); } catch (err) {
     console.error(String(err && err.message || err).split('\n')[0]);
-    process.exit(1);
+    exitFlushed(1);
   }
 }
 
