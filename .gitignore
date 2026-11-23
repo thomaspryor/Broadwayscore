@@ -819,3 +819,8 @@ data/money-monthly/snapshot.json
 /public/data/prod-data-parity.json
 !/docs/prod-data-parity.md
 *.mutant-orig
+
+# BRO-8175: per-Mac memory-cap strike state, rewritten every 60s by launchd.
+/data/audit/job-memory-cap-state.json
+/data/audit/job-memory-cap-state.json.lock/
+/data/audit/job-memory-cap-state.json.*.tmp

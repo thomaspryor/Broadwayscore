@@ -94,7 +94,9 @@ const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcome
   --ensure-tab          create/adopt/resurrect the 👑 OWNER watchdog tab
   --health              stale-heartbeat pager (for launchd, outside cmux)
   --status [--json]     print current classification without acting
-  --mem-report          print each live job's process-tree RSS vs the cap (read-only, no kills)
+  --mem-report          print each live job's process-tree memory vs the cap (read-only, no kills)
+  --memory-cap          memory-cap pass only (launchd every 60s; ignores the dispatch kill switch,
+                        BSC_JOB_MEMORY_CAP_OFF=1 is the cap's own off switch)
 `;
 
 function watchdogOff() {
@@ -410,13 +412,14 @@ function diskPressureInputs() {
 
 // BRO-8167: per-job process-tree RSS cap over the live job leases.
 const MEMORY_CAP_STATE_PATH = path.join(REPO, 'data', 'audit', 'job-memory-cap-state.json');
-async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledger = dispatchLedger, killFn = undefined, statePath = MEMORY_CAP_STATE_PATH, capGB = undefined, alert = undefined } = {}) {
+async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledger = dispatchLedger, killFn = undefined, statePath = MEMORY_CAP_STATE_PATH, capGB = undefined, alert = undefined, now = undefined, log = undefined } = {}) {
   const cap = require('./lib/job-memory-cap.js');
-  const runner = require('./lib/bsc-runner.js');
+  const liveJobs = jobs || cap.liveJobsFromLeases(path.join(REPO, 'data', 'audit', 'job-leases'));
   return cap.runLeasePass({
-    jobs: jobs || cap.liveJobsFromLeases(path.join(REPO, 'data', 'audit', 'job-leases')),
-    rows: rows === undefined ? cap.sampleProcessTable() : rows,
-    statePath,
+    jobs: liveJobs,
+    // BRO-8175: max(RSS, phys_footprint) per tree member.
+    rows: rows === undefined ? cap.sampleJobRows(liveJobs.map(j => j.pid)) : rows,
+    statePath, ...(now !== undefined ? { now } : {}), ...(log ? { log } : {}),
     capGB: capGB || cap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB),
     dryRun, ledger, ...(killFn ? { killFn } : {}),
     alert: alert || (({ taskId, reason }) => pageOwner({
@@ -425,6 +428,26 @@ async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledge
       description: `Watchdog killed the headless worker for ${taskId}: ${reason}. It is recorded as a failed job; re-dispatch once the cause is understood.`,
     })),
   });
+}
+
+// BRO-8175: the 60s launchd agent (com.broadwayscore.job-memory-cap) writes
+// the state file's ts every pass. A StartInterval timer can stop silently
+// (BRO-3635), so the 15-min --health tick pages when that ts goes stale.
+const MEMORY_CAP_STALE_MS = 5 * 60 * 1000;
+function checkMemoryCapLiveness({ statePath = MEMORY_CAP_STATE_PATH, now = Date.now(), page = pageOwner, env = process.env } = {}) {
+  const cap = require('./lib/job-memory-cap.js');
+  if (cap.capDisabled(env)) return { stale: false, ageMs: null, skipped: 'disabled' };
+  const ageMs = cap.stateAgeMs(statePath, now);
+  const stale = ageMs === null || ageMs > MEMORY_CAP_STALE_MS;
+  if (stale) {
+    page({
+      conditionKey: 'job-memory-cap-agent-stale',
+      title: 'Worker memory cap is not running',
+      description: `The 60-second worker memory-cap check last ran ${ageMs === null ? 'never (no state file)' : Math.round(ageMs / 60000) + ' min ago'}, so a runaway worker could fill the Mac's memory unchecked. Reload it: launchctl bootout gui/$(id -u)/com.broadwayscore.job-memory-cap 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.job-memory-cap.plist (tracked at scripts/launchd/com.broadwayscore.job-memory-cap.plist).`,
+      cooldownHours: 6,
+    });
+  }
+  return { stale, ageMs };
 }
 
 // ── actions ────────────────────────────────────────────────────────────────
@@ -1394,6 +1417,13 @@ async function health() {
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv) || argv.length === 0) { console.log(USAGE); return 0; }
+  // BRO-8175: before the dispatch kill switch — pausing dispatch must never
+  // also switch off the guard that stops a runaway worker stalling the Mac.
+  if (argv.includes('--memory-cap')) {
+    const r = await memoryCapPass({ dryRun: false });
+    console.log(`[memory-cap] ${new Date().toISOString()} jobs=${r.perJob.length} killed=${r.killed.length}${r.skipped ? ` skipped=${r.skipped}` : ''}`);
+    return 0;
+  }
   if (watchdogOff() && !argv.includes('--status') && !argv.includes('--health') && !argv.includes('--dashboard')) {
     console.log('watchdog: disabled (DISPATCH_WATCHDOG_DISABLED / dispatch-watchdog-off file)');
     return 0;
@@ -1406,7 +1436,10 @@ async function main() {
   }
   if (argv.includes('--sweep')) return sweepOnce({ dryRun: argv.includes('--dry-run') });
   if (argv.includes('--dashboard')) return dashboardLoop();
-  if (argv.includes('--health')) return health();
+  if (argv.includes('--health')) {
+    try { checkMemoryCapLiveness(); } catch (e) { console.error(`[watchdog] memory-cap liveness check failed: ${e.message}`); }
+    return health();
+  }
   if (argv.includes('--status')) {
     // Refresh before reporting: --status is the owner's read-only view, and a
     // status that silently omitted the Linear half of the queue would be the
@@ -1426,7 +1459,7 @@ if (require.main === module) {
     .catch(e => { console.error(`watchdog fatal: ${e.message}`); process.exitCode = 1; });
 }
 module.exports = {
-  main, ensureTab, memoryCapPass, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
+  main, ensureTab, memoryCapPass, checkMemoryCapLiveness, MEMORY_CAP_STALE_MS, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   deliverDispatcherWakes, // BRO-8079
   pageIfKillSwitchStale,
   // BRO-2412: exported so the heartbeat-fresh-but-no-dispatch path is tested

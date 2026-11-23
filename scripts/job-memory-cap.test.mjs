@@ -28,7 +28,11 @@ function mcHarness() {
   const killed = [];
   const ledgerFake = { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry: (e) => rowsLogged.push(e) };
   const jobs = [{ key: 'job-x', pid: 100, taskId: 'linear:BRO-1', jobId: 'job-x' }];
+  let clock = Date.now();
+  // BRO-8175: passes are a minute apart (the launchd cadence); back-to-back
+  // passes inside MIN_STRIKE_GAP_MS deliberately count as one sample.
   const run = (gb) => require('./dispatch-watchdog.js').memoryCapPass({
+    now: (clock += 60 * 1000), log: () => {},
     dryRun: false, rows: mcRows(gb), jobs, ledger: ledgerFake, statePath: pathMc.join(dir, 's.json'), capGB: 8, alert: () => {},
     killFn: async (pids) => { killed.push(pids); },
   });
@@ -76,8 +80,8 @@ test('BRO-8167: dry-run reports per-job tree RSS and kills nothing, writes no st
     killFn: async () => { throw new Error('no kills in dry-run'); }, log: (l) => lines.push(l),
   });
   assert.equal(r.perJob.length, 1);
-  assert.ok(Math.abs(r.perJob[0].rssGB - 12) < 0.01);
-  assert.match(lines[0], /RSS=12\.00GB.*OVER/);
+  assert.ok(Math.abs(r.perJob[0].memGB - 12) < 0.01);
+  assert.match(lines[0], /mem=12\.00GB.*OVER/);
   assert.equal(fsMc.existsSync(pathMc.join(h.dir, 'dry.json')), false);
 });
 
@@ -191,4 +195,182 @@ test('BRO-8167: a strike older than 10 min is not "consecutive"', async () => {
   const killed = [];
   const r = await mcLib.runLeasePass({ jobs: [{ key: 'job-x', pid: 100, taskId: 't', jobId: 'job-x' }], rows: mcRows(4), statePath, capGB: 8, ledger: { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry() {} }, killFn: async (p) => killed.push(p), log: () => {} });
   assert.equal(r.killed.length, 0, 'stale strike must not combine with one fresh over-cap pass');
+});
+
+
+// ── BRO-8175: the cap must act within minutes, not half an hour ─────────────
+// The 2026-11-23 runaways grew ~1 GB/min. Fake clock + fake process table
+// drive the REAL runLeasePass at the cadence the tracked launchd plist
+// declares, with the cmux dashboard sweep (90s) both dead and alive.
+const AGENT_PLIST = new URL('./launchd/com.broadwayscore.job-memory-cap.plist', import.meta.url);
+function plistStartIntervalSec(url) {
+  const m = fsMc.readFileSync(url, 'utf8').match(/<key>StartInterval<\/key>\s*<integer>(\d+)<\/integer>/);
+  assert.ok(m, 'plist declares a StartInterval');
+  return +m[1];
+}
+function plistArgs(url) {
+  const xml = fsMc.readFileSync(url, 'utf8');
+  const arr = xml.match(/<key>ProgramArguments<\/key>\s*<array>([\s\S]*?)<\/array>/)[1];
+  return [...arr.matchAll(/<string>([^<]*)<\/string>/g)].map(x => x[1]).join(' ');
+}
+const CROSS_MS = 180 * 1000; // 5 GB at t=0, +1 GB/min => crosses 8 GB at 180s
+const memGBAt = (t) => 5 + t / 60000;
+// Returns ms from crossing the cap to the tree being SIGKILL-eligible (kill
+// call + KILL_GRACE_MS), and the number of kills.
+async function simulate({ agentIntervalMs, agentPhaseMs, dashPhaseMs = null }) {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-clock-'));
+  const statePath = pathMc.join(dir, 's.json');
+  const ticks = [];
+  for (let t = agentPhaseMs; t <= 3600e3; t += agentIntervalMs) ticks.push(t);
+  if (dashPhaseMs !== null) for (let t = dashPhaseMs; t <= 3600e3; t += 90e3) ticks.push(t);
+  ticks.sort((a, b) => a - b);
+  const base = Date.parse('2026-11-23T12:00:00Z');
+  const kills = [];
+  for (const t of ticks) {
+    if (kills.length) break; // tree is gone
+    await mcLib.runLeasePass({
+      jobs: [{ key: 'job-r', pid: 100, taskId: 'linear:BRO-r', jobId: 'job-r' }],
+      rows: [{ pid: 100, ppid: 1, pgid: 100, rssKB: Math.round(memGBAt(t) * GBKB) }],
+      statePath, capGB: 8, now: base + t, log: () => {},
+      ledger: { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry() {} },
+      killFn: async () => { kills.push(t); },
+    });
+  }
+  fsMc.rmSync(dir, { recursive: true, force: true });
+  return { lagMs: kills.length ? kills[0] + mcLib.KILL_GRACE_MS - CROSS_MS : Infinity, kills: kills.length };
+}
+
+test('BRO-8175: launchd agent runs the memory-only pass (not --health) at <= 60s', () => {
+  assert.ok(plistStartIntervalSec(AGENT_PLIST) <= 60);
+  const args = plistArgs(AGENT_PLIST);
+  assert.match(args, /dispatch-watchdog\.js --memory-cap$/);
+  assert.doesNotMatch(args, /--health|--sweep/);
+});
+
+test('BRO-8175: a job over the cap is stopped within 3 minutes of crossing it (agent alone, every phase)', async () => {
+  const intervalMs = plistStartIntervalSec(AGENT_PLIST) * 1000;
+  let worst = 0;
+  for (let phase = 0; phase < intervalMs; phase += 5000) {
+    const r = await simulate({ agentIntervalMs: intervalMs, agentPhaseMs: phase });
+    assert.equal(r.kills, 1);
+    worst = Math.max(worst, r.lagMs);
+  }
+  assert.ok(worst <= 180e3, `worst-case crossing->stop ${worst / 1000}s must be <= 180s`);
+  assert.ok(worst <= 2 * intervalMs + mcLib.KILL_GRACE_MS, `worst ${worst / 1000}s`);
+});
+
+test('BRO-8175: with the 90s dashboard sweep also running, still <= 3 min and exactly one kill', async () => {
+  const intervalMs = plistStartIntervalSec(AGENT_PLIST) * 1000;
+  let worst = 0;
+  for (let a = 0; a < intervalMs; a += 7000) {
+    for (let d = 0; d < 90e3; d += 13000) {
+      const r = await simulate({ agentIntervalMs: intervalMs, agentPhaseMs: a, dashPhaseMs: d });
+      assert.equal(r.kills, 1);
+      worst = Math.max(worst, r.lagMs);
+    }
+  }
+  assert.ok(worst <= 180e3, `worst ${worst / 1000}s`);
+});
+
+test('BRO-8175: two over-cap passes inside MIN_STRIKE_GAP_MS are one strike, not a kill', async () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-gap-'));
+  const statePath = pathMc.join(dir, 's.json');
+  const killed = [];
+  const pass = (now) => mcLib.runLeasePass({ jobs: [{ key: 'j', pid: 100, taskId: 't', jobId: 'j' }], rows: mcRows(4), statePath, capGB: 8, now, log: () => {}, ledger: { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry() {} }, killFn: async (p) => killed.push(p) });
+  const t0 = Date.now();
+  await pass(t0);
+  const second = await pass(t0 + 1000);
+  assert.equal(second.killed.length, 0);
+  assert.equal(second.perJob[0].strikes, 1);
+  const third = await pass(t0 + mcLib.MIN_STRIKE_GAP_MS);
+  assert.equal(third.killed.length, 1, 'a strike spaced >= MIN_STRIKE_GAP_MS from the first one kills');
+});
+
+test('BRO-8175: pre-BRO-8175 state file (no strikeAt) still reads its strikes', () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-old-'));
+  const statePath = pathMc.join(dir, 's.json');
+  const now = Date.now();
+  fsMc.writeFileSync(statePath, JSON.stringify({ ts: new Date(now - 60e3).toISOString(), strikes: { a: 1 } }));
+  assert.deepEqual(mcLib.readState(statePath, now), { strikes: { a: 1 }, strikeAt: { a: now - 60e3 } });
+});
+
+test('BRO-8175: pass lock — a live holder skips, a dead holder is reclaimed', async () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-lock-'));
+  const statePath = pathMc.join(dir, 's.json');
+  const lockDir = `${statePath}.lock`;
+  fsMc.mkdirSync(lockDir); fsMc.writeFileSync(pathMc.join(lockDir, 'pid'), String(process.ppid)); // alive
+  const args = { jobs: [{ key: 'j', pid: 100, taskId: 't' }], rows: mcRows(1), statePath, capGB: 8, log: () => {}, ledger: {} };
+  assert.equal((await mcLib.runLeasePass(args)).skipped, 'locked');
+  fsMc.writeFileSync(pathMc.join(lockDir, 'pid'), '999999'); // dead pid
+  const r = await mcLib.runLeasePass(args);
+  assert.equal(r.skipped, undefined);
+  assert.equal(r.perJob.length, 1);
+  assert.equal(fsMc.existsSync(lockDir), false, 'lock released after the pass');
+  assert.ok(mcLib.stateAgeMs(statePath) < 5000, 'state ts written every pass (liveness)');
+});
+
+// Real `footprint -f bytes --noCategories -p 5182 -p 18732 -p 99999` output (2026-11-23).
+const FP_SAMPLE = `======================================================================
+node [5182]: 64-bit    Footprint: 142344584 B (16384 bytes per page)
+======================================================================
+
+Auxiliary data:
+    phys_footprint: 142377352 B
+    phys_footprint_peak: 228656600 B
+
+======================================================================
+node [18732]: 64-bit    Footprint: 39852008 B (16384 bytes per page)
+======================================================================
+
+Auxiliary data:
+    phys_footprint: 39884776 B
+    phys_footprint_peak: 47060800 B
+
+======================================================================
+Summary Footprint: 182196592 B
+======================================================================
+`;
+
+test('BRO-8175: footprint parser keys on [pid] headers, prefers phys_footprint, ignores Summary', () => {
+  const m = mcLib.parseFootprintOutput(FP_SAMPLE);
+  assert.deepEqual([...m.entries()], [[5182, 142377352], [18732, 39884776]]);
+  assert.equal(m.has(99999), false);
+  assert.equal(mcLib.parseFootprintOutput('').size, 0);
+});
+
+test('BRO-8175: sampleJobRows charges max(RSS, footprint) and falls back to RSS when footprint fails', () => {
+  const ps = () => '  100     1   100  1048576\n  101   100   100  1048576\n  200     1   200 41943040\n';
+  // footprint says pid 100 is really 6 GB (compressed pages RSS misses); 101 unknown
+  const fp = (bin, args) => { assert.equal(bin, '/usr/bin/footprint'); assert.ok(!args.includes('200'), 'only tree pids are sampled'); return `x [100]: 64-bit    Footprint: ${6 * 1024 ** 3} B (16384 bytes per page)\n`; };
+  const rows = mcLib.sampleJobRows([100], { psExec: ps, fpExec: fp });
+  const r = mcLib.evaluatePass({ jobs: [{ key: 'k', pid: 100 }], rows, capGB: 8 });
+  assert.ok(Math.abs(r.perJob[0].memGB - 7) < 0.01, `6GB footprint + 1GB RSS = 7GB, got ${r.perJob[0].memGB}`);
+  const failing = () => { const e = new Error('timeout'); e.stdout = ''; throw e; };
+  const rows2 = mcLib.sampleJobRows([100], { psExec: ps, fpExec: failing });
+  assert.ok(Math.abs(mcLib.evaluatePass({ jobs: [{ key: 'k', pid: 100 }], rows: rows2, capGB: 8 }).perJob[0].memGB - 2) < 0.01);
+  assert.equal(mcLib.sampleJobRows([100], { psExec: () => { throw new Error('no ps'); } }), null);
+});
+
+test('BRO-8175: --memory-cap is handled before the dispatch kill switch early-return', () => {
+  const src = fsMc.readFileSync(new URL('./dispatch-watchdog.js', import.meta.url), 'utf8');
+  const main = src.indexOf('async function main()');
+  const mc = src.indexOf("argv.includes('--memory-cap')", main);
+  const off = src.indexOf('watchdogOff() && !argv', main);
+  assert.ok(main > 0 && mc > main && off > mc, '--memory-cap must short-circuit before watchdogOff()');
+});
+
+test('BRO-8175: --health pages when the 60s agent state is stale or missing, not when fresh', () => {
+  const { checkMemoryCapLiveness, MEMORY_CAP_STALE_MS } = require('./dispatch-watchdog.js');
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-live-'));
+  const statePath = pathMc.join(dir, 's.json');
+  const pages = [];
+  const page = (p) => pages.push(p);
+  assert.equal(checkMemoryCapLiveness({ statePath, page, env: {} }).stale, true, 'missing state = stale');
+  const now = Date.now();
+  fsMc.writeFileSync(statePath, JSON.stringify({ ts: new Date(now - 60e3).toISOString(), strikes: {} }));
+  assert.equal(checkMemoryCapLiveness({ statePath, now, page, env: {} }).stale, false);
+  assert.equal(checkMemoryCapLiveness({ statePath, now: now + MEMORY_CAP_STALE_MS + 1, page, env: {} }).stale, true);
+  assert.equal(pages.length, 2);
+  assert.equal(pages[0].conditionKey, 'job-memory-cap-agent-stale');
+  assert.equal(checkMemoryCapLiveness({ statePath, page, env: { BSC_JOB_MEMORY_CAP_OFF: '1' } }).skipped, 'disabled');
 });

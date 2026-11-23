@@ -693,12 +693,12 @@ function runClaudeCli(opts) {
     const memCapGB = opts.memoryCapGB || null;
     const memSampler = (memCapGB && pid) ? setInterval(() => {
       if (settled || memoryCapHit) return;
-      const rows = (opts.sampleRows || memCap.sampleProcessTable)();
+      const rows = opts.sampleRows ? opts.sampleRows() : memCap.sampleJobRows([pid]); // BRO-8175: max(RSS, footprint)
       if (!rows) return;
       const r = memCap.evaluatePass({ jobs: [{ key: 'self', pid }], rows, prevStrikes: memStrikes, capGB: memCapGB });
       memStrikes = r.nextStrikes;
       if (r.kills.length) {
-        memoryCapHit = { capGB: memCapGB, rssGB: Number(r.kills[0].rssGB.toFixed(2)), reason: memCap.memoryCapReason(r.kills[0], memCapGB) };
+        memoryCapHit = { capGB: memCapGB, rssGB: Number(r.kills[0].memGB.toFixed(2)), reason: memCap.memoryCapReason(r.kills[0], memCapGB) };
         logLine(`===== ${new Date().toISOString()} ${memoryCapHit.reason} — killing process tree =====`);
         memCap.killTree(r.kills[0].pids, { graceMs: Math.min(graceMs, memCap.KILL_GRACE_MS) }).catch(() => {});
       }

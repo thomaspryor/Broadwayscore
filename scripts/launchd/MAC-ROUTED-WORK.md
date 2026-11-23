@@ -27,6 +27,7 @@ Verdicts: **moved** (now a GitHub Actions cron, plist deleted), **needs-Mac** (c
 | com.broadwayscore.dispatch-watchdog-health | needs-Mac | Reads the Mac dispatch ledger (gitignored, per machine). Goes when the Mac dispatch path does. |
 | com.broadwayscore.gap-recovery-nightly | needs-Mac | NYT subscriber text recovery uses the Mac's logged-in browser. |
 | com.broadwayscore.gap-recovery-opening-window | needs-Mac | Same recovery, every 20 min in opening windows. |
+| com.broadwayscore.job-memory-cap | needs-Mac | Kills a runaway local worker's process tree (BRO-8175). Goes when the Mac dispatch path does. |
 | com.broadwayscore.hook-liveness | needs-Mac | Checks `~/.claude/hooks` on this Mac. |
 | com.broadwayscore.infra-gate-registration | needs-Mac | Checks `~/.claude` registration on this Mac. |
 | com.broadwayscore.linear-drain-parked | needs-Mac | Drains `mac-only` cards; the cloud twin `linear-unpark-drain.js` takes the rest. |
