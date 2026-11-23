@@ -585,6 +585,14 @@ test('BRO-8064: a show is called the top or bottom only when it holds that score
   bad('lede', 'Eurotrash is the best of seven London openings at a solid 78/100. Cinderella (67) trails.');
   fine('lede', 'Eurotrash lands at a solid 78/100, the most reviewed of seven London openings. Nero (39) trails the field.');
   fine('lede', 'Cranford still leads London at 87, and Eurotrash lands at a solid 78/100 among seven London openings.');
+  // Review gaps (BRO-8064): bare "top", "the week's high", a show called "it", plain words.
+  bad('lede', "Eurotrash is the week's top opening at 78/100.");
+  bad('lede', "Eurotrash lands at 78/100, the week's high.");
+  bad('lede', 'Eurotrash lands at 78/100 among seven London openings. It tops the week, ahead of A Homo Alone 2 (68) and Cinderella (67).');
+  fine('lede', 'Eurotrash, led by a starry cast, lands at a solid 78/100. Critics say it is at its best in the second act.');
+  fine('lede', 'Eurotrash lands at 78/100 and trails only Cranford (87).');
+  assert.match(checkCandidate({ ...we16Good, lede: 'Eurotrash lands at 78/100 among seven London openings. Critics put it at 75, ahead of A Homo Alone 2 (68) and Cinderella (67).' }, we16Pool).join(), /score of 75/);
+  assert.doesNotMatch(checkCandidate({ ...we16Good, preheader: 'Two shows close Saturday, and Eurotrash lands at a solid 78/100.' }, we16Pool).join(), /openings this week/);
   // New York, 2026-11-16: 82 called the top with a 91 (three reviews) in the email.
   const ny = {
     edition: 'broadway',
@@ -600,12 +608,13 @@ test('BRO-8064: a show is called the top or bottom only when it holds that score
     topLeadTitles: ['The Fantasticks', 'Much Ado About Nothing', 'Blue Man Group'],
   };
   const np = buildPool(ny);
-  assert.deepEqual(np.leadShows, ['The Fantasticks', 'Much Ado About Nothing'], 'a Broadway tie keeps both; Broadway outranks Off-Broadway');
+  assert.deepEqual(np.leadShows, ['The Good Thief'], 'New York roundups cover every NYC opening: Broadway gets no first claim (owner, 2026-11-23)');
+  assert.deepEqual(buildPool({ ...ny, edition: 'west-end' }).leadShows, ['The Fantasticks', 'Much Ado About Nothing'], 'London keeps its main market first; a tie keeps both');
   const nyLive = { angle: 'the week as a group', subject: "How New York's four openings scored", preheader: 'Grosses climbed 10% week-over-week at the box office.', lede: "The Fantasticks and Much Ado About Nothing share the Broadway high at a solid 79/100. The Good Thief tops every New York opening at 82 Off-Broadway, while Blue Man Group trails at 48." };
   // One ranking problem is reported per field: the first sentence, then the live second one alone.
   assert.match(checkCandidate(nyLive, np).join(), /ranks The Fantasticks \(79\) as the top \("the Broadway high"\), but the email lists a show at 91/);
   assert.match(checkCandidate({ ...nyLive, lede: 'The Fantasticks lands at a solid 79/100 on Broadway. The Good Thief tops every New York opening at 82 Off-Broadway, while Blue Man Group trails at 48.' }, np).join(), /ranks The Good Thief \(82\) as the top/);
-  const nyOk = { ...nyLive, preheader: 'Off-Broadway, The Good Thief lands at 82. Blue Man Group sits at 48.', lede: 'The Fantasticks and Much Ado About Nothing both land at a solid 79/100 on Broadway. Off-Broadway, The Good Thief scores 82, and Blue Man Group sits at 48.' };
+  const nyOk = { ...nyLive, preheader: 'Off-Broadway, The Good Thief lands at 82. Blue Man Group sits at 48.', lede: 'Off-Broadway, The Good Thief scores 82. On Broadway, The Fantasticks and Much Ado About Nothing both land at a solid 79/100, and Blue Man Group sits at 48.' };
   assert.doesNotMatch(checkCandidate(nyOk, np).join(), /as the (top|bottom)|lead opening|cover the week/);
   assert.match(checkCandidate({ ...nyOk, subject: "How New York's six openings scored" }, np).join(), /says "six openings", but the facts count/);
 });
