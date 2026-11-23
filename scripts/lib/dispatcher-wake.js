@@ -34,9 +34,9 @@ const BAD_EVENTS = new Set(['job-failed', 'job-stranded', 'job-blocked', 'job-st
 // Rows that mean the task moved on after a bad row: re-dispatched, retried, finished, closed done or landed.
 const LANDED_EVENTS = (() => { try { return [...require('./dispatch-ledger.js').LANDED_ACK_EVENTS]; } catch { return ['landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']; } })();
 const MOVED_ON_EVENTS = new Set(['launch', 'job-spawned', 'job-retried', 'job-done', 'prune-closed', ...LANDED_EVENTS]);
-const isLeaseHeldAbandon = (e) => e.event === 'job-abandoned' && !/^disk-pressure/.test(String(e.reason || ''));
+const isLeaseHeldAbandon = (e) => e.event === 'job-abandoned' && !/^(?:disk|memory)-pressure/.test(String(e.reason || ''));
 function isBadRow(e) {
-  return BAD_EVENTS.has(e.event) && !(e.event === 'job-abandoned' && !/^disk-pressure/.test(String(e.reason || '')));
+  return BAD_EVENTS.has(e.event) && !(e.event === 'job-abandoned' && !/^(?:disk|memory)-pressure/.test(String(e.reason || '')));
 }
 const MIN_AGE_MS = 10 * 60 * 1000;
 const MAX_AGE_MS = 24 * 3600 * 1000;

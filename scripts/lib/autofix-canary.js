@@ -131,7 +131,7 @@ function wasRefusedByDiskPressure(dispatchLedgerEntries, taskId) {
   for (const e of entries) {
     if (!e || String(e.taskId) !== String(taskId)) continue;
     if (e.event === dispatchLedger.JOB_EVENTS.SPAWNED) refused = false; // a later real spawn supersedes
-    else if (e.event === dispatchLedger.JOB_EVENTS.ABANDONED) refused = /^disk-pressure/.test(String(e.reason || ''));
+    else if (e.event === dispatchLedger.JOB_EVENTS.ABANDONED) refused = /^(?:disk|memory)-pressure/.test(String(e.reason || ''));
   }
   return refused;
 }

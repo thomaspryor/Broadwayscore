@@ -167,3 +167,9 @@ test('BRO-8079 ship-check: deliveries are capped, not candidates, so busy tabs c
     assert.deepEqual(sent.sort(), ['workspace:10', 'workspace:11', 'workspace:12']);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('BRO-8171: memory-pressure abandoned rows wake like disk-pressure (job never ran)', () => {
+  const l = launch('linear:BRO-1', '2026-11-22T19:00:00Z');
+  const row = { ts: '2026-11-22T21:00:00Z', taskId: 'linear:BRO-1', event: 'job-abandoned', reason: 'memory-pressure: free 0.4GB < floor' };
+  assert.equal(wake.planDispatcherWakes([l, row], { nowMs: NOW }).length, 1);
+});

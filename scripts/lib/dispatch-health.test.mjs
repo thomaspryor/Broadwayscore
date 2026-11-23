@@ -643,3 +643,13 @@ test('headless digest never calls recovery when the 14d rate is below the recove
   for (let i = 0; i < 24; i++) entries.push(...headlessRun(`h-new-${i}`, iso(0.5, i), 'done'));
   assert.equal(computeHeadlessDispatchDigest({ entries, nowMs: NOW }).status, 'error');
 });
+
+test('BRO-8171: memory-pressure refusals are excluded from failures like disk-pressure', () => {
+  const entries = [
+    hlLaunch('2026-08-09T05:00:00.000Z', 'mem'),
+    { ts: '2026-08-09T05:00:00.000Z', event: JOB_EVENTS.ABANDONED, taskId: 'mem', jobId: 'mem-j', reason: 'memory-pressure: free 0.4GB < floor 1GB' },
+  ];
+  const stats = computeJobLaneOutcomeRate(entries, { nowMs: NOW, lane: 'headless' });
+  assert.equal(stats.abandoned, 1);
+  assert.equal(stats.failed, 0);
+});

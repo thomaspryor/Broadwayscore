@@ -619,3 +619,8 @@ test('foldCanaryStage: legacy recorded canary-fail "card-filed" + disk-pressure 
   const disp = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'disk-pressure: x' }];
   assert.equal(foldCanaryStage({ dateStr: YESTERDAY, canaryLedgerEntries: canary, dispatchLedgerEntries: disp, now: new Date(NOW) }).stage, 'disk-pressure');
 });
+
+test('BRO-8171: wasRefusedByDiskPressure also recognises memory-pressure refusals', () => {
+  const d = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'memory-pressure: free 0.4GB < floor' }];
+  assert.equal(wasRefusedByDiskPressure(d, 'linear:BRO-1'), true);
+});

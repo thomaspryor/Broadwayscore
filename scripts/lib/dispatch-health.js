@@ -285,7 +285,7 @@ function isLandedAcked(rows, taskId, last) {
 // The reason prefix bsc-runner.js's runJob() disk preflight writes on its
 // ABANDONED row ("disk-pressure: disk free …GB < floor …").
 function isDiskPressureRefusal(entry) {
-  return /^disk-pressure:/.test(String((entry && entry.reason) || ''));
+  return /^(?:disk|memory)-pressure:/.test(String((entry && entry.reason) || ''));
 }
 
 function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = JOB_LANE, isStrandedShaLanded = null } = {}) {
