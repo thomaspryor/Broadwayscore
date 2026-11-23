@@ -202,20 +202,6 @@
     "queuedAt": "2026-11-23T14:33:55.199Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +18 more). Checked 2026-11-23.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-23T14:33:55.267Z"
-  },
-  {
     "conditionKey": "land:land/anthropic-key-cloud",
     "title": "Landing blocked: unit-tests-node red on land/anthropic-key-cloud",
     "description": "land.yml did not land land/anthropic-key-cloud: the unit-tests-node gate went red at 4b78a6f067. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45193172766",
@@ -1099,6 +1085,20 @@
       }
     ],
     "queuedAt": "2026-11-23T17:53:58.137Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-23.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T18:21:12.374Z"
   },
   {
     "conditionKey": "land:land/bro-8146-unwatched-regional",
