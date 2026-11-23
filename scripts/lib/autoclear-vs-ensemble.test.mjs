@@ -28,7 +28,7 @@ const {
   hasEnsembleConsensus,
 } = require('./wrong-production-autoclear.js');
 const autoclear = require('./wrong-production-autoclear.js');
-const { scanAutoclearVsEnsembleViolations } = require('./autoclear-vs-ensemble-scan.js');
+const { scanAutoclearVsEnsembleViolations, classifyAutoclearVsEnsemble } = require('./autoclear-vs-ensemble-scan.js');
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
@@ -202,4 +202,40 @@ test('shouldRelease* wrongProduction self-release predicates refuse a unanimous 
   const rep = { wrongProduction: true, wrongProductionReason: 'prior-run-republish', fullText: 'x' };
   assert.strictEqual(shouldReleasePriorRunRepublish({ ...rep, ...ensemble }, show), false);
   assert.strictEqual(shouldReleasePriorRunRepublish(rep, show), true, 'control: releases without a verdict');
+});
+
+// BRO-8093 (mexodus NYT, 2026-11-22): the ensemble writer records an Off-Broadway
+// wrong_production verdict but never applies the flag (OB carve-out). An earlier
+// priorRun auto-clear stamp on the same file then read as a violation and turned
+// every land floor red. The writer now stamps rejectionFlagNotApplied='ob-exempt'
+// and the scanner exempts exactly that pair.
+test('BRO-8093: an OB-exempt (never applied) ensemble verdict is not an autoclear violation', () => {
+  const opts = { reason: 'wrong_production', autoClearedField: 'wrongProductionAutoCleared', flagField: 'wrongProduction' };
+  const base = {
+    wrongProduction: false,
+    wrongProductionAutoCleared: true,
+    rejectionReason: 'wrong_production',
+    rejectedBy: 'ensemble-scoreability-check',
+    rejectionAgreeCount: 3,
+    rejectionReasoning: 'claude: wrong_production | gpt-4o: wrong_production | gemini: wrong_production',
+    rejectedAt: '2026-11-22T17:50:00Z',
+  };
+  assert.strictEqual(classifyAutoclearVsEnsemble(base, opts).isViolation, true, 'unmarked pair is still a violation');
+  const ob = { ...base, rejectionFlagNotApplied: 'ob-exempt' };
+  const r = classifyAutoclearVsEnsemble(ob, opts);
+  assert.strictEqual(r.isViolation, false);
+  assert.strictEqual(r.exemptReason, 'ob-exempt-verdict-not-applied');
+  // the marker only exempts wrong_production; a wrong_show verdict is never OB-exempt
+  const ws = { ...ob, rejectionReason: 'wrong_show', wrongShow: false, wrongShowAutoCleared: true };
+  assert.strictEqual(classifyAutoclearVsEnsemble(ws, { reason: 'wrong_show', autoClearedField: 'wrongShowAutoCleared', flagField: 'wrongShow' }).isViolation, true);
+});
+
+test('BRO-8093: the ensemble OB-exempt branch stamps rejectionFlagNotApplied and every other rejection clears it', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'llm-scoring', 'index.ts'), 'utf8');
+  const i = src.indexOf("rejection === 'wrong_production' && isOffBroadway) {\n          (fileData as any).rejectionFlagNotApplied = 'ob-exempt';");
+  assert.ok(i > 0, 'OB-exempt branch must stamp rejectionFlagNotApplied = ob-exempt');
+  const tail = src.slice(i, i + 400);
+  assert.match(tail, /delete \(fileData as any\)\.rejectionFlagNotApplied;/, 'applied verdicts must drop a stale ob-exempt marker');
+  // the stamp sits before the save, inside the same rejection block
+  assert.ok(src.indexOf("fileData.rejectedBy = 'ensemble-scoreability-check';", i) > i);
 });
