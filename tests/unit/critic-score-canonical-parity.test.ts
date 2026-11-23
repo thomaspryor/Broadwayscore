@@ -63,7 +63,7 @@ describe('Critic Score: website display == slim cs (every show)', () => {
       compared++;
       const c = show.criticScore;
       const siteDisplayed = c && hasEnoughReviews(
-        c.reviewCount, show.category, (c.tier1Count || 0) + (c.tier2Count || 0), scoreGateArg(show.id),
+        c.reviewCount, show.category, (c.tier1Count || 0) + (c.tier2Count || 0), scoreGateArg(show),
       ) ? c.score : null;
       const slim = computeSlimCriticScore(raw, byShow.get(show.id) || [], registry);
       if (slim.cs != null) scored++;

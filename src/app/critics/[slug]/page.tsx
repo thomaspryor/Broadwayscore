@@ -24,7 +24,7 @@ function consensusFor(showSlugs: Iterable<string>): Record<string, ShowConsensus
     if (!wanted.has(show.slug) || show.compositeScore == null || !show.criticScore) continue;
     const rc = show.criticScore.reviewCount;
     const t1t2 = (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0);
-    if (!hasEnoughReviews(rc, show.category || 'broadway', t1t2, scoreGateArg(show.id))) continue;
+    if (!hasEnoughReviews(rc, show.category || 'broadway', t1t2, scoreGateArg(show))) continue;
     out[show.slug] = { score: Math.round(show.compositeScore), reviewCount: rc };
   }
   return out;

@@ -65,15 +65,40 @@ export const CURATED_HISTORICAL_SHOWS = new Set<string>(curatedHistoricalShowsDa
 
 const SCORE_GATE_OVERRIDES: Record<string, { minReviews?: number }> =
   (scoreGateOverridesData as { shows?: Record<string, { minReviews?: number }> }).shows ?? {};
+const SCORE_GATE_KEPT: Record<string, { approvedBy?: string }> =
+  (scoreGateOverridesData as { keptMarketMinimum?: Record<string, { approvedBy?: string }> }).keptMarketMinimum ?? {};
+
+// BRO-8163 standing rule (owner, 2026-11-23). TS copy of scripts/lib/score-gate-rule.js; the parity test locks them.
+const STANDING_SHORT_RUN_DAYS = 56;
+const STANDING_MIN_REVIEWS = 3;
+const GATED_SHORT_RUN_CATEGORIES = new Set(['broadway', 'west-end']);
+const isGateDay = (d: unknown): d is string => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(`${d}T00:00:00Z`));
+
+export interface ScoreGateShow { id?: string | null; type?: string | null; category?: string | null; openingDate?: string | null; closingDate?: string | null }
+
+/** 'special' / 'short run (N days)' for a show the standing rule covers, else null. */
+export function scoreGateReason(show: ScoreGateShow | null | undefined): string | null {
+  if (!show) return null;
+  if (String(show.type || '').toLowerCase() === 'special') return 'special';
+  if (show.category && GATED_SHORT_RUN_CATEGORIES.has(show.category) && isGateDay(show.openingDate) && isGateDay(show.closingDate)) {
+    const run = Math.round((Date.parse(`${show.closingDate}T00:00:00Z`) - Date.parse(`${show.openingDate}T00:00:00Z`)) / 86400000);
+    if (run >= 0 && run <= STANDING_SHORT_RUN_DAYS) return `short run (${run} days)`;
+  }
+  return null;
+}
 
 /**
- * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750): an
- * owner-approved per-show minimum from data/score-gate-overrides.json when one exists,
- * else whether the show is curated historical. Mirrors scripts/lib/should-hide-reviews.js.
+ * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750, BRO-8163). Pass the show object; a bare
+ * id works but cannot apply the standing rule. Order: explicit per-show minimum in data/score-gate-overrides.json,
+ * else a recorded keptMarketMinimum (skips the rule), else 3 for a special or short Broadway / West End run, else
+ * whether the show is curated historical. Mirrors scripts/lib/should-hide-reviews.js.
  */
-export function scoreGateArg(showId: string | null | undefined): boolean | number {
+export function scoreGateArg(showOrId: ScoreGateShow | string | null | undefined): boolean | number {
+  const show = showOrId && typeof showOrId === 'object' ? showOrId : null;
+  const showId = show ? show.id : (showOrId as string | null | undefined);
   const min = showId ? SCORE_GATE_OVERRIDES[showId]?.minReviews : undefined;
   if (typeof min === 'number' && Number.isFinite(min) && min >= 1) return min;
+  if (show && showId && scoreGateReason(show) && !SCORE_GATE_KEPT[showId]?.approvedBy) return STANDING_MIN_REVIEWS;
   return !!showId && CURATED_HISTORICAL_SHOWS.has(showId);
 }
 

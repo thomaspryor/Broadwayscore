@@ -27,7 +27,7 @@ export interface CitableScore {
 }
 
 // criticScore.reviews is left out so the show page's slimmed review rows fit too.
-type CitableShowFields = Pick<ComputedShow, 'id' | 'title' | 'slug' | 'openingDate' | 'category' | 'status' | 'scorePublicSince' | 'cov' | 'coverageAcked'> & {
+type CitableShowFields = Pick<ComputedShow, 'id' | 'title' | 'slug' | 'type' | 'openingDate' | 'closingDate' | 'category' | 'status' | 'scorePublicSince' | 'cov' | 'coverageAcked'> & {
   criticScore: Pick<CriticScoreResult, 'score' | 'reviewCount' | 'tier1Count' | 'tier2Count'> | null;
 };
 

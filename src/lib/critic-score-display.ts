@@ -10,6 +10,9 @@ import { scoreGateArg } from '@/config/scoring';
 interface ShowWithCriticScore {
   id?: string;
   category?: string;
+  type?: string | null;
+  openingDate?: string | null;
+  closingDate?: string | null;
   criticScore?: { reviewCount?: number; tier1Count?: number; tier2Count?: number } | null;
 }
 
@@ -21,6 +24,6 @@ export function displaysCriticScore(show: ShowWithCriticScore): boolean {
     show.category,
     // Unknown tier counts → undefined (no T3-only penalty), as ScoreBadge does.
     cs.tier1Count === undefined && cs.tier2Count === undefined ? undefined : (cs.tier1Count ?? 0) + (cs.tier2Count ?? 0),
-    scoreGateArg(show.id),
+    scoreGateArg(show),
   );
 }

@@ -28,7 +28,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager 
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
-  const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show.id)) ? rawScore : null;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? rawScore : null;
   const marketLabel = getMarketLabel(category, show.venue);
 
   // For not-yet-open shows there's no score, so the badge slot would just read

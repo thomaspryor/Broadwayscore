@@ -30,6 +30,7 @@ export interface ServerShelfShow {
   status?: string;
   previewsStartDate?: string | null;
   openingDate?: string | null;
+  closingDate?: string | null; // score-gate standing rule (BRO-8163)
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
 }
@@ -38,7 +39,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
-  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, scoreGateArg(show.id)) ? rawScore : null;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, scoreGateArg(show)) ? rawScore : null;
   const category = show.category ?? 'broadway';
   const imgSrc = show.images?.poster
     ? getOptimizedImageUrl(show.images.poster, 'card')

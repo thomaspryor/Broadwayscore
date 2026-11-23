@@ -115,7 +115,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
       }
       compared++;
       const siteQ = hasEnoughReviews(
-        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), scoreGateArg(show.id),
+        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), scoreGateArg(show),
       ) ? 1 : 0;
       if (siteQ === 0) gated++;
       const siteL = getScoreTier(Math.round(cs.score), show.category)?.label;
@@ -148,7 +148,7 @@ describe('the show page gate the feed mirrors has not moved', () => {
     assert.ok(!page.includes('hasEnoughReviews('), 'the show page must not re-derive the gate inline');
     const gate = readFileSync(resolve('src/lib/show-score-tbd.ts'), 'utf8').replace(/\s+/g, ' ');
     for (const part of [
-      '!hasEnoughReviews( cs?.reviewCount ?? 0, show.category, (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0), scoreGateArg(show.id), )',
+      '!hasEnoughReviews( cs?.reviewCount ?? 0, show.category, (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0), scoreGateArg(show), )',
       "show.status === 'previews' || show.status === 'upcoming'",
       'scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked',
     ]) assert.ok(gate.includes(part), 'the shared TBD gate changed (' + part.slice(0, 40) + '): update scripts/lib/mobile-critic-score.js (pq) to match');

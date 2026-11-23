@@ -8,7 +8,7 @@ import type { ComputedShow } from './engine';
 import { hasEnoughReviews, applyCoverageFloor } from '../config/score-buckets';
 import { scoreGateArg } from '../config/scoring';
 
-type ShowTbdFields = Pick<ComputedShow, 'id' | 'category' | 'status' | 'criticScore' | 'scorePublicSince' | 'cov' | 'coverageAcked'>;
+type ShowTbdFields = Pick<ComputedShow, 'id' | 'type' | 'openingDate' | 'closingDate' | 'category' | 'status' | 'criticScore' | 'scorePublicSince' | 'cov' | 'coverageAcked'>;
 
 /**
  * The show page's own TBD verdict (min-review gate, previews/upcoming, then the
@@ -22,7 +22,7 @@ export function computeShowTBD(show: ShowTbdFields, now?: number): boolean {
     cs?.reviewCount ?? 0,
     show.category,
     (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0),
-    scoreGateArg(show.id),
+    scoreGateArg(show),
   ) || show.status === 'previews' || show.status === 'upcoming';
   return applyCoverageFloor(reviewCountTBD, {
     scorePublicSince: show.scorePublicSince,

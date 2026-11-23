@@ -31,7 +31,7 @@ function computeSlimCriticScore(show, rawShowReviews, outletRegistry) {
   const scoreResult = hideReviews ? null : computeCriticScore(showReviews, outletRegistry, show.category, show.type);
   // Same display gate as the website's score badges (min-reviews.js).
   const hasEnough = !!scoreResult && hasEnoughReviews(
-    scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show.id),
+    scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show),
   );
   return {
     showReviews,

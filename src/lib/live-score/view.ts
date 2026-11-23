@@ -30,7 +30,7 @@ export interface ScoreRegionView {
 
 export interface BreakdownReview { reviewScore: number | null | undefined; verdict?: string | null }
 
-type ViewShow = Pick<ComputedShow, 'id' | 'category' | 'status' | 'criticScore' | 'scorePublicSince' | 'cov' | 'coverageAcked' | 'openingDate' | 'type' | 'synopsis'> & { [k: string]: unknown };
+type ViewShow = Pick<ComputedShow, 'id' | 'category' | 'status' | 'criticScore' | 'scorePublicSince' | 'cov' | 'coverageAcked' | 'openingDate' | 'closingDate' | 'type' | 'synopsis'> & { [k: string]: unknown };
 
 export function buildScoreRegionView(show: ViewShow, hasConsensus: boolean, now?: number, consensusText?: string | null): ScoreRegionView {
   const reviewCount = show.criticScore?.reviewCount || 0;
@@ -38,7 +38,7 @@ export function buildScoreRegionView(show: ViewShow, hasConsensus: boolean, now?
   const tier2Count = show.criticScore?.tier2Count || 0;
   const showTBD = computeShowTBD(show, now);
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
-    ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, scoreGateArg(show.id))
+    ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, scoreGateArg(show))
     : 0;
   return {
     score: show.criticScore?.score ?? null,
