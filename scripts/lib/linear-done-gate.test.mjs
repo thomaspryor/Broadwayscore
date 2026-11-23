@@ -448,7 +448,7 @@ test('BRO-8079 reopen: a number >= 10 next to a data noun, in either order, is s
     const m = dataCountMatch({ title: t });
     assert.equal(m && m.strong, true, t);
   }
-  for (const t of ['Fix 404 on show pages', 'Top 10 shows page redesign', 'Tony 2026 shows page', 'Mobile shows 2 rows of cards', 'Add 3 reviews to the fixture']) {
+  for (const t of ['Fix 404 on show pages', 'Top 10 shows page redesign', 'Tony 2026 shows page', 'Mobile shows 2 rows of cards', 'Add 3 reviews to the fixture', 'A full build compared all 1039 show pages', 'Evidence: show the lost boys 360 data testid review card', 'ReviewsList.tsx:381 reviews render twice']) {
     const m = dataCountMatch({ title: t });
     assert.equal(Boolean(m && m.strong), false, t);
   }

@@ -58,7 +58,8 @@ function acceptanceSection(description) {
 // candidates: 33 (2025-26), 166 ..." matched nothing; "29 opaque URLs" only warned). A number >= 10 next
 // to a data noun, in EITHER order, is strong. Years (19xx/20xx) are not counts.
 const DATA_NOUN = String.raw`(?:reviews?|stubs?|candidates?|gaps?|files?|urls?|links?|records?|shows?|entries|outlets?|critics?)`;
-const DATA_FWD_RE = new RegExp(String.raw`${NUM}\s+(?:[a-z_-]+\s+){0,2}?${DATA_NOUN}\b`, 'gi');
+// "1039 show pages", "360 data testid review card" (screenshot width) count UI, not data; "file.tsx:360" is a line number.
+const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}\s+(?:[a-z_-]+\s+){0,2}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
 const DATA_REV_RE = new RegExp(String.raw`\b${DATA_NOUN}\s*[:=]\s*~?(\d[\d,]*)\b`, 'gi');
 // An EFFECT: line in the card's own description (any line, bulleted or not) means its author asked for a
 // measured result at close; inline prose quoting `EFFECT: ...` and NO-DATA-EFFECT / NO-EFFECT-CHECK do not count.
