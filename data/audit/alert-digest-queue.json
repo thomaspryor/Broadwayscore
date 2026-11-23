@@ -1532,5 +1532,65 @@
       }
     ],
     "queuedAt": "2026-11-23T22:47:45.450Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-6866",
+    "title": "Red-first dispatch skipped BRO-6866 — no job spawned (human-gated:[object Object]) — still happening after 7 days",
+    "description": "Filed BRO-8207: this has been happening for 7+ days without clearing.\n\nThe BRO-4054 red-first pass skipped \"Scraper workflows failed 21 times this week, find and fix the cause\" (BRO-6866) this tick with reason \"human-gated:[object Object]\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8207",
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-6866"
+      },
+      {
+        "name": "Skip reason",
+        "value": "human-gated:[object Object]"
+      }
+    ],
+    "queuedAt": "2026-11-23T23:04:53.650Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-6867",
+    "title": "Red-first dispatch skipped BRO-6867 — no job spawned (human-gated:[object Object]) — still happening after 7 days",
+    "description": "Filed BRO-8208: this has been happening for 7+ days without clearing.\n\nThe BRO-4054 red-first pass skipped \"Browserbase cost $89.80 this week (898 sessions), find what drove it\" (BRO-6867) this tick with reason \"human-gated:[object Object]\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8208",
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-6867"
+      },
+      {
+        "name": "Skip reason",
+        "value": "human-gated:[object Object]"
+      }
+    ],
+    "queuedAt": "2026-11-23T23:04:55.327Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-house-of-blue-leaves-2011",
+    "title": "1 review(s) for the-house-of-blue-leaves-2011 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- chicagotribune--unknown.json (chicagotribune): no byline in page and no recoverable body http://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/house-of-blue-leaves-broadway-ben-stiller-edie-falco-director-david-cromer-broadway-review.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T23:12:18.289Z"
   }
 ]
