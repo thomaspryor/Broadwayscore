@@ -156,6 +156,7 @@ else
   # partial copy) — fall back to the old unscoped diff rather than fail closed.
   UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
 fi
+UI_FILES_ALL=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | sort -u)  # BRO-8156: full list, before any filter, for the ledger record
 # BRO-5844: drop code files whose diff only changes copy (logic in the helper,
 # canonical root ONLY so a pushed branch can't supply its own). Fail closed: any
 # helper/git error keeps the full list.
@@ -178,6 +179,7 @@ if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_RIL" ] && command -v timeout >/dev/null
     _RIL_DETECTOR_LINE="render-impact detector: no file exempt (each changes JSX, styles, state or non-effect code)."
   fi
 fi
+UI_FILES_GATED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | sort -u)  # BRO-8156: full filtered list (scope check); the head -5 below is display only
 UI_FILES_CHANGED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | head -5)
 if [ -z "$UI_FILES_CHANGED" ]; then
   # No UI files changed (or only copy edits) in this branch — push freely.
@@ -321,7 +323,29 @@ if [ "$LEDGER_OK" = "true" ]; then
   exit 0
 fi
 
-APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" --after-file="$VERDICT_PATH" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
+# >>> BRO-8156 scope reuse (the replay test strips this block to prove the red case)
+# One owner yes per feature branch covers later revisions of the SAME UI files (a re-run of visual-qa, a wrap fix):
+# allowed when a fresh ledger entry the owner approved on this branch lists every gated UI file and the current
+# verdict passes. A new UI file or route is not in that list, so it still asks. Never records or mints (no TTL renewal,
+# no durable marker for a diff the owner did not see). Canonical-root copy only; any error -> the normal ask below.
+if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ]; then
+  _SCOPE=$(node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=scope-allowed --repo="$CANONICAL_ROOT" --branch="$BRANCH" --ui-files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null)
+  if [ "$(printf '%s' "$_SCOPE" | jq -r '.allowed // false' 2>/dev/null)" = "true" ]; then
+    _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"; mkdir -p "$_logdir" 2>/dev/null
+    printf '%s\tscope-reuse\t%s\n' "$(date +%s)" "$BRANCH $(printf '%s' "$UI_FILES_GATED" | tr '\n' ' ')" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+    exit 0
+  fi
+fi
+# Freshness bound for the owner's yes (BRO-7295): the yes must come after the screenshots it approves. BRO-8156: with a
+# passing verdict, that is when screenshots of this file set were FIRST shown on the branch (verdict.scopeFirstAt, kept
+# by visual-qa across re-runs and tweaks; a new file restarts it), so re-running visual-qa never voids the yes.
+_AFTER_ARG="--after-file=$VERDICT_PATH"
+_SFA=$(jq -r '.scopeFirstAt // empty' "$VERDICT_PATH" 2>/dev/null)
+if [ "$OVERALL_PASS" = "true" ] && [ -n "$_SFA" ] && jq -e --arg g "$UI_FILES_GATED" '(.uiFiles // null) as $u | $u != null and (($g | split("\n") | map(select(. != ""))) - $u | length == 0)' "$VERDICT_PATH" >/dev/null 2>&1; then
+  _AFTER_ARG="--after=$_SFA"
+fi
+# <<< BRO-8156 scope reuse
+APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" "$_AFTER_ARG" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then
@@ -348,7 +372,9 @@ HEAD_SHA=$(cd "$SESSION_ROOT" && git rev-parse HEAD 2>/dev/null)
 if [ -n "$HEAD_SHA" ]; then
   node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=record \
     --repo="$CANONICAL_ROOT" --branch="$BRANCH" --commit="$HEAD_SHA" \
-    --hash="$VERDICT_HASH" --session="$session_id" >/dev/null 2>&1 || true
+    --hash="$VERDICT_HASH" --session="$session_id" \
+    --ui-files="$(jq -r --arg a "$UI_FILES_ALL" '($a | split("\n") | map(select(. != ""))) as $all | if (.uiFiles | type) == "array" then [$all[] | select(. as $f | $u_files | index($f))] else $all end | join(",")' --argjson u_files "$(jq -c '.uiFiles // []' "$VERDICT_PATH" 2>/dev/null || echo '[]')" "$VERDICT_PATH" 2>/dev/null)" \
+    >/dev/null 2>&1 || true  # BRO-8156: only files the owner's screenshots covered (verdict.uiFiles) join the approved scope
 fi
 
 _mint_durable

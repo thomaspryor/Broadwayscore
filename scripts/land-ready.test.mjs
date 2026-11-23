@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { evaluate, render } from './land-ready.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const base = { doctor: { ok: true }, dirty: [], uiFiles: [], gatedFiles: [], renderImpactDropped: [], uiCommitsMissingPrefix: [], touchesSrc: false, transcript: { found: true }, coverage: { ran: true, complete: true, missing: [] }, judge: { decision: 'allow' } };
+const base = { doctor: { ok: true }, dirty: [], uiFiles: [], gatedFiles: [], renderImpactDropped: [], touchesSrc: false, transcript: { found: true }, coverage: { ran: true, complete: true, missing: [] }, judge: { decision: 'allow' } };
 
 test('a clean branch with no UI files needs no owner approval and every box is ticked', () => {
   const r = evaluate(base);
@@ -44,9 +44,10 @@ test('non-rendering and text-only UI diffs need no owner approval', () => {
   assert.match(evaluate({ ...base, uiFiles: ['src/a.tsx'], renderImpactDropped: ['src/a.tsx'] }).cls, /non-rendering/);
 });
 
-test('dirty tree, unprefixed UI commit and a blocked land dry run are all listed together', () => {
+test('dirty tree and a blocked land dry run are listed together; no commit-label item (BRO-8156)', () => {
   const r = evaluate({ ...base, dirty: ['x.js'], uiFiles: ['src/a.tsx'], uiCommitsMissingPrefix: ['abc1234'], judge: { decision: 'block', message: 'rebase conflict in x\nmore' } });
-  assert.deepEqual(r.missing.map((i) => i.id).sort(), ['judge', 'prefix', 'tree']);
+  assert.deepEqual(r.missing.map((i) => i.id).sort(), ['judge', 'tree']);
+  assert.ok(!r.items.some((i) => /VISUAL-OK/.test(i.label + i.fix)), 'land-ready must never tell a session to type VISUAL-OK');
 });
 
 test('CLI on a real branch with a UI change and no transcript lists every open item and ends on the owner line', () => {

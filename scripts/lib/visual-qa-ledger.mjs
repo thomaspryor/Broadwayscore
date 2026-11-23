@@ -23,8 +23,12 @@
 //     Walks origin/HEAD..HEAD on <path>. Returns {allowed, reason, missing[]}.
 //     If --current-content-hash is provided, a fresh ledger entry with that
 //     contentHash allows the push regardless of commit SHA matches.
-//   --query=record --repo=<path> --branch=<b> --commit=<sha> --hash=<h> --session=<sid>
+//   --query=record --repo=<path> --branch=<b> --commit=<sha> --hash=<h> --session=<sid> [--ui-files=a,b]
 //     Appends one entry. Atomic open-and-append; safe under concurrent hooks.
+//   --query=scope-allowed --repo=<path> --branch=<b> --ui-files=a,b   (BRO-8156)
+//     Allowed when a fresh owner-approved entry for the SAME branch listed every one of these UI files: a later
+//     revision of already-approved files does not re-ask the owner; a new UI file (or route) still does. Never for
+//     the default branch, HEAD or an empty name (shared across every worktree). Read-only: never renews the TTL.
 //
 // Honors VISUAL_QA_LEDGER_TTL_DAYS env (default 7). Entries older than the
 // TTL are treated as not present.
@@ -62,7 +66,7 @@ function readLedger(repoRoot) {
   return entries;
 }
 
-export function recordApproval(repoRoot, { branch, commitSha, contentHash, sessionId }) {
+export function recordApproval(repoRoot, { branch, commitSha, contentHash, sessionId, uiFiles }) {
   if (!commitSha || !contentHash) {
     throw new Error('recordApproval: commitSha and contentHash are required');
   }
@@ -74,6 +78,7 @@ export function recordApproval(repoRoot, { branch, commitSha, contentHash, sessi
     branch: branch || null,
     commitSha,
     contentHash,
+    ...(Array.isArray(uiFiles) && uiFiles.length ? { uiFiles: [...new Set(uiFiles)].sort() } : {}),
   };
   // O_APPEND = atomic append for writes <= PIPE_BUF (512 bytes on macOS).
   // Entries are ~120 bytes; concurrent writers don't interleave.
@@ -176,6 +181,33 @@ export function queryPushAllowed(repoRoot, { currentContentHash } = {}) {
   };
 }
 
+// BRO-8156: branches whose name is shared by unrelated work, so a yes recorded under them proves nothing.
+const SHARED_BRANCH_RE = /^(?:|HEAD|main|master|origin\/.*|refs\/.*)$/;
+
+export function queryScopeAllowed(repoRoot, { branch, uiFiles } = {}) {
+  const b = String(branch || '').trim();
+  const files = (uiFiles || []).map((f) => String(f).trim()).filter(Boolean);
+  if (SHARED_BRANCH_RE.test(b) || b === defaultBranchRef(repoRoot).replace(/^origin\//, '')) {
+    return { allowed: false, reason: `branch "${b}" is shared; scope approvals are per feature branch` };
+  }
+  if (!files.length) return { allowed: false, reason: 'no UI files given' };
+  const now = Date.now();
+  const ttl = ttlMs();
+  for (const e of readLedger(repoRoot).reverse()) {
+    const t = Date.parse(e.ts);
+    if (!Number.isFinite(t) || now - t > ttl) continue;
+    if (e.branch !== b || !Array.isArray(e.uiFiles)) continue;
+    const approved = new Set(e.uiFiles);
+    const missing = files.filter((f) => !approved.has(f));
+    if (!missing.length) {
+      return { allowed: true, reason: `owner approved these UI files on ${b} at ${e.ts} (contentHash ${e.contentHash})`, approvedAt: e.ts };
+    }
+  }
+  const newest = readLedger(repoRoot).reverse().find((e) => e.branch === b && Array.isArray(e.uiFiles));
+  const extra = newest ? files.filter((f) => !newest.uiFiles.includes(f)) : files;
+  return { allowed: false, reason: newest ? `new UI file(s) since the owner's yes: ${extra.slice(0, 5).join(', ')}` : `no owner-approved UI scope for ${b}`, newFiles: extra };
+}
+
 // ── CLI ──────────────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
@@ -203,6 +235,15 @@ async function main() {
     process.exit(0);
   }
 
+  if (args.query === 'scope-allowed') {
+    const result = queryScopeAllowed(repoRoot, {
+      branch: args.branch,
+      uiFiles: args['ui-files'] ? String(args['ui-files']).split(',') : [],
+    });
+    console.log(JSON.stringify(result));
+    process.exit(0);
+  }
+
   if (args.query === 'record') {
     if (!args.commit || !args.hash) { console.error('--commit and --hash required'); process.exit(1); }
     const entry = recordApproval(repoRoot, {
@@ -210,6 +251,7 @@ async function main() {
       commitSha: args.commit,
       contentHash: args.hash,
       sessionId: args.session,
+      uiFiles: args['ui-files'] ? String(args['ui-files']).split(',').filter(Boolean) : undefined,
     });
     console.log(JSON.stringify({ ok: true, entry }));
     process.exit(0);

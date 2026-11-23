@@ -166,14 +166,14 @@ function hookEnv(fx, home) {
   return cleanEnv({ HOME: home, CLAUDE_LOG_DIR: fx.logs, TMPDIR: fx.tmp });
 }
 
-function runHook(fx, transcript, { home = fx.home, command = PUSH_CMD } = {}) {
+function runHook(fx, transcript, { home = fx.home, command = PUSH_CMD, hook = HOOK } = {}) {
   const input = JSON.stringify({
     tool_input: { command },
     session_id: 'sess-fixture-bro2312',
     transcript_path: transcript,
     tool_use_id: TOOL_USE_ID,
   });
-  const r = spawnSyncStdinFile('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [hook], {
     cwd: fx.repo,
     input,
     encoding: 'utf8',
@@ -244,4 +244,81 @@ test('BRO-7873 e2e: a hold or delay reply never clears the gate through the real
     const r = runReply(t, text);
     assert.equal(r.status, 2, `${text}: ${r.stderr}`);
   }
+});
+
+// ── BRO-8156: one owner yes per branch covers re-runs and tweaks of the same UI files ───────────────────────────
+// Owner complaint 2026-11-23 (BRO-8086): the same UI change was re-asked after every visual-qa re-run and every small
+// tweak. Each case runs the REAL hook; the red cases run a copy with the BRO-8156 block replaced by the old
+// --after-file bound, proving the test fails without the fix.
+const VERDICT_FILE = (fx) => join(fx.repo, '.claude', 'visual-qa', BRANCH, 'verdict.json');
+function redHook(fx) {
+  const src = readFileSync(HOOK, 'utf8');
+  const a = src.indexOf('# >>> BRO-8156 scope reuse'), b = src.indexOf('# <<< BRO-8156 scope reuse');
+  assert.ok(a > 0 && b > a, 'BRO-8156 block markers missing from the hook');
+  const p = join(fx.root, 'gate-red.sh');
+  writeFileSync(p, src.slice(0, a) + '_AFTER_ARG="--after-file=$VERDICT_PATH"\n' + src.slice(b));
+  return p;
+}
+function ledgerEntry(fx, uiFiles, branch = BRANCH) {
+  mkdirSync(dirname(fx.ledger), { recursive: true });
+  appendFileSync(fx.ledger, JSON.stringify({ ts: new Date().toISOString(), sessionId: 's', branch, commitSha: 'f'.repeat(40), contentHash: 'oldhash000000000', uiFiles }) + '\n');
+}
+
+test('BRO-8156: owner yes, then a visual-qa re-run (newer verdict file) still clears the gate', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  // Screenshots of Foo.tsx were first shown before the yes (scopeFirstAt); the re-run rewrote the file afterwards.
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], scopeFirstAt: '2026-10-12T00:00:00Z' });
+  const tr = writeTranscript(fx, 'yes ship it');
+  const red = runHook(fx, tr, { hook: redHook(fx) });
+  assert.equal(red.status, 2, 'red: without BRO-8156 the re-run voids the yes');
+  const r = runHook(fx, tr);
+  assert.equal(r.status, 0, r.stderr);
+  const rec = readFileSync(fx.ledger, 'utf8').trim().split('\n').map((l) => JSON.parse(l)).pop();
+  assert.deepEqual(rec.uiFiles, [UI_FILE], 'the approved scope is recorded with its files');
+});
+
+test('BRO-8156: a tweak to an already-approved file clears the gate with no new yes', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  ledgerEntry(fx, [UI_FILE]);
+  commitFile(fx.repo, UI_FILE, 'export const Foo = () => <p className="wrap">x</p>;\n', 'ui: wrap fix');
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], scopeFirstAt: new Date().toISOString() });
+  const tr = writeTranscript(fx, NEUTRAL_USER);
+  assert.equal(runHook(fx, tr, { hook: redHook(fx) }).status, 2, 'red: without BRO-8156 the tweak re-asks');
+  const r = runHook(fx, tr);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8'), /scope-reuse/);
+});
+
+test('BRO-8156: a NEW UI file (or route) still asks the owner', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  ledgerEntry(fx, [UI_FILE]);
+  commitFile(fx.repo, 'src/app/new-route/page.tsx', 'export default function P(){return <main>new</main>}\n', 'ui: new route');
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE, 'src/app/new-route/page.tsx'], scopeFirstAt: new Date().toISOString() });
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 2, r.stderr);
+});
+
+test('BRO-8156: a new file sorted after five approved ones is still compared (no head -5 hole)', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  const approved = ['a1', 'a2', 'a3', 'a4', 'a5'].map((n) => `src/components/${n.toUpperCase()}.tsx`);
+  for (const f of approved) commitFile(fx.repo, f, `export const X = () => <div>${f}</div>;\n`, `ui: ${f}`);
+  ledgerEntry(fx, [...approved, UI_FILE]);
+  commitFile(fx.repo, 'src/components/Zed.tsx', 'export const Z = () => <div>z</div>;\n', 'ui: Zed');
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [...approved, UI_FILE, 'src/components/Zed.tsx'], scopeFirstAt: new Date().toISOString() });
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 2, r.stderr);
+});
+
+test('BRO-8156: a failing re-run does not inherit the earlier yes', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  ledgerEntry(fx, [UI_FILE]);
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: false, uiFiles: [UI_FILE], scopeFirstAt: '2026-10-12T00:00:00Z' });
+  // The verdict file is newer than the yes, so the yes only counted through the carried scopeFirstAt (pass-only).
+  const r = runHook(fx, writeTranscript(fx, 'yes ship it'));
+  assert.equal(r.status, 2, r.stderr);
 });

@@ -55,6 +55,11 @@ const HASH_EXCLUDED_TOP_LEVEL_FIELDS = [
   // `demoFlagFindings` are commentary about that same run, not content.
   'featuresSource',
   'demoFlagFindings',
+  // BRO-8156: scope metadata (scripts/lib/visual-scope.js). Which files the screenshots covered and since when;
+  // the pixels are already in the hash, so these must not change it.
+  'uiFiles',
+  'uiFileHashes',
+  'scopeFirstAt',
 ];
 
 // Per-screenshot-digest fields stripped before hashing. `path` is the route

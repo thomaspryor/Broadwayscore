@@ -806,7 +806,16 @@ Then re-run this command.`);
   // S1-T8: skip rewrite if computed contentHash matches existing file.
   const existing = existsSync(verdictPath)
     ? safeReadJson(verdictPath) : null;
-  if (existing && existing.contentHash === verdict.contentHash) {
+  // BRO-8156: record which UI files these screenshots covered (and their blobs) and since when this file set has
+  // been shown on the branch, so a re-run or a tweak to the same files does not restart the owner's yes. Outside the hash.
+  try {
+    const S = createRequire(import.meta.url)('./lib/visual-scope.js');
+    verdict.uiFiles = S.uiWorkingFiles(process.cwd());
+    verdict.uiFileHashes = S.blobHashes(process.cwd(), verdict.uiFiles);
+    verdict.scopeFirstAt = S.carryScopeFirstAt(existing, verdict.uiFiles, verdict.timestamp);
+  } catch { /* optional: without it the gate falls back to the verdict file's mtime */ }
+  const scopeMoved = (() => { try { return createRequire(import.meta.url)('./lib/visual-scope.js').scopeMetadataChanged(existing, verdict); } catch { return false; } })();
+  if (existing && existing.contentHash === verdict.contentHash && !scopeMoved) {
     console.error(`[visual-qa] contentHash unchanged (${verdict.contentHash}); preserving existing verdict.json`);
   } else {
     writeFileSync(verdictPath, JSON.stringify(verdict, null, 2));

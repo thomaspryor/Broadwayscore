@@ -16,7 +16,6 @@ import { isMainModule } from './lib/is-main-module.mjs';
 const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const UI_RE = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.)/;
-const COMMIT_UI_RE = /^src\/(app|components)\/.*\.tsx$/; // what scripts/hooks/commit-msg demands a VISUAL-OK-1440: prefix for
 
 /** Pure: facts -> ordered checklist + owner line. */
 export function evaluate(f) {
@@ -27,8 +26,8 @@ export function evaluate(f) {
   else add('doctor', 'cloud-doctor --fix --quick', !!f.doctor?.ok, f.doctor?.detail || '', 'node scripts/cloud-doctor.js --fix --quick');
 
   add('tree', 'working tree clean', !(f.dirty || []).length, (f.dirty || []).slice(0, 5).join(', '), 'commit or discard the listed files');
-  const noPrefix = f.uiCommitsMissingPrefix || [];
-  if ((f.uiFiles || []).length) add('prefix', 'UI commits carry VISUAL-OK-1440:', noPrefix.length === 0, noPrefix.slice(0, 5).join(', '), 'reword those commits to start with VISUAL-OK-1440: after checking 1440px');
+  // BRO-8156: no commit-label item. commit-msg proves each UI commit from the passing verdict at commit time; telling
+  // sessions to reword commits with a typed label made them ask the owner for permission to type it.
 
   if (f.diffError) add('diff', 'diff against origin/main is readable', false, 'git diff failed, so no file list is known', 'git fetch origin main, then re-run');
   const gated = f.gatedFiles || [];
@@ -118,13 +117,6 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
   })();
   f.gatedFiles = afterRender;
   f.renderImpactDropped = afterText.filter((x) => !afterRender.includes(x));
-  // commit-msg demands VISUAL-OK-1440: on commits that stage src/(app|components)/*.tsx
-  f.uiCommitsMissingPrefix = [];
-  for (const sha of tryGit(cwd, ['rev-list', '--no-merges', `${base}..HEAD`]).split('\n').filter(Boolean)) {
-    const files = tryGit(cwd, ['diff-tree', '--no-commit-id', '--name-only', '-r', sha]).split('\n');
-    if (!files.some((x) => COMMIT_UI_RE.test(x))) continue;
-    if (!/^(VISUAL-OK-1440:|SKIP-VISUAL-CHECK:)/.test(tryGit(cwd, ['log', '-1', '--format=%s', sha]))) f.uiCommitsMissingPrefix.push(sha.slice(0, 9));
-  }
   // transcript coverage
   try {
     const rc = await import('./lib/review-coverage.mjs');
@@ -166,6 +158,11 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
       if (v.currentPatchId && require('./lib/visual-approval-durable.js').hasDurableApproval(cwd, v.currentPatchId)) approved = true;
       if (!approved && v.hash) {
         const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-qa-ledger.mjs'), '--query=push-allowed', `--repo=${cwd}`, `--current-content-hash=${v.hash}`], { encoding: 'utf8' });
+        approved = JSON.parse(r.stdout || '{}').allowed === true;
+      }
+      // BRO-8156: same scope rule as the push hook: the owner already said yes on this branch to every gated UI file.
+      if (!approved && v.overallPass && (f.gatedFiles || []).length) {
+        const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-qa-ledger.mjs'), '--query=scope-allowed', `--repo=${canon || cwd}`, `--branch=${branch}`, `--ui-files=${[...new Set(f.gatedFiles)].sort().join(',')}`], { encoding: 'utf8' });
         approved = JSON.parse(r.stdout || '{}').allowed === true;
       }
     } catch { /* not approved */ }
