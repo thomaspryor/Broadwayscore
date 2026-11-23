@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-22T09:54:48.955Z",
+  "lastChecked": "2026-11-23T10:54:31.407Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "18h ago, success"
+      "message": "19h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -19,12 +19,12 @@
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -34,62 +34,62 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "17h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "7d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "7d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "8h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "15h ago, ran (failure; liveness-only check)"
+      "message": "16h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "7d ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -99,12 +99,12 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "4 of 141 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 467h ago, limit 192h); backfill-cast-web.yml (no scheduled start in last 5 runs, limit 192h); detect-revivals-ibdb.yml (last start 762h ago, limit 192h); scrape-bww-reviews.yml (last start 833h ago, limit 192h)."
+      "message": "3 of 141 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 492h ago, limit 192h); backfill-cast-web.yml (no scheduled start in last 5 runs, limit 192h); detect-revivals-ibdb.yml (last start 787h ago, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "2 of 145 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-11-21); clear-stale-suspected-misattribution-flags.yml (3+ in a row, last 2026-11-18)."
+      "message": "4 of 145 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-11-22); clear-stale-suspected-misattribution-flags.yml (3+ in a row, last 2026-11-18); lane-recording-import.yml (3+ in a row, last 2026-11-22); promote-owe-venue-candidates.yml (3+ in a row, last 2026-11-22)."
     }
   ]
 }

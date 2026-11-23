@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-22T09:54:48.952Z",
+  "lastChecked": "2026-11-23T10:54:31.406Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "13 of 425 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7926 iOS app: tell the user when a queued offline change is dropped, and queue the favorites write"
+      "message": "14 of 438 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-8032 Board workers unhealthy: ScrapingBee smoke check still fails (egress blocked), BRO-7433 closed too early"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-21"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-22"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "82 review(s) with no usable text, 68 rejected although verified as a review, 18 never scored, 15 with a blocked URL (0 published on the site), across 746 current shows"
+      "message": "80 review(s) with no usable text, 66 rejected although verified as a review, 20 never scored, 15 with a blocked URL (0 published on the site), across 753 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 50177 checked"
+      "message": "1 published review score(s) contradict the critic's own rating or every model's verdict (0 more already queued for rescore), of 50528 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "3 early publish date(s) awaiting recheck (limit 40); 215 already attempted and not yet confirmed"
+      "message": "6 early publish date(s) awaiting recheck (limit 40); 216 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "warn",
-      "message": "4 unexplained approved-fix drift(s) across 3961 files with approvals"
+      "message": "4 unexplained approved-fix drift(s) across 3964 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,12 +119,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 563 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 560 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"THE GOOD THIEF at Irish Repertory Theatre\" (bww-roundup — missing 1d)"
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"THE GOOD THIEF at Irish Repertory Theatre\" (bww-roundup — missing 2d)"
     }
   ]
 }

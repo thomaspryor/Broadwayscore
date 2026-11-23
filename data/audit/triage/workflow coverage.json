@@ -1,20 +1,20 @@
 {
   "system": "workflow coverage",
-  "status": "warn",
-  "lastChecked": "2026-11-22T09:54:48.958Z",
+  "status": "pass",
+  "lastChecked": "2026-11-23T10:54:31.408Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Workflow coverage: invalid files",
-      "status": "warn",
-      "message": "Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed"
+      "status": "pass",
+      "message": "No workflow shows the invalid-file signature in the last 24h"
     },
     {
       "name": "Workflow coverage: never-run",
       "status": "pass",
-      "message": "No never-run workflows among 334 checked"
+      "message": "No never-run workflows among 335 checked"
     }
   ]
 }
