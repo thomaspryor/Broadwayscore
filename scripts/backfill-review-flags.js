@@ -92,7 +92,7 @@ for (const showId of showDirs) {
       fileMeta.set(file, { duplicateOf: data.duplicateOf, duplicateTextOf: data.duplicateTextOf });
       if (data.fullText && data.fullText.length >= 100) {
         const fp = computeContentFingerprint(data.fullText);
-        if (fp) fpEntries.push({ file, fingerprint: fp, duplicateOf: data.duplicateOf, duplicateTextOf: data.duplicateTextOf });
+        if (fp) fpEntries.push({ file, fingerprint: fp, url: data.url, duplicateOf: data.duplicateOf, duplicateTextOf: data.duplicateTextOf });
       }
     } catch (e) {
       // Skip unreadable files

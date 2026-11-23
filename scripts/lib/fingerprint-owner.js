@@ -1,4 +1,5 @@
 'use strict';
+const { isForumThreadUrl } = require('./talkinbroadway-forum-link');
 /**
  * Pick which file "owns" each content fingerprint within one show, for the
  * duplicateTextOf flag written by scripts/backfill-review-flags.js (1C).
@@ -10,13 +11,23 @@
  * spiked to 205 groups every Sunday.
  *
  * Rule: prefer a file that is not already a duplicate of something
- * (no duplicateOf), then one without duplicateTextOf, then readdir order.
+ * (no duplicateOf), then one whose url is not a forum repost, then one
+ * without duplicateTextOf, then readdir order.
  *
- * @param {Array<{file:string, fingerprint:string, duplicateOf?:string, duplicateTextOf?:string}>} entries
+ * BRO-8206: a Talkin' Broadway All That Chat forum thread
+ * (allthatchat_new/d.php) carried the same text as Alix Cohen's Theater
+ * Pizzazz review. "talkinbroadway--" sorts before "theater-pizzazz--", so the
+ * forum repost owned the text and the real article was hidden as its
+ * duplicate (reader submission #1200 could not go live). A forum repost
+ * never owns text a real outlet page also carries. The forum rank outweighs
+ * duplicateTextOf so a stale pointer written under the old rule heals on
+ * the next weekly run.
+ *
+ * @param {Array<{file:string, fingerprint:string, url?:string, duplicateOf?:string, duplicateTextOf?:string}>} entries
  * @returns {Map<string,string>} fingerprint -> owner file
  */
 function pickFingerprintOwners(entries) {
-  const rank = e => (e.duplicateOf ? 2 : 0) + (e.duplicateTextOf ? 1 : 0);
+  const rank = e => (e.duplicateOf ? 4 : 0) + (isForumThreadUrl(e.url) ? 2 : 0) + (e.duplicateTextOf ? 1 : 0);
   const best = new Map();
   for (const e of entries) {
     if (!e || !e.fingerprint) continue;
