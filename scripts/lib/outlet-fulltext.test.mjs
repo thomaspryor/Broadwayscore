@@ -60,7 +60,7 @@ test('computeOutletFulltext: complete capsule full, quoted excerpt duplicate, sc
   fs.rmSync(base, { recursive: true, force: true });
 });
 
-test('evaluateFloors: below floor + never attempted fails; attempted gaps pass; stale unattempted gap fails on its own', () => {
+test('evaluateFloors: attempted gaps cannot waive strict floors; stale unattempted gap fails on its own', () => {
   const now = Date.parse('2026-11-17T00:00:00Z');
   const rates = { wsj: { n: 10, pct: 90, floor: 98 }, guardian: { n: 100, pct: 99, floor: 95 } };
   const gaps = [{ outlet: 'wsj', reviewKey: 's/wsj--a.json', firstSeenAt: '2026-11-15T00:00:00Z' }];
@@ -69,7 +69,7 @@ test('evaluateFloors: below floor + never attempted fails; attempted gaps pass; 
   assert.deepEqual(v.failingOutlets, ['wsj']);
   assert.equal(v.staleUnattempted.length, 0, '2 days old is not stale');
   v = F.evaluateFloors({ rates, gaps, attemptedKeys: new Set(['s/wsj--a.json']), nowMs: now });
-  assert.equal(v.ok, true, 'below floor but every gap is being worked');
+  assert.equal(v.ok, false, 'the strict 98% target still applies when every gap was attempted');
   assert.deepEqual(v.belowFloor, ['wsj']);
   const stale = [{ outlet: 'guardian', reviewKey: 's/guardian--z.json', firstSeenAt: '2026-10-01T00:00:00Z' }];
   v = F.evaluateFloors({ rates: { guardian: rates.guardian }, gaps: stale, attemptedKeys: new Set(), nowMs: now });
@@ -156,5 +156,22 @@ test('BRO-8023: pending candidates the drain already fetched count as attempted,
   const w = v.outlets.find((x) => x.outlet === 'wsj');
   assert.equal(w.unattempted, 0);
   assert.equal(w.below, true);
-  assert.equal(w.fail, false, 'below floor but every pending candidate was worked');
+  assert.equal(w.fail, true, 'attempted pending candidates cannot waive the strict floor');
+});
+
+test('BRO-7702: all four strict outlets must reach 98%; other outlets may log recovery attempts', () => {
+  for (const outlet of [...F.STRICT_OUTLETS, 'variety']) {
+    const gap = { outlet, reviewKey: `show-2026/${outlet}--critic.json`, firstSeenAt: '2026-01-01' };
+    const verdict = (pct, attempted = true) => F.evaluateFloors({
+      rates: { [outlet]: { n: 1000, pct, floor: F.floorFor(outlet) } },
+      gaps: [gap], attemptedKeys: new Set(attempted ? [gap.reviewKey] : []),
+      nowMs: Date.parse('2026-11-23'),
+    });
+    assert.equal(verdict(94).ok, outlet === 'variety', `${outlet}: attempts waive only the default floor`);
+    assert.equal(verdict(94, false).ok, false, `${outlet}: unattempted gaps still fail`);
+    assert.equal(verdict(98).ok, true, `${outlet}: exactly at target passes`);
+    if (F.STRICT_OUTLETS.includes(outlet)) {
+      assert.equal(verdict(97.99).ok, false, `${outlet}: rounding to 98 cannot pass`);
+    }
+  }
 });

@@ -3,8 +3,8 @@
  * check-outlet-fulltext-floors.js — BRO-7702 floor guard for major-outlet full text
  * on 2025/2026 productions (rules: scripts/lib/outlet-fulltext.js).
  *
- * Fails (exit 1) when an outlet is below its floor (wsj/times-uk/standard/washpost 98%,
- * other majors 95%) while some of its gaps were never attempted, or when ANY gap older
+ * Fails (exit 1) when wsj/times-uk/standard/washpost is below 98%, another major
+ * outlet is below 95% with unattempted gaps, or when ANY gap older
  * than 7 days has no row in the gap-recovery attempts ledger: a gap is either being
  * worked by the nightly queue or it is a defect (owner rule: no write-off without logged
  * attempts). Advisory first (CLAUDE.md §19): CI runs it with continue-on-error, the
@@ -68,7 +68,7 @@ function main() {
     console.log(`\n${v.staleUnattempted.length} gap(s) older than the stale window with no recovery attempt logged:`);
     for (const g of v.staleUnattempted.slice(0, 40)) console.log(`  ${g.reviewKey} [${g.tier}] ${g.ageDays == null ? 'undated' : `${g.ageDays}d`}`);
   }
-  console.log(v.ok ? '\nOK: every outlet is at its floor or every gap is being worked.' : `\nFAIL: ${v.failingOutlets.length} outlet(s) below floor with unattempted gaps; ${v.staleUnattempted.length} stale unattempted gap(s).`);
+  console.log(v.ok ? '\nOK: strict outlets meet 98%; other outlets meet 95% or every gap is being worked.' : `\nFAIL: ${v.failingOutlets.length} outlet(s) fail the coverage floor policy; ${v.staleUnattempted.length} stale unattempted gap(s).`);
   return v.ok ? 0 : 1;
 }
 

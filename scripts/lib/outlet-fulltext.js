@@ -237,9 +237,9 @@ function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsB
 
 /**
  * The floor verdict (BRO-7702 owner rule: no gap, and no write-off without
- * logged attempts). An outlet fails when it is below its floor AND at least
- * one of its gaps has never been attempted (below the floor with every gap
- * attempted is reported, not failed: the queue is working on it). Any gap older
+ * logged attempts). The four strict outlets must reach 98% even when every
+ * gap has an attempt. Other outlets may fall below 95% when every gap has a
+ * logged attempt: the queue is working on it. Any gap older
  * than `staleDays` with no attempt row fails on its own, whatever the rate.
  * Pure.
  * @param {{rates:object, gaps:object[], attemptedKeys:Set<string>, nowMs?:number, staleDays?:number}} a
@@ -265,7 +265,8 @@ function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleD
     // Pending candidates are missing reviews: same covered count over a bigger denominator.
     const pct = pending ? (n ? (t.pct * t.n) / n : 100) : t.pct;
     const below = pct < t.floor;
-    return { outlet: o, pct: Math.round(pct * 10) / 10, floor: t.floor, n, gaps: og.length + pending, pending, unattempted, below, fail: below && unattempted > 0 };
+    const fail = below && (STRICT_OUTLETS.includes(o) || unattempted > 0);
+    return { outlet: o, pct: Math.round(pct * 10) / 10, floor: t.floor, n, gaps: og.length + pending, pending, unattempted, below, fail };
   }).sort((a, b) => a.pct - b.pct);
   const staleUnattempted = gaps.filter((g) => !attemptedKeys.has(g.reviewKey) && ageDays(g) > staleDays)
     .map((g) => ({ reviewKey: g.reviewKey, outlet: g.outlet, tier: g.tier, ageDays: Number.isFinite(ageDays(g)) ? Math.round(ageDays(g)) : null }));
