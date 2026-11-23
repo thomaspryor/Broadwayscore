@@ -221,7 +221,10 @@ test('BRO-8093: an OB-exempt (never applied) ensemble verdict is not an autoclea
     rejectedAt: '2026-11-22T17:50:00Z',
   };
   assert.strictEqual(classifyAutoclearVsEnsemble(base, opts).isViolation, true, 'unmarked pair is still a violation');
-  const ob = { ...base, rejectionFlagNotApplied: 'ob-exempt' };
+  const ob = { ...base, rejectionFlagNotApplied: 'ob-exempt', rejectionFlagNotAppliedAt: base.rejectedAt };
+  // a marker left over from an EARLIER verdict exempts nothing
+  assert.strictEqual(classifyAutoclearVsEnsemble({ ...ob, rejectedAt: '2026-11-25T00:00:00Z' }, opts).isViolation, true);
+  assert.strictEqual(classifyAutoclearVsEnsemble({ ...ob, rejectionFlagNotAppliedAt: undefined }, opts).isViolation, true);
   const r = classifyAutoclearVsEnsemble(ob, opts);
   assert.strictEqual(r.isViolation, false);
   assert.strictEqual(r.exemptReason, 'ob-exempt-verdict-not-applied');
@@ -233,9 +236,12 @@ test('BRO-8093: an OB-exempt (never applied) ensemble verdict is not an autoclea
 test('BRO-8093: the ensemble OB-exempt branch stamps rejectionFlagNotApplied and every other rejection clears it', () => {
   const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'llm-scoring', 'index.ts'), 'utf8');
   const i = src.indexOf("rejection === 'wrong_production' && isOffBroadway) {\n          (fileData as any).rejectionFlagNotApplied = 'ob-exempt';");
+  assert.ok(src.lastIndexOf("fileData.rejectedAt = new Date().toISOString();", i) > i - 200, 'rejectedAt is set right before the marker so the At stamp matches it');
   assert.ok(i > 0, 'OB-exempt branch must stamp rejectionFlagNotApplied = ob-exempt');
-  const tail = src.slice(i, i + 400);
+  const tail = src.slice(i, i + 600);
+  assert.match(tail, /rejectionFlagNotAppliedAt = fileData\.rejectedAt;/);
   assert.match(tail, /delete \(fileData as any\)\.rejectionFlagNotApplied;/, 'applied verdicts must drop a stale ob-exempt marker');
-  // the stamp sits before the save, inside the same rejection block
-  assert.ok(src.indexOf("fileData.rejectedBy = 'ensemble-scoreability-check';", i) > i);
+  // the stamp sits inside the same rejection block, before rejectedBy and the save
+  const by = src.indexOf("fileData.rejectedBy = 'ensemble-scoreability-check';", i);
+  assert.ok(by > i && by - i < 900);
 });

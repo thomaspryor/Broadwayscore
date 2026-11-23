@@ -1785,14 +1785,16 @@ async function main(): Promise<void> {
         // pair as an autoclear-vs-ensemble violation (mexodus NYT, 2026-11-22) and
         // every land floor goes red. Rewritten on every rejection so a later,
         // applied verdict never inherits a stale exemption.
+        fileData.rejectedAt = new Date().toISOString();
         if (rejection === 'wrong_production' && isOffBroadway) {
           (fileData as any).rejectionFlagNotApplied = 'ob-exempt';
+          // ties the marker to THIS verdict; the scan ignores it once a later verdict replaces it
+          (fileData as any).rejectionFlagNotAppliedAt = fileData.rejectedAt;
         } else {
           delete (fileData as any).rejectionFlagNotApplied;
+          delete (fileData as any).rejectionFlagNotAppliedAt;
           delete (fileData as any).rejectionFlagNotAppliedNote;
         }
-
-        fileData.rejectedAt = new Date().toISOString();
         fileData.rejectedBy = 'ensemble-scoreability-check';
         fileData.rejectionReason = rejection;
         fileData.rejectionReasoning = rejectionReasoning;

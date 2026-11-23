@@ -60,7 +60,10 @@ function classifyAutoclearVsEnsemble(data, { reason, autoClearedField, flagField
   // Off-Broadway wrong_production verdict but deliberately never applies the
   // flag (OB transfer carve-out) and stamps rejectionFlagNotApplied. The flag
   // was never going to be set, so no auto-clear overrode it.
-  if (reason === 'wrong_production' && data.rejectionFlagNotApplied === 'ob-exempt') {
+  // The marker must belong to the CURRENT verdict (rejectionFlagNotAppliedAt ===
+  // rejectedAt), so a stale marker can never blind the scan to a later verdict.
+  if (reason === 'wrong_production' && data.rejectionFlagNotApplied === 'ob-exempt'
+      && data.rejectionFlagNotAppliedAt && data.rejectionFlagNotAppliedAt === data.rejectedAt) {
     return { isViolation: false, exemptReason: 'ob-exempt-verdict-not-applied' };
   }
   // BRO-4391: a verdict issued before the show's declared runs/tour legs were
