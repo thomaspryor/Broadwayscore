@@ -550,6 +550,16 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/check-coverage-floor-trace.js .next
 
+      - name: Guard — traced function size under Vercel's 250 MB limit (advisory)
+        # BRO-8154: on 2026-11-23 api/admin/ingest-review/detect traced 341 MB and
+        # every prod deploy failed for ~7h, found only after the ~1.3 GB upload.
+        # Sums each .next/server/**/*.nft.json (node_modules included) and fails
+        # above 230 MB, naming the 5 biggest files. Advisory first (§19): arm
+        # (drop continue-on-error) after ~10 green main runs show the "largest:"
+        # figure with headroom.
+        continue-on-error: true
+        run: node scripts/lib/check-function-trace-size.js .next
+
       # BRO-7983: supersede stacked dispatches. This run's Build succeeded and it is about
       # to deploy, so cancel older main runs still before their own "Deploy to Production":
       # this run built newer code + core data. Placed AFTER Build on purpose: cancelling at
