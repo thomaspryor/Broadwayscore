@@ -1,7 +1,7 @@
 name: Show Refresh Kill Switch
 
-# BRO-8056 phase 1c: the reader kill switch for per-show publishing. kill sets
-# kill.json killed:true in the private show-refresh bucket (written, read back
+# BRO-8056: the reader kill switch for per-show publishing. kill sets the
+# kill row killed:true in public.show_refresh_state (written, read back
 # and confirmed); the phase-2 reader then renders the build's own data. How
 # fast a page reflects it depends on the reader's caching, which phase 2 sets
 # and measures (no promise here). unkill reverses it. status prints the
@@ -46,6 +46,8 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          # --status also checks what the site reader (public anon key) sees.
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           ACTION: ${{ inputs.action }}
           REASON: ${{ inputs.reason }}
         run: |
