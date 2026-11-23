@@ -378,18 +378,22 @@ function evaluateTimeToPublishSla(records, {
  * @param {number}   [opts.count=2]      how many recent openings to include
  * @param {number}   [opts.daysBefore=1]
  * @param {number}   [opts.daysAfter=4]
+ * @param {object[]} [opts.records] widen until enough measurable records exist
+ * @param {number}   [opts.maxWindows=50] cap widening (count can exceed it)
+ * @param {boolean}  [opts.includeIncomplete=false] allow explicit show queries
  * @returns {{showId:string, openingDate:string, from:string, to:string}[]}
  */
-function selectRecentOpeningWindows(shows, { now, count = 2, daysBefore = 1, daysAfter = 4 } = {}) {
+function selectRecentOpeningWindows(shows, { now, count = 2, daysBefore = 1, daysAfter = 4, records = null, maxWindows = 50, includeIncomplete = false } = {}) {
   const nowIso = new Date(now).toISOString();
   const candidates = (shows || [])
     .filter(s => s && s.id && typeof s.openingDate === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s.openingDate))
-    .filter(s => s.openingDate <= nowIso.slice(0, 10))
+    .filter(s => s.openingDate.slice(0, 10) <= nowIso.slice(0, 10))
+    .filter(s => includeIncomplete || s.type !== 'special')
     .sort((a, b) => (a.openingDate < b.openingDate ? 1 : a.openingDate > b.openingDate ? -1 : 0));
 
   const windows = [];
   for (const s of candidates) {
-    if (windows.length >= count) break;
+    if (windows.length >= Math.max(count, maxWindows)) break;
     const opening = new Date(`${s.openingDate.slice(0, 10)}T00:00:00Z`);
     const from = new Date(opening.getTime() - daysBefore * 24 * 60 * MS_MIN).toISOString();
     // INCLUSIVE of the whole last day. Ending at midnight of openingDate+N cut
@@ -397,7 +401,9 @@ function selectRecentOpeningWindows(shows, { now, count = 2, daysBefore = 1, day
     // silently dropped the entire Sunday, which is exactly when the weekend
     // stragglers land.
     const to = new Date(opening.getTime() + (daysAfter + 1) * 24 * 60 * MS_MIN - 1).toISOString();
+    if (!includeIncomplete && to > nowIso) continue;
     windows.push({ showId: s.id, openingDate: s.openingDate.slice(0, 10), from, to });
+    if (windows.length >= count && (!records || evaluateTimeToPublishSla(filterToOpeningWindows(records, windows)).evaluated >= DEFAULT_MIN_SAMPLE)) break;
   }
   return windows;
 }

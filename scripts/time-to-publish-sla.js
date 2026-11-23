@@ -10,8 +10,8 @@
  * LAST aggregator to have the reviews up.)
  *
  * Options
- *   --windows=N        judge the last N opening weekends (default 2, the card's
- *                      acceptance criterion)
+ *   --windows=N        start with N completed opening windows (default 2),
+ *                      widening to a measurable sample, up to 50 windows
  *   --days=N           judge everything first seen in the last N days instead
  *                      of scoping to openings
  *   --show=ID          judge one show only
@@ -274,36 +274,31 @@ async function main() {
     console.warn('[time-to-publish-sla] Run ./scripts/setup-local-data.sh for opening-scoped results.');
   }
 
+  // Load clocks for tracked shows before selecting, so sample counts use the
+  // same latency calculation as the final verdict, including clock skew cases.
+  const trackedShowIds = [...new Set(entries.filter(e => e.showId && e.reviewKey).map(e => e.showId))];
+  const publishTimes = trackedShowIds.length ? loadPublishTimes(trackedShowIds) : new Map();
+  let records = computeReviewLatencies(entries, {
+    publishTimes,
+    discoveryWindowMinutes: args.discoveryWindow,
+  });
   let windows = [];
   if (args.show) {
     const s = (showList || []).find(x => x && x.id === args.show);
-    windows = s ? selectRecentOpeningWindows([s], { now, count: 1 }) : [];
+    windows = s ? selectRecentOpeningWindows([s], { now, count: 1, includeIncomplete: true }) : [];
     if (!s) console.warn(`[time-to-publish-sla] WARNING: show ${args.show} not found in shows.json.`);
   } else if (!args.days) {
-    windows = selectRecentOpeningWindows(showList, { now, count: args.windows });
+    windows = selectRecentOpeningWindows(showList, { now, count: args.windows, records });
   }
-
-  const showIds = windows.map(w => w.showId);
-  const publishTimes = loadPublishTimes(showIds);
-
-  let records = computeReviewLatencies(entries, {
-    publishTimes,
-    // Uses the orchestrator's 15-minute default conservatively, including
-    // windows where the poll plan may have shortened the sleep to 5 minutes.
-    // For a known input override, pass --discovery-window=N to match that run.
-    discoveryWindowMinutes: args.discoveryWindow,
-  });
 
   let scope;
   if (args.days) {
     const cutoff = new Date(now - args.days * 24 * 60 * MS_MIN).toISOString();
     records = records.filter(r => r.firstSeenAt >= cutoff);
     scope = `last ${args.days} day(s)`;
-  } else if (windows.length) {
+  } else {
     records = filterToOpeningWindows(records, windows);
     scope = `${windows.length} opening window(s): ${windows.map(w => `${w.showId} (${w.openingDate})`).join(', ')}`;
-  } else {
-    scope = 'UNSCOPED — all tracked reviews (no opening window resolved)';
   }
   if (degraded) scope = `${scope} [DEGRADED: ${degraded}]`;
 

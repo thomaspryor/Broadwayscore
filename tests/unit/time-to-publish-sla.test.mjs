@@ -396,6 +396,29 @@ test('SLA — p50/p90 come from the evaluated set', () => {
 // opening-window scoping
 // ---------------------------------------------------------------------------
 
+test('windows skip openings whose review window has not finished', () => {
+  const shows = [{ id: 'today', openingDate: '2026-04-20' }, { id: 'finished', openingDate: '2026-04-15' }];
+  assert.deepEqual(selectRecentOpeningWindows(shows, { now: new Date('2026-04-20T12:00:00Z'), count: 1 }).map(w => w.showId), ['finished']);
+});
+
+test('windows skip specials', () => {
+  const shows = [{ id: 'special', type: 'special', openingDate: '2026-04-15' }, { id: 'play', type: 'play', openingDate: '2026-04-14' }];
+  assert.deepEqual(selectRecentOpeningWindows(shows, { now: new Date('2026-04-25T00:00:00Z'), count: 1 }).map(w => w.showId), ['play']);
+});
+
+test('windows widen to a measurable sample, with a cap and no backfills', () => {
+  const shows = ['a', 'b', 'c', 'd'].map((id, i) => ({ id, openingDate: `2026-04-${15 - i}` }));
+  const records = [
+    ...[0, 1, 2].map(() => ({ showId: 'a', firstSeenAt: '2026-04-15T12:00:00.000Z', publishedToLiveMs: 1 })),
+    ...[0, 1].map(() => ({ showId: 'b', firstSeenAt: '2026-04-14T12:00:00.000Z', publishedToLiveMs: 1 })),
+    { showId: 'a', firstSeenAt: '2026-05-01T00:00:00.000Z', publishedToLiveMs: 1 },
+    { showId: 'a', firstSeenAt: '2026-04-15T12:00:00.000Z', publishedToLiveMs: null },
+  ];
+  const opts = { now: new Date('2026-04-25T00:00:00Z'), count: 1, records };
+  assert.deepEqual(selectRecentOpeningWindows(shows, opts).map(w => w.showId), ['a', 'b']);
+  assert.deepEqual(selectRecentOpeningWindows(shows, { ...opts, maxWindows: 1 }).map(w => w.showId), ['a']);
+});
+
 test('windows — picks the two most recent past openings, newest first', () => {
   const shows = [
     { id: 'old', openingDate: '2026-01-02' },
