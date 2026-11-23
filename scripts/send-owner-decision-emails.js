@@ -23,7 +23,7 @@ const linear = require('./lib/linear-client');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const { findOwnerDecisions, planNotification } = require('./lib/owner-decision-notify.js');
 const link = require('../src/lib/owner-decision-link.js');
-const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, pictureHold } = require('./lib/owner-decision-email.js');
+const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, pictureHold, clarityHold } = require('./lib/owner-decision-email.js');
 const { holdReason, sendMode } = require('./lib/owner-decision-quiet-period.js');
 
 const USAGE = 'Usage: node scripts/send-owner-decision-emails.js [--dry-run] [--only=BRO-N] [--roundup] [--no-sweep] [--max=8]';
@@ -34,6 +34,7 @@ const BACKLOG_MIN = 3;
 const ROUNDUP_AFTER_MS = 3 * 24 * 60 * 60 * 1000;
 const MAX_PAGES = 40;
 const PICTURE_NEEDED_MARK = 'PICTURE NEEDED (BRO-7578):';
+const CLARITY_NEEDED_MARK = 'UNCLEAR QUESTION (BRO-8199):';
 
 const QUERY = `query($teamKey: String!, $after: String) {
   issues(first: 25, after: $after, filter: {
@@ -141,6 +142,8 @@ async function main(argv = process.argv.slice(2)) {
       // BRO-6266: the same already-answered test as the per-card email and the digest.
       const hold = holdReason(byId.get(d.identifier), d, { secret });
       if (hold && hold.reason !== 'recent-activity') { console.log(`[roundup] skip ${d.identifier}: ${hold.detail}`); return false; }
+      const muddled = clarityHold({ question: d.question || d.title, description: byId.get(d.identifier).description });
+      if (muddled) { console.log(`[roundup] skip ${d.identifier} (unclear-question): ${muddled}`); return false; }
       const c = ((byId.get(d.identifier).comments || {}).nodes || []).find((x) => link.bodyHasMarker(x.body, link.emailMarker(refOf(d))));
       return c && Date.now() - new Date(c.createdAt).getTime() > ROUNDUP_AFTER_MS;
     }).slice(0, 20);
@@ -176,15 +179,30 @@ async function main(argv = process.argv.slice(2)) {
   const relatedOf = (d) => link.relatedCardIds(byId.get(d.identifier).description, d.identifier)
     .map((id) => (byId.has(id) ? byId.get(id).description : closedText.get(id))).filter(Boolean);
   const needPicture = [];
+  const unclear = [];
   const fresh = untold.filter((d) => {
     const hold = holdReason(byId.get(d.identifier), d, { secret });
     if (hold) console.log(`[hold] ${d.identifier} (${hold.reason}): ${hold.detail}`);
     if (hold) return false;
+    // BRO-8199: never email a question the owner cannot answer from the email alone.
+    const muddled = clarityHold({ question: d.question || d.title, description: byId.get(d.identifier).description });
+    if (muddled) { console.log(`[hold] ${d.identifier} (unclear-question): ${muddled}`); unclear.push({ d, muddled }); return false; }
     const asked = ((byId.get(d.identifier).comments || {}).nodes || []).find((c) => link.bodyHasMarker(c.body, PICTURE_NEEDED_MARK));
     const blind = pictureHold({ question: d.question || d.title, description: byId.get(d.identifier).description, related: relatedOf(d), askedAt: asked ? asked.createdAt : null });
     if (blind) { console.log(`[hold] ${d.identifier} (needs-picture): ${blind}`); needPicture.push(d); }
     return !blind;
   });
+  // BRO-8199: said once on the card, so the next session on it rewrites the block; the next run then emails it.
+  if (!opts.dryRun) {
+    for (const { d, muddled } of unclear) {
+      if (hasComment(d, CLARITY_NEEDED_MARK)) continue;
+      try {
+        const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
+        await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
+          { input: { issueId: issue.issue.id, body: `${CLARITY_NEEDED_MARK} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it.` } });
+      } catch (err) { console.error(`[owner-decision-emails] could not note the unclear question on ${d.identifier}: ${err.message}`); }
+    }
+  }
   // Said once on the card, so whoever owns it adds a screenshot or mockup link; the next run then emails it.
   if (!opts.dryRun) {
     for (const d of needPicture) {

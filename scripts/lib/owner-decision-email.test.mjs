@@ -98,3 +98,50 @@ test('owner-facing decision pages never print a card id as text', () => {
     assert.doesNotMatch(src, /About: \$\{esc\((?:noDash\()?[\w.?]*title\)/, `${f} prints a raw title (ids and link markup) in About`);
   }
 });
+
+// BRO-8199: the real BRO-5123 text that reached the owner as one line of code names
+// under bare Approved/Rejected. It must be held; the same decision written plainly goes out.
+const BRO5123_Q = "no citable source exists for the 3 star deals (re-confirmed by Codex 2026-11-20), and the BRO-4989 checker ruling is still not posted. Keep Music Man, Hell's Kitchen, Gypsy held as star-deal-unknown at the sourcedStarDeals switch, or reclassify Hell's Kitchen as not star-driven. Recommendation: keep held.";
+const BRO5123_DESC = `DECISION NEEDED (owner judgment, already stated 2026-11-20): ${BRO5123_Q}\n\n<!-- decision-promoted-from-report -->`;
+const CLEAR_Q = 'For three shows we cannot find what their stars were paid. Should their profit estimates stay hidden until we can?';
+const CLEAR_DESC = [
+  `DECISION NEEDED: ${CLEAR_Q}`,
+  'In plain words: A star deal is extra pay a big name gets, often a share of ticket sales. It makes a show slower to earn back its money.',
+  'Why this is your call: it decides what the site shows readers for three shows.',
+  'Option A - hide them: nothing on the site rests on a guess / three shows lose their estimate',
+  'Option B - keep the guesses: the estimates stay / they rest on numbers nobody can cite',
+  'My recommendation: A because the site never shows figures it cannot source.',
+  'Default: the guesses stay on the site.',
+].join('\n');
+
+test('BRO-8199: the BRO-5123 email is held as unclear and says why', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  const r = clarityHold({ question: BRO5123_Q, description: BRO5123_DESC });
+  assert.ok(r, 'held');
+  for (const want of [/camelCase/, /card number/, /internal tool words/, /Option A/, /Why this is your call/, /My recommendation/]) assert.match(r, want);
+});
+
+test('BRO-8199: the same decision written plainly is not held, and the plain-words line is in the email', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  assert.equal(clarityHold({ question: CLEAR_Q, description: CLEAR_DESC }), null);
+  const { html } = buildDecisionEmail({ decision: { identifier: 'BRO-5123', title: 'Star deals', url: 'https://linear.app/x', question: CLEAR_Q }, description: CLEAR_DESC, secret, now: 0 });
+  assert.match(html, /A star deal is extra pay/);
+  assert.match(html, /Choose Option A/);
+  assert.ok(html.indexOf('A star deal is') < html.indexOf('Choose Option A'), 'background sits above the buttons');
+});
+
+test('BRO-8199: an owner task needs no options but still no code names; ordinary product names pass', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  const task = 'DECISION NEEDED: Finish the photo ID check for AdSense.\nWhy this is your call: only you can.\nOwner step 1: open AdSense.';
+  assert.equal(clarityHold({ question: 'Finish the photo ID check for AdSense.', description: task }), null);
+  assert.match(clarityHold({ question: 'Set APPROVAL_HMAC_SECRET in Vercel.', description: task.replace('Finish the photo ID check for AdSense.', 'Set APPROVAL_HMAC_SECRET in Vercel.') }) || '', /underscores/);
+  const { jargonIn } = require('../../src/lib/owner-decision-link.js');
+  for (const ok of ['Should the iPhone app show YouTube trailers?', 'Spend $400 on macOS ads?', "Keep Hell's Kitchen hidden?"]) assert.deepEqual(jargonIn(ok), [], ok);
+});
+
+test('BRO-8199: kill switch OWNER_DECISION_CLARITY_HOLD_DISABLED=1 sends as before', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED = '1';
+  try { assert.equal(clarityHold({ question: BRO5123_Q, description: BRO5123_DESC }), null); }
+  finally { delete process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED; }
+});

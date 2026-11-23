@@ -85,6 +85,9 @@ const LABEL_RES = {
   why: /^\s*(?:[-*>]\s+)?\**Why this is your call\**\s*:\s*\**\s*(.+)$/i,
   recommendation: /^\s*(?:[-*>]\s+)?\**My recommendation\**\s*:\s*\**\s*(.+)$/i,
   defaultText: /^\s*(?:[-*>]\s+)?\**Default\**\s*:\s*\**\s*(.+)$/i,
+  // BRO-8199: two or three plain sentences on what the subject even is ("A star deal is ..."),
+  // shown right under the question. The owner got questions they could not place.
+  background: /^\s*(?:[-*>]\s+)?\**In plain words\**\s*:\s*\**\s*(.+)$/i,
 };
 
 // "Evidence: <label> | <https://raw.githubusercontent.com/thomaspryor/Broadwayscore/...png>"
@@ -150,7 +153,7 @@ function isVisualQuestion(question) { return VISUAL_QUESTION_RE.test(String(ques
 
 /** Parse the plain-English parts of a decision card. Never throws. */
 function parseDecisionBlock(description) {
-  const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [], steps: [] };
+  const out = { why: null, background: null, options: [], recommendation: null, defaultText: null, evidence: [], steps: [] };
   const seen = new Set();
   // Screenshots are only for visual approvals (BRO-6244): any other card with an Evidence line must not put images on the owner pages.
   const visual = parseVisualApproval(description);
@@ -185,6 +188,39 @@ function parseDecisionBlock(description) {
   // A task only when nothing else claims the card: real A/B options or a visual approval win.
   out.task = out.steps.length > 0 && out.options.length < 2 && !visual;
   return out;
+}
+
+// BRO-8199: is a decision written so the owner can answer it from the email alone?
+// The owner is not technical; BRO-5123 reached them as a one-line question full of
+// code names (sourcedStarDeals, Codex, checker ruling) with no options, no why and
+// no recommendation, under bare Approved/Rejected buttons. Returns the list of
+// problems (empty when the decision reads fine). A task (Owner step lines) needs
+// no options. Pure; shared by the report-time guard and the send-time hold.
+const JARGON_RES = [
+  [/`/, 'code formatting (backticks)'],
+  [/\b[a-z]{2,}[A-Z][a-z]+[A-Za-z]*\b/, 'a code name in camelCase'],
+  [/\b[A-Za-z0-9]+_[A-Za-z0-9_]+\b/, 'a code name with underscores'],
+  [/\b[\w.-]+\/[\w./-]+\.(?:js|mjs|ts|tsx|json|md|yml|sh)\b/, 'a file path'],
+  [/\bBRO-\d+\b/, 'a card number'],
+  [/\b(?:Codex|backtest|worktree|VERIFY|RECHECK-AFTER|shadow mode|checker ruling)\b/i, 'internal tool words'],
+];
+const CLEAR_QUESTION_MAX = 300;
+function jargonIn(text) {
+  const t = String(text || '');
+  return JARGON_RES.filter(([re]) => re.test(t)).map(([, what]) => what);
+}
+function decisionClarityProblems({ question, description }) {
+  const block = parseDecisionBlock(description);
+  const problems = [];
+  const q = String(question || '');
+  if (q.length > CLEAR_QUESTION_MAX) problems.push(`the question is ${q.length} characters; keep it to one plain sentence under ${CLEAR_QUESTION_MAX}`);
+  const jargon = jargonIn(q);
+  if (jargon.length) problems.push(`the question has ${jargon.join(', ')}`);
+  if (block.task) return problems;
+  if (block.options.length < 2) problems.push('no "Option A: ..." and "Option B: ..." lines, each on its own line');
+  if (!block.why) problems.push('no "Why this is your call: ..." line');
+  if (!block.recommendation) problems.push('no "My recommendation: ..." line');
+  return problems;
 }
 
 // Options a card offers. Cards without parseable options get the generic pair,
@@ -682,7 +718,7 @@ function listOpenDecisions(issues) {
 
 module.exports = {
   LIST_TTL_MS, LIST_QUERY, MAX_LISTED,
-  signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
+  decisionClarityProblems, jargonIn, signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices, STEP_RE, TASK_CHOICES, mockupLinks, relatedCardIds, isVisualQuestion,

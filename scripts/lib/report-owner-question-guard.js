@@ -36,21 +36,57 @@ function checkHiddenOwnerQuestion({ status, summary, verification, description }
     .flatMap((l) => l.split(/(?<=[.!?;])\s+/))
     .filter((l) => !DENIAL_RE.test(l))
     .join('\n');
-  if (!namesOwnerHold(reportText) && !EXTRA_OWNER_ASK_RE.test(reportText)) return { hidden: false };
-  if (hasRealBlock(reportText) || hasRealBlock(description)) return { hidden: false };
+  // BRO-8199: a block in the report is checked for clarity whether or not other words name the owner.
+  const reportHasBlock = hasRealBlock(reportText);
+  if (!reportHasBlock && !namesOwnerHold(reportText) && !EXTRA_OWNER_ASK_RE.test(reportText)) return { hidden: false };
+  if (reportHasBlock || hasRealBlock(description)) {
+    // The block the owner will be emailed: the report's (it is promoted to the description) or the card's.
+    const problems = unclearBlock(reportHasBlock ? [summary, verification].filter(Boolean).join('\n') : description);
+    if (!problems.length) return { hidden: false };
+    return {
+      hidden: true,
+      unclear: true,
+      reason:
+        `This DECISION NEEDED would reach the owner unclear: ${problems.join('; ')}. The owner is not technical and ` +
+        'answers from the email alone (BRO-8199: BRO-5123 went out as one line of code names under bare Approved/Rejected). ' +
+        `Write it in --summary like this, each on its own line:\n${TEMPLATE}`,
+    };
+  }
   return {
     hidden: true,
     reason:
       'This report says the owner must decide, but neither it nor the card has a "DECISION NEEDED:" block, ' +
-      'so the question would never reach the owner email or list. Add to --summary, on separate lines:\n' +
-      '  DECISION NEEDED: <what, one sentence, plain English>\n' +
+      `so the question would never reach the owner email or list. Add to --summary, on separate lines:\n${TEMPLATE}` +
+      'If no owner decision is really needed, reword the report (e.g. "no owner decision needed").',
+  };
+}
+
+const TEMPLATE =
+      '  DECISION NEEDED: <what, one sentence, plain English, no code names or card numbers>\n' +
+      '  In plain words: <what the subject is, 2-3 sentences a non-technical reader follows>\n' +
       '  Why this is your call: <why>\n' +
       '  Option A - <name>: <upside> / <downside>\n' +
       '  Option B - <name>: <upside> / <downside>\n' +
       '  My recommendation: <X> because <Y>.\n' +
-      '  Default: <what happens if they do not answer>.\n' +
-      'If no owner decision is really needed, reword the report (e.g. "no owner decision needed").',
-  };
+      '  Default: <what happens if they do not answer>.\n';
+
+// The clarity problems of the first real DECISION NEEDED in text, judged the way the emailer
+// will see it once promoted: from that line to the end.
+function unclearBlock(text) {
+  const { findDecisionQuestion } = require('./decision-card-parse.js');
+  const { decisionClarityProblems } = require('../../src/lib/owner-decision-link.js');
+  const lines = stripCode(text);
+  const found = findDecisionQuestion(lines.join('\n'));
+  let question; let block;
+  if (found) { question = found.question; block = lines.slice(found.index).join('\n'); }
+  else {
+    const INLINE = /\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*[:\u2013\u2014-]\s*\**\s*(\S.*)$/;
+    const i = lines.findIndex((l) => INLINE.test(l));
+    if (i < 0) return [];
+    question = INLINE.exec(lines[i])[1];
+    block = [question, ...lines.slice(i + 1)].join('\n');
+  }
+  return decisionClarityProblems({ question, description: block });
 }
 
 // BRO-8152: the guard above is satisfied by a block in the REPORT, but the report posts as a comment
@@ -72,10 +108,16 @@ function promotedDecisionDescription({ status, summary, verification, descriptio
   if (process.env.DECISION_PROMOTE_DISABLED === '1') return null; // kill switch
   if (!GUARDED_STATUSES.has(status)) return null;
   const { findDecisionQuestion, SETTLED_RE } = require('./decision-card-parse.js');
-  const desc = String(description || '').replace(/\r\n?/g, '\n');
+  let desc = String(description || '').replace(/\r\n?/g, '\n');
+  const text = [summary, verification].filter(Boolean).join('\n').replace(/\r\n?/g, '\n');
+  // BRO-8199: an earlier promoted block the emailer holds as unclear is replaced by a clear one
+  // from this report (everything above the marker is the old promoted block).
+  const at = desc.indexOf(PROMOTED_MARKER);
+  if (at >= 0 && unclearBlock(desc.slice(0, at)).length && hasRealBlock(text) && !unclearBlock(text).length) {
+    desc = desc.slice(at + PROMOTED_MARKER.length).replace(/^\s+/, '');
+  }
   // Heading-form blocks ("## DECISION NEEDED" + question line) count too: the emailer reads them.
   if (hasRealBlock(desc) || findDecisionQuestion(desc)) return null;
-  const text = [summary, verification].filter(Boolean).join('\n').replace(/\r\n?/g, '\n');
   if (!hasRealBlock(text)) return null;
   const lines = stripCode(text);
   let block;
@@ -103,4 +145,4 @@ function promotedDecisionDescription({ status, summary, verification, descriptio
   return `${block}\n\n${PROMOTED_MARKER}\n\n${desc}`;
 }
 
-module.exports = { checkHiddenOwnerQuestion, GUARDED_STATUSES, promotedDecisionDescription, PROMOTED_MARKER };
+module.exports = { unclearBlock, checkHiddenOwnerQuestion, GUARDED_STATUSES, promotedDecisionDescription, PROMOTED_MARKER };

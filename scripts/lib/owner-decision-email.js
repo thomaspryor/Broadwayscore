@@ -6,7 +6,7 @@
  * owner-facing rules: plain English, no em dashes, no card ids in the text.
  */
 
-const { displayQuestion, parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks, mockupLinks, isVisualQuestion } = require('../../src/lib/owner-decision-link.js');
+const { displayQuestion, decisionClarityProblems, parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks, mockupLinks, isVisualQuestion } = require('../../src/lib/owner-decision-link.js');
 const { pickEmailImage, fullUrlForThumb } = require('./visual-approval.js');
 
 const BASE_URL = 'https://broadwayscorecard.com';
@@ -62,6 +62,7 @@ function buildDecisionEmail({ decision, description, related = [], secret, now =
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'Waiting on you'}. Work on this is paused until you answer.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(displayQuestion(decision.title)))}</p>` : ''}
+${backgroundHtml(block)}
 ${seeHtml}
 ${evidenceHtml(block.evidence)}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why this is your call:</strong> ${esc(noDash(block.why))}</p>` : ''}
@@ -73,6 +74,25 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
+}
+
+// BRO-8199: the plain-words background ("A star deal is ...") right under the question.
+function backgroundHtml(block) {
+  return block.background ? `<p style="margin:0 0 12px;">${esc(noDash(block.background))}</p>` : '';
+}
+
+/**
+ * BRO-8199: a decision is not emailed until the owner could answer it from the
+ * email alone: two or more options, why it is their call, a recommendation, and
+ * a short question with no code names. Returns a plain reason when it must wait,
+ * else null. No time-out: a garbled question is what the owner asked to stop
+ * getting. Held cards stay on the digest and the list page, and the card is told
+ * once what to fix (CLARITY_NEEDED_MARK in send-owner-decision-emails.js).
+ */
+function clarityHold({ question, description }) {
+  if (process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED === '1') return null; // kill switch
+  const problems = decisionClarityProblems({ question, description });
+  return problems.length ? problems.join('; ') : null;
 }
 
 // BRO-7578: the mockups and the card sit right under the question, above every
@@ -126,6 +146,7 @@ function taskHtml({ decision, block, choices, question, token, secret, now, base
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'A task for you'}. Work on this is paused until you tap Done.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(displayQuestion(decision.title)))}</p>` : ''}
+${backgroundHtml(block)}
 ${seeHtml}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why Claude cannot do this itself:</strong> ${esc(noDash(block.why))}</p>` : ''}
 <ol style="padding-left:22px;margin:12px 0 16px;">${steps}</ol>
@@ -170,4 +191,4 @@ ${button(listUrl(secret, { now, baseUrl }), 'See and answer everything', true)}
   return { subject, html };
 }
 
-module.exports = { pictureHold, PICTURE_WAIT_MS, contextLinksHtml, buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };
+module.exports = { clarityHold, backgroundHtml, pictureHold, PICTURE_WAIT_MS, contextLinksHtml, buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };

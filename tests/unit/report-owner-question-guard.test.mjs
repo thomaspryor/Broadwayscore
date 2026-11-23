@@ -110,3 +110,33 @@ test('cmdReport with skipOwnerQuestionGuard posts the comment instead of exiting
     process.exit = origExit; console.log = origLog; Object.assign(linear, orig);
   }
 });
+
+// BRO-8199: the real BRO-5123 pause report: a one-line block of code names, no options, no why.
+const UNCLEAR_REPORT = "DECISION NEEDED (owner judgment, already stated 2026-11-20): no citable source exists for the 3 star deals (re-confirmed by Codex 2026-11-20), and the BRO-4989 checker ruling is still not posted. Keep Music Man, Hell's Kitchen, Gypsy held as star-deal-unknown at the sourcedStarDeals switch, or reclassify Hell's Kitchen as not star-driven. Recommendation: keep held.";
+
+test('BRO-8199: a one-line DECISION NEEDED full of code names is refused with the template', () => {
+  const r = checkHiddenOwnerQuestion({ status: 'paused', summary: UNCLEAR_REPORT });
+  assert.equal(r.hidden, true);
+  assert.equal(r.unclear, true);
+  assert.match(r.reason, /camelCase/);
+  assert.match(r.reason, /In plain words:/);
+  assert.match(r.reason, /Option A/);
+});
+
+test('BRO-8199: an unclear block already on the card is refused too, so the next report rewrites it', () => {
+  const r = checkHiddenOwnerQuestion({ status: 'paused', summary: 'Still waiting on the owner.', description: UNCLEAR_REPORT });
+  assert.equal(r.hidden, true);
+  assert.equal(r.unclear, true);
+});
+
+test('BRO-8199: a clear report replaces an unclear promoted block on the card', () => {
+  const { promotedDecisionDescription, PROMOTED_MARKER } = require('../../scripts/lib/report-owner-question-guard.js');
+  const desc = `${UNCLEAR_REPORT}\n\n${PROMOTED_MARKER}\n\nOriginal card body.`;
+  const out = promotedDecisionDescription({ status: 'paused', summary: BLOCK, description: desc });
+  assert.ok(out, 'rewritten');
+  assert.match(out, /^DECISION NEEDED: Add the Liberation tour/);
+  assert.doesNotMatch(out, /sourcedStarDeals/);
+  assert.match(out, /Original card body\.$/);
+  // A clear promoted block is left alone.
+  assert.equal(promotedDecisionDescription({ status: 'paused', summary: BLOCK, description: `${BLOCK}\n\n${PROMOTED_MARKER}\n\nx` }), null);
+});
