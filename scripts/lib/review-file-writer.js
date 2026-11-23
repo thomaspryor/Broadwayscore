@@ -415,6 +415,7 @@ function _withRecord(result, record) {
 
 function _createOrMergeReviewFile(showId, input, options = {}) {
   const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
+  if (input && input.url) input = { ...input, url: require('./britishtheatre-locale-url').canonicalBritishTheatreUrl(input.url) };
   // BRO-6486: a WordPress photo-attachment page is never the review; its parent
   // post is (see wordpressAttachmentParentUrl). Rewrite before every url guard.
   const attachmentParent = input && input.url ? require('./non-review-url-patterns').wordpressAttachmentParentUrl(input.url) : null;

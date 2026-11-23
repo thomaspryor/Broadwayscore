@@ -245,6 +245,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
     console.log(`  Found ${results.length} results`);
 
     for (const result of results) {
+      result.url = require('./lib/britishtheatre-locale-url').canonicalBritishTheatreUrl(result.url);
       // Skip non-matching domains
       if (!result.url.includes(config.domain)) continue;
       // Skip duplicates

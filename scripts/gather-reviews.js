@@ -3170,6 +3170,7 @@ function archiveAggregatorPage(aggregator, showId, url, html, show) {
  * Uses centralized normalization to prevent duplicate files with different naming
  */
 function createReviewFile(showId, reviewData, options = {}) {
+  if (reviewData && reviewData.url) reviewData = { ...reviewData, url: require('./lib/britishtheatre-locale-url').canonicalBritishTheatreUrl(reviewData.url) };
   // BRO-6486: a WordPress photo-attachment page is never the review; its
   // parent post is. Rewrite before any url-keyed guard or filename lookup.
   const attachmentParent = reviewData && reviewData.url ? wordpressAttachmentParentUrl(reviewData.url) : null;
