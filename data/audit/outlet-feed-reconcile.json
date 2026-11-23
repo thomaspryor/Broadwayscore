@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T15:45:48.404Z",
+  "generatedAt": "2026-11-23T17:17:30.522Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -151,26 +151,50 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "lighting-and-sound-america",
+      "error": "HTTP 500 for https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 903,
-  "matchedGaps": 0,
-  "possibleGaps": 1,
+  "itemsScanned": 934,
+  "matchedGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play Broadway Review",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "the-ugly-one-off-west-end-2026",
+      "title": "The Ugly One",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/the-ugly-one/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-ugly-one",
+      "headline": "The Ugly One",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "possible",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/its-a-wonderful-life-radio-play-broadway-review/",
+      "headline": "&#8216;It&#8217;s a Wonderful Life: A Live Radio Play&#8217; rings all the bells, but can’t settle on a tune",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "possible",
+      "outletId": "nytg",
+      "url": "https://newyorktheatreguide.com/reviews/its-a-wonderful-life-a-live-radio-play-broadway-review",
+      "headline": "‘It’s a Wonderful Life: A Live Radio Play’ Broadway review — starry show puts a new spin on a holiday chestnut",
+      "publishDate": null
+    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
