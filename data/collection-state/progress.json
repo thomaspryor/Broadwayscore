@@ -120,7 +120,9 @@
     "downstate-2026/pages-on-stages--mason-pilevsky.json",
     "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
     "fantasma-off-broadway-2026/front-row-center--unknown.json",
-    "do-not-try-this-at-home-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "do-not-try-this-at-home-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json"
   ],
   "failed": [
     "hamlet-2009/usatoday--elysa-gardner.json",
@@ -278,7 +280,6 @@
     "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
     "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
     "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
     "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
     "the-fantasticks-2026/nytimes--maya-phillips.json",
     "the-fantasticks-2026/bobs-theater-blog--unknown.json",
@@ -351,7 +352,8 @@
       "do-not-try-this-at-home-off-broadway-2026/kidsoutandabout--unknown.json",
       "downstate-2026/pages-on-stages--mason-pilevsky.json",
       "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-      "fantasma-off-broadway-2026/front-row-center--unknown.json"
+      "fantasma-off-broadway-2026/front-row-center--unknown.json",
+      "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -364,7 +366,8 @@
       "bad-cinderella-2023/hollywood-reporter--unknown.json",
       "data/review-texts/all-about-me-2010/nytimes--unknown.json",
       "all-about-me-2010/nytimes--unknown.json",
-      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -831,6 +834,64 @@
       "t": "2026-11-23T10:17:16.053Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T11:18:31.150Z",
+      "event": "bb-session",
+      "session": "8f4135a3",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T11:18:31.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T11:20:32.226Z",
+      "event": "bb-session",
+      "session": "548a1914",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T11:20:32.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T11:20:50.484Z",
+      "event": "bb-session",
+      "session": "15a775e8",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T11:20:51.075Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T11:22:38.966Z",
+      "event": "bb-session",
+      "session": "4e8c3eb6",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T11:22:39.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T11:22:56.580Z",
+      "event": "bb-session",
+      "session": "1b0b8e07",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T11:22:57.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ]
 }
