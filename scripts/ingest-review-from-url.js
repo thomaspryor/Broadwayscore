@@ -331,10 +331,15 @@ if (!show) {
   if (fetchFailure) html = '';
   // BRO-8210: Blogger "Dynamic Views" pages render the post in the browser, so
   // the fetched HTML has no body; read the same post from Blogger's feed API.
-  if (!fetchFailure && !htmlFileArg) {
+  // Not with an explicit --archive-snapshot: the operator asked for that copy.
+  if (!fetchFailure && !htmlFileArg && !archiveSnapshotArg) {
     const bdv = await require('./lib/blogger-dynamic-views').expandBloggerDynamicViews(
       html, url, (u) => fetchPage(u, { source: 'process-review-submission' }));
-    if (bdv.expanded) { html = bdv.html; console.log(`  → Blogger Dynamic Views page; read the post from ${bdv.feedUrl}`); }
+    if (bdv.expanded) {
+      html = bdv.html;
+      viaArchiveSnapshot = null; // the text now comes from the live feed, not the archive copy
+      console.log(`  → Blogger Dynamic Views page; read the post from ${bdv.feedUrl}`);
+    }
     else if (bdv.feedUrl) console.warn(`  ⚠️  Blogger Dynamic Views page; feed read failed (${bdv.error || 'unknown'}): ${bdv.feedUrl}`);
   }
 

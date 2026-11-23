@@ -30,14 +30,25 @@ function bloggerFeedUrl(pageUrl, postId) {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// A browser-rendering fetch tier returns a JSON URL as <pre>-wrapped,
+// entity-escaped text; undo the escaping before JSON.parse.
+function decodeEntities(s) {
+  return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+    .replace(/&#39;|&#x27;/g, "'").replace(/&amp;/g, '&');
 }
 
 // Feed JSON (string or parsed) → minimal classic-Blogger HTML, or null.
+// No author meta: the feed's author is the Blogger account (often a house
+// handle like "NYTR"), not the critic; the caller's --critic or the body wins.
 function bloggerFeedToHtml(feed) {
   let d = feed;
   if (typeof d === 'string') {
     // fetch providers sometimes wrap JSON in <pre>/<body>; take the outer object
+    if (/^\s*</.test(d)) d = decodeEntities(d.replace(/<\/?(html|head|body|pre)[^>]*>/gi, ''));
     const start = d.indexOf('{');
     const end = d.lastIndexOf('}');
     if (start < 0 || end <= start) return null;
@@ -48,12 +59,10 @@ function bloggerFeedToHtml(feed) {
   if (typeof content !== 'string' || content.trim().length < 200) return null;
   const title = (e.title && e.title.$t) || '';
   const published = (e.published && e.published.$t) || '';
-  const author = (e.author && e.author[0] && e.author[0].name && e.author[0].name.$t) || '';
   return [
     '<html><head>',
     `<title>${escapeHtml(title)}</title>`,
     published ? `<meta property="article:published_time" content="${escapeHtml(published)}">` : '',
-    author ? `<meta name="author" content="${escapeHtml(author)}">` : '',
     '</head><body>',
     `<h3 class='post-title entry-title'>${escapeHtml(title)}</h3>`,
     `<div class='post-body entry-content'>${content}</div>`,

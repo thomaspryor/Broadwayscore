@@ -58,3 +58,17 @@ test('failed or empty feed keeps the original HTML', async () => {
   const b = await bdv.expandBloggerDynamicViews(shell, URL_, async () => '{"entry":{"content":{"$t":"short"}}}');
   assert.equal(b.expanded, false); assert.equal(b.html, shell);
 });
+
+test('entity-escaped <pre> body from a browser-rendering tier still parses', () => {
+  const esc = JSON.stringify(feed).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const html = bdv.bloggerFeedToHtml(`<html><head></head><body><pre style="x">${esc}</pre></body></html>`);
+  assert.ok(html);
+  assert.match(extractArticleTextFromUrl(html, URL_), /tightly drawn two-hander/);
+});
+
+test('no author meta (Blogger account handle is not the critic); quotes in title escaped', () => {
+  const f = { entry: { ...feed.entry, title: { $t: `O'Hara's "Play"` } } };
+  const html = bdv.bloggerFeedToHtml(f);
+  assert.doesNotMatch(html, /name="author"/);
+  assert.match(html, /O&#39;Hara&#39;s &quot;Play&quot;/);
+});
