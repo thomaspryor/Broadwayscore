@@ -36,7 +36,7 @@ import { tmpdir as __lsTmpdir } from 'node:os';
 import { join as __lsJoin } from 'node:path';
 {
   const __req = __lsCreateRequire(import.meta.url);
-  const restoreShows = __req('../../scripts/lib/shows-json-path.js').useShowsFixture([]);
+  const restoreShows = __req('../../scripts/lib/shows-json-fixture.js').useShowsFixture([]);
   const prevRc = process.env.RECURRENCE_CLASSES_PATH;
   process.env.RECURRENCE_CLASSES_PATH = __lsJoin(__lsTmpdir(), `no-recurrence-classes-${process.pid}.json`);
   process.on('exit', () => {

@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 // content-verifier (required below for contentHash) reads data/shows.json; point it at a
 // fixture so this test stays in test.yml's blocking batch (live-data-lane gate).
-process.on('exit', require('./shows-json-path.js').useShowsFixture([]));
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const {
   isRejectedNonReview,
   isNonReviewDemotedByFreshCV,
