@@ -25,7 +25,7 @@ import { cache } from 'react';
 // '@/lib/...' specifiers, not './...': tests stub '@/lib/data-core' by that exact
 // id (Module._load in show-og-poster-layout / live-in-hd tests), and a relative
 // import would bypass the stub.
-import { getShowBySlug, type ComputedShow } from '@/lib/data-core';
+import { getShowBySlug, withVerifiedVenueAddress, type ComputedShow } from '@/lib/data-core';
 import { getCriticConsensus, normalizeCriticConsensus } from '@/lib/data-consensus';
 import { getAudienceBuzz, normalizeAudienceBuzz } from '@/lib/data-audience';
 import type { AudienceBuzzData, CriticConsensus } from '@/lib/data-types';
@@ -74,14 +74,14 @@ function baselineRender(slug: string, rev: string = REV_BASE): ShowRender | null
  * would be TBD or score-less (held shows are never refreshed).
  */
 export function renderFromSlice(slice: PublishedSlice, buildInstant: number, rev: string): ShowRender | null {
-  const show = computeOneShow(slice.row as unknown as RawShow, slice.reviews as RawReview[], {
+  const show = withVerifiedVenueAddress(computeOneShow(slice.row as unknown as RawShow, slice.reviews as RawReview[], {
     blogReviews: slice.blogReviews as RawReview[],
     audience: slice.audience as RawAudience[],
     buzz: slice.buzz as RawBuzzThread[],
     coverageFloorInputs: coverageInputsFromSlice(slice),
     versionImage: versionedImagePath,
     now: buildInstant,
-  });
+  }));
   // Stricter than the build's held rule (computeShowTBD): a slice that yields no
   // score at all also renders the build.
   if (isShowScoreTBD(show, buildInstant)) return null;
