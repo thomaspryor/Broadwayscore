@@ -602,3 +602,85 @@ test('CMS footer: Standard "in pictures" caption and GO London ticket line (real
   for (const t of tails) assert.equal(tier(BODY + t, 'standard').contentTier, 'complete', t.slice(0, 40));
   assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys x', 'standard').contentTier, 'truncated');
 });
+
+// ---------------------------------------------------------------------------
+// BRO-8012: literal pre-filter. Each pre-filtered furniture regex names the
+// literals it cannot match without; furnitureMatch skips the regex (a full-text
+// scan) when none is present. A wrong literal would silently stop a strip, so
+// every entry is checked against a real ending that the regex matches.
+// ---------------------------------------------------------------------------
+const PF = T._furniture;
+// one real ending per pre-filtered regex, in the order of PF.filtered
+const PF_SAMPLES = [
+  'Δ document.getElementById( "ak_js_1" ).setAttribute( "value", 1 );',
+  "window.dataLayer = window.dataLayer || []; gtag('js', new Date());",
+  '@page WordSection1 {size:8.5in 11.0in;',
+  '/* Style */ mso-style-name:"Table Normal"; mso-padding-alt:0in;',
+  'css: { color: red; }',
+  'Keep up with the latest news and reviews on our Time Out Theater Facebook page',
+  'Editor\'s Note: Click here to read more Picture this Post stories by Jane Doe.',
+  'CLICK HERE TO READ MORE ARTICLES BY AMY MUNICE.',
+  'For more shows visit Theatre in Chicago',
+  '| Image: Joan Marcus',
+  'To learn more about Robert Tanitch and his reviews, click here to go to his website',
+  "For further information or to book visit the theatre's website here .",
+  'Watch the trailer here:',
+  'Tags: musical, revival',
+  '• Did you catch this show – or any other recently? Tell us about it',
+  'Running time:',
+  'Tickets: here.',
+  'Running time: 1hr 25mins. No intermission. Through July 23.',
+  'Public Theater (Off Broadway). By Jane Doe. Directed by John Roe. Running time: 90mins.',
+];
+// break every occurrence of a literal (case-insensitively for ci) without touching the rest
+const breakLiteral = (s, lit) => s.replace(new RegExp(lit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), (m) => m[0] + '\u0000' + m.slice(1));
+
+test('BRO-8012 prefilter: every entry is well formed for its regex flags', () => {
+  assert.equal(PF.filtered.length, PF_SAMPLES.length, 'add a sample for each new pre-filtered regex');
+  for (const e of PF.filtered) {
+    const lits = e.cs || e.ci;
+    assert.ok(Array.isArray(lits) && lits.length > 0, `no literals: ${e.re}`);
+    assert.ok(!(e.cs && e.ci), `both cs and ci: ${e.re}`);
+    if (e.ci) {
+      assert.ok(e.re.flags.includes('i'), `ci literal on a case-sensitive regex: ${e.re}`);
+      for (const l of e.ci) assert.equal(l, l.toLowerCase(), `ci literal not lower-case: ${l}`);
+    } else {
+      assert.ok(!e.re.flags.includes('i'), `cs literal on an /i regex: ${e.re}`);
+    }
+  }
+});
+
+test('BRO-8012 prefilter: each regex matches its sample, and stops matching once its literals are gone', () => {
+  PF.filtered.forEach((e, i) => {
+    const sample = `${FT_PROSE} ${PF_SAMPLES[i]}`;
+    assert.ok(e.re.test(sample), `sample does not match ${e.re}: ${PF_SAMPLES[i]}`);
+    let broken = sample;
+    for (const l of e.cs || e.ci) broken = breakLiteral(broken, l);
+    assert.ok(!e.re.test(broken), `regex still matches without its literals, so they are not required: ${e.re}`);
+  });
+});
+
+test('BRO-8012 prefilter: furniture samples still strip (pre-filter lets every match through)', () => {
+  for (const tail of PF_SAMPLES.slice(0, 16)) {
+    assert.notEqual(FT.stripKnownTrailers(`${FT_PROSE} ${tail}`, 'unknown-outlet').length, `${FT_PROSE} ${tail}`.length, `not stripped: ${tail}`);
+  }
+});
+
+test('BRO-8012 prefilter: plain prose runs none of the pre-filtered regexes (rebuild hot path)', () => {
+  const prose = FT_PROSE.repeat(40);
+  const filtered = new Set(PF.filtered.map((e) => e.re));
+  const origExec = RegExp.prototype.exec;
+  let scans = 0;
+  RegExp.prototype.exec = function (s) { if (filtered.has(this)) scans++; return origExec.call(this, s); };
+  try {
+    assert.equal(PF.furnitureMatch(prose), null);
+  } finally {
+    RegExp.prototype.exec = origExec;
+  }
+  assert.equal(scans, 0, `${scans} pre-filtered regexes scanned prose that holds none of their literals`);
+});
+
+test('BRO-8012 foldCase: folds the characters JS /i treats as ASCII letters', () => {
+  assert.equal(PF.foldCase('Webſite HERE Kelvin dırect'), 'website here kelvin direct');
+  assert.ok(/website here/i.test('WEBSITE HERE') && PF.foldCase('WEBSITE HERE').includes('website here'));
+});

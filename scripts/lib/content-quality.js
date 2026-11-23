@@ -511,7 +511,7 @@ const PROMO_BOOKING_COPY_MIN_HITS = 2;
  */
 function detectPromoBookingCopy(text) {
   const t = (typeof text === 'string') ? text : '';
-  const substantial = t.trim().length >= 500 && _countTheaterKeywords(t) >= 3;
+  const substantial = t.trim().length >= 500 && _countTheaterKeywords(t, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN;
   const matches = [];
   let strongHits = 0;
   for (const pattern of PROMO_BOOKING_COPY_PATTERNS) {
@@ -652,6 +652,8 @@ const THEATER_KEYWORDS = [
   'ensemble', 'understudy', 'matinee', 'evening show', 'off-broadway',
   'west end', 'playbill', 'shubert', 'nederlander', 'lyceum', 'booth',
 ];
+// Theater keywords a text needs to read as substantial review content.
+const SUBSTANTIAL_KEYWORD_MIN = 3;
 
 /**
  * Check if text contains ad blocker message
@@ -1561,7 +1563,7 @@ function isGarbageContent(text) {
   // it; a banner with too little behind it falls through to the cookie check.
   if (typeof text === 'string') {
     const stripped = stripLeadingCookieConsentBlock(text);
-    if (stripped !== text && stripped.trim().length >= 1500 && _countTheaterKeywords(stripped) >= 3) text = stripped;
+    if (stripped !== text && stripped.trim().length >= 1500 && _countTheaterKeywords(stripped, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN) text = stripped;
   }
 
   // BRO-5684: known mid-article publisher chrome blocks are not review prose.
@@ -1589,7 +1591,7 @@ function isGarbageContent(text) {
   // If the pattern is trailing junk on an otherwise valid review, don't reject the
   // entire review: collect-review-texts.js calls stripExemptedChrome() (below) right after
   // cleanText(), which removes the exempted line. cleanText() itself does NOT cover these.
-  const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
+  const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN;
 
   // Check for cookie consent / GDPR banner — always garbage, even with theater keywords
   // (consent text contains generic words like "show", "performance" that fool keyword checks)
@@ -1728,9 +1730,15 @@ function isGarbageContent(text) {
  * @param {string} text
  * @returns {number}
  */
-function _countTheaterKeywords(text) {
+function _countTheaterKeywords(text, cap = Infinity) {
+  // BRO-8012: every caller only asks ">= 3", so stop counting at the cap
+  // instead of scanning all 47 keywords (a hot path of the rebuild tier pass).
   const lower = text.toLowerCase();
-  return THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length;
+  let n = 0;
+  for (const kw of THEATER_KEYWORDS) {
+    if (lower.includes(kw) && ++n >= cap) break;
+  }
+  return n;
 }
 
 /**
@@ -2153,7 +2161,7 @@ function _stripExemptedChromeLines(text) {
   let out = text;
   for (let pass = 0; pass < 6; pass++) {
     const trimmed = out.trim();
-    if (trimmed.length < 500 || _countTheaterKeywords(trimmed) < 3) break;
+    if (trimmed.length < 500 || _countTheaterKeywords(trimmed, SUBSTANTIAL_KEYWORD_MIN) < SUBSTANTIAL_KEYWORD_MIN) break;
     const probes = [
       [detectAdBlocker, true, false, AD_BLOCKER_PATTERNS],
       [detectPaywall, true, false, PAYWALL_PATTERNS],

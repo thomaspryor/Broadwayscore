@@ -508,73 +508,52 @@ function stripRunInfoTrailer(text) {
 // ---------------------------------------------------------------------------
 const FURN_DATE = `(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?\\s+\\d{1,2}(?:st|nd|rd|th)?)`;
 const FURN_NAMES = "((?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)(?:(?:\\s*,\\s*|\\s+)(?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)){0,7})";
+// BRO-8012: every furniture regex is anchored at the end but not at the start,
+// so each one walks the whole text, and stripFurnitureTail runs on every review
+// on every rebuild (~22 full scans a file, the largest slice of the rebuild's
+// tier pass). Each entry names literals its regex cannot match without (cs:
+// exact case; ci: lower-case, for an /i regex, checked against foldCase(t)), so
+// a cheap includes() skips the scan and never changes a result. A new regex
+// needs one. tests/unit/furniture-prefilter.test.mjs checks every entry.
 // Template / script residue: never prose, so the whole tail goes.
 const FURN_CODE_RES = [
-  /\s*Δ\s*document\.getElementById\([\s\S]*$/,
-  /\s*(?:window\.)?dataLayer\s*=\s*window\.dataLayer[\s\S]*$/,
-  /\s*@page\s+WordSection\d[\s\S]*$/,
-  /\s*(?:\/\*[\s\S]{0,40})?(?:mso-[a-z-]+\s*:[^;]{0,60};\s*){2,}[\s\S]{0,2500}$/,
-  /\s*css:\s*\{[\s\S]{0,300}$/,
+  { re: /\s*Δ\s*document\.getElementById\([\s\S]*$/, cs: ['document.getElementById('] },
+  { re: /\s*(?:window\.)?dataLayer\s*=\s*window\.dataLayer[\s\S]*$/, cs: ['window.dataLayer'] },
+  { re: /\s*@page\s+WordSection\d[\s\S]*$/, cs: ['WordSection'] },
+  { re: /\s*(?:\/\*[\s\S]{0,40})?(?:mso-[a-z-]+\s*:[^;]{0,60};\s*){2,}[\s\S]{0,2500}$/, cs: ['mso-'] },
+  { re: /\s*css:\s*\{[\s\S]{0,300}$/, cs: ['css:'] },
 ];
 // Boilerplate footers, whole tail.
 const FURN_FOOTER_RES = [
-  /\s*(?:Keep up with the latest news and reviews on our Time Out Theater Facebook page|Follow Time Out Theater on (?:Facebook|X|Twitter|Instagram))[\s\S]{0,300}$/,
-  /\s*(?:Editor['’]s Note:\s*)?Click here to read more Picture this Post (?:stories|articles) by [^.\n]{1,60}\.?$/i,
-  /\s*CLICK HERE TO READ MORE ARTICLES BY [A-Z][A-Z .'’-]{2,50}\.?$/,
-  /\s*For more shows visit Theatre in Chicago(?:\s*Facebook\s*-->)?(?:\s*Share on:)?$/,
-  /\s*\|\s*Image:\s*[^|\n]{1,80}$/,
-  /\s*To learn more about [\p{Lu}][\p{L} .'’-]{2,40} and his reviews, click here to go to his website\.?$/u,
-  /\s*(?:For further information or to book )?visit the theatre['’]s website here\s*\.?(?:\s*Related Items[^\n]{0,80})?$/i,
-  /\s*Watch (?:the trailer|some behind-the-scenes footage|the video)[^.!?\n]{0,120}? here\s*:?(?:\s*Related Items[^\n]{0,80})?$/i,
-  /\s*(?:For more reviews see TheatreInChicago\.com\s*)?Tags:\s[^\n]{0,300}$/,
-  /\s*(?:•|·)\s*(?:Did you catch this show|What have you been to see lately)[^\n]{0,200}$/,
-  /\s*Running time:\s*$/,
+  { re: /\s*(?:Keep up with the latest news and reviews on our Time Out Theater Facebook page|Follow Time Out Theater on (?:Facebook|X|Twitter|Instagram))[\s\S]{0,300}$/, cs: ['Time Out Theater'] },
+  { re: /\s*(?:Editor['’]s Note:\s*)?Click here to read more Picture this Post (?:stories|articles) by [^.\n]{1,60}\.?$/i, ci: ['picture this post'] },
+  { re: /\s*CLICK HERE TO READ MORE ARTICLES BY [A-Z][A-Z .'’-]{2,50}\.?$/, cs: ['CLICK HERE TO READ MORE ARTICLES BY '] },
+  { re: /\s*For more shows visit Theatre in Chicago(?:\s*Facebook\s*-->)?(?:\s*Share on:)?$/, cs: ['For more shows visit Theatre in Chicago'] },
+  { re: /\s*\|\s*Image:\s*[^|\n]{1,80}$/, cs: ['Image:'] },
+  { re: /\s*To learn more about [\p{Lu}][\p{L} .'’-]{2,40} and his reviews, click here to go to his website\.?$/u, cs: [' and his reviews, click here to go to his website'] },
+  { re: /\s*(?:For further information or to book )?visit the theatre['’]s website here\s*\.?(?:\s*Related Items[^\n]{0,80})?$/i, ci: ['website here'] },
+  { re: /\s*Watch (?:the trailer|some behind-the-scenes footage|the video)[^.!?\n]{0,120}? here\s*:?(?:\s*Related Items[^\n]{0,80})?$/i, ci: ['watch '] },
+  { re: /\s*(?:For more reviews see TheatreInChicago\.com\s*)?Tags:\s[^\n]{0,300}$/, cs: ['Tags:'] },
+  { re: /\s*(?:•|·)\s*(?:Did you catch this show|What have you been to see lately)[^\n]{0,200}$/, cs: ['Did you catch this show', 'What have you been to see lately'] },
+  { re: /\s*Running time:\s*$/, cs: ['Running time:'] },
 ];
 // One short piece at the very end. Names-only credits keep a cut sentence ("Photos by Weegee line ...") out.
+const FURN_TICKETS_LITERALS = { ci: ['ticket'] };
 const FURN_TICKETS_RE = /(?:^|\s)Tickets?:\s*(?:here|click here|link|https?:\/\/\S+|www\.\S+)\.?$/i;
 const FURN_CREDIT_RE = new RegExp(`(?:^|\\s|\\||(?<=[\\p{L}\\d.!?]))(?:Review(?:ed)?(?:\\s+by)?\\s*:|(?:Review(?:ed)?\\s+)?by\\s*:|(?:Photos?|Photography|Photograph|Images?)(?:\\s+credits?)?\\s*(?::|\\bby\\b)|(?:Photo|Image)\\s+credits?\\s*:?)\\s*(?:courtesy\\s+of\\s+)?${FURN_NAMES}\\s*$`, 'iu');
 const FURN_RUNS_RE = new RegExp(`(?:^|\\s|\\||(?<=[.!?]))(?:(?:It|The\\s+(?:show|production|run))\\s+)?(?:runs|continues|plays|booking|books|bookings?)\\s+(?:until|through|thru|to)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?\\s*$`, 'iu');
 // "Until October 24 KilnTheatre.com", "Until Jan 31", "Details: Midnight, to January 3": a bare run line, only after a sentence end.
 const FURN_BARE_UNTIL_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:Details:\\s*[^.!?\\n]{0,40}?,?\\s*)?(?:Until|To|Through|Runs until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?(?:,?\\s*[\\p{Lu}][^.!?\\n]{1,60}?(?=\\s*\\([\\d ]{8,16}\\)\\.?\\s*$))?(?:,?\\s+[\\w.-]+\\.(?:com|org|net|co\\.uk|org\\.uk|uk)|\\s*\\([\\d ]{8,16}\\))?\\.?\\s*$`, 'u');
 // A Time Out capsule's credits: "Public Theater (Off Broadway). By X. Directed by Y. With ensemble cast. Running time:"
+const FURN_TIMEOUT_CREDITS_LITERALS = { cs: ['Directed by'] };
 const FURN_TIMEOUT_CREDITS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)[\p{Lu}][^.!?\n]{2,70}\((?:Off[- ])?Broadway\)\.\s+By\s[^.!?\n]{1,80}\.\s+Directed by\s[^.!?\n]{1,80}\.(?:\s+(?:With|Starring)\s[^.!?\n]{1,200}\.)?(?:\s+Running time:[^.!?\n]{0,60}\.?)?(?:\s+(?:One|Two|No)\s+intermissions?\.?)?\s*$/u;
 
 // Time Out running-time line, optionally closed by its run date: "Running time: 1hr 25mins. No intermission. Through July 23."
+const FURN_RUNNING_TIME_LITERALS = { cs: ['Running time:'] };
 const FURN_RUNNING_TIME_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)Running time:\\s*[^.!?\\n]{1,40}\\.(?:\\s+(?:One|Two|No)\\s+intermissions?\\.)?(?:\\s+(?:Through|Until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?)?\\s*$`, 'u');
 
 // A match may start on the sentence end it follows ([.!?] + space): the cut keeps that punctuation.
 const cutOf = (m) => m.index + ((m[0].match(/^[.!?]["'”’)]?/) || [''])[0].length);
-
-// BRO-8012: every furniture regex is anchored at the end but not at the start,
-// so each one walks the whole text, and stripFurnitureTail runs on every review
-// on every rebuild (~22 full scans a file, the largest slice of the rebuild's
-// tier pass). Each regex below can only match when a literal it requires is in
-// the text, so a cheap includes() check skips the scan and never changes a
-// result. Literals for /i regexes are lower-case and checked against foldCase(t).
-// tests/unit/furniture-prefilter.test.mjs proves every literal is required.
-const FURN_CODE_LITERALS = [
-  { cs: ['document.getElementById('] },
-  { cs: ['window.dataLayer'] },
-  { cs: ['WordSection'] },
-  { cs: ['mso-'] },
-  { cs: ['css:'] },
-];
-const FURN_FOOTER_LITERALS = [
-  { cs: ['Time Out Theater'] },
-  { ci: ['picture this post'] },
-  { cs: ['CLICK HERE TO READ MORE ARTICLES BY '] },
-  { cs: ['For more shows visit Theatre in Chicago'] },
-  { cs: ['Image:'] },
-  { cs: [' and his reviews, click here to go to his website'] },
-  { ci: ['website here'] },
-  { ci: ['watch '] },
-  { cs: ['Tags:'] },
-  { cs: ['Did you catch this show', 'What have you been to see lately'] },
-  { cs: ['Running time:'] },
-];
-const FURN_TICKETS_LITERALS = { ci: ['ticket'] };
-const FURN_RUNNING_TIME_LITERALS = { cs: ['Running time:'] };
-const FURN_TIMEOUT_CREDITS_LITERALS = { cs: ['Directed by'] };
 
 // Lower-case, plus the three characters JS case-insensitive matching treats as
 // an ASCII letter that toLowerCase() leaves alone (long s, dotless i, Kelvin).
@@ -583,7 +562,7 @@ function foldCase(t) {
   return /[\u017F\u0131\u212A]/.test(lower) ? lower.replace(/\u017F/g, 's').replace(/\u0131/g, 'i').replace(/\u212A/g, 'k') : lower;
 }
 
-// true when the text holds one of the literals (or the regex has none listed)
+// false only when the text holds none of the entry's required literals
 function mayMatch(lits, t, folded) {
   if (lits.cs) return lits.cs.some((l) => t.includes(l));
   return lits.ci.some((l) => folded().includes(l));
@@ -592,13 +571,13 @@ function mayMatch(lits, t, folded) {
 function furnitureMatch(t) {
   let foldedText = null;
   const folded = () => (foldedText === null ? (foldedText = foldCase(t)) : foldedText);
-  for (let i = 0; i < FURN_CODE_RES.length; i++) {
-    if (!mayMatch(FURN_CODE_LITERALS[i], t, folded)) continue;
-    const m = FURN_CODE_RES[i].exec(t); if (m) return { cut: cutOf(m), code: true };
+  for (const e of FURN_CODE_RES) {
+    if (!mayMatch(e, t, folded)) continue;
+    const m = e.re.exec(t); if (m) return { cut: cutOf(m), code: true };
   }
-  for (let i = 0; i < FURN_FOOTER_RES.length; i++) {
-    if (!mayMatch(FURN_FOOTER_LITERALS[i], t, folded)) continue;
-    const m = FURN_FOOTER_RES[i].exec(t); if (m) return { cut: cutOf(m), code: false };
+  for (const e of FURN_FOOTER_RES) {
+    if (!mayMatch(e, t, folded)) continue;
+    const m = e.re.exec(t); if (m) return { cut: cutOf(m), code: false };
   }
   const tk = mayMatch(FURN_TICKETS_LITERALS, t, folded) && FURN_TICKETS_RE.exec(t);
   if (tk) return { cut: cutOf(tk), code: false };
@@ -720,14 +699,14 @@ module.exports = {
   // BRO-8012: test seam for the literal pre-filter (tests/unit/furniture-prefilter.test.mjs)
   _furniture: {
     furnitureMatch, foldCase,
-    pairs: [
-      ...FURN_CODE_RES.map((re, i) => [re, FURN_CODE_LITERALS[i]]),
-      ...FURN_FOOTER_RES.map((re, i) => [re, FURN_FOOTER_LITERALS[i]]),
-      [FURN_TICKETS_RE, FURN_TICKETS_LITERALS],
-      [FURN_RUNNING_TIME_RE, FURN_RUNNING_TIME_LITERALS],
-      [FURN_TIMEOUT_CREDITS_RE, FURN_TIMEOUT_CREDITS_LITERALS],
+    // every pre-filtered regex with its literals; unfiltered: the regexes that have no single required literal
+    filtered: [
+      ...FURN_CODE_RES,
+      ...FURN_FOOTER_RES,
+      { re: FURN_TICKETS_RE, ...FURN_TICKETS_LITERALS },
+      { re: FURN_RUNNING_TIME_RE, ...FURN_RUNNING_TIME_LITERALS },
+      { re: FURN_TIMEOUT_CREDITS_RE, ...FURN_TIMEOUT_CREDITS_LITERALS },
     ],
-    codeCount: FURN_CODE_RES.length, codeLiteralCount: FURN_CODE_LITERALS.length,
-    footerCount: FURN_FOOTER_RES.length, footerLiteralCount: FURN_FOOTER_LITERALS.length,
+    unfiltered: [FURN_CREDIT_RE, FURN_RUNS_RE, FURN_BARE_UNTIL_RE],
   },
 };
