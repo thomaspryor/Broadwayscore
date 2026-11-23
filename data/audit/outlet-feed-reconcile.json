@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T10:47:57.222Z",
+  "generatedAt": "2026-11-23T14:45:21.417Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -151,21 +151,51 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "north-west-end",
-      "error": "Timeout fetching https://northwestend.com/feed/"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 920,
-  "matchedGaps": 1,
-  "possibleGaps": 1,
+  "itemsScanned": 899,
+  "matchedGaps": 2,
+  "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
       "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/the-ugly-one/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-ugly-one",
-      "headline": "The Ugly One",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/elektra-theatre-for-a-new-audience/",
+      "headline": "Elektra &#8211; Theatre for a New Audience ★★★★★",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "fantasma-off-broadway-2026",
+      "title": "Fantasma",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/fantasma-off-broadway-review/",
+      "headline": "&#8216;Fantasma&#8217; finds Latine trauma simmering in a Guatemalan family recipe",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "level": "possible",
+      "outletId": "west-end-wilma",
+      "url": "https://westendwilma.com/review-homo-alone-two-the-other-palace/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=review-homo-alone-two-the-other-palace",
+      "headline": "A Homo Alone 2, Reviewed at The Other Palace ★★★",
       "publishDate": "2026-11-23"
     },
     {
