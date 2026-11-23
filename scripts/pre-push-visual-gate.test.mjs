@@ -299,6 +299,7 @@ test('BRO-8156: a NEW UI file (or route) still asks the owner', (t) => {
   writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE, 'src/app/new-route/page.tsx'], scopeFirstAt: new Date().toISOString() });
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /new UI file\(s\) since the owner's yes: src\/app\/new-route\/page\.tsx/, 'the ask names the new file');
 });
 
 test('BRO-8156: a new file sorted after five approved ones is still compared (no head -5 hole)', (t) => {

@@ -23,6 +23,13 @@ import {
   classifyOverrideProvenance,
   queryOwnerNoVerify,
 } from './transcript-scan.mjs';
+// BRO-8156
+import { createRequire as __cr8156 } from 'node:module';
+import { execFileSync as __ex8156, spawnSync as __sp8156 } from 'node:child_process';
+import { mkdirSync as __mk8156, symlinkSync as __sl8156, appendFileSync as __ap8156 } from 'node:fs';
+import { dirname as __dn8156 } from 'node:path';
+import { fileURLToPath as __fu8156 } from 'node:url';
+import { queryScopeAllowed, recordApproval } from './visual-qa-ledger.mjs';
 
 // ── fixture builders ────────────────────────────────────────────────────────
 
@@ -1132,12 +1139,6 @@ test('BRO-7851 cousin: owner NO-VERIFY counts only while the owner turn is curre
 });
 
 // ── BRO-8156: approval churn (owner asked "yes" repeatedly for the same UI change, BRO-8086) ────────────────────
-import { createRequire as __cr8156 } from 'node:module';
-import { execFileSync as __ex8156, spawnSync as __sp8156 } from 'node:child_process';
-import { mkdirSync as __mk8156, symlinkSync as __sl8156, appendFileSync as __ap8156 } from 'node:fs';
-import { dirname as __dn8156 } from 'node:path';
-import { fileURLToPath as __fu8156 } from 'node:url';
-import { queryScopeAllowed, recordApproval } from './visual-qa-ledger.mjs';
 const __scope = __cr8156(import.meta.url)('./visual-scope.js');
 const __LIB = __dn8156(__fu8156(import.meta.url));
 

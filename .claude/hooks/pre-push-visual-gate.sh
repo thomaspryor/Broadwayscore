@@ -357,6 +357,7 @@ if [ "$APPROVED" != "true" ]; then
   {
     echo "🛑 BLOCKED: a passing visual-qa verdict exists (overallPass=$OVERALL_PASS) but the owner has not approved it yet (branch $BRANCH)."
     echo "UI files: $(echo "$UI_FILES_CHANGED" | tr '\n' ' ')"
+    [ -n "${_SCOPE:-}" ] && echo "Earlier owner yes on this branch: $(printf '%s' "$_SCOPE" | jq -r '.reason // empty' 2>/dev/null)"  # BRO-8156
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
     _FIX_LINE "$VERDICT_PATH"
     echo "Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate (\"ship it\", \"looks good\", \"yes\", \"go\", ...): the reader (transcript-scan.mjs, BRO-7848) accepts all of them. NEVER ask the owner to type, copy or paste a hash/token/APPROVED: string. Other bypasses (you, not the owner): \"ship immediately for: <reason>\" | NO-VERIFY: <reason>."

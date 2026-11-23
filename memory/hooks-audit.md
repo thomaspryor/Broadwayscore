@@ -94,7 +94,7 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | Hook | Status | Reason |
 |---|---|---|
 | pre-commit | KEEP | Runs before a commit exists: rejects tracked symlinks/gitlinks, wrong-aspect images, auto-sorts test manifests. Deterministic, no session context needed. |
-| commit-msg | KEEP | Requires the VISUAL-OK-1440 prefix when UI files are staged. |
+| commit-msg | KEEP | UI commits pass on a passing visual-qa verdict that screenshotted the staged contents (scripts/lib/visual-scope.js, BRO-8156); nothing to type. SKIP-VISUAL-CHECK: for non-rendering edits. |
 | pre-push | KEEP | Protects CLAUDE.md critical sections from concurrent-session reverts and runs the CI lint audits locally before a push burns a CI cycle. |
 
 ## Codex layer
