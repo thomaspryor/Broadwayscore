@@ -32,6 +32,14 @@ const DENIED: Record<Flag, string> = {
 };
 const ORDER: Flag[] = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
 
+/** ", checked Nov 2026" from an ISO date; empty when the date is missing or unreadable. */
+function checkedLabel(iso?: string): string {
+  const m = /^(\d{4})-(\d{2})-\d{2}$/.exec(iso || '');
+  if (!m) return '';
+  const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][Number(m[2]) - 1];
+  return month ? `, checked ${month} ${m[1]}` : '';
+}
+
 const PILL = 'inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium border';
 
 export function hasAccessibilityFacts(a?: TheaterAccessibility): boolean {
@@ -64,7 +72,7 @@ export default function AccessibilityBadges({ accessibility, className = 'border
           <a href={accessibility.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-brand hover:underline">
             Source: the venue&apos;s access page<span className="sr-only"> (opens in a new tab)</span>
           </a>
-          . Check with the box office before you book.
+          {checkedLabel(accessibility.checkedAt)}. Check with the box office before you book.
         </p>
       )}
     </div>

@@ -74,7 +74,7 @@ const VENUE_INFO = (venueInfoData as unknown as { venues: Record<string, VenueIn
 type AccessFlag = 'wheelchair' | 'stepFree' | 'elevator' | 'hearingLoop' | 'assistiveListening';
 type VenueAccessEntry = {
   website?: string;
-  access?: Partial<Record<AccessFlag, boolean>> & { note?: string; sourceUrl?: string | null };
+  access?: Partial<Record<AccessFlag, boolean>> & { note?: string; sourceUrl?: string | null; verifiedAt?: string };
   seatLinks?: { seatplan?: string; aviewfrommyseat?: string };
 };
 const VENUE_ACCESS = (venueAccessData as unknown as { venues: Record<string, VenueAccessEntry> }).venues;
@@ -95,6 +95,7 @@ function accessibilityFor(entry: VenueAccessEntry | undefined): TheaterAccessibi
     ...(a.note ? { notes: a.note } : {}),
     ...(denied.length ? { denied } : {}),
     ...(a.sourceUrl ? { sourceUrl: a.sourceUrl } : {}),
+    ...(a.verifiedAt ? { checkedAt: a.verifiedAt } : {}),
   };
 }
 
