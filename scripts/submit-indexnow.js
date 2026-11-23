@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
+const { loadShowsForSlugs, slugsForCli } = require('./lib/show-page-slugs');
 
 const INDEXNOW_KEY = 'c98817f2581efaac8a239e3dbed189ba';
 const SITE_HOST = 'broadwayscorecard.com';
@@ -51,7 +52,7 @@ Usage:
 
 Options:
   --urls <paths>    Comma-separated URL paths (e.g., /show/hamilton,/rankings)
-  --shows <ids>     Comma-separated show IDs (e.g., hamilton-2015,wicked-2003)
+  --shows <ids>     Comma-separated show IDs or page slugs (e.g., hamilton-2015,wicked-2003)
   --all             Submit all pages from sitemap.xml (recurses sitemap-index)
   --dry-run         Print URL count + first 10 URLs but do not POST to IndexNow
   --help            Show this help message
@@ -307,7 +308,8 @@ async function main() {
       break;
 
     case 'shows':
-      urls = specificShows.map(s => `https://${SITE_HOST}/show/${s}`);
+      // BRO-8085: tokens may be show ids or slugs; only the slug is the page address.
+      urls = slugsForCli(specificShows, loadShowsForSlugs(fs, path, __dirname)).map(s => `https://${SITE_HOST}/show/${s}`);
       // Also submit homepage since show listings may have changed
       urls.push(`https://${SITE_HOST}/`);
       break;
