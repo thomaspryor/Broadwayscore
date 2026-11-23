@@ -86,8 +86,15 @@ function main() {
     for (const r of decided) console.log(`  ${r.kind === "domainAlias" ? "ALIAS   " : "DISTINCT"} ${r.host} -> ${r.outletId} [${r.rule}]${r.applied ? ` ${r.applied}` : ''}`);
     for (const r of undecided) console.log(`  LEFT  ${r.host} -> ${r.outletId} [${r.rule}] ${r.reason}`);
   }
-  const refused = decided.filter((r) => r.applied && r.applied.startsWith('refused'));
-  return refused.length ? 1 : 0;
+  // A refusal is printed, never an exit code: the hourly workflow commits
+  // whatever was written, and a nonzero exit would drop those writes.
+  for (const r of decided.filter((x) => x.applied && x.applied.startsWith('refused'))) {
+    console.error(`::warning::resolve-outlet-domain-moves: ${r.host} -> ${r.outletId} ${r.applied}`);
+  }
+  for (const r of decided.filter((x) => x.applied === 'written')) {
+    console.error(`::notice::outlet domain move auto-resolved: ${r.host} -> ${r.outletId} ${r.kind} [${r.rule}]`);
+  }
+  return 0;
 }
 
 process.exit(main());

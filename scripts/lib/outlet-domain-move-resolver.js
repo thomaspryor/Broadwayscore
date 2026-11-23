@@ -87,10 +87,16 @@ function decideDomainMove(move, outlets, ctx = {}) {
     return { kind: null, rule: 'label-differs', reason: `${move.host} and ${outlet.domain} differ in more than the suffix (e.g. a hyphen); needs judgment` };
   }
 
+  // Never auto-alias onto a tier 1/2 outlet: a blog or mirror named after a
+  // major paper (variety.substack.com, thestage.com) would inherit its weight.
+  // Those stay a judgment call (second-opinion review, BRO-7822).
+  const aliasAllowed = !(Number(outlet.tier) > 0 && Number(outlet.tier) <= 2);
+
   if (a.platform || b.platform) {
     if (a.platform && b.platform && a.platform === b.platform) {
       return { kind: null, rule: 'same-platform', reason: 'same platform, different subdomain shape; needs judgment' };
     }
+    if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier}; a same-named blog is not trusted automatically` };
     return {
       kind: 'domainAlias',
       rule: 'platform-mirror',
@@ -116,6 +122,7 @@ function decideDomainMove(move, outlets, ctx = {}) {
   if (!genericSide || GENERIC_TLDS.has(ccSide.suffix)) {
     return { kind: null, rule: 'tld-not-home-swap', reason: `${a.suffix} vs ${b.suffix} is not a generic-to-home-country swap; needs judgment` };
   }
+  if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier}; a same-named site is not trusted automatically` };
   const shows = Array.isArray(move.shows) ? move.shows : [];
   if (shows.length === 0) return { kind: null, rule: 'no-shows', reason: 'no census shows to check the market against' };
   const outletMarketsRaw = get(ctx.outletMarkets, move.outletId);

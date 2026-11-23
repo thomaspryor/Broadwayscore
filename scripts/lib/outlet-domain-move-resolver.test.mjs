@@ -28,6 +28,8 @@ const outlets = {
   independent: { domain: 'independent.co.uk' },
   artshub: { domain: 'artshub.co.uk' },
   'gay-times': { domain: 'gaytimes.co.uk' },
+  variety: { domain: 'variety.com', tier: 1 },
+  thestage: { domain: 'thestage.co.uk', tier: 2, region: 'london' },
 };
 const showMarket = new Map([
   ['jack-and-the-beanstalk-off-west-end-2026', 'west-end'],
@@ -76,6 +78,11 @@ test('never guesses an alias without market evidence', () => {
   assert.equal(decide('gaytimes.com', 'gay-times', []).kind, null, 'no census shows');
   assert.equal(decide('gaytimes.com', 'gay-times', ['its-a-wonderful-life-a-live-radio-play-2026']).kind, null, 'regional: no known country');
   assert.equal(decide('gaytimes.com', 'gay-times', ['some-broadway-show']).kind, null, '.co.uk outlet, Broadway show');
+});
+
+test('never auto-aliases onto a tier 1/2 outlet (a same-named blog or mirror would inherit its weight)', () => {
+  assert.equal(decide('variety.substack.com', 'variety').kind, null);
+  assert.equal(decide('thestage.com', 'thestage', ['ceilidh-the-musical-off-west-end-2026']).kind, null);
 });
 
 test('a host never vouches for its own market', () => {
