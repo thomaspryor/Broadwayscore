@@ -25,129 +25,74 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
+            "claim": "Orchestra seats beyond the Mezzanine overhang may experience cut-off at the top of the stage.",
+            "short": "Possible cut-off at the top of the stage",
             "rows": "K-T",
-            "claim": "From row K back, the mezzanine overhang can cut off the top of the stage.",
-            "short": "Mezzanine overhang can cut off the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
                 "quoteHash": "e833e65c8646",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "A",
-            "claim": "Row A sits below stage level, close enough that some scenes are hard to take in comfortably.",
-            "short": "Below stage level, so some scenes are hard to take in",
+            "claim": "Row A is below the stage, and some patrons may find it too close to comfortably enjoy every scene.",
+            "short": "Row A below the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
                 "quoteHash": "607fa1037c53",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
                 "quoteHash": "d133e7ed35d9",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "side-angle",
-            "level": "orchestra",
-            "side": "sides",
-            "claim": "Toward the far sides of the Left and Right Orchestra the view turns side-on, and higher seat numbers are often sold as partial view.",
-            "short": "Side-on view, often sold as partial view",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/orchestra/",
-                "quoteHash": "8c9e18075d3a",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide",
-                "quoteHash": "a3bab45820c0",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "The far sides and back corners of the mezzanine have restricted views, and the rake gets steep in the last rows.",
-            "short": "Restricted views, and steep in the last rows",
+            "claim": "Mezzanine seats at the sides are restricted, and back-corner seats may have partial-view designations.",
+            "short": "Restricted sides and partial-view corners",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
                 "quoteHash": "c3bae52e8c0f",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/al-hirschfeld-theatre-seating-chart-detailed-seating-guide",
                 "quoteHash": "326f6533099a",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "mezzanine",
+            "claim": "The Mezzanine section combines broadly good views with good value.",
+            "short": "Broadly good views and good value",
             "side": "center",
-            "claim": "The middle rows of the Center Mezzanine are a price bracket below the front rows and keep a broad view of the stage.",
-            "short": "Cheaper than the front rows, with a broad view of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
                 "quoteHash": "af95c6612d4b",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "note",
-            "level": "mezzanine",
-            "rows": "G",
-            "claim": "In the Left and Right Mezzanine, row G sits behind a cross aisle, so it has extra legroom and a clear look over the rows in front.",
-            "short": "Behind a cross aisle, so there is extra legroom",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
-                "quoteHash": "eb079be3fdc7",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://seatplan.com/new-york/al-hirschfeld-theatre/mezzanine/",
-                "quoteHash": "71d31ea26afc",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "note",
-            "level": "mezzanine",
-            "claim": "Mezzanine rows are tight on legroom, even for people of average height. Aisle seats have the most room.",
-            "short": "Tight legroom, and aisle seats have the most room",
-            "evidence": [
-              {
-                "url": "https://aviewfrommyseat.com/venue/Al+Hirschfeld+Theatre/",
-                "quoteHash": "ba8480af54a9",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -297,8 +242,8 @@
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "The Orchestra faces a wide stage, so seats at the far sides look at it from a sharp angle and see less than average.",
-            "short": "Far side seats face the wide stage at an angle",
+            "claim": "The wide stage can make sightlines at the far sides of the Orchestra worse than average due to the angle.",
+            "short": "Far side sightlines can be worse than average",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/ambassador-theatre/orchestra/",
@@ -329,8 +274,8 @@
             "level": "front-mezzanine",
             "side": "center",
             "rows": "C-E",
-            "claim": "Rows C to E of the Front Mezzanine, kept as central as possible, are a good value pick with a clear raised view.",
-            "short": "Rows C to E are good value with a clear raised view",
+            "claim": "Good value seats are in rows C to E of the Front Mezzanine, as central as possible.",
+            "short": "Good value seats in rows C to E",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/ambassador-theatre/front-mezzanine/",
@@ -343,7 +288,8 @@
           {
             "type": "note",
             "level": "front-mezzanine",
-            "claim": "Legroom is tight across the Front Mezzanine. Inside aisle seats give the best mix of a central view and extra space.",
+            "claim": "Legroom is tight across the Front Mezzanine; inside aisle seats offer a central view and extra space.",
+            "short": "Inside aisle seats offer extra space",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/ambassador-theatre/front-mezzanine/",
@@ -356,8 +302,8 @@
           {
             "type": "value",
             "level": "rear-mezzanine",
-            "claim": "The Rear Mezzanine is the cheapest section in the house. It is far from the stage, but a decent rake gives most seats a clear view over the row in front.",
-            "short": "Cheapest section, distant but with a clear view",
+            "claim": "The Rear Mezzanine is the cheapest overall section, and most seats have a clean view above those in front.",
+            "short": "Cheapest section with most seats offering a clean view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/ambassador-theatre/rear-mezzanine/",
@@ -600,7 +546,7 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "V-ZZ",
-            "claim": "The Mezzanine overhang starts at row L, and from rows V to ZZ it cuts off the top of the stage. Some of these seats are sold as partial view.",
+            "claim": "In rows V-ZZ, the Mezzanine overhang will cut off the top of the stage.",
             "short": "Overhang cuts off the top of the stage",
             "evidence": [
               {
@@ -615,10 +561,10 @@
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
-            "side": "center",
             "rows": "A-C",
-            "claim": "Rows A to C of the Orchestra can feel too close, and you may need to crane your neck to look up at the performers.",
-            "short": "Very close, so expect some neck craning",
+            "claim": "Rows A-C may be too close for comfort and require neck craning to look up at actors.",
+            "short": "Rows A-C may require neck craning",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/august-wilson-theatre/orchestra/",
@@ -649,7 +595,7 @@
             "hazard": "side-angle",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "Mezzanine views are mostly open thanks to a good rake, but seats at the far sides have more restricted sightlines than the center rows.",
+            "claim": "Mezzanine seats at the far sides have more restricted sightlines than the premium center rows.",
             "short": "Far side seats have more restricted views",
             "evidence": [
               {
@@ -668,10 +614,10 @@
           {
             "type": "value",
             "level": "mezzanine",
-            "side": "center",
             "rows": "F-M",
-            "claim": "Views stay good further back in the center Mezzanine, so rows F to M are a well raked way to save some money.",
-            "short": "Rows F to M save money and keep a good view",
+            "claim": "Views remain good further back, so patrons wanting to save a little money can pick a well-raked seat in rows F-M.",
+            "short": "Well-raked seats in rows F-M",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/august-wilson-theatre/mezzanine/",
@@ -904,9 +850,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "J-Q",
-            "claim": "The Mezzanine overhangs the Orchestra from row J back, so seats behind that point can lose the top of the stage.",
-            "short": "Mezzanine overhang from row J cuts the top of the stage",
+            "rows": "J",
+            "claim": "The Mezzanine overhang begins at row J, meaning seats behind this may experience cut-off at the top of the stage.",
+            "short": "Seats behind the overhang may experience cut-off",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/orchestra/",
@@ -920,8 +866,8 @@
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
-            "claim": "The stage sits quite high, so the very front of the Orchestra means looking up; a few rows back is more comfortable.",
-            "short": "High stage, so the front rows look up",
+            "claim": "Look for seats a few rows back in the Orchestra to avoid having to look up at the quite high stage.",
+            "short": "Quite high stage may mean looking up",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/seating-plan/",
@@ -936,8 +882,8 @@
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "rows": "A",
-            "claim": "A safety bar in front of Mezzanine row A can block part of the view.",
-            "short": "Safety bar can block the view from row A",
+            "claim": "A safety bar can obstruct views in row A.",
+            "short": "Safety bar can obstruct row A views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/mezzanine/",
@@ -951,9 +897,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "mezzanine",
-            "rows": "C-H",
-            "claim": "The Balcony overhangs the Mezzanine from row C back, so seats behind that point may lose the top of the stage.",
-            "short": "Balcony overhang from row C can cut off the top",
+            "rows": "C",
+            "claim": "The Balcony overhang begins at row C.",
+            "short": "Balcony overhang begins at row C",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/mezzanine/",
@@ -968,8 +914,8 @@
             "hazard": "side-angle",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "In the Left and Right Mezzanine, the extreme side and corner seats have partly restricted views because the rows curve toward the stage.",
-            "short": "Far side and corner seats have restricted views",
+            "claim": "The outer corners of the Mezzanine can have partially obstructed or angled views.",
+            "short": "Mezzanine outer corners can have restricted views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/mezzanine/",
@@ -989,8 +935,8 @@
             "hazard": "obstructed-view",
             "level": "balcony",
             "side": "sides",
-            "claim": "In the Left and Right Balcony, the side boxes jut out in front of the seats, and the curve of the rows adds to the blocked view on the outer seats.",
-            "short": "Side boxes jut in front of outer seats",
+            "claim": "The Left and Right Boxes jut out in front of the Left and Right Balcony seats.",
+            "short": "Boxes jut out in front of Balcony seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/balcony/",
@@ -1005,8 +951,8 @@
             "level": "balcony",
             "side": "center",
             "rows": "B-D",
-            "claim": "The Balcony is the cheapest level, and the middle of Center Balcony rows B to D gives the best mix of price and view there.",
-            "short": "Cheapest level, best balance in center rows B-D",
+            "claim": "The best places to consider, taking into account cost and overall view, are in the middle of rows B-D.",
+            "short": "Middle of rows B-D is best for cost and overall view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/balcony/",
@@ -1029,7 +975,9 @@
           {
             "type": "note",
             "level": "balcony",
-            "claim": "Seat pitch in the Balcony is not ideal for taller patrons; aisle seats give the most legroom.",
+            "claim": "In the Left Balcony, legroom is best on the aisle; seat pitch is not ideal for taller patrons.",
+            "short": "Left Balcony aisle has the best legroom",
+            "side": "left",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/belasco-theatre/balcony/",
@@ -1237,17 +1185,17 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
+            "claim": "In Orchestra row O, the Mezzanine overhang cuts into and obstructs views of the top of the stage.",
+            "short": "Overhang obstructs the top of the stage",
             "rows": "O-R",
-            "claim": "From Orchestra row O back, the Mezzanine overhang cuts into the top of the stage.",
-            "short": "Mezzanine overhang cuts the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/orchestra/",
                 "quoteHash": "17ddc7c8df6f",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -1260,47 +1208,26 @@
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/orchestra/",
                 "quoteHash": "ee37e31c6f06",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "side-angle",
-            "level": "orchestra",
-            "side": "sides",
-            "claim": "Seats toward the outer aisles of the Left and Right Orchestra are angled, so the sides of the stage are cut off.",
-            "short": "Outer side seats lose the sides of the stage",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/orchestra/",
-                "quoteHash": "2ccfcf2325f8",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://www.tickpick.com/blog/bernard-b-jacobs-theatre-interactive-seating-chart/",
-                "quoteHash": "259c8c80e8a8",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "rows": "A",
-            "claim": "A safety bar in front of Mezzanine row A can cut into the view of the stage.",
-            "short": "Safety bar in front of row A",
+            "claim": "A safety bar may cut into the stage from row A.",
+            "short": "Safety bar may cut into the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/mezzanine/",
                 "quoteHash": "df2de3010550",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -1313,39 +1240,40 @@
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/mezzanine/",
                 "quoteHash": "ae479d298c12",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "mezzanine",
-            "side": "center",
             "rows": "J-K",
-            "claim": "The rear Mezzanine rows J and K are the cheapest in the theater, and the good rake keeps the view clear from back there.",
-            "short": "Cheapest seats in the house, still a clear view",
+            "claim": "Mezzanine rows J-K at the rear count as good value seats and are the cheapest on offer.",
+            "short": "Good value seats at the rear",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/mezzanine/",
                 "quoteHash": "b2d1cbb55585",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "mezzanine",
-            "claim": "Legroom in the Mezzanine is tight mid-row; aisle seats, preferably on the inside of the section, give more space.",
+            "claim": "The Mezzanine is tight on legroom, so patrons uncomfortable mid-row should look for aisle seats, preferably inside the section.",
+            "short": "Mezzanine legroom is tight",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/mezzanine/",
                 "quoteHash": "649cfb022fc7",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -1357,10 +1285,10 @@
               {
                 "url": "https://seatplan.com/new-york/bernard-b-jacobs-theatre/orchestra/",
                 "quoteHash": "5d208441d458",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -1547,9 +1475,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "O-Q",
-            "claim": "From about row O back, the Mezzanine overhang cuts slightly into the stage, usually just the very top.",
-            "short": "Overhang trims the top of the stage",
+            "rows": "O-O",
+            "claim": "In Orchestra row O, the Mezzanine overhang cuts into the stage slightly.",
+            "short": "Overhang cuts into the stage slightly",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/booth-theatre/orchestra/",
@@ -1569,8 +1497,8 @@
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "AA-BB",
-            "claim": "The first two Orchestra rows, AA and BB, may be too close to the stage for shorter people.",
-            "short": "May be too close for shorter people",
+            "claim": "Orchestra rows AA-BB may be too close to the stage for shorter theatergoers.",
+            "short": "May be too close for shorter theatergoers",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/booth-theatre/orchestra/",
@@ -1590,8 +1518,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "G-H",
-            "claim": "The back two rows of the Center Mezzanine, G and H, keep a raised and detailed view for well under the top price.",
-            "short": "Back rows G and H keep a detailed view for less",
+            "claim": "Center Mezzanine rows G-H have an elevated and impressively detailed view of the stage for much less than the premium price.",
+            "short": "Detailed views for less than premium",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/booth-theatre/mezzanine/",
@@ -1791,8 +1719,8 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "R-T",
-            "claim": "By row R the Mezzanine overhang hangs over about a third of the stage, and the shallow rake in rows R to T means heads in front can block the view.",
-            "short": "Overhang and a shallow rake in the back rows",
+            "claim": "The Mezzanine overhang is very obvious by row R, and views may be worse in rows R, S and T.",
+            "short": "Obvious overhang and possibly worse views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/broadhurst-theatre/orchestra/",
@@ -1808,34 +1736,12 @@
             "verifiedAt": "2026-11-23"
           },
           {
-            "type": "watch-out",
-            "hazard": "obstructed-view",
-            "level": "orchestra",
-            "side": "sides",
-            "rows": "D-F",
-            "claim": "The side Boxes jut out over the far aisle seats of the Left and Right Orchestra around rows D to F, blocking part of the view.",
-            "short": "Side Boxes block far aisle seats near the front",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/broadhurst-theatre/orchestra/",
-                "quoteHash": "532edb6d0234",
-                "fetchedAt": "2026-11-23"
-              },
-              {
-                "url": "https://seatplan.com/new-york/broadhurst-theatre/orchestra/",
-                "quoteHash": "4cabd2132f3b",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
             "type": "value",
             "level": "mezzanine",
             "side": "center",
             "rows": "C-F",
-            "claim": "Center Mezzanine rows C to F have enough rake to see over heads, giving a raised, wide view at a good price.",
-            "short": "Raised, wide view over heads at a good price",
+            "claim": "Center Mezzanine rows C-F have enough rake to see over the top of heads, with elevated and wide sightlines at good value.",
+            "short": "Elevated and wide sightlines at good value",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/broadhurst-theatre/seating-plan/",
@@ -1849,8 +1755,8 @@
             "type": "value",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "The cheapest seats in the house are at the sides of the Left and Right Mezzanine, though the view there is a little more restricted.",
-            "short": "Cheapest seats, with a slightly restricted view",
+            "claim": "The cheapest seats are over to the sides of the Left and Right Mezzanine, where the view may be a little more restricted.",
+            "short": "View may be a little more restricted",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/broadhurst-theatre/mezzanine/",
@@ -1877,8 +1783,9 @@
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "The Boxes above the side Orchestra sections have movable chairs, but they look at the stage from sharp angles and views can be very restricted.",
-            "short": "Sharp angles and very restricted views",
+            "claim": "Three Boxes elevated above the Left Orchestra have unfixed chairs and are at quite sharp angles.",
+            "short": "Unfixed chairs and quite sharp angles",
+            "side": "left",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/broadhurst-theatre/orchestra/",
@@ -2053,31 +1960,10 @@
         "seatNotes": [
           {
             "type": "watch-out",
-            "hazard": "mezz-overhang",
-            "level": "orchestra",
-            "rows": "J-Y",
-            "claim": "The Mezzanine overhang starts at row J and blocks more of the top of the stage further back. Seats behind row T also feel distant.",
-            "short": "Overhang from row J, and distant past row T",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/broadway-theatre/orchestra/",
-                "quoteHash": "9571f8df0b07",
-                "fetchedAt": "2026-11-23"
-              },
-              {
-                "url": "https://seatplan.com/new-york/broadway-theatre/orchestra/",
-                "quoteHash": "5930b6027865",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "The Boxes at either side of the Orchestra are private, but they see the stage at an angle.",
-            "short": "Private, but the stage is seen at an angle",
+            "claim": "Boxes offer angled, private seating with views of the stage.",
+            "short": "Angled private seating",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/broadway-theatre/orchestra/",
@@ -2132,31 +2018,11 @@
             "verifiedAt": "2026-11-23"
           },
           {
-            "type": "value",
-            "level": "rear-mezzanine",
-            "rows": "A-C",
-            "claim": "The Rear Mezzanine is distant but good for bargains, and its best affordable seats are in the front rows A to C.",
-            "short": "Distant, but front rows are a bargain",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/broadway-theatre/seating-plan/",
-                "quoteHash": "fa2fd1917f9a",
-                "fetchedAt": "2026-11-23"
-              },
-              {
-                "url": "https://seatplan.com/new-york/broadway-theatre/seating-plan/",
-                "quoteHash": "d787378d79c7",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
             "type": "watch-out",
             "hazard": "distant",
             "level": "rear-mezzanine",
-            "claim": "The back half of the Rear Mezzanine is high and far from the stage, and the mezzanine below or people in front can block the bottom of the stage.",
-            "short": "High and far, with the lower stage blocked",
+            "claim": "In the back half of the Rear Mezzanine, distance and height especially affect views.",
+            "short": "Distance and height in the back half",
             "rows": "K-R",
             "evidence": [
               {
@@ -2400,17 +2266,17 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
+            "claim": "Seats behind the Mezzanine overhang may experience a bit of cut-off at the top of the stage.",
+            "short": "Overhang may cut off the top of the stage",
             "rows": "J-Q",
-            "claim": "The Mezzanine overhang starts at row J, so seats behind it may lose a little of the top of the stage.",
-            "short": "Overhang may trim the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lena-horne-theatre/orchestra/",
                 "quoteHash": "07c9f1c52466",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -2423,10 +2289,10 @@
               {
                 "url": "https://seatplan.com/new-york/lena-horne-theatre/orchestra/",
                 "quoteHash": "156a6e375d23",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -2438,68 +2304,52 @@
               {
                 "url": "https://seatplan.com/new-york/lena-horne-theatre/orchestra/",
                 "quoteHash": "70f7b7bd7793",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/lena-horne-theatre-seating-chart/",
                 "quoteHash": "af9600369aec",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "tight-legroom",
-            "level": "front-mezzanine",
-            "rows": "A",
-            "claim": "In the Front Mezzanine, taller people are likely to feel very cramped in row A. Aisle seats have more legroom.",
-            "short": "Row A is very cramped for taller people",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/lena-horne-theatre/front-mezzanine/",
-                "quoteHash": "301a83c7803d",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "rear-mezzanine",
             "side": "center",
             "rows": "E-F",
-            "claim": "The front Rear Mezzanine rows E and F are good value, with a clear view down to the stage that nobody in front blocks.",
-            "short": "Front rows E and F give a clear view for less",
+            "claim": "Rows E and F of the Center Rear Mezzanine are great, unobstructed seats.",
+            "short": "Unobstructed seats in rows E and F",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lena-horne-theatre/rear-mezzanine/",
                 "quoteHash": "acae766aa7d6",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/lena-horne-theatre/rear-mezzanine/",
                 "quoteHash": "c4ab63327bf2",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "rear-mezzanine",
             "side": "sides",
-            "claim": "Side seats are more restricted in every section, most of all in the Rear Mezzanine, where they are farthest away and partly cut off.",
-            "short": "Side seats are far away and cut off",
+            "claim": "In the Rear Mezzanine, seats toward the sides are especially restricted, furthest away, and experience obstructions from the sides.",
+            "short": "Side seats are especially restricted",
             "evidence": [
               {
                 "url": "https://www.tickpick.com/blog/lena-horne-theatre-seating-chart/",
                 "quoteHash": "c54312c9f453",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -2702,65 +2552,48 @@
         "seatNotes": [
           {
             "type": "watch-out",
-            "hazard": "distant",
             "level": "orchestra",
-            "rows": "H-K",
-            "claim": "Rows H to K at the back give a clear view of the stage, but a more distant one than the front blocks.",
-            "short": "Back rows are clear but more distant",
+            "rows": "H-J",
+            "claim": "Rows H and J, at the rear of the venue towards the centre, offer a clear if more distant view of the stage.",
+            "short": "Rows H and J are clear but more distant",
+            "hazard": "distant",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/circle-in-the-square-theatre/seating-plan/",
                 "quoteHash": "ba2c7384278c",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "note",
-            "level": "orchestra",
-            "rows": "AA-B",
-            "claim": "Rows AA to B are the closest to the stage and are usually the most expensive seats in the house.",
-            "evidence": [
-              {
-                "url": "https://www.headout.com/blog/circle-in-the-square-theatre-seating-chart/",
-                "quoteHash": "3eb55229378d",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://www.tickpick.com/blog/circle-in-the-square-theatre-seating-chart/",
-                "quoteHash": "006e710c286a",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "orchestra",
             "rows": "B-D",
-            "claim": "Rows B, C and D sit at a comfortable distance from the stage without being right on top of it; seats near the middle of these rows see best.",
+            "claim": "Orchestra rows B-D are located at a prime distance from the stage.",
+            "short": "Prime distance from the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/circle-in-the-square-theatre/seating-plan/",
                 "quoteHash": "eb1e06dae3b8",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "All seating is on one Orchestra level that wraps around the thrust stage on three sides, with stadium-style rows rising toward the back.",
+            "claim": "The Orchestra surrounds the thrust stage on three sides, with stadium seating to ensure great sightlines from front to back.",
+            "short": "Stadium seating on three sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/circle-in-the-square-theatre/seating-plan/",
                 "quoteHash": "dbf2127b9d52",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -2951,134 +2784,96 @@
             "level": "orchestra",
             "side": "center",
             "rows": "A-C",
-            "claim": "Rows A to C of the Center Orchestra are very close to the stage, and one seat guide says you can miss action at the sides.",
-            "short": "Very close to the stage, so you can miss action at the sides",
+            "claim": "Rows A-C in the Center Orchestra tend to have an obstructed view of the stage because they are so up close.",
+            "short": "Up close with an obstructed view",
             "evidence": [
               {
                 "url": "https://www.tickpick.com/blog/barrymore-theatre-seating-chart/",
                 "quoteHash": "ff53848e2dd6",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "orchestra",
-            "side": "sides",
             "rows": "D-E",
-            "claim": "At the outer ends of rows D and E, the boxes above slightly block the side of the stage.",
-            "short": "The boxes above slightly block the side of the stage",
+            "claim": "At the end of rows D and E, the Boxes above slightly obstruct the side of the stage.",
+            "short": "Boxes slightly obstruct the side of the stage",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
                 "quoteHash": "20bc50089e21",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
-                "quoteHash": "3b110fc378c8",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "steep-rake",
             "level": "rear-mezzanine",
+            "claim": "The rear mezzanine gets pretty steep in the back half.",
+            "short": "Steep in the back half",
             "rows": "D-G",
-            "claim": "The back half of the rear mezzanine gets steep, which can bother anyone uneasy with heights.",
-            "short": "Steep, which can bother anyone uneasy with heights",
             "evidence": [
               {
                 "url": "https://forum.broadwayworld.com/thread/Ethel-Barrymore-Theatre-Mezzanine-Seating",
                 "quoteHash": "5728dd84895d",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "front-mezzanine",
             "side": "center",
             "rows": "D-E",
-            "claim": "The back two rows of the Center Front Mezzanine are the good-value rows, and the rake keeps the view clear over the rows in front.",
-            "short": "Lower price, and a clear view over the rows ahead",
+            "claim": "Rows D-E in the Center Front Mezzanine are good-value seats.",
+            "short": "Good-value front mezzanine seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/barrymore-theatre/front-mezzanine/",
                 "quoteHash": "4aa485584be4",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://seatplan.com/new-york/barrymore-theatre/seating-plan/",
-                "quoteHash": "edc183cc75a4",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "rear-mezzanine",
-            "side": "center",
             "rows": "A-C",
-            "claim": "The front rows of the rear mezzanine are among the cheapest seats in the house with a clean, raised view of the stage.",
-            "short": "Among the cheapest seats, with a clean raised view",
+            "claim": "Rows A-C in the rear mezzanine are value for money considering the clean view on offer and ticket prices.",
+            "short": "Value for money with a clean view",
+            "side": "center",
             "evidence": [
-              {
-                "url": "https://www.headout.com/blog/ethel-barrymore-theatre-seating-chart/",
-                "quoteHash": "5fcf6cf3c5fc",
-                "fetchedAt": "2026-11-22"
-              },
               {
                 "url": "https://seatplan.com/new-york/barrymore-theatre/rear-mezzanine/",
                 "quoteHash": "0b1bb199251c",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "Seats here are narrow with little legroom mid-row. Aisle seats in the Center Orchestra have the most room.",
-            "short": "Narrow seats, and aisle seats have the most room",
+            "claim": "Legroom can get a bit cramped mid-row, so an aisle seat at either side of the Center Orchestra is good for those needing extra space.",
+            "short": "Center Orchestra legroom",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/barrymore-theatre/orchestra/",
                 "quoteHash": "b8cea6903a78",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://aviewfrommyseat.com/venue/Barrymore+Theatre/",
-                "quoteHash": "9b08912a0a8b",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "note",
-            "level": "rear-mezzanine",
-            "claim": "The rear mezzanine is the most cramped level. Taller people should book an aisle seat.",
-            "short": "The most cramped level, so tall people should take an aisle",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/barrymore-theatre/rear-mezzanine/",
-                "quoteHash": "cb3652991572",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://aviewfrommyseat.com/venue/Barrymore+Theatre/",
-                "quoteHash": "9c2f05d5cc9d",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -3225,9 +3020,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
+            "claim": "Seats beyond the Mezzanine overhang may experience cut-off at the top of the stage, but the effect is minimal.",
+            "short": "Overhang may cut off the top of the stage",
             "rows": "L-T",
-            "claim": "The Mezzanine overhang starts at Orchestra row L. Seats from there back can lose a little of the top of the stage, though the effect is small.",
-            "short": "Overhang starts at row L, with only minor cut-off",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
@@ -3241,31 +3036,9 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "orchestra",
-            "side": "sides",
-            "rows": "A-K",
-            "claim": "In the Left and Right Orchestra, far-aisle seats up to row K may be sold as partial view, and the side Boxes can curve into the top of the stage.",
-            "short": "Far-aisle seats up to row K can be partial view",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
-                "quoteHash": "9be4d2cf0c93",
-                "fetchedAt": "2026-11-23"
-              },
-              {
-                "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
-                "quoteHash": "dbdd5842ce9c",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "obstructed-view",
-            "level": "orchestra",
             "side": "center",
-            "claim": "The rake in the back half of the Center Orchestra is only fair, so shorter patrons may have the people in front partly in their way.",
-            "short": "Gentle rake at the back, heads in front can block",
+            "claim": "In the back half of the Center Orchestra, the rake is fair, but shorter patrons may find their view obstructed a bit by people in front.",
+            "short": "People in front may obstruct the view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
@@ -3279,7 +3052,8 @@
             "type": "note",
             "level": "orchestra",
             "rows": "A",
-            "claim": "The stage is not very high here, so even row A is comfortable without much neck craning.",
+            "claim": "The stage itself isn’t too high for comfort in row A.",
+            "short": "Comfort in row A",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
@@ -3293,8 +3067,9 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "box",
-            "claim": "The Boxes on each side are raised at staggered heights and may be sold as partial view.",
-            "short": "Side Boxes may have partial views of the stage",
+            "claim": "Three Boxes at staggered heights to the side of the Left Orchestra may be marked partial view.",
+            "short": "Left Boxes may be marked partial view",
+            "side": "left",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/orchestra/",
@@ -3314,9 +3089,9 @@
             "hazard": "tight-legroom",
             "level": "mezzanine",
             "side": "sides",
-            "rows": "E",
-            "claim": "A railing in front of row E in the Left and Right Mezzanine cuts its legroom.",
-            "short": "Row E has a railing in front, so less legroom",
+            "rows": "E-E",
+            "claim": "Row E in the Left and Right Mezzanine may have less room due to a railing in front.",
+            "short": "Row E may have less room",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/mezzanine/",
@@ -3330,29 +3105,13 @@
             "type": "value",
             "level": "mezzanine",
             "side": "center",
-            "rows": "D",
-            "claim": "Row D, the back row of the small Center Mezzanine, costs less than the rows in front while keeping a central, elevated view.",
-            "short": "Back row of the Center Mezzanine costs less",
+            "rows": "D-D",
+            "claim": "Row D at the back of the Center Mezzanine is cheaper and represents good value.",
+            "short": "Center Mezzanine row D is cheaper",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/eugene-oneill-theatre/mezzanine/",
                 "quoteHash": "b03b885b91a6",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "side-angle",
-            "level": "mezzanine",
-            "side": "sides",
-            "claim": "Seats toward the far sides of the Left and Right Mezzanine are angled to the stage, and part of the side of the stage can be blocked.",
-            "short": "Far side seats are angled and partly blocked",
-            "evidence": [
-              {
-                "url": "https://www.headout.com/blog/eugene-oneill-theatre-seating-chart/",
-                "quoteHash": "047d907af3a7",
                 "fetchedAt": "2026-11-23"
               }
             ],
@@ -3561,9 +3320,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "Q-S",
-            "claim": "The Mezzanine overhang begins over row J, and from row Q back it cuts off the top of the stage.",
-            "short": "Overhang blocks the top of the stage from row Q",
+            "rows": "Q-Q",
+            "claim": "The Mezzanine overhang obstructs the top of the stage from Orchestra row Q.",
+            "short": "Overhang obstructs the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/orchestra/",
@@ -3578,8 +3337,8 @@
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "AA-B",
-            "claim": "The very front rows (AA to B) can feel too close to the stage for some people to comfortably take in every scene.",
-            "short": "Front rows can feel too close to the stage",
+            "claim": "Orchestra rows AA-B can feel too close to the stage for some.",
+            "short": "Front rows can feel too close",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/orchestra/",
@@ -3603,9 +3362,9 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "orchestra",
+            "claim": "The cheapest seats reflect the most restricted views, in the rear and corners of the Orchestra.",
+            "short": "Restricted views in the rear and corners",
             "side": "sides",
-            "claim": "The cheapest Orchestra seats are in the rear and corners, and they are priced low because their views are the most restricted.",
-            "short": "Corner and rear seats have the most restricted views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/orchestra/",
@@ -3620,8 +3379,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "E-G",
-            "claim": "Rows E to G of the Center Mezzanine are good value.",
-            "short": "Good value mid Mezzanine rows",
+            "claim": "Rows E-G in the Center Mezzanine represent good value seats.",
+            "short": "Good value Center Mezzanine seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/mezzanine/",
@@ -3641,8 +3400,8 @@
             "hazard": "side-angle",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "In the Left and Right Mezzanine, and especially on the outside aisles, views are less complete, though the steep rake keeps them decent.",
-            "short": "Outside-aisle seats see less of the stage",
+            "claim": "Seats in the Left and Right Mezzanine are a bit less comprehensive, especially on the outside aisles, but retain decent views.",
+            "short": "Outside-aisle views are less comprehensive",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gerald-schoenfeld-theatre/mezzanine/",
@@ -3873,112 +3632,98 @@
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "BB-EE",
-            "claim": "The first few rows sit below a raised stage, so you spend the show looking up and can end up with a stiff neck.",
-            "short": "Below a raised stage, so expect to look up",
+            "claim": "Orchestra rows BB-EE force an upward gaze that may become uncomfortable.",
+            "short": "Raised stage forces an upward gaze",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
                 "quoteHash": "56f21a75d211",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
                 "quoteHash": "743ca3c9d5ad",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "side-angle",
-            "level": "orchestra",
-            "side": "sides",
-            "claim": "In the Left and Right Orchestra, seats numbered 26 and up get a more restricted view the closer they are to the outside edge.",
-            "short": "Seat 26 and up: view narrows toward the wall",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
-                "quoteHash": "9981d427ef28",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "mezzanine",
-            "side": "sides",
             "rows": "AA-BB",
-            "claim": "Rows AA and BB at the front of the side mezzanine have just three seats each, giving a box-like feel with a side-on view of the stage.",
+            "claim": "Rows AA and BB have just three seats and offer a box-like feel with a side-on view of the stage.",
+            "short": "Three seats and a side-on view",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
                 "quoteHash": "f2bc20cf4df7",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "mezzanine",
             "rows": "F-N",
-            "claim": "The middle and rear mezzanine, rows F to N, are typically among the cheapest tickets in the house. The trade-off is a more distant view.",
-            "short": "Among the cheapest tickets, but farther from the stage",
+            "claim": "Middle and Rear Mezzanine rows F-N are typically among the cheapest tickets.",
+            "short": "Among the cheapest tickets",
             "evidence": [
               {
                 "url": "https://www.rateyourseats.com/gershwin-theatre/seating/mezzanine",
                 "quoteHash": "5a0f79569b12",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
                 "quoteHash": "076e2f612931",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
                 "quoteHash": "efc2972c63f9",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "orchestra",
             "side": "center",
             "rows": "F-L",
-            "claim": "Center Orchestra rows F to L are the sweet spot: close, but far enough back to take in the whole stage.",
+            "claim": "Centre Orchestra rows F to L provide an unhindered view of the whole stage.",
+            "short": "Unhindered view of the whole stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/orchestra/",
                 "quoteHash": "82c4c55d7c4e",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/gershwin-theatre-seating-chart-wicked-ny/",
                 "quoteHash": "a7b1a10d3aa0",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "mezzanine",
-            "side": "sides",
-            "rows": "F",
-            "claim": "Row F in the side mezzanine sections faces a cross aisle, so it has a lot of extra legroom.",
+            "rows": "F-F",
+            "claim": "Legroom at row F is particularly spacious because there is an aisle where row E would otherwise be.",
+            "short": "Particularly spacious legroom",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/gershwin-theatre/mezzanine/",
                 "quoteHash": "f858f1e76f16",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -4126,8 +3871,8 @@
             "hazard": "distant",
             "level": "orchestra",
             "rows": "P-R",
-            "claim": "The auditorium is deep and narrow, so the back Orchestra rows (P to R) can feel quite far from the stage despite the small house.",
-            "short": "Back rows feel far back in this deep, narrow room",
+            "claim": "Orchestra rows P to R can feel quite far back due to the auditorium's deep but narrow design.",
+            "short": "Rows P to R can feel quite far back",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hayes-theater/orchestra/",
@@ -4141,8 +3886,8 @@
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "mezzanine",
-            "claim": "Mezzanine seats are tight, and so is the legroom.",
-            "short": "Mezzanine seats and legroom are tight",
+            "claim": "Seats and legroom can be very tight, especially in the Mezzanine.",
+            "short": "Mezzanine seats and legroom can be tight",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hayes-theater/mezzanine/",
@@ -4162,7 +3907,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "A",
-            "claim": "Row A in the middle section of the Mezzanine gives a raised, very clear view of the stage.",
+            "claim": "Mezzanine row A in the middle section offers a great view of the stage from an elevated position.",
+            "short": "Elevated stage view from Mezzanine row A",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hayes-theater/seating-plan/",
@@ -4180,7 +3926,8 @@
           {
             "type": "note",
             "level": "mezzanine",
-            "claim": "The back rows of the Mezzanine are the least liked in this theater, but their views still beat similar seats in bigger Broadway houses.",
+            "claim": "The back few Mezzanine rows can be considered the least desirable, but views are still good compared with equivalent seats in larger Broadway theaters.",
+            "short": "Back Mezzanine views are still good",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hayes-theater/mezzanine/",
@@ -4348,8 +4095,9 @@
           {
             "type": "note",
             "level": "orchestra",
-            "rows": "R-U",
-            "claim": "The overhang above becomes noticeable from Orchestra row R, though it does not cut into the view of the stage very much.",
+            "rows": "R",
+            "claim": "The Mezzanine overhang only becomes obvious at Orchestra row R and does not affect views of the stage too much.",
+            "short": "Overhang becomes obvious at row R",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hudson-theatre/orchestra/",
@@ -4369,8 +4117,8 @@
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "A",
-            "claim": "Row A is close enough that it can be hard to take in the whole stage comfortably.",
-            "short": "Row A is a little too close for easy viewing",
+            "claim": "Orchestra row A can be a little close to the stage for easy viewing.",
+            "short": "Row A can be a little close",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hudson-theatre/orchestra/",
@@ -4383,7 +4131,8 @@
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "The Orchestra was renovated in 2017 and has more legroom than most Broadway houses.",
+            "claim": "The Hudson Theatre Orchestra has better than average legroom, having been refurbished prior to its 2017 re-opening.",
+            "short": "Better than average legroom",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/hudson-theatre/orchestra/",
@@ -4572,8 +4321,8 @@
             "type": "watch-out",
             "hazard": "distant",
             "level": "rear-mezzanine",
-            "claim": "The Rear Mezzanine has decent sightlines, but the stage feels noticeably farther away than from the Front Mezzanine.",
-            "short": "Decent view, but distant from the stage",
+            "claim": "The Rear Mezzanine has decent but more distant sightlines.",
+            "short": "Decent but more distant sightlines",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
@@ -4592,8 +4341,8 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "box",
-            "claim": "The Boxes are private, but their view of the stage is restricted.",
-            "short": "Private, but with restricted views",
+            "claim": "Boxes offer private yet restricted seating.",
+            "short": "Private yet restricted seating",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
@@ -4607,8 +4356,9 @@
             "type": "value",
             "level": "front-mezzanine",
             "rows": "C-F",
-            "claim": "Rows C to F of the Front Mezzanine, especially the central sections, are well priced for the view they give.",
-            "short": "Well priced for the view, best in the center",
+            "claim": "Front Mezzanine rows C-F, especially across the more central sections, are well priced for the view on offer.",
+            "short": "Well priced for the view on offer",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
@@ -4628,7 +4378,8 @@
             "level": "orchestra",
             "side": "center",
             "rows": "C-G",
-            "claim": "Rows C to G of the Center Orchestra are close to the stage without forcing you to crane your neck.",
+            "claim": "Rows C-G of the Center Orchestra are perfect for an immersive experience that isn't hampered by uncomfortable neck craning.",
+            "short": "Immersive experience without uncomfortable neck craning",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/imperial-theatre/seating-plan/",
@@ -4785,8 +4536,8 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "claim": "From around row O back in the Orchestra, the Mezzanine overhang cuts into the top of the stage picture.",
-            "short": "Mezzanine overhang trims the top of the stage",
+            "claim": "The Mezzanine overhang cuts into the top of the stage from row O.",
+            "short": "Overhang cuts into the top of the stage from row O",
             "rows": "O",
             "evidence": [
               {
@@ -4802,8 +4553,8 @@
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "Higher-numbered outer seats in the Left and Right Orchestra sit at an angle, so part of the far side of the stage is blocked.",
-            "short": "Outer side seats are angled with part of the stage blocked",
+            "claim": "Double-digit seats above 16 are slightly more angled, with part of the stage partially obstructed.",
+            "short": "Seats above 16 are angled, stage partly obstructed",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/james-earl-jones-theatre/orchestra/",
@@ -4816,7 +4567,8 @@
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "The rake is fairly shallow in the back half of the Orchestra, so a tall person in front can get in the way.",
+            "claim": "The rake between rows is quite shallow in the back half of the Orchestra.",
+            "short": "Shallow rake in the back half",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/james-earl-jones-theatre/orchestra/",
@@ -4830,8 +4582,8 @@
             "type": "value",
             "level": "mezzanine",
             "rows": "G-H",
-            "claim": "Rows G and H at the back of the Mezzanine are good value.",
-            "short": "Good value back rows",
+            "claim": "There are some good value seats in rows G-H of the Mezzanine.",
+            "short": "Some good value seats in rows G-H",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/james-earl-jones-theatre/mezzanine/",
@@ -4845,7 +4597,7 @@
             "type": "watch-out",
             "hazard": "steep-rake",
             "level": "balcony",
-            "claim": "The Balcony is very steep, which can be hard for anyone with vertigo.",
+            "claim": "The Balcony is very steep, which may discourage patrons with vertigo from attempting the three flights of stairs.",
             "short": "Very steep Balcony",
             "evidence": [
               {
@@ -5069,51 +4821,53 @@
             "type": "value",
             "level": "front-mezzanine",
             "rows": "D",
-            "claim": "Row D, the last row of the small Front Mezzanine, keeps a clean view for less than the rows in front.",
-            "short": "Last Front Mezzanine row, clean view for less",
+            "claim": "The last row D in the Front Mezzanine offers value for money seats with a clean view.",
+            "short": "Front Mezzanine Row D offers value",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
                 "quoteHash": "eab691d38a74",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/john-golden-theatre-seating-chart/",
                 "quoteHash": "079945ec8b96",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "rear-mezzanine",
             "side": "center",
             "rows": "A-D",
-            "claim": "The middle seats in the first four rows of the Rear Mezzanine (A to D) are reasonably priced.",
-            "short": "Front rows of the Rear Mezzanine are reasonably priced",
+            "claim": "In the Rear Mezzanine, middle seats in the first four rows A to D are pretty reasonably priced.",
+            "short": "Rear Mezzanine A-D middle seats are reasonably priced",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
                 "quoteHash": "8c29c401a09a",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "front-mezzanine",
             "rows": "A-D",
-            "claim": "The Front Mezzanine is small, with just four rows (A to D) split into left and right sections.",
+            "claim": "Front Mezzanine rows A to D are split into left and right sections.",
+            "short": "Rows A to D are split into left and right sections",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/john-golden-theatre-seating-chart/",
                 "quoteHash": "89385398b0b5",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -5358,8 +5112,8 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "H",
-            "claim": "From row H back in the Orchestra, the Mezzanine above starts to hang over you and can cut off the top of the stage.",
-            "short": "Overhang can clip the top of the stage from row H",
+            "claim": "The Mezzanine overhang kicks in at row H, and seats behind this may experience cut-off at the top of the stage.",
+            "short": "Mezzanine overhang kicks in at row H",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/orchestra/",
@@ -5373,10 +5127,10 @@
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
-            "side": "center",
             "rows": "AA-B",
-            "claim": "The first rows of the Center Orchestra (AA, A and B) are very close, and the low angle up to the stage leads to neck craning.",
-            "short": "Front rows are close enough to strain your neck",
+            "claim": "Rows AA, A and B can be too close because the angle leads to neck craning.",
+            "short": "Rows AA to B can be too close",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/orchestra/",
@@ -5396,8 +5150,8 @@
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "Toward the far sides of the Left and Right Mezzanine, the boxes and the angle to the stage block more of the view.",
-            "short": "Far side seats are blocked by boxes and angle",
+            "claim": "Towards the far sides in the Left and Right Mezzanine, views tend to become more obstructed by the Boxes and the angle towards the stage.",
+            "short": "Far side views tend to be more obstructed",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/mezzanine/",
@@ -5411,8 +5165,8 @@
             "type": "value",
             "level": "mezzanine",
             "side": "center",
-            "claim": "The middle rows of the Center Mezzanine cost less than the front rows but still give a raised, central view that does not feel far away.",
-            "short": "Middle rows give a raised view for less",
+            "claim": "The middle rows in the Center Mezzanine are a good value option for elevated sightlines that don’t feel distant.",
+            "short": "Elevated sightlines that don’t feel distant",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/seating-plan/",
@@ -5426,9 +5180,10 @@
             "type": "watch-out",
             "hazard": "pillar",
             "level": "balcony",
-            "claim": "Four thin pillars stand at the edges of the Center Balcony, between rows B and C, so they sit in front of row C.",
-            "short": "Four thin pillars at the Center Balcony edges",
-            "rows": "C",
+            "claim": "Four thin pillars are located between rows B and C at the edge of the Center Balcony.",
+            "short": "Thin pillars between rows B and C",
+            "rows": "B-C",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/balcony/",
@@ -5439,12 +5194,12 @@
             "verifiedAt": "2026-11-23"
           },
           {
-            "type": "value",
+            "type": "note",
             "level": "balcony",
             "side": "center",
             "rows": "A-B",
-            "claim": "Rows A and B of the Center Balcony have the best views on this level, and Balcony prices make them a good bargain.",
-            "short": "Front Balcony rows are a good bargain",
+            "claim": "Rows A and B of the Center Balcony are the best views in this high and more distant section.",
+            "short": "Best views in the Balcony section",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/longacre-theatre/balcony/",
@@ -5654,53 +5409,53 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "W-YY",
-            "claim": "In the back rows of the Orchestra (W to YY), the Mezzanine overhang cuts into the very top of the stage and details are harder to see.",
-            "short": "Overhang clips the top of the stage at the back",
+            "claim": "In Orchestra rows W-YY, the Mezzanine overhang cuts into the very top of the stage, and details of performances are less clear.",
+            "short": "Overhang cuts into the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/orchestra/",
                 "quoteHash": "1d02a9118f83",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "Seats at the far sides of the Left and Right Orchestra have restricted, angled views, especially double-digit seats behind row H.",
-            "short": "Far side seats are angled and restricted",
+            "claim": "The far sides of the Left and Right Orchestra have a restricted view.",
+            "short": "Restricted views on the far sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/orchestra/",
                 "quoteHash": "95255876bedd",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.headout.com/blog/lunt-fontanne-theatre-seating-chart/",
                 "quoteHash": "3f0074af1e45",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "front-mezzanine",
             "rows": "A",
-            "claim": "A safety bar in front of row A of the Front Mezzanine can cut into the view for shorter people.",
-            "short": "Safety bar can block the view in row A",
+            "claim": "A safety bar can obstruct views in Front Mezzanine row A for shorter patrons.",
+            "short": "Safety bar can obstruct views in row A",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/front-mezzanine/",
                 "quoteHash": "f4cf136cf963",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
@@ -5713,25 +5468,25 @@
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/front-mezzanine/",
                 "quoteHash": "151f3ac8a9b7",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "rear-mezzanine",
             "rows": "B-C",
-            "claim": "Rows B and C, near the front of the Rear Mezzanine, are singled out as a good value option.",
-            "short": "Good value rows near the front of the section",
+            "claim": "Rows B and C of the Rear Mezzanine are a good value option.",
+            "short": "Good value in rows B and C",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/seating-plan/",
                 "quoteHash": "631ecd42feae",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
@@ -5741,10 +5496,10 @@
               {
                 "url": "https://seatplan.com/new-york/lunt-fontanne-theatre/rear-mezzanine/",
                 "quoteHash": "b5e9a2921342",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -5893,8 +5648,8 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "claim": "The Mezzanine overhang starts at row L of the Orchestra, and seats behind it may lose the very top of the stage.",
-            "short": "Overhang from row L can cut the top of the stage",
+            "claim": "The Mezzanine overhang starts at row L.",
+            "short": "Mezzanine overhang starts at row L",
             "rows": "L",
             "evidence": [
               {
@@ -5907,27 +5662,11 @@
           },
           {
             "type": "watch-out",
-            "hazard": "mezz-overhang",
-            "level": "mezzanine",
-            "claim": "The Balcony overhang begins at row C of the Mezzanine, so seats behind it may see the top of the stage cut off.",
-            "short": "Balcony overhang from row C trims the top",
-            "rows": "C",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/lyceum-theatre/mezzanine/",
-                "quoteHash": "c1cfb8492406",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "watch-out",
             "hazard": "side-angle",
             "level": "mezzanine",
+            "claim": "Mezzanine seat D24 has a partially restricted view and may miss actors or events on the far right-hand side of the stage.",
+            "short": "D24 has a partially restricted view",
             "side": "sides",
-            "claim": "High-numbered seats at the outer ends of the Mezzanine have partly restricted views and can miss action on the far side of the stage.",
-            "short": "Outer seats miss the far side of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyceum-theatre/mezzanine/",
@@ -5942,8 +5681,8 @@
             "hazard": "obstructed-view",
             "level": "balcony",
             "rows": "A",
-            "claim": "A safety bar in front of Balcony row A can cut across the stage, so a few rows back is better.",
-            "short": "Safety bar cuts across the stage in row A",
+            "claim": "A safety bar in row A can cut across the stage.",
+            "short": "Safety bar can cut across the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyceum-theatre/balcony/",
@@ -5971,7 +5710,8 @@
           {
             "type": "note",
             "level": "balcony",
-            "claim": "Balcony rows feel very tight and legroom is noticeably restricted unless you sit on an aisle.",
+            "claim": "Rows in the Balcony can feel very tight, with legroom noticeably restricted unless you sit on the aisle.",
+            "short": "Balcony legroom can feel restricted",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyceum-theatre/balcony/",
@@ -6156,7 +5896,8 @@
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "Legroom is generous across the whole Orchestra, so you do not need an aisle seat to stretch out.",
+            "claim": "Legroom is impressive across the whole Orchestra, so patrons do not have to worry about getting an aisle seat.",
+            "short": "Impressive legroom across the Orchestra",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyric-theatre/orchestra/",
@@ -6172,8 +5913,8 @@
             "level": "balcony",
             "side": "sides",
             "rows": "A",
-            "claim": "At either end of Balcony row A, seats 25 to 30 curve round to the side, and the angle and wall block the stage when seated.",
-            "short": "Row A end seats curve away from the stage",
+            "claim": "At either end of Balcony row A, seats 25 to 29 curve to the side, and the angle and wall obstruct the stage from a seated position.",
+            "short": "Balcony row A end seats curve to the side",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyric-theatre/balcony/",
@@ -6193,8 +5934,8 @@
             "hazard": "obstructed-view",
             "level": "balcony",
             "side": "left",
-            "claim": "In the Left Balcony, the safety bar can be too high for shorter people and distracting in the front rows.",
-            "short": "High safety bar in the front rows",
+            "claim": "In the Left Balcony, the safety bar can be too high for short patrons and a distraction in the front rows.",
+            "short": "Safety bar in the front rows",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyric-theatre/balcony/",
@@ -6222,7 +5963,9 @@
           {
             "type": "note",
             "level": "box",
-            "claim": "Two private Boxes sit raised beside the Left Balcony, with fairly good views of the stage.",
+            "claim": "Two Boxes are elevated to the side of the Left Balcony, with private and fairly good views of the stage.",
+            "short": "Two Boxes at the side of Left Balcony",
+            "side": "left",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/lyric-theatre/balcony/",
@@ -6438,10 +6181,10 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "side": "center",
-            "claim": "In the Center Orchestra, the Front Mezzanine overhangs from row H, so seats behind it can lose action at the top of the stage.",
-            "short": "Overhang from row H trims the top of the stage",
+            "claim": "The Front Mezzanine overhangs at row H, potentially cutting off action at the top of the stage.",
+            "short": "Front Mezzanine overhangs at row H",
             "rows": "H",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/majestic-theatre/orchestra/",
@@ -6455,8 +6198,8 @@
             "type": "value",
             "level": "orchestra",
             "side": "sides",
-            "claim": "The sides of the Orchestra give a decent view for a reasonable price, though more of the stage is blocked toward the outer edge.",
-            "short": "Decent view for a fair price on the sides",
+            "claim": "The sides of the Orchestra offer a decent view for a reasonable price, although parts of the stage become more obstructed towards the outside.",
+            "short": "Decent Orchestra side views for a reasonable price",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
@@ -6485,8 +6228,8 @@
             "type": "value",
             "level": "front-mezzanine",
             "side": "center",
-            "claim": "The middle and back of the Center Front Mezzanine are good value, with a decent rake between rows.",
-            "short": "Raked middle and back rows for less",
+            "claim": "Center seats in rows C to G in the Front Mezzanine are value for money considering the clean view and ticket prices.",
+            "short": "Clean views and value in Front Mezzanine rows C to G",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/majestic-theatre/front-mezzanine/",
@@ -6506,8 +6249,8 @@
             "level": "rear-mezzanine",
             "side": "center",
             "rows": "A-B",
-            "claim": "Rows A and B toward the center of the Rear Mezzanine are very good value, with direct views down to the stage.",
-            "short": "Direct views at a good price",
+            "claim": "Rows A and B towards the center of the Rear Mezzanine offer direct, largely uninhibited sightlines down to the stage.",
+            "short": "Very good value with direct sightlines",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/majestic-theatre/rear-mezzanine/",
@@ -6520,7 +6263,8 @@
           {
             "type": "note",
             "level": "rear-mezzanine",
-            "claim": "The Rear Mezzanine is the farthest level from the stage, so fine details are harder to make out.",
+            "claim": "The Rear Mezzanine is furthest from the stage and may not be best for specific details.",
+            "short": "Furthest from the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/majestic-theatre/seating-plan/",
@@ -6732,8 +6476,9 @@
           {
             "type": "note",
             "level": "orchestra",
-            "rows": "M-Z",
-            "claim": "The Mezzanine overhang begins over Orchestra row M and can clip the top of the stage for seats behind it, though it rarely gets in the way.",
+            "rows": "M-M",
+            "claim": "The Mezzanine overhang starts at Orchestra row M but rarely affects views.",
+            "short": "Mezzanine overhang starts at row M",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/marquis-theatre/orchestra/",
@@ -6774,8 +6519,8 @@
             "hazard": "side-angle",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "The far side seats of the Mezzanine are the ones to avoid, at least on a first visit.",
-            "short": "Far side Mezzanine seats are best avoided",
+            "claim": "Patrons may want to avoid the far sides of the Mezzanine at first.",
+            "short": "Far sides may be avoided at first",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
@@ -6788,10 +6533,10 @@
           {
             "type": "value",
             "level": "mezzanine",
-            "side": "center",
             "rows": "H-K",
-            "claim": "Center Mezzanine rows H to K are good value, and the section's strong rake keeps the view clear from any seat.",
-            "short": "Good value with a clear raked view",
+            "claim": "There are many opportunities for good value seats in rows H-K.",
+            "short": "Good value opportunities in rows H-K",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
@@ -6804,10 +6549,10 @@
           {
             "type": "value",
             "level": "mezzanine",
-            "side": "center",
             "rows": "L-M",
-            "claim": "The back rows of the Center Mezzanine, L and M, are the cheapest seats in the theater. They feel distant but are a solid pick on a budget.",
-            "short": "Cheapest seats in the house, but distant",
+            "claim": "In the mezzanine, rows L-M have the cheapest seats in the Marquis Theatre.",
+            "short": "Cheapest mezzanine seats in rows L-M",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/marquis-theatre/mezzanine/",
@@ -7049,17 +6794,17 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "side": "sides",
-            "rows": "P-Z",
-            "claim": "On the sides of the Orchestra the Mezzanine overhang starts at row P, so seats behind it may lose the top of the stage.",
-            "short": "Overhang from row P can cut off the top of the stage",
+            "rows": "P",
+            "claim": "On the Orchestra sides, the Mezzanine overhang starts at row P, so seats behind it may experience some cut-off at the top of the stage.",
+            "short": "Mezzanine overhang starts at row P on the sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/orchestra/",
                 "quoteHash": "e788f1036fd0",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
@@ -7071,15 +6816,15 @@
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/orchestra/",
                 "quoteHash": "ee78710d3747",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/orchestra/",
                 "quoteHash": "5f1c3177d10b",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -7092,31 +6837,31 @@
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/mezzanine/",
                 "quoteHash": "e157156c6cc7",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "rows": "A",
-            "claim": "The safety rail in front of Mezzanine row A can cut off the bottom of the stage for shorter people and children.",
-            "short": "Safety rail can block the stage for shorter people",
+            "claim": "In Mezzanine row A, the safety railing may cut off the bottom of the stage for smaller patrons or children.",
+            "short": "Safety railing may cut off the bottom of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/mezzanine/",
                 "quoteHash": "ad6955d30db8",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/mezzanine/",
                 "quoteHash": "179205efa8f8",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
@@ -7126,31 +6871,31 @@
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/mezzanine/",
                 "quoteHash": "677d58db8eb1",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/minskoff-theatre/mezzanine/",
                 "quoteHash": "dcd08e680b9d",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "mezzanine",
             "side": "center",
             "rows": "D-G",
-            "claim": "Center seats in Mezzanine rows D to G are good value for the clean view they give at their price.",
-            "short": "Clean elevated view for the price",
+            "claim": "Center seats in front Mezzanine rows D-G are value for money considering the clean view and ticket prices.",
+            "short": "Clean view and value for money",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/minskoff-theatre-seating-chart/",
                 "quoteHash": "290a8a784908",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -7354,22 +7099,17 @@
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
-            "rows": "AA-B",
-            "claim": "The front rows (AA, A and B) sit below a high stage, so you spend the show looking up and can miss action further back on stage.",
-            "short": "Below a high stage, so expect neck craning",
+            "rows": "A-B",
+            "claim": "Rows A and B are below the stage, so patrons have to look up for prolonged periods and miss some action further back.",
+            "short": "Below the stage with prolonged looking up",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
                 "quoteHash": "7ab081cfab7c",
-                "fetchedAt": "2026-11-22"
-              },
-              {
-                "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
-                "quoteHash": "80689296aea0",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -7377,16 +7117,16 @@
             "level": "mezzanine",
             "side": "sides",
             "rows": "A-B",
-            "claim": "In the Left and Right Mezzanine, the outer seats (25 to 28) of rows A and B are partly blocked by the boxes that jut out beside the stage.",
-            "short": "Outer seats in rows A and B are blocked by the boxes",
+            "claim": "Boxes restrict views from seats 25-28 in rows A-B of the Left and Right Mezzanine.",
+            "short": "Boxes restrict views from seats 25-28",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
                 "quoteHash": "8414a38ec38a",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -7399,56 +7139,56 @@
               {
                 "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
                 "quoteHash": "78db4549afbf",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
                 "quoteHash": "302dbd09f620",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "P",
-            "claim": "In the last orchestra row (P), the mezzanine overhang cuts slightly into the top of the stage.",
-            "short": "Mezzanine overhang trims the top of the stage",
+            "claim": "The Mezzanine overhang cuts into view slightly in row P.",
+            "short": "Overhang cuts slightly into view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
                 "quoteHash": "3408a07a5bf4",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "mezzanine",
+            "claim": "The cheapest seats at the back of the Mezzanine have clear, detailed and generally unobstructed sight lines.",
+            "short": "Clear sight lines at the back of the Mezzanine",
             "rows": "J-L",
-            "claim": "The back rows of the mezzanine are some of the cheapest seats in the house, and in a theater this small they still have a clear view of the stage.",
-            "short": "Some of the cheapest seats, still a clear view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
                 "quoteHash": "d540f97d080f",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.headout.com/blog/music-box-theatre-seating-chart/",
                 "quoteHash": "b2a2696dddef",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
                 "quoteHash": "fef1902428bb",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
@@ -7460,28 +7200,29 @@
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/orchestra/",
                 "quoteHash": "67fcdf8b9414",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.tickpick.com/blog/music-box-theatre-seating-chart/",
                 "quoteHash": "02fd1cb49de5",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "mezzanine",
-            "claim": "Mezzanine legroom is tight, so taller people should pick an aisle seat.",
+            "claim": "Legroom becomes tight in the Mezzanine, and the aisles are safe options for a bit of extra room.",
+            "short": "Tight Mezzanine legroom with extra room by aisles",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/music-box-theatre/mezzanine/",
                 "quoteHash": "00c06952fbc6",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -7693,7 +7434,7 @@
             "hazard": "mezz-overhang",
             "level": "orchestra",
             "rows": "Q",
-            "claim": "The Mezzanine overhang is visible from the back half of the Orchestra and cuts into the top of the stage by row Q.",
+            "claim": "The Mezzanine overhang is in view beyond row M but does not cut into the stage until row Q.",
             "short": "Overhang cuts into the stage at row Q",
             "evidence": [
               {
@@ -7709,8 +7450,8 @@
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "A",
-            "claim": "The stage is fairly high, so Orchestra row A is less comfortable; a row or two back is easier on the neck.",
-            "short": "High stage makes row A less comfortable",
+            "claim": "The stage is fairly high, so avoid row A if you prefer more comfort.",
+            "short": "Avoid row A if you prefer more comfort",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/nederlander-theatre/orchestra/",
@@ -7724,8 +7465,8 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "orchestra",
-            "claim": "The rake is quite shallow at the back of the Orchestra, so heads in front are more likely to get in the way.",
-            "short": "Shallow rake at the back lets heads block the view",
+            "claim": "The rake is quite shallow at the rear of the Orchestra.",
+            "short": "Shallow rake at the rear of the Orchestra",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/nederlander-theatre/orchestra/",
@@ -7740,8 +7481,8 @@
             "hazard": "obstructed-view",
             "level": "mezzanine",
             "rows": "A",
-            "claim": "A safety bar in front of Mezzanine row A can cut into the view of the stage, especially for shorter people.",
-            "short": "Safety bar in row A can block shorter people",
+            "claim": "Shorter patrons may find the safety bar in front of row A obstructive.",
+            "short": "Safety bar may obstruct shorter patrons",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
@@ -7770,9 +7511,9 @@
           {
             "type": "value",
             "level": "mezzanine",
+            "claim": "The middle and back rows of the Mezzanine have clear views but are very tight on legroom.",
+            "short": "Clear views but very tight legroom",
             "rows": "L-P",
-            "claim": "From row L back in the Center Mezzanine, seats are cheaper and the steep rake keeps the view clear, but legroom is very tight.",
-            "short": "Clear view for less, but very tight legroom",
             "side": "center",
             "evidence": [
               {
@@ -7796,7 +7537,8 @@
           {
             "type": "note",
             "level": "box",
-            "claim": "The Mezzanine boxes give much more legroom than regular seats, but they look at the stage from an angle.",
+            "claim": "Box seats are much better for legroom, but sit at an angle.",
+            "short": "Better legroom in angled box seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/nederlander-theatre/mezzanine/",
@@ -7965,10 +7707,10 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "side": "center",
             "rows": "U-Z",
-            "claim": "In the back rows of the Center Orchestra, U to Z, the Mezzanine overhang cuts into the top of the stage.",
+            "claim": "Patrons in rows U-Z will notice the Mezzanine overhang cuts into the top of the stage.",
             "short": "Overhang cuts into the top of the stage",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/neil-simon-theatre/orchestra/",
@@ -7982,8 +7724,8 @@
             "type": "value",
             "level": "orchestra",
             "side": "sides",
-            "claim": "Inside aisle seats in the Left and Right Orchestra cost less than the center but still face the stage fairly head-on.",
-            "short": "Cheaper than center but still fairly head-on",
+            "claim": "Inside aisle seats in the Left and Right Orchestra are cheaper but remain fairly head-on to the stage.",
+            "short": "Cheaper and fairly head-on seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/neil-simon-theatre/seating-plan/",
@@ -7998,8 +7740,8 @@
             "hazard": "tight-legroom",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "In the Left and Right Mezzanine, rows H and L have stair railings right in front, which makes legroom tight there.",
-            "short": "Railings in rows H and L squeeze legroom",
+            "claim": "Legroom in rows H and L in the Left and Right Mezzanine is restricted by railings in front.",
+            "short": "Railings restrict legroom in rows H and L",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
@@ -8030,8 +7772,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "F-M",
-            "claim": "Center Mezzanine rows F to M are good value: farther away, but with a full view of the stage at a lower price.",
-            "short": "Distant but full views for less",
+            "claim": "Center Mezzanine rows F-M offer distant but comprehensive views for a lower price.",
+            "short": "Distant but comprehensive views for a lower price",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
@@ -8055,10 +7797,10 @@
             "type": "watch-out",
             "hazard": "distant",
             "level": "mezzanine",
-            "side": "center",
             "rows": "S-U",
-            "claim": "The back rows of the Mezzanine, S to U, feel distant and lose detail, and the front of the stage is harder to see from there.",
-            "short": "Back rows feel far away and lose detail",
+            "claim": "Rows S-U feel more distant and less detailed than the rest of the section.",
+            "short": "More distant and less detailed",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/neil-simon-theatre/mezzanine/",
@@ -8071,7 +7813,8 @@
           {
             "type": "note",
             "level": "box",
-            "claim": "The box seats on either side of the stage are private, but the view from them is not the best.",
+            "claim": "The viewing experience is not the best from these box seats.",
+            "short": "Box seat viewing is not the best",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/neil-simon-theatre-seating-chart/",
@@ -8319,33 +8062,33 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "P-V",
-            "claim": "The Mezzanine overhangs the Orchestra from row P back, so seats behind it can lose the top of the stage, most noticeably at the rear of the Left and Right Orchestra.",
-            "short": "Mezzanine overhang can cut off the top of the stage",
+            "rows": "P",
+            "claim": "The Mezzanine overhang begins at row P.",
+            "short": "Mezzanine overhang begins at row P",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/new-amsterdam-theatre/orchestra/",
                 "quoteHash": "e2bb02c0e640",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "mezzanine",
-            "rows": "AA",
-            "claim": "The safety railing in front of Mezzanine row AA can get in the way for shorter people, even though these are among the best seats on the level.",
-            "short": "Railing in front of row AA can block shorter viewers",
+            "rows": "AA-AA",
+            "claim": "Shorter patrons may find the safety railing obstructive in Mezzanine row AA.",
+            "short": "Safety railing may obstruct shorter patrons",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/new-amsterdam-theatre/mezzanine/",
                 "quoteHash": "0af4a9a152b9",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -8357,30 +8100,30 @@
               {
                 "url": "https://seatplan.com/new-york/new-amsterdam-theatre/balcony/",
                 "quoteHash": "3f9c62445a62",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "steep-rake",
             "level": "balcony",
-            "claim": "The Balcony is very high with a sharp incline, so it is a poor choice for anyone with vertigo.",
-            "short": "Very high and steep, avoid if you have vertigo",
+            "claim": "The balcony section is at quite a height with an equally sharp incline, and if you have vertigo, you should avoid it.",
+            "short": "Balcony at quite a height with a sharp incline",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/new-amsterdam-theatre-seating-chart/",
                 "quoteHash": "d9716582666a",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://www.headout.com/blog/new-amsterdam-theatre-seating-chart/",
                 "quoteHash": "a7c64046efdf",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
@@ -8392,25 +8135,26 @@
               {
                 "url": "https://seatplan.com/new-york/new-amsterdam-theatre/balcony/",
                 "quoteHash": "618b11842c73",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "The elevated boxes beside the Mezzanine sit high and at a sharp angle to the stage, which can restrict sightlines.",
-            "short": "High, sharply angled view of the stage",
+            "claim": "Four elevated Boxes are to the left of the Mezzanine, but the height and angle to the stage can restrict sightlines.",
+            "short": "Height and angle can restrict sightlines",
+            "side": "left",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/new-amsterdam-theatre/mezzanine/",
                 "quoteHash": "9499d41b696e",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -8617,8 +8361,9 @@
           {
             "type": "value",
             "level": "balcony",
-            "claim": "Seats toward the front of the Balcony are good value with a great view. Most Balcony tickets cost about the same, so aim for the middle of the first five rows.",
-            "short": "Front Balcony seats give a great view for less",
+            "claim": "Balcony rows A-B are not considered too shabby for value for money.",
+            "short": "Value for money in Balcony rows A-B",
+            "rows": "A-B",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/palace-theatre/seating-plan/",
@@ -8642,7 +8387,8 @@
             "type": "note",
             "level": "orchestra",
             "side": "sides",
-            "claim": "The Left and Right Orchestra sit slightly higher than the center block, so heads in front are less of a problem, though the front rows there view the stage from the side.",
+            "claim": "The Orchestra side sections are slightly raised from the centre section and can lessen the chance of being obstructed by heads in front.",
+            "short": "Slightly raised Orchestra side sections",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/palace-theatre/seating-plan/",
@@ -8860,116 +8606,104 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "S-X",
-            "claim": "Past row S of the Orchestra the Mezzanine overhang gets more noticeable, and in rows W and X you may need to duck to see action at the top of the stage.",
-            "short": "Overhang can hide the top of the stage",
+            "rows": "W-X",
+            "claim": "In Orchestra rows W-X, patrons might find themselves ducking slightly to catch action at the top of the stage.",
+            "short": "Duck slightly to see the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
                 "quoteHash": "f11189448f58",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "partial-stage",
             "level": "orchestra",
             "rows": "CC",
-            "claim": "Row CC sits lower than the stage, which some find uncomfortable, and the stage lip can hide action further back.",
-            "short": "Below stage level, the lip can hide action",
+            "claim": "Row CC is lower than the stage, and at this angle the stage lip may cut off some action further back.",
+            "short": "Row CC is lower than the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
                 "quoteHash": "b43009f474a4",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
                 "quoteHash": "59039a68d31b",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "note",
             "level": "orchestra",
             "rows": "L-X",
-            "claim": "From row L back to row X the Orchestra uses stadium-style seating with a steep rake, so the back rows sit well above the front.",
+            "claim": "Rows L-X have stadium-style seating with an impressive rake, and the back of the Orchestra is much higher than the lobby.",
+            "short": "Stadium-style seating with an impressive rake",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/orchestra/",
                 "quoteHash": "b47e3f78b56d",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "value",
             "level": "front-mezzanine",
             "rows": "D-G",
-            "claim": "The back rows of the Front Mezzanine give raised, clear sightlines at relatively low prices.",
-            "short": "Raised views at a lower price",
+            "claim": "Rows D-G in the Front Mezzanine offer good value for money, with desirable elevated sightlines and relatively cheap tickets.",
+            "short": "Elevated sightlines and relatively cheap tickets",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/seating-plan/",
                 "quoteHash": "21d9e6a53b63",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "rear-mezzanine",
-            "claim": "The Rear Mezzanine is steep and cramped, with very tight legroom, and the stage can feel far away.",
-            "short": "Tight legroom, steep and far from the stage",
+            "claim": "In the Rear Mezzanine, legroom can be very tight, the angle is quite steep and notably cramped, and the stage can feel distant.",
+            "short": "Tight legroom and a distant stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/seating-plan/",
                 "quoteHash": "371943d4335a",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               },
               {
                 "url": "https://seatplan.com/new-york/richard-rodgers-theatre/rear-mezzanine/",
                 "quoteHash": "b7c140cd7a3e",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
-          },
-          {
-            "type": "note",
-            "level": "rear-mezzanine",
-            "rows": "A",
-            "claim": "Row A of the Rear Mezzanine has a curtain rather than a wall in front, which gives much more legroom than the other front rows in the house.",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/richard-rodgers-theatre/rear-mezzanine/",
-                "quoteHash": "6648f6bf102f",
-                "fetchedAt": "2026-11-22"
-              }
-            ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           },
           {
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "All box seats are sold as partial view because they face the stage from the side, so you may miss some action.",
-            "short": "Side-on view, sold as partial view",
+            "claim": "All box seats are considered partial view because they are to the side, so patrons may miss some action.",
+            "short": "Side box seats are considered partial view",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://www.tickpick.com/blog/richard-rodgers-theatre-seating-chart-hamilton-on-broadway/",
                 "quoteHash": "f8e347c4848f",
-                "fetchedAt": "2026-11-22"
+                "fetchedAt": "2026-11-23"
               }
             ],
-            "verifiedAt": "2026-11-22"
+            "verifiedAt": "2026-11-23"
           }
         ]
       },
@@ -9118,8 +8852,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "D-F",
-            "claim": "Center Mezzanine rows D to F are a good value pick in this small house, a few rows behind the Premier Circle.",
-            "short": "Good value a few rows back",
+            "claim": "Good value seats are in Center Mezzanine rows D to F.",
+            "short": "Good value seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/samuel-j-friedman-theatre/mezzanine/",
@@ -9133,8 +8867,8 @@
             "type": "value",
             "level": "mezzanine",
             "side": "left",
-            "claim": "The small Left Mezzanine has plenty of good value seats for anyone on a budget.",
-            "short": "Plenty of good value seats",
+            "claim": "There are plenty of options for good value seats in the Left Mezzanine.",
+            "short": "Plenty of good value options",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/samuel-j-friedman-theatre/mezzanine/",
@@ -9147,8 +8881,9 @@
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "The Mezzanine overhang begins over Orchestra row G.",
+            "claim": "The Mezzanine overhangs Orchestra row G.",
             "rows": "G",
+            "short": "Mezzanine overhang",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/samuel-j-friedman-theatre/orchestra/",
@@ -9175,7 +8910,8 @@
             "type": "note",
             "level": "mezzanine",
             "rows": "AA-BB",
-            "claim": "The first two Mezzanine rows, AA and BB, are called the Premier Circle.",
+            "claim": "Mezzanine rows AA and BB are also known as the Premier Circle.",
+            "short": "Mezzanine rows AA-BB are the Premier Circle",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/samuel-j-friedman-theatre/mezzanine/",
@@ -9346,9 +9082,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "R-T",
-            "claim": "The Mezzanine overhang starts at row L, and from row R back it cuts noticeably into the top of the stage.",
-            "short": "Overhang cuts into the top of the stage",
+            "rows": "L-R",
+            "claim": "The Mezzanine overhang starts at row L and by row R significantly cuts into the top of the stage.",
+            "short": "Mezzanine overhang cuts into the top of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/orchestra/",
@@ -9368,8 +9104,8 @@
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "Seats toward the outside aisles of the Left and Right Orchestra have partial views of the stage.",
-            "short": "Outside aisle seats have partial views",
+            "claim": "Seats further towards the outside aisles in the Left and Right Orchestra are partial view.",
+            "short": "Outside Orchestra seats are partial view",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/orchestra/",
@@ -9387,7 +9123,9 @@
           {
             "type": "note",
             "level": "box",
-            "claim": "Raised boxes on each side of the Orchestra hold 16 people in total and give angled views of the stage.",
+            "claim": "Elevated Boxes on either side seat a further 16 people for angled views.",
+            "short": "Elevated boxes with angled views",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/orchestra/",
@@ -9402,8 +9140,8 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "E-G",
-            "claim": "Center Mezzanine rows E to G are good value, with elevated and mostly clear views.",
-            "short": "Elevated, mostly clear views for less",
+            "claim": "Rows E-G in the Center Mezzanine are good value seats.",
+            "short": "Good value Center Mezzanine seats",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/mezzanine/",
@@ -9423,8 +9161,9 @@
             "hazard": "pillar",
             "level": "balcony",
             "rows": "C-D",
-            "claim": "Thin support poles near the aisles between Balcony rows C and D cut through the view for some seats behind them.",
+            "claim": "Thin support poles are near the aisles in Center Balcony rows C-D.",
             "short": "Thin support poles near the aisles",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/balcony/",
@@ -9440,12 +9179,11 @@
             "verifiedAt": "2026-11-23"
           },
           {
-            "type": "value",
+            "type": "note",
             "level": "balcony",
-            "side": "center",
-            "rows": "A",
-            "claim": "Row A of the Center Balcony is high but mostly clear, and one of the less expensive seats in the house.",
-            "short": "High but clear, and inexpensive",
+            "rows": "A-C",
+            "claim": "Balcony rows A-C are value for money considering the clean view on offer and ticket prices.",
+            "short": "Clean views and value for money",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/balcony/",
@@ -9468,7 +9206,8 @@
           {
             "type": "note",
             "level": "balcony",
-            "claim": "The Balcony is very steep with cramped legroom, so hold the handrails on the way to your seat.",
+            "claim": "The Balcony is very steep, so hold onto the handrails when getting to your seat.",
+            "short": "Very steep Balcony",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/shubert-theatre/balcony/",
@@ -9553,9 +9292,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "J-T",
-            "claim": "The Mezzanine overhang begins over Orchestra row J, so seats from there back can lose the top of the stage, more noticeably from around row M.",
-            "short": "Overhang trims the top of the stage from row J back",
+            "rows": "J-M",
+            "claim": "The Mezzanine overhang begins at row J, with the top part of the stage cut off from around row M.",
+            "short": "Mezzanine overhang begins at row J",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/st-james-theatre/orchestra/",
@@ -9574,9 +9313,9 @@
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "orchestra",
+            "claim": "Views of the side of the stage become gradually more restricted the further out you sit, with far side aisle seats most affected.",
+            "short": "Far side aisle seats most affected",
             "side": "sides",
-            "claim": "In the Left and Right Orchestra, the side of the stage gets more restricted the further out you sit, and seats on the far side aisles are hit hardest.",
-            "short": "Far side Orchestra seats lose part of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/st-james-theatre/orchestra/",
@@ -9590,9 +9329,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "mezzanine",
+            "claim": "The Balcony overhang is more obvious in the back half.",
+            "short": "Balcony overhang in the back half",
             "rows": "D-R",
-            "claim": "The Balcony overhang starts over Mezzanine row D and is more noticeable in the back half, though views there are still decent.",
-            "short": "Balcony overhang from row D, stronger at the back",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/st-james-theatre/mezzanine/",
@@ -9603,28 +9342,11 @@
             "verifiedAt": "2026-11-23"
           },
           {
-            "type": "watch-out",
-            "hazard": "steep-rake",
-            "level": "balcony",
-            "side": "left",
-            "claim": "The Left Balcony can feel steep and cramped. Anyone needing more room should aim for row A or an inside aisle seat.",
-            "short": "Steep and cramped, row A or inside aisle helps",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/st-james-theatre/balcony/",
-                "quoteHash": "2fbb175dd59b",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "value",
+            "type": "note",
             "level": "balcony",
             "rows": "A",
-            "claim": "Center Balcony seats are the cheapest in the theater, and row A adds extra legroom and the clearest view on this level.",
-            "short": "Cheapest level, and row A has legroom and clear views",
-            "side": "center",
+            "claim": "A seat in row A of the Balcony is perfect for combining extra legroom, the best view, and good value for money.",
+            "short": "Extra legroom and the best view in row A",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/st-james-theatre/balcony/",
@@ -9644,7 +9366,7 @@
             "level": "mezzanine",
             "side": "center",
             "rows": "A",
-            "claim": "Row A of the Center Mezzanine gives a good general overview of the stage.",
+            "claim": "Row A of the Center Mezzanine has a great general overview of the stage.",
             "evidence": [
               {
                 "url": "https://www.tickpick.com/blog/st-james-theatre-seating-chart/",
@@ -9847,28 +9569,11 @@
         ],
         "seatNotes": [
           {
-            "type": "watch-out",
-            "hazard": "partial-stage",
-            "level": "orchestra",
-            "side": "sides",
-            "rows": "A-B",
-            "claim": "The side seats in Orchestra rows A and B are sold as partial view and miss about a third of the stage.",
-            "short": "Side seats miss about a third of the stage",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/seating-plan/",
-                "quoteHash": "d66df2b878f2",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
             "type": "note",
             "level": "orchestra",
-            "side": "sides",
-            "rows": "F",
-            "claim": "In the Left and Right Orchestra there is a walkway where row E would be, so row F has extra legroom and a little extra height.",
+            "rows": "F-F",
+            "claim": "There is a walkway in front of the edge seats in Orchestra row F for extra legroom.",
+            "short": "Row F edge seats have extra legroom",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/seating-plan/",
@@ -9886,8 +9591,9 @@
           {
             "type": "note",
             "level": "orchestra",
-            "rows": "J-U",
-            "claim": "Orchestra rows are stepped from row J back, so sightlines stay very good in the back rows.",
+            "rows": "J-J",
+            "claim": "In the back rows, sightlines remain very good thanks to stepped rows kicking in at row J.",
+            "short": "Very good back-row sightlines",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/orchestra/",
@@ -9900,8 +9606,9 @@
           {
             "type": "note",
             "level": "orchestra",
-            "rows": "K-U",
-            "claim": "The Mezzanine overhangs the Orchestra from row K, but it does not cut into the view even from the last rows.",
+            "rows": "K-K",
+            "claim": "The Mezzanine overhang kicks in at row K, but isn’t an issue even in the very back seats.",
+            "short": "Overhang isn’t an issue",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/orchestra/",
@@ -9915,8 +9622,8 @@
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "mezzanine",
-            "claim": "Legroom in the Mezzanine is very cramped; aisle seats give the most space.",
-            "short": "Cramped legroom, aisle seats help",
+            "claim": "Legroom can get very cramped in the Mezzanine, with the best extra space on the aisles.",
+            "short": "Mezzanine legroom can get very cramped",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/mezzanine/",
@@ -9930,8 +9637,8 @@
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "The boxes beside the Orchestra are private but look at the stage from a slight angle.",
-            "short": "Private but slightly angled views",
+            "claim": "Boxes elevated to the side offer private but slightly angled views.",
+            "short": "Private but slightly angled box views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/stephen-sondheim-theatre/orchestra/",
@@ -9945,7 +9652,8 @@
             "type": "note",
             "level": "orchestra",
             "rows": "C-G",
-            "claim": "The front Orchestra rows C to G are considered the best in the house.",
+            "claim": "In the Orchestra, the front four rows, C to G, are considered the best.",
+            "short": "Front Orchestra rows are considered the best",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/stephen-sondheim-theatre-seating-chart/",
@@ -9959,7 +9667,8 @@
             "type": "note",
             "level": "mezzanine",
             "rows": "AA-CC",
-            "claim": "The best Mezzanine seats are in the front rows, AA to CC.",
+            "claim": "The best seats in the elevated Mezzanine can be found in rows AA to CC.",
+            "short": "Best Mezzanine seats in rows AA to CC",
             "evidence": [
               {
                 "url": "https://www.headout.com/blog/stephen-sondheim-theatre-seating-chart/",
@@ -10116,9 +9825,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "M-P",
-            "claim": "From around Orchestra row M back, the Mezzanine overhang drops into the top of the stage.",
-            "short": "Overhang cuts off the top of the stage from row M",
+            "rows": "M",
+            "claim": "The Mezzanine overhang cuts into the stage by row M.",
+            "short": "Mezzanine overhang cuts into the stage by row M",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/orchestra/",
@@ -10133,8 +9842,8 @@
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "Far side Orchestra seats have angled sightlines, so part of the stage on that side can be hard to see.",
-            "short": "Far side seats get an angled view",
+            "claim": "Far side seats in the Orchestra are disrupted by angled sightlines.",
+            "short": "Far side seats have angled sightlines",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/orchestra/",
@@ -10149,8 +9858,8 @@
             "hazard": "obstructed-view",
             "level": "front-mezzanine",
             "rows": "AA",
-            "claim": "The safety railing in front of Front Mezzanine row AA can cut into the stage, especially for shorter people, so row BB is often a better pick.",
-            "short": "Safety rail in front of row AA can block the stage",
+            "claim": "The safety railing in front of row AA can cut into the stage slightly.",
+            "short": "Safety railing can cut into the stage slightly",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/front-mezzanine/",
@@ -10169,8 +9878,8 @@
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "front-mezzanine",
-            "claim": "Legroom in the Front Mezzanine is cramped. Taller people should book an aisle seat, ideally on an inside aisle.",
-            "short": "Cramped legroom, book an aisle if you are tall",
+            "claim": "Legroom is cramped in the Front Mezzanine, so taller people should choose an aisle seat, preferably on the inside.",
+            "short": "Cramped legroom in the Front Mezzanine",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/front-mezzanine/",
@@ -10185,8 +9894,8 @@
             "hazard": "obstructed-view",
             "level": "rear-mezzanine",
             "rows": "EE",
-            "claim": "The safety railings in front of Rear Mezzanine row EE can cut into the view of the stage.",
-            "short": "Railings in front of row EE can block the stage",
+            "claim": "The safety railings in front of row EE can cut into the stage.",
+            "short": "Safety railings can cut into the stage from row EE",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/rear-mezzanine/",
@@ -10200,8 +9909,8 @@
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "rear-mezzanine",
-            "claim": "The Rear Mezzanine has very little legroom and can get uncomfortable over a long performance.",
-            "short": "Very tight legroom up here",
+            "claim": "The Rear Mezzanine leaves a lot to be desired for legroom and may be uncomfortable for prolonged periods.",
+            "short": "Legroom may be uncomfortable for prolonged periods",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/studio-54-theatre/rear-mezzanine/",
@@ -10370,9 +10079,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "N-P",
-            "claim": "The Mezzanine overhang begins over Orchestra row H, and from row N back it cuts off the top of the stage.",
-            "short": "Overhang cuts off the top of the stage from row N",
+            "rows": "H-N",
+            "claim": "The Mezzanine overhang starts at Orchestra row H and drops into the stage by row N.",
+            "short": "Overhang drops into the stage by row N",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/orchestra/",
@@ -10387,8 +10096,8 @@
             "hazard": "side-angle",
             "level": "box",
             "side": "sides",
-            "claim": "The six-seat Boxes beside the Orchestra are elevated and close, but the view is angled toward the stage.",
-            "short": "Boxes are close but side-on",
+            "claim": "A Box to the left offers an angled view, while a Box to the side of the Right Orchestra offers slightly side-on views.",
+            "short": "Boxes offer angled or slightly side-on views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/orchestra/",
@@ -10406,8 +10115,9 @@
           {
             "type": "value",
             "level": "mezzanine",
-            "claim": "The Mezzanine has the cheapest seats in the house at the back and far sides, and its steep rake and the small room keep views strong.",
-            "short": "Cheapest seats in the house with a steep, clear rake",
+            "claim": "The far sides of the Mezzanine are among the cheapest seat locations.",
+            "short": "Cheapest seats include the far sides",
+            "side": "sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/mezzanine/",
@@ -10425,7 +10135,8 @@
           {
             "type": "note",
             "level": "orchestra",
-            "claim": "Orchestra legroom is much better than at a typical Broadway house, and aisle seats have the most room.",
+            "claim": "The Orchestra has much better legroom than the average Broadway venue, with better legroom on aisle seats.",
+            "short": "Better legroom in the Orchestra",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/orchestra/",
@@ -10438,7 +10149,8 @@
           {
             "type": "note",
             "level": "mezzanine",
-            "claim": "Mezzanine legroom is usually better than average for Broadway.",
+            "claim": "Legroom is usually better than average in the Mezzanine.",
+            "short": "Better than average Mezzanine legroom",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/mezzanine/",
@@ -10448,21 +10160,6 @@
               {
                 "url": "https://seatplan.com/new-york/todd-haimes-theatre/mezzanine/",
                 "quoteHash": "c9bc6f21fed0",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "note",
-            "level": "mezzanine",
-            "side": "center",
-            "rows": "A-C",
-            "claim": "The middle seats in rows A to C of the Mezzanine give a great look at the stage.",
-            "evidence": [
-              {
-                "url": "https://www.headout.com/blog/american-airlines-theatre-seating-chart/",
-                "quoteHash": "039bf0b6e3bf",
                 "fetchedAt": "2026-11-23"
               }
             ],
@@ -10571,8 +10268,8 @@
             "type": "value",
             "level": "orchestra",
             "side": "sides",
-            "claim": "The cheapest Orchestra tickets are in the back rows, especially the extreme side blocks (seats above 500 and below 100), and even the back row still sees the stage well.",
-            "short": "Cheapest seats are the back and far sides",
+            "claim": "The cheapest seats are in the back rows of the Orchestra, especially above 500 and below 100, the extreme sides.",
+            "short": "Cheapest seats on the extreme sides",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/vivian-beaumont-theater/orchestra/",
@@ -10755,9 +10452,9 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "rows": "H-S",
-            "claim": "The Mezzanine overhang starts fairly far forward at Orchestra row H, so seats from there back can lose the top of the stage.",
-            "short": "Overhang from row H can cut off the top of the stage",
+            "rows": "H-J",
+            "claim": "The Mezzanine level overhangs at Orchestra rows H-J.",
+            "short": "Mezzanine overhang at rows H-J",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/",
@@ -10777,7 +10474,8 @@
             "level": "orchestra",
             "side": "center",
             "rows": "C-D",
-            "claim": "The front rows of the Center Orchestra (C and D) are not far below the stage, so they feel close without much looking up.",
+            "claim": "Center Orchestra rows C-D aren’t too far below the stage.",
+            "short": "Front rows aren’t too far below the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/",
@@ -10791,7 +10489,8 @@
             "type": "note",
             "level": "mezzanine",
             "rows": "D-H",
-            "claim": "The Balcony overhangs the Mezzanine from row D back and can cut off the top of the stage, though the steep rake keeps heads in front out of the way.",
+            "claim": "In the Mezzanine, the Balcony overhang starting at row D may cause some cut-off at the top of the stage.",
+            "short": "Balcony overhang may cut off the stage top",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/mezzanine/",
@@ -10805,8 +10504,8 @@
             "type": "value",
             "level": "mezzanine",
             "side": "right",
-            "claim": "Because the theater is small, the cheaper seats toward the sides and back of the Right Mezzanine still feel close and are good value.",
-            "short": "Cheaper side and back seats still feel close",
+            "claim": "Cheaper seats towards the sides and back of the Right Mezzanine are very good value options.",
+            "short": "Side and back seats are very good value",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/mezzanine/",
@@ -10820,8 +10519,8 @@
             "type": "watch-out",
             "hazard": "obstructed-view",
             "level": "balcony",
-            "claim": "All Balcony seats are sold as partial view, and fixtures on the Balcony front and the ceiling can get in the sightlines.",
-            "short": "Sold as partial view, some sightlines blocked",
+            "claim": "Balcony seats are partial view, and patrons may find objects including fixtures in their sightlines.",
+            "short": "Balcony partial views and objects in sightlines",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/balcony/",
@@ -10846,8 +10545,8 @@
             "hazard": "partial-stage",
             "level": "balcony",
             "rows": "B",
-            "claim": "From Balcony row B a large part of the bottom of the stage can be cut off, partly because people in row A lean forward.",
-            "short": "Row B can lose the front of the stage",
+            "claim": "Sitting in Balcony row B may mean a significant part of the bottom of the stage is cut off, partly by patrons in row A leaning forward.",
+            "short": "Row B may lose the bottom of the stage",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/balcony/",
@@ -10861,8 +10560,8 @@
             "type": "watch-out",
             "hazard": "tight-legroom",
             "level": "balcony",
-            "claim": "The Balcony is steep and tight between rows; only its eight aisle seats give more legroom.",
-            "short": "Tight between rows, only aisle seats have room",
+            "claim": "The Balcony is quite steep and tight between rows, and its eight aisle seats offer more legroom than elsewhere on the Balcony.",
+            "short": "Steep and tight Balcony rows",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/balcony/",
@@ -10876,8 +10575,8 @@
             "type": "watch-out",
             "hazard": "side-angle",
             "level": "box",
-            "claim": "The boxes beside the Orchestra sit very side-on to the stage.",
-            "short": "Very side-on view of the stage",
+            "claim": "The Boxes can feel very side-on to the stage.",
+            "short": "Boxes can feel very side-on",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/walter-kerr-theatre/orchestra/",
@@ -11077,8 +10776,8 @@
             "type": "watch-out",
             "hazard": "mezz-overhang",
             "level": "orchestra",
-            "claim": "The Mezzanine overhang starts at Orchestra row O, fairly far back, and seats behind it may lose the very top of the stage.",
-            "short": "Overhang from row O may clip the top of the stage",
+            "claim": "The Mezzanine overhang starts at Orchestra row O; seats behind it might experience cut-off at the very top of the stage.",
+            "short": "Overhang starts at Orchestra row O",
             "rows": "O",
             "evidence": [
               {
@@ -11099,8 +10798,8 @@
             "hazard": "side-angle",
             "level": "orchestra",
             "side": "sides",
-            "claim": "The Orchestra is very wide, and seats farther out in the Left and Right sections get a more restricted, side-on view.",
-            "short": "Far side seats get a side-on view",
+            "claim": "Seats farther out in the Left and Right Orchestra have a more restricted, side-on view.",
+            "short": "Farther-out Orchestra seats are side-on",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/winter-garden-theatre/orchestra/",
@@ -11120,8 +10819,8 @@
             "hazard": "side-angle",
             "level": "mezzanine",
             "side": "sides",
-            "claim": "Because the Mezzanine is so wide, the far side seats have partial views of the stage.",
-            "short": "Far side Mezzanine seats are partial view",
+            "claim": "Far side seats in the Mezzanine offer partial views of the stage.",
+            "short": "Far side Mezzanine partial views",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/winter-garden-theatre/mezzanine/",
@@ -11139,10 +10838,10 @@
           {
             "type": "value",
             "level": "mezzanine",
-            "side": "center",
             "rows": "D-F",
-            "claim": "Center Mezzanine rows D to F cost less than the front rows but still get clear elevated views thanks to the rake.",
-            "short": "Elevated views for less than the front rows",
+            "claim": "Mezzanine rows D-F benefit from the section’s rake and offer desirable aerial views at a lower price.",
+            "short": "Lower-priced aerial views in rows D-F",
+            "side": "center",
             "evidence": [
               {
                 "url": "https://seatplan.com/new-york/winter-garden-theatre/seating-plan/",
@@ -11168,22 +10867,6 @@
               {
                 "url": "https://seatplan.com/new-york/winter-garden-theatre/mezzanine/",
                 "quoteHash": "e58e9a1f8417",
-                "fetchedAt": "2026-11-23"
-              }
-            ],
-            "verifiedAt": "2026-11-23"
-          },
-          {
-            "type": "watch-out",
-            "hazard": "side-angle",
-            "level": "box",
-            "side": "sides",
-            "claim": "The Lower and Upper Boxes beside the Orchestra feel private and comfortable, but they give a restricted view of the near side of the stage.",
-            "short": "Boxes are private but side-on",
-            "evidence": [
-              {
-                "url": "https://seatplan.com/new-york/winter-garden-theatre/orchestra/",
-                "quoteHash": "3e00773d4681",
                 "fetchedAt": "2026-11-23"
               }
             ],
