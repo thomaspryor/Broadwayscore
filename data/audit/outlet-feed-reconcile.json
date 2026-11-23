@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T17:17:30.522Z",
+  "generatedAt": "2026-11-23T18:35:38.308Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -99,11 +99,6 @@
       "openingDate": "2026-11-17"
     },
     {
-      "id": "wuthering-heights-off-broadway-2026",
-      "title": "Wuthering Heights",
-      "openingDate": "2026-11-19"
-    },
-    {
       "id": "arrowhead-regional-2026",
       "title": "Arrowhead",
       "openingDate": "2026-11-21"
@@ -112,11 +107,6 @@
       "id": "fiddler-on-the-roof-regional-2026",
       "title": "Fiddler on the Roof",
       "openingDate": "2026-11-19"
-    },
-    {
-      "id": "the-beauty-queen-of-leenane-regional-2026",
-      "title": "The Beauty Queen of Leenane",
-      "openingDate": "2026-11-20"
     },
     {
       "id": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
@@ -151,12 +141,24 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "lighting-and-sound-america",
-      "error": "HTTP 500 for https://lightingandsoundamerica.com/news/rss.asp"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 934,
-  "matchedGaps": 2,
+  "itemsScanned": 906,
+  "matchedGaps": 1,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -169,21 +171,12 @@
       "publishDate": "2026-11-23"
     },
     {
-      "showId": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/the-ugly-one/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-ugly-one",
-      "headline": "The Ugly One",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
       "level": "possible",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/its-a-wonderful-life-radio-play-broadway-review/",
-      "headline": "&#8216;It&#8217;s a Wonderful Life: A Live Radio Play&#8217; rings all the bells, but can’t settle on a tune",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
     },
     {

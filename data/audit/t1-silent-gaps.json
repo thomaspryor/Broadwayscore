@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T17:11:12.337Z",
+  "generatedAt": "2026-11-23T18:35:14.831Z",
   "windowDays": 45,
   "showsScanned": 296,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 346.1506536111111,
+      "fileAgeHours": 347.55132944444443,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 323.6022325,
+      "nonTerminalAgeHours": 325.00292527777776,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=nine-night-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-23T02:36:36.634Z",
-      "fileAgeHours": 14.576428333333334,
+      "fileAgeHours": 15.977110555555555,
       "gapSeenAt": "2026-11-23T03:38:23.855Z",
-      "nonTerminalAgeHours": 13.546800555555556,
+      "nonTerminalAgeHours": 14.947493333333334,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 315.38252472222223,
+      "fileAgeHours": 316.78320916666667,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 314.2377875,
+      "nonTerminalAgeHours": 315.6384802777778,
       "needsManualRecovery": true
     }
   ],

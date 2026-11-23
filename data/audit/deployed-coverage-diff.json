@@ -1,15 +1,31 @@
 {
-  "generatedAt": "2026-11-23T17:17:30.212Z",
+  "generatedAt": "2026-11-23T18:35:37.953Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 368,
-  "clean": 365,
-  "defective": 3,
+  "checked": 358,
+  "clean": 352,
+  "defective": 6,
   "byType": {
-    "score-drift": 3
+    "score-drift": 6
   },
   "shows": [
+    {
+      "showId": "fantasma-off-broadway-2026",
+      "title": "Fantasma",
+      "openingDate": "2026-11-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.24 vs local 83.98 (Δ0.74)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-23T18:35:28.189Z"
+    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
@@ -18,23 +34,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 69.21 vs local 68.73 (Δ0.48)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-11-23T17:17:19.797Z"
-    },
-    {
-      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
-      "title": "A Homo Alone 2: Yikes, We Did It Again!",
-      "openingDate": "2026-11-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.8 vs local 67.7 (Δ0.1)"
+          "detail": "deployed cs 68.46 vs local 68.1 (Δ0.36)"
         }
       ],
       "missingFromProd": [],
@@ -43,20 +43,68 @@
       "firstDefectAt": "2026-11-23T17:17:19.797Z"
     },
     {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "title": "Cabaret at the Kit Kat Club",
-      "openingDate": "2021-12-12",
+      "showId": "nine-night-off-west-end-2026",
+      "title": "Nine Night",
+      "openingDate": "2026-11-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.98 vs local 88.06 (Δ0.08)"
+          "detail": "deployed cs 83.82 vs local 83.36 (Δ0.46)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25,
-      "firstDefectAt": "2026-11-23T17:17:19.797Z"
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-23T18:35:28.189Z"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 90.71 vs local 90.24 (Δ0.47)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-23T18:35:28.189Z"
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.05 vs local 75.89 (Δ0.16)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-23T18:35:28.189Z"
+    },
+    {
+      "showId": "magic-mike-live-off-west-end-2021",
+      "title": "Magic Mike Live",
+      "openingDate": "2018-11-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.43 vs local 63.06 (Δ0.37)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-23T18:35:28.189Z"
     }
   ],
   "persistentDefective": 0,
