@@ -174,6 +174,15 @@ gc_probe() {
   python3 "$SCRIPT_DIR/lib/gc-read-probe.py" "$seconds" "$@"
 }
 
+gc_pin() {
+  # The classifier CLI exits 1 for "none", so call its read-only API and
+  # reserve nonzero here for a failed probe or a deadline.
+  gc_probe 15 node -e '
+    const { cwdPinStatus } = require(process.argv[1]);
+    console.log(cwdPinStatus(process.argv[2]).pin);
+  ' "$SCRIPT_DIR/lib/gc-worktree-liveness.js" "$1"
+}
+
 gc_size_kb() {
   local p="$1" result
   if ! result=$(gc_probe "${WORKTREE_GC_READ_TIMEOUT_SECONDS:-10}" du -sk "$p"); then
@@ -607,8 +616,7 @@ retire_stale_job_worktree() {
   [ "$saved_head" = "$(gc_probe 10 git -C "$wt" rev-parse HEAD)" ] || return 1
   is_stale "$wt" "$RETIRE_STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}" || return 1
   command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ] || return 1
-  pin=$(gc_probe 15 node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$wt" --classify) || return 1
-  pin=${pin%%$'\n'*}
+  pin=$(gc_pin "$wt") || return 1
   [ "$pin" = "none" ] || return 1
   if is_worktree_clean "$wt"; then how="clean"
   elif is_safe_dirty "$wt"; then how="generated churn only"
@@ -697,7 +705,7 @@ flush() {
   landed_status=1
   if [ -n "$head_sha" ]; then
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/landing-verify.js" ]; then
-      gc_probe 15 node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
+      PUSH_SKIP_UNSHALLOW=1 gc_probe 15 node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
       landed_status=$?
     else
       gc_probe 10 git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null
@@ -755,8 +763,7 @@ flush() {
   if [ "$is_ancestor" = "1" ] || [ "$has_unmerged" = "0" ]; then
     cwd_pin="unknown"
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ]; then
-      cwd_pin=$(gc_probe 15 node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$path" --classify) || cwd_pin="unknown"
-      cwd_pin=${cwd_pin%%$'\n'*}
+      cwd_pin=$(gc_pin "$path") || cwd_pin="unknown"
     else
       log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — treating [$CURRENT_REPO_NAME] $(basename "$path") as pinned"
     fi
