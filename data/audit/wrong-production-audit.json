@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T21:26:24.501Z",
+  "timestamp": "2026-11-23T21:43:47.808Z",
   "stats": {
-    "totalReviews": 84433,
+    "totalReviews": 84435,
     "alreadyFlagged": 22523,
     "dateGuardCatches": 242,
     "directorMismatch": 3887,
     "tvFilmSignals": 2423,
-    "londonSignals": 3989,
+    "londonSignals": 3990,
     "offBroadwaySignals": 788,
     "yearMismatch": 394,
-    "noPublishDate": 8274
+    "noPublishDate": 8272
   },
   "findings": [
     {
@@ -29480,7 +29480,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 95,
       "publishDate": "2015-04-16",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/gypsy-at-the-savoy-theatre-wc2-888ctjd3bbf",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -124840,6 +124840,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "file": "thereviewshub--louise-burns.json",
+      "publishDate": "2026-11-23",
+      "url": "https://www.thereviewshub.com/nine-night-kiln-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
