@@ -1,23 +1,30 @@
 {
-  "updatedAt": "2026-11-22T10:52:41.678Z",
-  "scanned": 4936,
-  "showsWithViolations": 4,
-  "totalViolations": 4,
+  "updatedAt": "2026-11-23T11:55:11.039Z",
+  "scanned": 4946,
+  "showsWithViolations": 5,
+  "totalViolations": 5,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-ugly-one-off-west-end-2026"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
   ],
-  "actionableViolations": 0,
-  "newActionableSinceLastRun": 0,
-  "newActionableKeys": [],
-  "openActionableCount": 0,
-  "actionableOpen": {},
-  "actionableKeys": [],
+  "actionableViolations": 1,
+  "newActionableSinceLastRun": 1,
+  "newActionableKeys": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
+  ],
+  "openActionableCount": 1,
+  "actionableOpen": {
+    "the-truth-a-comedy-by-florian-zeller-west-end-2027": "2026-11-23T11:55:08.314Z"
+  },
+  "actionableKeys": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
+  ],
   "violationKeys": [
     "cloud-9-west-end-2026",
     "tristan-and-yseult-off-broadway-2026",
     "downstate-2026",
-    "the-ugly-one-off-west-end-2026"
+    "the-ugly-one-off-west-end-2026",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
   ],
   "hits": [
     {
@@ -65,6 +72,18 @@
         {
           "titleMatch": false,
           "mentionCount": 3
+        }
+      ]
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2027",
+      "title": "The Truth",
+      "openingDate": null,
+      "message": "the-truth-a-comedy-by-florian-zeller-west-end-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": true,
+          "mentionCount": 0
         }
       ]
     }

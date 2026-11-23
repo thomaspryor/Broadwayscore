@@ -1,22 +1,19 @@
 {
-  "updatedAt": "2026-11-22T10:49:35.903Z",
-  "scanned": 4936,
-  "showsWithViolations": 126,
-  "totalViolations": 156,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-11-23T11:52:22.256Z",
+  "scanned": 4946,
+  "showsWithViolations": 125,
+  "totalViolations": 155,
+  "newSinceLastRun": 0,
   "handled": {
-    "not-shipped": 66,
-    "temporal-override-low-confidence": 977,
+    "not-shipped": 67,
+    "temporal-override-low-confidence": 976,
     "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 12,
     "self-healed": 74,
-    "prior-run-or-tour-leg": 50
+    "prior-run-or-tour-leg": 48
   },
-  "newViolationKeys": [
-    "les-miserables-arena-concert-spectacular-off-broadway-2026::nydailynews--chris-jones.json",
-    "marie-and-rosetta-west-end-2025::standard--nick-curtis.json"
-  ],
+  "newViolationKeys": [],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
@@ -43,7 +40,6 @@
     "cymbeline-2007::nytimes--ben-brantley.json",
     "rent-1996::newyorker--john-lahr-1996.json",
     "titanic-1997::vulture--jackson-mchenry.json",
-    "a-raisin-in-the-sun-2004::huffpost--david-finkle.json",
     "the-receptionist-off-broadway-2026::culturesauce--thom-geier.json",
     "the-receptionist-off-broadway-2026::theatre-reviews-limited--unknown.json",
     "titus-andronicus-off-broadway-2026::nysr--melissa-rose-bernardo.json",
@@ -661,27 +657,6 @@
           "cvIssues": [
             "Review is for Encores! production at New York Theatre Workshop (off-Broadway), not Broadway production at Lunt-Fontanne Theatre",
             "Expected opening date 1997-04-23 (original Broadway run) does not match this 2024 Encores! revival"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "a-raisin-in-the-sun-2004",
-      "title": "A Raisin in the Sun",
-      "openingDate": "2004-04-26",
-      "message": "huffpost/David Finkle (huffpost--david-finkle.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a legitimate theater review, but it reviews a different production of 'A Raisin in the Sun' than  — http://www.huffingtonpost.com/david-finkle/first-nighter-denzel-wash_b_5088078.html",
-      "violations": [
-        {
-          "filename": "huffpost--david-finkle.json",
-          "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-denzel-wash_b_5088078.html",
-          "outletId": "huffpost",
-          "criticName": "David Finkle",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content is a legitimate theater review, but it reviews a different production of 'A Raisin in the Sun' than ",
-          "cvIssues": [
-            "Wrong production: Review describes a production at Barrymore Theatre with Denzel Washington in a current/recent run, not the 2004 revival at Bernard B. Jacobs Theatre specified in expected review",
-            "Wrong venue: Barrymore Theatre vs. Bernard B. Jacobs Theatre"
           ]
         }
       ]
