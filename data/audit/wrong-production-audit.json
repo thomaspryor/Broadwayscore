@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T01:54:17.134Z",
+  "timestamp": "2026-11-23T02:15:30.524Z",
   "stats": {
-    "totalReviews": 84167,
-    "alreadyFlagged": 22491,
+    "totalReviews": 84179,
+    "alreadyFlagged": 22494,
     "dateGuardCatches": 240,
     "directorMismatch": 3883,
     "tvFilmSignals": 2419,
     "londonSignals": 3972,
     "offBroadwaySignals": 786,
-    "yearMismatch": 394,
-    "noPublishDate": 8234
+    "yearMismatch": 395,
+    "noPublishDate": 8227
   },
   "findings": [
     {
@@ -2592,6 +2592,20 @@
       "score": 39,
       "publishDate": "April 3, 2014",
       "url": "https://www.amny.com/entertainment/theater-review-a-raisin-in-the-sun-2-stars-1.7598557",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "file": "latimes--charles-mcnulty.json",
+      "score": null,
+      "publishDate": "2014-06-06",
+      "url": "https://www.latimes.com/entertainment/envelope/tonys/la-et-cm-raisin-in-the-sun-actresses-20140605-column.html",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
