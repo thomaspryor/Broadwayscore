@@ -224,4 +224,9 @@ test('BRO-8096: Times footer strip handles a run-time token and a related-articl
   // prose after the follow line is never eaten (no related-block marker)
   const prose = `${BODY} Follow @timesculture to read the latest reviews\n\nThe second review of the night was better and ran long, with a fine cast.`;
   assert.ok(T.stripTimesFooter(prose).includes('second review of the night'));
+  // ship-check: a long blank run after the follow line must not backtrack
+  const blanks = `${BODY} Follow @timesculture to read the latest reviews${'\n'.repeat(5000)}x`;
+  const t0 = Date.now();
+  T.stripTimesFooter(blanks);
+  assert.ok(Date.now() - t0 < 1000, 'stripTimesFooter backtracks on a long newline run');
 });

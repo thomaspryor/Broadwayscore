@@ -328,7 +328,7 @@ const TIMES_FOOTER_MAX = 240;
 // from Theatre & Dance...", then the byline). Cut it so the promo/footer peel
 // sees the real ending. Needs the follow line first and a block marker within
 // 1200 chars, so prose is never eaten.
-const TIMES_RELATED_TAIL_RE = /(Follow @timesculture[^\n]{0,80})\s*\n+(?=[\s\S]{0,1200}?(?:Going out or staying in\?|More from Theatre & Dance))[\s\S]*$/;
+const TIMES_RELATED_TAIL_RE = /(Follow @timesculture[^\n]{0,80})\n\s*(?=[\s\S]{0,1200}?(?:Going out or staying in\?|More from Theatre & Dance))[\s\S]*$/;
 // A run-time token ("155 minutes", "120min") sits between the last sentence and the listing.
 const TIMES_DURATION_TAIL_RE = /\s*\b\d{2,3}\s*(?:min(?:ute)?s?)\s*$/i;
 const TIMES_FOOTER_EVIDENCE_RE = /★|\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b[Tt]o (?:[A-Z][a-z]{2,8} \d{1,2}|\d{1,2} [A-Z][a-z]{2,8})\b/;
