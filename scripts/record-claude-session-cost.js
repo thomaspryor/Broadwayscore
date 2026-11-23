@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+require('./lib/cli-help').exitOnHelp(module);
+
 /**
  * record-claude-session-cost.js (BRO-5671): fill data/audit/claude-session-cost.jsonl.
  *
