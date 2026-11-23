@@ -1723,3 +1723,25 @@ describe('BRO-8195: a Theatre Record stub whose text never names the show is ano
     assert.equal(T.noUrlStubVerdict(real, { show: J19, allShows: [J19], file: 'x--y.json', showHasFile: () => false, siblingHasFile: () => false }), null);
   });
 });
+
+describe('BRO-8195 nearSameArticleUrl: one article under a typo / censored / old-host url settles as same-article', () => {
+  const { nearSameArticleUrl } = require('../../scripts/replay-pending-bylines.js');
+  test('the five real open pairs from 2026-11-23 match', () => {
+    const pairs = [
+      ['https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/', 'https://culturesauce.com/ther-desert-cities-julia-louis-dreyfus-broadway-review/'],
+      ['https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney', 'https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy'],
+      ['https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r', 'https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r'],
+      ['http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html', 'https://www.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html'],
+      ['https://www.theatermania.com/news/hold-on-to-me-darling_76306/', 'http://www.theatermania.com/off-broadway/reviews/hold-on-to-me-darling_76306.html'],
+    ];
+    for (const [a, b] of pairs) assert.equal(nearSameArticleUrl(a, b), true, `${a} ~ ${b}`);
+  });
+  test('different articles do not match', () => {
+    assert.equal(nearSameArticleUrl('https://www.nytimes.com/2011/11/18/theater/reviews/private-lives-review.html', 'https://www.washingtonpost.com/2011/11/18/theater/reviews/private-lives-review.html'), false);
+    assert.equal(nearSameArticleUrl('https://www.timeout.com/newyork/theater/hamlet-review-2019', 'https://www.timeout.com/newyork/theater/macbeth-review-2019'), false);
+    assert.equal(nearSameArticleUrl('https://deadline.com/2026/09/i-play-rocky-review-peter-farrelly-biopic-tallones-classic-1237100498/', 'https://deadline.com/2026/11/indie-films-opening-i-play-rocky-club-kid-wild-horse-nine-1237215727/'), false);
+    assert.equal(nearSameArticleUrl('https://deadline.com/2026/09/rocky-review-broadway-1237100498/', 'https://deadline.com/2026/09/rocky-review-broadway-1237100499/'), false);
+    assert.equal(nearSameArticleUrl('https://www.lsa.example/reviews/story.asp?ID=123456', 'https://www.lsa.example/reviews/story.asp?ID=123457'), false);
+    assert.equal(nearSameArticleUrl('https://www.theatermania.com/news/review_12/', 'https://www.theatermania.com/off-broadway/review_12.html'), false);
+  });
+});

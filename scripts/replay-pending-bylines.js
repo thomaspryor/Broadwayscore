@@ -434,6 +434,50 @@ function sameTrailingArticleId(u1, u2) {
   const a = key(u1), b = key(u2);
   return !!a && a === b;
 }
+/**
+ * BRO-8195: one article whose two stored urls differ by a typo, a censored word or an old host: 5 of the last 24
+ * open stubs (culturesauce "ther-desert" vs "other-desert", Time Out "mccartney" vs "mccarthy", The Times "org*sms",
+ * theater.nytimes.com vs www.nytimes.com, TheaterMania /news/x_76306/ vs /off-broadway/reviews/x_76306.html).
+ * Same site (subdomain dropped) and either the same distinctive last segment (an id or 4+ words) or paths within
+ * 2 edits of each other on a 30+ char path. Pure.
+ */
+function nearSameArticleUrl(u1, u2) {
+  const parse = (u) => {
+    try {
+      const x = new URL(String(u || ''));
+      const labels = x.hostname.toLowerCase().split('.');
+      const site = labels.slice(labels.length >= 3 && /^(co|com|org|ac)$/.test(labels[labels.length - 2]) ? -3 : -2).join('.');
+      // Id-routed urls (LSA story.asp?ID=) are different articles per id: id-like query params stay in the key.
+      const ids = [...x.searchParams].filter(([k]) => /^(id|p|sid|aid|story|article|articleid|storyid)$/i.test(k)).map(([k, v]) => `${k.toLowerCase()}=${v}`).sort().join('&');
+      const p = decodeURIComponent(x.pathname).toLowerCase().replace(/\.html?$/, '').replace(/\/+$/, '') + (ids ? `?${ids}` : '');
+      return { site, path: p, last: p.split('/').filter(Boolean).pop() || '' };
+    } catch { return null; }
+  };
+  const a = parse(u1), b = parse(u2);
+  if (!a || !b || a.site !== b.site) return false;
+  if (a.path === b.path) return true;
+  // Ids decide: two article ids (a 4+ digit run, or an id query param) that differ are two articles.
+  const idsOf = (x) => (x.path.match(/\d{4,}/g) || []).join(',');
+  if (idsOf(a) !== idsOf(b)) return false;
+  const distinctive = (seg) => /\d{5,}/.test(seg) || seg.split(/[-_]+/).filter(Boolean).length >= 4;
+  if (a.last && a.last === b.last && distinctive(a.last)) return true;
+  if (Math.min(a.path.length, b.path.length) < 30 || Math.abs(a.path.length - b.path.length) > 2) return false;
+  // Bounded edit distance (<= 2), banded so it stays linear in the path length.
+  const n = a.path.length, m = b.path.length, K = 2;
+  let prev = Array.from({ length: m + 1 }, (_, j) => j);
+  for (let i = 1; i <= n; i++) {
+    const cur = new Array(m + 1).fill(K + 1);
+    cur[0] = i;
+    let best = cur[0];
+    for (let j = Math.max(1, i - K); j <= Math.min(m, i + K); j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.path[i - 1] === b.path[j - 1] ? 0 : 1));
+      if (cur[j] < best) best = cur[j];
+    }
+    if (best > K) return false;
+    prev = cur;
+  }
+  return prev[m] <= K;
+}
 const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore', 'dtliThumb', 'bwwThumb', 'bwwScore', 'originalRating']; // thumbs/ratings feed the rebuild's score fallback + rave flag (BRO-8091 review)
 const present = (v) => v != null && v !== '';
 /**
@@ -450,7 +494,7 @@ function sameArticleSettleReason(data, primary, primaryFile) {
   if (who(data.criticName) && who(data.criticName) !== 'unknown' && who(data.criticName) !== who(primary.criticName)) return null;
   const { normalizeArticleUrl } = require('./lib/combined-review-utils');
   const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
-  if (!a || (a !== b && !sameTrailingArticleId(data.url, primary.url))) return null;
+  if (!a || (a !== b && !sameTrailingArticleId(data.url, primary.url) && !nearSameArticleUrl(data.url, primary.url))) return null;
   if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
   // BRO-8091: an aggregator excerpt (dtliExcerpt/showScoreExcerpt/bwwExcerpt) is only a scoring FALLBACK for a
   // body-less review. This primary already has a sound body (primaryBodyIsSound above), so an excerpt it lacks
@@ -1198,6 +1242,7 @@ module.exports = {
   findExistingFileForUrl,
   isRedundantPendingStub,
   sameTrailingArticleId,
+  nearSameArticleUrl,
   nextFetchFailureCount,
   stampFetchAttempt,
   primaryBodyIsSound,
