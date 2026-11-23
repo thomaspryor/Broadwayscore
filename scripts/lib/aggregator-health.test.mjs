@@ -267,3 +267,63 @@ test('real registry: every active feed workflow checks out and pushes data/aggre
   }
   assert.deepEqual(H.archivePersistence(H.SOURCES, steps), []);
 });
+
+// BRO-8127 class guard: "archive coverage X% vs Y% baseline" recurred 4 times in
+// 30 days (theatre.reviews x3, The Stage). Two causes, one test each.
+test('BRO-8127: shows no other source archived do not count against a source (unreviewed-show denominator)', () => {
+  // Every quarter: 10 critic-reviewed shows (all sources archive them) + from 26Q2 on,
+  // 15 shows nobody reviews (children's, one-nighters). Source A covers every reviewed show.
+  const shows = []; const a = new Set(); const b = new Set();
+  const month = { '25Q4': '11', '26Q1': '02', '26Q2': '05', '26Q3': '08' };
+  for (const q of Object.keys(month)) {
+    for (let i = 0; i < 10; i++) {
+      const id = `rev-${q}-${i}`; shows.push({ id, market: 'west-end', openingDate: `20${q.slice(0, 2)}-${month[q]}-10` }); a.add(id); b.add(id);
+    }
+    if (q >= '26Q2') for (let i = 0; i < 15; i++) shows.push({ id: `kids-${q}-${i}`, market: 'west-end', openingDate: `20${q.slice(0, 2)}-${month[q]}-12` });
+  }
+  const sources = [
+    { id: 'a', label: 'A', market: 'west-end', workflows: {} },
+    { id: 'b', label: 'B', market: 'west-end', workflows: {} },
+  ];
+  const withPeers = H.assess({ sources, shows, now: NOW, archives: { a, b }, scheduled: {} });
+  assert.deepEqual(withPeers.findings, [], 'full coverage of reviewed shows must not flag');
+  // Red leg: the pre-fix all-shows denominator reads this as 100% -> 40% and flags.
+  const v = H.coverageVerdict(H.coverageSeries(shows, a, { market: 'west-end', now: NOW }));
+  assert.equal(v.flagged, true);
+});
+
+test('BRO-8127: a source that stops archiving shows its peers still archive IS flagged', () => {
+  const { shows, ids: all } = fixture({ '25Q4': [10, 10], '26Q1': [10, 10], '26Q2': [10, 10], '26Q3': [10, 10] });
+  const a = new Set([...all].filter(id => !/26Q[23]/.test(id)));
+  const sources = [
+    { id: 'a', label: 'A', market: 'west-end', workflows: {} },
+    { id: 'b', label: 'B', market: 'west-end', workflows: {} },
+  ];
+  const { findings } = H.assess({ sources, shows, now: NOW, archives: { a, b: all }, scheduled: {} });
+  assert.deepEqual(findings.map(f => f.source), ['a']);
+});
+
+test('BRO-8127: coverage-drop title is stable (no percentages or quarters) so one card tracks the condition', () => {
+  const mk = (n) => {
+    const { shows, ids } = fixture({ '25Q4': [100, 59], '26Q1': [100, 59], '26Q2': [100, n], '26Q3': [100, 0] });
+    const sources = [{ id: 'a', label: 'A', market: 'west-end', workflows: {} }];
+    return H.assess({ sources, shows, now: NOW, archives: { a: ids }, scheduled: {} }).findings[0];
+  };
+  const f1 = mk(12), f2 = mk(5);
+  assert.notEqual(f1.message, f2.message);
+  assert.equal(f1.title, f2.title);
+  assert.doesNotMatch(f1.title, /\d/);
+});
+
+test('BRO-8127: The Stage tolerates editorial swing (ratio 0.5) but a collapse or dead quarter still flags', () => {
+  const stage = H.SOURCES.find(s => s.id === 'thestage-roundups');
+  assert.equal(stage.coverageOpts.dropRatio, 0.5);
+  const run = (n26q2, n26q3) => {
+    const { shows: raw, ids } = fixture({ '25Q4': [10, 8], '26Q1': [10, 8], '26Q2': [10, n26q2], '26Q3': [10, n26q3] });
+    const shows = raw.map(x => ({ ...x, category: 'west-end' }));
+    return H.assess({ sources: [{ ...stage, workflows: {} }], shows, now: NOW, archives: { 'thestage-roundups': ids }, scheduled: {} }).findings.length;
+  };
+  assert.equal(run(5, 4), 0, '80% -> 45% is editorial swing');
+  assert.equal(run(2, 2), 1, '80% -> 20% is a collapse');
+  assert.equal(run(4, 0), 1, 'dead latest quarter always flags');
+});

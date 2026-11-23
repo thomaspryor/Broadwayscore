@@ -29,7 +29,10 @@
 // market-wide denominator read as a collapse for every West End aggregator. Same
 // reason the New York sources filter category 'broadway'.
 const SOURCES = Object.freeze([
-  { id: 'thestage-roundups', label: 'The Stage roundups', market: 'west-end', category: 'west-end',
+  // dropRatio 0.5 (BRO-8127): roundups are an editorial pick, not a page per show, so the share
+  // of peer-archived shows The Stage rounds up swings 53-75% quarter to quarter on its own.
+  // Dead scrapes still page: deadNow (0%), workflow liveness and archive-persistence checks.
+  { id: 'thestage-roundups', label: 'The Stage roundups', market: 'west-end', category: 'west-end', coverageOpts: { dropRatio: 0.5 },
     workflows: { 'scrape-thestage-roundups.yml': 7, 'sweep-we-aggregators.yml': 7 } },
   { id: 'stagedoor', label: 'Stagedoor', market: 'west-end', category: 'west-end',
     workflows: { 'scrape-stagedoor.yml': 7 },
@@ -77,7 +80,7 @@ function quarterOf(dateStr) {
  * @param {Set<string>} archivedIds show ids that have an archived page
  * @returns {Array<{quarter,total,covered,pct}>} ascending by quarter
  */
-function coverageSeries(shows, archivedIds, { market, category, now = new Date(), graceDays = DEFAULTS.graceDays } = {}) {
+function coverageSeries(shows, archivedIds, { market, category, now = new Date(), graceDays = DEFAULTS.graceDays, expectedIds = null } = {}) {
   const cutoff = new Date(now.getTime() - graceDays * 86400000).toISOString().slice(0, 10);
   const currentQ = quarterOf(now.toISOString()); // still filling in: never judged
   const byQ = new Map();
@@ -86,6 +89,10 @@ function coverageSeries(shows, archivedIds, { market, category, now = new Date()
     if (market && s.market !== market) continue;
     if (category && s.category !== category) continue;
     if (s.openingDate > cutoff) continue;
+    // BRO-8127: only shows some OTHER source in the market archived count as
+    // expected. Children's, one-night and unreviewed shows no aggregator covers
+    // inflated the denominator, so a quarter heavy in them read as a collapse.
+    if (expectedIds && !expectedIds.has(s.id)) continue;
     const q = quarterOf(s.openingDate);
     if (!q || q === currentQ) continue;
     const row = byQ.get(q) || { quarter: q, total: 0, covered: 0 };
@@ -99,6 +106,24 @@ function coverageSeries(shows, archivedIds, { market, category, now = new Date()
 }
 
 const mean = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
+
+/**
+ * BRO-8127: show ids that at least one OTHER active source in the same market
+ * archived. The denominator for that source's coverage. Null when no peer
+ * archive was readable (caller falls back to every show).
+ */
+function peerArchivedIds(source, sources, archives) {
+  const out = new Set();
+  let readable = false;
+  for (const o of sources) {
+    if (o.id === source.id || o.retired || o.market !== source.market) continue;
+    const a = archives && archives[o.id];
+    if (!(a instanceof Set)) continue;
+    readable = true;
+    for (const id of a) out.add(id);
+  }
+  return readable ? out : null;
+}
 
 /**
  * Recent quarters against the source's own trailing baseline. Thin quarters
@@ -243,11 +268,14 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, archiveSt
     if (s.retired) { report.push({ source: s.id, retired: s.retired }); continue; }
     const entry = { source: s.id, label: s.label };
     if (archives && archives[s.id]) {
-      const series = coverageSeries(shows, archives[s.id], { market: s.market, category: s.category, now, graceDays: opts.graceDays });
-      const v = coverageVerdict(series, opts);
+      const series = coverageSeries(shows, archives[s.id], { market: s.market, category: s.category, now, graceDays: opts.graceDays, expectedIds: peerArchivedIds(s, sources, archives) });
+      const v = coverageVerdict(series, { ...s.coverageOpts, ...opts });
       entry.coverage = { series: series.slice(-6), ...v };
       if (v.flagged) {
-        findings.push({ source: s.id, kind: 'coverage-drop',
+        // title is stable across days and quarter rolls (BRO-8127): the router and
+        // digest-autofix dedupe by title, and a title carrying percentages and
+        // quarter names minted a fresh card each time they moved.
+        findings.push({ source: s.id, kind: 'coverage-drop', title: `${s.label}: archive coverage dropped below its own baseline`,
           message: `${s.label}: archive coverage ${v.recent}% in ${v.recentQuarters.join('+')} vs ${v.baseline}% baseline (${v.baselineQuarters.join('+')})` });
       }
     }
@@ -305,6 +333,6 @@ function resolvedConditionKeys(findings, sources, { archives, runs, archiveSteps
 }
 
 module.exports = {
-  SOURCES, DEFAULTS, quarterOf, coverageSeries, coverageVerdict, workflowVerdict,
+  SOURCES, DEFAULTS, quarterOf, peerArchivedIds, coverageSeries, coverageVerdict, workflowVerdict,
   retiredConsistency, archiveSteps, archivePersistence, assess, conditionKey, resolvedConditionKeys,
 };

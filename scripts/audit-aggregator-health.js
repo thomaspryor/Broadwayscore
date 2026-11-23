@@ -78,7 +78,7 @@ async function alertFindings(findings, sources, have) {
   let raised = 0;
   for (const f of findings) {
     try {
-      await routeAlert({ conditionKey: conditionKey(f), title: f.message, description: `${f.message}\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.`, severity: 'warning', disposition: 'digest', cooldownHours: 20 });
+      await routeAlert({ conditionKey: conditionKey(f), title: f.title || f.message, description: `${f.message}\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.`, severity: 'warning', disposition: 'digest', cooldownHours: 20 });
       raised++;
     } catch (err) { console.error(`[aggregator-health] alert failed for ${conditionKey(f)}: ${err.message}`); process.exitCode = 1; }
   }
