@@ -1,22 +1,24 @@
 {
-  "generatedAt": "2026-11-23T06:06:08.027Z",
+  "generatedAt": "2026-11-23T12:59:08.648Z",
   "night": "2026-11-22",
   "counts": {
     "total": 1,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 1
+    "failed": 1,
+    "notGraded": 0
   },
   "lines": [
     {
-      "verdict": "PENDING",
-      "line": "Fantasma: not graded yet, still being checked."
+      "verdict": "FAIL",
+      "line": "Fantasma: published by the regular pipeline; 1 of 2 reviews live by 12:00am; Talkin' Broadway went live at 12:21am (late). Failed."
     }
   ],
   "scoreboard": {
-    "graded": 25,
+    "graded": 26,
     "passed": 4,
     "passedOnOwn": 3
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "fantasma-off-broadway-2026|2026-11-22|review:talkinbroadway:Moshe Bloxenheim": "2026-11-23T12:59:08.648Z"
+  }
 }
