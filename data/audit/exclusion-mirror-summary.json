@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-11-23T22:23:55.837Z",
-  "totalScanned": 84770,
-  "totalExcluded": 31312,
+  "generatedAt": "2026-11-23T22:50:41.326Z",
+  "totalScanned": 84771,
+  "totalExcluded": 31309,
   "ruleCounts": {
-    "wrongProduction": 20349,
+    "wrongProduction": 20351,
     "duplicateOf": 2376,
-    "rejectionReason": 1592,
+    "rejectionReason": 1587,
     "wrongShow": 1368,
     "nonReview": 926,
-    "noTextOrScoreSignal": 924,
+    "noTextOrScoreSignal": 921,
     "unverifiableWebSearchRow": 883,
     "wrongAttribution": 347,
     "isRoundupArticle": 340,
     "knownSyndicationSecondary": 275,
     "cvWrongArticleHighConfidence": 263,
-    "crossOutletDuplicate": 247,
+    "crossOutletDuplicate": 248,
     "blockedReviewUrl": 236,
     "listingPageUrl": 172,
     "bodylessAggregatorScoreUncorroborated": 153,
@@ -25,7 +25,7 @@
     "roundupPageAsReview": 62,
     "contentTierInvalid": 54,
     "submissionRefusedUrl": 52,
-    "rejectedAt": 49,
+    "rejectedAt": 50,
     "directorMismatch": 41,
     "cancelledBeforeOpening": 31,
     "combinedReviewOfOtherMemberOnly": 27,
@@ -41,19 +41,23 @@
     "previewFirstLookPiece": 2,
     "wrongContentNoUsableSignal": 2,
     "errorPage": 1,
-    "personalRepost": 1
+    "personalRepost": 1,
+    "suspectedMisattribution": 1
   },
   "ruleDeltas": {
     "wrongProduction": 2,
-    "rejectionReason": 1,
-    "noTextOrScoreSignal": 3
+    "rejectionReason": -5,
+    "noTextOrScoreSignal": -3,
+    "crossOutletDuplicate": 1,
+    "rejectedAt": 1,
+    "suspectedMisattribution": 1
   },
-  "previousGeneratedAt": "2026-11-23T22:03:36.440Z",
+  "previousGeneratedAt": "2026-11-23T22:23:55.837Z",
   "mirror": {
     "comparedShows": 4895,
-    "comparedFiles": 84148,
-    "agreeExcluded": 31298,
-    "agreeIncluded": 52350,
+    "comparedFiles": 84149,
+    "agreeExcluded": 31260,
+    "agreeIncluded": 52389,
     "mirrorOnly": 185,
     "rebuildOnly": 315,
     "disagreements": 500,
@@ -86,7 +90,7 @@
     "notComparedShows": 51,
     "notComparedFiles": 622
   },
-  "previousDisagreementRate": 0.006,
+  "previousDisagreementRate": 0.0059,
   "reasonlessWrongAttribution": 48,
   "previousReasonlessWrongAttribution": 48
 }

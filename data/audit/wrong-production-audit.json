@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T22:24:19.689Z",
+  "timestamp": "2026-11-23T22:51:04.781Z",
   "stats": {
-    "totalReviews": 84441,
-    "alreadyFlagged": 22525,
+    "totalReviews": 84442,
+    "alreadyFlagged": 22527,
     "dateGuardCatches": 242,
     "directorMismatch": 3887,
     "tvFilmSignals": 2423,
-    "londonSignals": 3990,
+    "londonSignals": 3989,
     "offBroadwaySignals": 788,
     "yearMismatch": 394,
-    "noPublishDate": 8271
+    "noPublishDate": 8269
   },
   "findings": [
     {
@@ -2142,7 +2142,7 @@
     {
       "showId": "a-christmas-carol-west-end-2024",
       "file": "times-uk--ben-dowell.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2024-11-21",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-john-simm-old-vic-w2wtzgpqq",
       "findings": [
@@ -18903,7 +18903,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2024-08-29",
       "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review",
       "findings": [
@@ -18959,7 +18959,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2024",
       "file": "times-uk--rachel-halliburton.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2024-08-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/death-of-england-closing-time-review-z5cbw6t7q",
       "findings": [
@@ -61839,7 +61839,7 @@
     {
       "showId": "skylight-west-end-2014",
       "file": "times-uk--dominic-maxwell.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2014-07-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/skylight-at-wyndhamstheatre-wc2-vhnfx88d98d",
       "findings": [
@@ -71180,6 +71180,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "thingsforkidsinkent--things-for-kids-in-kent.json",
+      "score": 96,
       "publishDate": "2025-08-18",
       "url": "https://www.thingsforkidsinkent.co.uk/theatre-reviews-show-reviews/comedy-about-spies",
       "findings": [
@@ -91760,6 +91761,7 @@
     {
       "showId": "2-22-a-ghost-story-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 80,
       "publishDate": "2023-02-02",
       "url": "https://www.allthatdazzles.co.uk/post/review-2-22-a-ghost-story-lyric-theatre",
       "findings": [
@@ -94388,19 +94390,6 @@
       ]
     },
     {
-      "showId": "alice-in-wonderland-west-end-2025",
-      "file": "theatreandtonic--emmie-newitt.json",
-      "publishDate": "2025-07-28",
-      "url": "https://theatreandtonic.co.uk/blog/alice-in-wonderland-theatre-on-kew-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
       "showId": "all-about-eve-west-end-2019",
       "file": "broadwayworld--marianka-swain.json",
       "score": 66,
@@ -95342,7 +95331,7 @@
     {
       "showId": "an-oak-tree-west-end-2025",
       "file": "guardian--kate-wyver.json",
-      "score": null,
+      "score": 85,
       "publishDate": "2025-05-07",
       "url": "https://www.theguardian.com/stage/2025/may/07/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
       "findings": [
@@ -95398,6 +95387,7 @@
     {
       "showId": "an-oak-tree-west-end-2025",
       "file": "matineemouse--megan-oneill.json",
+      "score": 43,
       "publishDate": "2025-05-07",
       "url": "https://matineemouse.substack.com/p/an-oak-tree-review",
       "findings": [
@@ -143020,6 +143010,7 @@
     {
       "showId": "the-master-builder-west-end-2016",
       "file": "londontheatre1--kate-beswick.json",
+      "score": 94,
       "publishDate": "2016-02-08",
       "url": "https://www.londontheatre1.com/reviews/5-star-the-master-builder-at-the-old-vic-review/",
       "findings": [
@@ -149871,6 +149862,7 @@
     {
       "showId": "twelfth-night-west-end-2017",
       "file": "west-end-wilma--bob-galereux.json",
+      "score": 88,
       "publishDate": "2017-02-25",
       "url": "https://westendwilma.com/review-twelfth-night-national-theatre/",
       "findings": [
