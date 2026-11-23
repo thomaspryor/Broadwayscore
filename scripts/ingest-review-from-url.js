@@ -188,12 +188,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--submitter-critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--submitter-critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
   process.exit(1);
 }
 
@@ -580,6 +580,10 @@ if (!show) {
     byline: extractByline(html, { outletId, text }),
     stageCritic: stageMeta && stageMeta.criticName,
     outletEntry: (require('../data/outlet-registry.json').outlets || {})[outletId],
+    outletId,
+    submitterCritic: getArg('submitter-critic'),
+    pageTitle: (/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i.exec(html) || /<title[^>]*>([^<]+)</i.exec(html) || [])[1],
+    text,
   });
 
   // Page-date extraction: when --publish-date wasn't supplied, pull it from

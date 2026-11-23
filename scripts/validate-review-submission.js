@@ -516,6 +516,12 @@ async function main() {
         process.env.GITHUB_OUTPUT,
         `review_url=${result.submissionData?.reviewUrl || ''}\n`
       );
+      // BRO-8211: submitter's critic name (single line) so ingest can use it when the
+      // page byline is just the publication name. Passed as --submitter-critic.
+      fs.appendFileSync(
+        process.env.GITHUB_OUTPUT,
+        `critic_name=${String(result.submissionData?.criticName || '').replace(/[\r\n]+/g, ' ').trim()}\n`
+      );
       fs.appendFileSync(
         process.env.GITHUB_OUTPUT,
         `show_url=${result.showUrl || ''}\n`

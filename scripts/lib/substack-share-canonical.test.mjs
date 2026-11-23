@@ -43,3 +43,29 @@ test('attribute order, spacing and data- attributes', () => {
   assert.equal(substackShareCanonicalUrl(share, `<link rel = "canonical" href = "${want}">`), want);
   assert.equal(substackShareCanonicalUrl(share, `<link data-rel="canonical" href="${want}">`), null);
 });
+
+// BRO-8211: a multi-critic Substack's byline is the publication name; the critic
+// must come from the submitter or the "NAME reviews TITLE" post title.
+const { resolveCritic, isPublicationName, criticFromReviewsTitle } = require('./resolve-critic.js');
+const BG = { displayName: 'The BroadGAYS', aliases: ['stephenkearley', 'the-broadgays', 'broadgays'] };
+
+test('publication-name byline never becomes the critic (title pattern)', () => {
+  assert.equal(resolveCritic({ byline: 'The BroadGAYS', outletEntry: BG, outletId: 'stephenkearley',
+    pageTitle: 'TONY MARINELLI reviews FALLS FOR JODIE at The Tank' }), 'Tony Marinelli');
+  assert.equal(resolveCritic({ byline: 'The BroadGAYS', outletEntry: BG, outletId: 'stephenkearley',
+    text: 'STEPHEN KEARLEY reviews CRAZY MAMA at 59E59' }), 'Stephen Kearley');
+});
+
+test('submitter critic beats the title; --critic beats both', () => {
+  const base = { byline: 'The BroadGAYS', outletEntry: BG, outletId: 'stephenkearley', pageTitle: 'TONY MARINELLI reviews X' };
+  assert.equal(resolveCritic({ ...base, submitterCritic: 'Stephen Kearley' }), 'Stephen Kearley');
+  assert.equal(resolveCritic({ ...base, criticArg: 'Someone Else', submitterCritic: 'Stephen Kearley' }), 'Someone Else');
+});
+
+test('publication byline with no critic signal resolves Unknown, real bylines untouched', () => {
+  assert.equal(resolveCritic({ byline: 'The BroadGAYS', outletEntry: BG, outletId: 'stephenkearley' }), 'Unknown');
+  assert.equal(resolveCritic({ byline: 'Jesse Green', outletEntry: BG, outletId: 'stephenkearley', submitterCritic: 'X Y' }), 'Jesse Green');
+  assert.equal(isPublicationName('the-broadgays', BG, 'stephenkearley'), true);
+  assert.equal(criticFromReviewsTitle('Variety reviews the show'), null);
+  assert.equal(criticFromReviewsTitle('We review the show'), null);
+});
