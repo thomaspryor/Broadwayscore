@@ -190,9 +190,7 @@ function emptyRecord({ showId, night, market = null, embargoAt, embargoSource = 
 
 // Same identity as lib/dedup-by-critic.js, so counts agree with verify-opening-night-live.js.
 function reviewKey(r) {
-  const outlet = String(r.outlet || 'unknown').toLowerCase();
-  const critic = String(r.critic || 'unknown').toLowerCase();
-  return `${outlet}|${critic}`;
+  return require('./dedup-by-critic').reviewIdentityKey({ outlet: String(r.outlet || ''), criticName: String(r.critic || '') });
 }
 
 function tierNum(t) {
