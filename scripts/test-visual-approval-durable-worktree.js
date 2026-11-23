@@ -3,6 +3,7 @@
 // BRO-8164: the working-tree patch id must equal the committed id for the same UI content (so the durable marker mints),
 // and editing after the screenshot must change it. Real functions, real git repo.
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
