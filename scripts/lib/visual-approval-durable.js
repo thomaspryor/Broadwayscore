@@ -39,6 +39,26 @@ function uiPatchId(cwd, ref = 'HEAD', base = 'origin/main') {
   } catch { return null; }
 }
 
+/**
+ * Same id as uiPatchId() for the WORKING TREE (BRO-8164): sessions screenshot before committing, so the verdict used to
+ * carry no id and the durable marker never minted. Diffs <merge-base> against the working-tree content of the UI files
+ * (tracked changes only); the same content committed gives the same id. '' when untracked UI files exist (their content
+ * is not in the diff, so an id would not match the commit) or on any error/no UI change.
+ */
+function uiPatchIdWorkingTree(cwd, base = 'origin/main') {
+  try {
+    const mb = git(cwd, ['merge-base', base, 'HEAD']);
+    const untracked = git(cwd, ['ls-files', '--others', '--exclude-standard']).split('\n').filter((f) => UI_RE.test(f));
+    if (untracked.length) return '';
+    const files = git(cwd, ['diff', '--name-only', '--no-renames', mb]).split('\n').filter((f) => UI_RE.test(f));
+    if (!files.length) return '';
+    const diff = git(cwd, ['diff', '--binary', mb, '--', ...files]);
+    if (!diff) return '';
+    const out = execFileSync('git', ['patch-id', '--verbatim'], { input: diff, encoding: 'utf8', cwd, maxBuffer: 256 * 1024 * 1024 }).trim();
+    return out ? out.split(/\s+/)[0].slice(0, 20) : '';
+  } catch { return ''; }
+}
+
 const ymd = (d) => d.toISOString().slice(0, 10).replace(/-/g, '');
 
 /** -> true when origin holds an unexpired marker for this id. Any error -> false. */
@@ -77,4 +97,4 @@ function main(argv) {
   return 2;
 }
 if (require.main === module) require('./exit-flushed').exitFlushed(main(process.argv.slice(2)));
-module.exports = { uiPatchId, hasDurableApproval, mintDurableApproval, UI_RE, PREFIX, TTL_DAYS };
+module.exports = { uiPatchId, uiPatchIdWorkingTree, hasDurableApproval, mintDurableApproval, UI_RE, PREFIX, TTL_DAYS };

@@ -42,8 +42,11 @@ export function evaluate(f) {
   }
   if (needsVisual) {
     const v = f.verdict || {};
-    const ok = !!v.exists && v.schemaOk !== false && v.overallPass === true && !!v.uiPatchId && v.uiPatchId === v.currentPatchId;
-    add('verdict', 'visual verdict exists and matches this diff', ok,
+    const fresh = !!v.exists && v.schemaOk !== false && v.overallPass === true && !!v.uiPatchId && v.uiPatchId === v.currentPatchId;
+    // BRO-8164: an already-approved diff needs no new screenshots, unless the verdict names a different diff.
+    const approvedStill = !!f.approval?.approved && (!v.uiPatchId || v.uiPatchId === v.currentPatchId);
+    const ok = fresh || approvedStill;
+    add('verdict', approvedStill && !fresh ? 'visual verdict: already approved, no new screenshots needed' : 'visual verdict exists and matches this diff', ok,
       !v.exists ? 'no verdict.json for this branch' : v.schemaOk === false ? 'verdict is an old schema' : v.overallPass !== true ? 'verdict says the visual check did not pass' : v.uiPatchId !== v.currentPatchId ? 'verdict is for an older version of the UI diff' : '',
       '/visual-qa (screenshots at 390 and 1440), then re-run this');
   }
