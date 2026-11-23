@@ -164,6 +164,8 @@ const GUARDIAN_TOPICS_FOOTER_RE = /\s*Explore more on these topics[\s\S]{0,260}?
 
 function stripGuardianTopicsFooter(text) {
   if (!text || typeof text !== 'string') return text;
+  // BRO-8012: the regex needs this exact phrase; includes() skips a full-text scan.
+  if (!text.includes('Explore more on these topics')) return text;
   const m = GUARDIAN_TOPICS_FOOTER_RE.exec(text);
   return m ? text.slice(0, m.index) : text;
 }
@@ -458,7 +460,8 @@ function stripRunInfoTrailer(text) {
   for (let i = 0; i < 5; i++) {
     const before = t;
     // the show widget: only menu words after it, never prose
-    const w = BWW_WIDGET_RE.exec(t);
+    // BRO-8012: each branch of BWW_WIDGET_RE needs 'Tix' or 'Get Show Info'; skip the scan without them.
+    const w = (t.includes('Tix') || t.includes('Get Show Info')) && BWW_WIDGET_RE.exec(t);
     if (w && !/\b[a-z]{2,}\s+[a-z]{2,}\s+[a-z]{2,}\b/.test(w[1])) t = t.slice(0, w.index).trimEnd();
     // a photo credit is names only ("Photography by Helen Murray"), not
     // "Photos by Weegee line the walls of the set, and ..."
