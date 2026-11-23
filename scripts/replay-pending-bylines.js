@@ -42,7 +42,7 @@ const { verifyAggregatorUrl, OPAQUE_INCONCLUSIVE } = require('./lib/show-match-v
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
+const { findExistingFileForUrl: findExistingFileForUrlShared, canonicalReviewUrl } = require('./lib/review-url-clusters');
 const { isRecentlyLive } = require('./lib/show-liveness');
 const { markEmptyBodyForRetry, recoveryPatch } = require('./lib/empty-body-retry');
 const { emitStage } = require('./lib/stage-latency');
@@ -389,6 +389,21 @@ function isRedundantPendingStub(data, landedFile) {
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
+/**
+ * BRO-8194: the ONLY way the drain may remove a _pending stub it does not promote: the show already holds a file
+ * carrying the same canonical url, so the article stays traceable. Returns false (and deletes nothing) otherwise;
+ * the caller then settles the stub with a typed reason. The url-year and non-Met-opera rejects and the same-article
+ * collision drop used to unlinkSync directly: 435 stubs (2026-11-20..23) left no file on any show and no tag.
+ */
+function removePendingStubAsFiled(filepath, landedPath, url) {
+  let landedUrl = null;
+  try { landedUrl = JSON.parse(fs.readFileSync(landedPath, 'utf8')).url; } catch { return false; }
+  const a = canonicalReviewUrl(url);
+  if (!a || canonicalReviewUrl(landedUrl) !== a) return false;
+  fs.unlinkSync(filepath);
+  return true;
+}
+
 /** BRO-8023: a filed primary whose body the rebuild would score (a real tier, no exclusion/body flag). Pure. */
 function primaryBodyIsSound(primary) {
   if (!primary || typeof primary.fullText !== 'string' || !primary.fullText.trim()) return false;
@@ -613,6 +628,13 @@ async function processShow(showId, deps = {}) {
       kept++;
       continue;
     }
+    // BRO-8194: settle (tag with a typed reason, keep on disk). The drain never deletes an unpromoted stub.
+    const settleStub = (reason) => {
+      if (dry) return;
+      data.promoteSkippedReason = reason;
+      data.promoteSkippedAt = now().toISOString();
+      try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+    };
     // BRO-8065: a stub whose url is a bot-wall interstitial gets the guarded article url back. A skip that was
     // decided from the wall's url alone (it named no show) is re-opened, so the real review is fetched.
     // Another writer (the write guard) may have unwrapped the url first: the url-only skip is re-opened either way.
@@ -726,10 +748,9 @@ async function processShow(showId, deps = {}) {
     const landed = findExistingFileForUrl(showId, data.outletId, url, root);
     let landedData = null;
     if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
-    if (isRedundantPendingStub(data, landed)) {
+    if (isRedundantPendingStub(data, landed) && (dry || removePendingStubAsFiled(filepath, path.join(root, showId, landed), url))) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       verdictCount('duplicate: url already filed for this show');
-      if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
       continue;
     }
@@ -788,9 +809,10 @@ async function processShow(showId, deps = {}) {
 
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
     if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((show || {}).venue)).rejected) {
-      console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+      // BRO-8194: settled with a typed reason and KEPT, never deleted (a reject must leave a trace).
+      console.log(`  [${file}] REJECT: non-Met opera house URL — tagged, kept`);
       verdictCount('rejected: non-Met opera house url');
-      if (!dry) fs.unlinkSync(filepath);
+      settleStub('non-Met opera house url (BRO-8194 reject)');
       rejected++;
       continue;
     }
@@ -802,9 +824,9 @@ async function processShow(showId, deps = {}) {
         return ys.length ? Array.from({ length: Math.max(...ys) - Math.min(...ys) + 1 }, (_, i) => Math.min(...ys) + i) : [];
       });
       if (badYear && !runYears.includes(Number(badYear))) {
-        console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — ${dry ? 'DRY, not deleting' : 'deleting'}`);
+        console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — tagged, kept`);
         verdictCount('rejected: url year more than a year from opening');
-        if (!dry) fs.unlinkSync(filepath);
+        settleStub(`url year ${badYear} is more than a year from opening ${openingYear} (BRO-8194 reject)`);
         rejected++;
         continue;
       }
@@ -955,9 +977,16 @@ async function processShow(showId, deps = {}) {
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
       // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
       if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
-        console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this article`);
-        if (!dry) fs.unlinkSync(filepath);
-        droppedRedundant++;
+        if (dry || removePendingStubAsFiled(filepath, newPath, url)) {
+          console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this url`);
+          droppedRedundant++;
+          continue;
+        }
+        // BRO-8194: same article under another link form: settle with the file it collides with, never delete.
+        console.log(`  [${file}] ${newFilename} already carries this article (other url form) — tagged, kept`);
+        settleStub(`collision-with-existing-critic-file: ${newFilename} (same article, BRO-8194)`);
+        tagged++;
+        kept++;
         continue;
       }
       if (verdict === 'different-article') {

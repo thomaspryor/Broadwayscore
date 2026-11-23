@@ -248,6 +248,17 @@ const SETTLED_KEYS = ['promoteSkippedReason', 'rssIdentityRejected'];
 function isSettledPendingStub(data) {
   return !!data && SETTLED_KEYS.some((k) => !!data[k]);
 }
+/**
+ * BRO-8194: the typed reason a settled stub carries, whichever settle key set it ('' when none). The RSS identity
+ * reject keeps its reason in rssIdentityRejectedReason, not promoteSkippedReason: an audit reading only the latter
+ * reported 25 2025-26 settles as "empty reason" that were all typed. Pure.
+ */
+function settledPendingReason(data) {
+  if (!data) return '';
+  const r = String(data.promoteSkippedReason || '').trim();
+  if (r) return r;
+  return data.rssIdentityRejected ? String(data.rssIdentityRejectedReason || '').trim() : '';
+}
 
 /**
  * BRO-8090: the url's own date (a day, or a month whose first and last day agree) lands in exactly one corroborated
@@ -471,4 +482,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, settledPendingReason, showEra };

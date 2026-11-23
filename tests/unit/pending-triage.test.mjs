@@ -1453,3 +1453,79 @@ describe('BRO-8091 first fetch failure must not settle (review P1: the fresh sta
     assert.equal(nextFetchFailureCount({ pendingFetchAttemptResult: 'no-byline', pendingFetchAttemptedAt: 'x' }), 1);
   });
 });
+
+/**
+ * BRO-8194: the drain deleted 435 _pending stubs (2026-11-20..23) with no file on any show and no tag: the url-year
+ * and non-Met-opera rejects and the same-article collision drop called fs.unlinkSync directly. Class guard: a stub
+ * leaves _pending only by being written to the show (promotion) or by removePendingStubAsFiled (the show already
+ * holds that exact url). Every other outcome keeps the stub with a typed reason.
+ */
+describe('BRO-8194: the drain never deletes a _pending stub without a trace', () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const SRC = fs.readFileSync(new URL('../../scripts/replay-pending-bylines.js', import.meta.url), 'utf8');
+  const deps = (root, fetch, show = PUNCH) => ({
+    root, show, dryRun: false, heldIndex: null, explicitScope: false, allShows: [show],
+    fetch: fetch || (async () => { throw new Error('must not fetch'); }),
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  });
+  function stubRoot(stub, primary) {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8194-'));
+    const pdir = path.join(root, '_pending', PUNCH.id);
+    fs.mkdirSync(pdir, { recursive: true });
+    fs.mkdirSync(path.join(root, PUNCH.id), { recursive: true });
+    if (primary) fs.writeFileSync(path.join(root, PUNCH.id, primary.file), JSON.stringify(primary.data));
+    const p = path.join(pdir, 'culturesauce--abc.json');
+    fs.writeFileSync(p, JSON.stringify(stub));
+    return { root, p };
+  }
+
+  test('static: every unlinkSync in the drain is a promotion (file written first) or removePendingStubAsFiled', () => {
+    const lines = SRC.split('\n');
+    const helperStart = lines.findIndex((l) => /^function removePendingStubAsFiled\(/.test(l));
+    const helperEnd = helperStart + lines.slice(helperStart).findIndex((l) => l === '}');
+    assert.ok(helperStart > 0, 'removePendingStubAsFiled exists');
+    const bad = [];
+    lines.forEach((l, i) => {
+      if (!/\bunlinkSync\(/.test(l) || /^\s*(\*|\/\/)/.test(l)) return;
+      if (i > helperStart && i < helperEnd) return;
+      if (/writeFileSync\(newPath/.test(lines[i - 1] || '')) return; // promotion: the show's file holds the stub now
+      bad.push(`${i + 1}: ${l.trim()}`);
+    });
+    assert.deepEqual(bad, [], 'a drain path deletes a stub without promoting it or proving its url is filed');
+  });
+
+  test('a url-year reject is tagged with a typed reason and kept, not deleted', async () => {
+    // A declared earlier run makes the no-fetch triage abstain on url-year ranges, so the drain's own url-year
+    // reject decides it (how the real 431 stubs reached the unlinkSync).
+    const show = { ...PUNCH, priorRuns: [{ openingDate: '2023-05-01', closingDate: '2023-06-30' }] };
+    const { root, p } = stubRoot({ outletId: 'culturesauce', criticName: 'Unknown', url: 'https://culturesauce.com/2019/punch-review-young-vic/' });
+    const r = await processShow(PUNCH.id, deps(root, undefined, show));
+    assert.equal(r.rejected, 1, 'reached the url-year reject');
+    assert.ok(fs.existsSync(p), 'stub kept');
+    const j = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.match(T.settledPendingReason(j), /url year 2019 is more than a year from opening 2025/);
+  });
+
+  test('a same-article collision under another link form is settled with the colliding file, not deleted', async () => {
+    const primary = { file: 'culturesauce--thom-geier.json', data: { outletId: 'culturesauce', criticName: 'Thom Geier', url: 'https://culturesauce.com/punch-west-end-review-young-vic/', fullText: 'word '.repeat(600), contentTier: 'complete' } };
+    const { root, p } = stubRoot({ outletId: 'culturesauce', criticName: 'Unknown', url: 'https://culturesauce.com/theatre/punch-west-end-review-young-vic/' }, primary);
+    await processShow(PUNCH.id, deps(root, async () => ({ content: '<html><head><meta name="author" content="Thom Geier"><meta property="article:published_time" content="2025-09-27T10:00:00Z"></head><body></body></html>' })));
+    assert.ok(fs.existsSync(p), 'stub kept');
+    assert.match(T.settledPendingReason(JSON.parse(fs.readFileSync(p, 'utf8'))), /collision-with-existing-critic-file: culturesauce--thom-geier\.json/);
+  });
+
+  test('a textless stub whose exact url the show already files is still dropped (traceable by url)', async () => {
+    const U = 'https://culturesauce.com/punch-west-end-review-young-vic/';
+    const primary = { file: 'culturesauce--thom-geier.json', data: { outletId: 'culturesauce', criticName: 'Thom Geier', url: U, fullText: 'word '.repeat(600), contentTier: 'complete' } };
+    const { root, p } = stubRoot({ outletId: 'culturesauce', criticName: 'Unknown', url: U }, primary);
+    const r = await processShow(PUNCH.id, deps(root));
+    assert.equal(fs.existsSync(p), false);
+    assert.equal(r.droppedRedundant, 1);
+  });
+
+  test('settledPendingReason reads the RSS identity reason too (the 25 "empty reason" settles were typed)', () => {
+    assert.equal(T.settledPendingReason({ rssIdentityRejected: true, rssIdentityRejectedReason: 'no title/slug match to show at replay (BRO-6321)' }), 'no title/slug match to show at replay (BRO-6321)');
+    assert.equal(T.settledPendingReason({ promoteSkippedReason: 'x' }), 'x');
+    assert.equal(T.settledPendingReason({ rssIdentityRejected: true }), '');
+  });
+});
