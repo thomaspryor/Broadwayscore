@@ -32,3 +32,23 @@ test('unrelated reviews of the same show are not contained', () => {
 test('fragments under minWords never count (stock phrases are not syndication)', () => {
   assert.equal(trigramContainment('Romeo and Juliet opened tonight at the Richard Rodgers Theatre', longText).containment, 0);
 });
+
+const { containmentSyndication } = createRequire(import.meta.url)('./trigram-similarity.js');
+
+test('containmentSyndication flags only the shorter side as the copy', () => {
+  assert.ok(containmentSyndication({ text1: prefix, text2: longText, secondaryIs: 1, primaryExcluded: false }));
+  assert.equal(containmentSyndication({ text1: prefix, text2: longText, secondaryIs: 2, primaryExcluded: false }), null);
+});
+
+test('containmentSyndication refuses when the primary is itself not counted', () => {
+  assert.equal(containmentSyndication({ text1: prefix, text2: longText, secondaryIs: 1, primaryExcluded: true }), null);
+});
+
+test('containmentSyndication needs the words in order, not just shared trigrams', () => {
+  // Same 3-word chunks as the prefix, shuffled: high trigram containment is impossible to
+  // fake fully, so build a text whose sentences are reordered pieces of the long text.
+  const sentences = longText.split('. ');
+  const shuffled = sentences.filter((_, i) => i % 7 === 0).reverse().map((x) => x.split(' ').slice(0, 6).join(' ')).join(' zz ');
+  const r = containmentSyndication({ text1: shuffled, text2: longText, secondaryIs: 1, primaryExcluded: false });
+  assert.equal(r, null);
+});

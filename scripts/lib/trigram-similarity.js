@@ -50,4 +50,42 @@ function trigramContainment(text1, text2, { minWords = 20 } = {}) {
   return { containment: Math.round(100 * hit / ts.size), shorter, shorterWords: ws.length };
 }
 
-module.exports = { trigramSimilarity, trigramContainment };
+/** Longest run of consecutive words shared by both lists (word-level, DP over the shorter). */
+function longestSharedRun(a, b) {
+  let best = 0;
+  let prev = new Array(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) {
+      if (a[i - 1] === b[j - 1]) { cur[j] = prev[j - 1] + 1; if (cur[j] > best) best = cur[j]; }
+    }
+    prev = cur;
+  }
+  return best;
+}
+
+/**
+ * BRO-7391: should a same-critic, same-show pair that Jaccard missed be treated as a
+ * truncated syndicated copy? All must hold, else null:
+ *  - the shorter text is >= minWords and >= threshold% contained in the longer;
+ *  - the shorter text's words appear IN ORDER as one run covering >= half of it
+ *    (unordered trigram overlap alone could be a shared bio or production blurb);
+ *  - the side to be flagged (secondary) is the shorter one: containment never demotes
+ *    a full text behind a fragment;
+ *  - the primary is itself counted (primaryExcluded false), or the flag would leave the
+ *    review counted nowhere.
+ * @param {{text1:string, text2:string, secondaryIs:1|2, primaryExcluded:boolean, threshold?:number, minWords?:number}} p
+ * @returns {null | {containment:number, run:number, shorterWords:number}}
+ */
+function containmentSyndication({ text1, text2, secondaryIs, primaryExcluded, threshold = 90, minWords = 20 }) {
+  if (primaryExcluded) return null;
+  const c = trigramContainment(text1, text2, { minWords });
+  if (c.containment < threshold || c.shorter !== secondaryIs) return null;
+  const ws = words(c.shorter === 1 ? text1 : text2);
+  const wl = words(c.shorter === 1 ? text2 : text1);
+  const run = longestSharedRun(ws, wl);
+  if (run * 2 < ws.length) return null;
+  return { containment: c.containment, run, shorterWords: ws.length };
+}
+
+module.exports = { trigramSimilarity, trigramContainment, containmentSyndication };

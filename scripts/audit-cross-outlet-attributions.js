@@ -178,6 +178,14 @@ const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json
 // home. A homeless registry default (Stasio at boston-herald, Kennedy at
 // news-tribune) made every review that critic wrote anywhere else a suspect.
 const defaultOf = buildEvidencedDefaultHomes(registryDoc, reviews);
+{
+  // Visible, not silent: a correct default whose home rows are all missing from
+  // reviews.json drops out here too, and its drift would go unreported.
+  const dropped = Object.entries(registryDoc.outlets)
+    .filter(([oid, e]) => e && e.defaultCritic && !(defaultOf.get(e.defaultCritic) || []).includes(canonOutlet(oid)))
+    .map(([oid, e]) => `${oid}|${e.defaultCritic}`);
+  if (dropped.length) console.error(`ignoring ${dropped.length} registry defaultCritic(s) with no reviews at their own outlet: ${dropped.join(', ')}`);
+}
 const perOutletCritic = new Map();
 for (const r of reviews) {
   const key = `${canonOutlet(r.outletId)}||${r.criticName}`;

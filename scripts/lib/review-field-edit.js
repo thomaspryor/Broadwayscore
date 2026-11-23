@@ -628,7 +628,10 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   const stampEntry = { fixId: stamp.fixId, field, at: stamp.at, newValue };
   // A verdict that sets a flag binds to the url + body it was made on (BRO-6676).
   // Hashed on `next` so the edit's own retractions are part of the judged state.
-  if (newValue === true) stampEntry.boundTo = require('./approved-fix-flag').approvedFixBinding(next);
+  // BRO-7391: a criticName re-credit is also a verdict on this article's byline, and
+  // the cross-outlet audit treats it as verified triage (hasApprovedCriticName), so it
+  // must stop counting once the url or body changes.
+  if (newValue === true || field === 'criticName') stampEntry.boundTo = require('./approved-fix-flag').approvedFixBinding(next);
   next.approvedFixes = [...prior, stampEntry];
   if ((field === 'wrongShow' || field === 'wrongProduction') && newValue === false) {
     const retiered = retierAfterFlagClear(next);
