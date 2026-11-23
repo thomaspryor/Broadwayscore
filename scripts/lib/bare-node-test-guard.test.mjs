@@ -109,6 +109,7 @@ test('allowlist has no stale entries', () => {
 // sat here for weeks while no CI job ran it. A node:test file on the allowlist
 // must be registered in a manifest (or named/globbed by a workflow run: step).
 const { ciCoverageOf } = require(path.join(ROOT, 'scripts', 'lib', 'ci-test-coverage.js'));
+const { executableWorkflowText } = require(path.join(ROOT, 'scripts', 'lib', 'bash-integration-test-list.js'));
 
 function neverRunAllowlisted(allowlist, { read, covered }) {
   return [...allowlist.keys()].filter((rel) => NODE_TEST_RE.test(read(rel)) && !covered(rel));
@@ -121,10 +122,9 @@ function ciCoverage() {
     if (!fs.existsSync(abs)) continue;
     for (const l of fs.readFileSync(abs, 'utf8').split('\n')) if (l.trim() && !l.trim().startsWith('#')) manifestEntries.add(l.trim());
   }
-  const runText = fs.readdirSync(path.join(ROOT, '.github', 'workflows'))
-    .filter((f) => /\.ya?ml$/.test(f))
-    .map((f) => fs.readFileSync(path.join(ROOT, '.github', 'workflows', f), 'utf8'))
-    .join('\n');
+  // run: step text only (comments stripped). Whole-file text would let an
+  // on.push.paths line count as "CI runs it" (BRO-8070 added that line).
+  const runText = executableWorkflowText(path.join(ROOT, '.github', 'workflows'));
   return (rel) => Boolean(ciCoverageOf(rel, { manifestEntries, runText }));
 }
 
