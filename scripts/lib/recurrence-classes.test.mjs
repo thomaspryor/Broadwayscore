@@ -694,8 +694,7 @@ test('BRO-7375 ship-check: byline/date/duplicate subjects are not text misses; d
   assert.equal(pm.fileChangeOf(c, ['show-x/nyt--old.json', 'show-x/nyt--new.json']), 'modified'); // rename
   assert.equal(pm.fileChangeOf(c, ['show-x/wsj--a.json']), 'deleted');
   assert.equal(pm.fileChangeOf(c, ['show-x/vulture--b.json']), 'added');
-  // a deletion is never a discovery or text miss (BRO-7145: it is classed by what it removed)
-  assert.ok(!['discovery-gap', 'text-gap'].includes(og.causeOfSignal({ kind: 'ingest-dispatch', source: 'x', fileChange: 'deleted' })));
+  assert.equal(og.causeOfSignal({ kind: 'ingest-dispatch', source: 'x', fileChange: 'deleted' }), 'other');
 });
 
 test('BRO-7375 ship-check: a review found late and then given its text by hand is one discovery miss, not both', () => {

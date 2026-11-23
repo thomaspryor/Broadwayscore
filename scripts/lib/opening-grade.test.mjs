@@ -7,6 +7,9 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const og = require('./opening-grade.js');
+// The real inclusion rule loads data/shows.json for its multi-production guards; seed
+// them empty so this blocking test never reads live core data (live-data-lane).
+require('./review-guards.js').setMultiProdGuardShows([]);
 
 const show = { id: 'medea-off-broadway-2026', title: 'Medea', category: 'off-broadway', openingDate: '2026-10-20' };
 const files = Array.from({ length: 6 }, (_, i) => ({ _file: `${show.id}/r${i}.json`, firstSeenAt: '2026-10-21T03:00:00Z', fullText: 'A sharp, funny and moving night at the theater. '.repeat(20) }));
@@ -207,7 +210,8 @@ test('BRO-7145: hand deletions and approved-fix ingests get a cause class, not "
   assert.equal(del('f2d868d6 on-monitor: drop same-URL duplicate nyt-theater--jonathan.json'), 'duplicate-identity');
   assert.equal(del('1bdad414 on-monitor: drop Vulture slam-frank stub superseded by full-text vulture--jackson'), 'duplicate-identity');
   assert.equal(del('773ff6ed fix(reviews): remove Air Mail event-listing page mis-ingested as PEC review'), 'content-tier');
-  assert.equal(del('on-monitor: ingest cleanup, drop old file'), 'removed-by-hand');
+  assert.equal(del('on-monitor: ingest cleanup, drop old file'), 'other'); // unlabelled: say so, do not guess
+  assert.ok(!['discovery-gap', 'text-gap'].includes(del('x'))); // a deletion is never a first-pass miss
   assert.equal(del('on-monitor: drop cross-outlet duplicate'), 'attribution');
   assert.equal(og.causeOfSubject('drop cross-outlet duplicate'), 'attribution');
   assert.equal(og.causeOfSubject('14b07e94 BRO-4695: triage 5 more cross-outlet suspects'), 'attribution');

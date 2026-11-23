@@ -153,7 +153,6 @@ const CAUSE_LABEL = {
   'scoring-by-hand': 'score set by hand',
   'content-tier': 'content tier or non-review flag',
   'false-alarm': 'hand ingest of a review already live',
-  'removed-by-hand': 'unwanted file removed by hand',
   other: 'other fix',
 };
 const CAUSE_BY_FIELD = {
@@ -206,7 +205,7 @@ function causeOfDeletion(subject) {
   if (/cross-outlet|attribut|byline|re-credit/.test(t)) return 'attribution';
   if (/duplic|same-url|superseded|syndicat|dedupe/.test(t)) return 'duplicate-identity';
   if (/mirror|listing|placeholder|\bstub\b|junk|non.?review|not a review|event page|mis-ingested/.test(t)) return 'content-tier';
-  return 'removed-by-hand';
+  return 'other';
 }
 
 /** Cause class of a hand commit or log line, from its subject. */
