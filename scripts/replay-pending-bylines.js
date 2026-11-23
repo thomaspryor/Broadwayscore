@@ -721,6 +721,13 @@ async function processShow(showId, deps = {}) {
     if (tri.verdict === 'rehome') {
       console.log(`  [${file}] triage: ${tri.reason} — rehomed to ${tri.sibling} (BRO-8090)`);
       const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: tri.sibling, data, publishDate: tri.publishDate, nowIso: now().toISOString(), dry });
+      if (out === 'sibling-copy-settled') {
+        // The owner's copy of this url is settled there: leave this one as it is (never two settled copies).
+        console.log(`  [${file}] ${tri.sibling} holds a settled copy of this url — left in place (BRO-8090)`);
+        verdictCount('kept: sibling holds a settled copy');
+        kept++;
+        continue;
+      }
       if (out === 'sibling-has-copy' && !dry) {
         data.promoteSkippedReason = `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
         data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
@@ -818,7 +825,10 @@ async function processShow(showId, deps = {}) {
             const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: r.sibling, data, publishDate: String(publishDate).slice(0, 10), nowIso: now().toISOString(), dry });
             console.log(`  [${file}] ${rejectReason}; belongs to ${r.sibling} — ${out} (BRO-8090)`);
             if (out === 'rehomed') { redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1; tagged++; kept++; continue; }
-            settle = { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, whose _pending copy carries it (BRO-7945)`, sibling: r.sibling };
+            settle = out === 'sibling-copy-settled'
+              // Fetched and rejected here, so it must settle (no re-fetch every run); say the owner's copy is settled.
+              ? { kind: 'sibling-settled', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, whose _pending copy of this url is itself settled (BRO-8090)` }
+              : { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, whose _pending copy carries it (BRO-7945)`, sibling: r.sibling };
           } else if (r.kind === 'duplicate') {
             settle = { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, which already holds this url (BRO-8090)`, sibling: r.sibling };
           } else {

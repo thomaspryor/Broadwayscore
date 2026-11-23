@@ -110,6 +110,8 @@ function outletMarketGroup(outletId) {
   if (!region || region === 'dual') return null;
   return region === 'london' || region === 'uk' ? 'uk' : 'us';
 }
+const COMPANY_PHRASES = new Set(['lincoln-center', 'manhattan', 'roundabout', 'public', 'signature', 'second-stage', 'atlantic', 'national', 'rsc', 'royal-shakespeare-company']);
+const COMPANY_PREFIXES = new Set(['rscs', 'rsc', 'nts', 'nt']);
 const SLUG_VENUE_RE = /-at-(?:the-)?([a-z0-9]+(?:-[a-z0-9]+){0,3}?)-(?:theatre|theater|playhouse)(?:-|$)/;
 function stubContradictsSibling(stub, sib, show) {
   if (!stub || !sib) return null;
@@ -124,7 +126,11 @@ function stubContradictsSibling(stub, sib, show) {
   const m = slug.match(SLUG_VENUE_RE);
   const named = m && require('./pending-triage').venuePhrase(m[1].replace(/-/g, ' '));
   const own = require('./pending-triage').venuePhrase(String(sib.venue || '').split('/')[0]);
-  if (named && own && !named.includes(own) && !own.includes(named)) return 'venue-mismatch';
+  // Whole-phrase compare: "royal-lyceum" (Edinburgh) is not the "lyceum" (Broadway). A possessive company prefix
+  // ("rscs-royal-shakespeare") still names the building; a producing company ("lincoln-center" for the Vivian
+  // Beaumont) names no building, so it is no evidence either way.
+  if (named && own && named !== own && !COMPANY_PHRASES.has(named)
+      && !(named.endsWith(`-${own}`) && COMPANY_PREFIXES.has(named.slice(0, -own.length - 1)))) return 'venue-mismatch';
   return null;
 }
 
@@ -190,11 +196,14 @@ function urlContradictsTitle(stub, show, sib, allShows) {
  * The sibling's own no-fetch triage would settle the stub at once (a forum thread, a box-office story, its url date):
  * moving it there gains nothing. Judged with the verdict date. No allShows, so it never recurses. Pure.
  */
-function siblingTriageJunk(stub, sib, publishDate) {
+function siblingTriageJunk(stub, sib, publishDate, allShows) {
   if (!stub || !stub.url) return null;
   const bare = { ...stub }; if (publishDate) bare.publishDate = publishDate;
   for (const k of ['promoteSkippedReason', 'promoteSkippedAt', 'promoteSettled', 'promoteSettledSibling']) delete bare[k];
-  const t = require('./pending-triage').triagePendingStub(bare, { showId: sib.id, show: sib });
+  // sameTitleShows (never allShows, so it cannot recurse): the sibling-venue rule must agree with intake's verdict,
+  // or a moved stub is settled under the sibling the moment intake writes it (ship-check 2026-11-23).
+  const pt = require('./pending-triage');
+  const t = pt.triagePendingStub(bare, { showId: sib.id, show: sib, sameTitleShows: allShows ? pt.sameTitleShowsFrom(sib, allShows) : undefined });
   return t.verdict === 'junk' ? t.reason : null;
 }
 
@@ -213,7 +222,7 @@ function siblingRehomeBlocker(stub, show, sib, allShows, publishDate) {
   const contra = urlContradictsTitle(stub, show, sib, allShows);
   if (contra) return contra;
   if (stub && stub.rehomedFrom) return 'already-rehomed';
-  return siblingTriageJunk(stub, sib, publishDate);
+  return siblingTriageJunk(stub, sib, publishDate, allShows);
 }
 
 function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = () => false, holdsUrl = () => false }) {
@@ -252,7 +261,7 @@ function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = (
   }
   if (hasCopy(sib.id) || holdsUrl(sib.id)) return { kind: 'duplicate', sibling: sib.id };
   if (stub && stub.rehomedFrom) return { kind: 'ambiguous', sibling: null, candidates: [sib.id] };
-  const junk = siblingTriageJunk(stub, sib, publishDate);
+  const junk = siblingTriageJunk(stub, sib, publishDate, allShows);
   if (junk) return { kind: 'junk-for-sibling', sibling: null, candidates: [sib.id], reason: junk };
   return { kind: 'rehome', sibling: sib.id };
 }
@@ -271,7 +280,9 @@ function stripForeignShowFlags(o) {
   if (!o) return o;
   if (/^(date_implausible|cross_market)/.test(String(o.pendingReason || ''))) delete o.pendingReason;
   delete o._dateImplausibleDetail; delete o._crossMarketDetail;
-  const human = o.wrongProductionManual || o.humanReviewed || o.manualReview || /manual|owner|human/i.test(String(o.wrongProductionSource || ''));
+  // Placeholder status was stamped against the show it was gathered under (that show in previews), not the owner.
+  delete o.isPreviewPlaceholder;
+  const human = o.wrongProductionManual || o.humanReviewed || o.humanReviewedWrongProduction || o.manualReview || /manual|owner|human/i.test(String(o.wrongProductionSource || ''));
   if (o.wrongProduction && !human && AUTO_WRONG_PRODUCTION_RE.test(String(o.wrongProductionNote || ''))) {
     delete o.wrongProduction; delete o.wrongProductionNote;
     require('./wrongproduction-provenance').dropWrongProductionProvenance(o); // BRO-7575: no orphaned provenance
@@ -310,7 +321,13 @@ function sameArticleUrl(a, b) {
  */
 function siblingHoldsSameUrl({ root, toShowId, file, url, fsImpl = require('fs') }) {
   const p = require('path').join(root, '_pending', toShowId, file);
-  try { return sameArticleUrl(JSON.parse(fsImpl.readFileSync(p, 'utf8')).url, url); } catch { return false; }
+  // Only a LIVE copy counts (BRO-7945's contract): settling this one onto a settled copy would strand both.
+  try { const d = JSON.parse(fsImpl.readFileSync(p, 'utf8')); return sameArticleUrl(d.url, url) && !d.promoteSkippedReason && !d.rssIdentityRejected; } catch { return false; }
+}
+
+/** The destination carries this url but is settled: the caller leaves the source untouched (never two settled copies). */
+function siblingHoldsSettledSameUrl(dest, url, fsImpl) {
+  try { const d = JSON.parse(fsImpl.readFileSync(dest, 'utf8')); return sameArticleUrl(d.url, url) && !!(d.promoteSkippedReason || d.rssIdentityRejected); } catch { return false; }
 }
 
 /**
@@ -318,7 +335,7 @@ function siblingHoldsSameUrl({ root, toShowId, file, url, fsImpl = require('fs')
  * place (link fails if the name exists, so two drain shards racing on one destination cannot both win, and a crash
  * never leaves a half-written destination), then the source is removed. A same-named destination holding the SAME
  * url = 'sibling-has-copy' (the caller settles the source as a duplicate); a different article under that name gets
- * a url-hash suffixed name instead. Returns 'rehomed' | 'sibling-has-copy'.
+ * a url-hash suffixed name instead. Returns 'rehomed' | 'sibling-has-copy' | 'sibling-copy-settled'.
  */
 function rehomeStubFile({ root, file, fromShowId, toShowId, data, publishDate, nowIso, dry = false, fsImpl = require('fs') }) {
   const path = require('path');
@@ -330,6 +347,7 @@ function rehomeStubFile({ root, file, fromShowId, toShowId, data, publishDate, n
     const dest = path.join(dir, name);
     if (fsImpl.existsSync(dest)) {
       if (siblingHoldsSameUrl({ root, toShowId, file: name, url: data && data.url, fsImpl })) return 'sibling-has-copy';
+      if (siblingHoldsSettledSameUrl(dest, data && data.url, fsImpl)) return 'sibling-copy-settled';
       continue;
     }
     if (dry) return 'rehomed';

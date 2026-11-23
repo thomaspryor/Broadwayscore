@@ -155,9 +155,10 @@ function bodyNamesTitle(html, title) {
   const norm = (x) => ' ' + foldDiacritics(String(x || '').replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' '))
     .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
   const phrase = ' ' + foldDiacritics(String(title)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
-  const h = String(html);
+  // Related-story widgets (<aside>, <nav>, <footer>, h3 link lists) name other shows inside <article> (ship-check 2026-11-23).
+  const h = String(html).replace(/<(aside|nav|footer)\b[\s\S]*?<\/\1>/gi, ' ');
   const strong = [];
-  for (const re of [/<title[^>]*>([\s\S]*?)<\/title>/gi, /<h[1-3][^>]*>([\s\S]*?)<\/h[1-3]>/gi, /<article[^>]*>([\s\S]*?)<\/article>/gi]) {
+  for (const re of [/<title[^>]*>([\s\S]*?)<\/title>/gi, /<h[1-2][^>]*>([\s\S]*?)<\/h[1-2]>/gi, /<article[^>]*>([\s\S]*?)<\/article>/gi]) {
     let m; while ((m = re.exec(h))) strong.push(m[1]);
   }
   const metaRe = /<meta[^>]+(?:property|name)=["'](?:og:title|og:description|twitter:title|description)["'][^>]*>/gi;

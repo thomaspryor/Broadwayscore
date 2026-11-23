@@ -1353,3 +1353,39 @@ test('BRO-8090: intake triage does not junk a review that a same-title sibling o
   const v = intakeVerdict(stub, A1536.id, { ctx });
   assert.notEqual(v.verdict, 'junk', JSON.stringify(v));
 });
+
+describe('BRO-8090 ship-check 2026-11-23 (Claude + Codex reviewers)', () => {
+  const M13 = { id: 'macbeth-west-end-2013', title: 'Macbeth', category: 'west-end', venue: 'Trafalgar Studios', previewsStartDate: '2013-02-09', openingDate: '2013-02-22', closingDate: '2013-04-27' };
+  const M08 = { id: 'macbeth-2008', title: 'Macbeth', category: 'broadway', venue: 'Lyceum Theatre', previewsStartDate: '2008-03-28', openingDate: '2008-04-08', closingDate: '2008-05-24' };
+  test('a DATED Royal Lyceum Edinburgh review is not moved to the Broadway Lyceum (whole-phrase venue compare)', () => {
+    const stub = { outletId: 'whatsonstage', url: 'https://www.whatsonstage.com/news/macbeth-an-undoing-at-royal-lyceum-theatre-edinburgh-review_58311/' };
+    assert.equal(S.stubContradictsSibling(stub, M08, M13), 'venue-mismatch');
+    assert.notEqual(S.resolveOutOfWindowStub({ show: M13, allShows: [M13, M08], publishDate: '2008-04-09', stub }).kind, 'rehome');
+  });
+  test('a producing company ("at-lincoln-center-theater") and a possessive prefix ("rscs-royal-shakespeare") are not venue mismatches', () => {
+    const VB = { id: 'x-2020', title: 'X', category: 'broadway', venue: 'Vivian Beaumont Theater' };
+    assert.equal(S.stubContradictsSibling({ url: 'https://example.com/x-at-lincoln-center-theater-review' }, VB, null), null);
+    const RST = { id: 'y-2025', title: 'Y', category: 'regional', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' };
+    assert.equal(S.stubContradictsSibling({ url: 'https://www.whatsonstage.com/news/y-at-the-rscs-royal-shakespeare-theatre-review_1/' }, RST, null), null);
+  });
+  test('a rehomed stub drops the preview-placeholder flag and keeps a human wrongProduction verdict', () => {
+    const out = S.rehomedStub({ url: 'u', isPreviewPlaceholder: true, wrongProduction: true, wrongProductionNote: 'Auto-flagged x', humanReviewedWrongProduction: true }, 'a', 'b', {});
+    assert.equal(out.isPreviewPlaceholder, undefined);
+    assert.equal(out.wrongProduction, true);
+  });
+  test('a SETTLED sibling copy is not a duplicate target: the source is left alone, never two settled copies', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090sc-')); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const url = 'https://www.standard.co.uk/culture/theatre/1536-at-ambassadors-theatre-review-b1282189.html';
+    fs.mkdirSync(path.join(root, '_pending', A1536.id), { recursive: true }); fs.mkdirSync(path.join(root, '_pending', B1536.id), { recursive: true });
+    const src = path.join(root, '_pending', A1536.id, 'standard--x.json');
+    fs.writeFileSync(src, JSON.stringify({ url, promoteSkippedReason: 'old' }));
+    fs.writeFileSync(path.join(root, '_pending', B1536.id, 'standard--x.json'), JSON.stringify({ url, promoteSkippedReason: 'settled there' }));
+    assert.equal(S.siblingHoldsSameUrl({ root, toShowId: B1536.id, file: 'standard--x.json', url }), false);
+    assert.equal(S.rehomeStubFile({ root, file: 'standard--x.json', fromShowId: A1536.id, toShowId: B1536.id, data: { url } }), 'sibling-copy-settled');
+    assert.equal(fs.existsSync(src), true);
+  });
+  test('an opaque url whose show mention sits only in an <aside> inside <article> stays inconclusive', () => {
+    const html = '<html><title>FT</title><body><article><h1>Markets rally</h1><p>Stocks rose.</p><aside><h3>King of the Yees review</h3></aside></article></body></html>';
+    assert.notEqual(V.verifyAggregatorUrl({ url: 'https://www.ft.com/content/fe1c433f-2786-4c16-b3e3-61e386182235', html, show: YEES }).isValid, true);
+  });
+});

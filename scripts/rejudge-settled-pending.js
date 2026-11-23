@@ -88,6 +88,7 @@ function main() {
         fs.writeFileSync(path.join(dir, file), JSON.stringify(stub, null, 2));
       } else if (v.action === 'rehome') {
         const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: v.sibling, data: stub, publishDate: v.date, nowIso: now });
+        if (out === 'sibling-copy-settled') { tally[`keep:sibling copy settled|${showEra(showId)}`] = (tally[`keep:sibling copy settled|${showEra(showId)}`] || 0) + 1; continue; }
         if (out !== 'rehomed') { stub.promoteSettled = 'sibling'; stub.promoteSettledSibling = v.sibling; stub.promoteSkippedReason += `; belongs to ${v.sibling}, whose _pending copy carries it (BRO-8090)`; fs.writeFileSync(path.join(dir, file), JSON.stringify(stub, null, 2)); }
       } else if (v.action === 'duplicate') {
         stub.promoteSettled = 'sibling'; stub.promoteSettledSibling = v.sibling; stub.promoteSkippedReason += `; belongs to ${v.sibling}, which already holds this url (BRO-8090)`;
