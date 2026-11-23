@@ -554,7 +554,7 @@ for (const skip of [false, true]) {
     TEAM_STATES.push({ id: 'state-paused', name: 'Paused', type: 'backlog' });
     await withStubbedExit(async () => {
       await cmdReport({ issue: 'BRO-9458', status: 'paused',
-        summary: 'Checked it.\nDECISION NEEDED: Should the gate drop to 3 reviews for the short run?\nMy recommendation: yes.' },
+        summary: 'Checked it.\nDECISION NEEDED: Should the gate drop to 3 reviews for the short run?\nWhy this is your call: it changes what readers see.\nOption A - drop to 3: covers short runs / thinner scores\nOption B - keep 5: steadier scores / short runs show none\nMy recommendation: A because short runs otherwise show nothing.\nDefault: keep 5.' },
       skip ? { skipOwnerQuestionGuard: true } : {});
     }).finally(() => TEAM_STATES.pop());
     const descWrites = calls.filter((c) => c.query.includes('issueUpdate') && JSON.stringify(c.variables).includes('"description"'));
@@ -577,7 +577,7 @@ test('BRO-8152: the promotion re-reads the card, so an edit made after the first
   };
   TEAM_STATES.push({ id: 'state-paused', name: 'Paused', type: 'backlog' });
   await withStubbedExit(async () => {
-    await cmdReport({ issue: 'BRO-9458', status: 'paused', summary: 'DECISION NEEDED: Keep the gate at 3 reviews for the short run?' });
+    await cmdReport({ issue: 'BRO-9458', status: 'paused', summary: 'DECISION NEEDED: Keep the gate at 3 reviews for the short run?\nWhy this is your call: it changes what readers see.\nOption A - drop to 3: covers short runs / thinner scores\nOption B - keep 5: steadier scores / short runs show none\nMy recommendation: A because short runs otherwise show nothing.\nDefault: keep 5.' });
   }).finally(() => TEAM_STATES.pop());
   const w = calls.filter((c) => c.query.includes('issueUpdate') && JSON.stringify(c.variables).includes('"description"'));
   assert.equal(w.length, 1);
