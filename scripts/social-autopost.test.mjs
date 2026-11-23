@@ -115,7 +115,7 @@ test('London shows never post to the Broadway accounts; they wait for their own 
   assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], bwOnly), [], 'no fallback to the Broadway accounts (BRO-8085)');
   assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], both), ['west-end']);
   assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], both), ['west-end']);
-  assert.equal(routing.postsToOwnSet(show({ category: 'west-end' }), bwOnly), false, 'the fallback is not its own set');
+  assert.equal(routing.postsToOwnSet(show({ category: 'west-end' }), bwOnly), false, 'no West End accounts: it posts nowhere');
   assert.equal(routing.postsToOwnSet(show({ category: 'off-broadway' }), bwOnly), true);
   // the live config has no West End accounts yet: no London show is even a candidate
   for (const category of ['off-west-end', 'west-end']) {
@@ -590,8 +590,9 @@ test('routing: the live config has Broadway channels and routes every eligible c
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
   // London shows wait for the West End accounts (BRO-6932, BRO-8085); every other category posts somewhere.
   for (const cat of C.ELIGIBLE_CATEGORIES) {
-    const want = routing.homeSet(show({ category: cat })) === 'west-end' && !routing.postsToOwnSet(show({ category: cat })) ? 0 : 1;
-    assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= want, cat);
+    const route = routing.targetSets(show({ category: cat }), NONE);
+    if (routing.homeSet(show({ category: cat })) === 'west-end') assert.deepEqual(route, routing.postsToOwnSet(show({ category: cat })) ? ['west-end'] : [], cat);
+    else assert.ok(route.length >= 1, cat);
   }
 });
 
@@ -607,6 +608,34 @@ test('routing: a transfer link on either end makes both shows high profile', () 
   const nyc = show({ id: 'nyc', category: 'broadway', transferOf: 'lon' });
   assert.equal(routing.isHighProfile(lon, NONE, [lon, nyc]), true);
   assert.deepEqual(routing.targetSets(lon, NONE, SETS_BOTH, [lon, nyc]), ['west-end'], 'London never cross-posts (BRO-8085)');
+});
+
+test('retry guard (BRO-8085): a pending London retry on a Broadway channel is dropped, never resent', async () => {
+  const { retryBlocked, retryFailedChannels } = require('./social-autopost/run.js');
+  const lon = show({ id: 'r-lon', category: 'west-end' });
+  const nyc = show({ id: 'r-nyc', category: 'broadway' });
+  const bw = { id: 'b1', service: 'bluesky', key: 'bluesky', set: 'broadway' };
+  const we = { id: 'w1', service: 'bluesky', key: 'bluesky@west-end', set: 'west-end' };
+  assert.equal(retryBlocked({ showId: lon.id }, bw, [lon, nyc]), true);
+  assert.equal(retryBlocked({ showId: lon.id }, we, [lon, nyc]), false);
+  assert.equal(retryBlocked({ showId: nyc.id }, bw, [lon, nyc]), false);
+  assert.equal(retryBlocked({ id: 'brief:x' }, bw, [lon, nyc]), false, 'no show id: not a score post');
+  const now = Date.parse('2026-11-23T12:00:00Z');
+  const entry = { type: 'score', showId: lon.id, dueAt: '2026-11-23T11:00:00Z', attempts: 1, channels: {}, pending: { bluesky: 'text' }, errors: { bluesky: 'boom' } };
+  const ledger = { posts: [entry] };
+  let created = 0;
+  const fake = { findExistingPost: async () => null, createImagePost: async () => { created++; return { id: 'p' }; } };
+  const noWrite = () => {}; // never touch the real ledger file
+  assert.equal(await retryFailedChannels(ledger, [bw], fake, now, [], [lon, nyc], noWrite), 0);
+  assert.equal(created, 0, 'nothing posted to the Broadway account');
+  assert.equal(entry.pending, undefined);
+  assert.equal(entry.errors, undefined);
+  // a Broadway show's retry on the same channel still goes out
+  const nycEntry = { type: 'score', showId: nyc.id, dueAt: '2026-11-23T11:00:00Z', attempts: 1, channels: {}, pending: { bluesky: 'text' }, errors: {} };
+  const out = await retryFailedChannels({ posts: [nycEntry] }, [bw], { ...fake, findExistingPost: async () => null }, now, [], [lon, nyc], noWrite);
+  assert.equal(out, 0);
+  assert.equal(created, 1);
+  assert.equal(nycEntry.channels.bluesky.postId, 'p');
 });
 
 test('routing guard (BRO-8085): no London show ever reaches the Broadway accounts, whatever the config or signals', () => {

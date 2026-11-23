@@ -181,7 +181,7 @@ function recordPlanStatus(all) {
 
 /**
  * The usable channels a brief posts to: the newer production's home set (routing.js;
- * Broadway until that market's accounts are configured). Never cross-posted.
+ * none until that market's accounts are configured, BRO-8085). Never cross-posted.
  */
 function briefChannels(channels, newer, { ungated = false, slim } = {}) {
   // BRO-7417: an owner-approved brief is the owner's own call, so it skips the BRO-7413 notability gate;
@@ -249,9 +249,26 @@ async function verifySent(ledger, buffer, now) {
   return problems;
 }
 
-async function retryFailedChannels(ledger, channels, buffer, now, summary) {
+/**
+ * BRO-8085: a London show's post never reaches the Broadway accounts, so a retry of one
+ * queued before that rule (when it fell back to them) is dropped, not resent.
+ */
+function retryBlocked(entry, channel, shows) {
+  if (!channel || channel.set !== 'broadway' || !entry.showId || !Array.isArray(shows)) return false;
+  const show = shows.find(s => s.id === entry.showId);
+  return !!show && homeSet(show) === 'west-end';
+}
+
+async function retryFailedChannels(ledger, channels, buffer, now, summary, shows = null, write = writeLedger) {
   let errors = 0;
   for (const entry of pendingRetries(ledger, now)) {
+    for (const key of Object.keys(entry.pending)) {
+      if (!retryBlocked(entry, channels.find(c => c.key === key), shows)) continue;
+      console.log(`retry ${entryName(entry)} on ${key} dropped: London shows never post to the Broadway accounts (BRO-8085)`);
+      delete entry.pending[key];
+      if (entry.errors) delete entry.errors[key];
+    }
+    if (!Object.keys(entry.pending).length) { delete entry.pending; delete entry.altText; if (entry.errors && !Object.keys(entry.errors).length) delete entry.errors; write(ledger); continue; }
     const markers = entryMarkers(entry);
     const retryDueAt = new Date(Math.max(Date.parse(entry.dueAt), now + 10 * 60e3));
     const eligible = limitDailyNetworks(channels, ledger, retryDueAt, MAX_PER_NETWORK_PER_DAY, entry);
@@ -276,7 +293,7 @@ async function retryFailedChannels(ledger, channels, buffer, now, summary) {
     }
     if (!Object.keys(entry.pending).length) { delete entry.pending; delete entry.altText; }
     if (entry.errors && !Object.keys(entry.errors).length) delete entry.errors;
-    writeLedger(ledger);
+    write(ledger);
   }
   return errors;
 }
@@ -871,7 +888,7 @@ async function main() {
     problems.push(...await verifySent(ctx.ledger, buffer, now));
     problems.push(...abandonRetries(ctx.ledger, now));
     writeLedger(ctx.ledger);
-    if (await retryFailedChannels(ctx.ledger, channels, buffer, now, summary)) problems.push('a retried network failed again (see the log above)');
+    if (await retryFailedChannels(ctx.ledger, channels, buffer, now, summary, ctx.shows)) problems.push('a retried network failed again (see the log above)');
     // A refused brief fails the run (the CLI reads that) but never holds up the score posts below.
     if (brief) {
       try {
@@ -1068,4 +1085,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, recordPlanStatus, LEDGER_FILE };
+module.exports = { retryBlocked, retryFailedChannels, buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, recordPlanStatus, LEDGER_FILE };
