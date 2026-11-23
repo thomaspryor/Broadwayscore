@@ -1385,5 +1385,36 @@
       }
     ],
     "queuedAt": "2026-11-23T21:40:04.590Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8195-mwtqkx9v",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-8195-mwtqkx9v",
+    "description": "land.yml did not land land/job/linear-BRO-8195-mwtqkx9v: the rebase gate went red at fc434eb262. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-8195-mwtqkx9v @ fc434eb262 (origin/land/job/linear-BRO-8195-mwtqkx9v) → origin/main @ e985e3969d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e985e3969d: Rebasing (1/7) error: could not apply bbe02d39a26... feat(BRO-8195): browser recovery lists paywalled _pending stubs and promotes them through the drain hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45270592084",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8195-mwtqkx9v"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fc434eb262f5bdce295ae32dcb248f42f3c38e00"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45270592084"
+      }
+    ],
+    "queuedAt": "2026-11-23T22:04:38.273Z"
   }
 ]
