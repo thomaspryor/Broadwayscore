@@ -156,6 +156,13 @@ test('writeLedger leaves the file alone when only lastUpdated would change (no h
 const show = (id, openingDate, category = 'broadway') => ({ id, slug: id, title: id.toUpperCase(), category, openingDate, status: 'open' });
 const selCtx = (shows, slim = {}) => ({ shows, slim, reviewsByShow: {}, getOutletTier: () => 1 });
 const liveLedger = { posts: [{ type: 'score', showId: 'posted', dueAt: '2026-10-20T14:00:00Z', date: '2026-10-20' }] };
+// Runs fn with dummy West End accounts filled in: without them a London show posts nowhere (BRO-8085).
+const withWestEnd = (fn) => {
+  const sets = require('../social-autopost/config.js').CHANNEL_SETS;
+  const prev = sets['west-end'];
+  sets['west-end'] = Object.fromEntries(Object.keys(sets.broadway).map((svc) => [svc, `we-${svc}`]));
+  try { return fn(); } finally { sets['west-end'] = prev; }
+};
 
 test('skippedShows: waiting, aged out and pre-launch shows, each with a plain reason', () => {
   const ctx = selCtx([
@@ -166,9 +173,11 @@ test('skippedShows: waiting, aged out and pre-launch shows, each with a plain re
     show('future', '2026-11-05'),
     show('london', '2026-10-30', 'west-end'),
   ]);
-  const out = skippedShows({ ctx, ledger: liveLedger, now: NOW });
+  const out = withWestEnd(() => skippedShows({ ctx, ledger: liveLedger, now: NOW }));
   // prelaunch aged out of 10 days before go-live, but the quiet-day backfill still owes it (BRO-6932)
   assert.deepEqual(out.map((x) => [x.title, x.final]), [['AGED', true], ['PRELAUNCH', false], ['WAITING', false], ['LONDON (West End)', false]]);
+  // no West End accounts yet: the London show is not a candidate, so it is not listed (BRO-8085)
+  assert.ok(!skippedShows({ ctx, ledger: liveLedger, now: NOW }).some((x) => x.title === 'LONDON (West End)'));
   assert.match(out[0].reason, /gave up 10 days after opening: no score on the site yet/);
   assert.match(out[1].reason, /will post on a quiet day once that changes/);
   assert.equal(out[2].reason, 'no score on the site yet');
@@ -271,8 +280,9 @@ test('upcomingPosts: Buffer posts grouped by show and hour, then expected score 
     { id: 'v9', service: 'youtube', dueAt: '2026-11-03T21:00:00Z', text: 'How we score a show' },
     { id: 'late', service: 'twitter', dueAt: '2026-11-20T15:00:00Z', text: 'next month' },
   ];
-  const out = upcomingPosts({ scheduled, ctx, ledger: { posts: [] }, now: NOW });
+  const out = withWestEnd(() => upcomingPosts({ scheduled, ctx, ledger: { posts: [] }, now: NOW }));
   assert.deepEqual(out.map((x) => x.title), ['How we score a show', 'THE-IMAGINARY-INVALID', 'LONDON (West End)', 'SOON']);
+  assert.ok(!upcomingPosts({ scheduled, ctx, ledger: { posts: [] }, now: NOW }).some((x) => x.title === 'LONDON (West End)'), 'no West End accounts: no London post expected (BRO-8085)');
   assert.equal(out[1].line, 'Wed, Nov 4, 10:00 AM ET on Threads, Bluesky');
   assert.match(out[2].line, /^Thu, Nov 5, 10:00 AM UK time, score post/);
   assert.equal(upcomingPosts({ scheduled: [], ctx: null, ledger: null, now: NOW }).length, 0);

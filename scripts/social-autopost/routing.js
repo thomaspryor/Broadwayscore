@@ -3,8 +3,9 @@
  * in social-autopost.test.mjs.
  *
  * A show's home set follows its market: Broadway and Off-Broadway -> 'broadway',
- * West End and Off-West End -> 'west-end'. A high-profile show is also posted to the
- * other market's accounts (isHighProfile, rule in config.js HIGH_PROFILE). The video
+ * West End and Off-West End -> 'west-end'. A high-profile Broadway show is also posted to
+ * the West End accounts (isHighProfile, rule in config.js HIGH_PROFILE); a London show
+ * never goes to the Broadway accounts (owner, BRO-8085). The video
  * lane (BRO-6250) must call the same isHighProfile / targetSets.
  */
 
@@ -74,11 +75,10 @@ function operaConfigured(sets = C.CHANNEL_SETS) {
 }
 
 /**
- * Channel sets this show posts to: [home] or [home, other] when high profile.
- * sets: config CHANNEL_SETS. A set with no channel ids is not configured yet; a show
- * whose home set is unconfigured posts to 'broadway' when its category is in
- * BROADWAY_FALLBACK_CATEGORIES (main-stage West End) and nowhere otherwise (Off-West
- * End, BRO-6932), and cross-posting to an unconfigured set is skipped.
+ * Channel sets this show posts to: [home], or ['broadway', 'west-end'] for a high-profile
+ * Broadway show. sets: config CHANNEL_SETS. A set with no channel ids is not configured
+ * yet; a show whose home set is unconfigured posts nowhere (London shows wait for the
+ * West End accounts, BRO-8085), and cross-posting to an unconfigured set is skipped.
  * A set counts as configured only when it has every network the Broadway set has, so
  * adding the accounts one at a time never moves shows onto fewer networks.
  */
@@ -93,13 +93,13 @@ function targetSetsUngated(show, showReviews, sets, shows) {
   if (!home) return [];
   if (home === 'opera') return operaConfigured(sets) ? ['opera'] : []; // never cross-posted, never a fallback
   const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
-  if (!configured(home)) return C.BROADWAY_FALLBACK_CATEGORIES.includes(show.category) ? ['broadway'] : [];
-  if (home === 'broadway' && (show.category === 'regional' || show.category === 'tour')) return [home]; // BRO-6935: broadway accounts only, never cross-posted
-  const other = home === 'broadway' ? 'west-end' : 'broadway';
-  return configured(other) && isHighProfile(show, showReviews, shows) ? [home, other] : [home];
+  if (!configured(home)) return []; // BRO-8085: no fallback to another market's accounts
+  if (home !== 'broadway') return [home]; // BRO-8085: London shows never reach the Broadway accounts
+  if (show.category === 'regional' || show.category === 'tour') return [home]; // BRO-6935: broadway accounts only, never cross-posted
+  return configured('west-end') && isHighProfile(show, showReviews, shows) ? [home, 'west-end'] : [home];
 }
 
-/** True when the show posts to its own market's accounts (not the Broadway fallback). */
+/** True when the show posts to its own market's accounts. */
 function postsToOwnSet(show, sets = C.CHANNEL_SETS) {
   const home = homeSet(show);
   return !!home && targetSets(show, [], sets).includes(home);

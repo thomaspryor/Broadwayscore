@@ -512,8 +512,8 @@ async function buildClosing(ev, ctx, outDir, { requirePoster = true } = {}) {
 
 /**
  * Roundups and closing-soon posts go only to their own market's accounts: until that set is
- * fully configured (West End, BRO-6378) they are not posted at all, rather than falling back to
- * the Broadway accounts as the score lane does.
+ * fully configured (West End, BRO-6378) they are not posted at all. The score lane does the
+ * same since BRO-8085: nothing London ever falls back to the Broadway accounts.
  */
 function ownSetConfigured(set) {
   return set === 'broadway' || Object.keys(CHANNEL_SETS.broadway).every(svc => (CHANNEL_SETS[set] || {})[svc]);

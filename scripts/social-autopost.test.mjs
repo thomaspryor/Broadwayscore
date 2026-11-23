@@ -108,19 +108,22 @@ test('Off-Broadway under 8 reviews posts once every known review is in, a week o
   assert.equal(sel.scoreSettled(bw, { ...ctx('complete', reviews(2, 1, 3), week), reviewsByShow: { [bw.id]: reviews(2, 1, 3) }, slim: { [bw.id]: { cs: 78, rc: 6, cov: { state: 'complete' } } } }).ok, false, 'Broadway keeps its floors');
 });
 
-test('Off-West End never posts to the Broadway accounts; main-stage West End still falls back until its own accounts exist (BRO-6932)', () => {
+test('London shows never post to the Broadway accounts; they wait for their own (BRO-6932, BRO-8085)', () => {
   const both = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
   const bwOnly = { broadway: { instagram: 'b1' }, 'west-end': {} };
   assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], bwOnly), []);
-  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], bwOnly), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], bwOnly), [], 'no fallback to the Broadway accounts (BRO-8085)');
   assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], both), ['west-end']);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], both), ['west-end']);
   assert.equal(routing.postsToOwnSet(show({ category: 'west-end' }), bwOnly), false, 'the fallback is not its own set');
   assert.equal(routing.postsToOwnSet(show({ category: 'off-broadway' }), bwOnly), true);
-  // the live config has no West End accounts yet: an Off-West End show is not even a candidate
-  const owe = show({ category: 'off-west-end' });
-  assert.equal(sel.isEligibleShow(owe), false);
-  assert.equal(sel.findScoreEvents({ ...base(owe, { reviewsByShow: { [owe.id]: reviews(3, 3, 6) } }), now: Date.parse('2026-11-06T10:00:00Z') }).length, 0);
-  assert.equal(withWestEnd(() => sel.isEligibleShow(owe)), true);
+  // the live config has no West End accounts yet: no London show is even a candidate
+  for (const category of ['off-west-end', 'west-end']) {
+    const lon = show({ category });
+    assert.equal(sel.isEligibleShow(lon), false, category);
+    assert.equal(sel.findScoreEvents({ ...base(lon, { reviewsByShow: { [lon.id]: reviews(3, 3, 6) } }), now: Date.parse('2026-11-06T10:00:00Z') }).length, 0, category);
+    assert.equal(withWestEnd(() => sel.isEligibleShow(lon)), true, category);
+  }
 });
 
 test('roundup fills its rows with main-stage openings before Off shows, each best score first (BRO-6920)', () => {
@@ -145,9 +148,10 @@ test('a transfer needs reviews of this run, not its earlier run', () => {
   const s = show({ id: 't-2026', category: 'west-end', openingDate: '2026-10-20', venue: 'Gielgud Theatre', priorRuns: [{ id: 'p-2025', venue: 'Apollo Theatre', openingDate: '2025-03-01', closingDate: '2025-06-01' }] });
   const args = { shows: [prior, s], ledger: empty, now: Date.parse('2026-10-25T12:00:00Z'), slim: { [s.id]: { cs: 80, rc: 14 } }, getOutletTier };
   const old = reviews(3, 3, 8).map(r => ({ ...r, showId: s.id, publishDate: '2025-03-05' }));
-  assert.equal(sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: old } }).length, 0, 'only old-run reviews');
+  // West End accounts filled in: without them a London show posts nowhere (BRO-8085)
+  assert.equal(withWestEnd(() => sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: old } })).length, 0, 'only old-run reviews');
   const fresh = reviews(3, 3, 8).map(r => ({ ...r, showId: s.id, publishDate: '2026-10-21' }));
-  assert.equal(sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: fresh } }).length, 1, 'reviews of this run');
+  assert.equal(withWestEnd(() => sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: fresh } })).length, 1, 'reviews of this run');
 });
 
 test('same-morning posts are spaced 90 min apart and only the first is created now', () => {
@@ -456,8 +460,9 @@ test('brief channels: the newer production\'s home set only, never cross-posted'
   const C = require('./social-autopost/config.js');
   const all = require('./social-autopost/routing.js').tagChannels([...Object.entries(C.CHANNEL_SETS.broadway).map(([service, id]) => ({ service, id })), { service: 'tiktok', id: 'not-ours' }], C.CHANNEL_SETS);
   assert.deepEqual(run.briefChannels(all, offb).map(c => c.key).sort(), Object.keys(C.CHANNEL_SETS.broadway).sort());
-  // West End accounts not configured yet: a London-newer brief keeps to Broadway, like score posts.
-  assert.deepEqual(run.briefChannels(all, london).map(c => c.set), Object.keys(C.CHANNEL_SETS.broadway).map(() => 'broadway'));
+  // West End accounts not configured yet: a London-newer brief is not posted at all, like score posts (BRO-8085).
+  assert.deepEqual(run.briefChannels(all, london), []);
+  assert.deepEqual(run.briefChannels(all, london, { ungated: true }), [], 'an owner-approved brief is not a way round it');
   assert.ok(run.briefChannels(all, offb).every(c => c.set === 'broadway'));
 });
 
@@ -527,10 +532,12 @@ test('routing: West End and Off-West End go to West End channels only, Broadway 
 });
 
 test('routing: a high-profile show (other-market critics, same show there, or transfer) also posts to the other market', () => {
-  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes'), SETS_BOTH, []), ['west-end', 'broadway']);
+  // A high-profile London show stays on the West End accounts (owner, BRO-8085); only Broadway cross-posts.
+  assert.equal(routing.isHighProfile(show({ category: 'west-end' }), by('nytimes'), []), true);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes'), SETS_BOTH, []), ['west-end']);
   assert.deepEqual(routing.targetSets(show({ category: 'broadway' }), by('telegraph'), SETS_BOTH, []), ['broadway', 'west-end']);
   // a market's own critics do not count, however many: London's nationals review nearly every West End opening
-  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('telegraph', 'times-uk', 'financialtimes', 'thestage', 'independent', 'sunday-times', 'guardian', 'evening-standard'), SETS_BOTH, []), ['west-end']);
+  assert.equal(routing.isHighProfile(show({ category: 'west-end' }), by('telegraph', 'times-uk', 'financialtimes', 'thestage', 'independent', 'sunday-times', 'guardian', 'evening-standard'), []), false);
   assert.deepEqual(routing.targetSets(show({ category: 'broadway' }), by('nytimes', 'variety', 'vulture'), SETS_BOTH, []), ['broadway']);
   const lon = show({ id: 'lon', category: 'west-end' });
   const nyc = show({ id: 'nyc', category: 'broadway', transferOf: 'lon' });
@@ -543,12 +550,15 @@ test('routing: a high-profile show (other-market critics, same show there, or tr
 test('routing: the same title on the other main stage within 3 years is high profile; Off- markets and old runs are not', () => {
   const we = show({ id: 'we', category: 'west-end', title: 'Oh, Mary!', openingDate: '2026-01-27' });
   const bw = show({ id: 'bw', category: 'broadway', title: 'Oh, Mary!', openingDate: '2024-07-11' });
-  assert.deepEqual(routing.targetSets(we, NONE, SETS_BOTH, [we, bw]), ['west-end', 'broadway']);
+  assert.equal(routing.isHighProfile(we, NONE, [we, bw]), true);
+  assert.deepEqual(routing.targetSets(we, NONE, SETS_BOTH, [we, bw]), ['west-end'], 'London never cross-posts (BRO-8085)');
   assert.deepEqual(routing.targetSets(bw, NONE, SETS_BOTH, [we, bw]), ['broadway', 'west-end']);
-  const old = { ...bw, openingDate: '2019-01-01' };
-  assert.deepEqual(routing.targetSets(we, NONE, SETS_BOTH, [we, old]), ['west-end'], 'more than 3 years apart');
+  const old = { ...we, openingDate: '2028-01-01' };
+  assert.deepEqual(routing.targetSets(bw, NONE, SETS_BOTH, [old, bw]), ['broadway'], 'more than 3 years apart');
+  assert.equal(routing.isHighProfile(we, NONE, [we, { ...bw, openingDate: '2019-01-01' }]), false, 'more than 3 years apart');
   const owe = { ...we, category: 'off-west-end' };
-  assert.deepEqual(routing.targetSets(owe, NONE, SETS_BOTH, [owe, bw]), ['west-end'], 'Off-West End is not main stage');
+  assert.equal(routing.isHighProfile(owe, NONE, [owe, bw]), false, 'Off-West End is not main stage');
+  assert.deepEqual(routing.targetSets(bw, NONE, SETS_BOTH, [owe, bw]), ['broadway'], 'an Off-West End twin does not make Broadway high profile');
   assert.equal(routing.titleKey('The Phantom of the Opéra'), routing.titleKey('Phantom of the Opera'));
 });
 
@@ -564,9 +574,9 @@ test('routing: rival productions of one play (different directors) are not twins
   assert.equal(routing.isHighProfile({ ...we, openingDate: undefined }, NONE, [we, bw]), false);
 });
 
-test('routing: West End channels not configured yet -> unchanged behaviour (everything to Broadway)', () => {
+test('routing: West End channels not configured yet -> London shows post nowhere, Broadway shows are not cross-posted', () => {
   const none = { broadway: { instagram: 'b1' }, 'west-end': {} };
-  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes', 'telegraph'), none, []), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes', 'telegraph'), none, []), []);
   assert.deepEqual(routing.targetSets(show({ category: 'broadway' }), by('nytimes', 'telegraph'), none, []), ['broadway'], 'no cross-post to an unconfigured set');
 });
 
@@ -578,16 +588,16 @@ test('routing: channels are tagged by set; the Broadway ledger key stays the bar
 test('routing: the live config has Broadway channels and routes every eligible category somewhere', () => {
   const C = require('./social-autopost/config.js');
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
-  // Off-West End waits for the West End accounts (BRO-6932); every other category posts somewhere.
+  // London shows wait for the West End accounts (BRO-6932, BRO-8085); every other category posts somewhere.
   for (const cat of C.ELIGIBLE_CATEGORIES) {
-    const want = cat === 'off-west-end' && !routing.postsToOwnSet(show({ category: cat })) ? 0 : 1;
+    const want = routing.homeSet(show({ category: cat })) === 'west-end' && !routing.postsToOwnSet(show({ category: cat })) ? 0 : 1;
     assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= want, cat);
   }
 });
 
 test('routing: a partly filled West End set is not active; duplicate ids across sets are rejected', () => {
   const part = { broadway: { instagram: 'b1', facebook: 'b2' }, 'west-end': { instagram: 'w1' } };
-  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes', 'telegraph'), part, []), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), by('nytimes', 'telegraph'), part, []), []);
   const dup = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'b1' } };
   assert.throws(() => routing.tagChannels([{ id: 'b1', service: 'instagram' }], dup), /both 'broadway' and 'west-end'/);
 });
@@ -595,7 +605,30 @@ test('routing: a partly filled West End set is not active; duplicate ids across 
 test('routing: a transfer link on either end makes both shows high profile', () => {
   const lon = show({ id: 'lon', category: 'west-end' });
   const nyc = show({ id: 'nyc', category: 'broadway', transferOf: 'lon' });
-  assert.deepEqual(routing.targetSets(lon, NONE, SETS_BOTH, [lon, nyc]), ['west-end', 'broadway']);
+  assert.equal(routing.isHighProfile(lon, NONE, [lon, nyc]), true);
+  assert.deepEqual(routing.targetSets(lon, NONE, SETS_BOTH, [lon, nyc]), ['west-end'], 'London never cross-posts (BRO-8085)');
+});
+
+test('routing guard (BRO-8085): no London show ever reaches the Broadway accounts, whatever the config or signals', () => {
+  const C = require('./social-autopost/config.js');
+  const live = C.CHANNEL_SETS;
+  const full = { ...live, 'west-end': Object.fromEntries(Object.keys(live.broadway).map(svc => [svc, `we-${svc}`])) };
+  const part = { ...live, 'west-end': { [Object.keys(live.broadway)[0]]: 'we-1' } };
+  const nyc = show({ id: 'g-nyc', category: 'broadway', title: 'Guard Show', openingDate: '2026-01-01', transferOf: 'g-lon' });
+  const prevNotable = C.NOTABLE_ONLY.enabled;
+  try {
+    for (const notable of [false, true]) {
+      C.NOTABLE_ONLY.enabled = notable;
+      for (const category of ['west-end', 'off-west-end']) {
+        const lon = show({ id: 'g-lon', category, title: 'Guard Show', openingDate: '2026-03-01', transferredTo: 'g-nyc' });
+        for (const [name, sets] of [['live', live], ['full', full], ['part', part], ['none', { broadway: live.broadway }]]) {
+          const why = `${category} ${name} notable=${notable}`;
+          assert.ok(!routing.targetSetsUngated(lon, by('nytimes', 'variety'), sets, [lon, nyc]).includes('broadway'), why);
+          assert.ok(!routing.targetSets(lon, by('nytimes', 'variety'), sets, [lon, nyc], {}).includes('broadway'), why);
+        }
+      }
+    }
+  } finally { C.NOTABLE_ONLY.enabled = prevNotable; }
 });
 
 test('self-test: channels added after go-live (West End) are unvalidated; legacy ledgers cover the Broadway set', () => {

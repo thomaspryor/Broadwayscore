@@ -36,8 +36,8 @@ const CHANNEL_SETS = {
   // West End Scorecard accounts (BRO-6378). Fill in the Buffer channel ids from
   // `node scripts/social-autopost/run.js --list-channels` once the owner has
   // connected them (guide: claude-outputs/west-end-social-accounts-guide.md).
-  // While this is empty, main-stage West End shows keep posting to the Broadway set
-  // (BROADWAY_FALLBACK_CATEGORIES, routing.js) and Off-West End shows post nothing,
+  // While this is empty, West End and Off-West End shows post nothing (owner,
+  // 2026-11-23, BRO-8085: West End results never go to the American accounts),
   // so switching routing on is just adding ids here.
   'west-end': {
     // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
@@ -46,7 +46,7 @@ const CHANNEL_SETS = {
 // Opera Scorecard accounts (BRO-6770). Fill in the Buffer channel ids from
 // `node scripts/social-autopost/run.js --list-channels` once the owner has connected them.
 // Opera posts ONLY here: while this is empty opera posts nothing (no fallback to the
-// Broadway or West End accounts, unlike West End), and nothing else ever posts here.
+// Broadway or West End accounts, same as West End), and nothing else ever posts here.
 CHANNEL_SETS.opera = {
   // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
 };
@@ -56,14 +56,12 @@ const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers th
 // Which channel set is a show's home. Broadway and Off-Broadway post to the Broadway
 // accounts, West End and Off-West End to the West End accounts.
 const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', regional: 'broadway', tour: 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
-// Categories whose shows post to the Broadway accounts while their own set is not
-// configured. Off-West End is not one (owner, BRO-6932: fringe London shows do not
-// belong on the Broadway accounts); it waits for the West End accounts.
-// BRO-7413: unchanged, but while NOTABLE_ONLY is on the notability gate in routing.targetSets removes West End from the
-// Broadway accounts, so this fallback only matters if that gate is switched off.
-const BROADWAY_FALLBACK_CATEGORIES = ['west-end'];
+// London shows never post to the Broadway accounts: no fallback while the West End set
+// is empty, and no cross-post once it exists (owner 2026-11-23, BRO-8085: "I'm not going
+// to post the West End results to the American accounts"). routing.targetSetsUngated.
 
-// "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
+// "High profile" rule for cross-posting a Broadway show to the West End accounts (BRO-6378;
+// London -> Broadway cross-posting is off since BRO-8085;
 // proposal, the owner approves it). Also the rule for the video lane (BRO-6250):
 // import isHighProfile from routing.js there. A show is high profile in the other
 // market when that market's own critics came to it (otherMarketPress, keyed by the
@@ -218,7 +216,7 @@ const VIDEO = {
 
 module.exports = {
   VIDEO, NOTABLE_ONLY, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
-  MAX_PER_NETWORK_PER_DAY, MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MAX_PER_NETWORK_PER_DAY, MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

@@ -192,10 +192,14 @@ test('class guard: only runBrief passes ungated: true to postCompare (automatic 
   assert.ok(start >= 0 && hits[0].index > start && (end < 0 || hits[0].index < end), 'the call site is inside runBrief');
 });
 
-test('a West End brief keeps the pre-BRO-7413 route (Broadway fallback) when ungated; gated it posts nowhere', () => {
+test('a West End show never reaches the Broadway accounts while the West End set is empty, gated or not (BRO-8085)', () => {
   const { briefChannels } = require('./run.js');
-  const we = show({ id: 'we-brief-2026', category: 'west-end', venue: 'Lyric Theatre' });
   const channels = [{ id: 'c1', service: 'instagram', set: 'broadway', key: 'instagram' }];
-  assert.equal(briefChannels(channels, we, { ungated: true }).length, 1);
-  assert.equal(briefChannels(channels, we, { slim: {} }).length, 0);
+  for (const category of ['west-end', 'off-west-end']) {
+    const we = show({ id: `we-brief-${category}`, category, venue: 'Lyric Theatre' });
+    assert.equal(briefChannels(channels, we, { ungated: true }).length, 0, category);
+    assert.equal(briefChannels(channels, we, { slim: {} }).length, 0, category);
+  }
+  const bway = show({ id: 'bway-brief-2026', category: 'broadway', venue: 'Majestic Theatre' });
+  assert.equal(briefChannels(channels, bway, { ungated: true }).length, 1, 'Broadway still posts');
 });

@@ -213,7 +213,7 @@ function backfillCandidate(show, ctx, cfg = C.BACKFILL) {
 /** backfillCandidate without the score check: the show would post on a quiet day once its score settles. */
 function backfillWindow(show, ctx, cfg = C.BACKFILL) {
   if (!cfg || !cfg.enabled || !isEligibleShow(show, { allowOpera: true, slim: ctx.slim }) || show.status !== 'open') return false;
-  // Filler stays on the show's own accounts: no old London show on the Broadway fallback.
+  // Filler stays on the show's own accounts (a London show never posts to the Broadway ones).
   if (!postsToOwnSet(show)) return false;
   const today = localParts(new Date(ctx.now), C.MARKETS.broadway.tz).ymd;
   const closing = String(show.closingDate || '').slice(0, 10);
