@@ -102,7 +102,7 @@ function showNames(show, allShows) {
     const r = registry();
     const owners = r.ownersByTitle.get(normTitle(show.title)) || new Set();
     const restKey = normTitle(bare.rest);
-    const restIsBilled = r.titles.some((t) => normTitle(t) === restKey);
+    const restIsBilled = r.openTitles.has(restKey); // closed entries (a 2024 regional staging) must not block an open show
     if (bare.ownerWords.length && owners.has(bare.ownerWords.join(' ')) && !restIsBilled) {
       seen.add(normTitle(bare.rest));
       out.push({ name: bare.rest, kind: 'aka' });
@@ -124,6 +124,7 @@ let _registry = null; // { akaByTitle, venueByTitle, peopleByTitle, marketsByTit
 function buildRegistry(shows) {
   const akaByTitle = new Map();
   const venueByTitle = new Map();
+  const openTitles = new Set(); // normalised billed titles of shows that are not closed
   const ownersByTitle = new Map(); // normalised full names of the creative team only (BRO-8125 author-possessive owner)
   const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const marketsByTitle = new Map(); // categories of the shows billed with a title (BRO-7785)
@@ -151,7 +152,9 @@ function buildRegistry(shows) {
       if (!peopleByTitle.has(k)) peopleByTitle.set(k, new Set());
       for (const w of normTitle(name).split(' ')) if (w.length > 1) peopleByTitle.get(k).add(w);
     }
-    for (const p of Array.isArray(s.creativeTeam) ? s.creativeTeam : []) {
+    // Open shows only: a closed production's creative team (the 2007 Grinch) must not vouch for another staging billed alike.
+    if (s.status !== 'closed') openTitles.add(k);
+    for (const p of s.status === 'closed' ? [] : Array.isArray(s.creativeTeam) ? s.creativeTeam : []) {
       const name = typeof p === 'string' ? p : p && p.name;
       if (typeof name !== 'string' || !name.trim()) continue;
       if (!ownersByTitle.has(k)) ownersByTitle.set(k, new Set());
@@ -163,7 +166,7 @@ function buildRegistry(shows) {
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, peopleByTitle, ownersByTitle, marketsByTitle, titles, homeVenues, entries };
+  return { akaByTitle, venueByTitle, peopleByTitle, ownersByTitle, openTitles, marketsByTitle, titles, homeVenues, entries };
 }
 function registry() {
   if (!_registry) {
