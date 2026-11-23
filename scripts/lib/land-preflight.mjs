@@ -1045,6 +1045,43 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
   }
 }
 
+/**
+ * BRO-8107: land.yml's lint-workflows::live-data-lane refusal, run here first. 17 land runs
+ * were refused there in ~25h (2026-11-22/23), each found 20-30 min into the land; the local
+ * floor in merge-worktree-to-main.sh never sees a direct `git push … land/<name>` (cloud).
+ * Same call as that floor: trace the branch's changed unit tests and refuse an undeclared
+ * live one. Only exit 1 (an undeclared live test, confirmed by a complete trace) blocks; a
+ * missing script, a crash, a timeout or an exhausted budget is a skip (land.yml still judges).
+ * Reads the working tree, so the caller runs it only when HEAD is the pushed commit and clean.
+ * LAND_LIVE_DATA_PREFLIGHT_DISABLE=1 turns it off. -> { status: fail|clean|skip|off, message?, reason? }
+ */
+export function liveDataLaneCheck({ root, base = 'origin/main', env = process.env, seams = {}, budgetMs }) {
+  if (env.LAND_LIVE_DATA_PREFLIGHT_DISABLE === '1') return { status: 'off', reason: 'LAND_LIVE_DATA_PREFLIGHT_DISABLE=1' };
+  if (!(budgetMs >= 20000)) return { status: 'skip', reason: 'hook time budget exhausted' };
+  try {
+    const script = path.join(root, 'scripts', 'live-data-lane.js');
+    if (!seams.run && !(fs.existsSync(script) && fs.readFileSync(script, 'utf8').includes('--refuse-undeclared'))) return { status: 'skip', reason: 'live-data-lane.js --refuse-undeclared not in this tree' };
+    const r = (seams.run || spawnSync)(process.execPath, [script, '--verify-changed', '--refuse-undeclared', `--base=${base}`], {
+      cwd: root, encoding: 'utf8', timeout: budgetMs + 15000, maxBuffer: 16 * 1024 * 1024,
+      // Per runner (node, then tsx): half each, so the pair stays inside the budget.
+      env: { ...env, LIVE_DATA_LANE_TRACE_TIMEOUT_MS: String(Math.floor(budgetMs / 2)) },
+    });
+    if (r.status === 0) return { status: 'clean' };
+    if (r.status !== 1) return { status: 'skip', reason: `live-data-lane gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
+    const errors = String(r.stdout || '').split('\n').filter((l) => l.startsWith('::error::')).map((l) => `  - ${l.slice(9)}`);
+    if (!errors.length) return { status: 'skip', reason: 'live-data-lane exited 1 without naming a test' };
+    return {
+      status: 'fail',
+      message: `land.yml would refuse this push at lint-workflows::live-data-lane (BRO-8107):\n${errors.slice(0, 5).join('\n')}\n` +
+        'Fix: point the test at a fixture (useShowsFixture from scripts/lib/shows-json-path.js), or add "// LIVE-DATA-LANE: <why>" to its first 40 lines. ' +
+        `Re-run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}\n` +
+        'If the read is not yours, bypass this push with `# NO-LAND-PREFLIGHT: <reason>`.',
+    };
+  } catch (e) {
+    return { status: 'skip', reason: `live-data-lane errored: ${e.message}` };
+  }
+}
+
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
 export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
   const started = Date.now();
@@ -1115,7 +1152,13 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
-    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
+    // BRO-8107: after the fast tests, in whatever hook time is left (240s total, 10s margin).
+    const ld = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
+      : !checkTests ? { status: 'skip', reason: 'working tree is not the pushed commit' }
+      : liveDataLaneCheck({ root, base, env, seams: seams.liveDataLane || {}, budgetMs: 230000 - (Date.now() - started) });
+    v.detail.liveDataLane = ld;
+    if (ld.status === 'fail') { v.decision = 'block'; v.message = ld.message; }
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, liveDataLane: ld.status, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];

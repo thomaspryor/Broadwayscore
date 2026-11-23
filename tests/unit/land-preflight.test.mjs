@@ -1015,3 +1015,33 @@ test('mergeCommitWarnings: an octopus merge and a flood of merges fail open', as
   assert.ok(r.count > 10);
   assert.deepEqual(r.warnings, []);
 });
+
+// BRO-8107: land.yml's live-data-lane refusal is found here, before the land, for direct
+// land/ pushes too (3 of 17 refusals on 2026-11-22/23 came from pushes that never ran the
+// merge-worktree-to-main.sh floor). Only a named undeclared live test blocks.
+test('liveDataLaneCheck: an undeclared live test blocks; anything else never does', async () => {
+  const { liveDataLaneCheck, runHook } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  const refused = { status: 1, stdout: 'live-data-lane: 1 changed unit test file(s)\n::error::tests/unit/x.test.mjs reads live data (data/shows.json (untracked core data)) but would run in test.yml\'s blocking batch\nlive-data-lane: 1 undeclared live test(s)\n' };
+  let seen = null;
+  const runner = (res) => ({ run: (cmd, args, opts) => { seen = { args, opts }; return res; } });
+  const r = liveDataLaneCheck({ root: wt, env: {}, seams: runner(refused), budgetMs: 100000 });
+  assert.equal(r.status, 'fail');
+  assert.match(r.message, /tests\/unit\/x\.test\.mjs reads live data/);
+  assert.match(r.message, /useShowsFixture|LIVE-DATA-LANE/);
+  assert.match(r.message, /NO-LAND-PREFLIGHT/);
+  assert.ok(seen.args.includes('--refuse-undeclared') && seen.args.includes('--base=origin/main'));
+  assert.equal(seen.opts.env.LIVE_DATA_LANE_TRACE_TIMEOUT_MS, '50000', 'two runners share the budget');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: runner({ status: 0, stdout: '' }), budgetMs: 100000 }).status, 'clean');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: runner({ status: 1, stdout: 'no error lines' }), budgetMs: 100000 }).status, 'skip', 'exit 1 without a named test');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: runner({ status: null, signal: 'SIGTERM', stdout: '' }), budgetMs: 100000 }).status, 'skip', 'killed');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: { run: () => { throw new Error('boom'); } }, budgetMs: 100000 }).status, 'skip');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: runner(refused), budgetMs: 5000 }).status, 'skip', 'budget exhausted');
+  assert.equal(liveDataLaneCheck({ root: wt, env: { LAND_LIVE_DATA_PREFLIGHT_DISABLE: '1' }, seams: runner(refused), budgetMs: 100000 }).status, 'off');
+  assert.equal(liveDataLaneCheck({ root: wt, env: {}, budgetMs: 100000 }).status, 'skip', 'a tree without the --refuse-undeclared floor');
+  // Through the hook: the refusal blocks the push with the named test.
+  sh(wt, 'git reset -q --hard origin/main && mkdir -p scripts/lib && echo "module.exports = 2;" > scripts/lib/y.js && git add -A && git commit -qm code');
+  const v = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => [], fastTests: { run: () => ({ status: 0, stdout: JSON.stringify({ status: 'clean', ran: 1, ms: 1000, newFailures: [] }) }) }, liveDataLane: runner(refused) } });
+  assert.equal(v.decision, 'block', JSON.stringify(v.results?.[0]?.detail?.liveDataLane));
+  assert.match(v.message, /lint-workflows::live-data-lane/);
+});
