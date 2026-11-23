@@ -773,18 +773,27 @@ async function fetchViaListingConfig(outletId, sc) {
 // BRO-8189: a listing-html config with perShowSerp also runs the per-show SERP (never in
 // opening-window mode, which is free-only) and merges by URL. A failing listing no longer
 // loses the outlet: the SERP half still returns its results.
-async function fetchViaListingConfigWithSerp(outletId, sc, domain, cutoff, opts, win, shows, serp = serpQuery) {
+async function fetchViaListingConfigWithSerp(outletId, sc, domain, cutoff, opts, win, shows, serp = serpQuery, now = Date.now()) {
   if (!sc.perShowSerp || win || !domain) return fetchViaListingConfig(outletId, sc);
   let listing = [];
   let listingErr = null;
   try { listing = await fetchViaListingConfig(outletId, sc); } catch (err) { listingErr = err; console.warn(`  ⚠ listing failed (${err.message}); per-show SERP still runs`); }
   const scoped = opts.market ? shows.filter(s => s.category === opts.market || s.market === opts.market) : shows;
   let perShow = [];
-  try { perShow = await fetchViaSerpPerShow(outletId, domain, cutoff, opts, scoped, serp); } catch (err) { if (listingErr) throw listingErr; console.warn(`  ⚠ per-show SERP failed: ${err.message}`); }
+  try { perShow = await fetchViaSerpPerShow(outletId, domain, cutoff, opts, scoped, serp, now); } catch (err) { if (listingErr) throw listingErr; console.warn(`  ⚠ per-show SERP failed: ${err.message}`); }
   const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
-  const seen = new Set(listing.map(a => key(a.url)));
+  const byUrl = new Map(listing.map(a => [key(a.url), a]));
   const filter = sc.urlFilter;
-  for (const a of perShow) if (!seen.has(key(a.url)) && (!filter || filter.test(a.url))) { seen.add(key(a.url)); listing.push({ ...a, viaSerp: true }); }
+  for (const a of perShow) {
+    if (filter && !filter.test(a.url)) continue;
+    const have = byUrl.get(key(a.url));
+    // Same URL from both: the listing headline may not name the show ("a-blue-streak-of-staleness"); the SERP title does.
+    if (have) { if (a.headline && !String(have.headline || '').includes(a.headline)) have.headline = `${have.headline || ''} ${a.headline}`.trim(); continue; }
+    const item = { ...a, viaSerp: true };
+    byUrl.set(key(a.url), item); listing.push(item);
+  }
+  // Listing failed and SERP found nothing: surface it so the outlet counts as failed (and the non-window run falls back to its generic SERP).
+  if (listingErr && listing.length === 0) throw listingErr;
   return listing;
 }
 
