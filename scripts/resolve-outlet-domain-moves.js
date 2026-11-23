@@ -46,8 +46,19 @@ function main() {
       return 0;
     }
   }
+  if (process.env.OUTLET_DOMAIN_MOVE_AUTORESOLVE_DISABLED === '1' && apply) {
+    console.log('skip: OUTLET_DOMAIN_MOVE_AUTORESOLVE_DISABLED=1');
+    return 0;
+  }
   const registry = readJson(registryPath);
   const census = readJson(censusPath);
+  // Same freshness bar as the health-check row: never decide from a census the
+  // audit failed to refresh.
+  const ageH = (Date.now() - Date.parse(census.generatedAt || '')) / 3600000;
+  if (apply && !(ageH <= 48)) {
+    console.log(`skip: census generatedAt ${census.generatedAt || 'missing'} is older than 48h`);
+    return 0;
+  }
   const showMarket = new Map((readJson(p('data', 'shows.json')).shows || []).map((s) => [s.id, s.market]));
   const { registrableHost } = require('./lib/non-review-url-patterns');
   const excludeHosts = new Set((census.outlets || []).map((o) => o && o.host && registrableHost(String(o.host).toLowerCase())).filter(Boolean));

@@ -28,6 +28,8 @@ const outlets = {
   independent: { domain: 'independent.co.uk' },
   artshub: { domain: 'artshub.co.uk' },
   'gay-times': { domain: 'gaytimes.co.uk' },
+  cnn: { domain: 'cnn.com', tier: 3 },
+  stageandcinema: { domain: 'stageandcinema.com', tier: 3 },
   variety: { domain: 'variety.com', tier: 1 },
   thestage: { domain: 'thestage.co.uk', tier: 2, region: 'london' },
 };
@@ -38,7 +40,7 @@ const showMarket = new Map([
   ['its-a-wonderful-life-a-live-radio-play-2026', 'regional'],
   ['some-broadway-show', 'broadway'],
 ]);
-const outletMarkets = new Map([['rollingstone', new Set(['broadway'])], ['curtainup', new Set(['broadway'])]]);
+const outletMarkets = new Map([['stageandcinema', new Set(['broadway', 'west-end'])], ['rollingstone', new Set(['broadway'])], ['curtainup', new Set(['broadway'])]]);
 const decide = (host, outletId, shows = []) => decideDomainMove({ host, outletId, shows }, outlets, { outletMarkets, showMarket });
 
 test('BRO-8044 hackneycitizen.ghost.io: blog-platform mirror of the same label is an alias', () => {
@@ -47,8 +49,10 @@ test('BRO-8044 hackneycitizen.ghost.io: blog-platform mirror of the same label i
   assert.equal(d.rule, 'platform-mirror');
 });
 
-test('BRO-7335 theartsdispatch.com: custom domain of a substack outlet is an alias', () => {
-  assert.equal(decide('theartsdispatch.com', 'theartsdispatch').kind, 'domainAlias');
+test('BRO-7335 theartsdispatch.com: custom domain of a substack outlet is an alias when seen on its own market', () => {
+  assert.equal(decide('theartsdispatch.com', 'theartsdispatch', ['ceilidh-the-musical-off-west-end-2026']).kind, 'domainAlias');
+  // seen on a Broadway show the London outlet never covered: left for judgment
+  assert.equal(decide('theartsdispatch.com', 'theartsdispatch', ['some-broadway-show']).kind, null);
 });
 
 test('BRO-7335 westendextra.co.uk: home-country TLD swap on West End shows is an alias (0 reviews left on the old host)', () => {
@@ -61,8 +65,9 @@ test('BRO-7335 metro.us vs metro.co.uk: two national ccTLDs is a different paper
   const d = decide('metro.us', 'metro-uk', ['some-broadway-show']);
   assert.equal(d.kind, 'notDomainMove');
   assert.equal(d.rule, 'foreign-cctld-twin');
-  assert.equal(decide('independent.ie', 'independent').kind, 'notDomainMove');
-  assert.equal(decide('artshub.com.au', 'artshub').kind, 'notDomainMove');
+  // without market evidence for the foreign host it stays undecided
+  assert.equal(decide('independent.ie', 'independent').kind, null);
+  assert.equal(decide('metro.eu', 'metro-uk', ['some-broadway-show']).kind, null, '.eu is not a country');
 });
 
 test('BRO-7411 rollingstone.co.uk on a West End show: an edition abroad stays for judgment', () => {
@@ -83,6 +88,8 @@ test('never guesses an alias without market evidence', () => {
 test('never auto-aliases onto a tier 1/2 outlet (a same-named blog or mirror would inherit its weight)', () => {
   assert.equal(decide('variety.substack.com', 'variety').kind, null);
   assert.equal(decide('thestage.com', 'thestage', ['ceilidh-the-musical-off-west-end-2026']).kind, null);
+  assert.equal(decide('cnn.substack.com', 'cnn', ['some-broadway-show']).kind, null, 'short famous label');
+  assert.equal(decide('stageandcinema.co.uk', 'stageandcinema', ['ceilidh-the-musical-off-west-end-2026']).kind, null, 'US outlet that also covers London');
 });
 
 test('a host never vouches for its own market', () => {

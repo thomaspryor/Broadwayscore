@@ -34,6 +34,11 @@
  * A wrong alias credits a review to the wrong outlet and tier; undecided only
  * costs a card, so this never guesses.
  *
+ * Rollback for a wrong decision: move the host from domainAliases to
+ * notDomainMoves (or back). applyOutletRegistryAlias refuses to write a host
+ * already recorded on the other list, so a human correction is never undone.
+ * Kill switch: repo variable OUTLET_DOMAIN_MOVE_AUTORESOLVE_DISABLED=1.
+ *
  * Pure: no I/O. `outletMarkets` maps outletId -> Set of markets the outlet has
  * reviews in; `showMarket` maps showId -> market (shows.json `market`).
  */
@@ -53,8 +58,9 @@ const MARKET_CCTLDS = {
 // had 0 reviews left on westendextra.com).
 const REGION_MARKET = { london: 'west-end', uk: 'west-end', nyc: 'broadway', 'new-york': 'broadway' };
 
-// ccTLDs commonly bought as generic vanity domains: never read as a country.
-const VANITY_CCTLDS = new Set(['tv', 'io', 'co', 'me', 'fm', 'ly', 'am', 'to', 'cc', 'ai', 'gg', 'is', 'it', 'la', 'ws', 'nu', 'vc', 'ac', 'sh', 'st']);
+const MIN_ALIAS_LABEL = 8;
+// ccTLDs commonly bought as generic vanity domains (or not a country: eu).
+const VANITY_CCTLDS = new Set(['eu', 'tv', 'io', 'co', 'me', 'fm', 'ly', 'am', 'to', 'cc', 'ai', 'gg', 'is', 'it', 'la', 'ws', 'nu', 'vc', 'ac', 'sh', 'st']);
 const countryOf = (suffix) => String(suffix || '').split('.').pop();
 function isNationalCc(suffix) {
   const c = countryOf(suffix);
@@ -87,16 +93,33 @@ function decideDomainMove(move, outlets, ctx = {}) {
     return { kind: null, rule: 'label-differs', reason: `${move.host} and ${outlet.domain} differ in more than the suffix (e.g. a hyphen); needs judgment` };
   }
 
+  // Exactly one plausible owner: the detector pairs the FIRST outlet whose
+  // domain slug matches, and some slugs are shared by two outlets.
+  const owners = Object.values(outlets).filter((o) => o && o.domain && hostShape(o.domain)?.label === a.label);
+  if (owners.length !== 1) return { kind: null, rule: 'shared-label', reason: `${owners.length} registered outlets carry the "${a.label}" label; needs judgment` };
+
+  const get = (m, k) => (m instanceof Map ? m.get(k) : m && m[k]);
+  const shows = Array.isArray(move.shows) ? move.shows : [];
+  // Markets the outlet covers: its reviews; its registry region only when it
+  // has none left (every review moved to the new host, West End Extra).
+  const outletMarkets = new Set(get(ctx.outletMarkets, move.outletId) || []);
+  if (outletMarkets.size === 0 && REGION_MARKET[outlet.region]) outletMarkets.add(REGION_MARKET[outlet.region]);
+  const showMarkets = shows.map((id) => get(ctx.showMarket, id));
+  const allShowsInOutletMarkets = shows.length > 0 && showMarkets.every((m) => m && outletMarkets.has(m));
+
   // Never auto-alias onto a tier 1/2 outlet: a blog or mirror named after a
   // major paper (variety.substack.com, thestage.com) would inherit its weight.
   // Those stay a judgment call (second-opinion review, BRO-7822).
-  const aliasAllowed = !(Number(outlet.tier) > 0 && Number(outlet.tier) <= 2);
+  // Short labels name famous brands (cnn, vogue, bbc, npr are tier 3 here):
+  // a same-named blog is far more likely a fan than the outlet. Ship-check.
+  const aliasAllowed = !(Number(outlet.tier) > 0 && Number(outlet.tier) <= 2) && a.label.length >= MIN_ALIAS_LABEL;
 
   if (a.platform || b.platform) {
     if (a.platform && b.platform && a.platform === b.platform) {
       return { kind: null, rule: 'same-platform', reason: 'same platform, different subdomain shape; needs judgment' };
     }
-    if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier}; a same-named blog is not trusted automatically` };
+    if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier || '?'} with label "${a.label}"; a same-named blog is not trusted automatically (tier 1/2 or label under ${MIN_ALIAS_LABEL} chars)` };
+    if (!allShowsInOutletMarkets) return { kind: null, rule: 'platform-new-market', reason: `${move.host} was not seen only on shows in markets ${move.outletId} covers; needs judgment` };
     return {
       kind: 'domainAlias',
       rule: 'platform-mirror',
@@ -108,7 +131,12 @@ function decideDomainMove(move, outlets, ctx = {}) {
   // independent.co.uk, artshub.com.au vs artshub.co.uk): a paper does not move
   // country, so this is a same-named paper elsewhere. Vanity ccTLDs used as
   // generic ones (.tv, .io, .co, ...) are excluded.
-  if (isNationalCc(a.suffix) && isNationalCc(b.suffix) && countryOf(a.suffix) !== countryOf(b.suffix)) {
+  // Also needs market evidence: none of the host's shows is in a market the
+  // outlet covers (metro.us on Broadway shows vs Metro UK's West End reviews).
+  // and the host's own ccTLD is the country those shows play in.
+  const disjoint = shows.length > 0 && outletMarkets.size > 0 && showMarkets.every((m) => m && !outletMarkets.has(m));
+  const hostCountryMatches = showMarkets.every((m) => m && (MARKET_CCTLDS[m] || []).includes(a.suffix));
+  if (isNationalCc(a.suffix) && isNationalCc(b.suffix) && countryOf(a.suffix) !== countryOf(b.suffix) && disjoint && hostCountryMatches) {
     return {
       kind: 'notDomainMove',
       rule: 'foreign-cctld-twin',
@@ -116,24 +144,26 @@ function decideDomainMove(move, outlets, ctx = {}) {
     };
   }
 
-  const get = (m, k) => (m instanceof Map ? m.get(k) : m && m[k]);
   const genericSide = GENERIC_TLDS.has(a.suffix) ? a : GENERIC_TLDS.has(b.suffix) ? b : null;
   const ccSide = genericSide === a ? b : a;
   if (!genericSide || GENERIC_TLDS.has(ccSide.suffix)) {
     return { kind: null, rule: 'tld-not-home-swap', reason: `${a.suffix} vs ${b.suffix} is not a generic-to-home-country swap; needs judgment` };
   }
-  if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier}; a same-named site is not trusted automatically` };
-  const shows = Array.isArray(move.shows) ? move.shows : [];
+  if (!aliasAllowed) return { kind: null, rule: 'major-outlet', reason: `${move.outletId} is tier ${outlet.tier || '?'} with label "${a.label}"; a same-named site is not trusted automatically (tier 1/2 or label under ${MIN_ALIAS_LABEL} chars)` };
   if (shows.length === 0) return { kind: null, rule: 'no-shows', reason: 'no census shows to check the market against' };
-  const outletMarketsRaw = get(ctx.outletMarkets, move.outletId);
-  const outletMarkets = new Set(outletMarketsRaw || []);
-  if (REGION_MARKET[outlet.region]) outletMarkets.add(REGION_MARKET[outlet.region]);
   for (const showId of shows) {
     const market = get(ctx.showMarket, showId);
     const cc = market && MARKET_CCTLDS[market];
     if (!cc) return { kind: null, rule: 'market-unknown', reason: `${showId} has no market with a known country` };
     if (!cc.includes(ccSide.suffix)) return { kind: null, rule: 'market-country-mismatch', reason: `${showId} (${market}) does not play in the .${ccSide.suffix} country` };
     if (!outletMarkets.has(market)) return { kind: null, rule: 'outlet-new-market', reason: `${move.outletId} has no ${market} reviews yet (an edition abroad, or a different paper)` };
+  }
+  // The outlet must cover ONLY that country: a US site that also reviews the
+  // West End (stageandcinema.com) next to a same-named .co.uk is two papers.
+  for (const m of outletMarkets) {
+    if (!(MARKET_CCTLDS[m] || []).includes(ccSide.suffix)) {
+      return { kind: null, rule: 'outlet-multi-country', reason: `${move.outletId} also covers ${m}; a home-country twin could be a different paper` };
+    }
   }
   return {
     kind: 'domainAlias',
