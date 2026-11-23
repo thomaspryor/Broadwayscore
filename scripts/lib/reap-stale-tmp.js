@@ -64,6 +64,9 @@ const GIT_ENV = (() => {
   return e;
 })();
 
+// realpath that never throws (/private/tmp does not exist on Linux CI).
+function safeRealpath(p) { try { return fs.realpathSync(p); } catch { return null; } }
+
 function hasGit(p) {
   try { fs.lstatSync(path.join(p, '.git')); return true; } catch { return false; }
 }
@@ -284,7 +287,7 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
     // What was deleted, by name, so a bad pass can be traced (real root only
     // by default; tests pass their own path or nothing).
     const logPath = removedLog !== undefined ? removedLog
-      : (real === fs.realpathSync(DEFAULT_ROOT) && !dryRun ? (process.env.TMP_REAP_LOG || path.join(os.homedir(), 'Library', 'Logs', 'bro-reap-stale-tmp.log')) : null);
+      : (real === safeRealpath(DEFAULT_ROOT) && !dryRun ? (process.env.TMP_REAP_LOG || path.join(os.homedir(), 'Library', 'Logs', 'bro-reap-stale-tmp.log')) : null);
     if (logPath) {
       try {
         try { if (fs.statSync(logPath).size > 50 * 1024 * 1024) fs.renameSync(logPath, `${logPath}.1`); } catch { /* new */ }
