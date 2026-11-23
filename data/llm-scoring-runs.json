@@ -375562,5 +375562,76 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T22:26:00.702Z",
+    "completedAt": "2026-11-23T22:26:09.087Z",
+    "totalReviews": 41,
+    "processed": 1,
+    "skipped": 40,
+    "errors": 63,
+    "tokensUsed": {
+      "input": 38999,
+      "output": 1447,
+      "cacheRead": 22842,
+      "cacheWrite": 7569,
+      "total": 105775
+    },
+    "costUsd": 0.08525035,
+    "runId": "45278418010",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+        "outletId": "whatnightout",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "menopause-the-musical-tour-2026",
+        "outletId": "oazis",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "ghost-notes-off-broadway-2026",
+        "outletId": "oazis",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+        "outletId": "patch",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+        "outletId": "jamr",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "hungry-women-off-broadway-2026",
+        "outletId": "melissamaney",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T22:31:05.296Z",
+    "completedAt": "2026-11-23T22:31:05.338Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45278418010",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
   }
 ]
