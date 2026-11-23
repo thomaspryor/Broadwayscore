@@ -41631,7 +41631,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
@@ -41642,7 +41642,9 @@
       "lastSurfacedAt": "2026-11-23T23:03:02.906Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T23:17:26.526Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
