@@ -1,0 +1,1195 @@
+diff --git a/scripts/lib/prod-data-parity.js b/scripts/lib/prod-data-parity.js
+index d9e00d611..4efbdc676 100644
+--- a/scripts/lib/prod-data-parity.js
++++ b/scripts/lib/prod-data-parity.js
+@@ -75,15 +75,27 @@ function buildSnapshot() {
+   if (!sample.length) throw new Error('No generated show details; run the show-details generator first');
+   const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+   const snapshot = { version: 1, commit, showsBlobSha: blobSha(showsBytes), reviewsBlobSha: blobSha(reviewsBytes), sample };
++  // BRO-8056 G1: a refreshed page computes with the build's instant; the probe needs it to
++  // recompute that page's expectation. prebuild.sh writes the manifest before this snapshot.
++  const refreshBuildInstant = readRefreshBuildInstant();
++  if (refreshBuildInstant != null) snapshot.refreshBuildInstant = refreshBuildInstant;
+   snapshot.id = createHash('sha256').update(JSON.stringify(snapshot)).digest('hex');
+   return snapshot;
+ }
+ 
++function readRefreshBuildInstant() {
++  try {
++    const m = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'show-refresh-manifest.json'), 'utf8'));
++    return Number.isFinite(m?.buildInstant) ? m.buildInstant : null;
++  } catch { return null; }
++}
++
+ function validateSnapshot(snapshot) {
+   if (snapshot?.version !== 1 || !/^[a-f0-9]{40}$/.test(snapshot.commit || '')
+       || !/^[a-f0-9]{40}$/.test(snapshot.showsBlobSha || '') || !/^[a-f0-9]{40}$/.test(snapshot.reviewsBlobSha || '')
+       || !/^[a-f0-9]{64}$/.test(snapshot.id || '') || !Array.isArray(snapshot.sample)
+       || !snapshot.sample.length || snapshot.sample.length > 20) throw new Error('Invalid deployed parity snapshot');
++  if (snapshot.refreshBuildInstant !== undefined && !Number.isFinite(snapshot.refreshBuildInstant)) throw new Error('Invalid parity refresh build instant');
+   const ids = new Set();
+   for (const s of snapshot.sample) {
+     if (!s.id || ids.has(s.id) || !/^[a-z0-9-]+$/.test(s.slug || '')
+@@ -137,12 +149,39 @@ function readPage(html) {
+   return { score: scores[0], reviewCount: counts[0] || 0 };
+ }
+ 
++// BRO-8056 G1: the page's show-refresh marker (src/lib/show-refresh-core.ts SHOW_REFRESH_REV_META).
++// Absent (reader off), 'base' or 'base-error' => the page used the build's data.
++const REFRESH_META = 'show-refresh-rev';
++function readRefreshMarker(html) {
++  const value = load(html)(`meta[name="${REFRESH_META}"]`).first().attr('content');
++  if (value === undefined || value === 'base' || value === 'base-error') return { kind: 'base', value: value ?? null };
++  if (/^[0-9a-f]{16}$/.test(value)) return { kind: 'hash', value };
++  return { kind: 'invalid', value };
++}
++
++/**
++ * The parity row a page rendered from published slice show/<id>/<hash>.json must show:
++ * read the slice with the reader's anon key, check its hash, recompute it the way the
++ * page does (scripts/lib/show-refresh/expected-parity-row.ts). Throws when it cannot,
++ * and the probe counts that page as unavailable, never mismatched.
++ */
++async function defaultRefreshExpectation(id, hash, snapshot) {
++  if (!Number.isFinite(snapshot.refreshBuildInstant)) throw new Error('snapshot has no refresh build instant');
++  const store = require('./show-refresh/store');
++  const { sliceHash } = require('./show-refresh/slice');
++  const read = await store.readJsonObject(store.readerStoreFromEnv(process.env), store.showObjectPath(id, hash));
++  if (read.state !== 'ok') throw new Error(`refresh slice ${read.state === 'error' ? read.error : 'missing'}`);
++  if (sliceHash(read.value) !== hash) throw new Error('refresh slice hash mismatch');
++  const { expectedParityRow } = require('tsx/cjs/api').require('./show-refresh/expected-parity-row.ts', __filename);
++  return expectedParityRow(read.value, { buildInstant: snapshot.refreshBuildInstant });
++}
++
+ function comparePage(expected, actual) {
+   return ['score', 'reviewCount'].filter(key => expected[key] !== actual[key])
+     .map(field => ({ field, expected: expected[field], actual: actual[field] }));
+ }
+ 
+-async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch } = {}) {
++async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch, refreshExpectation = defaultRefreshExpectation } = {}) {
+   // Own-site uptime/numeric monitoring, not third-party scraping. No paid proxy.
+   async function get(url, json = false) {
+     const response = await fetchImpl(url, { cache: 'no-store', headers: { 'cache-control': 'no-cache' }, signal: AbortSignal.timeout(20000) });
+@@ -158,9 +197,26 @@ async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch
+     let next = 0;
+     await Promise.all(Array.from({ length: 4 }, async () => {
+       while (next < snapshot.sample.length) {
+-        const expected = snapshot.sample[next++];
++        const row = snapshot.sample[next++];
+         try {
+-          const html = await get(new URL(`/show/${expected.slug}`, base));
++          const html = await get(new URL(`/show/${row.slug}`, base));
++          let expected = row;
++          const marker = readRefreshMarker(html);
++          if (marker.kind === 'invalid') {
++            result.mismatched++;
++            result.rows.push({ id: row.id, differences: [{ field: 'refresh marker', expected: 'base or a slice hash', actual: marker.value }] });
++            continue;
++          }
++          if (marker.kind === 'hash') {
++            try {
++              const overlay = await refreshExpectation(row.id, marker.value, snapshot);
++              expected = { ...row, score: overlay.score, reviewCount: overlay.reviewCount, refreshHash: marker.value };
++            } catch (err) {
++              result.unavailable++;
++              result.rows.push({ id: row.id, error: `refreshed page ${marker.value}: ${err.message}` });
++              continue;
++            }
++          }
+           let actual;
+           try { actual = readPage(html); }
+           catch (err) {
+@@ -173,7 +229,7 @@ async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch
+           if (differences.length) result.mismatched++; else result.matched++;
+         } catch (err) {
+           result.unavailable++;
+-          result.rows.push({ id: expected.id, error: err.message });
++          result.rows.push({ id: row.id, error: err.message });
+         }
+       }
+     }));
+@@ -234,4 +290,4 @@ async function main(args = process.argv.slice(2)) {
+ }
+ 
+ if (require.main === module) main().then(code => { process.exitCode = code; }).catch(err => { console.error(err.message); process.exitCode = 2; });
+-module.exports = { selectSample, buildSnapshot, validateSnapshot, readPage, comparePage, probe, runProbe, main };
++module.exports = { selectSample, buildSnapshot, validateSnapshot, readPage, readRefreshMarker, comparePage, probe, runProbe, main, defaultRefreshExpectation };
+diff --git a/scripts/lib/show-refresh/expected-parity-row.ts b/scripts/lib/show-refresh/expected-parity-row.ts
+new file mode 100644
+index 000000000..e4904a6c8
+--- /dev/null
++++ b/scripts/lib/show-refresh/expected-parity-row.ts
+@@ -0,0 +1,39 @@
++/**
++ * BRO-8056 phase 2 (plan G1): the prod-data-parity row a refreshed show page
++ * must render, computed from its published slice the way the page computes it
++ * (computeOneShow with the build's instant, src/lib/show-render.ts
++ * renderFromSlice). prod-data-parity.js uses it for a page whose refresh marker
++ * is a slice hash; marker 'base' keeps the prebuild snapshot row.
++ *
++ * Row shape = prod-data-parity buildSnapshot's sample row: { score, reviewCount },
++ * score null below the display gate (slim `cs` null), the scored review count either way
++ * (snapshot reads slim scoreResult.rc, which is not gated).
++ */
++import { computeOneShow } from '../../../src/lib/compute-one-show';
++import { hasEnoughReviews } from '../../../src/config/score-buckets';
++import { scoreGateArg } from '../../../src/config/scoring';
++import type { RawShow, RawReview, RawAudience, RawBuzzThread } from '../../../src/lib/engine';
++
++/* eslint-disable @typescript-eslint/no-require-imports */
++const { coverageInputsFromSlice } = require('./slice');
++/* eslint-enable @typescript-eslint/no-require-imports */
++
++export interface ParityRow { score: number | null; reviewCount: number }
++
++export function expectedParityRow(
++  slice: { row: unknown; reviews: unknown[]; blogReviews: unknown[]; audience: unknown[]; buzz: unknown[] },
++  ctx: { buildInstant: number; versionImage?: <T extends string | null | undefined>(p: T) => T },
++): ParityRow {
++  const show = computeOneShow(slice.row as RawShow, slice.reviews as RawReview[], {
++    blogReviews: slice.blogReviews as RawReview[],
++    audience: slice.audience as RawAudience[],
++    buzz: slice.buzz as RawBuzzThread[],
++    coverageFloorInputs: coverageInputsFromSlice(slice),
++    versionImage: ctx.versionImage ?? (<T,>(p: T) => p),
++    now: ctx.buildInstant,
++  });
++  const cs = show.criticScore;
++  if (!cs || cs.score == null) return { score: null, reviewCount: 0 };
++  const enough = hasEnoughReviews(cs.reviewCount, show.category, (cs.tier1Count ?? 0) + (cs.tier2Count ?? 0), scoreGateArg(show.id));
++  return { score: enough ? Math.round(cs.score) : null, reviewCount: cs.reviewCount };
++}
+diff --git a/scripts/prebuild.sh b/scripts/prebuild.sh
+index 11fd1ea1e..86269cda0 100755
+--- a/scripts/prebuild.sh
++++ b/scripts/prebuild.sh
+@@ -24,6 +24,13 @@ build_show_refresh_manifest() {
+     || echo '[show-refresh-manifest] WARNING: runner failed to start; show refresh is off for this build.'
+ }
+ 
++# Pin the page-parity reference to this build's canonical scores and review data
++# and to this build's show-refresh manifest (refreshBuildInstant). Must run
++# after build_show_refresh_manifest.
++pin_parity_snapshot() {
++  node scripts/lib/prod-data-parity.js --snapshot
++}
++
+ # Always run: validation + gitignored output
+ node scripts/validate-shows-prebuild.js
+ node scripts/generate-show-lookup.js
+@@ -81,8 +88,9 @@ node scripts/generate-blog-reviews-for-scoring.js
+ # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
+ # when rebuild workflows commit stale public JSONs between deploys. (~30s)
+ node scripts/generate-mobile-show-details.js
+-# Pin the page-parity reference to this build's canonical scores and review data.
+-node scripts/lib/prod-data-parity.js --snapshot
++# Page-parity reference: pinned by pin_parity_snapshot right after
++# build_show_refresh_manifest on both CI paths below, because the snapshot
++# records the manifest's buildInstant (BRO-8056 G1) and so must follow it.
+ 
+ # Web Stats catalog (gitignored): a slim projection of mobile-shows.json, so it
+ # runs on BOTH paths — here from the committed mobile-shows.json, and at the end
+@@ -91,6 +99,7 @@ if [ "$SKIP_HEAVY_PREBUILD" = "true" ]; then
+   echo "Skipping heavy prebuild (code-only change — committed data files are current)"
+   node scripts/generate-stats-shows.js
+   build_show_refresh_manifest
++  pin_parity_snapshot
+   exit 0
+ fi
+ 
+@@ -106,3 +115,4 @@ node scripts/generate-off-broadway-archive.js
+ node scripts/generate-off-west-end-archive.js
+ node scripts/generate-west-end-archive.js
+ build_show_refresh_manifest
++pin_parity_snapshot
+diff --git a/src/app/api/show-refresh/revalidate/route.ts b/src/app/api/show-refresh/revalidate/route.ts
+new file mode 100644
+index 000000000..51333a579
+--- /dev/null
++++ b/src/app/api/show-refresh/revalidate/route.ts
+@@ -0,0 +1,30 @@
++// BRO-8056 phase 2: the publisher's and the kill switch's revalidate call
++// (plan 1.5 step 8 and Kill). POST with header x-show-refresh-secret; body
++//   { slugs?: string[], home?: boolean, tag?: boolean }
++// revalidates /show/<slug> and /show/<slug>/reviews.json for each slug, '/' when
++// home is true, and the 'show-refresh' tag (every cached store read) when tag is
++// true. 404 while SHOW_REFRESH_REVALIDATE_SECRET is unset, so it does nothing
++// until the secret exists. The decision lives in show-refresh-revalidate.ts.
++import { revalidatePath, revalidateTag } from 'next/cache';
++import { NextResponse } from 'next/server';
++import { planRevalidate, revalidateAuth } from '@/lib/show-refresh-revalidate';
++import { SHOW_REFRESH_TAG } from '@/lib/show-refresh-core';
++
++export const dynamic = 'force-dynamic';
++
++export async function POST(req: Request) {
++  // Secret first: an unauthorised caller never gets the body parsed.
++  const denied = revalidateAuth(process.env.SHOW_REFRESH_REVALIDATE_SECRET, req.headers.get('x-show-refresh-secret'));
++  if (denied) return NextResponse.json({ ok: false, error: denied.error }, { status: denied.status });
++  let body: unknown = null;
++  try { body = await req.json(); } catch { body = null; }
++  const plan = planRevalidate({
++    configuredSecret: process.env.SHOW_REFRESH_REVALIDATE_SECRET,
++    givenSecret: req.headers.get('x-show-refresh-secret'),
++    body,
++  });
++  if (!plan.ok) return NextResponse.json({ ok: false, error: plan.error }, { status: plan.status });
++  if (plan.tag) revalidateTag(SHOW_REFRESH_TAG, { expire: 0 });
++  for (const p of plan.paths) revalidatePath(p);
++  return NextResponse.json({ ok: true, tag: plan.tag, paths: plan.paths }, { headers: { 'cache-control': 'no-store' } });
++}
+diff --git a/src/app/show/[slug]/opengraph-image.tsx b/src/app/show/[slug]/opengraph-image.tsx
+index f5cb13b44..adfd62d9e 100644
+--- a/src/app/show/[slug]/opengraph-image.tsx
++++ b/src/app/show/[slug]/opengraph-image.tsx
+@@ -48,7 +48,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
+ 
+ export default async function OGImage({ params: pendingParams }: { params: Promise<{ slug: string }> }) {
+   const params = await pendingParams;
+-  const show = getShowForRender(params.slug)?.show;
++  const show = (await getShowForRender(params.slug))?.show;
+ 
+   // Fall back to homepage OG if no show / no image / flag-gated category
+   if (!show || !isCategoryEnabled(show.category)) {
+diff --git a/src/app/show/[slug]/page.tsx b/src/app/show/[slug]/page.tsx
+index 8fdc163da..167007a50 100644
+--- a/src/app/show/[slug]/page.tsx
++++ b/src/app/show/[slug]/page.tsx
+@@ -15,8 +15,9 @@ import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
+ import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
+ import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
+ import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
+-import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
++import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, audiencePlatformUrlFrom } from '@/lib/data-audience';
+ import { getShowForRender } from '@/lib/show-render';
++import { showRefreshEnabled, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
+ import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
+ import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
+ import { getLotteryRush } from '@/lib/data-lottery';
+@@ -94,8 +95,8 @@ export const revalidate = 86400;
+ 
+ // Metadata and both hero layouts share one request snapshot, even across UTC
+ // midnight. The cached page passes the wording through hydration unchanged.
+-const getLiveInHdForRender = cache((slug: string) => {
+-  const show = getShowForRender(slug)?.show;
++const getLiveInHdForRender = cache(async (slug: string) => {
++  const show = (await getShowForRender(slug))?.show;
+   const hd = isOperaShow(show) ? show?.liveInHd : null;
+   const today = new Date().toISOString().slice(0, 10);
+   return { line: liveInHdLine(hd, today), description: liveInHdDescription(hd, today) };
+@@ -115,7 +116,8 @@ export function generateStaticParams() {
+ 
+ export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+   const params = await props.params;
+-  const show = getShowForRender(params.slug)?.show;
++  const render = await getShowForRender(params.slug);
++  const show = render?.show;
+   // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
+   if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
+ 
+@@ -215,7 +217,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
+       : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}`
+   ).trim();
+   // Put the date immediately after the verdict, ahead of venue and synopsis.
+-  const hd = getLiveInHdForRender(params.slug);
++  const hd = await getLiveInHdForRender(params.slug);
+   const fullDescription = `${descriptionLead}${hd.description ? ` ${hd.description}` : ''}${statusPart}${synopsisSnippet ? ` ${synopsisSnippet}` : ''}`.trim();
+   const truncatedDescription = fullDescription.length > 160
+     ? fullDescription.slice(0, 157).replace(/\s\S*$/, '...')
+@@ -257,6 +259,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
+       title: twitterTitle,
+       description: truncatedDescription,
+     },
++    // BRO-8056 refresh marker (plan row 10): which data this render used. Only
++    // while the reader is on, so flag-off pages stay byte-identical to today.
++    ...(showRefreshEnabled() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
+   };
+ }
+ 
+@@ -278,14 +283,17 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
+ 
+ export default async function ShowPage(props: { params: Promise<{ slug: string }> }) {
+   const params = await props.params;
+-  const render = getShowForRender(params.slug);
++  const render = await getShowForRender(params.slug);
+   const show = render?.show;
+ 
+   if (!render || !show || !isCategoryEnabled(show.category)) {
+     notFound();
+   }
+ 
+-  const lastUpdated = getShowLastUpdated(show.id);
++  // BRO-8056: a page rendered from a published slice holds data newer than the build's
++  // timestamps; its render time is when that data was applied (ISR renders on revalidate).
++  const refreshed = isRefreshedRev(render.rev);
++  const lastUpdated = refreshed ? new Date().toISOString() : getShowLastUpdated(show.id);
+   const castFileForSchema = getShowCastFile(show.id);
+   const performers = castFileForSchema?.openingNightCast
+     ?.filter(m =>
+@@ -301,7 +309,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+   const isRegional = show.category === 'regional';
+   const isTour = show.category === 'tour';
+   const isOpera = isOperaShow(show);
+-  const hd = getLiveInHdForRender(params.slug);
++  const hd = await getLiveInHdForRender(params.slug);
+ 
+   // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
+   const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(foldVenueName(show.venue))) : undefined;
+@@ -353,8 +361,10 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+   // index is built on first call. 'all' format slice powers the hero rank
+   // line; the bottom WhereItRanks card additionally requests the show's-own-
+   // format slice.
+-  const ranks = featureFlags.showRanks ? getShowRanks(show.id, { format: 'all' }) : null;
+-  const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
++  // Ranks compare build-time scores across every show, so a refreshed page (newer
++  // score) leaves them out until the next deploy rather than show a stale rank (BRO-8056).
++  const ranks = featureFlags.showRanks && !refreshed ? getShowRanks(show.id, { format: 'all' }) : null;
++  const ranksByFormat = featureFlags.showRanks && !refreshed && (show.type === 'musical' || show.type === 'play')
+     ? getShowRanks(show.id, { format: show.type })
+     : null;
+   // The Profitability Scorecard was released 2026-10-26 (BRO-6192); to pull it, set the
+@@ -483,7 +493,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+   const audiencePlatformUrls: Record<string, string> = audienceBuzz ? Object.fromEntries(
+     Object.keys(audienceBuzz.sources)
+       .filter(k => k !== 'showScore')
+-      .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
++      // From the page's own buzz (render.audienceBuzz), so a refreshed page links what it shows (BRO-8056).
++      .map(k => [k, audiencePlatformUrlFrom(k, show.id, audienceBuzz)])
+       .filter((entry): entry is [string, string] => entry[1] != null)
+   ) : {};
+   const currentMonday = getScheduleCurrentMonday();
+diff --git a/src/app/show/[slug]/reviews.json/route.ts b/src/app/show/[slug]/reviews.json/route.ts
+index 3fb841f2d..d0cbc385f 100644
+--- a/src/app/show/[slug]/reviews.json/route.ts
++++ b/src/app/show/[slug]/reviews.json/route.ts
+@@ -2,6 +2,7 @@
+ import { notFound } from 'next/navigation';
+ import { getRecentShowSlugs } from '@/lib/data-core';
+ import { getShowForRender } from '@/lib/show-render';
++import { showRefreshEnabled, SHOW_REFRESH_REV_HEADER } from '@/lib/show-refresh-core';
+ import { isCategoryEnabled } from '@/lib/markets';
+ import { getReviewListItems, REVIEWS_INLINE_COUNT } from '@/lib/show-review-items';
+ 
+@@ -14,7 +15,10 @@ export function generateStaticParams() {
+ 
+ export async function GET(_req: Request, ctx: { params: Promise<{ slug: string }> }) {
+   const { slug } = await ctx.params;
+-  const show = getShowForRender(slug)?.show;
++  const render = await getShowForRender(slug);
++  const show = render?.show;
+   if (!show || !isCategoryEnabled(show.category)) notFound();
+-  return Response.json(getReviewListItems(show).slice(REVIEWS_INLINE_COUNT));
++  const rows = getReviewListItems(show).slice(REVIEWS_INLINE_COUNT);
++  // BRO-8056 refresh marker (plan row 10), only while the reader is on.
++  return Response.json(rows, showRefreshEnabled() ? { headers: { [SHOW_REFRESH_REV_HEADER]: render?.rev ?? 'base' } } : undefined);
+ }
+diff --git a/src/lib/show-refresh-core.ts b/src/lib/show-refresh-core.ts
+new file mode 100644
+index 000000000..03864aced
+--- /dev/null
++++ b/src/lib/show-refresh-core.ts
+@@ -0,0 +1,149 @@
++// BRO-8056 phase 2: the show-refresh reader's decision, with every input
++// injected (no Next, no fetch, no fs), so tests drive it with fake reads.
++// src/lib/show-refresh.ts wires the real store, manifest and cache.
++//
++// The one rule: any doubt => the build's data. A store error never throws and
++// never 5xx's a page; it renders the build with marker 'base-error' (plan R7),
++// which the publisher's verify treats as "not applied yet" and re-queues.
++
++/** Render used the build's data on purpose (flag off, killed, not listed, held, unchanged). */
++export const REV_BASE = 'base';
++/** Render fell back to the build because the store or the slice could not be trusted. */
++export const REV_BASE_ERROR = 'base-error';
++
++/** Cache tag on every store read; revalidateTag(SHOW_REFRESH_TAG) drops them all. */
++export const SHOW_REFRESH_TAG = 'show-refresh';
++
++/** Page marker: `<meta name="show-refresh-rev" content="<rev>">` (plan row 10). */
++export const SHOW_REFRESH_REV_META = 'show-refresh-rev';
++/** reviews.json marker header, same value as the page marker. */
++export const SHOW_REFRESH_REV_HEADER = 'x-show-refresh-hash';
++
++/** True when a render used a published slice (its rev is a slice hash), not the build's data. */
++export function isRefreshedRev(rev: string | null | undefined): boolean {
++  return typeof rev === 'string' && /^[0-9a-f]{16}$/.test(rev);
++}
++
++/**
++ * The reader's on switch: SHOW_REFRESH_READER=on, and never during `next build`
++ * (spike S0: builds make zero store requests and render the build's data).
++ */
++export function showRefreshEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
++  if (env.NEXT_PHASE === 'phase-production-build') return false;
++  return env.SHOW_REFRESH_READER === 'on';
++}
++
++/** Result of one store read, as scripts/lib/show-refresh/store.js readJsonObject returns it. */
++export type StoreRead =
++  | { state: 'ok'; value: unknown }
++  | { state: 'missing' }
++  | { state: 'error'; error: string };
++
++export interface ManifestShow { slug: string; hash: string; held: boolean; imagesSig: string }
++export interface RefreshManifest {
++  schema: number;
++  sliceVersion: number;
++  manifestId: string;
++  buildInstant: number;
++  shows: Record<string, ManifestShow>;
++}
++
++/** A published slice (scripts/lib/show-refresh/slice.js sliceFor). Only the fields the reader checks are typed. */
++export interface PublishedSlice {
++  sliceVersion: number;
++  showId: string;
++  row: { id: string; slug: string; [k: string]: unknown };
++  reviews: unknown[];
++  blogReviews: unknown[];
++  audience: unknown[];
++  buzz: unknown[];
++  consensus: unknown;
++  audienceBuzz: unknown;
++  coverage: { cov: unknown; scorePublicSince: unknown; acked: boolean };
++}
++
++export interface RefreshDeps {
++  enabled: boolean;
++  manifest: RefreshManifest | null;
++  readKill(): Promise<StoreRead>;
++  readHome(): Promise<StoreRead>;
++  readSlice(id: string, hash: string): Promise<StoreRead>;
++  /** 16-hex content hash of a slice (slice.js sliceHash). */
++  sliceHash(slice: unknown): string;
++}
++
++export type RefreshDecision =
++  | { rev: typeof REV_BASE | typeof REV_BASE_ERROR; reason: string; showId: string | null }
++  | { rev: string; reason: 'published'; showId: string; slice: PublishedSlice };
++
++const base = (reason: string, showId: string | null = null): RefreshDecision => ({ rev: REV_BASE, reason, showId });
++const baseError = (reason: string, showId: string | null = null): RefreshDecision => ({ rev: REV_BASE_ERROR, reason, showId });
++
++/** slug -> id over the manifest's prerendered shows (built once per manifest). */
++const slugIndex = new WeakMap<RefreshManifest, Map<string, string>>();
++export function manifestIdForSlug(manifest: RefreshManifest, slug: string): string | null {
++  let m = slugIndex.get(manifest);
++  if (!m) {
++    m = new Map();
++    for (const [id, s] of Object.entries(manifest.shows)) if (isRecord(s) && typeof s.slug === 'string') m.set(s.slug, id);
++    slugIndex.set(manifest, m);
++  }
++  return m.get(slug) ?? null;
++}
++
++function isRecord(v: unknown): v is Record<string, unknown> {
++  return typeof v === 'object' && v !== null && !Array.isArray(v);
++}
++
++/** A kill state the reader can act on; anything but a valid row reads as killed (store.js effectiveKill). */
++function killedBy(read: StoreRead): { killed: boolean; error: boolean } {
++  if (read.state !== 'ok' || !isRecord(read.value) || typeof read.value.killed !== 'boolean') {
++    return { killed: true, error: read.state !== 'missing' };
++  }
++  return { killed: read.value.killed, error: false };
++}
++
++/**
++ * Which data one render of /show/<slug> uses. Never throws: a dependency that
++ * throws is caught and becomes 'base-error'.
++ */
++export async function decideShowRefresh(slug: string, deps: RefreshDeps): Promise<RefreshDecision> {
++  if (!deps.enabled) return base('flag off');
++  const manifest = deps.manifest;
++  if (!manifest || !isRecord(manifest.shows) || typeof manifest.manifestId !== 'string') return base('no usable build manifest');
++  let id: string | null = null;
++  try {
++    id = manifestIdForSlug(manifest, slug);
++    if (!id) return base('not prerendered by this build');
++    const built = manifest.shows[id];
++    if (!isRecord(built) || typeof built.hash !== 'string') return baseError('build manifest entry malformed', id);
++    if (built.held) return base('held at build', id);
++    const kill = killedBy(await deps.readKill());
++    if (kill.killed) return kill.error ? baseError('kill state unreadable', id) : base('killed', id);
++
++    const home = await deps.readHome();
++    if (home.state === 'error') return baseError(`home unreadable: ${home.error}`, id);
++    if (home.state === 'missing') return base('no published index', id);
++    if (!isRecord(home.value) || typeof home.value.manifestId !== 'string') return baseError('published index malformed', id);
++    if (home.value.manifestId !== manifest.manifestId) return base('index belongs to another build', id);
++    const shows = home.value.shows;
++    if (!isRecord(shows)) return baseError('published index malformed', id);
++    const entry = shows[id];
++    if (entry === undefined) return base('not in published index', id);
++    if (!isRecord(entry) || typeof entry.hash !== 'string') return baseError('published index entry malformed', id);
++    if (entry.hash === built.hash) return base('published hash equals build', id);
++    if (!/^[0-9a-f]{16}$/.test(entry.hash)) return baseError('published hash malformed', id);
++
++    const obj = await deps.readSlice(id, entry.hash);
++    if (obj.state !== 'ok') return baseError(`slice ${obj.state === 'error' ? `unreadable: ${obj.error}` : 'missing'}`, id);
++    const slice = obj.value;
++    if (!isRecord(slice) || !isRecord(slice.row) || !isRecord(slice.coverage)) return baseError('slice malformed', id);
++    if (slice.sliceVersion !== manifest.sliceVersion) return base('slice version differs from build', id);
++    if (slice.showId !== id || slice.row.id !== id) return baseError('slice is for another show', id);
++    if (slice.row.slug !== slug) return baseError('slice slug differs', id);
++    if (deps.sliceHash(slice) !== entry.hash) return baseError('slice hash mismatch', id);
++    return { rev: entry.hash, reason: 'published', showId: id, slice: slice as unknown as PublishedSlice };
++  } catch (e) {
++    return baseError(`reader error: ${e instanceof Error ? e.message : String(e)}`, id);
++  }
++}
+diff --git a/src/lib/show-refresh-revalidate.ts b/src/lib/show-refresh-revalidate.ts
+new file mode 100644
+index 000000000..c5f91f134
+--- /dev/null
++++ b/src/lib/show-refresh-revalidate.ts
+@@ -0,0 +1,44 @@
++// BRO-8056 phase 2: what one call to /api/show-refresh/revalidate may do. Pure,
++// so tests drive it without Next. The route applies the plan.
++import { createHash, timingSafeEqual } from 'crypto';
++
++/** Per call; the publisher batches targets (plan 1.5), the kill switch lists every prerendered page. */
++export const MAX_REVALIDATE_SLUGS = 1200;
++const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
++
++export type RevalidatePlan =
++  | { ok: true; tag: boolean; paths: string[] }
++  | { ok: false; status: number; error: string };
++
++function sameSecret(a: string, b: string): boolean {
++  // Compare fixed-length digests so a length difference leaks nothing.
++  const x = createHash('sha256').update(a).digest();
++  const y = createHash('sha256').update(b).digest();
++  return timingSafeEqual(x, y);
++}
++
++/** The secret check alone, run before the route reads the body. null = authorised. */
++export function revalidateAuth(configuredSecret: string | undefined, givenSecret: string | null): { status: number; error: string } | null {
++  const secret = configuredSecret ?? '';
++  // Unset or short secret: the route does not exist yet.
++  if (secret.length < 32) return { status: 404, error: 'not found' };
++  if (!givenSecret || !sameSecret(givenSecret, secret)) return { status: 401, error: 'unauthorized' };
++  return null;
++}
++
++export function planRevalidate(input: { configuredSecret?: string; givenSecret: string | null; body: unknown }): RevalidatePlan {
++  const denied = revalidateAuth(input.configuredSecret, input.givenSecret);
++  if (denied) return { ok: false, ...denied };
++  const body = input.body;
++  if (typeof body !== 'object' || body === null || Array.isArray(body)) return { ok: false, status: 400, error: 'body must be an object' };
++  const { slugs = [], home = false, tag = false } = body as { slugs?: unknown; home?: unknown; tag?: unknown };
++  if (!Array.isArray(slugs) || typeof home !== 'boolean' || typeof tag !== 'boolean') return { ok: false, status: 400, error: 'bad fields' };
++  if (slugs.length > MAX_REVALIDATE_SLUGS) return { ok: false, status: 400, error: `at most ${MAX_REVALIDATE_SLUGS} slugs` };
++  const bad = slugs.find(s => typeof s !== 'string' || !SLUG.test(s) || s.length > 200);
++  if (bad !== undefined) return { ok: false, status: 400, error: 'bad slug' };
++  const unique = [...new Set(slugs as string[])];
++  if (!unique.length && !home && !tag) return { ok: false, status: 400, error: 'nothing to revalidate' };
++  const paths = unique.flatMap(s => [`/show/${s}`, `/show/${s}/reviews.json`]);
++  if (home) paths.push('/');
++  return { ok: true, tag, paths };
++}
+diff --git a/src/lib/show-refresh.ts b/src/lib/show-refresh.ts
+new file mode 100644
+index 000000000..92dbd8715
+--- /dev/null
++++ b/src/lib/show-refresh.ts
+@@ -0,0 +1,99 @@
++// BRO-8056 phase 2: show-refresh reader, server side. Wires the decision in
++// show-refresh-core.ts to the real store:
++//   - kill / home pointers: Postgres table show_refresh_state through PostgREST
++//     (anon key, never CDN-cached; Storage served stale bytes after overwrites),
++//   - slices: immutable Storage objects show/<id>/<hash>.json (anon key),
++//   - the build manifest: data/show-refresh-manifest.json (traced into ISR
++//     functions by next.config.js outputFileTracingIncludes).
++//
++// Off unless SHOW_REFRESH_READER=on. During `next build` it never fetches
++// (spike S0: builds make zero store requests) and returns the build's data.
++// Pointers are cached 60 s and slices forever, all under tag 'show-refresh',
++// so the kill route's revalidateTag('show-refresh') drops every cached read.
++// Errors are thrown inside the cached functions so they are never cached,
++// then caught here and turned into 'base-error'.
++import 'server-only';
++import fs from 'fs';
++import path from 'path';
++import { unstable_cache } from 'next/cache';
++import {
++  decideShowRefresh, showRefreshEnabled, SHOW_REFRESH_TAG, type RefreshDecision, type RefreshManifest, type StoreRead,
++} from './show-refresh-core';
++
++export { showRefreshEnabled, SHOW_REFRESH_TAG };
++
++/* eslint-disable @typescript-eslint/no-require-imports */
++const store = require('../../scripts/lib/show-refresh/store') as {
++  PATHS: { home: string; kill: string };
++  showObjectPath(id: string, hash: string): string;
++  readerStoreFromEnv(env?: NodeJS.ProcessEnv, o?: { timeoutMs?: number }): unknown;
++  readerStateFromEnv(env?: NodeJS.ProcessEnv, o?: { timeoutMs?: number }): unknown;
++  readJsonObject(client: unknown, p: string, o?: { cacheBust?: number }): Promise<StoreRead>;
++};
++const { sliceHash } = require('../../scripts/lib/show-refresh/slice') as { sliceHash(s: unknown): string };
++/* eslint-enable @typescript-eslint/no-require-imports */
++
++/** Per-read network budget (plan 1.3). */
++const READ_TIMEOUT_MS = 2500;
++const POINTER_TTL_S = 60;
++
++let manifestMemo: { value: RefreshManifest | null } | null = null;
++/** The manifest this deployment was built with, or null (missing / unreadable / wrong shape). */
++export function buildManifest(): RefreshManifest | null {
++  if (manifestMemo) return manifestMemo.value;
++  let value: RefreshManifest | null = null;
++  try {
++    // Literal path: Next's tracer must not see a data/ directory argument (src-no-traced-data-dir).
++    const m = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'show-refresh-manifest.json'), 'utf8'));
++    if (m && typeof m.manifestId === 'string' && m.shows && typeof m.shows === 'object' && Number.isFinite(m.buildInstant)) value = m;
++  } catch {
++    value = null;
++  }
++  manifestMemo = { value };
++  return value;
++}
++
++/** A read that the cache may keep: 'ok' and 'missing'. 'error' throws so it is not cached. */
++async function cacheable(read: () => Promise<StoreRead>): Promise<StoreRead> {
++  const r = await read();
++  if (r.state === 'error') throw new Error(r.error);
++  return r;
++}
++
++const asError = (e: unknown): StoreRead => ({ state: 'error', error: e instanceof Error ? e.message : String(e) });
++
++function stateClient() { return store.readerStateFromEnv(process.env, { timeoutMs: READ_TIMEOUT_MS }); }
++function sliceClient() { return store.readerStoreFromEnv(process.env, { timeoutMs: READ_TIMEOUT_MS }); }
++
++const cachedPointer = unstable_cache(
++  (p: string) => cacheable(() => store.readJsonObject(stateClient(), p)),
++  ['show-refresh-pointer'],
++  { revalidate: POINTER_TTL_S, tags: [SHOW_REFRESH_TAG] },
++);
++const cachedSlice = unstable_cache(
++  // A missing slice throws too: slices are immutable once present, so caching
++  // 'missing' forever would pin a page to base-error after one early read.
++  async (id: string, hash: string) => {
++    const r = await cacheable(() => store.readJsonObject(sliceClient(), store.showObjectPath(id, hash)));
++    if (r.state === 'missing') throw new Error('slice missing');
++    return r;
++  },
++  ['show-refresh-slice'],
++  { revalidate: false, tags: [SHOW_REFRESH_TAG] },
++);
++
++async function safe(read: () => Promise<StoreRead>): Promise<StoreRead> {
++  try { return await read(); } catch (e) { return asError(e); }
++}
++
++/** Which data this render of /show/<slug> uses. Never throws. */
++export function readShowRefresh(slug: string): Promise<RefreshDecision> {
++  return decideShowRefresh(slug, {
++    enabled: showRefreshEnabled(),
++    manifest: showRefreshEnabled() ? buildManifest() : null,
++    readKill: () => safe(() => cachedPointer(store.PATHS.kill)),
++    readHome: () => safe(() => cachedPointer(store.PATHS.home)),
++    readSlice: (id, hash) => safe(() => cachedSlice(id, hash)),
++    sliceHash,
++  });
++}
+diff --git a/src/lib/show-render.ts b/src/lib/show-render.ts
+index 4ba1b002d..56ca89291 100644
+--- a/src/lib/show-render.ts
++++ b/src/lib/show-render.ts
+@@ -26,34 +26,101 @@ import { cache } from 'react';
+ // id (Module._load in show-og-poster-layout / live-in-hd tests), and a relative
+ // import would bypass the stub.
+ import { getShowBySlug, type ComputedShow } from '@/lib/data-core';
+-import { getCriticConsensus } from '@/lib/data-consensus';
+-import { getAudienceBuzz } from '@/lib/data-audience';
++import { getCriticConsensus, normalizeCriticConsensus } from '@/lib/data-consensus';
++import { getAudienceBuzz, normalizeAudienceBuzz } from '@/lib/data-audience';
+ import type { AudienceBuzzData, CriticConsensus } from '@/lib/data-types';
++import { computeOneShow } from '@/lib/compute-one-show';
++import { isShowScoreTBD } from '@/lib/show-score-tbd';
++import { versionedImagePath } from '@/lib/versioned-image-path';
++import type { RawShow, RawReview, RawAudience, RawBuzzThread } from '@/lib/engine';
++import { REV_BASE, REV_BASE_ERROR, showRefreshEnabled, type PublishedSlice, type RefreshDecision } from '@/lib/show-refresh-core';
++
++/* eslint-disable-next-line @typescript-eslint/no-require-imports */
++const { coverageInputsFromSlice } = require('../../scripts/lib/show-refresh/slice') as {
++  coverageInputsFromSlice(slice: PublishedSlice): Parameters<typeof computeOneShow>[2]['coverageFloorInputs'];
++};
+ 
+ /** Marker value of a render that used the build's data (no published slice). */
+-export const BASE_REV = 'base';
++export const BASE_REV = REV_BASE;
++export { REV_BASE_ERROR };
+ 
+ export interface ShowRender {
+   show: ComputedShow;
+   consensus: CriticConsensus | undefined;
+   audienceBuzz: AudienceBuzzData | undefined;
+-  /** BASE_REV, or the published slice hash the render used (phase 2). */
++  /**
++   * The page's refresh marker (plan row 10, R7): 'base' (the build's data on
++   * purpose), 'base-error' (the build's data because the store or slice could
++   * not be trusted; the publisher re-queues it), or the slice hash rendered.
++   */
+   rev: string;
+ }
+ 
+-function baselineRender(slug: string): ShowRender | null {
++function baselineRender(slug: string, rev: string = REV_BASE): ShowRender | null {
+   const show = getShowBySlug(slug);
+   if (!show) return null;
+   return {
+     show,
+     consensus: getCriticConsensus(show.id),
+     audienceBuzz: getAudienceBuzz(show.id),
+-    rev: BASE_REV,
++    rev,
++  };
++}
++
++/**
++ * The render for a published slice, computed exactly as the build computes a
++ * show (computeOneShow), with the build's instant as the clock (plan row 6) so
++ * an unchanged slice renders like the build. Null => use the build: the show
++ * would be TBD or score-less (held shows are never refreshed).
++ */
++export function renderFromSlice(slice: PublishedSlice, buildInstant: number, rev: string): ShowRender | null {
++  const show = computeOneShow(slice.row as unknown as RawShow, slice.reviews as RawReview[], {
++    blogReviews: slice.blogReviews as RawReview[],
++    audience: slice.audience as RawAudience[],
++    buzz: slice.buzz as RawBuzzThread[],
++    coverageFloorInputs: coverageInputsFromSlice(slice),
++    versionImage: versionedImagePath,
++    now: buildInstant,
++  });
++  // Stricter than the build's held rule (computeShowTBD): a slice that yields no
++  // score at all also renders the build.
++  if (isShowScoreTBD(show, buildInstant)) return null;
++  const { category, status, closingDate } = slice.row as unknown as { category: string; status: string; closingDate?: string | null };
++  return {
++    show,
++    consensus: normalizeCriticConsensus(slice.consensus as CriticConsensus | null),
++    audienceBuzz: slice.audienceBuzz
++      ? normalizeAudienceBuzz(slice.audienceBuzz as AudienceBuzzData, { category, status, closingDate } as Parameters<typeof normalizeAudienceBuzz>[1])
++      : undefined,
++    rev,
+   };
+ }
+ 
++/** Pure: a reader decision -> this request's render. Exported for tests. */
++export function renderForDecision(slug: string, decision: RefreshDecision, buildInstant: number | null): ShowRender | null {
++  if (!('slice' in decision) || buildInstant == null) return baselineRender(slug, decision.rev);
++  try {
++    return renderFromSlice(decision.slice, buildInstant, decision.rev) ?? baselineRender(slug, REV_BASE);
++  } catch {
++    return baselineRender(slug, REV_BASE_ERROR);
++  }
++}
++
+ /**
+  * This show's data for one render. Cached per request, so metadata, body and
+- * JSON-LD of the same request can never see two different versions.
++ * JSON-LD of the same request can never see two different versions. With the
++ * reader off (SHOW_REFRESH_READER unset) it resolves to the build's data
++ * without touching the store.
+  */
+-export const getShowForRender = cache((slug: string): ShowRender | null => baselineRender(slug));
++export const getShowForRender = cache(async (slug: string): Promise<ShowRender | null> => {
++  // Loaded lazily: show-refresh.ts is server-only and reads the manifest.
++  if (!showRefreshEnabled()) return baselineRender(slug);
++  try {
++    const { readShowRefresh, buildManifest } = await import('@/lib/show-refresh');
++    const decision = await readShowRefresh(slug);
++    return renderForDecision(slug, decision, buildManifest()?.buildInstant ?? null);
++  } catch {
++    // Reader module failed to load or threw: never 5xx, render the build.
++    return baselineRender(slug, REV_BASE_ERROR);
++  }
++});
+diff --git a/tests/unit-test-manifest-tsx.txt b/tests/unit-test-manifest-tsx.txt
+index aa1191525..bb40430c2 100644
+--- a/tests/unit-test-manifest-tsx.txt
++++ b/tests/unit-test-manifest-tsx.txt
+@@ -184,6 +184,8 @@ tests/unit/show-filter-predicates.test.ts
+ tests/unit/show-market.test.ts
+ tests/unit/show-origins.test.ts
+ tests/unit/show-page-provisional-state.test.ts
++tests/unit/show-refresh-reader.test.ts
++tests/unit/show-refresh-revalidate.test.ts
+ tests/unit/show-render-slice-parity.test.ts
+ tests/unit/show-score-tbd.test.ts
+ tests/unit/show-slug-aliases.test.ts
+diff --git a/tests/unit/live-in-hd.test.mjs b/tests/unit/live-in-hd.test.mjs
+index 943f1469d..889a0c0cf 100644
+--- a/tests/unit/live-in-hd.test.mjs
++++ b/tests/unit/live-in-hd.test.mjs
+@@ -174,7 +174,7 @@ test('metadata and both hero layouts use the same cached server snapshot', () =>
+   const page = readFileSync(new URL('../../src/app/show/[slug]/page.tsx', import.meta.url), 'utf8');
+   const hero = readFileSync(new URL('../../src/components/show-page/ShowHeroRedesign.tsx', import.meta.url), 'utf8');
+   assert.match(page, /const getLiveInHdForRender = cache\(/);
+-  assert.equal(page.match(/const hd = getLiveInHdForRender\(params.slug\);/g)?.length, 2);
++  assert.equal(page.match(/const hd = (?:await )?getLiveInHdForRender\(params.slug\);/g)?.length, 2);
+   assert.match(page, /absolute: hd\.line/);
+   assert.match(page, /liveInHdText=\{hd.line\}/);
+   assert.match(page, /data-testid="live-in-hd"[^\n]*\{hd.line\}/);
+diff --git a/tests/unit/prod-data-parity.test.mjs b/tests/unit/prod-data-parity.test.mjs
+index 622f3f9f9..bcc7b39da 100644
+--- a/tests/unit/prod-data-parity.test.mjs
++++ b/tests/unit/prod-data-parity.test.mjs
+@@ -125,3 +125,47 @@ test('one router condition covers all mismatches and only a complete pass resolv
+   await runProbe({ alert: true, log: () => {}, router, fetchImpl: transport() });
+   assert.equal(calls[1], 'prod-data-parity:mismatch');
+ });
++
++// BRO-8056 G1: a page the show-refresh reader rendered from a published slice
++// carries <meta name="show-refresh-rev" content="<hash>">; the probe compares it
++// against that slice's expectation, never the prebuild row.
++const H1 = '0123456789abcdef';
++const marked = (html, rev) => html.replace('<main>', `<meta name="show-refresh-rev" content="${rev}"/><main>`);
++function refreshTransport(aHtml) {
++  return async url => {
++    const pathname = new URL(url).pathname;
++    if (pathname.endsWith('.json')) return { ok: true, json: async () => ({ ...snapshot(), refreshBuildInstant: 1 }) };
++    return { ok: true, text: async () => pathname === '/show/a' ? aHtml : empty };
++  };
++}
++
++test('G1: refresh marker picks the expectation (base, hash + overlay, stale prebuild, disagreement, store down)', async () => {
++  const { readRefreshMarker } = require('../../scripts/lib/prod-data-parity');
++  assert.deepEqual(readRefreshMarker(page(82)), { kind: 'base', value: null });
++  assert.equal(readRefreshMarker(marked(page(82), 'base-error')).kind, 'base');
++  assert.deepEqual(readRefreshMarker(marked(page(82), H1)), { kind: 'hash', value: H1 });
++  assert.equal(readRefreshMarker(marked(page(82), 'zz')).kind, 'invalid');
++
++  const never = async () => { throw new Error('overlay must not be read for a base page'); };
++  const base = await probe({ fetchImpl: refreshTransport(marked(page(82), 'base')), refreshExpectation: never });
++  assert.deepEqual([base.exitCode, base.matched, base.mismatched], [0, 2, 0]);
++
++  const calls = [];
++  const overlay = row => async (id, hash, snap) => { calls.push([id, hash, snap.refreshBuildInstant]); return row; };
++  // Prebuild row says 82/12; the refreshed page shows the slice's 88/14 => matched through the overlay.
++  const refreshed = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: overlay({ score: 88, reviewCount: 14 }) });
++  assert.deepEqual([refreshed.exitCode, refreshed.matched, refreshed.mismatched], [0, 2, 0]);
++  assert.deepEqual(calls, [['a', H1, 1]]);
++  // Same page checked against the stale prebuild row only would mismatch: proves the overlay is what matched.
++  const stale = await probe({ fetchImpl: refreshTransport(page(88, 14)), refreshExpectation: never });
++  assert.equal(stale.mismatched, 1);
++  // Overlay disagrees with what the page rendered => mismatched.
++  const wrong = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: overlay({ score: 70, reviewCount: 14 }) });
++  assert.deepEqual([wrong.exitCode, wrong.mismatched], [1, 1]);
++  // Store unreadable for a hashed page => unavailable, never mismatched.
++  const down = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: async () => { throw new Error('store down'); } });
++  assert.deepEqual([down.exitCode, down.mismatched, down.unavailable], [2, 0, 1]);
++  // A marker that is neither base nor a hash is a rendering defect.
++  const garbled = await probe({ fetchImpl: refreshTransport(marked(page(82), 'zz')), refreshExpectation: never });
++  assert.deepEqual([garbled.exitCode, garbled.mismatched], [1, 1]);
++});
+diff --git a/tests/unit/show-refresh-reader.test.ts b/tests/unit/show-refresh-reader.test.ts
+new file mode 100644
+index 000000000..b27256964
+--- /dev/null
++++ b/tests/unit/show-refresh-reader.test.ts
+@@ -0,0 +1,241 @@
++/**
++ * BRO-8056 phase 2: the show-refresh reader.
++ *  - decideShowRefresh: every path to 'base' / 'base-error' / a published hash,
++ *    driven by fake store reads (no network).
++ *  - renderForDecision on real core data (skips without data/): an unchanged
++ *    slice renders exactly what the build renders; a changed slice changes the
++ *    page's show, consensus and audience; a TBD slice falls back to the build.
++ *
++ * Run: npx tsx --test tests/unit/show-refresh-reader.test.ts
++ */
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'fs';
++import path from 'path';
++import {
++  decideShowRefresh, showRefreshEnabled, REV_BASE, REV_BASE_ERROR,
++  type RefreshDeps, type RefreshManifest, type StoreRead,
++} from '../../src/lib/show-refresh-core';
++
++/* eslint-disable @typescript-eslint/no-require-imports */
++const { sliceHash, SLICE_VERSION } = require('../../scripts/lib/show-refresh/slice');
++/* eslint-enable @typescript-eslint/no-require-imports */
++
++const ok = (value: unknown): StoreRead => ({ state: 'ok', value });
++const MISSING: StoreRead = { state: 'missing' };
++const ERR: StoreRead = { state: 'error', error: 'boom' };
++
++function fakeSlice(over: Record<string, unknown> = {}) {
++  return {
++    sliceVersion: SLICE_VERSION, showId: 'hamilton-2015',
++    row: { id: 'hamilton-2015', slug: 'hamilton' },
++    reviews: [], blogReviews: [], audience: [], buzz: [], consensus: null, audienceBuzz: null,
++    coverage: { cov: null, scorePublicSince: null, acked: false },
++    ...over,
++  };
++}
++
++function setup(over: Partial<RefreshDeps> = {}, opts: { slice?: Record<string, unknown>; held?: boolean } = {}) {
++  const slice = fakeSlice(opts.slice);
++  const hash = sliceHash(slice);
++  const manifest: RefreshManifest = {
++    schema: 1, sliceVersion: SLICE_VERSION, manifestId: 'm1', buildInstant: Date.UTC(2026, 10, 23, 12),
++    shows: { 'hamilton-2015': { slug: 'hamilton', hash: '0000000000000000', held: opts.held === true, imagesSig: 'x' } },
++  };
++  const calls: string[] = [];
++  const deps: RefreshDeps = {
++    enabled: true,
++    manifest,
++    readKill: async () => { calls.push('kill'); return ok({ schema: 1, killed: false, seq: 1 }); },
++    readHome: async () => { calls.push('home'); return ok({ manifestId: 'm1', shows: { 'hamilton-2015': { hash } } }); },
++    readSlice: async (id, h) => { calls.push(`slice:${id}:${h}`); return ok(slice); },
++    sliceHash,
++    ...over,
++  };
++  return { deps, hash, slice, calls };
++}
++
++test('published slice: rev is its hash and the slice comes back', async () => {
++  const { deps, hash, calls } = setup();
++  const d = await decideShowRefresh('hamilton', deps);
++  assert.equal(d.rev, hash);
++  assert.equal(d.reason, 'published');
++  assert.ok('slice' in d && d.slice.showId === 'hamilton-2015');
++  assert.deepEqual(calls, ['kill', 'home', `slice:hamilton-2015:${hash}`]);
++});
++
++test('flag off, no manifest, not prerendered, held: base without reading the store', async () => {
++  for (const [name, deps, slug] of [
++    ['flag off', setup({ enabled: false }).deps, 'hamilton'],
++    ['no manifest', setup({ manifest: null }).deps, 'hamilton'],
++    ['not prerendered', setup().deps, 'some-other-show'],
++    ['held', setup({}, { held: true }).deps, 'hamilton'],
++  ] as const) {
++    const calls: string[] = [];
++    const spy = { ...deps, readKill: async () => { calls.push('kill'); return MISSING; } };
++    const d = await decideShowRefresh(slug, spy);
++    assert.equal(d.rev, REV_BASE, name);
++    assert.deepEqual(calls, [], `${name} must not read the store`);
++  }
++});
++
++test('kill: killed or missing => base; unreadable or malformed => base-error (fail closed)', async () => {
++  const cases: Array<[StoreRead, string]> = [
++    [ok({ killed: true }), REV_BASE],
++    [MISSING, REV_BASE],
++    [ERR, REV_BASE_ERROR],
++    [ok({ killed: 'no' }), REV_BASE_ERROR],
++    [ok(null), REV_BASE_ERROR],
++  ];
++  for (const [read, want] of cases) {
++    const d = await decideShowRefresh('hamilton', setup({ readKill: async () => read }).deps);
++    assert.equal(d.rev, want, JSON.stringify(read));
++  }
++});
++
++test('home: unreadable => base-error; missing, other build, unlisted, equal to build => base', async () => {
++  const { hash } = setup();
++  const cases: Array<[StoreRead, string, string]> = [
++    [ERR, REV_BASE_ERROR, 'error'],
++    [MISSING, REV_BASE, 'missing'],
++    [ok({ manifestId: 'other', shows: { 'hamilton-2015': { hash } } }), REV_BASE, 'other build'],
++    [ok({ manifestId: 'm1', shows: {} }), REV_BASE, 'unlisted'],
++    [ok({ manifestId: 'm1', shows: { 'hamilton-2015': { hash: '0000000000000000' } } }), REV_BASE, 'equal to build'],
++    [ok({ manifestId: 'm1', shows: { 'hamilton-2015': { hash: '../../etc' } } }), REV_BASE_ERROR, 'malformed hash'],
++    [ok([]), REV_BASE_ERROR, 'home not an object'],
++    [ok({ shows: {} }), REV_BASE_ERROR, 'no manifestId'],
++    [ok({ manifestId: 'm1' }), REV_BASE_ERROR, 'no shows'],
++    [ok({ manifestId: 'm1', shows: { 'hamilton-2015': { hash: 7 } } }), REV_BASE_ERROR, 'non-string hash'],
++    [ok({ manifestId: 'm1', shows: { 'hamilton-2015': null } }), REV_BASE_ERROR, 'null entry'],
++  ];
++  for (const [read, want, name] of cases) {
++    const d = await decideShowRefresh('hamilton', setup({ readHome: async () => read }).deps);
++    assert.equal(d.rev, want, name);
++  }
++});
++
++test('slice: missing, unreadable, wrong show, wrong slug, tampered => base-error; other sliceVersion => base', async () => {
++  const { slice } = setup();
++  const cases: Array<[StoreRead, string, string]> = [
++    [MISSING, REV_BASE_ERROR, 'missing'],
++    [ERR, REV_BASE_ERROR, 'error'],
++    [ok({ ...slice, showId: 'wicked-2003' }), REV_BASE_ERROR, 'another show'],
++    [ok({ ...slice, row: { id: 'hamilton-2015', slug: 'wicked' } }), REV_BASE_ERROR, 'slug'],
++    [ok({ ...slice, reviews: [{ x: 1 }] }), REV_BASE_ERROR, 'content differs from its hash'],
++    [ok({ ...slice, sliceVersion: SLICE_VERSION + 1 }), REV_BASE, 'other slice version'],
++    [ok('not json object'), REV_BASE_ERROR, 'malformed'],
++  ];
++  for (const [read, want, name] of cases) {
++    const d = await decideShowRefresh('hamilton', setup({ readSlice: async () => read }).deps);
++    assert.equal(d.rev, want, name);
++  }
++});
++
++test('a malformed build manifest entry never throws', async () => {
++  const { deps } = setup();
++  const shows = { ...deps.manifest!.shows, 'broken-2020': null } as unknown as RefreshManifest['shows'];
++  const d1 = await decideShowRefresh('hamilton', { ...deps, manifest: { ...deps.manifest!, shows } });
++  assert.notEqual(d1.rev, REV_BASE_ERROR);
++  const bad = { 'hamilton-2015': { slug: 'hamilton', held: false } } as unknown as RefreshManifest['shows'];
++  const d2 = await decideShowRefresh('hamilton', { ...deps, manifest: { ...deps.manifest!, shows: bad } });
++  assert.equal(d2.rev, REV_BASE_ERROR);
++});
++
++test('a read that throws never escapes: base-error', async () => {
++  const d = await decideShowRefresh('hamilton', setup({ readHome: async () => { throw new Error('socket hang up'); } }).deps);
++  assert.equal(d.rev, REV_BASE_ERROR);
++  assert.match(d.reason, /socket hang up/);
++});
++
++test('showRefreshEnabled: on only with SHOW_REFRESH_READER=on, never during next build', () => {
++  assert.equal(showRefreshEnabled({} as NodeJS.ProcessEnv), false);
++  assert.equal(showRefreshEnabled({ SHOW_REFRESH_READER: 'on' } as unknown as NodeJS.ProcessEnv), true);
++  assert.equal(showRefreshEnabled({ SHOW_REFRESH_READER: 'true' } as unknown as NodeJS.ProcessEnv), false);
++  assert.equal(showRefreshEnabled({ SHOW_REFRESH_READER: 'on', NEXT_PHASE: 'phase-production-build' } as unknown as NodeJS.ProcessEnv), false);
++});
++
++// ---- real core data ----------------------------------------------------------
++const DATA = path.join(__dirname, '../../data');
++const MANIFEST = path.join(DATA, 'show-refresh-manifest.json');
++const haveData = fs.existsSync(path.join(DATA, 'shows.json')) && fs.statSync(path.join(DATA, 'shows.json')).size > 100_000
++  && fs.existsSync(MANIFEST);
++
++async function realSlices(n: number) {
++  /* eslint-disable @typescript-eslint/no-require-imports */
++  const { buildShowInputs } = require('../../scripts/lib/show-refresh/inputs');
++  const { indexForSlices, sliceFor } = require('../../scripts/lib/show-refresh/slice');
++  const { readCoverageFloorInputs } = require('../../scripts/lib/coverage-floor-inputs');
++  /* eslint-enable @typescript-eslint/no-require-imports */
++  const read = (f: string) => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
++  const manifest = read('show-refresh-manifest.json');
++  const inputs = buildShowInputs({
++    showsData: read('shows.json'), reviews: read('reviews.json').reviews,
++    blogReviews: read('blog-reviews-for-scoring.json').reviews,
++    audience: read('audience.json').audience, buzz: read('buzz.json').threads,
++  });
++  const index = indexForSlices(inputs, {
++    consensusById: read('critic-consensus.json').shows,
++    audienceBuzzById: read('audience-buzz.json').shows,
++    coverageFloorInputs: readCoverageFloorInputs({
++      gapAudit: path.join(DATA, 'audit', 'show-review-gap.json'),
++      stamps: path.join(DATA, 'audit', 'score-public-since.json'),
++      acks: path.join(DATA, 'audit', 't1-coverage-ack.json'),
++      snapshot: path.join(DATA, 'coverage-floor-snapshot.json'),
++    }),
++  });
++  // Diverse picks: listed, not held, spread over the manifest (musical, play, closed, West End...).
++  const ids = Object.keys(manifest.shows).filter(id => !manifest.shows[id].held);
++  const step = Math.max(1, Math.floor(ids.length / n));
++  const picks = ids.filter((_, i) => i % step === 0).slice(0, n);
++  return { manifest, picks: picks.map(id => ({ id, slug: manifest.shows[id].slug, slice: sliceFor(id, index) })) };
++}
++
++test('real data: an unchanged slice renders exactly what the build renders', { skip: !haveData && 'core data not present' }, async () => {
++  const { renderForDecision, getShowForRender } = await import('../../src/lib/show-render');
++  const { manifest, picks } = await realSlices(20);
++  assert.ok(picks.length >= 10, 'want at least 10 shows');
++  let same = 0;
++  for (const p of picks) {
++    assert.ok(p.slice, p.id);
++    assert.equal(sliceHash(p.slice), manifest.shows[p.id].hash, `manifest hash = slice hash for ${p.id}`);
++    const built = await getShowForRender(p.slug);
++    const over = renderForDecision(p.slug, { rev: 'h', reason: 'published', showId: p.id, slice: p.slice }, manifest.buildInstant);
++    assert.ok(built && over, p.id);
++    assert.equal(built.rev, REV_BASE);
++    assert.equal(over.rev, 'h', `${p.id} rendered from the slice (not TBD)`);
++    // computedAt is the compute clock (build instant vs this process); no page shows it.
++    const norm = (r: typeof built) => ({ ...r, rev: 'x', show: { ...r.show, computedAt: 'x' } });
++    assert.deepEqual(norm(over), norm(built), `render parity ${p.id}`);
++    same++;
++  }
++  console.log(`render parity: ${same}/${picks.length} shows identical`);
++});
++
++test('real data: a changed slice reaches show, consensus and audience; TBD falls back to the build', { skip: !haveData && 'core data not present' }, async () => {
++  const { renderForDecision, getShowForRender } = await import('../../src/lib/show-render');
++  const { manifest, picks } = await realSlices(40);
++  const p = picks.find(x => x.slice && x.slice.reviews.length >= 8 && x.slice.consensus && x.slice.audienceBuzz);
++  assert.ok(p, 'need a show with reviews, consensus and audience buzz');
++  const s = structuredClone(p.slice);
++  s.consensus = { ...s.consensus, text: 'FIXTURE consensus text' };
++  s.row = { ...s.row, title: `${s.row.title} FIXTURE` };
++  for (const r of s.reviews) { r.assignedScore = 99; r.originalScore = null; }
++  const built = await getShowForRender(p.slug);
++  const over = renderForDecision(p.slug, { rev: 'h2', reason: 'published', showId: p.id, slice: s }, manifest.buildInstant);
++  assert.ok(built && over);
++  assert.equal(over.rev, 'h2');
++  assert.equal(over.consensus?.text, 'FIXTURE consensus text');
++  assert.match(over.show.title, /FIXTURE$/);
++  assert.notEqual(over.show.criticScore?.score, built.show.criticScore?.score, 'score follows the slice reviews');
++  assert.deepEqual(over.audienceBuzz, built.audienceBuzz, 'audience unchanged when the slice audience is unchanged');
++
++  const tbd = structuredClone(p.slice);
++  tbd.reviews = []; tbd.blogReviews = [];
++  const fallback = renderForDecision(p.slug, { rev: 'h3', reason: 'published', showId: p.id, slice: tbd }, manifest.buildInstant);
++  assert.equal(fallback?.rev, REV_BASE, 'a TBD slice renders the build');
++  assert.equal(fallback?.show.title, built.show.title);
++
++  const broken = { ...structuredClone(p.slice), reviews: 'not an array' };
++  const errored = renderForDecision(p.slug, { rev: 'h4', reason: 'published', showId: p.id, slice: broken as never }, manifest.buildInstant);
++  assert.equal(errored?.rev, REV_BASE_ERROR, 'a slice that throws in compute renders the build, marked base-error');
++});
+diff --git a/tests/unit/show-refresh-revalidate.test.ts b/tests/unit/show-refresh-revalidate.test.ts
+new file mode 100644
+index 000000000..7109adc06
+--- /dev/null
++++ b/tests/unit/show-refresh-revalidate.test.ts
+@@ -0,0 +1,54 @@
++/**
++ * BRO-8056 phase 2: /api/show-refresh/revalidate decides with planRevalidate
++ * (src/lib/show-refresh-revalidate.ts). Off until the secret exists; wrong
++ * secret refused; bad input refused; a good call lists page + reviews.json per
++ * slug, '/' when asked, and the tag flag.
++ */
++import { test } from 'node:test';
++import assert from 'node:assert/strict';
++import { planRevalidate, revalidateAuth, MAX_REVALIDATE_SLUGS } from '../../src/lib/show-refresh-revalidate';
++
++const SECRET = 's'.repeat(40);
++const call = (body: unknown, given: string | null = SECRET, configured: string | undefined = SECRET) =>
++  planRevalidate({ configuredSecret: configured, givenSecret: given, body });
++
++test('route does not exist until a long secret is configured', () => {
++  assert.deepEqual(call({ tag: true }, SECRET, ''), { ok: false, status: 404, error: 'not found' });
++  assert.equal((call({ tag: true }, 'short', 'short') as { status: number }).status, 404);
++});
++
++test('wrong or missing secret is refused', () => {
++  assert.equal((call({ tag: true }, null) as { status: number }).status, 401);
++  assert.equal((call({ tag: true }, 'x'.repeat(40)) as { status: number }).status, 401);
++  assert.equal((call({ tag: true }, SECRET + 'x') as { status: number }).status, 401);
++});
++
++test('bad bodies are refused', () => {
++  for (const body of [null, [], 'x', { slugs: 'a' }, { home: 'yes' }, { slugs: ['../etc'] }, { slugs: ['A'] }, { slugs: [1] }, {},
++    { slugs: Array.from({ length: MAX_REVALIDATE_SLUGS + 1 }, (_, i) => `s${i}`) }]) {
++    assert.equal((call(body) as { status: number }).status, 400, JSON.stringify(body).slice(0, 60));
++  }
++});
++
++test('a good call lists both surfaces per slug, home, and the tag', () => {
++  assert.deepEqual(call({ slugs: ['hamilton', 'hamilton', 'the-lost-boys-2026'], home: true }), {
++    ok: true, tag: false,
++    paths: ['/show/hamilton', '/show/hamilton/reviews.json', '/show/the-lost-boys-2026', '/show/the-lost-boys-2026/reviews.json', '/'],
++  });
++  assert.deepEqual(call({ tag: true }), { ok: true, tag: true, paths: [] });
++});
++
++test('only a slice hash counts as a refreshed render (ranks hidden, render-time lastUpdated)', async () => {
++  const { isRefreshedRev } = await import('../../src/lib/show-refresh-core');
++  assert.equal(isRefreshedRev('0123456789abcdef'), true);
++  for (const rev of ['base', 'base-error', '', null, undefined, '0123456789ABCDEF', '0123456789abcde']) assert.equal(isRefreshedRev(rev), false, String(rev));
++});
++
++test('revalidateAuth runs alone (before the body is read) and agrees with planRevalidate', () => {
++  const secret = 'x'.repeat(40);
++  assert.equal(revalidateAuth(undefined, secret)?.status, 404);
++  assert.equal(revalidateAuth(secret, null)?.status, 401);
++  assert.equal(revalidateAuth(secret, secret.slice(1))?.status, 401);
++  assert.equal(revalidateAuth(secret, secret + 'y')?.status, 401);
++  assert.equal(revalidateAuth(secret, secret), null);
++});
