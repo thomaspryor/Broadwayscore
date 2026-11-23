@@ -101,6 +101,26 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     });
     if (!res.ok) throw new Error(`state put ${path} ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
   }
+  /**
+   * Compare-and-swap: replace the row only while its value.seq still equals
+   * expectSeq. Returns the number of rows changed (0 = someone wrote since the
+   * caller read it). return=representation so an RLS-filtered PATCH (0 rows,
+   * 2xx) is not mistaken for success.
+   */
+  async function putIfSeq(path, text, expectSeq) {
+    if (!Number.isInteger(expectSeq)) throw new Error(`state putIfSeq ${path}: expectSeq must be an integer`);
+    const res = await call(`${root}?key=eq.${rowKey(path)}&value->>seq=eq.${expectSeq}`, {
+      method: 'PATCH',
+      headers: { ...auth, 'content-type': 'application/json', prefer: 'return=representation' },
+      body: JSON.stringify({ value: JSON.parse(text), updated_at: new Date().toISOString() }),
+    });
+    const body = await res.text().catch(() => '');
+    if (!res.ok) throw new Error(`state putIfSeq ${path} ${res.status} ${body.slice(0, 200)}`);
+    let rows;
+    try { rows = JSON.parse(body); } catch { throw new Error(`state putIfSeq ${path}: invalid JSON from PostgREST`); }
+    if (!Array.isArray(rows)) throw new Error(`state putIfSeq ${path}: not an array`);
+    return rows.length;
+  }
   async function remove(path) {
     // return=representation: RLS silently filters a forbidden DELETE to 0 rows,
     // so the caller needs the count to tell "deleted" from "not allowed".
@@ -111,7 +131,7 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     try { n = JSON.parse(body).length; } catch { /* empty body */ }
     return n;
   }
-  return { get, put, remove, table: STATE_TABLE };
+  return { get, put, putIfSeq, remove, table: STATE_TABLE };
 }
 
 function envUrl(env) { return env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL; }
@@ -216,8 +236,19 @@ async function setKill(state, { killed, reason = '', by = '', now = Date.now() }
   if (unreadable && !want) throw new Error(`setKill: kill.json unreadable (${cur.error}); refusing a blind unkill`);
   const prevSeq = cur.state === 'ok' && cur.value && Number.isInteger(cur.value.seq) ? cur.value.seq : 0;
   const seq = unreadable ? Math.max(prevSeq + 1, now) : prevSeq + 1;
-  const next = { schema: 1, killed: want, reason: String(reason).slice(0, 500), by: String(by).slice(0, 200), at: new Date(now).toISOString(), seq };
-  await putMutable(state, PATHS.kill, next);
+  // jsonb rejects NUL, so one would make the write fail; strip control characters
+  // other than tab and newline (multi-line reasons are allowed).
+  const clean = (v, n) => String(v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ' ').slice(0, n);
+  const next = { schema: 1, killed: want, reason: clean(reason, 500), by: clean(by, 200), at: new Date(now).toISOString(), seq };
+  if (!want && cur.state === 'ok' && Number.isInteger(prevSeq) && prevSeq > 0 && typeof state.putIfSeq === 'function') {
+    // An unkill only applies to the kill state it read. Without this, a kill and
+    // an unkill that both read seq N each write N+1 and each re-check passes, so
+    // the kill reports success and is lost. A kill always writes (kills win).
+    const changed = await state.putIfSeq(PATHS.kill, JSON.stringify(next), prevSeq);
+    if (changed !== 1) throw new Error(`setKill: kill.json changed since it was read (seq ${prevSeq}); refusing the unkill, re-run it after checking --status`);
+  } else {
+    await putMutable(state, PATHS.kill, next);
+  }
   const back = await readJsonObject(state, PATHS.kill);
   if (back.state !== 'ok' || !back.value || back.value.killed !== want || back.value.seq !== seq) {
     throw new Error(`setKill: kill.json changed under us (now ${back.state === 'ok' ? `killed=${back.value && back.value.killed} seq=${back.value && back.value.seq}` : back.state})`);

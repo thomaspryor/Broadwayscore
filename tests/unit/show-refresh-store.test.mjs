@@ -59,6 +59,15 @@ function startFake() {
           state.rows.set(row.key, sorted);
           return done(201, '');
         }
+        if (req.method === 'PATCH') {
+          // value->>seq=eq.N compare-and-swap: 0 rows when the stored seq moved on.
+          const want = (url.searchParams.get('value->>seq') || '').replace(/^eq\./, '');
+          const cur = state.rows.get(k);
+          if (!cur || String(cur.seq) !== want) return done(200, '[]');
+          const row = JSON.parse(body);
+          state.rows.set(k, row.value);
+          return done(200, JSON.stringify([{ key: k, value: row.value }]));
+        }
         if (req.method === 'DELETE') {
           const had = state.rows.has(k) ? [{ key: k }] : [];
           state.rows.delete(k);
@@ -277,6 +286,34 @@ describe('show-refresh store', () => {
       return w.state.get(path);
     } };
     await assert.rejects(store.setKill(s, { killed: true, reason: 'x' }), /changed under us .*killed=false seq=99/);
+  });
+
+  test('an unkill that read a stale seq is refused, so a racing kill is never lost', async () => {
+    reset();
+    const w = await setup();
+    let first = true;
+    // The unkill reads seq 1; a kill lands (seq 2) before the unkill writes.
+    const s = { ...w.state, get: async (path) => {
+      const r = await w.state.get(path);
+      if (first) { first = false; fake.state.rows.set('kill', { schema: 1, killed: true, reason: 'rival kill', seq: 2 }); }
+      return r;
+    } };
+    await assert.rejects(store.setKill(s, { killed: false, reason: 'fixed' }), /changed since it was read \(seq 1\)/);
+    assert.equal(fake.state.rows.get('kill').killed, true);
+    assert.equal(fake.state.rows.get('kill').seq, 2);
+    // With no rival, the same unkill applies.
+    const u = await store.setKill(w.state, { killed: false, reason: 'fixed' });
+    assert.equal(u.seq, 3);
+    assert.equal(fake.state.rows.get('kill').killed, false);
+  });
+
+  test('control characters in reason/by are stripped (jsonb rejects NUL)', async () => {
+    reset();
+    const w = await setup();
+    const k = await store.setKill(w.state, { killed: true, reason: 'a\u0000b\nc', by: 'x\u0007y' });
+    assert.equal(k.reason, 'a b\nc');
+    assert.equal(k.by, 'x y');
+    assert.equal(fake.state.rows.get('kill').reason, 'a b\nc');
   });
 
   test('effectiveKill fails closed on missing, error and malformed', () => {
