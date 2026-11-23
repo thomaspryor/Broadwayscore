@@ -22,10 +22,13 @@
 // reflect a slice; phase 2 must take them from the slice (or accept and
 // document the lag) before the reader is switched on.
 import { cache } from 'react';
-import { getShowBySlug, type ComputedShow } from './data-core';
-import { getCriticConsensus } from './data-consensus';
-import { getAudienceBuzz } from './data-audience';
-import type { AudienceBuzzData, CriticConsensus } from './data-types';
+// '@/lib/...' specifiers, not './...': tests stub '@/lib/data-core' by that exact
+// id (Module._load in show-og-poster-layout / live-in-hd tests), and a relative
+// import would bypass the stub.
+import { getShowBySlug, type ComputedShow } from '@/lib/data-core';
+import { getCriticConsensus } from '@/lib/data-consensus';
+import { getAudienceBuzz } from '@/lib/data-audience';
+import type { AudienceBuzzData, CriticConsensus } from '@/lib/data-types';
 
 /** Marker value of a render that used the build's data (no published slice). */
 export const BASE_REV = 'base';

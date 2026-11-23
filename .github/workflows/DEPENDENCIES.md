@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (334 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (335 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -366,7 +366,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `COOKIES_BUNDLE_7` | 18 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_8` | 18 cross-repo writers (of 21 workflows using it) |
 | `COOKIES_BUNDLE_9` | 18 cross-repo writers (of 21 workflows using it) |
-| `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 200 workflows using it) |
+| `DISCORD_WEBHOOK_ALERTS` | 110 cross-repo writers (of 201 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
@@ -394,7 +394,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `NEW_YORKER_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
-| `NEXT_PUBLIC_SUPABASE_URL` | 3 cross-repo writers (of 19 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |
+| `NEXT_PUBLIC_SUPABASE_URL` | 3 cross-repo writers (of 20 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |
 | `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NYDAILYNEWS_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -416,7 +416,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REVIEW_TEXTS_TOKEN` | 143 cross-repo writers (of 262 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 82 cross-repo writers (of 111 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 85 cross-repo writers (of 114 workflows using it) |
-| `SUPABASE_SERVICE_ROLE_KEY` | 3 cross-repo writers (of 18 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |
+| `SUPABASE_SERVICE_ROLE_KEY` | 3 cross-repo writers (of 19 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
 | `TR_EMAIL` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
 | `TR_PASSWORD` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
