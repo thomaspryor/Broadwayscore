@@ -1646,3 +1646,37 @@ describe('BRO-8195: browser recovery lists paywalled _pending stubs', () => {
     assert.ok(!H.pendingSubscriberStubEligible(after), 'a stub the logged-in read could not promote is not retried every run');
   });
 });
+
+describe('BRO-8195: a logged-in read that never reached the article never reaches the drain', () => {
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-miss-'));
+  process.on('exit', () => fs.rmSync(rt, { recursive: true, force: true }));
+  // The real stub: an old WaPo story url that now redirects to the homepage (drain promoted a food writer's byline).
+  const URL0 = 'https://www.washingtonpost.com/entertainment/review-broadways-some-like-it-hot-blazes-righteous-path/2022/12/11/68e0a7b4-79c9-11ed-bb97-f47d47466b9a_story.html';
+  const rel = '_pending/some-like-it-hot-2022/washpost--177ae7da.json';
+  fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true });
+  fs.writeFileSync(path.join(rt, rel), JSON.stringify({ showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0, pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed on paywalled outlet washpost (BRO-8091)' }));
+  const prev = process.env.REVIEW_TEXTS_DIR;
+  process.env.REVIEW_TEXTS_DIR = rt;
+  const key = require.resolve('../../scripts/lib/browser-recovery-helpers.js');
+  delete require.cache[key];
+  const H = require(key);
+  process.env.REVIEW_TEXTS_DIR = prev;
+
+  test('pendingBrowserMissReason: homepage / section redirect or a near-empty read is a miss; a moved article is not', () => {
+    assert.match(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/', textLen: 69 }), /redirected off the article/);
+    assert.match(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/theater-dance/', textLen: 4000 }), /redirected off the article/);
+    assert.match(H.pendingBrowserMissReason({ finalUrl: URL0, textLen: 69 }), /only 69 chars/);
+    assert.equal(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/theater-dance/2022/12/12/some-like-it-hot-broadway-review/', textLen: 5200 }), null);
+  });
+
+  test('the homepage redirect settles the stub with a typed reason and the drain is never called', async () => {
+    const [cand] = H.loadCandidates({ filePrefix: 'washpost', includePending: true });
+    let called = false;
+    const r = await H.processPendingCandidate(cand, '<html>homepage</html>', { processShow: async () => { called = true; return { promoted: 1 }; }, tracker: new Set(), finalUrl: 'https://www.washingtonpost.com/', textLen: 69 });
+    assert.equal(called, false);
+    assert.equal(r.outcome, 'settled');
+    const d = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+    assert.match(d.promoteSkippedReason, /^subscriber-browser-no-article: the logged-in browser redirected off the article/);
+    assert.ok(!H.pendingSubscriberStubEligible(d));
+  });
+});

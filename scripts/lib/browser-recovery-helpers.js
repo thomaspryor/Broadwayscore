@@ -113,6 +113,23 @@ function pendingSubscriberStubEligible(data) {
   return !settled || settled.startsWith('subscriber-fetch-failed');
 }
 
+/**
+ * BRO-8195: the logged-in browser did not reach the article: it was redirected to a home or section page
+ * (an old WaPo story url lands on the homepage, whose feature module carries a food writer's byline the drain
+ * then promoted), or it read almost no text. The drain trusts the url's slug for identity, so it must never
+ * see such a page. Pure. Returns the reason or null.
+ */
+const PENDING_MIN_ARTICLE_CHARS = 500;
+function pendingBrowserMissReason({ finalUrl, textLen }) {
+  if (finalUrl) {
+    let segs = null;
+    try { segs = new URL(finalUrl).pathname.split('/').filter(Boolean); } catch { /* unparseable: judged on text alone */ }
+    if (segs && segs.length <= 1) return `redirected off the article to ${finalUrl}`;
+  }
+  if (Number.isFinite(textLen) && textLen < PENDING_MIN_ARTICLE_CHARS) return `only ${textLen} chars of article text`;
+  return null;
+}
+
 function loadPendingCandidates({ prefixes, showsAllowlist }) {
   const root = path.join(REVIEW_TEXTS_DIR, '_pending');
   let dirs;
@@ -155,6 +172,19 @@ async function processPendingCandidate(candidate, html, opts = {}) {
   const before = read();
   if (!before) return { outcome: 'vanished' };
   if (!pendingSubscriberStubEligible(before) || before.url !== candidate.url) return { outcome: 'kept', detail: 'stub changed since listing' };
+  const miss = pendingBrowserMissReason({ finalUrl: opts.finalUrl, textLen: opts.textLen });
+  if (miss) {
+    if (dry) return { outcome: 'settled', detail: `${miss} (dry run)` };
+    withReviewTextsLock(`settle:${candidate.file}`, () => {
+      const d = read();
+      if (!d) return;
+      d.promoteSkippedReason = `subscriber-browser-no-article: the logged-in browser ${miss}; the url no longer serves the review, clear to retry (BRO-8195)`;
+      d.promoteSkippedAt = new Date().toISOString();
+      safeWriteReview(candidate.filePath, d);
+    });
+    tracker.add(path.resolve(candidate.filePath));
+    return { outcome: 'settled', detail: miss };
+  }
   if (before.promoteSkippedReason && !dry) {
     withReviewTextsLock(`reopen:${candidate.file}`, () => {
       const d = read();
@@ -169,7 +199,7 @@ async function processPendingCandidate(candidate, html, opts = {}) {
   const listShow = () => { try { return new Set(fs.readdirSync(showDir)); } catch { return new Set(); } };
   const had = listShow();
   const res = await drain(candidate.showId, {
-    files: [candidate.file], dryRun: dry, explicitScope: true,
+    files: [candidate.file], dryRun: dry, explicitScope: false, // never an owner alert from this path: the stub settles with a typed reason below
     fetch: async (u) => (u === candidate.url ? { content: html, success: true, method: 'subscriber-browser' } : null),
     ...(opts.drainDeps || {}),
   });
@@ -300,4 +330,4 @@ function acquireRecoveryRunLock(label) {
   return require('./recovery-run-lock').acquireRunLock(label);
 }
 
-module.exports = { loadCandidates, pendingSubscriberStubEligible, processPendingCandidate, processRecoveredText, stampDead, startRun, checkpoint, acquireRecoveryRunLock, RUN_WRITES, REVIEW_TEXTS_DIR };
+module.exports = { loadCandidates, pendingSubscriberStubEligible, pendingBrowserMissReason, processPendingCandidate, processRecoveredText, stampDead, startRun, checkpoint, acquireRecoveryRunLock, RUN_WRITES, REVIEW_TEXTS_DIR };
