@@ -54,6 +54,9 @@ const DESIGN_CASES = {
   'await added to a const that feeds className': [`const c = f(); return <div className={c}/>;`, `const c = await f(); return <div className={c}/>;`],
   'async added to a class method': [`class K { m(){ const v = f(); return v; } } return <A/>;`, `class K { async m(){ const v = await f(); return v; } } return <A/>;`],
   'async helper exported by name': [`const h = (s) => { const v = f(s); return v; }; return <A/>;`, `const h = async (s) => { const v = await f(s); return v; }; return <A/>;`, "export { h };"],
+  'async helper called un-awaited from a nested helper': [`const h = (s) => { const v = f(s); return v; }; const g = () => h(s); return <A g={g()}/>;`, `const h = async (s) => { const v = await f(s); return v; }; const g = () => h(s); return <A g={g()}/>;`],
+  'async helper passed as a callback': [`const h = (s) => { const v = f(s); return v; }; const L2 = L.map(h); return <A L={L2}/>;`, `const h = async (s) => { const v = await f(s); return v; }; const L2 = L.map(h); return <A L={L2}/>;`],
+  'async helper shadowed by a same-named local that is used bare': [`const h = (s) => { const v = f(s); return v; }; const k = (h) => h; return <A k={k}/>;`, `const h = async (s) => { const v = await f(s); return v; }; const k = (h) => h; return <A k={k}/>;`],
   'parenthesised grouping changed (no await)': [`const n = (a + b) * c; return <A n={n}/>;`, `const n = a + b * c; return <A n={n}/>;`],
   'await plus a new identifier': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s) ?? fallback; return <A r={r}/>;`],
 };
