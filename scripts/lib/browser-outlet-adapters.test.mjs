@@ -205,3 +205,23 @@ test('a Stage wall page that still yields a short teaser is an access wall too',
   const r = await A.ADAPTERS.thestage.extract(fakePage({ html }), 'https://www.thestage.co.uk/reviews/x');
   assert.equal(r.authWall, true);
 });
+
+// BRO-8096: the Times browser read "not_longer" on reviews we already held in full.
+// Root cause: the stored text read truncated because (a) the run time ("155 minutes")
+// sat between the last sentence and the listing footer, so the body did not end on a
+// sentence, and (b) older saves carried the related-articles block after the
+// "Follow @timesculture" line. The tier classifier must see the real ending.
+test('BRO-8096: Times footer strip handles a run-time token and a related-articles tail', () => {
+  const T = require('./trailer-signatures.js');
+  const BODY = 'The company sings well and the second act moves quickly, though the book sags in places and the staging never quite earns its final image. '.repeat(14).trim();
+  const withDuration = `${BODY} 155 minutes To January 20, millatsonning.com Follow @timesculture on Twitter to read the latest reviews`;
+  assert.equal(T.stripTimesFooter(withDuration), BODY);
+  const withRelated = `${BODY}★☆☆☆☆120 minutesTo June 14, royalcourttheatre.com\n\nFollow @timesculture to read the latest reviews\n\nFIRST NIGHTMrs Warren’s Profession — Imelda Staunton battles with Bernard ShawMay 23 2025, 12.00amClive DavisGoing out or staying in? Our critics pick the best things to do this weekMay 23 2025, 12.00amDebra Craine | Clive DavisMore from Theatre & DanceFive things to see in Scotland this weekMay 24 2025, 12.00am\n\nClive Davis, Chief Theatre Critic`;
+  assert.equal(T.stripTimesFooter(withRelated), BODY);
+  // a cut-off review with a run time stays truncated
+  const cut = `${BODY.slice(0, -1)} and the lead brings a snarl 155 minutes To January 20, millatsonning.com`;
+  assert.equal(T.stripTimesFooter(cut), cut);
+  // prose after the follow line is never eaten (no related-block marker)
+  const prose = `${BODY} Follow @timesculture to read the latest reviews\n\nThe second review of the night was better and ran long, with a fine cast.`;
+  assert.ok(T.stripTimesFooter(prose).includes('second review of the night'));
+});

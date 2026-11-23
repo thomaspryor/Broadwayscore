@@ -323,11 +323,19 @@ function stripStagePageTail(text) {
 const TIMES_PROMO_RE = /\s*(?:Follow @timesculture[^\n]{0,80}|Save\b[\s\S]{0,40}?Promoted Content|Promoted Content|What have you enjoyed at the theatre recently\?[^\n]{0,120}|Love classical music and opera\?[^\n]{0,160})\s*$/;
 const TIMES_FOOTER_START_RE = /★|Box office:|\bTo (?:[A-Z][a-z]{2,8} \d{1,2}|\d{1,2} [A-Z][a-z]{2,8})\b/g;
 const TIMES_FOOTER_MAX = 240;
+// BRO-8096: older saves carry the page's related-articles block after the
+// "Follow @timesculture" line ("FIRST NIGHT...Going out or staying in?...More
+// from Theatre & Dance...", then the byline). Cut it so the promo/footer peel
+// sees the real ending. Needs the follow line first and a block marker within
+// 1200 chars, so prose is never eaten.
+const TIMES_RELATED_TAIL_RE = /(Follow @timesculture[^\n]{0,80})\s*\n+(?=[\s\S]{0,1200}?(?:Going out or staying in\?|More from Theatre & Dance))[\s\S]*$/;
+// A run-time token ("155 minutes", "120min") sits between the last sentence and the listing.
+const TIMES_DURATION_TAIL_RE = /\s*\b\d{2,3}\s*(?:min(?:ute)?s?)\s*$/i;
 const TIMES_FOOTER_EVIDENCE_RE = /★|\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b[Tt]o (?:[A-Z][a-z]{2,8} \d{1,2}|\d{1,2} [A-Z][a-z]{2,8})\b/;
 
 function stripTimesFooter(text) {
   if (!text || typeof text !== 'string') return text;
-  let t = text.replace(/\s+$/, '');
+  let t = text.replace(/\s+$/, '').replace(TIMES_RELATED_TAIL_RE, '$1');
   for (let i = 0; i < 3; i++) {
     const p = t.replace(TIMES_PROMO_RE, '');
     if (p === t) break;
@@ -338,7 +346,7 @@ function stripTimesFooter(text) {
   let m;
   while ((m = TIMES_FOOTER_START_RE.exec(t)) !== null) {
     const footer = t.slice(m.index);
-    const body = t.slice(0, m.index).replace(/\s+$/, '');
+    const body = t.slice(0, m.index).replace(/\s+$/, '').replace(TIMES_DURATION_TAIL_RE, '');
     // the footer is a listing, not prose: no full sentence inside it
     const prose = /[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(footer);
     if (!prose && TIMES_FOOTER_EVIDENCE_RE.test(footer) && SENTENCE_END_RE.test(body) && body.length >= RELATED_MIN_REMAINING) return body;
