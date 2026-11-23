@@ -329,6 +329,14 @@ if (!show) {
     fetchFailure = `no usable HTML (${html ? html.length : 0} chars)`;
   }
   if (fetchFailure) html = '';
+  // BRO-8210: Blogger "Dynamic Views" pages render the post in the browser, so
+  // the fetched HTML has no body; read the same post from Blogger's feed API.
+  if (!fetchFailure && !htmlFileArg) {
+    const bdv = await require('./lib/blogger-dynamic-views').expandBloggerDynamicViews(
+      html, url, (u) => fetchPage(u, { source: 'process-review-submission' }));
+    if (bdv.expanded) { html = bdv.html; console.log(`  → Blogger Dynamic Views page; read the post from ${bdv.feedUrl}`); }
+    else if (bdv.feedUrl) console.warn(`  ⚠️  Blogger Dynamic Views page; feed read failed (${bdv.error || 'unknown'}): ${bdv.feedUrl}`);
+  }
 
   // BRO-8204: substack.com/home/post/p-<id> names no publication, so the outlet
   // resolved to a generic "substack" and the misattribution guard held the review.

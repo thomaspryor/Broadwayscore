@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-23T03:23:05.875Z",
+    "lastUpdated": "2026-11-23T23:33:06.193Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6610: coverageExpectation re-decided latimes"
+    "lastChange": "BRO-8210: register New York Theatre Review (newyorktheatrereview.blogspot.com)"
   },
   "outlets": {
     "westendtheatre": {
@@ -15871,6 +15871,16 @@
         "folio-weekly"
       ],
       "domain": "folioweekly.com"
+    },
+    "newyorktheatrereview": {
+      "displayName": "New York Theatre Review",
+      "tier": 4,
+      "aliases": [
+        "newyorktheatrereview",
+        "new-york-theatre-review-blogspot"
+      ],
+      "domain": "newyorktheatrereview.blogspot.com",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -16631,8 +16641,10 @@
     "the-critic": "the-critic",
     "vanguard-culture": "vanguard-culture",
     "vanguard culture": "vanguard-culture",
-    "vanguardculture": "vanguard-culture"
+    "vanguardculture": "vanguard-culture",
+    "newyorktheatrereview": "newyorktheatrereview",
+    "new-york-theatre-review-blogspot": "newyorktheatrereview"
   },
-  "lastUpdated": "2026-11-18T07:04:37.218Z",
-  "lastChange": "BRO-5823: registered 18 staged outlets with checked mastheads (globalnews2 blocked as a Deadline mirror; guide4moms left staged, no reachable masthead)"
+  "lastUpdated": "2026-11-23T23:33:06.193Z",
+  "lastChange": "BRO-8210: register New York Theatre Review (newyorktheatrereview.blogspot.com)"
 }
