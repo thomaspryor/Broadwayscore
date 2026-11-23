@@ -149,7 +149,11 @@ function findFuncDirs(functionsDir) {
     for (const e of entries) {
       const p = path.join(d, e.name);
       let isDir = e.isDirectory();
-      if (!isDir && e.isSymbolicLink()) { try { isDir = fs.statSync(p).isDirectory(); } catch { isDir = false; } }
+      if (!isDir && e.isSymbolicLink()) {
+        let st = null;
+        try { st = fs.statSync(p); } catch { /* dangling link: not a directory */ }
+        isDir = !!st && st.isDirectory();
+      }
       if (!isDir) continue;
       if (e.name.endsWith('.func')) out.push(p); else walk(p); // symlinked route dirs too
     }
