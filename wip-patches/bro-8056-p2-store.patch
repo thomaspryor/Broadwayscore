@@ -1,0 +1,1288 @@
+From 980ad25b12ac9a6f543727d9be58d5d1dad316e5 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 23 Nov 2026 01:41:10 +0000
+Subject: [PATCH] BRO-8056 p2: home/kill move to PostgREST state table (Storage
+ CDN stale for anon)
+
+Real --selftest PASS 3/3 on prod store. Kill workflow passes the anon key
+so --status checks the reader view. PostgREST 404 counts as an error.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01RUGH9m5rhUrRNuURKkrKZJ
+---
+ .github/workflows/show-refresh-kill.yml       |   6 +-
+ scripts/lib/show-refresh/store.js             | 214 +++++++---
+ scripts/lib/supabase-schema-expectations.js   |  21 +-
+ scripts/show-refresh-store.js                 | 159 ++++---
+ scripts/verify-supabase-schema.js             |   4 +
+ .../20261123_show_refresh_anon_read.sql       |  26 ++
+ .../20261123b_show_refresh_state.sql          |  37 ++
+ tests/unit/show-refresh-store.test.mjs        | 394 ++++++++++--------
+ .../supabase-schema-expectations.test.mjs     |  27 ++
+ 9 files changed, 575 insertions(+), 313 deletions(-)
+ create mode 100644 supabase/migrations/20261123_show_refresh_anon_read.sql
+ create mode 100644 supabase/migrations/20261123b_show_refresh_state.sql
+
+diff --git a/.github/workflows/show-refresh-kill.yml b/.github/workflows/show-refresh-kill.yml
+index bd3832d13..cab3e517c 100644
+--- a/.github/workflows/show-refresh-kill.yml
++++ b/.github/workflows/show-refresh-kill.yml
+@@ -1,7 +1,7 @@
+ name: Show Refresh Kill Switch
+ 
+-# BRO-8056 phase 1c: the reader kill switch for per-show publishing. kill sets
+-# kill.json killed:true in the private show-refresh bucket (written, read back
++# BRO-8056: the reader kill switch for per-show publishing. kill sets the
++# kill row killed:true in public.show_refresh_state (written, read back
+ # and confirmed); the phase-2 reader then renders the build's own data. How
+ # fast a page reflects it depends on the reader's caching, which phase 2 sets
+ # and measures (no promise here). unkill reverses it. status prints the
+@@ -46,6 +46,8 @@ jobs:
+         env:
+           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
++          # --status also checks what the site reader (public anon key) sees.
++          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+           ACTION: ${{ inputs.action }}
+           REASON: ${{ inputs.reason }}
+         run: |
+diff --git a/scripts/lib/show-refresh/store.js b/scripts/lib/show-refresh/store.js
+index df0ffb051..f3d79cfe6 100644
+--- a/scripts/lib/show-refresh/store.js
++++ b/scripts/lib/show-refresh/store.js
+@@ -1,30 +1,35 @@
+ 'use strict';
+ /**
+- * BRO-8056 phase 1c: the private `show-refresh` store (plan v14-final §1.2).
++ * BRO-8056: the show-refresh store (plan v14-final §1.2).
+  *
+- *   show/<id>/<hash>.json   immutable slice objects (1-year cache)
+- *   home.json               index the reader follows (no-cache)
+- *   kill.json               kill switch (no-cache)
+- *   covered.json, health.json, flagged/<sha>.json  (later phases; no-cache)
++ * Two homes, chosen by how each object changes:
++ *   - Storage bucket `show-refresh` (private): immutable slices
++ *     show/<id>/<hash>.json (1-year cache), plus covered.json, health.json and
++ *     flagged/<sha>.json (later phases; service role only).
++ *   - Table public.show_refresh_state, read through PostgREST: the MUTABLE
++ *     pointers home (index the reader follows) and kill (kill switch), plus a
++ *     'probe' row for --selftest.
++ *
++ * Why the split (measured 2026-11-23): Supabase's Storage CDN served the OLD
++ * bytes of an overwritten object to shared-credential readers, both through a
++ * signed URL and to the anon key on the authenticated endpoint (cf HIT despite
++ * "private, no-cache"). Only per-service-key reads came back fresh. A slice's
++ * path changes with its content, so a cached slice is always right; a pointer
++ * is not. PostgREST answers are not CDN-cached (cf-cache-status DYNAMIC).
+  *
+  * Writes need the service-role key and happen only in CI (single writer, R4).
+- * The site reader never holds a key: it gets long-lived signed URLs for
+- * home.json and kill.json (readerUrls), and home.json names a signed URL per
+- * show object. A leaked URL reads one object of already-public page data;
+- * held (unrevealed) shows are never published. A signed URL is tied to the
+- * PATH (it survives overwrites) and cannot be revoked one at a time:
+- * rotation = re-sign (`show-refresh-store.js --reader-urls`), update the
+- * Vercel env, redeploy. Re-signing does NOT revoke the old URL: it stays valid
+- * until it expires. Real revocation means rotating the project's storage
+- * signing key (which voids every signed URL) or moving the object to a new
+- * path. Decide before phase 3a whether that is acceptable or the bucket
+- * should be public (its contents are already-public page data). Why private at all (plan v14-final 1.2): covered.json,
+- * health.json and flagged/ are internal state, and the bucket is never
+- * listable or enumerable without a credential. Revisit before phase 3a if the
+- * per-object signing cost outweighs that.
++ * The site reader holds only the PUBLIC anon key. RLS
++ * (supabase/migrations/20261123b_show_refresh_state.sql) lets anon SELECT the
++ * state rows and Storage objects under show/ (already-public page data; held
++ * shows are never published) and nothing else. Anon can also LIST show/, so
++ * the writer must never upload a slice for a held or unrevealed show. Writers
++ * share the show-refresh-kill concurrency group: setKill is read-modify-write. `show-refresh-store.js
++ * --selftest` proves freshness and the denials on the real store, and must pass
++ * before any reader is switched on.
+  *
+- * Every read returns { state: 'ok' | 'missing' | 'error' } so a caller can
+- * tell "not there" from "store down" (an error is never treated as "unkilled").
++ * Both clients expose get(path) -> { status, text }, so every read goes through
++ * readJsonObject and returns { state: 'ok' | 'missing' | 'error' }: a caller
++ * can tell "not there" from "store down" (an error is never "unkilled").
+  */
+ const { makeStorage, putVerified } = require('../live-score/storage');
+ 
+@@ -38,9 +43,8 @@ const PATHS = Object.freeze({
+   kill: 'kill.json',
+   covered: 'covered.json',
+   health: 'health.json',
++  probe: 'probe.json',
+ });
+-/** Signed reader URLs last 10 years; rotation = re-sign and update the env var. */
+-const READER_URL_SECONDS = 10 * 365 * 24 * 3600;
+ const ID_RE = /^[a-z0-9][a-z0-9-]{0,120}$/;
+ const HASH_RE = /^[0-9a-f]{16}$/;
+ const HOME_PLACEHOLDER = Object.freeze({ schema: 1, manifestId: null, coreSha: null, generation: 0, shows: {}, pending: {} });
+@@ -51,12 +55,93 @@ function showObjectPath(id, hash) {
+   return `show/${id}/${hash}.json`;
+ }
+ 
+-/** Store client from env. Throws when the URL or key is missing (writers only). */
++/**
++ * Storage objects the anon reader may read; mirrors the storage RLS policy
++ * (first folder = 'show'). A unit test pins the two together.
++ */
++function isReaderPath(path) {
++  return /^show\/[^/]/.test(String(path));
++}
++
++const STATE_TABLE = 'show_refresh_state';
++/** State-table paths -> row keys (the table's CHECK allows exactly these). */
++const STATE_KEYS = Object.freeze({ [PATHS.home]: 'home', [PATHS.kill]: 'kill', [PATHS.probe]: 'probe' });
++
++/**
++ * Client for public.show_refresh_state over PostgREST, shaped like the
++ * Storage client: get(path) -> { status, text } (an absent row is status 404),
++ * put(path, text), remove(path). path is one of STATE_KEYS.
++ */
++function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
++  const root = `${String(baseUrl).replace(/\/$/, '')}/rest/v1/${STATE_TABLE}`;
++  const auth = { apikey: key, Authorization: `Bearer ${key}` };
++  const call = (url, init = {}) => fetchImpl(url, timeoutMs ? { ...init, signal: AbortSignal.timeout(timeoutMs) } : init);
++  const rowKey = (path) => {
++    const k = STATE_KEYS[path];
++    if (!k) throw new Error(`show-refresh state: no row for ${JSON.stringify(path)}`);
++    return k;
++  };
++  async function get(path) {
++    const res = await call(`${root}?key=eq.${rowKey(path)}&select=value`, { headers: { ...auth, accept: 'application/json' } });
++    const body = await res.text().catch(() => '');
++    // Only an empty 200 means "no row". A PostgREST 404 (table missing, stale
++    // schema cache) is a store error, never "missing".
++    if (!res.ok) return { status: res.status === 404 ? 502 : res.status, text: body.slice(0, 500) };
++    let rows;
++    try { rows = JSON.parse(body); } catch { return { status: 502, text: 'state: invalid JSON from PostgREST' }; }
++    if (!Array.isArray(rows)) return { status: 502, text: 'state: not an array' };
++    if (rows.length === 0) return { status: 404, text: '' };
++    return { status: 200, text: JSON.stringify(rows[0].value) };
++  }
++  async function put(path, text) {
++    const res = await call(`${root}?on_conflict=key`, {
++      method: 'POST',
++      headers: { ...auth, 'content-type': 'application/json', prefer: 'resolution=merge-duplicates,return=minimal' },
++      body: JSON.stringify({ key: rowKey(path), value: JSON.parse(text), updated_at: new Date().toISOString() }),
++    });
++    if (!res.ok) throw new Error(`state put ${path} ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
++  }
++  async function remove(path) {
++    // return=representation: RLS silently filters a forbidden DELETE to 0 rows,
++    // so the caller needs the count to tell "deleted" from "not allowed".
++    const res = await call(`${root}?key=eq.${rowKey(path)}`, { method: 'DELETE', headers: { ...auth, prefer: 'return=representation' } });
++    const body = await res.text().catch(() => '');
++    if (!res.ok) throw new Error(`state remove ${path} ${res.status}`);
++    let n = 0;
++    try { n = JSON.parse(body).length; } catch { /* empty body */ }
++    return n;
++  }
++  return { get, put, remove, table: STATE_TABLE };
++}
++
++function envUrl(env) { return env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL; }
++function requireEnv(env, keyName, who) {
++  const baseUrl = envUrl(env);
++  const key = env[keyName];
++  if (!baseUrl || !key) throw new Error(`show-refresh ${who}: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and ${keyName} are required`);
++  return { baseUrl, key };
++}
++const withFetch = (fetchImpl) => (fetchImpl ? { fetchImpl } : {});
++
++/** Writer Storage client (service key). Throws when the URL or key is missing. */
+ function storeFromEnv(env = process.env, { timeoutMs = 10000, fetchImpl } = {}) {
+-  const baseUrl = env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL;
+-  const serviceKey = env.SUPABASE_SERVICE_ROLE_KEY;
+-  if (!baseUrl || !serviceKey) throw new Error('show-refresh store: SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY are required');
+-  return makeStorage({ baseUrl, serviceKey, bucket: env.SHOW_REFRESH_BUCKET || BUCKET, isPublic: false, timeoutMs, ...(fetchImpl ? { fetchImpl } : {}) });
++  const { baseUrl, key } = requireEnv(env, 'SUPABASE_SERVICE_ROLE_KEY', 'store');
++  return makeStorage({ baseUrl, serviceKey: key, bucket: env.SHOW_REFRESH_BUCKET || BUCKET, isPublic: false, timeoutMs, ...withFetch(fetchImpl) });
++}
++/** Reader Storage client (public anon key): show/ slices only. */
++function readerStoreFromEnv(env = process.env, { timeoutMs = 2500, fetchImpl } = {}) {
++  const { baseUrl, key } = requireEnv(env, 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'reader');
++  return makeStorage({ baseUrl, serviceKey: key, bucket: env.SHOW_REFRESH_BUCKET || BUCKET, isPublic: false, timeoutMs, ...withFetch(fetchImpl) });
++}
++/** Writer state-table client (service key). */
++function stateFromEnv(env = process.env, { timeoutMs = 10000, fetchImpl } = {}) {
++  const { baseUrl, key } = requireEnv(env, 'SUPABASE_SERVICE_ROLE_KEY', 'state');
++  return makeStateTable({ baseUrl, key, timeoutMs, ...withFetch(fetchImpl) });
++}
++/** Reader state-table client (public anon key). */
++function readerStateFromEnv(env = process.env, { timeoutMs = 2500, fetchImpl } = {}) {
++  const { baseUrl, key } = requireEnv(env, 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'reader state');
++  return makeStateTable({ baseUrl, key, timeoutMs, ...withFetch(fetchImpl) });
+ }
+ 
+ /**
+@@ -87,10 +172,24 @@ async function readJsonObject(storage, path, { cacheBust = Date.now() } = {}) {
+   }
+ }
+ 
+-/** Write a mutable JSON object (no-cache) and read it back. Returns the text written. */
+-async function putMutable(storage, path, value) {
++/** Key-order-independent JSON (jsonb stores keys in its own order). */
++function canonical(v) {
++  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
++  if (v && typeof v === 'object') return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(',')}}`;
++  return JSON.stringify(v);
++}
++
++/**
++ * Write a mutable JSON value (a state row, or a no-cache Storage object) and
++ * read it back; throws unless the stored value equals the one written.
++ */
++async function putMutable(client, path, value) {
+   const text = JSON.stringify(value);
+-  await putVerified(storage, path, text, { cacheControl: CACHE.mutable, cacheBust: Date.now() });
++  await client.put(path, text, { cacheControl: CACHE.mutable });
++  const back = await readJsonObject(client, path);
++  if (back.state !== 'ok' || canonical(back.value) !== canonical(value)) {
++    throw new Error(`verify mismatch for ${path} (${back.state})`);
++  }
+   return text;
+ }
+ 
+@@ -110,16 +209,16 @@ async function putShowObject(storage, id, hash, text) {
+  * After writing, re-read and confirm the stored state is the one requested
+  * (a concurrent writer wins visibly, never silently).
+  */
+-async function setKill(storage, { killed, reason = '', by = '', now = Date.now() }) {
++async function setKill(state, { killed, reason = '', by = '', now = Date.now() }) {
+   const want = Boolean(killed);
+-  const cur = await readJsonObject(storage, PATHS.kill);
++  const cur = await readJsonObject(state, PATHS.kill);
+   const unreadable = cur.state === 'error' && cur.error !== 'invalid JSON';
+   if (unreadable && !want) throw new Error(`setKill: kill.json unreadable (${cur.error}); refusing a blind unkill`);
+   const prevSeq = cur.state === 'ok' && cur.value && Number.isInteger(cur.value.seq) ? cur.value.seq : 0;
+   const seq = unreadable ? Math.max(prevSeq + 1, now) : prevSeq + 1;
+   const next = { schema: 1, killed: want, reason: String(reason).slice(0, 500), by: String(by).slice(0, 200), at: new Date(now).toISOString(), seq };
+-  await putMutable(storage, PATHS.kill, next);
+-  const back = await readJsonObject(storage, PATHS.kill, { cacheBust: now + 1 });
++  await putMutable(state, PATHS.kill, next);
++  const back = await readJsonObject(state, PATHS.kill);
+   if (back.state !== 'ok' || !back.value || back.value.killed !== want || back.value.seq !== seq) {
+     throw new Error(`setKill: kill.json changed under us (now ${back.state === 'ok' ? `killed=${back.value && back.value.killed} seq=${back.value && back.value.seq}` : back.state})`);
+   }
+@@ -140,46 +239,27 @@ function effectiveKill(read) {
+ }
+ 
+ /**
+- * Create the private bucket and seed kill.json / home.json if absent.
+- * Refuses a bucket that exists but is public (it would serve slices to anyone).
++ * Create the private bucket and seed the kill / home rows if absent.
++ * Refuses a bucket that exists but is public (it would serve internal objects to anyone).
+  */
+-async function setupStore(storage, { by = 'setup' } = {}) {
++async function setupStore(storage, state, { by = 'setup' } = {}) {
+   const created = await storage.ensureBucket();
+   const meta = await storage.getBucket();
+   if (!meta) throw new Error('setupStore: bucket missing after ensureBucket');
+   if (meta.public !== false) throw new Error(`setupStore: bucket ${storage.bucket} is public; it must be private`);
+   const seeded = [];
+-  const kill = await readJsonObject(storage, PATHS.kill);
+-  if (kill.state === 'error') throw new Error(`setupStore: kill.json unreadable (${kill.error})`);
+-  if (kill.state === 'missing') { await setKill(storage, { killed: false, reason: 'initial', by }); seeded.push(PATHS.kill); }
+-  const home = await readJsonObject(storage, PATHS.home);
+-  if (home.state === 'error') throw new Error(`setupStore: home.json unreadable (${home.error})`);
+-  if (home.state === 'missing') { await putMutable(storage, PATHS.home, HOME_PLACEHOLDER); seeded.push(PATHS.home); }
++  const kill = await readJsonObject(state, PATHS.kill);
++  if (kill.state === 'error') throw new Error(`setupStore: kill row unreadable (${kill.error})`);
++  if (kill.state === 'missing') { await setKill(state, { killed: false, reason: 'initial', by }); seeded.push('kill'); }
++  const home = await readJsonObject(state, PATHS.home);
++  if (home.state === 'error') throw new Error(`setupStore: home row unreadable (${home.error})`);
++  if (home.state === 'missing') { await putMutable(state, PATHS.home, HOME_PLACEHOLDER); seeded.push('home'); }
+   return { bucket: created, seeded };
+ }
+ 
+-/**
+- * Signed read-only URLs for the reader (home.json, kill.json).
+- *
+- * WARNING (measured 2026-11-23, `show-refresh-store.js --selftest`): Supabase's
+- * CDN can cache a signed URL's response (cf-cache-status HIT, age 23 s and
+- * counting, an extra query param does not bust it), so after an overwrite the
+- * SAME signed URL can keep serving the old bytes; the authenticated endpoint
+- * and a freshly signed URL saw the new ones. Intermittent: selftest.json
+- * failed 4 of 4 runs, a fresh path flipped at once in 2 of 2. Fine for immutable show/<id>/<hash>.json objects, NOT for
+- * mutable kill.json / home.json. The selftest fails until phase 2 picks a
+- * read path for mutable objects (BRO-8056 card notes the options); do not
+- * point a reader at these two URLs before then.
+- */
+-async function readerUrls(storage, { expiresIn = READER_URL_SECONDS } = {}) {
+-  return {
+-    SHOW_REFRESH_HOME_URL: await storage.signUrl(PATHS.home, expiresIn),
+-    SHOW_REFRESH_KILL_URL: await storage.signUrl(PATHS.kill, expiresIn),
+-  };
+-}
+-
+ module.exports = {
+-  BUCKET, CACHE, PATHS, READER_URL_SECONDS, HOME_PLACEHOLDER,
+-  showObjectPath, storeFromEnv, readJsonObject, isObjectMissing, putMutable, putShowObject,
+-  setKill, effectiveKill, setupStore, readerUrls,
++  BUCKET, CACHE, PATHS, HOME_PLACEHOLDER, STATE_TABLE, STATE_KEYS,
++  showObjectPath, isReaderPath, makeStateTable, storeFromEnv, readerStoreFromEnv, stateFromEnv, readerStateFromEnv,
++  readJsonObject, isObjectMissing, canonical, putMutable, putShowObject,
++  setKill, effectiveKill, setupStore,
+ };
+diff --git a/scripts/lib/supabase-schema-expectations.js b/scripts/lib/supabase-schema-expectations.js
+index ef4f9113f..b13a4d853 100644
+--- a/scripts/lib/supabase-schema-expectations.js
++++ b/scripts/lib/supabase-schema-expectations.js
+@@ -119,6 +119,20 @@ function extractFunctionBodies(sql) {
+   return out;
+ }
+ 
++// Policy keys name the table bare for public (the historical key shape) and
++// schema-qualified for storage ('storage.objects:<policy>'), the one other
++// schema this project's migrations write policies into (BRO-8056). Without
++// the qualifier a storage policy would be expected as public 'objects' and
++// report as unapplied forever.
++const POLICY_SCHEMAS = ['storage'];
++function policyTableKey(raw) {
++  const t = String(raw || '').trim();
++  const m = t.match(/^"?([A-Za-z_][\w]*)"?\./);
++  const schema = m && m[1].toLowerCase();
++  const table = unquoteIdent(t);
++  return schema && POLICY_SCHEMAS.includes(schema) ? `${schema}.${table}` : table;
++}
++
+ function unquoteIdent(raw) {
+   if (!raw) return raw;
+   let name = raw.trim();
+@@ -285,11 +299,11 @@ function parseStatement(stmt, file, expected) {
+     return true;
+   }
+   if ((m = stmt.match(/\bCREATE\s+POLICY\s+("[^"]+"|[\w]+)\s+ON\s+("[^"]+"|[\w.]+)/i))) {
+-    add('policy', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
++    add('policy', `${policyTableKey(m[2])}:${unquoteIdent(m[1])}`);
+     return true;
+   }
+   if ((m = stmt.match(/\bDROP\s+POLICY\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w]+)\s+ON\s+("[^"]+"|[\w.]+)/i))) {
+-    remove('policy', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
++    remove('policy', `${policyTableKey(m[2])}:${unquoteIdent(m[1])}`);
+     return true;
+   }
+   if ((m = stmt.match(/\bCREATE\s+(?:OR\s+REPLACE\s+)?FUNCTION\s+("[^"]+"|[\w.]+)\s*\(/i))) {
+@@ -424,7 +438,7 @@ UNION ALL SELECT 'view', viewname, NULL FROM pg_views WHERE schemaname = 'public
+ UNION ALL SELECT 'column', table_name || '.' || column_name, NULL FROM information_schema.columns WHERE table_schema = 'public'
+ UNION ALL SELECT 'constraint', rel.relname || ':' || conname, NULL FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
+ UNION ALL SELECT 'index', indexname, NULL FROM pg_indexes WHERE schemaname = 'public'
+-UNION ALL SELECT 'policy', tablename || ':' || policyname, cmd || ' TO ' || array_to_string(roles, ',') || ' USING (' || coalesce(qual, '') || ') CHECK (' || coalesce(with_check, '') || ')' FROM pg_policies WHERE schemaname = 'public'
++UNION ALL SELECT 'policy', CASE WHEN schemaname = 'public' THEN '' ELSE schemaname || '.' END || tablename || ':' || policyname, cmd || ' TO ' || array_to_string(roles, ',') || ' USING (' || coalesce(qual, '') || ') CHECK (' || coalesce(with_check, '') || ')' FROM pg_policies WHERE schemaname IN ('public', 'storage')
+ UNION ALL SELECT 'function', p.proname, md5(btrim(regexp_replace(p.prosrc, '[ \t\n\r\f\v]+', ' ', 'g'), ' ')) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
+ UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname, NULL FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
+ UNION ALL SELECT 'fnconfig', p.proname || ':' || lower(split_part(cfg, '=', 1)), NULL FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace CROSS JOIN LATERAL unnest(p.proconfig) AS cfg WHERE n.nspname = 'public'
+@@ -519,6 +533,7 @@ module.exports = {
+   diffFunctionBodies,
+   findUnexpectedPolicies,
+   policyDefHash,
++  policyTableKey,
+   findUndeletedUserTables,
+   liveSiblings,
+   LIVE_CATALOG_QUERY,
+diff --git a/scripts/show-refresh-store.js b/scripts/show-refresh-store.js
+index ac0101be4..7b067388d 100644
+--- a/scripts/show-refresh-store.js
++++ b/scripts/show-refresh-store.js
+@@ -1,26 +1,31 @@
+ #!/usr/bin/env node
+ 'use strict';
+ /**
+- * BRO-8056 phase 1c: operate the private show-refresh store.
++ * BRO-8056: operate the show-refresh store (Storage bucket + state table).
+  *
+- *   --status                     bucket visibility, kill state, home.json generation
+- *   --setup                      create the private bucket, seed kill.json + home.json
+- *   --kill --reason="..."        set kill.json killed:true (the reader renders the build)
++ *   --status                     bucket visibility, kill state, home generation
++ *   --setup                      create the private bucket, seed the kill + home rows
++ *   --kill --reason="..."        set kill killed:true (the reader renders the build)
+  *   --unkill --reason="..."      set killed:false
+- *   --selftest                   write a no-cache probe, read it back through a signed
+- *                                URL with no key, within 5 s (plan row 15)
+- *   --reader-urls --out=FILE     write SHOW_REFRESH_HOME_URL / SHOW_REFRESH_KILL_URL to
+- *                                FILE (mode 600). Never printed: signed URLs are secrets.
++ *   --selftest                   prove the reader's path on the real store (plan row 15):
++ *                                a state-row overwrite is seen through the anon key,
++ *                                anon reads kill/home and a fresh show/ slice, and anon
++ *                                can neither read internal objects nor write or delete
++ *                                anything. Gate before any reader is switched on.
+  *
+- * Needs SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY.
++ * Needs SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY;
++ * --status and --selftest also need NEXT_PUBLIC_SUPABASE_ANON_KEY (reader view).
+  * Exit 0 ok, 1 failure, 2 usage.
+  */
+ require('./lib/cli-help').exitOnHelp(module);
+-const fs = require('fs');
+ const store = require('./lib/show-refresh/store');
+ const { putVerified } = require('./lib/live-score/storage');
+ 
+-const SELFTEST_PATH = 'selftest.json';
++// Slice probes live under show/_selftest/ (ID_RE never starts with '_', so no
++// show id collides), one fresh name per run; the internal probe sits under
++// flagged/, which anon must not read.
++const SELFTEST_SLICE_DIR = 'show/_selftest';
++const SELFTEST_INTERNAL_PATH = 'flagged/_selftest.json';
+ const SELFTEST_BUDGET_MS = 5000;
+ 
+ function parseArgs(argv) {
+@@ -35,92 +40,126 @@ function parseArgs(argv) {
+ 
+ /**
+  * Healthy = bucket exists and is private, kill.json is a valid kill object
+- * (boolean killed) and home.json a schema-1 object. A readable but malformed
+- * file is reported as state 'malformed', not 'ok'.
++ * (boolean killed) and home.json a schema-1 object, as seen by BOTH the writer
++ * (service key) and the reader (anon key). A readable but malformed file is
++ * reported as state 'malformed', not 'ok'. A dropped RLS policy or rotated
++ * anon key shows up as reader state 'missing' (the reader then renders the
++ * build everywhere), so it fails --status instead of passing silently.
+  */
+ function statusHealthy(st) {
+-  return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok';
++  return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok'
++    && (!st.reader || (st.reader.kill === 'ok' && st.reader.home === 'ok'));
+ }
+ 
+ const validKill = (v) => Boolean(v) && typeof v === 'object' && typeof v.killed === 'boolean';
+ const validHome = (v) => Boolean(v) && typeof v === 'object' && !Array.isArray(v) && v.schema === 1 && typeof v.shows === 'object' && v.shows !== null;
+ const shape = (read, valid) => (read.state === 'ok' && !valid(read.value) ? 'malformed' : read.state);
+ 
+-async function status(s) {
+-  const meta = await s.getBucket();
+-  if (!meta) return { bucket: 'missing', kill: { state: 'missing' }, home: { state: 'missing' } };
+-  const kill = await store.readJsonObject(s, store.PATHS.kill);
+-  const home = await store.readJsonObject(s, store.PATHS.home);
++/** ctx = { storage, state } (writer) ; reader = { storage, state } (anon) or null. */
++async function status(ctx, reader) {
++  const meta = await ctx.storage.getBucket();
++  const kill = await store.readJsonObject(ctx.state, store.PATHS.kill);
++  const home = await store.readJsonObject(ctx.state, store.PATHS.home);
+   const eff = store.effectiveKill(kill);
+-  return {
+-    bucket: s.bucket,
+-    public: meta.public,
++  const out = {
++    bucket: meta ? ctx.storage.bucket : 'missing',
++    public: meta ? meta.public : null,
+     kill: { state: shape(kill, validKill), killed: eff.killed, reason: eff.reason, seq: kill.value && kill.value.seq, at: kill.value && kill.value.at },
+     home: { state: shape(home, validHome), generation: home.value && home.value.generation, shows: home.value && home.value.shows ? Object.keys(home.value.shows).length : null },
+   };
++  if (reader) {
++    out.reader = {
++      kill: shape(await store.readJsonObject(reader.state, store.PATHS.kill), validKill),
++      home: shape(await store.readJsonObject(reader.state, store.PATHS.home), validHome),
++    };
++  }
++  return out;
+ }
+ 
++const refused = async (fn) => { try { const n = await fn(); return n === 0; } catch { return true; } };
++
+ /**
+- * Plan row 15: sign ONE URL, write v1, read it keyless, overwrite with v2,
+- * read the SAME URL again. Both reads must match, all within 5 s. This proves
+- * what the reader relies on: a no-cache object read through a long-lived
+- * signed URL shows an overwrite promptly (no stale CDN copy).
++ * Plan row 15, on the reader's real path.
++ * State (mutable pointers): writer upserts the probe row v1, anon reads it;
++ * writer overwrites v2, anon reads again. Both must match, every round, within
++ * 5 s a round (3 rounds: the stale-CDN failure on Storage was intermittent).
++ * Slices: writer puts a never-used show/_selftest/<rand>.json, anon reads it.
++ * Denials: anon reads kill/home but not an internal Storage object; anon writes
++ * and deletes on both the table and Storage are refused and change nothing.
+  */
+-async function selftest(s, { fetchImpl = fetch, now = Date.now } = {}) {
++async function selftest(ctx, reader, { now = Date.now, rounds = 3 } = {}) {
+   const t0 = now();
+-  const probe = (v) => JSON.stringify({ probe: t0, v, rand: Math.random().toString(36).slice(2) });
+-  const v1 = probe(1);
+-  await putVerified(s, SELFTEST_PATH, v1, { cacheControl: store.CACHE.mutable, cacheBust: t0 });
+-  const url = await s.signUrl(SELFTEST_PATH, 60);
+-  const read = async () => {
+-    const res = await fetchImpl(url, { signal: AbortSignal.timeout(SELFTEST_BUDGET_MS) });
+-    return { status: res.status, body: await res.text() };
+-  };
+-  const r1 = await read();
+-  const v2 = probe(2);
+-  await putVerified(s, SELFTEST_PATH, v2, { cacheControl: store.CACHE.mutable, cacheBust: t0 + 1 });
+-  const r2 = await read();
++  const rand = () => Math.random().toString(36).slice(2);
++  const probe = (v) => ({ probe: t0, v, rand: rand() });
++  const failures = [];
++  let last;
++  for (let i = 0; i < rounds; i++) {
++    const v1 = probe(`${i}a`);
++    await store.putMutable(ctx.state, store.PATHS.probe, v1);
++    const r1 = await store.readJsonObject(reader.state, store.PATHS.probe);
++    const v2 = probe(`${i}b`);
++    await store.putMutable(ctx.state, store.PATHS.probe, v2);
++    const r2 = await store.readJsonObject(reader.state, store.PATHS.probe);
++    const same = (r, v) => r.state === 'ok' && store.canonical(r.value) === store.canonical(v);
++    if (!same(r1, v1)) failures.push(`round ${i}: first anon read ${r1.state} not v1`);
++    if (!same(r2, v2)) failures.push(`round ${i}: anon read after overwrite ${r2.state === 'ok' && same(r2, v1) ? 'STALE (old value)' : `${r2.state} not v2`}`);
++    last = v2;
++  }
+   const ms = now() - t0;
+-  const matched = r1.body === v1 && r2.body === v2;
+-  const status = r2.status === 200 ? r1.status : r2.status;
+-  const ok = r1.status === 200 && r2.status === 200 && matched && ms <= SELFTEST_BUDGET_MS;
+-  return { ok, ms, status, matched, overwriteSeen: r2.body === v2 };
++  if (ms > SELFTEST_BUDGET_MS * rounds) failures.push(`slow: ${ms} ms for ${rounds} rounds`);
++  for (const p of [store.PATHS.kill, store.PATHS.home]) {
++    const r = await store.readJsonObject(reader.state, p);
++    if (r.state !== 'ok') failures.push(`anon cannot read state ${p} (${r.state})`);
++  }
++  // Slice: fresh name, so a CDN copy cannot exist yet.
++  const slicePath = `${SELFTEST_SLICE_DIR}/${rand()}.json`;
++  const sliceText = JSON.stringify(probe('slice'));
++  await putVerified(ctx.storage, slicePath, sliceText, { cacheControl: store.CACHE.immutable, cacheBust: now() });
++  const slice = await reader.storage.get(slicePath);
++  if (slice.status !== 200 || slice.text !== sliceText) failures.push(`anon slice read ${slice.status} ${slice.text === sliceText ? '' : 'wrong bytes'}`.trim());
++  // Denials.
++  await putVerified(ctx.storage, SELFTEST_INTERNAL_PATH, JSON.stringify(probe('internal')), { cacheControl: store.CACHE.mutable, cacheBust: now() });
++  const internal = await reader.storage.get(SELFTEST_INTERNAL_PATH);
++  if (internal.status === 200) failures.push(`anon READ internal ${SELFTEST_INTERNAL_PATH}`);
++  if (!(await refused(() => reader.state.put(store.PATHS.probe, JSON.stringify(probe('anon')))))) failures.push('anon state write succeeded');
++  if (!(await refused(() => reader.state.remove(store.PATHS.probe)))) failures.push('anon state delete succeeded');
++  const stateAfter = await store.readJsonObject(ctx.state, store.PATHS.probe);
++  if (stateAfter.state !== 'ok' || store.canonical(stateAfter.value) !== store.canonical(last)) failures.push(`anon write/delete changed the probe row (now ${stateAfter.state})`);
++  if (!(await refused(() => reader.storage.put(slicePath, 'x', { cacheControl: store.CACHE.mutable })))) failures.push('anon Storage PUT succeeded');
++  await refused(() => reader.storage.remove(slicePath));
++  const sliceAfter = await ctx.storage.get(slicePath, { cacheBust: now() });
++  if (sliceAfter.status !== 200 || sliceAfter.text !== sliceText) failures.push(`anon write/delete changed the slice probe (now ${sliceAfter.status})`);
++  await ctx.storage.remove(slicePath).catch(() => {});
++  return { ok: failures.length === 0, ms, rounds, failures };
+ }
+ 
+ async function main(argv = process.argv.slice(2), env = process.env, out = console.log) {
+   let a;
+   try { a = parseArgs(argv); } catch (e) { out(String(e.message)); return 2; }
+-  const modes = ['status', 'setup', 'kill', 'unkill', 'selftest', 'reader-urls'].filter((k) => a[k]);
+-  if (modes.length !== 1) { out('pick exactly one of --status --setup --kill --unkill --selftest --reader-urls'); return 2; }
++  const modes = ['status', 'setup', 'kill', 'unkill', 'selftest'].filter((k) => a[k]);
++  if (modes.length !== 1) { out('pick exactly one of --status --setup --kill --unkill --selftest'); return 2; }
+   const by = env.GITHUB_ACTOR ? `gh:${env.GITHUB_ACTOR}` : (env.USER || 'local');
+-  const s = store.storeFromEnv(env);
++  const ctx = { storage: store.storeFromEnv(env), state: store.stateFromEnv(env) };
++  const readerFor = (timeoutMs) => ({ storage: store.readerStoreFromEnv(env, { timeoutMs }), state: store.readerStateFromEnv(env, { timeoutMs }) });
+   switch (modes[0]) {
+     case 'status': {
+-      const st = await status(s);
++      const st = await status(ctx, readerFor(10000));
+       out(JSON.stringify(st, null, 2));
+       return statusHealthy(st) ? 0 : 1;
+     }
+-    case 'setup': out(JSON.stringify(await store.setupStore(s, { by }))); return 0;
++    case 'setup': out(JSON.stringify(await store.setupStore(ctx.storage, ctx.state, { by }))); return 0;
+     case 'kill':
+     case 'unkill': {
+       if (!a.reason || a.reason === true) { out('--reason="..." is required'); return 2; }
+-      const k = await store.setKill(s, { killed: modes[0] === 'kill', reason: a.reason, by });
+-      out(`kill.json now killed=${k.killed} seq=${k.seq}`);
++      const k = await store.setKill(ctx.state, { killed: modes[0] === 'kill', reason: a.reason, by });
++      out(`kill now killed=${k.killed} seq=${k.seq}`);
+       return 0;
+     }
+     case 'selftest': {
+-      const r = await selftest(s);
+-      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: status ${r.status}, matched ${r.matched}, overwrite seen ${r.overwriteSeen}, ${r.ms} ms (budget ${SELFTEST_BUDGET_MS})`);
++      const r = await selftest(ctx, readerFor(SELFTEST_BUDGET_MS));
++      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: ${r.rounds} state overwrite rounds through the anon reader in ${r.ms} ms${r.failures.length ? `; ${r.failures.join('; ')}` : ''}`);
+       return r.ok ? 0 : 1;
+     }
+-    case 'reader-urls': {
+-      if (!a.out || a.out === true) { out('--out=FILE is required (URLs are never printed)'); return 2; }
+-      const urls = await store.readerUrls(s);
+-      fs.writeFileSync(a.out, Object.entries(urls).map(([k, v]) => `${k}=${v}`).join('\n') + '\n', { mode: 0o600 });
+-      fs.chmodSync(a.out, 0o600); // writeFileSync's mode only applies when it creates the file
+-      out(`wrote ${Object.keys(urls).join(', ')} to ${a.out}`);
+-      return 0;
+-    }
+   }
+   return 2;
+ }
+diff --git a/scripts/verify-supabase-schema.js b/scripts/verify-supabase-schema.js
+index 7b1575f07..bedd36902 100644
+--- a/scripts/verify-supabase-schema.js
++++ b/scripts/verify-supabase-schema.js
+@@ -62,6 +62,10 @@ const KNOWN_LIVE_ONLY_POLICIES = {
+   "watchlist:Users can insert own watchlist": { def: 'ed1efb1ea29d', why: 'base schema: own rows only (auth.uid() = user_id)' },
+   "watchlist:Users can read own watchlist": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
+   "watchlist:Users can update own watchlist": { def: '096635213bde', why: 'base schema: own rows only (auth.uid() = user_id)' },
++  "storage.objects:diary-photos: delete own": { def: '104310535b50', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
++  "storage.objects:diary-photos: insert own": { def: '79e89559004d', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
++  "storage.objects:diary-photos: select own": { def: '52a284b9066b', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
++  "storage.objects:diary-photos: update own": { def: 'b48d5f4d55fd', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
+ };
+ const DELETE_ACCOUNT_FN = path.join(__dirname, '..', 'supabase', 'functions', 'delete-account', 'handler.mjs');
+ 
+diff --git a/supabase/migrations/20261123_show_refresh_anon_read.sql b/supabase/migrations/20261123_show_refresh_anon_read.sql
+new file mode 100644
+index 000000000..6d25dd8fe
+--- /dev/null
++++ b/supabase/migrations/20261123_show_refresh_anon_read.sql
+@@ -0,0 +1,26 @@
++-- BRO-8056 phase 2: the site's show-refresh reader reads the private `show-refresh` bucket
++-- with the public anon key through /storage/v1/object/authenticated/... .
++-- Why not the long-lived signed URLs from phase 1c: Supabase's CDN served the OLD bytes of an
++-- overwritten object through an existing signed URL (cf-cache-status HIT, age 23 s+), which is
++-- unsafe for the mutable kill.json / home.json. The authenticated endpoint answers
++-- "private, no-cache" with cf-cache-status MISS (measured 2026-11-23); `show-refresh-store.js
++-- --selftest` proves it for the anon key before any reader is switched on.
++-- Scope: SELECT only, anon only, and only the reader's objects (home.json, kill.json and the
++-- immutable show/<id>/<hash>.json slices, all already-public page data; held shows are never
++-- published). covered.json, health.json and flagged/ stay service-role only. No INSERT /
++-- UPDATE / DELETE policy exists for this bucket, so anon cannot write (selftest asserts it).
++-- Re-runnable. Rollback at the bottom (commented).
++BEGIN;
++
++DROP POLICY IF EXISTS show_refresh_anon_read ON storage.objects;
++CREATE POLICY show_refresh_anon_read ON storage.objects
++  FOR SELECT TO anon
++  USING (
++    bucket_id = 'show-refresh'
++    AND (name IN ('home.json', 'kill.json') OR (storage.foldername(name))[1] = 'show')
++  );
++
++COMMIT;
++
++-- Rollback (the reader then reads "missing", which effectiveKill treats as killed: baseline renders):
++-- DROP POLICY IF EXISTS show_refresh_anon_read ON storage.objects;
+diff --git a/supabase/migrations/20261123b_show_refresh_state.sql b/supabase/migrations/20261123b_show_refresh_state.sql
+new file mode 100644
+index 000000000..72f1d4e02
+--- /dev/null
++++ b/supabase/migrations/20261123b_show_refresh_state.sql
+@@ -0,0 +1,37 @@
++-- BRO-8056 phase 2: the show-refresh reader's MUTABLE pointers (home index, kill switch) move
++-- from Storage objects to this table, read through PostgREST with the public anon key.
++-- Why: measured 2026-11-23 (`show-refresh-store.js --selftest`), Supabase's Storage CDN served
++-- the OLD bytes of an overwritten object to anon readers on the authenticated endpoint
++-- (cf-cache-status HIT despite "private, no-cache"), as it did through signed URLs. Every
++-- visitor-facing reader shares one anon key, so the CDN treats those reads as cacheable.
++-- PostgREST responses are not CDN-cached (cf-cache-status DYNAMIC).
++-- Immutable show/<id>/<hash>.json slices stay in Storage: their path changes with their
++-- content, so a cached copy is always the right bytes.
++-- Writes: service role only (single writer, plan R4). Reads: anon may SELECT exactly the rows
++-- 'home' and 'kill' (already-public page state) and 'probe' (written only by
++-- `show-refresh-store.js --selftest`, which proves overwrite freshness through anon). Re-runnable. Rollback at the bottom.
++BEGIN;
++
++CREATE TABLE IF NOT EXISTS public.show_refresh_state (
++  key TEXT PRIMARY KEY CHECK (key IN ('home', 'kill', 'probe')),
++  value JSONB NOT NULL,
++  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
++);
++
++ALTER TABLE public.show_refresh_state ENABLE ROW LEVEL SECURITY;
++REVOKE ALL ON public.show_refresh_state FROM PUBLIC, anon, authenticated;
++DROP POLICY IF EXISTS show_refresh_state_anon_read ON public.show_refresh_state;
++CREATE POLICY show_refresh_state_anon_read ON public.show_refresh_state FOR SELECT TO anon USING (key IN ('home', 'kill', 'probe'));
++GRANT SELECT ON public.show_refresh_state TO anon;
++GRANT ALL ON public.show_refresh_state TO service_role;
++
++-- Storage: home.json / kill.json are no longer reader objects; anon reads only show/ slices.
++DROP POLICY IF EXISTS show_refresh_anon_read ON storage.objects;
++CREATE POLICY show_refresh_anon_read ON storage.objects
++  FOR SELECT TO anon
++  USING (bucket_id = 'show-refresh' AND (storage.foldername(name))[1] = 'show');
++
++COMMIT;
++
++-- Rollback (the reader then reads an error for home/kill, which effectiveKill treats as killed: baseline renders):
++-- DROP TABLE IF EXISTS public.show_refresh_state;
+diff --git a/tests/unit/show-refresh-store.test.mjs b/tests/unit/show-refresh-store.test.mjs
+index 54115d430..3c406ae58 100644
+--- a/tests/unit/show-refresh-store.test.mjs
++++ b/tests/unit/show-refresh-store.test.mjs
+@@ -1,7 +1,10 @@
+ /**
+- * BRO-8056 phase 1c: the private show-refresh store and the shared storage
+- * client, run against a local fake of the Supabase Storage endpoints (private
+- * bucket semantics: authenticated reads, signed URLs, 400/"404" for missing).
++ * BRO-8056: the show-refresh store (private Storage bucket for slices, the
++ * show_refresh_state table for the mutable home/kill pointers) and the shared
++ * storage client, run against a local fake of the Supabase Storage and
++ * PostgREST endpoints. The fake mirrors the RLS policies of
++ * supabase/migrations/20261123b_show_refresh_state.sql: the anon key reads
++ * show/ objects and the home/kill/probe rows only, and can write nothing.
+  * Requires the real modules (CLAUDE.md rule 15).
+  * Card VERIFY: node --test tests/unit/show-refresh-store.test.mjs
+  */
+@@ -14,10 +17,15 @@ const { makeStorage, putVerified } = require('../../scripts/lib/live-score/stora
+ const store = require('../../scripts/lib/show-refresh/store.js');
+ 
+ const KEY = 'service-key-test';
++const ANON = 'anon-key-test';
++const STATE_ROW_KEYS = ['home', 'kill', 'probe']; // the table's CHECK
++const ANON_ROWS = ['home', 'kill', 'probe']; // the anon SELECT policy
+ 
+-/** Fake Supabase Storage. opts.isPublic: bucket visibility when created. */
+ function startFake() {
+-  const state = { buckets: new Map(), objects: new Map(), headers: new Map(), failNext: 0, hangNext: 0, requests: [] };
++  const state = {
++    buckets: new Map(), objects: new Map(), headers: new Map(), rows: new Map(),
++    failNext: 0, hangNext: 0, staleAnonRows: false, anonRowCache: new Map(), requests: [],
++  };
+   const server = http.createServer((req, res) => {
+     const chunks = [];
+     req.on('data', (c) => chunks.push(c));
+@@ -29,8 +37,35 @@ function startFake() {
+       if (state.hangNext > 0) { state.hangNext--; return; } // never answers
+       if (state.failNext > 0) { state.failNext--; return done(500, '{"error":"boom"}'); }
+       const authed = req.headers.authorization === `Bearer ${KEY}`;
+-      const p = url.pathname.replace(/^\/storage\/v1/, '');
++      const anon = req.headers.authorization === `Bearer ${ANON}`;
+       let m;
++      // PostgREST: public.show_refresh_state
++      if (url.pathname === '/rest/v1/show_refresh_state') {
++        const k = (url.searchParams.get('key') || '').replace(/^eq\./, '');
++        if (req.method === 'GET') {
++          if (!authed && !anon) return done(401);
++          if (anon && !ANON_ROWS.includes(k)) return done(200, '[]');
++          if (anon && state.staleAnonRows && state.anonRowCache.has(k)) return done(200, state.anonRowCache.get(k));
++          const out = state.rows.has(k) ? JSON.stringify([{ value: state.rows.get(k) }]) : '[]';
++          if (anon) state.anonRowCache.set(k, out);
++          return done(200, out);
++        }
++        if (!authed) return done(401, '{"code":"42501","message":"permission denied for table show_refresh_state"}');
++        if (req.method === 'POST') {
++          const row = JSON.parse(body);
++          if (!STATE_ROW_KEYS.includes(row.key)) return done(400, '{"code":"23514"}');
++          // jsonb reorders keys: store with keys sorted so callers cannot rely on text equality.
++          const sorted = Object.fromEntries(Object.keys(row.value).sort().reverse().map((x) => [x, row.value[x]]));
++          state.rows.set(row.key, sorted);
++          return done(201, '');
++        }
++        if (req.method === 'DELETE') {
++          const had = state.rows.has(k) ? [{ key: k }] : [];
++          state.rows.delete(k);
++          return done(200, JSON.stringify(had));
++        }
++      }
++      const p = url.pathname.replace(/^\/storage\/v1/, '');
+       if (p === '/bucket' && req.method === 'POST') {
+         if (!authed) return done(401);
+         const b = JSON.parse(body);
+@@ -41,21 +76,11 @@ function startFake() {
+       if ((m = p.match(/^\/bucket\/([^/]+)$/)) && req.method === 'GET') {
+         return state.buckets.has(m[1]) ? done(200, JSON.stringify(state.buckets.get(m[1]))) : done(400, '{"statusCode":"404","error":"Bucket not found"}');
+       }
+-      if ((m = p.match(/^\/object\/sign\/([^/]+)\/(.+)$/)) && req.method === 'POST') {
+-        if (!authed) return done(401);
+-        const key = `${m[1]}/${m[2]}`;
+-        if (!state.objects.has(key)) return done(400, '{"statusCode":"404","error":"not_found"}');
+-        return done(200, JSON.stringify({ signedURL: `/object/sign/${m[1]}/${m[2]}?token=tok-${JSON.parse(body).expiresIn}` }));
+-      }
+-      if ((m = p.match(/^\/object\/sign\/([^/]+)\/(.+)$/)) && req.method === 'GET') {
+-        const key = `${m[1]}/${m[2]}`;
+-        if (!/^tok-\d+$/.test(url.searchParams.get('token') || '')) return done(400, '{"statusCode":"403"}');
+-        return state.objects.has(key) ? done(200, state.objects.get(key)) : done(400, '{"statusCode":"404"}');
+-      }
++      const notFound = '{"statusCode":"404","error":"not_found","message":"Object not found"}';
+       if ((m = p.match(/^\/object\/authenticated\/([^/]+)\/(.+)$/)) && req.method === 'GET') {
+-        if (!authed) return done(400, '{"statusCode":"403"}');
+         const key = `${m[1]}/${m[2]}`;
+-        return state.objects.has(key) ? done(200, state.objects.get(key)) : done(400, '{"statusCode":"404","error":"not_found","message":"Object not found"}');
++        if (!authed && !(anon && m[1] === 'show-refresh' && /^show\/[^/]/.test(m[2]))) return done(400, notFound); // RLS hides it
++        return state.objects.has(key) ? done(200, state.objects.get(key)) : done(400, notFound);
+       }
+       if ((m = p.match(/^\/object\/public\/([^/]+)\/(.+)$/)) && req.method === 'GET') {
+         const b = state.buckets.get(m[1]);
+@@ -64,10 +89,15 @@ function startFake() {
+         return state.objects.has(key) ? done(200, state.objects.get(key)) : done(400, '{"statusCode":"404"}');
+       }
+       if ((m = p.match(/^\/object\/([^/]+)\/(.+)$/))) {
+-        if (!authed) return done(401);
+         const key = `${m[1]}/${m[2]}`;
+-        if (req.method === 'POST') { state.objects.set(key, body); state.headers.set(key, req.headers['cache-control']); return done(200, '{}'); }
+-        if (req.method === 'DELETE') { state.objects.delete(key); return done(200, '{}'); }
++        if (req.method === 'POST') {
++          if (!authed) return done(400, '{"statusCode":"403","error":"Unauthorized","message":"new row violates row-level security policy"}');
++          state.objects.set(key, body); state.headers.set(key, req.headers['cache-control']); return done(200, '{}');
++        }
++        if (req.method === 'DELETE') {
++          if (!authed) return done(200, '[]'); // RLS filters the delete to nothing
++          state.objects.delete(key); return done(200, '{}');
++        }
+       }
+       return done(400, '{"statusCode":"400"}');
+     });
+@@ -78,8 +108,15 @@ function startFake() {
+ let fake;
+ before(async () => { fake = await startFake(); });
+ after(async () => { await fake.close(); });
+-const env = () => ({ SUPABASE_URL: fake.baseUrl, SUPABASE_SERVICE_ROLE_KEY: KEY });
+-const reset = () => { fake.state.buckets.clear(); fake.state.objects.clear(); fake.state.headers.clear(); fake.state.failNext = 0; fake.state.hangNext = 0; };
++const env = () => ({ SUPABASE_URL: fake.baseUrl, SUPABASE_SERVICE_ROLE_KEY: KEY, NEXT_PUBLIC_SUPABASE_ANON_KEY: ANON });
++const reset = () => {
++  const s = fake.state;
++  s.buckets.clear(); s.objects.clear(); s.headers.clear(); s.rows.clear(); s.anonRowCache.clear();
++  s.failNext = 0; s.hangNext = 0; s.staleAnonRows = false;
++};
++const writer = () => ({ storage: store.storeFromEnv(env()), state: store.stateFromEnv(env()) });
++const reader = () => ({ storage: store.readerStoreFromEnv(env()), state: store.readerStateFromEnv(env()) });
++const setup = async () => { const w = writer(); await store.setupStore(w.storage, w.state, { by: 'test' }); return w; };
+ 
+ describe('storage client (shared with live-scores)', () => {
+   test('public bucket default is unchanged: put + public read, max-age from cacheSeconds', async () => {
+@@ -118,6 +155,7 @@ describe('storage client (shared with live-scores)', () => {
+   });
+ });
+ 
++
+ describe('show-refresh store', () => {
+   test('showObjectPath validates id and hash', () => {
+     assert.equal(store.showObjectPath('hamilton-2015', '0123456789abcdef'), 'show/hamilton-2015/0123456789abcdef.json');
+@@ -126,111 +164,117 @@ describe('show-refresh store', () => {
+     assert.throws(() => store.showObjectPath('Hamilton', '0123456789abcdef'), /bad show id/);
+   });
+ 
+-  test('storeFromEnv needs URL and key, builds a private client', () => {
++  test('clients from env need the URL and the right key', () => {
+     assert.throws(() => store.storeFromEnv({}), /required/);
+-    assert.throws(() => store.storeFromEnv({ SUPABASE_URL: 'http://x' }), /required/);
++    assert.throws(() => store.storeFromEnv({ SUPABASE_URL: 'http://x' }), /SERVICE_ROLE_KEY are required/);
++    assert.throws(() => store.stateFromEnv({ SUPABASE_URL: 'http://x' }), /SERVICE_ROLE_KEY are required/);
++    assert.throws(() => store.readerStateFromEnv({ SUPABASE_URL: 'http://x', SUPABASE_SERVICE_ROLE_KEY: KEY }), /ANON_KEY are required/, 'the reader never falls back to the service key');
++    assert.throws(() => store.readerStoreFromEnv({ SUPABASE_URL: 'http://x', SUPABASE_SERVICE_ROLE_KEY: KEY }), /ANON_KEY are required/);
+     const s = store.storeFromEnv(env());
+     assert.equal(s.bucket, 'show-refresh');
+     assert.equal(s.isPublic, false);
+   });
+ 
+-  test('setupStore creates a private bucket, seeds kill.json + home.json, and is idempotent', async () => {
++  test('isReaderPath mirrors the storage RLS policy: show/ only', () => {
++    assert.equal(store.isReaderPath('show/wicked-2003/0123456789abcdef.json'), true);
++    for (const p of ['home.json', 'kill.json', 'covered.json', 'health.json', 'flagged/x.json', 'show/', 'shows/x.json']) {
++      assert.equal(store.isReaderPath(p), false, p);
++    }
++  });
++
++  test('the migration policies match STATE_KEYS and isReaderPath', () => {
++    const fs = require('node:fs');
++    const sql = fs.readFileSync(new URL('../../supabase/migrations/20261123b_show_refresh_state.sql', import.meta.url), 'utf8');
++    const keys = Object.values(store.STATE_KEYS).sort();
++    const list = (re) => sql.match(re)[1].split(',').map((x) => x.trim().replace(/'/g, '')).sort();
++    assert.deepEqual(list(/CHECK \(key IN \(([^)]*)\)\)/), keys);
++    assert.deepEqual(list(/FOR SELECT TO anon USING \(key IN \(([^)]*)\)\)/), keys);
++    assert.match(sql, /bucket_id = 'show-refresh' AND \(storage\.foldername\(name\)\)\[1\] = 'show'/);
++    assert.doesNotMatch(sql, /GRANT (INSERT|UPDATE|DELETE|ALL)[^;]*TO anon/);
++  });
++
++  test('setupStore creates a private bucket, seeds the kill + home rows, and is idempotent', async () => {
+     reset();
+-    const s = store.storeFromEnv(env());
+-    const first = await store.setupStore(s, { by: 'test' });
++    const w = writer();
++    const first = await store.setupStore(w.storage, w.state, { by: 'test' });
+     assert.equal(first.bucket, 'created');
+-    assert.deepEqual(first.seeded.sort(), ['home.json', 'kill.json']);
++    assert.deepEqual(first.seeded.sort(), ['home', 'kill']);
+     assert.equal(fake.state.buckets.get('show-refresh').public, false);
+-    assert.equal(fake.state.headers.get('show-refresh/kill.json'), 'no-cache');
+-    assert.equal(fake.state.headers.get('show-refresh/home.json'), 'no-cache');
+-    const kill = JSON.parse(fake.state.objects.get('show-refresh/kill.json'));
+-    assert.equal(kill.killed, false);
+-    assert.equal(kill.seq, 1);
+-    assert.deepEqual(JSON.parse(fake.state.objects.get('show-refresh/home.json')), store.HOME_PLACEHOLDER);
+-    const again = await store.setupStore(s);
++    assert.equal(fake.state.rows.get('kill').killed, false);
++    assert.equal(fake.state.rows.get('kill').seq, 1);
++    assert.deepEqual(fake.state.rows.get('home'), store.HOME_PLACEHOLDER);
++    assert.equal(fake.state.objects.size, 0, 'nothing mutable goes to Storage');
++    const again = await store.setupStore(w.storage, w.state);
+     assert.equal(again.bucket, 'exists');
+     assert.deepEqual(again.seeded, []);
+-    assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).seq, 1, 'setup never rewrites an existing kill.json');
++    assert.equal(fake.state.rows.get('kill').seq, 1, 'setup never rewrites an existing kill row');
+   });
+ 
+   test('setupStore refuses a bucket that is public', async () => {
+     reset();
+     fake.state.buckets.set('show-refresh', { id: 'show-refresh', public: true });
+-    await assert.rejects(store.setupStore(store.storeFromEnv(env())), /public; it must be private/);
+-    assert.equal(fake.state.objects.size, 0);
++    const w = writer();
++    await assert.rejects(store.setupStore(w.storage, w.state), /public; it must be private/);
++    assert.equal(fake.state.rows.size, 0);
+   });
+ 
+-  test('private objects are not readable on the public endpoint', async () => {
++  test('readJsonObject tells ok / missing / error apart, on both clients', async () => {
+     reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    const pub = makeStorage({ baseUrl: fake.baseUrl, bucket: 'show-refresh' });
+-    const r = await pub.get('home.json');
+-    assert.notEqual(r.status, 200);
+-  });
+-
+-  test('readJsonObject tells ok / missing / error apart', async () => {
+-    reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    assert.equal((await store.readJsonObject(s, 'home.json')).state, 'ok');
+-    assert.equal((await store.readJsonObject(s, 'covered.json')).state, 'missing');
++    const w = await setup();
++    assert.equal((await store.readJsonObject(w.state, 'home.json')).state, 'ok');
++    assert.equal((await store.readJsonObject(w.state, 'probe.json')).state, 'missing');
++    assert.equal((await store.readJsonObject(w.storage, 'covered.json')).state, 'missing');
+     fake.state.failNext = 1;
+-    assert.equal((await store.readJsonObject(s, 'home.json')).state, 'error');
++    assert.equal((await store.readJsonObject(w.state, 'home.json')).state, 'error');
+     fake.state.objects.set('show-refresh/health.json', 'not json');
+-    assert.equal((await store.readJsonObject(s, 'health.json')).state, 'error');
+-    const down = store.storeFromEnv({ SUPABASE_URL: 'http://127.0.0.1:1', SUPABASE_SERVICE_ROLE_KEY: KEY });
++    assert.equal((await store.readJsonObject(w.storage, 'health.json')).state, 'error');
++    const down = store.stateFromEnv({ SUPABASE_URL: 'http://127.0.0.1:1', SUPABASE_SERVICE_ROLE_KEY: KEY });
+     assert.equal((await store.readJsonObject(down, 'home.json')).state, 'error');
++    assert.equal((await store.readJsonObject(w.state, 'covered.json')).state, 'error', 'a path with no row is a caller bug, not "missing"');
++  });
++
++  test('putMutable verifies by value, so jsonb key reordering is not a mismatch', async () => {
++    reset();
++    const w = await setup();
++    await store.putMutable(w.state, 'home.json', { schema: 1, shows: { b: 1, a: 2 }, generation: 3 });
++    assert.notEqual(JSON.stringify(fake.state.rows.get('home')), JSON.stringify({ schema: 1, shows: { b: 1, a: 2 }, generation: 3 }));
++    assert.equal(store.canonical({ a: 1, b: [1, { d: 1, c: 2 }] }), store.canonical({ b: [1, { c: 2, d: 1 }], a: 1 }));
++    assert.notEqual(store.canonical([1, 2]), store.canonical([2, 1]));
+   });
+ 
+   test('setKill increments seq, records reason; unkill refuses to write blind', async () => {
+     reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    const k = await store.setKill(s, { killed: true, reason: 'bad publish', by: 'test' });
++    const w = await setup();
++    const k = await store.setKill(w.state, { killed: true, reason: 'bad publish', by: 'test' });
+     assert.equal(k.seq, 2);
+     assert.equal(k.killed, true);
+-    const u = await store.setKill(s, { killed: false, reason: 'fixed' });
++    const u = await store.setKill(w.state, { killed: false, reason: 'fixed' });
+     assert.equal(u.seq, 3);
+     fake.state.failNext = 1;
+-    await assert.rejects(store.setKill(s, { killed: false }), /refusing a blind unkill/);
+-    assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).seq, 3);
++    await assert.rejects(store.setKill(w.state, { killed: false }), /refusing a blind unkill/);
++    assert.equal(fake.state.rows.get('kill').seq, 3);
+   });
+ 
+-  test('a KILL still lands when kill.json is unreadable, with a seq above any earlier one', async () => {
++  test('a KILL still lands when the kill row is unreadable, with a seq above any earlier one', async () => {
+     reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
++    const w = await setup();
+     fake.state.failNext = 1; // the pre-read fails; the write and read-back work
+     const now = 1_800_000_000_000;
+-    const k = await store.setKill(s, { killed: true, reason: 'emergency', now });
+-    assert.equal(k.killed, true);
++    const k = await store.setKill(w.state, { killed: true, reason: 'emergency', now });
+     assert.equal(k.seq, now);
+-    const stored = JSON.parse(fake.state.objects.get('show-refresh/kill.json'));
+-    assert.equal(stored.killed, true);
+-    assert.equal(stored.seq, now);
+-  });
+-
+-  test('setKill overwrites a kill.json that is not valid JSON', async () => {
+-    reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    fake.state.objects.set('show-refresh/kill.json', '{not json');
+-    const u = await store.setKill(s, { killed: false, reason: 'repair' });
+-    assert.equal(u.seq, 1);
+-    assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).killed, false);
++    assert.equal(fake.state.rows.get('kill').killed, true);
++    assert.equal(fake.state.rows.get('kill').seq, now);
+   });
+ 
+-  test('setKill fails loudly when a concurrent writer changes kill.json after our write', async () => {
++  test('setKill fails loudly when a concurrent writer changes kill after our write', async () => {
+     reset();
+-    const base = store.storeFromEnv(env());
+-    await store.setupStore(base);
++    const w = await setup();
+     let gets = 0;
+-    // The third GET (after the pre-read and putVerified's read-back) sees a rival write.
+-    const s = { ...base, get: async (path, o) => {
++    // The third GET (after the pre-read and putMutable's read-back) sees a rival write.
++    const s = { ...w.state, get: async (path) => {
+       gets++;
+-      if (gets === 3) fake.state.objects.set('show-refresh/kill.json', JSON.stringify({ schema: 1, killed: false, seq: 99 }));
+-      return base.get(path, o);
++      if (gets === 3) fake.state.rows.set('kill', { schema: 1, killed: false, seq: 99 });
++      return w.state.get(path);
+     } };
+     await assert.rejects(store.setKill(s, { killed: true, reason: 'x' }), /changed under us .*killed=false seq=99/);
+   });
+@@ -244,6 +288,24 @@ describe('show-refresh store', () => {
+     assert.equal(store.effectiveKill({ state: 'ok', value: { killed: true, reason: 'r' } }).reason, 'r');
+   });
+ 
++  test('anon reads kill/home and show/ slices, nothing else, and cannot write', async () => {
++    reset();
++    const w = await setup();
++    const r = reader();
++    assert.equal((await store.readJsonObject(r.state, 'kill.json')).state, 'ok');
++    assert.equal((await store.readJsonObject(r.state, 'home.json')).state, 'ok');
++    const p = await store.putShowObject(w.storage, 'wicked-2003', 'aaaaaaaaaaaaaaaa', '{"v":1}');
++    assert.equal(fake.state.headers.get(`show-refresh/${p}`), 'max-age=31536000, immutable');
++    assert.equal((await r.storage.get(p)).text, '{"v":1}');
++    fake.state.objects.set('show-refresh/covered.json', '{}');
++    assert.notEqual((await r.storage.get('covered.json')).status, 200);
++    await assert.rejects(r.state.put('kill.json', '{"killed":true}'), /401/);
++    await assert.rejects(r.state.remove('kill.json'), /401/);
++    await assert.rejects(r.storage.put(p, 'x'), /403|400/);
++    const pub = makeStorage({ baseUrl: fake.baseUrl, bucket: 'show-refresh' });
++    assert.notEqual((await pub.get(p)).status, 200, 'private bucket: no public endpoint');
++  });
++
+   test('getBucket: not-found is null, any other 400 throws', async () => {
+     const mk = (status, body) => makeStorage({ baseUrl: 'http://x', serviceKey: 'k', bucket: 'b', isPublic: false,
+       fetchImpl: async () => new Response(body, { status }) });
+@@ -255,132 +317,102 @@ describe('show-refresh store', () => {
+   test('isObjectMissing: object not found is missing, bucket not found is not', () => {
+     assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"not_found","message":"Object not found"}' }), true);
+     assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"Bucket not found"}' }), false);
+-  });
+-
+-  test('--status reports a malformed home.json or kill.json and exits 1', async () => {
+-    const { main } = require('../../scripts/show-refresh-store.js');
+-    const run = async (args) => { const lines = []; const code = await main(args, env(), (l) => lines.push(l)); return { code, out: lines.join('\n') }; };
+-    reset();
+-    await run(['--setup']);
+-    fake.state.objects.set('show-refresh/home.json', '[]');
+-    const r = await run(['--status']);
+-    assert.equal(r.code, 1);
+-    assert.match(r.out, /"state": "malformed"/);
+-    reset();
+-    await run(['--setup']);
+-    fake.state.objects.set('show-refresh/kill.json', '{"killed":"yes"}');
+-    assert.equal((await run(['--status'])).code, 1);
+-  });
+-
+-  test('selftest fails when an overwrite is not visible through the same signed URL', async () => {
+-    reset();
+-    const base = store.storeFromEnv(env());
+-    await store.setupStore(base);
+-    let first;
+-    const fetchImpl = async (url, o) => {
+-      const res = await fetch(url, o);
+-      const body = await res.text();
+-      if (first === undefined) first = body; // a stale cache would keep serving v1
+-      return new Response(first, { status: res.status });
+-    };
+-    const { selftest } = require('../../scripts/show-refresh-store.js');
+-    const r = await selftest(base, { fetchImpl });
+-    assert.equal(r.ok, false);
+-    assert.equal(r.overwriteSeen, false);
+-  });
+-
+-  test('putShowObject writes immutable cache-control and reads back', async () => {
+-    reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    const p = await store.putShowObject(s, 'wicked-2003', 'aaaaaaaaaaaaaaaa', '{"v":1}');
+-    assert.equal(fake.state.headers.get(`show-refresh/${p}`), 'max-age=31536000, immutable');
+-  });
+-
+-  test('readerUrls are absolute signed URLs that read the object without a key', async () => {
+-    reset();
+-    const s = store.storeFromEnv(env());
+-    await store.setupStore(s);
+-    const urls = await store.readerUrls(s);
+-    for (const [name, u] of Object.entries(urls)) {
+-      assert.match(u, /^http:\/\/127\.0\.0\.1:\d+\/storage\/v1\/object\/sign\/show-refresh\/(home|kill)\.json\?token=/, name);
+-      assert.ok(u.includes(`tok-${store.READER_URL_SECONDS}`), 'long-lived');
+-      const r = await fetch(u); // no Authorization header
+-      assert.equal(r.status, 200);
+-      JSON.parse(await r.text());
+-    }
++    assert.equal(store.isObjectMissing({ status: 404, text: '' }), true);
++    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"403"}' }), false);
+   });
+ });
+ 
+ describe('show-refresh-store CLI', () => {
+   const cli = require('../../scripts/show-refresh-store.js');
+-  const run = async (args) => { const lines = []; const code = await cli.main(args, env(), (l) => lines.push(l)); return { code, out: lines.join('\n') }; };
++  const run = async (args, e = env()) => { const lines = []; const code = await cli.main(args, e, (l) => lines.push(l)); return { code, out: lines.join('\n') }; };
+ 
+   test('usage errors exit 2', async () => {
+     assert.equal((await run([])).code, 2);
+     assert.equal((await run(['--kill'])).code, 2, 'kill needs a reason');
+     assert.equal((await run(['--status', '--setup'])).code, 2);
+-    assert.equal((await run(['--reader-urls'])).code, 2, 'needs --out');
++    assert.equal((await run(['--reader-urls'])).code, 2, 'removed mode');
+   });
+ 
+-  test('setup, kill, unkill, status round trip', async () => {
++  test('setup, kill, unkill, status round trip (the kill workflow\'s commands)', async () => {
+     reset();
+-    assert.equal((await run(['--status'])).out.includes('"bucket": "missing"'), true);
++    assert.match((await run(['--status'])).out, /"bucket": "missing"/);
+     assert.equal((await run(['--setup'])).code, 0);
+     assert.match((await run(['--kill', '--reason=test kill'])).out, /killed=true seq=2/);
+-    const st = JSON.parse((await run(['--status'])).out);
++    const r = await run(['--status']);
++    assert.equal(r.code, 0, r.out);
++    const st = JSON.parse(r.out);
+     assert.equal(st.public, false);
+     assert.equal(st.kill.killed, true);
+     assert.equal(st.kill.reason, 'test kill');
+     assert.equal(st.home.generation, 0);
++    assert.deepEqual(st.reader, { kill: 'ok', home: 'ok' });
+     assert.match((await run(['--unkill', '--reason=ok'])).out, /killed=false seq=3/);
+   });
+ 
+-  test('selftest passes against a working store and writes no-cache', async () => {
++  test('--status exits 1 on a malformed row, a missing bucket, or a reader that cannot see the rows', async () => {
+     reset();
++    assert.equal((await run(['--status'])).code, 1, 'bucket missing');
+     await run(['--setup']);
+-    const r = await run(['--selftest']);
+-    assert.equal(r.code, 0, r.out);
+-    assert.match(r.out, /PASS/);
+-    assert.equal(fake.state.headers.get('show-refresh/selftest.json'), 'no-cache');
++    assert.equal((await run(['--status'])).code, 0);
++    fake.state.rows.set('home', []);
++    const r = await run(['--status']);
++    assert.equal(r.code, 1);
++    assert.match(r.out, /"state": "malformed"/);
++    reset();
++    await run(['--setup']);
++    fake.state.rows.set('kill', { killed: 'yes' });
++    assert.equal((await run(['--status'])).code, 1);
++    reset();
++    await run(['--setup']);
++    assert.equal((await run(['--status'], { ...env(), NEXT_PUBLIC_SUPABASE_ANON_KEY: 'rotated' })).code, 1, 'reader view broken (rotated key / dropped policy)');
++    fake.state.failNext = 1; // getBucket 500
++    await assert.rejects(run(['--status']), /getBucket 500/);
+   });
+ 
+-  test('reader-urls writes a 600 file and never prints a URL', async () => {
++  test('the kill workflow passes every env var --status needs', async () => {
++    const fs = require('node:fs');
++    const yml = fs.readFileSync(new URL('../../.github/workflows/show-refresh-kill.yml', import.meta.url), 'utf8');
++    const names = [...yml.matchAll(/^\s{10}([A-Z_]+): \$\{\{ secrets\.[A-Z_]+ \}\}/gm)].map((m) => m[1]);
++    const real = env();
++    const wfEnv = Object.fromEntries(names.filter((n) => n in real).map((n) => [n, real[n]]));
+     reset();
+-    await run(['--setup']);
+-    const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+-    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'srs-')), 'urls.env');
+-    const r = await run(['--reader-urls', `--out=${file}`]);
+-    assert.equal(r.code, 0);
+-    assert.doesNotMatch(r.out, /token=|https?:\/\//);
+-    assert.equal(fs.statSync(file).mode & 0o777, 0o600);
+-    assert.match(fs.readFileSync(file, 'utf8'), /^SHOW_REFRESH_HOME_URL=http.*\nSHOW_REFRESH_KILL_URL=http/);
++    await run(['--setup'], wfEnv);
++    const r = await run(['--status'], wfEnv);
++    assert.equal(r.code, 0, `workflow env ${names.join(',')}: ${r.out}`);
+   });
+-});
+ 
+-describe('review fixes (second opinion 1c)', () => {
+-  const cli = require('../../scripts/show-refresh-store.js');
+-  const run = async (args, e = env()) => { const lines = []; const code = await cli.main(args, e, (l) => lines.push(l)); return { code, out: lines.join('\n') }; };
++  test('a PostgREST 404 (table gone) is an error, not "missing"', async () => {
++    const st = store.makeStateTable({ baseUrl: 'http://x', key: 'k', fetchImpl: async () => new Response('{"code":"PGRST205"}', { status: 404 }) });
++    assert.equal((await store.readJsonObject(st, 'kill.json')).state, 'error');
++  });
+ 
+-  test('a missing bucket is an error, never "missing" (kill must not fail open)', () => {
+-    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"Bucket not found"}' }), false);
+-    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"not_found","message":"Object not found"}' }), true);
+-    assert.equal(store.isObjectMissing({ status: 404, text: '' }), true);
+-    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"403"}' }), false);
+-    assert.equal(store.effectiveKill({ state: 'error' }).killed, true);
++  test('selftest passes against a working store and cleans up its slice probe', async () => {
++    reset();
++    await run(['--setup']);
++    const r = await run(['--selftest']);
++    assert.equal(r.code, 0, r.out);
++    assert.match(r.out, /selftest PASS: 3 state overwrite rounds/);
++    assert.equal([...fake.state.objects.keys()].filter((k) => k.startsWith('show-refresh/show/_selftest/')).length, 0);
++    assert.ok(fake.state.rows.has('probe'));
+   });
+ 
+-  test('--status exits 1 when the bucket is missing or the store is down', async () => {
++  test('selftest FAILS when anon reads of the state are served stale (the Storage CDN bug)', async () => {
+     reset();
+-    assert.equal((await run(['--status'])).code, 1, 'bucket missing');
+     await run(['--setup']);
+-    assert.equal((await run(['--status'])).code, 0);
+-    fake.state.failNext = 1; // getBucket 500: main throws, the entry point exits 1
+-    await assert.rejects(run(['--status']), /getBucket 500/);
+-    fake.state.failNext = 0;
+-    fake.state.objects.delete('show-refresh/home.json'); // bucket fine, home.json gone
+-    assert.equal((await run(['--status'])).code, 1);
+-    assert.equal((await run(['--status'], { SUPABASE_URL: 'http://127.0.0.1:1', SUPABASE_SERVICE_ROLE_KEY: KEY }).catch(() => ({ code: 1 }))).code, 1);
++    fake.state.staleAnonRows = true;
++    const r = await run(['--selftest']);
++    assert.equal(r.code, 1);
++    assert.match(r.out, /STALE/);
++  });
++
++  test('selftest FAILS when anon can read internal objects or write state', async () => {
++    reset();
++    const w = await setup();
++    const leaky = { storage: { ...reader().storage, get: (p, o) => w.storage.get(p, o) }, state: w.state };
++    const r = await cli.selftest(w, leaky);
++    assert.equal(r.ok, false);
++    assert.ok(r.failures.some((f) => /anon READ internal/.test(f)), r.failures.join('; '));
++    assert.ok(r.failures.some((f) => /anon state write succeeded/.test(f)), r.failures.join('; '));
+   });
+ 
+   test('a multi-line reason is accepted', async () => {
+@@ -388,6 +420,6 @@ describe('review fixes (second opinion 1c)', () => {
+     await run(['--setup']);
+     const r = await run(['--kill', '--reason=line one\nline two']);
+     assert.equal(r.code, 0, r.out);
+-    assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).reason, 'line one\nline two');
++    assert.equal(fake.state.rows.get('kill').reason, 'line one\nline two');
+   });
+ });
+diff --git a/tests/unit/supabase-schema-expectations.test.mjs b/tests/unit/supabase-schema-expectations.test.mjs
+index 4573b2936..00b4e403a 100644
+--- a/tests/unit/supabase-schema-expectations.test.mjs
++++ b/tests/unit/supabase-schema-expectations.test.mjs
+@@ -340,3 +340,30 @@ test('an iOS-only per-user table that delete-account does not touch is reported'
+   const fnSource = "await deleteRows(base, auth, 'push_tokens', q);";
+   assert.deepEqual(findUndeletedUserTables(live, fnSource, DELETE_ACCOUNT_EXEMPT), ['ios_only_notes']);
+ });
++
++// BRO-8056: a storage.objects policy is keyed schema-qualified on both sides
++// (migration parser and live catalog query), or it reads as unapplied forever.
++test('storage.objects policies are keyed storage.objects:<name>; public stays bare', () => {
++  const r = deriveExpectations([{ name: 's.sql', sql: `
++CREATE POLICY show_refresh_anon_read ON storage.objects FOR SELECT TO anon USING (bucket_id = 'show-refresh');
++CREATE POLICY "Own rows" ON public.watchlist FOR SELECT USING (true);
++CREATE POLICY gone ON storage.objects FOR SELECT USING (true);
++DROP POLICY IF EXISTS gone ON storage.objects;
++` }]);
++  assert.ok(r.expected.has('policy:storage.objects:show_refresh_anon_read'));
++  assert.ok(r.expected.has('policy:watchlist:Own rows'));
++  assert.ok(!r.expected.has('policy:objects:show_refresh_anon_read'));
++  assert.ok(!r.expected.has('policy:storage.objects:gone'));
++});
++
++test('live catalog query reads storage policies with the same key shape', async () => {
++  const { LIVE_CATALOG_QUERY } = await import('../../scripts/lib/supabase-schema-expectations.js');
++  assert.match(LIVE_CATALOG_QUERY, /FROM pg_policies WHERE schemaname IN \('public', 'storage'\)/);
++  assert.match(LIVE_CATALOG_QUERY, /CASE WHEN schemaname = 'public' THEN '' ELSE schemaname \|\| '\.' END \|\| tablename/);
++});
++
++test('the real show-refresh migration derives the storage-qualified key', () => {
++  const file = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'supabase', 'migrations', '20261123_show_refresh_anon_read.sql');
++  const r = deriveExpectations([{ name: 'm.sql', sql: fs.readFileSync(file, 'utf8') }]);
++  assert.ok(r.expected.has('policy:storage.objects:show_refresh_anon_read'), [...r.expected.keys()].join(','));
++});
+-- 
+2.43.0
+
