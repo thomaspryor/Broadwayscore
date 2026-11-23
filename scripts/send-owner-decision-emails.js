@@ -144,7 +144,7 @@ async function main(argv = process.argv.slice(2)) {
     try {
       const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
       await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
-        { input: { issueId: issue.issue.id, body: `${mark} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it. Until then the digest lists it with only a "Reply in my own words" button.` } });
+        { input: { issueId: issue.issue.id, body: `${mark} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the decision block at the top of the description, each on its own line: the question (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it. Until then the digest lists it with only a "Reply in my own words" button.` } });
       return true;
     } catch (err) { console.error(`[owner-decision-emails] could not note the unclear question on ${d.identifier}: ${err.message}`); return false; }
   };

@@ -113,7 +113,8 @@ function isAlreadyAnswered(issue, decision, secret) {
 function decisionSince(issue) {
   let since = ms(issue && issue.createdAt) || 0;
   for (const c of commentsOf(issue)) {
-    if (/DECISION NEEDED/i.test(bodyOf(c))) { const t = ms(c.createdAt); if (t != null && t > since) since = t; }
+    // BRO-8199: the emailer's own "UNCLEAR QUESTION" note quotes the block's labels; it restates nothing.
+    if (/DECISION NEEDED/i.test(bodyOf(c)) && !/UNCLEAR QUESTION \(BRO-8199\)/.test(bodyOf(c))) { const t = ms(c.createdAt); if (t != null && t > since) since = t; }
   }
   return since;
 }

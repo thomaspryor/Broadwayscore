@@ -206,3 +206,13 @@ test('BRO-8199 ship-check: a one-tap signed link is not refused at report time e
   const { unclearBlock } = require('./report-owner-question-guard.js');
   assert.deepEqual(unclearBlock('DECISION NEEDED: Tap https://broadwayscorecard.com/api/admin/gmail-reauth?t=abc_def and press Allow.'), []);
 });
+
+test('BRO-8199 ship-check: the unclear-question note does not reset the maybe-answered window', () => {
+  const q = require('./owner-decision-quiet-period.js');
+  const issue = { createdAt: '2026-11-01T00:00:00Z', comments: { nodes: [
+    { body: 'A', createdAt: '2026-11-02T00:00:00Z' },
+    { body: 'UNCLEAR QUESTION (BRO-8199): abc this decision is not emailed yet. Rewrite the DECISION NEEDED block.', createdAt: '2026-11-03T00:00:00Z' },
+  ] } };
+  const found = q.maybeAnswerComments ? q.maybeAnswerComments(issue, Date.parse('2026-11-04T00:00:00Z')) : null;
+  if (found) assert.equal(found.length, 1, 'the owner "A" before the note still counts');
+});
