@@ -16,27 +16,43 @@ const shows = [
 const idx = rd.buildShowTitleIndex(shows, 'nyc');
 
 test('venue tail that matches the catalogued venue resolves', () => {
-  assert.equal(rd.resolveMatchedShowId('THE GOOD THIEF at Irish Repertory Theatre', idx), 'good-thief');
-  assert.equal(rd.titleMatchesIndex('THE GOOD THIEF at Irish Repertory Theatre', idx), true);
+  assert.equal(rd.venueTailShowId('THE GOOD THIEF at Irish Repertory Theatre', idx), 'good-thief');
+  // Row-only: the audit's matchers are unchanged, so no evidence is attached and no candidate is dropped.
+  assert.equal(rd.resolveMatchedShowId('THE GOOD THIEF at Irish Repertory Theatre', idx), null);
+  assert.equal(rd.titleMatchesIndex('THE GOOD THIEF at Irish Repertory Theatre', idx), false);
 });
 
 test('a title containing " at the " is not suppressed by a same-head show at another venue', () => {
-  assert.equal(rd.resolveMatchedShowId('MIDNIGHT AT THE NEVER GET', idx), null);
+  assert.equal(rd.venueTailShowId('MIDNIGHT AT THE NEVER GET', idx), null);
 });
 
 test('titleMatchesIndex (the alert-suppression path) stays false for the Midnight case', () => {
   assert.equal(rd.titleMatchesIndex('MIDNIGHT AT THE NEVER GET', idx), false);
+  assert.equal(rd.venueTailShowId('MIDNIGHT AT THE NEVER GET', idx), null);
 });
 
 test('generic tails ("at the Theatre", "at the Center") and partial words do not count as venue proof', () => {
-  assert.equal(rd.resolveMatchedShowId('The Lost Boys at the Theatre', idx), null);
-  assert.equal(rd.resolveMatchedShowId('The Lost Boys at New World Stages', idx), null);
-  assert.equal(rd.resolveMatchedShowId('The Charioteer at the Cellar', idx), null);
-  assert.equal(rd.resolveMatchedShowId('The Great Gatsby at Broadway', idx), null);
-  assert.equal(rd.resolveMatchedShowId('The Great Gatsby at North American Tour', idx), null);
+  assert.equal(rd.venueTailShowId('The Lost Boys at the Theatre', idx), null);
+  assert.equal(rd.venueTailShowId('The Lost Boys at New World Stages', idx), null);
+  assert.equal(rd.venueTailShowId('The Charioteer at the Cellar', idx), null);
+  assert.equal(rd.venueTailShowId('The Great Gatsby at Broadway', idx), null);
+  assert.equal(rd.venueTailShowId('The Great Gatsby at North American Tour', idx), null);
 });
 
 test('a real venue still resolves, and a closed show at that venue does not', () => {
-  assert.equal(rd.resolveMatchedShowId('The Lost Boys at Palace Theatre', idx), 'lost-boys');
-  assert.equal(rd.resolveMatchedShowId('Old Run at Irish Repertory Theatre', idx), null);
+  assert.equal(rd.venueTailShowId('The Lost Boys at Palace Theatre', idx), 'lost-boys');
+  assert.equal(rd.venueTailShowId('Old Run at Irish Repertory Theatre', idx), null);
+});
+
+test('a venue with extra identifying words, or a stale open show past its closingDate, does not match', () => {
+  assert.equal(rd.venueTailShowId('The Lost Boys at Palace Theatre London', idx), null);
+  const stale = rd.buildShowTitleIndex([{ id: 's', title: 'Stale Show', slug: 'stale-show', category: 'off-broadway', status: 'open', closingDate: '2020-01-01', venue: 'Irish Repertory Theatre' }], 'nyc');
+  assert.equal(rd.venueTailShowId('Stale Show at Irish Repertory Theatre', stale), null);
+});
+
+test('a tail that only contains the venue words plus more does not match (Midnight at the Palace Hotel)', () => {
+  const i = rd.buildShowTitleIndex([{ id: 'm', title: 'Midnight', slug: 'midnight', category: 'off-broadway', status: 'open', venue: 'Palace Theatre' }], 'nyc');
+  assert.equal(rd.venueTailShowId('MIDNIGHT AT THE PALACE HOTEL', i), null);
+  assert.equal(rd.venueTailShowId('Midnight at the Palace of Versailles', i), null);
+  assert.equal(rd.venueTailShowId('Midnight at the Palace', i), 'm');
 });

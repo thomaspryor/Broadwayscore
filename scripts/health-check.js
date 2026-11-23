@@ -4758,11 +4758,13 @@ function buildStillMissingPredicate() {
     const weIndex = buildShowTitleIndex(shows, 'we'); // 'we' is the market key; 'west-end' indexed every category
     const ukGuardian = require('./lib/uk-regional-guardian'); // uk-regional Guardian items (BRO-4923)
     const ukShows = ukGuardian.ukFlagshipShows(shows);
-    const { bwwRoundupCataloguedElsewhere } = require('./lib/reverse-discovery');
+    const { bwwRoundupCataloguedElsewhere, venueTailShowId } = require('./lib/reverse-discovery');
     return (c) => {
       if (c && c.market === 'uk-regional') return !ukShows.some((s) => ukGuardian.isSameProduction(c, s));
       const index = c && c.market === 'west-end' ? weIndex : nycIndex;
       if (resolveMatchedShowId(c && c.title, index)) return false;
+      // BRO-8149: "SHOW at Venue" roundup titles, proven by the catalogued venue (row-only, see venueTailShowId).
+      if (c && c.source === 'bww-roundup' && venueTailShowId(c.title, index)) return false;
       // BWW files West End / tour roundups as 'nyc' (see the helper).
       if (c && c.source === 'bww-roundup' && bwwRoundupCataloguedElsewhere(c.title, shows, c.date)) return false;
       return true;

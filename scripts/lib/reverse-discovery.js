@@ -465,14 +465,15 @@ function possessiveLeadShowId(title, index) {
 }
 
 /**
- * BRO-8149: a BWW roundup headline "THE GOOD THIEF at Irish Repertory Theatre" carries the venue as a tail, which
+ * BRO-8149 (HEALTH ROW ONLY: health-check's still-missing predicate; NOT used by resolveMatchedShowId/titleMatchesIndex,
+ * so no review evidence is attached and no candidate is dropped from the audit): a BWW roundup headline "THE GOOD THIEF at Irish Repertory Theatre" carries the venue as a tail, which
  * the extractor deliberately does not split (a bare " at the " split truncates real titles, see the 2026-07-26
  * revert in extractShowTitleFromBwwRoundup). Resolve it here instead, where the venue can prove the split: the
  * head must be exactly one non-closed catalogued title AND that show's venue must contain the tail (or the
  * reverse). "MIDNIGHT AT THE NEVER GET" -> head "midnight" matches the show Midnight, but its venue is not
  * "the never get", so nothing is suppressed.
  */
-const VENUE_GENERIC_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'playhouse', 'stage', 'broadway', 'hall', 'house', 'arts', 'of', 'and', 'for', 'at', 'new', 'york', 'nyc', 'london', 'company']);
+const VENUE_GENERIC_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'playhouse', 'stage', 'broadway', 'hall', 'house', 'arts', 'of', 'and', 'for', 'at', 'company']);
 const VENUE_PLACEHOLDER_RE = /\b(?:tour|tba|tbd|various|multiple|undisclosed)\b/;
 /** Whole-word venue match on the distinctive words only ("theatre"/"center"/"playhouse" prove nothing). */
 function venueWordsMatch(tail, venue) {
@@ -483,7 +484,8 @@ function venueWordsMatch(tail, venue) {
   if (!T.size || !V.size) return false;
   const common = [...T].filter((w) => V.has(w));
   if (!common.length || common.join('').length < 5) return false;
-  return common.length === T.size || common.length === V.size;
+  // Equal word sets only: "Palace Theatre London" must not match a catalogued New York "Palace Theatre".
+  return common.length === T.size && common.length === V.size;
 }
 
 function venueTailShowId(title, index) {
@@ -497,6 +499,7 @@ function venueTailShowId(title, index) {
     if (!head || !tail || tail.length < 5) continue;
     for (const e of (index.statusByVariant && index.statusByVariant.get(head)) || []) {
       if (!e.full || !e.id || !e.status || e.status === 'closed' || !e.venue) continue;
+      if (e.closingDate && e.closingDate < new Date().toISOString().slice(0, 10)) continue; // stale 'open' past its closing date
       if (venueWordsMatch(tail, e.venue)) ids.add(e.id);
     }
   }
@@ -527,7 +530,7 @@ function resolveMatchedShowId(title, index) {
       }
     }
   }
-  if (ids.size === 0) return possessiveLeadShowId(title, index) || venueTailShowId(title, index);
+  if (ids.size === 0) return possessiveLeadShowId(title, index);
   return ids.size === 1 ? [...ids][0] : null;
 }
 
@@ -787,8 +790,7 @@ function titleMatchesIndex(title, index, opts = {}) {
   // Strokes") only differ by an 's — try the stripped variant too, so a
   // Playbill-style headline can't false-positive as a missing show.
   return titleCandidates(title).some((c) => titleMatchesIndexSingle(c, index, opts)) ||
-    possessiveLeadShowId(title, index) !== null ||
-    venueTailShowId(title, index) !== null;
+    possessiveLeadShowId(title, index) !== null;
 }
 
 function titleMatchesIndexSingle(title, index, opts = {}) {
@@ -874,6 +876,7 @@ module.exports = {
   isPlaybillNonNycRoundup,
   titleCandidates,
   resolveMatchedShowId,
+  venueTailShowId,
   extractOpeningFactsFromArticle,
   resolveDate,
   isBwwNonStageTieIn,
