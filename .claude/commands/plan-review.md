@@ -228,7 +228,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
    ```
    Its status line (stderr) says what happened. Put it in the coverage banner (Phase 3):
-   - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with N repo files attached. `no-reads` instead of `ok` means the plan named no tracked file, so the banner says its code claims are unverified.
+   - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with N repo files attached. `partial` means more named files were left out than attached, or the answer was cut short: use it, but say so in the banner. `no-reads` instead of `ok` means the plan named no tracked file, so the banner says its code claims are unverified.
    - `GEMINI_RC=3`, `MISSING: <reason>`: run the plan-text-only curl below instead and print `Gemini: MISSING (<reason>), plan-text curl ran instead, no repo access`. If the reason is `GEMINI_API_KEY is not set` (the only MISSING reason now), record Gemini as **MISSING** with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed). Don't silently drop it.
    - `GEMINI_RC=1`, `FAILED:` or `EMPTY:`: a coverage failure, not a pass. Run the curl below too and print the reason in the banner.
 

@@ -26,9 +26,9 @@ const { spawnSync } = require('child_process');
 
 // Key, certificate and env files by name, and a data/config file whose name mentions a secret.
 // Source files (token-budget.js) are code and are sent; they are tracked, so already on GitHub.
-const SECRET_RE = /(^|\/)(\.env(\.[^/]*)?|\.npmrc|\.netrc|\.pypirc|id_(rsa|dsa|ecdsa|ed25519)[^/]*|[^/]*\.(pem|key|p12|pfx|keystore|jks))$|(^|\/)[^/]*(secret|credential|token|password)[^/]*?(\.(json|txt|ya?ml|ini|conf|cfg|bak|backup|old|csv|toml))?$/i;
+const SECRET_RE = /(^|\/)(\.env(\.[^/]*)?|\.envrc|\.npmrc|\.netrc|\.pypirc|\.pgpass|\.htpasswd|auth\.json|id_(rsa|dsa|ecdsa|ed25519)[^/]*|[^/]*\.(pem|key|p12|pfx|keystore|jks|kdbx|ppk|asc|gpg))$|(^|\/)[^/]*(secret|credential|token|password|passwd|apikey|api[-_]key|service[-_]?account|adminsdk|private[-_]key)[^/]*?(\.(json|txt|ya?ml|ini|conf|cfg|bak|backup|old|csv|toml))?$/i;
 const CODE_EXT_RE = /\.(c?js|mjs|tsx?|jsx|sh|py|md)$/i;
-const isSecretPath = (p) => SECRET_RE.test(p) && !(CODE_EXT_RE.test(p) && !/(^|\/)(\.env|id_)/.test(p) && !/\.(pem|key|p12|pfx|keystore|jks)$/i.test(p));
+const isSecretPath = (p) => SECRET_RE.test(p) && !(CODE_EXT_RE.test(p) && !/(^|\/)(\.env|id_)/.test(p) && !/\.(pem|key|p12|pfx|keystore|jks|kdbx|ppk|asc|gpg)$/i.test(p));
 const MAX_FILE_BYTES = 200 * 1024;
 // A changed file is sent as windows around its changes, so a big one (test.yml is ~480KB) still fits.
 const WINDOWED_MAX_BYTES = 5 * 1024 * 1024;
@@ -61,23 +61,48 @@ function parseNameStatus(z) {
   return out.filter((e) => e.path);
 }
 
+/** Git quotes a path with unusual characters as a C string: "b/sp ace.js", octal escapes for UTF-8. */
+function unquotePath(p) {
+  if (!p.startsWith('"') || !p.endsWith('"')) return p;
+  const bytes = [];
+  const body = p.slice(1, -1);
+  const esc = { n: 10, t: 9, r: 13, b: 8, f: 12, a: 7, v: 11, '"': 34, '\\': 92 };
+  for (let i = 0; i < body.length; i++) {
+    const c = body[i];
+    if (c !== '\\') { bytes.push(...Buffer.from(c, 'utf8')); continue; }
+    const o = /^[0-7]{3}/.exec(body.slice(i + 1));
+    if (o) { bytes.push(parseInt(o[0], 8)); i += 3; continue; }
+    const n = body[++i];
+    bytes.push(esc[n] !== undefined ? esc[n] : n.charCodeAt(0));
+  }
+  return Buffer.from(bytes).toString('utf8');
+}
+
 /** `git diff -U0` text -> Map path -> [[start, end]] of changed lines in the NEW file. */
 function parseHunks(diff) {
   const m = new Map();
   let cur = null;
+  let prevMinus = false;
   for (const line of String(diff || '').split('\n')) {
-    if (line.startsWith('+++ ')) { cur = line === '+++ /dev/null' ? null : line.slice(4).replace(/^b\//, ''); if (cur && !m.has(cur)) m.set(cur, []); continue; }
+    // A `+++` line is a header only right after the `---` header; an added line "++ x" also reads "+++ x".
+    if (prevMinus && line.startsWith('+++ ')) {
+      prevMinus = false;
+      cur = line === '+++ /dev/null' ? null : unquotePath(line.slice(4)).replace(/^b\//, '');
+      if (cur && !m.has(cur)) m.set(cur, []);
+      continue;
+    }
+    prevMinus = line.startsWith('--- ');
     const h = /^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@/.exec(line);
     if (h && cur) {
       const start = Number(h[1]);
       const n = h[2] === undefined ? 1 : Number(h[2]);
-      m.get(cur).push(n === 0 ? [start, start] : [start, start + n - 1]); // n=0: pure deletion after line `start`
+      m.get(cur).push(n === 0 ? [Math.max(1, start), Math.max(1, start)] : [start, start + n - 1]); // n=0: pure deletion after line `start`
     }
   }
   return m;
 }
 
-/** Names the change defines (from added lines of a unified diff), for the caller search. */
+/** Names the change declares, adds or removes (from +/- lines of a unified diff), for the caller search. */
 function definedNames(diff) {
   const names = new Set();
   const res = [
@@ -90,7 +115,7 @@ function definedNames(diff) {
     /^\s*([A-Za-z_][\w]{3,})\s*\(\)\s*\{/g, // shell function
   ];
   for (const l of String(diff || '').split('\n')) {
-    if (!l.startsWith('+') || l.startsWith('+++')) continue;
+    if (!/^[+-]/.test(l) || l.startsWith('+++') || l.startsWith('---')) continue;
     const body = l.slice(1);
     for (const re of res) for (const m of body.matchAll(re)) if (!KEYWORDS.has(m[1])) names.add(m[1]);
   }
@@ -101,15 +126,18 @@ function definedNames(diff) {
 function pathsFromPrompt(prompt, tracked) {
   const out = [];
   const seen = new Set();
-  for (const m of String(prompt || '').matchAll(/(?:^|[\s`'"(\[])((?:\.\/)?[\w.@-]+(?:\/[\w.@-]+)*\.[A-Za-z0-9]+)/g)) {
+  // Extension optional (Dockerfile, .husky/pre-commit): only tracked paths count, so bare words drop out.
+  for (const m of String(prompt || '').matchAll(/(?:^|[\s`'"(\[=])((?:\.\/)?[\w.@-]+(?:\/[\w.@-]+)*)/g)) {
     const p = m[1].replace(/^\.\//, '').replace(/[.,;:]+$/, '');
     if (seen.has(p) || !tracked.has(p)) continue;
     seen.add(p);
     out.push(p);
-    if (out.length >= MAX_PROMPT_PATHS) break;
   }
   return out;
 }
+
+/** Lines of a file; the newline that ends the last line does not start another one. */
+const splitLines = (text) => { const l = String(text).split('\n'); if (l.length > 1 && l[l.length - 1] === '') l.pop(); return l; };
 
 const number = (lines, from, to) => {
   const w = String(to).length;
@@ -120,7 +148,7 @@ const number = (lines, from, to) => {
 
 /** Line-numbered windows around ranges (1-based, inclusive), merged when they overlap. */
 function windows(text, ranges, pad = WINDOW_PAD) {
-  const lines = String(text).split('\n');
+  const lines = splitLines(text);
   const spans = ranges.map(([a, b]) => [Math.max(1, a - pad), Math.min(lines.length, b + pad)]).sort((x, y) => x[0] - y[0]);
   const merged = [];
   for (const s of spans) {
@@ -164,6 +192,7 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
   const tracked = new Set(ls.out.split('\0').filter(Boolean));
 
   let files = []; // [{ path, weight, ranges }]
+  const overLimit = [];
   const deleted = [];
   let diffText = '';
   if (base) {
@@ -192,19 +221,24 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
       files.push({ path: e.path, weight: weight.get(e.path) || 0, ranges: hunks.get(e.path) || [] });
     }
     files.sort((a, b) => b.weight - a.weight || a.path.localeCompare(b.path));
+    // New files nobody `git add`ed are in no diff; name them so the gap is visible, but never send them.
+    const un = git(['ls-files', '--others', '--exclude-standard', '-z'], root);
+    for (const p of un.out.split('\0').filter(Boolean)) overLimit.push({ path: p, why: 'untracked, never sent (git add it to have it reviewed)' });
   } else {
-    files = pathsFromPrompt(prompt, tracked).map((p) => ({ path: p, weight: 0, ranges: [] }));
+    const named = pathsFromPrompt(prompt, tracked);
+    files = named.slice(0, MAX_PROMPT_PATHS).map((p) => ({ path: p, weight: 0, ranges: [] }));
+    for (const p of named.slice(MAX_PROMPT_PATHS)) overLimit.push({ path: p, why: `past the first ${MAX_PROMPT_PATHS} files the prompt names` });
   }
 
   const parts = [];
   const given = [];
   const partial = [];
-  const omitted = [];
+  const omitted = [...overLimit];
   let left = budgetChars;
   for (const f of files) {
     const r = readAllowed(root, f.path, tracked, f.ranges.length ? WINDOWED_MAX_BYTES : MAX_FILE_BYTES);
-    if (!r.text) { omitted.push({ path: f.path, why: r.why }); continue; }
-    const lines = r.text.split('\n');
+    if (typeof r.text !== 'string') { omitted.push({ path: f.path, why: r.why }); continue; }
+    const lines = splitLines(r.text);
     const head = `=== FILE ${f.path} (${lines.length} lines${f.ranges.length ? `; changed lines ${fmtRanges(f.ranges)}` : ''}) ===\n`;
     if (r.text.length <= FULL_FILE_CHARS) {
       const block = head + number(lines, 1, lines.length) + '\n';
@@ -218,17 +252,21 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
   }
 
   let callerLines = 0;
+  const tooCommon = [];
+  let namesUnsearched = 0;
   if (base && diffText) {
     const inBundle = new Set(files.map((f) => f.path));
     const blocks = [];
-    for (const name of definedNames(diffText)) {
-      if (callerLines >= CALLER_LINES_MAX) break;
+    const names = definedNames(diffText);
+    for (const name of names) {
+      if (callerLines >= CALLER_LINES_MAX) { namesUnsearched = names.length - names.indexOf(name); break; }
       // -e keeps a name that starts with '-' from being read as an option; names come from regexes that never allow one anyway.
-      const g = git(['grep', '-n', '-w', '-I', '-e', name, '--'], root);
+      const g = git(['grep', '-n', '-w', '-I', '-F', '-e', name, '--'], root); // -F: '$' in a JS name is not an anchor
       if (!g.ok) continue; // exit 1 = no hits
       const hits = g.out.split('\n').filter(Boolean)
         .filter((h) => { const p = h.slice(0, h.indexOf(':')); return !inBundle.has(p) && !isSecretPath(p); });
-      if (!hits.length || hits.length > CALLER_HITS_SKIP) continue;
+      if (!hits.length) continue;
+      if (hits.length > CALLER_HITS_SKIP) { tooCommon.push(name); continue; }
       const take = hits.slice(0, Math.min(CALLER_HITS_PER_NAME, CALLER_LINES_MAX - callerLines)).map((h) => (h.length > 240 ? h.slice(0, 240) + ' ...' : h));
       blocks.push(`-- uses of ${name}${hits.length > take.length ? ` (${take.length} of ${hits.length})` : ''} --\n${take.join('\n')}`);
       callerLines += take.length;
@@ -246,6 +284,9 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
       + (base ? ' with the changed line ranges named, then lines elsewhere in the repository that use names the change defines.' : '.'),
     'Check each claim against this text before you make it. If something you need is not here, do not guess: name it under NOT CHECKED.',
   ];
+  if (tooCommon.length || namesUnsearched) {
+    intro.push(`USES NOT LISTED: ${tooCommon.length ? `${tooCommon.slice(0, 20).join(', ')} (used in over ${CALLER_HITS_SKIP} places)` : ''}${tooCommon.length && namesUnsearched ? '; ' : ''}${namesUnsearched ? `${namesUnsearched} more changed names (the ${CALLER_LINES_MAX}-line limit was reached)` : ''}. Say so under NOT CHECKED if a finding depends on their callers.`);
+  }
   if (deleted.length) intro.push(`DELETED by this change (see the diff): ${deleted.join(', ')}`);
   if (omitted.length) {
     // A change of hundreds of files must not turn this list into the bulk of the request.
@@ -259,6 +300,6 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
 }
 
 module.exports = {
-  buildBundle, parseNameStatus, parseHunks, definedNames, pathsFromPrompt, windows, readAllowed,
+  buildBundle, parseNameStatus, parseHunks, unquotePath, splitLines, definedNames, pathsFromPrompt, windows, readAllowed,
   SECRET_RE, isSecretPath, MAX_FILE_BYTES, WINDOWED_MAX_BYTES, FULL_FILE_CHARS, DEFAULT_BUDGET_CHARS,
 };

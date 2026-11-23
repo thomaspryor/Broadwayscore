@@ -81,12 +81,12 @@ test('parseHunks: new-file line ranges, a pure deletion is one line, a deleted f
   assert.equal(m.has('gone.js'), false);
 });
 
-test('definedNames: functions, consts, exports, classes and methods from added lines; keywords and removed lines skipped', () => {
+test('definedNames: functions, consts, exports, classes and methods from added and removed lines; keywords and headers skipped', () => {
   const diff = ['+function parseThing(a) {', '+const MAX_ROWS = 3;', '+exports.helperOne = 1;', '+export async function loadAll() {}',
     '+class Widget {}', '+  render(props) {', '+  if (x) {', '-function removedOne() {}', '+++ b/file.js', '+function -Ocat() {}'].join('\n');
   const names = bundleLib.definedNames(diff);
-  for (const n of ['parseThing', 'MAX_ROWS', 'helperOne', 'loadAll', 'Widget', 'render']) assert.ok(names.includes(n), n);
-  for (const n of ['removedOne', 'if']) assert.ok(!names.includes(n), n);
+  for (const n of ['parseThing', 'MAX_ROWS', 'helperOne', 'loadAll', 'Widget', 'render', 'removedOne']) assert.ok(names.includes(n), n);
+  for (const n of ['if']) assert.ok(!names.includes(n), n);
   assert.ok(names.every((n) => !n.startsWith('-')), 'a name can never start with a dash (git grep option injection)');
 });
 
@@ -119,7 +119,7 @@ test('buildBundle --base: changed, added, renamed and uncommitted files attached
   assert.ok(!b.error, b.error);
   for (const p of ['lib/a.js', 'lib/c.js', 'lib/f.js']) assert.ok(b.given.includes(p), `${p} attached whole`);
   assert.deepEqual(b.partial, ['lib/big.js'], 'a big file gets windows around its change');
-  assert.match(b.text, /=== FILE lib\/big\.js \(3001 lines; changed lines 2000; only the changed parts are shown\) ===/);
+  assert.match(b.text, /=== FILE lib\/big\.js \(3000 lines; changed lines 2000; only the changed parts are shown\) ===/);
   assert.match(b.text, /2000: const line1999 = 0; \/\/ PLANTED CHANGE/);
   assert.doesNotMatch(b.text, /line10 = 10;/, 'parts of the big file far from the change stay out');
   assert.match(b.text, /DELETED by this change \(see the diff\): lib\/d\.js/);
@@ -128,6 +128,7 @@ test('buildBundle --base: changed, added, renamed and uncommitted files attached
   assert.doesNotMatch(b.text, /UNTRACKED-TEXT/, 'untracked files are never sent');
   const omitted = Object.fromEntries(b.omitted.map((o) => [o.path, o.why]));
   assert.match(omitted['.env'], /secret/);
+  assert.match(omitted['notes-untracked.js'], /untracked, never sent/, 'an untracked file is named so the model can say it was not checked');
   assert.equal(omitted['img.bin'], 'binary');
   assert.match(b.text, /OMITTED \(not given to you; list each under NOT CHECKED\): .*\.env/);
   assert.match(b.text, /changed lines 1-2/, 'changed line ranges are named for whole files too');
@@ -165,6 +166,55 @@ test('buildBundle: a changed file over the whole-file size cap is sent as window
   assert.match(b.text, /CHANGED/);
   const p = bundleLib.buildBundle({ cwd: repo, prompt: 'see huge2.yml' });
   assert.equal(p.omitted.find((o) => o.path === 'huge2.yml').why, 'over 200KB');
+});
+
+test('parseHunks: quoted paths, an added line that reads like a header, a deletion at the top', () => {
+  const diff = [
+    'diff --git "a/sp ace.js" "b/sp ace.js"', '--- "a/sp ace.js"', '+++ "b/sp ace.js"', '@@ -3 +3 @@', '-x', '+y',
+    'diff --git a/caf\\303\\251.js b/caf\\303\\251.js', '--- "a/caf\\303\\251.js"', '+++ "b/caf\\303\\251.js"', '@@ -1,0 +1 @@', '+a',
+    'diff --git a/n.js b/n.js', '--- a/n.js', '+++ b/n.js', '@@ -1 +1 @@', '-old', '+++ counter', '@@ -9 +9 @@', '-p', '+q',
+    'diff --git a/top.js b/top.js', '--- a/top.js', '+++ b/top.js', '@@ -1,2 +0,0 @@', '-gone', '-gone',
+  ].join('\n');
+  const h = bundleLib.parseHunks(diff);
+  assert.deepEqual(h.get('sp ace.js'), [[3, 3]]);
+  assert.deepEqual(h.get('caf\u00e9.js'), [[1, 1]]);
+  assert.deepEqual(h.get('n.js'), [[1, 1], [9, 9]], 'an added "++ counter" line is content, not a new file');
+  assert.ok(!h.has('counter'));
+  assert.deepEqual(h.get('top.js'), [[1, 1]], 'a deletion at the top is reported at line 1, not 0');
+});
+
+test('isSecretPath: key, env and account files by name; code files with such words are not', () => {
+  for (const p of ['.envrc', 'a/.pgpass', 'gcp-service-account.json', 'firebase-adminsdk-abc.json', 'config/apikey.txt', 'auth.json', 'x.kdbx', 'k.p12', 'putty.ppk', '.env.local'])
+    assert.ok(bundleLib.isSecretPath(p), p);
+  for (const p of ['scripts/lib/token-budget.js', 'src/lib/auth.ts', 'scripts/lib/service-account-check.js', 'README.md'])
+    assert.ok(!bundleLib.isSecretPath(p), p);
+});
+
+test('buildBundle: an empty tracked file is attached, line counts ignore the final newline, git grep takes names literally', () => {
+  const repo = fixtureRepo();
+  fs.writeFileSync(path.join(repo, 'empty.js'), '');
+  fs.writeFileSync(path.join(repo, 'dollar.js'), 'function get$Value() { return 1; }\n');
+  fs.writeFileSync(path.join(repo, 'use.js'), 'get$Value();\nconst x = 2;\n');
+  sh(repo, 'add', '-A'); sh(repo, 'commit', '-qm', 'base2'); sh(repo, 'branch', '-f', 'b2');
+  fs.writeFileSync(path.join(repo, 'dollar.js'), 'function get$Value() { return 2; }\n');
+  fs.appendFileSync(path.join(repo, 'empty.js'), '');
+  sh(repo, 'commit', '-qam', 'edit');
+  const b = bundleLib.buildBundle({ cwd: repo, base: 'b2' });
+  assert.match(b.text, /=== FILE dollar\.js \(1 lines; changed lines 1\) ===/);
+  assert.match(b.text, /use\.js:1:get\$Value\(\);/, 'a name with $ is found by its callers');
+  const p = bundleLib.buildBundle({ cwd: repo, prompt: 'see empty.js and Dockerfile-less --file=dollar.js' });
+  assert.ok(p.given.includes('empty.js'), 'an empty file is attached, not omitted with no reason');
+  assert.ok(p.given.includes('dollar.js'), 'a path after = is found');
+  assert.ok(p.omitted.every((o) => o.why), 'every omission has a reason');
+});
+
+test('buildBundle: plan mode names the files past the 40-file limit instead of dropping them', () => {
+  const repo = fixtureRepo();
+  for (let i = 0; i < 45; i++) fs.writeFileSync(path.join(repo, `p${i}.js`), `${i}\n`);
+  sh(repo, 'add', '-A'); sh(repo, 'commit', '-qm', 'many');
+  const b = bundleLib.buildBundle({ cwd: repo, prompt: Array.from({ length: 45 }, (_, i) => `p${i}.js`).join(' ') });
+  assert.equal(b.given.length, 40);
+  assert.equal(b.omitted.filter((o) => /past the first 40/.test(o.why)).length, 5);
 });
 
 test('buildBundle: the OMITTED list is capped so a huge change cannot bloat the request', () => {
@@ -306,7 +356,7 @@ test('cli: a good run prints the review, a status line the land gate counts, and
   const r = cli(repo, { args: ['--base=main'] });
   assert.equal(r.code, 0, r.err);
   assert.match(r.out, /lib\/a\.js:2 finding/);
-  assert.match(r.err, /^GEMINI-REVIEW: ok model=gemini-3\.8-flash reads=4 partial=1 unbundled=2 callers=\d+ tokens=1500 usd=\d+\.\d{4} thinking=medium$/m);
+  assert.match(r.err, /^GEMINI-REVIEW: ok model=gemini-3\.8-flash reads=4 partial=1 unbundled=3 callers=\d+ tokens=1500 usd=\d+\.\d{4} thinking=medium$/m);
   assert.equal(geminiReviewOk(`${r.out}\n${r.err}`), true, 'review-coverage.mjs must count this run');
   const sent = JSON.parse(r.sent.trim().split('\n')[0]);
   const text = sent.contents[0].parts[0].text;
@@ -346,15 +396,35 @@ test('cli: no key is MISSING (exit 3); no prompt, a bad flag or a bad base is FA
   }
 });
 
-test('cli: an HTTP error is FAILED with no review, and the paid-but-failed call is still logged', () => {
+test('cli: an HTTP error is FAILED with no review; a 5xx (may have run) is logged as unknown spend, a 4xx (refused) is not', () => {
   const repo = fixtureRepo();
   const r = cli(repo, { args: ['--base=main'], status: 403, replyBody: { error: { message: 'API key not valid' } } });
   assert.equal(r.code, 1);
   assert.match(r.err, /^FAILED: Gemini HTTP 403: API key not valid$/m);
   assert.equal(r.out, '');
   assert.equal(geminiReviewOk(r.err), false);
-  const row = JSON.parse(r.ledger.trim().split('\n').pop());
-  assert.equal(row.unknownCalls, 1);
+  assert.equal(r.ledger.trim(), '', 'a refused 4xx call is not billed, so no spend row');
+  const r5 = cli(repo, { args: ['--base=main', '--timeout-sec=3'], status: 500, replyBody: { error: { message: 'boom' } } });
+  assert.equal(r5.code, 1);
+  const rows = r5.ledger.trim().split('\n').map((l) => JSON.parse(l));
+  assert.ok(rows.length >= 1 && rows.every((x) => x.unknownCalls === 1), 'each 5xx attempt is logged as an unknown-size call');
+});
+
+test('redactSecretDiffs: a secret-named file\'s diff never reaches the request; other sections and cut markers stay', () => {
+  const prompt = ['HEAD', 'diff --git a/lib/a.js b/lib/a.js', '+ok', 'diff --git a/.env b/.env', '+KEY=SUPER-SECRET', 'diff --git a/x/gcp-service-account.json b/x/gcp-service-account.json', '+{"private_key":"S2"}', '', '=== UNCOMMITTED CHANGES ===', 'diff --git a/lib/b.js b/lib/b.js', '+fine'].join('\n');
+  const { text, dropped } = lib.redactSecretDiffs(prompt);
+  assert.deepEqual(dropped, ['.env', 'x/gcp-service-account.json']);
+  assert.doesNotMatch(text, /SUPER-SECRET|S2/);
+  assert.match(text, /\+ok/); assert.match(text, /\+fine/); assert.match(text, /=== UNCOMMITTED CHANGES ===/);
+  assert.match(text, /diff withheld: the name looks like a secret/);
+});
+
+test('cli: a review where more changed files were left out than attached is `partial`, which the land gate does not count', () => {
+  const repo = fixtureRepo();
+  const r = cli(repo, { args: ['--base=main', '--budget-chars=300'] });
+  assert.equal(r.code, 0, r.err);
+  assert.match(r.err, /^GEMINI-REVIEW: partial model=/m);
+  assert.equal(geminiReviewOk(`${r.out}\n${r.err}`), false);
 });
 
 // ---------- class guard over the review skills ----------

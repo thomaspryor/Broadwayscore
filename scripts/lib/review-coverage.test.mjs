@@ -804,8 +804,9 @@ test('review.js still prints the success status line geminiReviewOk() parses', (
   // done(0, ...) line changes shape, every real Gemini
   // review would silently stop counting (a wrongful land block), so pin the producer side here.
   const src = fs.readFileSync(new URL('../gemini/review.js', import.meta.url), 'utf8');
-  assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{parsed\.reads === 0 \? 'no-reads' : 'ok'\} model=\$\{model\} reads=\$\{parsed\.reads\}/,
-    'review.js success line must stay `GEMINI-REVIEW: <ok|no-reads> <fields>` (update geminiReviewOk() with it)');
+  assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{status\} model=\$\{model\} reads=\$\{parsed\.reads\}/,
+    'review.js success line must stay `GEMINI-REVIEW: <status> model=M reads=N <fields>` (update geminiReviewOk() with it)');
+  assert.match(src, /const status = parsed\.reads === 0 \? 'no-reads' : \(.*'partial' : 'ok'\);/, 'status is still ok|partial|no-reads');
 });
 
 // BRO-8016 review P1: the plan-review Gemini fallback must stay a counted external review after it

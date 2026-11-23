@@ -15,16 +15,15 @@
  *   --base   review the change from the merge base with <ref> to the working tree (ship-check).
  *            Without it the files the prompt names are attached (plan-review).
  * stdout: the review text (only when exit 0)
- * stderr: one status line: `GEMINI-REVIEW: ok|no-reads model=M reads=N partial=N unbundled=N ...`
+ * stderr: one status line: `GEMINI-REVIEW: ok|partial|no-reads model=M reads=N partial=N unbundled=N ...`
  *         (reads = files attached, whole or in part), or `MISSING: <why>`, `EMPTY: <why>`, `FAILED: <why>`
  * Exit:   0 review printed | 3 MISSING (fall back) | 1 EMPTY/FAILED
  * Env:    GEMINI_API_KEY (required), GEMINI_REVIEW_MODEL, GEMINI_REVIEW_THINKING (low|medium|high)
  * Never prints the API key.
  */
 'use strict';
-require('../lib/llm-usage-install'); // LLM spend meter, before any request (BRO-5043)
 const fs = require('fs');
-const { buildBundle, DEFAULT_BUDGET_CHARS } = require('./review-bundle');
+const { buildBundle, isSecretPath, DEFAULT_BUDGET_CHARS } = require('./review-bundle');
 
 // BRO-8108: gemini-3.8-flash (models.js GEMINI_REVIEW). Medium thinking: on real commits it found a
 // bug low thinking missed and guessed less, at $0.03 to $0.30 a review (BRO-8160 step 0).
@@ -74,6 +73,8 @@ async function review({ text, model, key, deadline, thinking, fetchImpl = global
   let transient = 0;
   let thinkRetry = false;
   let tokenRetry = false;
+  // Never sleep past the deadline; the loop then reports the timeout.
+  const backoff = () => sleepImpl(Math.max(0, Math.min(2000 * 2 ** (transient - 1), deadline - Date.now() - 1000)));
   for (;;) {
     const left = deadline - Date.now();
     if (left <= 1000) return { fail: 'timed out before Gemini answered' };
@@ -86,17 +87,19 @@ async function review({ text, model, key, deadline, thinking, fetchImpl = global
         body: JSON.stringify(buildRequest(text, { thinking: think })),
         signal: AbortSignal.timeout(left),
       });
-      body = await res.json().catch(() => null);
+      // A timeout while the body streams in must read as a timeout, not as an empty answer.
+      body = await res.json().catch((e) => { if (e && (e.name === 'TimeoutError' || e.name === 'AbortError')) throw e; return null; });
     } catch (e) {
       onFailedCall();
       if (e && (e.name === 'TimeoutError' || e.name === 'AbortError')) return { fail: `Gemini timed out after ${Math.round(left / 1000)}s` };
-      if (transient++ < 3) { await sleepImpl(2000 * 2 ** (transient - 1)); continue; }
+      if (transient++ < 3) { await backoff(); continue; }
       return { fail: `Gemini network error: ${String(e && e.message).slice(0, 160)}` };
     }
     if (!res.ok) {
-      onFailedCall();
+      // A 5xx may have run (and billed) the model; a 4xx was refused before it ran.
+      if (res.status >= 500) onFailedCall();
       const msg = String((body && body.error && body.error.message) || '').slice(0, 200);
-      if (RETRY_STATUS.has(res.status) && transient++ < 3) { await sleepImpl(2000 * 2 ** (transient - 1)); continue; }
+      if (RETRY_STATUS.has(res.status) && transient++ < 3) { await backoff(); continue; }
       if (res.status === 400 && think && !thinkRetry && /thinking/i.test(msg)) { thinkRetry = true; think = null; continue; }
       return { fail: `Gemini HTTP ${res.status}${msg ? `: ${msg}` : ''}` };
     }
@@ -113,7 +116,21 @@ function arg(name, dflt) {
   return a ? a.slice(name.length + 3) : dflt;
 }
 
+/** Drop diff sections for secret-named files from the caller's prompt: the bundle never sends them, so neither does the diff. */
+function redactSecretDiffs(prompt) {
+  const dropped = [];
+  const out = String(prompt).split(/(?=^diff --git )/m).map((sec) => {
+    const m = /^diff --git (?:"?a\/.*?"? )"?b\/(.*?)"?$/m.exec(sec);
+    if (!m || !sec.startsWith('diff --git ') || !isSecretPath(m[1])) return sec;
+    dropped.push(m[1]);
+    const tail = /\n(=== [^\n]*===[^\n]*\n?[\s\S]*)$/.exec(sec); // keep a cut marker or section header that followed
+    return `diff --git a/${m[1]} b/${m[1]}\n(diff withheld: the name looks like a secret)\n${tail ? tail[1] : ''}`;
+  }).join('');
+  return { text: out, dropped };
+}
+
 async function main() {
+  require('../lib/llm-usage-install'); // LLM spend meter, before any request (BRO-5043); here so importers of this module are untouched
   let ledger = null;
   try { ledger = require('../lib/gemini-usage-ledger'); } catch { /* record only */ }
   const done = async (code, line) => {
@@ -140,25 +157,31 @@ async function main() {
   const bundle = buildBundle({ cwd: process.cwd(), base: base || undefined, prompt, budgetChars });
   if (bundle.error) return done(1, `FAILED: could not build the review bundle: ${bundle.error}`);
 
-  // Spend goes to the session ledger (copied into the tracked one at wrap-up, BRO-8108), never
-  // the committed CI ledger.
+  // Local and cloud sessions write the session ledger (folded into the tracked one at wrap-up,
+  // BRO-8108); in GitHub Actions sessionLedgerPath() is the tracked CI ledger itself.
   if (ledger && !process.env.GEMINI_USAGE_LEDGER_PATH) {
     try { process.env.GEMINI_USAGE_LEDGER_PATH = ledger.sessionLedgerPath(); } catch { /* record only */ }
   }
   // The meter counts only answered calls; a failed one may still be billed, so log it as unknown size.
   const onFailedCall = () => { try { if (ledger) ledger.logSessionCall({ provider: 'gemini', model, response: {}, caller }); } catch { /* record only */ } };
 
-  const r = await review({ text: `${prompt.trimEnd()}\n\n${bundle.text}`, model, key, deadline, thinking, onFailedCall });
+  const red = redactSecretDiffs(prompt);
+  const r = await review({ text: `${red.text.trimEnd()}\n\n${bundle.text}`, model, key, deadline, thinking, onFailedCall });
   if (r.fail) return done(1, `${r.empty ? 'EMPTY' : 'FAILED'}: ${r.fail}`);
 
   const parsed = { reads: bundle.given.length + bundle.partial.length, ...r.parsed };
   const u = parsed.usage;
   let usd = null;
   try { usd = ledger.estimateCostUsd(model, u.prompt, u.output, { cachedInputTokens: u.cached }); } catch { /* unknown */ }
-  const cut = parsed.finishReason === 'MAX_TOKENS' ? '\n\n(NOTE: this answer was cut at the output limit.)' : '';
+  const truncated = parsed.finishReason === 'MAX_TOKENS';
+  const cut = truncated ? '\n\n(NOTE: this answer was cut at the output limit.)' : '';
+  // More changed files left out than attached, or an answer cut short, is a partial review: it is
+  // printed and used, but the land gate (review-coverage.mjs, `ok` only) does not count it as coverage.
+  const missedChanged = bundle.omitted.filter((o) => !/^untracked|^past the first/.test(o.why)).length;
+  const status = parsed.reads === 0 ? 'no-reads' : (truncated || missedChanged > parsed.reads ? 'partial' : 'ok');
   process.stdout.write((parsed.reads === 0 ? NO_READS_HEADER + '\n\n' : '') + parsed.text + cut + '\n');
-  return done(0, `GEMINI-REVIEW: ${parsed.reads === 0 ? 'no-reads' : 'ok'} model=${model} reads=${parsed.reads} partial=${bundle.partial.length} unbundled=${bundle.omitted.length} callers=${bundle.callerLines} tokens=${u.prompt + u.output} usd=${usd == null ? 'unknown' : usd.toFixed(4)} thinking=${r.thinking}`);
+  return done(0, `GEMINI-REVIEW: ${status} model=${model} reads=${parsed.reads} partial=${bundle.partial.length} unbundled=${bundle.omitted.length} callers=${bundle.callerLines} tokens=${u.prompt + u.output} usd=${usd == null ? 'unknown' : usd.toFixed(4)} thinking=${r.thinking}${red.dropped.length ? ` withheld=${red.dropped.length}` : ''}`);
 }
 
-module.exports = { buildRequest, parseResponse, review, NO_READS_HEADER, DEFAULT_THINKING, MAX_OUTPUT_TOKENS };
+module.exports = { buildRequest, parseResponse, review, redactSecretDiffs, NO_READS_HEADER, DEFAULT_THINKING, MAX_OUTPUT_TOKENS };
 if (require.main === module) main().catch((e) => { process.stderr.write(`FAILED: ${String((e && e.stack) || e).split('\n')[0].slice(0, 300)}\n`); process.exit(1); });

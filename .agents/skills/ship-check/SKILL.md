@@ -364,7 +364,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    GEMINI_RC=$?
    cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
    ```
-   Its status line (stderr) goes in the coverage banner: `GEMINI_RC=0` with `ok … reads=N partial=P unbundled=U … usd=X` reviewed N attached files (P of them as windows; U left out for size or as secrets, named in its NOT CHECKED list); `no-reads` means no files were attached, so its file:line claims are unverified; `3` `MISSING: <reason>` (no key: print the reason as a degraded-review line); `1` `FAILED:`/`EMPTY:` (a coverage failure, not a pass). Its line numbers come from the attached files; open the file before acting on a finding.
+   Its status line (stderr) goes in the coverage banner: `GEMINI_RC=0` with `ok … reads=N partial=P unbundled=U … usd=X` reviewed N attached files (P of them as windows; U left out for size or as secrets, named in its NOT CHECKED list); `partial` (more changed files left out than attached, or the answer cut at the output limit) is printed and used but the land gate does not count it, so Codex must carry the external review; `withheld=K` means K secret-named files' diffs were removed from the request; `no-reads` means no files were attached, so its file:line claims are unverified; `3` `MISSING: <reason>` (no key: print the reason as a degraded-review line); `1` `FAILED:`/`EMPTY:` (a coverage failure, not a pass). Its line numbers come from the attached files; open the file before acting on a finding.
 
 5. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:
 
