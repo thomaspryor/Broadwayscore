@@ -1177,5 +1177,36 @@
       }
     ],
     "queuedAt": "2026-11-23T18:48:20.780Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8170-flag-on-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8170-flag-on-gaps",
+    "description": "land.yml did not land land/bro-8170-flag-on-gaps: the unit-tests-node gate went red at ccde4b2544. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45241296238",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8170-flag-on-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ccde4b25447082560c9e2c658129cf9e49e7c5a2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45241296238"
+      }
+    ],
+    "queuedAt": "2026-11-23T19:05:19.584Z"
   }
 ]
