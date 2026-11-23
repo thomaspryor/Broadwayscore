@@ -160,3 +160,30 @@ test('Broadway page shows Year opened + official website; all three market pages
   const core = read('src/lib/data-core.ts');
   assert.ok(core.includes('venue-access.json') && /broadway\/\$\{slugify\(name\)\}/.test(core), 'data-core no longer reads venue-access.json for Broadway websites');
 });
+
+// BRO-8112 ship-check: the published access file must never carry the wrong-fact classes the review found.
+// These checks re-run the real rules over every published fact, so reverting a rule fails here.
+test('venue-access.json: denials, partial claims and notes obey the strict rules', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const rules = req('../../scripts/lib/venue-access-agree.js');
+  const data = req('../../data/venue-access.json').venues;
+  const bad = [];
+  for (const [key, v] of Object.entries(data)) {
+    const a = v.access;
+    if (!a) continue;
+    const ev = a.evidence || {};
+    for (const f of rules.FIELDS) {
+      if (!(f in a)) continue;
+      const q = ev[f] && ev[f].quote;
+      if (!q) { bad.push(`${key} ${f}: no evidence quote`); continue; }
+      if (f === 'assistiveListening' && a[f] === false && !/assistive|infra-?red|listening|headset|headphone|receiver|captio|amplif/i.test(q)) bad.push(`${key} ${f}: weak denial`);
+      if (f === 'elevator' && rules.PARTIAL.elevator.test(q)) bad.push(`${key} ${f}: partial lift claim`);
+      if (f === 'hearingLoop' && a[f] === false && (rules.PARTIAL.hearingLoop.test(q) || /\b(but|however)\b/i.test(q))) bad.push(`${key} ${f}: loop on request`);
+      if (a[f] === true && rules.negatedInText(q, q)) bad.push(`${key} ${f}: negated`);
+    }
+    if (a.note && /\b(aims?|committed|proud|voted|strives?|contact|details about)\b/i.test(a.note)) bad.push(`${key} note: slogan`);
+    if (a.note && !(a.evidence && a.evidence.note && a.evidence.note.url)) bad.push(`${key} note: no source page`);
+  }
+  assert.deepEqual(bad, []);
+});

@@ -6,7 +6,7 @@ const { quoteInText, agreeAccess, htmlToText, accessLinks, titleNamesVenue } = r
 
 const PAGE = {
   url: 'https://example.org/access',
-  text: 'Our building is step-free from the street. We have two wheelchair spaces in the stalls. A hearing loop is installed in the auditorium. There is no lift to the circle.',
+  text: 'Our building is step-free from the street. We have two wheelchair spaces in the stalls. A hearing loop is installed in the auditorium. There is no lift to the circle. The building has no lift anywhere.',
 };
 const ans = (value, quote) => ({ value, quote });
 
@@ -29,9 +29,9 @@ test('both models agree with verbatim on-topic quotes: published, with the quote
 });
 
 test('an explicit "no" is published only when both quote it', () => {
-  const both = agreeAccess({ elevator: ans(false, 'There is no lift to the circle') }, { elevator: ans(false, 'no lift to the circle') }, [PAGE]);
+  const both = agreeAccess({ elevator: ans(false, 'The building has no lift anywhere') }, { elevator: ans(false, 'building has no lift anywhere') }, [PAGE]);
   assert.equal(both.access.elevator, false);
-  const one = agreeAccess({ elevator: ans(false, 'There is no lift to the circle') }, { elevator: ans(null, null) }, [PAGE]);
+  const one = agreeAccess({ elevator: ans(false, 'The building has no lift anywhere') }, { elevator: ans(null, null) }, [PAGE]);
   assert.deepEqual(one.access, {});
 });
 
@@ -80,4 +80,58 @@ test('seat-view page counts only when its title names the venue and is not an er
   assert.ok(!titleNamesVenue('Search results for adelphi - SeatPlan', 'Adelphi Theatre'));
   assert.ok(!titleNamesVenue('Quick security check - A View From My Seat', 'Adelphi Theatre'));
   assert.ok(!titleNamesVenue('Donmar Warehouse Seating Plan | SeatPlan', 'Adelphi Theatre'));
+});
+
+// ---- BRO-8112 ship-check findings: real quotes that used to publish wrong facts ----
+const both = (f, v, q, text) => agreeAccess({ [f]: ans(v, q) }, { [f]: ans(v, q) }, [{ url: 'https://x.org/a', text }]);
+
+test('a hearing-loop denial does not become "No assistive listening" (Charing Cross)', () => {
+  const t = 'Please note that we do not currently have a hearing induction loop installed.';
+  assert.deepEqual(both('assistiveListening', false, t, t).access, {});
+  assert.equal(both('hearingLoop', false, t, t).access.hearingLoop, false);
+});
+
+test('a loop that exists only on request / personally is not a "No hearing loop" (Dorfman)', () => {
+  const t = 'There is no installed loop, but you can request a personal neck-loop from the box office.';
+  assert.deepEqual(both('hearingLoop', false, t, t).access, {});
+});
+
+test('a loop at the box office or foyer is not an auditorium hearing loop (Criterion, Almeida)', () => {
+  const c = 'We have an induction loop system available in the foyer for the Box Office.';
+  assert.deepEqual(both('hearingLoop', true, c, c).access, {});
+  const ok = 'A hearing loop is installed in the auditorium and stalls.';
+  assert.equal(both('hearingLoop', true, ok, ok).access.hearingLoop, true);
+});
+
+test('"no lift to the circle" is about one level, not "No elevator" (Almeida)', () => {
+  const t = 'The theatre does not have a lift to the circle.';
+  assert.deepEqual(both('elevator', false, t, t).access, {});
+});
+
+test('a yes quote cut from a negated sentence is rejected', () => {
+  const t = 'There is no step free access to the stalls from the street.';
+  const r = both('stepFree', true, 'step free access to the stalls', t);
+  assert.deepEqual(r.access, {});
+  assert.match(r.rejected[0].reason, /negation/);
+});
+
+test('"lift to floor 3" does not prove step-free; bare "accessible performances" does not prove wheelchair', () => {
+  const a = 'Take the lift to floor 3 for the studio.';
+  assert.deepEqual(both('stepFree', true, a, a).access, {});
+  const b = 'We offer accessible performances throughout the season.';
+  assert.deepEqual(both('wheelchair', true, b, b).access, {});
+});
+
+test('notes: slogans and seating descriptions are dropped, and a note cannot contradict a denied flag', () => {
+  const page = { url: 'https://x.org/a', text: 'A black box studio space with unallocated seats on the 3rd floor. The venue aims to be as accessible as possible. Wheelchair users can sit in row A. There is no lift to every level. A lift serves the stalls bar.' };
+  const mk = (note) => agreeAccess(
+    { wheelchair: ans(true, 'Wheelchair users can sit in row A'), note },
+    { wheelchair: ans(true, 'Wheelchair users can sit in row A'), note }, [page]);
+  assert.equal(mk('A black box studio space with unallocated seats on the 3rd floor.').access.note, undefined);
+  assert.equal(mk('The venue aims to be as accessible as possible.').access.note, undefined);
+  assert.equal(mk('Wheelchair users can sit in row A.').access.note, 'Wheelchair users can sit in row A.');
+  const denied = agreeAccess(
+    { wheelchair: ans(true, 'Wheelchair users can sit in row A'), elevator: ans(false, 'There is no lift to every level'), note: 'A lift serves the stalls bar.' },
+    { wheelchair: ans(true, 'Wheelchair users can sit in row A'), elevator: ans(false, 'There is no lift to every level'), note: 'A lift serves the stalls bar.' }, [page]);
+  assert.equal(denied.access.note, undefined);
 });

@@ -60,14 +60,15 @@ function cachePath(url) {
 async function getHtml(url) {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   const cp = cachePath(url);
-  if (fs.existsSync(cp)) return JSON.parse(fs.readFileSync(cp, 'utf8')).html;
+  if (!args.refresh && fs.existsSync(cp)) { const c = JSON.parse(fs.readFileSync(cp, 'utf8')).html; if (c) return c; }
   const { fetchPage } = require('./lib/scraper');
   let html = null;
   try {
     const r = await fetchPage(url, { skipVerify: true });
     html = r && r.content ? String(r.content) : null;
   } catch { html = null; }
-  fs.writeFileSync(cp, JSON.stringify({ url, html, at: new Date().toISOString() }));
+  // A failed fetch is never cached: a transient outage must not freeze a venue as "no page" for good.
+  if (html) fs.writeFileSync(cp, JSON.stringify({ url, html, at: new Date().toISOString() }));
   return html;
 }
 
@@ -192,9 +193,10 @@ async function viewFromSeatLink(v) {
 
 // ---------- main ----------
 
-function venueList() {
+function venueList(scoped = true) {
   const info = readJson(INFO_PATH, { venues: {} }).venues;
   let out = Object.entries(info).map(([key, v]) => ({ key, market: key.split('/')[0], slug: key.split('/')[1], name: v.name, website: v.fields.website || null }));
+  if (!scoped) return out;
   if (args.market) out = out.filter((v) => v.market === args.market);
   if (args.only) { const only = new Set(String(args.only).split(',')); out = out.filter((v) => only.has(v.slug)); }
   if (args.limit) out = out.slice(0, Number(args.limit));
@@ -213,7 +215,7 @@ async function main() {
     const meta = readJson(META_PATH, {});
     let names = Object.keys(meta).filter((k) => k !== '_meta');
     if (args.only) { const only = new Set(String(args.only).split(',')); names = names.filter((n) => only.has(slugify(n))); }
-    const todo = names.filter((n) => args.refresh || !raw.broadway[n] || raw.broadway[n].gemini?.error || raw.broadway[n].openai?.error);
+    const todo = names.filter((n) => args.refresh || !raw.broadway[n] || !raw.broadway[n].gemini || !raw.broadway[n].openai || raw.broadway[n].gemini.error || raw.broadway[n].openai.error);
     console.log(`broadway websites: ${names.length}, to research: ${todo.length}`);
     await ask.pool(todo, workers, async (n) => {
       const p = websitePrompt(n);
@@ -230,7 +232,7 @@ async function main() {
 
   if (phases.has('access')) {
     const withSite = venues.filter((v) => v.website);
-    const todo = withSite.filter((v) => args.refresh || !raw.access[v.key] || raw.access[v.key].gemini?.error || raw.access[v.key].openai?.error);
+    const todo = withSite.filter((v) => args.refresh || !raw.access[v.key] || !raw.access[v.key].gemini || !raw.access[v.key].openai || raw.access[v.key].gemini.error || raw.access[v.key].openai.error);
     console.log(`access: ${withSite.length} venues with a website, to research: ${todo.length}, cap $${ask.spend.maxUsd}`);
     let done = 0;
     await ask.pool(todo, workers, async (v) => {
@@ -265,7 +267,8 @@ async function main() {
   }
 
   // ---------- build the published file from the checkpoint ----------
-  const all = venueList();
+  // The published file always covers every venue; --only/--market/--limit only scope the research above.
+  const all = venueList(false);
   const out = {};
   const rejects = {};
   for (const v of all) {

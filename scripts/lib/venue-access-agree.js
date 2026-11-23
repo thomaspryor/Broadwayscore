@@ -18,17 +18,35 @@
 const FIELDS = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
 
 // A quote must mention the topic it is offered as evidence for.
+// Narrow on purpose (BRO-8112 review): "hearing" or "loop" alone must not prove an assistive
+// listening claim, "lift" alone must not prove step-free, bare "accessible" must not prove wheelchair.
 const TOPIC = {
-  wheelchair: /wheelchair|step[- ]?free|level access|ramp|accessible|disabled|mobility/i,
-  stepFree: /step[- ]?free|level access|no steps|ramp|lift|elevator|flat|ground floor|stair[- ]?free|without (any )?steps/i,
+  wheelchair: /wheelchair|step[- ]?free|level access|ramp|mobility|\bada\b|accessible (seat|space|entrance|toilet|bay|place)/i,
+  stepFree: /step[- ]?free|level access|no steps|ramp|stair[- ]?free|without (any )?steps/i,
   elevator: /\blifts?\b|elevators?/i,
   hearingLoop: /loop|induction|t[- ]?coil|telecoil/i,
-  assistiveListening: /assistive|infra-?red|listening|headset|headphone|receiver|hearing|loop|captio|induction|amplif/i,
+  assistiveListening: /assistive|infra-?red|listening|headset|headphone|receiver|captio|amplif|hearing|loop|induction/i,
 };
+// A denial ("No assistive listening") is held to a stricter topic than a yes: a loop being absent says
+// nothing about infra-red or headset systems, so only a quote about assistive listening itself may deny it.
+const TOPIC_DENY = { assistiveListening: /assistive|infra-?red|listening|headset|headphone|receiver|captio|amplif/i };
+
+// A "no lift" that is only about one level, or a loop that is only in the foyer / box office,
+// says nothing about the building as a whole: do not turn it into a flat yes or no.
+const PARTIAL = {
+  elevator: /\b(to|up to|access to|reach)\s+(the\s+)?(circle|balcony|gallery|upper|bar|first|second|third|fourth|floor|level|dress|grand|studio|rehearsal|offices?|roof)/i,
+  hearingLoop: /box office|foyer|kiosk|\bbar\b|reception|portable|neck[- ]?loop|personal|on request|upon request|available to (borrow|request)/i,
+};
+const WHOLE_VENUE = /auditorium|theatre|theater|stalls|performance|seating|seats/i;
+const NEGATION_BEFORE = /\b(no|not|cannot|without|nor|never|isn t|aren t|don t|doesn t|unable)\s*$/;
 
 const MAX_NOTE = 240;
 // The page note must itself be about access, not a slogan.
-const NOTE_TOPIC = /wheelchair|step[- ]?free|level access|ramp|accessib|disabled|mobility|\blifts?\b|elevator|hearing|loop|induction|infra-?red|assistive|listening|captio|seat/i;
+// Concrete access wording only: slogans ("aims to be as accessible as possible") and plain seating
+// descriptions do not qualify as a note.
+const NOTE_TOPIC = /wheelchair|step[- ]?free|level access|ramp|accessib|\bada\b|disabled|mobility|\blifts?\b|elevator|hearing|loop|induction|infra-?red|assistive|listening|captio/i;
+// Slogans, promotion and pointers are not facts, whatever access word they contain.
+const NOTE_SLOGAN = /\b(aims?|aspires?|strives?|committed|commitment|proud|voted|award|believe|pride|welcoming|inclusive|inclusion|everyone|all visitors|contact|please|learn more|visit our|details about|questions|range of|variety of)\b/i;
 
 /** Lowercase, strip accents/punctuation, collapse whitespace: the form quotes are compared in. */
 function normalize(t) {
@@ -47,6 +65,16 @@ function quoteInText(quote, text) {
   const q = normalize(quote);
   if (q.split(' ').length < 3) return false; // a one or two word "quote" proves nothing
   return ` ${normalize(text)} `.includes(` ${q} `);
+}
+
+/** True when the 1-3 words right before the quote's first occurrence in text are a negation. */
+function negatedInText(quote, text) {
+  const q = normalize(quote);
+  const hay = ` ${normalize(text)} `;
+  const at = hay.indexOf(` ${q} `);
+  if (at < 0) return false;
+  const before = hay.slice(0, at).trim().split(' ').slice(-1).join(' ');
+  return NEGATION_BEFORE.test(before + ' ') || NEGATION_BEFORE.test(before);
 }
 
 /** Answer shape per field: {value: true|false|null, quote: string|null}. */
@@ -83,7 +111,18 @@ function agreeAccess(g, o, pages) {
     const ua = urlOf(a.quote);
     const ub = urlOf(b.quote);
     if (!ua || !ub) { rejected.push({ field: f, reason: 'quote not found in the official page text' }); continue; }
-    if (!TOPIC[f].test(a.quote) || !TOPIC[f].test(b.quote)) { rejected.push({ field: f, reason: 'quote is off topic' }); continue; }
+    const topic = a.value === false && TOPIC_DENY[f] ? TOPIC_DENY[f] : TOPIC[f];
+    if (!topic.test(a.quote) || !topic.test(b.quote)) { rejected.push({ field: f, reason: 'quote is off topic' }); continue; }
+    const texts = pages.map((p) => p.text).join(' ');
+    // A yes whose quote sits right after "no" / "not" in the page is a cut-off negation.
+    if (a.value === true && (negatedInText(a.quote, texts) || negatedInText(b.quote, texts))) { rejected.push({ field: f, reason: 'quote follows a negation' }); continue; }
+    // A partial claim (one floor, box office only, loop on request) is not a whole-venue fact.
+    const partial = (q) => {
+      if (f === 'elevator') return PARTIAL.elevator.test(q);
+      if (f === 'hearingLoop') return a.value === false ? PARTIAL.hearingLoop.test(q) || /\b(but|however)\b/i.test(q) : PARTIAL.hearingLoop.test(q) && !WHOLE_VENUE.test(q);
+      return false;
+    };
+    if (partial(a.quote) || partial(b.quote)) { rejected.push({ field: f, reason: 'quote is about part of the venue, not the whole building' }); continue; }
     access[f] = a.value;
     // Keep the shorter of the two verified quotes as the audit record.
     const [q, url] = a.quote.length <= b.quote.length ? [a.quote, ua] : [b.quote, ub];
@@ -95,9 +134,13 @@ function agreeAccess(g, o, pages) {
   const nb = typeof o.note === 'string' ? o.note.trim() : '';
   if (na && nb && quoteInText(na, pages.map((p) => p.text).join(' ')) && quoteInText(nb, pages.map((p) => p.text).join(' '))) {
     const note = (na.length <= nb.length ? na : nb);
-    if (note.length <= MAX_NOTE && NOTE_TOPIC.test(note) && Object.keys(access).length) {
+    // A note that talks about a feature the flags deny would contradict the pill next to it.
+    const affirmative = !/\b(no|not|cannot|unfortunately|regret|only|except|unable)\b/i.test(note);
+    const contradicts = affirmative && FIELDS.some((f) => access[f] === false && TOPIC[f].test(note));
+    const noteUrl = urlOf(note);
+    if (note.length <= MAX_NOTE && NOTE_TOPIC.test(note) && !NOTE_SLOGAN.test(note) && Object.keys(access).length && !contradicts && noteUrl) {
       access.note = note;
-      evidence.note = { quote: note, url: urlOf(note) };
+      evidence.note = { quote: note, url: noteUrl };
     }
   }
   // Nothing agreed on a flag: a bare note would float free of any fact, so drop it.
@@ -159,4 +202,4 @@ function titleNamesVenue(title, venueName) {
   return words.every((w) => t.includes(w));
 }
 
-module.exports = { FIELDS, TOPIC, normalize, quoteInText, agreeAccess, htmlToText, accessLinks, titleNamesVenue };
+module.exports = { FIELDS, TOPIC, PARTIAL, normalize, quoteInText, negatedInText, agreeAccess, htmlToText, accessLinks, titleNamesVenue };
