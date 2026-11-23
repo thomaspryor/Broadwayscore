@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
-import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
+import { ScoreBadge, StatGrid, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { versionedImagePath } from '@/lib/versioned-image-path';
 import { getBroadwayDuration } from '@/lib/date-utils';
@@ -203,25 +203,15 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
           </div>
 
           {/* Stats row */}
-          <div className={`grid ${theater.capacity ? 'grid-cols-3' : 'grid-cols-2'} gap-3 mb-4`}>
-            {theater.capacity && (
-              <div className="card p-3 sm:p-4 text-center">
-                <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Seats</p>
-                <p className="text-xl sm:text-2xl font-bold text-white">{theater.capacity.toLocaleString('en-US')}</p>
-              </div>
-            )}
-            <div className="card p-3 sm:p-4 text-center">
-              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
-              <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
-              <p className="text-[10px] text-fg-muted mt-0.5">1970 to present</p>
-            </div>
-            <div className="card p-3 sm:p-4 text-center">
-              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
-              <div className="flex justify-center">
-                <ScoreBadge score={avgScore ?? undefined} size="sm" />
-              </div>
-            </div>
-          </div>
+          <StatGrid
+            columns={theater.capacity ? 3 : 2}
+            className="mb-4"
+            stats={[
+              ...(theater.capacity ? [{ label: 'Seats', value: theater.capacity.toLocaleString('en-US') }] : []),
+              { label: 'Past Shows', value: theater.allShows.length, subtitle: '1970 to present' },
+              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" /> },
+            ]}
+          />
 
           {/* Theater Scorecard — 5-dim venue ratings (top of page, expanded by default) */}
           {theater.venueScores && (
