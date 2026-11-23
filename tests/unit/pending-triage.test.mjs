@@ -1679,6 +1679,32 @@ describe('BRO-8195: a logged-in read that never reached the article never reache
     assert.match(d.promoteSkippedReason, /^subscriber-browser-no-article: the logged-in browser redirected off the article/);
     assert.ok(!H.pendingSubscriberStubEligible(d));
   });
+
+  test('a miss after the login dropped stamps nothing and stops the run (session-lost)', async () => {
+    const rel2 = '_pending/some-like-it-hot-2022/washpost--lost.json';
+    const body = { showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0 + '?x=lost', pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed (BRO-8091)' };
+    fs.writeFileSync(path.join(rt, rel2), JSON.stringify(body));
+    const cand = { reviewId: rel2, filePath: path.join(rt, rel2), url: body.url, showId: body.showId, file: 'washpost--lost.json', pending: true };
+    let called = false;
+    const r = await H.processPendingCandidate(cand, '<html>sign in</html>', { processShow: async () => { called = true; return {}; }, tracker: new Set(), finalUrl: 'https://www.washingtonpost.com/', textLen: 40, probe: async () => ({ text: 'Sign in', len: 7 }), minAuthChars: 1000 });
+    assert.equal(r.outcome, 'session-lost');
+    assert.equal(called, false);
+    assert.deepEqual(JSON.parse(fs.readFileSync(cand.filePath, 'utf8')), body, 'the stub is untouched');
+  });
+
+  test('a drain that rehomes the stub to a sibling: the rehomed copy is tracked for the commit', async () => {
+    const rel3 = '_pending/some-like-it-hot-2022/washpost--moved.json';
+    const body = { showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0 + '?x=moved', pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: x (BRO-8091)' };
+    fs.writeFileSync(path.join(rt, rel3), JSON.stringify(body));
+    const cand = { reviewId: rel3, filePath: path.join(rt, rel3), url: body.url, showId: body.showId, file: 'washpost--moved.json', pending: true };
+    const dest = path.join(rt, '_pending/some-like-it-hot-2023/washpost--moved.json');
+    const drain = async () => { fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, JSON.stringify({ ...body, rehomedFrom: body.showId })); fs.unlinkSync(cand.filePath); return { promoted: 0 }; };
+    const tracker = new Set();
+    const r = await H.processPendingCandidate(cand, '<html>article</html>', { processShow: drain, tracker, finalUrl: URL0, textLen: 4000 });
+    assert.equal(r.outcome, 'settled');
+    assert.match(r.detail, /rehomed to _pending\/some-like-it-hot-2023/);
+    assert.ok(tracker.has(path.resolve(cand.filePath)) && tracker.has(path.resolve(dest)));
+  });
 });
 
 describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on name and date', () => {
@@ -1722,6 +1748,22 @@ describe('BRO-8195: a Theatre Record stub whose text never names the show is ano
     const real = { ...annaX, fullText: 'Go go go Joseph! The Technicolor coat is back at the Palladium. '.repeat(5), publishDate: '2019-07-12' };
     assert.equal(T.noUrlStubVerdict(real, { show: J19, allShows: [J19], file: 'x--y.json', showHasFile: () => false, siblingHasFile: () => false }), null);
   });
+
+  test('two title words decide a long title: a real review that never says "Technicolor" stays; "Joseph" alone is not enough', () => {
+    // Real data 2026-11-23: times-uk--dominic-maxwell says joseph + dreamcoat only; the Anna X stubs say only joseph.
+    assert.equal(T.textMissesTitle('Joseph and his dreamcoat dazzle at the Palladium.', J19.title), false);
+    assert.equal(T.textMissesTitle('Joseph Charlton has written a sharp play about Anna Sorokin.', J19.title), true);
+    assert.equal(T.textMissesTitle('A thrilling night of Hamlet.', 'Hamlet'), false);
+    assert.equal(T.textMissesTitle('A thrilling night of Macbeth.', 'Hamlet'), true);
+  });
+
+  test('outside the window, a show that already files the same outlet--critic settles as a duplicate before any rehome', () => {
+    const J21 = { ...J19, id: 'joseph-2021', previewsStartDate: '2021-06-24', openingDate: '2021-07-08', closingDate: '2021-09-05' };
+    const s = { source: 'theatre-record', url: null, publishDate: '2021-07-12', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/07/1-joseph', fullText: 'Joseph and his Amazing Technicolor Dreamcoat is back. '.repeat(5) };
+    const v = T.noUrlStubVerdict(s, { show: J19, allShows: [J19, J21], file: 'x--y.json', showHasFile: (n) => n === 'x--y.json', siblingHasFile: () => false });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /this show already files x--y\.json/);
+  });
 });
 
 describe('BRO-8195 nearSameArticleUrl: one article under a typo / censored / old-host url settles as same-article', () => {
@@ -1743,6 +1785,10 @@ describe('BRO-8195 nearSameArticleUrl: one article under a typo / censored / old
     assert.equal(nearSameArticleUrl('https://deadline.com/2026/09/rocky-review-broadway-1237100498/', 'https://deadline.com/2026/09/rocky-review-broadway-1237100499/'), false);
     assert.equal(nearSameArticleUrl('https://www.lsa.example/reviews/story.asp?ID=123456', 'https://www.lsa.example/reviews/story.asp?ID=123457'), false);
     assert.equal(nearSameArticleUrl('https://www.theatermania.com/news/review_12/', 'https://www.theatermania.com/off-broadway/review_12.html'), false);
+    // NYT archive reviews share one path and differ only in ?res= (every non-tracking param is identity).
+    assert.equal(nearSameArticleUrl('https://www.nytimes.com/movie/review?res=9A0DE3D81E3EF93BA15751C1A961958260', 'https://www.nytimes.com/movie/review?res=9A0DE3D81E3EF93BA15751C1A961958261'), false);
+    assert.equal(nearSameArticleUrl('https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63', 'https://theater.nytimes.com/mem/theater/treview.html?res=9A01E2D9173BF932A05750C0A9659C8B63'), false);
+    assert.equal(nearSameArticleUrl('https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63', 'https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63&pagewanted=all&smid=tw'), true);
   });
 });
 

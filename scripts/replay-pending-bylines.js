@@ -448,7 +448,8 @@ function nearSameArticleUrl(u1, u2) {
       const labels = x.hostname.toLowerCase().split('.');
       const site = labels.slice(labels.length >= 3 && /^(co|com|org|ac)$/.test(labels[labels.length - 2]) ? -3 : -2).join('.');
       // Id-routed urls (LSA story.asp?ID=) are different articles per id: id-like query params stay in the key.
-      const ids = [...x.searchParams].filter(([k]) => /^(id|p|sid|aid|story|article|articleid|storyid)$/i.test(k)).map(([k, v]) => `${k.toLowerCase()}=${v}`).sort().join('&');
+      // Every query param but tracking ones is identity (NYT treview.html?res=, wp ?p=, LSA ?ID=).
+      const ids = [...x.searchParams].filter(([k]) => !/^(utm_|fbclid$|gclid$|mc_|ref$|src$|source$|cmp$|smid$|smtyp$|_r$|pagewanted$|partner$|sniply)/i.test(k)).map(([k, v]) => `${k.toLowerCase()}=${v}`).sort().join('&');
       const p = decodeURIComponent(x.pathname).toLowerCase().replace(/\.html?$/, '').replace(/\/+$/, '') + (ids ? `?${ids}` : '');
       return { site, path: p, last: p.split('/').filter(Boolean).pop() || '' };
     } catch { return null; }
@@ -456,6 +457,7 @@ function nearSameArticleUrl(u1, u2) {
   const a = parse(u1), b = parse(u2);
   if (!a || !b || a.site !== b.site) return false;
   if (a.path === b.path) return true;
+  if (a.path.split('?')[1] !== b.path.split('?')[1]) return false; // different query identity = different article
   // Ids decide: two article ids (a 4+ digit run, or an id query param) that differ are two articles.
   const idsOf = (x) => (x.path.match(/\d{4,}/g) || []).join(',');
   if (idsOf(a) !== idsOf(b)) return false;

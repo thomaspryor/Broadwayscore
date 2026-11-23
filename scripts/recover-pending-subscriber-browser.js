@@ -53,10 +53,11 @@ async function main() {
           try { r = await s.extract(c.url); } catch (e) { r = { error: e.message }; }
           if (r.error || !r.text) { console.log(`  [${c.reviewId}] ${r.error || 'no text'} (not stamped)`); stats.outcomes.skipped = (stats.outcomes.skipped || 0) + 1; continue; }
           let pr;
-          try { pr = await H.processPendingCandidate(c, await s.page.content(), { dryRun, finalUrl: s.page.url(), textLen: r.len }); } catch (e) { pr = { outcome: 'error', detail: e.message }; }
+          try { pr = await H.processPendingCandidate(c, await s.page.content(), { dryRun, finalUrl: s.page.url(), textLen: r.len, probe: s.probe, minAuthChars: s.minAuthChars }); } catch (e) { pr = { outcome: 'error', detail: e.message }; }
           console.log(`  [${c.reviewId}] ${pr.outcome}${pr.detail ? ` (${pr.detail})` : ''}`);
           stats.outcomes[pr.outcome] = (stats.outcomes[pr.outcome] || 0) + 1;
           if (pr.outcome === 'promoted') stats.recovered++;
+          if (pr.outcome === 'session-lost') { console.log(`[${a.name}] session lost: stopping this outlet, nothing stamped after it`); break; }
         }
       } finally { await s.close(); }
     }

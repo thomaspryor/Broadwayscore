@@ -427,10 +427,24 @@ function triagePendingStub(data, ctx = {}) {
  */
 const TITLE_KEY_STOP = new Set(['the', 'and', 'into', 'with', 'from', 'that', 'this', 'your', 'what', 'when', 'where', 'show', 'musical', 'play']);
 /** The title's most distinctive word: its longest word of 4+ letters outside a small stop list. Pure. */
+function titleKeyWords(title) {
+  return [...new Set(String(title || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z]+/)
+    .filter((w) => w.length >= 4 && !TITLE_KEY_STOP.has(w)))];
+}
 function distinctiveTitleWord(title) {
-  const words = String(title || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z]+/)
-    .filter((w) => w.length >= 4 && !TITLE_KEY_STOP.has(w));
-  return words.sort((a, b) => b.length - a.length)[0] || null;
+  return titleKeyWords(title).sort((a, b) => b.length - a.length)[0] || null;
+}
+/**
+ * The text never names the title: no key word at all for a one-word title, fewer than two of them for a longer one
+ * (a real Joseph review may never say "Technicolor" but says "Joseph" and "Dreamcoat"; Anna X by Joseph Charlton
+ * says only "Joseph"). Pure.
+ */
+function textMissesTitle(text, title) {
+  const keys = titleKeyWords(title);
+  if (!keys.length) return false;
+  const t = String(text || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  const hits = keys.filter((w) => t.includes(w)).length;
+  return keys.length === 1 ? hits === 0 : hits < 2;
 }
 
 function noUrlStubVerdict(data, ctx = {}) {
@@ -453,10 +467,12 @@ function noUrlStubVerdict(data, ctx = {}) {
   // Theatre Record's PDF pages run several shows together: 11 "Joseph" stubs were reviews of Anna X (by playwright
   // Joseph Charlton). Text that never names the title's distinctive word is another show's review. A url-less stub
   // is never promoted by the drain, so this settle loses nothing; clearing promoteSkippedReason re-opens it.
-  const key = data.source === 'theatre-record' && ctx.show && distinctiveTitleWord(ctx.show.title);
   const text = String(data.fullText || '');
-  if (key && text.length >= 200 && !text.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').includes(key)) {
-    return { verdict: 'junk', reason: `url-less Theatre Record text never names "${ctx.show.title}" (no "${key}"): another show's review from the archive page` };
+  if (data.source === 'theatre-record' && ctx.show && text.length >= 200 && textMissesTitle(text, ctx.show.title)) {
+    return { verdict: 'junk', reason: `url-less Theatre Record text never names "${ctx.show.title}" (${titleKeyWords(ctx.show.title).join('/')}): another show's review from the archive page` };
+  }
+  if (outside && ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
   }
   if (outside) {
     const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
@@ -534,4 +550,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { noUrlStubVerdict, distinctiveTitleWord, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };
+module.exports = { noUrlStubVerdict, distinctiveTitleWord, textMissesTitle, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };

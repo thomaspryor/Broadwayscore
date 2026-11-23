@@ -154,6 +154,24 @@ function loadPendingCandidates({ prefixes, showsAllowlist }) {
   return out;
 }
 
+/** The rehomed copy of a vanished stub: same file name (or name--hash) under another _pending show, rehomedFrom this show. */
+function findRehomedCopy(candidate) {
+  const root = path.join(REVIEW_TEXTS_DIR, '_pending');
+  const stem = candidate.file.replace(/\.json$/, '');
+  let dirs = [];
+  try { dirs = fs.readdirSync(root); } catch { return null; }
+  for (const d of dirs) {
+    if (d === candidate.showId) continue;
+    let files;
+    try { files = fs.readdirSync(path.join(root, d)); } catch { continue; }
+    for (const f of files) {
+      if (f !== candidate.file && !(f.startsWith(`${stem}--`) && f.endsWith('.json'))) continue;
+      try { const j = JSON.parse(fs.readFileSync(path.join(root, d, f), 'utf8')); if (j.rehomedFrom === candidate.showId && j.url === candidate.url) return path.join(root, d, f); } catch { /* unreadable: not ours */ }
+    }
+  }
+  return null;
+}
+
 /**
  * BRO-8195: promote a _pending subscriber stub from the logged-in page's own html. The drain
  * (replay-pending-bylines.js processShow) does every check it does for a paid fetch (identity,
@@ -173,6 +191,14 @@ async function processPendingCandidate(candidate, html, opts = {}) {
   if (!before) return { outcome: 'vanished' };
   if (!pendingSubscriberStubEligible(before) || before.url !== candidate.url) return { outcome: 'kept', detail: 'stub changed since listing' };
   const miss = pendingBrowserMissReason({ finalUrl: opts.finalUrl, textLen: opts.textLen });
+  if (miss && opts.probe) {
+    // A lost login or an access wall is never evidence about the article (BRO-7171): re-probe the session first.
+    let p = null;
+    try { p = await opts.probe(); } catch (e) { p = { error: e.message }; }
+    if (!p || p.error || !p.text || (p.len || 0) < (opts.minAuthChars || PENDING_MIN_ARTICLE_CHARS)) {
+      return { outcome: 'session-lost', detail: `${miss}; session probe failed (${(p && p.error) || `${(p && p.len) || 0} chars`})` };
+    }
+  }
   if (miss) {
     if (dry) return { outcome: 'settled', detail: `${miss} (dry run)` };
     withReviewTextsLock(`settle:${candidate.file}`, () => {
@@ -198,6 +224,7 @@ async function processPendingCandidate(candidate, html, opts = {}) {
   const showDir = path.join(REVIEW_TEXTS_DIR, candidate.showId);
   const listShow = () => { try { return new Set(fs.readdirSync(showDir)); } catch { return new Set(); } };
   const had = listShow();
+  if (!dry) tracker.add(path.resolve(candidate.filePath)); // a drain that throws after the reopen still lands the reopen
   const res = await drain(candidate.showId, {
     files: [candidate.file], dryRun: dry, explicitScope: false, // never an owner alert from this path: the stub settles with a typed reason below
     fetch: async (u) => (u === candidate.url ? { content: html, success: true, method: 'subscriber-browser' } : null),
@@ -209,7 +236,12 @@ async function processPendingCandidate(candidate, html, opts = {}) {
   for (const f of added) tracker.add(path.resolve(path.join(showDir, f)));
   if (res.promoted) return { outcome: 'promoted', detail: added.join(', ') };
   const after = read();
-  if (!after) return { outcome: 'settled', detail: 'stub removed by the drain (redundant copy)' };
+  if (!after) {
+    // Rehomed (rehomeStubFile writes _pending/<sibling>/<file or file--hash>): the copy must land with the deletion.
+    const moved = findRehomedCopy(candidate);
+    if (moved) { tracker.add(path.resolve(moved)); return { outcome: 'settled', detail: `rehomed to ${path.relative(REVIEW_TEXTS_DIR, moved)}` }; }
+    return { outcome: 'settled', detail: 'stub removed by the drain (redundant copy)' };
+  }
   if (after.promoteSkippedReason || after.rssIdentityRejected) return { outcome: 'settled', detail: String(after.promoteSkippedReason || 'rss identity') };
   withReviewTextsLock(`settle:${candidate.file}`, () => {
     const d = read();

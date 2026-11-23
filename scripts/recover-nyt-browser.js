@@ -167,15 +167,16 @@ async function main() {
       }
 
       // BRO-8195: a paywalled _pending stub is promoted by the drain from this logged-in page's html,
-      // never gap-gated into a show file. A miss is never stamped on the stub.
+      // never gap-gated into a show file. A lost session is never stamped on the stub (re-probed first).
       if (c.pending) {
         if (result.error || !result.text) { console.log(`  ✗ ${result.error || 'no text extracted'} (_pending stub, not stamped)`); stats.skipped = (stats.skipped || 0) + 1; continue; }
         let pr;
-        try { pr = await processPendingCandidate(c, await page.content(), { dryRun, finalUrl: page.url(), textLen: result.len }); } catch (e) { pr = { outcome: 'error', detail: e.message }; }
+        try { pr = await processPendingCandidate(c, await page.content(), { dryRun, finalUrl: page.url(), textLen: result.len, probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS }); } catch (e) { pr = { outcome: 'error', detail: e.message }; }
         console.log(`  -> _pending stub: ${pr.outcome}${pr.detail ? ` (${pr.detail})` : ''}`);
         if (pr.outcome === 'promoted') stats.recovered++;
         stats.pending = stats.pending || {};
         stats.pending[pr.outcome] = (stats.pending[pr.outcome] || 0) + 1;
+        if (pr.outcome === 'session-lost') { stats.sessionLost = pr.detail; break; }
         continue;
       }
 
