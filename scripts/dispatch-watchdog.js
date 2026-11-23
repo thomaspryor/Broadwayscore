@@ -410,7 +410,7 @@ function diskPressureInputs() {
 
 // BRO-8167: per-job process-tree RSS cap over the live job leases.
 const MEMORY_CAP_STATE_PATH = path.join(REPO, 'data', 'audit', 'job-memory-cap-state.json');
-async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledger = dispatchLedger, killFn = undefined, statePath = MEMORY_CAP_STATE_PATH, capGB = undefined } = {}) {
+async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledger = dispatchLedger, killFn = undefined, statePath = MEMORY_CAP_STATE_PATH, capGB = undefined, alert = undefined } = {}) {
   const cap = require('./lib/job-memory-cap.js');
   const runner = require('./lib/bsc-runner.js');
   return cap.runLeasePass({
@@ -419,11 +419,11 @@ async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledge
     statePath,
     capGB: capGB || cap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB),
     dryRun, ledger, ...(killFn ? { killFn } : {}),
-    alert: ({ taskId, reason }) => pageOwner({
+    alert: alert || (({ taskId, reason }) => pageOwner({
       conditionKey: `job-memory-cap:${taskId}`,
       title: `Killed runaway worker ${taskId} (memory cap)`,
       description: `Watchdog killed the headless worker for ${taskId}: ${reason}. It is recorded as a failed job; re-dispatch once the cause is understood.`,
-    }),
+    })),
   });
 }
 

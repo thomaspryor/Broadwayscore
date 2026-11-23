@@ -365,7 +365,7 @@ function mcHarness() {
   const ledgerFake = { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry: (e) => rowsLogged.push(e) };
   const jobs = [{ key: 'job-x', pid: 100, taskId: 'linear:BRO-1', jobId: 'job-x' }];
   const run = (gb) => require('./dispatch-watchdog.js').memoryCapPass({
-    dryRun: false, rows: mcRows(gb), jobs, ledger: ledgerFake, statePath: pathMc.join(dir, 's.json'), capGB: 8,
+    dryRun: false, rows: mcRows(gb), jobs, ledger: ledgerFake, statePath: pathMc.join(dir, 's.json'), capGB: 8, alert: () => {},
     killFn: async (pids) => { killed.push(pids); },
   });
   return { run, rowsLogged, killed, dir };
