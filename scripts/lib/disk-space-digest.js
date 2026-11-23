@@ -81,4 +81,40 @@ function readDiskSpace(dfOutput) {
   return { total: toGB(cols[1]), free: toGB(cols[3]) };
 }
 
-module.exports = { diskSpaceResults, readDiskSpace };
+// BRO-8179: /private/tmp growth on this Mac. Test suites and session clones
+// leaked ~200k entries / ~20GB a day there (macOS clears it only at reboot)
+// until reap-stale-tmp.js ran hourly; on 2026-11-23 it held 384k entries /
+// 40GB. The reaper keeps it to roughly a day of inflow, so these thresholds
+// fire when the reaper stops running or inflow jumps, well before the disk
+// floor. gb may be NaN (du timed out on a huge tree): judged on count alone.
+function tmpSpaceResults(count, gb) {
+  const NAME = 'Infra: /private/tmp';
+  if (!Number.isFinite(count) || count < 0) {
+    return [{ name: NAME, status: 'warn', message: 'Could not read /private/tmp', hint: 'ls /private/tmp failed on this Mac.' }];
+  }
+  const where = `${count.toLocaleString('en-US')} items${Number.isFinite(gb) ? `, ${gb}GB` : ', size unknown (du timed out)'}`;
+  const hint = 'Check the hourly reaper ran: grep STALE-TMP-REAP data/audit/worktree-gc.log | tail -3; run node scripts/lib/reap-stale-tmp.js by hand.';
+  if (count > 150000 || gb > 25) return [{ name: NAME, status: 'error', message: `${where}: the temp reaper is not keeping up`, hint }];
+  if (count > 50000 || gb > 10) return [{ name: NAME, status: 'warn', message: `${where}: growing`, hint }];
+  return [{ name: NAME, status: 'ok', message: where }];
+}
+
+// Measure /private/tmp: top-level count (fast) + du GB (bounded).
+function readTmpSpace(root = '/private/tmp', { timeoutMs = 120000 } = {}) {
+  const fs = require('fs');
+  let count = NaN;
+  try { count = fs.readdirSync(root).length; } catch { /* NaN */ }
+  let gb = NaN;
+  try {
+    const out = require('child_process').execFileSync('du', ['-sk', root], { encoding: 'utf8', timeout: timeoutMs, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024 });
+    const kb = Number(out.split(/\s/)[0]);
+    if (Number.isFinite(kb)) gb = Math.round((kb / 1024 / 1024) * 10) / 10;
+  } catch (e) {
+    // du exits 1 on unreadable entries (other users' files) but still prints a total.
+    const kb = Number(String((e && e.stdout) || '').split(/\s/)[0]);
+    if (e && e.status === 1 && !e.signal && kb > 0) gb = Math.round((kb / 1024 / 1024) * 10) / 10;
+  }
+  return { count, gb };
+}
+
+module.exports = { diskSpaceResults, readDiskSpace, tmpSpaceResults, readTmpSpace };

@@ -1251,6 +1251,24 @@ async function main() {
     console.error(`[digest] WARN could not read this Mac's free disk: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-8179: /private/tmp item count + GB, so tmp growth shows before the
+  // disk runs out. warn and error are both named (the reaper should keep it
+  // well under the warn line; crossing it means the reaper stopped).
+  if (!skipMacLocal) try {
+    const { readTmpSpace, tmpSpaceResults } = require('./lib/disk-space-digest.js');
+    const { count, gb } = readTmpSpace();
+    for (const row of tmpSpaceResults(count, gb)) {
+      console.log(`[digest] ${row.name} (this Mac): ${row.status} ${row.message}`);
+      if (row.status === 'error' || row.status === 'warn') {
+        if (!sections.health) sections.health = {};
+        if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+        sections.health.errors.push({ name: `${row.name} (this Mac)`, message: row.message, hint: row.hint });
+      }
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not read this Mac's /private/tmp: ${String(err.message).slice(0, 120)}`);
+  }
+
   // BRO-2049: the shared checkout going shallow (a --shallow-since fetch) silently broke every session's
   // did-it-land proof for ~3 weeks. health-check.js cannot measure it (GitHub Actions only, and CI checkouts
   // are shallow by design), so this sender, which runs on the Mac that owns ~/Broadwayscore, evaluates it.

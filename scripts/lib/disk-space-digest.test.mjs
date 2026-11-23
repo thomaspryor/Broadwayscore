@@ -118,3 +118,23 @@ test('readDiskSpace returns NaN on junk rather than guessing a healthy number', 
     assert.ok(Number.isNaN(free), `${JSON.stringify(junk)} must not yield a number`);
   }
 });
+
+// BRO-8179: /private/tmp digest row.
+test('BRO-8179 tmpSpaceResults: thresholds and unknown size', async () => {
+  const { tmpSpaceResults, readTmpSpace } = (await import('node:module')).createRequire(import.meta.url)('./disk-space-digest.js');
+  assert.equal(tmpSpaceResults(384253, 40)[0].status, 'error');
+  assert.equal(tmpSpaceResults(60000, 4)[0].status, 'warn');
+  assert.equal(tmpSpaceResults(12000, 12)[0].status, 'warn');
+  assert.equal(tmpSpaceResults(12000, 2)[0].status, 'ok');
+  assert.match(tmpSpaceResults(12000, 2)[0].message, /12,000 items, 2GB/);
+  assert.equal(tmpSpaceResults(200000, NaN)[0].status, 'error');
+  assert.match(tmpSpaceResults(1000, NaN)[0].message, /size unknown/);
+  assert.equal(tmpSpaceResults(NaN, 1)[0].status, 'warn');
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8179-tmpspace-'));
+  try {
+    fs.writeFileSync(path.join(d, 'a'), 'x'); fs.mkdirSync(path.join(d, 'b'));
+    const r = readTmpSpace(d);
+    assert.equal(r.count, 2); assert.ok(Number.isFinite(r.gb));
+  } finally { fs.rmSync(d, { recursive: true, force: true }); }
+});
