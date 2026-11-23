@@ -324,12 +324,8 @@ if [ "$LEDGER_OK" = "true" ]; then
 fi
 
 # >>> BRO-8156 scope reuse (the replay test strips this block to prove the red case)
-# One owner yes per feature branch covers later revisions of the SAME UI files (a re-run of visual-qa, a wrap fix):
-# allowed when a fresh ledger entry the owner approved on this branch lists every gated UI file and the current
-# verdict passes and shows HEAD's content. A new UI file or route is not in that list, so it still asks. Never records or mints (no TTL renewal,
-# no durable marker for a diff the owner did not see). Canonical-root copy only; any error -> the normal ask below.
-# The verdict must also show every gated file exactly as HEAD has it (visual-scope.js head-current), so an old passing
-# verdict plus a later unscreenshotted edit never rides the earlier yes.
+# One owner yes per branch covers later revisions of the SAME UI files when the passing verdict shows the pushed
+# content (visual-scope.js head-current) and a fresh ledger entry lists every gated file. Never records or mints.
 _CURRENT=0
 if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ] \
    && node "$CANONICAL_ROOT/scripts/lib/visual-scope.js" head-current --cwd="$SESSION_ROOT" --ref="$DIFF_REF" --verdict="$VERDICT_PATH" --files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null; then
@@ -343,9 +339,7 @@ if [ "$_CURRENT" = 1 ]; then
     exit 0
   fi
 fi
-# Freshness bound for the owner's yes (BRO-7295): the yes must come after the screenshots it approves. BRO-8156: with a
-# passing verdict, that is when screenshots of this file set were FIRST shown on the branch (verdict.scopeFirstAt, kept
-# by visual-qa across re-runs and tweaks; a new file restarts it), so re-running visual-qa never voids the yes.
+# BRO-7295 yes-after-screenshots bound; BRO-8156: from verdict.scopeFirstAt (first screenshots of this file set).
 _AFTER_ARG="--after-file=$VERDICT_PATH"
 _SFA=$(jq -r '.scopeFirstAt // empty' "$VERDICT_PATH" 2>/dev/null)
 if [ "$_CURRENT" = 1 ] && [ -n "$_SFA" ] && jq -e --arg g "$UI_FILES_GATED" '(.uiFiles // null) as $u | $u != null and (($g | split("\n") | map(select(. != ""))) - $u | length == 0)' "$VERDICT_PATH" >/dev/null 2>&1; then

@@ -1153,7 +1153,7 @@ test('BRO-8156 scope: yes recorded with files, later revision of the same files 
     recordApproval(repo, { branch: 'claude/bro-8086-tiles', commitSha: 'a'.repeat(40), contentHash: 'h1', uiFiles: ['src/app/theater/page.tsx', 'src/components/StatTile.tsx'] });
     assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-tiles', uiFiles: ['src/components/StatTile.tsx'] }).allowed, true);
     assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-tiles', uiFiles: ['src/app/theater/page.tsx', 'src/components/StatTile.tsx'] }).allowed, true);
-  } finally { rmSync(repo, { recursive: true, force: true }); }
+  } finally { rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 scope: a new UI file or route re-asks; another branch never inherits the yes', () => {
@@ -1164,7 +1164,7 @@ test('BRO-8156 scope: a new UI file or route re-asks; another branch never inher
     assert.equal(r.allowed, false);
     assert.deepEqual(r.newFiles, ['src/app/new/page.tsx']);
     assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-other', uiFiles: ['src/components/StatTile.tsx'] }).allowed, false);
-  } finally { rmSync(repo, { recursive: true, force: true }); }
+  } finally { rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 scope: shared branch names (main, HEAD, empty) never reuse a yes', () => {
@@ -1174,7 +1174,7 @@ test('BRO-8156 scope: shared branch names (main, HEAD, empty) never reuse a yes'
       recordApproval(repo, { branch: b, commitSha: 'a'.repeat(40), contentHash: 'h1', uiFiles: ['src/app/globals.css'] });
       assert.equal(queryScopeAllowed(repo, { branch: b, uiFiles: ['src/app/globals.css'] }).allowed, false, `branch "${b}"`);
     }
-  } finally { rmSync(repo, { recursive: true, force: true }); }
+  } finally { rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 scope: entries older than the ledger TTL do not count; legacy entries without files do not count', () => {
@@ -1187,7 +1187,7 @@ test('BRO-8156 scope: entries older than the ledger TTL do not count; legacy ent
     const r = queryScopeAllowed(repo, { branch: 'f', uiFiles: ['src/a.tsx'] });
     assert.equal(r.allowed, false);
     assert.match(r.reason, /has expired/, 'an expired yes says so (not an empty "new UI file(s):" list)');
-  } finally { rmSync(repo, { recursive: true, force: true }); }
+  } finally { rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 re-run: visual-qa carries scopeFirstAt for the same (or smaller) file set, restarts it for a new file', () => {
@@ -1260,7 +1260,7 @@ test('BRO-8156 commit-msg (real hook): blocks a UI commit with no verdict and ne
     assert.equal(out.status, 1);
     assert.doesNotMatch(out.stdout + out.stderr, /Prefix your commit message with: VISUAL-OK/);
     assert.match(out.stdout, /run \/visual-qa/);
-  } finally { rmSync(r.d, { recursive: true, force: true }); }
+  } finally { rmSync(r.d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 commit-msg (real hook): a passing verdict that screenshotted the staged contents passes; an edit after it blocks', () => {
@@ -1280,7 +1280,7 @@ test('BRO-8156 commit-msg (real hook): a passing verdict that screenshotted the 
     assert.equal(r.hook('feat: tiles').status, 1);
     // SKIP-VISUAL-CHECK still works for non-rendering edits.
     assert.equal(r.hook('SKIP-VISUAL-CHECK: types only').status, 0);
-  } finally { rmSync(r.d, { recursive: true, force: true }); }
+  } finally { rmSync(r.d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-8156 commit-msg (real hook): in a detached HEAD the verdict visual-qa wrote under no-branch counts', () => {
@@ -1296,5 +1296,5 @@ test('BRO-8156 commit-msg (real hook): in a detached HEAD the verdict visual-qa 
     writeFileSync(join(vd, 'verdict.json'), JSON.stringify({ schemaVersion: 2, overallPass: true, uiFileHashes: { 'src/components/A.tsx': r.g('hash-object', 'src/components/A.tsx') } }));
     const ok = r.hook('feat: tiles');
     assert.equal(ok.status, 0, ok.stdout + ok.stderr);
-  } finally { rmSync(r.d, { recursive: true, force: true }); }
+  } finally { rmSync(r.d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
