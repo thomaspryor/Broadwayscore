@@ -461,6 +461,9 @@ function noUrlStubVerdict(data, ctx = {}) {
   if (outside) {
     const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
     if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+    // No tracked production's window holds the date (Jamie 2024 stubs dated 2017, the untracked Sheffield run):
+    // the same settle the url triage gives a dated stub outside every window.
+    if (r.kind === 'outside-all') return { verdict: 'junk', reason: `url-less stub published ${pdIso} is outside this production's window and every tracked same-title production's` };
   }
   return null;
 }

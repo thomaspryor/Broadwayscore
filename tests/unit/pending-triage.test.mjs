@@ -1745,3 +1745,14 @@ describe('BRO-8195 nearSameArticleUrl: one article under a typo / censored / old
     assert.equal(nearSameArticleUrl('https://www.theatermania.com/news/review_12/', 'https://www.theatermania.com/off-broadway/review_12.html'), false);
   });
 });
+
+describe('BRO-8195: a url-less stub dated outside every tracked production settles', () => {
+  test('Jamie 2024 (Peacock) stub dated 2017-02-13 (Sheffield, untracked) settles; an in-window one does not', () => {
+    const J = { id: 'everybodys-talking-about-jamie-off-west-end-2024', title: "Everybody's Talking About Jamie", category: 'off-west-end', venue: 'Peacock Theatre', previewsStartDate: '2024-02-08', openingDate: '2024-02-14', closingDate: '2024-03-23' };
+    const stub = { outletId: 'observer', criticName: 'Clare Brennan', url: null, source: 'westendtheatre', publishDate: '2017-02-13', westEndTheatreExcerpt: 'John McCrea’s Jamie ...' };
+    const v = T.noUrlStubVerdict(stub, { show: J, allShows: [J], file: 'observer--clare-brennan.json', showHasFile: () => false, siblingHasFile: () => false });
+    assert.equal(v && v.verdict, 'junk');
+    assert.match(v.reason, /outside this production's window and every tracked same-title production's/);
+    assert.equal(T.noUrlStubVerdict({ ...stub, publishDate: '2024-02-15' }, { show: J, allShows: [J], file: 'observer--clare-brennan.json', showHasFile: () => false, siblingHasFile: () => false }), null);
+  });
+});
