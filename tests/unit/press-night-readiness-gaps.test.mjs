@@ -64,8 +64,9 @@ test('rows: a warn row per gap with the shows named, a same-name pass row when c
   assert.deepEqual(clear.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'pass'], ['Press night: score gate undecided', 'pass']]);
 });
 
-test('health-check wires both rows, with playbook entries (no silent low-urgency default)', () => {
-  const rows = health.checkPressNightReadiness({ nowMs: NOW });
+test('health-check wires both rows, with playbook entries (no silent low-urgency default); no live data read (BRO-8146 live-data-lane)', () => {
+  assert.equal(typeof health.checkPressNightReadiness, 'function');
+  const rows = g.pressNightReadinessResults({ shows: [], overrides: { shows: {} }, nowMs: NOW, embargoAt });
   assert.deepEqual(rows.map((r) => r.name), ['Press night: openings not watched', 'Press night: score gate undecided']);
   for (const r of rows) {
     const e = health.getPlaybookEntry(r.name);
