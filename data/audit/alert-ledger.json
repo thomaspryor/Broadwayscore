@@ -88,7 +88,7 @@
       "resolveReason": "absent"
     },
     "health-check:SEO: health": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: SEO: health",
       "firstSeen": "2026-07-24T07:50:32.738Z",
@@ -102,7 +102,9 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 8,
       "sweptTracker": "BRO-477",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-23T10:54:33.263Z",
+      "resolveReason": "health-check row passing"
     },
     "health-check:Secrets: health": {
       "status": "resolved",
@@ -790,36 +792,31 @@
       "silentRefires": 5
     },
     "affiliate:bot-divergence": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Affiliate revenue: Bot click divergence — anomaly",
       "firstSeen": "2026-08-09T07:42:19.544Z",
-      "incidentOpenedAt": "2026-11-07T08:47:07.789Z",
-      "lastSeen": "2026-11-09T09:46:04.075Z",
-      "lastNotifiedAt": "2026-11-07T08:47:07.789Z",
-      "lastSurfacedAt": "2026-11-07T08:47:07.789Z",
-      "notifyCount": 4,
+      "incidentOpenedAt": "2026-11-23T10:44:12.884Z",
+      "lastSeen": "2026-11-23T10:44:12.884Z",
+      "lastNotifiedAt": "2026-11-23T10:44:12.884Z",
+      "lastSurfacedAt": "2026-11-23T10:44:12.884Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-10T09:45:14.845Z"
+      "linearIdentifier": null
     },
     "health-check:Revenue: affiliate health": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
       "title": "BSC Daily: Revenue: affiliate health",
       "firstSeen": "2026-08-09T07:42:46.513Z",
-      "incidentOpenedAt": "2026-11-04T01:48:41.362Z",
+      "incidentOpenedAt": "2026-11-23T10:54:33.327Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T09:53:13.105Z",
-      "lastNotifiedAt": "2026-11-07T08:51:26.514Z",
-      "lastSurfacedAt": "2026-11-07T08:51:26.514Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-11-23T10:54:33.327Z",
+      "lastNotifiedAt": "2026-11-23T10:54:33.327Z",
+      "lastSurfacedAt": "2026-11-23T10:54:33.327Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-7062",
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-14T09:07:36.589Z",
-      "resolveReason": "health-check row passing"
+      "linearIdentifier": null
     },
     "health-check:Cron failed: Reverse Discovery": {
       "status": "resolved",
@@ -1708,21 +1705,18 @@
       "notifyCountAtRelease": 2
     },
     "health-check:Workflow repeat-failure: Deploy to Vercel": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "BSC Daily: Workflow repeat-failure: Deploy to Vercel",
       "firstSeen": "2026-08-19T14:07:14.420Z",
-      "incidentOpenedAt": "2026-10-26T07:50:36.451Z",
+      "incidentOpenedAt": "2026-11-23T10:54:33.310Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-28T08:30:25.629Z",
-      "lastNotifiedAt": "2026-10-26T07:50:36.451Z",
-      "lastSurfacedAt": "2026-10-26T07:50:36.451Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-23T10:54:33.310Z",
+      "lastNotifiedAt": "2026-11-23T10:54:33.310Z",
+      "lastSurfacedAt": "2026-11-23T10:54:33.310Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-11-01T09:17:32.740Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:jeeves-takes-charge-west-end-2026": {
       "status": "resolved",
@@ -17041,13 +17035,13 @@
       "firstSeen": "2026-10-13T09:28:34.744Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.744Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:58:59.557Z",
+      "lastSeen": "2026-11-23T10:54:35.301Z",
       "lastNotifiedAt": "2026-11-19T10:31:19.068Z",
       "lastSurfacedAt": "2026-11-19T10:31:19.068Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-6523",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Data quality: fulltext-mentions-show lifetime sweep": {
       "status": "open",
@@ -17056,13 +17050,13 @@
       "firstSeen": "2026-10-13T09:28:34.752Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.752Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:58:59.714Z",
+      "lastSeen": "2026-11-23T10:54:35.556Z",
       "lastNotifiedAt": "2026-11-21T09:57:00.461Z",
       "lastSurfacedAt": "2026-11-21T09:57:00.461Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-3634",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Data quality: slug-mismatch lifetime sweep": {
       "status": "open",
@@ -17101,7 +17095,7 @@
       "firstSeen": "2026-10-13T09:28:34.776Z",
       "incidentOpenedAt": "2026-11-14T09:07:40.696Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:02.932Z",
+      "lastSeen": "2026-11-23T10:54:35.710Z",
       "lastNotifiedAt": "2026-11-17T10:49:00.028Z",
       "lastSurfacedAt": "2026-11-17T10:49:00.028Z",
       "notifyCount": 6,
@@ -17109,7 +17103,7 @@
       "linearIdentifier": "BRO-7592",
       "notifyCountAtRelease": 4,
       "sweptTracker": "BRO-5447",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "health-check:Data quality: stale announced shows": {
       "status": "open",
@@ -17118,12 +17112,13 @@
       "firstSeen": "2026-10-13T09:28:34.785Z",
       "incidentOpenedAt": "2026-11-22T10:01:03.327Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:03.327Z",
+      "lastSeen": "2026-11-23T10:55:36.071Z",
       "lastNotifiedAt": "2026-11-22T10:01:03.327Z",
       "lastSurfacedAt": "2026-11-22T10:01:03.327Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Coverage: adversarial probe": {
       "status": "open",
@@ -17208,7 +17203,7 @@
       "resolveReason": "health-check row passing"
     },
     "health-check:Stuck pipeline items": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: Stuck pipeline items",
       "firstSeen": "2026-10-13T09:28:34.834Z",
@@ -17219,7 +17214,9 @@
       "lastSurfacedAt": "2026-11-18T10:18:16.553Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "health-check:Data freshness: shows missing poster/synopsis/tickets": {
       "status": "open",
@@ -17228,13 +17225,13 @@
       "firstSeen": "2026-10-13T09:28:34.841Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.841Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:03.369Z",
+      "lastSeen": "2026-11-23T10:55:36.092Z",
       "lastNotifiedAt": "2026-11-21T09:57:01.314Z",
       "lastSurfacedAt": "2026-11-21T09:57:01.314Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-5455",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Feedback: needs-manual-review backlog": {
       "status": "resolved",
@@ -17254,7 +17251,7 @@
       "resolveReason": "health-check row passing"
     },
     "health-check:Data: T1/T2 silent review gaps": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "BSC Daily: Data: T1/T2 silent review gaps",
       "firstSeen": "2026-10-13T09:28:34.859Z",
@@ -17266,7 +17263,9 @@
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7453",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "health-check:Data: uncollected live review strands": {
       "status": "open",
@@ -17289,13 +17288,13 @@
       "firstSeen": "2026-10-13T09:28:34.875Z",
       "incidentOpenedAt": "2026-11-21T09:58:03.362Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:06.883Z",
+      "lastSeen": "2026-11-23T10:55:36.271Z",
       "lastNotifiedAt": "2026-11-21T09:58:03.362Z",
       "lastSurfacedAt": "2026-11-21T09:58:03.362Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "coverage-holes:franz-and-marie-west-end-2026": {
       "status": "resolved",
@@ -17763,15 +17762,16 @@
       "firstSeen": "2026-10-14T02:45:34.129Z",
       "incidentOpenedAt": "2026-11-22T09:54:52.017Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:54:52.017Z",
+      "lastSeen": "2026-11-23T10:54:33.344Z",
       "lastNotifiedAt": "2026-11-22T09:54:52.017Z",
       "lastSurfacedAt": "2026-11-22T09:54:52.017Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Commercial model: stored vs fresh run": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: Commercial model: stored vs fresh run",
       "firstSeen": "2026-10-14T02:45:34.142Z",
@@ -17784,7 +17784,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 3,
-      "sweptTracker": "BRO-6454"
+      "sweptTracker": "BRO-6454",
+      "resolvedAt": "2026-11-23T10:54:33.263Z",
+      "resolveReason": "health-check row passing"
     },
     "health-check:Data quality: cross-outlet attribution drift": {
       "status": "open",
@@ -17793,12 +17795,13 @@
       "firstSeen": "2026-10-14T02:45:34.242Z",
       "incidentOpenedAt": "2026-11-19T10:31:19.049Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:55:54.680Z",
+      "lastSeen": "2026-11-23T10:54:35.158Z",
       "lastNotifiedAt": "2026-11-22T09:55:54.680Z",
       "lastSurfacedAt": "2026-11-22T09:55:54.680Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-8038"
+      "linearIdentifier": "BRO-8038",
+      "silentRefires": 1
     },
     "guard-audit:bd-serp_api1": {
       "status": "resolved",
@@ -20734,7 +20737,7 @@
       "resolvedAt": "2026-10-18T08:00:13.473Z"
     },
     "health-check:Data: BWW roundup discovery misses near opening": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "BSC Daily: Data: BWW roundup discovery misses near opening",
       "firstSeen": "2026-10-18T07:16:56.465Z",
@@ -20745,7 +20748,9 @@
       "lastSurfacedAt": "2026-11-18T10:18:16.782Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-7762"
+      "linearIdentifier": "BRO-7762",
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "broadcast:never-sent:some-woman-west-end-2026": {
       "status": "resolved",
@@ -21435,12 +21440,13 @@
       "firstSeen": "2026-10-19T07:49:05.192Z",
       "incidentOpenedAt": "2026-11-22T10:01:03.522Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:03.522Z",
+      "lastSeen": "2026-11-23T10:55:36.236Z",
       "lastNotifiedAt": "2026-11-22T10:01:03.522Z",
       "lastSurfacedAt": "2026-11-22T10:01:03.522Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-8039"
+      "linearIdentifier": "BRO-8039",
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:other-desert-cities-2026": {
       "status": "resolved",
@@ -29442,7 +29448,7 @@
       "resolveReason": "absent"
     },
     "health-check:Data: duplicate-flag leaks (a wrong twin dropping a good review)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: Data: duplicate-flag leaks (a wrong twin dropping a good review)",
       "firstSeen": "2026-10-28T08:30:36.400Z",
@@ -29454,7 +29460,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-23T10:54:33.263Z",
+      "resolveReason": "health-check row passing"
     },
     "review-gap:opening-window:the-revlon-girl-off-west-end-2026": {
       "status": "resolved",
@@ -35097,12 +35105,13 @@
       "firstSeen": "2026-11-01T09:17:31.009Z",
       "incidentOpenedAt": "2026-11-22T09:55:54.653Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:55:54.653Z",
+      "lastSeen": "2026-11-23T10:54:35.141Z",
       "lastNotifiedAt": "2026-11-22T09:55:54.653Z",
       "lastSurfacedAt": "2026-11-22T09:55:54.653Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:a-few-good-men-2026": {
       "status": "open",
@@ -40225,18 +40234,17 @@
     },
     "health-check:Commercial: rows held for a person": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "BSC Daily: Commercial: rows held for a person",
       "firstSeen": "2026-11-09T09:53:13.734Z",
       "incidentOpenedAt": "2026-11-20T10:11:03.689Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:54:52.068Z",
-      "lastNotifiedAt": "2026-11-20T10:11:03.689Z",
-      "lastSurfacedAt": "2026-11-20T10:11:03.689Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-23T10:54:33.364Z",
+      "lastNotifiedAt": "2026-11-23T10:54:33.364Z",
+      "lastSurfacedAt": "2026-11-23T10:54:33.364Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": "BRO-8050"
     },
     "health-check:Data: approved-fix drift": {
       "status": "open",
@@ -40245,12 +40253,13 @@
       "firstSeen": "2026-11-09T09:53:17.007Z",
       "incidentOpenedAt": "2026-11-22T10:01:06.858Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T10:01:06.858Z",
+      "lastSeen": "2026-11-23T10:55:36.254Z",
       "lastNotifiedAt": "2026-11-22T10:01:06.858Z",
       "lastSurfacedAt": "2026-11-22T10:01:06.858Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:dogstar-off-west-end-2026": {
       "status": "open",
@@ -43154,7 +43163,7 @@
       "resolveReason": "absent"
     },
     "health-check:Data: live show with zero critic reviews on site": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "BSC Daily: Data: live show with zero critic reviews on site",
       "firstSeen": "2026-11-13T09:36:21.225Z",
@@ -43165,7 +43174,9 @@
       "lastSurfacedAt": "2026-11-19T10:31:14.844Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7825"
+      "linearIdentifier": "BRO-7825",
+      "resolvedAt": "2026-11-23T10:54:33.263Z",
+      "resolveReason": "health-check row passing"
     },
     "abandoned-review-rescue:midnight-off-broadway-2026": {
       "status": "resolved",
@@ -43807,7 +43818,7 @@
       "notifyCountAtRelease": 1
     },
     "prod-data-parity:mismatch": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Production show pages disagree with deployed critic data",
       "firstSeen": "2026-11-15T09:24:31.409Z",
@@ -43819,7 +43830,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-8037",
       "notifyCountAtRelease": 3,
-      "sweptTracker": "BRO-7760"
+      "sweptTracker": "BRO-7760",
+      "resolvedAt": "2026-11-23T10:53:54.223Z",
+      "resolveReason": "All sampled production pages match their deployed data"
     },
     "anthropic-retirement:unregistered": {
       "status": "resolved",
@@ -43852,7 +43865,7 @@
       "resolveReason": "every referenced Gemini model with a shutdown date is registered"
     },
     "express-retry-still-thin:nutty-nattys-magic-puppet-show-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Opening Night Express retry still found thin review coverage for nutty-nattys-magic-puppet-show-off-broadway-2026",
       "firstSeen": "2026-11-15T10:35:03.498Z",
@@ -43862,10 +43875,12 @@
       "lastSurfacedAt": "2026-11-15T10:35:03.498Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "opening-night-remediation-exhausted-empty-cast:blue-man-group-a-new-holiday-surprise-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Auto-remediation gave up on blue-man-group-a-new-holiday-surprise-2026",
       "firstSeen": "2026-11-15T11:02:51.804Z",
@@ -43876,7 +43891,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 7,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/job/linear-BRO-7524-mwhxhf6t": {
       "status": "resolved",
@@ -43894,7 +43911,7 @@
       "resolvedAt": "2026-11-15T16:31:00.773Z"
     },
     "land:land/job/linear-BRO-7523-mwhxe3kz": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7523-mwhxe3kz",
       "firstSeen": "2026-11-15T15:33:51.451Z",
@@ -43905,7 +43922,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/job/linear-BRO-7521-mwhx5dpa": {
       "status": "resolved",
@@ -43967,7 +43986,7 @@
       "resolvedAt": "2026-11-15T17:52:39.796Z"
     },
     "opening-night-publish-date-pre-opening:missing:pride-bridge-theatre-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Pride - Bridge Theatre",
       "firstSeen": "2026-11-15T17:37:59.129Z",
@@ -43978,10 +43997,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/bro-7535-followup": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-7535-followup",
       "firstSeen": "2026-11-15T18:14:41.389Z",
@@ -43992,7 +44013,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/bro-7182-strict-audit-alerts": {
       "status": "resolved",
@@ -44024,7 +44047,7 @@
       "resolveReason": "latest run no longer failing"
     },
     "slug-misroute:f67a0ba455b4": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "177 new slug-misroute finding(s)",
       "firstSeen": "2026-11-15T19:43:31.899Z",
@@ -44034,7 +44057,9 @@
       "lastSurfacedAt": "2026-11-15T19:43:31.899Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/newsletter-pride-moved": {
       "status": "resolved",
@@ -44180,7 +44205,7 @@
       "resolveReason": "no in-use art from a rejected URL"
     },
     "land:land/bro-7559-recheck-stale-checks": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-7559-recheck-stale-checks",
       "firstSeen": "2026-11-15T23:55:25.253Z",
@@ -44191,7 +44216,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/bro-7569-fulltext-gaps": {
       "status": "resolved",
@@ -44268,7 +44295,7 @@
       "linearIdentifier": null
     },
     "opening-night-lane-summary:downstate-2026:2026-11-15": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Opening-night lane for downstate-2026: 0 unpublished, 3 failed, 38 errors, 1 awaiting an excerpt",
       "firstSeen": "2026-11-16T06:09:45.537Z",
@@ -44278,7 +44305,9 @@
       "lastSurfacedAt": "2026-11-16T06:09:45.537Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/job/linear-BRO-7401-mwii9na2": {
       "status": "resolved",
@@ -45483,7 +45512,7 @@
       "resolvedAt": "2026-11-18T09:35:00.321Z"
     },
     "health-check:Workflow repeat-failure: execute-approved-fix bro-7660 [apply] / execute / Update GitHub issue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "BSC Daily: Workflow repeat-failure: execute-approved-fix bro-7660 [apply] / execute / Update GitHub issue",
       "firstSeen": "2026-11-18T10:17:10.402Z",
@@ -45494,7 +45523,9 @@
       "lastSurfacedAt": "2026-11-18T10:17:10.402Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:55:36.288Z",
+      "resolveReason": "absent"
     },
     "land:land/bro-7637-land-precheck": {
       "status": "resolved",
@@ -46018,12 +46049,13 @@
       "firstSeen": "2026-11-19T10:31:14.793Z",
       "incidentOpenedAt": "2026-11-19T10:31:14.793Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:54:52.111Z",
+      "lastSeen": "2026-11-23T10:54:34.821Z",
       "lastNotifiedAt": "2026-11-22T09:54:52.111Z",
       "lastSurfacedAt": "2026-11-22T09:54:52.111Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7979"
+      "linearIdentifier": "BRO-7979",
+      "silentRefires": 1
     },
     "health-check:Press night: score gate undecided": {
       "status": "open",
@@ -46032,12 +46064,13 @@
       "firstSeen": "2026-11-19T10:31:14.819Z",
       "incidentOpenedAt": "2026-11-19T10:31:14.819Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-22T09:54:53.181Z",
+      "lastSeen": "2026-11-23T10:54:34.996Z",
       "lastNotifiedAt": "2026-11-22T09:54:53.181Z",
       "lastSurfacedAt": "2026-11-22T09:54:53.181Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-7980"
+      "linearIdentifier": "BRO-7980",
+      "silentRefires": 1
     },
     "pending-unrecoverable:now-you-see-me-live-2026": {
       "status": "resolved",
@@ -48880,6 +48913,20 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-11-23T07:09:19.320Z"
+    },
+    "health-check:Workflow repeat-failure: Deploy to Vercel / deploy / Deploy to Production": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Workflow repeat-failure: Deploy to Vercel / deploy / Deploy to Production",
+      "firstSeen": "2026-11-23T10:54:33.292Z",
+      "incidentOpenedAt": "2026-11-23T10:54:33.292Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-23T10:54:33.292Z",
+      "lastNotifiedAt": "2026-11-23T10:54:33.292Z",
+      "lastSurfacedAt": "2026-11-23T10:54:33.292Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
