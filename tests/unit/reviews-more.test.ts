@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import fs from 'fs';
 import path from 'path';
 import { fetchMoreRows, sameRenderData, MORE_RETRY_DELAY_MS } from '../../src/lib/reviews-more';
-import { SHOW_REFRESH_REV_HEADER } from '../../src/lib/show-refresh-core';
+import { SHOW_REFRESH_REV_HEADER, showRefreshConfigured, showRefreshEnabled } from '../../src/lib/show-refresh-core';
 
 const H1 = '0123456789abcdef';
 const H2 = 'fedcba9876543210';
@@ -74,11 +74,19 @@ test('HTTP error: error, not rows', async () => {
 
 test('wiring: the page passes its marker only while the reader is on; ReviewsList checks it', () => {
   const page = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/page.tsx'), 'utf8');
-  assert.match(page, /\.\.\.\(showRefreshEnabled\(\) \? \{ rev: render\.rev \} : \{\}\)/);
+  assert.match(page, /\.\.\.\(showRefreshConfigured\(\) \? \{ rev: render\.rev \} : \{\}\)/);
+  assert.doesNotMatch(page, /showRefreshEnabled\(\) \? \{ rev:/, 'a page prerendered by a flag-on build must still pass its marker');
   const list = fs.readFileSync(path.join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
   assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
   assert.match(list, /loadMore\(moreUrl, moreRev\)/);
   assert.doesNotMatch(list, /\bfetch\(url\)/, 'no unchecked fetch of reviews.json left in ReviewsList');
   const route = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/reviews.json/route.ts'), 'utf8');
   assert.match(route, /SHOW_REFRESH_REV_HEADER\]: render\?\.rev/);
+});
+
+test('flag-on build: the reader does not run, but the page still passes its marker', () => {
+  const build = { SHOW_REFRESH_READER: 'on', NEXT_PHASE: 'phase-production-build' } as unknown as NodeJS.ProcessEnv;
+  assert.equal(showRefreshEnabled(build), false);
+  assert.equal(showRefreshConfigured(build), true);
+  assert.equal(showRefreshConfigured({} as unknown as NodeJS.ProcessEnv), false, 'flag off: no marker, nothing changes');
 });

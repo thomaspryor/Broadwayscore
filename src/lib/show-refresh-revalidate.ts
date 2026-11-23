@@ -24,7 +24,7 @@ export function showSurfacePaths(slug: string): string[] {
  * deployment could have refreshed (prerendered and not held at build).
  */
 export type RevalidatePlan =
-  | { ok: true; tag: boolean; pointerTag: true; paths: string[] }
+  | { ok: true; tag: boolean; pointerTag: true; paths: string[]; refreshable?: number }
   | { ok: false; status: number; error: string };
 
 function sameSecret(a: string, b: string): boolean {
@@ -69,5 +69,5 @@ export function planRevalidate(input: {
   if (!unique.length && !home && !tag && !all) return { ok: false, status: 400, error: 'nothing to revalidate' };
   const paths = unique.flatMap(showSurfacePaths);
   if (home) paths.push('/');
-  return { ok: true, tag, pointerTag: true, paths };
+  return { ok: true, tag, pointerTag: true, paths, ...(all ? { refreshable: expanded.length } : {}) };
 }

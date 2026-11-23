@@ -92,13 +92,13 @@ const cli = require('../../scripts/show-refresh-revalidate.js');
 /* eslint-enable @typescript-eslint/no-require-imports */
 const repo = path.join(__dirname, '../..');
 
-function fakeSite(...answers: Array<{ status: number; body?: unknown } | Error>) {
+function fakeSite(...answers: Array<{ status: number; body?: unknown; html?: string } | Error>) {
   const calls: Array<{ url: string; init: RequestInit }> = [];
   const fetchImpl = async (url: string, init: RequestInit) => {
     calls.push({ url, init });
     const a = answers[Math.min(calls.length - 1, answers.length - 1)];
     if (a instanceof Error) throw a;
-    return { status: a.status, json: async () => a.body };
+    return { status: a.status, json: async () => a.body, text: async () => a.html ?? '' };
   };
   return { fetchImpl, calls };
 }
@@ -115,12 +115,30 @@ test('gap 2 script: posts all+tag with the secret; ok with paths is exit 0', asy
 });
 
 test('gap 2 script: exit 3 only when the secret is unset here; a 404 with the secret set fails', async () => {
-  const site = fakeSite({ status: 200, body: { ok: true, count: 3 } });
-  assert.equal(await cli.revalidateAll({ env: {}, ...site, ...quiet }), 3);
-  assert.equal(site.calls.length, 0, 'no request without a secret');
+  const off = fakeSite({ status: 200, html: '<html><head><title>Hamilton</title></head></html>' });
+  assert.equal(await cli.revalidateAll({ env: {}, ...off, ...quiet }), 3, 'reader off: dormant');
+  assert.equal(off.calls.length, 1, 'only the probe, no revalidate POST without a secret');
+  assert.ok(!off.calls[0].init?.method, 'the probe is a GET');
+  assert.match(off.calls[0].url, /\/show\/hamilton$/);
+  const down = fakeSite(new Error('ENOTFOUND'));
+  assert.equal(await cli.revalidateAll({ env: {}, ...down, ...quiet }), 3, 'probe failed: still dormant, not a false alarm');
   const s404 = fakeSite({ status: 404, body: { ok: false, error: 'not found' } });
   assert.equal(await cli.revalidateAll({ env: { SHOW_REFRESH_REVALIDATE_SECRET: SECRET }, ...s404, ...quiet }), 1);
   assert.equal(s404.calls.length, 1, '4xx is never retried');
+});
+
+test('gap 2 script: secret unset while the live reader is on is a failure, not "not configured"', async () => {
+  const on = fakeSite({ status: 200, html: '<head><meta name="show-refresh-rev" content="0123456789abcdef"/></head>' });
+  const lines: string[] = [];
+  assert.equal(await cli.revalidateAll({ env: {}, ...on, log: (l: string) => lines.push(l), sleep: async () => {} }), 1);
+  assert.match(lines.join('\n'), /reader is ON/);
+  assert.equal(on.calls.length, 1, 'no POST without a secret');
+});
+
+test('gap 2 script: every show held (refreshable 0) is a warning, not a failure', async () => {
+  assert.equal(cli.classify(200, { ok: true, count: 0, refreshable: 0 }).code, 0);
+  assert.equal(cli.classify(200, { ok: true, count: 0, refreshable: 0 }).warning, true);
+  assert.equal(cli.classify(200, { ok: true, count: 0, refreshable: 4 }).code, 1, 'refreshable shows but no paths is still a failure');
 });
 
 test('gap 2 script: ok with 0 paths fails; no manifest is a warning; 5xx and network retry then fail', async () => {

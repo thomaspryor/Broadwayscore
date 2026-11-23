@@ -9,16 +9,20 @@
 // Off unless SHOW_REFRESH_READER=on. During `next build` it never fetches
 // (spike S0: builds make zero store requests) and returns the build's data.
 //
-// Caching (BRO-8170 gap 1): every read is cached with NO time-based expiry.
-// A cache entry's revalidate becomes the ceiling of the ISR page that reads
-// it, so a short pointer TTL (it was 60 s) would re-render every show page,
-// reviews.json and OG image each minute once the flag is on. Freshness comes
-// from explicit invalidation instead: pointers carry SHOW_REFRESH_POINTER_TAG,
-// which /api/show-refresh/revalidate drops on every call, and every read
-// carries SHOW_REFRESH_TAG, which the kill switch drops. The pointer cache can
-// never be staler than the page it feeds, because both are revalidated by the
-// same call. tests/unit/show-refresh-wiring.test.ts pins this.
-//
+// Caching (BRO-8170 gap 1): a cache entry's revalidate becomes the ceiling of
+// the ISR page that reads it, so a short pointer TTL (it was 60 s) re-rendered
+// every show page, reviews.json and OG image each minute once the flag is on.
+// Freshness comes from explicit invalidation: pointers carry
+// SHOW_REFRESH_POINTER_TAG, which /api/show-refresh/revalidate drops on every
+// call, and every read carries SHOW_REFRESH_TAG, which the kill switch drops.
+// THE PUBLISHER MUST CALL THAT ROUTE after it moves home.json, or a publish
+// stays invisible for up to POINTER_MAX_AGE_S.
+// Pointers still expire after POINTER_MAX_AGE_S, the show routes' own ISR
+// period: it costs no extra renders, and it bounds how long a missed or failed
+// revalidate call (or a slow read finishing after an invalidation) can leave a
+// kill or publish unseen. Slices are immutable, so they never expire.
+// tests/unit/show-refresh-wiring.test.ts pins both.
+
 // All store reads of one render share one deadline (gap 7). Errors are thrown
 // inside the cached functions so they are never cached, then caught here and
 // turned into 'base-error'.
@@ -83,11 +87,14 @@ const asError = (e: unknown): StoreRead => ({ state: 'error', error: e instanceo
 function stateClient() { return store.readerStateFromEnv(process.env, { timeoutMs: READ_TIMEOUT_MS }); }
 function sliceClient() { return store.readerStoreFromEnv(process.env, { timeoutMs: READ_TIMEOUT_MS }); }
 
+/** = the show routes' `revalidate` (page, reviews.json, OG image). */
+export const POINTER_MAX_AGE_S = 86400;
+
 const cachedPointer = unstable_cache(
   (p: string) => cacheable(() => store.readJsonObject(stateClient(), p)),
   ['show-refresh-pointer'],
-  // revalidate: false, never a number: see the header (gap 1).
-  { revalidate: false, tags: [SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG] },
+  // Never shorter than the routes' ISR period: see the header (gap 1).
+  { revalidate: POINTER_MAX_AGE_S, tags: [SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG] },
 );
 const cachedSlice = unstable_cache(
   // A missing slice throws too: slices are immutable once present, so caching

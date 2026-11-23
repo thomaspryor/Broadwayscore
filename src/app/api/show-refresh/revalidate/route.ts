@@ -32,5 +32,5 @@ export async function POST(req: Request) {
   if (plan.tag) revalidateTag(SHOW_REFRESH_TAG, { expire: 0 });
   revalidateTag(SHOW_REFRESH_POINTER_TAG, { expire: 0 });
   for (const p of plan.paths) revalidatePath(p);
-  return NextResponse.json({ ok: true, tag: plan.tag, pointerTag: true, count: plan.paths.length, sample: plan.paths.slice(0, 6) }, { headers: { 'cache-control': 'no-store' } });
+  return NextResponse.json({ ok: true, tag: plan.tag, pointerTag: true, count: plan.paths.length, ...(plan.refreshable !== undefined ? { refreshable: plan.refreshable } : {}), sample: plan.paths.slice(0, 6) }, { headers: { 'cache-control': 'no-store' } });
 }

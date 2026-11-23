@@ -125,6 +125,9 @@ test('gap 1: no cached store read expires sooner than the ISR routes that read i
   }
   const pointer = cacheCalls.find(c => c.keyParts.includes('show-refresh-pointer'));
   assert.ok(pointer?.opts.tags?.includes(core.SHOW_REFRESH_POINTER_TAG), 'pointer reads carry the pointer tag the revalidate route drops');
+  // Bounded, not forever: a failed or missed revalidate call must not leave a kill unseen indefinitely.
+  assert.equal(pointer?.opts.revalidate, floor, 'pointer expiry = the routes\' ISR period (bounded staleness, no extra renders)');
+  assert.equal(reader.POINTER_MAX_AGE_S, floor);
 });
 
 // ---- gap 8: wiring -----------------------------------------------------------

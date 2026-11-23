@@ -35,6 +35,16 @@ export function showRefreshEnabled(env: NodeJS.ProcessEnv = process.env): boolea
   return env.SHOW_REFRESH_READER === 'on';
 }
 
+/**
+ * The flag as set for this deployment, build phase included. A page prerendered
+ * by a flag-on build renders the build's data ('base') but must still tell the
+ * browser so, or reviews.json regenerated from a slice would be accepted
+ * unchecked (BRO-8170 gap 3). Flag off: false, so nothing changes.
+ */
+export function showRefreshConfigured(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.SHOW_REFRESH_READER === 'on';
+}
+
 /** Result of one store read, as scripts/lib/show-refresh/store.js readJsonObject returns it. */
 export type StoreRead =
   | { state: 'ok'; value: unknown }
