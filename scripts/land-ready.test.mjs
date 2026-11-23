@@ -112,3 +112,13 @@ test('BRO-8156: an earlier owner yes counts in land-ready only while the verdict
   assert.doesNotMatch(run('0'.repeat(40)), /already approved/, 'stale verdict: the earlier yes must not count');
   assert.match(run(g('rev-parse', 'HEAD:src/components/A.tsx')), /already approved/, 'current verdict: the earlier yes counts');
 });
+
+test('BRO-8164: an already-approved diff passes the verdict item with an empty id, fails on a different id, unapproved+empty still fails', () => {
+  const ui = { uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'] };
+  const open = (r) => r.missing.some((i) => i.id === 'verdict');
+  assert.equal(open(evaluate({ ...base, ...ui, approval: { approved: true, durable: true }, verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: '', currentPatchId: 'cur' } })), false);
+  // ledger-only approval (contentHash match) with an empty id must NOT pass: it may belong to an older diff
+  assert.equal(open(evaluate({ ...base, ...ui, approval: { approved: true, durable: false }, verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: '', currentPatchId: 'cur' } })), true);
+  assert.equal(open(evaluate({ ...base, ...ui, approval: { approved: true }, verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: 'old', currentPatchId: 'cur' } })), true);
+  assert.equal(open(evaluate({ ...base, ...ui, approval: { approved: false }, verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: '', currentPatchId: 'cur' } })), true);
+});
