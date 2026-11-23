@@ -151,7 +151,8 @@ function unannouncedTheater(category: string | undefined, country: string) {
 }
 
 function toPostalAddress(address: string, country: string) {
-  const match = address.match(/^(.+?),\s*(.+?),\s*([A-Z]{2})\s+(\d{5})$/);
+  // Greedy street part: "39 W 14th St, Suite 301, New York, NY 10011" keeps the suite in the street.
+  const match = address.match(/^(.+),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5})$/);
   if (match) {
     return {
       '@type': 'PostalAddress',
@@ -401,14 +402,20 @@ export function generateTheaterSchema(theater: {
   address?: string;
   currentShow?: { title: string; slug: string };
   pastShows: { title: string; slug: string }[];
+  /** Page path when it is not /theater/<slug> (Off-Broadway and London venue pages, BRO-8088). */
+  path?: string;
+  country?: 'US' | 'GB';
+  /** The venue's verified official website (schema.org sameAs). */
+  website?: string;
 }) {
-  const country = 'US';
+  const country = theater.country ?? 'US';
   return {
     '@context': 'https://schema.org',
     '@type': 'PerformingArtsTheater',
     name: theater.name,
-    url: `${BASE_URL}/theater/${theater.slug}`,
+    url: `${BASE_URL}${theater.path ?? `/theater/${theater.slug}`}`,
     ...(theater.address && { address: toPostalAddress(theater.address, country) }),
+    ...(theater.website && { sameAs: [theater.website] }),
     // Event.location requires an address per Google's structured data spec
     // (GSC flags "Missing field 'address' (in 'location')" otherwise). Venues
     // without a known address (e.g. a not-yet-announced "TBA" house) omit the

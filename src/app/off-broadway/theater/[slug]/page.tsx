@@ -12,7 +12,7 @@ import {
 } from '@/lib/data-core';
 import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
@@ -90,6 +90,17 @@ export default async function OffBroadwayTheaterPage(props: { params: Promise<{ 
     { name: theater.name, url: `${BASE_URL}/off-broadway/theater/${params.slug}` },
   ]);
 
+  // Venue address and official site for search engines (BRO-8088); show events are left to show pages.
+  const theaterSchema = generateTheaterSchema({
+    name: theater.name,
+    slug: params.slug,
+    path: `/off-broadway/theater/${params.slug}`,
+    country: 'US',
+    address: theater.address,
+    website: theater.website,
+    pastShows: [],
+  });
+
   // Compute stats
   const scoredShows = theater.allShows.filter(s => s.criticScore?.score != null);
   const avgScore = scoredShows.length > 0
@@ -128,7 +139,7 @@ export default async function OffBroadwayTheaterPage(props: { params: Promise<{ 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([breadcrumbSchema]).replace(/</g, '\\u003c'),
+          __html: JSON.stringify([breadcrumbSchema, theaterSchema]).replace(/</g, '\\u003c'),
         }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
