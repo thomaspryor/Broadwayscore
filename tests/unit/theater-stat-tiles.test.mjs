@@ -58,18 +58,19 @@ const StatGrid = loadStatGrid();
 const html = props => renderToStaticMarkup(React.createElement(StatGrid, props));
 const badge = React.createElement('span', { className: 'BADGE' }, '72');
 
-test('a row with a badge node: labels on top, value block centered, subtitle can truncate', () => {
+test('a row with a badge node: labels on top, value block centered, subtitle wraps inside the tile', () => {
   const out = html({
     columns: 2,
     stats: [
-      { label: 'Past Shows', value: 20, subtitle: 'a very long subtitle that must truncate' },
+      { label: 'Past Shows', value: 20, subtitle: 'a very long subtitle that must wrap' },
       { label: 'Avg Score', value: 72, node: badge },
     ],
   });
   assert.equal((out.match(/class="card [^"]*flex flex-col items-center"/g) || []).length, 2);
   assert.equal((out.match(/flex-1 w-full min-w-0 flex flex-col items-center justify-center/g) || []).length, 2);
   assert.match(out, /BADGE/);
-  assert.match(out, /truncate [^"]*w-full/);
+  assert.match(out, /w-full break-words/);
+  assert.doesNotMatch(out, /truncate/, 'a stretched-row subtitle wraps (a clipped "based on 2 sho…" label reads as a bug)');
   assert.ok(out.indexOf('Past Shows') < out.indexOf('>20<'), 'label comes before value');
 });
 
@@ -82,7 +83,8 @@ test('a row with no node renders exactly as before (cast, critic, creative, biz 
   });
   assert.doesNotMatch(out, /flex-col/);
   assert.doesNotMatch(out, /justify-center/);
-  assert.doesNotMatch(out, /truncate [^"]*w-full/);
+  assert.match(out, /truncate/);
+  assert.doesNotMatch(out, /break-words/);
   assert.match(out, /class="card p-2\.5 sm:p-4 text-center"/);
 });
 
