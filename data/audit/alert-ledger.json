@@ -38018,13 +38018,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-23T02:41:19.967Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T03:32:57.372Z",
+      "lastSeen": "2026-11-23T14:53:31.520Z",
       "lastNotifiedAt": "2026-11-23T02:41:19.967Z",
       "lastSurfacedAt": "2026-11-23T02:41:19.967Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -45342,13 +45342,13 @@
       "firstSeen": "2026-11-18T03:32:27.712Z",
       "incidentOpenedAt": "2026-11-23T02:00:13.240Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T03:32:57.391Z",
+      "lastSeen": "2026-11-23T14:53:31.545Z",
       "lastNotifiedAt": "2026-11-23T02:00:13.240Z",
       "lastSurfacedAt": "2026-11-23T02:00:13.240Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "pending-unrecoverable:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -45586,13 +45586,12 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T03:32:56.334Z",
-      "lastNotifiedAt": "2026-11-22T03:42:41.879Z",
+      "lastSeen": "2026-11-23T14:53:30.763Z",
+      "lastNotifiedAt": "2026-11-23T14:53:30.763Z",
       "lastSurfacedAt": "2026-11-21T02:59:59.567Z",
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-7916",
-      "silentRefires": 9
+      "linearIdentifier": "BRO-7916"
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
@@ -45779,13 +45778,12 @@
       "firstSeen": "2026-11-18T17:58:55.876Z",
       "incidentOpenedAt": "2026-11-18T17:58:55.876Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T03:32:57.179Z",
-      "lastNotifiedAt": "2026-11-22T07:51:17.710Z",
+      "lastSeen": "2026-11-23T14:53:31.333Z",
+      "lastNotifiedAt": "2026-11-23T14:53:31.333Z",
       "lastSurfacedAt": "2026-11-21T06:33:40.696Z",
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-7939",
-      "silentRefires": 8
+      "linearIdentifier": "BRO-7939"
     },
     "land:land/bro-7789-compact-sync": {
       "status": "resolved",
@@ -46360,7 +46358,7 @@
       "resolvedAt": "2026-11-19T18:54:58.246Z"
     },
     "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs)",
       "firstSeen": "2026-11-19T18:03:56.896Z",
@@ -46372,7 +46370,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8033",
-      "silentRefires": 8
+      "silentRefires": 8,
+      "resolvedAt": "2026-11-23T14:53:31.591Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-7847-ledger-persist": {
       "status": "resolved",
@@ -46707,13 +46707,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T03:32:57.158Z",
+      "lastSeen": "2026-11-23T14:53:31.098Z",
       "lastNotifiedAt": "2026-11-23T02:00:01.244Z",
       "lastSurfacedAt": "2026-11-23T02:00:01.244Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8101",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -47245,7 +47245,7 @@
       "resolvedAt": "2026-11-21T12:11:29.420Z"
     },
     "live-data-test:tests/unit/show-id-market-suffix.test.mjs::every shows.json id suffix matches its category": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: every shows.json id suffix matches its category (tests/unit/show-id-market-suffix.test.mjs)",
       "firstSeen": "2026-11-21T13:03:39.013Z",
@@ -47257,7 +47257,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 7,
+      "resolvedAt": "2026-11-23T14:53:31.616Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro7962-walled": {
       "status": "resolved",
@@ -49045,6 +49047,20 @@
       "lastSeen": "2026-11-23T14:29:33.966Z",
       "lastNotifiedAt": "2026-11-23T14:29:33.966Z",
       "lastSurfacedAt": "2026-11-23T14:29:33.966Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs)",
+      "firstSeen": "2026-11-23T14:53:31.566Z",
+      "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-23T14:53:31.566Z",
+      "lastNotifiedAt": "2026-11-23T14:53:31.566Z",
+      "lastSurfacedAt": "2026-11-23T14:53:31.566Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
