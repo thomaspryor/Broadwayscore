@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T18:35:14.831Z",
+  "generatedAt": "2026-11-23T19:41:54.889Z",
   "windowDays": 45,
   "showsScanned": 296,
   "gaps": [
@@ -18,30 +18,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 347.55132944444443,
+      "fileAgeHours": 348.66244555555556,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 325.00292527777776,
+      "nonTerminalAgeHours": 326.1140525,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "nine-night-off-west-end-2026",
-      "title": "Nine Night",
-      "openingDate": "2026-11-12",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=nine-night-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-23T02:36:36.634Z",
-      "fileAgeHours": 15.977110555555555,
-      "gapSeenAt": "2026-11-23T03:38:23.855Z",
-      "nonTerminalAgeHours": 14.947493333333334,
-      "needsManualRecovery": false
     },
     {
       "showId": "rope-off-broadway-2026",
@@ -58,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 316.78320916666667,
+      "fileAgeHours": 317.8943316666667,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 315.6384802777778,
+      "nonTerminalAgeHours": 316.7496075,
       "needsManualRecovery": true
     }
   ],
