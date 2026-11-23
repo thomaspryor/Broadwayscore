@@ -93,7 +93,6 @@ setup() {
   cp "$REPO_ROOT/scripts/lib/autonomous-checks.js" "$d/main/scripts/lib/"
   # nodeUnitTestsForTree() for workflow-guard discovery (BRO-2483).
   cp "$REPO_ROOT/scripts/lib/unit-test-collection.js" "$d/main/scripts/lib/"
-  cp "$REPO_ROOT/scripts/lib/live-data-paths.js" "$d/main/scripts/lib/"
   cp "$REPO_ROOT/scripts/lib/push-mutex.sh" "$d/main/scripts/lib/"
   # Stub the unrelated range-scoped push-audit gate (own coverage elsewhere;
   # a real run here would abort before reaching the check this test targets).

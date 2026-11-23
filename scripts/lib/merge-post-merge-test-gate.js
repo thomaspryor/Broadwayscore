@@ -140,7 +140,6 @@ const { parseTapOutput } = require('./tap-failure-parser.js');
 const { execErrorDetail } = require('./exec-error-detail.js');
 const { readTsxManifest } = require('./autonomous-checks.js');
 const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('./unit-test-collection.js');
-const { isDeclaredLiveFile } = require('./live-data-paths.js');
 
 // "A hang is worse than a failure" applies to this gate's two spawns. 8 min
 // per spawn (BRO-6184: a merged run was killed at 5 min / 648s on a loaded
@@ -214,83 +213,28 @@ function safeRealpath(p) {
 
 // BRO-8110: the baseline checkout gets data/*.json COPIED but none of the
 // gitignored data DIRECTORIES (data/review-texts above all), while the merged
-// run in the main checkout sees the live corpus. A LIVE-DATA-LANE corpus test
-// (autoclear-vs-ensemble.test.mjs) then SKIPS green on the baseline and fails
-// on the merged tree, so a failure already red on origin/main read as NEW and
-// blocked every local land (2 of 2 floors on 2026-11-23 needed
-// MERGE_SKIP_POST_MERGE_TEST_GATE=1). Lists each gitignored data/ directory the
-// merged tree has and the baseline lacks: when any exist, the two runs did not
-// see the same data, so a live-lane file's NEW failure cannot be pinned on the
-// branch (runTestGate reports it, unblocking). Nothing is linked into the
-// baseline tree; tests that honour REVIEW_TEXTS_DIR are pointed at the merged
-// corpus instead (runTestGate), the same live path the merged run already
-// reads, so the baseline gains no write access the merged run lacks. The
-// corpus can still change between the two runs (CI pushes), a rare race that
-// at worst flips one verdict. land.yml runs with no corpus on
-// either side, so the list is empty there and its behavior is unchanged.
-function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
-  const ignored = isIgnored || ((rel) => spawnSync('git', ['check-ignore', '-q', rel], { cwd: fromRoot }).status === 0);
-  const missing = [];
-  let names;
-  try { names = fs.readdirSync(path.join(fromRoot, 'data')); } catch { return missing; }
-  for (const name of names.sort()) {
-    const rel = path.join('data', name);
-    try {
-      // stat follows symlinks (data/review-texts is one); a dangling link throws into the catch below.
-      const st = fs.statSync(path.join(fromRoot, rel));
-      if (!st.isDirectory()) continue;
-      if (fs.existsSync(path.join(toRoot, rel))) continue;
-      if (ignored(rel)) missing.push(rel);
-    } catch { /* unreadable entry: not evidence of a data difference */ }
-  }
-  return missing;
+// run in the main checkout sees the live corpus. A corpus test
+// (autoclear-vs-ensemble.test.mjs) then SKIPPED green on the baseline and
+// failed on the merged tree, so a failure already red on origin/main read as
+// NEW and blocked every local land (2 of 2 floors on 2026-11-23 needed
+// MERGE_SKIP_POST_MERGE_TEST_GATE=1). Fix: the baseline run reads the SAME
+// corpus through REVIEW_TEXTS_DIR (absolute, since the two runs have different
+// cwds), and a corpus failure seen on both sides is compared by its payload
+// like an aggregate guard, so a branch that adds violations to an already-red
+// corpus assertion still blocks. Corpus tests that ignore REVIEW_TEXTS_DIR are
+// NOT exempted: they keep blocking (a waiver let real parser regressions
+// through, ship-check review); make such a test honour REVIEW_TEXTS_DIR.
+// Returns the env for the baseline run, or null when there is nothing to share.
+function baselineCorpusEnv(cwd, baselineRoot, env = process.env) {
+  if (env && env.REVIEW_TEXTS_DIR) return { REVIEW_TEXTS_DIR: path.resolve(cwd, env.REVIEW_TEXTS_DIR) };
+  const rel = path.join('data', 'review-texts');
+  if (!fs.existsSync(path.join(cwd, rel)) || fs.existsSync(path.join(baselineRoot, rel))) return null;
+  return { REVIEW_TEXTS_DIR: safeRealpath(path.join(cwd, rel)) };
 }
 
-// TAP names of tests the run SKIPPED (`ok N - name # SKIP reason`). A
-// live-lane failure is only unjudged when the baseline skipped that very test
-// (no corpus there); a test the baseline actually ran was judged on equal
-// terms, so its NEW failure still blocks (review of BRO-8110).
-// node's TAP carries no file for a passing or skipped test, and test names
-// are not unique across files (tap-failure-parser.js), so a name is returned
-// only when EVERY baseline test of that name was skipped: if any same-named
-// test ran (ok / not ok without SKIP), the skip cannot be pinned on the
-// failing file and the failure stays blocking.
-function skippedTestNames(tapOutput) {
-  const skipped = new Set();
-  const ran = new Set();
-  for (const line of String(tapOutput || '').split('\n')) {
-    const m = /^\s*(?:not )?ok \d+ - (.+?)\s*$/.exec(line);
-    if (!m) continue;
-    const skip = /^(.+?)\s+#\s*SKIP\b/i.exec(m[1]);
-    if (skip) skipped.add(skip[1]);
-    else ran.add(m[1].replace(/\s+#\s*TODO\b.*$/i, ''));
-  }
-  for (const n of ran) skipped.delete(n);
-  return skipped;
-}
-
-// Pure-ish (reads the test files' first lines): split NEW failures into those
-// the branch owns and those in LIVE-DATA-LANE files, which cannot be judged
-// when dataDiff is non-empty (see ignoredDataDirsMissingFrom). A live file the
-// baseline does not have is the branch's own new test: it stays blocking. So
-// does a file isBridged() says read the SAME corpus in both runs (it honours
-// REVIEW_TEXTS_DIR, which runTestGate points the baseline run at): that one
-// was judged fairly, so a regression in it still blocks (Codex review).
-//
-// "Live" and "bridged" are read from the BASELINE copy, never the merged tree:
-// otherwise a branch could add a LIVE-DATA-LANE header to an existing test and
-// turn its own regression there into a warning (review of BRO-8110). And only
-// tests the baseline SKIPPED (baselineSkipped) can be unjudged.
-function splitLiveUnjudged(newFailures, cwd, dataDiff, baselineRoot, isLive = isDeclaredLiveFile, isBridged = () => false, baselineSkipped = new Set()) {
-  if (!dataDiff || dataDiff.length === 0) return { blocking: newFailures, liveUnjudged: [] };
-  const blocking = [];
-  const liveUnjudged = [];
-  for (const f of newFailures) {
-    const unjudged = Boolean(f && f.file && baselineRoot && fs.existsSync(path.join(baselineRoot, f.file))
-      && baselineSkipped.has(f.name) && isLive(f.file, baselineRoot) && !isBridged(f.file));
-    (unjudged ? liveUnjudged : blocking).push(f);
-  }
-  return { blocking, liveUnjudged };
+// A file whose baseline copy reads REVIEW_TEXTS_DIR ran on the shared corpus.
+function honoursReviewTextsDir(baselineRoot, rel) {
+  try { return fs.readFileSync(path.join(baselineRoot, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
 }
 
 // The two change-class prefixes the floor knows how to test. Kept as named
@@ -804,7 +748,7 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies, dataDiffFn = ignoredDataDirsMissingFrom, env = process.env } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies, env = process.env } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
@@ -949,23 +893,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
-    let dataDiff = [];
-    try { dataDiff = dataDiffFn(safeRealpath(cwd), baselineRoot) || []; } catch { dataDiff = []; }
-    // Corpus tests that honour REVIEW_TEXTS_DIR read the merged tree's corpus
-    // in the baseline run too, so the two runs differ in code only for them.
-    // Unset when the caller already set it (then both runs share it anyway).
-    const bridgeCorpus = dataDiff.includes(path.join('data', 'review-texts')) && !(env && env.REVIEW_TEXTS_DIR);
-    const baselineEnv = bridgeCorpus ? { REVIEW_TEXTS_DIR: safeRealpath(path.join(cwd, 'data', 'review-texts')) } : null;
-    const isBridged = (rel) => {
-      if (!bridgeCorpus && !(env && env.REVIEW_TEXTS_DIR)) return false;
-      try { return fs.readFileSync(path.join(baselineRoot, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
-    };
+    let baselineEnv = null;
+    try { baselineEnv = baselineCorpusEnv(cwd, baselineRoot, env); } catch { baselineEnv = null; }
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
-    let baselineSkipped = new Set();
     if (baselineTestFiles.length > 0) {
       const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs, baselineEnv);
-      baselineSkipped = skippedTestNames(baselineResult.stdout);
       const baselineParsed = parseTapOutput(`${baselineResult.stdout || ''}`, safeRealpath(baselineRoot));
       // Same fail-safe guard as the merged run above, mirrored for the
       // baseline: a baseline run that exited non-zero but parsed zero
@@ -984,13 +917,13 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       }
       baselineFailures = baselineParsed.failures;
     }
-    const diffed = diffFailingSets(baselineFailures, mergedFailures);
-    const { preExisting } = diffed;
-    const { blocking: newFailures, liveUnjudged } = splitLiveUnjudged(diffed.newFailures, cwd, dataDiff, baselineRoot, isDeclaredLiveFile, isBridged, baselineSkipped);
+    // Corpus files that ran on the shared corpus are compared by payload, so
+    // MORE violations in an already-red corpus assertion still read NEW.
+    const corpusFiles = baselineEnv
+      ? [...new Set([...mergedFailures.values()].map((f) => f && f.file).filter((f) => f && f !== '?' && honoursReviewTextsDir(baselineRoot, f)))]
+      : [];
+    const { newFailures, preExisting } = diffFailingSets(baselineFailures, mergedFailures, [...AGGREGATE_GUARD_FILES, ...corpusFiles]);
     let combinedOutput = output;
-    if (liveUnjudged.length > 0) {
-      combinedOutput += `\n\n⚠ post-merge test floor: LIVE-DATA-LANE failures NOT judged here, NOT blocking — the merged tree sees ${dataDiff.join(', ')} and the origin/main baseline does not, so a new-vs-pre-existing call would compare different data (BRO-8110). check-corpus-drift.yml judges these; if one is real, file a card:\n${formatFailureList('  ', liveUnjudged)}`;
-    }
     if (preExisting.length > 0) {
       let staleCopies = [];
       try { staleCopies = staleCopiesFn(cwd) || []; } catch { staleCopies = []; }
@@ -1003,7 +936,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: newFailures.length === 0,
       output: combinedOutput,
-      reason: `ran ${testFiles.length} file(s) (${timing()}) vs origin/main baseline: ${newFailures.length} new, ${preExisting.length} pre-existing${liveUnjudged.length ? `, ${liveUnjudged.length} live-data not judged` : ''}`,
+      reason: `ran ${testFiles.length} file(s) (${timing()}) vs origin/main baseline: ${newFailures.length} new, ${preExisting.length} pre-existing`,
     };
   } catch (err) {
     // Baseline infra failed (network, worktree lock, unprepared checkout) —
@@ -1095,9 +1028,7 @@ module.exports = {
   payloadItems,
   AGGREGATE_GUARD_FILES,
   baselineCheckoutOptions,
-  ignoredDataDirsMissingFrom,
-  splitLiveUnjudged,
-  skippedTestNames,
+  baselineCorpusEnv,
 };
 
 if (require.main === module) {
