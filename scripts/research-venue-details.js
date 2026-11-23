@@ -15,8 +15,9 @@
  *
  * Usage:
  *   node scripts/research-venue-details.js [--market=off-broadway|london] [--only=slug,slug]
- *     [--limit=N] [--max-usd=40] [--workers=4] [--refresh] [--rebuild-only]
+ *     [--limit=N] [--max-usd=40] [--workers=4] [--refresh] [--rebuild-only] [--redecide]
  * --rebuild-only re-derives venue-info.json from the raw checkpoint with no model calls.
+ * --redecide re-applies the agreement rules to every venue (needed after a rule change).
  */
 
 require('./lib/cli-help').exitOnHelp(module);
@@ -176,8 +177,22 @@ async function decide(v, raw, { network = true } = {}) {
 
   let geo = null;
   if (fields.address && network) {
-    geo = await geocode(fields.address);
-    if (geo && !inCity(geo.lat, geo.lng, v.city)) {
+    // Fallback query without the postcode: Nominatim often misses full UK/US postcodes.
+    // Fallbacks: Nominatim misses suite/floor parts, street ranges and some postcodes, so try
+    // the bare street address, then the venue by name. Every hit must still land in the city.
+    const bare = fields.address
+      .replace(/,\s*(suite|ste\.?|floor|fl\.?|unit)\s+[^,]+|,\s*\d+(st|nd|rd|th)\s+floor/gi, '')
+      .replace(/^(\d+)-\d+\s/, '$1 ')
+      .replace(/,?\s*(NY\s+)?\d{5}(-\d{4})?$|\s+[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i, '');
+    geo = await geocode(fields.address)
+      || (bare !== fields.address ? await geocode(bare) : null)
+      || await geocode(`${v.name}, ${v.city === 'london' ? 'London' : 'New York'}`);
+    if (!geo) {
+      // An address we could not place on a map is not published (BRO-8088 ship-check).
+      disagreements.push({ field: 'address', reason: 'could not geocode', address: fields.address });
+      delete fields.address;
+      delete how.address;
+    } else if (!inCity(geo.lat, geo.lng, v.city)) {
       disagreements.push({ field: 'address', reason: 'geocodes outside city', address: fields.address, geocoded: geo.display });
       delete fields.address;
       delete how.address;
@@ -233,7 +248,7 @@ async function main() {
     if (!raw) continue;
     i++;
     const prev = existing.venues?.[key(v)];
-    const sameRaw = prev && prev.researchedAt === raw.at;
+    const sameRaw = prev && prev.researchedAt === raw.at && (!prev.fields?.address || prev.lat != null);
     // Reuse the previous decision when the raw answers did not change (saves geocode calls).
     const d = sameRaw && !args.redecide
       ? { fields: prev.fields, how: prev.how, geo: prev.lat != null ? { lat: prev.lat, lng: prev.lng } : null, disagreements: prev._disagreements || [] }
