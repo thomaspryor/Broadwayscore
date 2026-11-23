@@ -56,7 +56,7 @@ test('every open London show in the real data resolves to its own slug', () => {
 });
 
 test('Google --shows: ids become slugs plus homepage and rankings', () => {
-  const { showUrls } = require('../submit-google-indexing.js');
+  const { googleShowUrls: showUrls } = require('./show-page-slugs.js');
   assert.deepEqual(showUrls(['hamilton-west-end-2021'], 'URL_UPDATED', () => shows), [
     'https://broadwayscorecard.com/show/hamilton-west-end',
     'https://broadwayscorecard.com/',
@@ -65,7 +65,7 @@ test('Google --shows: ids become slugs plus homepage and rankings', () => {
 });
 
 test('Google URL_DELETED keeps the removed slug and never names a live page', () => {
-  const { showUrls } = require('../submit-google-indexing.js');
+  const { googleShowUrls: showUrls } = require('./show-page-slugs.js');
   let loaded = false;
   assert.deepEqual(showUrls([' gone-show ', ''], 'URL_DELETED', () => { loaded = true; return shows; }),
     ['https://broadwayscorecard.com/show/gone-show']);

@@ -58,4 +58,15 @@ function slugsForCli(tokens, shows, log = console) {
   return slugs;
 }
 
-module.exports = { resolveShowSlugs, loadShowsForSlugs, slugsForCli };
+/**
+ * Google Indexing --shows URL list. URL_UPDATED resolves tokens to live page
+ * slugs and adds the homepage and /rankings. URL_DELETED keeps each token as
+ * given (the show is gone, so it cannot resolve) and never loads shows.json.
+ */
+function googleShowUrls(tokens, type, loadShows, host = 'https://broadwayscorecard.com') {
+  if (type === 'URL_DELETED') return (tokens || []).map(s => String(s || '').trim()).filter(Boolean).map(s => `${host}/show/${s}`);
+  const urls = slugsForCli(tokens, loadShows()).map(s => `${host}/show/${s}`);
+  return [...urls, `${host}/`, `${host}/rankings`];
+}
+
+module.exports = { resolveShowSlugs, loadShowsForSlugs, slugsForCli, googleShowUrls };
