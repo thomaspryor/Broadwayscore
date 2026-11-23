@@ -25,7 +25,7 @@ const LISTINGS = [
   listing({ title: 'Oedipus', venue: "Wyndham's Theatre", previewsStartDate: '2024-10-04', openingDate: '2024-10-15', closingDate: '2025-01-04' }),
   listing({ title: 'Oedipus', venue: 'Old Vic Theatre', previewsStartDate: '2025-01-21', openingDate: '2025-02-04', closingDate: '2025-03-29' }),
   listing({ title: 'Juno and the Paycock', venue: 'Gielgud Theatre', previewsStartDate: '2024-09-21', openingDate: '2024-10-03', closingDate: '2024-11-23' }),
-  listing({ title: 'Some Fringe Play', venue: 'Kiln Theatre', openingDate: '2024-10-01', closingDate: '2024-11-01' }),
+  listing({ title: 'Some Fringe Play', venue: 'Bristol Old Vic', openingDate: '2024-10-01', closingDate: '2024-11-01' }),
   listing({ title: 'A Concert', venue: 'Apollo Theatre', openingDate: '2024-10-01', closingDate: '2024-11-01', genres: ['event'] }),
   listing({ title: 'Last Season Show', venue: 'Apollo Theatre', openingDate: '2024-05-01', closingDate: '2024-11-01' }),
 ];
@@ -46,7 +46,7 @@ function run() {
 test('buildCandidates keeps only in-season West End listings', () => {
   const { candidates } = run();
   const titles = candidates.map(c => `${c.title}@${c.venue}`);
-  assert.ok(!titles.some(t => t.startsWith('Some Fringe Play')), 'Off-West End venue dropped');
+  assert.ok(!titles.some(t => t.startsWith('Some Fringe Play')), 'out-of-scope venue dropped (producing houses are in scope since BRO-8120)');
   assert.ok(!titles.some(t => t.startsWith('Last Season Show')), 'previous season dropped');
   assert.ok(titles.includes('A Concert@Apollo Theatre'), 'concert kept as a candidate (rejected by decision)');
 });
