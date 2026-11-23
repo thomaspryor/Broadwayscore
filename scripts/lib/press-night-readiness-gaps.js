@@ -26,6 +26,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const isDay = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(`${d}T00:00:00Z`));
 // Today in New York: the check runs at 02:15Z, still the previous evening there, and a UTC date would call tomorrow tonight.
 const dayOf = (ms, timeZone = 'America/New_York') => new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+// BRO-8146: regional and touring openings are sweep-only by design (no lane market, no embargo hour; 1,300+ regional
+// shows, mostly community theatre). Naming each one daily made the row permanent noise. A regional with a
+// reviewEmbargoAt is watched anyway. The row now covers the markets the lane is meant to run in: any of those
+// without an hour is a real gap.
+const SWEEP_ONLY_CATEGORIES = new Set(['regional', 'tour']);
 const GATED_SHORT_RUN_CATEGORIES = new Set(['broadway', 'west-end']);
 const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / DAY_MS);
 
@@ -43,6 +48,7 @@ function upcoming(shows, nowMs, days) {
 function unwatchedOpenings(shows, { nowMs, embargoAt, days = UNWATCHED_LOOKAHEAD_DAYS }) {
   const today = dayOf(nowMs);
   return upcoming(shows, nowMs, days)
+    .filter((s) => !SWEEP_ONLY_CATEGORIES.has(s.category))
     .filter((s) => { try { return !embargoAt(s); } catch { return true; } })
     .map((s) => ({ id: s.id, title: s.title || s.id, category: s.category || null, openingDate: s.openingDate, inDays: daysBetween(today, s.openingDate) }))
     .sort((a, b) => a.openingDate.localeCompare(b.openingDate) || a.id.localeCompare(b.id));
@@ -90,7 +96,7 @@ function pressNightReadinessResults({ shows, overrides, nowMs, embargoAt }) {
     unwatched.length
       ? { name: 'Press night: openings not watched', status: 'warn', items: unwatched,
         message: `${unwatched.length} opening(s) in the next ${UNWATCHED_LOOKAHEAD_DAYS} days have no press-night watch (no embargo hour for their market, so no lane or probe runs; reviews arrive only through the daily sweeps): ${list(unwatched, (u) => `${u.title} (${u.category}, ${when(u.inDays)})`)}`,
-        hint: 'Not watched on purpose unless someone adds a market hour (EMBARGO_HOUR_LOCAL) or a reviewEmbargoAt for the show.' }
+        hint: 'A lane market (Broadway, Off-Broadway, West End, Off-West End) with no embargo hour is a gap: add the market hour (EMBARGO_HOUR_LOCAL) or a reviewEmbargoAt for the show. Regional and touring openings are sweep-only by design and are not listed.' }
       : { name: 'Press night: openings not watched', status: 'pass', message: `Every opening in the next ${UNWATCHED_LOOKAHEAD_DAYS} days has a press-night watch` },
     undecided.length
       ? { name: 'Press night: score gate undecided', status: 'warn', items: undecided,
@@ -102,5 +108,5 @@ function pressNightReadinessResults({ shows, overrides, nowMs, embargoAt }) {
 
 module.exports = {
   unwatchedOpenings, scoreGateUndecided, scoreGateReason, pressNightReadinessResults,
-  UNWATCHED_LOOKAHEAD_DAYS, SCORE_GATE_LOOKAHEAD_DAYS, SHORT_RUN_DAYS,
+  SWEEP_ONLY_CATEGORIES, UNWATCHED_LOOKAHEAD_DAYS, SCORE_GATE_LOOKAHEAD_DAYS, SHORT_RUN_DAYS,
 };
