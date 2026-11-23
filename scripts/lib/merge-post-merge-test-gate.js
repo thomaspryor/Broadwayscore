@@ -886,6 +886,8 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     };
   }
   let checkout = null;
+  let mirrored = [];
+  let mirrorRoot = null;
   try {
     checkout = makeBaselineCheckout();
     const baselineRoot = checkout && (checkout.wt || checkout.dir);
@@ -898,7 +900,8 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
-    mirrorFn(safeRealpath(cwd), baselineRoot);
+    mirrorRoot = baselineRoot;
+    mirrored = mirrorFn(safeRealpath(cwd), baselineRoot) || [];
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
@@ -950,6 +953,9 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       reason: `ran ${testFiles.length} file(s) (${timing()}); baseline checkout unavailable`,
     };
   } finally {
+    // Unlink the mirrored data-dir symlinks before teardown, so removal of the
+    // checkout can never reach the real corpus they point at (BRO-8110).
+    for (const rel of mirrored) { try { fs.unlinkSync(path.join(mirrorRoot, rel)); } catch { /* already gone */ } }
     if (checkout && removeBaselineCheckout) removeBaselineCheckout(checkout);
   }
 }
