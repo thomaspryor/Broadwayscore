@@ -77,6 +77,8 @@ const EXEMPT_NEVER_CI = {
   // BRO-5673 acceptance shim; imports suites already run by the node unit-test
   // batch and scripts/lib/*.test.mjs step. Do not run those suites twice in CI.
   'scripts/batch-session-optimization.test.mjs': 'BRO-5673',
+  // BRO-8160 RECHECK-AFTER probe: live LLM session ledger, skipped until 2026-11-26.
+  'scripts/verify-bro-8160-recheck.test.mjs': 'BRO-8160',
   // BRO-7596 RECHECK-AFTER probe: live usage ledger; passes only after the owner stores CLAUDE_CODE_OAUTH_TOKEN.
   'scripts/verify-codex-check-oauth-live.test.mjs': 'BRO-7596',
   // BRO-7531 RECHECK-AFTER probe: live vendor billing record, skipped until 2026-11-23.
