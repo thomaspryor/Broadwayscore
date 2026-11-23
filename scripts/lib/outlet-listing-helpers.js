@@ -467,6 +467,18 @@ function computeTitleForms(show) {
     const rest = hyphenSpaced(possessive[2].replace(/[_/]+/g, ' '));
     if (rest && rest.split(/\s+/).length >= 3 && !forms.includes(rest) && !COMMON_WORD_SHOW_TITLES.has(rest)) forms.push(rest);
   }
+  // BRO-8190: the main title before a quoted/colon/dash subtitle, the show identity every other matcher shares
+  // (show-names.js mainTitleSplit, unique among all shows). TheaterMania headlined Blue Man Group “A New Holiday
+  // Surprise” as "Blue Man Group's Broadway Christmas Show...": no subtitle, and the possessive folds to "groups" in
+  // headline and slug alike, so the possessive-folded form counts too.
+  try {
+    const { mainTitleSplit, mainTitleIsUnique, registryShowTitles } = require('./show-names');
+    const split = mainTitleSplit(show && show.title);
+    if (split && mainTitleIsUnique(show.title, split.main, registryShowTitles())) {
+      const main = hyphenSpaced(split.main.replace(/[_/]+/g, ' '));
+      for (const f of [main, main + 's']) if (f && !forms.includes(f) && !COMMON_WORD_SHOW_TITLES.has(f)) forms.push(f);
+    }
+  } catch { /* registry unavailable: full-title forms only */ }
   return forms;
 }
 
