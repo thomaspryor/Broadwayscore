@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-23T02:41:01.408Z",
+  "generatedAt": "2026-11-23T03:38:42.246Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 366,
-  "clean": 366,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 363,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.11 vs local 63.73 (Δ0.38)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-11-23T03:38:37.824Z"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 89.62 vs local 89.44 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-23T03:38:37.824Z"
+    },
+    {
+      "showId": "clue-tour-2025",
+      "title": "Clue",
+      "openingDate": "2025-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.81 vs local 80.5 (Δ0.31)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-23T03:38:37.824Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
