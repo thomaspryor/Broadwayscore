@@ -952,6 +952,8 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
  * @returns {string} '' when neither declares an entry
  */
 function buildPriorRunHint(priorRuns, tourLegs) {
+  // BRO-8093: shared with the ensemble note so the two prompts cannot drift.
+  const { DECLARED_RUN_AFFIRMATION } = require('./prior-runs-note');
   const sanitize = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
   const describe = (venue, from, to) => {
     const dates = from || to ? ` (${from || 'unknown'} to ${to || 'unknown'})` : '';
@@ -967,7 +969,7 @@ function buildPriorRunHint(priorRuns, tourLegs) {
     if (l && typeof l === 'object') legs.push(describe(l.venue, l.startDate, l.endDate));
   }
   if (legs.length === 0) return '';
-  return `\n\n**DECLARED EARLIER RUNS / TOUR LEGS OF THIS PRODUCTION**: This same production also played declared earlier runs/tour legs: ${legs.join('; ')}. A review of a listed run at that venue, published during that run or in the weeks right after it closed, IS a review of THIS production: do NOT set wrongProduction=true for it, even where the guidance above calls a tryout, transfer or earlier venue a different production. Any other staging (including earlier stagings by the same company, even at the same venue in a different year) is still wrongProduction.`;
+  return `\n\n**DECLARED EARLIER RUNS / TOUR LEGS OF THIS PRODUCTION**: This same production also played declared earlier runs/tour legs: ${legs.join('; ')}. ${DECLARED_RUN_AFFIRMATION} For this output that means: do NOT set wrongProduction=true for it. Any other staging (including earlier stagings by the same company, even at the same venue in a different year) is still wrongProduction.`;
 }
 
 // ============================================================

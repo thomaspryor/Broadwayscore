@@ -51,7 +51,9 @@ describe('prior-runs note: return engagement', () => {
     const note = buildPriorRunsNote(PRIOR_RUNS);
     assert.match(note, /Any other staging .* is wrong_production/);
     assert.doesNotMatch(note, /for the declared earlier run only, flag it/, 'must not reject reviews of a declared run that matches a listed venue and date range');
-    assert.match(note, /matches a listed venue AND falls within that leg's date range/);
+    // BRO-8093: an inheritReviews:false run is listed as a SEPARATE production, never as this one.
+    assert.match(note, /SEPARATE production[^.]*No[ëe]l Coward/);
+    assert.doesNotMatch(note, /This same production also played/);
   });
 
   test('buildScoringInput for the Adelphi return review includes the rule and the publish date', () => {
@@ -77,5 +79,49 @@ describe('prior-runs note: return engagement', () => {
       fullText: RETURN_REVIEW,
     });
     assert.doesNotMatch(built.context, /RETURN ENGAGEMENT/);
+  });
+});
+
+// BRO-8093: mexodus-off-broadway-2026 declares Audible's Minetta Lane run as a
+// prior run (it transferred to the Daryl Roth). The ensemble rejected a
+// 2025-10-04 Minetta Lane review as wrong_production because its note, unlike
+// the collector's content-verifier hint, never said a declared-run review IS
+// this production and overrides the rubric's "reject transfer productions".
+describe('prior-runs note: declared earlier run of the same production (BRO-8093)', () => {
+  const { DECLARED_RUN_AFFIRMATION } = require('../../scripts/lib/prior-runs-note');
+  const { buildPriorRunHint } = require('../../scripts/lib/content-verifier.js');
+  const MEXODUS_RUNS = [{ openingDate: '2025-09-09', venue: 'Minetta Lane Theatre' }];
+
+  test('ensemble note affirms a declared-run review IS this production and overrides the transfer rule', () => {
+    const note = buildPriorRunsNote(MEXODUS_RUNS);
+    assert.match(note, /This same production also played declared earlier runs\/tour legs: Minetta Lane Theatre \(2025-09-09 to unknown\)/);
+    assert.ok(note.includes(DECLARED_RUN_AFFIRMATION), 'ensemble note must carry the shared affirmation');
+    assert.match(note, /IS a review of THIS production: do NOT reject it as wrong_production/);
+    assert.match(note, /transfer or earlier venue a different production/);
+    assert.match(note, /end date is unknown: any time before the current engagement began/);
+  });
+
+  test('ensemble note and content-verifier hint share the same affirmation (no drift)', () => {
+    assert.ok(buildPriorRunHint(MEXODUS_RUNS, null).includes(DECLARED_RUN_AFFIRMATION), 'content-verifier hint must carry the shared affirmation');
+    assert.ok(buildPriorRunsNote(MEXODUS_RUNS).includes(DECLARED_RUN_AFFIRMATION));
+  });
+
+  test('buildScoringInput for the mexodus Minetta Lane review carries the affirmation', () => {
+    const built = buildScoringInput({
+      showId: 'mexodus-off-broadway-2026', showTitle: 'Mexodus', category: 'off-broadway',
+      venue: 'Daryl Roth Theatre', publishDate: '2025-10-04', priorRuns: MEXODUS_RUNS,
+      fullText: 'Mexodus at Audible\'s Minetta Lane Theater is a thrilling two-man musical. '.repeat(20),
+    });
+    assert.ok(built.context.includes(DECLARED_RUN_AFFIRMATION));
+    assert.match(built.context, /Review published: 2025-10-04/);
+  });
+
+  test('a mix of inherited + opt-out runs lists each under the right heading', () => {
+    const note = buildPriorRunsNote([
+      { venue: 'Barbican', openingDate: '2022-10-08', closingDate: '2023-01-21' },
+      { venue: 'Noel Coward', openingDate: '2025-04-14', closingDate: '2025-08-03', inheritReviews: false },
+    ]);
+    assert.match(note, /This same production also played declared earlier runs\/tour legs: Barbican \(2022-10-08 to 2023-01-21\)\./);
+    assert.match(note, /SEPARATE production[^:]*: Noel Coward/);
   });
 });
