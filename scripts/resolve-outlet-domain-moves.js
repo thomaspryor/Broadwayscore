@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { exitFlushed } = require('./lib/exit-flushed');
 const { findProbableDomainMoves } = require('./lib/silent-exclusion-detectors');
 const { decideDomainMove, buildOutletMarkets } = require('./lib/outlet-domain-move-resolver');
 const { applyOutletRegistryAlias } = require('./lib/outlet-registry-alias-action');
@@ -108,4 +109,4 @@ function main() {
   return 0;
 }
 
-process.exit(main());
+exitFlushed(main());
