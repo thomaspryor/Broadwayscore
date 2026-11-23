@@ -257,7 +257,9 @@ function headlineIdentity({ outletId, headline, show, showTitle }) {
   // normalizeTitle drops bracketed text, and The Stage brackets part of some
   // titles ("Tartuffe (Remixed)"), so also read the headline with brackets unwrapped.
   const forms = [...new Set([headline, String(headline).replace(/[()[\]]/g, ' ')].map((x) => ` ${normalizeTitle(x)} `))];
-  const named = titles.some((t) => { const n = normalizeTitle(t); return n.length >= 3 && forms.some((h) => h.includes(` ${n} `)); });
+  const { numericTitleHits, isNumericTitle } = require('./show-title-variants');
+  // A 1-3 digit title ("44") is named only when printed as a title (BRO-8100).
+  const named = titles.some((t) => { if (isNumericTitle(t)) { const h = numericTitleHits(headline, t); return h.musical + h.quoted > 0; } const n = normalizeTitle(t); return n.length >= 3 && forms.some((h) => h.includes(` ${n} `)); });
   if (!named) return { ok: false, why: `"${String(headline).slice(0, 80)}" does not name the show` };
   if (HEADLINE_NEEDS_REVIEW_WORD.has(outletId) && !/\breview\b/i.test(headline)) return { ok: false, why: `"${String(headline).slice(0, 80)}" names the show but is not headed as a review` };
   if (show) {

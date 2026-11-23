@@ -5252,7 +5252,7 @@ function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
     .filter((v) => typeof v === 'string' && v.trim()).join(' ');
   const titles = require('./show-title-variants');
   const names = parts.length > 1 ? [show.title, ...parts] : [show.title];
-  const namesOwn = (t) => names.some((n) => titles.textMentionsTitle(t, n) || titles.textMentionsShortTitle(t, n, 1));
+  const namesOwn = (t) => names.some((n) => titles.textMentionsShowTitle(t, n, { shortMinHits: 1 }));
   if (namesMember) return !text || !namesOwn(text);
   // BRO-6569: an opaque url (ft.com/content/<uuid>) names no show, so the text
   // decides alone: a body that names a co-member by its full title and never
@@ -5286,6 +5286,7 @@ function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
   const esc = (v) => v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const asName = (v) => new RegExp(`(?<![A-Za-z0-9])${esc(v)}(?![A-Za-z0-9])`, 'g');
   const memberNamed = (t) => {
+    if (titles.isNumericTitle(t)) return !!titles.textMentionsShowTitle(text, t);
     const core = t.replace(/^(?:the|a|an)\s+/i, '');
     if (core.trim().split(/\s+/).length >= 2) return !!titles.textMentionsTitle(text, t);
     return (core !== t && asName(t).test(text)) || (text.match(asName(core)) || []).length >= 2;

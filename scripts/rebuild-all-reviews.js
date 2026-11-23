@@ -53,7 +53,7 @@ const { createFingerprintMemo } = require('./lib/fingerprint-memo');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
-const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
+const { textMentionsShowTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
 const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -5057,8 +5057,7 @@ showDirs.forEach(showId => {
           // Love Never Dies reviews), so it never overrides a wrongArticle verdict.
           if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))
               || (realTitle && !(data.contentVerification && data.contentVerification.wrongArticle === true)
-                  && (textMentionsTitle(textToCheck.substring(0, 5000), realTitle)
-                      || textMentionsShortTitle(textToCheck.substring(0, 5000), realTitle)))) {
+                  && textMentionsShowTitle(textToCheck.substring(0, 5000), realTitle))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out

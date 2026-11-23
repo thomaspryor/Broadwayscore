@@ -297,14 +297,15 @@ function numericTitleHits(text, title) {
   const quoted = new RegExp(`(?<![0-9'’])[“"‘']${t}(?![0-9])[,.:;!?]?[”"’']`, 'g');
   // Capitalised "Musical" only: "13 the musical director" is not the title.
   // One optional whitespace run per side of the dash (two adjacent \s* went quadratic, review).
-  const musical = new RegExp(`(?<![0-9$£€.,/:#])${t}\\s*(?:[:–—-]\\s*)?(?:The|THE|the) (?:Musical|MUSICAL)\\b`, 'g');
+  const musical = new RegExp(`(?<![A-Za-z0-9$£€.,/:#])${t}\\s*(?:[:–—-]\\s*)?(?:The|THE|the) (?:Musical|MUSICAL)\\b`, 'g');
   return { quoted: (text.match(quoted) || []).length, musical: (text.match(musical) || []).length };
 }
 
 /** How many times a 1-3 digit title is printed as a title (quoted or "N The Musical"). Pure. */
 function countNumericTitleMentions(text, title) {
   const h = numericTitleHits(text, title);
-  return h.quoted + h.musical;
+  // One quoted number can be an age or a score: quoted counts only from 2 hits.
+  return h.musical + (h.quoted >= 2 ? h.quoted : 0);
 }
 
 /**
@@ -322,7 +323,29 @@ function textMentionsNumericTitle(text, title) {
   return h.musical >= 1 || h.quoted >= 2 ? String(title).trim().replace(/[.!?]+$/, '') : null;
 }
 
+/** Is the title a bare 1-3 digit number ("44", "13")? Pure. */
+function isNumericTitle(title) {
+  return /^\d{1,3}$/.test(String(title || '').trim().replace(/[.!?]+$/, ''));
+}
+
+/**
+ * ONE title-mention predicate for every identity gate (BRO-8100): full-title
+ * variants, curated short titles, and numeric titles printed as titles. Gates
+ * must call this instead of composing textMentionsTitle/textMentionsShortTitle.
+ * opts.shortMinHits (default 2) and opts.allowUncurated pass to the short check.
+ * Returns the matched variant or null. Pure.
+ */
+function textMentionsShowTitle(text, title, opts = {}) {
+  return textMentionsTitle(text, title, opts)
+    || textMentionsShortTitle(text, title, opts.shortMinHits != null ? opts.shortMinHits : 2, opts)
+    || textMentionsNumericTitle(text, title)
+    || null;
+}
+
 module.exports = {
+  numericTitleHits,
+  isNumericTitle,
+  textMentionsShowTitle,
   textMentionsNumericTitle,
   countNumericTitleMentions,
   normalizeForMention,

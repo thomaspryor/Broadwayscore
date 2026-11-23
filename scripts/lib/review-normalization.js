@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
-const { buildShowTitleVariants, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const { buildShowTitleVariants, textMentionsShowTitle } = require('./show-title-variants');
 const SHOW_MENTION_SWAP_MIN_CHARS = 600;
 const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
@@ -879,8 +879,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const _slotIsWeak = !(typeof existing.fullText === 'string' && existing.fullText.length >= 1500 && !existing.wrongProduction);
   const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && _titleCheckable && _slotIsWeak
     && _swapText.length >= SHOW_MENTION_SWAP_MIN_CHARS
-    && !textMentionsTitle(_swapText, _mentionTitle)
-    && !textMentionsShortTitle(_swapText, _mentionTitle)
+    && !textMentionsShowTitle(_swapText, _mentionTitle)
     && !urlSlugNamesShow(incoming.url, _mentionTitle);
   if (urlIsUnrelatedToShow) {
     console.warn(`[mergeReviews] refused url swap, incoming text never mentions "${_mentionTitle}" for ${existing.outletId || context.file || '?'}: ${incoming.url}`);

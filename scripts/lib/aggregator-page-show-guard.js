@@ -16,7 +16,7 @@
  * Text only: never reads the row URLs (CLAUDE.md §3).
  */
 const { validateShowMentioned } = require('./content-quality');
-const { textMentionsTitle } = require('./show-title-variants');
+const { textMentionsTitle, numericTitleHits, isNumericTitle } = require('./show-title-variants');
 
 // Below this much excerpt text a real round-up can plausibly skip the title
 // (Stagedoor rows are one-line headlines), so the page is not judged.
@@ -29,6 +29,8 @@ const MIN_CHARS = 600;
  */
 function headlineNamesShow(headline, title) {
   if (typeof headline !== 'string' || !headline.trim()) return false;
+  const nh = numericTitleHits(headline, title);
+  if (isNumericTitle(title)) return nh.musical + nh.quoted > 0;
   if (textMentionsTitle(headline, title)) return true;
   const t = title.trim();
   return t.length < 4 && !!textMentionsTitle(headline.trim().slice(0, t.length + 1), t, { minVariantLength: 1 });

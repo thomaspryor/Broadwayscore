@@ -21,7 +21,7 @@
 const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
-const { normalizeForMention, textMentionsTitle } = require('./show-title-variants');
+const { normalizeForMention, textMentionsShowTitle } = require('./show-title-variants');
 const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { isUrlTitleMismatch } = require('./review-guards');
 
@@ -101,7 +101,7 @@ function isPunctuationNulledCandidate(data, showTitle) {
   // require the punctuation-tolerant matcher to actually find the show in it —
   // otherwise this really was the wrong article and re-collecting won't help.
   if (data.wrongFullText) {
-    if (!textMentionsTitle(data.wrongFullText, showTitle)) {
+    if (!textMentionsShowTitle(data.wrongFullText, showTitle)) {
       return { candidate: false, reason: 'wrongFullText still does not mention show under variant matching' };
     }
   } else if (data.url && isUrlTitleMismatch(data.url, showTitle).isMismatch) {

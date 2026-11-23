@@ -8,7 +8,7 @@
  * @module content-quality
  */
 
-const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle, textMentionsNumericTitle } = require('./show-title-variants');
+const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle, textMentionsNumericTitle, countNumericTitleMentions, isNumericTitle } = require('./show-title-variants');
 const { hasExcerpt: hasAnyExcerpt, getLongestExcerpt } = require('./excerpt-fields');
 const { stripKnownTrailers, trailerFixesEnabled } = require('./trailer-signatures');
 
@@ -4128,7 +4128,11 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // official title used 3 times"). De-duplicate tokens so "Schmigadoon" in
   // both title and ID doesn't double-weight.
   const tokens = new Set();
-  if (showTitle && showTitle.length > 2) {
+  // A 1-3 digit title ("44", "13") contributes NO bare-digit token (dates, prices,
+  // ages); it is counted only where printed as a title (countNumericTitleMentions,
+  // BRO-8100). 1-2 digit titles used to yield zero tokens, so every review failed.
+  const numericTitle = isNumericTitle(showTitle);
+  if (showTitle && showTitle.length > 2 && !numericTitle) {
     const t = normalize(showTitle).toLowerCase();
     tokens.add(t);
     // Strip trailing/sentence punctuation so long titles match body + headline
@@ -4198,13 +4202,13 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // prefix + ID word (keeps the roundup single-mention rejection intact).
   const normMentionText = normalizeForMention(text);
   const baseVariants = new Set(
-    (showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle, { includePrefix: false }) : [],
+    (showTitle && showTitle.length > 2 && !numericTitle) ? buildShowTitleVariants(showTitle, { includePrefix: false }) : [],
   );
   for (const tok of tokens) {
     const nt = normalizeForMention(tok);
     if (nt) baseVariants.add(nt);
   }
-  const prefixVariants = ((showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle) : [])
+  const prefixVariants = ((showTitle && showTitle.length > 2 && !numericTitle) ? buildShowTitleVariants(showTitle) : [])
     .filter((v) => !baseVariants.has(v));
   const titleVariants = [...baseVariants, ...prefixVariants];
   let normalizedCount = 0;
@@ -4221,7 +4225,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
       coveredSpans.push([a, b]);
     }
   }
-  const mentionCount = Math.max(literalCount, normalizedCount);
+  const mentionCount = Math.max(literalCount, normalizedCount, numericTitle ? countNumericTitleMentions(text, showTitle) : 0);
 
   // HTML <title> check (optional — only when html is provided)
   let htmlTitle = null;
@@ -4244,6 +4248,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
       if (htmlTitle) {
         const titleLower = normalize(htmlTitle).toLowerCase();
         htmlTitleMatch = false;
+        if (numericTitle && countNumericTitleMentions(htmlTitle, showTitle) > 0) htmlTitleMatch = true;
         for (const token of tokens) {
           if (token && titleLower.includes(token)) {
             htmlTitleMatch = true;

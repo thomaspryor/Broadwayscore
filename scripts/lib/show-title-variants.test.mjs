@@ -257,3 +257,28 @@ test('numeric titles count only when printed as a title, quoted or "N The Musica
   assert.equal(validateShowMentioned('In “44 – The Musical” the president sings.' + pad, '44', '44-off-broadway-2025').valid, true);
   assert.equal(validateShowMentioned('On February 13 the 13 kids sang.' + pad, '13', '13-2008').valid, false);
 });
+
+// BRO-8100 class guard: a numeric-title review passes EVERY identity gate.
+test('numeric title: one helper + every gate accepts a real numeric-title review', () => {
+  const { textMentionsShowTitle, isNumericTitle } = require('./show-title-variants.js');
+  const { validateContentMentionsShow } = require('./content-quality.js');
+  const { headlineIdentity } = require('./gap-acceptance.js');
+  for (const t of ['44', '13']) {
+    const text = t + ' The Musical lands at the Public with real swagger. “' + t + '” is bold, and “' + t + '” earns it. ' + t + ' The Musical closes strong.' + FILLER.repeat(8);
+    assert.ok(isNumericTitle(t));
+    assert.ok(textMentionsShowTitle(text, t), 'helper ' + t);
+    assert.equal(validateShowMentioned(text, t, t + '-off-broadway-2025').valid, true, 'validateShowMentioned ' + t);
+    const r = validateContentMentionsShow(text, null, t, t + '-off-broadway-2025');
+    assert.equal(r.valid, true, 'url-content-mismatch ' + t + ': ' + JSON.stringify(r));
+    const bare = 'Opened ' + t + ' years ago, tickets cost USD ' + t + '.' + FILLER.repeat(8);
+    assert.equal(textMentionsShowTitle(bare, t), null, 'bare ' + t);
+    assert.equal(validateContentMentionsShow(bare, null, t, t + '-off-broadway-2025').valid, false, 'bare gate ' + t);
+    const hl = headlineIdentity({ outletId: 'thestage', headline: t + ' The Musical review', show: { title: t, id: t + '-x-2025' }, showTitle: t });
+    assert.equal(hl.ok, true, 'headline ' + t + ': ' + JSON.stringify(hl));
+    // review-found false accepts (BRO-8100 codex/panelist)
+    assert.equal(validateContentMentionsShow('The score was \u201c' + t + '\u201d to nothing. ' + FILLER.repeat(8), null, t, t + '-x-2025').valid, false, 'one quoted');
+    assert.equal(textMentionsShowTitle('B' + t + ' The Musical is new.', t), null, 'letter prefix');
+    assert.equal(headlineIdentity({ outletId: 'thestage', headline: t + ' shows to see this summer', show: { title: t, id: t + '-x-2025' }, showTitle: t }).ok, false, 'bare headline');
+    assert.equal(validateContentMentionsShow('Tickets cost ' + t + ' dollars, ' + t + ' seats, ' + t + ' rows.' + FILLER.repeat(8), null, t + '!', t + '-x-2025').valid, false, 'punct title bare');
+  }
+});

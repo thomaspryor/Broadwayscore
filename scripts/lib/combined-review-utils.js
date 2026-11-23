@@ -105,8 +105,8 @@ function shouldRecoverJointWrongShow(data, showTitle) {
   if (hasApprovedFlag(data, 'wrongShow')) return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   if (showTitle && text.length >= JOINT_REVIEW_MIN_TEXT) {
-    const { textMentionsTitle } = require('./show-title-variants');
-    if (!textMentionsTitle(text, showTitle)) return false;
+    const { textMentionsShowTitle } = require('./show-title-variants');
+    if (!textMentionsShowTitle(text, showTitle)) return false;
   }
   return true;
 }
