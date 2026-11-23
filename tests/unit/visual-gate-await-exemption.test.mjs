@@ -1,0 +1,68 @@
+// BRO-8169: a UI diff whose only change is ADDING `await` (with its parentheses) or `async` around non-JSX
+// expressions is a fix, not a design change. The real case: BRO-8056 p2 made getShowForRender async, and the
+// show page + OG image were flagged "layout/style changed near ParenthesizedExpression", so the owner had to
+// say yes to identical pictures again.
+// The exemption is insert-only: removing an await (a Promise then reaches a condition or a class) stays design,
+// and `async` alone stays design unless its JSX-free function body also gained an await.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const HERE = dirname(fileURLToPath(import.meta.url));
+const D = require('../../scripts/lib/visual-design-diff.js');
+const FIX = join(HERE, '..', '..', 'scripts', 'lib', 'fixtures', 'bro-8169');
+const SKIP_TS = !D._loadTs() && 'typescript is not installed (the classifier fails closed without it)';
+
+const wrap = (body, head = "import {A,B} from 'a'; import {f,g,cache} from './u';") => `${head} export default async function X(){${body}}`;
+const classify = (a, b, opts = {}) => D.classifyFile({ file: opts.file || 'src/x.tsx', oldSource: (opts.headA ?? '') + wrap(a, opts.head), newSource: (opts.headB ?? '') + wrap(b, opts.head) });
+const read = (f) => readFileSync(join(FIX, f), 'utf8');
+
+const FIX_CASES = {
+  'await added to a data getter': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s); return <A r={r}/>;`],
+  'await added with parentheses before optional chaining': [`const r = f(s)?.show; return <A r={r}/>;`, `const r = (await f(s))?.show; return <A r={r}/>;`],
+  'async + await added inside a cache() getter': [`const h = cache((s) => { const v = f(s)?.show; return v; }); return <A/>;`, `const h = cache(async (s) => { const v = (await f(s))?.show; return v; }); return <A/>;`],
+  'await added to a getter result then used': [`const hd = g(s); return <A line={hd.line}/>;`, `const hd = await g(s); return <A line={hd.line}/>;`],
+};
+for (const [name, [a, b]] of Object.entries(FIX_CASES)) {
+  test(`fix: ${name}`, { skip: SKIP_TS }, () => { const r = classify(a, b); assert.equal(r.design, false, r.reason); });
+}
+
+const DESIGN_CASES = {
+  'await added next to a className change': [`const r = f(s); return <div className="p-2"><A r={r}/></div>;`, `const r = await f(s); return <div className="p-4"><A r={r}/></div>;`],
+  'await removed (a Promise now reaches the condition)': [`const on = await f(); return on && <A/>;`, `const on = f(); return on && <A/>;`],
+  'await removed feeding a class': [`const c = await f(); return <div className={c}/>;`, `const c = f(); return <div className={c}/>;`],
+  'await added as a JSX child': [`return <div>{f()}</div>;`, `return <div>{await f()}</div>;`],
+  'await added whose operand holds JSX': [`const el = f(<A/>); return el;`, `const el = await f(<A/>); return el;`],
+  'async added with no await in the function': [`const h = cache((s) => f(s)); return <A h={h}/>;`, `const h = cache(async (s) => f(s)); return <A h={h}/>;`],
+  'async added to a JSX-returning function': [`const C = () => { const v = f(); return <A v={v}/>; }; return <C/>;`, `const C = async () => { const v = await f(); return <A v={v}/>; }; return <C/>;`],
+  'parenthesised grouping changed (no await)': [`const n = (a + b) * c; return <A n={n}/>;`, `const n = a + b * c; return <A n={n}/>;`],
+  'await plus a new identifier': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s) ?? fallback; return <A r={r}/>;`],
+};
+for (const [name, [a, b]] of Object.entries(DESIGN_CASES)) {
+  test(`design (fail closed): ${name}`, { skip: SKIP_TS }, () => { const r = classify(a, b); assert.equal(r.design, true, r.reason); });
+}
+
+test('kill switch VISUAL_AWAIT_TRANSPARENT_DISABLED=1 makes an added await design again', { skip: SKIP_TS }, () => {
+  process.env.VISUAL_AWAIT_TRANSPARENT_DISABLED = '1';
+  try { assert.equal(classify(`const r = f(s); return <A r={r}/>;`, `const r = await f(s); return <A r={r}/>;`).design, true); }
+  finally { delete process.env.VISUAL_AWAIT_TRANSPARENT_DISABLED; }
+});
+
+// Real BRO-8056 p2 files (commit b0deb852d, branch land/bro-8056-p2-reader), stored as fixtures.
+test('real BRO-8056 p2: opengraph-image.tsx (its whole diff is one added await) is fix-only', { skip: SKIP_TS }, () => {
+  const r = D.classifyFile({ file: 'src/app/show/[slug]/opengraph-image.tsx', oldSource: read('opengraph-image.before.tsx.txt'), newSource: read('opengraph-image.after.tsx.txt') });
+  assert.equal(r.design, false, r.reason);
+});
+test('real BRO-8056 p2: page.tsx with only its await/async hunks is fix-only', { skip: SKIP_TS }, () => {
+  const r = D.classifyFile({ file: 'src/app/show/[slug]/page.tsx', oldSource: read('page.before.tsx.txt'), newSource: read('page.after-await-hunks.tsx.txt') });
+  assert.equal(r.design, false, r.reason);
+});
+test('real BRO-8056 p2: the FULL page.tsx diff stays design (it also adds `!refreshed` conditions that hide the rank cards)', { skip: SKIP_TS }, () => {
+  const r = D.classifyFile({ file: 'src/app/show/[slug]/page.tsx', oldSource: read('page.before.tsx.txt'), newSource: read('page.full-after.tsx.txt') });
+  assert.equal(r.design, true, r.reason);
+  assert.doesNotMatch(r.reason, /ParenthesizedExpression|AwaitExpression/, 'the await itself is no longer the reason: ' + r.reason);
+});

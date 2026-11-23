@@ -16,6 +16,11 @@
 //      const initializer), CSS imports and 'use client'/'use server'. JSX text (copy) and other logic are NOT in it,
 //      so reworded copy, a changed handler, href or data path is a fix; a moved, added or removed element, a changed
 //      class, style, literal or tag target is design.
+//   4. (BRO-8169) the one exception to "identical": the new skeleton may ADD insertable tokens. An `await` (and the
+//      parentheses directly around it) on a non-JSX expression outside any JSX, and `async` on a function whose body has
+//      no JSX and awaits on its own. Removing any of these stays design (a Promise would then reach a condition or a
+//      class), as does `async` with no await of its own (callers would get a Promise). `for await` is not exempt.
+//      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
 //
 // One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
 // running the main checkout's copy (the pushing checkout runs the main checkout copy of the hook and this file, so a pushed branch cannot loosen it), so the two never disagree.
@@ -72,6 +77,14 @@ function skeleton(ts, sf) {
   };
   scanUse(sf, false);
   const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
+  // BRO-8169: tokens a diff may ADD without changing what draws (prefixed '~'; see insertOnlyMatch).
+  const INS = process.env.VISUAL_AWAIT_TRANSPARENT_DISABLED === '1' ? '' : '~';
+  const isFn = (x) => ts.isFunctionDeclaration(x) || ts.isFunctionExpression(x) || ts.isArrowFunction(x) || ts.isMethodDeclaration(x);
+  const JSX_KINDS = new Set([K.JsxElement, K.JsxSelfClosingElement, K.JsxFragment, K.JsxExpression, K.JsxAttribute, K.JsxSpreadAttribute, K.JsxOpeningElement]);
+  const insideJsx = (x) => { for (let p = x.parent; p; p = p.parent) if (JSX_KINDS.has(p.kind)) return true; return false; };
+  const insertableAwait = (x) => ts.isAwaitExpression(x) && !insideJsx(x) && !hasJsx(x.expression);
+  const ownsAwait = (fn) => { let f = false; const w = (x) => { if (f) return; if (x !== fn.body && isFn(x)) return; if (ts.isAwaitExpression(x)) { f = true; return; } ts.forEachChild(x, w); }; if (fn.body) w(fn.body); return f; };
+  const insertableAsync = (x) => x.kind === K.AsyncKeyword && x.parent && isFn(x.parent) && x.parent.body && !hasJsx(x.parent.body) && ownsAwait(x.parent);
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
   const visit = (n) => {
@@ -124,7 +137,8 @@ function skeleton(ts, sf) {
       ts.forEachChild(n, visit);
       return;
     }
-    out.push(K[n.kind]);
+    const insertable = insertableAwait(n) || (ts.isParenthesizedExpression(n) && insertableAwait(n.expression)) || insertableAsync(n);
+    out.push(insertable ? INS + K[n.kind] : K[n.kind]);
     if (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) out.push(`op${n.operator}`);
     if (ts.isIdentifier(n) || ts.isPrivateIdentifier(n)) out.push(n.text);
     else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(norm(n.text));
@@ -136,6 +150,22 @@ function skeleton(ts, sf) {
   visit(sf);
   out.imports = imports;
   return out;
+}
+
+/**
+ * BRO-8169: is `after` equal to `before` with only insertable ('~'-prefixed) tokens added? Insert-only on purpose:
+ * a '~' token present before must still be present after (a removed await stays design). A greedy walk is enough:
+ * whenever it succeeds it has found such an embedding, and when it fails we fail closed.
+ * -> { ok, added, at } (at = first token that broke the match).
+ */
+function insertOnlyMatch(before, after) {
+  let i = 0, j = 0, added = 0;
+  while (i < before.length || j < after.length) {
+    if (i < before.length && j < after.length && before[i] === after[j]) { i++; j++; continue; }
+    if (j < after.length && after[j][0] === '~') { j++; added++; continue; }
+    return { ok: false, added, at: after[j] || before[i] || '' };
+  }
+  return { ok: true, added, at: '' };
 }
 
 /** -> { design: boolean, reason } for one file. oldSource/newSource null = file absent on that side. */
@@ -154,10 +184,9 @@ function classifyFile({ file, oldSource, newSource }) {
     const sb = skeleton(ts, b);
     // A binding present on both sides that now points somewhere else (a swapped icon, component or constant) changes what draws.
     for (const [name, target] of sa.imports) if (sb.imports.has(name) && sb.imports.get(name) !== target) return design(`import ${name} now points at a different module or export`);
-    if (sa.length === sb.length && sa.every((t, i) => t === sb[i])) return { design: false, reason: 'page structure and style tokens unchanged' };
-    let i = 0;
-    while (i < sa.length && i < sb.length && sa[i] === sb[i]) i++;
-    return design(`layout/style changed near ${JSON.stringify((sb[i] || sa[i] || '').slice(0, 60))}`);
+    const m = insertOnlyMatch(sa, sb);
+    if (m.ok) return { design: false, reason: m.added ? `page structure and style tokens unchanged (only ${m.added} await/async added)` : 'page structure and style tokens unchanged' };
+    return design(`layout/style changed near ${JSON.stringify((m.at || '').replace(/^~/, '').slice(0, 60))}`);
   } catch (e) {
     return design(`classifier error (fail closed): ${e && e.message}`);
   }
@@ -219,7 +248,7 @@ function explain(r) {
   return `Owner yes needed: ${r.reason}.`;
 }
 
-module.exports = { classifyFile, designFiles, selfClear, explain, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
+module.exports = { classifyFile, _insertOnlyMatch: insertOnlyMatch, designFiles, selfClear, explain, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
 
 if (require.main === module) {
   const opt = {};
