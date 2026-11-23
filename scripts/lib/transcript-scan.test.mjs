@@ -1130,3 +1130,137 @@ test('BRO-7851 cousin: owner NO-VERIFY counts only while the owner turn is curre
   assert.equal(stale.ownerTyped, false);
   assert.match(stale.reason, /superseded/);
 });
+
+// ── BRO-8156: approval churn (owner asked "yes" repeatedly for the same UI change, BRO-8086) ────────────────────
+import { createRequire as __cr8156 } from 'node:module';
+import { execFileSync as __ex8156, spawnSync as __sp8156 } from 'node:child_process';
+import { mkdirSync as __mk8156, symlinkSync as __sl8156, appendFileSync as __ap8156 } from 'node:fs';
+import { dirname as __dn8156 } from 'node:path';
+import { fileURLToPath as __fu8156 } from 'node:url';
+import { queryScopeAllowed, recordApproval } from './visual-qa-ledger.mjs';
+const __scope = __cr8156(import.meta.url)('./visual-scope.js');
+const __LIB = __dn8156(__fu8156(import.meta.url));
+
+function ledgerRepo() {
+  const d = mkdtempSync(join(tmpdir(), 'scope-ledger-'));
+  return d;
+}
+
+test('BRO-8156 scope: yes recorded with files, later revision of the same files is allowed', () => {
+  const repo = ledgerRepo();
+  try {
+    recordApproval(repo, { branch: 'claude/bro-8086-tiles', commitSha: 'a'.repeat(40), contentHash: 'h1', uiFiles: ['src/app/theater/page.tsx', 'src/components/StatTile.tsx'] });
+    assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-tiles', uiFiles: ['src/components/StatTile.tsx'] }).allowed, true);
+    assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-tiles', uiFiles: ['src/app/theater/page.tsx', 'src/components/StatTile.tsx'] }).allowed, true);
+  } finally { rmSync(repo, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 scope: a new UI file or route re-asks; another branch never inherits the yes', () => {
+  const repo = ledgerRepo();
+  try {
+    recordApproval(repo, { branch: 'claude/bro-8086-tiles', commitSha: 'a'.repeat(40), contentHash: 'h1', uiFiles: ['src/components/StatTile.tsx'] });
+    const r = queryScopeAllowed(repo, { branch: 'claude/bro-8086-tiles', uiFiles: ['src/components/StatTile.tsx', 'src/app/new/page.tsx'] });
+    assert.equal(r.allowed, false);
+    assert.deepEqual(r.newFiles, ['src/app/new/page.tsx']);
+    assert.equal(queryScopeAllowed(repo, { branch: 'claude/bro-8086-other', uiFiles: ['src/components/StatTile.tsx'] }).allowed, false);
+  } finally { rmSync(repo, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 scope: shared branch names (main, HEAD, empty) never reuse a yes', () => {
+  const repo = ledgerRepo();
+  try {
+    for (const b of ['main', 'HEAD', '']) {
+      recordApproval(repo, { branch: b, commitSha: 'a'.repeat(40), contentHash: 'h1', uiFiles: ['src/app/globals.css'] });
+      assert.equal(queryScopeAllowed(repo, { branch: b, uiFiles: ['src/app/globals.css'] }).allowed, false, `branch "${b}"`);
+    }
+  } finally { rmSync(repo, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 scope: entries older than the ledger TTL do not count; legacy entries without files do not count', () => {
+  const repo = ledgerRepo();
+  try {
+    __mk8156(join(repo, '.claude', 'visual-qa'), { recursive: true });
+    const old = new Date(Date.now() - 30 * 86400000).toISOString();
+    __ap8156(join(repo, '.claude', 'visual-qa', 'approvals.jsonl'), JSON.stringify({ ts: old, branch: 'f', commitSha: 'a', contentHash: 'h', uiFiles: ['src/a.tsx'] }) + '\n');
+    __ap8156(join(repo, '.claude', 'visual-qa', 'approvals.jsonl'), JSON.stringify({ ts: new Date().toISOString(), branch: 'f', commitSha: 'b', contentHash: 'h2' }) + '\n');
+    assert.equal(queryScopeAllowed(repo, { branch: 'f', uiFiles: ['src/a.tsx'] }).allowed, false);
+  } finally { rmSync(repo, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 re-run: visual-qa carries scopeFirstAt for the same (or smaller) file set, restarts it for a new file', () => {
+  const prev = { uiFiles: ['src/a.tsx', 'src/b.css'], scopeFirstAt: '2026-11-23T10:00:00.000Z' };
+  assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx', 'src/b.css'], '2026-11-23T12:00:00.000Z'), '2026-11-23T10:00:00.000Z');
+  assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T10:00:00.000Z');
+  assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx', 'src/app/new/page.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T12:00:00.000Z');
+  assert.equal(__scope.carryScopeFirstAt(null, ['src/a.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T12:00:00.000Z');
+  // A changed file set forces the verdict rewrite even when the pixels (contentHash) did not move.
+  assert.equal(__scope.scopeMetadataChanged({ uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }, { uiFiles: ['src/a.tsx', 'src/c.tsx'], uiFileHashes: { 'src/a.tsx': '1', 'src/c.tsx': '2' } }), true);
+  assert.equal(__scope.scopeMetadataChanged({ uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }, { uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }), false);
+});
+
+test('BRO-8156 re-run: the yes is judged against when the screenshots were first shown, not the re-run time', () => {
+  const ev = [{ kind: 'user_text', text: 'yes ship it', ts: '2026-11-23T11:00:00.000Z', synthetic: false }];
+  assert.equal(queryApprovalOf(ev, 'abcdef0123456789', { after: '2026-11-23T12:00:00.000Z' }).approved, false, 'old bound: re-run voids the yes');
+  assert.equal(queryApprovalOf(ev, 'abcdef0123456789', { after: '2026-11-23T10:00:00.000Z' }).approved, true, 'scopeFirstAt bound keeps it');
+});
+
+test('BRO-8156 commit proof (pure): passing verdict with matching blobs passes; missing, failing or stale blocks', () => {
+  const staged = { 'src/components/A.tsx': 'blob1' };
+  const ok = { schemaVersion: 2, overallPass: true, uiFileHashes: { 'src/components/A.tsx': 'blob1' } };
+  assert.equal(__scope.commitProof(ok, staged).ok, true);
+  assert.equal(__scope.commitProof(null, staged).ok, false);
+  assert.equal(__scope.commitProof({ ...ok, overallPass: false }, staged).ok, false);
+  assert.equal(__scope.commitProof({ ...ok, uiFileHashes: { 'src/components/A.tsx': 'older' } }, staged).ok, false);
+  assert.equal(__scope.commitProof({ schemaVersion: 2, overallPass: true }, staged).ok, false);
+  assert.equal(__scope.commitProof({ ...ok, uiFileHashes: {} }, staged).ok, false);
+});
+
+// The REAL scripts/hooks/commit-msg in a throwaway repo whose scripts/ is this repo's scripts/.
+function commitRepo() {
+  const d = mkdtempSync(join(tmpdir(), 'commit-msg-8156-'));
+  const env = { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
+  for (const k of Object.keys(env)) if (k.startsWith('GIT_') && !['GIT_CONFIG_GLOBAL', 'GIT_CONFIG_NOSYSTEM'].includes(k)) delete env[k];
+  const g = (...a) => __ex8156('git', a, { cwd: d, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  g('init', '-q', '-b', 'main');
+  for (const [k, v] of [['user.email', 't@t'], ['user.name', 't'], ['commit.gpgsign', 'false']]) g('config', k, v);
+  __sl8156(join(__LIB, '..'), join(d, 'scripts'), 'dir');
+  __ap8156(join(d, '.git', 'info', 'exclude'), '/scripts\n/.claude/\n');
+  g('commit', '-q', '--allow-empty', '-m', 'base');
+  g('checkout', '-q', '-b', 'feat-x');
+  __mk8156(join(d, 'src', 'components'), { recursive: true });
+  writeFileSync(join(d, 'src', 'components', 'A.tsx'), 'export const A = () => <p>a</p>;\n');
+  g('add', 'src/components/A.tsx');
+  const hook = (msg) => { const m = join(d, 'MSG'); writeFileSync(m, msg); return __sp8156('bash', [join(__LIB, '..', 'hooks', 'commit-msg'), m], { cwd: d, env, encoding: 'utf8' }); };
+  const verdict = (v) => { const vd = join(d, '.claude', 'visual-qa', 'feat-x'); __mk8156(vd, { recursive: true }); writeFileSync(join(vd, 'verdict.json'), JSON.stringify(v)); };
+  return { d, g, hook, verdict };
+}
+
+test('BRO-8156 commit-msg (real hook): blocks a UI commit with no verdict and never tells the session to type a label', () => {
+  const r = commitRepo();
+  try {
+    const out = r.hook('feat: tiles');
+    assert.equal(out.status, 1);
+    assert.doesNotMatch(out.stdout + out.stderr, /Prefix your commit message with: VISUAL-OK/);
+    assert.match(out.stdout, /run \/visual-qa/);
+  } finally { rmSync(r.d, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 commit-msg (real hook): a passing verdict that screenshotted the staged contents passes; an edit after it blocks', () => {
+  const r = commitRepo();
+  try {
+    const blob = r.g('hash-object', 'src/components/A.tsx');
+    r.verdict({ schemaVersion: 2, overallPass: true, contentHash: 'x', uiFiles: ['src/components/A.tsx'], uiFileHashes: { 'src/components/A.tsx': blob } });
+    const pass = r.hook('feat: tiles');
+    assert.equal(pass.status, 0, pass.stdout + pass.stderr);
+    writeFileSync(join(r.d, 'src', 'components', 'A.tsx'), 'export const A = () => <p>changed</p>;\n');
+    r.g('add', 'src/components/A.tsx');
+    const stale = r.hook('feat: tiles');
+    assert.equal(stale.status, 1);
+    assert.match(stale.stdout, /changed after the last visual-qa run/);
+    // A failing verdict is not proof either.
+    r.verdict({ schemaVersion: 2, overallPass: false, contentHash: 'x', uiFileHashes: { 'src/components/A.tsx': r.g('hash-object', 'src/components/A.tsx') } });
+    assert.equal(r.hook('feat: tiles').status, 1);
+    // SKIP-VISUAL-CHECK still works for non-rendering edits.
+    assert.equal(r.hook('SKIP-VISUAL-CHECK: types only').status, 0);
+  } finally { rmSync(r.d, { recursive: true, force: true }); }
+});

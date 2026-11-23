@@ -67,7 +67,7 @@ test('CLI on a real branch with a UI change and no transcript lists every open i
   assert.match(out, /\[ \] `npm run build`/);
   assert.match(out, /\[ \] visual verdict/);
   assert.match(out, /\[ \] \/ship-check/);
-  assert.match(out, /\[ \] UI commits carry VISUAL-OK-1440/);
+  assert.doesNotMatch(out, /VISUAL-OK/); // BRO-8156: no commit-label item
   assert.match(out.trim().split('\n').pop(), /^Ask the owner now: no$/);
 });
 
