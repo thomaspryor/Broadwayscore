@@ -212,7 +212,7 @@ test('branchLandedDespiteRebase: tip signal, content signal, and a genuine miss'
 test('ignored-input classifier: disposable vs keep', () => {
   for (const e of ['.cache/', 'data/audit/outlet-census/.cache/', 'scripts/x/__pycache__/', 'tsconfig.tsbuildinfo',
     'next-env.d.ts', 'expo-env.d.ts', '.expo/', 'dist/', 'ios/', 'node_modules/', '.claude/visual-qa/',
-    'data/audit/intake-ledger.jsonl']) {
+    'data/audit/intake-ledger.jsonl', 'data/site-image-versions.json']) {
     assert.notEqual(classifyIgnoredEntry(e, {}), null, e);
   }
   for (const e of ['data/finances/', 'data/grosses.json', 'data/opening-night-sent.json', 'data/review-texts/', 'data/aggregator-archive/', 'data/shows.json', '.env',

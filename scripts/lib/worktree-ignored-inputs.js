@@ -58,6 +58,7 @@ const DISPOSABLE_PATTERNS = [
   /(^|\/)\.cache\/$/,
   /(^|\/)__pycache__\/$/,
   /^(tsconfig\.tsbuildinfo|next-env\.d\.ts|expo-env\.d\.ts)$/,
+  /^data\/site-image-versions\.json$/, // rewritten by next.config.js on every build/dev start
   /^data\/audit\/[^/].*[^/]$/, // ignored audit ledgers/logs (same class is_safe_dirty allows)
 ];
 
