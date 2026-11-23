@@ -34,6 +34,7 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
 const { buildFixApprovalEmail, formatFieldValue } = require('./lib/email-templates.js');
 const { GPT54_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { buildVerifierPrompt } = require('./lib/remediation-verifier');
+const { buildPlannerPrompt, buildReviewRecordContext } = require('./lib/remediation-planner-prompt');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { generateApprovalUrl } = require('./lib/approval-link.js');
@@ -403,14 +404,10 @@ async function main() {
       contextParts.push(`## Commercial Data: ${show.title}\n\`\`\`json\n${JSON.stringify(commercial.shows[slug], null, 2)}\n\`\`\``);
     }
 
-    // Reviews summary
-    const showReviews = allReviews.filter(r => r.showId === show.id);
-    if (showReviews.length > 0) {
-      const summary = showReviews.slice(0, 10).map(r => ({
-        outlet: r.outlet, critic: r.criticName, score: r.assignedScore, tier: r.tier,
-      }));
-      contextParts.push(`## Reviews for ${show.title} (${showReviews.length} total, showing first 10)\n\`\`\`json\n${JSON.stringify(summary, null, 2)}\n\`\`\``);
-    }
+    // Review records with file names and urls (BRO-8209): the planner needs them to plan a review-field-edit.
+    const reviewTextsDir = path.join(ROOT, 'data/review-texts');
+    const recordCtx = buildReviewRecordContext(show, allReviews, { reviewTextsDir: fs.existsSync(reviewTextsDir) ? reviewTextsDir : null });
+    if (recordCtx) contextParts.push(recordCtx);
   }
 
   // Relevant source code based on fix type
@@ -428,67 +425,9 @@ async function main() {
   // 3. Call Claude to generate remediation plan
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  const prompt = `You are generating a remediation plan for a bug on Broadway Scorecard that couldn't be auto-fixed.
-
-## Bug Diagnosis
-**Summary:** ${diagnosis.summary}
-**What's happening:** ${diagnosis.whatsHappening}
-**Findings:** ${diagnosis.findings?.join('; ') || 'N/A'}
-**Proposed fix:** ${diagnosis.proposedFix}
-**Fix type:** ${diagnosis.fixType}
-**Confidence:** ${diagnosis.confidence}
-**Auto-fix result:** ${fixAction}
-
-${contextParts.join('\n\n')}
-
-## What You Can Plan
-Your plan will be executed automatically after human approval. You may include these action types:
-
-### 1. data-edit — Change fields in data files
-Allowed fields:
-${allowedFieldsList}
-Each edit must specify: file, showId/slug, field, oldValue, newValue
-
-### 2. run-script — Run a pipeline script
-Allowed scripts: ${ALLOWED_SCRIPTS.join(', ')}
-Specify: script name, args (optional, ONE string of space-separated flags, e.g. "args": "--show=some-show-id --apply")
-IMPORTANT: Do NOT include validate-data.js as an action — validation runs automatically after data edits.
-
-### 3. review-file-op — Move/delete review files in data/review-texts/
-Specify: operation (move, delete, rename), source path, destination path
-
-## Rules
-- Be SPECIFIC with every action — exact field names, exact values, exact paths
-- For data-edits, include the current oldValue so the executor can verify nothing changed
-- Keep it minimal — only what's needed to fix the bug
-- Assess risk honestly: Low (data-only, easily reversible), Medium (multiple files, review file ops), High (structural changes)
-- Write the summary in plain English as if explaining to a friend
-- CRITICAL: Only use show IDs and production details that appear in the Show Data above. Do NOT guess production years, revival numbers, or historical facts. If the show data doesn't include specific shows mentioned in the diagnosis, use generic references (e.g., "the Sweeney Todd entry") and set showId to null with a note that the correct show ID needs to be looked up.
-
-- "rootCause" is optional. Include it ONLY when the specific fix leaves a pipeline or process gap that let this error through (for example a scraper that never retries). Give a plain-English summary and approach. Never put reader names, emails or message text in it. Otherwise set it to null.
-
-Respond with ONLY a JSON object:
-{
-  "canCreatePlan": true,
-  "rootCause": null,
-  "summary": "Plain English summary of the fix in 1-2 sentences",
-  "steps": ["Step 1 in plain English", "Step 2"],
-  "riskLevel": "Low|Medium|High",
-  "actions": [
-    {
-      "type": "data-edit",
-      "file": "shows.json",
-      "showId": "show-id",
-      "field": "venue",
-      "oldValue": "current value",
-      "newValue": "new value",
-      "description": "Why this change"
-    }
-  ]
-}
-
-Or if you cannot create an actionable plan:
-{ "canCreatePlan": false, "reason": "why" }`;
+  const prompt = buildPlannerPrompt({
+    diagnosis, fixAction, contextParts, allowedFieldsList, allowedScripts: ALLOWED_SCRIPTS,
+  });
 
   let plan;
   try {
