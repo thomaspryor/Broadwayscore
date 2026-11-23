@@ -211,6 +211,37 @@ function safeRealpath(p) {
   }
 }
 
+// BRO-8110: the baseline checkout gets data/*.json COPIED but none of the
+// gitignored data DIRECTORIES (data/review-texts above all). A corpus test
+// (autoclear-vs-ensemble.test.mjs, review-guards.explain.test.mjs) then SKIPS
+// green on the baseline and fails on the merged tree that has the corpus, so
+// a failure already red on origin/main reads as NEW and blocks every land
+// (2 of 2 floors on 2026-11-23 needed MERGE_SKIP_POST_MERGE_TEST_GATE=1).
+// Mirror each gitignored data/ directory the merged tree has and the baseline
+// lacks, as a symlink to the same place, so the two runs differ in CODE only.
+// Read-only exposure is unchanged: the merged tree's tests already see it.
+// Returns the repo-relative paths linked.
+function mirrorIgnoredDataDirs(fromRoot, toRoot, { isIgnored } = {}) {
+  const ignored = isIgnored || ((rel) => spawnSync('git', ['check-ignore', '-q', rel], { cwd: fromRoot }).status === 0);
+  const linked = [];
+  let names;
+  try { names = fs.readdirSync(path.join(fromRoot, 'data')); } catch { return linked; }
+  for (const name of names.sort()) {
+    const rel = path.join('data', name);
+    const src = path.join(fromRoot, rel);
+    const dest = path.join(toRoot, rel);
+    try {
+      if (!fs.statSync(src).isDirectory()) continue;
+      if (fs.existsSync(dest) || fs.lstatSync(dest, { throwIfNoEntry: false })) continue;
+      if (!ignored(rel)) continue;
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+      fs.symlinkSync(fs.realpathSync(src), dest);
+      linked.push(rel);
+    } catch { /* best effort — a missing dir only re-creates the old asymmetry */ }
+  }
+  return linked;
+}
+
 // The two change-class prefixes the floor knows how to test. Kept as named
 // constants because both shouldRunTestGate() and selectTestFiles() must agree
 // on them: if they ever disagree, the gate either runs nothing while claiming
@@ -722,7 +753,7 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies, env = process.env } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false, staleCopiesFn = defaultStaleCopies, mirrorFn = mirrorIgnoredDataDirs, env = process.env } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
@@ -867,6 +898,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
+    mirrorFn(safeRealpath(cwd), baselineRoot);
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
@@ -995,6 +1027,7 @@ module.exports = {
   payloadItems,
   AGGREGATE_GUARD_FILES,
   baselineCheckoutOptions,
+  mirrorIgnoredDataDirs,
 };
 
 if (require.main === module) {

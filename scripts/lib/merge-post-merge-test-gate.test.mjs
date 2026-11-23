@@ -310,6 +310,38 @@ test('runTestGate baseline mode: a branch that ADDS a new failure is still block
   assert.equal(removed.dir, baselineDir);
 });
 
+// BRO-8110: a corpus test already red on origin/main (it reads the gitignored
+// data/review-texts) skipped green in the corpus-less baseline checkout and so
+// read as NEW, blocking every local land. The baseline must see the same
+// gitignored data dirs as the merged tree, and then it reads as pre-existing.
+test('runTestGate baseline mode: a red corpus test reading a gitignored data dir is pre-existing, not NEW (BRO-8110)', () => {
+  const corpusTest = "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport path from 'node:path';\n"
+    + "test('corpus: no auto-clear over an ensemble verdict', (t) => {\n  const dir = path.join(process.cwd(), 'data', 'corpus');\n  if (!fs.existsSync(dir)) { t.skip('no corpus'); return; }\n  assert.equal(fs.readdirSync(dir).length, 0, 'mexodus auto-cleared');\n});\n";
+  const mk = () => {
+    const d = makeScratchRepo();
+    spawnSync('git', ['init', '-q'], { cwd: d });
+    fs.writeFileSync(path.join(d, '.gitignore'), '/data/corpus\n');
+    fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), corpusTest);
+    return d;
+  };
+  const baselineDir = mk();
+  const mergedDir = mk();
+  fs.mkdirSync(path.join(mergedDir, 'data', 'corpus'), { recursive: true });
+  fs.writeFileSync(path.join(mergedDir, 'data', 'corpus', 'bad.json'), '{}');
+  fs.mkdirSync(path.join(mergedDir, 'data', 'tracked-dir'), { recursive: true }); // not ignored: never mirrored
+  const result = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.doesNotMatch(result.output, /NEW since origin\/main/);
+  assert.match(result.output, /pre-existing on origin\/main/);
+  assert.equal(result.passed, true);
+  assert.ok(fs.lstatSync(path.join(baselineDir, 'data', 'corpus')).isSymbolicLink());
+  assert.equal(fs.existsSync(path.join(baselineDir, 'data', 'tracked-dir')), false);
+});
+
 // BRO-4812 Codex review: a run killed mid-way (spawn timeout) that parsed only
 // pre-existing failures must not pass — the tests after the kill never ran.
 test('runTestGate baseline mode: a merged run killed by a signal blocks even when every parsed failure is pre-existing', () => {
