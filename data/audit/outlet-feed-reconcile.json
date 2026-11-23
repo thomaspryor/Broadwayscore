@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T20:39:37.797Z",
+  "generatedAt": "2026-11-23T21:56:03.217Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -37,6 +37,11 @@
       "id": "eurotrash-off-west-end-2026",
       "title": "Eurotrash",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "seven-guitars-off-broadway-2026",
+      "title": "Seven Guitars",
+      "openingDate": "2026-11-23"
     },
     {
       "id": "la-distance-bam-off-broadway-2026",
@@ -91,7 +96,7 @@
     {
       "id": "its-a-wonderful-life-a-live-radio-play-2026",
       "title": "It’s A Wonderful Life: A Live Radio Play",
-      "openingDate": "2026-11-18"
+      "openingDate": "2026-11-23"
     },
     {
       "id": "a-christmas-story-the-musical-tour-2026",
@@ -126,10 +131,6 @@
   ],
   "skipped": [
     {
-      "showId": "seven-guitars-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -161,8 +162,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 904,
-  "matchedGaps": 1,
+  "itemsScanned": 902,
+  "matchedGaps": 3,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -172,6 +173,24 @@
       "outletId": "thereviewshub",
       "url": "https://www.thereviewshub.com/cinderella-lyric-hammersmith-london/",
       "headline": "Cinderella – Lyric Hammersmith, London",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/elektra-an-ancient-story-in-high-concept-packaging/",
+      "headline": "&#8216;Elektra&#8217; – An Ancient Story in High Concept Packaging",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/uk-reviews/eurotrash/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=eurotrash",
+      "headline": "Eurotrash",
       "publishDate": "2026-11-23"
     },
     {
