@@ -28,6 +28,23 @@ afterEach(() => {
 // instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
 guardProcessExit();
 
+// live-data-lane: never read the untracked shows.json or the bot-written recurrence
+// ledger from this blocking-batch test. An empty shows fixture and an absent
+// recurrence snapshot (the done gate fails open on a missing file) keep it hermetic.
+import { createRequire as __lsCreateRequire } from 'node:module';
+import { tmpdir as __lsTmpdir } from 'node:os';
+import { join as __lsJoin } from 'node:path';
+{
+  const __req = __lsCreateRequire(import.meta.url);
+  const restoreShows = __req('../../scripts/lib/shows-json-path.js').useShowsFixture([]);
+  const prevRc = process.env.RECURRENCE_CLASSES_PATH;
+  process.env.RECURRENCE_CLASSES_PATH = __lsJoin(__lsTmpdir(), `no-recurrence-classes-${process.pid}.json`);
+  process.on('exit', () => {
+    restoreShows();
+    if (prevRc === undefined) delete process.env.RECURRENCE_CLASSES_PATH; else process.env.RECURRENCE_CLASSES_PATH = prevRc;
+  });
+}
+
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 

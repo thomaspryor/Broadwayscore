@@ -53,7 +53,8 @@ function showTitleRegex() {
   showTitleRe = null;
   try {
     const path = require('path');
-    const file = [path.join(__dirname, '../../data/shows.json'), path.join(process.cwd(), 'data/shows.json')]
+    // showsJsonPath() honors SHOWS_JSON_PATH (test fixtures, live-data-lane) before the repo copy.
+    const file = [require('./shows-json-path.js').showsJsonPath(), path.join(process.cwd(), 'data/shows.json')]
       .find((f) => require('fs').existsSync(f));
     if (!file) return null;
     const raw = JSON.parse(require('fs').readFileSync(file, 'utf8'));
