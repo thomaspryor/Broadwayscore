@@ -586,15 +586,18 @@ reap_stale_tmp_checkout() {
 # keeps it in the stale digest. Kill switch: WORKTREE_GC_RETIRE_STALE_JOBS=0.
 RETIRE_STALE_DAYS="${WORKTREE_GC_RETIRE_STALE_DAYS:-8}"
 worktree_inputs_safe() {
-  local wt="$1" ignored item
+  local wt="$1" out
+  LAST_INPUTS_REASON=""
   # Git status alone misses ignored settings, nested repositories and data.
-  ignored=$(gc_probe 15 git --no-optional-locks -C "$wt" ls-files --others --ignored --exclude-standard --directory) || return 1
-  while IFS= read -r item; do
-    case "$item" in
-      ''|node_modules|node_modules/|.next/|ios/build/|ios/Pods/) ;;
-      *) return 1 ;;
-    esac
-  done <<< "$ignored"
+  # BRO-8178: the verdict lives in worktree-ignored-inputs.js (symlinks, empty
+  # dirs, caches, setup-local-data copies and files identical to the main
+  # checkout are disposable; anything else keeps). The old inline allowlist
+  # kept every bootstrapped worktree. Missing helper or a probe failure keeps.
+  [ -f "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" ] || return 1
+  out=$(gc_probe 30 node "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" --worktree="$wt" --main="$REPO") || {
+    LAST_INPUTS_REASON="${out:-probe unavailable}"; return 1; }
+  case "$out" in "discards setup copies:"*) log "NOTE  [$CURRENT_REPO_NAME] $(basename "$wt") — $out" ;; esac
+  return 0
 }
 
 retire_stale_job_worktree() {
@@ -842,7 +845,7 @@ flush() {
     path="" branch=""; is_locked=0; locked_reason=""; return
   fi
   if ! worktree_inputs_safe "$path"; then
-    log "KEEP  [$CURRENT_REPO_NAME] $(basename "$path") — local inputs or probe unavailable"
+    log "KEEP  [$CURRENT_REPO_NAME] $(basename "$path") — local inputs ${LAST_INPUTS_REASON:-or probe unavailable}"
     kept=$((kept+1)); path="" branch=""; return
   fi
   if [ "$DRY_RUN" = "1" ]; then
