@@ -13,7 +13,9 @@ test('validateArgs', () => {
   const spec = { flags: ['--dry-run'], valueFlags: ['--root'] };
   assert.equal(validateArgs(['--help'], spec).help, true);
   assert.equal(validateArgs(['--dry-run', '--root', '/x'], spec).error, null);
-  assert.equal(validateArgs(['--root=/x'], spec).error, null);
+  assert.match(validateArgs(['--root=/x'], spec).error, /unrecognised/);
+  assert.match(validateArgs(['--root', '--dry-run'], spec).error, /requires a value/);
+  assert.match(validateArgs(['--root'], spec).error, /requires a value/);
   assert.match(validateArgs(['--dryrun'], spec).error, /unrecognised/);
   assert.match(validateArgs(['stray'], spec).error, /unrecognised/);
 });
@@ -52,4 +54,9 @@ test('gc-merged-worktrees.sh: --help 0, typo 2, nothing run', () => {
   const sh = path.join(here, '..', 'gc-merged-worktrees.sh');
   assert.equal(spawnSync('bash', [sh, '--help']).status, 0);
   assert.equal(spawnSync('bash', [sh, '--dryrun']).status, 2);
+});
+
+test('gc-merged-worktrees.sh: empty-string arg rejected', () => {
+  const sh = path.join(here, '..', 'gc-merged-worktrees.sh');
+  assert.equal(spawnSync('bash', [sh, '']).status, 2);
 });

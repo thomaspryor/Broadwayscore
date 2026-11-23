@@ -9,8 +9,13 @@ function validateArgs(argv, { flags = [], valueFlags = [] } = {}) {
   if (argv.includes('--help') || argv.includes('-h')) return { help: true, error: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    const [name] = a.split('=', 1);
-    if (valueFlags.includes(name)) { if (!a.includes('=')) i++; continue; }
+    if (valueFlags.includes(a)) {
+      const v = argv[i + 1];
+      // A missing value or a following flag means a typo; the CLIs read values
+      // as argv[i+1] only, so `--flag=value` is deliberately NOT accepted.
+      if (v === undefined || v.startsWith('-')) return { help: false, error: `${a} requires a value` };
+      i++; continue;
+    }
     if (flags.includes(a)) continue;
     return { help: false, error: `unrecognised argument: ${a}` };
   }
