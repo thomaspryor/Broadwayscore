@@ -1,0 +1,93 @@
+/**
+ * Guard: theater page stat tiles must not stretch into tall empty boxes.
+ *
+ * The Past Shows / Avg Score row used hand-rolled `card ... text-center` tiles. On desktop
+ * the "sm" ScoreBadge is 68px, the grid stretched the Past Shows tile to match, and the
+ * number sat at the top of a tall empty box. Fixed by rendering the row through the shared
+ * StatGrid, which pins labels to the top and centers the value block.
+ *
+ * Fails if any theater detail page (Broadway, Off-Broadway, West End, future markets)
+ * goes back to hand-rolled tiles, or if StatGrid loses its centering / badge slot.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+function findTheaterPages(dir, out = []) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) findTheaterPages(p, out);
+    else if (e.name === 'page.tsx' && /[\\/]theater[\\/]\[slug\][\\/]page\.tsx$/.test(p)) out.push(p);
+  }
+  return out;
+}
+
+const pages = findTheaterPages(path.join(root, 'src', 'app'));
+
+test('finds the theater detail pages', () => {
+  assert.ok(pages.length >= 3, `expected >= 3 theater pages, found ${pages.length}`);
+});
+
+for (const p of pages) {
+  const rel = path.relative(root, p);
+  test(`${rel} builds its stats row with StatGrid`, () => {
+    const src = fs.readFileSync(p, 'utf8');
+    assert.match(src, /<StatGrid\b/);
+    assert.doesNotMatch(src, /card p-3 sm:p-4 text-center/);
+  });
+}
+
+// Render the real component (no copied logic): transpile StatGrid.tsx and call it.
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
+function loadStatGrid() {
+  const src = fs.readFileSync(path.join(root, 'src/components/show-cards/StatGrid.tsx'), 'utf8');
+  const out = ts.transpileModule(src, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, target: ts.ScriptTarget.ES2020 } }).outputText;
+  const mod = { exports: {} };
+  new Function('require', 'exports', 'module', 'React', out)(require, mod.exports, mod, React);
+  return mod.exports.StatGrid;
+}
+const StatGrid = loadStatGrid();
+const html = props => renderToStaticMarkup(React.createElement(StatGrid, props));
+const badge = React.createElement('span', { className: 'BADGE' }, '72');
+
+test('a row with a badge node: labels on top, value block centered, subtitle can truncate', () => {
+  const out = html({
+    columns: 2,
+    stats: [
+      { label: 'Past Shows', value: 20, subtitle: 'a very long subtitle that must truncate' },
+      { label: 'Avg Score', value: 72, node: badge },
+    ],
+  });
+  assert.equal((out.match(/class="card [^"]*flex flex-col items-center"/g) || []).length, 2);
+  assert.equal((out.match(/flex-1 w-full min-w-0 flex flex-col items-center justify-center/g) || []).length, 2);
+  assert.match(out, /BADGE/);
+  assert.match(out, /truncate [^"]*w-full/);
+  assert.ok(out.indexOf('Past Shows') < out.indexOf('>20<'), 'label comes before value');
+});
+
+test('a row with no node renders exactly as before (cast, critic, creative, biz pages)', () => {
+  const out = html({
+    stats: [
+      { label: 'Highest', value: 91, subtitle: 'a very long subtitle that must truncate', subValue: '2nd' },
+      { label: 'Lowest', value: 40 },
+    ],
+  });
+  assert.doesNotMatch(out, /flex-col/);
+  assert.doesNotMatch(out, /justify-center/);
+  assert.doesNotMatch(out, /truncate [^"]*w-full/);
+  assert.match(out, /class="card p-2\.5 sm:p-4 text-center"/);
+});
+
+test('columns prop maps to literal Tailwind classes', () => {
+  assert.match(html({ columns: 2, stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-2 /);
+  assert.match(html({ columns: 3, stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-3 /);
+  assert.match(html({ stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-2 sm:grid-cols-4 /);
+});

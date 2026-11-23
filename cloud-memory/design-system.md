@@ -89,7 +89,7 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `CategoryBadge` | Category indicator |
 | `ToggleBar` | Toggle between view modes |
 | `ScoreToggle` | Critics vs. audience score switcher |
-| `StatGrid` | Grid layout for statistics |
+| `StatGrid` | Stat tiles (label + value). `columns` 2/3/4; `node` slot for a ScoreBadge. Rows that include a `node` (badge) pin labels to the top and center the value block so tiles stretched by a 68px badge never leave a number floating; rows without a node render as before. Use it for every stats row, never hand-roll `card text-center` tiles. Guard: `tests/unit/theater-stat-tiles.test.mjs` |
 | `ColumnHeader` | Sortable table header with direction indicators |
 | `Modal` / `ModalCloseButton` | Modal dialog container — portals to `<body>` (safe inside `.card`, whose `contain: layout style` would otherwise trap `position:fixed`). `maxWidth`: `sm` \| `md` \| `lg` (520px) \| `xl` (`max-w-3xl`, added 2026-07-21 for the Review Import preview) |
 | `ShowSearchDropdown` | Search/autocomplete for shows |

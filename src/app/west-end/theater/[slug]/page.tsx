@@ -13,7 +13,7 @@ import {
 import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
-import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
+import { ScoreBadge, StatGrid, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from '../../../theater/[slug]/TheaterDetailClient';
@@ -187,18 +187,14 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
           </div>
 
           {/* Stats row (seats, when verified, are in the Venue info card) */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="card p-3 sm:p-4 text-center">
-              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
-              <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
-            </div>
-            <div className="card p-3 sm:p-4 text-center">
-              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
-              <div className="flex justify-center">
-                <ScoreBadge score={avgScore ?? undefined} size="sm" />
-              </div>
-            </div>
-          </div>
+          <StatGrid
+            columns={2}
+            className="mb-4"
+            stats={[
+              { label: 'Past Shows', value: theater.allShows.length },
+              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" /> },
+            ]}
+          />
 
           {/* Now Playing */}
           {theater.currentShow && (
