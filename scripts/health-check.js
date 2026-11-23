@@ -4002,7 +4002,8 @@ function checkDeployFreshness() {
     const ageH = dep.ageSec / 3600;
     const gate = require('./lib/should-deploy-gate.js');
     const { backstopSec } = gate.resolveGateTiming(process.env);
-    const { warnH, errorH } = gate.freshnessAlertHours(backstopSec);
+    const { warnH: rawWarnH, errorH: rawErrorH } = gate.freshnessAlertHours(backstopSec);
+    const warnH = +rawWarnH.toFixed(1); const errorH = +rawErrorH.toFixed(1);
     const backstopH = +(backstopSec / 3600).toFixed(2);
     const msg = `Latest READY production deploy: ${dep.deployedSha ? dep.deployedSha.slice(0, 10) : 'unknown-sha'}, age ${ageH.toFixed(1)}h`;
     // BRO-2771: this hint used to tell the owner to run `gh run list --workflow=...`,
