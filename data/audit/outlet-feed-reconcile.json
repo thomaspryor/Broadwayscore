@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T23:14:11.349Z",
+  "generatedAt": "2026-11-23T00:40:45.882Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,16 @@
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "the-dead-1904-off-broadway-2026",
+      "title": "The Dead, 1904",
+      "openingDate": "2026-11-24"
+    },
+    {
+      "id": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "openingDate": "2026-11-24"
     },
     {
       "id": "the-afronauts-west-end-2026",
@@ -19,19 +29,14 @@
       "openingDate": "2026-11-21"
     },
     {
+      "id": "the-jungle-book-west-end-2026",
+      "title": "The Jungle Book",
+      "openingDate": "2026-11-24"
+    },
+    {
       "id": "eurotrash-off-west-end-2026",
       "title": "Eurotrash",
       "openingDate": "2026-11-17"
-    },
-    {
-      "id": "jenufa-off-broadway-2026",
-      "title": "Jenůfa",
-      "openingDate": "2026-11-16"
-    },
-    {
-      "id": "the-fantasticks-2026",
-      "title": "The Fantasticks",
-      "openingDate": "2026-11-16"
     },
     {
       "id": "la-distance-bam-off-broadway-2026",
@@ -52,11 +57,6 @@
       "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
       "title": "Bigfoot Ripped My Dog In Half I Saw It",
       "openingDate": "2026-11-20"
-    },
-    {
-      "id": "now-you-see-me-live-2026",
-      "title": "Now You See Me Live",
-      "openingDate": "2026-11-16"
     },
     {
       "id": "blue-man-group-a-new-holiday-surprise-2026",
@@ -109,26 +109,6 @@
       "openingDate": "2026-11-21"
     },
     {
-      "id": "entre-dos-sombras-regional-2026",
-      "title": "Entre Dos Sombras",
-      "openingDate": "2026-11-16"
-    },
-    {
-      "id": "takes-all-kinds-regional-2026",
-      "title": "Takes All Kinds",
-      "openingDate": "2026-11-16"
-    },
-    {
-      "id": "my-english-persian-kitchen-regional-2026",
-      "title": "My English Persian Kitchen",
-      "openingDate": "2026-11-16"
-    },
-    {
-      "id": "destiny-of-desire-regional-2026",
-      "title": "Destiny of Desire",
-      "openingDate": "2026-11-16"
-    },
-    {
       "id": "fiddler-on-the-roof-regional-2026",
       "title": "Fiddler on the Roof",
       "openingDate": "2026-11-19"
@@ -147,6 +127,11 @@
       "id": "the-farce-awakens-feydeau-x-2-regional-2026",
       "title": "The Farce Awakens: Feydeau x 2",
       "openingDate": "2026-11-19"
+    },
+    {
+      "id": "a-midsummer-nights-dream-jentes-regional-2026",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2026-11-21"
     }
   ],
   "skipped": [
@@ -156,10 +141,6 @@
     },
     {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "a-midsummer-nights-dream-jentes-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -190,19 +171,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 893,
-  "matchedGaps": 1,
+  "itemsScanned": 888,
+  "matchedGaps": 0,
   "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-26230",
-      "headline": "Cinderella",
-      "publishDate": "2026-11-22"
-    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
