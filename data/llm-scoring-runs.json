@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-11-21T13:16:30.848Z",
-    "completedAt": "2026-11-21T13:16:36.260Z",
-    "totalReviews": 24,
-    "processed": 182,
-    "skipped": 23,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 1241793,
-      "output": 72818,
-      "cacheRead": 993379,
-      "cacheWrite": 58669,
-      "total": 3314157
-    },
-    "costUsd": 2.8520452500000006,
-    "runId": "44907750520",
-    "source": "index",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-21T13:21:36.207Z",
-    "completedAt": "2026-11-21T13:21:36.211Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44907750520",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-21T13:27:19.666Z",
     "completedAt": "2026-11-21T13:27:19.670Z",
     "totalReviews": 0,
@@ -269357,6 +269317,52 @@
     },
     "costUsd": 0,
     "runId": "45101261242",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T03:00:00.008Z",
+    "completedAt": "2026-11-23T03:03:44.066Z",
+    "totalReviews": 84536,
+    "processed": 67,
+    "skipped": 84462,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 390110,
+      "output": 22903,
+      "cacheRead": 249863,
+      "cacheWrite": 26375,
+      "total": 1025495
+    },
+    "costUsd": 0.398368375,
+    "runId": "45103039851",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T03:04:00.232Z",
+    "completedAt": "2026-11-23T03:07:28.253Z",
+    "totalReviews": 103,
+    "processed": 103,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 248663,
+      "output": 25691,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 274354
+    },
+    "costUsd": 0.24536044999999998,
+    "runId": "45103039851",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
