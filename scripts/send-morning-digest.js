@@ -1254,17 +1254,6 @@ async function main() {
     console.error(`[digest] WARN could not read this Mac's free disk: ${String(err.message).slice(0, 120)}`);
   }
 
-  // BRO-8178: informational disk line (free GB, worktree count, top 3
-  // consumers) every morning, so worktree growth shows before dispatch refuses.
-  if (!skipMacLocal) try {
-    const { macDiskLine, collectMacDisk } = require('./lib/mac-disk-digest.js');
-    const repos = require('./lib/worktree-gc-repos.js').getGcRepos().map((r) => r.path).filter((p) => fs.existsSync(p));
-    sections.macDisk = { text: macDiskLine(collectMacDisk({ repos: repos.length ? repos : [REPO] })) };
-    console.log(`[digest] ${sections.macDisk.text}`);
-  } catch (err) {
-    console.error(`[digest] WARN could not build the Mac disk line: ${String(err.message).slice(0, 120)}`);
-  }
-
   // BRO-2049: the shared checkout going shallow (a --shallow-since fetch) silently broke every session's
   // did-it-land proof for ~3 weeks. health-check.js cannot measure it (GitHub Actions only, and CI checkouts
   // are shallow by design), so this sender, which runs on the Mac that owns ~/Broadwayscore, evaluates it.
@@ -1892,6 +1881,16 @@ async function main() {
     const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
+  }
+  // BRO-8178: free disk, worktree count and top consumers. The email is sent
+  // from GitHub, which cannot see the Mac, so the Mac's worktree GC posts this
+  // as a mac/disk commit status and every sender reads it back.
+  try {
+    const { readMacDiskStatus, digestLineFromStatus } = require('./lib/mac-disk-digest.js');
+    sections.macDisk = { text: digestLineFromStatus(await readMacDiskStatus({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN })) };
+    console.log(`[digest] ${sections.macDisk.text}`);
+  } catch (err) {
+    console.error(`[digest] WARN could not read the Mac disk status: ${String(err.message).slice(0, 120)}`);
   }
   const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: cloudAutofix ? 'cloud' : noAutofix, skipMacLocal, now });
 

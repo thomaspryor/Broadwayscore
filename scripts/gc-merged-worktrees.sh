@@ -169,7 +169,7 @@ if [ "$gc_lock_acquired" != "1" ]; then
   exit 0
 fi
 echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
-GC_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/gc-merged-worktrees.XXXXXX")
+GC_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/gc-merged-worktrees.XXXXXX") || GC_TMP_DIR=""
 trap 'rm -rf "$GC_TMP_DIR" 2>/dev/null; rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
 
 # UTC (BRO-2608): see SKIP-RUN comment above — this log is read for
@@ -595,7 +595,7 @@ worktree_inputs_safe() {
   # checkout are disposable; anything else keeps). The old inline allowlist
   # kept every bootstrapped worktree. Missing helper or a probe failure keeps.
   [ -f "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" ] || return 1
-  out=$(gc_probe 30 node "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" --worktree="$wt" --main="$REPO") || {
+  out=$(gc_probe 60 node "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" --worktree="$wt" --main="$REPO") || {
     LAST_INPUTS_REASON="(probe unavailable)"; return 1; }
   case "$out" in
     ok) return 0 ;;
@@ -723,7 +723,7 @@ flush() {
   else
     unmerged=$(echo "$cherry_raw" | grep -c '^+')
   fi
-  local is_ancestor has_unmerged has_live_lease removable cwd_pin worktree_idle pin_blocked decide_rc rebase_out
+  local is_ancestor has_unmerged has_live_lease removable cwd_pin worktree_idle pin_blocked decide_rc rebase_out rebase_landed=0
   is_ancestor=0
   [ "$landed_status" = "0" ] && is_ancestor=1
   has_unmerged=0
@@ -745,7 +745,7 @@ flush() {
           case "$rebase_out" in
             "landed "*)
               log "NOTE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch rebase-landed: ${rebase_out#landed } (BRO-8178)"
-              has_unmerged=0; unmerged=0 ;;
+              has_unmerged=0; unmerged=0; rebase_landed=1 ;;
           esac
         fi ;;
     esac
@@ -908,6 +908,16 @@ flush() {
   # logged "freed=797.9MB" because this size was never captured — accurate
   # for the wrong reason next time someone reads this log to judge impact).
   local removal_sz remove_err force_err diag_err salvage_out
+  # BRO-8178: a rebase-landed job worktree is one a resumed job may pick up
+  # again (bsc-runner.js takes its lease independently of this GC). Re-check
+  # the lease and the branch tip right before removing, as the retire path does.
+  if [ "$rebase_landed" = "1" ]; then
+    gc_probe 10 node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
+    if [ "$?" != "1" ] || [ "$head_sha" != "$(gc_probe 10 git rev-parse "$branch")" ]; then
+      log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch rebase-landed but a job resumed or moved the branch since the check; not removing"
+      skipped=$((skipped+1)); path="" branch=""; return
+    fi
+  fi
   removal_sz=$(gc_size_kb "$path") || { skipped=$((skipped+1)); path="" branch=""; return; }
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
@@ -1011,9 +1021,10 @@ gc_one_repo() {
   # BRO-8178: landings.jsonl tips, read once per repo run for the rebase-proof
   # landed check in flush(). Empty file = signal 1 unavailable (content tie
   # still runs); a failed write leaves the check to fall back to keeping.
-  GC_LANDING_TIPS_FILE="$GC_TMP_DIR/landing-tips-$repo_name.txt"
-  : > "$GC_LANDING_TIPS_FILE"
-  if [ -f "$SCRIPT_DIR/lib/headless-unlanded-detection.js" ]; then
+  GC_LANDING_TIPS_FILE=""
+  if [ -n "$GC_TMP_DIR" ] && [ -f "$SCRIPT_DIR/lib/headless-unlanded-detection.js" ]; then
+    GC_LANDING_TIPS_FILE="$GC_TMP_DIR/landing-tips-$repo_name.txt"
+    : > "$GC_LANDING_TIPS_FILE"
     gc_probe 60 node "$SCRIPT_DIR/lib/headless-unlanded-detection.js" --repo="$REPO" --write-tips="$GC_LANDING_TIPS_FILE" >/dev/null \
       || log "WARN  [$repo_name] landings.jsonl tips unavailable; rebase-landed detection uses the content check only"
   fi
@@ -1139,3 +1150,17 @@ done <<< "$GC_REPO_LINES"
 
 total_freed_kb=$((floor_freed_kb + strip_freed_kb + orphan_freed_kb + removed_freed_kb))
 log "DONE  removed=$removed kept=$kept skipped=$skipped freed=$(human_kb "$total_freed_kb") (dry_run=$DRY_RUN)"
+
+# BRO-8178: publish free disk, worktree count and top consumers for the
+# GitHub-sent morning digest (mac/disk commit status, throttled to 6h inside
+# the helper). Real runs on the real repos only: never from a dry run or a
+# fixture (WORKTREE_GC_REPOS_JSON set). Off: WORKTREE_GC_POST_DISK=0.
+if [ "$DRY_RUN" = "0" ] && [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] && [ "${WORKTREE_GC_POST_DISK:-1}" != "0" ] \
+    && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/mac-disk-digest.js" ]; then
+  if [ -n "$TIMEOUT_BIN" ]; then
+    disk_post=$("$TIMEOUT_BIN" 300s node "$SCRIPT_DIR/lib/mac-disk-digest.js" --post --repo="$PRIMARY_REPO" 2>&1)
+  else
+    disk_post=$(node "$SCRIPT_DIR/lib/mac-disk-digest.js" --post --repo="$PRIMARY_REPO" 2>&1)
+  fi
+  log "DISK  ${disk_post:-mac/disk post produced no output}"
+fi

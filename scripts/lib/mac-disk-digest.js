@@ -6,6 +6,12 @@
  * floor starts refusing dispatches (2026-11-23: 59 job worktrees at ~800MB,
  * disk at 3GB, dispatch refused, nothing in the digest said why).
  * The alarm rows stay in disk-space-digest.js; this line is informational.
+ *
+ * The email is sent from GitHub Actions with --skip-mac-local, which cannot
+ * see this Mac's disk. So the Mac posts the line as a commit status on
+ * origin/main (context mac/disk, same channel as mac-applied-heartbeat.js),
+ * at most every POST_EVERY_MS, from the end of a real gc-merged-worktrees.sh
+ * run, and the digest reads the newest one back (readMacDiskStatus).
  */
 const fs = require('fs');
 const os = require('os');
@@ -49,11 +55,13 @@ function collectMacDisk({ repos, home = os.homedir(), duTimeoutMs = 120000 } = {
   const wts = repos.flatMap(listWorktrees).filter((p) => fs.existsSync(p));
   const worktrees = { total: wts.length, job: wts.filter((p) => path.basename(p).startsWith('job-')).length };
   const extras = [
-    ['Xcode DerivedData', path.join(home, 'Library/Developer/Xcode/DerivedData')],
-    ['Library/Caches', path.join(home, 'Library/Caches')],
+    ['DerivedData', path.join(home, 'Library/Developer/Xcode/DerivedData')],
+    ['Caches', path.join(home, 'Library/Caches')],
   ].filter(([, p]) => fs.existsSync(p));
   let sizes = null;
-  const targets = [...wts.map((p) => [path.basename(p), p]), ...extras];
+  // Short labels: the line must fit a 140-char commit-status description.
+  const label = (p) => path.basename(p).replace(/^job-linear-(BRO-\d+)-.*$/, 'job $1');
+  const targets = [...wts.map((p) => [label(p), p]), ...extras];
   if (targets.length) {
     let out = '';
     try {
@@ -69,4 +77,76 @@ function collectMacDisk({ repos, home = os.homedir(), duTimeoutMs = 120000 } = {
   return { freeGb, worktrees, sizes };
 }
 
-module.exports = { macDiskLine, collectMacDisk };
+const DISK_STATUS_CONTEXT = 'mac/disk';
+const POST_EVERY_MS = 6 * 3600e3;
+const READ_PAGES = 12; // x100 commits on main, ~17h at ~70 commits/h
+
+/** Pure: GitHub caps a status description at 140 characters. */
+function statusDescription(line) {
+  const t = String(line || '').replace(/\s+/g, ' ').trim();
+  return t.length <= 140 ? t : `${t.slice(0, 139)}…`;
+}
+
+const READ_QUERY = `query($owner:String!,$name:String!,$after:String){repository(owner:$owner,name:$name){ref(qualifiedName:"refs/heads/main"){target{... on Commit{history(first:100,after:$after){pageInfo{hasNextPage endCursor} nodes{status{context(name:"${DISK_STATUS_CONTEXT}"){description createdAt}}}}}}}}}`;
+
+/** Newest mac/disk status on main: {line, at} or null. Never throws. */
+async function readMacDiskStatus({ token, repo = 'thomaspryor/Broadwayscore', graphql } = {}) {
+  try {
+    const gq = graphql || require('./mac-applied-heartbeat.js').githubGraphql(token);
+    const [owner, name] = String(repo).split('/');
+    let after = null;
+    for (let page = 0; page < READ_PAGES; page++) {
+      const data = await gq(READ_QUERY, { owner, name, after });
+      const history = data && data.repository && data.repository.ref && data.repository.ref.target && data.repository.ref.target.history;
+      if (!history || !Array.isArray(history.nodes)) return null;
+      for (const node of history.nodes) {
+        const ctx = node && node.status && node.status.context;
+        if (ctx && ctx.description) return { line: ctx.description, at: ctx.createdAt };
+      }
+      if (!history.pageInfo || !history.pageInfo.hasNextPage) return null;
+      after = history.pageInfo.endCursor;
+    }
+    return null;
+  } catch { return null; }
+}
+
+/** Pure: the digest's line from a status read (null = nothing recent). */
+function digestLineFromStatus(st, now = new Date()) {
+  if (!st) return 'Mac disk: no report from the Mac in the last ~17h (its worktree GC has not run, or it is off).';
+  const ageH = Math.round((now.getTime() - Date.parse(st.at)) / 3600e3);
+  return Number.isFinite(ageH) ? `${st.line} (measured ${ageH}h ago)` : st.line;
+}
+
+// CLI (Mac): node scripts/lib/mac-disk-digest.js --post [--dry-run] [--repo=<main checkout>]
+function postCli(argv) {
+  const repoArg = argv.find((a) => a.startsWith('--repo='));
+  const main = repoArg ? repoArg.slice(7) : path.resolve(__dirname, '../..');
+  const dry = argv.includes('--dry-run');
+  const git = (...a) => execFileSync('git', ['-C', main, ...a], { encoding: 'utf8', timeout: 15000, stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  let commonDir = git('rev-parse', '--git-common-dir');
+  if (!path.isAbsolute(commonDir)) commonDir = path.join(main, commonDir);
+  const stateFile = path.join(commonDir, 'mac-disk-status.json');
+  let last = null;
+  try { last = JSON.parse(fs.readFileSync(stateFile, 'utf8')); } catch { /* first run */ }
+  const now = Date.now();
+  if (last && now - Date.parse(last.at) < POST_EVERY_MS) { console.log('mac/disk: posted recently, skipping'); return 0; }
+  const repos = require('./worktree-gc-repos.js').getGcRepos().map((r) => r.path).filter((p) => fs.existsSync(p));
+  const line = macDiskLine(collectMacDisk({ repos: repos.length ? repos : [main] }));
+  const sha = git('rev-parse', 'origin/main');
+  const desc = statusDescription(line);
+  if (dry) { console.log(`mac/disk (dry-run) would post on ${sha.slice(0, 10)}: ${desc}`); return 0; }
+  execFileSync('gh', ['api', '-X', 'POST', 'repos/thomaspryor/Broadwayscore/statuses/' + sha,
+    '-f', 'state=success', '-f', `context=${DISK_STATUS_CONTEXT}`, '-f', `description=${desc}`], { stdio: 'pipe', timeout: 20000 });
+  fs.writeFileSync(stateFile, `${JSON.stringify({ sha, at: new Date(now).toISOString(), line })}\n`);
+  console.log(`mac/disk posted on ${sha.slice(0, 10)}: ${desc}`);
+  return 0;
+}
+
+if (require.main === module) {
+  try { process.exit(process.argv.includes('--post') ? postCli(process.argv.slice(2)) : 2); } catch (err) {
+    console.error(`mac/disk post failed: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
+    process.exit(1);
+  }
+}
+
+module.exports = { macDiskLine, collectMacDisk, statusDescription, readMacDiskStatus, digestLineFromStatus, DISK_STATUS_CONTEXT };

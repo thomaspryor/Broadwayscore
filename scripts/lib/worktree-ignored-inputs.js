@@ -17,9 +17,11 @@
  *   - a symlink (removal deletes the link, never its target),
  *   - an empty directory,
  *   - a regenerable build/cache/audit-churn path (DISPOSABLE_PATTERNS),
- *   - a setup-local-data.sh plain copy (SETUP_COPIED_DATA_FILES; the main
- *     checkout or core-data repo is authoritative), reported back by name so
- *     the GC log records what was discarded,
+ *   - a setup-local-data.sh plain copy (SETUP_COPIED_DATA_FILES) that is either
+ *     byte-identical to the main checkout or untouched since the worktree was
+ *     bootstrapped (mtime within SETUP_WINDOW_MS of the worktree's creation),
+ *     reported back by name so the GC log records what was discarded. A copy a
+ *     session edited later (e.g. append-season-payback-history.ts) keeps it,
  *   - a regular file byte-identical to the same path in the main checkout.
  * Anything else (data/finances/, a non-empty data/review-texts/ copy that may
  * hold unpushed review edits, a differing .env, a nested repo) keeps the
@@ -62,7 +64,7 @@ const DISPOSABLE_PATTERNS = [
 /**
  * Pure verdict for one entry.
  * @param {string} entry path as printed by `git ls-files --others --ignored --directory`
- * @param {{isSymlink?:boolean, isEmptyDir?:boolean, identicalToMain?:boolean}} facts
+ * @param {{isSymlink?:boolean, isEmptyDir?:boolean, identicalToMain?:boolean, untouchedSinceSetup?:boolean}} facts
  * @returns {'symlink'|'empty-dir'|'disposable'|'setup-copy'|'identical-to-main'|null} null = must keep
  */
 function classifyIgnoredEntry(entry, facts = {}) {
@@ -72,7 +74,7 @@ function classifyIgnoredEntry(entry, facts = {}) {
   if (facts.isEmptyDir) return 'empty-dir';
   if (DISPOSABLE_PATTERNS.some((re) => re.test(e))) return 'disposable';
   const m = /^data\/([^/]+)$/.exec(e);
-  if (m && SETUP_COPIED_DATA_FILES.has(m[1])) return 'setup-copy';
+  if (m && SETUP_COPIED_DATA_FILES.has(m[1]) && (facts.identicalToMain || facts.untouchedSinceSetup)) return 'setup-copy';
   if (facts.identicalToMain) return 'identical-to-main';
   return null;
 }
@@ -88,6 +90,9 @@ function decideIgnoredInputs(items) {
   return { safe: true, blocker: null, discardedCopies };
 }
 
+// setup-local-data.sh runs within minutes of `git worktree add`.
+const SETUP_WINDOW_MS = 10 * 60 * 1000;
+
 function sameBytes(a, b) {
   try {
     const sa = fs.statSync(a);
@@ -99,6 +104,9 @@ function sameBytes(a, b) {
 
 /** I/O: gather facts for each ignored entry of worktree `wt`. */
 function gatherIgnoredInputs(wt, mainCheckout) {
+  // A linked worktree's .git FILE is written once, by `git worktree add`.
+  let createdMs = null;
+  try { const g = fs.lstatSync(path.join(wt, '.git')); if (g.isFile()) createdMs = g.mtimeMs; } catch { /* unknown */ }
   const out = execFileSync('git', ['--no-optional-locks', '-C', wt, 'ls-files', '--others', '--ignored', '--exclude-standard', '--directory', '-z'],
     { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 });
   return out.split('\0').filter(Boolean).map((entry) => {
@@ -112,6 +120,9 @@ function gatherIgnoredInputs(wt, mainCheckout) {
       try { facts.isEmptyDir = fs.readdirSync(abs).length === 0; } catch { facts.isEmptyDir = false; }
     } else if (st.isFile() && mainCheckout) {
       facts.identicalToMain = sameBytes(abs, path.join(mainCheckout, entry));
+    }
+    if (st.isFile() && createdMs !== null) {
+      facts.untouchedSinceSetup = st.mtimeMs <= createdMs + SETUP_WINDOW_MS;
     }
     return { entry, facts };
   });

@@ -237,7 +237,7 @@ function makeStrandedLandedPredicate({ cwd } = {}) {
  * "N unmerged commit(s)" because the rebase rewrote every sha and a patch
  * changed during conflict resolution defeats `git cherry`. Two rebase-proof
  * signals, strongest first:
- *   1. every non-merge commit on the branch is reachable from origin/main or
+ *   1. every commit (merges included) on the branch is reachable from origin/main or
  *      from a landings.jsonl `tip` (land.yml records the PRE-rebase tip, which
  *      is the job's own commit, so its ancestors are what was landed),
  *   2. every file the branch changed since its merge-base is byte-identical
@@ -263,7 +263,9 @@ function branchLandedDespiteRebase({ repo, branch, tips = [], upstream = 'origin
     const out = git(['cat-file', '--batch-check=%(objectname) %(objecttype)'], `${wanted.join('\n')}\n`);
     known = out.split('\n').filter((l) => / commit$/.test(l)).map((l) => l.split(' ')[0]);
   }
-  const outstanding = git(['rev-list', '--no-merges', '--stdin'], `${branch}\n^${upstream}\n${known.map((t) => `^${t}`).join('\n')}\n`).trim();
+  // Merge commits count too: a conflict resolution committed in a merge after
+  // the landed tip is work `git cherry` cannot see (see cherryPlusFor).
+  const outstanding = git(['rev-list', '--stdin'], `${branch}\n^${upstream}\n${known.map((t) => `^${t}`).join('\n')}\n`).trim();
   if (!outstanding) return { landed: true, reason: 'every commit is on main or inside a landings.jsonl tip' };
   const base = git(['merge-base', upstream, branch]).trim();
   const files = git(['diff', '--no-renames', '--name-only', '-z', base, branch]).split('\0').filter(Boolean);
@@ -281,7 +283,7 @@ function branchLandedDespiteRebase({ repo, branch, tips = [], upstream = 'origin
 function recentLandingTips(repo, { days = 30, nowMs = Date.now() } = {}) {
   const since = nowMs - days * 24 * 3600 * 1000;
   return readOriginLandings(repo)
-    .filter((r) => r && r.tip && !(Date.parse(r.ts) < since))
+    .filter((r) => r && r.tip && Date.parse(r.ts) >= since)
     .map((r) => r.tip);
 }
 

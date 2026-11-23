@@ -58,9 +58,11 @@ function bootstrapInputs(wt, repo) {
  *   job-rebased-content  landed through a differently-shaped commit, no ledger row; files identical    -> removed
  *   job-unlanded         a commit whose work is not on main                                            -> kept
  *   job-landed-private   landed (tip) but holds an ignored data/finances/ file                          -> kept
+ *   job-edited-copy      landed (tip) but a setup-copied data file was edited after bootstrap           -> kept
+ *   job-merge-after-tip  landed tip, then a merge of main whose conflict resolution added unlanded work -> kept
  */
 const REMOVED = ['job-rebased-tip', 'job-rebased-content'];
-const KEPT = ['job-unlanded', 'job-landed-private'];
+const KEPT = ['job-unlanded', 'job-landed-private', 'job-edited-copy', 'job-merge-after-tip'];
 
 function buildFixture() {
   const tmp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'gc-rebase-landed-')));
@@ -97,6 +99,8 @@ function buildFixture() {
   const tipP = commitFile(wts['job-landed-private'], 'src/p.ts', 'p\n', 'BRO-4: add p');
   fs.mkdirSync(path.join(wts['job-landed-private'], 'data/finances'), { recursive: true });
   fs.writeFileSync(path.join(wts['job-landed-private'], 'data/finances/q3.json'), '{"real":1}\n');
+  const tipE = commitFile(wts['job-edited-copy'], 'src/e.ts', 'e\n', 'BRO-5: add e');
+  const tipM = commitFile(wts['job-merge-after-tip'], 'src/m.ts', 'm\n', 'BRO-6: add m');
   // job-rebased-content: x then y; main lands y in one differently-shaped commit.
   commitFile(wts['job-rebased-content'], 'src/c.ts', 'x\n', 'BRO-2: add c');
   commitFile(wts['job-rebased-content'], 'src/c.ts', 'y\n', 'BRO-2: tweak c');
@@ -110,11 +114,23 @@ function buildFixture() {
   commitFile(repo, 'src/b.ts', 'b\n', 'BRO-1: add b');
   commitFile(repo, 'src/p.ts', 'p\n', 'BRO-4: add p');
   commitFile(repo, 'src/c.ts', 'y\n', 'BRO-2: land c');
-  const rows = [tipA, tipP].map((tip) => JSON.stringify({ ts: new Date().toISOString(), branch: 'land/x', sha: 'f'.repeat(40), tip }));
+  commitFile(repo, 'src/e.ts', 'e\n', 'BRO-5: add e');
+  commitFile(repo, 'src/m.ts', 'm\n', 'BRO-6: add m');
+  const rows = [tipA, tipP, tipE, tipM].map((tip) => JSON.stringify({ ts: new Date().toISOString(), branch: 'land/x', sha: 'f'.repeat(40), tip }));
   commitFile(repo, 'data/audit/landings.jsonl', `${rows.join('\n')}\n`, 'landings');
   git(repo, 'push', '-q', 'origin', 'main');
 
+  // job-merge-after-tip merges main, and the merge commit itself carries extra work.
+  git(wts['job-merge-after-tip'], 'merge', '-q', '--no-ff', '--no-commit', 'main');
+  fs.writeFileSync(path.join(wts['job-merge-after-tip'], 'src/m.ts'), 'm\nresolution only in the merge\n');
+  git(wts['job-merge-after-tip'], 'add', '-A');
+  git(wts['job-merge-after-tip'], 'commit', '-q', '-m', 'Merge main');
   for (const name of [...REMOVED, ...KEPT]) bootstrapInputs(wts[name], repo);
+  // A session edited its setup copy well after bootstrap (e.g. append-season-payback-history.ts).
+  const edited = path.join(wts['job-edited-copy'], 'data/grosses.json');
+  fs.writeFileSync(edited, '{"edited":true}\n');
+  const later = new Date(Date.now() + 3600e3);
+  fs.utimesSync(edited, later, later);
   return { tmp, repo, wtRoot, wts };
 }
 
@@ -158,6 +174,8 @@ test('real run removes rebase-landed job worktrees, keeps unlanded and private-i
   }
   assert.match(decisionFor(out, 'job-unlanded'), /KEEP .*unmerged commit/);
   assert.match(decisionFor(out, 'job-landed-private'), /KEEP .*keeps: data\/finances\//);
+  assert.match(decisionFor(out, 'job-edited-copy'), /KEEP .*keeps: data\/grosses\.json/);
+  assert.match(decisionFor(out, 'job-merge-after-tip'), /KEEP .*unmerged commit/);
   for (const n of KEPT) assert.ok(fs.existsSync(fx.wts[n]), `${n} must survive`);
   // Symlink targets in the main checkout survive the removal.
   assert.equal(fs.readFileSync(path.join(fx.repo, '.env'), 'utf8'), 'K=v\n');
@@ -194,17 +212,20 @@ test('branchLandedDespiteRebase: tip signal, content signal, and a genuine miss'
 test('ignored-input classifier: disposable vs keep', () => {
   for (const e of ['.cache/', 'data/audit/outlet-census/.cache/', 'scripts/x/__pycache__/', 'tsconfig.tsbuildinfo',
     'next-env.d.ts', 'expo-env.d.ts', '.expo/', 'dist/', 'ios/', 'node_modules/', '.claude/visual-qa/',
-    'data/audit/intake-ledger.jsonl', 'data/grosses.json', 'data/opening-night-sent.json']) {
+    'data/audit/intake-ledger.jsonl']) {
     assert.notEqual(classifyIgnoredEntry(e, {}), null, e);
   }
-  for (const e of ['data/finances/', 'data/review-texts/', 'data/aggregator-archive/', 'data/shows.json', '.env',
+  for (const e of ['data/finances/', 'data/grosses.json', 'data/opening-night-sent.json', 'data/review-texts/', 'data/aggregator-archive/', 'data/shows.json', '.env',
     '.env.local', 'data/subscribers.json', '.claude/settings.local.json', 'nested-repo/']) {
     assert.equal(classifyIgnoredEntry(e, {}), null, e);
   }
   assert.equal(classifyIgnoredEntry('.env', { isSymlink: true }), 'symlink');
+  assert.equal(classifyIgnoredEntry('data/grosses.json', { untouchedSinceSetup: true }), 'setup-copy');
+  assert.equal(classifyIgnoredEntry('data/grosses.json', { identicalToMain: true }), 'setup-copy');
+  assert.equal(classifyIgnoredEntry('data/grosses.json', { untouchedSinceSetup: false }), null, 'an edited setup copy keeps');
   assert.equal(classifyIgnoredEntry('data/review-texts/', { isEmptyDir: true }), 'empty-dir');
   assert.equal(classifyIgnoredEntry('.env.local', { identicalToMain: true }), 'identical-to-main');
-  const d = decideIgnoredInputs([{ entry: 'data/grosses.json', facts: {} }, { entry: 'data/finances/', facts: {} }]);
+  const d = decideIgnoredInputs([{ entry: 'data/grosses.json', facts: { untouchedSinceSetup: true } }, { entry: 'data/finances/', facts: {} }]);
   assert.deepEqual(d, { safe: false, blocker: 'data/finances/', discardedCopies: ['data/grosses.json'] });
 });
 
@@ -225,5 +246,20 @@ test('morning-digest Mac disk line: free, worktree counts, top 3 by size', () =>
     { label: 'a', kb: 1 * 1024 * 1024 }, { label: 'big', kb: 11 * 1024 * 1024 }, { label: 'mid', kb: 2.4 * 1024 * 1024 }, { label: 'c', kb: 2 * 1024 * 1024 },
   ] });
   assert.equal(line, 'Mac disk: 38GB free, 102 worktrees (61 job); biggest: big 11GB, mid 2.4GB, c 2.0GB.');
+  const { statusDescription, digestLineFromStatus, readMacDiskStatus } = require('../lib/mac-disk-digest.js');
+  assert.equal(statusDescription('x'.repeat(200)).length, 140);
+  assert.match(digestLineFromStatus(null), /no report from the Mac/);
+  assert.equal(digestLineFromStatus({ line: 'Mac disk: 5GB free.', at: '2026-11-23T00:00:00Z' }, new Date('2026-11-23T03:00:00Z')), 'Mac disk: 5GB free. (measured 3h ago)');
   assert.match(macDiskLine({ freeGb: null, worktrees: { total: 0, job: 0 }, sizes: null }), /free space unknown.*biggest consumers unavailable/);
+});
+
+test('readMacDiskStatus returns the newest mac/disk status walking main, null on error', async () => {
+  const { readMacDiskStatus } = require('../lib/mac-disk-digest.js');
+  const pages = [
+    { repository: { ref: { target: { history: { pageInfo: { hasNextPage: true, endCursor: 'c1' }, nodes: [{ status: null }, { status: { context: null } }] } } } } },
+    { repository: { ref: { target: { history: { pageInfo: { hasNextPage: false }, nodes: [{ status: { context: { description: 'Mac disk: 9GB free.', createdAt: '2026-11-23T01:00:00Z' } } }] } } } } },
+  ];
+  let i = 0;
+  assert.deepEqual(await readMacDiskStatus({ graphql: async () => pages[i++] }), { line: 'Mac disk: 9GB free.', at: '2026-11-23T01:00:00Z' });
+  assert.equal(await readMacDiskStatus({ graphql: async () => { throw new Error('boom'); } }), null);
 });
