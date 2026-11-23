@@ -5,6 +5,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
+// Fixture registry (not live data/shows.json): the main-title uniqueness check reads every show title.
+const BMG_FIXTURE = { id: 'blue-man-group-a-new-holiday-surprise-2026', title: 'Blue Man Group “A New Holiday Surprise”', status: 'open' };
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([BMG_FIXTURE]));
 const { titleForms, findPageConfirmCandidates } = require('./outlet-listing-helpers');
 
 const BMG = {
