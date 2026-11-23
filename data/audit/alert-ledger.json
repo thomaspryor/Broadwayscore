@@ -8783,12 +8783,13 @@
       "title": "Untracked brightdata spend: ledger explains only 77%, 79% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
       "incidentOpenedAt": "2026-11-23T11:27:05.515Z",
-      "lastSeen": "2026-11-23T11:27:05.515Z",
+      "lastSeen": "2026-11-23T21:04:10.819Z",
       "lastNotifiedAt": "2026-11-23T11:27:05.515Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-8132"
+      "linearIdentifier": "BRO-8132",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "resolved",
@@ -9976,12 +9977,13 @@
       "title": "Overdue P0/P1 queue: 14 P0 older than 24h, 70 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-23T10:58:19.877Z",
+      "lastSeen": "2026-11-23T20:40:25.335Z",
       "lastNotifiedAt": "2026-11-23T10:58:19.877Z",
       "lastSurfacedAt": "2026-11-17T10:49:52.412Z",
       "notifyCount": 51,
       "cardId": null,
-      "linearIdentifier": "BRO-5613"
+      "linearIdentifier": "BRO-5613",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -17825,13 +17827,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-23T11:26:02.048Z",
+      "lastSeen": "2026-11-23T21:04:08.986Z",
       "lastNotifiedAt": "2026-11-18T10:47:02.532Z",
       "lastSurfacedAt": "2026-11-18T10:47:02.532Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -38526,9 +38528,9 @@
       "lastSurfacedAt": "2026-11-23T02:07:48.200Z",
       "notifyCount": 31,
       "cardId": null,
-      "linearIdentifier": "BRO-8102",
-      "notifyCountAtRelease": 15,
-      "sweptTracker": "BRO-7516",
+      "linearIdentifier": null,
+      "notifyCountAtRelease": 31,
+      "sweptTracker": "BRO-8102",
       "silentRefires": 6,
       "resolvedAt": "2026-11-23T15:33:09.266Z",
       "resolveReason": "outside the post-opening alert window on a complete scan"
@@ -40308,12 +40310,13 @@
       "title": "Same-critic outlet pairs: 35 show/critic pairs counted at two outlets",
       "firstSeen": "2026-11-09T09:57:37.244Z",
       "incidentOpenedAt": "2026-11-09T09:57:37.244Z",
-      "lastSeen": "2026-11-23T10:59:05.012Z",
+      "lastSeen": "2026-11-23T20:41:03.006Z",
       "lastNotifiedAt": "2026-11-23T10:59:05.012Z",
       "lastSurfacedAt": null,
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7207"
+      "linearIdentifier": "BRO-7207",
+      "silentRefires": 1
     },
     "default-critic-diversity:unflagged": {
       "status": "open",
@@ -40321,12 +40324,13 @@
       "title": "Default-critic diversity: 2 outlets credit blank bylines to one of several critics",
       "firstSeen": "2026-11-09T09:57:49.316Z",
       "incidentOpenedAt": "2026-11-16T09:49:05.745Z",
-      "lastSeen": "2026-11-23T10:59:56.991Z",
+      "lastSeen": "2026-11-23T20:41:55.047Z",
       "lastNotifiedAt": "2026-11-23T10:59:56.991Z",
       "lastSurfacedAt": null,
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7586"
+      "linearIdentifier": "BRO-7586",
+      "silentRefires": 1
     },
     "approved-fix-drift:unexplained": {
       "status": "open",
@@ -40334,14 +40338,15 @@
       "title": "Approved-fix drift: 4 approved exclusion verdicts silently undone",
       "firstSeen": "2026-11-09T09:58:29.714Z",
       "incidentOpenedAt": "2026-11-22T10:03:39.016Z",
-      "lastSeen": "2026-11-23T11:00:17.331Z",
+      "lastSeen": "2026-11-23T20:42:11.827Z",
       "lastNotifiedAt": "2026-11-23T11:00:17.331Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-8042",
       "notifyCountAtRelease": 3,
-      "sweptTracker": "BRO-7209"
+      "sweptTracker": "BRO-7209",
+      "silentRefires": 1
     },
     "express-retry-still-thin:violets-magic-glasses-off-broadway-2026": {
       "status": "resolved",
@@ -42660,9 +42665,11 @@
       "lastSurfacedAt": "2026-11-21T10:44:11.439Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": "BRO-7960",
+      "linearIdentifier": null,
       "resolvedAt": "2026-11-23T11:52:54.969Z",
-      "resolveReason": "finding cleared"
+      "resolveReason": "finding cleared",
+      "sweptTracker": "BRO-7960",
+      "notifyCountAtRelease": 11
     },
     "land:land/job/linear-BRO-7327-mwcsrexe": {
       "status": "resolved",
@@ -44885,12 +44892,13 @@
       "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-17T10:50:10.404Z",
       "incidentOpenedAt": "2026-11-17T10:50:10.404Z",
-      "lastSeen": "2026-11-23T10:58:32.863Z",
+      "lastSeen": "2026-11-23T20:40:36.059Z",
       "lastNotifiedAt": "2026-11-23T10:58:32.863Z",
       "lastSurfacedAt": "2026-11-23T10:58:32.863Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "feedback-outcomes:2026-11-17T02:54:55.352846+00:00": {
       "status": "resolved",
@@ -46140,12 +46148,13 @@
       "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-19T10:36:59.089Z",
       "incidentOpenedAt": "2026-11-19T10:36:59.089Z",
-      "lastSeen": "2026-11-23T10:58:32.615Z",
+      "lastSeen": "2026-11-23T20:40:35.858Z",
       "lastNotifiedAt": "2026-11-23T10:58:32.615Z",
       "lastSurfacedAt": "2026-11-23T10:58:32.615Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "express-retry-still-thin:the-conversation-off-broadway-2026": {
       "status": "open",
@@ -46418,10 +46427,12 @@
       "lastSurfacedAt": "2026-11-22T07:51:12.499Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-8033",
+      "linearIdentifier": null,
       "silentRefires": 8,
       "resolvedAt": "2026-11-23T14:53:31.591Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-8033",
+      "notifyCountAtRelease": 4
     },
     "land:land/bro-7847-ledger-persist": {
       "status": "resolved",
@@ -46573,8 +46584,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7883",
-      "resolvedAt": "2026-11-23T14:45:00.081Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T14:45:00.081Z",
+      "sweptTracker": "BRO-7883",
+      "notifyCountAtRelease": 1
     },
     "land:land/not-before-cards": {
       "status": "resolved",
@@ -48990,15 +49003,16 @@
       "title": "jenufa-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-23T10:58:32.528Z",
       "incidentOpenedAt": "2026-11-23T10:58:32.528Z",
-      "lastSeen": "2026-11-23T10:58:32.528Z",
+      "lastSeen": "2026-11-23T20:40:35.785Z",
       "lastNotifiedAt": "2026-11-23T10:58:32.528Z",
       "lastSurfacedAt": "2026-11-23T10:58:32.528Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:fantasma-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "fantasma-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-23T10:58:32.739Z",
@@ -49008,7 +49022,9 @@
       "lastSurfacedAt": "2026-11-23T10:58:32.739Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T20:40:35.961Z",
+      "resolveReason": "no rejected-but-verified review, no unqueued out-of-band score and no double-counted teaser"
     },
     "step-timeout-headroom:near-cap": {
       "status": "open",
@@ -49016,12 +49032,13 @@
       "title": "Opening-night timeout headroom: 3 steps near their timeout cap",
       "firstSeen": "2026-11-23T10:59:47.139Z",
       "incidentOpenedAt": "2026-11-23T10:59:47.139Z",
-      "lastSeen": "2026-11-23T10:59:47.139Z",
+      "lastSeen": "2026-11-23T20:41:47.641Z",
       "lastNotifiedAt": "2026-11-23T10:59:47.139Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-8130"
+      "linearIdentifier": "BRO-8130",
+      "silentRefires": 1
     },
     "provider-spend:attribution-gap:scrapingbee": {
       "status": "open",
@@ -49544,6 +49561,36 @@
         "mode": "dispatch-at-filing",
         "runId": "45255609159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45255609159"
+      }
+    },
+    "coverage-holes:nine-night-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "nine-night-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "firstSeen": "2026-11-23T20:40:35.827Z",
+      "incidentOpenedAt": "2026-11-23T20:40:35.827Z",
+      "lastSeen": "2026-11-23T20:40:35.827Z",
+      "lastNotifiedAt": "2026-11-23T20:40:35.827Z",
+      "lastSurfacedAt": "2026-11-23T20:40:35.827Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "abandoned-review-rescue:wuthering-heights-off-broadway-2026": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "wuthering-heights-off-broadway-2026: 1 real review(s) the servers cannot fetch",
+      "firstSeen": "2026-11-23T20:40:47.299Z",
+      "incidentOpenedAt": "2026-11-23T20:40:47.299Z",
+      "lastSeen": "2026-11-23T20:40:47.299Z",
+      "lastNotifiedAt": "2026-11-23T20:40:47.299Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-8193",
+      "dispatch": {
+        "requestedAt": "2026-11-23T20:40:47.299Z",
+        "mode": "dispatch-at-filing"
       }
     },
     "land:land/job/linear-BRO-8178-mwtmn2tj": {
