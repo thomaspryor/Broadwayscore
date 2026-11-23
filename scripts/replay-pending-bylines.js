@@ -852,6 +852,12 @@ async function processShow(showId, deps = {}) {
       const msg = String((e && e.message) || e).slice(0, 80);
       console.log(`  [${file}] fetch failed: ${msg} — keep`);
         stampFetchAttempt(filepath, data, dry, now().toISOString(), 'fetch-failed');
+      if (!dry) { // BRO-8091: count failures; the 2nd settles the stub with a typed reason instead of re-opening it forever
+        data.pendingFetchFailures = (Number(data.pendingFetchFailures) || 0) + 1;
+        const terminal = pendingTriage.fetchFailedTerminalReason(data);
+        if (terminal) { data.promoteSkippedReason = terminal; data.promoteSkippedAt = new Date().toISOString(); }
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e2) { console.log(`  could not record fetch failure: ${e2.message}`); }
+      }
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, `fetch failed: ${msg}`);
       kept++;
       continue;

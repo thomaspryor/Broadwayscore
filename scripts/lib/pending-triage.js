@@ -225,6 +225,19 @@ function noBylineTerminalReason(data, show, nowMs = Date.now()) {
   return 'no-byline-on-page: fetched page has a body but no author (archive page); not promotable without a critic (BRO-8091)';
 }
 
+/**
+ * BRO-8091: a fetch that failed on every scraper tier is stamped once but triage never read the stamp, so
+ * 63 of 75 open candidates (22/25, 41/50) re-opened as paid fetch candidates on every run. After
+ * FETCH_FAIL_LIMIT failed attempts the stub settles with a typed reason; clearing promoteSkippedReason
+ * (and pendingFetchFailures) re-opens it. Pure. Returns the reason or null.
+ */
+const FETCH_FAIL_LIMIT = 2;
+function fetchFailedTerminalReason(data) {
+  const n = Number(data && data.pendingFetchFailures) || 0;
+  if (n < FETCH_FAIL_LIMIT) return null;
+  return `fetch-failed-terminal: ${n} fetches failed on every scraper tier (dead url or bot wall); not retried (BRO-8091)`;
+}
+
 const SETTLED_KEYS = ['promoteSkippedReason', 'rssIdentityRejected'];
 /** A stub the drain already settled (it never fetches it again). Pure. */
 function isSettledPendingStub(data) {
@@ -453,4 +466,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { fetchFailedTerminalReason, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

@@ -1404,3 +1404,13 @@ describe('BRO-8091 noBylineTerminalReason: fetched, bodied, bylineless page on a
     assert.equal(noBylineTerminalReason({ pendingRefetchedAt: 'x', fullText: body }, null, NOW), null);
   });
 });
+
+describe('BRO-8091 fetchFailedTerminalReason: repeated all-tier fetch failures settle with a typed reason', () => {
+  const { fetchFailedTerminalReason } = require('../../scripts/lib/pending-triage.js');
+  test('settles at 2 failures, not at 0 or 1', () => {
+    assert.equal(fetchFailedTerminalReason({}), null);
+    assert.equal(fetchFailedTerminalReason({ pendingFetchFailures: 1 }), null);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2 }), /^fetch-failed-terminal/);
+    assert.equal(fetchFailedTerminalReason(null), null);
+  });
+});
