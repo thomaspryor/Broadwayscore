@@ -67,7 +67,7 @@ const {
   hasListingChrome, stripListingPrelude, stripLeadingCredits, isTagCloudExcerpt, isMidWordTruncation,
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
-  isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, PAREN_ASIDE_START_RE,
+  isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, stripCaptionChrome, PAREN_ASIDE_START_RE,
   combinedColumnQuoteLacksOwnShow,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
@@ -869,7 +869,7 @@ function selectBestExcerpt(data, showTitle) {
       return null;
     }
 
-    excerpt = trimToCompleteSentence(stripLeadingParenAside(excerpt));
+    excerpt = trimToCompleteSentence(stripLeadingParenAside(stripCaptionChrome(excerpt)));
     if (PAREN_ASIDE_START_RE.test(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'parenthetical-aside', source });
       return null;
