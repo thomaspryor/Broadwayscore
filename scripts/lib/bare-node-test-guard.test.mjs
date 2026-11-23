@@ -116,8 +116,9 @@ function neverRunAllowlisted(allowlist, { read, covered }) {
 }
 
 function ciCoverage() {
+  // Not unit-test-manifest.txt: a retired tombstone CI ignores (the collector runs instead).
   const manifestEntries = new Set();
-  for (const m of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt']) {
+  for (const m of ['tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt']) {
     const abs = path.join(ROOT, m);
     if (!fs.existsSync(abs)) continue;
     for (const l of fs.readFileSync(abs, 'utf8').split('\n')) if (l.trim() && !l.trim().startsWith('#')) manifestEntries.add(l.trim());

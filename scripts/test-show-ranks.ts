@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data) and times an index build over it. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101, BRO-8071).
 /**
  * Tests for src/lib/data-show-ranks.ts
  *
