@@ -104,7 +104,18 @@
     "speculations-off-west-end-2026/islingtontribune--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-    "speculations-off-west-end-2026/westminsterextra--unknown.json"
+    "speculations-off-west-end-2026/westminsterextra--unknown.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "hamlet-2009/usatoday--elysa-gardner.json",
@@ -255,7 +266,17 @@
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "relative-motion-off-west-end-2026/reviewsgate--william-russell.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-    "dogstar-off-west-end-2026/reviewsgate--william-russell.json"
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -309,7 +330,14 @@
       "dogstar-off-west-end-2026/londonlivinglarge--unknown.json",
       "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher.json",
       "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -390,7 +418,7 @@
     ]
   },
   "startTime": "2026-11-22T22:18:56.368Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "downstate-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -489,6 +517,61 @@
     },
     {
       "t": "2026-11-23T02:50:16.722Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T03:46:49.866Z",
+      "event": "bb-session",
+      "session": "08be2db5",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T03:46:50.728Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T03:49:05.883Z",
+      "event": "bb-session",
+      "session": "15ba67a1",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T03:49:06.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T03:49:23.977Z",
+      "event": "bb-session",
+      "session": "84075f5f",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T03:49:24.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T03:51:17.192Z",
+      "event": "bb-session",
+      "session": "67327e8b",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T03:51:18.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T03:51:35.400Z",
+      "event": "bb-session",
+      "session": "9e2ef016",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T03:51:36.215Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
