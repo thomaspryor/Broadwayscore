@@ -1,5 +1,51 @@
 [
   {
+    "startedAt": "2026-11-21T21:47:44.631Z",
+    "completedAt": "2026-11-21T21:51:20.549Z",
+    "totalReviews": 84169,
+    "processed": 18,
+    "skipped": 84148,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 103569,
+      "output": 6340,
+      "cacheRead": 56690,
+      "cacheWrite": 18851,
+      "total": 275692
+    },
+    "costUsd": 0.12647372499999998,
+    "runId": "44953104837",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-21T21:51:37.194Z",
+    "completedAt": "2026-11-21T21:55:08.209Z",
+    "totalReviews": 21,
+    "processed": 21,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 57588,
+      "output": 5105,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 62693
+    },
+    "costUsd": 0.0539597,
+    "runId": "44953104837",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-20T00:00:00.000Z"
+  },
+  {
     "startedAt": "2026-11-21T22:11:59.196Z",
     "completedAt": "2026-11-21T22:11:59.198Z",
     "totalReviews": 0,
@@ -375468,28 +375514,28 @@
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-23T20:31:58.160Z",
-    "completedAt": "2026-11-23T20:32:03.396Z",
-    "totalReviews": 21,
+    "startedAt": "2026-11-23T20:41:13.247Z",
+    "completedAt": "2026-11-23T20:41:19.365Z",
+    "totalReviews": 25,
     "processed": 1,
-    "skipped": 20,
+    "skipped": 24,
     "errors": 0,
     "tokensUsed": {
-      "input": 5530,
-      "output": 327,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14397
+      "input": 5593,
+      "output": 306,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 14460
     },
-    "costUsd": 0.0101928,
-    "runId": "45259833159",
+    "costUsd": 0.02307705,
+    "runId": "45260635455",
     "source": "index",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-23T20:37:00.185Z",
-    "completedAt": "2026-11-23T20:37:00.197Z",
+    "startedAt": "2026-11-23T20:46:16.023Z",
+    "completedAt": "2026-11-23T20:46:16.075Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -375502,67 +375548,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "45259833159",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-22T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-23T20:42:18.008Z",
-    "completedAt": "2026-11-23T20:42:18.035Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "45261576872",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-22T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-23T20:41:49.778Z",
-    "completedAt": "2026-11-23T20:41:52.802Z",
-    "totalReviews": 6,
-    "processed": 0,
-    "skipped": 5,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5247,
-      "output": 158,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 13804
-    },
-    "costUsd": 0.0079837,
-    "runId": "45261574159",
-    "source": "index",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-22T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-23T20:46:51.704Z",
-    "completedAt": "2026-11-23T20:46:51.706Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "45261574159",
+    "runId": "45260635455",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
