@@ -244,13 +244,16 @@ function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
 // Pure-ish (reads the test files' first lines): split NEW failures into those
 // the branch owns and those in LIVE-DATA-LANE files, which cannot be judged
 // when dataDiff is non-empty (see ignoredDataDirsMissingFrom). A live file the
-// baseline does not have is the branch's own new test: it stays blocking.
-function splitLiveUnjudged(newFailures, cwd, dataDiff, baselineRoot, isLive = isDeclaredLiveFile) {
+// baseline does not have is the branch's own new test: it stays blocking. So
+// does a file isBridged() says read the SAME corpus in both runs (it honours
+// REVIEW_TEXTS_DIR, which runTestGate points the baseline run at): that one
+// was judged fairly, so a regression in it still blocks (Codex review).
+function splitLiveUnjudged(newFailures, cwd, dataDiff, baselineRoot, isLive = isDeclaredLiveFile, isBridged = () => false) {
   if (!dataDiff || dataDiff.length === 0) return { blocking: newFailures, liveUnjudged: [] };
   const blocking = [];
   const liveUnjudged = [];
   for (const f of newFailures) {
-    const unjudged = Boolean(f && f.file && isLive(f.file, cwd) && baselineRoot && fs.existsSync(path.join(baselineRoot, f.file)));
+    const unjudged = Boolean(f && f.file && isLive(f.file, cwd) && !isBridged(f.file) && baselineRoot && fs.existsSync(path.join(baselineRoot, f.file)));
     (unjudged ? liveUnjudged : blocking).push(f);
   }
   return { blocking, liveUnjudged };
@@ -599,7 +602,7 @@ function floorSummaryLine(stdout) {
   return null;
 }
 
-function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
+function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS, extraEnv = null) {
   // NODE_TEST_CONTEXT (set by node's own --test runner on itself) makes a
   // NESTED `node --test` child assume it's a subtest reporting results back
   // over an inherited IPC channel rather than a standalone run — it then
@@ -607,7 +610,7 @@ function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
   // .test.mjs (running under `node --test` already) or, in principle, this
   // gate invoked from inside some other test-runner wrapper — strip it so
   // the child always reports its own real exit code.
-  const env = testChildEnv(process.env);
+  const env = { ...testChildEnv(process.env), ...(extraEnv || {}) };
   // --test-reporter=tap (not the default spec reporter) so parseTapOutput()
   // can key failures by <repo-relative-file>::<test name> for the baseline
   // diff below. `not ok N - <test name>` still carries the literal test name,
@@ -914,10 +917,19 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     }
     let dataDiff = [];
     try { dataDiff = dataDiffFn(safeRealpath(cwd), baselineRoot) || []; } catch { dataDiff = []; }
+    // Corpus tests that honour REVIEW_TEXTS_DIR read the merged tree's corpus
+    // in the baseline run too, so the two runs differ in code only for them.
+    // Unset when the caller already set it (then both runs share it anyway).
+    const bridgeCorpus = dataDiff.includes(path.join('data', 'review-texts')) && !(env && env.REVIEW_TEXTS_DIR);
+    const baselineEnv = bridgeCorpus ? { REVIEW_TEXTS_DIR: safeRealpath(path.join(cwd, 'data', 'review-texts')) } : null;
+    const isBridged = (rel) => {
+      if (!bridgeCorpus && !(env && env.REVIEW_TEXTS_DIR)) return false;
+      try { return fs.readFileSync(path.join(cwd, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
+    };
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
-      const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs);
+      const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs, baselineEnv);
       const baselineParsed = parseTapOutput(`${baselineResult.stdout || ''}`, safeRealpath(baselineRoot));
       // Same fail-safe guard as the merged run above, mirrored for the
       // baseline: a baseline run that exited non-zero but parsed zero
@@ -938,7 +950,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     }
     const diffed = diffFailingSets(baselineFailures, mergedFailures);
     const { preExisting } = diffed;
-    const { blocking: newFailures, liveUnjudged } = splitLiveUnjudged(diffed.newFailures, cwd, dataDiff, baselineRoot);
+    const { blocking: newFailures, liveUnjudged } = splitLiveUnjudged(diffed.newFailures, cwd, dataDiff, baselineRoot, isDeclaredLiveFile, isBridged);
     let combinedOutput = output;
     if (liveUnjudged.length > 0) {
       combinedOutput += `\n\n⚠ post-merge test floor: LIVE-DATA-LANE failures NOT judged here, NOT blocking — the merged tree sees ${dataDiff.join(', ')} and the origin/main baseline does not, so a new-vs-pre-existing call would compare different data (BRO-8110). check-corpus-drift.yml judges these; if one is real, file a card:\n${formatFailureList('  ', liveUnjudged)}`;
