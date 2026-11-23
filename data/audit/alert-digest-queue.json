@@ -1295,5 +1295,19 @@
       }
     ],
     "queuedAt": "2026-11-23T20:50:54.446Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:a-round-heeled-woman-west-end-2011",
+    "title": "1 review(s) for a-round-heeled-woman-west-end-2011 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- times-uk--4fe08d73.json (times-uk): no byline in page and no recoverable body https://www.thetimes.com/culture/theatre-dance/article/a-round-heeled-woman-at-the-riverside-london-nzwbzxt062l",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T20:57:00.212Z"
   }
 ]
