@@ -55,8 +55,27 @@ import theaterMetaData from '../../data/theater-metadata.json';
 // Curated multi-stage venue complexes (e.g. Atlantic Theater Company -> Atlantic Stage 2)
 import venueComplexesData from '../../data/venue-complexes.json';
 import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json';
+// Verified venue facts for Off-Broadway + London pages (BRO-8088): only fields two
+// independent web-search models agreed on (scripts/research-venue-details.js).
+import venueInfoData from '../../data/venue-info.json';
+import { getTheaterAddress } from '../../scripts/lib/venue-addresses';
 import { displaysCriticScore } from './critic-score-display';
 import { getShowYear } from './date-utils';
+
+type VenueInfoMarket = 'off-broadway' | 'london';
+type VenueInfoEntry = {
+  fields: { address?: string; website?: string; capacity?: number; yearOpened?: number; operator?: string };
+};
+const VENUE_INFO = (venueInfoData as unknown as { venues: Record<string, VenueInfoEntry> }).venues;
+
+/** Verified address for an Off-Broadway / London show's venue page, if one exists (BRO-8088). */
+function verifiedVenueAddress(category: string | undefined, venue: string | undefined | null): string | undefined {
+  const market: VenueInfoMarket | null = category === 'off-broadway' ? 'off-broadway'
+    : category === 'west-end' || category === 'off-west-end' ? 'london' : null;
+  if (!market) return undefined;
+  const name = stubTheaterName(venue ?? undefined);
+  return name ? VENUE_INFO[`${market}/${urlSlugify(name)}`]?.fields.address : undefined;
+}
 
 // Type the imported data
 // BRO-5954: rows that page generation would crash on are dropped here (and named
@@ -131,7 +150,13 @@ export function getAllShows(): ComputedShow[] {
     .map(show => computeOneShow(show, baseReviewsByShowId.get(show.id) || [], {
       ...deps,
       blogReviews: blogReviewsByShowId.get(show.id) || [],
-    }));
+    }))
+    // Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
+    // address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
+    .map(show => {
+      const verified = verifiedVenueAddress(show.category, show.venue);
+      return verified && verified !== show.theaterAddress ? { ...show, theaterAddress: verified } : show;
+    });
 
   return computedShowsCache;
 }
@@ -922,6 +947,18 @@ export function getAllTheaters(): Theater[] {
       };
     }).sort((a, b) => b.showCount - a.showCount);
 
+  // Renamed houses (BRO-8088): an old-name page (Brooks Atkinson, Virginia, Foxwoods) gets the
+  // same building's address and a link to its current-name page. Then the address registry
+  // (scripts/lib/venue-addresses.js) fills any page whose shows carry no theaterAddress.
+  const byFormerName = new Map<string, Theater>();
+  for (const t of _theatersCache) for (const f of t.formerNames ?? []) byFormerName.set(f, t);
+  _theatersCache = _theatersCache.map(t => {
+    const current = byFormerName.get(t.name);
+    const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? undefined;
+    if (current) return { ...t, address, nowKnownAs: { name: current.name, slug: current.slug } };
+    return address === t.address ? t : { ...t, address };
+  });
+
   // Warn about shows with venues that don't match any theater metadata
   const theaterSlugs = new Set(_theatersCache.map(t => t.slug));
   const metaKeys = new Set(Object.keys(meta).filter(k => k !== '_meta'));
@@ -998,7 +1035,24 @@ export function getAllTheaterSlugs(): string[] {
  * stubTheaterName(), shared with scripts/build-slug-redirects.js so the
  * retired-slug redirects replay exactly the names that get pages.
  */
-function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
+/**
+ * Overlay verified venue facts (data/venue-info.json) on a stub-index venue. A verified
+ * address wins over shows.json theaterAddress (freeform, unaudited for these markets).
+ */
+export function applyVenueInfo<T extends Theater>(theater: T, market: VenueInfoMarket): T {
+  const info = VENUE_INFO[`${market}/${theater.slug}`]?.fields;
+  if (!info) return theater;
+  return {
+    ...theater,
+    address: info.address ?? theater.address,
+    website: info.website ?? theater.website,
+    capacity: info.capacity ?? theater.capacity,
+    yearBuilt: info.yearOpened ?? theater.yearBuilt,
+    operator: info.operator ?? theater.operator,
+  };
+}
+
+function buildStubTheaterIndex(shows: ComputedShow[], market: VenueInfoMarket): Theater[] {
   const theaterMap = new Map<string, { name: string; shows: ComputedShow[]; address?: string }>();
 
   for (const show of shows) {
@@ -1017,7 +1071,7 @@ function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
       const currentShow = data.shows.find(
         s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming'
       );
-      return {
+      return applyVenueInfo({
         name: data.name,
         slug,
         address: data.address,
@@ -1029,7 +1083,7 @@ function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
           return new Date(b.openingDate).getTime() - new Date(a.openingDate).getTime();
         }),
         showCount: data.shows.length,
-      };
+      }, market);
     })
     .sort((a, b) => b.showCount - a.showCount);
 }
@@ -1042,7 +1096,7 @@ export function getAllLondonTheaters(): Theater[] {
   // theatre and must appear in the venue index even when all its current shows
   // are non-theatrical (which getWestEndShows() now excludes). Venue coverage
   // must not regress from the genre-routing change.
-  _londonTheatersCache = buildStubTheaterIndex(getAllLondonShows());
+  _londonTheatersCache = buildStubTheaterIndex(getAllLondonShows(), 'london');
   return _londonTheatersCache;
 }
 
@@ -1064,7 +1118,7 @@ let _offBroadwayTheatersCache: Theater[] | null = null;
 export function getAllOffBroadwayTheaters(): Theater[] {
   if (_offBroadwayTheatersCache) return _offBroadwayTheatersCache;
   // Venue pages retain every genre, including opera excluded from browse listings.
-  _offBroadwayTheatersCache = buildStubTheaterIndex(getAllShows().filter(s => s.category === 'off-broadway'));
+  _offBroadwayTheatersCache = buildStubTheaterIndex(getAllShows().filter(s => s.category === 'off-broadway'), 'off-broadway');
   return _offBroadwayTheatersCache;
 }
 
@@ -1098,7 +1152,7 @@ type VenueComplexDef = { name: string; subVenueSlugs: string[] };
  * lookup below — see data/venue-complexes.json and
  * data/venue-complexes-west-end.json for the per-market curated mappings.
  */
-function buildComplexIndex(theaters: Theater[], defs: Record<string, VenueComplexDef>): TheaterComplex[] {
+function buildComplexIndex(theaters: Theater[], defs: Record<string, VenueComplexDef>, market: VenueInfoMarket): TheaterComplex[] {
   const bySlug = new Map(theaters.map(t => [t.slug, t]));
 
   return Object.entries(defs).map(([complexSlug, def]) => {
@@ -1122,15 +1176,20 @@ function buildComplexIndex(theaters: Theater[], defs: Record<string, VenueComple
     // synthetic complex page with no map link.
     const address = ownTheater?.address ?? subVenues.find(t => t.address)?.address;
 
-    return {
+    // Own-slug venue facts first (verified for the building), else the own theater's.
+    return applyVenueInfo({
       name: def.name,
       slug: complexSlug,
       address,
+      website: ownTheater?.website,
+      capacity: ownTheater?.capacity,
+      yearBuilt: ownTheater?.yearBuilt,
+      operator: ownTheater?.operator,
       currentShow,
       allShows,
       showCount: allShows.length,
       subVenues: subVenues.map(t => ({ name: t.name, slug: t.slug })),
-    };
+    }, market);
   });
 }
 
@@ -1151,7 +1210,7 @@ const OFF_BROADWAY_COMPLEX_DEFS: Record<string, VenueComplexDef> =
 let _offBroadwayComplexesCache: TheaterComplex[] | null = null;
 export function getAllOffBroadwayComplexes(): TheaterComplex[] {
   if (!_offBroadwayComplexesCache) {
-    _offBroadwayComplexesCache = buildComplexIndex(getAllOffBroadwayTheaters(), OFF_BROADWAY_COMPLEX_DEFS);
+    _offBroadwayComplexesCache = buildComplexIndex(getAllOffBroadwayTheaters(), OFF_BROADWAY_COMPLEX_DEFS, 'off-broadway');
   }
   return _offBroadwayComplexesCache;
 }
@@ -1178,7 +1237,7 @@ const WEST_END_COMPLEX_DEFS: Record<string, VenueComplexDef> =
 let _westEndComplexesCache: TheaterComplex[] | null = null;
 export function getAllWestEndComplexes(): TheaterComplex[] {
   if (!_westEndComplexesCache) {
-    _westEndComplexesCache = buildComplexIndex(getAllLondonTheaters(), WEST_END_COMPLEX_DEFS);
+    _westEndComplexesCache = buildComplexIndex(getAllLondonTheaters(), WEST_END_COMPLEX_DEFS, 'london');
   }
   return _westEndComplexesCache;
 }
