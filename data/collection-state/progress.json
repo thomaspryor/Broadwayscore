@@ -115,7 +115,10 @@
     "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
     "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
     "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json"
+    "now-you-see-me-live-2026/culturesauce--unknown.json",
+    "do-not-try-this-at-home-off-broadway-2026/kidsoutandabout--unknown.json",
+    "downstate-2026/pages-on-stages--mason-pilevsky.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
   ],
   "failed": [
     "hamlet-2009/usatoday--elysa-gardner.json",
@@ -267,7 +270,20 @@
     "relative-motion-off-west-end-2026/reviewsgate--william-russell.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
     "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
-    "nine-night-off-west-end-2026/times-uk--clive-davis.json"
+    "nine-night-off-west-end-2026/times-uk--clive-davis.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -328,7 +344,10 @@
       "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
       "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
       "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json"
+      "now-you-see-me-live-2026/culturesauce--unknown.json",
+      "do-not-try-this-at-home-off-broadway-2026/kidsoutandabout--unknown.json",
+      "downstate-2026/pages-on-stages--mason-pilevsky.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -409,7 +428,7 @@
     ]
   },
   "startTime": "2026-11-22T22:18:56.368Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
   "log": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -563,6 +582,61 @@
     },
     {
       "t": "2026-11-23T03:51:36.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T04:31:13.382Z",
+      "event": "bb-session",
+      "session": "30c43464",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T04:31:14.096Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T04:32:31.992Z",
+      "event": "bb-session",
+      "session": "8ef6ca99",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T04:32:32.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T04:32:49.468Z",
+      "event": "bb-session",
+      "session": "70a3b75c",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T04:32:50.017Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T04:34:14.012Z",
+      "event": "bb-session",
+      "session": "fdeddc34",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T04:34:14.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T04:34:31.697Z",
+      "event": "bb-session",
+      "session": "dea5594e",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T04:34:32.286Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
