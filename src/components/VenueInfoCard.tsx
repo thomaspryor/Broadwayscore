@@ -2,9 +2,10 @@ import type { Theater } from '@/lib/data-types';
 
 /**
  * Verified venue facts for Off-Broadway and London venue pages (BRO-8088): address with
- * directions, official website, seats, year opened, operator. Every value comes from
- * data/venue-info.json, where a field exists only when two independent sources agreed.
- * Renders nothing when the venue has no verified facts.
+ * directions, official website, seats, year opened, operator. Values come from
+ * data/venue-info.json (a field exists only when two independent sources agreed); when a
+ * venue has no verified address the page's existing shows.json address is shown instead.
+ * Renders nothing when there is nothing to show.
  */
 function mapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;

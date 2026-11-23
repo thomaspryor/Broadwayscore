@@ -967,7 +967,7 @@ export function getAllTheaters(): Theater[] {
   for (const t of _theatersCache) for (const f of t.formerNames ?? []) byFormerName.set(f, t);
   _theatersCache = _theatersCache.map(t => {
     const current = byFormerName.get(t.name);
-    const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? undefined;
+    const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? (current ? getTheaterAddress(current.name) : undefined) ?? undefined;
     // The old-name page shows the current building's photo, so it carries that photo's credit too.
     if (current) return { ...t, address, images: t.images?.exterior ? t.images : current.images, nowKnownAs: { name: current.name, slug: current.slug } };
     return address === t.address ? t : { ...t, address };

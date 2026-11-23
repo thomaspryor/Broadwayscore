@@ -103,8 +103,10 @@ function pickWebsite(a, b) {
     const ub = siteUrl(b);
     const pa = ua.pathname.replace(/\/+$/, '').toLowerCase();
     const pb = ub.pathname.replace(/\/+$/, '').toLowerCase();
-    if (pa && pa === pb) return `${ua.origin}${ua.pathname.replace(/\/+$/, '')}`;
-    return `${ua.origin}/`;
+    // Prefer https when either source gave it (both agree on the host).
+    const origin = ua.protocol === 'https:' || ub.protocol === 'https:' ? `https://${ua.host}` : ua.origin;
+    if (pa && pa === pb) return `${origin}${ua.pathname.replace(/\/+$/, '')}`;
+    return `${origin}/`;
   } catch {
     return null;
   }
