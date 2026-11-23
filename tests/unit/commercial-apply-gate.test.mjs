@@ -863,3 +863,15 @@ describe('model-estimate designations give way to a verified recoupment (BRO-615
     assert.equal('designationBasis' in b, false);
   });
 });
+
+// BRO-8137: a research row with no figures is archived, not held for a person.
+describe('carriesNoFigures (BRO-8137)', () => {
+  const gate = require('../../scripts/lib/commercial-apply-gate.js');
+  it('is true only for a row with no figure and no recoupment claim', () => {
+    assert.equal(gate.carriesNoFigures({ capitalization: null, weeklyRunningCost: null, recouped: null, designation: 'Easy Winner' }), true);
+    assert.equal(gate.carriesNoFigures({ capitalization: 12000000 }), false);
+    assert.equal(gate.carriesNoFigures({ weeklyRunningCost: 700000 }), false);
+    assert.equal(gate.carriesNoFigures({ recouped: true }), false);
+    assert.equal(gate.carriesNoFigures({ _recoupedClaim: true }), false);
+  });
+});
