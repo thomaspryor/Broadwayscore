@@ -54,13 +54,39 @@ function acceptanceSection(description) {
   return next ? rest.slice(0, next.index) : rest;
 }
 
+// BRO-8079 reopen: keyword guessing on phrase order missed real cards ("Drain the _pending fetch
+// candidates: 33 (2025-26), 166 ..." matched nothing; "29 opaque URLs" only warned). A number >= 10 next
+// to a data noun, in EITHER order, is strong. Years (19xx/20xx) are not counts.
+const DATA_NOUN = String.raw`(?:reviews?|stubs?|candidates?|gaps?|files?|urls?|links?|records?|shows?|entries|outlets?|critics?)`;
+const DATA_FWD_RE = new RegExp(String.raw`${NUM}\s+(?:[a-z_-]+\s+){0,2}?${DATA_NOUN}\b`, 'gi');
+const DATA_REV_RE = new RegExp(String.raw`\b${DATA_NOUN}\s*[:=]\s*~?(\d[\d,]*)\b`, 'gi');
+// An EFFECT: line in the card's own description (any line, bulleted or not) means its author asked for a
+// measured result at close; inline prose quoting `EFFECT: ...` and NO-DATA-EFFECT / NO-EFFECT-CHECK do not count.
+const DESC_EFFECT_RE = /^[ \t>*_+-]*(?:\*\*|__)?EFFECT(?:\*\*|__)?[ \t]*:/im;
+
+function bigDataCount(text) {
+  const ok = (raw) => {
+    const n = Number(String(raw).replace(/[^\d]/g, ''));
+    return n >= 10 && !(/^(?:19|20)\d\d$/.test(String(raw).trim()));
+  };
+  for (const m of text.matchAll(DATA_FWD_RE)) {
+    const lead = /\d[\d,]*/.exec(m[0]);
+    if (lead && ok(lead[0])) return m[0].trim();
+  }
+  for (const m of text.matchAll(DATA_REV_RE)) if (ok(m[1])) return m[0].trim();
+  return null;
+}
+
 /** PURE. {phrase, strong} for the phrase that makes this a data-count card, or null. */
 function dataCountMatch({ title = '', description = '' } = {}) {
+  if (DESC_EFFECT_RE.test(String(description || ''))) return { phrase: 'the card asks for an EFFECT: line', strong: true };
   const text = [String(title || ''), acceptanceSection(description)].join('\n').replace(NOT_DATA_RE, ' ');
   for (const re of [VERB_COUNT_RE, QUEUE_RE, STRONG_COUNT_RE]) {
     const m = re.exec(text);
     if (m) return { phrase: m[0].trim(), strong: true };
   }
+  const big = bigDataCount(text);
+  if (big) return { phrase: big, strong: true };
   for (const re of [PCT_RE, WEAK_COUNT_RE]) {
     const m = re.exec(text);
     if (m) return { phrase: m[0].trim(), strong: false };

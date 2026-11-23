@@ -360,9 +360,9 @@ test('BRO-8079 ship-check: ordinary titles are not data-count cards; weak count 
     assert.equal(dataCountMatch({ title: t }), null, t);
   }
   assert.equal(dataCountMatch({ title: BRO_7930_TITLE }).strong, true);
-  assert.equal(dataCountMatch({ title: 'TR wrong_show repair, part 3: 88 files still rejected' }).strong, false);
+  assert.equal(dataCountMatch({ title: 'TR wrong_show repair, part 3: 8 files still rejected' }).strong, false);
   const weak = checkLinearDoneTransition({
-    targetStateType: 'completed', title: 'TR wrong_show repair, part 3: 88 files still rejected', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    targetStateType: 'completed', title: 'TR wrong_show repair, part 3: 8 files still rejected', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
     verifyCmdEvidence: passingVerify, env: {},
   });
   assert.equal(weak.allowed, true);
@@ -386,4 +386,70 @@ test('BRO-8079 ship-check: SAMPLE-AUDIT urls after the block (Key Files, PR link
   assert.equal(noWrong.allowed, false);
   const outside = checkLinearDoneTransition({ ...base, commentText: `98% settled/junk.\nSAMPLE-AUDIT: 2 sampled, 0 wrong\n- https://a.com/x\n\nKey files:\n${urls}` });
   assert.equal(outside.allowed, false);
+});
+
+// ── BRO-8079 reopen (2026-11-23): keyword guessing on title phrasing missed real data cards ──
+// Live probe on main 224437eb846: BRO-8091 -> no match (Done accepted with no EFFECT line), BRO-8090 -> weak (warn only).
+const REAL_CARDS = {
+  'BRO-8091': {
+    title: 'Drain the _pending fetch candidates: 33 (2025-26), 166 (2015-24), 747 (pre-2015), chained + checkpointed, subscriber outlets via logged-in browser',
+    description: '## Acceptance criteria\n\n* EFFECT: open candidates per era before -> after; promoted count; promoted reviews present in reviews.json on main after the CI rebuild.\n* 20-item sample of promoted stubs checked against the page.\n* VERIFY: `node --test tests/unit/pending-triage.test.mjs`\n',
+  },
+  'BRO-8090': {
+    title: 'P1: _pending triage wrongly settles real reviews: ~415 belong to a tracked sibling production (junked as out-of-window) + 29 opaque URLs settled by url-token-mismatch',
+    description: '## Acceptance criteria\n\n* Tests using the King of the Yees and 1536 examples (red on old code).\n* EFFECT: settled-but-real count before -> after; rehomed count.\n* VERIFY: `node --test tests/unit/pending-triage.test.mjs`\n',
+  },
+  'BRO-7930': { title: BRO_7930_TITLE, description: '## Acceptance criteria\n\nVERIFY: node scripts/validate-data.js\n' },
+  'BRO-8023': {
+    title: 'P1: ~500-600 real 2025-26 reviews stuck in _pending (6,786 queue, drain promotes 0 despite BRO-7930 Done); floors report blind to them',
+    description: '## Acceptance criteria\n\n* VERIFY: `node --test tests/unit/pending-triage.test.mjs`\n',
+  },
+  'BRO-7569': {
+    title: 'Close full-text gaps for 2025-26 shows across major outlets (~200 reviews: 78 stub, 71 excerpt, 47 truncated)',
+    description: '## Acceptance criteria\n\n* VERIFY: node --test scripts/lib/review-guards.test.mjs\n',
+  },
+};
+
+test('BRO-8079 reopen: all five real data cards are BLOCKED Done on a passing unit-test VERIFY alone', () => {
+  for (const [id, card] of Object.entries(REAL_CARDS)) {
+    const gate = checkLinearDoneTransition({
+      targetStateType: 'completed', identifier: id, title: card.title, description: card.description,
+      commentText: 'Outcome: fixed, tests pass.', verifyCmdEvidence: passingVerify, env: {},
+    });
+    assert.equal(gate.allowed, false, `${id}: ${gate.reason}`);
+    assert.equal(gate.verdict, 'data-effect-unmeasured', id);
+  }
+});
+
+test('BRO-8079 reopen: the same five cards are ALLOWED with a measured EFFECT line', () => {
+  for (const [id, card] of Object.entries(REAL_CARDS)) {
+    const gate = checkLinearDoneTransition({
+      targetStateType: 'completed', identifier: id, title: card.title, description: card.description,
+      commentText: 'Outcome: fixed.\nEFFECT: open candidates 946 -> 120, measured by `node scripts/count-pending.js --by-era`\nNO-SAMPLE-AUDIT: fixture, no rate claimed here',
+      verifyCmdEvidence: passingVerify, env: {},
+    });
+    assert.equal(gate.verdict === 'data-effect-unmeasured', false, `${id}: ${gate.reason}`);
+  }
+});
+
+test('BRO-8079 reopen: any card whose description carries an EFFECT: line is a strong data card, whatever its title', () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  const m = dataCountMatch({ title: 'Tidy the drain script', description: 'Notes\n- EFFECT: queue before -> after\n' });
+  assert.equal(m && m.strong, true);
+  // Prose that only mentions the word inline, or other EFFECT-ish tokens, does not count.
+  for (const description of ['must require an `EFFECT: <before> -> <after>` line', 'NO-EFFECT-CHECK: docs only', 'NO-DATA-EFFECT: not a data card']) {
+    assert.equal(dataCountMatch({ title: 'Tidy the drain script', description }), null, description);
+  }
+});
+
+test('BRO-8079 reopen: a number >= 10 next to a data noun, in either order, is strong; small numbers and years are not', () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  for (const t of ['Drain the 6,500 pending candidates', 'Drain candidates: 6500', '29 opaque URLs settled wrongly', 'TR wrong_show repair, part 3: 88 files still rejected', 'Backfill 120 critic records', 'stubs: 78 left for 2025-26', 'Fix 35 broken links on show pages']) {
+    const m = dataCountMatch({ title: t });
+    assert.equal(m && m.strong, true, t);
+  }
+  for (const t of ['Fix 404 on show pages', 'Top 10 shows page redesign', 'Tony 2026 shows page', 'Mobile shows 2 rows of cards', 'Add 3 reviews to the fixture']) {
+    const m = dataCountMatch({ title: t });
+    assert.equal(Boolean(m && m.strong), false, t);
+  }
 });
