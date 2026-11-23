@@ -2,7 +2,7 @@
 // network calls stubbed. Requires the real module, no copied logic.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine, judgePrompt } from './subject-writer.mjs';
+import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine, judgePrompt, roundupProblems } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -617,6 +617,26 @@ test('BRO-8064: a show is called the top or bottom only when it holds that score
   const nyOk = { ...nyLive, preheader: 'Off-Broadway, The Good Thief lands at 82. Blue Man Group sits at 48.', lede: 'Off-Broadway, The Good Thief scores 82. On Broadway, The Fantasticks and Much Ado About Nothing both land at a solid 79/100, and Blue Man Group sits at 48.' };
   assert.doesNotMatch(checkCandidate(nyOk, np).join(), /as the (top|bottom)|lead opening|cover the week/);
   assert.match(checkCandidate({ ...nyOk, subject: "How New York's six openings scored" }, np).join(), /says "six openings", but the facts count/);
+});
+
+test('BRO-8064 follow-up (owner 2026-11-23): editorial not recap, bare-verb scores, plain words, NYC example', () => {
+  const recap = "Six shows opened in New York this week. Off-Broadway, The Good Thief scored 82/100 and Elektra 64. On Broadway, The Fantasticks and Much Ado About Nothing both landed at 79, Now You See Me Live at 60 and Blue Man Group's holiday show at 48.";
+  assert.match(roundupProblems({ subject: 'x', preheader: 'x', lede: recap }, we16Pool).join(), /editorial, not a recap/);
+  assert.doesNotMatch(roundupProblems(we16Good, we16Pool).join(), /recap/);
+  // A stale score written with a bare verb is caught.
+  assert.match(roundupProblems({ ...we16Good, lede: 'Eurotrash scores 75 among seven London openings.' }, we16Pool).join(), /score of 75/);
+  // "It" at the start of a clause is the show before it, even when another show is named later.
+  assert.match(roundupProblems({ ...we16Good, lede: 'Eurotrash lands at 78/100. It tops the week, ahead of Cinderella (67).' }, we16Pool).join(), /ranks Eurotrash \(78\)/);
+  assert.doesNotMatch(roundupProblems({ ...we16Good, lede: 'Eurotrash lands at 78/100. It tops the week, ahead of Cinderella (67).' }, we16Pool).join(), /ranks Cinderella/);
+  for (const ok of ['Eurotrash, led by Sarah Snook, lands at a solid 78/100.', 'Eurotrash lands at 78/100 with two leads in top form.', 'Eurotrash lands at 78/100 on its standout cast and comic beats.']) {
+    assert.doesNotMatch(roundupProblems({ ...we16Good, lede: ok }, we16Pool).join(), /as the (top|bottom)/, ok);
+  }
+  assert.match(roundupProblems({ ...we16Good, lede: '78/100 for Eurotrash leads a seven-show Off West End slate.' }, we16Pool).join(), /ranks Eurotrash/);
+  assert.doesNotMatch(roundupProblems({ ...we16Good, preheader: "New York's two shows close Saturday; Eurotrash lands at 78/100." }, we16Pool).join(), /openings this week/);
+  assert.doesNotMatch(roundupProblems({ ...we16Good, subject: 'How the seven London openings scored' }, we16Pool).join(), /openings this week|cover the week/);
+  // The NYC example the prompt gives would itself pass the subject rules.
+  const m = writerPrompt(buildPool({ ...we16Facts, edition: 'broadway' })).match(/Good subject: "([^"]+)"/);
+  assert.ok(m && m[1].length <= 60 && !/with critics/i.test(m[1]), m && m[1]);
 });
 
 test('BRO-8064: the writer and judge are told to cover the week and use the lead', () => {
