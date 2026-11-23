@@ -104,7 +104,7 @@ Several repos attached (or a bad `create_session` source_url) start in `/home/us
 
 ## Production API keys from a phone session
 
-The environment has production keys (read+write) for PostHog, Sentry and Supabase, plus scraper, Resend, Bing, Impact and Formspree keys; no GA4 or Anthropic key; VERCEL_TOKEN, logins and cookies are withheld. Run a committed script with production read keys: `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` (land the script first). Data changes use `execute-approved-fix.yml` or their own workflows. Variable names, the no-`gh` route and paywalled fetches: `docs/cloud-production-keys-runbook.md`.
+The environment has production keys (read+write) for PostHog, Sentry and Supabase, plus scraper, Resend, Bing, Impact and Formspree keys; an Anthropic key (spend-capped, set 2026-11-23); no GA4 key; VERCEL_TOKEN, logins and cookies are withheld. Run a committed script with production read keys: `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` (land the script first). Data changes use `execute-approved-fix.yml` or their own workflows. Variable names, the no-`gh` route and paywalled fetches: `docs/cloud-production-keys-runbook.md`.
 
 ## Newsletter copy edits (BRO-8109)
 

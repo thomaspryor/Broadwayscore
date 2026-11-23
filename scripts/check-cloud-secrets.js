@@ -62,16 +62,16 @@ const TIER_1 = [
   'RESEND_API_KEY',
 ];
 
-// Keys cloud sessions are deliberately NOT given. Only ANTHROPIC_API_KEY now:
-// Claude API work runs through GitHub Actions / scripts/cloud-run-script.js.
+// Keys cloud sessions are deliberately NOT given. None now: the owner added a
+// spend-capped ANTHROPIC_API_KEY to the cloud environment on 2026-11-23, so
+// sessions can run the real Claude API. (Earlier policy: Claude API work ran
+// only through GitHub Actions / scripts/cloud-run-script.js.)
 // The scraper and Resend keys were withheld until the owner added them to the
 // Default environment (BRO-6112). In cloud (and only there) the check treats
 // these as expected-absent, not as a failure. Still Tier 1 everywhere else.
 // BRIGHTDATA_CUSTOMER is not required: its readers (evaluate-brightdata-serp.js,
 // lib/url-discovery.js) fall back to a hardcoded default.
-const CLOUD_WITHHELD = [
-  'ANTHROPIC_API_KEY',
-];
+const CLOUD_WITHHELD = [];
 
 // Tier 2: useful when doing specific work. Reported but doesn't fail the check.
 const TIER_2 = [
