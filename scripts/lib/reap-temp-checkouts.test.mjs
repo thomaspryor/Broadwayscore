@@ -217,3 +217,33 @@ test('BRO-8179 stale tmp: protected names', () => {
   for (const n of ['claude-501', '.X11-unix', 'com.apple.launchd.x', 'tmux-501', 'acceptance-check-abc123']) assert.equal(S.isProtectedName(n), true, n);
   for (const n of ['orj-abc', 'bro-sb', 'merge-test-gate-x', 'verify-edits-chain-1']) assert.equal(S.isProtectedName(n), false, n);
 });
+
+test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named dir, lock, hook state kept; 2d dirty clone kept, 2d clean clone reaped', () => {
+  const r = root();
+  const H = 3600 * 1000;
+  const mk = (name, ageMs) => { const d = path.join(r, name); fs.mkdirSync(d, { recursive: true }); fs.writeFileSync(path.join(d, 'f.txt'), 'x'); ageTree(d, ageMs); return d; };
+  const fixture = mk('orj-aB3xY9', 4 * H);
+  const handNamed = mk('bro-sb', 4 * H);
+  const lock = mk('gc.lock', 3 * DAY_MS);
+  const hookState = path.join(r, 'linear-issue-claimed-e3382528-4f8a-46c4-ab01-a73a14706c00');
+  fs.writeFileSync(hookState, 'x'); ageTree(hookState, 3 * DAY_MS);
+  const git = (cwd, ...a) => execFileSync('git', ['-C', cwd, ...a], { stdio: 'ignore' });
+  const clone = (name, dirty) => {
+    const d = path.join(r, name); fs.mkdirSync(d);
+    git(d, 'init', '-q'); fs.writeFileSync(path.join(d, 'a.txt'), 'a');
+    if (!dirty) { git(d, 'add', '.'); git(d, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'x'); }
+    ageTree(d, 2 * DAY_MS); return d;
+  };
+  const dirty = clone('bro-dirty-clone', true);
+  const clean = clone('bro-clean-clone', false);
+  assert.equal(S.gitHasLocalWork(dirty), true);
+  assert.equal(S.gitHasLocalWork(clean), false);
+  const s = S.reapStaleTmp({ root: r, snapshotFn: () => [], measure: false });
+  assert.equal(fs.existsSync(fixture), false, 'mkdtemp fixture idle >3h removed');
+  assert.equal(fs.existsSync(handNamed), true, 'hand-named dir keeps 24h');
+  assert.equal(fs.existsSync(lock), true, 'lock keeps 7d');
+  assert.equal(fs.existsSync(hookState), true, 'hook state keeps 7d');
+  assert.equal(fs.existsSync(dirty), true, 'dirty clone keeps 7d');
+  assert.equal(fs.existsSync(clean), false, 'clean idle clone removed');
+  assert.equal(s.removed, 2);
+});

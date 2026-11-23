@@ -21,6 +21,16 @@
  *   - no process holds a file or cwd under it, per one lsof snapshot taken
  *     before the scan and a fresh one taken just before the deletes (an
  *     lsof failure keeps everything).
+ *
+ * Age tiers (the "maxAgeH" above is per entry; BRO-8179 review):
+ *   - SHORT (3h): mkdtemp/mktemp-shaped names (prefix + 6 random chars with a
+ *     digit or capital) that are not git checkouts. These are test fixtures;
+ *     ~140k/day arrive, so a 24h-only reaper leaves /tmp at ~140k entries.
+ *   - DEFAULT (24h): everything else, including clean git clones.
+ *   - LONG (7d): per-session hook state (names carrying a session UUID or a
+ *     known hook-state prefix), real lock files/dirs (*.lock, *-lock), and git
+ *     clones with uncommitted or unpushed work (or whose status cannot be
+ *     read). Losing these early breaks a long-idle tab or loses work.
  */
 const fs = require('fs');
 const path = require('path');
@@ -29,12 +39,46 @@ const { openPathSnapshot, TEMP_CHECKOUT_PREFIXES } = require('./reap-temp-checko
 
 const DEFAULT_ROOT = '/private/tmp';
 const MAX_AGE_H = Number(process.env.TMP_REAP_MAX_AGE_H) > 0 ? Number(process.env.TMP_REAP_MAX_AGE_H) : 24;
+const SHORT_AGE_H = 3;
+const LONG_AGE_H = 7 * 24;
+// Hook/session state the ~/.claude hooks key per session and read back later.
+const HOOK_STATE_RE = /^(?:linear-issue-(?:claimed|reported)-|finish-line-|verify-edits-satisfied-|notion-card-|notion-create-failed|ctx-nudge-|pn-refresh-|owner-steps-|scoring-delta-baseline-|push-retry-|core-data-snapshot)/;
+const UUID_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+const LOCK_RE = /(?:[.\-_]lock|\.lck)$/i;
+// prefix + 6-char mkdtemp/mktemp suffix that has a digit or capital (an
+// all-lowercase 6-letter word like "-review" is a hand-made name, not random).
+const MKDTEMP_RE = /[-_.]([A-Za-z0-9]{6})$/;
 // Names nothing in this repo creates but the OS, launchd agents or tools rely on.
 const KEEP_NAME_RE = /^(?:\.|claude|com\.apple|launch|tmux-|ssh-|powerlog|KSOutOfProcessFetcher|MozillaUpdateLock|boost_interprocess)/i;
 // Bounded walk: a huge clone is judged by what was seen before the cap plus
 // its explicit git markers instead of stat-ing every file.
 const WALK_LIMIT = 50000;
 const PRUNE_DIRS = new Set(['node_modules', 'objects']);
+
+function hasGit(p) {
+  try { fs.lstatSync(path.join(p, '.git')); return true; } catch { return false; }
+}
+
+/** Uncommitted or unpushed work in a git checkout; unreadable counts as dirty. */
+function gitHasLocalWork(p) {
+  try {
+    const out = execFileSync('git', ['-C', p, 'status', '--porcelain=v1', '-b', '--untracked-files=normal'],
+      { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024,
+        // No index refresh write: a rewritten .git/index would reset the idle clock.
+        env: { ...process.env, GIT_OPTIONAL_LOCKS: '0' } });
+    const lines = out.split('\n').filter(Boolean);
+    if (lines.length > 1) return true; // dirty
+    return /\[ahead \d+/.test(lines[0] || '');
+  } catch { return true; }
+}
+
+/** Age tier for one entry name (git-dirty LONG is decided later, it costs a spawn). */
+function ageTierH(name, isDir, p, maxAgeH = MAX_AGE_H) {
+  if (HOOK_STATE_RE.test(name) || UUID_RE.test(name) || LOCK_RE.test(name)) return Math.max(LONG_AGE_H, maxAgeH);
+  const m = MKDTEMP_RE.exec(name);
+  if (m && /[0-9A-Z]/.test(m[1]) && !(isDir && hasGit(p))) return Math.min(SHORT_AGE_H, maxAgeH);
+  return maxAgeH;
+}
 
 function isProtectedName(name) {
   if (KEEP_NAME_RE.test(name)) return true;
@@ -90,11 +134,16 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   if (st.isSymbolicLink()) return { reap: false, reason: 'symlink' };
   const isDir = st.isDirectory();
   if (!isDir && !st.isFile()) return { reap: false, reason: 'socket/fifo/device' };
-  const cutoff = now - maxAgeH * 3600 * 1000;
-  if (st.mtimeMs > cutoff) return { reap: false, reason: `younger than ${maxAgeH}h` };
+  const ageH = ageTierH(name, isDir, p, maxAgeH);
+  const cutoff = now - ageH * 3600 * 1000;
+  if (st.mtimeMs > cutoff) return { reap: false, reason: `younger than ${ageH}h` };
   if (!openNames || openNames.has(name)) return { reap: false, reason: 'open handle under it (or lsof failed)' };
-  if (isDir && touchedSince(p, cutoff)) return { reap: false, reason: `something inside changed within ${maxAgeH}h` };
-  return { reap: true, path: p, isDir, bytes: isDir ? 0 : st.size, reason: `idle >${maxAgeH}h, nothing open` };
+  if (isDir && touchedSince(p, cutoff)) return { reap: false, reason: `something inside changed within ${ageH}h` };
+  if (isDir && ageH < LONG_AGE_H && hasGit(p) && gitHasLocalWork(p)) {
+    const longCutoff = now - LONG_AGE_H * 3600 * 1000;
+    if (st.mtimeMs > longCutoff || touchedSince(p, longCutoff)) return { reap: false, reason: 'git checkout with local work, younger than 7d' };
+  }
+  return { reap: true, path: p, isDir, bytes: isDir ? 0 : st.size, reason: `idle >${ageH}h, nothing open` };
 }
 
 function duKb(p) {
@@ -155,7 +204,7 @@ function formatSummary(s, dryRun) {
   return `STALE-TMP-REAP scanned=${s.scanned} ${dryRun ? 'would_remove' : 'removed'}=${s.removed} freed=${gb}GB${s.skipped ? ` skipped=${s.skipped}` : ''} kept: ${kept || 'none'}`;
 }
 
-module.exports = { DEFAULT_ROOT, MAX_AGE_H, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
+module.exports = { DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
 
 // CLI: node scripts/lib/reap-stale-tmp.js [--dry-run] [--root DIR] [--max-age-h N] [--budget-min N] [--no-measure]
 if (require.main === module) {
