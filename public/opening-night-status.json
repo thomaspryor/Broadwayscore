@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T15:59:45.632Z",
+  "generatedAt": "2026-11-23T17:33:57.508Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -554,28 +554,28 @@
       "status": "open",
       "slug": "fantasma-off-broadway",
       "thumbnail": "/images/shows/fantasma-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 82.74,
-      "liveScore": 83,
-      "scoreDrift": 0.2600000000000051,
+      "siteScore": 81.2,
+      "liveScore": 81,
+      "scoreDrift": -0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 2,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:1/3",
-          "hi-conf:3/8"
+          "T2:2/3",
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -656,10 +656,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -963,6 +959,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-23T17:33:57.508Z",
+          "rc": 4,
+          "s": 81.2,
+          "t1": 0,
+          "t2": 2,
+          "t3": 2,
+          "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1134,25 +1142,25 @@
       "status": "open",
       "slug": "cinderella-lyric-hammersmith-off-west-end",
       "thumbnail": "/images/shows/cinderella-lyric-hammersmith-off-west-end-2026/thumbnail.webp",
-      "siteScore": 68.73,
-      "liveScore": 69,
-      "scoreDrift": 0.269999999999996,
+      "siteScore": 68.37,
+      "liveScore": 68,
+      "scoreDrift": -0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 13,
       "t1": 2,
-      "t2": 5,
+      "t2": 6,
       "t3": 5,
       "positive": 10,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1221,10 +1229,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -1410,6 +1414,18 @@
           "t3": 5,
           "p": 10,
           "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-23T17:33:57.508Z",
+          "rc": 13,
+          "s": 68.37,
+          "t1": 2,
+          "t2": 6,
+          "t3": 5,
+          "p": 10,
+          "m": 2,
           "n": 1,
           "bc": "waiting"
         }
