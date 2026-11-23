@@ -48,7 +48,7 @@ export function StatGrid({ stats, className, columns = 4 }: { stats: Stat[]; cla
             </p>
           )}
           {stat.subtitle && (
-            <p className={`text-[10px] text-fg-muted truncate mt-0.5 sm:mt-1${stretched ? ' w-full' : ''}`}>{stat.subtitle}</p>
+            <p className={`text-[10px] text-fg-muted mt-0.5 sm:mt-1${stretched ? ' w-full break-words' : ' truncate'}`}>{stat.subtitle}</p>
           )}
           </div>
         </div>
