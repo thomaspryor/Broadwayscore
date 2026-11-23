@@ -173,5 +173,32 @@ test('every Gemini pin in models.js has a price row', () => {
   const models = require('./models.js');
   const unpriced = Object.entries(models).filter(([, id]) => /^gemini-/.test(id) && L.estimateCostUsd(id, 1e6, 1e6) === null).map(([k, id]) => `${k}=${id}`);
   assert.deepEqual(unpriced, [], `add a PRICES_PER_M row in gemini-usage-ledger.js: ${unpriced.join(', ')}`);
-  assert.equal(L.estimateCostUsd(models.GEMINI_REVIEW, 1e6, 1e6), 24);
+  assert.equal(L.estimateCostUsd(models.GEMINI_REVIEW, 1e6, 1e6), 9); // gemini-3.8-flash (BRO-8108)
+  assert.equal(L.estimateCostUsd('gemini-4-carbon', 1e6, 1e6), 24); // old rows still price
+});
+
+// BRO-8108: a cloud session's home folder dies with its container, so session rows written
+// there (every /ship-check Gemini review) never reached any ledger and a ~$190/day bill read as ~$5.
+test('cloud sessions log session rows to the tracked ledger, not the dying home folder', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-'));
+  const run = (extra) => {
+    const env = { PATH: process.env.PATH, HOME: home, ...extra };
+    const r = spawnSync(process.execPath, ['-e', 'process.stdout.write(require(process.argv[1]).sessionLedgerPath())', require.resolve('./gemini-usage-ledger.js')], { env, encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout;
+  };
+  assert.equal(run({ CLAUDE_CODE_REMOTE: 'true' }), L.TRACKED_SESSION_LEDGER_PATH);
+  assert.ok(L.TRACKED_SESSION_LEDGER_PATH.endsWith(path.join('data', 'audit', 'llm-session-usage.jsonl')));
+  assert.equal(run({}), path.join(home, '.claude', 'state', 'llm-session-usage.jsonl'));
+  assert.equal(run({ CLAUDE_CODE_REMOTE: 'true', LLM_SESSION_LEDGER_PATH: '/x/y.jsonl' }), '/x/y.jsonl');
+  const attrs = fs.readFileSync(path.join(path.dirname(require.resolve('./gemini-usage-ledger.js')), '..', '..', '.gitattributes'), 'utf8');
+  assert.match(attrs, /^data\/audit\/llm-session-usage\.jsonl merge=union$/m);
+});
+
+test('the usage summary reads committed cloud-session rows', () => {
+  const S = require('./llm-usage-summary.js');
+  const src = fs.readFileSync(require.resolve('./llm-usage-summary.js'), 'utf8');
+  assert.match(src, /TRACKED_SESSION_LEDGER_PATH/);
+  assert.equal(typeof S.readRows, 'function');
 });

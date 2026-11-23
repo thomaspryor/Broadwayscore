@@ -38,7 +38,8 @@ const PIN = '0.70.0';
 // 2.5-flash shuts down 2026-12-01 (BRO-7511). On CLI 0.70.0, models.js GEMINI_FLASH (3.5-flash-lite,
 // same price) opened 2 and 3 files on two probes; gemini-3.8-flash opened 5 for ~5x the price.
 // BRO-8016: owner chose strength over price, so the default is models.js GEMINI_REVIEW (Gemini 4
-// Carbon). Unlike 2.5-pro it opened files on every probe (54 on the first), about $0.10-0.30 a review.
+// Carbon). Unlike 2.5-pro it opened files on every probe (54 on the first), but at roughly $190 a day
+// of reviews (Google Cloud anomaly 2026-11-23) the owner moved it to gemini-3.8-flash (BRO-8108).
 const DEFAULT_MODEL = require('../lib/models').GEMINI_REVIEW;
 const READ_NUDGE = 'Before you answer, open with read_file every file the diff or plan names, and the code it calls. A review that opens no files is rejected. Then do the review described above.';
 const RETRY_NUDGE = 'Your previous answer was rejected because you opened no files. ' + READ_NUDGE;
@@ -195,6 +196,9 @@ function main() {
       env: { ...process.env, HOME: home, USERPROFILE: home, NO_COLOR: '1' },
     });
     const parsed = parseCliJson(r.stdout);
+    // Snapshot BEFORE logging: in cloud the spend row goes to a tracked file in this repo
+    // (BRO-8108), and our own write must not read as Gemini changing the tree.
+    const afterRun = before === null ? null : snapshot(cwd);
     // Log what was spent even when the review is unusable. No usage (timeout, crash, bad JSON)
     // still writes one row, counted as a call of unknown size, so paid failures are not invisible.
     try {
@@ -208,7 +212,7 @@ function main() {
       treeChecked = false;
     }
     else {
-      const after = snapshot(cwd);
+      const after = afterRun;
       if (after === null) done(1, 'FAILED: git status failed after the Gemini run, so the working tree could not be re-checked; do not trust this review');
       const changed = treeChanges(before, after);
       if (changed.length) done(4, `UNSAFE: the working tree changed while Gemini ran (${changed.slice(0, 5).join(', ')}); either the read-only lock failed or another process edited these files, so do not use this review`);

@@ -374,3 +374,13 @@ test('live: the pinned CLI with review-policy.toml cannot write files or run she
   assert.notEqual(r.status, 4, `the tree check fired, so something wrote: ${r.stderr}`);
   assert.match(r.stderr, /^GEMINI-REVIEW: |^FAILED: |^EMPTY: /m, r.stderr);
 });
+
+// BRO-8108: in cloud the spend row is written to a tracked file inside the reviewed repo. Our own
+// write must not read as Gemini changing the tree (the first live run came back UNSAFE).
+test('wrapper: logging spend into a file inside the repo is not UNSAFE', () => {
+  const sb = sandbox();
+  const inRepo = path.join(sb.repo, 'data', 'audit', 'llm-session-usage.jsonl');
+  const r = run(sb, { env: { CLAUDE_CODE_REMOTE: 'true', LLM_SESSION_LEDGER_PATH: inRepo } });
+  assert.equal(r.code, 0, r.err);
+  assert.equal(JSON.parse(fs.readFileSync(inRepo, 'utf8').trim()).provider, 'gemini');
+});

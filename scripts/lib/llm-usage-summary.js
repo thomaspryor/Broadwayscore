@@ -8,7 +8,7 @@
 'use strict';
 
 const fs = require('fs');
-const { LEDGER_PATH, sessionLedgerPath } = require('./gemini-usage-ledger');
+const { LEDGER_PATH, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath } = require('./gemini-usage-ledger');
 
 function readFile(p) {
   try {
@@ -24,8 +24,9 @@ function readRows(p) {
   // default view adds this machine's session rows.
   if (p) return readFile(p);
   const base = process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH;
-  const sp = sessionLedgerPath();
-  return sp === base ? readFile(base) : readFile(base).concat(readFile(sp));
+  // Committed cloud-session rows (BRO-8108) plus this machine's own, each file once.
+  const files = [...new Set([base, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath()])];
+  return files.flatMap(readFile);
 }
 
 /** rows -> { providers: {name: totals}, callers: [{provider, workflow, script, ...totals}] } */

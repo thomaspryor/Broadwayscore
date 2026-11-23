@@ -72,8 +72,17 @@ function main() {
   if (args['dry-run']) { rows.forEach((r) => console.log(JSON.stringify(r))); return failed ? 1 : 0; }
   const r = rows.length ? appendRows(rows, { file: C.ledgerPath(REPO) }) : { written: 0, replaced: 0 };
   console.log(`${C.LEDGER_REL}: ${r.written} row(s) written (${r.replaced} replaced same-day rows), ${failed} skipped`);
+  const pending = sessionUsagePending(REPO);
+  if (pending) console.log(`${SESSION_USAGE_REL} has uncommitted reviewer-spend rows: commit it with the cost row (BRO-8108).`);
   return failed ? 1 : 0;
 }
 
+const SESSION_USAGE_REL = 'data/audit/llm-session-usage.jsonl';
+/** True when this session wrote Gemini/OpenAI reviewer-spend rows that are not committed yet (BRO-8108). */
+function sessionUsagePending(cwd) {
+  const r = require('child_process').spawnSync('git', ['status', '--porcelain', '--', SESSION_USAGE_REL], { cwd, encoding: 'utf8' });
+  return r.status === 0 && r.stdout.trim() !== '';
+}
+
 if (require.main === module) process.exitCode = main();
-module.exports = { parseArgs };
+module.exports = { parseArgs, sessionUsagePending, SESSION_USAGE_REL };

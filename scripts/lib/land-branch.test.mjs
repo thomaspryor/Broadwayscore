@@ -1206,6 +1206,9 @@ test('BRO-6519: a bot ledger BOTH sides changed is not an overlap (small re-chec
   assert.equal(selectRecheckScope({ ancestor: true, intervening: ['data/audit/landings.jsonl'], changedFiles: ['data/audit/landings.jsonl'] }).mode, 'full');
   assert.equal(isMergeableBothSidesLedger('scripts/alert-ledger.json', yes), false);
   assert.equal(isMergeableBothSidesLedger('data/audit/alert-ledger.json.bak', yes), false);
+  // BRO-8108: cloud sessions' reviewer-spend rows, union-merged like the scraper spend ledger
+  assert.equal(isMergeableBothSidesLedger('data/audit/llm-session-usage.jsonl'), true);
+  assert.equal(isMergeableBothSidesLedger('data/audit/llm-session-usage.jsonl.bak'), false);
   // the switch still wins
   assert.equal(selectRecheckScope({ ancestor: true, intervening: [SP], changedFiles: branch, disabled: true }).mode, 'full');
   // trains: two members appending the union-merged ledger stay small

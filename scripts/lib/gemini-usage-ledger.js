@@ -56,6 +56,8 @@ const ANTHROPIC_HOST = 'api.anthropic.com';
 // Batch APIs bill at half the synchronous list price (all three vendors).
 const BATCH_DISCOUNT = 0.5;
 const REPO_ROOT = path.join(__dirname, '..', '..');
+// Cloud sessions' rows (BRO-8108); see sessionLedgerPath().
+const TRACKED_SESSION_LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'llm-session-usage.jsonl');
 
 // Gemini: USD per 1M tokens (input, output). Published list prices, standard
 // tier; an estimate for attribution, not an invoice. Cached input bills at a
@@ -347,6 +349,11 @@ function usageFromResponse(provider, json) {
 function sessionLedgerPath() {
   if (process.env.LLM_SESSION_LEDGER_PATH) return process.env.LLM_SESSION_LEDGER_PATH;
   if (process.env.GEMINI_USAGE_LEDGER_PATH || process.env.GITHUB_ACTIONS || isTestRun()) return _ledgerPath();
+  // BRO-8108: a cloud session's home folder dies with its container, so its rows (every
+  // /ship-check and /plan-review Gemini run) never reached any ledger: a ~$190/day Carbon
+  // bill showed as ~$5. Cloud writes a tracked file instead, committed with the session's
+  // retro row at wrap-up and carried to main by its land push (merge=union).
+  if (process.env.CLAUDE_CODE_REMOTE === 'true') return TRACKED_SESSION_LEDGER_PATH;
   return path.join(os.homedir(), '.claude', 'state', 'llm-session-usage.jsonl');
 }
 
@@ -596,4 +603,5 @@ module.exports = {
   settle,
   install,
   LEDGER_PATH,
+  TRACKED_SESSION_LEDGER_PATH,
 };

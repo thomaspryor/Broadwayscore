@@ -66,6 +66,7 @@ data/audit/pending-growth-ledger.jsonl merge=union
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
+data/audit/llm-session-usage.jsonl merge=union
 # OpenAI-leg A/B shard records (append-only, one writer per shard, 2026-11)
 data/audit/openai-leg-ab/*.jsonl merge=union
 data/audit/board-dispatch.jsonl merge=union

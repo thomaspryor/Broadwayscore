@@ -226,7 +226,9 @@ const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
 // keyed-object .json counts only when the merged file still parses (ledgerOk).
 // Named one by one, here and in SESSION_RECORD_LEDGER_RE below: other
 // data/audit ledgers are not covered.
-const BOTH_SIDES_LEDGER_RE = /^data\/audit\/(alert-ledger\.json|scraper-spend-ledger\.jsonl)$/;
+// BRO-8108: llm-session-usage.jsonl (cloud sessions' reviewer-spend rows) is the same kind:
+// append-only, merge=union, read by nothing in the test floor.
+const BOTH_SIDES_LEDGER_RE = /^data\/audit\/(alert-ledger\.json|scraper-spend-ledger\.jsonl|llm-session-usage\.jsonl)$/;
 
 // BRO-8030 (owner decision 2026-11-22): the two session record files. Every
 // finished session lands a row in them, so two landings in one train, or one
