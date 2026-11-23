@@ -18,8 +18,11 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-// The files whose edits change which text getBestTextForScoring picks.
-const TEXT_SELECTOR_SOURCES = ['text-quality.js', 'trailer-signatures.js'];
+// The selector-specific files whose edits change which text getBestTextForScoring
+// picks. content-quality.js (TRUNCATION_SIGNALS) and text-cleaning.js also feed it but
+// are left out on purpose: they are edited mostly for unrelated reasons (bylines,
+// entity decoding), and pinning them would force a bump on nearly every edit.
+const TEXT_SELECTOR_SOURCES = ['text-quality.js', 'trailer-signatures.js', 'page-furniture.js', 'excerpt-fields.js'];
 
 function computeTextSelectorSourceHash(dir = __dirname, files = TEXT_SELECTOR_SOURCES) {
   const h = crypto.createHash('sha256');
