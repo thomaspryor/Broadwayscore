@@ -57,7 +57,9 @@ test('priorRuns emits a venue-and-date-scoped tour-leg note into the scoring con
 
   assert.match(built.context, /declared earlier runs\/tour legs/i, 'tour-leg note must be present');
   assert.match(built.context, /Lowry Salford/, 'note must name the declared legs');
-  assert.match(built.context, /matches a listed venue AND falls within/i, 'note must require venue AND date match');
+  // BRO-8093: venue + date scoping is now the explicit per-run review window.
+  assert.match(built.context, /review window \d{4}-\d{2}-\d{2} to \d{4}-\d{2}-\d{2}/, 'note must give each run an explicit review window');
+  assert.match(built.context, /outside every listed window is not covered/, 'note must say out-of-window reviews are not covered');
   assert.match(built.context, /same company, even at the same venue in a different year/i, 'note must exclude earlier same-company stagings');
   assert.match(built.context, /Review published: 2026-06-24/, 'publish date must be surfaced so the date clause is checkable');
 });

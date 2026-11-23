@@ -96,8 +96,8 @@ test('prompt lists declared priorRuns and tourLegs as THIS production', () => {
     tourLegs: [{ venue: 'Curran Theatre', startDate: '2026-11-01', endDate: '2027-01-05' }],
   });
   assert.match(prompt, /DECLARED EARLIER RUNS \/ TOUR LEGS OF THIS PRODUCTION/);
-  assert.match(prompt, /Barbican Theatre \(2022-10-08 to 2023-01-21\)/);
-  assert.match(prompt, /Curran Theatre \(2026-11-01 to 2027-01-05\)/);
+  assert.match(prompt, /Barbican Theatre \(2022-10-08 to 2023-01-21; review window 2022-10-08 to 2023-01-28\)/);
+  assert.match(prompt, /Curran Theatre \(2026-11-01 to 2027-01-05; review window 2026-11-01 to 2027-01-12\)/);
   assert.match(prompt, /IS a review of THIS production/);
   assert.match(prompt, /is still wrongProduction/);
 });
@@ -119,7 +119,7 @@ test('prompt carries no prior-run hint when the show declares none', () => {
 
 test('buildPriorRunHint: missing dates / venue degrade, newlines are flattened', () => {
   const hint = buildPriorRunHint([{ openingDate: '2022-01-01' }, { venue: 'Garrick\nTheatre' }], null);
-  assert.match(hint, /earlier run \(2022-01-01 to unknown\)/);
+  assert.match(hint, /earlier run \(2022-01-01 to unknown; review window 2022-01-01 to 2022-06-30\)/);
   assert.match(hint, /; Garrick Theatre\./);
 });
 

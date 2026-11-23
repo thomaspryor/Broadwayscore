@@ -26,16 +26,29 @@
  * (their reviews stay wrong_production) and never under "this same production".
  */
 
-const DECLARED_RUN_AFFIRMATION = 'A review of a listed run at that venue, published during that run or in the weeks right after it closed (when the end date is unknown: any time before the current engagement began), IS a review of THIS production: do NOT reject it as wrong_production, even though it names the earlier venue, does not mention the move, and even where the general rules call a tryout, transfer or earlier venue a different production.';
+const DECLARED_RUN_AFFIRMATION = 'A review of a listed run at that venue, published inside the review window listed for that run, IS a review of THIS production: do NOT reject it as wrong_production, even though it names the earlier venue, does not mention the move, and even where the general rules call a tryout, transfer or earlier venue a different production. A review published outside every listed window is not covered by this rule.';
+
+/**
+ * " (opening to closing; reviews dated from..to count)" for one run. The
+ * review window is the SAME one the deterministic guards use
+ * (wrong-production-autoclear.js priorRunWindow), so the model never accepts
+ * a date the rebuild would not (BRO-8093 ship-check: an open-ended "until the
+ * current engagement" rule drifted from the 180-day / +7-day guard window).
+ */
+function describeDates(openingDate, closingDate) {
+  if (!openingDate && !closingDate) return '';
+  const base = `${openingDate || 'unknown'} to ${closingDate || 'unknown'}`;
+  const { priorRunWindow } = require('./wrong-production-autoclear');
+  const w = priorRunWindow({ openingDate, closingDate });
+  return w ? ` (${base}; review window ${w.from} to ${w.to})` : ` (${base})`;
+}
 
 function sanitize(s) {
   return String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
 }
 
 function describeRun(p) {
-  const dates = p.openingDate || p.closingDate
-    ? ` (${p.openingDate || 'unknown'} to ${p.closingDate || 'unknown'})`
-    : '';
+  const dates = describeDates(p.openingDate, p.closingDate);
   const kind = p.note === 'tour leg' ? ' [tour leg]' : '';
   return `${p.venue ? sanitize(p.venue) : 'earlier run'}${dates}${kind}`;
 }
@@ -61,4 +74,4 @@ function buildPriorRunsNote(priorRuns) {
   return parts.join(' ');
 }
 
-module.exports = { buildPriorRunsNote, DECLARED_RUN_AFFIRMATION };
+module.exports = { buildPriorRunsNote, DECLARED_RUN_AFFIRMATION, describeDates };

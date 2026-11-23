@@ -117,25 +117,41 @@ function findMatchingPriorRun(reviewDate, priorRuns) {
   return matchPriorRuns(rdMs, priorRuns, true);
 }
 
+/**
+ * The publish-date window a declared prior run covers: openingDate through
+ * closingDate (+ REVIEW_LAG_GRACE_DAYS when allowGrace and the close is
+ * explicit), or openingDate + 180 days when no closingDate is recorded.
+ * Single source for matchPriorRuns AND the LLM prompt notes
+ * (prior-runs-note.js, content-verifier.js) so the model is told the exact
+ * window the deterministic guards use (BRO-8093). Returns null for a run
+ * with no usable openingDate.
+ * @returns {{fromMs:number,toMs:number,from:string,to:string}|null}
+ */
+function priorRunWindow(run, { allowGrace = true } = {}) {
+  if (!run || !run.openingDate) return null;
+  const open = parseDate(run.openingDate);
+  if (!open || isNaN(open.getTime())) return null;
+  let close;
+  let hasExplicitClose = false;
+  if (run.closingDate) {
+    close = parseDate(run.closingDate);
+    if (close && !isNaN(close.getTime())) hasExplicitClose = true;
+    else close = undefined;
+  }
+  if (!close) {
+    close = new Date(open.getTime());
+    close.setUTCDate(close.getUTCDate() + 180);
+  }
+  const graceMs = (allowGrace && hasExplicitClose) ? REVIEW_LAG_GRACE_DAYS * 86400000 : 0;
+  const toMs = close.getTime() + graceMs;
+  const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
+  return { fromMs: open.getTime(), toMs, from: iso(open.getTime()), to: iso(toMs) };
+}
+
 function matchPriorRuns(rdMs, priorRuns, allowGrace) {
   for (const run of priorRuns) {
-    if (!run || !run.openingDate) continue;
-    const open = parseDate(run.openingDate);
-    if (!open || isNaN(open.getTime())) continue;
-    let close;
-    let hasExplicitClose = false;
-    if (run.closingDate) {
-      close = parseDate(run.closingDate);
-      if (close && !isNaN(close.getTime())) hasExplicitClose = true;
-      else close = undefined;
-    }
-    if (!close) {
-      close = new Date(open.getTime());
-      close.setUTCDate(close.getUTCDate() + 180);
-    }
-    const graceMs = (allowGrace && hasExplicitClose) ? REVIEW_LAG_GRACE_DAYS * 86400000 : 0;
-    const closeMs = close.getTime() + graceMs;
-    if (rdMs >= open.getTime() && rdMs <= closeMs) return run;
+    const w = priorRunWindow(run, { allowGrace });
+    if (w && rdMs >= w.fromMs && rdMs <= w.toMs) return run;
   }
   return null;
 }
@@ -1329,6 +1345,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  priorRunWindow,
   bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,
   locationFlagsStaleAfterMove,

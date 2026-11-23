@@ -956,7 +956,7 @@ function buildPriorRunHint(priorRuns, tourLegs) {
   const { DECLARED_RUN_AFFIRMATION } = require('./prior-runs-note');
   const sanitize = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
   const describe = (venue, from, to) => {
-    const dates = from || to ? ` (${from || 'unknown'} to ${to || 'unknown'})` : '';
+    const dates = require('./prior-runs-note').describeDates(from, to);
     return `${venue ? sanitize(venue) : 'earlier run'}${dates}`;
   };
   const legs = [];

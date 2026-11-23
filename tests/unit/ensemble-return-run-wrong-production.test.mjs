@@ -41,7 +41,7 @@ describe('prior-runs note: return engagement', () => {
 
   test('note names the earlier run and carries the return-engagement rule', () => {
     const note = buildPriorRunsNote(PRIOR_RUNS);
-    assert.match(note, /No[ëe]l Coward Theatre \(2025-04-14 to 2025-08-03\)/);
+    assert.match(note, /No[ëe]l Coward Theatre \(2025-04-14 to 2025-08-03; review window 2025-04-14 to 2025-08-10\)/);
     assert.match(note, /RETURN ENGAGEMENT/);
     assert.match(note, /return, transfer or revival/i);
     assert.match(note, /Do NOT flag it wrong_production merely because the show also played the earlier run/);
@@ -94,11 +94,11 @@ describe('prior-runs note: declared earlier run of the same production (BRO-8093
 
   test('ensemble note affirms a declared-run review IS this production and overrides the transfer rule', () => {
     const note = buildPriorRunsNote(MEXODUS_RUNS);
-    assert.match(note, /This same production also played declared earlier runs\/tour legs: Minetta Lane Theatre \(2025-09-09 to unknown\)/);
+    assert.match(note, /This same production also played declared earlier runs\/tour legs: Minetta Lane Theatre \(2025-09-09 to unknown; review window 2025-09-09 to 2026-03-08\)/);
     assert.ok(note.includes(DECLARED_RUN_AFFIRMATION), 'ensemble note must carry the shared affirmation');
     assert.match(note, /IS a review of THIS production: do NOT reject it as wrong_production/);
     assert.match(note, /transfer or earlier venue a different production/);
-    assert.match(note, /end date is unknown: any time before the current engagement began/);
+    assert.match(note, /outside every listed window is not covered/);
   });
 
   test('ensemble note and content-verifier hint share the same affirmation (no drift)', () => {
@@ -121,7 +121,25 @@ describe('prior-runs note: declared earlier run of the same production (BRO-8093
       { venue: 'Barbican', openingDate: '2022-10-08', closingDate: '2023-01-21' },
       { venue: 'Noel Coward', openingDate: '2025-04-14', closingDate: '2025-08-03', inheritReviews: false },
     ]);
-    assert.match(note, /This same production also played declared earlier runs\/tour legs: Barbican \(2022-10-08 to 2023-01-21\)\./);
+    assert.match(note, /This same production also played declared earlier runs\/tour legs: Barbican \(2022-10-08 to 2023-01-21; review window 2022-10-08 to 2023-01-28\)\./);
     assert.match(note, /SEPARATE production[^:]*: Noel Coward/);
   });
+});
+
+// BRO-8093 ship-check: the window printed to the model must be exactly the one
+// the deterministic guards (isWithinPriorRun) use, at both edges.
+test('prompt review window matches isWithinPriorRun at both edges', () => {
+  const { isWithinPriorRun, priorRunWindow } = require('../../scripts/lib/wrong-production-autoclear.js');
+  for (const run of [
+    { openingDate: '2025-09-09', venue: 'Minetta Lane Theatre' },
+    { openingDate: '2022-10-08', closingDate: '2023-01-21', venue: 'Barbican' },
+  ]) {
+    const w = priorRunWindow(run);
+    assert.ok(buildPriorRunsNote([run]).includes(`review window ${w.from} to ${w.to}`));
+    const day = (iso, d) => new Date(Date.parse(iso) + d * 86400000).toISOString().slice(0, 10);
+    assert.equal(isWithinPriorRun(w.from, [run]), true);
+    assert.equal(isWithinPriorRun(w.to, [run]), true);
+    assert.equal(isWithinPriorRun(day(w.from, -1), [run]), false);
+    assert.equal(isWithinPriorRun(day(w.to, 1), [run]), false);
+  }
 });
