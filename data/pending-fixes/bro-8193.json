@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8193",
   "planId": "94e3db58-f0e7-426f-abfc-ed0733378869",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-23T20:47:19.069Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-23T21:07:25.211Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json isNonReviewReason: null -> \"manual (not a review): letterboxd.com/film/wuthering-heights-2026 is the 2026 film's reviews index, not a review of this production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
