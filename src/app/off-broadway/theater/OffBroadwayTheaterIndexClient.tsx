@@ -119,7 +119,7 @@ export default function OffBroadwayTheaterIndexClient({ theaters }: { theaters: 
         <p className="text-gray-400">
           {theaters.length} theaters · {playingCount} with shows currently running
         </p>
-        <p className="text-xs text-fg-muted mt-1">Off-Broadway venues across New York City. Venue details (capacity, accessibility, seating tips) coming soon.</p>
+        <p className="text-xs text-fg-muted mt-1">Off-Broadway venues across New York City. Open a venue for its address, website and seat count.</p>
       </div>
 
       <div className="relative mb-4" role="search">

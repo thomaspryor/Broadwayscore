@@ -119,7 +119,7 @@ export default function LondonTheaterIndexClient({ theaters }: { theaters: Londo
         <p className="text-gray-400">
           {theaters.length} theatres · {playingCount} with shows currently running
         </p>
-        <p className="text-xs text-fg-muted mt-1">West End and Off-West End venues across London. Venue details (capacity, accessibility, pre-show dining) coming soon.</p>
+        <p className="text-xs text-fg-muted mt-1">West End and Off-West End venues across London. Open a venue for its address, website and seat count.</p>
       </div>
 
       <div className="relative mb-4" role="search">
