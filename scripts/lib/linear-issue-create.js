@@ -779,11 +779,7 @@ async function pausedDecisionTwinAbsorbs(twin, mode, dedupeOptOut, client) {
     if (findOwnerDecisions([merged]).length > 0) return true;
     // A paused worker's DECISION NEEDED lives in its "Session report (paused)" COMMENT, not the
     // description (BRO-7980/8047): the dispatcher's own pause-history rule names it awaiting-owner.
-    // Our own "Filed again on ..." absorb notes are newer than the pause report and would read as a
-    // person commenting since, clearing the hold on day two (BRO-8158 post-land check); skip them,
-    // as resolved-alert-card-sweep does.
-    const nodes = ((merged.comments && merged.comments.nodes) || []).filter((c) => !/^Filed again on /.test(String((c && c.body) || '')));
-    return require('./linear-dispatch.js').pausedHoldReason({ ...merged, comments: { nodes } }) === 'awaiting-owner';
+    return require('./linear-dispatch.js').pausedHoldReason(merged) === 'awaiting-owner';
   } catch (e) {
     console.warn(`[linear-issue-create] could not read ${twin && twin.identifier} for a decision check, filing normally: ${e.message}`);
     return false;

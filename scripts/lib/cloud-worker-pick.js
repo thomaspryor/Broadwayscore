@@ -235,9 +235,10 @@ const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
 // is not an answer to it.
 // Also the reclaim sweep's note (linear-reclaim-abandoned.js RECLAIM_MARKER) and
 // the Codex runner's hand-backs (scripts/codex/daily-runner.js), BRO-5360, and the
-// claim trace linear-session.js claim posts (buildClaimComment), BRO-6092.
+// claim trace linear-session.js claim posts (buildClaimComment), BRO-6092, and the
+// "Filed again on" note a repeat filing leaves on its open twin (BRO-8158).
 const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
-const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|STALL-NUDGE:|SILENT-DISPATCH:|LAND-FAILED-UNSEEN:|Headless worker ended without its own session report|<!-- codex-runner|## Codex runner\b)/i;
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|STALL-NUDGE:|SILENT-DISPATCH:|LAND-FAILED-UNSEEN:|Headless worker ended without its own session report|<!-- codex-runner|## Codex runner\b|Filed again on )/i;
 // The reclaim sweep's note when it sends a card to Backlog, not Todo, after
 // MAX_RECLAIMS: "Someone should read the history before it is retried."
 const RECLAIM_TO_BACKLOG_RE = /^RECLAIMED-ABANDONED:[\s\S]*goes to Backlog instead of Todo/;

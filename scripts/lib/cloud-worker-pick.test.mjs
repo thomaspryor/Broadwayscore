@@ -1157,3 +1157,16 @@ test('BRO-6262: digest-autofix posts its notes refresh with the marker the picke
   const src = fs.readFileSync(new URL('./digest-autofix.js', import.meta.url), 'utf8');
   assert.match(src, /'--comment', `\$\{FILER_REFRESH_MARKER\}\\n\$\{notes\}`/);
 });
+
+test('BRO-8158: "Filed again on" absorb notes do not release an awaiting-owner pause hold', async () => {
+  const { pausedHoldReason } = await import('./linear-dispatch.js');
+  const report = { body: '**Session report (paused)**\n\nDECISION NEEDED: hide the score?', createdAt: '2026-11-22T13:00:00Z', user: null };
+  const note = (d) => ({ body: `Filed again on ${d}Z with the same title; added here instead of opening a duplicate card.`, createdAt: `${d}:00Z`, user: null });
+  const card = (...nodes) => ({ priority: 1, state: { type: 'backlog', name: 'Paused' }, comments: { nodes } });
+  const now = Date.parse('2026-11-25T12:00:00Z');
+  assert.equal(pausedHoldReason(card(report), now), 'awaiting-owner');
+  assert.equal(pausedHoldReason(card(note('2026-11-23T15:15'), report), now), 'awaiting-owner');
+  assert.equal(pausedHoldReason(card(note('2026-11-24T15:15'), note('2026-11-23T15:15'), report), now), 'awaiting-owner');
+  // A person's real reply still releases it.
+  assert.notEqual(pausedHoldReason(card({ body: 'Yes, hide it.', createdAt: '2026-11-24T16:00:00Z', user: { name: 'Owner' } }, note('2026-11-23T15:15'), report), now), 'awaiting-owner');
+});
