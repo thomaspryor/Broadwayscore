@@ -285,7 +285,8 @@
     "downstate-2026/nytimes--unknown.json",
     "downstate-2026/nydailynews--unknown.json",
     "downstate-2026/pages-on-stages--unknown.json",
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -432,7 +433,7 @@
     ]
   },
   "startTime": "2026-11-22T22:18:56.368Z",
-  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -685,6 +686,50 @@
     },
     {
       "t": "2026-11-23T05:54:14.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T07:32:27.269Z",
+      "event": "bb-session",
+      "session": "feea0725",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T07:32:28.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T07:32:45.790Z",
+      "event": "bb-session",
+      "session": "dbbc1b12",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T07:32:46.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T07:34:20.326Z",
+      "event": "bb-session",
+      "session": "0f9eb4cb",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T07:34:21.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T07:36:09.208Z",
+      "event": "bb-session",
+      "session": "903788a8",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T07:36:10.041Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
