@@ -1,154 +1,101 @@
 {
-  "generatedAt": "2026-11-16T22:00:14.526Z",
+  "generatedAt": "2026-11-23T23:52:41.055Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "iphigenie-en-tauride-english-national-opera-west-end-2026",
-    "the-moth-off-west-end-2026",
-    "the-feel-good-story-america-needs-right-now-regional-2026",
-    "the-unexpected-3rd-2026",
-    "desire-under-the-elms-off-west-end-2026"
+    "frankenstein-regional-2026",
+    "franky-off-west-end-2026",
+    "angels-bone-west-end-2026",
+    "eurotrash-off-west-end-2026",
+    "goblin-off-west-end-2026"
   ],
   "settlingSkipped": 4,
   "shows": [
     {
-      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "title": "Iphigenie en Tauride - English National Opera",
-      "openingDate": "2026-11-06",
+      "showId": "frankenstein-regional-2026",
+      "title": "Frankenstein",
+      "openingDate": "2026-10-29",
       "sampleState": "measured",
-      "sampleReason": "opened 10d ago",
-      "naiveQuery": "Iphigenie en Tauride - English National Opera London Coliseum review",
+      "sampleReason": "opened 25d ago",
+      "naiveQuery": "Frankenstein Studebaker Theater, Chicago, IL review",
       "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 4
-        }
-      ],
-      "onDiskCount": 21
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "openingDate": "2026-10-30",
-      "sampleState": "measured",
-      "sampleReason": "opened 17d ago",
-      "naiveQuery": "The Moth Finborough Theatre review",
-      "candidates": [
-        {
-          "url": "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/the-moth/839368",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
-          "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/the-moth",
-          "state": "excluded",
-          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 6
-        }
-      ],
-      "onDiskCount": 33
-    },
-    {
-      "showId": "the-feel-good-story-america-needs-right-now-regional-2026",
-      "title": "The Feel Good Story America Needs Right Now",
-      "openingDate": "2026-10-03",
-      "sampleState": "measured",
-      "sampleReason": "opened 44d ago",
-      "naiveQuery": "The Feel Good Story America Needs Right Now Theatre West, West Hollywood, CA review",
-      "candidates": [
-        {
-          "url": "https://stagescenela.com/2026/10/the-feel-good-story-america-needs-right-now/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatreinla.com/the-feel-good-story-america-needs-right-now",
-          "state": "excluded",
-          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
-        }
-      ],
       "queries": [
         {
           "ok": true,
           "raw": 3
         }
       ],
-      "onDiskCount": 4
+      "onDiskCount": 11
     },
     {
-      "showId": "the-unexpected-3rd-2026",
-      "title": "The Unexpected 3rd",
-      "openingDate": "2026-10-26",
+      "showId": "franky-off-west-end-2026",
+      "title": "Franky",
+      "openingDate": "2026-10-27",
       "sampleState": "measured",
-      "sampleReason": "opened 21d ago",
-      "naiveQuery": "The Unexpected 3rd George Street Playhouse, New Brunswick, NJ review",
+      "sampleReason": "opened 27d ago",
+      "naiveQuery": "Franky Lyric Hammersmith review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 3
+        }
+      ],
+      "onDiskCount": 0
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
+      "openingDate": "2026-10-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 37d ago",
+      "naiveQuery": "Angel's Bone London Coliseum review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 3
+        }
+      ],
+      "onDiskCount": 26
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 6d ago",
+      "naiveQuery": "Eurotrash Young Vic (Main House) review",
       "candidates": [
         {
-          "url": "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
-          "state": "live",
-          "reason": null
+          "url": "https://www.allthatdazzles.co.uk/post/review-eurotrash-young-vic",
+          "state": "excluded",
+          "reason": "duplicateOf"
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 4
+          "raw": 5
         }
       ],
-      "onDiskCount": 5
+      "onDiskCount": 33
     },
     {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "openingDate": "2026-11-14",
+      "showId": "goblin-off-west-end-2026",
+      "title": "Goblin",
+      "openingDate": "2026-11-19",
       "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
-      "naiveQuery": "Desire Under the Elms Almeida Theatre review",
-      "candidates": [
-        {
-          "url": "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
-          "state": "excluded",
-          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
-        }
-      ],
+      "sampleReason": "opened 4d ago",
+      "naiveQuery": "Goblin Park Theatre review",
+      "candidates": [],
       "queries": [
         {
           "ok": true,
-          "raw": 7
+          "raw": 2
         }
       ],
-      "onDiskCount": 8
+      "onDiskCount": 9
     }
   ],
   "summary": {
