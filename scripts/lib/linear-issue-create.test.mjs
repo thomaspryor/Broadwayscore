@@ -700,6 +700,13 @@ test('BRO-8158: a dispatch filing from digest-autofix is noted on a Paused twin 
   assert.equal(await reuseOpenTwin({ title: twin.title, body: 'today', client: mk('Problem only, no ask'), mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);
   // A session's own --dispatch (no opt-out) is never swallowed by a decision card.
   assert.equal(await reuseOpenTwin({ title: twin.title, body: 'today', client: mk(decision), mode: 'dispatch' }), null);
+  // The real cards keep the question in the worker's paused-report COMMENT, not the description.
+  const withComment = { findOpenIssueByTitle: async () => twin, addComment: async () => {},
+    getIssue: async () => ({ ...twin, description: 'Problem only', comments: { nodes: [
+      { body: '**Session report (paused)**\n\nDECISION NEEDED: four shows, hide the score?', createdAt: '2026-11-22T13:00:00Z', user: null },
+    ] } }) };
+  const rc = await reuseOpenTwin({ title: twin.title, body: 'today', client: withComment, mode: 'dispatch', dedupeOptOut: 'digest-autofix' });
+  assert.equal(rc && rc.issue.identifier, 'BRO-8047');
   // A failing description read files normally.
   const broken = { findOpenIssueByTitle: async () => twin, getIssue: async () => { throw new Error('429'); }, addComment: async () => {} };
   assert.equal(await reuseOpenTwin({ title: twin.title, body: '', client: broken, mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);

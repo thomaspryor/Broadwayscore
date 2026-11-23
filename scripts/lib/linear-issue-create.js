@@ -775,7 +775,11 @@ async function pausedDecisionTwinAbsorbs(twin, mode, dedupeOptOut, client) {
       : (client ? (client.getIssue ? await client.getIssue(twin.identifier) : null) : await linear.getIssue(twin.identifier));
     if (!full) return false;
     const { findOwnerDecisions } = require('./owner-decision-notify.js');
-    return findOwnerDecisions([{ ...twin, ...full }]).length > 0;
+    const merged = { ...twin, ...full };
+    if (findOwnerDecisions([merged]).length > 0) return true;
+    // A paused worker's DECISION NEEDED lives in its "Session report (paused)" COMMENT, not the
+    // description (BRO-7980/8047): the dispatcher's own pause-history rule names it awaiting-owner.
+    return require('./linear-dispatch.js').pausedHoldReason(merged) === 'awaiting-owner';
   } catch (e) {
     console.warn(`[linear-issue-create] could not read ${twin && twin.identifier} for a decision check, filing normally: ${e.message}`);
     return false;
