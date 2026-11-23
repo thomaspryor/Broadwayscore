@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-23T01:37:17.988Z",
+  "timestamp": "2026-11-23T01:54:17.134Z",
   "stats": {
-    "totalReviews": 84154,
-    "alreadyFlagged": 22485,
+    "totalReviews": 84167,
+    "alreadyFlagged": 22491,
     "dateGuardCatches": 240,
     "directorMismatch": 3883,
-    "tvFilmSignals": 2418,
-    "londonSignals": 3971,
+    "tvFilmSignals": 2419,
+    "londonSignals": 3972,
     "offBroadwaySignals": 786,
     "yearMismatch": 394,
     "noPublishDate": 8234
@@ -14493,6 +14493,19 @@
       "score": 61,
       "publishDate": "2026-03-15",
       "url": "https://munroreview.com/2026/03/15/theater-review-a-clever-script-for-clue-delivers-laughs-but-one-note-performances-diminish-the-farce/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "northwest-arkansas-democrat-gazette--monica-hooper.json",
+      "publishDate": "11/19/2025",
+      "url": "https://www.nwaonline.com/news/2025/nov/08/high-energy-cast-and-dynamic-set-mix-with/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -110707,6 +110720,19 @@
       "score": 78,
       "publishDate": "2018-11-22",
       "url": "https://www.maturetimes.co.uk/robert-tanitch-reviews-hadestown/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2018-11-14",
+      "url": "https://www.thestage.co.uk/reviews/hadestown-review-at-national-theatre-london--stunning-new-folk-opera",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
