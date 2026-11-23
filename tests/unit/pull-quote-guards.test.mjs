@@ -994,3 +994,24 @@ describe('stripCaptionChrome (BRO-8105)', () => {
     }
   });
 });
+
+// BRO-8084: hasBodyFurniture() drops page furniture that reads like a sentence (stored-truncated route only).
+test('hasBodyFurniture flags listing, byline, caption and widget text but not critic prose', async () => {
+  const { hasBodyFurniture } = await import('../../scripts/lib/pull-quote-guards.js').then(m => m.default || m);
+  for (const t of [
+    'WHEN?: Monday 20 May, opens and runs through 3 August 2024 RUNTIME: 140 minutes',
+    '1/7 Jane Smith22 February 2019The play is a play for today',
+    'The tour continues until 14 November 2026. Following on',
+    'A Cast Member in Some Show at the Barbican. Pictures: Some Photographer',
+    'Is This Your Show? Submit Updates 📷 Photos',
+    'Sept. 26, 2019 4:34 pm ET 1 Gift unlocked article Robert Cuccioli',
+    'See all 7 Access Captioned: Saturday, 7th November',
+    'Catch Some Show and book your tickets today.',
+    'Theater review by Some Critic and the rest',
+  ]) assert.equal(hasBodyFurniture(t), true, t);
+  for (const t of [
+    'The writers have given themselves a satirical mission and the cast of six meets it with total commitment.',
+    'By the end of the night the audience was on its feet. The show runs through the summer beautifully.',
+    'It was the summer of my O levels. The boyfriend for whom I was desperate had gone.',
+  ]) assert.equal(hasBodyFurniture(t), false, t);
+});

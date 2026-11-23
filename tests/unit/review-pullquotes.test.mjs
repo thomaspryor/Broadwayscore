@@ -224,3 +224,163 @@ test('BRO-8105: a candidate that opens with a photo credit ships without it', ()
     assert.doesNotMatch(q, /Photo|Murphy|Victoria Wai/, q);
   }
 });
+
+// BRO-8084: a whole review tiered "truncated" only because the page ends in a star line + run-info line (no full
+// stop) shipped with no pull quote, because the selector refused to read any truncated body. Synthetic prose.
+// Ship-check (Codex + Claude reviewers): the quote must never contain the trailer or a cut final sentence.
+const PROSE = 'A raucous romp has opened in midtown just in time for the holidays. The writers have given themselves a satirical '
+  + 'mission and the cast of six meets it with total commitment. The host, played by a riotous and charming newcomer, is the '
+  + 'evening\u2019s MVP, whose overdone accent is pure delight. The audience participation is sharp and never mean-spirited. '
+  + 'The design is handsome without ever upstaging the actors, and the second act lands with real force. '
+  + 'The score is bright and tuneful, with two numbers that stay in the head long after the curtain call. '
+  + 'The jokes land often enough that the occasional miss barely registers, and the pacing never sags. '
+  + 'The lighting and costumes give the small stage a surprising sense of scale and polish. '
+  + 'The ensemble is tight, the direction is brisk, and the whole evening feels confident and generous. ';
+// Neutral plot filler (no evaluative words): real reviews run 450+ words, and the re-tier step refuses "Short text".
+const FILLER = 'The story begins on a cold evening in the city, where a group of strangers receives an invitation by post. '
+  + 'Each guest is asked to bring a single object from home, and each is told to keep its purpose secret. '
+  + 'They gather in a rented hall above a shop, and a host explains the rules of the game in a long speech. '
+  + 'Every round, one of the guests is sent out of the room while the others vote on a secret role. '
+  + 'The first round ends quickly, and the second round introduces a new rule about who may speak and when. '
+  + 'By the third round the guests have formed two camps, and the host begins to read names from a list. '
+  + 'The set is a single room with a long table, a staircase and a window that looks onto a painted skyline. '
+  + 'The running time is ninety minutes with no interval, and the cast of six plays all of the roles between them. '
+  + 'The company moves the table, the chairs and the lamps between scenes without leaving the stage. ';
+const TRAILER = '\u2605\u2605\u2605\u2605 4 stars Some Show runz at The Theatre, 1 Main Street until 31 January 2027 Tickets from \u00a320';
+const TRAILER_RE = /runz at|runs at|\u2605|4 stars|until 31 January|Tickets from/;
+const trailerFile = (tail, over = {}) => ({
+  showId: 'some-show-2026', outletId: 'the-recs', criticName: 'A Critic', showTitle: 'Some Show',
+  fullText: FILLER + PROSE + tail, textStatus: 'truncated', contentTier: 'truncated', truncationSignals: ['no_ending_punctuation'], ...over,
+});
+
+test('BRO-8084: trailer-only truncation still yields a pull quote from the body', () => {
+  const q = finalizePullQuote(trailerFile(`Delightfully deranged ${TRAILER}`), 'Some Show', 'open');
+  assert.ok(q && q.length > 50, `expected a quote, got ${JSON.stringify(q)}`);
+  assert.doesNotMatch(q, TRAILER_RE);
+});
+
+// Plot summary with no evaluative words, so the only quotable-looking sentence is the one glued to the trailer.
+const PLOT = 'The story follows a group of friends who travel to a castle in the mountains for the weekend. '.repeat(1)
+  + 'On the first night they draw lots to decide who will play the host. The second scene takes place in the kitchen. '
+  + 'A letter arrives that nobody expected, and the group argues about what to do with it. '
+  + 'The third scene moves to the garden, where two of the friends make a bet. '
+  + 'By the interval the host has been chosen and the bet has been settled. '
+  + 'The second half takes place over a single dinner, and the letter is finally opened. '
+  + 'The cast of six sit around a long table while the host reads the names aloud. ';
+test('BRO-8084: an evaluative last phrase glued to the trailer never ships the trailer', () => {
+  const glued = (tail) => ({ ...trailerFile(''), fullText: FILLER + PLOT + tail });
+  for (const tail of [
+    `Ultimately the result is a wonderful and moving evening ${TRAILER}`,
+    `It was superb, a triumph in every scene ${TRAILER}`,
+    `Ultimately a wonderful and moving evening \u2605\u2605\u2605\u2605\u2605 Some Show runs at The Theatre until 4 April 2027`,
+  ]) {
+    const q = finalizePullQuote(glued(tail), 'Some Show', 'open');
+    if (q) assert.doesNotMatch(q, TRAILER_RE, `trailer leaked: ${q}`);
+    assert.ok(!q || !/wonderful and moving evening|superb, a triumph/.test(q), `glued phrase quoted: ${q}`);
+  }
+});
+
+test('BRO-8084: a glued evaluative phrase after strong prose is not quoted', () => {
+  for (const tail of [
+    `Ultimately the result is a wonderful and moving evening ${TRAILER}`,            // no full stop before the star line
+    `It was superb, a triumph in every scene ${TRAILER}`,
+    `Ultimately a wonderful and moving evening \u2605\u2605\u2605\u2605\u2605 Some Show runs at The Theatre until 4 April 2027`,
+  ]) {
+    const q = finalizePullQuote(trailerFile(tail), 'Some Show', 'open');
+    if (q) assert.doesNotMatch(q, TRAILER_RE, `trailer leaked: ${q}`);
+    assert.ok(!q || !/wonderful and moving evening|superb, a triumph/.test(q), `glued phrase quoted: ${q}`);
+  }
+  // a body with no full stops at all has no safe prefix: no quote, never a trailer
+  assert.equal(finalizePullQuote({ ...trailerFile(''), fullText: 'a superb cast that triumphs in every scene and a score to match '.repeat(8) + TRAILER }, 'Some Show', 'open'), null);
+});
+
+test('BRO-8084: a body cut mid-sentence is not quoted from its cut end', () => {
+  const q = finalizePullQuote(trailerFile('The finale is a triumph and the company is superb, and in the closing scene the director lets the staging lose its grip on the'), 'Some Show', 'open');
+  if (q) assert.doesNotMatch(q, /lose its grip|triumph and the company/);
+});
+
+// finalizePullQuote re-tiers the file from its TEXT (the rebuild does the same), so a real truncation has to be real in
+// the text: a paywall prompt in the body (the classifier scans the first 70%), or a body too short to be a review.
+const PAYWALLED = FILLER + 'Subscribe to continue reading this review. ' + PROSE + FILLER + 'Delightfully deranged ' + TRAILER;
+test('BRO-8084: a real truncation (paywall prompt / short text) ships no extracted quote', () => {
+  const t = `Delightfully deranged ${TRAILER}`;
+  assert.equal(finalizePullQuote(trailerFile('', { fullText: PAYWALLED }), 'Some Show', 'open'), null, 'paywall prompt in the body');
+  const short = 'The cast is superb and the staging is a triumph from the first scene to the last. '.repeat(4) + t;
+  assert.equal(finalizePullQuote(trailerFile('', { fullText: short, wordCount: 93 }), 'Some Show', 'open'), null, 'short text');
+  assert.equal(finalizePullQuote(trailerFile(t, { contentTierReason: 'Paywall truncation: hard paywall', truncationSignals: ['paywall_or_login_prompt'], fullText: PAYWALLED }), 'Some Show', 'open'), null);
+});
+
+// BRO-8084 (ship-check, Gemini): finalizePullQuote must give the rebuild's answer for a file as STORED, i.e. run the
+// same re-tier step the rebuild runs first. Otherwise backfill / the live-data test call a review recoverable that the
+// rebuild then leaves quote-less (or the reverse) and the drift check reddens.
+test('BRO-8084: a stored-truncated file the classifier now calls complete (known trailer) still yields a quote', () => {
+  const body = FILLER + PROSE + 'Delightfully deranged.';
+  const file = {
+    showId: 'some-show-2026', outletId: 'guardian', criticName: 'A Critic', showTitle: 'Some Show',
+    url: 'https://example.com/a', wordCount: 200,
+    fullText: `${body} • At the Almeida, London, until 7 June`,
+    textStatus: 'truncated', contentTier: 'truncated', truncationSignals: ['no_ending_punctuation'],
+  };
+  const q = finalizePullQuote({ ...file }, 'Some Show', 'open');
+  assert.ok(q && q.length > 50, `expected a quote, got ${JSON.stringify(q)}`);
+  assert.doesNotMatch(q, /Almeida|until 7 June/);
+});
+
+test('BRO-8084: stored trailer-only signals that the re-tier replaces with a real paywall verdict ship no quote', () => {
+  const file = {
+    showId: 'some-show-2026', outletId: 'the-recs', criticName: 'A Critic', showTitle: 'Some Show',
+    fullText: PAYWALLED, textStatus: 'truncated', contentTier: 'truncated',
+    truncationSignals: ['no_ending_punctuation'], contentTierReason: 'Missing proper ending or other signals',
+  };
+  assert.equal(finalizePullQuote({ ...file }, 'Some Show', 'open'), null);
+});
+
+// BRO-8084: the body steps are newly open to stored-truncated files, but they must not displace the quote such a file
+// already shipped from a soft-rejected candidate (5 of 52,285 reviews changed in the real rebuild before this gate).
+test('BRO-8084: a stored-truncated file keeps its soft-rejected quote instead of a new body extraction', () => {
+  const soft = '(the cast of six play every role between them in a staging that is a triumph of invention and wit)'; // deferred: a whole-candidate aside
+  const withSoft = trailerFile(`Delightfully deranged ${TRAILER}`, { showScoreExcerpt: soft });
+  const q = finalizePullQuote(withSoft, 'Some Show', 'open');
+  assert.ok(q && /^\(the cast of six/.test(q), `existing soft-rejected quote displaced: ${JSON.stringify(q)}`);
+  // the same file with no soft candidate does get the body quote
+  assert.ok(finalizePullQuote(trailerFile(`Delightfully deranged ${TRAILER}`), 'Some Show', 'open'));
+});
+
+// BRO-8084 (Gemini): a paywall prompt that ENDS a long preview sits in the last 30%, which the classifier does not scan.
+// The classifier calls a body this long complete, so it is quotable, but only from the part before the trailer window.
+test('BRO-8084: a paywall prompt ending a long preview never reaches a quote', () => {
+  for (const tail of ['Subscribe to continue reading', 'Sign in to read the rest of this review', 'Continue reading']) {
+    const file = trailerFile('', { fullText: FILLER + PROSE + FILLER + PROSE + ' ' + tail, url: 'https://example.com/a', wordCount: 400 });
+    const q = finalizePullQuote(file, 'Some Show', 'open');
+    assert.ok(!q || !/subscribe|sign in|continue reading/i.test(q), `${tail}: ${q}`);
+  }
+});
+
+// BRO-8084 (review): a body read only because the file is stored "truncated" has no better fallback than its own opening
+// page furniture, so a quote made of listing / byline / caption / navigation text is dropped there.
+test('BRO-8084: page furniture at the start of a stored-truncated body never becomes the quote', () => {
+  // Shapes seen in real stored-truncated files (invented wording). Each opens with furniture that reads like a sentence.
+  const FURNITURE = [
+    'WHEN?: Monday 20 May, opens and runs through 3 August 2024 RUNTIME: 140 minutes (including a 20-minute interval) Outside it is a very hot day and inside this historic venue the most remarkable thing about this production is the lighting.',
+    '1/7 Jane Smith22 February 2019The play is a play for today and it was written a long time ago by a man in a wig and a wonderful pair of shoes.',
+    'The tour continues until 14 November 2026. Following on from the immaculately presented heels of another touring hit this one is a good deal longer and funnier.',
+    'A Cast Member and Another in Some Show at the Barbican Theatre, London. Pictures: Some Photographer Some Show was reviewed at the Barbican Theatre, London where it continues until 11 July 2026. The tour continues until 14 November 2026.',
+  ];
+  for (const f of FURNITURE) {
+    for (const contentTier of ['complete', 'truncated']) {
+      const file = trailerFile('', { fullText: `${f} ${PLOT.repeat(4)}`, contentTier, truncationSignals: contentTier === 'complete' ? [] : ['no_ending_punctuation'] });
+      const q = finalizePullQuote(file, 'Some Show', 'open');
+      assert.ok(!q || !/WHEN\?|1\/7|tour continues|Pictures: |was reviewed at/.test(q), `${contentTier}: ${JSON.stringify(q)}`);
+    }
+  }
+});
+
+// A paywall prompt in the last 30% of a long body is not scanned by the classifier, so only trailer signals remain.
+test('BRO-8084: a stored-truncated body is not quoted when a paywall prompt sits anywhere in it', () => {
+  const body = PROSE + FILLER.repeat(6) + 'Subscribe to continue reading this review. ' + FILLER + FILLER + `Delightfully deranged ${TRAILER}`;
+  const file = trailerFile('', { fullText: body, url: 'https://example.com/a', wordCount: 600 });
+  assert.equal(finalizePullQuote(file, 'Some Show', 'open'), null);
+  // the same body without the prompt is a whole review and does get a quote
+  const whole = { ...file, fullText: body.replace('Subscribe to continue reading this review. ', '') };
+  assert.ok(finalizePullQuote(whole, 'Some Show', 'open'));
+});
