@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-23T05:56:15.829Z",
+  "timestamp": "2026-11-23T07:28:40.270Z",
   "stats": {
     "totalReviews": 84275,
-    "alreadyFlagged": 22509,
-    "dateGuardCatches": 243,
+    "alreadyFlagged": 22511,
+    "dateGuardCatches": 242,
     "directorMismatch": 3885,
-    "tvFilmSignals": 2419,
-    "londonSignals": 3974,
+    "tvFilmSignals": 2425,
+    "londonSignals": 3979,
     "offBroadwaySignals": 788,
-    "yearMismatch": 395,
+    "yearMismatch": 396,
     "noPublishDate": 8210
   },
   "findings": [
@@ -2849,6 +2849,19 @@
       ]
     },
     {
+      "showId": "a-streetcar-named-desire-west-end-2023",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/article/a-streetcar-named-desire-review-magnetic-paul-mescal-is-no-normal-leading-man-2dlh2h2tt",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rebecca frecknall\" from a-streetcar-named-desire-off-broadway-2025"
+        }
+      ]
+    },
+    {
       "showId": "a-time-to-kill-2013",
       "file": "nytimes--charles-isherwood.json",
       "score": 48,
@@ -3990,6 +4003,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"des mcanuff\" from aint-too-proud-2019"
+        }
+      ]
+    },
+    {
+      "showId": "aint-too-proud-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "score": 40,
+      "publishDate": "April 21st, 2023",
+      "url": "https://www.thetimes.com/article/aint-too-proud-review-the-temptations-musical-wont-get-you-dancing-in-the-aisles-v0nrbvzcm",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
         }
       ]
     },
@@ -33907,6 +33934,20 @@
     },
     {
       "showId": "i-need-that-2023",
+      "file": "newyorker--vinson-cunningham.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorker.com/magazine/2023/11/13/sabbaths-theater-i-need-that-theatre-reviews",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "i-need-that-2023",
       "file": "nydailynews--chris-jones.json",
       "score": 68,
       "publishDate": "November 2, 2023",
@@ -47680,6 +47721,24 @@
       ]
     },
     {
+      "showId": "mrs-doubtfire-west-end-2023",
+      "file": "independent--oliver-browning.json",
+      "publishDate": "2023-11-22",
+      "url": "https://www.independent.co.uk/tv/culture/robin-williams-films-mrs-doubtfire-b2451751.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 3\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2023 (1x). 2025 matches production: mrs-doubtfire-tour-2025"
+        }
+      ]
+    },
+    {
       "showId": "mrs-warrens-profession-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
       "score": 56,
@@ -51741,6 +51800,20 @@
     },
     {
       "showId": "operation-mincemeat-2025",
+      "file": "broadwaynews--brittani-samuel.json",
+      "score": 76,
+      "publishDate": "March 21, 2025",
+      "url": "https://www.broadwaynews.com/the-broadway-review-operation-mincemeat-is-a-gleeful-mi5-inspired-romp/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
       "score": 92,
       "publishDate": "2025-03-20",
@@ -54899,24 +54972,6 @@
       "publishDate": "2023-06-07",
       "url": null,
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rupert goold\" from patriots-2024"
-        }
-      ]
-    },
-    {
-      "showId": "patriots-west-end-2023",
-      "file": "times-uk--clive-davis.json",
-      "publishDate": "July 13th, 2022",
-      "url": "https://www.thetimes.co.uk/article/patriots-review-drama-of-dissidents-life-lost-in-the-details-fgmsllncd",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 317d before show (July 13th, 2022 vs 2023-05-26)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -59990,6 +60045,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "rose-west-end-2023",
+      "file": "variety--peter-debruge.json",
+      "publishDate": null,
+      "url": "https://variety.com/2023/tv/reviews/the-idol-review-the-weeknd-lily-rose-depp-1235622311/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -88578,6 +88646,19 @@
     },
     {
       "showId": "we-will-rock-you-west-end-2023",
+      "file": "independent--lucy-leeson.json",
+      "publishDate": "2023-08-17",
+      "url": "https://www.independent.co.uk/tv/culture/we-will-rock-you-lee-mead-hair-transplant-b2394786.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 3\""
+        }
+      ]
+    },
+    {
+      "showId": "we-will-rock-you-west-end-2023",
       "file": "london-box-office--stuart-king.json",
       "score": 44,
       "publishDate": null,
@@ -114682,7 +114763,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -125844,6 +125925,20 @@
     },
     {
       "showId": "oklahoma-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "score": 73,
+      "publishDate": "March 1st, 2023",
+      "url": "https://www.thetimes.co.uk/article/oklahoma-theatre-review-wyndham-hm7p5kjth",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "oklahoma-west-end-2023",
       "file": "whatsonstage--alun-hood.json",
       "score": 61,
       "publishDate": "March 1st, 2023",
@@ -126728,6 +126823,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "March 27th, 2024",
+      "url": "https://www.thetimes.co.uk/article/opening-night-review-sheridan-smith-shines-in-a-bizarre-drama-2thlqkf6n",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -137658,6 +137767,20 @@
     },
     {
       "showId": "the-confessions-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 79,
+      "publishDate": "October 25th, 2023",
+      "url": "https://www.standard.co.uk/culture/theatre/the-confessions-national-theatre-alexander-zeldin-review-b1115520.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-confessions-west-end-2023",
       "file": "west-end-best-friend--erifyli-gigante.json",
       "score": 59,
       "publishDate": "October 24th, 2023",
@@ -143646,6 +143769,20 @@
     },
     {
       "showId": "the-old-man-and-the-pool-west-end-2023",
+      "file": "standard--bruce-dessau.json",
+      "score": 81,
+      "publishDate": "September 16th, 2023",
+      "url": "https://www.standard.co.uk/culture/comedy/mike-birbiglia-the-old-man-and-the-pool-at-review-wyndhams-b1107289.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-old-man-and-the-pool-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 82,
       "publishDate": "September 15th, 2023",
@@ -144196,6 +144333,20 @@
       "score": 74,
       "publishDate": "2023-06-21",
       "url": "https://sierz.co.uk/reviews/the-pillowman-duke-of-yorks-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-pillowman-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "score": 36,
+      "publishDate": "June 22nd, 2023",
+      "url": "https://www.thetimes.co.uk/article/the-pillowman-review-tale-of-art-and-suffering-is-a-struggle-to-sit-through-dzn92lwrh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
