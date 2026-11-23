@@ -494,6 +494,15 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+          # BRO-8150: the Vercel CLI's own function-size analysis. With it, a
+          # function over 250MB uncompressed fails THIS step with its name and
+          # largest dependencies, instead of uploading and failing server-side
+          # with NOW_SANDBOX_WORKER_MAX_UNCOMPRESSED_FUNCTION_SIZE (2026-11-23:
+          # ~8h of failed prod deploys). Same 250MB threshold Vercel enforces,
+          # so it cannot block a deploy Vercel would accept. Undocumented flag:
+          # tests/unit/check-function-bundle-size.test.mjs fails if the CLI
+          # stops honoring it.
+          VERCEL_ANALYZE_BUILD_OUTPUT: '1'
         run: |
           # Card #90 (2026-08-14): under a burst of concurrent pushes, Vercel's
           # server-side "latest wins" dedup can CANCEL this run's deployment
@@ -526,6 +535,15 @@ jobs:
             exit 1
           fi
           echo "Build completed in ${BUILD_SECS}s"
+
+      - name: Guard — serverless function size early warning (advisory)
+        # BRO-8150: warns when any function passes 200MB of Vercel's 250MB
+        # uncompressed limit, naming the function and its biggest traced dirs,
+        # so growth is visible before the blocking check in Build trips.
+        # Advisory first (§19). Script + tests:
+        # scripts/lib/check-function-bundle-size.js.
+        continue-on-error: true
+        run: node scripts/lib/check-function-bundle-size.js .vercel/output
 
       - name: Sitemap URL count vs live (advisory)
         # BRO-5969: warns when the built sitemap lists >3% fewer URLs than live,
