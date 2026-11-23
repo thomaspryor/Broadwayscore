@@ -71,7 +71,7 @@ test('publication byline with no critic signal resolves Unknown, real bylines un
 });
 
 test('BRO-8211 review: one-critic outlets keep their real byline; junk titles/submitters rejected', () => {
-  const KM = { displayName: 'Stephen Kearley', aliases: ['stephenkearley'] };
+  const KM = { displayName: 'Stephen Kearley', defaultCritic: 'Stephen Kearley', aliases: ['stephenkearley'] };
   assert.equal(resolveCritic({ byline: 'Stephen Kearley', outletEntry: KM, outletId: 'stephenkearley' }), 'Stephen Kearley');
   assert.equal(resolveCritic({ byline: 'Jonathan Kalb', outletEntry: { displayName: 'Jonathan Kalb', defaultCritic: 'Jonathan Kalb' }, outletId: 'jonathankalb' }), 'Jonathan Kalb');
   assert.equal(criticFromReviewsTitle('Crazy Mama earns glowing reviews from critics'), null);
