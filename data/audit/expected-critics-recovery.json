@@ -374,8 +374,16 @@
         {
           "at": "2026-11-16T19:48:45.906Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-23T21:43:44.310Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-23T21:43:44.310Z",
+        "note": "auto (BRO-7312): 3 targeted searches of timeout for wanted-2022 found no review (2026-11-13, 2026-11-16, 2026-11-23)"
+      }
     },
     "here-there-are-blueberries-2026::theater-scene": {
       "showId": "here-there-are-blueberries-2026",
@@ -422,8 +430,16 @@
         {
           "at": "2026-11-16T19:48:20.323Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-23T21:43:35.791Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-23T21:43:35.791Z",
+        "note": "auto (BRO-7312): 3 targeted searches of theatermania for the-steel-man-off-broadway-2026 found no review (2026-11-14, 2026-11-16, 2026-11-23)"
+      }
     },
     "tosca-off-broadway-2026::theatermania": {
       "showId": "tosca-off-broadway-2026",
@@ -458,6 +474,10 @@
         {
           "at": "2026-11-19T18:33:47.764Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-23T21:44:21.701Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -470,6 +490,10 @@
         {
           "at": "2026-11-19T18:33:47.764Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-23T21:44:21.701Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -481,6 +505,10 @@
       "attempts": [
         {
           "at": "2026-11-19T18:33:47.764Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-23T21:44:21.701Z",
           "outcome": "no_evidence"
         }
       ]
@@ -524,18 +552,6 @@
     "now-you-see-me-live-2026::nypost": {
       "showId": "now-you-see-me-live-2026",
       "outletId": "nypost",
-      "openingDate": "2026-11-16",
-      "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": [
-        {
-          "at": "2026-11-20T18:01:42.135Z",
-          "outcome": "no_evidence"
-        }
-      ]
-    },
-    "now-you-see-me-live-2026::nytimes": {
-      "showId": "now-you-see-me-live-2026",
-      "outletId": "nytimes",
       "openingDate": "2026-11-16",
       "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
       "attempts": [
@@ -691,31 +707,29 @@
         }
       ]
     },
-    "blue-man-group-a-new-holiday-surprise-2026::nytimes": {
-      "showId": "blue-man-group-a-new-holiday-surprise-2026",
-      "outletId": "nytimes",
-      "openingDate": "2026-11-17",
-      "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
-      "attempts": [
-        {
-          "at": "2026-11-21T16:58:04.513Z",
-          "outcome": "no_evidence"
-        }
-      ]
-    },
     "blue-man-group-a-new-holiday-surprise-2026::talkinbroadway": {
       "showId": "blue-man-group-a-new-holiday-surprise-2026",
       "outletId": "talkinbroadway",
       "openingDate": "2026-11-17",
       "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
-      "attempts": []
+      "attempts": [
+        {
+          "at": "2026-11-23T21:44:38.127Z",
+          "outcome": "no_evidence"
+        }
+      ]
     },
     "blue-man-group-a-new-holiday-surprise-2026::theater-scene": {
       "showId": "blue-man-group-a-new-holiday-surprise-2026",
       "outletId": "theater-scene",
       "openingDate": "2026-11-17",
       "firstSeenMissingAt": "2026-11-21T16:56:36.434Z",
-      "attempts": []
+      "attempts": [
+        {
+          "at": "2026-11-23T21:44:38.127Z",
+          "outcome": "no_evidence"
+        }
+      ]
     },
     "blue-man-group-a-new-holiday-surprise-2026::theatrely": {
       "showId": "blue-man-group-a-new-holiday-surprise-2026",
@@ -769,6 +783,13 @@
           "collectorOutcome": "rejected",
           "reason": "http-error",
           "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924"
+        },
+        {
+          "at": "2026-11-23T21:43:30.454Z",
+          "outcome": "non_evidence",
+          "collectorOutcome": "rejected",
+          "reason": "http-error",
+          "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924"
         }
       ]
     },
@@ -783,6 +804,12 @@
           "outcome": "rejected",
           "reason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021",
           "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre"
+        },
+        {
+          "at": "2026-11-23T21:43:30.454Z",
+          "outcome": "rejected",
+          "reason": "onMerge-aborted",
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/opinion-how-did-harry-potter-and-the-cursed-child-bewitch-the-west-end"
         }
       ]
     },
@@ -797,6 +824,12 @@
           "outcome": "rejected",
           "reason": "file-exists",
           "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original"
+        },
+        {
+          "at": "2026-11-23T21:43:30.454Z",
+          "outcome": "rejected",
+          "reason": "file-exists",
+          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-the-palace-theatre-london--entirely-distinctive"
         }
       ]
     },
@@ -812,6 +845,12 @@
           "collectorOutcome": "rejected",
           "reason": "http-error",
           "url": "https://www.timeout.com/london/harry-potter-and-the-cursed-child-review"
+        },
+        {
+          "at": "2026-11-23T21:43:30.454Z",
+          "outcome": "rejected",
+          "reason": "onMerge-aborted",
+          "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review"
         }
       ]
     },
@@ -826,6 +865,10 @@
           "outcome": "rejected",
           "reason": "cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i",
           "url": "https://www.whatsonstage.com/news/west-end-vs-broadway-harry-potter-and-the-cursed-child-two-scorpius-malfoys-duel-it-out_1618315/"
+        },
+        {
+          "at": "2026-11-23T21:43:30.454Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -900,6 +943,27 @@
           "outcome": "existing_file"
         }
       ]
+    },
+    "much-ado-about-nothing-2026::talkinbroadway": {
+      "showId": "much-ado-about-nothing-2026",
+      "outletId": "talkinbroadway",
+      "openingDate": "2026-11-19",
+      "firstSeenMissingAt": "2026-11-23T21:42:33.556Z",
+      "attempts": []
+    },
+    "much-ado-about-nothing-2026::theater-scene": {
+      "showId": "much-ado-about-nothing-2026",
+      "outletId": "theater-scene",
+      "openingDate": "2026-11-19",
+      "firstSeenMissingAt": "2026-11-23T21:42:33.556Z",
+      "attempts": []
+    },
+    "much-ado-about-nothing-2026::variety": {
+      "showId": "much-ado-about-nothing-2026",
+      "outletId": "variety",
+      "openingDate": "2026-11-19",
+      "firstSeenMissingAt": "2026-11-23T21:42:33.556Z",
+      "attempts": []
     }
   }
 }
