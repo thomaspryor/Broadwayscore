@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
@@ -60,9 +61,17 @@ test('scoring-delta notices changes to international coverage in the registry', 
 // The writer does not itself run this guard; the rebuild used to invalidate
 // legitimate files created here. Keep fixtures separate from real show files.
 test('createReviewFile THR and Variety London fixtures survive the forward guard', () => {
+  // BRO-8178: write into a temp REVIEW_TEXTS_DIR, never the real corpus. A run
+  // killed before `finally` (the land gate's per-run cap) left this fixture in
+  // data/review-texts/, and autoclear-vs-ensemble.test.mjs then read a fake
+  // one-entry corpus and failed an unrelated landing.
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2749-review-texts-'));
+  const prevDir = process.env.REVIEW_TEXTS_DIR;
+  process.env.REVIEW_TEXTS_DIR = tmpRoot;
+  delete require.cache[require.resolve('../gather-reviews.js')];
   const { createReviewFile } = require('../gather-reviews.js');
   const showId = `__test-bro2749-west-end-${process.pid}-2026`;
-  const showDir = path.resolve('data/review-texts', showId);
+  const showDir = path.join(tmpRoot, showId);
   try {
     for (const id of ['hollywood-reporter', 'variety']) {
       const created = createReviewFile(showId, {
@@ -79,6 +88,9 @@ test('createReviewFile THR and Variety London fixtures survive the forward guard
       assert.equal(verdictFor(written.outletId).shouldFlag, false);
     }
   } finally {
-    fs.rmSync(showDir, { recursive: true, force: true });
+    if (prevDir === undefined) delete process.env.REVIEW_TEXTS_DIR; else process.env.REVIEW_TEXTS_DIR = prevDir;
+    delete require.cache[require.resolve('../gather-reviews.js')];
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
   }
+  assert.equal(fs.existsSync(path.resolve('data/review-texts', showId)), false, 'fixture must never touch the real corpus');
 });
