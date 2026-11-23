@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-23T03:24:14.524Z",
+  "generated": "2026-11-23T18:41:58.135Z",
   "disputes": {
     "off-broadway/92ny-theater-for-young-audiences": {
       "name": "92NY Theater for Young Audiences",
@@ -386,14 +386,9 @@
         }
       ]
     },
-    "off-broadway/the-public-theater-luesther-hall": {
-      "name": "The Public Theater – LuEsther Hall",
+    "off-broadway/public-theater-luesther-hall": {
+      "name": "Public Theater/LuEsther Hall",
       "disagreements": [
-        {
-          "field": "capacity",
-          "gemini": 160,
-          "openai": null
-        },
         {
           "field": "yearOpened",
           "gemini": 1967,
@@ -626,8 +621,8 @@
         }
       ]
     },
-    "off-broadway/theatre-at-st-jean-s": {
-      "name": "Theatre at St. Jean's",
+    "off-broadway/theater-at-st-jean-s": {
+      "name": "Theater at St. Jean's",
       "disagreements": [
         {
           "field": "website",
@@ -635,14 +630,9 @@
           "openai": "https://www.yorktheatre.org/"
         },
         {
-          "field": "capacity",
-          "gemini": 204,
-          "openai": null
-        },
-        {
           "field": "operator",
-          "gemini": "Eglise St. Jean Baptiste",
-          "openai": "Eglise Saint Jean Baptiste"
+          "gemini": "St. Jean Baptiste Church",
+          "openai": "The York Theatre"
         }
       ]
     },
@@ -786,8 +776,8 @@
         }
       ]
     },
-    "off-broadway/the-cell": {
-      "name": "the cell",
+    "off-broadway/the-cell-theatre": {
+      "name": "The Cell Theatre",
       "disagreements": [
         {
           "field": "yearOpened",
@@ -841,18 +831,18 @@
         }
       ]
     },
-    "off-broadway/the-public-theater-martinson-hall": {
-      "name": "The Public Theater/Martinson Hall",
+    "off-broadway/public-theater-martinson-hall": {
+      "name": "Public Theater/Martinson Hall",
       "disagreements": [
         {
           "field": "yearOpened",
           "gemini": 1967,
-          "openai": null
+          "openai": 1971
         }
       ]
     },
-    "off-broadway/the-public-theater-shiva-theater": {
-      "name": "The Public Theater/Shiva Theater",
+    "off-broadway/public-theater-shiva-theater": {
+      "name": "Public Theater/Shiva Theater",
       "disagreements": [
         {
           "field": "yearOpened",
@@ -868,16 +858,6 @@
           "field": "capacity",
           "gemini": 275,
           "openai": null
-        }
-      ]
-    },
-    "off-broadway/the-public-theater-newman-theater": {
-      "name": "The Public Theater/Newman Theater",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1967,
-          "openai": 1970
         }
       ]
     },
@@ -938,31 +918,6 @@
           "field": "yearOpened",
           "gemini": 1977,
           "openai": null
-        }
-      ]
-    },
-    "off-broadway/theater-at-st-jean-s": {
-      "name": "Theater at St. Jean's",
-      "disagreements": [
-        {
-          "field": "website",
-          "gemini": "https://www.sjbny.org/the-theatre-st-jean/",
-          "openai": "https://www.yorktheatre.org/"
-        },
-        {
-          "field": "operator",
-          "gemini": "St. Jean Baptiste Church",
-          "openai": "The York Theatre"
-        }
-      ]
-    },
-    "off-broadway/theater-at-st-jean": {
-      "name": "Theater at St. Jean",
-      "disagreements": [
-        {
-          "field": "operator",
-          "gemini": "St. Jean Baptiste Church",
-          "openai": "Eglise St. Jean Baptiste"
         }
       ]
     },
@@ -1312,16 +1267,6 @@
         }
       ]
     },
-    "off-broadway/the-cell-theatre": {
-      "name": "The Cell Theatre",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 2006,
-          "openai": 2007
-        }
-      ]
-    },
     "off-broadway/axis-theatre": {
       "name": "Axis Theatre",
       "disagreements": [
@@ -1384,16 +1329,6 @@
           "field": "yearOpened",
           "gemini": 2022,
           "openai": null
-        }
-      ]
-    },
-    "off-broadway/duke-on-42nd-street": {
-      "name": "Duke on 42nd Street",
-      "disagreements": [
-        {
-          "field": "website",
-          "gemini": "https://www.new42.org",
-          "openai": "https://www.new42studios.org/the-duke-on-42nd-street/"
         }
       ]
     },
@@ -1592,16 +1527,6 @@
         }
       ]
     },
-    "off-broadway/public-theater-martinson-hall": {
-      "name": "Public Theater/Martinson Hall",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1967,
-          "openai": 1971
-        }
-      ]
-    },
     "off-broadway/public-theater-anspacher-theater": {
       "name": "Public Theater/Anspacher Theater",
       "disagreements": [
@@ -1679,36 +1604,6 @@
           "field": "yearOpened",
           "gemini": 1977,
           "openai": 1981
-        }
-      ]
-    },
-    "off-broadway/players-theatre": {
-      "name": "Players Theatre",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": null,
-          "openai": 1959
-        }
-      ]
-    },
-    "off-broadway/the-west-end-theatre": {
-      "name": "The West End Theatre",
-      "disagreements": [
-        {
-          "field": "website",
-          "gemini": "https://stpaulandstandrew.org/",
-          "openai": "https://www.wetnyc.org/"
-        },
-        {
-          "field": "yearOpened",
-          "gemini": 1999,
-          "openai": null
-        },
-        {
-          "field": "operator",
-          "gemini": "Church of St. Paul and St. Andrew",
-          "openai": "Bedlam Theater Company"
         }
       ]
     },
@@ -1799,26 +1694,6 @@
           "field": "operator",
           "gemini": "Catherine Russell",
           "openai": "The Clementine Company, LLC d/b/a The Theater Center"
-        }
-      ]
-    },
-    "off-broadway/public-theater-shiva-theater": {
-      "name": "Public Theater/Shiva Theater",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1967,
-          "openai": null
-        }
-      ]
-    },
-    "off-broadway/public-theater-luesther-hall": {
-      "name": "Public Theater/LuEsther Hall",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1967,
-          "openai": null
         }
       ]
     },
@@ -1989,16 +1864,6 @@
           "field": "operator",
           "gemini": "Jonathon Timpanelli and Salimen (Sal) Nagi",
           "openai": null
-        }
-      ]
-    },
-    "off-broadway/the-triad": {
-      "name": "The Triad",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1984,
-          "openai": 1982
         }
       ]
     },
@@ -2767,26 +2632,6 @@
         }
       ]
     },
-    "london/almeida-theatre": {
-      "name": "Almeida Theatre",
-      "disagreements": [
-        {
-          "field": "address",
-          "gemini": "Almeida Street, London N1 1TA",
-          "openai": null
-        },
-        {
-          "field": "capacity",
-          "gemini": 325,
-          "openai": null
-        },
-        {
-          "field": "yearOpened",
-          "gemini": 1980,
-          "openai": null
-        }
-      ]
-    },
     "london/king-s-head-theatre": {
       "name": "King's Head Theatre",
       "disagreements": [
@@ -2857,21 +2702,6 @@
         }
       ]
     },
-    "london/richmond": {
-      "name": "Richmond",
-      "disagreements": [
-        {
-          "field": "address",
-          "gemini": "1 Little Green, London TW9 1QJ",
-          "openai": "1 Little Green, London TW9 1QH"
-        },
-        {
-          "field": "operator",
-          "gemini": "ATG Entertainment",
-          "openai": "Ambassador Theatre Group (ATG)"
-        }
-      ]
-    },
     "london/national-theatre": {
       "name": "National Theatre",
       "disagreements": [
@@ -2882,13 +2712,23 @@
         }
       ]
     },
-    "london/the-arts-at-marble-arch-powered-by-todaytix": {
-      "name": "The Arts at Marble Arch powered by TodayTix",
+    "london/the-arts-at-marble-arch": {
+      "name": "The Arts at Marble Arch",
       "disagreements": [
         {
-          "field": "exists",
-          "gemini": true,
-          "openai": false
+          "field": "address",
+          "gemini": "Marble Arch, London W1H 7DX",
+          "openai": null
+        },
+        {
+          "field": "website",
+          "gemini": "https://artstheatrewestend.co.uk/",
+          "openai": "https://www.artsatmarblearch.com/"
+        },
+        {
+          "field": "operator",
+          "gemini": "Hartshorn — Hook Productions",
+          "openai": "HH Productions"
         }
       ]
     },
@@ -3004,36 +2844,6 @@
           "field": "operator",
           "gemini": "AEG International",
           "openai": "Ansco Arena Limited"
-        }
-      ]
-    },
-    "london/the-arts-at-marble-arch": {
-      "name": "The Arts at Marble Arch",
-      "disagreements": [
-        {
-          "field": "address",
-          "gemini": "Marble Arch, London W1H 7DX",
-          "openai": null
-        },
-        {
-          "field": "website",
-          "gemini": "https://artstheatrewestend.co.uk/",
-          "openai": "https://www.artsatmarblearch.com/"
-        },
-        {
-          "field": "operator",
-          "gemini": "Hartshorn — Hook Productions",
-          "openai": "HH Productions"
-        }
-      ]
-    },
-    "london/lyric-hammersmith-theatre": {
-      "name": "Lyric Hammersmith Theatre",
-      "disagreements": [
-        {
-          "field": "yearOpened",
-          "gemini": 1895,
-          "openai": 1979
         }
       ]
     },
@@ -3299,31 +3109,6 @@
           "field": "capacity",
           "gemini": 421,
           "openai": 400
-        }
-      ]
-    },
-    "london/dorfman": {
-      "name": "Dorfman",
-      "disagreements": [
-        {
-          "field": "capacity",
-          "gemini": 450,
-          "openai": 500
-        },
-        {
-          "field": "yearOpened",
-          "gemini": 2014,
-          "openai": 1977
-        }
-      ]
-    },
-    "london/lyttelton": {
-      "name": "Lyttelton",
-      "disagreements": [
-        {
-          "field": "address",
-          "gemini": "Upper Ground, London SE1 9PX",
-          "openai": "National Theatre, Upper Ground, South Bank, London SE1 9PX"
         }
       ]
     },

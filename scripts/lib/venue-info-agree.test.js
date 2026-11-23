@@ -85,3 +85,32 @@ test('website keeps the venue page when both sources name it, else the homepage'
 test('website prefers https when either source gives it', () => {
   assert.equal(pickWebsite('http://galleryplayers.com/', 'https://galleryplayers.com'), 'https://galleryplayers.com/');
 });
+
+test('a house-number range ("1a/1b") still agrees with its first number on the same street', () => {
+  assert.ok(addressesAgree('1a Almeida Street, London N1 1TA', '1a/1b Almeida Street, London N1 1TA'));
+  assert.ok(addressesAgree('10-12 Main Street, New York, NY 10001', '10 Main St, New York, NY 10001'));
+  // Different house numbers still disagree.
+  assert.ok(!addressesAgree('1 Almeida Street, London N1 1TA', '7 Almeida Street, London N1 1TA'));
+});
+
+test('a folded page keeps facts researched under its old spelling, never overriding its own', () => {
+  const { fillFromFolded } = require('./venue-info-agree');
+  const d = { fields: { address: '115 MacDougal St, New York, NY 10012' }, how: { address: 'gemini+openai' }, geo: { lat: 1, lng: 2 } };
+  fillFromFolded(d, [
+    { fields: { address: 'Other St', capacity: 248 }, how: { address: 'gemini+openai', capacity: 'gemini+openai' }, geo: { lat: 9, lng: 9 } },
+  ]);
+  assert.equal(d.fields.address, '115 MacDougal St, New York, NY 10012');
+  assert.deepEqual(d.geo, { lat: 1, lng: 2 });
+  assert.equal(d.fields.capacity, 248);
+  assert.equal(d.how.capacity, 'gemini+openai');
+  const e = fillFromFolded({ fields: {}, how: {}, geo: null }, [{ fields: { address: 'X St' }, how: { address: 'gemini+openai' }, geo: null }]);
+  assert.equal(e.fields.address, undefined, 'an address without a geocode never moves');
+});
+
+test('access/seat answers researched under a folded spelling reach the merged page', () => {
+  const { pickWithFolded } = require('./venue-info-agree');
+  const store = { 'off-broadway/the-sheen-center': { a: 1 }, 'off-broadway/sheen-center': undefined };
+  assert.deepEqual(pickWithFolded(store, 'off-broadway/sheen-center'), { a: 1 });
+  assert.deepEqual(pickWithFolded({ 'off-broadway/sheen-center': { own: 1 }, 'off-broadway/the-sheen-center': { a: 1 } }, 'off-broadway/sheen-center'), { own: 1 });
+  assert.equal(pickWithFolded(store, 'london/sheen-center'), undefined, 'never crosses markets');
+});

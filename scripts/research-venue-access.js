@@ -272,11 +272,14 @@ async function main() {
   // ---------- build the published file from the checkpoint ----------
   // The published file always covers every venue; --only/--market/--limit only scope the research above.
   const all = venueList(false);
+  // Facts researched under a spelling that now folds into this page (BRO-8173) still count.
+  const { pickWithFolded } = require('./lib/venue-info-agree');
+  const pick = pickWithFolded;
   const out = {};
   const rejects = {};
   for (const v of all) {
     const entry = {};
-    const a = raw.access[v.key];
+    const a = pick(raw.access, v.key);
     if (a && a.gemini && a.openai && v.website) {
       const pages = await accessPages(v.website); // cached on disk, same text the models saw
       const r = agreeAccess(a.gemini, a.openai, pages);
@@ -285,7 +288,7 @@ async function main() {
       }
       if (r.rejected.length) rejects[v.key] = r.rejected;
     }
-    const s = raw.seats[v.key];
+    const s = pick(raw.seats, v.key);
     if (s && (s.seatplan || s.aviewfrommyseat)) {
       entry.seatLinks = {};
       if (s.seatplan) entry.seatLinks.seatplan = s.seatplan;
