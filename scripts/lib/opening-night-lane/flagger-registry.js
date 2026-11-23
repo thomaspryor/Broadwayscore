@@ -44,6 +44,7 @@ const LANE_EXEMPT = Object.freeze({
   'scripts/fix-wrong-reviews.js': R.oneOff,
   'scripts/lib/cv-promoted-nonreview-selector.js': R.verdict,
   'scripts/lib/non-review-patterns.js': R.verdict,
+  'scripts/lib/orphan-production-clusters.js': R.verdict, // revertRehome(): in-memory reverted view for --simulate-revert, never written
   'scripts/repair-noteless-wrongprod-autoclear.js': R.unscheduled,
   'scripts/resolve-remaining-collisions.js': R.unscheduled,
   'scripts/shadow-autoclear-report.js': R.verdict,
