@@ -172,16 +172,13 @@ test('corpus: 0 files where an auto-clear overrode a live unanimous ensemble ver
   assert.ok(scanned > 0, `scanned 0 files in a non-empty ${REVIEW_TEXTS_DIR} — scan logic is broken`);
 
   const describe = (v) => `${v.showId}/${v.file} (${v.breadcrumb})`;
-  // Violations go in the message one per line: the local post-merge floor
-  // compares message lines against origin/main, so a branch adding one more
-  // violation to an already-red corpus reads NEW (BRO-8110).
   assert.deepStrictEqual(
     wpViolations.map(describe), [],
-    `${wpViolations.length} wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n${wpViolations.map(describe).join('\n')}`
+    `${wpViolations.length} wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix`
   );
   assert.deepStrictEqual(
     wsViolations.map(describe), [],
-    `${wsViolations.length} wrongShow auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n${wsViolations.map(describe).join('\n')}`
+    `${wsViolations.length} wrongShow auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix`
   );
 });
 
