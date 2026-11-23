@@ -312,35 +312,61 @@ test('runTestGate baseline mode: a branch that ADDS a new failure is still block
 
 // BRO-8110: a corpus test already red on origin/main (it reads the gitignored
 // data/review-texts) skipped green in the corpus-less baseline checkout and so
-// read as NEW, blocking every local land. The baseline must see the same
-// gitignored data dirs as the merged tree, and then it reads as pre-existing.
-test('runTestGate baseline mode: a red corpus test reading a gitignored data dir is pre-existing, not NEW (BRO-8110)', () => {
-  const corpusTest = "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport path from 'node:path';\n"
+// read as NEW, blocking every local land. When the trees do not see the same
+// gitignored data, a LIVE-DATA-LANE file's failure is reported, not blocking;
+// everything else keeps its old verdict.
+function corpusTestSrc(live) {
+  return (live ? '// LIVE-DATA-LANE: reads data/corpus\n' : '')
+    + "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport path from 'node:path';\n"
     + "test('corpus: no auto-clear over an ensemble verdict', (t) => {\n  const dir = path.join(process.cwd(), 'data', 'corpus');\n  if (!fs.existsSync(dir)) { t.skip('no corpus'); return; }\n  assert.equal(fs.readdirSync(dir).length, 0, 'mexodus auto-cleared');\n});\n";
-  const mk = () => {
+}
+function corpusTrees({ live = true, inBaseline = true, corpus = true } = {}) {
+  const mk = (withTest) => {
     const d = makeScratchRepo();
     spawnSync('git', ['init', '-q'], { cwd: d });
     fs.writeFileSync(path.join(d, '.gitignore'), '/data/corpus\n');
-    fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), corpusTest);
+    if (withTest) fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), corpusTestSrc(live));
     return d;
   };
-  const baselineDir = mk();
-  const mergedDir = mk();
+  const baselineDir = mk(inBaseline);
+  const mergedDir = mk(true);
   fs.mkdirSync(path.join(mergedDir, 'data', 'corpus'), { recursive: true });
   fs.writeFileSync(path.join(mergedDir, 'data', 'corpus', 'bad.json'), '{}');
-  fs.mkdirSync(path.join(mergedDir, 'data', 'tracked-dir'), { recursive: true }); // not ignored: never mirrored
+  if (!corpus) {
+    // Same data on both sides (land.yml's case): the baseline has the dir too.
+    fs.mkdirSync(path.join(baselineDir, 'data', 'corpus'), { recursive: true });
+    fs.writeFileSync(path.join(baselineDir, 'data', 'corpus', 'bad.json'), '{}');
+  }
   const result = runTestGate({
     cwd: mergedDir,
     changedFiles: ['scripts/lib/review-file-writer.js'],
     makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
     removeBaselineCheckout: () => {},
   });
-  assert.doesNotMatch(result.output, /NEW since origin\/main/);
+  return { result, baselineDir };
+}
+test('runTestGate (BRO-8110): a live-lane corpus test red only because the baseline lacks the gitignored corpus is reported, not blocking', () => {
+  const { result, baselineDir } = corpusTrees();
+  assert.equal(result.passed, true, result.output);
+  assert.match(result.output, /LIVE-DATA-LANE failures NOT judged here, NOT blocking/);
+  assert.match(result.output, /data\/corpus/);
+  assert.match(result.reason, /1 live-data not judged/);
+  assert.equal(fs.existsSync(path.join(baselineDir, 'data', 'corpus')), false, 'nothing is linked into the baseline');
+});
+test('runTestGate (BRO-8110): the same failure in a NON-live file still blocks as NEW', () => {
+  const { result } = corpusTrees({ live: false });
+  assert.equal(result.passed, false);
+  assert.match(result.output, /NEW since origin\/main/);
+});
+test('runTestGate (BRO-8110): a live test the branch adds (absent from the baseline) still blocks', () => {
+  const { result } = corpusTrees({ inBaseline: false });
+  assert.equal(result.passed, false);
+  assert.match(result.output, /NEW since origin\/main/);
+});
+test('runTestGate (BRO-8110): with the same data on both sides (land.yml) a live failure is judged as before', () => {
+  const { result } = corpusTrees({ corpus: false });
+  assert.doesNotMatch(result.output, /NOT judged here/);
   assert.match(result.output, /pre-existing on origin\/main/);
-  assert.equal(result.passed, true);
-  assert.equal(fs.lstatSync(path.join(baselineDir, 'data', 'corpus'), { throwIfNoEntry: false }), undefined, 'mirrored link is unlinked before teardown');
-  assert.ok(fs.existsSync(path.join(mergedDir, 'data', 'corpus', 'bad.json')), 'the real corpus survives');
-  assert.equal(fs.existsSync(path.join(baselineDir, 'data', 'tracked-dir')), false);
 });
 
 // BRO-4812 Codex review: a run killed mid-way (spawn timeout) that parsed only
