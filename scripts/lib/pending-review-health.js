@@ -71,6 +71,7 @@ const PRESERVED_PENDING_FIELDS = [
   // it (tristan-and-yseult nydailynews, twice), so the floors report counted an attempted stub as an untouched gap.
   'pendingFetchAttemptedAt',
   'pendingFetchAttemptResult',
+  'pendingFetchFailures',
   // The rss identity strike counter and the reason/date of the final verdict (rssIdentityRejected itself was kept).
   'rssIdentityFetchFailures',
   'rssIdentityRejectedReason',

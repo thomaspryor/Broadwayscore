@@ -1407,13 +1407,14 @@ describe('BRO-8091 noBylineTerminalReason: fetched, bodied, bylineless page on a
 
 describe('BRO-8091 fetchFailedTerminalReason: repeated all-tier fetch failures settle with a typed reason', () => {
   const { fetchFailedTerminalReason } = require('../../scripts/lib/pending-triage.js');
-  test('settles at 2 failures, not at 0 or 1', () => {
+  test('settles at 3 failures, not at 0-2', () => {
     assert.equal(fetchFailedTerminalReason({}), null);
     assert.equal(fetchFailedTerminalReason({ pendingFetchFailures: 1 }), null);
-    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2 }), /^fetch-failed-terminal/);
+    assert.equal(fetchFailedTerminalReason({ pendingFetchFailures: 2 }), null);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 3 }), /^fetch-failed-terminal/);
     assert.equal(fetchFailedTerminalReason(null), null);
-    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2, outletId: 'nytimes' }), /^subscriber-fetch-failed/);
-    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2, outletId: 'dtli' }), /^fetch-failed-terminal/);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 3, outletId: 'nytimes' }), /^subscriber-fetch-failed/);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 3, outletId: 'dtli' }), /^fetch-failed-terminal/);
   });
 });
 
@@ -1439,7 +1440,7 @@ describe('BRO-8091 sameTrailingArticleId: one outlet article under two url forms
 describe('BRO-8091 first fetch failure must not settle (review P1: the fresh stamp was read as a prior failure)', () => {
   const { nextFetchFailureCount, stampFetchAttempt } = require('../../scripts/replay-pending-bylines.js');
   const { fetchFailedTerminalReason } = require('../../scripts/lib/pending-triage.js');
-  test('stamp then count: first failure = 1 (open), second = 2 (settled)', () => {
+  test('stamp then count: first failure = 1 (open), second = 2', () => {
     const d = {};
     stampFetchAttempt('/nonexistent/x.json', d, false, 'now', 'fetch-failed'); // write guard failure is logged, the data is still stamped
     assert.equal(nextFetchFailureCount(d), 1);

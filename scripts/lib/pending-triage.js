@@ -231,7 +231,7 @@ function noBylineTerminalReason(data, show, nowMs = Date.now()) {
  * FETCH_FAIL_LIMIT failed attempts the stub settles with a typed reason; clearing promoteSkippedReason
  * (and pendingFetchFailures) re-opens it. Pure. Returns the reason or null.
  */
-const FETCH_FAIL_LIMIT = 2;
+const FETCH_FAIL_LIMIT = 3; // matches RSS_IDENTITY_FETCH_STRIKES: the identity tag and this settle agree on when a repeatedly failing stub stops being retried
 // Paywalled outlets: a failed fetch here is "needs the logged-in browser", not "dead url" (card BRO-8091 step 2).
 const SUBSCRIBER_OUTLETS = new Set(['nytimes', 'wsj', 'times-uk', 'financialtimes', 'telegraph', 'washpost', 'newyorker']);
 function fetchFailedTerminalReason(data) {

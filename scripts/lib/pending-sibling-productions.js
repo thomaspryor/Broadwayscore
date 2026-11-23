@@ -293,7 +293,7 @@ function stripForeignShowFlags(o) {
 function rehomedStub(stub, fromShowId, toShowId, { publishDate, nowIso } = {}) {
   const out = stripForeignShowFlags({ ...stub, showId: toShowId, rehomedFrom: fromShowId, rehomedAt: nowIso || new Date().toISOString() });
   delete out.promoteSkippedReason; delete out.promoteSkippedAt; delete out.promoteSettled; delete out.promoteSettledSibling;
-  delete out.pendingFetchAttemptedAt; delete out.pendingFetchAttemptResult;
+  delete out.pendingFetchAttemptedAt; delete out.pendingFetchAttemptResult; delete out.pendingFetchFailures;
   if (publishDate) { out.publishDate = publishDate; out.dateSource = 'rehome-verdict-date'; }
   return out;
 }
