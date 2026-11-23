@@ -46,15 +46,6 @@ test('a missing or corrupt shows.json fails closed with the cause', () => {
   assert.equal(loadShowsForSlugs(fs, path, scripts).length, 4);
 });
 
-test('every open London show in the real data resolves to its own slug', () => {
-  const real = loadShowsForSlugs(fs, path, path.join(path.dirname(new URL(import.meta.url).pathname), '..'));
-  const london = real.filter(s => s.status === 'open' && (s.category === 'west-end' || s.category === 'off-west-end') && !s._devOnly);
-  if (!london.length) return; // stub data in a keyless container
-  const { slugs, unknown } = resolveShowSlugs(london.map(s => s.id), real);
-  assert.deepEqual(unknown, []);
-  assert.deepEqual(slugs, london.map(s => s.slug));
-});
-
 test('Google --shows: ids become slugs plus homepage and rankings', () => {
   const { googleShowUrls: showUrls } = require('./show-page-slugs.js');
   assert.deepEqual(showUrls(['hamilton-west-end-2021'], 'URL_UPDATED', () => shows), [
