@@ -30,4 +30,23 @@ function classifyTierWriteBack(data) {
   return { tierResult, tierChanged, reasonOnlyChanged };
 }
 
-module.exports = { classifyTierWriteBack };
+/**
+ * Mirror a classifyTierWriteBack() result onto an in-memory record the way rebuild-all-reviews.js does (and the
+ * way the next rebuild will read the written file): tier, signals, the paywall truncation fields, and the current
+ * reason. One function for the rebuild and finalizePullQuote, so a caller holding an un-reclassified file (backfill,
+ * live-data test) judges the same record the rebuild does (BRO-8084).
+ */
+function applyTierResultInMemory(data, tierResult) {
+  data.contentTier = tierResult.contentTier;
+  // Propagate truncationSignals so classifyIncompleteReason (called next) can
+  // use them for routing (e.g., nyt_bot_stub -> bot_blocked not paywall).
+  if (tierResult.truncationSignals) data.truncationSignals = tierResult.truncationSignals;
+  if (tierResult.paywallOverride) {
+    data.textStatus = 'truncated';
+    data.textQuality = 'truncated';
+    data.isFullReview = false;
+  }
+  if (tierResult.tierReason !== undefined) data.contentTierReason = tierResult.tierReason;
+}
+
+module.exports = { classifyTierWriteBack, applyTierResultInMemory };

@@ -1156,6 +1156,43 @@ function startsWithPageChrome(text) {
     || CREDITS_HEADER_RE.test(t);
 }
 
+/**
+ * Page furniture inside the first lines of a review body that is not critic prose: a gallery counter ("1/7"), a byline
+ * date glued to the text ("Henry Hitchings22 February 2019"), a "WHEN?:" / "RUNTIME:" listing block, a "(Picture: ...)"
+ * caption, site navigation icons, "The tour continues until ..." run logistics. startsWithPageChrome() only defers such
+ * a quote; a file stored "truncated" (BRO-8084) has nothing better to fall back to, so selectBestExcerpt drops it there.
+ */
+const BODY_FURNITURE_PATTERNS = [
+  /^\W*\d{1,2}\s*\/\s*\d{1,2}\s+[A-Z]/,
+  new RegExp(`[a-z]\\d{1,2}\\s+(?:${MONTHS})\\s+(?:19|20)\\d\\d`),
+  /\b(?:WHEN|WHERE|RUNTIME|TICKETS|BOOKINGS?)\s*\?\s*:/,
+  /\bIs This Your Show\?/i,
+  /\((?:Pictures?|Photos?|Images?)\s*:/i,
+  /\bPictures?\s*:\s+[A-Z][a-z]+ [A-Z]/,
+  /\bwas reviewed at the\b/i,
+  // Site promo / widget text and a glued "Theater review by <name>" byline (seen in the stored-truncated quote A/B)
+  /\bGift unlocked article\b/i,
+  /\bbook your tickets\b/i,
+  /\bSee all \d+\b|\bAccess Captioned\b/,
+  /\bthe reviews are in\b|\bsee what the critics\b/i,
+  /^\W*More from\b/i,
+  /^\W*Back to\s+(?:Plays|Shows|Musicals|Listings|Search|Results|all)\b/i,
+  /^\W*Synopsis\s*:/i,
+  /\*{3,}\s*Written by\b/,
+  /^\W*[A-Z][a-z]+ [A-Z][a-z]+ reviews [A-Z]/,
+  new RegExp(`^\\W*(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?,?\\s+\\d{1,2}(?:st|nd|rd|th)?\\s+(?:${MONTHS})`),
+  /^\W*Theat(?:er|re) review by\b/i,
+  /\bComment\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}\b/,
+  /\bCOMMENTS(?=[A-Z])/,
+  /[\u{1F4F7}\u{1F3A5}\u{1F3F7}\u{1F465}\u{1F3AD}]/u,
+  /^\W*(?:the\s+)?(?:tour|show|production|run|season)\s+(?:continues|runs|plays)\s+(?:until|through|to)\s+(?:\d{1,2}\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/i,
+];
+
+function hasBodyFurniture(excerpt) {
+  if (!excerpt || typeof excerpt !== 'string') return false;
+  return BODY_FURNITURE_PATTERNS.some(re => re.test(excerpt));
+}
+
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
 // NO theater-domain words AND NO show-title keywords. False positives (blocking
 // a real review) are worse than letting a bad excerpt through.
@@ -1539,6 +1576,7 @@ module.exports = {
   isExcerptAnchoredInSource,
   isTrustedContiguitySource,
   startsWithPageChrome,
+  hasBodyFurniture,
   // Candidate ranking
   EXCERPT_SOURCE_RANK,
   RAW_SOURCE_RANK,

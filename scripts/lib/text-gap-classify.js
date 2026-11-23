@@ -32,7 +32,7 @@
 const { classifyIncompleteReason } = require('./incomplete-reason');
 const { effectiveFailureReason, isNonEvidenceFailure } = require('./failed-fetch-policy');
 const { hasExcerpt } = require('./excerpt-fields');
-const { stripKnownTrailers } = require('./trailer-signatures');
+const { stripKnownTrailers, TRAILER_ONLY_SIGNALS } = require('./trailer-signatures');
 
 const GAP_CLASSES = Object.freeze([
   'EXCLUDED',
@@ -59,9 +59,6 @@ const CLOSED_CLASSES = Object.freeze(['EXCLUDED', 'COMPLETE', 'TERMINAL']);
 const RECENT_WINDOW_DAYS = 730;
 const DAY_MS = 86400000;
 
-// Truncation signals that a page trailer alone can cause. Any other signal
-// (paywall prompt, bot stub, mid-article cut) means a real truncation.
-const TRAILER_ONLY_SIGNALS = new Set(['no_ending_punctuation', 'has_footer_junk']);
 const BLOCKED_FETCH_REASONS = new Set(['all_tiers_failed', 'fetch_error', 'all_tiers_timeout']);
 
 function ms(value) {

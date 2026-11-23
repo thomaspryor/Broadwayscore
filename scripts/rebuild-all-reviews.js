@@ -54,7 +54,7 @@ const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsShowTitle } = require('./lib/show-title-variants');
-const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
+const { classifyTierWriteBack, applyTierResultInMemory } = require('./lib/content-tier-reason-sync');
 const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -68,8 +68,9 @@ const {
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
   isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, stripCaptionChrome, PAREN_ASIDE_START_RE,
-  combinedColumnQuoteLacksOwnShow,
+  combinedColumnQuoteLacksOwnShow, hasBodyFurniture,
 } = require('./lib/pull-quote-guards');
+const { isTrailerOnlyTruncation, isKnownTrailerComplete, trailerSafeBody, PAYWALL_PROMPT_TAIL_RE } = require('./lib/trailer-signatures');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
 let _heldTrackedShows = null; // lazy: readTrackedShowIds() once per run, only if a held show is seen
@@ -791,6 +792,18 @@ function selectBestExcerpt(data, showTitle) {
   const LLM_DERIVED_SOURCES = new Set(['llmPullQuote', 'keyPhrase', 'keyQuote', 'fullText', 'fullText-chrome-skip']);
   // A soft-404 template saved as fullText is not review prose to quote from.
   const bodyIsSoft404 = isSoft404Body(data.fullText);
+  // fullText is quotable unless it is really cut off. A file tiered "truncated" only because the page
+  // ends in a run-info / star / listing line (BRO-8084) is read through trailerSafeBody(): the signal
+  // cannot prove a trailer exists, and the trailer or a cut final sentence must never become the quote.
+  // Only the trailer-only case and a file complete once a KNOWN trailer is stripped are opened. Any other stored-truncated file the classifier calls complete is NOT: the A/B over the
+  // review-texts corpus showed those are mostly ticket-listing and widget pages, so they keep shipping no quote.
+  // Either route also needs the body to carry no paywall prompt anywhere: the classifier scans only the first 70% of a
+  // long body, and the paywall override fires only for a labelled or recently rechecked file (ship-check, BRO-8084).
+  const bodyTextQuotable = data.textStatus !== 'truncated'
+    || ((isTrailerOnlyTruncation(data) || isKnownTrailerComplete(data)) && !PAYWALL_PROMPT_TAIL_RE.test(String(data.fullText || '')));
+  const quoteBody = data.textStatus === 'truncated' ? trailerSafeBody(data.fullText, data.outletId) : data.fullText;
+  // A stored-truncated body has no better fallback than its opening furniture, so a quote made of it is dropped (BRO-8084).
+  const bodyFurnitureOnTruncated = (q) => data.textStatus === 'truncated' && hasBodyFurniture(q);
 
   /**
    * Resolve the final excerpt once a candidate has been accepted (or every
@@ -1187,11 +1200,15 @@ function selectBestExcerpt(data, showTitle) {
 
   // 6. Extract from fullText (last automated option — critics often open with
   //    context/scene-setting, so this is lower priority than aggregator excerpts)
-  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated' && !bodyIsSoft404) {
-    const extracted = extractExcerptFromFullText(data.fullText, data.showId);
+  // A file stored 'truncated' only reaches the body steps when nothing soft-rejected is on hand: its existing quote
+  // (a deferred candidate) keeps shipping, as before (BRO-8084). Complete files keep the original priority.
+  const bodyStepsOpen = quoteBody && quoteBody.length > 300 && bodyTextQuotable && !bodyIsSoft404
+    && !(data.textStatus === 'truncated' && deferred.length);
+  if (bodyStepsOpen) {
+    const extracted = extractExcerptFromFullText(quoteBody, data.showId);
     if (extracted && extracted.length > 50) {
       const validated = validateExcerpt(extracted, 'fullText');
-      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.fullText, excerpt: validated });
+      if (validated && !bodyFurnitureOnTruncated(validated)) return finish({ rank: EXCERPT_SOURCE_RANK.fullText, excerpt: validated });
     }
   }
 
@@ -1201,15 +1218,15 @@ function selectBestExcerpt(data, showTitle) {
   //    fullText rather than nothing — but skip the leading page chrome first
   //    so we don't return "Review: <Title> at the Palace Theatre Palace
   //    Theatre ⋄ ...". See pull-quote-guards.stripLeadingChrome.
-  //    Operates on raw fullText (not the truncated-status version) and bails
+  //    Operates on quoteBody (the whole body, or its trailer-safe part for a stored-truncated file) and bails
   //    when the heuristic would skip >70% of text.
-  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated' && !bodyIsSoft404) {
-    const stripped = stripLeadingChrome(data.fullText, { maxLen: 600 });
+  if (bodyStepsOpen) {
+    const stripped = stripLeadingChrome(quoteBody, { maxLen: 600 });
     if (stripped && stripped.length > 50) {
       const cleaned = cleanExcerpt(stripped);
       if (cleaned && cleaned.length > 50 && !isJunkExcerpt(cleaned)) {
         const validated = validateExcerpt(cleaned, 'fullText-chrome-skip');
-        if (validated) return finish({ rank: EXCERPT_SOURCE_RANK['fullText-chrome-skip'], excerpt: validated });
+        if (validated && !bodyFurnitureOnTruncated(validated)) return finish({ rank: EXCERPT_SOURCE_RANK['fullText-chrome-skip'], excerpt: validated });
       }
     }
   }
@@ -1371,6 +1388,10 @@ function finalizePullQuote(data, showTitle, showStatus) {
   // garbageFullText here would put that text back into the quote.
   const migrated = { ...data };
   if (!isFullTextWrongAuthorActive(data)) applyScoreRelevantMigrations(migrated);
+  // BRO-8084: the rebuild re-tiers a file (tier, signals, paywall override, reason) before it reaches here, and
+  // selectBestExcerpt reads those to decide whether a truncated body is quotable. Same step here for every file, so
+  // backfill / the live-data test see the rebuild's answer (an in-window hard-paywall capture included). Idempotent in the rebuild.
+  applyTierResultInMemory(migrated, classifyTierWriteBack(migrated).tierResult);
   const raw = selectBestExcerpt(migrated, showTitle);
   if (raw && isJunkExcerpt(raw)) return null;
   const quote = normalizeQuoteWrapping(raw && decodeHtmlEntities(raw));
@@ -3111,17 +3132,9 @@ showDirs.forEach(showId => {
         // text) instead of resetting it to 'complete' on every rebuild.
         // BRO-3238: classifyTierWriteBack also reports a reason-only change.
         const { tierResult, tierChanged, reasonOnlyChanged } = classifyTierWriteBack(data);
-        data.contentTier = tierResult.contentTier;
-        // Propagate truncationSignals so classifyIncompleteReason (called next) can
-        // use them for routing (e.g., nyt_bot_stub → bot_blocked not paywall).
-        if (tierResult.truncationSignals) data.truncationSignals = tierResult.truncationSignals;
-        // Mirror the write-back in memory so this rebuild's excerpt selection
-        // sees the same textStatus the next one will (ship-check P2, BRO-4334).
-        if (tierResult.paywallOverride) {
-          data.textStatus = 'truncated';
-          data.textQuality = 'truncated';
-          data.isFullReview = false;
-        }
+        // Mirror the write-back in memory so this rebuild's excerpt selection sees the same tier, signals,
+        // textStatus and reason the next one will (ship-check P2, BRO-4334; BRO-8084).
+        applyTierResultInMemory(data, tierResult);
         if (tierChanged) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -3143,8 +3156,8 @@ showDirs.forEach(showId => {
           // BRO-3238: same tier, stale reason text (an older classifier's
           // wording). Only the reason is changed here; safeWriteReview still
           // applies its usual at-write corrections, as on every rebuild
-          // write. The in-memory record keeps the stored reason this run,
-          // exactly as it did before, so inclusion is unchanged.
+          // write. The in-memory record now takes the new reason this run too (applyTierResultInMemory, BRO-8084);
+          // the file converges to the same state either way.
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             sourceData.contentTierReason = tierResult.tierReason;
