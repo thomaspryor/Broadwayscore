@@ -7,7 +7,7 @@
  * BRO-7949: also fails on a NET-new hard error() added inside a blocking validator
  * (scripts/validate-data.js, validate-market-expansion.js) with no `// gate-arm-ok:`
  * marker in the hunk and no referenced baseline file. GATE_ARM_VALIDATOR_ADVISORY=1
- * downgrades that part to a warning (test.yml lands it advisory first, per §19).
+ * downgrades that part to a warning (test.yml ran it advisory first per §19; armed '0' by BRO-8094).
  *
  * Usage: node scripts/audit-new-gate-arming.js [--base=<ref>]
  *   base defaults to $GATE_ARM_BASE, else origin/main (or HEAD~1 when HEAD is
