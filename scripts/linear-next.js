@@ -1280,6 +1280,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exitCode = 1;
       return;
     }
+    if (res.stage === 'memory-pressure') {
+      // BRO-8167: kernel memory pressure is not normal — nothing spawned, same
+      // release-the-claim shape as disk-pressure.
+      console.error(`[linear-next] ${identifier} dispatch refused: memory pressure. Retry once the Mac recovers.`);
+      process.exitCode = 1;
+      return;
+    }
     // Task #1898: only NOW (not before runJob() was even called) is this a
     // real dispatch — 'lease-held' above means nothing was actually spawned,
     // and the dispatch claim must release immediately in that case rather

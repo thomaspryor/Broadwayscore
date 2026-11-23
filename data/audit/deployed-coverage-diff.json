@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-23T15:45:47.950Z",
+  "generatedAt": "2026-11-23T17:17:30.212Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 368,
-  "clean": 368,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 365,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "openingDate": "2026-11-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.21 vs local 68.73 (Δ0.48)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-23T17:17:19.797Z"
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "openingDate": "2026-11-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.8 vs local 67.7 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-23T17:17:19.797Z"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.98 vs local 88.06 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-11-23T17:17:19.797Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

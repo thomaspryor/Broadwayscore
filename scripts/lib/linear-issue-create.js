@@ -779,7 +779,10 @@ async function pausedDecisionTwinAbsorbs(twin, mode, dedupeOptOut, client) {
     if (findOwnerDecisions([merged]).length > 0) return true;
     // A paused worker's DECISION NEEDED lives in its "Session report (paused)" COMMENT, not the
     // description (BRO-7980/8047): the dispatcher's own pause-history rule names it awaiting-owner.
-    return require('./linear-dispatch.js').pausedHoldReason(merged) === 'awaiting-owner';
+    // Any hold the dispatcher itself honours (awaiting-owner, recently-paused, paused-repeatedly,
+    // recheck-pending) means the twin would refuse a dispatch, so a new card is the only way the
+    // filing runs and the hold is defeated (BRO-8138 has 5 Paused twins, BRO-8049/8144 two).
+    return !!require('./linear-dispatch.js').pausedHoldReason(merged);
   } catch (e) {
     console.warn(`[linear-issue-create] could not read ${twin && twin.identifier} for a decision check, filing normally: ${e.message}`);
     return false;

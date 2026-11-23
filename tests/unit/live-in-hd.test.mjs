@@ -174,7 +174,7 @@ test('metadata and both hero layouts use the same cached server snapshot', () =>
   const page = readFileSync(new URL('../../src/app/show/[slug]/page.tsx', import.meta.url), 'utf8');
   const hero = readFileSync(new URL('../../src/components/show-page/ShowHeroRedesign.tsx', import.meta.url), 'utf8');
   assert.match(page, /const getLiveInHdForRender = cache\(/);
-  assert.equal(page.match(/const hd = getLiveInHdForRender\(params.slug\);/g)?.length, 2);
+  assert.equal(page.match(/const hd = (?:await )?getLiveInHdForRender\(params.slug\);/g)?.length, 2);
   assert.match(page, /absolute: hd\.line/);
   assert.match(page, /liveInHdText=\{hd.line\}/);
   assert.match(page, /data-testid="live-in-hd"[^\n]*\{hd.line\}/);

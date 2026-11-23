@@ -16,6 +16,12 @@
 //      const initializer), CSS imports and 'use client'/'use server'. JSX text (copy) and other logic are NOT in it,
 //      so reworded copy, a changed handler, href or data path is a fix; a moved, added or removed element, a changed
 //      class, style, literal or tag target is design.
+//   4. (BRO-8169) the one exception to "identical": the new skeleton may ADD insertable tokens. An `await` (and the
+//      parentheses directly around it) on a non-JSX expression outside any JSX, not written straight into a branch
+//      condition, and not initialising a const that feeds className/class/style; and `async` on a non-exported named function
+//      whose body has no JSX, awaits on its own, and whose every use in the file is `await name(...)`. Removing any
+//      of these stays design (a Promise would then reach a condition or a class). `for await` is not exempt.
+//      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
 //
 // One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
 // running the main checkout's copy (the pushing checkout runs the main checkout copy of the hook and this file, so a pushed branch cannot loosen it), so the two never disagree.
@@ -49,7 +55,7 @@ function parse(ts, file, text) {
  * types, comments, JSX text (copy), import/export statements (compared separately), and the inside of "quiet" roots
  * (effect callbacks, on* handlers, key/ref/href/to/name/htmlFor props), where only strings and DOM style/class writes count.
  */
-function skeleton(ts, sf) {
+function skeleton(ts, sf, env = process.env) {
   const out = [];
   const imports = new Map(); // local binding -> "module::importedName"
   const K = ts.SyntaxKind;
@@ -72,6 +78,58 @@ function skeleton(ts, sf) {
   };
   scanUse(sf, false);
   const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
+  // BRO-8169: tokens a diff may ADD without changing what draws. Their indexes go in out.insertable (a side set, so
+  // no literal text can pose as one); see insertOnlyMatch. The kill switch leaves the set empty: exact old behaviour.
+  const insertableIdx = new Set();
+  const awaitExemptOn = env.VISUAL_AWAIT_TRANSPARENT_DISABLED !== '1';
+  const isFn = (x) => ts.isFunctionDeclaration(x) || ts.isFunctionExpression(x) || ts.isArrowFunction(x) || ts.isMethodDeclaration(x);
+  const JSX_KINDS = new Set([K.JsxElement, K.JsxSelfClosingElement, K.JsxFragment, K.JsxExpression, K.JsxAttribute, K.JsxSpreadAttribute, K.JsxOpeningElement]);
+  const insideJsx = (x) => { for (let p = x.parent; p; p = p.parent) if (JSX_KINDS.has(p.kind)) return true; return false; };
+  // An await written straight into a branch condition, or whose const feeds a class/style, stays design: if the callee
+  // was already async, the old code tested a Promise (always truthy) or drew "[object Promise]". Accepted residual risk:
+  // a const that later reaches a condition (`const r = await get(); if (!r) notFound()`) is allowed, because that is
+  // the normal shape when the callee just became async (BRO-8056 p2), and the visual-qa verdict still has to pass.
+  const CLS_ATTR = /^(className|class|style)$/;
+  const upParens = (x) => { while (x.parent && ts.isParenthesizedExpression(x.parent)) x = x.parent; return x; };
+  const decidesDrawing = (x) => {
+    const e = upParens(x), p = e.parent;
+    if (!p) return false;
+    if ((ts.isIfStatement(p) || ts.isWhileStatement(p) || ts.isDoStatement(p)) && p.expression === e) return true;
+    if (ts.isForStatement(p) && p.condition === e) return true;
+    if (ts.isConditionalExpression(p) && p.condition === e) return true;
+    if (ts.isPrefixUnaryExpression(p) && p.operator === K.ExclamationToken) return true;
+    if (ts.isBinaryExpression(p) && [K.AmpersandAmpersandToken, K.BarBarToken, K.QuestionQuestionToken].includes(p.operatorToken.kind)) return true;
+    if (ts.isTemplateSpan(p)) return true; // `${promise}` text
+    return false;
+  };
+  const nameFeedsClass = (name) => { let hit = false; const w = (x, inCls) => { if (hit) return; let c = inCls; if (ts.isJsxAttribute(x)) c = CLS_ATTR.test(x.name.getText(sf)); if (ts.isIdentifier(x) && x.text === name && !(x.parent && ts.isVariableDeclaration(x.parent) && x.parent.name === x) && c) { hit = true; return; } ts.forEachChild(x, (y) => w(y, c)); }; w(sf, false); return hit; };
+  const insertableAwait = (x) => {
+    if (!ts.isAwaitExpression(x) || insideJsx(x) || hasJsx(x.expression) || decidesDrawing(x)) return false;
+    const d = upParens(x).parent; // `const v = await f()`: v must not later feed className/class/style
+    if (d && ts.isVariableDeclaration(d) && d.initializer === upParens(x) && ts.isIdentifier(d.name) && nameFeedsClass(d.name.text)) return false;
+    return true;
+  };
+  const ownsAwait = (fn) => { let f = false; const w = (x) => { if (f) return; if (x !== fn.body && isFn(x)) return; if (ts.isAwaitExpression(x)) { f = true; return; } ts.forEachChild(x, w); }; if (fn.body) w(fn.body); return f; };
+  // A newly async function returns a Promise, so every caller must await it. Only a function bound to a non-exported
+  // const/function name whose every other mention in the file is `await name(...)` qualifies; an inline callback,
+  // an export (callers in other files) or any bare reference stays design.
+  const bindingOf = (fn) => {
+    if (ts.isFunctionDeclaration(fn)) return fn.name ? { name: fn.name, stmt: fn } : null;
+    let x = fn;
+    while (x.parent && ts.isCallExpression(x.parent) && x.parent.arguments.includes(x)) x = x.parent; // cache(async () => ...)
+    const d = x.parent;
+    if (!d || !ts.isVariableDeclaration(d) || d.initializer !== x || !ts.isIdentifier(d.name)) return null;
+    const stmt = d.parent && d.parent.parent;
+    return stmt && ts.isVariableStatement(stmt) ? { name: d.name, stmt } : null;
+  };
+  // `export { h }` / `export default h` are bare references, which everyUseAwaited already refuses.
+  const exported = (stmt) => !!(stmt.modifiers && stmt.modifiers.some((m) => m.kind === K.ExportKeyword));
+  const everyUseAwaited = (b) => { let ok = true; const w = (x) => { if (!ok) return; if (ts.isIdentifier(x) && x !== b.name && x.text === b.name.text) { const c = x.parent; if (!(c && ts.isCallExpression(c) && c.expression === x && c.parent && ts.isAwaitExpression(c.parent))) ok = false; } ts.forEachChild(x, w); }; w(sf); return ok; };
+  const insertableAsync = (x) => {
+    if (x.kind !== K.AsyncKeyword || !x.parent || !isFn(x.parent) || !x.parent.body || hasJsx(x.parent.body) || !ownsAwait(x.parent)) return false;
+    const b = bindingOf(x.parent);
+    return !!b && !exported(b.stmt) && everyUseAwaited(b);
+  };
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
   const visit = (n) => {
@@ -124,6 +182,8 @@ function skeleton(ts, sf) {
       ts.forEachChild(n, visit);
       return;
     }
+    const insertable = insertableAwait(n) || (ts.isParenthesizedExpression(n) && insertableAwait(n.expression)) || insertableAsync(n);
+    if (insertable && awaitExemptOn) insertableIdx.add(out.length);
     out.push(K[n.kind]);
     if (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) out.push(`op${n.operator}`);
     if (ts.isIdentifier(n) || ts.isPrivateIdentifier(n)) out.push(n.text);
@@ -135,11 +195,29 @@ function skeleton(ts, sf) {
   };
   visit(sf);
   out.imports = imports;
+  out.insertable = insertableIdx;
   return out;
 }
 
+/**
+ * BRO-8169: is `after` equal to `before` with only insertable tokens (indexes in after.insertable) added? Insert-only
+ * on purpose: every token present before must still be present after (a removed await stays design). A greedy walk is enough:
+ * whenever it succeeds it has found such an embedding, and when it fails we fail closed.
+ * -> { ok, added, at } (at = first token that broke the match).
+ */
+function insertOnlyMatch(before, after) {
+  const insertable = after.insertable || new Set();
+  let i = 0, j = 0, added = 0;
+  while (i < before.length || j < after.length) {
+    if (i < before.length && j < after.length && before[i] === after[j]) { i++; j++; continue; }
+    if (j < after.length && insertable.has(j)) { j++; added++; continue; }
+    return { ok: false, added, at: after[j] || before[i] || '' };
+  }
+  return { ok: true, added, at: '' };
+}
+
 /** -> { design: boolean, reason } for one file. oldSource/newSource null = file absent on that side. */
-function classifyFile({ file, oldSource, newSource }) {
+function classifyFile({ file, oldSource, newSource, env = process.env }) {
   const design = (reason) => ({ design: true, reason });
   if (!/^src\/.*\.(tsx|jsx)$/.test(file)) return design('style or config file (CSS/SCSS/Tailwind/PostCSS)');
   if (typeof oldSource !== 'string') return design('new file');
@@ -150,14 +228,13 @@ function classifyFile({ file, oldSource, newSource }) {
     const a = parse(ts, file, oldSource);
     const b = parse(ts, file, newSource);
     if (!a || !b) return design('does not parse (fail closed)');
-    const sa = skeleton(ts, a);
-    const sb = skeleton(ts, b);
+    const sa = skeleton(ts, a, env);
+    const sb = skeleton(ts, b, env);
     // A binding present on both sides that now points somewhere else (a swapped icon, component or constant) changes what draws.
     for (const [name, target] of sa.imports) if (sb.imports.has(name) && sb.imports.get(name) !== target) return design(`import ${name} now points at a different module or export`);
-    if (sa.length === sb.length && sa.every((t, i) => t === sb[i])) return { design: false, reason: 'page structure and style tokens unchanged' };
-    let i = 0;
-    while (i < sa.length && i < sb.length && sa[i] === sb[i]) i++;
-    return design(`layout/style changed near ${JSON.stringify((sb[i] || sa[i] || '').slice(0, 60))}`);
+    const m = insertOnlyMatch(sa, sb);
+    if (m.ok) return { design: false, reason: m.added ? `page structure and style tokens unchanged (only ${m.added} await/async added)` : 'page structure and style tokens unchanged' };
+    return design(`layout/style changed near ${JSON.stringify((m.at || '').slice(0, 60))}`);
   } catch (e) {
     return design(`classifier error (fail closed): ${e && e.message}`);
   }
@@ -166,7 +243,7 @@ function classifyFile({ file, oldSource, newSource }) {
 const gitIn = (cwd) => (args) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
 
 /** Design files among `files` for a base...head range. Fail closed: any error returns every file. */
-function designFiles(range, files, cwd) {
+function designFiles(range, files, cwd, env = process.env) {
   try {
     const git = gitIn(cwd);
     const [baseRef, headRef] = range.split('...');
@@ -174,7 +251,7 @@ function designFiles(range, files, cwd) {
     const show = (ref, f) => { try { return git(['show', `${ref}:${f}`]); } catch { return null; } };
     const out = [];
     for (const f of files) {
-      const r = classifyFile({ file: f, oldSource: show(base, f), newSource: show(headRef, f) });
+      const r = classifyFile({ file: f, oldSource: show(base, f), newSource: show(headRef, f), env });
       if (r.design) out.push({ file: f, reason: r.reason });
     }
     return out;
@@ -195,7 +272,7 @@ function selfClear({ cwd, range = 'origin/main...HEAD', verdict = null, env = pr
     const [baseRef, headRef] = range.split('...');
     const files = gitIn(cwd)(['diff', '--name-only', '--no-renames', range]).split('\n').filter((f) => f && D.UI_RE.test(f));
     if (!files.length) return no('no UI files in the diff');
-    const design = designFiles(range, files, cwd);
+    const design = designFiles(range, files, cwd, env);
     if (design.length) return no('design change: the owner approves how it looks', design);
     if (!verdict) return no('fix-only, but no visual-qa verdict yet');
     if (String(verdict.schemaVersion) !== '2') return no('fix-only, but the verdict is an old schema');
@@ -219,7 +296,7 @@ function explain(r) {
   return `Owner yes needed: ${r.reason}.`;
 }
 
-module.exports = { classifyFile, designFiles, selfClear, explain, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
+module.exports = { classifyFile, _insertOnlyMatch: insertOnlyMatch, designFiles, selfClear, explain, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
 
 if (require.main === module) {
   const opt = {};

@@ -59,24 +59,24 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 // Hardcoded fallback outlet lists (used only if registry has no outlets for a market)
 const MARKET_OUTLETS_FALLBACK = {
   'west-end': {
-    tier1: ['guardian', 'telegraph', 'evening-standard', 'the-times-uk', 'dailymail'],
-    tier2: ['stage-uk', 'whatsonstage', 'timeout-london', 'independent', 'financial-times-uk', 'london-theatre', 'inews'],
-    tier3: ['the-arts-desk', 'everythingtheatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
+    tier1: ['guardian', 'telegraph', 'standard', 'times-uk', 'daily-mail'],
+    tier2: ['thestage', 'whatsonstage', 'timeout-london', 'independent', 'financialtimes', 'london-theatre', 'i-paper'],
+    tier3: ['artsdesk', 'everything-theatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
   },
   'off-west-end': {
-    tier1: ['guardian', 'telegraph', 'evening-standard', 'the-times-uk', 'dailymail'],
-    tier2: ['stage-uk', 'whatsonstage', 'timeout-london', 'independent', 'financial-times-uk', 'london-theatre', 'inews'],
-    tier3: ['the-arts-desk', 'everythingtheatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
+    tier1: ['guardian', 'telegraph', 'standard', 'times-uk', 'daily-mail'],
+    tier2: ['thestage', 'whatsonstage', 'timeout-london', 'independent', 'financialtimes', 'london-theatre', 'i-paper'],
+    tier3: ['artsdesk', 'everything-theatre', 'thereviewshub', 'metro-uk', 'west-end-best-friend', 'londonist'],
   },
   'broadway': {
     tier1: ['nytimes', 'vulture', 'variety', 'hollywood-reporter'],
     tier2: ['timeout', 'theatermania', 'nypost', 'deadline', 'ew', 'nydailynews', 'observer', 'wsj', 'newyorker'],
-    tier3: ['broadwayworld', 'theaterscene', 'talkinbroadway', 'theatrely', 'newyorktheater', 'frontmezzjunkies'],
+    tier3: ['broadwayworld', 'theater-scene', 'talkinbroadway', 'theatrely', 'nyt-theater', 'frontmezzjunkies'],
   },
   'off-broadway': {
     tier1: ['nytimes', 'vulture', 'variety', 'hollywood-reporter'],
     tier2: ['timeout', 'theatermania', 'nypost', 'deadline', 'ew', 'observer', 'theatrely'],
-    tier3: ['newyorktheater', 'talkinbroadway', 'stage-and-cinema', 'frontmezzjunkies', 'broadwayworld'],
+    tier3: ['nyt-theater', 'talkinbroadway', 'stageandcinema', 'frontmezzjunkies', 'broadwayworld'],
   },
 };
 
@@ -717,7 +717,7 @@ async function main() {
 }
 
 // Export the write path for tests (CLAUDE.md §15 — test the real function).
-module.exports = { main, writeReviewFile, looksLikeReview, getTargetOutlets, publishWindowVerdict };
+module.exports = { main, writeReviewFile, looksLikeReview, getTargetOutlets, publishWindowVerdict, MARKET_OUTLETS_FALLBACK };
 
 if (require.main === module) {
   main().catch(e => {

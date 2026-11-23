@@ -156,6 +156,7 @@ else
   # partial copy) — fall back to the old unscoped diff rather than fail closed.
   UI_FILES_CHANGED=$(_UNSCOPED_UI_DIFF)
 fi
+UI_FILES_ALL=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | sort -u)  # BRO-8156: full list, before any filter, for the ledger record
 # BRO-5844: drop code files whose diff only changes copy (logic in the helper,
 # canonical root ONLY so a pushed branch can't supply its own). Fail closed: any
 # helper/git error keeps the full list.
@@ -178,6 +179,7 @@ if [ -n "$UI_FILES_CHANGED" ] && [ -f "$_RIL" ] && command -v timeout >/dev/null
     _RIL_DETECTOR_LINE="render-impact detector: no file exempt (each changes JSX, styles, state or non-effect code)."
   fi
 fi
+UI_FILES_GATED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | sort -u)  # BRO-8156: full filtered list (scope check); the head -5 below is display only
 UI_FILES_CHANGED=$(printf '%s\n' "$UI_FILES_CHANGED" | sed '/^$/d' | head -5)
 if [ -z "$UI_FILES_CHANGED" ]; then
   # No UI files changed (or only copy edits) in this branch — push freely.
@@ -321,7 +323,30 @@ if [ "$LEDGER_OK" = "true" ]; then
   exit 0
 fi
 
-APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" --after-file="$VERDICT_PATH" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
+# >>> BRO-8156 scope reuse (the replay test strips this block to prove the red case)
+# One owner yes per branch covers later revisions of the SAME UI files when the passing verdict shows the pushed
+# content (visual-scope.js head-current) and a fresh ledger entry lists every gated file. Never records or mints.
+_CURRENT=0
+if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ] \
+   && node "$CANONICAL_ROOT/scripts/lib/visual-scope.js" head-current --cwd="$SESSION_ROOT" --ref="$DIFF_REF" --verdict="$VERDICT_PATH" --files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null; then
+  _CURRENT=1
+fi
+if [ "$_CURRENT" = 1 ]; then
+  _SCOPE=$(node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=scope-allowed --repo="$CANONICAL_ROOT" --branch="$BRANCH" --ui-files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null)
+  if [ "$(printf '%s' "$_SCOPE" | jq -r '.allowed // false' 2>/dev/null)" = "true" ]; then
+    _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"; mkdir -p "$_logdir" 2>/dev/null
+    printf '%s\tscope-reuse\t%s\n' "$(date +%s)" "$BRANCH $(printf '%s' "$UI_FILES_GATED" | tr '\n' ' ')" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+    exit 0
+  fi
+fi
+# BRO-7295 yes-after-screenshots bound; BRO-8156: from verdict.scopeFirstAt (first screenshots of this file set).
+_AFTER_ARG="--after-file=$VERDICT_PATH"
+_SFA=$(jq -r '.scopeFirstAt // empty' "$VERDICT_PATH" 2>/dev/null)
+if [ "$_CURRENT" = 1 ] && [ -n "$_SFA" ] && jq -e --arg g "$UI_FILES_GATED" '(.uiFiles // null) as $u | $u != null and (($g | split("\n") | map(select(. != ""))) - $u | length == 0)' "$VERDICT_PATH" >/dev/null 2>&1; then
+  _AFTER_ARG="--after=$_SFA"
+fi
+# <<< BRO-8156 scope reuse
+APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" "$_AFTER_ARG" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then
@@ -333,6 +358,7 @@ if [ "$APPROVED" != "true" ]; then
   {
     echo "🛑 BLOCKED: a passing visual-qa verdict exists (overallPass=$OVERALL_PASS) but the owner has not approved it yet (branch $BRANCH)."
     echo "UI files: $(echo "$UI_FILES_CHANGED" | tr '\n' ' ')"
+    [ -n "${_SCOPE:-}" ] && echo "Earlier owner yes on this branch: $(printf '%s' "$_SCOPE" | jq -r '.reason // empty' 2>/dev/null)"  # BRO-8156
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
     _FIX_LINE "$VERDICT_PATH"
     echo "Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate (\"ship it\", \"looks good\", \"yes\", \"go\", ...): the reader (transcript-scan.mjs, BRO-7848) accepts all of them. NEVER ask the owner to type, copy or paste a hash/token/APPROVED: string. Other bypasses (you, not the owner): \"ship immediately for: <reason>\" | NO-VERIFY: <reason>."
@@ -348,7 +374,9 @@ HEAD_SHA=$(cd "$SESSION_ROOT" && git rev-parse HEAD 2>/dev/null)
 if [ -n "$HEAD_SHA" ]; then
   node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=record \
     --repo="$CANONICAL_ROOT" --branch="$BRANCH" --commit="$HEAD_SHA" \
-    --hash="$VERDICT_HASH" --session="$session_id" >/dev/null 2>&1 || true
+    --hash="$VERDICT_HASH" --session="$session_id" \
+    --ui-files="$(jq -r --arg a "$UI_FILES_ALL" '($a | split("\n") | map(select(. != ""))) as $all | if (.uiFiles | type) == "array" then [$all[] | select(. as $f | $u_files | index($f))] else [] end | join(",")' --argjson u_files "$(jq -c '.uiFiles // []' "$VERDICT_PATH" 2>/dev/null || echo '[]')" "$VERDICT_PATH" 2>/dev/null)" \
+    >/dev/null 2>&1 || true  # BRO-8156: only files the owner's screenshots covered (verdict.uiFiles) join the approved scope
 fi
 
 _mint_durable

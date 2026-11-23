@@ -29,7 +29,9 @@ const { shouldRefuseDispatch, isLeaseLive, parseEtime } = require('./worktree-gc
 const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
 const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
+const { acquireStorage } = require('./mac-storage-budget.js');
 const { isSlimTree, treeModeArgs } = require('./codex-runner.js');
+const jobMemCap = require('./job-memory-cap.js'); // BRO-8167
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -237,6 +239,17 @@ function parseDispatchFloorGB(raw, warn = console.error) {
   return n;
 }
 
+// BRO-8167: kernel memory-pressure admission. Pure decision + thin I/O.
+function shouldRefuseForMemory(verdict, env = process.env) {
+  if (String(env.BSC_DISPATCH_MEM_GUARD || '').trim() === '0') return false;
+  // Critical only: 'warning' is this Mac's routine state under load (see
+  // swap-pressure.js header); refusing on it would stall the queue for hours.
+  return Boolean(verdict) && verdict.critical === true;
+}
+function currentMemoryVerdict() {
+  try { return require('./swap-pressure.js').currentVmPressure(); } catch { return null; }
+}
+
 const GC_SCRIPT = path.join(REPO, 'scripts', 'gc-merged-worktrees.sh');
 
 // Same `df -Pk` parse as scripts/lib/disk-floor-check.sh's ensure_disk_floor,
@@ -425,7 +438,10 @@ async function runJob(opts) {
     freeGB = freeDiskGB(REPO);
   }
   if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
-    const detail = `disk free ${freeGB.toFixed(1)}GB < floor ${dispatchFloorGB}GB after self-heal GC — refusing dispatch for task ${taskId}`;
+    return deferForDisk(`disk free ${freeGB.toFixed(1)}GB < floor ${dispatchFloorGB}GB after self-heal GC`);
+  }
+
+  function deferForDisk(detail, alert = true) {
     console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
     // ABANDONED, not FAILED: disk pressure is infra, not a defect in this
     // task — JOB_EVENTS.FAILED counts toward a task's dead-attempt strikes
@@ -434,8 +450,21 @@ async function runJob(opts) {
     // Same "task is fine, this attempt just didn't run" semantics as the
     // lease-held case below.
     try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `disk-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
-    routeDiskPressureAlert(detail);
+    if (alert) routeDiskPressureAlert(detail);
     return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
+  }
+
+  // BRO-8167: memory admission. The kernel's own pressure verdict (never raw
+  // free pages, see swap-pressure.js header) must be normal before a new
+  // worker is stacked on the machine. ABANDONED, not FAILED, for the same
+  // reason as disk-pressure above. Fail-open: no verdict (non-macOS/sysctl
+  // error) never refuses. BSC_DISPATCH_MEM_GUARD=0 turns it off.
+  const memVerdict = opts.memoryPressureFn ? opts.memoryPressureFn() : currentMemoryVerdict();
+  if (shouldRefuseForMemory(memVerdict)) {
+    const detail = `kernel memory pressure is ${memVerdict.level} — refusing dispatch for task ${taskId}`;
+    console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
+    try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `memory-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
+    return { ok: false, jobId, stage: 'memory-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
 
   // Card #1454: acquireLease() (mkdirSync-based) can throw (e.g. LEASE_ROOT
@@ -467,8 +496,18 @@ async function runJob(opts) {
 
   let cwd = opts.cwd || REPO;
   let wtPath = null;
+  let releaseStorage = () => {};
   let out = null; // returned object; finally patches keptWorktree onto it
   try {
+    try {
+      releaseStorage = acquireStorage({
+        directory: cwd,
+        sizeGiB: opts.worktreeMode === 'slim' ? 3 : 4,
+        floorGiB: dispatchFloorGB,
+      });
+    } catch (error) {
+      return deferForDisk(error.message, false);
+    }
     if (isolate && !resumeSessionId) {
       try {
         wtPath = provisionJobWorktree(jobId, opts.worktreeMode);
@@ -500,6 +539,8 @@ async function runJob(opts) {
       // has a fresh clock and needs the same commit-early contract.
       prompt: buildBudgetPreamble(timeoutMs) + sparseNotice + prompt,
       cwd, model, resumeSessionId, timeoutMs, graceMs, logFile,
+      // BRO-8167: dispatched jobs opt in to the process-tree memory cap.
+      memoryCapGB: jobMemCap.capDisabled() ? null : jobMemCap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB),
       // BRO-3442: every bsc-runner spawn IS a headless `claude -p` job, resume
       // included — this is the fix for Gate H's cwd-sniffing heuristic
       // (exit-status-gate.sh: cwd under .claude/worktrees/job-*) missing the
@@ -575,11 +616,19 @@ async function runJob(opts) {
       // Adversarial review caught that; without this line the whole change is
       // cosmetic for its own use case. `undefined` on a normal failure so the
       // row shape is unchanged for everything except a signalled death.
-      ledger.appendEntry({
+      // BRO-8167: the watchdog's memory-cap backstop may already have written this
+      // job's terminal row; a second one would count as two dead attempts.
+      let alreadyFailed = false;
+      try { alreadyFailed = ledger.readEntries().some(e => e.jobId === jobId && e.event === ledger.JOB_EVENTS.FAILED && e.killedBy === 'watchdog-memory-cap'); } catch { /* fail open: write the row */ }
+      if (!alreadyFailed) ledger.appendEntry({
         event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage,
         sessionId: res.sessionId, cwd, model: model || null,
         costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,
         exitSignal: res.exitSignal || undefined,
+        // BRO-8167: memory-cap kill rides as fields (stage stays 'error').
+        reason: res.memoryCap ? res.memoryCap.reason : undefined,
+        memoryCapGB: res.memoryCap ? res.memoryCap.capGB : undefined,
+        rssGB: res.memoryCap ? res.memoryCap.rssGB : undefined,
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
@@ -595,13 +644,13 @@ async function runJob(opts) {
     const timedOutJob = out && out.stage === 'timeout';
     const kept = wtPath ? (timedOutJob || !teardownJobWorktree(wtPath, jobId)) : false;
     if (out) out.keptWorktree = kept;
-    releaseLease(taskId, jobId);
+    try { releaseLease(taskId, jobId); } finally { releaseStorage(); }
   }
 }
 
 module.exports = {
   gitSafeJobId, provisionJobWorktree,
-  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
+  runJob, shouldRefuseForMemory, currentMemoryVerdict, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB, routeDiskPressureAlert,
 };

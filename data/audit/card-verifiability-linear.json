@@ -1,46 +1,13 @@
 {
-  "generatedAt": "2026-11-23T15:43:04.174Z",
+  "generatedAt": "2026-11-23T16:33:18.832Z",
   "total": 482,
-  "armedCount": 456,
-  "refusedCount": 26,
+  "armedCount": 463,
+  "refusedCount": 19,
   "byKind": {
-    "no-command": 3,
-    "no-section": 3,
-    "shape": 20
+    "shape": 18,
+    "no-section": 1
   },
   "refused": [
-    {
-      "id": "BRO-8164",
-      "name": "Visual approval asks the owner again and again for the same change",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8164/visual-approval-asks-the-owner-again-and-again-for-the-same-change",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-8159",
-      "name": "Calibrate the function trace-size gate against packaged .func sizes, then arm it",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8159/calibrate-the-function-trace-size-gate-against-packaged-func-sizes",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-8134",
-      "name": "Opening-night audit 2026-11-23",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8134/opening-night-audit-2026-11-23",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-8122",
-      "name": "Tech Scorecard: confirm PostHog visitor and country data stayed right after the /ingest proxy",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8122/tech-scorecard-confirm-posthog-visitor-and-country-data-stayed-right",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
     {
       "id": "BRO-8117",
       "name": "114 complete full-text reviews scored from a 1-2 sentence excerpt: text-quality.js corruption check misfires on photo credit + privacy-policy furniture",
@@ -48,30 +15,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8117/114-complete-full-text-reviews-scored-from-a-1-2-sentence-excerpt-text",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-excerpt-scored-fulltext.js  (corrupted-but-complete settled count 114 -> near 0, sample N>=20 checked)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-8116",
-      "name": "Alarm on daily reviewer (session LLM) spend, and fold Mac session rows too",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8116/alarm-on-daily-reviewer-session-llm-spend-and-fold-mac-session-rows",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-provider-spend.js --dry-run --day=2026-11-23 prints a session-spend line)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-8113",
-      "name": "Job worktrees weigh 1.8 GB each: check out without public/images (or APFS-clone it) so the Mac stops filling up",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8113/job-worktrees-weigh-18-gb-each-check-out-without-publicimages-or-apfs",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/bsc-next.js --list >/dev/null && echo ok)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-8112",
-      "name": "Theater pages parity: accessibility + seat-view links for OB/London venues; year opened + official site on Broadway pages",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8112/theater-pages-parity-accessibility-seat-view-links-for-oblondon-venues",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-8087",
@@ -219,12 +162,21 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 300,
-    "checked": 300,
+    "total": 301,
+    "checked": 301,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-8164",
+      "name": "Visual approval asks the owner again and again for the same change",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8164/visual-approval-asks-the-owner-again-and-again-for-the-same-change",
+      "cmd": "node --test tests/unit/visual-approval-repeat-asks.test.mjs",
+      "missingPaths": [
+        "tests/unit/visual-approval-repeat-asks.test.mjs"
+      ]
+    },
     {
       "id": "BRO-8155",
       "name": "Shrink serverless functions: 4 are 204-217MB of Vercel's 250MB limit",
@@ -244,12 +196,30 @@
       ]
     },
     {
+      "id": "BRO-8122",
+      "name": "Tech Scorecard: confirm PostHog visitor and country data stayed right after the /ingest proxy",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8122/tech-scorecard-confirm-posthog-visitor-and-country-data-stayed-right",
+      "cmd": "node --test scripts/check-posthog-geoip.test.mjs",
+      "missingPaths": [
+        "scripts/check-posthog-geoip.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-8115",
       "name": "Maestro tabs on the Mac: onboarding helper stuck on quiz step 1 (city, no Skip), all 5 tabs flows fail (run 45113209220)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8115/maestro-tabs-on-the-mac-onboarding-helper-stuck-on-quiz-step-1-city-no",
       "cmd": "node --test scripts/e2e-gate.test.mjs",
       "missingPaths": [
         "scripts/e2e-gate.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8112",
+      "name": "Theater pages parity: accessibility + seat-view links for OB/London venues; year opened + official site on Broadway pages",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8112/theater-pages-parity-accessibility-seat-view-links-for-oblondon-venues",
+      "cmd": "node --test tests/unit/venue-info-parity.test.mjs",
+      "missingPaths": [
+        "tests/unit/venue-info-parity.test.mjs"
       ]
     },
     {

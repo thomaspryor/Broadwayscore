@@ -36,6 +36,7 @@ const os = require('os');
 const path = require('path');
 const { readEnvKeys } = require('./load-env.js');
 const { DISPATCH_OPUS } = require('./models.js');
+const memCap = require('./job-memory-cap.js'); // BRO-8167
 
 // Same guard as autonomous-budget.js: checked on the OUTPUT of model choice so
 // no config edit can route an unattended run onto the interactive default tier.
@@ -615,7 +616,7 @@ function runClaudeCli(opts) {
     // exitSignal (BRO-3053) defaults alongside exitCode so every result has the
     // field present-and-null rather than sometimes-undefined — a consumer can
     // then test `r.exitSignal === 'SIGKILL'` without a truthiness dance.
-    exitCode: null, exitSignal: null, pid: null, killedTasks: [], usage: null, costUSD: null, costEstimated: false, errorDetail: null,
+    exitCode: null, exitSignal: null, memoryCap: null, pid: null, killedTasks: [], usage: null, costUSD: null, costEstimated: false, errorDetail: null,
     ...r, durationMs: Date.now() - started,
   });
 
@@ -680,6 +681,30 @@ function runClaudeCli(opts) {
     let settled = false;
     let graceTimer = null;
 
+    // BRO-8167: memory cap. Sample this child's process tree; 2 consecutive
+    // over-cap samples => SIGTERM tree, SIGKILL survivors. Reported as
+    // STAGES.ERROR plus a memoryCap field (never a new stage spelling, see
+    // header) so retry/breaker classification is unchanged. Fails open when
+    // ps is unavailable. Opt-in via opts.memoryCapGB.
+    let memoryCapHit = null;
+    let memStrikes = {};
+    // Opt-in: only dispatched-job callers (bsc-runner.runJob) pass memoryCapGB;
+    // monitors and dataset builders keep their old behaviour.
+    const memCapGB = opts.memoryCapGB || null;
+    const memSampler = (memCapGB && pid) ? setInterval(() => {
+      if (settled || memoryCapHit) return;
+      const rows = (opts.sampleRows || memCap.sampleProcessTable)();
+      if (!rows) return;
+      const r = memCap.evaluatePass({ jobs: [{ key: 'self', pid }], rows, prevStrikes: memStrikes, capGB: memCapGB });
+      memStrikes = r.nextStrikes;
+      if (r.kills.length) {
+        memoryCapHit = { capGB: memCapGB, rssGB: Number(r.kills[0].rssGB.toFixed(2)), reason: memCap.memoryCapReason(r.kills[0], memCapGB) };
+        logLine(`===== ${new Date().toISOString()} ${memoryCapHit.reason} — killing process tree =====`);
+        memCap.killTree(r.kills[0].pids, { graceMs: Math.min(graceMs, memCap.KILL_GRACE_MS) }).catch(() => {});
+      }
+    }, opts.memorySampleMs || memCap.SAMPLE_INTERVAL_MS) : null;
+    if (memSampler && memSampler.unref) memSampler.unref();
+
     const timer = setTimeout(() => {
       timedOut = true;
       // SIGTERM first: lets in-flight child processes (a git commit, a test
@@ -732,7 +757,7 @@ function runClaudeCli(opts) {
     child.on('error', (e) => {
       if (settled) return;
       settled = true;
-      clearTimeout(timer); clearTimeout(graceTimer);
+      clearTimeout(timer); clearTimeout(graceTimer); if (memSampler) clearInterval(memSampler);
       if (logFd !== null) { try { fs.closeSync(logFd); } catch { /* ignore */ } }
       resolve(done({ stage: STAGES.ERROR, pid, errorDetail: `child error: ${e.message}` }));
     });
@@ -751,7 +776,7 @@ function runClaudeCli(opts) {
     child.on('close', (code, signal) => {
       if (settled) return;
       settled = true;
-      clearTimeout(timer); clearTimeout(graceTimer);
+      clearTimeout(timer); clearTimeout(graceTimer); if (memSampler) clearInterval(memSampler);
       if (lineBuf.trim()) handleLine(lineBuf); // last line may lack a newline
       if (logFd !== null) {
         try {
@@ -766,6 +791,13 @@ function runClaudeCli(opts) {
       const realCost = resultEvent && resultEvent.costUSD != null ? resultEvent.costUSD : null;
       const est = realCost != null ? null : estimateCostUSD(usageTotal, model);
       const cost = { costUSD: realCost != null ? realCost : est, costEstimated: realCost == null && est != null };
+      if (memoryCapHit && !timedOut) {
+        return resolve(done({
+          stage: STAGES.ERROR, pid, exitCode: code, exitSignal: signal || null, sessionId,
+          usage: usageTotal, ...cost, memoryCap: memoryCapHit,
+          errorDetail: memoryCapHit.reason,
+        }));
+      }
       if (timedOut) {
         return resolve(done({
           stage: STAGES.TIMEOUT, pid, exitCode: code, exitSignal: signal || null, sessionId,

@@ -17,7 +17,9 @@ const here = path.dirname(new URL(import.meta.url).pathname);
 // byline-* only resolve the critic's name (BRO-7745 added byline-from-text's
 // printed-credit override and byline-normalization's suffix strip to
 // extractAuthorFromHtml / cleanAuthorName); none decides tier or score.
-const NOT_TIER_DECIDING = new Set(['byline-extraction', 'byline-recovery', 'byline-from-text', 'byline-normalization', 'date-utils']);
+// shows-json-path only returns WHERE data/shows.json is (SHOWS_JSON_PATH test
+// fixtures, BRO-8090); the title list it feeds was already read from that file.
+const NOT_TIER_DECIDING = new Set(['byline-extraction', 'byline-recovery', 'byline-from-text', 'byline-normalization', 'date-utils', 'shows-json-path']);
 
 test('every local require of content-quality.js is watched or explicitly not tier-deciding', () => {
   const src = fs.readFileSync(path.join(here, 'content-quality.js'), 'utf8');

@@ -2916,6 +2916,40 @@ function computeCvIsStale(data) {
 }
 
 /**
+ * BRO-8135: true when the CV verdict covers the current text's SAME VERDICT WINDOW: the stored
+ * contentHash equals the hash of the current fullText. contentHash covers only the first
+ * CV_WINDOW_CHARS (2500) chars, so a changed tail still matches. It proves "the verifier read
+ * this same window", not "the same body", so it is used ONLY by the stale-CV wrongShowReason
+ * fallback below. It is deliberately NOT folded into computeCvIsStale, whose other callers
+ * (promotion, demotion, self-heal) need timestamp staleness kept.
+ * Returns false when contentHash is missing or fullText is empty (cannot prove sameness).
+ *
+ * @param {object} data - Review-text JSON
+ * @returns {boolean}
+ */
+function cvSameVerdictWindow(data) {
+  const cv = data && data.contentVerification;
+  if (!cv || !cv.contentHash || !data.fullText) return false;
+  return cv.contentHash === require('./content-verifier').contentHash(data.fullText); // lazy: content-verifier requires this module
+}
+
+/**
+ * BRO-8135: pure predicate for rebuild's stale-CV wrongShowReason fallback (called only when
+ * the CV is already stale by timestamp or hash). True when the file is not already wrongShow and
+ * the stored reason describes a wrong article, EXCEPT when a fresh CLEAN verdict (valid, not
+ * wrongArticle/wrongProduction/film-TV) covers the same verdict window: that verdict read this
+ * text and cleared it, so an older collector reason must not re-exclude it.
+ */
+function shouldPromoteViaStaleCvReasonFallback(data) {
+  if (!data || data.wrongShow === true || !data.wrongShowReason) return false;
+  if (!/wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason)) return false;
+  const cv = data.contentVerification;
+  const clean = !!cv && cv.isValid !== false && !cv.wrongArticle && !cv.wrongProduction && !cv.isFilmTv;
+  if (clean && cvSameVerdictWindow(data)) return false;
+  return true;
+}
+
+/**
  * Self-heal a stale CV-promoted wrongShow flag (BRO-168).
  *
  * Same one-directional bug as isStaleCvPromotedWrongProduction above, but for
@@ -7253,6 +7287,8 @@ module.exports = {
   isStaleGenericHomepageWrongShow,
   isStaleBulkTitleWrongShow,
   computeCvIsStale,
+  cvSameVerdictWindow,
+  shouldPromoteViaStaleCvReasonFallback,
   isNonReviewDemotedByFreshCV,
   isUrlCorrectedReverifiedReview,
   isStaleCvNonReviewVerdictOverruled,

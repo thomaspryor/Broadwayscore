@@ -51,7 +51,9 @@ function intakeVerdict(stub, showId, opts = {}) {
   try {
     if (!ctx) { if (!_ctx) _ctx = loadContext(opts.dataDir); ctx = _ctx; }
     const show = ctx.byId.get(showId);
-    const v = triagePendingStub(stub, { showId, show, sameTitleShows: ctx.allShows ? sameTitleShowsFrom(show, ctx.allShows) : undefined, heldIndex: ctx.heldIndex, showTitleOf: (id) => (ctx.byId.get(id) || {}).title });
+    // BRO-8090: allShows lets the out-of-window / url-date / sibling-venue rules see a same-title sibling that owns
+    // the article ('rehome', never settled here); without it they junked that sibling's real review on arrival.
+    const v = triagePendingStub(stub, { showId, show, allShows: ctx.allShows, sameTitleShows: ctx.allShows ? sameTitleShowsFrom(show, ctx.allShows) : undefined, heldIndex: ctx.heldIndex, showTitleOf: (id) => (ctx.byId.get(id) || {}).title });
     return { verdict: v.verdict, reason: v.reason };
   } catch (e) {
     return { verdict: 'candidate', reason: null, error: e.message };

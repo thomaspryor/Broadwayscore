@@ -386,20 +386,6 @@
     "queuedAt": "2026-11-23T15:05:47.353Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-23T15:45:23.101Z"
-  },
-  {
     "conditionKey": "land:land/bro-8152-decision-promote",
     "title": "Landing blocked: lint-workflows red on land/bro-8152-decision-promote",
     "description": "land.yml did not land land/bro-8152-decision-promote: the lint-workflows gate went red at ebcb291792. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45199658213",
@@ -735,5 +721,414 @@
       }
     ],
     "queuedAt": "2026-11-23T16:01:31.492Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:fantasma-off-broadway-2026",
+    "title": "Auto-remediation gave up on fantasma-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"fantasma-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T16:14:20.900Z"
+  },
+  {
+    "conditionKey": "land:land/mac-storage-budget",
+    "title": "Landing blocked: unit-tests-node red on land/mac-storage-budget",
+    "description": "land.yml did not land land/mac-storage-budget: the unit-tests-node gate went red at b035246e1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45214153055",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-storage-budget"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b035246e1ca6aec23abb8fc5f3db982095d1fc81"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45214153055"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:20:16.100Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T17:11:12.338Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Recover Explicit Ratings",
+    "title": "Cron's latest run failed (not yet stale): Recover Explicit Ratings",
+    "description": "Recover Explicit Ratings: Latest run failed (last success 53h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45219265513",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45219265513)"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:43:34.356Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich West End Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich West End Dates",
+    "description": "Enrich West End Dates: Latest run failed (last success 102h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45219265513",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45219265513)"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:43:34.391Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8155-fn-size",
+    "title": "Landing blocked: rebase red on land/bro-8155-fn-size",
+    "description": "land.yml did not land land/bro-8155-fn-size: the rebase gate went red at 1d85fab9e9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45219078288",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8155-fn-size"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "1d85fab9e940a49b79eb4e9968ee79ead0c4d769"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45219078288"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:47:22.934Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8164-visual-phase2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8164-visual-phase2",
+    "description": "land.yml did not land land/bro-8164-visual-phase2: the scripts-lib-tests gate went red at 57b62e2901. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45217697263",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8164-visual-phase2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "57b62e29015eb3bc212761281c8e4a790f500a1c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45217697263"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:53:28.155Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-8002",
+    "title": "Watchdog parked #linear:BRO-8002 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Check the 2026-11-22 Maestro nightly passed the Home Browse-all flows (BRO-7988 follow-up)\" was claimed for redispatch at 2026-11-23T16:05:37.517Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8002), then re-arm with node scripts/linear-next.js --id BRO-8002 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T16:21:24.890Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8156-approval-churn. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:14:14.569Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c",
+    "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8156-approval-churn. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:14:14.600Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8167-mwtgpag4",
+    "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-8167-mwtgpag4",
+    "description": "land.yml did not land land/job/linear-BRO-8167-mwtgpag4: the lint-workflows gate went red at 0170315810. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45217616041",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8167-mwtgpag4"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "01703158101e76051e0f01e2629654e2e3283f11"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45217616041"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:03:20.283Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8155-fn-size-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8155-fn-size-v2",
+    "description": "land.yml did not land land/bro-8155-fn-size-v2: the unit-tests-node gate went red at e2dc33192a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45222463717",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8155-fn-size-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e2dc33192aef1cefee937918c11c390c98b705c0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45222463717"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:10:04.225Z"
+  },
+  {
+    "conditionKey": "land:land/review-bundle",
+    "title": "Landing blocked: unit-tests-node red on land/review-bundle",
+    "description": "land.yml did not land land/review-bundle: the unit-tests-node gate went red at be1674b0f5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45224084232",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/review-bundle"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "be1674b0f52e07ea20ba9095a7949b4e26a848c9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45224084232"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:17:58.198Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45230296066",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45230296066)"
+      }
+    ],
+    "queuedAt": "2026-11-23T18:09:18.509Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8124-mwth0oub",
+    "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-8124-mwth0oub",
+    "description": "land.yml did not land land/job/linear-BRO-8124-mwth0oub: the lint-workflows gate went red at 9dfdf0dc70. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45226840897",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8124-mwth0oub"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "9dfdf0dc705af74b55ffd5c8f958046c7e7afc77"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45226840897"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:53:58.137Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8146-unwatched-regional",
+    "title": "Landing blocked: lint-workflows red on land/bro-8146-unwatched-regional",
+    "description": "land.yml did not land land/bro-8146-unwatched-regional: the lint-workflows gate went red at c80e39a924. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45230179542",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8146-unwatched-regional"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "c80e39a924ee55dffa869d46c0e997d74e6f1273"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45230179542"
+      }
+    ],
+    "queuedAt": "2026-11-23T18:11:10.885Z"
   }
 ]

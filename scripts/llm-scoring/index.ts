@@ -1779,8 +1779,22 @@ async function main(): Promise<void> {
         } else if (rejection === 'garbage_text') {
           fileData.contentTier = 'needs-rescrape';
         }
-
+        // BRO-8093: an OB-exempt verdict is recorded but never applied, so a
+        // wrongProductionAutoCleared stamp on the same file did not override it.
+        // Without this marker scripts/lib/autoclear-vs-ensemble-scan.js reads the
+        // pair as an autoclear-vs-ensemble violation (mexodus NYT, 2026-11-22) and
+        // every land floor goes red. Rewritten on every rejection so a later,
+        // applied verdict never inherits a stale exemption.
         fileData.rejectedAt = new Date().toISOString();
+        if (rejection === 'wrong_production' && isOffBroadway) {
+          (fileData as any).rejectionFlagNotApplied = 'ob-exempt';
+          // ties the marker to THIS verdict; the scan ignores it once a later verdict replaces it
+          (fileData as any).rejectionFlagNotAppliedAt = fileData.rejectedAt;
+        } else {
+          delete (fileData as any).rejectionFlagNotApplied;
+          delete (fileData as any).rejectionFlagNotAppliedAt;
+          delete (fileData as any).rejectionFlagNotAppliedNote;
+        }
         fileData.rejectedBy = 'ensemble-scoreability-check';
         fileData.rejectionReason = rejection;
         fileData.rejectionReasoning = rejectionReasoning;

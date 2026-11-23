@@ -707,6 +707,24 @@ test('BRO-8158: a dispatch filing from digest-autofix is noted on a Paused twin 
     ] } }) };
   const rc = await reuseOpenTwin({ title: twin.title, body: 'today', client: withComment, mode: 'dispatch', dedupeOptOut: 'digest-autofix' });
   assert.equal(rc && rc.issue.identifier, 'BRO-8047');
+  // Day two: our own "Filed again on" note is newer than the pause report and must not clear the hold.
+  const afterAbsorb = { findOpenIssueByTitle: async () => twin, addComment: async () => {},
+    getIssue: async () => ({ ...twin, description: 'Problem only', comments: { nodes: [
+      { body: 'Filed again on 2026-11-23T15:15Z with the same title; added here instead of opening a duplicate card.', createdAt: '2026-11-23T15:15:00Z', user: null },
+      { body: '**Session report (paused)**\n\nDECISION NEEDED: four shows, hide the score?', createdAt: '2026-11-22T13:00:00Z', user: null },
+    ] } }) };
+  const ra = await reuseOpenTwin({ title: twin.title, body: 'day two', client: afterAbsorb, mode: 'dispatch', dedupeOptOut: 'digest-autofix' });
+  assert.equal(ra && ra.issue.identifier, 'BRO-8047');
+  // Any pause hold counts, not only a decision: a report from an hour ago holds the twin (recently-paused).
+  const recent = { findOpenIssueByTitle: async () => twin, addComment: async () => {},
+    getIssue: async () => ({ ...twin, priority: 3, description: 'Problem only', comments: { nodes: [
+      { body: '**Session report (paused)**\n\nBlocked on a missing credential.', createdAt: new Date(Date.now() - 3600e3).toISOString(), user: null },
+    ] } }) };
+  const rr = await reuseOpenTwin({ title: twin.title, body: 'today', client: recent, mode: 'dispatch', dedupeOptOut: 'digest-autofix' });
+  assert.equal(rr && rr.issue.identifier, 'BRO-8047');
+  // A Paused twin with no pause report at all is not held and still gets a real card.
+  const noHold = { findOpenIssueByTitle: async () => twin, addComment: async () => {}, getIssue: async () => ({ ...twin, description: 'Problem only', comments: { nodes: [] } }) };
+  assert.equal(await reuseOpenTwin({ title: twin.title, body: 'today', client: noHold, mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);
   // A failing description read files normally.
   const broken = { findOpenIssueByTitle: async () => twin, getIssue: async () => { throw new Error('429'); }, addComment: async () => {} };
   assert.equal(await reuseOpenTwin({ title: twin.title, body: '', client: broken, mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);

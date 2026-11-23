@@ -24,11 +24,21 @@ jobs:
     timeout-minutes: 20
     if: startsWith(github.event.workflow_run.head_branch, 'visual-hold/')
     steps:
+      # BRO-8164: blobless clones fetch file contents lazily over the network; abort a stalled
+      # transfer fast instead of hanging to the job timeout (opening-night-poller.yml pattern).
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
       - name: Checkout main
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
-          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+          # BRO-8164: full commit graph (patch-id and the ancestry check need it) but no historical
+          # blobs. Full blobs took 35-40 min and every run was cancelled (land.yml, BRO-423).
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node

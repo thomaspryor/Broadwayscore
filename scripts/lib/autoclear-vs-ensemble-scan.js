@@ -56,6 +56,16 @@ function classifyAutoclearVsEnsemble(data, { reason, autoClearedField, flagField
   if (!hasEnsembleConsensus(data, reason)) return { isViolation: false };
   if (data[flagField] === true) return { isViolation: false }; // flag never actually cleared
   if (isHumanOverridden(data)) return { isViolation: false, exemptReason: 'human-overridden' };
+  // BRO-8093: the ensemble writer (scripts/llm-scoring/index.ts) records an
+  // Off-Broadway wrong_production verdict but deliberately never applies the
+  // flag (OB transfer carve-out) and stamps rejectionFlagNotApplied. The flag
+  // was never going to be set, so no auto-clear overrode it.
+  // The marker must belong to the CURRENT verdict (rejectionFlagNotAppliedAt ===
+  // rejectedAt), so a stale marker can never blind the scan to a later verdict.
+  if (reason === 'wrong_production' && data.rejectionFlagNotApplied === 'ob-exempt'
+      && data.rejectionFlagNotAppliedAt && data.rejectionFlagNotAppliedAt === data.rejectedAt) {
+    return { isViolation: false, exemptReason: 'ob-exempt-verdict-not-applied' };
+  }
   // BRO-4391: a verdict issued before the show's declared runs/tour legs were
   // in the prompt was re-checked once; only a rejection NEWER than the recheck
   // (issued with that context) is a verdict to defer to.

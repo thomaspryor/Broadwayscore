@@ -4,6 +4,8 @@ import { useState, type JSX } from 'react';
 import Link from 'next/link';
 import type { TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks } from '@/lib/data-types';
 import { featureFlags } from '@/config/feature-flags';
+import AccessibilityBadges from './AccessibilityBadges';
+import SeatViewLinks from './SeatViewLinks';
 
 interface TheaterScorecardCardProps {
   venueScores: TheaterVenueScores;
@@ -92,22 +94,6 @@ function FacilitiesIcon() {
   );
 }
 
-function WheelchairIcon() {
-  return (
-    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2a3 3 0 100 6 3 3 0 000-6zm-1 8a5 5 0 00-4.9 4H4a1 1 0 100 2h2.1A5 5 0 0016 16h3l1.4 4.2a1 1 0 101.9-.6L20.7 15a1 1 0 00-.9-.7L16 14a3 3 0 01-3-3V10h-2z" />
-    </svg>
-  );
-}
-
-function ExternalLinkIcon() {
-  return (
-    <svg className="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-    </svg>
-  );
-}
-
 function ScoreDots({ score, label, icon }: { score: number; label: string; icon: JSX.Element }) {
   return (
     <div className="flex items-center gap-2" role="meter" aria-valuenow={score} aria-valuemin={1} aria-valuemax={5} aria-label={`${label}: ${score} out of 5`}>
@@ -148,8 +134,6 @@ export default function TheaterScorecardCard({
 
   const overall = venueScores.overall;
   const designation = overall != null ? getVenueDesignation(overall) : null;
-  const hasAccessibility = !!(accessibility && accessibility.verified && (accessibility.wheelchair || accessibility.elevator || accessibility.hearingLoop || accessibility.assistiveListening));
-  const hasExternal = !!(externalLinks && (externalLinks.seatplan || externalLinks.aviewfrommyseat));
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="theater-scorecard-heading">
@@ -201,65 +185,10 @@ export default function TheaterScorecardCard({
           </div>
 
           {/* Accessibility badges */}
-          {hasAccessibility && (
-            <div className="border-t border-white/5 pt-3 mb-3">
-              <p className="text-[10px] text-fg-muted uppercase tracking-wider font-semibold mb-2">Accessibility</p>
-              <div className="flex flex-wrap gap-1.5">
-                {accessibility!.wheelchair && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                    <WheelchairIcon /> Wheelchair
-                  </span>
-                )}
-                {accessibility!.elevator && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                    Elevator
-                  </span>
-                )}
-                {accessibility!.hearingLoop && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                    Hearing Loop
-                  </span>
-                )}
-                {accessibility!.assistiveListening && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-status-open-bg text-status-open text-[10px] font-medium border border-status-open/20">
-                    Assistive Listening
-                  </span>
-                )}
-              </div>
-              {accessibility!.notes && (
-                <p className="text-xs text-fg-muted mt-1.5">{accessibility!.notes}</p>
-              )}
-            </div>
-          )}
+          <AccessibilityBadges accessibility={accessibility} />
 
           {/* External links */}
-          {hasExternal && (
-            <div className="border-t border-white/5 pt-3">
-              <p className="text-[10px] text-fg-muted uppercase tracking-wider font-semibold mb-2">Find Your Seat</p>
-              <div className="flex flex-wrap gap-2">
-                {externalLinks!.seatplan && (
-                  <a
-                    href={externalLinks!.seatplan}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
-                  >
-                    SeatPlan <ExternalLinkIcon />
-                  </a>
-                )}
-                {externalLinks!.aviewfrommyseat && (
-                  <a
-                    href={externalLinks!.aviewfrommyseat}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-medium transition-colors"
-                  >
-                    A View From My Seat <ExternalLinkIcon />
-                  </a>
-                )}
-              </div>
-            </div>
-          )}
+          <SeatViewLinks externalLinks={externalLinks} />
 
           {/* Methodology note */}
           <p className="text-[9px] text-fg-muted mt-3 leading-relaxed">

@@ -163,7 +163,35 @@ log() { echo "[$(ts)] $*" | tee -a "$LOG"; }
 # All repos here live on the same local disk, so one check covers them all.
 disk_free_gb() {
   local repo_path="${1:-$PRIMARY_REPO}"
-  df -Pk "$repo_path" | awk 'NR==2 {print int($4/1024/1024)}'
+  [ -d "$repo_path" ] || repo_path="$SCRIPT_DIR"
+  gc_probe 5 df -Pk "$repo_path" | awk 'NR==2 {print int($4/1024/1024)}'
+}
+
+# Detach read probes from the GC's output pipes. A macOS process stuck in
+# filesystem I/O may hold them open even after SIGKILL. Never use this for
+# removals, which must finish before the shared GC lock is released.
+gc_probe() {
+  local seconds="$1"; shift
+  printf '%s\0' "$@" | python3 "$SCRIPT_DIR/lib/gc-read-probe.py" "$seconds" --stdin
+}
+
+gc_pin() {
+  # The classifier CLI exits 1 for "none", so call its read-only API and
+  # reserve nonzero here for a failed probe or a deadline.
+  gc_probe 15 node -e '
+    const { cwdPinStatus } = require(process.argv[1]);
+    console.log(cwdPinStatus(process.argv[2]).pin);
+  ' "$SCRIPT_DIR/lib/gc-worktree-liveness.js" "$1"
+}
+
+gc_size_kb() {
+  local p="$1" result
+  if ! result=$(gc_probe "${WORKTREE_GC_READ_TIMEOUT_SECONDS:-10}" du -sk "$p"); then
+    log "WARN  size check failed or timed out — preserving $p" >&2
+    return 1
+  fi
+  [[ "$result" =~ ^[0-9]+[[:space:]] ]] || return 1
+  echo "${result%%[!0-9]*}"
 }
 
 # True (exit 0) iff no file under $1 (excluding node_modules/.next/.git plus
@@ -178,8 +206,8 @@ is_stale() {
   for d in "${extra_dirs[@]+"${extra_dirs[@]}"}"; do
     [ -n "$d" ] && prune_args+=(-o -path "*/$d")
   done
-  hit=$(find "$p" \( "${prune_args[@]}" \) -prune -o \
-    -type f -newermt "-${days} days" -print -quit 2>/dev/null)
+  hit=$(gc_probe "${WORKTREE_GC_READ_TIMEOUT_SECONDS:-10}" find "$p" \( "${prune_args[@]}" \) -prune -o \
+    -type f -newermt "-${days} days" -print -quit) || { log "WARN  age check failed or timed out — preserving $p" >&2; return 1; }
   [ -z "$hit" ]
 }
 
@@ -221,7 +249,7 @@ is_worktree_clean() {
   # empty output. Treating that as clean would log "fully merged /
   # WOULD-REMOVE" while the real `git worktree remove` errors and logs SKIP —
   # exactly the divergence this whole change exists to remove.
-  st=$(git -C "$1" status --porcelain 2>/dev/null) || return 1
+  st=$(gc_probe 15 git --no-optional-locks -C "$1" status --porcelain) || return 1
   [ -z "$st" ]
 }
 
@@ -246,15 +274,15 @@ GC_CORE_DATA_DIR="${WORKTREE_GC_CORE_DATA_DIR:-${HOME:+$HOME/broadway-scorecard-
 is_committed_copy() {
   local p="$1" f="$2" h
   [ -f "$p/$f" ] || return 1
-  h=$(git -C "$p" hash-object -- "$f" 2>/dev/null) || return 1
+  h=$(gc_probe 10 git -C "$p" hash-object -- "$f") || return 1
   [ -n "$h" ] || return 1
-  [ -n "$(git -C "$p" log --branches --remotes -1 --format=%H --find-object="$h" -- "$f" 2>/dev/null)" ] && return 0
+  [ -n "$(gc_probe 15 git -C "$p" log --branches --remotes -1 --format=%H --find-object="$h" -- "$f")" ] && return 0
   [ -n "$GC_CORE_DATA_DIR" ] && [ -d "$GC_CORE_DATA_DIR" ] || return 1
-  [ -n "$(git -C "$GC_CORE_DATA_DIR" log --branches --remotes -1 --format=%H --find-object="$h" -- "${f#data/}" 2>/dev/null)" ]
+  [ -n "$(gc_probe 15 git -C "$GC_CORE_DATA_DIR" log --branches --remotes -1 --format=%H --find-object="$h" -- "${f#data/}")" ]
 }
 is_safe_dirty() {
   local p="$1" status line f
-  status=$(git -C "$p" status --porcelain 2>/dev/null)
+  status=$(gc_probe 15 git --no-optional-locks -C "$p" status --porcelain) || return 1
   [ -z "$status" ] && return 1
   while IFS= read -r line; do
     [ -z "$line" ] && continue
@@ -322,7 +350,7 @@ strip_build_artifacts() {
         log "WARN  [$CURRENT_REPO_NAME] $name/$d — not gitignored per \`git check-ignore\`, refusing to strip (config or .gitignore drift)"
         continue
       fi
-      sz=$(du -sk "$p/$d" 2>/dev/null | awk '{print $1}')
+      sz=$(gc_size_kb "$p/$d") || continue
       sz=${sz:-0}
       if [ "$DRY_RUN" = "1" ]; then
         log "WOULD-STRIP  $name/$d — $(human_kb "$sz"), untouched >${STALE_DAYS}d"
@@ -349,7 +377,7 @@ clean_derived_data() {
   local dd="$HOME/Library/Developer/Xcode/DerivedData" sz
   LAST_CLEAN_DD_FREED_KB=0
   [ -d "$dd" ] || return 0
-  sz=$(du -sk "$dd" 2>/dev/null | awk '{print $1}')
+  sz=$(gc_size_kb "$dd") || return 0
   sz=${sz:-0}
   [ "$sz" = "0" ] && return 0
   if [ "$DRY_RUN" = "1" ]; then
@@ -371,7 +399,7 @@ clean_stale_scratchpad() {
   while IFS= read -r dir; do
     [ -z "$dir" ] && continue
     is_stale "$dir" "$SCRATCHPAD_STALE_DAYS" || continue
-    sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
+    sz=$(gc_size_kb "$dir") || continue
     sz=${sz:-0}
     [ "$sz" = "0" ] && continue
     if [ "$DRY_RUN" = "1" ]; then
@@ -381,7 +409,7 @@ clean_stale_scratchpad() {
       log "CLEAN  scratchpad $(basename "$(dirname "$dir")")/$(basename "$dir") — freed $(human_kb "$sz"), untouched >${SCRATCHPAD_STALE_DAYS}d"
     fi
     total=$((total + sz))
-  done < <(find "$PRIMARY_REPO" -maxdepth 3 -type d -name scratchpad -not -path '*/node_modules/*' 2>/dev/null)
+  done < <(gc_probe 15 find "$PRIMARY_REPO" -maxdepth 3 -type d -name scratchpad -not -path '*/node_modules/*' 2>/dev/null)
   LAST_SCRATCHPAD_FREED_KB=$total
 }
 
@@ -398,7 +426,9 @@ clean_stale_gh_run_logs() {
   local dir="$HOME/.cache/gh" sz
   LAST_GH_RUN_LOG_FREED_KB=0
   [ -d "$dir" ] || return 0
-  sz=$(find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -print0 2>/dev/null | xargs -0 -r du -sk 2>/dev/null | awk '{s+=$1} END {print s+0}')
+  local sizes
+  sizes=$(gc_probe 15 find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -exec du -sk '{}' +) || return 0
+  sz=$(awk '{s+=$1} END {print s+0}' <<< "$sizes")
   sz=${sz:-0}
   [ "$sz" = "0" ] && return 0
   if [ "$DRY_RUN" = "1" ]; then
@@ -459,6 +489,7 @@ check_disk_floor() {
   local before after floor_freed=0
   LAST_FLOOR_FREED_KB=0
   before=$(disk_free_gb "$PRIMARY_REPO")
+  [[ "$before" =~ ^[0-9]+$ ]] || { log "WARN  disk free space could not be measured; skipping emergency cleanup"; return 0; }
   if [ "$before" -ge "$DISK_FLOOR_GB" ]; then
     return 0
   fi
@@ -522,7 +553,7 @@ reap_stale_tmp_checkout() {
     *) return 1 ;;
   esac
   [ -f "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" ] || return 1
-  owner=$(node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" owner "$wt") || return 1
+  owner=$(gc_probe 10 node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" owner "$wt") || return 1
   case "$owner" in
     dead)
       # The creator died. Allow provisioning/subprocess teardown to settle first.
@@ -531,14 +562,16 @@ reap_stale_tmp_checkout() {
       ;;
     legacy)
       [ -n "$(find "$parent" -maxdepth 0 -mmin +"$TMP_CHECKOUT_MAX_AGE_MIN" 2>/dev/null)" ] || return 1
-      find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print 2>/dev/null | grep -q . && return 1
+      local recent
+      recent=$(gc_probe "${WORKTREE_GC_READ_TIMEOUT_SECONDS:-10}" find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print -quit) || return 1
+      [ -z "$recent" ] || return 1
       reap_reason="legacy checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m"
       ;;
     *) return 1 ;;
   esac
-  node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" safe "$wt" || return 1
-  git -C "$wt" merge-base --is-ancestor HEAD origin/main 2>/dev/null || return 1
-  sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
+  gc_probe 40 node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" safe "$wt" || return 1
+  gc_probe 10 git -C "$wt" merge-base --is-ancestor HEAD origin/main || return 1
+  sz=$(gc_size_kb "$wt") || return 1
   sz=${sz:-0}
   if [ "$DRY_RUN" = "1" ]; then
     log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — $reap_reason, HEAD on origin/main"
@@ -564,29 +597,46 @@ reap_stale_tmp_checkout() {
 # and the tree is clean or only generated churn (is_safe_dirty). The caller
 # keeps it in the stale digest. Kill switch: WORKTREE_GC_RETIRE_STALE_JOBS=0.
 RETIRE_STALE_DAYS="${WORKTREE_GC_RETIRE_STALE_DAYS:-8}"
+worktree_inputs_safe() {
+  local wt="$1" ignored item
+  # Git status alone misses ignored settings, nested repositories and data.
+  ignored=$(gc_probe 15 git --no-optional-locks -C "$wt" ls-files --others --ignored --exclude-standard --directory) || return 1
+  while IFS= read -r item; do
+    case "$item" in
+      ''|node_modules|node_modules/|.next/|ios/build/|ios/Pods/) ;;
+      *) return 1 ;;
+    esac
+  done <<< "$ignored"
+}
+
 retire_stale_job_worktree() {
-  local wt="$1" br="$2" pin how sz
+  local wt="$1" br="$2" pin how sz saved_head
   [ "${WORKTREE_GC_RETIRE_STALE_JOBS:-1}" = "0" ] && return 1
   case "$(basename "$wt")" in job-*) ;; *) return 1 ;; esac
   [ "$is_locked" = "1" ] && return 1
-  git rev-parse --verify -q "refs/heads/$br" >/dev/null 2>&1 || return 1
+  saved_head=$(gc_probe 10 git rev-parse --verify "refs/heads/$br^{commit}") || return 1
+  [ "$saved_head" = "$(gc_probe 10 git -C "$wt" rev-parse HEAD)" ] || return 1
   is_stale "$wt" "$RETIRE_STALE_DAYS" "${CURRENT_BUILD_ARTIFACT_DIRS[@]+"${CURRENT_BUILD_ARTIFACT_DIRS[@]}"}" || return 1
   command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ] || return 1
-  pin=$(node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$wt" --classify 2>/dev/null | head -n 1)
+  pin=$(gc_pin "$wt") || return 1
   [ "$pin" = "none" ] || return 1
   if is_worktree_clean "$wt"; then how="clean"
   elif is_safe_dirty "$wt"; then how="generated churn only"
   else return 1
   fi
-  sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
+  worktree_inputs_safe "$wt" || return 1
+  sz=$(gc_size_kb "$wt") || return 1
   sz=${sz:-0}
   if [ "$DRY_RUN" = "1" ]; then
     log "WOULD-RETIRE  [$CURRENT_REPO_NAME] $(basename "$wt") — $br unmerged, idle >${RETIRE_STALE_DAYS}d, $how; branch would be kept"
   else
     # Lease re-check right before the remove: a resumed job may have taken it.
     if [ -f "$SCRIPT_DIR/lib/worktree-live-lease-check.js" ]; then
-      node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$wt" >/dev/null 2>&1 && return 1
+      gc_probe 10 node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$wt" >/dev/null 2>&1
+      [ "$?" = "1" ] || return 1
     fi
+    [ "$saved_head" = "$(gc_probe 10 git rev-parse --verify "refs/heads/$br^{commit}")" ] || return 1
+    worktree_inputs_safe "$wt" || return 1
     if [ "$how" = "clean" ]; then
       LC_ALL=C git worktree remove "$wt" >/dev/null 2>&1 || return 1
     else
@@ -653,25 +703,22 @@ flush() {
   # (fetch --unshallow) before answering. Fall back to the raw check if node
   # or the lib is unavailable — never silently skip the fast path.
   local cherry_raw cherry_status unmerged head_sha landed_status
-  head_sha=$(git rev-parse "$branch" 2>/dev/null)
+  head_sha=$(gc_probe 10 git rev-parse "$branch")
   landed_status=1
   if [ -n "$head_sha" ]; then
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/landing-verify.js" ]; then
-      node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
+      PUSH_SKIP_UNSHALLOW=1 gc_probe 15 node "$SCRIPT_DIR/lib/landing-verify.js" --sha="$head_sha" --branch=main --remote=origin --cwd="$REPO" >/dev/null 2>&1
       landed_status=$?
     else
-      git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null
+      gc_probe 10 git merge-base --is-ancestor "$head_sha" origin/main 2>/dev/null
       landed_status=$?
     fi
   fi
   if [ -n "$head_sha" ] && [ "$landed_status" = "0" ]; then
     cherry_raw=""      # definitively contained in origin/main
     cherry_status=0
-  elif [ -n "$TIMEOUT_BIN" ]; then
-    cherry_raw=$("$TIMEOUT_BIN" 15s git cherry origin/main "$branch" 2>/dev/null)
-    cherry_status=$?
   else
-    cherry_raw=$(git cherry origin/main "$branch" 2>/dev/null)
+    cherry_raw=$(gc_probe 15 git cherry origin/main "$branch")
     cherry_status=$?
   fi
   if [ "$cherry_status" != "0" ]; then
@@ -701,8 +748,8 @@ flush() {
   # which repo owns it, so iOS-repo worktrees get the same protection.
   has_live_lease=0
   if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-live-lease-check.js" ]; then
-    node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
-    [ "$?" = "0" ] && has_live_lease=1
+    gc_probe 10 node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
+    [ "$?" = "1" ] || has_live_lease=1
   else
     log "WARN  live-lease guard unavailable (node or worktree-live-lease-check.js missing) — skipping for [$CURRENT_REPO_NAME] $(basename "$path")"
   fi
@@ -718,7 +765,7 @@ flush() {
   if [ "$is_ancestor" = "1" ] || [ "$has_unmerged" = "0" ]; then
     cwd_pin="unknown"
     if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/gc-worktree-liveness.js" ]; then
-      cwd_pin=$(node "$SCRIPT_DIR/lib/gc-worktree-liveness.js" --path="$path" --classify 2>/dev/null | head -n 1)
+      cwd_pin=$(gc_pin "$path") || cwd_pin="unknown"
     else
       log "WARN  liveness guard unavailable (node or gc-worktree-liveness.js missing) — treating [$CURRENT_REPO_NAME] $(basename "$path") as pinned"
     fi
@@ -806,6 +853,10 @@ flush() {
     skipped=$((skipped+1))
     path="" branch=""; is_locked=0; locked_reason=""; return
   fi
+  if ! worktree_inputs_safe "$path"; then
+    log "KEEP  [$CURRENT_REPO_NAME] $(basename "$path") — local inputs or probe unavailable"
+    kept=$((kept+1)); path="" branch=""; return
+  fi
   if [ "$DRY_RUN" = "1" ]; then
     # Three-way, mirroring the real path's three outcomes exactly (BRO-2607):
     # clean -> plain remove succeeds; safe-dirty -> --force path; anything else
@@ -839,7 +890,7 @@ flush() {
   # logged "freed=797.9MB" because this size was never captured — accurate
   # for the wrong reason next time someone reads this log to judge impact).
   local removal_sz remove_err force_err diag_err salvage_out
-  removal_sz=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
+  removal_sz=$(gc_size_kb "$path") || { skipped=$((skipped+1)); path="" branch=""; return; }
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
   # Stderr is captured (not discarded) so the else-branch below can tell a
@@ -939,6 +990,11 @@ gc_one_repo() {
     git fetch origin main -q 2>/dev/null || log "WARN: [$repo_name] git fetch failed (offline?) — using cached origin/main"
   fi
 
+  local worktree_list
+  if ! worktree_list=$(gc_probe 15 git worktree list --porcelain); then
+    log "WARN  [$repo_name] worktree list unavailable; preserving this repository"
+    return
+  fi
   path="" branch="" is_locked=0 locked_reason=""
   # Same parser as check-worktree-collision.js. NUL fields preserve empty
   # branches/reasons and spaces without a second porcelain parser in bash.
@@ -947,7 +1003,7 @@ gc_one_repo() {
         IFS= read -r -d '' is_locked &&
         IFS= read -r -d '' locked_reason; do
     flush
-  done < <(git worktree list --porcelain | node "$SCRIPT_DIR/lib/worktree-lock-parse.js")
+  done < <(printf '%s\n\n' "$worktree_list" | node "$SCRIPT_DIR/lib/worktree-lock-parse.js")
 
   git worktree prune 2>/dev/null
 
@@ -975,11 +1031,16 @@ gc_one_repo() {
   local worktrees_root="$REPO/$worktree_subdir"
   if [ -d "$worktrees_root" ]; then
     local registered_paths=() reg_line
+    # Refresh after the mutation pass. Never infer orphans from a failed list.
+    if ! worktree_list=$(gc_probe 15 git worktree list --porcelain); then
+      log "WARN  [$repo_name] worktree list unavailable; preserving possible orphans"
+      return
+    fi
     while IFS= read -r reg_line; do
       case "$reg_line" in
         "worktree "*) registered_paths+=("${reg_line#worktree }") ;;
       esac
-    done < <(git worktree list --porcelain)
+    done <<< "$worktree_list"
     is_registered() {
       local d="$1" r
       for r in "${registered_paths[@]+"${registered_paths[@]}"}"; do [ "$r" = "$d" ] && return 0; done
@@ -997,8 +1058,10 @@ gc_one_repo() {
         log "WARN  [$repo_name] $orphan_name — unregistered but has a .git artifact; leaving for manual triage (not auto-deleted)"
         continue
       fi
-      find "$dir" -newermt '-15 minutes' -print -quit 2>/dev/null | grep -q . && continue
-      orphan_sz=$(du -sk "$dir" 2>/dev/null | awk '{print $1}')
+      local recent
+      recent=$(gc_probe "${WORKTREE_GC_READ_TIMEOUT_SECONDS:-10}" find "$dir" -newermt '-15 minutes' -print -quit) || continue
+      [ -z "$recent" ] || continue
+      orphan_sz=$(gc_size_kb "$dir") || continue
       orphan_sz=${orphan_sz:-0}
       if [ "$DRY_RUN" = "1" ]; then
         log "WOULD-REMOVE-ORPHAN  [$repo_name] $orphan_name — $(human_kb "$orphan_sz"), not registered with git worktree list"
@@ -1007,7 +1070,7 @@ gc_one_repo() {
         log "REMOVE-ORPHAN  [$repo_name] $orphan_name — freed $(human_kb "$orphan_sz"), not registered with git worktree list"
       fi
       orphan_freed_kb=$((orphan_freed_kb + orphan_sz))
-    done < <(find "$worktrees_root" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+    done < <(gc_probe 15 find "$worktrees_root" -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
   fi
 
   if [ "${#stale_unmerged[@]}" -gt 0 ]; then

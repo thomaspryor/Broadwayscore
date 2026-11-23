@@ -99,6 +99,8 @@ test('warn band (>=200MB, <240MB) does not fail; healthy output exits 0', () => 
     const r = spawnSync(process.execPath, [SCRIPT, out, `--project-root=${root}`], { encoding: 'utf8' });
     assert.equal(r.status, 0, r.stdout + r.stderr);
     assert.match(r.stdout, /::warning::function api\/og/);
+    assert.match(r.stdout, /OK \(not failing\): .* 1 over the 200\.0MB warning line/, 'a warn-band run must not claim nothing is near the limit');
+    assert.doesNotMatch(r.stdout, /no function near the size limit/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

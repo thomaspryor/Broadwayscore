@@ -74,7 +74,7 @@ const ACKABLE_TERMINAL_EVENTS = new Set([
 // disk check runs BEFORE the lease, so the reason alone does not prove no
 // sibling is live (review finding): every job-spawned jobId in the rows must
 // also have a later end row of its own.
-const NO_SIBLING_ABANDON_REASON = /^(?:disk-pressure:|acquireLease threw:)/;
+const NO_SIBLING_ABANDON_REASON = /^(?:disk-pressure:|memory-pressure:|acquireLease threw:)/;
 const JOB_LEG_END_EVENTS = new Set([...ACKABLE_TERMINAL_EVENTS, 'job-done', 'job-retried']);
 // A sibling writes job-spawned only after taking the lease and provisioning
 // its worktree, so a fresh abandon could precede a starting sibling's first

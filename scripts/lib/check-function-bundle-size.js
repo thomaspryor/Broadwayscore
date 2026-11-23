@@ -191,7 +191,12 @@ function main(argv) {
     if (f.configError) console.log(`::warning::function ${f.name}: unreadable .vc-config.json (${f.configError}); its traced files were not counted`);
     if (f.missing.length) console.log(`  note: ${f.name}: ${f.missing.length}/${f.mapped} filePathMap entries not found on disk (not counted), e.g. ${f.missing.slice(0, 3).join(', ')}`);
   }
-  if (res.failed.length === 0) { console.log('OK: no function near the size limit'); return 0; }
+  if (res.failed.length === 0) {
+    console.log(res.warned.length
+      ? `OK (not failing): no function at the ${fmt(FAIL_BYTES)} fail threshold, but ${res.warned.length} over the ${fmt(WARN_BYTES)} warning line (see warnings above)`
+      : 'OK: no function near the size limit');
+    return 0;
+  }
   if (process.env.FUNCTION_SIZE_GUARD_DISABLED === 'true') {
     console.log('::warning::FUNCTION_SIZE_GUARD_DISABLED=true, not failing');
     return 0;

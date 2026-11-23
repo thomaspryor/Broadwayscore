@@ -105,6 +105,11 @@ function venuePhrase(venue) {
  * @param {{id:string, venue:string}[]} sameTitleShows  other entries sharing this show's title
  */
 function siblingVenueReason(url, show, sameTitleShows) {
+  const m = siblingVenueMatch(url, show, sameTitleShows);
+  return m ? m.reason : null;
+}
+/** siblingVenueReason with the owning entry's id: {reason, id} | null. Pure. */
+function siblingVenueMatch(url, show, sameTitleShows) {
   if (!show || !Array.isArray(sameTitleShows) || !sameTitleShows.length) return null;
   const slug = `-${finalSlug(url).toLowerCase().replace(/\.html?$/i, '')}-`;
   const mine = venuePhrase(show.venue);
@@ -114,6 +119,7 @@ function siblingVenueReason(url, show, sameTitleShows) {
   if (/tour/i.test(`${show.category || ''} ${show.venue || ''}`)) return null;
   const start = (x) => Date.parse(String((x && (x.previewsStartDate || x.openingDate)) || ''));
   const own = new Set([mine, ...((show.priorRuns || []).map((r) => venuePhrase(r && r.venue))), ...((show.tourLegs || []).map((r) => venuePhrase(r && r.venue)))].filter(Boolean));
+  const hits = [];
   for (const o of sameTitleShows) {
     const p = venuePhrase(o && o.venue);
     if (!p || own.has(p) || (mine && (mine.includes(p) || p.includes(mine)))) continue;
@@ -127,9 +133,13 @@ function siblingVenueReason(url, show, sameTitleShows) {
     if (`-${titleParts(show.title).join('-')}-`.includes(`-${p}-`)) continue; // "crucible": venue word inside the title
     // Venue context only ("at-the-young-vic", "almeida-theatre"): a bare "harold-pinter" / "noel-coward" is as
     // often the playwright, and "broadway" / "palace" are ordinary words (corpus audit, BRO-8065).
-    if (new RegExp(`-at-(?:the-)?${p}-|-${p}-(?:theatre|theater|playhouse)-`).test(slug)) return `url names the ${o.venue} production (${o.id}), not this one`;
+    if (new RegExp(`-at-(?:the-)?${p}-|-${p}-(?:theatre|theater|playhouse)-`).test(slug)) hits.push(o);
   }
-  return null;
+  if (!hits.length) return null;
+  // Two same-title entries at the named venue (two Young Vic revivals): it is not this production, but which one it
+  // is cannot be told from the url, so no owner id (the caller settles it, never moves it). Codex ship-check.
+  const o = hits[0];
+  return { reason: `url names the ${o.venue} production (${hits.map((h) => h.id).join(', ')}), not this one`, id: hits.length === 1 ? o.id : null };
 }
 const titleParts = (title) => String(title || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/['’]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
@@ -163,6 +173,7 @@ function heldHosts(heldIndex) {
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { isArticleOutsideProductionWindow } = require('./date-guard');
 const { urlYearConflict } = require('./url-year-guard');
+const { resolveOutOfWindowStub } = require('./pending-sibling-productions');
 
 /**
  * The canonical same-article key (combined-review-utils.normalizeArticleUrl): tracking params dropped, an id
@@ -206,6 +217,31 @@ function isSettledPendingStub(data) {
 }
 
 /**
+ * BRO-8090: the url's own date (a day, or a month whose first and last day agree) lands in exactly one corroborated
+ * same-title sibling's window: a 'rehome' verdict (or a duplicate settle when the sibling already carries the url).
+ * null when no sibling owns it. Year-only url dates are too coarse to move a stub. Pure over ctx.
+ */
+function siblingOwnerByUrlDate(data, ctx) {
+  if (!ctx.allShows || !ctx.show) return null;
+  const r = require('./url-date').extractDateFromUrl(data.url);
+  let days = null;
+  if (r && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date)) days = [r.date, r.date];
+  else if (r && r.date && /^\d{4}-\d{2}$/.test(r.date)) {
+    const [y, mo] = r.date.split('-').map(Number);
+    days = [new Date(Date.UTC(y, mo - 1, 1)), new Date(Date.UTC(y, mo, 0))].map((d) => d.toISOString().slice(0, 10));
+  }
+  if (!days) return null;
+  const held = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(data.url));
+  const res = days.map((d) => resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: d, stub: data,
+    hasCopy: ctx.siblingHasCopy || (() => false), holdsUrl: (sid) => !!(held && held.has(sid)) }));
+  if (res[0].kind !== res[1].kind || res[0].sibling !== res[1].sibling) return null;
+  const label = days[0] === days[1] ? days[0] : r.date;
+  if (res[0].kind === 'rehome') return { verdict: 'rehome', reason: `url date ${label} belongs to same-title production ${res[0].sibling}`, sibling: res[0].sibling, publishDate: days[0] === days[1] ? days[0] : null };
+  if (res[0].kind === 'duplicate') return { verdict: 'junk', reason: `url date ${label} belongs to same-title production ${res[0].sibling}, which already holds this url`, sibling: res[0].sibling };
+  return null;
+}
+
+/**
  * The url is not a review PAGE at all, whatever production it names: an off-topic or film/TV section, a listing,
  * an interview, a news story, an awards post or live blog, a TV recap, a photo-call announcement. These are the
  * rules that judge the kind of page, not which production it covers, so intake can apply them too
@@ -241,7 +277,7 @@ function pageKindJunkReason(url, show) {
 /**
  * @param {object} data  the _pending stub
  * @param {{showId:string, show?:object, heldIndex?:Map<string,Set<string>>, showTitleOf?:(id:string)=>string}} ctx
- * @returns {{verdict:'duplicate'|'junk'|'candidate', reason:string|null, heldBy?:string[]}}
+ * @returns {{verdict:'duplicate'|'junk'|'rehome'|'candidate', reason:string|null, heldBy?:string[]}}
  */
 function triagePendingStub(data, ctx = {}) {
   const url = data && data.url;
@@ -256,7 +292,12 @@ function triagePendingStub(data, ctx = {}) {
     if (bad) return { verdict: 'junk', reason: `url year ${bad} is more than a year from the show's ${idYear} (show has no dates)` };
   }
   const dateReason = urlDateOutsideWindowReason(url, ctx.show);
-  if (dateReason) return { verdict: 'junk', reason: dateReason };
+  if (dateReason) {
+    // BRO-8090 cousin: the url's own date sitting in a same-title sibling's window is that sibling's review.
+    const owned = siblingOwnerByUrlDate(data, ctx);
+    if (owned) return owned;
+    return { verdict: 'junk', reason: dateReason };
+  }
   // A bare numeric / 1-2 letter / generic title ("44", "G", "The Story") the url never spells out: a site-search
   // fluke (BRO-7930; the drain applied this before triage, now one rule for both). Owner/manual stubs are exempt.
   if (ctx.show && ctx.show.title && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
@@ -271,8 +312,25 @@ function triagePendingStub(data, ctx = {}) {
       && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
     return { verdict: 'junk', reason: `url never spells out the short title "${ctx.show.title}"` };
   }
-  const sibling = siblingVenueReason(url, ctx.show, ctx.sameTitleShows);
-  if (sibling) return { verdict: 'junk', reason: sibling };
+  const sibling = siblingVenueMatch(url, ctx.show, ctx.sameTitleShows);
+  if (sibling) {
+    // BRO-8090 cousin: the url names the venue of exactly one same-title entry, so it is THAT entry's review: move it
+    // there unless the stub's own date rules that entry out, or the entry already carries the url.
+    const sib = (ctx.allShows || []).find((x) => x && x.id === sibling.id);
+    const pdIso0 = stubDateIso(data.publishDate);
+    // A rehome needs a date inside the sibling's run (sample audit 2026-11-23): venues host the same title again
+    // (RST Macbeth 2018 vs 2025, Sadler's Wells Singin' 2021 vs 2027) and "royal-lyceum" names the Lyceum too.
+    // Dateless, it stays settled here with the sibling named; the duplicate settle needs no date.
+    const held0 = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
+    if (sib && ((ctx.siblingHasCopy && ctx.siblingHasCopy(sib.id)) || (held0 && held0.has(sib.id)))) {
+      return { verdict: 'junk', reason: `${sibling.reason}, which already holds this url`, sibling: sib.id };
+    }
+    if (sib && pdIso0 && !isArticleOutsideProductionWindow(sib, pdIso0)) {
+      const blocked = require('./pending-sibling-productions').siblingRehomeBlocker(data, ctx.show, sib, ctx.allShows, pdIso0);
+      if (!blocked) return { verdict: 'rehome', reason: sibling.reason, sibling: sib.id, publishDate: pdIso0 || null };
+    }
+    return { verdict: 'junk', reason: sibling.reason };
+  }
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
   // only settles a stub on a host the corpus has never scored a review from (venue sites such as bam.org).
   if (ctx.heldIndex && nonReviewHostMatch(url) && !heldHosts(ctx.heldIndex).has(hostKey(url))) {
@@ -300,6 +358,15 @@ function triagePendingStub(data, ctx = {}) {
   // Aggregator stubs store prose dates ("December 14, 2014"): any parseable date naming a 4-digit year counts.
   const pdIso = stubDateIso(pd);
   if (ctx.show && pdIso && isArticleOutsideProductionWindow(ctx.show, pdIso)) {
+    // BRO-8090: a same-title sibling whose window holds the date OWNS the article; settling it here as junk threw
+    // away ~415 real reviews. Needs the sibling list; without one (old callers) the old settle stands.
+    if (ctx.allShows) {
+      const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data,
+        hasCopy: ctx.siblingHasCopy || (() => false),
+        holdsUrl: (sid) => !!(ctx.heldIndex && (ctx.heldIndex.get(normalizeReviewUrl(url)) || new Set()).has(sid)) });
+      if (r.kind === 'rehome') return { verdict: 'rehome', reason: `article published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+      if (r.kind === 'duplicate') return { verdict: 'junk', reason: `article published ${pdIso} belongs to same-title production ${r.sibling}, which already holds this url`, sibling: r.sibling };
+    }
     return { verdict: 'junk', reason: `article published ${pdIso} is outside this production's window (stub date, no fetch)` };
   }
   return { verdict: 'candidate', reason: null };
@@ -371,4 +438,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

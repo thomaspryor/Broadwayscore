@@ -43,6 +43,11 @@ const EXEMPT_FILES = new Set([
   // wouldAutoClear() for a report — never written to disk as a real flag.
   // Same exemption as lint-wrongproduction-provenance.js.
   'scripts/shadow-autoclear-report.js',
+  // orphan-production-clusters.js revertRehome() builds an in-memory REVERTED
+  // VIEW of a rehome ({ ...j, wrongProduction: true } on a copy) so
+  // cluster-orphan-productions.js --simulate-revert can prove the orphan gate
+  // goes red on real data (BRO-8093). Pure: never written to disk as a flag.
+  'scripts/lib/orphan-production-clusters.js',
   // review-file-writer.js's 3 wrongProduction=true writers (classifyMarketRouting
   // accept-with-flag, Guard J, Guard K) stamp `fields.wrongProduction` on a
   // caller-owned patch object inside createOrMergeReviewFile(); the actual

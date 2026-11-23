@@ -211,6 +211,32 @@ function safeRealpath(p) {
   }
 }
 
+// BRO-8110: the baseline checkout gets data/*.json COPIED but none of the
+// gitignored data DIRECTORIES (data/review-texts above all), while the merged
+// run in the main checkout sees the live corpus. A corpus test
+// (autoclear-vs-ensemble.test.mjs) then SKIPPED green on the baseline and
+// failed on the merged tree, so a failure already red on origin/main read as
+// NEW and blocked every local land (2 of 2 floors on 2026-11-23 needed
+// MERGE_SKIP_POST_MERGE_TEST_GATE=1). Fix: the baseline run reads the SAME
+// corpus through REVIEW_TEXTS_DIR (absolute, since the two runs have different
+// cwds), and a corpus failure seen on both sides is compared by its payload
+// like an aggregate guard, so a branch that adds violations to an already-red
+// corpus assertion still blocks. Corpus tests that ignore REVIEW_TEXTS_DIR are
+// NOT exempted: they keep blocking (a waiver let real parser regressions
+// through, ship-check review); make such a test honour REVIEW_TEXTS_DIR.
+// Returns the env for the baseline run, or null when there is nothing to share.
+function baselineCorpusEnv(cwd, baselineRoot, env = process.env) {
+  if (env && env.REVIEW_TEXTS_DIR) return { REVIEW_TEXTS_DIR: path.resolve(cwd, env.REVIEW_TEXTS_DIR) };
+  const rel = path.join('data', 'review-texts');
+  if (!fs.existsSync(path.join(cwd, rel)) || fs.existsSync(path.join(baselineRoot, rel))) return null;
+  return { REVIEW_TEXTS_DIR: safeRealpath(path.join(cwd, rel)) };
+}
+
+// A file whose baseline copy reads REVIEW_TEXTS_DIR ran on the shared corpus.
+function honoursReviewTextsDir(baselineRoot, rel) {
+  try { return fs.readFileSync(path.join(baselineRoot, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
+}
+
 // The two change-class prefixes the floor knows how to test. Kept as named
 // constants because both shouldRunTestGate() and selectTestFiles() must agree
 // on them: if they ever disagree, the gate either runs nothing while claiming
@@ -554,7 +580,7 @@ function floorSummaryLine(stdout) {
   return null;
 }
 
-function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
+function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS, extraEnv = null) {
   // NODE_TEST_CONTEXT (set by node's own --test runner on itself) makes a
   // NESTED `node --test` child assume it's a subtest reporting results back
   // over an inherited IPC channel rather than a standalone run — it then
@@ -562,7 +588,7 @@ function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
   // .test.mjs (running under `node --test` already) or, in principle, this
   // gate invoked from inside some other test-runner wrapper — strip it so
   // the child always reports its own real exit code.
-  const env = testChildEnv(process.env);
+  const env = { ...testChildEnv(process.env), ...(extraEnv || {}) };
   // --test-reporter=tap (not the default spec reporter) so parseTapOutput()
   // can key failures by <repo-relative-file>::<test name> for the baseline
   // diff below. `not ok N - <test name>` still carries the literal test name,
@@ -867,10 +893,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
+    let baselineEnv = null;
+    try { baselineEnv = baselineCorpusEnv(cwd, baselineRoot, env); } catch { baselineEnv = null; }
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
-      const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs);
+      const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs, baselineEnv);
       const baselineParsed = parseTapOutput(`${baselineResult.stdout || ''}`, safeRealpath(baselineRoot));
       // Same fail-safe guard as the merged run above, mirrored for the
       // baseline: a baseline run that exited non-zero but parsed zero
@@ -889,7 +917,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       }
       baselineFailures = baselineParsed.failures;
     }
-    const { newFailures, preExisting } = diffFailingSets(baselineFailures, mergedFailures);
+    // Corpus files that ran on the shared corpus are compared by payload, so
+    // MORE violations in an already-red corpus assertion still read NEW.
+    const corpusFiles = baselineEnv
+      ? [...new Set([...mergedFailures.values()].map((f) => f && f.file).filter((f) => f && f !== '?' && honoursReviewTextsDir(baselineRoot, f)))]
+      : [];
+    const { newFailures, preExisting } = diffFailingSets(baselineFailures, mergedFailures, [...AGGREGATE_GUARD_FILES, ...corpusFiles]);
     let combinedOutput = output;
     if (preExisting.length > 0) {
       let staleCopies = [];
@@ -995,6 +1028,7 @@ module.exports = {
   payloadItems,
   AGGREGATE_GUARD_FILES,
   baselineCheckoutOptions,
+  baselineCorpusEnv,
 };
 
 if (require.main === module) {

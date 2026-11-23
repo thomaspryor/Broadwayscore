@@ -594,7 +594,7 @@ function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
   // A global hold this function does not know about (added to planSweep
   // without a flag here) must read as a policy pause, never as a failure:
   // an unknown hold can cost a missed page, never a false one.
-  const knownHolds = ['killSwitch', 'dayBudget', 'hourly', 'concurrency', 'claimOutage', 'spendHalt', 'diskPressure'].filter(k => f[k]).length;
+  const knownHolds = ['killSwitch', 'dayBudget', 'hourly', 'concurrency', 'claimOutage', 'spendHalt', 'diskPressure', 'memoryPressure'].filter(k => f[k]).length;
   const unknownHold = Array.isArray(b.globalHolds) && b.globalHolds.length > knownHolds;
   // The spend breaker (BRO-3924 R5) reserves liveNow x median job cost for
   // open slots, so the same never-closed slots that make the concurrency cap
@@ -610,7 +610,7 @@ function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
   // diskPressure (BRO-6430) is a known, deliberate hold: executeSweep raises
   // bsc-runner's disk-pressure digest alert for it, so it must not ALSO read
   // as a wedged dispatch flow.
-  const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly || f.diskPressure ||
+  const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly || f.diskPressure || f.memoryPressure ||
     (f.spendHalt && !spendFromStaleSlots) || (f.concurrency && !staleConcurrency));
   if (policyBlocking) return toDispatch;
   // Claims that never produced a launch are unfinished work the queue no
@@ -893,7 +893,7 @@ function hasNoFurtherDispatchWork(taskId, entries) {
  *     I/O), same injection pattern as liveTitles, so this stays pure.
  */
 function planSweep(entries, tasks, opts) {
-  const { now, liveTitles = null, recheckFailures = [], alreadyPasses = [], dispatchEnabled = true, unlandedJobDone = [], diskFreeGB = null, diskFloorGB = null } = opts || {};
+  const { now, liveTitles = null, recheckFailures = [], alreadyPasses = [], dispatchEnabled = true, unlandedJobDone = [], diskFreeGB = null, diskFloorGB = null, memoryPressure = false } = opts || {};
   if (!Number.isFinite(now)) throw new Error('planSweep requires now (ms epoch)');
   const cmuxObserved = liveTitles instanceof Map && liveTitles.size > 0;
 
@@ -1227,6 +1227,9 @@ function planSweep(entries, tasks, opts) {
   const diskPressure = Number.isFinite(diskFreeGB) && Number.isFinite(diskFloorGB) &&
     shouldRefuseDispatch({ freeGB: diskFreeGB, floorGB: diskFloorGB });
   if (diskPressure) globalHolds.push(`disk pressure (${diskFreeGB.toFixed(1)}GB free < ${diskFloorGB}GB dispatch floor) on this Mac — every launch would be refused; scripts/gc-merged-worktrees.sh frees space`);
+  // BRO-8167: bsc-runner refuses every launch (ABANDONED 'memory-pressure:')
+  // while the kernel's pressure verdict is not normal; hold like disk.
+  if (memoryPressure) globalHolds.push('memory pressure (kernel vm pressure not normal) on this Mac — every launch would be refused until it recovers');
   // Union — a NEW array, never an alias of globalHolds (an alias made every
   // cmux hold a global one again, which is the exact bug this split removes).
   // The narrative and every existing reader see the same list they always did;
@@ -1249,7 +1252,8 @@ function planSweep(entries, tasks, opts) {
     liveNow >= CAPS.watchdogConcurrent ||
     (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) ||
     spendBreaker.halt ||
-    diskPressure;
+    diskPressure ||
+    memoryPressure;
 
   let budget = 0;
   if (!globalHolds.length) {
@@ -1319,6 +1323,7 @@ function planSweep(entries, tasks, opts) {
         claimOutage: !!claimOutage,
         spendHalt: !!spendBreaker.halt,
         diskPressure,
+        memoryPressure: !!memoryPressure,
       },
       awaitingClaimCount: awaitingClaim.length,
       laneEligible: eligibleForLane.length,

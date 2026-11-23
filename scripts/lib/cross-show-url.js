@@ -21,7 +21,7 @@ const { foldDiacritics } = require('./title-match');
 const { toDateMs } = require('./date-utils');
 const { earliestShowDate } = require('./date-guard');
 
-const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+const DEFAULT_SHOWS_PATH = require('./shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures)
 
 function slugify(text) {
   return String(text || '').toLowerCase()

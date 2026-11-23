@@ -316,7 +316,7 @@ test('ledgerPrecondition: an infra job-abandoned (no live sibling) is ackable; a
     { ts: '2026-11-16T00:40:34.976Z', event: 'job-retried', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-a' },
   ];
   const ab = (reason) => [...base, { ts: '2026-11-16T00:50:35.777Z', event: 'job-abandoned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-b', reason }];
-  for (const reason of ['disk-pressure: disk free 3.2GB < floor 5GB after self-heal GC', 'acquireLease threw: EACCES']) {
+  for (const reason of ['disk-pressure: disk free 3.2GB < floor 5GB after self-heal GC', 'memory-pressure: kernel memory pressure is critical', 'acquireLease threw: EACCES']) {
     assert.deepEqual(core.ledgerPrecondition(ab(reason)).refusals, [], reason);
   }
   const held = core.ledgerPrecondition(ab('lease held (held by linear:BRO-7569-c)'));

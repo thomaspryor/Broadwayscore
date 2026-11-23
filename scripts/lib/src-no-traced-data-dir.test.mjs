@@ -46,7 +46,15 @@ export function rootDirHits(src) {
     const segs = (m[2] ?? m[3] ?? '').replace(/^\/+|\/+$/g, '');
     if (ROOTS.has(segs)) hits.push(m[0]);
   }
-  return hits;
+  // BRO-8165: any path.join/resolve whose 'data' argument (also '../data', 'data/') is
+  // the last argument, or is followed by a NON-literal argument (a variable), names the
+  // directory itself whatever the first argument is (__dirname, ROOT, a const). Same
+  // pattern as tests/unit/trace-excludes-data-dirs.test.mjs (scripts/lib graph); this
+  // runs it over src/ on comment-stripped code.
+  const dataArg = String.raw`['"\x60](?:\.{1,2}\/)*data\/?['"\x60]`;
+  const dirOnly = new RegExp(String.raw`path\.(?:join|resolve)\s*\([^;\n]*?${dataArg}\s*(?:\)|,\s*[^'"\x60\s])`, 'g');
+  for (const m of code.matchAll(dirOnly)) hits.push(m[0]);
+  return [...new Set(hits)];
 }
 
 test('detector: roots caught, files and subfolders allowed, comments ignored', () => {
@@ -59,6 +67,15 @@ test('detector: roots caught, files and subfolders allowed, comments ignored', (
   assert.equal(rootDirHits('const d = `${process.cwd()}/public/data/`;').length, 1);
   assert.equal(rootDirHits("fs.readFileSync(process.cwd() + '/public/data/homepage-archive.json')").length, 0);
   assert.equal(rootDirHits("const r = `${process.cwd()}/data/audit/x.json`;").length, 0);
+  // BRO-8165: non-cwd roots and variable segments after 'data'
+  assert.ok(rootDirHits("path.join(__dirname, '..', '..', 'data')").length >= 1);
+  assert.ok(rootDirHits("path.join(ROOT, 'data', sub)").length >= 1);
+  assert.equal(rootDirHits("path.join(__dirname, '..', 'data', 'shows.json')").length, 0);
+  assert.equal(rootDirHits("// path.join(__dirname, '..', 'data')").length, 0);
+  // BRO-8165 review: backtick literal and a space before the paren
+  assert.ok(rootDirHits("path.join(ROOT, `data`)").length >= 1);
+  assert.ok(rootDirHits("path.join (ROOT, 'data')").length >= 1);
+  assert.equal(rootDirHits("path.join(ROOT, `data`, 'x.json')").length, 0);
 });
 
 test('no server code under src/ names the data/ or public/ root', () => {

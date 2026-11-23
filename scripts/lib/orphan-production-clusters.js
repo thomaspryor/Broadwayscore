@@ -167,7 +167,80 @@ function proposeEntry(c, existingIds) {
   };
 }
 
+/**
+ * BRO-8093 (audit of BRO-7929/7959): the whole orphan scan as one pure function,
+ * so the --gate decision is testable on fixtures and on a reverted view of real data.
+ * @param {Array<[string,string,object]>} records [hostShowId, fileName, reviewJson]
+ * @param {Array<object>} shows shows.json rows
+ * @param {object} outlets outlet registry map
+ * @param {number} now epoch ms
+ * @returns {Array<{hostId,title,file,ms,outletId,market}>}
+ */
+function findOrphans(records, shows, outlets, now) {
+  const ctx = { byTitle: indexShows(shows), cutoffMs: now - 2 * 365 * DAY, now };
+  const showById = new Map(shows.map((s) => [s.id, s]));
+  // BRO-7959: a flagged copy whose URL is already held UNFLAGGED on another show is a duplicate of a review that is
+  // live, not a hidden one. Counting it inflated clusters (Pirates! The Penzance Musical: 16 "hidden" copies, all live).
+  const live = new Set();
+  const liveFiles = new Map();
+  for (const [id, f, j] of records) {
+    if (!j.wrongProduction && !j.wrongShow && !j.duplicateOf) {
+      if (j.url) live.add(urlKey(j.url));
+      // same outlet--critic file + date (URL may differ between scrapes); scoped by title so one critic's two shows on a day never collide
+      const fk = `${f}|${reviewDateMs(j)}`;
+      const sh = showById.get(id);
+      if (sh) { if (!liveFiles.has(fk)) liveFiles.set(fk, []); liveFiles.get(fk).push(normTitle(sh.title)); }
+    }
+  }
+  const orphans = [];
+  for (const [id, f, j] of records) {
+    const show = showById.get(id);
+    if (!show) continue;
+    const c = orphanCandidate(j, show, ctx);
+    if (!c) continue;
+    if ((j.url && live.has(urlKey(j.url))) || (liveFiles.get(`${f}|${c.ms}`) || []).some((t) => titlesCompatible(t, normTitle(show.title)))) continue; // duplicate of a live review
+    orphans.push({ hostId: id, title: show.title, file: f, ms: c.ms, outletId: j.outletId, market: reviewMarket(j, outlets) });
+  }
+  return orphans;
+}
+
+/** title|market -> review total over clusters with count >= min (gate keys; stable as the 2-year cutoff rolls). */
+function gateKeyTotals(clusters, min) {
+  const t = {};
+  for (const c of clusters) if (c.count >= min) t[c.key] = (t[c.key] || 0) + c.count;
+  return t;
+}
+
+/** Keys that are new or grown vs the ratchet baseline: each one is a production missing from shows.json. */
+function gateFailures(keyTotals, baseline) {
+  return Object.entries(keyTotals).filter(([k, n]) => baseline[k] === undefined || n > baseline[k]).map(([k, n]) => ({ key: k, count: n, baseline: baseline[k] }));
+}
+
+/**
+ * Reverted view of a rehome (red-then-green on real data): drop the spec'd shows that the
+ * rehome ADDED and put every file it moved (reroutedFrom set, sitting in a spec'd show dir)
+ * back on its old host, flagged wrongProduction again. Pure: inputs are not mutated.
+ * @param {Set<string>} addedIds shows the fix added (removed from the view)
+ * @param {Set<string>} rehomeTargets show dirs files were moved into (may include pre-existing shows)
+ */
+function revertRehome(records, shows, addedIds, rehomeTargets) {
+  const byId = new Map(shows.map((s) => [s.id, s]));
+  const outShows = shows.filter((s) => !addedIds.has(s.id));
+  const missingHosts = [];
+  const outRecords = records.map(([id, f, j]) => {
+    if (!rehomeTargets.has(id) || !j.reroutedFrom || j.reroutedFrom === id) return [id, f, j];
+    const host = byId.get(j.reroutedFrom);
+    const target = byId.get(id);
+    // Only same-title moves are orphan rehomes; other reroutes (cross-market backlog) stay put.
+    if (host && target && !titlesCompatible(normTitle(host.title), normTitle(target.title))) return [id, f, j];
+    if (!host) missingHosts.push(`${id}/${f} -> ${j.reroutedFrom}`);
+    return [j.reroutedFrom, f, { ...j, wrongProduction: true }];
+  });
+  return { records: outRecords, shows: outShows, missingHosts };
+}
+
 module.exports = {
+  findOrphans, gateKeyTotals, gateFailures, revertRehome,
   urlKey, titlesCompatible,
   DAY, COVER_SLACK_DAYS, CLUSTER_GAP_DAYS,
   parseDate, normTitle, reviewDateMs, isCrossMarketNote, indexShows, isCovered,

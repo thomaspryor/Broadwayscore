@@ -58,6 +58,9 @@ import venueComplexesWestEndData from '../../data/venue-complexes-west-end.json'
 // Verified venue facts for Off-Broadway + London pages (BRO-8088): only fields two
 // independent web-search models agreed on (scripts/research-venue-details.js).
 import venueInfoData from '../../data/venue-info.json';
+// Access facts, seat-view links and Broadway official websites (BRO-8112): only what two models
+// agreed on AND quoted from the venue's own page (scripts/research-venue-access.js).
+import venueAccessData from '../../data/venue-access.json';
 import { getTheaterAddress } from '../../scripts/lib/venue-addresses';
 import { displaysCriticScore } from './critic-score-display';
 import { getShowYear } from './date-utils';
@@ -67,6 +70,34 @@ type VenueInfoEntry = {
   fields: { address?: string; website?: string; capacity?: number; yearOpened?: number; operator?: string };
 };
 const VENUE_INFO = (venueInfoData as unknown as { venues: Record<string, VenueInfoEntry> }).venues;
+
+type AccessFlag = 'wheelchair' | 'stepFree' | 'elevator' | 'hearingLoop' | 'assistiveListening';
+type VenueAccessEntry = {
+  website?: string;
+  access?: Partial<Record<AccessFlag, boolean>> & { note?: string; sourceUrl?: string | null; verifiedAt?: string };
+  seatLinks?: { seatplan?: string; aviewfrommyseat?: string };
+};
+const VENUE_ACCESS = (venueAccessData as unknown as { venues: Record<string, VenueAccessEntry> }).venues;
+const ACCESS_FLAGS: AccessFlag[] = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
+
+/** Access facts from the venue's own page, in the shape the access badges read; undefined when none. */
+function accessibilityFor(entry: VenueAccessEntry | undefined): TheaterAccessibility | undefined {
+  const a = entry?.access;
+  if (!a || !ACCESS_FLAGS.some(f => typeof a[f] === 'boolean')) return undefined;
+  const denied = ACCESS_FLAGS.filter(f => a[f] === false);
+  return {
+    wheelchair: a.wheelchair === true,
+    stepFree: a.stepFree === true,
+    elevator: a.elevator === true,
+    hearingLoop: a.hearingLoop === true,
+    assistiveListening: a.assistiveListening === true,
+    verified: true,
+    ...(a.note ? { notes: a.note } : {}),
+    ...(denied.length ? { denied } : {}),
+    ...(a.sourceUrl ? { sourceUrl: a.sourceUrl } : {}),
+    ...(a.verifiedAt ? { checkedAt: a.verifiedAt } : {}),
+  };
+}
 
 /** Verified address for an Off-Broadway / London show's venue page, if one exists (BRO-8088). */
 const US_ZIP = /\b\d{5}(-\d{4})?\b/;
@@ -82,6 +113,23 @@ function verifiedVenueAddress(category: string | undefined, venue: string | unde
   if (!market) return undefined;
   const name = stubTheaterName(venue ?? undefined);
   return name ? VENUE_INFO[`${market}/${urlSlugify(name)}`]?.fields.address : undefined;
+}
+
+/**
+ * Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
+ * address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
+ * Fill a missing address, or replace one that is plainly in the other city (a London
+ * show carrying a New York ZIP). A production-specific address is otherwise kept: a
+ * company that moved, or two spaces sharing a name, must not be sent to the wrong door.
+ * Every computeOneShow result that reaches a page goes through this, the build's
+ * getAllShows and the show-refresh slice render alike (BRO-8056 render parity).
+ */
+export function withVerifiedVenueAddress<T extends { category?: string; venue?: string | null; theaterAddress?: string | null }>(show: T): T {
+  const verified = verifiedVenueAddress(show.category, show.venue);
+  if (!verified || verified === show.theaterAddress) return show;
+  return !show.theaterAddress || addressInOtherCity(show.category, show.theaterAddress)
+    ? { ...show, theaterAddress: verified }
+    : show;
 }
 
 // Type the imported data
@@ -158,18 +206,7 @@ export function getAllShows(): ComputedShow[] {
       ...deps,
       blogReviews: blogReviewsByShowId.get(show.id) || [],
     }))
-    // Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
-    // address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
-    .map(show => {
-      // Fill a missing address, or replace one that is plainly in the other city (a London
-      // show carrying a New York ZIP). A production-specific address is otherwise kept: a
-      // company that moved, or two spaces sharing a name, must not be sent to the wrong door.
-      const verified = verifiedVenueAddress(show.category, show.venue);
-      if (!verified || verified === show.theaterAddress) return show;
-      return !show.theaterAddress || addressInOtherCity(show.category, show.theaterAddress)
-        ? { ...show, theaterAddress: verified }
-        : show;
-    });
+    .map(withVerifiedVenueAddress);
 
   return computedShowsCache;
 }
@@ -939,6 +976,7 @@ export function getAllTheaters(): Theater[] {
         name,
         slug: slugify(name),
         address: data.address,
+        website: VENUE_ACCESS[`broadway/${slugify(name)}`]?.website,
         capacity: theaterMeta?.capacity,
         yearBuilt: theaterMeta?.yearBuilt,
         operator: theaterMeta?.operator,
@@ -969,7 +1007,7 @@ export function getAllTheaters(): Theater[] {
     const current = byFormerName.get(t.name);
     const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? (current ? getTheaterAddress(current.name) : undefined) ?? undefined;
     // The old-name page shows the current building's photo, so it carries that photo's credit too.
-    if (current) return { ...t, address, images: t.images?.exterior ? t.images : current.images, nowKnownAs: { name: current.name, slug: current.slug } };
+    if (current) return { ...t, address, website: t.website ?? current.website, images: t.images?.exterior ? t.images : current.images, nowKnownAs: { name: current.name, slug: current.slug } };
     return address === t.address ? t : { ...t, address };
   });
 
@@ -1055,14 +1093,19 @@ export function getAllTheaterSlugs(): string[] {
  */
 export function applyVenueInfo<T extends Theater>(theater: T, market: VenueInfoMarket): T {
   const info = VENUE_INFO[`${market}/${theater.slug}`]?.fields;
-  if (!info) return theater;
+  const extra = VENUE_ACCESS[`${market}/${theater.slug}`];
+  const accessibility = accessibilityFor(extra);
+  const externalLinks = extra?.seatLinks && (extra.seatLinks.seatplan || extra.seatLinks.aviewfrommyseat) ? extra.seatLinks : undefined;
+  if (!info && !accessibility && !externalLinks) return theater;
   return {
     ...theater,
-    address: info.address ?? theater.address,
-    website: info.website ?? theater.website,
-    capacity: info.capacity ?? theater.capacity,
-    yearBuilt: info.yearOpened ?? theater.yearBuilt,
-    operator: info.operator ?? theater.operator,
+    address: info?.address ?? theater.address,
+    website: info?.website ?? theater.website,
+    capacity: info?.capacity ?? theater.capacity,
+    yearBuilt: info?.yearOpened ?? theater.yearBuilt,
+    operator: info?.operator ?? theater.operator,
+    accessibility: accessibility ?? theater.accessibility,
+    externalLinks: externalLinks ?? theater.externalLinks,
   };
 }
 

@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { evaluate, render } from './land-ready.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const base = { doctor: { ok: true }, dirty: [], uiFiles: [], gatedFiles: [], renderImpactDropped: [], uiCommitsMissingPrefix: [], touchesSrc: false, transcript: { found: true }, coverage: { ran: true, complete: true, missing: [] }, judge: { decision: 'allow' } };
+const base = { doctor: { ok: true }, dirty: [], uiFiles: [], gatedFiles: [], renderImpactDropped: [], touchesSrc: false, transcript: { found: true }, coverage: { ran: true, complete: true, missing: [] }, judge: { decision: 'allow' } };
 
 test('a clean branch with no UI files needs no owner approval and every box is ticked', () => {
   const r = evaluate(base);
@@ -44,9 +44,10 @@ test('non-rendering and text-only UI diffs need no owner approval', () => {
   assert.match(evaluate({ ...base, uiFiles: ['src/a.tsx'], renderImpactDropped: ['src/a.tsx'] }).cls, /non-rendering/);
 });
 
-test('dirty tree, unprefixed UI commit and a blocked land dry run are all listed together', () => {
+test('dirty tree and a blocked land dry run are listed together; no commit-label item (BRO-8156)', () => {
   const r = evaluate({ ...base, dirty: ['x.js'], uiFiles: ['src/a.tsx'], uiCommitsMissingPrefix: ['abc1234'], judge: { decision: 'block', message: 'rebase conflict in x\nmore' } });
-  assert.deepEqual(r.missing.map((i) => i.id).sort(), ['judge', 'prefix', 'tree']);
+  assert.deepEqual(r.missing.map((i) => i.id).sort(), ['judge', 'tree']);
+  assert.ok(!r.items.some((i) => /VISUAL-OK/.test(i.label + i.fix)), 'land-ready must never tell a session to type VISUAL-OK');
 });
 
 test('CLI on a real branch with a UI change and no transcript lists every open item and ends on the owner line', () => {
@@ -66,7 +67,7 @@ test('CLI on a real branch with a UI change and no transcript lists every open i
   assert.match(out, /\[ \] `npm run build`/);
   assert.match(out, /\[ \] visual verdict/);
   assert.match(out, /\[ \] \/ship-check/);
-  assert.match(out, /\[ \] UI commits carry VISUAL-OK-1440/);
+  assert.doesNotMatch(out, /VISUAL-OK/); // BRO-8156: no commit-label item
   assert.match(out.trim().split('\n').pop(), /^Ask the owner now: no$/);
 });
 
@@ -89,4 +90,25 @@ test('BRO-7888: a fix-only UI diff with a current passing verdict needs no owner
   assert.match(fix.owner.why, /fix-only/);
   assert.equal(evaluate({ ...base, ...ui, fixOnly: { allowed: false, reason: 'design change' } }).owner.line, 'Ask the owner now: yes');
   assert.equal(evaluate({ ...base, ...ui }).owner.line, 'Ask the owner now: yes'); // classifier absent: fail closed
+});
+
+test('BRO-8156: an earlier owner yes counts in land-ready only while the verdict shows HEAD content (same rule as the hook)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lr8156-'));
+  const g = (...a) => execFileSync('git', a, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }).trim();
+  g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+  mkdirSync(join(dir, 'src/components'), { recursive: true });
+  writeFileSync(join(dir, 'src/components/A.tsx'), 'export default function A(){return <p>a</p>}\n');
+  g('add', '-A'); g('commit', '-qm', 'base'); g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+  g('checkout', '-q', '-b', 'feat');
+  writeFileSync(join(dir, 'src/components/A.tsx'), 'export default function A(){return <p className="b">a</p>}\n');
+  g('add', '-A'); g('commit', '-qm', 'tweak');
+  const vq = join(dir, '.claude', 'visual-qa');
+  mkdirSync(join(vq, 'feat'), { recursive: true });
+  writeFileSync(join(vq, 'approvals.jsonl'), JSON.stringify({ ts: new Date().toISOString(), sessionId: 's', branch: 'feat', commitSha: 'f'.repeat(40), contentHash: 'old', uiFiles: ['src/components/A.tsx'] }) + '\n');
+  const run = (blob) => {
+    writeFileSync(join(vq, 'feat', 'verdict.json'), JSON.stringify({ schemaVersion: 2, overallPass: true, contentHash: 'x', uiFiles: ['src/components/A.tsx'], uiFileHashes: { 'src/components/A.tsx': blob } }));
+    return execFileSync('node', [join(HERE, 'land-ready.mjs'), '--no-doctor', '--no-judge'], { cwd: dir, encoding: 'utf8', env: { ...process.env, CLAUDE_CODE_SESSION_ID: '', LAND_READY_CWD: dir, HOME: dir } });
+  };
+  assert.doesNotMatch(run('0'.repeat(40)), /already approved/, 'stale verdict: the earlier yes must not count');
+  assert.match(run(g('rev-parse', 'HEAD:src/components/A.tsx')), /already approved/, 'current verdict: the earlier yes counts');
 });

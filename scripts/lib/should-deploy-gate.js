@@ -130,6 +130,7 @@ const SITE_DATA_FILES = [
   'data/tour-schedules.json',
   'data/tour-tickets.json',
   'data/uk-regional-venues.json',
+  'data/venue-access.json',
   'data/venue-complexes-west-end.json',
   'data/venue-complexes.json',
   'data/venue-info.json',

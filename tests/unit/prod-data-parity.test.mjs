@@ -125,3 +125,47 @@ test('one router condition covers all mismatches and only a complete pass resolv
   await runProbe({ alert: true, log: () => {}, router, fetchImpl: transport() });
   assert.equal(calls[1], 'prod-data-parity:mismatch');
 });
+
+// BRO-8056 G1: a page the show-refresh reader rendered from a published slice
+// carries <meta name="show-refresh-rev" content="<hash>">; the probe compares it
+// against that slice's expectation, never the prebuild row.
+const H1 = '0123456789abcdef';
+const marked = (html, rev) => html.replace('<main>', `<meta name="show-refresh-rev" content="${rev}"/><main>`);
+function refreshTransport(aHtml) {
+  return async url => {
+    const pathname = new URL(url).pathname;
+    if (pathname.endsWith('.json')) return { ok: true, json: async () => ({ ...snapshot(), refreshBuildInstant: 1 }) };
+    return { ok: true, text: async () => pathname === '/show/a' ? aHtml : empty };
+  };
+}
+
+test('G1: refresh marker picks the expectation (base, hash + overlay, stale prebuild, disagreement, store down)', async () => {
+  const { readRefreshMarker } = require('../../scripts/lib/prod-data-parity');
+  assert.deepEqual(readRefreshMarker(page(82)), { kind: 'base', value: null });
+  assert.equal(readRefreshMarker(marked(page(82), 'base-error')).kind, 'base');
+  assert.deepEqual(readRefreshMarker(marked(page(82), H1)), { kind: 'hash', value: H1 });
+  assert.equal(readRefreshMarker(marked(page(82), 'zz')).kind, 'invalid');
+
+  const never = async () => { throw new Error('overlay must not be read for a base page'); };
+  const base = await probe({ fetchImpl: refreshTransport(marked(page(82), 'base')), refreshExpectation: never });
+  assert.deepEqual([base.exitCode, base.matched, base.mismatched], [0, 2, 0]);
+
+  const calls = [];
+  const overlay = row => async (id, hash, snap) => { calls.push([id, hash, snap.refreshBuildInstant]); return row; };
+  // Prebuild row says 82/12; the refreshed page shows the slice's 88/14 => matched through the overlay.
+  const refreshed = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: overlay({ score: 88, reviewCount: 14 }) });
+  assert.deepEqual([refreshed.exitCode, refreshed.matched, refreshed.mismatched], [0, 2, 0]);
+  assert.deepEqual(calls, [['a', H1, 1]]);
+  // Same page checked against the stale prebuild row only would mismatch: proves the overlay is what matched.
+  const stale = await probe({ fetchImpl: refreshTransport(page(88, 14)), refreshExpectation: never });
+  assert.equal(stale.mismatched, 1);
+  // Overlay disagrees with what the page rendered => mismatched.
+  const wrong = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: overlay({ score: 70, reviewCount: 14 }) });
+  assert.deepEqual([wrong.exitCode, wrong.mismatched], [1, 1]);
+  // Store unreadable for a hashed page => unavailable, never mismatched.
+  const down = await probe({ fetchImpl: refreshTransport(marked(page(88, 14), H1)), refreshExpectation: async () => { throw new Error('store down'); } });
+  assert.deepEqual([down.exitCode, down.mismatched, down.unavailable], [2, 0, 1]);
+  // A marker that is neither base nor a hash is a rendering defect.
+  const garbled = await probe({ fetchImpl: refreshTransport(marked(page(82), 'zz')), refreshExpectation: never });
+  assert.deepEqual([garbled.exitCode, garbled.mismatched], [1, 1]);
+});

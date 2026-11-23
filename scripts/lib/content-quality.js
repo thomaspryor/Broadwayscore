@@ -847,14 +847,17 @@ function detectWrongArticle(text, showTitle) {
  * @type {string[]}
  */
 let _cachedBroadwayShows = null;
+let _cachedBroadwayShowsPath = null; // cache keyed by the shows.json path (SHOWS_JSON_PATH fixtures)
 
 function loadBroadwayShows() {
-  if (_cachedBroadwayShows) return _cachedBroadwayShows;
+  const _curShowsPath = require('./shows-json-path').showsJsonPath();
+  if (_cachedBroadwayShows && _cachedBroadwayShowsPath === _curShowsPath) return _cachedBroadwayShows;
+  _cachedBroadwayShowsPath = _curShowsPath;
 
   // Try loading from shows.json
   try {
     const fs = require('fs');
-    const showsPath = require('path').join(__dirname, '../../data/shows.json');
+    const showsPath = require('./shows-json-path').showsJsonPath(); // honours SHOWS_JSON_PATH (test fixtures)
     const raw = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
     const shows = raw.shows || raw;
     // shows.json is a per-PRODUCTION list, so a frequently-revived title

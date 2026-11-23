@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const configText = readFileSync(join(ROOT, 'next.config.js'), 'utf8');
 const excludes = new Function(
-  `return [${configText.match(/outputFileTracingExcludes:\s*\{\s*'\*\*\/\*':\s*\[([\s\S]*?)\n\s*\],\s*\n\s*\},/)[1]}];`,
+  `return [${configText.match(/outputFileTracingExcludes:\s*\{\s*'\*\*\/\*':\s*\[([\s\S]*?)\n\s*\],\s*\n(?:\s*\.\.\.[^\n]*\n)?\s*\},/)[1]}];`,
 )();
 
 function nft() {

@@ -14,6 +14,8 @@
  *   node scripts/cluster-orphan-productions.js [--top N] [--min N] [--json PATH]
  *   node scripts/cluster-orphan-productions.js --gate             # exit 1 on a cluster not in baseline / grown
  *   node scripts/cluster-orphan-productions.js --update-baseline  # freeze current clusters (supervised)
+ *   node scripts/cluster-orphan-productions.js --gate --simulate-revert SPEC.json[,SPEC2] [--keep-shows ID]
+ *       # in-memory revert of an applied spec: must FAIL (red-then-green, BRO-8093); SHOWS_FILE env overrides shows.json
  * Wired into scripts/check-corpus-drift.js AUDITS (non-blocking; BRO-3535 precedent).
  * Baseline: data/audit/orphan-production-clusters-baseline.json (ratchet: only shrinks).
  */
@@ -38,25 +40,24 @@ const UPDATE = ARGV.includes('--update-baseline');
 const TOP = +arg('--top', 25);
 const MIN = +arg('--min', 3); // clusters below this are stray single reviews, not a missing production
 const JSON_OUT = arg('--json', null);
+const REVERT = arg('--simulate-revert', null); // SPEC[,SPEC]: gate a reverted view of an applied fix (red-then-green)
+const KEEP_SHOWS = arg('--keep-shows', null);
+const SHOWS_PATH = process.env.SHOWS_FILE || path.join(ROOT, 'data', 'shows.json');
+
+function loadShows() {
+  const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  return Array.isArray(raw) ? raw : raw.shows;
+}
 
 function collect() {
-  const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
+  let shows = loadShows();
   const outletsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
   const outlets = outletsRaw.outlets || outletsRaw;
   const dir = resolveReviewTextsDir();
   const problem = corpusDirProblem(dir);
   if (problem) { console.error(`SKIP: ${problem}`); process.exit(2); }
   try { assertReviewTextCorpus(dir); } catch (err) { exitIfCorpusNotScanned(err); } // BRO-7193 shared guard: exit 2
-  const now = Date.now();
-  const ctx = { byTitle: L.indexShows(shows), cutoffMs: now - 2 * 365 * L.DAY, now };
-  const showById = new Map(shows.map((s) => [s.id, s]));
-  const orphans = [];
-  // BRO-7959: a flagged copy whose URL is already held UNFLAGGED on another show is a duplicate of a review that is
-  // live, not a hidden one. Counting it inflated clusters (Pirates! The Penzance Musical: 16 "hidden" copies, all live).
-  const live = new Set();
-  const liveFiles = new Map();
-  const all = [];
+  let all = [];
   for (const id of listShowDirs(dir, { silent: true, skipHolding: true })) {
     let files;
     try { files = fs.readdirSync(path.join(dir, id)).filter((f) => f.endsWith('.json')); } catch { continue; }
@@ -64,37 +65,35 @@ function collect() {
       let j;
       try { j = JSON.parse(fs.readFileSync(path.join(dir, id, f), 'utf8')); } catch { continue; }
       all.push([id, f, j]);
-      if (!j.wrongProduction && !j.wrongShow && !j.duplicateOf) {
-        if (j.url) live.add(L.urlKey(j.url));
-        // same outlet--critic file + date (URL may differ between scrapes); scoped by title so one critic's two shows on a day never collide
-        const fk = `${f}|${L.reviewDateMs(j)}`;
-        const sh = showById.get(id);
-        if (sh) { if (!liveFiles.has(fk)) liveFiles.set(fk, []); liveFiles.get(fk).push(L.normTitle(sh.title)); }
-      }
     }
   }
-  for (const [id, f, j] of all) {
-    const show = showById.get(id);
-    if (!show) continue;
-    const c = L.orphanCandidate(j, show, ctx);
-    if (!c) continue;
-    if ((j.url && live.has(L.urlKey(j.url))) || (liveFiles.get(`${f}|${c.ms}`) || []).some((t) => L.titlesCompatible(t, L.normTitle(show.title)))) continue; // duplicate of a live review
-    orphans.push({ hostId: id, title: show.title, file: f, ms: c.ms, outletId: j.outletId, market: L.reviewMarket(j, outlets) });
+  if (REVERT) {
+    // BRO-8093: in-memory revert of an applied spec (nothing on disk changes) to prove the gate goes red without the fix.
+    const specs = REVERT.split(',').flatMap((p) => JSON.parse(fs.readFileSync(p, 'utf8')));
+    const targets = new Set(specs.map((s) => s.id));
+    const keep = new Set(KEEP_SHOWS ? KEEP_SHOWS.split(',') : []); // spec ids that pre-existed the fix (rehome target only)
+    const badKeep = [...keep].filter((id) => !targets.has(id));
+    if (badKeep.length) { console.error(`--keep-shows ids not in the spec(s): ${badKeep.join(',')}`); process.exit(2); }
+    const added = new Set([...targets].filter((id) => !keep.has(id)));
+    let missingHosts;
+    ({ records: all, shows, missingHosts } = L.revertRehome(all, shows, added, targets));
+    console.log(`SIMULATED REVERT of ${targets.size} spec'd productions (${added.size} removed from shows view)`);
+    if (missingHosts.length) console.warn(`WARN: ${missingHosts.length} rehomed file(s) point at a host not in shows.json (not counted): ${missingHosts.slice(0, 5).join('; ')}`);
   }
-  return orphans;
+  return L.findOrphans(all, shows, outlets, Date.now());
 }
 
 // Existing ids, so a proposal for a second same-year production never reuses one (proposeEntry takes -N).
-const EXISTING_IDS = (() => { const r = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')); return new Set((Array.isArray(r) ? r : r.shows).map((s) => s.id)); })();
+const EXISTING_IDS = new Set(loadShows().map((s) => s.id));
 const orphans = collect();
 const clusters = L.clusterOrphans(orphans);
 const gated = clusters.filter((c) => c.count >= MIN);
 // Gate keys are title|market totals, NOT per-cluster ids: a cluster id embeds its first review
 // month, which shifts as the rolling 2-year cutoff drops old reviews (false red with no data change).
-const keyTotals = {};
-for (const c of gated) keyTotals[c.key] = (keyTotals[c.key] || 0) + c.count;
+const keyTotals = L.gateKeyTotals(clusters, MIN);
 const summary = { orphanReviews: orphans.length, clusters: clusters.length, clustersAtLeastMin: gated.length, min: MIN, reviewsInGatedClusters: gated.reduce((a, c) => a + c.count, 0) };
 
+if (UPDATE && (REVERT || process.env.SHOWS_FILE)) { console.error('refusing --update-baseline with --simulate-revert or SHOWS_FILE (baseline must come from data/shows.json)'); process.exit(2); }
 if (UPDATE) {
   const out = { generatedAt: new Date().toISOString(), summary, clusters: keyTotals };
   fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
@@ -115,7 +114,7 @@ if (!GATE) {
 
 let base = {};
 try { base = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')).clusters || {}; } catch { console.error('no baseline; run --update-baseline'); process.exit(1); }
-const bad = Object.entries(keyTotals).filter(([k, n]) => base[k] === undefined || n > base[k]).map(([k, n]) => ({ id: k, count: n, hosts: Object.assign({}, ...gated.filter((c) => c.key === k).map((c) => c.hosts)) }));
+const bad = L.gateFailures(keyTotals, base).map((b) => ({ id: b.key, count: b.count, hosts: Object.assign({}, ...gated.filter((c) => c.key === b.key).map((c) => c.hosts)) }));
 if (bad.length) {
   console.error(`FAIL: ${bad.length} orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):`);
   for (const c of bad.slice(0, 20)) console.error(`  ${c.id} count=${c.count} baseline=${base[c.id] ?? 'none'} hosts=${Object.keys(c.hosts).join(',')}`);
