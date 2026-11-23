@@ -1,7 +1,7 @@
 {
   "outletId": "nyt-theater",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:37:13.509Z",
+  "generatedAt": "2026-11-23T23:28:43.569Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
@@ -16,22 +16,22 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 333,
-      "not-review": 162,
-      "held-unmatched": 24,
+      "held": 337,
+      "not-review": 161,
+      "held-unmatched": 26,
       "catalog-gap": 52,
-      "out-of-window": 77,
+      "out-of-window": 76,
       "held-alt-url": 2,
       "held-other-market": 1,
-      "gap": 12,
+      "gap": 8,
       "ambiguous": 1
     },
     "viaTitleVariant": {
-      "held": 18,
-      "gap": 2
+      "held": 19,
+      "gap": 1
     },
-    "recall": 0.965,
-    "recallWithCatalog": 0.84
+    "recall": 0.977,
+    "recallWithCatalog": 0.85
   },
   "seasons": {
     "2026-27": {
@@ -44,27 +44,27 @@
       "held-other-market": 1
     },
     "2025-26": {
-      "out-of-window": 7,
-      "not-review": 23,
+      "out-of-window": 6,
+      "not-review": 22,
       "catalog-gap": 4,
       "gap": 5,
       "held": 88,
-      "held-unmatched": 2
+      "held-unmatched": 4
     },
     "2024-25": {
       "out-of-window": 13,
       "catalog-gap": 8,
       "not-review": 24,
-      "held": 55,
+      "held": 56,
       "held-unmatched": 7,
       "held-alt-url": 1,
-      "gap": 2
+      "gap": 1
     },
     "2023-24": {
       "not-review": 35,
       "catalog-gap": 7,
-      "gap": 4,
-      "held": 53,
+      "gap": 2,
+      "held": 55,
       "held-unmatched": 11,
       "out-of-window": 16
     },
@@ -78,10 +78,9 @@
     "2021-22": {
       "not-review": 34,
       "out-of-window": 18,
-      "held": 47,
+      "held": 48,
       "held-unmatched": 2,
-      "catalog-gap": 14,
-      "gap": 1
+      "catalog-gap": 14
     },
     "2020-21": {
       "not-review": 19,
@@ -91,8 +90,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 531,
-    "notEnumerated": 18,
+    "rowsInWindow": 545,
+    "heldExcludedRows": 0,
+    "notEnumerated": 21,
     "noUrl": 3,
     "samples": [
       {
@@ -150,6 +150,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+        "url": "https://newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review/",
+        "publishDate": "2026-11-23",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "macbeth-1981",
         "url": null,
         "publishDate": null,
@@ -166,6 +172,12 @@
         "url": null,
         "publishDate": null,
         "why": "no-url"
+      },
+      {
+        "showId": "much-ado-about-nothing-2026",
+        "url": "https://newyorktheater.me/2026/11/19/much-ado-about-nothing-broadway-review/",
+        "publishDate": "2026-11-19",
+        "why": "not-enumerated"
       },
       {
         "showId": "oh-mary-2024",
@@ -189,6 +201,12 @@
         "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
         "url": "https://newyorktheater.me/2026/03/05/fringe-the-amazing-sex-life-of-rabbits/",
         "publishDate": "2026-03-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "url": "https://newyorktheater.me/2026/11/21/the-ripple-the-wave-that-carried-me-home-review/",
+        "publishDate": "2026-11-21",
         "why": "not-enumerated"
       },
       {
@@ -248,6 +266,7 @@
         "hamlet-2009",
         "hamlet-1995",
         "hamlet-1975",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -286,17 +305,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://newyorktheater.me/2025/03/10/the-jonathan-larson-project-review/",
-      "headline": "The Jonathan Larson Project Review",
-      "publishDate": "2025-03-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-jonathan-larson-project-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://newyorktheater.me/2024/09/29/the-hills-of-california-broadway-review/",
       "headline": "The Hills of California Broadway Review",
       "publishDate": "2024-09-29",
@@ -328,43 +336,6 @@
       "held": [],
       "matched": [
         "the-wiz-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://newyorktheater.me/2023/12/17/buena-vista-social-club-off-broadway-review/",
-      "headline": "Buena Vista Social Club Off Broadway Review",
-      "publishDate": "2023-12-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "buena-vista-social-club-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "buena-vista-social-club-2025"
-      ]
-    },
-    {
-      "url": "https://newyorktheater.me/2023/10/29/stereophonic-review/",
-      "headline": "Stereophonic Review",
-      "publishDate": "2023-10-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stereophonic-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "stereophonic-2024"
-      ]
-    },
-    {
-      "url": "https://newyorktheater.me/2022/02/01/mj-the-musical-review/",
-      "headline": "MJ The Musical Review: Michael Jackson as Thriller, not Dangerous",
-      "publishDate": "2022-02-01",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "mj-2022"
       ],
       "outOfWindow": []
     }
@@ -438,6 +409,30 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/11/06/44-review-about-obama/",
+      "headline": "44 Review. About Obama.",
+      "publishDate": "2025-11-06",
+      "via": null,
+      "held": [
+        "44-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/04/mexodus-review/",
+      "headline": "Mexodus Review. A Riff on Freedom, Then and Now",
+      "publishDate": "2025-10-04",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
     },
     {
       "url": "https://newyorktheater.me/2025/08/07/rosie-odonnell-common-knowledge-review/",
@@ -1263,17 +1258,6 @@
       ]
     },
     {
-      "url": "https://newyorktheater.me/2025/10/04/mexodus-review/",
-      "headline": "Mexodus Review. A Riff on Freedom, Then and Now",
-      "publishDate": "2025-10-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://newyorktheater.me/2025/09/18/this-is-not-a-drill-review-38-minutes-that-changed-their-lives/",
       "headline": "This Is Not a Drill Review. 38 minutes that changed their lives.",
       "publishDate": "2025-09-18",
@@ -1659,6 +1643,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2066,5 +2051,9 @@
         "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

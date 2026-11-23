@@ -1,26 +1,26 @@
 {
   "outletId": "operawire",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:36:22.060Z",
+  "generatedAt": "2026-11-23T23:27:45.383Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1493,
-    "inWindow": 1493,
+    "enumerated": 1505,
+    "inWindow": 1505,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1148,
+      "not-review": 1159,
+      "held-other-market": 2,
       "out-of-window": 258,
       "held": 26,
       "catalog-gap": 59,
-      "held-other-market": 1,
       "gap": 1
     },
     "viaTitleVariant": {
@@ -31,11 +31,11 @@
   },
   "seasons": {
     "2026-27": {
-      "not-review": 62,
+      "not-review": 73,
+      "held-other-market": 2,
       "out-of-window": 17,
       "held": 7,
-      "catalog-gap": 5,
-      "held-other-market": 1
+      "catalog-gap": 5
     },
     "2025-26": {
       "not-review": 286,
@@ -74,6 +74,7 @@
   },
   "corpusSide": {
     "rowsInWindow": 31,
+    "heldExcludedRows": 0,
     "notEnumerated": 0,
     "noUrl": 0,
     "samples": []
@@ -1494,6 +1495,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1692,6 +1694,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2195,6 +2198,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2781,6 +2785,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2937,6 +2942,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -3725,5 +3731,9 @@
         "the-marriage-of-figaro-1985"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

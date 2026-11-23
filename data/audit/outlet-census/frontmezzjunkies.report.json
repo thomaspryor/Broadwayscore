@@ -1,89 +1,89 @@
 {
   "outletId": "frontmezzjunkies",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:39:57.460Z",
+  "generatedAt": "2026-11-23T23:31:30.949Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 554,
-    "inWindow": 554,
+    "enumerated": 556,
+    "inWindow": 556,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 227,
+      "gap": 32,
+      "held": 238,
       "catalog-gap": 115,
-      "gap": 38,
-      "held-alt-url": 24,
-      "out-of-window": 73,
+      "held-alt-url": 25,
       "not-review": 61,
-      "ambiguous": 12,
+      "out-of-window": 70,
+      "ambiguous": 11,
       "held-unmatched": 4
     },
     "viaTitleVariant": {
-      "held": 13,
+      "held": 15,
       "held-alt-url": 5,
-      "gap": 4
+      "gap": 3
     },
-    "recall": 0.869,
-    "recallWithCatalog": 0.621
+    "recall": 0.892,
+    "recallWithCatalog": 0.641
   },
   "seasons": {
     "2026-27": {
-      "held": 6,
-      "catalog-gap": 4,
       "gap": 7,
+      "held": 8,
+      "catalog-gap": 4,
       "held-alt-url": 1
     },
     "2025-26": {
       "catalog-gap": 36,
-      "out-of-window": 30,
+      "gap": 11,
       "not-review": 16,
       "held-alt-url": 15,
-      "gap": 13,
+      "out-of-window": 29,
       "ambiguous": 3,
-      "held": 45,
+      "held": 48,
       "held-unmatched": 2
     },
     "2024-25": {
-      "held": 58,
+      "held": 59,
       "catalog-gap": 32,
-      "gap": 4,
-      "out-of-window": 17,
+      "held-alt-url": 3,
+      "out-of-window": 15,
       "not-review": 16,
-      "ambiguous": 3,
-      "held-alt-url": 2
+      "gap": 4,
+      "ambiguous": 3
     },
     "2023-24": {
-      "held": 50,
+      "held": 51,
       "gap": 3,
       "catalog-gap": 20,
       "out-of-window": 12,
       "not-review": 14,
       "held-alt-url": 2,
-      "ambiguous": 3
+      "ambiguous": 2
     },
     "2022-23": {
-      "held": 42,
+      "held": 44,
       "out-of-window": 6,
       "catalog-gap": 9,
-      "gap": 3,
       "not-review": 7,
       "ambiguous": 2,
+      "gap": 1,
       "held-alt-url": 2
     },
     "2021-22": {
       "catalog-gap": 14,
-      "held": 26,
+      "held": 28,
       "held-alt-url": 2,
-      "gap": 8,
       "out-of-window": 8,
       "not-review": 5,
+      "gap": 6,
       "ambiguous": 1,
       "held-unmatched": 2
     },
@@ -92,7 +92,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 378,
+    "rowsInWindow": 388,
+    "heldExcludedRows": 0,
     "notEnumerated": 7,
     "noUrl": 0,
     "samples": [
@@ -141,6 +142,17 @@
     ]
   },
   "gaps": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/11/23/a-bowl-of-here-there-are-blueberries-and-what-the-photographs-couldnt-show/",
+      "headline": "“Here There Are Blueberries” and What the Photographs Couldn’t Show",
+      "publishDate": "2026-11-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "here-there-are-blueberries-2026"
+      ],
+      "outOfWindow": []
+    },
     {
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
@@ -213,15 +225,22 @@
       "outOfWindow": []
     },
     {
-      "url": "https://frontmezzjunkies.com/2026/09/09/heated-rivalry-knows-exactly-why-were-here/",
-      "headline": "“Heated Rivalry: The Unauthorized Musical Parody” Knows Exactly Why We’re Here",
-      "publishDate": "2026-09-09",
+      "url": "https://frontmezzjunkies.com/2026/08/24/antonio-says-the-ennui-of-a-provincial-hamlet/",
+      "headline": "Antonio Says, “The Ennui of a Provincial Hamlet.”",
+      "publishDate": "2026-08-24",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+        "hamlet-by-william-shakespeare-off-broadway-2026"
       ],
-      "outOfWindow": []
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
     },
     {
       "url": "https://frontmezzjunkies.com/2026/08/08/broadway-is-saying-goodbye-to-cats-titanique-and-some-remarkable-shows/",
@@ -237,19 +256,6 @@
       ]
     },
     {
-      "url": "https://frontmezzjunkies.com/2026/05/13/the-equation-of-isolation-is-calculated-inside-proof-on-broadway/",
-      "headline": "The Equation of Isolation is Calculated Inside “Proof” on Broadway",
-      "publishDate": "2026-05-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "proof-2026"
-      ],
-      "outOfWindow": [
-        "proof-2000"
-      ]
-    },
-    {
       "url": "https://frontmezzjunkies.com/2026/05/09/the-fear-of-13-locks-time-memory-and-identity-inside-solitary-confinement/",
       "headline": "“The Fear of 13” Locks Time, Memory, and Identity Inside Solitary Confinement",
       "publishDate": "2026-05-09",
@@ -261,17 +267,6 @@
       "outOfWindow": [
         "solitary-confinement-1992"
       ]
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2026/05/03/80s-nostalgia-in-two-keys-beaches-and-the-lost-boys-reimagined-on-broadway/",
-      "headline": "80s Nostalgia in Two Keys: “Beaches” and “The Lost Boys” Reimagined on Broadway",
-      "publishDate": "2026-05-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-lost-boys-2026"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://frontmezzjunkies.com/2026/04/24/the-unknown-turns-obsession-into-a-slick-unsettling-game-of-control/",
@@ -364,28 +359,6 @@
       ]
     },
     {
-      "url": "https://frontmezzjunkies.com/2025/10/01/house-of-mcqueen/",
-      "headline": "“House of McQueen”: A Stylish but Neat Hemline Where a Raw Cut Was Desired",
-      "publishDate": "2025-10-01",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "house-of-mcqueen-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2025/08/26/house-of-mcqueen-opens-off-broadway-a-gripping-portrait-of-lee-alexander-mcqueen/",
-      "headline": "“House of McQueen” Opens Off-Broadway—A Gripping Portrait of Lee Alexander McQueen",
-      "publishDate": "2025-08-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "house-of-mcqueen-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
       "headline": "Acton Says: Color Me Stoked: “Heathers the Musical” at New World Stages",
       "publishDate": "2025-07-10",
@@ -395,6 +368,36 @@
         "heathers-the-musical-off-broadway-2025"
       ],
       "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/10/vive-la-farce-the-imaginary-invalid-at-red-bull-theater/",
+      "headline": "Acton Says: Vive la farce! “The Imaginary Invalid” at Red Bull Theater",
+      "publishDate": "2025-06-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-imaginary-invalid-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/03/26/a-streetcar-named-desire-bam/",
+      "headline": "Almeida’s “A Streetcar Named Desire” Pours Down the Pain and Anger Magnificently at BAM",
+      "publishDate": "2025-03-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-streetcar-named-desire-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
     },
     {
       "url": "https://frontmezzjunkies.com/2024/11/10/mama-im-a-big-girl-now/",
@@ -408,17 +411,6 @@
       "outOfWindow": [
         "the-doctor-off-broadway-2023"
       ]
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2024/10/04/fountain-theatres-fatherland/",
-      "headline": "Fountain Theatre’s “Fatherland” Literally Talks Its Way Through Without Unpacking That Warped Mind",
-      "publishDate": "2024-10-04",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "fatherland-off-broadway-2024"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://frontmezzjunkies.com/2024/08/22/max-wolf-friedlichs-job-fires-with-force-on-broadway/",
@@ -456,17 +448,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://frontmezzjunkies.com/2023/07/13/broadways-once-upon-a-please-dont-hit-me-with-this-one-more-time/",
-      "headline": "Broadway’s “Once Upon a [please don’t hit me with this] One More Time”",
-      "publishDate": "2023-07-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "once-upon-a-one-more-time-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://frontmezzjunkies.com/2023/04/13/how-to-defend-yourself-punches-strong-at-nytw/",
       "headline": "“How To Defend Yourself” Punches Strong at NYTW",
       "publishDate": "2023-04-13",
@@ -474,28 +455,6 @@
       "held": [],
       "matched": [
         "how-to-defend-yourself-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
-      "headline": "Broadway’s A Beautiful Noise Tries Hard, Without a Lot of Sing Song Blues to Run With",
-      "publishDate": "2023-01-31",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "a-beautiful-noise-the-neil-diamond-musical-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2022/07/19/atlantic-theater-the-bedwetter/",
-      "headline": "Atlantic Theater’s The Bedwetter Shines Above and Beyond its Shame. I Swear. And So Does This Show. A Lot.",
-      "publishDate": "2022-07-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-bedwetter-off-broadway-2022"
       ],
       "outOfWindow": []
     },
@@ -569,19 +528,6 @@
         "english-off-broadway-2022"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2021/11/12/caroline-or-change-broadway/",
-      "headline": "Roundabout’s Caroline, or Change Heats Up from Within on Broadway",
-      "publishDate": "2021-11-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "caroline-or-change-2021"
-      ],
-      "outOfWindow": [
-        "caroline-or-change-2004"
-      ]
     }
   ],
   "heldAltUrl": [
@@ -759,6 +705,17 @@
       ],
       "heldUrls": [
         "http://frontmezzjunkies.com/2016/02/09/finally-heres-hamilton/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/26/house-of-mcqueen-opens-off-broadway-a-gripping-portrait-of-lee-alexander-mcqueen/",
+      "headline": "“House of McQueen” Opens Off-Broadway—A Gripping Portrait of Lee Alexander McQueen",
+      "publishDate": "2025-08-26",
+      "matched": [
+        "house-of-mcqueen-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2025/10/01/house-of-mcqueen/"
       ]
     },
     {
@@ -992,18 +949,6 @@
       "matched": [
         "hells-kitchen-2024",
         "water-for-elephants-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2024/05/07/broadways-illinoise/",
-      "headline": "Broadway’s “Illinoise” Dances and Sings, Igniting a Fire of Storytellers, Both Dynamic and Distant.",
-      "publishDate": "2024-05-07",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "illinoise-2024",
-        "illinoise-off-broadway-2024"
       ],
       "outOfWindow": []
     },
@@ -2099,22 +2044,6 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://frontmezzjunkies.com/2026/08/24/antonio-says-the-ennui-of-a-provincial-hamlet/",
-      "headline": "Antonio Says, “The Ennui of a Provincial Hamlet.”",
-      "publishDate": "2026-08-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "hamlet-off-broadway-2024",
-        "hamlet-greenwich-house-off-broadway-2024"
-      ]
-    },
-    {
       "url": "https://frontmezzjunkies.com/2026/08/01/the-curious-case-of-benjamin-button-returns-to-the-stage-this-time-just-a-little-closer-to-home/",
       "headline": "“The Curious Case of Benjamin Button” Returns to the Stage, This Time Just a Little Closer to Home",
       "publishDate": "2026-08-01",
@@ -2488,17 +2417,6 @@
       ]
     },
     {
-      "url": "https://frontmezzjunkies.com/2025/06/10/vive-la-farce-the-imaginary-invalid-at-red-bull-theater/",
-      "headline": "Acton Says: Vive la farce! “The Imaginary Invalid” at Red Bull Theater",
-      "publishDate": "2025-06-10",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
-    },
-    {
       "url": "https://frontmezzjunkies.com/2025/06/03/third-times-a-palace-charm-for-beetlejuice-the-musical/",
       "headline": "Third Time’s a Palace Charm for Beetlejuice the Musical",
       "publishDate": "2025-06-03",
@@ -2565,21 +2483,6 @@
       "matched": [],
       "outOfWindow": [
         "frankenstein-1981"
-      ]
-    },
-    {
-      "url": "https://frontmezzjunkies.com/2025/03/26/a-streetcar-named-desire-bam/",
-      "headline": "Almeida’s “A Streetcar Named Desire” Pours Down the Pain and Anger Magnificently at BAM",
-      "publishDate": "2025-03-26",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
       ]
     },
     {
@@ -2820,6 +2723,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2969,5 +2873,9 @@
         "the-women-1973"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

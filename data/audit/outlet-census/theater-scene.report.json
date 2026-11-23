@@ -1,24 +1,24 @@
 {
   "outletId": "theater-scene",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:28:21.607Z",
+  "generatedAt": "2026-11-23T23:18:57.063Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1497,
-    "inWindow": 1497,
+    "enumerated": 1502,
+    "inWindow": 1502,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1037,
-      "held": 445,
-      "held-unmatched": 15
+      "not-review": 1036,
+      "held": 450,
+      "held-unmatched": 16
     },
     "viaTitleVariant": {
       "held": 19
@@ -28,33 +28,33 @@
   },
   "seasons": {
     "2026-27": {
-      "not-review": 26,
-      "held": 43,
+      "not-review": 32,
+      "held": 46,
       "held-unmatched": 1
     },
     "2025-26": {
       "held": 133,
-      "held-unmatched": 4,
-      "not-review": 162
+      "held-unmatched": 5,
+      "not-review": 161
     },
     "2024-25": {
-      "not-review": 190,
+      "not-review": 189,
       "held-unmatched": 5,
-      "held": 89
+      "held": 90
     },
     "2023-24": {
-      "not-review": 209,
+      "not-review": 208,
       "held": 76,
       "held-unmatched": 2
     },
     "2022-23": {
-      "not-review": 211,
+      "not-review": 210,
       "held": 71,
       "held-unmatched": 1
     },
     "2021-22": {
-      "not-review": 208,
-      "held": 33,
+      "not-review": 205,
+      "held": 34,
       "held-unmatched": 2
     },
     "2020-21": {
@@ -62,7 +62,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 816,
+    "rowsInWindow": 823,
+    "heldExcludedRows": 0,
     "notEnumerated": 130,
     "noUrl": 0,
     "samples": [
@@ -379,6 +380,19 @@
       ]
     },
     {
+      "url": "https://www.theaterscene.net/musicals/offbway/mexodus/victor-gluck/",
+      "headline": "Mexodus",
+      "publishDate": "2025-10-02",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
       "url": "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
       "headline": "Amaze",
       "publishDate": "2025-08-31",
@@ -510,5 +524,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

@@ -1,47 +1,48 @@
 {
   "outletId": "amny",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:33:36.107Z",
+  "generatedAt": "2026-11-23T23:24:42.853Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 466,
-    "inWindow": 466,
+    "enumerated": 467,
+    "inWindow": 467,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
+      "catalog-gap": 7,
       "not-review": 306,
-      "held": 115,
+      "held": 118,
       "held-alt-url": 3,
-      "gap": 7,
+      "gap": 4,
       "held-unmatched": 13,
-      "out-of-window": 16,
-      "catalog-gap": 6
+      "out-of-window": 16
     },
     "viaTitleVariant": {
       "held-alt-url": 2,
-      "gap": 2,
-      "held": 11
+      "gap": 1,
+      "held": 12
     },
-    "recall": 0.944,
-    "recallWithCatalog": 0.901
+    "recall": 0.968,
+    "recallWithCatalog": 0.917
   },
   "seasons": {
     "2026-27": {
+      "catalog-gap": 1,
       "not-review": 10,
       "held": 4,
       "held-alt-url": 1
     },
     "2025-26": {
       "not-review": 45,
-      "held": 27,
-      "gap": 3,
+      "held": 28,
+      "gap": 2,
       "held-unmatched": 2,
       "out-of-window": 1,
       "catalog-gap": 1
@@ -56,11 +57,10 @@
     },
     "2023-24": {
       "not-review": 61,
-      "held": 13,
+      "held": 14,
       "catalog-gap": 1,
       "out-of-window": 2,
-      "held-unmatched": 2,
-      "gap": 1
+      "held-unmatched": 2
     },
     "2022-23": {
       "not-review": 48,
@@ -74,8 +74,8 @@
     "2021-22": {
       "out-of-window": 6,
       "not-review": 78,
-      "held": 20,
-      "gap": 2,
+      "held": 21,
+      "gap": 1,
       "held-unmatched": 5
     },
     "2020-21": {
@@ -85,26 +85,21 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 464,
-    "notEnumerated": 52,
-    "noUrl": 4,
+    "rowsInWindow": 467,
+    "heldExcludedRows": 0,
+    "notEnumerated": 50,
+    "noUrl": 3,
     "samples": [
-      {
-        "showId": "700-sundays-2013",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-700-sundays-4-stars-1.6431425",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-bronx-tale-the-musical-2016",
-        "url": null,
-        "publishDate": null,
-        "why": "no-url"
-      },
       {
         "showId": "a-dolls-house-2023",
         "url": "https://www.amny.com/entertainment/broadway/jessica-chastain-leads-fresh-bare-broadway-revival-a-dolls-house/",
         "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-gentlemans-guide-to-love-and-murder-2013",
+        "url": "http://www.amny.com/urbanite-1.812039/theater-review-a-gentleman-s-guide-to-love-murder-2-stars-1.6452210",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -195,12 +190,6 @@
         "showId": "every-brilliant-thing-2026",
         "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
         "publishDate": "2026-03-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "first-date-2013",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-first-date-2-stars-1.5859300",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -328,6 +317,18 @@
         "url": "https://www.amny.com/entertainment/broadway/review-pirates-the-penzance-musical/",
         "publishDate": "2025-04-25",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "rain-2010",
+        "url": "https://www.amny.com/urbanite-1.812039/rain-not-such-a-fab-four-1.2404286",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "runaways-1978",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       }
     ]
   },
@@ -354,32 +355,6 @@
       ],
       "outOfWindow": [
         "cats-the-jellicle-ball-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/review-the-wild-party-is-worth-the-hangover/",
-      "headline": "Review | ‘The Wild Party’ is worth the hangover",
-      "publishDate": "2026-03-22",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "encores-the-wild-party-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "the-wild-party-2000"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/news/review-spamalot-broadway-revival-2023/",
-      "headline": "Review | ‘Spamalot’ brings the bright side of life back to Broadway",
-      "publishDate": "2023-11-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "spamalot-2023"
-      ],
-      "outOfWindow": [
-        "spamalot-2005"
       ]
     },
     {
@@ -412,17 +387,6 @@
         "macbeth-off-broadway-2026",
         "macbeth-an-undoing-off-broadway-2024"
       ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-town-politics-run-wild-in-the-minutes/",
-      "headline": "Review | Town politics run wild in ‘The Minutes’",
-      "publishDate": "2022-04-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-minutes-2022"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
@@ -610,6 +574,15 @@
   ],
   "ambiguous": [],
   "catalogGaps": [
+    {
+      "url": "https://www.amny.com/entertainment/theater/much-ado-hiddleston-atwell/",
+      "headline": "Review | ‘Much Ado’ with Hiddleston and Atwell is a confetti-filled blast",
+      "publishDate": "2026-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
     {
       "url": "https://www.amny.com/entertainment/broadway/review-bat-boy-city-center/",
       "headline": "Review | ‘Bat Boy’ outgrows its cave at City Center",
@@ -852,5 +825,9 @@
         "twilight-los-angeles-1992-1994"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

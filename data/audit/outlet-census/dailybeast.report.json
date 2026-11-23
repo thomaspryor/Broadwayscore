@@ -1,25 +1,25 @@
 {
   "outletId": "dailybeast",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:32:15.257Z",
+  "generatedAt": "2026-11-23T23:36:41.880Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 798,
-    "inWindow": 798,
+    "enumerated": 800,
+    "inWindow": 800,
     "undated": 0,
     "meta": {
-      "fetched": 798,
+      "fetched": 800,
       "failed": 0
     }
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 658,
+      "not-review": 660,
       "held": 110,
       "held-unmatched": 18,
       "gap": 1,
@@ -36,7 +36,7 @@
   },
   "seasons": {
     "2026-27": {
-      "not-review": 19
+      "not-review": 21
     },
     "2025-26": {
       "not-review": 99,
@@ -75,8 +75,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 303,
-    "notEnumerated": 69,
+    "rowsInWindow": 304,
+    "heldExcludedRows": 0,
+    "notEnumerated": 68,
     "noUrl": 2,
     "samples": [
       {
@@ -131,12 +132,6 @@
         "showId": "flying-over-sunset-2021",
         "url": "https://www.thedailybeast.com/cary-grant-is-high-on-lsd-in-flying-over-sunset-everyone-else-has-a-bad-trip/",
         "publishDate": "2021-12-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gettin-the-band-back-together-2018",
-        "url": "https://www.thedailybeast.com/jersey-boys-refuse-to-grow-up-review-of-gettin-the-band-back-together",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -272,6 +267,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "mexodus-off-broadway-2026",
+        "url": "https://www.thedailybeast.com/obsessed/mexodus-review-could-this-show-be-the-next-hamilton/",
+        "publishDate": "2025-09-19",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
         "url": "https://www.thedailybeast.com/mike-birbiglia-shows-how-to-make-death-very-funny-indeed-in-the-old-man-and-the-pool/",
         "publishDate": "2022-11-13",
@@ -399,6 +400,19 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.thedailybeast.com/review-denzel-washingtons-daughter-shines-in-broadways-wine-in-the-wilderness",
+      "headline": "Denzel’s Daughter’s Play Is the Real Must-See Theater Event",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "wine-in-the-wilderness-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "wine-in-the-wilderness-off-broadway-2025"
+      ]
+    },
+    {
       "url": "https://www.thedailybeast.com/othello-on-broadway-denzel-washington-and-jake-gyllenhaals-tragic-misfire",
       "headline": "Denzel’s ‘Othello’ Isn’t Worth Its $900 Ticket Prices",
       "publishDate": "2025-10-20",
@@ -414,19 +428,6 @@
         "othello-bedlam-off-broadway-2026",
         "othello-off-broadway-2026",
         "othello-off-broadway-2016"
-      ]
-    },
-    {
-      "url": "https://www.thedailybeast.com/review-denzel-washingtons-daughter-shines-in-broadways-wine-in-the-wilderness",
-      "headline": "Denzel’s Daughter’s Play Is the Real Must-See Theater Event",
-      "publishDate": "2025-10-20",
-      "via": null,
-      "held": [
-        "wine-in-the-wilderness-off-broadway-2025"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "wine-in-the-wilderness-off-broadway-2025"
       ]
     },
     {
@@ -465,6 +466,17 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.thedailybeast.com/all-in-review-john-mulaney-and-co-hilariously-take-over-broadway",
+      "headline": "John Mulaney Hilariously Takes Over Broadway in ‘All In’",
+      "publishDate": "2024-12-23",
+      "via": null,
+      "held": [
+        "all-in-comedy-about-love-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.thedailybeast.com/broadway-review-audra-mcdonald-excels-in-mixed-gypsy-revival",
       "headline": "Audra McDonald Excels in Mixed ‘Gypsy’ Revival on Broadway",
       "publishDate": "2025-10-20",
@@ -480,17 +492,6 @@
         "gypsy-1989",
         "gypsy-1974"
       ]
-    },
-    {
-      "url": "https://www.thedailybeast.com/all-in-review-john-mulaney-and-co-hilariously-take-over-broadway",
-      "headline": "John Mulaney Hilariously Takes Over Broadway in ‘All In’",
-      "publishDate": "2024-12-23",
-      "via": null,
-      "held": [
-        "all-in-comedy-about-love-2024"
-      ],
-      "matched": [],
-      "outOfWindow": []
     },
     {
       "url": "https://www.thedailybeast.com/review-elf-the-musical-brings-will-ferrells-merry-movie-to-broadway",
@@ -695,5 +696,9 @@
         "the-real-thing-1984"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

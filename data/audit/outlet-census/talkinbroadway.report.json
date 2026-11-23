@@ -1,7 +1,7 @@
 {
   "outletId": "talkinbroadway",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:50:10.359Z",
+  "generatedAt": "2026-11-23T23:41:38.963Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
@@ -25,9 +25,10 @@
   },
   "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 742,
-    "notEnumerated": 419,
-    "noUrl": 2,
+    "rowsInWindow": 758,
+    "heldExcludedRows": 0,
+    "notEnumerated": 433,
+    "noUrl": 1,
     "samples": [
       {
         "showId": "1776-2022",
@@ -45,6 +46,12 @@
         "showId": "300-paintings-off-broadway-2024",
         "url": "https://www.talkinbroadway.com/page/ob/11_25_24.html",
         "publishDate": "2024-11-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "700-sundays-2013",
+        "url": "https://www.talkinbroadway.com/world/700Sundays2013.html",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -262,12 +269,6 @@
         "url": "https://www.talkinbroadway.com/page/world/BacktotheFuture.html#:~:text=Without%20their%20tremendous%20skill%20and,the%20level%20of%20serviceable%20time%2D",
         "publishDate": "2023-08-03",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "bad-cinderella-2023",
-        "url": "https://www.talkinbroadway.com/page/world/BadCinderella.html",
-        "publishDate": "2023-03-23",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -278,5 +279,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

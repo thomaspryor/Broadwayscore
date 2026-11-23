@@ -1,22 +1,22 @@
 {
   "outletId": "the-komisar-scoop",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:34:29.894Z",
+  "generatedAt": "2026-11-23T23:25:58.517Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 221,
-    "inWindow": 221,
+    "enumerated": 224,
+    "inWindow": 224,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 172,
+      "not-review": 175,
       "held": 49
     },
     "viaTitleVariant": {},
@@ -25,7 +25,7 @@
   },
   "seasons": {
     "2026-27": {
-      "not-review": 6,
+      "not-review": 9,
       "held": 3
     },
     "2025-26": {
@@ -54,6 +54,7 @@
   },
   "corpusSide": {
     "rowsInWindow": 148,
+    "heldExcludedRows": 0,
     "notEnumerated": 1,
     "noUrl": 0,
     "samples": [
@@ -72,5 +73,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

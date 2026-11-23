@@ -1,7 +1,7 @@
 {
   "outletId": "culturesauce",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:29:11.108Z",
+  "generatedAt": "2026-11-23T23:19:42.392Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
@@ -16,22 +16,22 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 164,
+      "held": 165,
       "not-review": 24,
       "held-unmatched": 4,
-      "held-alt-url": 200,
+      "held-alt-url": 203,
       "catalog-gap": 76,
-      "gap": 14,
-      "out-of-window": 45,
-      "ambiguous": 4
+      "out-of-window": 44,
+      "ambiguous": 2,
+      "gap": 13
     },
     "viaTitleVariant": {
       "held": 12,
       "held-alt-url": 14,
       "gap": 3
     },
-    "recall": 0.963,
-    "recallWithCatalog": 0.802
+    "recall": 0.966,
+    "recallWithCatalog": 0.805
   },
   "seasons": {
     "2026-27": {
@@ -42,29 +42,28 @@
     },
     "2025-26": {
       "catalog-gap": 11,
-      "held": 39,
+      "held": 40,
       "not-review": 9,
       "held-alt-url": 83,
       "held-unmatched": 2,
-      "gap": 1,
       "out-of-window": 3
     },
     "2024-25": {
-      "out-of-window": 15,
+      "out-of-window": 14,
       "catalog-gap": 23,
-      "held-alt-url": 65,
+      "held-alt-url": 66,
       "held": 22,
       "not-review": 7,
       "ambiguous": 1
     },
     "2023-24": {
-      "held-alt-url": 49,
+      "held-alt-url": 51,
       "catalog-gap": 19,
       "held": 25,
-      "ambiguous": 3,
+      "gap": 1,
+      "ambiguous": 1,
       "out-of-window": 12,
-      "not-review": 2,
-      "gap": 1
+      "not-review": 2
     },
     "2022-23": {
       "out-of-window": 8,
@@ -86,8 +85,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 388,
-    "notEnumerated": 212,
+    "rowsInWindow": 401,
+    "heldExcludedRows": 0,
+    "notEnumerated": 222,
     "noUrl": 0,
     "samples": [
       {
@@ -100,6 +100,12 @@
         "showId": "a-knock-on-the-roof-off-broadway-2025",
         "url": "https://culturesauce.com/2025/01/27/knock-on-the-roof-off-broadway-review-gaza/",
         "publishDate": "2025-02-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-streetcar-named-desire-off-broadway-2025",
+        "url": "https://culturesauce.com/2025/03/11/paul-mescal-streetcar-named-desire-off-broadway-review/",
+        "publishDate": "2025-03-11",
         "why": "not-enumerated"
       },
       {
@@ -229,6 +235,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "blue-man-group-a-new-holiday-surprise-2026",
+        "url": "https://culturesauce.com/blue-man-group-new-holiday-surprise-broadway-review/",
+        "publishDate": "2026-11-19",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "boop-2025",
         "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
         "publishDate": "2025-04-07",
@@ -317,44 +329,21 @@
         "url": "https://culturesauce.com/2024/12/12/cult-of-love-broadway-review/",
         "publishDate": "2024-12-12",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "dark-noon-off-broadway-2024",
-        "url": "https://culturesauce.com/2024/06/17/dark-noon-western-off-broadway-review/",
-        "publishDate": "2024-06-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "data-off-broadway-2026",
-        "url": "https://culturesauce.com/2026/01/28/data-2026-off-broadway-review/",
-        "publishDate": "2026-01-28",
-        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
     {
-      "url": "https://culturesauce.com/marjorie-prime-broadway-review/",
-      "headline": "June Squibb and Cynthia Nixon test the limits of our AI future in ‘Marjorie Prime’ (Broadway review)",
-      "publishDate": "2025-12-15",
-      "via": "poller-matcher",
+      "url": "https://culturesauce.com/cole-escola-oh-mary-broadway-review/",
+      "headline": "‘Oh, Mary!’ establishes Cole Escola as the new first lady of comedy (Broadway review)",
+      "publishDate": "2024-07-11",
+      "via": "date-resolved",
       "held": [],
       "matched": [
-        "marjorie-prime-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://culturesauce.com/buena-vista-social-club-off-broadway-review/",
-      "headline": "‘Buena Vista Social Club’ is a soulful sensation (Off Broadway review)",
-      "publishDate": "2023-12-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "buena-vista-social-club-off-broadway-2023"
+        "oh-mary-2024"
       ],
       "outOfWindow": [
-        "buena-vista-social-club-2025"
+        "oh-mary-off-broadway-2024"
       ]
     },
     {
@@ -1229,18 +1218,6 @@
       ]
     },
     {
-      "url": "https://culturesauce.com/cole-escola-oh-mary-broadway-review/",
-      "headline": "‘Oh, Mary!’ establishes Cole Escola as the new first lady of comedy (Broadway review)",
-      "publishDate": "2024-07-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "oh-mary-2024",
-        "oh-mary-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://culturesauce.com/from-here-musical-orlando-pulse-off-broadway-review/",
       "headline": "‘From Here’ makes a musical hash of LGBTQ lives and the Pulse nightclub massacre (Off Broadway review)",
       "publishDate": "2024-07-01",
@@ -1249,18 +1226,6 @@
       "matched": [
         "orlando-off-broadway-2026",
         "from-here-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://culturesauce.com/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
-      "headline": "Sufjan Stevens’s ‘Illinoise’ springs to life in dance (Broadway review)",
-      "publishDate": "2024-04-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "illinoise-2024",
-        "illinoise-off-broadway-2024"
       ],
       "outOfWindow": []
     }
@@ -2094,21 +2059,6 @@
       ]
     },
     {
-      "url": "https://culturesauce.com/paul-mescal-streetcar-named-desire-off-broadway-review/",
-      "headline": "Paul Mescal and Patsy Ferran heat up ‘A Streetcar Named Desire’ (Off Broadway review)",
-      "publishDate": "2025-03-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
-      ]
-    },
-    {
       "url": "https://culturesauce.com/urinetown-encores-off-broadway-review/",
       "headline": "‘Urinetown’ minds its pees and queues up melodic meta humor (Off Broadway review)",
       "publishDate": "2025-02-06",
@@ -2440,6 +2390,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2457,6 +2408,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2496,5 +2448,9 @@
         "love-letters-1989"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

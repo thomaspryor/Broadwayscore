@@ -1,7 +1,7 @@
 {
   "outletId": "variety",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:31:44.329Z",
+  "generatedAt": "2026-11-23T23:22:30.252Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
@@ -16,11 +16,11 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 154,
-      "held-other-market": 29,
+      "held": 156,
+      "held-other-market": 30,
       "not-review": 34,
-      "out-of-window": 41,
-      "held-alt-url": 20,
+      "held-alt-url": 19,
+      "out-of-window": 39,
       "held-unmatched": 5,
       "catalog-gap": 10,
       "gap": 1
@@ -41,17 +41,17 @@
     "2025-26": {
       "held": 21,
       "not-review": 1,
-      "out-of-window": 4,
+      "held-other-market": 5,
       "held-alt-url": 3,
-      "held-other-market": 4
+      "out-of-window": 3
     },
     "2024-25": {
-      "held": 32,
+      "held": 33,
       "held-other-market": 4,
       "not-review": 1,
       "held-alt-url": 5,
       "held-unmatched": 1,
-      "out-of-window": 2
+      "out-of-window": 1
     },
     "2023-24": {
       "held": 29,
@@ -63,10 +63,10 @@
       "held-alt-url": 1
     },
     "2022-23": {
-      "held": 42,
+      "held": 41,
       "held-other-market": 5,
       "not-review": 7,
-      "held-alt-url": 2,
+      "held-alt-url": 3,
       "out-of-window": 7,
       "gap": 1,
       "catalog-gap": 3
@@ -74,9 +74,9 @@
     "2021-22": {
       "out-of-window": 20,
       "catalog-gap": 4,
-      "held": 25,
+      "held": 27,
       "not-review": 11,
-      "held-alt-url": 9,
+      "held-alt-url": 7,
       "held-unmatched": 1,
       "held-other-market": 4
     },
@@ -89,7 +89,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 702,
+    "rowsInWindow": 708,
+    "heldExcludedRows": 0,
     "notEnumerated": 51,
     "noUrl": 4,
     "samples": [
@@ -120,12 +121,6 @@
       {
         "showId": "a-view-from-the-bridge-2010",
         "url": "http://www.variety.com/review/VE1117941959.html?categoryid=33&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+variety%2Fheadlines+%28Variety+-+Latest+News%29&utm_content=Google+Reader",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "act-one-2014",
-        "url": "https://variety.com/2014/legit/reviews/broadway-review-act-one-starring-tony-shalhoub-1201159101/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -163,12 +158,6 @@
         "showId": "cabaret-2024",
         "url": "https://variety.com/2024/legit/columns/cabaret-broadway-revival-reviews-male-critics-gayle-rankin-1235984887/",
         "publishDate": "2024-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-or-change-2021",
-        "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/",
-        "publishDate": "2021-11-02",
         "why": "not-enumerated"
       },
       {
@@ -220,15 +209,15 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "flying-over-sunset-2021",
-        "url": "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/",
-        "publishDate": "2021-12-13",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "good-people-2011",
         "url": "http://www.variety.com/review/VE1117944758",
         "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "grey-house-2023",
+        "url": "https://variety.com/2023/legit/reviews/grey-house-review-broadway-1235624373/",
+        "publishDate": "2023-05-31",
         "why": "not-enumerated"
       },
       {
@@ -330,6 +319,18 @@
       {
         "showId": "steel-magnolias-2005",
         "url": "https://variety.com/2005/legit/reviews/steel-magnolias-3-1200526719/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "stephen-sondheims-old-friends-2025",
+        "url": "https://variety.com/2025/music/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/",
+        "publishDate": "2025-04-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "sweet-smell-of-success-2002",
+        "url": "https://variety.com/2002/legit/reviews/sweet-smell-of-success-4-1200551928/",
         "publishDate": null,
         "why": "not-enumerated"
       }
@@ -460,6 +461,17 @@
       ]
     },
     {
+      "url": "https://variety.com/2023/legit/reviews/grey-house-review-broadway-play-1235630674/",
+      "headline": "‘Grey House’ Review: Laurie Metcalf Stars in a Spooky but Oblique Broadway Thriller",
+      "publishDate": "2023-06-01",
+      "matched": [
+        "grey-house-2023"
+      ],
+      "heldUrls": [
+        "https://variety.com/2023/legit/reviews/grey-house-review-broadway-1235624373/"
+      ]
+    },
+    {
       "url": "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-play-1235391743/",
       "headline": "‘Cost of Living’ Review: Martyna Majok’s Pulitzer-Winning Drama Makes Sensational Broadway Debut",
       "publishDate": "2022-10-03",
@@ -515,17 +527,6 @@
       ]
     },
     {
-      "url": "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-musical-1235132491/",
-      "headline": "‘Flying Over Sunset’ Review: A Trippy New Broadway Musical",
-      "publishDate": "2021-12-13",
-      "matched": [
-        "flying-over-sunset-2021"
-      ],
-      "heldUrls": [
-        "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/"
-      ]
-    },
-    {
       "url": "https://variety.com/2021/legit/reviews/pardise-square-review-musical-chicago-1235115343/",
       "headline": "‘Paradise Square’ Review: Broadway-Bound Musical Premieres in Chicago",
       "publishDate": "2021-11-18",
@@ -545,17 +546,6 @@
       ],
       "heldUrls": [
         "https://variety.com/2021/music/reviews/diana-musical-review-broadway-1235114301/"
-      ]
-    },
-    {
-      "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
-      "headline": "‘Caroline, or Change’ Review: Broadway Revival Starring Sharon D Clarke Is Timely and Necessary",
-      "publishDate": "2021-10-27",
-      "matched": [
-        "caroline-or-change-2021"
-      ],
-      "heldUrls": [
-        "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/"
       ]
     },
     {
@@ -732,17 +722,6 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://variety.com/2026/legit/reviews/brigadoon-pasadena-playhouse-review-lerner-loe-1236760181/",
-      "headline": "‘Brigadoon’ Review: Pasadena Playhouse’s Enrapturing Revival Is Worth What Seemed Like a Hundred-Year Wait",
-      "publishDate": "2026-05-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "brigadoon-1980"
-      ]
-    },
-    {
       "url": "https://variety.com/2026/legit/reviews/amadeus-pasadena-playhouse-review-jefferson-mays-1236674354/",
       "headline": "‘Amadeus’ Review: Jefferson Mays Shines as a Funny and Frothing Salieri in a Gorgeously Mounted, Essential Revival at the Pasadena Playhouse",
       "publishDate": "2026-02-26",
@@ -774,21 +753,6 @@
       "matched": [],
       "outOfWindow": [
         "eureka-day-2024"
-      ]
-    },
-    {
-      "url": "https://variety.com/2025/legit/reviews/a-streetcar-named-desire-review-paul-mescal-1236334736/",
-      "headline": "‘A Streetcar Named Desire’ Review: Paul Mescal and Patsy Ferran Sparkle in the Tennessee Williams Classic",
-      "publishDate": "2025-03-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
       ]
     },
     {
@@ -932,7 +896,8 @@
         "a-streetcar-named-desire-1992",
         "a-streetcar-named-desire-1988",
         "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
+        "a-streetcar-named-desire-2005",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -1190,6 +1155,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1228,9 +1194,14 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

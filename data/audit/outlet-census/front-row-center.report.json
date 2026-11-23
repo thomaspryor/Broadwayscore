@@ -1,37 +1,37 @@
 {
   "outletId": "front-row-center",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:49:02.932Z",
+  "generatedAt": "2026-11-23T23:40:07.199Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1916,
-    "inWindow": 1916,
+    "enumerated": 1921,
+    "inWindow": 1921,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1038,
-      "out-of-window": 244,
-      "held-unmatched": 28,
-      "held": 382,
-      "held-alt-url": 22,
+      "not-review": 1039,
+      "out-of-window": 242,
+      "held-unmatched": 29,
+      "held": 483,
+      "held-alt-url": 24,
       "catalog-gap": 73,
-      "gap": 128,
+      "gap": 30,
       "held-other-market": 1
     },
     "viaTitleVariant": {
-      "held": 17,
+      "held": 25,
       "held-alt-url": 5,
-      "gap": 10
+      "gap": 2
     },
-    "recall": 0.759,
-    "recallWithCatalog": 0.668
+    "recall": 0.944,
+    "recallWithCatalog": 0.831
   },
   "seasons": {
     "2023-24": {
@@ -39,52 +39,52 @@
       "out-of-window": 71,
       "held-unmatched": 5,
       "catalog-gap": 29,
-      "held-alt-url": 2,
-      "held": 77,
-      "gap": 17,
+      "held-alt-url": 3,
+      "held": 86,
+      "gap": 7,
       "held-other-market": 1
     },
     "2026-27": {
       "held-unmatched": 5,
-      "held": 50,
-      "gap": 14,
-      "not-review": 36,
+      "held": 62,
+      "not-review": 38,
       "catalog-gap": 3,
+      "gap": 5,
       "out-of-window": 10
     },
     "2024-25": {
       "held-unmatched": 5,
       "catalog-gap": 16,
-      "held": 72,
+      "held": 86,
       "not-review": 164,
-      "out-of-window": 47,
-      "gap": 18
+      "out-of-window": 46,
+      "gap": 5
     },
     "2022-23": {
       "not-review": 190,
       "catalog-gap": 5,
-      "held": 61,
+      "held": 64,
       "out-of-window": 32,
       "held-unmatched": 4,
-      "gap": 4,
-      "held-alt-url": 2
+      "held-alt-url": 2,
+      "gap": 1
     },
     "2021-22": {
-      "held": 43,
+      "held": 49,
       "held-alt-url": 11,
       "not-review": 114,
       "out-of-window": 32,
       "held-unmatched": 3,
-      "gap": 9,
+      "gap": 3,
       "catalog-gap": 9
     },
     "2025-26": {
-      "not-review": 148,
-      "held-alt-url": 7,
-      "gap": 66,
-      "held": 79,
-      "out-of-window": 47,
-      "held-unmatched": 6,
+      "not-review": 147,
+      "held-alt-url": 8,
+      "gap": 9,
+      "held": 136,
+      "out-of-window": 46,
+      "held-unmatched": 7,
       "catalog-gap": 10
     },
     "2020-21": {
@@ -94,26 +94,13 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 644,
+    "rowsInWindow": 745,
+    "heldExcludedRows": 0,
     "notEnumerated": 0,
     "noUrl": 0,
     "samples": []
   },
   "gaps": [
-    {
-      "url": "http://thefrontrowcenter.com/2021/11/assassins/",
-      "headline": "assassins",
-      "publishDate": "2021-11-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "assassins-off-broadway-2021"
-      ],
-      "outOfWindow": [
-        "assassins-2004"
-      ]
-    },
     {
       "url": "http://thefrontrowcenter.com/2021/12/the-play-that-goes-wrong-2/",
       "headline": "the play that goes wrong 2",
@@ -141,23 +128,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2022/01/long-days-journey-into-night-2/",
-      "headline": "long days journey into night 2",
-      "publishDate": "2022-01-26",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "long-days-journey-into-night-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "long-days-journey-into-night-2016",
-        "long-days-journey-into-night-2003",
-        "long-days-journey-into-night-1986",
-        "long-days-journey-into-night-1988"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2022/03/moulin-rouge-at-the-al-hirschfeld-theatre-blog-from-an-audience-member/",
       "headline": "moulin rouge at the al hirschfeld theatre blog from an audience member",
       "publishDate": "2022-04-16",
@@ -172,116 +142,6 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2022/04/potus-or-behind-every-dumbass-are-seven-women-trying-to-keep-him-alive/",
-      "headline": "potus or behind every dumbass are seven women trying to keep him alive",
-      "publishDate": "2022-04-29",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
-      ],
-      "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973",
-        "potus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2022/06/macbeth-an-audience-member-opinion/",
-      "headline": "macbeth an audience member opinion",
-      "publishDate": "2022-06-08",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "macbeth-2022"
-      ],
-      "outOfWindow": [
-        "the-audience-2015",
-        "macbeth-2013",
-        "macbeth-2008",
-        "macbeth-1988",
-        "macbeth-1981",
-        "macbeth-2000",
-        "macbeth-1982",
-        "macbeth-off-broadway-2026",
-        "macbeth-an-undoing-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2022/06/what-the-end-will-be/",
-      "headline": "what the end will be",
-      "publishDate": "2022-06-24",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "what-the-end-will-be-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2022/06/potus-an-audience-members-thoughts/",
-      "headline": "potus an audience members thoughts",
-      "publishDate": "2022-06-24",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
-      ],
-      "outOfWindow": [
-        "the-audience-2015",
-        "potus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2023/01/merrily-we-roll-along-2/",
-      "headline": "merrily we roll along 2",
-      "publishDate": "2023-01-06",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "merrily-we-roll-along-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "merrily-we-roll-along-2023",
-        "merrily-we-roll-along-1981"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2023/04/sweeney-todd-the-demon-barber-of-fleet-street/",
-      "headline": "sweeney todd the demon barber of fleet street",
-      "publishDate": "2023-04-22",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sweeney-todd-2023"
-      ],
-      "outOfWindow": [
-        "sweeney-todd-2005",
-        "sweeney-todd-1989",
-        "sweeney-todd-1979"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2023/07/orpheus-descending-2/",
-      "headline": "orpheus descending 2",
-      "publishDate": "2023-07-18",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "orpheus-descending-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "orpheus-descending-1989"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2023/08/the-shark-is-broken/",
       "headline": "the shark is broken",
       "publishDate": "2023-08-11",
@@ -292,37 +152,6 @@
         "the-shark-is-broken-2023"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2023/11/waiting-for-godot/",
-      "headline": "waiting for godot",
-      "publishDate": "2023-11-15",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "waiting-for-godot-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "waiting-for-godot-2025",
-        "waiting-for-godot-2013",
-        "waiting-for-godot-2009"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2023/11/arcadia/",
-      "headline": "arcadia",
-      "publishDate": "2023-11-13",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "arcadia-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "arcadia-2011",
-        "arcadia-1995"
-      ]
     },
     {
       "url": "http://thefrontrowcenter.com/2023/11/medea-on-media/",
@@ -367,21 +196,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2023/12/translations/",
-      "headline": "translations",
-      "publishDate": "2023-12-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "translations-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "translations-2007",
-        "translations-1995"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2024/02/days-of-wine-and-roses-at-studio-54/",
       "headline": "days of wine and roses at studio 54",
       "publishDate": "2024-02-05",
@@ -414,80 +228,14 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2024/02/eddie-izzard-performing-hamlet/",
-      "headline": "eddie izzard performing hamlet",
-      "publishDate": "2024-02-12",
+      "url": "http://thefrontrowcenter.com/2024/03/corruption/",
+      "headline": "corruption",
+      "publishDate": "2024-03-16",
       "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "hamlet-greenwich-house-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "hamlet-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/02/sunset-baby/",
-      "headline": "sunset baby",
-      "publishDate": "2024-02-28",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sunset-baby-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/03/doubt-a-parable/",
-      "headline": "doubt a parable",
-      "publishDate": "2024-03-18",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "doubt-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/04/orlando/",
-      "headline": "orlando",
-      "publishDate": "2024-04-22",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "orlando-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/04/still/",
-      "headline": "still",
-      "publishDate": "2024-04-26",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "still-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/05/three-houses/",
-      "headline": "three houses",
-      "publishDate": "2024-05-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "three-houses-off-broadway-2026"
+        "corruption-off-broadway-2024"
       ],
       "outOfWindow": []
     },
@@ -500,30 +248,6 @@
       "held": [],
       "matched": [
         "david-a-new-musical-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/06/empire/",
-      "headline": "empire",
-      "publishDate": "2024-06-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "empire-the-musical-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/07/empire-2/",
-      "headline": "empire 2",
-      "publishDate": "2024-07-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "empire-the-musical-off-broadway-2024"
       ],
       "outOfWindow": []
     },
@@ -544,18 +268,6 @@
         "medea-1982",
         "medea-off-broadway-2026"
       ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/10/yellow-face/",
-      "headline": "yellow face",
-      "publishDate": "2024-10-07",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "yellow-face-2024"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "http://thefrontrowcenter.com/2024/10/in-the-amazon-warehouse-parking-lot-a-non-review/",
@@ -582,114 +294,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2024/10/sunset-blvd-reviewed-betsyann-faiella-oct-23/",
-      "headline": "sunset blvd reviewed betsyann faiella oct 23",
-      "publishDate": "2024-10-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sunset-boulevard-2024"
-      ],
-      "outOfWindow": [
-        "sunset-boulevard-2017",
-        "sunset-boulevard-1994"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/11/the-devils-disciple-an-adaptation/",
-      "headline": "the devils disciple an adaptation",
-      "publishDate": "2024-11-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-devils-disciple-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "the-devils-disciple-1988"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2024/11/swept-away/",
-      "headline": "swept away",
-      "publishDate": "2024-11-22",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "swept-away-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/01/gary-gulman-grandiloquent/",
-      "headline": "gary gulman grandiloquent",
-      "publishDate": "2025-01-24",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "grandiloquent-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/02/liberation/",
-      "headline": "liberation",
-      "publishDate": "2025-02-20",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "liberation-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "liberation-2025"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/03/the-price-2/",
-      "headline": "the price 2",
-      "publishDate": "2025-03-12",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-price-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "the-price-2017",
-        "the-price-1999"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/03/wine-in-the-wilderness/",
-      "headline": "wine in the wilderness",
-      "publishDate": "2025-03-26",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "wine-in-the-wilderness-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/03/ghosts/",
-      "headline": "ghosts",
-      "publishDate": "2025-04-18",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ghosts-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "ghosts-1982"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2025/04/becoming-eve/",
       "headline": "becoming eve",
       "publishDate": "2025-04-07",
@@ -698,18 +302,6 @@
       "held": [],
       "matched": [
         "becoming-eve-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/04/im-assuming-you-know-david-greenspan/",
-      "headline": "im assuming you know david greenspan",
-      "publishDate": "2025-04-07",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "im-assuming-you-know-david-greenspan-off-broadway-2025"
       ],
       "outOfWindow": []
     },
@@ -728,18 +320,6 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2025/04/boop-the-musical/",
-      "headline": "boop the musical",
-      "publishDate": "2025-04-12",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "boop-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "http://thefrontrowcenter.com/2025/04/harry-potter-and-the-cursed-child-celebrates-7-years-on-broadway/",
       "headline": "harry potter and the cursed child celebrates 7 years on broadway",
       "publishDate": "2025-04-22",
@@ -754,68 +334,6 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2025/06/eurydice/",
-      "headline": "eurydice",
-      "publishDate": "2025-06-02",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "eurydice-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/06/call-me-izzy/",
-      "headline": "call me izzy",
-      "publishDate": "2025-06-13",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "call-me-izzy-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/10/caroline/",
-      "headline": "caroline",
-      "publishDate": "2025-10-14",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "caroline-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/10/oratorio-for-living-things-2/",
-      "headline": "oratorio for living things 2",
-      "publishDate": "2025-10-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "oratorio-for-living-things-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/10/liberation-2/",
-      "headline": "liberation 2",
-      "publishDate": "2025-10-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "liberation-2025"
-      ],
-      "outOfWindow": [
-        "liberation-off-broadway-2025"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2025/10/hannah-senesh/",
       "headline": "hannah senesh",
       "publishDate": "2025-10-28",
@@ -824,18 +342,6 @@
       "held": [],
       "matched": [
         "hannah-senesh-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/11/the-seat-of-our-pants/",
-      "headline": "the seat of our pants",
-      "publishDate": "2025-11-13",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-seat-of-our-pants-off-broadway-2025"
       ],
       "outOfWindow": []
     },
@@ -852,30 +358,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2025/12/picnic-at-hanging-rock-the-musical/",
-      "headline": "picnic at hanging rock the musical",
-      "publishDate": "2025-12-19",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "picnic-at-hanging-rock-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/02/where-wonder-wears-no-age-the-artistry-behind-broadway-magic-hour/",
-      "headline": "where wonder wears no age the artistry behind broadway magic hour",
-      "publishDate": "2026-02-06",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "broadway-magic-hour-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "http://thefrontrowcenter.com/2026/02/gobstopper/",
       "headline": "gobstopper",
       "publishDate": "2026-02-16",
@@ -884,433 +366,6 @@
       "held": [],
       "matched": [
         "gobstopper-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/night-side-songs/",
-      "headline": "night side songs",
-      "publishDate": "2026-03-02",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "night-side-songs-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/the-amazing-sex-life-of-rabbits/",
-      "headline": "the amazing sex life of rabbits",
-      "publishDate": "2026-03-17",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-amazing-sex-life-of-rabbits-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/body-count/",
-      "headline": "body count",
-      "publishDate": "2026-03-10",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "body-count-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/antigone-this-play-i-read-in-high-school/",
-      "headline": "antigone this play i read in high school",
-      "publishDate": "2026-03-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "antigone-1971"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/is-anything-ok/",
-      "headline": "is anything ok",
-      "publishDate": "2026-03-19",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "is-anything-ok-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/spare-parts/",
-      "headline": "spare parts",
-      "publishDate": "2026-03-12",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "spare-parts-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/calf-scramble/",
-      "headline": "calf scramble",
-      "publishDate": "2026-03-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "calf-scramble-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/ulster-american/",
-      "headline": "ulster american",
-      "publishDate": "2026-04-09",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ulster-american-irish-repertory-theatre-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/cold-war-choir-practice/",
-      "headline": "cold war choir practice",
-      "publishDate": "2026-03-17",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cold-war-choir-practice-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/my-joy-is-heavy-by-abigail-shaun-bengson-march-14-2026-new-york-theatre-workshop/",
-      "headline": "my joy is heavy by abigail shaun bengson march 14 2026 new york theatre workshop",
-      "publishDate": "2026-03-25",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "my-joy-is-heavy-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/every-brilliant-thing/",
-      "headline": "every brilliant thing",
-      "publishDate": "2026-03-20",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "every-brilliant-thing-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/jesa/",
-      "headline": "jesa",
-      "publishDate": "2026-03-20",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "jesa-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/touch-2/",
-      "headline": "touch 2",
-      "publishDate": "2026-03-25",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "touch-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/titus-andronicus-3/",
-      "headline": "titus andronicus 3",
-      "publishDate": "2026-03-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "titus-andronicus-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/heartbreak-hotel/",
-      "headline": "heartbreak hotel",
-      "publishDate": "2026-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "heartbreak-hotel-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/sexual-misconduct-of-the-middle-classes/",
-      "headline": "sexual misconduct of the middle classes",
-      "publishDate": "2026-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/no-singing-in-the-navy/",
-      "headline": "no singing in the navy",
-      "publishDate": "2026-03-30",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "no-singing-in-the-navy-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/03/stories-from-the-brink/",
-      "headline": "stories from the brink",
-      "publishDate": "2026-03-30",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stories-from-the-brink-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/gotta-dance/",
-      "headline": "gotta dance",
-      "publishDate": "2026-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "gotta-dance-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/nicole-travolta-is-doing-alright/",
-      "headline": "nicole travolta is doing alright",
-      "publishDate": "2026-04-06",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "nicole-travolta-is-doing-alright-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/heavenly-baba/",
-      "headline": "heavenly baba",
-      "publishDate": "2026-04-07",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "heavenly-baba-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/becky-shaw-2/",
-      "headline": "becky shaw 2",
-      "publishDate": "2026-04-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "becky-shaw-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/the-adding-machine/",
-      "headline": "the adding machine",
-      "publishDate": "2026-04-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-adding-machine-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/scorched-earth/",
-      "headline": "scorched earth",
-      "publishDate": "2026-04-15",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "scorched-earth-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/titanique/",
-      "headline": "titanique",
-      "publishDate": "2026-04-17",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "titanique-2026"
-      ],
-      "outOfWindow": [
-        "titanique-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/rheology/",
-      "headline": "rheology",
-      "publishDate": "2026-05-03",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "rheology-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/miracle-on-south-division-street/",
-      "headline": "miracle on south division street",
-      "publishDate": "2026-04-22",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "miracle-on-south-division-street-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/what-happened-was/",
-      "headline": "what happened was",
-      "publishDate": "2026-04-25",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "what-happened-was-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/04/schmigadoon/",
-      "headline": "schmigadoon",
-      "publishDate": "2026-04-26",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "schmigadoon-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/kenrex/",
-      "headline": "kenrex",
-      "publishDate": "2026-05-03",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "kenrex-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/the-rocky-horror-show/",
-      "headline": "the rocky horror show",
-      "publishDate": "2026-11-02",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-rocky-horror-show-2026"
-      ],
-      "outOfWindow": [
-        "the-rocky-horror-show-1975",
-        "the-rocky-horror-show-2000"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/73-seconds/",
-      "headline": "73 seconds",
-      "publishDate": "2026-05-05",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "73-seconds-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/cable-street/",
-      "headline": "cable street",
-      "publishDate": "2026-05-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cable-street-59e59-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/the-balusters/",
-      "headline": "the balusters",
-      "publishDate": "2026-05-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-balusters-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/05/indian-princesses/",
-      "headline": "indian princesses",
-      "publishDate": "2026-05-24",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "indian-princesses-off-broadway-2025"
       ],
       "outOfWindow": []
     },
@@ -1345,70 +400,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2026/06/animal-wisdom/",
-      "headline": "animal wisdom",
-      "publishDate": "2026-06-17",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "animal-wisdom-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/06/the-loved-ones/",
-      "headline": "the loved ones",
-      "publishDate": "2026-07-14",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-loved-ones-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/06/pea-dinneen-raising-her-voice/",
-      "headline": "pea dinneen raising her voice",
-      "publishDate": "2026-06-20",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "pea-dinneen-raising-her-voice-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/06/la-cage-aux-folles-porter-and-brady-are-superb/",
-      "headline": "la cage aux folles porter and brady are superb",
-      "publishDate": "2026-07-14",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "encores-la-cage-aux-folles-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "la-cage-aux-folles-2010",
-        "la-cage-aux-folles-2004",
-        "la-cage-aux-folles-1983"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/07/why-i-stuck-a-flare-up-my-arse-for-england/",
-      "headline": "why i stuck a flare up my arse for england",
-      "publishDate": "2026-07-14",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "http://thefrontrowcenter.com/2026/07/the-potluck/",
       "headline": "the potluck",
       "publishDate": "2026-07-17",
@@ -1417,54 +408,6 @@
       "held": [],
       "matched": [
         "the-potluck-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/07/dukes/",
-      "headline": "dukes",
-      "publishDate": "2026-09-02",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dukes-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/07/the-whoopi-monologues/",
-      "headline": "the whoopi monologues",
-      "publishDate": "2026-07-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-whoopi-monologues-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/07/shifters/",
-      "headline": "shifters",
-      "publishDate": "2026-07-21",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "shifters-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/07/hungry-women/",
-      "headline": "hungry women",
-      "publishDate": "2026-07-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hungry-women-off-broadway-2026"
       ],
       "outOfWindow": []
     },
@@ -1483,80 +426,6 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2026/08/the-vessel/",
-      "headline": "the vessel",
-      "publishDate": "2026-08-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-vessel-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/the-pass/",
-      "headline": "the pass",
-      "publishDate": "2026-08-03",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-pass-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/every-brilliant-thing-closing-august-9/",
-      "headline": "every brilliant thing closing august 9",
-      "publishDate": "2026-08-04",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "every-brilliant-thing-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/are-you-mad-at-me-bryan-safi/",
-      "headline": "are you mad at me bryan safi",
-      "publishDate": "2026-08-08",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "are-you-mad-at-me-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/masticate-at-the-players-theatre/",
-      "headline": "masticate at the players theatre",
-      "publishDate": "2026-10-20",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "masticate-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "players-1978"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/brooklyns-bridge/",
-      "headline": "brooklyns bridge",
-      "publishDate": "2026-08-11",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "brooklyns-bridge-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "http://thefrontrowcenter.com/2026/08/an-american-daughter/",
       "headline": "an american daughter",
       "publishDate": "2026-09-08",
@@ -1569,90 +438,6 @@
       "outOfWindow": [
         "an-american-daughter-1997"
       ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/the-winters-tale-3/",
-      "headline": "the winters tale 3",
-      "publishDate": "2026-08-12",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-winters-tale-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/isla-conjures-cuba-at-the-wp-theater/",
-      "headline": "isla conjures cuba at the wp theater",
-      "publishDate": "2026-10-01",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "isla-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/sukkot-family-tradition-and-rejoicing-despite-the-hardships/",
-      "headline": "sukkot family tradition and rejoicing despite the hardships",
-      "publishDate": "2026-08-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sukkot-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/the-bathroom-attendant/",
-      "headline": "the bathroom attendant",
-      "publishDate": "2026-08-20",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-bathroom-attendant-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/the-real-ivanov/",
-      "headline": "the real ivanov",
-      "publishDate": "2026-09-02",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-real-ivanov-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/the-house-of-the-negro-insane/",
-      "headline": "the house of the negro insane",
-      "publishDate": "2026-08-23",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-house-of-the-negro-insane-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/08/benevolent/",
-      "headline": "benevolent",
-      "publishDate": "2026-09-08",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "benevolent-off-broadway-2026"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "http://thefrontrowcenter.com/2026/08/les-miserables-2/",
@@ -1683,18 +468,6 @@
       "outOfWindow": []
     },
     {
-      "url": "http://thefrontrowcenter.com/2026/09/our-sinatra/",
-      "headline": "our sinatra",
-      "publishDate": "2026-09-25",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "our-sinatra-a-musical-celebration-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "http://thefrontrowcenter.com/2026/10/august-wilsons-seven-guitars-set-to-open/",
       "headline": "august wilsons seven guitars set to open",
       "publishDate": "2026-10-23",
@@ -1707,18 +480,6 @@
       "outOfWindow": [
         "seven-guitars-1996"
       ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/10/the-imaginary-invalid-2/",
-      "headline": "the imaginary invalid 2",
-      "publishDate": "2026-10-29",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-imaginary-invalid-2026"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "http://thefrontrowcenter.com/2026/10/legerdemain-at-the-tank-lynn-rosens-sleight-of-heart-comedy/",
@@ -1741,18 +502,6 @@
       "held": [],
       "matched": [
         "kate-allie-and-the-86-mets-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2026/11/now-you-see-me-live-a-little-more-than-magic/",
-      "headline": "now you see me live a little more than magic",
-      "publishDate": "2026-11-17",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "now-you-see-me-live-2026"
       ],
       "outOfWindow": []
     }
@@ -1924,6 +673,17 @@
       ]
     },
     {
+      "url": "http://thefrontrowcenter.com/2024/06/empire/",
+      "headline": "empire",
+      "publishDate": "2024-06-21",
+      "matched": [
+        "empire-the-musical-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://thefrontrowcenter.com/2024/07/empire-2/"
+      ]
+    },
+    {
       "url": "http://thefrontrowcenter.com/2024/11/music-city-a-new-musical/",
       "headline": "music city a new musical",
       "publishDate": "2026-06-18",
@@ -1998,6 +758,17 @@
       ],
       "heldUrls": [
         "https://thefrontrowcenter.com/2026/06/birthright/"
+      ]
+    },
+    {
+      "url": "http://thefrontrowcenter.com/2026/08/every-brilliant-thing-closing-august-9/",
+      "headline": "every brilliant thing closing august 9",
+      "publishDate": "2026-08-04",
+      "matched": [
+        "every-brilliant-thing-2026"
+      ],
+      "heldUrls": [
+        "https://thefrontrowcenter.com/2026/03/every-brilliant-thing/"
       ]
     }
   ],
@@ -2230,6 +1001,20 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "http://thefrontrowcenter.com/2025/09/mexodus/",
+      "headline": "mexodus",
+      "publishDate": "2025-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
     },
     {
       "url": "http://thefrontrowcenter.com/2025/09/art/",
@@ -4177,6 +2962,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -5324,18 +4110,6 @@
       ]
     },
     {
-      "url": "http://thefrontrowcenter.com/2025/06/the-imaginary-invalid/",
-      "headline": "the imaginary invalid",
-      "publishDate": "2025-06-02",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
-    },
-    {
       "url": "http://thefrontrowcenter.com/2025/06/lucky-man-a-warriors-journey/",
       "headline": "lucky man a warriors journey",
       "publishDate": "2025-06-17",
@@ -5458,18 +4232,6 @@
       "matched": [],
       "outOfWindow": [
         "the-porch-on-windy-hill-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "http://thefrontrowcenter.com/2025/09/mexodus/",
-      "headline": "mexodus",
-      "publishDate": "2025-09-19",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
       ]
     },
     {
@@ -6132,6 +4894,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -6173,5 +4936,9 @@
         "romeo-juliet-2024"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

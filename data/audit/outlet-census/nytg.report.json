@@ -1,18 +1,18 @@
 {
   "outletId": "nytg",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:27:58.016Z",
+  "generatedAt": "2026-11-23T23:18:23.105Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 2457,
-    "inWindow": 703,
+    "enumerated": 2458,
+    "inWindow": 704,
     "undated": 2,
     "meta": {
-      "fetched": 2457,
+      "fetched": 2458,
       "failed": 0
     }
   },
@@ -20,12 +20,11 @@
   "summary": {
     "counts": {
       "catalog-gap": 123,
-      "held": 495,
+      "held": 498,
       "not-review": 9,
-      "out-of-window": 40,
+      "out-of-window": 38,
       "held-alt-url": 17,
-      "held-unmatched": 13,
-      "ambiguous": 1,
+      "held-unmatched": 14,
       "gap": 5
     },
     "viaTitleVariant": {
@@ -33,11 +32,19 @@
       "held-alt-url": 1
     },
     "recall": 0.99,
-    "recallWithCatalog": 0.8
+    "recallWithCatalog": 0.801
   },
   "seasons": {
     "undated": {
       "catalog-gap": 2
+    },
+    "2023-24": {
+      "held": 84,
+      "out-of-window": 6,
+      "catalog-gap": 22,
+      "held-unmatched": 2,
+      "held-alt-url": 7,
+      "gap": 1
     },
     "2021-22": {
       "held": 53,
@@ -47,40 +54,31 @@
       "out-of-window": 14,
       "gap": 3
     },
-    "2023-24": {
-      "held": 83,
-      "out-of-window": 6,
-      "catalog-gap": 22,
-      "held-unmatched": 2,
-      "ambiguous": 1,
-      "gap": 1,
-      "held-alt-url": 7
-    },
     "2024-25": {
-      "held": 99,
+      "held": 100,
       "held-unmatched": 5,
       "catalog-gap": 19,
-      "out-of-window": 8,
+      "out-of-window": 7,
       "not-review": 1,
       "gap": 1
     },
     "2025-26": {
       "not-review": 2,
       "held": 136,
-      "out-of-window": 3,
+      "out-of-window": 2,
       "held-alt-url": 1,
       "catalog-gap": 9,
-      "held-unmatched": 1
+      "held-unmatched": 2
     },
     "2026-27": {
-      "held": 49,
+      "held": 50,
       "held-unmatched": 2
     },
     "2022-23": {
       "held": 74,
       "catalog-gap": 25,
-      "out-of-window": 9,
       "not-review": 5,
+      "out-of-window": 9,
       "held-alt-url": 9
     },
     "2020-21": {
@@ -89,10 +87,17 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 602,
-    "notEnumerated": 1,
+    "rowsInWindow": 611,
+    "heldExcludedRows": 0,
+    "notEnumerated": 2,
     "noUrl": 2,
     "samples": [
+      {
+        "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+        "url": "https://www.newyorktheatreguide.com/reviews/its-a-wonderful-life-a-live-radio-play-broadway-review",
+        "publishDate": "2026-11-23",
+        "why": "not-enumerated"
+      },
       {
         "showId": "masquerade-off-broadway-2025",
         "url": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
@@ -375,23 +380,23 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-      "headline": "'Amaze' Off-Broadway review — Jamie Allan delivers mystery, memoir, and magic for all ages",
-      "publishDate": "2025-08-13",
-      "via": null,
-      "held": [
-        "amaze-magic-off-broadway-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/six-broadway-review-a-%E2%80%98one-of-a-kind-no-category%E2%80%99-musical",
       "headline": "'Six' Broadway review — a ‘one of a kind, no category’ musical",
       "publishDate": "2021-10-04",
       "via": null,
       "held": [
         "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
+      "headline": "'Amaze' Off-Broadway review — Jamie Allan delivers mystery, memoir, and magic for all ages",
+      "publishDate": "2025-08-13",
+      "via": null,
+      "held": [
+        "amaze-magic-off-broadway-2025"
       ],
       "matched": [],
       "outOfWindow": []
@@ -422,19 +427,6 @@
       ]
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/anna-deavere-smith-twilight-los-angeles-1992-signature-theatre-review",
-      "headline": "‘Twilight: Los Angeles, 1992’ review — Anna Deavere Smith’s seminal work remains painfully resonant",
-      "publishDate": "2021-11-01",
-      "via": null,
-      "held": [
-        "twilight-los-angeles-1992-1994"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "twilight-los-angeles-1992-1994"
-      ]
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/prince-f-t-off-broadway-review-thought-provoking-examination-of-queerness-royal-family",
       "headline": "'Prince F****t' Off-Broadway review — thought-provoking examination of queerness within the Royal Family",
       "publishDate": "2025-06-18",
@@ -450,15 +442,17 @@
       ]
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/can-i-be-frank-off-broadway-review-morgan-bassichis",
-      "headline": "'Can I Be Frank?' Off-Broadway review — a delightful, insightful trip through queer comedy history",
-      "publishDate": "2025-08-04",
+      "url": "https://www.newyorktheatreguide.com/reviews/anna-deavere-smith-twilight-los-angeles-1992-signature-theatre-review",
+      "headline": "‘Twilight: Los Angeles, 1992’ review — Anna Deavere Smith’s seminal work remains painfully resonant",
+      "publishDate": "2021-11-01",
       "via": null,
       "held": [
-        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+        "twilight-los-angeles-1992-1994"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
     },
     {
       "url": "https://www.newyorktheatreguide.com/reviews/sexual-misconduct-of-the-middle-classes-off-broadway-review-hugh-jackman-ella-beatty",
@@ -474,6 +468,19 @@
       ]
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/mexodus-off-broadway-review",
+      "headline": "'Mexodus' Off-Broadway review — lost history gets a stunning musical spotlight",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/44-the-musical-off-broadway-review",
       "headline": "'44 The Musical' Off-Broadway review — staging the song-and-dance of Obama-era politics",
       "publishDate": "2025-11-06",
@@ -486,6 +493,17 @@
         "song-and-dance-1985",
         "44-off-broadway-2025"
       ]
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/can-i-be-frank-off-broadway-review-morgan-bassichis",
+      "headline": "'Can I Be Frank?' Off-Broadway review — a delightful, insightful trip through queer comedy history",
+      "publishDate": "2025-08-04",
+      "via": null,
+      "held": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
     },
     {
       "url": "https://www.newyorktheatreguide.com/reviews/na-off-broadway-review-holland-taylor-ana-villafane",
@@ -523,20 +541,7 @@
       "outOfWindow": []
     }
   ],
-  "ambiguous": [
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/illinoise-broadway-review-sufjan-stevens",
-      "headline": "'Illinoise' review — Sufjan Stevens musical has a heart as big as the title state",
-      "publishDate": "2024-04-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "illinoise-2024",
-        "illinoise-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    }
-  ],
+  "ambiguous": [],
   "catalogGaps": [
     {
       "url": "https://www.newyorktheatreguide.com/reviews/broadway",
@@ -584,15 +589,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/sally-and-tom-off-broadway-review",
-      "headline": "'Sally & Tom' review — meta-theatrical play examines history, money, and power",
-      "publishDate": "2024-04-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/reasons-to-see-six-on-broadway",
       "headline": "Reasons to see 'Six' on Broadway",
       "publishDate": "2021-10-03",
@@ -611,45 +607,18 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/sally-and-tom-off-broadway-review",
+      "headline": "'Sally & Tom' review — meta-theatrical play examines history, money, and power",
+      "publishDate": "2024-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/the-best-we-could-off-broadway-review",
       "headline": "'The Best We Could' review — a ride on the road to ruin",
       "publishDate": "2023-03-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-visitor-off-broadway-review",
-      "headline": "'The Visitor' review - a well-intentioned, yet out-of-touch musical",
-      "publishDate": "2021-11-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/fairycakes-off-broadway-review",
-      "headline": "'Fairycakes' review — 'a gorgeous array of theatrical royalty' thoroughly enjoying themselves",
-      "publishDate": "2021-10-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/to-my-girls-off-broadway-review",
-      "headline": "To My Girls Review",
-      "publishDate": "2022-04-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/cocktail-magique-off-broadway-review",
-      "headline": "'Cocktail Magique' review — cue the alcohol and the abracadabra",
-      "publishDate": "2023-02-26",
       "via": null,
       "held": [],
       "matched": [],
@@ -692,6 +661,51 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/fairycakes-off-broadway-review",
+      "headline": "'Fairycakes' review — 'a gorgeous array of theatrical royalty' thoroughly enjoying themselves",
+      "publishDate": "2021-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/to-my-girls-off-broadway-review",
+      "headline": "To My Girls Review",
+      "publishDate": "2022-04-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/cocktail-magique-off-broadway-review",
+      "headline": "'Cocktail Magique' review — cue the alcohol and the abracadabra",
+      "publishDate": "2023-02-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/the-visitor-off-broadway-review",
+      "headline": "'The Visitor' review - a well-intentioned, yet out-of-touch musical",
+      "publishDate": "2021-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/the-ally-off-broadway-review-josh-radnor",
+      "headline": "'The Ally' review — new play, starring Josh Radnor, mines political controversy",
+      "publishDate": "2024-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/dungeons-and-dragons-the-twenty-sided-tavern-off-broadway-review",
       "headline": "‘The Twenty-Sided Tavern’ review — fantastical show leaves the decisions to you",
       "publishDate": "2024-05-05",
@@ -710,117 +724,18 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/walden-off-broadway-review-emmy-rossum-zoe-winters",
+      "headline": "'Walden' review — Emmy Rossum and Zoë Winters are twins with space between them",
+      "publishDate": "2024-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/the-life-and-slimes-of-marc-summers-off-broadway-review",
       "headline": "'The Life and Slimes of Marc Summers' review — tackling life one physical challenge at a time",
       "publishDate": "2024-02-22",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
-      "headline": "'My Son's a Queer (But What Can You Do?)' is an explosion of pure, homegrown joy",
-      "publishDate": "2025-06-13",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/we-had-a-world-off-broadway-review",
-      "headline": "‘We Had a World’ review — a family drama with heartache and humor",
-      "publishDate": "2025-03-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/blind-runner-off-broadway-review",
-      "headline": "'Blind Runner' review — new play sprints through themes of protest and freedom",
-      "publishDate": "2025-01-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-hunt-off-broadway-review-tobias-menzies",
-      "headline": "‘The Hunt’ review — Tobias Menzies shines in this psychological thriller",
-      "publishDate": "2024-02-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/life-and-times-of-michael-k-off-broadway-review",
-      "headline": "'Life & Times of Michael K' review — a puppet's adventures tug at the heartstrings",
-      "publishDate": "2023-12-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/practice-off-broadway-review",
-      "headline": "'Practice' Off-Broadway review — provocative play asks where creativity ends and manipulation begins",
-      "publishDate": "2025-11-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/hold-me-in-the-water-off-broadway-review",
-      "headline": "'Hold Me in the Water' Off-Broadway review — a heartfelt and humorous love story",
-      "publishDate": "2025-04-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/initiative-off-broadway-review",
-      "headline": "'Initiative' Off-Broadway review — love, angst, and Dungeons & Dragons",
-      "publishDate": "2025-11-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/did-you-eat-off-broadway-review-zoe-kim",
-      "headline": "‘Did You Eat? (밥먹었니?)’ Off-Broadway review — Zoë Kim's physicality shines in autobiographical solo show",
-      "publishDate": "2025-10-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/ha-ha-ha-ha-ha-ha-ha-off-broadway-review-julia-masli",
-      "headline": "'Ha Ha Ha Ha Ha Ha Ha' Off-Broadway review — Julia Masli uses clowning for problem-solving",
-      "publishDate": "2025-06-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-ally-off-broadway-review-josh-radnor",
-      "headline": "'The Ally' review — new play, starring Josh Radnor, mines political controversy",
-      "publishDate": "2024-02-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/manahatta-off-broadway-review",
-      "headline": "'Manahatta' review — Native American family drama modernizes history",
-      "publishDate": "2023-12-05",
       "via": null,
       "held": [],
       "matched": [],
@@ -836,9 +751,108 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/hold-me-in-the-water-off-broadway-review",
+      "headline": "'Hold Me in the Water' Off-Broadway review — a heartfelt and humorous love story",
+      "publishDate": "2025-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/practice-off-broadway-review",
+      "headline": "'Practice' Off-Broadway review — provocative play asks where creativity ends and manipulation begins",
+      "publishDate": "2025-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/we-had-a-world-off-broadway-review",
+      "headline": "‘We Had a World’ review — a family drama with heartache and humor",
+      "publishDate": "2025-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+      "headline": "'My Son's a Queer (But What Can You Do?)' is an explosion of pure, homegrown joy",
+      "publishDate": "2025-06-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/did-you-eat-off-broadway-review-zoe-kim",
+      "headline": "‘Did You Eat? (밥먹었니?)’ Off-Broadway review — Zoë Kim's physicality shines in autobiographical solo show",
+      "publishDate": "2025-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/initiative-off-broadway-review",
+      "headline": "'Initiative' Off-Broadway review — love, angst, and Dungeons & Dragons",
+      "publishDate": "2025-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/ha-ha-ha-ha-ha-ha-ha-off-broadway-review-julia-masli",
+      "headline": "'Ha Ha Ha Ha Ha Ha Ha' Off-Broadway review — Julia Masli uses clowning for problem-solving",
+      "publishDate": "2025-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/manahatta-off-broadway-review",
+      "headline": "'Manahatta' review — Native American family drama modernizes history",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/safety-not-guaranteed-off-broadway-review",
       "headline": "'Safety Not Guaranteed' review — a time-traveling musical rooted in the now",
       "publishDate": "2024-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/blind-runner-off-broadway-review",
+      "headline": "'Blind Runner' review — new play sprints through themes of protest and freedom",
+      "publishDate": "2025-01-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/life-and-times-of-michael-k-off-broadway-review",
+      "headline": "'Life & Times of Michael K' review — a puppet's adventures tug at the heartstrings",
+      "publishDate": "2023-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/the-hunt-off-broadway-review-tobias-menzies",
+      "headline": "‘The Hunt’ review — Tobias Menzies shines in this psychological thriller",
+      "publishDate": "2024-02-25",
       "via": null,
       "held": [],
       "matched": [],
@@ -854,18 +868,18 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/breaking-the-fifth-wall-off-broadway-review-lou-wall",
-      "headline": "'Breaking the Fifth Wall' Off-Broadway review — Lou Wall unravels layers of comedic truth — or do they?",
-      "publishDate": "2025-09-21",
+      "url": "https://www.newyorktheatreguide.com/reviews/weer-off-broadway-review-natalie-palamides",
+      "headline": "'Weer' Off-Broadway review — till death do they share body parts in Natalie Palamides's solo comedy",
+      "publishDate": "2025-09-28",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/our-class-off-broadway-review",
-      "headline": "'Our Class' review — a union dividing and surviving",
-      "publishDate": "2024-09-17",
+      "url": "https://www.newyorktheatreguide.com/reviews/lunar-eclipse-off-broadway-review-reed-birney-lisa-emery",
+      "headline": "'Lunar Eclipse' Off-Broadway review — Reed Birney and Lisa Emery lead a marriage story under the stars",
+      "publishDate": "2025-06-03",
       "via": null,
       "held": [],
       "matched": [],
@@ -890,6 +904,15 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/our-class-off-broadway-review",
+      "headline": "'Our Class' review — a union dividing and surviving",
+      "publishDate": "2024-09-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/jes-tom-less-lonely-off-broadway-review",
       "headline": "'Less Lonely' review — comedian Jes Tom punches through loneliness",
       "publishDate": "2023-12-11",
@@ -908,18 +931,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/lunar-eclipse-off-broadway-review-reed-birney-lisa-emery",
-      "headline": "'Lunar Eclipse' Off-Broadway review — Reed Birney and Lisa Emery lead a marriage story under the stars",
-      "publishDate": "2025-06-03",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/weer-off-broadway-review-natalie-palamides",
-      "headline": "'Weer' Off-Broadway review — till death do they share body parts in Natalie Palamides's solo comedy",
-      "publishDate": "2025-09-28",
+      "url": "https://www.newyorktheatreguide.com/reviews/all-the-devils-are-here-off-broadway-review-patrick-page",
+      "headline": "'All the Devils Are Here' review — Patrick Page perfected the villain",
+      "publishDate": "2023-10-16",
       "via": null,
       "held": [],
       "matched": [],
@@ -935,18 +949,18 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/all-the-devils-are-here-off-broadway-review-patrick-page",
-      "headline": "'All the Devils Are Here' review — Patrick Page perfected the villain",
-      "publishDate": "2023-10-16",
+      "url": "https://www.newyorktheatreguide.com/reviews/romy-and-michele-the-musical-off-broadway-review",
+      "headline": "'Romy & Michele: The Musical' Off-Broadway review — stage adaptation of '90s film shows friendship never goes out of style",
+      "publishDate": "2025-10-28",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/romy-and-michele-the-musical-off-broadway-review",
-      "headline": "'Romy & Michele: The Musical' Off-Broadway review — stage adaptation of '90s film shows friendship never goes out of style",
-      "publishDate": "2025-10-28",
+      "url": "https://www.newyorktheatreguide.com/reviews/breaking-the-fifth-wall-off-broadway-review-lou-wall",
+      "headline": "'Breaking the Fifth Wall' Off-Broadway review — Lou Wall unravels layers of comedic truth — or do they?",
+      "publishDate": "2025-09-21",
       "via": null,
       "held": [],
       "matched": [],
@@ -980,18 +994,18 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/drinking-in-america-off-broadway-review-andre-royo",
-      "headline": "‘Drinking in America’ review — Andre Royo’s talent outshines a dated play",
-      "publishDate": "2023-03-19",
+      "url": "https://www.newyorktheatreguide.com/reviews/lucy-off-broadway-review",
+      "headline": "'Lucy' review — new thriller explores the joy, and horror, of motherhood",
+      "publishDate": "2023-02-06",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/lucy-off-broadway-review",
-      "headline": "'Lucy' review — new thriller explores the joy, and horror, of motherhood",
-      "publishDate": "2023-02-06",
+      "url": "https://www.newyorktheatreguide.com/reviews/drinking-in-america-off-broadway-review-andre-royo",
+      "headline": "‘Drinking in America’ review — Andre Royo’s talent outshines a dated play",
+      "publishDate": "2023-03-19",
       "via": null,
       "held": [],
       "matched": [],
@@ -1019,33 +1033,6 @@
       "url": "https://www.newyorktheatreguide.com/reviews/the-strange-undoing-of-prudencia-hart-off-broadway-review",
       "headline": "'The Strange Undoing of Prudencia Hart' review — an enchanting, immersive experience",
       "publishDate": "2023-03-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/spain-off-broadway-review",
-      "headline": "'Spain' review — cleverly deceptive play examines propaganda and art",
-      "publishDate": "2023-11-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/poor-yella-rednecks-off-broadway-review",
-      "headline": "'Poor Yella Rednecks' review — a discordant musical story of immigration",
-      "publishDate": "2023-11-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/king-james-off-broadway-review-chris-perfetti-glenn-davis",
-      "headline": "'King James' review — Chris Perfetti and Glenn Davis lead a theatrical one-on-one match",
-      "publishDate": "2023-05-16",
       "via": null,
       "held": [],
       "matched": [],
@@ -1088,9 +1075,45 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/spain-off-broadway-review",
+      "headline": "'Spain' review — cleverly deceptive play examines propaganda and art",
+      "publishDate": "2023-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/poor-yella-rednecks-off-broadway-review",
+      "headline": "'Poor Yella Rednecks' review — a discordant musical story of immigration",
+      "publishDate": "2023-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/king-james-off-broadway-review-chris-perfetti-glenn-davis",
+      "headline": "'King James' review — Chris Perfetti and Glenn Davis lead a theatrical one-on-one match",
+      "publishDate": "2023-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/jordans-off-broadway-review",
       "headline": "'Jordans' review — a workplace drama that goes above and beyond",
       "publishDate": "2024-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/melissa-etheridge-my-window-broadway-review",
+      "headline": "'Melissa Etheridge: My Window' review — a celebration of the singer's truest self",
+      "publishDate": "2023-09-28",
       "via": null,
       "held": [],
       "matched": [],
@@ -1115,24 +1138,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/melissa-etheridge-my-window-broadway-review",
-      "headline": "'Melissa Etheridge: My Window' review — a celebration of the singer's truest self",
-      "publishDate": "2023-09-28",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-far-country-off-broadway-review",
-      "headline": "'The Far Country' review — found-family drama sheds light on a dark slice of American history",
-      "publishDate": "2022-12-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/the-apiary-off-broadway-review",
       "headline": "'The Apiary' review — imagining a world without honeybees",
       "publishDate": "2024-02-13",
@@ -1142,18 +1147,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/breaking-the-story-off-broadway-review",
-      "headline": "'Breaking the Story' review — a tribute to the sacrifices of war correspondents",
-      "publishDate": "2024-06-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/walden-off-broadway-review-emmy-rossum-zoe-winters",
-      "headline": "'Walden' review — Emmy Rossum and Zoë Winters are twins with space between them",
-      "publishDate": "2024-11-07",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-far-country-off-broadway-review",
+      "headline": "'The Far Country' review — found-family drama sheds light on a dark slice of American history",
+      "publishDate": "2022-12-05",
       "via": null,
       "held": [],
       "matched": [],
@@ -1187,18 +1183,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-bandaged-place-off-broadway-review",
-      "headline": "'the bandaged place' review — moving new play captures the messiness of trauma and healing",
-      "publishDate": "2022-11-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/sondheim-by-candlelight-illuminates-the-music-of-an-icon",
-      "headline": "Sondheim by Candlelight illuminates the music of an icon",
-      "publishDate": "2025-03-31",
+      "url": "https://www.newyorktheatreguide.com/reviews/breaking-the-story-off-broadway-review",
+      "headline": "'Breaking the Story' review — a tribute to the sacrifices of war correspondents",
+      "publishDate": "2024-06-04",
       "via": null,
       "held": [],
       "matched": [],
@@ -1235,6 +1222,15 @@
       "url": "https://www.newyorktheatreguide.com/reviews/selling-kabul-review-playwrights-horizons",
       "headline": "'Selling Kabul' review — unrelenting tension muddies the play's 'compelling' emotional core",
       "publishDate": "2021-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/sondheim-by-candlelight-illuminates-the-music-of-an-icon",
+      "headline": "Sondheim by Candlelight illuminates the music of an icon",
+      "publishDate": "2025-03-31",
       "via": null,
       "held": [],
       "matched": [],
@@ -1583,6 +1579,15 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/the-bandaged-place-off-broadway-review",
+      "headline": "'the bandaged place' review — moving new play captures the messiness of trauma and healing",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/catch-as-catch-can-off-broadway-review",
       "headline": "'Catch as Catch Can' review — expertly acted play turns the family drama on its head",
       "publishDate": "2022-11-09",
@@ -1702,6 +1707,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1729,21 +1735,6 @@
       ]
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/a-streetcar-named-desire-off-broadway-review-paul-mescal",
-      "headline": "'A Streetcar Named Desire' review — Paul Mescal headlines a theatrical thrill ride",
-      "publishDate": "2025-03-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
-      ]
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/the-cherry-orchard-off-broadway-review",
       "headline": "'The Cherry Orchard' Off-Broadway review — an indie spin on a Chekhov classic",
       "publishDate": "2025-04-02",
@@ -1768,19 +1759,6 @@
         "cyrano-de-bergerac-2012",
         "cyrano-de-bergerac-2007",
         "cyrano-de-bergerac-1984"
-      ]
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/the-merchant-of-venice-off-broadway-review",
-      "headline": "'The Merchant of Venice' review — a Jewish reclamation of Shakespeare's problem play",
-      "publishDate": "2024-11-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-merchant-of-venice-2010",
-        "the-merchant-of-venice-1989",
-        "the-merchant-of-venice-1973"
       ]
     },
     {
@@ -1818,6 +1796,19 @@
       ]
     },
     {
+      "url": "https://www.newyorktheatreguide.com/reviews/the-merchant-of-venice-off-broadway-review",
+      "headline": "'The Merchant of Venice' review — a Jewish reclamation of Shakespeare's problem play",
+      "publishDate": "2024-11-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
       "url": "https://www.newyorktheatreguide.com/reviews/twelfth-night-review-shakespeare-in-the-park",
       "headline": "'Twelfth Night' review — a starry, comic romp through Shakespeare",
       "publishDate": "2025-08-20",
@@ -1852,17 +1843,6 @@
         "king-lear-2019",
         "king-lear-2004",
         "king-lear-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.newyorktheatreguide.com/reviews/mexodus-off-broadway-review",
-      "headline": "'Mexodus' Off-Broadway review — lost history gets a stunning musical spotlight",
-      "publishDate": "2025-09-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
       ]
     },
     {
@@ -1911,17 +1891,6 @@
       ]
     },
     {
-      "url": "https://www.newyorktheatreguide.com/reviews/alex-edelman-just-for-us-review-cherry-lane-theatre",
-      "headline": "Alex Edelman: Just for Us review",
-      "publishDate": "2022-01-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "just-for-us-2023"
-      ]
-    },
-    {
       "url": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
       "headline": "'Here There Are Blueberries' review — uncovering a lesser-known snapshot of history",
       "publishDate": "2024-05-13",
@@ -1930,6 +1899,17 @@
       "matched": [],
       "outOfWindow": [
         "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/alex-edelman-just-for-us-review-cherry-lane-theatre",
+      "headline": "Alex Edelman: Just for Us review",
+      "publishDate": "2022-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-for-us-2023"
       ]
     },
     {
@@ -2068,6 +2048,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2129,5 +2110,9 @@
         "the-sign-in-sidney-brusteins-window-1972"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

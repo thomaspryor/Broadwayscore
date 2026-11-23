@@ -1,26 +1,26 @@
 {
   "outletId": "hollywood-reporter",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:18:30.947Z",
+  "generatedAt": "2026-11-23T23:24:16.874Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1521,
-    "inWindow": 1521,
+    "enumerated": 1524,
+    "inWindow": 1524,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1458,
-      "held-other-market": 6,
+      "not-review": 1461,
+      "held-other-market": 8,
       "held-unmatched": 21,
-      "held": 23,
-      "out-of-window": 10,
+      "held": 24,
+      "out-of-window": 7,
       "catalog-gap": 2,
       "held-alt-url": 1
     },
@@ -28,11 +28,11 @@
       "held": 1
     },
     "recall": 1,
-    "recallWithCatalog": 0.923
+    "recallWithCatalog": 0.926
   },
   "seasons": {
     "2026-27": {
-      "not-review": 78,
+      "not-review": 81,
       "held-other-market": 2,
       "held-unmatched": 1
     },
@@ -45,17 +45,18 @@
     },
     "2024-25": {
       "not-review": 266,
-      "held-other-market": 1,
+      "held-other-market": 2,
       "held": 5,
       "held-unmatched": 3,
-      "out-of-window": 2,
+      "out-of-window": 1,
       "catalog-gap": 1
     },
     "2023-24": {
       "not-review": 245,
       "held-unmatched": 1,
-      "out-of-window": 2,
-      "held": 6
+      "out-of-window": 1,
+      "held": 6,
+      "held-other-market": 1
     },
     "2022-23": {
       "not-review": 257,
@@ -65,8 +66,8 @@
     },
     "2021-22": {
       "not-review": 281,
-      "held": 7,
-      "out-of-window": 3,
+      "held": 8,
+      "out-of-window": 2,
       "held-unmatched": 8,
       "held-other-market": 2,
       "catalog-gap": 1,
@@ -77,16 +78,11 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 480,
-    "notEnumerated": 16,
+    "rowsInWindow": 481,
+    "heldExcludedRows": 0,
+    "notEnumerated": 14,
     "noUrl": 4,
     "samples": [
-      {
-        "showId": "a-bronx-tale-the-musical-2016",
-        "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987?utm_source=twitter",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
       {
         "showId": "a-life-in-the-theatre-2010",
         "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-review-1004120521.story",
@@ -110,12 +106,6 @@
         "url": null,
         "publishDate": null,
         "why": "no-url"
-      },
-      {
-        "showId": "caroline-or-change-2021",
-        "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
-        "publishDate": "2021-11-01",
-        "why": "not-enumerated"
       },
       {
         "showId": "cult-of-love-2024",
@@ -568,17 +558,6 @@
       ]
     },
     {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/elektra-theater-review-brie-larson-stockard-channing-sophocles-london-1236128871/",
-      "headline": "‘Elektra’ Theater Review: Brie Larson Makes West End Debut in Messy, Misguided Take on Sophocles",
-      "publishDate": "2025-02-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "elektra-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-tom-holland-shakespeare-1235909307/",
       "headline": "‘Romeo & Juliet’ Theater Review: Tom Holland Disappoints in Return to the Stage, But Another Star Is Born",
       "publishDate": "2024-05-25",
@@ -590,17 +569,6 @@
         "romeo-and-juliet-1986",
         "romeo-and-juliet-1977",
         "romeo-and-juliet-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-picture-of-dorian-gray-review-sarah-snook-theater-1235827598/",
-      "headline": "‘The Picture of Dorian Gray’ Theater Review: Sarah Snook Is Phenomenal in Bravura Oscar Wilde Adaptation",
-      "publishDate": "2024-02-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-picture-of-dorian-gray-2025"
       ]
     },
     {
@@ -627,7 +595,8 @@
         "a-streetcar-named-desire-1988",
         "a-streetcar-named-desire-1973",
         "a-streetcar-named-desire-2005",
-        "kowalski-off-broadway-2025"
+        "kowalski-off-broadway-2025",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -643,17 +612,6 @@
         "the-glass-menagerie-1975",
         "the-glass-menagerie-2005",
         "the-glass-menagerie-1983"
-      ]
-    },
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
-      "headline": "‘Caroline, or Change’: Theater Review",
-      "publishDate": "2021-10-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "caroline-or-change-2004"
       ]
     },
     {
@@ -675,5 +633,9 @@
         "macbeth-an-undoing-off-broadway-2024"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

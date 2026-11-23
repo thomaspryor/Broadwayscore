@@ -1,40 +1,40 @@
 {
   "outletId": "thewrap",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:29:27.371Z",
+  "generatedAt": "2026-11-23T23:20:03.890Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 504,
-    "inWindow": 504,
+    "enumerated": 506,
+    "inWindow": 506,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 238,
+      "held": 245,
       "not-review": 164,
-      "held-unmatched": 8,
-      "held-alt-url": 1,
+      "held-unmatched": 9,
+      "held-alt-url": 2,
       "catalog-gap": 45,
-      "out-of-window": 33,
-      "gap": 15
+      "out-of-window": 32,
+      "gap": 9
     },
     "viaTitleVariant": {
-      "held": 21,
+      "held": 23,
       "held-alt-url": 1,
-      "gap": 4
+      "gap": 3
     },
-    "recall": 0.941,
-    "recallWithCatalog": 0.799
+    "recall": 0.965,
+    "recallWithCatalog": 0.821
   },
   "seasons": {
     "2026-27": {
-      "held": 14,
+      "held": 16,
       "not-review": 13,
       "held-unmatched": 1
     },
@@ -42,39 +42,38 @@
       "not-review": 59,
       "held": 56,
       "held-alt-url": 1,
-      "held-unmatched": 2,
-      "catalog-gap": 3,
-      "out-of-window": 1
+      "held-unmatched": 3,
+      "catalog-gap": 3
     },
     "2024-25": {
       "not-review": 29,
       "catalog-gap": 2,
       "out-of-window": 2,
-      "held": 37,
-      "held-unmatched": 2,
-      "gap": 1
+      "held": 38,
+      "held-unmatched": 2
     },
     "2023-24": {
       "not-review": 17,
       "held-unmatched": 2,
-      "held": 37,
+      "held": 40,
       "out-of-window": 5,
-      "gap": 5,
+      "gap": 2,
       "catalog-gap": 7
     },
     "2022-23": {
-      "held": 59,
+      "held": 60,
       "not-review": 23,
       "out-of-window": 11,
       "catalog-gap": 17,
-      "gap": 5
+      "gap": 4
     },
     "2021-22": {
       "out-of-window": 14,
       "not-review": 22,
       "held": 35,
       "catalog-gap": 16,
-      "gap": 4,
+      "gap": 3,
+      "held-alt-url": 1,
       "held-unmatched": 1
     },
     "2020-21": {
@@ -82,8 +81,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 545,
-    "notEnumerated": 40,
+    "rowsInWindow": 560,
+    "heldExcludedRows": 0,
+    "notEnumerated": 42,
     "noUrl": 0,
     "samples": [
       {
@@ -96,6 +96,12 @@
         "showId": "anna-christie-off-broadway-2025",
         "url": "https://www.thewrap.com/anna-christie-off-broadway-review-michelle-williams/",
         "publishDate": "2025-12-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "babe-off-broadway-2024",
+        "url": "https://www.thewrap.com/babe-off-broadway-review-marisa-tomei-gets-stuck/",
+        "publishDate": "2024-11-21",
         "why": "not-enumerated"
       },
       {
@@ -177,15 +183,15 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "messy-white-gays-off-broadway-2025",
-        "url": "https://www.thewrap.com/messy-white-gays-off-broadway-review-drew-droege/",
-        "publishDate": "2025-11-03",
+        "showId": "madwomen-of-the-west-off-broadway-2023",
+        "url": "https://www.thewrap.com/madwomen-of-the-west-off-broadway-review/",
+        "publishDate": "2023-12-05",
         "why": "not-enumerated"
       },
       {
-        "showId": "of-mice-and-men-2014",
-        "url": "https://www.thewrap.com/mice-and-men-james-franco-review",
-        "publishDate": null,
+        "showId": "messy-white-gays-off-broadway-2025",
+        "url": "https://www.thewrap.com/messy-white-gays-off-broadway-review-drew-droege/",
+        "publishDate": "2025-11-03",
         "why": "not-enumerated"
       },
       {
@@ -198,6 +204,12 @@
         "showId": "on-the-twentieth-century-2015",
         "url": "http://www.thewrap.com/on-the-twentieth-century-theater-review-kristin-chenoweth-is-back-on-the-fast-track/",
         "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-mattress-2024",
+        "url": "https://www.thewrap.com/once-upon-a-mattress-broadway-review-sutton-foster/",
+        "publishDate": "2024-08-13",
         "why": "not-enumerated"
       },
       {
@@ -313,33 +325,10 @@
         "url": "https://www.thewrap.com/tina-broadway-review-tina-turner-adrienne-warren-katori-hall/",
         "publishDate": null,
         "why": "not-enumerated"
-      },
-      {
-        "showId": "waiting-for-godot-2025",
-        "url": "https://www.thewrap.com/waiting-for-godot-broadway-review-keanu-reeves-alex-winters-samuel-beckett/",
-        "publishDate": "2025-09-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "wedding-band-off-broadway-2022",
-        "url": "https://www.thewrap.com/wedding-band-off-broadway-review-the-theater-rediscovers-alice-childress/",
-        "publishDate": "2022-05-08",
-        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
-    {
-      "url": "https://www.thewrap.com/english-broadway-review-sanaz-toossi/",
-      "headline": "‘English’ Broadway Review: Something Gets Lost in the Translation",
-      "publishDate": "2025-01-23",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "english-2025"
-      ],
-      "outOfWindow": []
-    },
     {
       "url": "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/",
       "headline": "‘Home’ Broadway Review: How to Dismantle the Myth of the North",
@@ -348,17 +337,6 @@
       "held": [],
       "matched": [
         "home-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
-      "headline": "‘The Outsiders’ Broadway Review: It Vastly Improves on Coppola’s Cult Classic",
-      "publishDate": "2024-04-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-outsiders-2024"
       ],
       "outOfWindow": []
     },
@@ -373,32 +351,6 @@
       ],
       "outOfWindow": [
         "buena-vista-social-club-2025"
-      ]
-    },
-    {
-      "url": "https://www.thewrap.com/i-can-get-it-for-you-wholesale-off-broadway-review/",
-      "headline": "‘I Can Get It for You Wholesale’ Off Broadway Review: Barbra Streisand’s Other Stage Musical Gets a Second Look",
-      "publishDate": "2023-10-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "i-can-get-it-for-you-wholesale-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "other-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.thewrap.com/stereophonic-off-broadway-review/",
-      "headline": "‘Stereophonic’ Off Broadway Review: Part Robert Altman, Part Fleetwood Mac",
-      "publishDate": "2023-10-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stereophonic-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "stereophonic-2024"
       ]
     },
     {
@@ -435,19 +387,6 @@
         "where-we-belong-off-broadway-2022"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.thewrap.com/funny-girl-broadway-review-lea-michele-brings-her-funny-lady-to-the-stage/",
-      "headline": "‘Funny Girl’ Broadway Review: Lea Michele Brings the Diva But Not the Laughs",
-      "publishDate": "2022-10-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "funny-girl-2022"
-      ],
-      "outOfWindow": [
-        "funny-girl-2002"
-      ]
     },
     {
       "url": "https://www.thewrap.com/remember-this-off-broadway-review-david-strathairn-proves-bearing-witness-can-be-heroic/",
@@ -492,19 +431,6 @@
       ]
     },
     {
-      "url": "https://www.thewrap.com/funny-girl-broadway-review-beanie-feldstein/",
-      "headline": "‘Funny Girl’ Broadway Review: She’s Back, Finally, and Very Different",
-      "publishDate": "2022-04-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "funny-girl-2022"
-      ],
-      "outOfWindow": [
-        "funny-girl-2002"
-      ]
-    },
-    {
       "url": "https://www.thewrap.com/is-this-a-room-broadway-review-reality-winner/",
       "headline": "‘Is This a Room’ Broadway Review:  Whistleblower Reality Winner’s Trauma in Her Own Words",
       "publishDate": "2021-10-11",
@@ -526,6 +452,17 @@
       ],
       "heldUrls": [
         "https://www.thewrap.com/just-in-time-broadway-review-jonathan-groff/"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/funny-girl-broadway-review-beanie-feldstein/",
+      "headline": "‘Funny Girl’ Broadway Review: She’s Back, Finally, and Very Different",
+      "publishDate": "2022-04-24",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://www.thewrap.com/funny-girl-broadway-review-lea-michele-brings-her-funny-lady-to-the-stage/"
       ]
     }
   ],
@@ -567,6 +504,19 @@
       "matched": [],
       "outOfWindow": [
         "two-strangers-bway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
+      "headline": "‘Mexodus’ Off Broadway Review: One of America’s Darker Chapters Now Explodes With Music",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
       ]
     },
     {
@@ -1041,17 +991,6 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
-      "headline": "‘Mexodus’ Off Broadway Review: One of America’s Darker Chapters Now Explodes With Music",
-      "publishDate": "2025-09-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
       "headline": "‘Jesus Christ Superstar’ LA Theater Review: Cynthia Erivo and Adam Lambert Reach Biblical Heights",
       "publishDate": "2025-08-04",
@@ -1295,6 +1234,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1312,6 +1252,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1430,5 +1371,9 @@
         "flight-off-broadway-2027"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

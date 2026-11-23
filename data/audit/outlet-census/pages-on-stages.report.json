@@ -1,7 +1,7 @@
 {
   "outletId": "pages-on-stages",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:39:42.521Z",
+  "generatedAt": "2026-11-23T23:31:11.204Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
@@ -18,54 +18,51 @@
     "counts": {
       "not-review": 80,
       "catalog-gap": 23,
-      "gap": 20,
+      "gap": 12,
+      "held": 152,
       "held-unmatched": 23,
-      "held": 145,
       "out-of-window": 37,
-      "held-alt-url": 38,
-      "ambiguous": 1
+      "held-alt-url": 40
     },
     "viaTitleVariant": {
       "held-alt-url": 1
     },
-    "recall": 0.901,
-    "recallWithCatalog": 0.81
+    "recall": 0.941,
+    "recallWithCatalog": 0.846
   },
   "seasons": {
     "2026-27": {
       "not-review": 1,
       "catalog-gap": 1,
-      "gap": 2,
+      "gap": 1,
+      "held": 19,
       "held-unmatched": 3,
-      "held": 18,
       "out-of-window": 3
     },
     "2025-26": {
-      "held": 71,
+      "held": 73,
       "not-review": 19,
       "held-unmatched": 6,
-      "held-alt-url": 1,
+      "held-alt-url": 2,
       "out-of-window": 5,
-      "catalog-gap": 3,
-      "gap": 3
+      "catalog-gap": 3
     },
     "2024-25": {
       "out-of-window": 20,
       "held-unmatched": 12,
-      "gap": 7,
+      "held": 52,
       "catalog-gap": 7,
       "not-review": 44,
-      "held": 47,
+      "gap": 2,
       "held-alt-url": 9
     },
     "2023-24": {
-      "held": 9,
-      "held-alt-url": 21,
+      "held": 8,
+      "held-alt-url": 22,
       "catalog-gap": 12,
-      "gap": 8,
+      "gap": 9,
       "not-review": 14,
       "out-of-window": 7,
-      "ambiguous": 1,
       "held-unmatched": 2
     },
     "2022-23": {
@@ -79,7 +76,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 217,
+    "rowsInWindow": 224,
+    "heldExcludedRows": 0,
     "notEnumerated": 49,
     "noUrl": 0,
     "samples": [
@@ -341,101 +339,6 @@
       ]
     },
     {
-      "url": "https://pagesonstages.com/2026/11/17/downstate/",
-      "headline": "Power Full",
-      "publishDate": "2026-11-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "downstate-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://pagesonstages.com/2025/12/22/tartuffe-nytw/",
-      "headline": "Clandestine Creative Casting",
-      "publishDate": "2025-12-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "tartuffe-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "tartuffe-2003",
-        "tartuffe-1996",
-        "tartuffe-1977"
-      ]
-    },
-    {
-      "url": "https://pagesonstages.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee/",
-      "headline": "My Favorite Moments of the Bee",
-      "publishDate": "2025-11-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "the-25th-annual-putnam-county-spelling-bee-2005"
-      ]
-    },
-    {
-      "url": "https://pagesonstages.com/2025/10/29/tartuffe-redeemer/",
-      "headline": "Mindlessness and Mindfulness",
-      "publishDate": "2025-10-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "tartuffe-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "tartuffe-2003",
-        "tartuffe-1996",
-        "tartuffe-1977"
-      ]
-    },
-    {
-      "url": "https://pagesonstages.com/2025/08/26/mamma-mia/",
-      "headline": "Here I’d Go Again",
-      "publishDate": "2025-08-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mamma-mia-2025"
-      ],
-      "outOfWindow": [
-        "mamma-mia-2001"
-      ]
-    },
-    {
-      "url": "https://pagesonstages.com/2025/05/10/operation-mincemeat/",
-      "headline": "Gender Bender",
-      "publishDate": "2025-05-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "operation-mincemeat-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://pagesonstages.com/2025/04/11/op-ed-othello/",
-      "headline": "Op-Ed: Do Movie Stars Belong on Broadway?",
-      "publishDate": "2025-04-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "othello-2025"
-      ],
-      "outOfWindow": [
-        "othello-1970",
-        "othello-1982",
-        "othello-bedlam-off-broadway-2026",
-        "othello-off-broadway-2026",
-        "othello-off-broadway-2016"
-      ]
-    },
-    {
       "url": "https://pagesonstages.com/2025/02/08/300-paintings/",
       "headline": "I Can Do Anything Better than You",
       "publishDate": "2025-02-08",
@@ -445,36 +348,6 @@
         "300-paintings-off-broadway-2024"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://pagesonstages.com/2024/10/22/teeth-op-ed/",
-      "headline": "Teeth: Why I Didn’t Bite, But You Might",
-      "publishDate": "2024-10-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "teeth-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "teeth-playwrights-horizons-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://pagesonstages.com/2024/09/23/medea-re-versed/",
-      "headline": "That’s a Wrap",
-      "publishDate": "2024-09-23",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "medea-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "medea-2002",
-        "medea-1994",
-        "medea-1973",
-        "medea-1982",
-        "medea-off-broadway-2026"
-      ]
     },
     {
       "url": "https://pagesonstages.com/2024/09/23/blood-of-the-lamb/",
@@ -580,6 +453,17 @@
         "water-for-elephants-2024"
       ],
       "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2023/10/24/jajas-african-hair-braiding/",
+      "headline": "What Immigrants Experience",
+      "publishDate": "2023-10-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jajas-african-hair-braiding-2023"
+      ],
+      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
@@ -592,6 +476,17 @@
       ],
       "heldUrls": [
         "https://pagesonstages.com/2026/04/27/the-lost-boys/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/10/29/tartuffe-redeemer/",
+      "headline": "Mindlessness and Mindfulness",
+      "publishDate": "2025-10-29",
+      "matched": [
+        "tartuffe-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.com/2025/12/22/tartuffe-nytw/"
       ]
     },
     {
@@ -779,6 +674,17 @@
       ],
       "heldUrls": [
         "https://pagesonstages.wordpress.com/2024/05/05/the-great-gatsby/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/25/illinoise/",
+      "headline": "Make Us Moved",
+      "publishDate": "2024-04-25",
+      "matched": [
+        "illinoise-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/04/25/illinoise/"
       ]
     },
     {
@@ -1268,20 +1174,7 @@
       ]
     }
   ],
-  "ambiguous": [
-    {
-      "url": "https://pagesonstages.com/2024/04/25/illinoise/",
-      "headline": "Make Us Moved",
-      "publishDate": "2024-04-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "illinoise-2024",
-        "illinoise-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    }
-  ],
+  "ambiguous": [],
   "catalogGaps": [
     {
       "url": "https://pagesonstages.com/2026/11/17/paywall-explanation/",
@@ -1923,9 +1816,14 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

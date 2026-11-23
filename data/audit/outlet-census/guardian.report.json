@@ -1,14 +1,14 @@
 {
   "outletId": "guardian",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:50:10.354Z",
+  "generatedAt": "2026-11-23T23:41:38.958Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
     "status": "unreadable",
-    "reason": "robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API",
+    "reason": "robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the Content API lists the archive but needs GUARDIAN_API_KEY (the public test key answers HTTP 401, probed 2026-11-21) and the census job holds none",
     "notes": [
-      "unreadable: robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API"
+      "unreadable: robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the Content API lists the archive but needs GUARDIAN_API_KEY (the public test key answers HTTP 401, probed 2026-11-21) and the census job holds none"
     ],
     "incomplete": false,
     "enumerated": 0,
@@ -25,7 +25,8 @@
   },
   "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 257,
+    "rowsInWindow": 260,
+    "heldExcludedRows": 0,
     "notEnumerated": 104,
     "noUrl": 3,
     "samples": [
@@ -218,7 +219,7 @@
       {
         "showId": "downstate-2026",
         "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
-        "publishDate": "2026-11-16",
+        "publishDate": "2026-11-15",
         "why": "not-enumerated"
       },
       {
@@ -278,5 +279,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

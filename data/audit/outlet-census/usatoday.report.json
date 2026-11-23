@@ -1,23 +1,23 @@
 {
   "outletId": "usatoday",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:36:15.473Z",
+  "generatedAt": "2026-11-23T23:41:38.937Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 306,
-    "inWindow": 306,
+    "enumerated": 314,
+    "inWindow": 314,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 19,
-      "not-review": 281,
+      "held": 21,
+      "not-review": 287,
       "held-unmatched": 4,
       "out-of-window": 2
     },
@@ -27,18 +27,18 @@
   },
   "seasons": {
     "2026-27": {
-      "held": 3,
-      "not-review": 13
-    },
-    "2024-25": {
-      "held": 8,
-      "not-review": 47,
-      "held-unmatched": 1
+      "held": 5,
+      "not-review": 19
     },
     "2025-26": {
-      "not-review": 70,
       "held": 3,
+      "not-review": 70,
       "held-unmatched": 2
+    },
+    "2024-25": {
+      "held-unmatched": 1,
+      "not-review": 47,
+      "held": 8
     },
     "2023-24": {
       "not-review": 42,
@@ -59,8 +59,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 233,
-    "notEnumerated": 13,
+    "rowsInWindow": 235,
+    "heldExcludedRows": 0,
+    "notEnumerated": 12,
     "noUrl": 0,
     "samples": [
       {
@@ -130,12 +131,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "the-fantasticks-2026",
-        "url": "https://www.usatoday.com/story/entertainment/music/2026/11/16/fantasticks-review-broadway-musicals/92811425007/",
-        "publishDate": "2026-11-16",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "uncle-vanya-2024",
         "url": "https://www.usatoday.com/story/entertainment/music/2024/04/24/uncle-vanya-review-steve-carell/73412565007/",
         "publishDate": "2024-04-24",
@@ -148,18 +143,6 @@
   "misfiles": [],
   "heldUnmatched": [
     {
-      "url": "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
-      "headline": "89488390007",
-      "publishDate": "2026-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "cats-the-jellicle-ball-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.usatoday.com/story/entertainment/music/2025/03/27/picture-dorian-gray-review-broadway/82633789007/",
       "headline": "82633789007",
       "publishDate": "2025-03-01",
@@ -167,6 +150,18 @@
       "via": null,
       "held": [
         "the-picture-of-dorian-gray-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
+      "headline": "89488390007",
+      "publishDate": "2026-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cats-the-jellicle-ball-2026"
       ],
       "matched": [],
       "outOfWindow": []
@@ -224,5 +219,9 @@
         "tick-tick-boom-off-broadway-2016"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

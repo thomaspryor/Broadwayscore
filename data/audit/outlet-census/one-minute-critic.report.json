@@ -1,28 +1,28 @@
 {
   "outletId": "one-minute-critic",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:33:19.470Z",
+  "generatedAt": "2026-11-23T23:24:22.569Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 251,
-    "inWindow": 251,
+    "enumerated": 253,
+    "inWindow": 253,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
+      "held": 151,
       "held-unmatched": 9,
-      "held": 147,
       "held-other-market": 7,
-      "out-of-window": 25,
+      "out-of-window": 24,
       "not-review": 40,
       "held-alt-url": 2,
-      "gap": 10,
+      "gap": 9,
       "catalog-gap": 11
     },
     "viaTitleVariant": {
@@ -30,13 +30,13 @@
       "not-review": 3,
       "held-alt-url": 1
     },
-    "recall": 0.937,
-    "recallWithCatalog": 0.876
+    "recall": 0.944,
+    "recallWithCatalog": 0.884
   },
   "seasons": {
     "2026-27": {
+      "held": 29,
       "held-unmatched": 5,
-      "held": 27,
       "held-other-market": 3,
       "out-of-window": 4,
       "not-review": 1,
@@ -53,16 +53,17 @@
       "held-alt-url": 1
     },
     "2024-25": {
-      "out-of-window": 6,
+      "out-of-window": 5,
       "catalog-gap": 4,
-      "held": 22,
+      "held": 24,
       "not-review": 5,
-      "gap": 3,
+      "gap": 2,
       "held-unmatched": 3
     }
   },
   "corpusSide": {
-    "rowsInWindow": 158,
+    "rowsInWindow": 162,
+    "heldExcludedRows": 0,
     "notEnumerated": 2,
     "noUrl": 0,
     "samples": [
@@ -179,17 +180,6 @@
       "held": [],
       "matched": [
         "angry-alan-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://1minutecritic.com/hells-kitchen-alicia-keys-broadway-review/",
-      "headline": "‘Hell’s Kitchen’ jolts Broadway with a score by Alicia Keys and New York City soul",
-      "publishDate": "2025-04-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hells-kitchen-2024"
       ],
       "outOfWindow": []
     }
@@ -712,17 +702,10 @@
       "outOfWindow": [
         "a-broadway-musical-1978"
       ]
-    },
-    {
-      "url": "https://1minutecritic.com/the-imaginary-invalid-off-broadway-review/",
-      "headline": "Red Bull’s treatment of Molière’s ‘The Imaginary Invalid’ shows promise; side effects may vary",
-      "publishDate": "2025-06-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

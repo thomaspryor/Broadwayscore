@@ -1,7 +1,7 @@
 {
   "outletId": "cititour",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:50:10.361Z",
+  "generatedAt": "2026-11-23T23:41:38.965Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
@@ -25,8 +25,9 @@
   },
   "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 405,
-    "notEnumerated": 319,
+    "rowsInWindow": 408,
+    "heldExcludedRows": 0,
+    "notEnumerated": 322,
     "noUrl": 0,
     "samples": [
       {
@@ -74,6 +75,12 @@
       {
         "showId": "a-strange-loop-2022",
         "url": "https://cititour.com/NYC_Broadway/A-Strange-Loop/1076",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-streetcar-named-desire-off-broadway-2025",
+        "url": "https://cititour.com/NYC_Broadway/A-Streetcar-Named-Desire/1283",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -262,12 +269,6 @@
         "url": "https://cititour.com/NYC_Broadway/Call-Me-Izzy/1312",
         "publishDate": "2025-06-13",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://cititour.com/NYC_Broadway/Camelot/1140",
-        "publishDate": null,
-        "why": "not-enumerated"
       }
     ]
   },
@@ -278,5 +279,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

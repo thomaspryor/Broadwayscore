@@ -1,56 +1,55 @@
 {
   "outletId": "wsj",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:49:36.357Z",
+  "generatedAt": "2026-11-23T23:41:02.229Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1496,
-    "inWindow": 1421,
+    "enumerated": 1497,
+    "inWindow": 1422,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held-unmatched": 189,
+      "held-unmatched": 191,
       "not-review": 1002,
-      "held": 24,
+      "held": 25,
       "held-other-market": 4,
-      "out-of-window": 164,
+      "out-of-window": 163,
       "catalog-gap": 25,
-      "gap": 8,
+      "gap": 7,
       "misfile": 2,
       "ambiguous": 1,
       "held-alt-url": 2
     },
     "viaTitleVariant": {
-      "gap": 2,
-      "held": 1,
+      "held": 2,
       "not-review": 5,
+      "gap": 1,
       "held-alt-url": 1
     },
-    "recall": 0.722,
-    "recallWithCatalog": 0.426
+    "recall": 0.75,
+    "recallWithCatalog": 0.443
   },
   "seasons": {
     "2025-26": {
-      "held-unmatched": 56,
+      "held-unmatched": 57,
       "not-review": 39,
-      "held": 8,
+      "held": 9,
       "held-other-market": 2,
       "out-of-window": 6,
-      "catalog-gap": 1,
-      "gap": 1
+      "catalog-gap": 1
     },
     "2024-25": {
       "held-other-market": 1,
       "not-review": 45,
-      "held-unmatched": 41,
-      "out-of-window": 16,
+      "held-unmatched": 42,
+      "out-of-window": 15,
       "gap": 1,
       "catalog-gap": 5,
       "held": 4
@@ -86,20 +85,15 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 499,
-    "notEnumerated": 37,
+    "rowsInWindow": 506,
+    "heldExcludedRows": 0,
+    "notEnumerated": 35,
     "noUrl": 1,
     "samples": [
       {
         "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
         "url": "https://www.wsj.com/articles/a-case-for-the-existence-of-god-samuel-d-hunter-kyle-beltran-will-brill-david-cromer-11651609331",
         "publishDate": "2022-05-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-raisin-in-the-sun-2014",
-        "url": "http://online.wsj.com/news/articles/SB10001424052702303978304579471790328514428?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303978304579471790328514428.html",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -295,12 +289,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "the-snow-geese-2013",
-        "url": "https://online.wsj.com/news/articles/SB10001424052702303902404579152020852456290",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "the-trip-to-bountiful-2013",
         "url": "https://online.wsj.com/article/SB10001424127887324874204578440540234119324.html",
         "publishDate": null,
@@ -321,18 +309,6 @@
     ]
   },
   "gaps": [
-    {
-      "url": "https://www.wsj.com/articles/going-bacharach-review-a-revue-done-right-off-broadway-1106af41",
-      "headline": "going bacharach review a revue done right off broadway 1106af41",
-      "publishDate": "2026-01-01",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "going-bacharach-the-songs-of-an-icon-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
     {
       "url": "https://www.wsj.com/articles/liberation-review-feminism-and-frustration-on-broadway-537a92b7",
       "headline": "liberation review feminism and frustration on broadway 537a92b7",
@@ -491,6 +467,22 @@
   ],
   "heldUnmatched": [
     {
+      "url": "https://www.wsj.com/articles/much-ado-about-nothing-review-broadways-dance-party-with-the-bard-9dac2d68",
+      "headline": "much ado about nothing review broadways dance party with the bard 9dac2d68",
+      "publishDate": "2026-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "much-ado-about-nothing-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-1984",
+        "much-ado-about-nothing-1972",
+        "much-ado-about-nothing-2026"
+      ]
+    },
+    {
       "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-at-the-met-9ae7d922",
       "headline": "jenufa review a powerfully grim opera at the met 9ae7d922",
       "publishDate": "2026-01-01",
@@ -602,7 +594,8 @@
       ],
       "matched": [],
       "outOfWindow": [
-        "the-imaginary-invalid-2026"
+        "the-imaginary-invalid-2026",
+        "the-imaginary-invalid-off-broadway-2025"
       ]
     },
     {
@@ -891,7 +884,8 @@
       ],
       "matched": [],
       "outOfWindow": [
-        "birthright-off-broadway-2026"
+        "birthright-off-broadway-2026",
+        "birthright-2027"
       ]
     },
     {
@@ -1867,6 +1861,25 @@
       "matched": [],
       "outOfWindow": [
         "purpose-2025"
+      ]
+    },
+    {
+      "url": "https://www.wsj.com/articles/a-streetcar-named-desire-review-paul-mescal-in-a-staging-of-potent-purity-0016d06d",
+      "headline": "a streetcar named desire review paul mescal in a staging of potent purity 0016d06d",
+      "publishDate": "2025-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-streetcar-named-desire-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -3772,22 +3785,6 @@
       ]
     },
     {
-      "url": "https://www.wsj.com/articles/a-streetcar-named-desire-review-paul-mescal-in-a-staging-of-potent-purity-0016d06d",
-      "headline": "a streetcar named desire review paul mescal in a staging of potent purity 0016d06d",
-      "publishDate": "2025-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
-      ]
-    },
-    {
       "url": "https://www.wsj.com/articles/bank-of-canada-inflation-targeting-review-wont-touch-2-level-macklem-says-34d8e7fd",
       "headline": "bank of canada inflation targeting review wont touch 2 level macklem says 34d8e7fd",
       "publishDate": "2025-01-01",
@@ -4166,6 +4163,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -4484,7 +4482,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "birthright-off-broadway-2026"
+        "birthright-off-broadway-2026",
+        "birthright-2027"
       ]
     },
     {
@@ -5477,6 +5476,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -5623,5 +5623,9 @@
         "the-children-2017"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

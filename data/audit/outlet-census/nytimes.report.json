@@ -1,105 +1,104 @@
 {
   "outletId": "nytimes",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:33:46.022Z",
+  "generatedAt": "2026-11-23T23:38:31.329Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 3185,
-    "inWindow": 3185,
+    "enumerated": 3194,
+    "inWindow": 3194,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 2527,
-      "held": 427,
-      "held-other-market": 47,
-      "held-unmatched": 27,
-      "out-of-window": 111,
+      "not-review": 2531,
+      "held-unmatched": 30,
+      "held-other-market": 48,
+      "held": 447,
+      "out-of-window": 110,
+      "gap": 3,
       "catalog-gap": 18,
-      "gap": 21,
       "held-alt-url": 6,
       "misfile": 1
     },
     "viaTitleVariant": {
-      "held": 33,
+      "held": 34,
       "held-other-market": 1,
-      "gap": 2,
+      "gap": 1,
       "held-alt-url": 2
     },
-    "recall": 0.952,
-    "recallWithCatalog": 0.915
+    "recall": 0.991,
+    "recallWithCatalog": 0.954
   },
   "seasons": {
     "2026-27": {
-      "not-review": 62,
-      "held": 33,
-      "held-other-market": 5,
-      "held-unmatched": 4
+      "not-review": 68,
+      "held-unmatched": 5,
+      "held-other-market": 6,
+      "held": 34
     },
     "2024-25": {
       "held": 79,
-      "not-review": 399,
+      "not-review": 398,
+      "held-unmatched": 9,
       "out-of-window": 20,
       "held-other-market": 9,
-      "held-unmatched": 8,
       "catalog-gap": 1
     },
+    "2025-26": {
+      "not-review": 369,
+      "held": 108,
+      "gap": 2,
+      "held-other-market": 8,
+      "held-unmatched": 7,
+      "out-of-window": 4,
+      "catalog-gap": 1
+    },
+    "2021-22": {
+      "not-review": 594,
+      "held": 57,
+      "catalog-gap": 6,
+      "out-of-window": 28,
+      "held-other-market": 7,
+      "held-unmatched": 3,
+      "gap": 1,
+      "held-alt-url": 1
+    },
     "2023-24": {
-      "not-review": 427,
-      "held": 78,
+      "not-review": 426,
+      "held": 86,
+      "held-unmatched": 3,
       "out-of-window": 14,
       "catalog-gap": 4,
-      "gap": 7,
-      "held-unmatched": 3,
       "held-other-market": 11,
       "held-alt-url": 1,
       "misfile": 1
     },
-    "2021-22": {
-      "not-review": 594,
-      "out-of-window": 28,
-      "catalog-gap": 6,
-      "held": 54,
-      "held-other-market": 7,
-      "gap": 4,
-      "held-unmatched": 3,
-      "held-alt-url": 1
-    },
-    "2025-26": {
-      "not-review": 369,
-      "held": 105,
-      "gap": 5,
-      "held-other-market": 8,
-      "held-unmatched": 6,
-      "out-of-window": 5,
-      "catalog-gap": 1
-    },
     "2022-23": {
       "not-review": 525,
-      "held": 77,
+      "held": 82,
       "held-unmatched": 3,
       "out-of-window": 38,
       "held-other-market": 6,
-      "gap": 5,
-      "catalog-gap": 5,
-      "held-alt-url": 4
+      "held-alt-url": 4,
+      "catalog-gap": 5
     },
     "2020-21": {
       "not-review": 151,
-      "out-of-window": 6,
-      "catalog-gap": 1,
       "held-other-market": 1,
-      "held": 1
+      "held": 1,
+      "out-of-window": 6,
+      "catalog-gap": 1
     }
   },
   "corpusSide": {
-    "rowsInWindow": 1216,
+    "rowsInWindow": 1245,
+    "heldExcludedRows": 0,
     "notEnumerated": 23,
     "noUrl": 2,
     "samples": [
@@ -269,18 +268,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
-      "headline": "mr saturday night review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mr-saturday-night-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
       "headline": "les miserables review hudson valley shakespeare",
       "publishDate": "2026-08-01",
@@ -309,231 +296,6 @@
       "outOfWindow": [
         "assassins-2004"
       ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html",
-      "headline": "slam frank crooked cross review",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "crooked-cross-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "slam-frank-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/14/theater/nothing-can-take-you-from-the-hand-of-god-review.html",
-      "headline": "nothing can take you from the hand of god review",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/02/theater/the-honey-trap-review-irish-rep.html",
-      "headline": "the honey trap review irish rep",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-honey-trap-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/04/22/theater/grenfell-review.html",
-      "headline": "grenfell review",
-      "publishDate": "2024-04-01",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "grenfell-in-the-words-of-survivors-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/04/20/theater/still-review-colt-coeur.html",
-      "headline": "still review colt coeur",
-      "publishDate": "2024-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "still-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/17/theater/arcadia-stoppard-theater-review.html",
-      "headline": "arcadia stoppard theater review",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "arcadia-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "arcadia-2011",
-        "arcadia-1995"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/14/theater/danny-and-the-deep-blue-sea-review-aubrey-plaza.html",
-      "headline": "danny and the deep blue sea review aubrey plaza",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "danny-and-the-deep-blue-sea-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html",
-      "headline": "between two knees review",
-      "publishDate": "2024-02-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "between-two-knees-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/02/13/theater/izzard-hamlet-new-york-review.html",
-      "headline": "izzard hamlet new york review",
-      "publishDate": "2024-02-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamlet-greenwich-house-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "hamlet-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html",
-      "headline": "the collaboration review",
-      "publishDate": "2022-12-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-collaboration-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2023/12/11/theater/review-translations-brian-friel.html",
-      "headline": "review translations brian friel",
-      "publishDate": "2023-12-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "translations-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "translations-2007",
-        "translations-1995"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/08/30/theater/pay-the-writer-review.html",
-      "headline": "pay the writer review",
-      "publishDate": "2023-08-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "pay-the-writer-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2023/08/03/theater/cat-kid-comic-club-review.html",
-      "headline": "cat kid comic club review",
-      "publishDate": "2023-08-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cat-kid-comic-club-the-musical-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/10/13/theater/the-piano-lesson-review.html",
-      "headline": "the piano lesson review",
-      "publishDate": "2022-10-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-piano-lesson-2022"
-      ],
-      "outOfWindow": [
-        "the-piano-lesson-1990"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/06/09/theater/snow-in-midsummer-review.html",
-      "headline": "snow in midsummer review",
-      "publishDate": "2022-06-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "snow-in-midsummer-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/01/25/theater/long-days-journey-into-night-review.html",
-      "headline": "long days journey into night review",
-      "publishDate": "2022-01-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "long-days-journey-into-night-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "long-days-journey-into-night-2016",
-        "long-days-journey-into-night-2003",
-        "long-days-journey-into-night-1986",
-        "long-days-journey-into-night-1988"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/01/27/theater/the-smuggler-review.html",
-      "headline": "the smuggler review",
-      "publishDate": "2023-01-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-smuggler-off-broadway-2023"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
@@ -549,14 +311,14 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2023/05/15/theater/romeo-and-juliet-review.html",
-      "headline": "romeo and juliet review",
-      "publishDate": "2023-05-01",
+      "url": "https://www.nytimes.com/2022/09/29/theater/funny-girl-review-lea-michele.html",
+      "headline": "funny girl review lea michele",
+      "publishDate": "2022-09-01",
       "matched": [
-        "and-juliet-2022"
+        "funny-girl-2022"
       ],
       "heldUrls": [
-        "https://www.nytimes.com/2022/11/17/theater/and-juliet-review.html"
+        "https://www.nytimes.com/2022/04/24/theater/funny-girl-review.html"
       ]
     },
     {
@@ -583,6 +345,17 @@
       ]
     },
     {
+      "url": "https://www.nytimes.com/2023/05/15/theater/romeo-and-juliet-review.html",
+      "headline": "romeo and juliet review",
+      "publishDate": "2023-05-01",
+      "matched": [
+        "and-juliet-2022"
+      ],
+      "heldUrls": [
+        "https://www.nytimes.com/2022/11/17/theater/and-juliet-review.html"
+      ]
+    },
+    {
       "url": "https://www.nytimes.com/2022/03/28/theater/7-minutes-review-stefano-massini.html",
       "headline": "7 minutes review stefano massini",
       "publishDate": "2022-03-01",
@@ -591,17 +364,6 @@
       ],
       "heldUrls": [
         "https://www.nytimes.com/2022/04/17/theater/the-minutes-review.html"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/09/29/theater/funny-girl-review-lea-michele.html",
-      "headline": "funny girl review lea michele",
-      "publishDate": "2022-09-01",
-      "matched": [
-        "funny-girl-2022"
-      ],
-      "heldUrls": [
-        "https://www.nytimes.com/2022/04/24/theater/funny-girl-review.html"
       ]
     }
   ],
@@ -625,6 +387,20 @@
   ],
   "heldUnmatched": [
     {
+      "url": "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-now-you-see-me-review.html",
+      "headline": "its a wonderful life blue man group now you see me review",
+      "publishDate": "2026-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "blue-man-group-a-new-holiday-surprise-2026",
+        "its-a-wonderful-life-a-live-radio-play-2026",
+        "now-you-see-me-live-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
       "headline": "waiting for lefty review odets pasquale",
       "publishDate": "2026-11-01",
@@ -632,6 +408,54 @@
       "via": null,
       "held": [
         "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2025/03/11/theater/streetcar-named-desire-review-mescal-ferran.html",
+      "headline": "streetcar named desire review mescal ferran",
+      "publishDate": "2025-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-streetcar-named-desire-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
+      "headline": "american daughter review wendy wasserstein",
+      "publishDate": "2026-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-american-daughter-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2022/02/01/theater/mj-musical-review.html",
+      "headline": "mj musical review",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+      "headline": "for colored girls review ntozake shange",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
       ],
       "matched": [],
       "outOfWindow": []
@@ -675,28 +499,87 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
-      "headline": "for colored girls review ntozake shange",
-      "publishDate": "2022-04-01",
+      "url": "https://www.nytimes.com/2025/10/09/theater/least-problematic-woman-review-dylan-mulvaney.html",
+      "headline": "least problematic woman review dylan mulvaney",
+      "publishDate": "2025-10-01",
       "dateSoft": true,
       "via": null,
       "held": [
-        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+        "the-least-problematic-woman-in-the-world-off-broadway-2025"
       ],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2022/02/01/theater/mj-musical-review.html",
-      "headline": "mj musical review",
-      "publishDate": "2022-02-01",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html",
+      "headline": "dad dont read this review",
+      "publishDate": "2026-05-01",
       "dateSoft": true,
       "via": null,
       "held": [
-        "mj-2022"
+        "dad-dont-read-this-off-broadway-2026"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "dad-dont-read-this-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/11/28/theater/amid-falling-walls-review.html",
+      "headline": "amid falling walls review",
+      "publishDate": "2023-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2026/06/11/theater/review-romeo-juliet-shakespeare-in-the-park.html",
+      "headline": "review romeo juliet shakespeare in the park",
+      "publishDate": "2026-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-juliet-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolger.html",
+      "headline": "antigone review shalhoub keenan bolger",
+      "publishDate": "2026-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
+      "headline": "mexodus review audible",
+      "publishDate": "2025-09-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
     },
     {
       "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
@@ -727,43 +610,16 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-      "headline": "american daughter review wendy wasserstein",
-      "publishDate": "2026-08-01",
+      "url": "https://www.nytimes.com/2021/10/03/theater/six-review-broadway.html",
+      "headline": "six review broadway",
+      "publishDate": "2021-10-01",
       "dateSoft": true,
       "via": null,
       "held": [
-        "an-american-daughter-off-broadway-2026"
+        "six-2021"
       ],
       "matched": [],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/09/theater/least-problematic-woman-review-dylan-mulvaney.html",
-      "headline": "least problematic woman review dylan mulvaney",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "the-least-problematic-woman-in-the-world-off-broadway-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html",
-      "headline": "cabaret review eddie redmayne",
-      "publishDate": "2024-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "cabaret-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "cabaret-2014",
-        "cabaret-1987"
-      ]
     },
     {
       "url": "https://www.nytimes.com/2025/04/24/theater/pirates-penzance-musical-review.html",
@@ -790,111 +646,16 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2026/06/11/theater/review-romeo-juliet-shakespeare-in-the-park.html",
-      "headline": "review romeo juliet shakespeare in the park",
-      "publishDate": "2026-06-01",
+      "url": "https://www.nytimes.com/2025/06/24/theater/duke-roya-review-jay-ellis.html",
+      "headline": "duke roya review jay ellis",
+      "publishDate": "2025-06-01",
       "dateSoft": true,
       "via": null,
       "held": [
-        "romeo-and-juliet-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "romeo-juliet-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html",
-      "headline": "dad dont read this review",
-      "publishDate": "2026-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "dad-dont-read-this-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "dad-dont-read-this-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2026/03/12/theater/antigone-review-shalhoub-keenan-bolger.html",
-      "headline": "antigone review shalhoub keenan bolger",
-      "publishDate": "2026-03-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "antigone-1971",
-        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2021/10/03/theater/six-review-broadway.html",
-      "headline": "six review broadway",
-      "publishDate": "2021-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "six-2021"
+        "duke-and-roya-off-broadway-2025"
       ],
       "matched": [],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/28/theater/amid-falling-walls-review.html",
-      "headline": "amid falling walls review",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
-      "headline": "christmas carol review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "a-christmas-carol-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2025/05/08/theater/review-hugh-jackman-in-a-twisty-tale-of-sexual-misconduct.html",
-      "headline": "review hugh jackman in a twisty tale of sexual misconduct",
-      "publishDate": "2025-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2025/07/22/theater/ta-da-review-josh-sharp-tries-a-thing.html",
-      "headline": "ta da review josh sharp tries a thing",
-      "publishDate": "2025-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "ta-da-off-broadway-2025"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "ta-da-off-broadway-2025"
-      ]
     },
     {
       "url": "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html",
@@ -921,13 +682,27 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2025/06/24/theater/duke-roya-review-jay-ellis.html",
-      "headline": "duke roya review jay ellis",
-      "publishDate": "2025-06-01",
+      "url": "https://www.nytimes.com/2025/07/22/theater/ta-da-review-josh-sharp-tries-a-thing.html",
+      "headline": "ta da review josh sharp tries a thing",
+      "publishDate": "2025-07-01",
       "dateSoft": true,
       "via": null,
       "held": [
-        "duke-and-roya-off-broadway-2025"
+        "ta-da-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "ta-da-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/05/08/theater/review-hugh-jackman-in-a-twisty-tale-of-sexual-misconduct.html",
+      "headline": "review hugh jackman in a twisty tale of sexual misconduct",
+      "publishDate": "2025-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
       ],
       "matched": [],
       "outOfWindow": []
@@ -959,6 +734,21 @@
       ]
     },
     {
+      "url": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html",
+      "headline": "cabaret review eddie redmayne",
+      "publishDate": "2024-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
       "url": "https://www.nytimes.com/2022/10/02/theater/baldwin-buckley-at-cambridge-review.html",
       "headline": "baldwin buckley at cambridge review",
       "publishDate": "2022-10-01",
@@ -969,34 +759,26 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+      "headline": "christmas carol review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-christmas-carol-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
     }
   ],
   "ambiguous": [],
   "catalogGaps": [
     {
-      "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-      "headline": "oresteia review park avenue armory",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.nytimes.com/2022/02/16/theater/wolf-play-review-soho-rep.html",
       "headline": "wolf play review soho rep",
       "publishDate": "2022-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/04/26/theater/jordans-public-theater-review.html",
-      "headline": "jordans public theater review",
-      "publishDate": "2024-04-01",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -1014,16 +796,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2021/10/19/theater/autumn-royal-review-irish-repertory-theater.html",
-      "headline": "autumn royal review irish repertory theater",
-      "publishDate": "2021-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.nytimes.com/2023/11/07/theater/snatch-adams-tainty-mccracken-review-soho-rep.html",
       "headline": "snatch adams tainty mccracken review soho rep",
       "publishDate": "2023-11-01",
@@ -1034,9 +806,79 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+      "headline": "oresteia review park avenue armory",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2023/10/18/theater/helen-review-la-mama.html",
+      "headline": "helen review la mama",
+      "publishDate": "2023-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2021/10/19/theater/autumn-royal-review-irish-repertory-theater.html",
+      "headline": "autumn royal review irish repertory theater",
+      "publishDate": "2021-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2024/07/30/theater/job-review-broadway.html",
+      "headline": "job review broadway",
+      "publishDate": "2024-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.nytimes.com/2021/06/25/theater/off-broadway-review.html",
       "headline": "off broadway review",
       "publishDate": "2021-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2024/10/16/theater/vladimir-russia-journalism-review-mtc.html",
+      "headline": "vladimir russia journalism review mtc",
+      "publishDate": "2024-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2024/04/26/theater/jordans-public-theater-review.html",
+      "headline": "jordans public theater review",
+      "publishDate": "2024-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2022/10/25/theater/montag-review-soho-rep.html",
+      "headline": "montag review soho rep",
+      "publishDate": "2022-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -1057,46 +899,6 @@
       "url": "https://www.nytimes.com/2022/08/18/theater/patience-review-second-stage.html",
       "headline": "patience review second stage",
       "publishDate": "2022-08-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2023/10/18/theater/helen-review-la-mama.html",
-      "headline": "helen review la mama",
-      "publishDate": "2023-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/10/16/theater/vladimir-russia-journalism-review-mtc.html",
-      "headline": "vladimir russia journalism review mtc",
-      "publishDate": "2024-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2024/07/30/theater/job-review-broadway.html",
-      "headline": "job review broadway",
-      "publishDate": "2024-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/10/25/theater/montag-review-soho-rep.html",
-      "headline": "montag review soho rep",
-      "publishDate": "2022-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -1167,6 +969,185 @@
       "outOfWindow": [
         "the-seagull-2008",
         "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/02/15/theater/merchant-of-venice-theater-for-a-new-audience-review.html",
+      "headline": "merchant of venice theater for a new audience review",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015",
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/02/03/theater/the-tap-dance-kid-review.html",
+      "headline": "the tap dance kid review",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/02/01/theater/prayer-for-the-french-republic-review.html",
+      "headline": "prayer for the french republic review",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/04/14/theater/cyrano-de-bergerac-review.html",
+      "headline": "cyrano de bergerac review",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-de-bergerac-1984"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/02/27/theater/dakar-2000-review-rajiv-joseph.html",
+      "headline": "dakar 2000 review rajiv joseph",
+      "publishDate": "2025-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/02/06/theater/urinetown-review-encores.html",
+      "headline": "urinetown review encores",
+      "publishDate": "2025-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
+      "headline": "schmigadoon review kennedy center",
+      "publishDate": "2025-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/10/13/theater/are-the-bennet-girls-ok-review-bedlam.html",
+      "headline": "are the bennet girls ok review bedlam",
+      "publishDate": "2025-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "are-the-bennet-girls-ok-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html",
+      "headline": "othello review wendell pierce",
+      "publishDate": "2026-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/11/19/theater/hells-kitchen-review-alicia-keys.html",
+      "headline": "hells kitchen review alicia keys",
+      "publishDate": "2023-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/11/17/theater/big-apple-circus-review-lincoln-center.html",
+      "headline": "big apple circus review lincoln center",
+      "publishDate": "2023-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "big-apple-circus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/11/02/theater/pal-joey-review-city-center.html",
+      "headline": "pal joey review city center",
+      "publishDate": "2023-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pal-joey-2008",
+        "pal-joey-1976"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/09/16/theater/galas-review-little-island.html",
+      "headline": "galas review little island",
+      "publishDate": "2025-09-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2024/02/22/theater/jellys-last-jam-review.html",
+      "headline": "jellys last jam review",
+      "publishDate": "2024-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
       ]
     },
     {
@@ -1262,59 +1243,6 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2022/04/14/theater/cyrano-de-bergerac-review.html",
-      "headline": "cyrano de bergerac review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cyrano-de-bergerac-2012",
-        "cyrano-de-bergerac-2007",
-        "cyrano-de-bergerac-1984"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/02/15/theater/merchant-of-venice-theater-for-a-new-audience-review.html",
-      "headline": "merchant of venice theater for a new audience review",
-      "publishDate": "2022-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-audience-2015",
-        "the-merchant-of-venice-2010",
-        "the-merchant-of-venice-1989",
-        "the-merchant-of-venice-1973"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/02/03/theater/the-tap-dance-kid-review.html",
-      "headline": "the tap dance kid review",
-      "publishDate": "2022-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-tap-dance-kid-1983"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/02/01/theater/prayer-for-the-french-republic-review.html",
-      "headline": "prayer for the french republic review",
-      "publishDate": "2022-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "prayer-for-the-french-republic-2024"
-      ]
-    },
-    {
       "url": "https://www.nytimes.com/2025/11/08/theater/purple-rain-review-prince.html",
       "headline": "purple rain review prince",
       "publishDate": "2025-11-01",
@@ -1368,27 +1296,29 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
-      "headline": "mexodus review audible",
-      "publishDate": "2025-09-01",
+      "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+      "headline": "review kenneth branaghs short shallow king lear",
+      "publishDate": "2023-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "mexodus-off-broadway-2026"
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
       ]
     },
     {
-      "url": "https://www.nytimes.com/2025/09/16/theater/galas-review-little-island.html",
-      "headline": "galas review little island",
-      "publishDate": "2025-09-01",
+      "url": "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
+      "headline": "great gatsby musical review",
+      "publishDate": "2023-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-island-1974"
+        "the-great-gatsby-2024"
       ]
     },
     {
@@ -1402,95 +1332,6 @@
       "outOfWindow": [
         "mornings-at-seven-2002",
         "mornings-at-seven-1980"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/13/theater/are-the-bennet-girls-ok-review-bedlam.html",
-      "headline": "are the bennet girls ok review bedlam",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "are-the-bennet-girls-ok-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/04/22/theater/macbeth-in-stride-review.html",
-      "headline": "macbeth in stride review",
-      "publishDate": "2025-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "macbeth-2022",
-        "macbeth-2013",
-        "macbeth-2008",
-        "macbeth-1988",
-        "macbeth-1981",
-        "macbeth-2000",
-        "macbeth-1982",
-        "macbeth-off-broadway-2026",
-        "macbeth-an-undoing-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/04/02/theater/the-cherry-orchard-review-st-anns-warehouse.html",
-      "headline": "the cherry orchard review st anns warehouse",
-      "publishDate": "2025-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-cherry-orchard-2016",
-        "the-cherry-orchard-1997",
-        "the-cherry-orchard-1977",
-        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html",
-      "headline": "othello review wendell pierce",
-      "publishDate": "2026-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "othello-2025",
-        "othello-1970",
-        "othello-1982",
-        "othello-bedlam-off-broadway-2026",
-        "othello-off-broadway-2026",
-        "othello-off-broadway-2016"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2021/12/15/theater/cabaret-review-london-eddie-redmayne.html",
-      "headline": "cabaret review london eddie redmayne",
-      "publishDate": "2021-12-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cabaret-2014",
-        "cabaret-1987"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2021/12/08/theater/is-there-still-sex-in-the-city-review.html",
-      "headline": "is there still sex in the city review",
-      "publishDate": "2021-12-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "still-off-broadway-2024"
       ]
     },
     {
@@ -1531,6 +1372,251 @@
       ]
     },
     {
+      "url": "https://www.nytimes.com/2025/04/22/theater/macbeth-in-stride-review.html",
+      "headline": "macbeth in stride review",
+      "publishDate": "2025-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/04/02/theater/the-cherry-orchard-review-st-anns-warehouse.html",
+      "headline": "the cherry orchard review st anns warehouse",
+      "publishDate": "2025-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/06/24/theater/cold-war-choir-practice-review.html",
+      "headline": "cold war choir practice review",
+      "publishDate": "2025-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cold-war-choir-practice-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/01/24/theater/just-for-us-review.html",
+      "headline": "just for us review",
+      "publishDate": "2022-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-for-us-2023"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/01/18/theater/this-beautiful-future-review.html",
+      "headline": "this beautiful future review",
+      "publishDate": "2022-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "this-beautiful-future-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/01/17/theater/witness-review-arlekin-players.html",
+      "headline": "witness review arlekin players",
+      "publishDate": "2022-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/02/28/theater/fall-river-fishing-review.html",
+      "headline": "fall river fishing review",
+      "publishDate": "2023-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/02/27/theater/the-sign-in-sidney-brusteins-window-bam-review.html",
+      "headline": "the sign in sidney brusteins window bam review",
+      "publishDate": "2023-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/02/02/theater/endgame-review.html",
+      "headline": "endgame review",
+      "publishDate": "2023-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2021/08/15/theater/grown-ups-review.html",
+      "headline": "grown ups review",
+      "publishDate": "2021-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "grown-ups-1981"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2021/08/09/theater/review-the-tempest-hudson-shakespeare.html",
+      "headline": "review the tempest hudson shakespeare",
+      "publishDate": "2021-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2021/08/08/theater/review-most-happy-fella-in-concert.html",
+      "headline": "review most happy fella in concert",
+      "publishDate": "2021-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-most-happy-fella-1992",
+        "the-most-happy-fella-1979"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/09/27/theater/sesame-street-the-musical-review.html",
+      "headline": "sesame street the musical review",
+      "publishDate": "2022-09-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sesame-street-the-musical-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/01/30/theater/asi-winds-inner-circle-review.html",
+      "headline": "asi winds inner circle review",
+      "publishDate": "2023-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/01/24/theater/small-talk-review.html",
+      "headline": "small talk review",
+      "publishDate": "2023-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2024/11/13/theater/big-apple-circus-review.html",
+      "headline": "big apple circus review",
+      "publishDate": "2024-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "big-apple-circus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+      "headline": "king lear review kenneth branagh",
+      "publishDate": "2024-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2024/03/20/theater/ibsens-ghosts-review-charles-busch.html",
+      "headline": "ibsens ghosts review charles busch",
+      "publishDate": "2024-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-1982",
+        "ghosts-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/07/14/theater/the-gospel-at-colonus-review-little-island.html",
+      "headline": "the gospel at colonus review little island",
+      "publishDate": "2025-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-gospel-at-colonus-1988",
+        "the-island-1974"
+      ]
+    },
+    {
       "url": "https://www.nytimes.com/2025/01/21/theater/vanya-on-huron-street-review.html",
       "headline": "vanya on huron street review",
       "publishDate": "2025-01-01",
@@ -1540,104 +1626,6 @@
       "matched": [],
       "outOfWindow": [
         "vanya-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/19/theater/hells-kitchen-review-alicia-keys.html",
-      "headline": "hells kitchen review alicia keys",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hells-kitchen-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/17/theater/big-apple-circus-review-lincoln-center.html",
-      "headline": "big apple circus review lincoln center",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "big-apple-circus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/11/02/theater/pal-joey-review-city-center.html",
-      "headline": "pal joey review city center",
-      "publishDate": "2023-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "pal-joey-2008",
-        "pal-joey-1976"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/25/theater/big-apple-circus-review.html",
-      "headline": "big apple circus review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "big-apple-circus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/22/theater/the-patient-gloria-review.html",
-      "headline": "the patient gloria review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "gloria-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
-      "headline": "downstate review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "downstate-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/08/theater/a-delicate-balance-review.html",
-      "headline": "a delicate balance review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-delicate-balance-2014",
-        "a-delicate-balance-1996"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/11/02/theater/the-year-of-magical-thinking-review.html",
-      "headline": "the year of magical thinking review",
-      "publishDate": "2022-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-year-of-magical-thinking-2007"
       ]
     },
     {
@@ -1674,54 +1662,6 @@
       "matched": [],
       "outOfWindow": [
         "communion-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/02/27/theater/dakar-2000-review-rajiv-joseph.html",
-      "headline": "dakar 2000 review rajiv joseph",
-      "publishDate": "2025-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "joseph-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/02/06/theater/urinetown-review-encores.html",
-      "headline": "urinetown review encores",
-      "publishDate": "2025-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "urinetown-2001"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-      "headline": "schmigadoon review kennedy center",
-      "publishDate": "2025-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "schmigadoon-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/02/22/theater/jellys-last-jam-review.html",
-      "headline": "jellys last jam review",
-      "publishDate": "2024-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "jellys-last-jam-1992"
       ]
     },
     {
@@ -1775,182 +1715,54 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2022/12/16/theater/review-hoagy-carmichaels-stardust-road.html",
-      "headline": "review hoagy carmichaels stardust road",
-      "publishDate": "2022-12-01",
+      "url": "https://www.nytimes.com/2024/12/17/theater/annie-review-whoopi-goldberg.html",
+      "headline": "annie review whoopi goldberg",
+      "publishDate": "2024-12-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "stardust-1987"
+        "whoopi-goldberg-1984"
       ]
     },
     {
-      "url": "https://www.nytimes.com/2021/08/15/theater/grown-ups-review.html",
-      "headline": "grown ups review",
-      "publishDate": "2021-08-01",
+      "url": "https://www.nytimes.com/2024/09/12/theater/counting-and-cracking-review.html",
+      "headline": "counting and cracking review",
+      "publishDate": "2024-09-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "grown-ups-1981"
+        "counting-and-cracking-off-broadway-2026"
       ]
     },
     {
-      "url": "https://www.nytimes.com/2021/08/09/theater/review-the-tempest-hudson-shakespeare.html",
-      "headline": "review the tempest hudson shakespeare",
-      "publishDate": "2021-08-01",
+      "url": "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
+      "headline": "ragtime review city center",
+      "publishDate": "2024-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-tempest-1995"
+        "ragtime-2025",
+        "ragtime-2009",
+        "ragtime-1998"
       ]
     },
     {
-      "url": "https://www.nytimes.com/2021/08/08/theater/review-most-happy-fella-in-concert.html",
-      "headline": "review most happy fella in concert",
-      "publishDate": "2021-08-01",
+      "url": "https://www.nytimes.com/2024/10/23/theater/woman-among-women-review-bushwick-starr.html",
+      "headline": "woman among women review bushwick starr",
+      "publishDate": "2024-10-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-most-happy-fella-1992",
-        "the-most-happy-fella-1979"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/07/14/theater/the-gospel-at-colonus-review-little-island.html",
-      "headline": "the gospel at colonus review little island",
-      "publishDate": "2025-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-gospel-at-colonus-1988",
-        "the-island-1974"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-      "headline": "the great gatsby review",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-great-gatsby-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/28/theater/review-this-hamlet-under-the-stars-is-no-walk-in-the-park.html",
-      "headline": "review this hamlet under the stars is no walk in the park",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "hamlet-off-broadway-2024",
-        "hamlet-greenwich-house-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/22/theater/the-light-in-the-piazza-review.html",
-      "headline": "the light in the piazza review",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-light-in-the-piazza-2005"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/21/theater/good-vibrations-review.html",
-      "headline": "good vibrations review",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "good-vibrations-2005"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/20/theater/cabaret-review-barrington-stage.html",
-      "headline": "cabaret review barrington stage",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cabaret-2014",
-        "cabaret-1987"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/06/09/theater/deep-blue-sound-review.html",
-      "headline": "deep blue sound review",
-      "publishDate": "2023-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "deep-blue-sound-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
-      "headline": "review as you like it",
-      "publishDate": "2022-08-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "as-you-like-it-1974",
-        "as-you-like-it-1986"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/11/13/theater/big-apple-circus-review.html",
-      "headline": "big apple circus review",
-      "publishDate": "2024-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "big-apple-circus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-      "headline": "king lear review kenneth branagh",
-      "publishDate": "2024-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "king-lear-2019",
-        "king-lear-2004",
-        "king-lear-off-broadway-2026"
+        "the-women-2001",
+        "the-women-1973"
       ]
     },
     {
@@ -1990,95 +1802,6 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
-      "headline": "review kenneth branaghs short shallow king lear",
-      "publishDate": "2023-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "king-lear-2019",
-        "king-lear-2004",
-        "king-lear-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
-      "headline": "great gatsby musical review",
-      "publishDate": "2023-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-great-gatsby-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/06/24/theater/cold-war-choir-practice-review.html",
-      "headline": "cold war choir practice review",
-      "publishDate": "2025-06-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cold-war-choir-practice-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/12/17/theater/annie-review-whoopi-goldberg.html",
-      "headline": "annie review whoopi goldberg",
-      "publishDate": "2024-12-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "whoopi-goldberg-1984"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
-      "headline": "ragtime review city center",
-      "publishDate": "2024-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ragtime-2025",
-        "ragtime-2009",
-        "ragtime-1998"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/10/23/theater/woman-among-women-review-bushwick-starr.html",
-      "headline": "woman among women review bushwick starr",
-      "publishDate": "2024-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/09/12/theater/counting-and-cracking-review.html",
-      "headline": "counting and cracking review",
-      "publishDate": "2024-09-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "counting-and-cracking-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://www.nytimes.com/2024/06/19/theater/pre-existing-condition-review-marin-ireland.html",
       "headline": "pre existing condition review marin ireland",
       "publishDate": "2024-06-01",
@@ -2100,19 +1823,6 @@
       "matched": [],
       "outOfWindow": [
         "titanic-1997"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/03/20/theater/ibsens-ghosts-review-charles-busch.html",
-      "headline": "ibsens ghosts review charles busch",
-      "publishDate": "2024-03-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ghosts-1982",
-        "ghosts-off-broadway-2025"
       ]
     },
     {
@@ -2177,86 +1887,6 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2022/05/26/theater/fat-ham-review.html",
-      "headline": "fat ham review",
-      "publishDate": "2022-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "fat-ham-2023"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/05/25/theater/mother-courage-and-her-children-review.html",
-      "headline": "mother courage and her children review",
-      "publishDate": "2022-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-children-2017"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/05/23/theater/who-killed-my-father-review.html",
-      "headline": "who killed my father review",
-      "publishDate": "2022-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-father-2016",
-        "the-father-1981"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/05/06/theater/into-the-woods-review.html",
-      "headline": "into the woods review",
-      "publishDate": "2022-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "into-the-woods-2022",
-        "into-the-woods-2002",
-        "into-the-woods-1997",
-        "into-the-woods-1987"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/05/15/theater/antigone-in-the-amazon-review.html",
-      "headline": "antigone in the amazon review",
-      "publishDate": "2023-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "antigone-1971",
-        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/05/11/theater/tartuffe-review-moliere.html",
-      "headline": "tartuffe review moliere",
-      "publishDate": "2023-05-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tartuffe-2003",
-        "tartuffe-1996",
-        "tartuffe-1977",
-        "tartuffe-off-broadway-2025"
-      ]
-    },
-    {
       "url": "https://www.nytimes.com/2022/10/28/theater/hamlet-review-bam.html",
       "headline": "hamlet review bam",
       "publishDate": "2022-10-01",
@@ -2269,6 +1899,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2373,6 +2004,276 @@
       ]
     },
     {
+      "url": "https://www.nytimes.com/2021/12/15/theater/cabaret-review-london-eddie-redmayne.html",
+      "headline": "cabaret review london eddie redmayne",
+      "publishDate": "2021-12-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2021/12/08/theater/is-there-still-sex-in-the-city-review.html",
+      "headline": "is there still sex in the city review",
+      "publishDate": "2021-12-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/25/theater/big-apple-circus-review.html",
+      "headline": "big apple circus review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "big-apple-circus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/22/theater/the-patient-gloria-review.html",
+      "headline": "the patient gloria review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gloria-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
+      "headline": "downstate review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/08/theater/a-delicate-balance-review.html",
+      "headline": "a delicate balance review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-delicate-balance-2014",
+        "a-delicate-balance-1996"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/11/02/theater/the-year-of-magical-thinking-review.html",
+      "headline": "the year of magical thinking review",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-year-of-magical-thinking-2007"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/12/16/theater/review-hoagy-carmichaels-stardust-road.html",
+      "headline": "review hoagy carmichaels stardust road",
+      "publishDate": "2022-12-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stardust-1987"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+      "headline": "the great gatsby review",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/28/theater/review-this-hamlet-under-the-stars-is-no-walk-in-the-park.html",
+      "headline": "review this hamlet under the stars is no walk in the park",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/22/theater/the-light-in-the-piazza-review.html",
+      "headline": "the light in the piazza review",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-light-in-the-piazza-2005"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/21/theater/good-vibrations-review.html",
+      "headline": "good vibrations review",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "good-vibrations-2005"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/20/theater/cabaret-review-barrington-stage.html",
+      "headline": "cabaret review barrington stage",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/06/09/theater/deep-blue-sound-review.html",
+      "headline": "deep blue sound review",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "deep-blue-sound-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/08/30/theater/review-as-you-like-it.html",
+      "headline": "review as you like it",
+      "publishDate": "2022-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/05/26/theater/fat-ham-review.html",
+      "headline": "fat ham review",
+      "publishDate": "2022-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/05/25/theater/mother-courage-and-her-children-review.html",
+      "headline": "mother courage and her children review",
+      "publishDate": "2022-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-2017"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/05/23/theater/who-killed-my-father-review.html",
+      "headline": "who killed my father review",
+      "publishDate": "2022-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/05/06/theater/into-the-woods-review.html",
+      "headline": "into the woods review",
+      "publishDate": "2022-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/05/15/theater/antigone-in-the-amazon-review.html",
+      "headline": "antigone in the amazon review",
+      "publishDate": "2023-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/05/11/theater/tartuffe-review-moliere.html",
+      "headline": "tartuffe review moliere",
+      "publishDate": "2023-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977",
+        "tartuffe-off-broadway-2025"
+      ]
+    },
+    {
       "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
       "headline": "oratorio for living things review",
       "publishDate": "2022-03-01",
@@ -2382,18 +2283,6 @@
       "matched": [],
       "outOfWindow": [
         "oratorio-for-living-things-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/09/27/theater/sesame-street-the-musical-review.html",
-      "headline": "sesame street the musical review",
-      "publishDate": "2022-09-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "sesame-street-the-musical-off-broadway-2023"
       ]
     },
     {
@@ -2420,42 +2309,6 @@
       "outOfWindow": [
         "aint-misbehavin-1978",
         "aint-misbehavin-1988"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/01/24/theater/just-for-us-review.html",
-      "headline": "just for us review",
-      "publishDate": "2022-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "just-for-us-2023"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/01/18/theater/this-beautiful-future-review.html",
-      "headline": "this beautiful future review",
-      "publishDate": "2022-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "this-beautiful-future-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/01/17/theater/witness-review-arlekin-players.html",
-      "headline": "witness review arlekin players",
-      "publishDate": "2022-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "players-1978"
       ]
     },
     {
@@ -2506,67 +2359,10 @@
         "the-seagull-2008",
         "the-seagull-1992"
       ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/02/28/theater/fall-river-fishing-review.html",
-      "headline": "fall river fishing review",
-      "publishDate": "2023-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-river-2014"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/02/27/theater/the-sign-in-sidney-brusteins-window-bam-review.html",
-      "headline": "the sign in sidney brusteins window bam review",
-      "publishDate": "2023-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-sign-in-sidney-brusteins-window-2023",
-        "the-sign-in-sidney-brusteins-window-1972"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/02/02/theater/endgame-review.html",
-      "headline": "endgame review",
-      "publishDate": "2023-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "endgame-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/01/30/theater/asi-winds-inner-circle-review.html",
-      "headline": "asi winds inner circle review",
-      "publishDate": "2023-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-circle-1989"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/01/24/theater/small-talk-review.html",
-      "headline": "small talk review",
-      "publishDate": "2023-01-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "small-off-broadway-2026"
-      ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }
