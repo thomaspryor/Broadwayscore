@@ -46,7 +46,9 @@ const { refreshDataClone } = require('./data-clone-refresh.js');
 const { writeOwner, checkoutInUse, OWNER_FILE } = require('./acceptance-checkout-owner.js');
 const { registerExitCleanup } = require('./temp-worktree.js');
 const { holdsIgnoredWork } = require('./codex-runner.js');
+const { acquireStorage } = require('./mac-storage-budget.js');
 const ownedCheckouts = new Map();
+const checkoutReservations = new WeakMap();
 let cleanupRegistered = false;
 
 function ownCheckout(co) {
@@ -129,7 +131,21 @@ function sleepMs(ms) {
  *   "pre-existing").
  * @returns {{dir:string, wt:string, repo:string}}
  */
-function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null, lockRetryDelaysMs = LOCK_RETRY_DELAYS_MS } = {}) {
+function makeFreshCheckout(options = {}) {
+  const release = acquireStorage({ directory: os.tmpdir(), sizeGiB: 5, floorGiB: 15 });
+  try {
+    const checkout = provisionFreshCheckout(options);
+    checkoutReservations.set(checkout, release);
+    // Keep the actual returned object for exit cleanup and its reservation.
+    ownedCheckouts.set(checkout.dir, checkout);
+    return checkout;
+  } catch (error) {
+    release();
+    throw error;
+  }
+}
+
+function provisionFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null, lockRetryDelaysMs = LOCK_RETRY_DELAYS_MS } = {}) {
   // Every git call here is TIME-BOXED. A synchronous caller (notion-brain's
   // close-time check) is holding a person or a sync sweep hostage while this
   // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
@@ -277,6 +293,12 @@ function removeCheckout(co) {
   } catch (error) {
     console.error(`[acceptance-checkout] retained ${co.dir}: ${error.message}`);
     return false;
+  } finally {
+    const release = checkoutReservations.get(co);
+    if (release) {
+      checkoutReservations.delete(co);
+      release();
+    }
   }
 }
 

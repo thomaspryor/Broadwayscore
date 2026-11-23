@@ -29,6 +29,7 @@ const { shouldRefuseDispatch, isLeaseLive, parseEtime } = require('./worktree-gc
 const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
 const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
+const { acquireStorage } = require('./mac-storage-budget.js');
 const { isSlimTree, treeModeArgs } = require('./codex-runner.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
@@ -425,7 +426,10 @@ async function runJob(opts) {
     freeGB = freeDiskGB(REPO);
   }
   if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
-    const detail = `disk free ${freeGB.toFixed(1)}GB < floor ${dispatchFloorGB}GB after self-heal GC — refusing dispatch for task ${taskId}`;
+    return deferForDisk(`disk free ${freeGB.toFixed(1)}GB < floor ${dispatchFloorGB}GB after self-heal GC`);
+  }
+
+  function deferForDisk(detail, alert = true) {
     console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
     // ABANDONED, not FAILED: disk pressure is infra, not a defect in this
     // task — JOB_EVENTS.FAILED counts toward a task's dead-attempt strikes
@@ -434,7 +438,7 @@ async function runJob(opts) {
     // Same "task is fine, this attempt just didn't run" semantics as the
     // lease-held case below.
     try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `disk-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
-    routeDiskPressureAlert(detail);
+    if (alert) routeDiskPressureAlert(detail);
     return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
 
@@ -467,8 +471,18 @@ async function runJob(opts) {
 
   let cwd = opts.cwd || REPO;
   let wtPath = null;
+  let releaseStorage = () => {};
   let out = null; // returned object; finally patches keptWorktree onto it
   try {
+    try {
+      releaseStorage = acquireStorage({
+        directory: cwd,
+        sizeGiB: opts.worktreeMode === 'slim' ? 3 : 4,
+        floorGiB: dispatchFloorGB,
+      });
+    } catch (error) {
+      return deferForDisk(error.message, false);
+    }
     if (isolate && !resumeSessionId) {
       try {
         wtPath = provisionJobWorktree(jobId, opts.worktreeMode);
@@ -595,7 +609,7 @@ async function runJob(opts) {
     const timedOutJob = out && out.stage === 'timeout';
     const kept = wtPath ? (timedOutJob || !teardownJobWorktree(wtPath, jobId)) : false;
     if (out) out.keptWorktree = kept;
-    releaseLease(taskId, jobId);
+    try { releaseLease(taskId, jobId); } finally { releaseStorage(); }
   }
 }
 

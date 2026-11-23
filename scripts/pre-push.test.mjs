@@ -37,6 +37,7 @@ import { createRequire } from 'node:module';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
 // BRO-2892: fixture worktrees on the real repo must be removable while still
 // locked 'initializing' (a SIGKILL'd add) and on interrupt, or they leak.
+const { acquireStorage } = createRequire(import.meta.url)('./lib/mac-storage-budget.js');
 const { removeTempWorktree, reapStaleTempWorktrees, registerExitCleanup } = createRequire(import.meta.url)('./lib/temp-worktree.js');
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
@@ -387,11 +388,21 @@ let cleanupHookWorktree = () => {};
 before(() => {
   try {
     reapStaleTempWorktrees(REPO_ROOT);
-    hookWorktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre-push-hook-wt-'));
+    const release = acquireStorage({ directory: os.tmpdir(), sizeGiB: 3, floorGiB: 15 });
+    try {
+      hookWorktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre-push-hook-wt-'));
+    } catch (error) {
+      release();
+      throw error;
+    }
     const dirForCleanup = hookWorktreeDir;
     cleanupHookWorktree = registerExitCleanup(() => {
-      removeTempWorktree(REPO_ROOT, dirForCleanup);
-      spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+      try {
+        removeTempWorktree(REPO_ROOT, dirForCleanup);
+        spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+      } finally {
+        release();
+      }
     });
     fs.rmSync(hookWorktreeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); // `git worktree add` wants a non-existent path
     spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
@@ -425,6 +436,7 @@ before(() => {
     const current = fs.readFileSync(path.join(hookWorktreeDir, 'CLAUDE.md'), 'utf8');
     shaOversized = commitInClone('CLAUDE.md', current + 'x'.repeat(20000), 'oversized CLAUDE.md');
   } catch (err) {
+    if (err.code === 'BSC_DISK_PRESSURE') throw err;
     hookWorktreeError = err;
   }
 });

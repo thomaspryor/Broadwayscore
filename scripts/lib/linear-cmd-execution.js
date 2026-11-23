@@ -156,6 +156,10 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
       // BRO-5837: a git timeout while building the checkout says nothing about
       // the card. Say so, and name the way out, instead of reading as a failed
       // command. No retry/clone here: callers cap this whole gate at 300s.
+      if (err && err.code === 'BSC_DISK_PRESSURE') {
+        return { allowed: false, verdict: 'verify-cmd-disk-pressure',
+          reason: `Verification deferred until the Mac has room: ${message}`, notOnMain: false, sha: null };
+      }
       const infraTimeout = isCheckoutTimeout(err);
       return {
         allowed: false,
