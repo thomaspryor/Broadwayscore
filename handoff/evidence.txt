@@ -1,0 +1,6 @@
+Rebased on main 2b31cf287 (patch applies cleanly; 16 files, +880/-30). Reader reads kill/home from the show_refresh_state table.
+tsc: npx tsc --noEmit clean (0 errors) on main + patch.
+tests: reader+revalidate 14/14 (tsx --test); live-in-hd + prod-data-parity + show-refresh-store 51/51; eslint clean on staged files.
+screenshots (this run, 1440x900 full page, main vs main+patch, dev servers, same data): /show/chicago 0 px differ (>24/255), /  0 px differ; main-vs-main self-check also 0 px. HTML after normalizing dev-only ids/paths: only __next_r + devtools ids differ (og:image query hash changes because opengraph-image.tsx changed; image not visible on page).
+earlier run: visual-identical 20/20 show-page pairs identical; visual-qa verdict pass.
+earlier run: HTML diff 0/1060 show pages differ (flag off).
