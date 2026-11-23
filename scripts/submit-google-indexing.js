@@ -323,11 +323,17 @@ async function main() {
       return `${SITE_HOST}${u.startsWith('/') ? '' : '/'}${u}`;
     });
   } else if (specificShows.length > 0) {
-    // BRO-8085: tokens may be show ids or slugs; only the slug is the page address.
-    urls = slugsForCli(specificShows, loadShowsForSlugs(fs, path, __dirname)).map(s => `${SITE_HOST}/show/${s}`);
-    // Also submit homepage since listings changed
-    urls.push(`${SITE_HOST}/`);
-    urls.push(`${SITE_HOST}/rankings`);
+    if (notificationType === 'URL_DELETED') {
+      // A removed show is no longer in shows.json, so its token is used as the old slug, and
+      // live pages (homepage, rankings) must never be sent a deletion notice (BRO-8085).
+      urls = specificShows.map(s => s.trim()).filter(Boolean).map(s => `${SITE_HOST}/show/${s}`);
+    } else {
+      // BRO-8085: tokens may be show ids, slugs or aliases; only the slug is the page address.
+      urls = slugsForCli(specificShows, loadShowsForSlugs(fs, path, __dirname)).map(s => `${SITE_HOST}/show/${s}`);
+      // Also submit homepage since listings changed
+      urls.push(`${SITE_HOST}/`);
+      urls.push(`${SITE_HOST}/rankings`);
+    }
   } else {
     console.error('No URLs specified. Use --urls, --shows, --submit-sitemap, or --test-auth.');
     process.exit(1);
