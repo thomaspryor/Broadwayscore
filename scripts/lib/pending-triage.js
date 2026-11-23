@@ -232,9 +232,14 @@ function noBylineTerminalReason(data, show, nowMs = Date.now()) {
  * (and pendingFetchFailures) re-opens it. Pure. Returns the reason or null.
  */
 const FETCH_FAIL_LIMIT = 2;
+// Paywalled outlets: a failed fetch here is "needs the logged-in browser", not "dead url" (card BRO-8091 step 2).
+const SUBSCRIBER_OUTLETS = new Set(['nytimes', 'wsj', 'times-uk', 'financialtimes', 'telegraph', 'washpost', 'newyorker']);
 function fetchFailedTerminalReason(data) {
   const n = Number(data && data.pendingFetchFailures) || 0;
   if (n < FETCH_FAIL_LIMIT) return null;
+  if (SUBSCRIBER_OUTLETS.has(data.outletId)) {
+    return `subscriber-fetch-failed: ${n} paid fetches failed on paywalled outlet ${data.outletId}; needs the logged-in browser path, not retried by the paid scraper (BRO-8091)`;
+  }
   return `fetch-failed-terminal: ${n} fetches failed on every scraper tier (dead url or bot wall); not retried (BRO-8091)`;
 }
 
@@ -466,4 +471,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { fetchFailedTerminalReason, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

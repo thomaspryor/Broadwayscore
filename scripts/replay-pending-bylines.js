@@ -395,6 +395,23 @@ function primaryBodyIsSound(primary) {
   if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf || primary.fullTextWrongAuthor) return false;
   return ['complete', 'truncated'].includes(primary.contentTier);
 }
+/**
+ * BRO-8091: the same outlet article reached through two url forms (hollywoodreporter.com/review/amy-orphans-theater-review-1089837
+ * vs /lifestyle/lifestyle-news/amy-orphans-theater-review-1089837/): same host, same final slug ending in the same 6+ digit
+ * article id. 12 HR stubs sat open as target-exists because the canonical key differs. Pure.
+ */
+function sameTrailingArticleId(u1, u2) {
+  const key = (u) => {
+    try {
+      const x = new URL(String(u || ''));
+      const slug = x.pathname.split('/').filter(Boolean).pop() || '';
+      const m = slug.match(/^(.*[a-z].*)-(\d{6,})$/i);
+      return m ? `${x.hostname.replace(/^www\./, '')}|${m[1].toLowerCase()}-${m[2]}` : null;
+    } catch { return null; }
+  };
+  const a = key(u1), b = key(u2);
+  return !!a && a === b;
+}
 const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore', 'dtliThumb', 'bwwThumb', 'bwwScore', 'originalRating']; // thumbs/ratings feed the rebuild's score fallback + rave flag (BRO-8091 review)
 const present = (v) => v != null && v !== '';
 /**
@@ -411,7 +428,7 @@ function sameArticleSettleReason(data, primary, primaryFile) {
   if (who(data.criticName) && who(data.criticName) !== 'unknown' && who(data.criticName) !== who(primary.criticName)) return null;
   const { normalizeArticleUrl } = require('./lib/combined-review-utils');
   const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
-  if (!a || a !== b) return null;
+  if (!a || (a !== b && !sameTrailingArticleId(data.url, primary.url))) return null;
   if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
   // BRO-8091: an aggregator excerpt (dtliExcerpt/showScoreExcerpt/bwwExcerpt) is only a scoring FALLBACK for a
   // body-less review. This primary already has a sound body (primaryBodyIsSound above), so an excerpt it lacks
@@ -437,6 +454,18 @@ function stampFetchAttempt(filepath, data, dry, nowIso, why) {
   data.pendingFetchAttemptedAt = nowIso;
   data.pendingFetchAttemptResult = why;
   try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not stamp fetch attempt: ${e.message}`); }
+}
+
+/**
+ * BRO-8091: count a failed fetch on the stub; the 2nd settles it with a typed reason (fetchFailedTerminalReason) instead of
+ * leaving it a paid candidate every run. A stamp from before the counter existed is failure #1.
+ */
+function recordFetchFailure(filepath, data, dry) {
+  if (dry || !data) return;
+  data.pendingFetchFailures = (Number(data.pendingFetchFailures) || (['fetch-failed', 'unrecoverable', 'no-content'].includes(data.pendingFetchAttemptResult) ? 1 : 0)) + 1;
+  const terminal = pendingTriage.fetchFailedTerminalReason(data);
+  if (terminal) { data.promoteSkippedReason = terminal; data.promoteSkippedAt = new Date().toISOString(); }
+  try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not record fetch failure: ${e.message}`); }
 }
 
 function isDescriptiveNonReviewSlug(url) {
@@ -518,6 +547,7 @@ async function processShow(showId, deps = {}) {
     }
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
+    if (!/^fetch failed/.test(reason)) recordFetchFailure(filepath, data, dry); // fetch-failed already counted in the catch
     stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
   // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
@@ -852,12 +882,7 @@ async function processShow(showId, deps = {}) {
       const msg = String((e && e.message) || e).slice(0, 80);
       console.log(`  [${file}] fetch failed: ${msg} — keep`);
         stampFetchAttempt(filepath, data, dry, now().toISOString(), 'fetch-failed');
-      if (!dry) { // BRO-8091: count failures; the 2nd settles the stub with a typed reason instead of re-opening it forever
-        data.pendingFetchFailures = (Number(data.pendingFetchFailures) || 0) + 1;
-        const terminal = pendingTriage.fetchFailedTerminalReason(data);
-        if (terminal) { data.promoteSkippedReason = terminal; data.promoteSkippedAt = new Date().toISOString(); }
-        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e2) { console.log(`  could not record fetch failure: ${e2.message}`); }
-      }
+      recordFetchFailure(filepath, data, dry);
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, `fetch failed: ${msg}`);
       kept++;
       continue;
@@ -1084,6 +1109,7 @@ module.exports = {
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
   isRedundantPendingStub,
+  sameTrailingArticleId,
   primaryBodyIsSound,
   sameArticleSettleReason,
   // Liveness of the --all-open scope (audit S7-T7) — exported for

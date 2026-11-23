@@ -1412,5 +1412,26 @@ describe('BRO-8091 fetchFailedTerminalReason: repeated all-tier fetch failures s
     assert.equal(fetchFailedTerminalReason({ pendingFetchFailures: 1 }), null);
     assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2 }), /^fetch-failed-terminal/);
     assert.equal(fetchFailedTerminalReason(null), null);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2, outletId: 'nytimes' }), /^subscriber-fetch-failed/);
+    assert.match(fetchFailedTerminalReason({ pendingFetchFailures: 2, outletId: 'dtli' }), /^fetch-failed-terminal/);
+  });
+});
+
+describe('BRO-8091 sameTrailingArticleId: one outlet article under two url forms settles as same-article', () => {
+  const { sameTrailingArticleId, sameArticleSettleReason } = require('../../scripts/replay-pending-bylines.js');
+  const A = 'https://www.hollywoodreporter.com/review/amy-orphans-theater-review-1089837';
+  const B = 'https://www.hollywoodreporter.com/lifestyle/lifestyle-news/amy-orphans-theater-review-1089837/';
+  test('same host+slug+id matches; different id / host / opaque slug does not', () => {
+    assert.equal(sameTrailingArticleId(A, B), true);
+    assert.equal(sameTrailingArticleId(A, B.replace('1089837', '1089838')), false);
+    assert.equal(sameTrailingArticleId(A, B.replace('hollywoodreporter', 'variety')), false);
+    assert.equal(sameTrailingArticleId('https://x.com/a/123456', 'https://x.com/b/123456'), false);
+    assert.equal(sameTrailingArticleId(null, B), false);
+  });
+  test('a stub under the second url form settles against the sound primary', () => {
+    const body = 'word '.repeat(300);
+    const primary = { url: A, criticName: 'Frank Scheck', fullText: body, contentTier: 'complete' };
+    const stub = { url: B, criticName: 'Unknown', fullText: body };
+    assert.match(sameArticleSettleReason(stub, primary, 'hollywood-reporter--frank-scheck.json'), /same article already filed/);
   });
 });
