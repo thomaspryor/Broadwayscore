@@ -20,7 +20,7 @@ on:
         type: choice
         options: [status, kill, unkill]
       reason:
-        description: 'Why (recorded in kill.json; defaults to the action and who ran it)'
+        description: 'Why (recorded on the kill row; defaults to the action and who ran it)'
         required: false
         type: string
 
@@ -62,7 +62,7 @@ jobs:
             # Status afterwards is informational: an unhealthy home.json must not
             # turn a successful kill red.
             node scripts/show-refresh-store.js --status | tee -a "$GITHUB_STEP_SUMMARY" \
-              || echo "::warning::kill.json was set, but the store status check is unhealthy (see summary)"
+              || echo "::warning::the kill row was set, but the store status check is unhealthy (see summary)"
           fi
 
       - name: Notify on failure
