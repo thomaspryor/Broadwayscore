@@ -338,7 +338,8 @@ test('runTestGate baseline mode: a red corpus test reading a gitignored data dir
   assert.doesNotMatch(result.output, /NEW since origin\/main/);
   assert.match(result.output, /pre-existing on origin\/main/);
   assert.equal(result.passed, true);
-  assert.ok(fs.lstatSync(path.join(baselineDir, 'data', 'corpus')).isSymbolicLink());
+  assert.equal(fs.lstatSync(path.join(baselineDir, 'data', 'corpus'), { throwIfNoEntry: false }), undefined, 'mirrored link is unlinked before teardown');
+  assert.ok(fs.existsSync(path.join(mergedDir, 'data', 'corpus', 'bad.json')), 'the real corpus survives');
   assert.equal(fs.existsSync(path.join(baselineDir, 'data', 'tracked-dir')), false);
 });
 
