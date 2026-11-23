@@ -36133,12 +36133,13 @@
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
       "incidentOpenedAt": "2026-11-22T18:55:19.780Z",
-      "lastSeen": "2026-11-22T18:55:19.780Z",
+      "lastSeen": "2026-11-23T16:43:34.645Z",
       "lastNotifiedAt": "2026-11-22T18:55:19.780Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-8063"
+      "linearIdentifier": "BRO-8063",
+      "silentRefires": 1
     },
     "land:land/bro-6857": {
       "status": "resolved",
@@ -40656,19 +40657,17 @@
       "resolveReason": "absent"
     },
     "cron-health-failed:Enrich West End Dates": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Enrich West End Dates",
       "firstSeen": "2026-11-09T21:49:54.849Z",
-      "incidentOpenedAt": "2026-11-16T21:30:27.410Z",
-      "lastSeen": "2026-11-16T21:30:27.410Z",
-      "lastNotifiedAt": "2026-11-16T21:30:27.410Z",
-      "lastSurfacedAt": "2026-11-16T21:30:27.410Z",
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-11-23T16:43:34.390Z",
+      "lastSeen": "2026-11-23T16:43:34.390Z",
+      "lastNotifiedAt": "2026-11-23T16:43:34.390Z",
+      "lastSurfacedAt": "2026-11-23T16:43:34.390Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-21T09:58:03.378Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "opening-night-lane-summary:here-there-are-blueberries-2026:2026-11-09": {
       "status": "resolved",
@@ -49258,6 +49257,19 @@
       "lastSeen": "2026-11-23T16:20:16.100Z",
       "lastNotifiedAt": "2026-11-23T16:20:16.100Z",
       "lastSurfacedAt": "2026-11-23T16:20:16.100Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:Recover Explicit Ratings": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Recover Explicit Ratings",
+      "firstSeen": "2026-11-23T16:43:34.355Z",
+      "incidentOpenedAt": "2026-11-23T16:43:34.355Z",
+      "lastSeen": "2026-11-23T16:43:34.355Z",
+      "lastNotifiedAt": "2026-11-23T16:43:34.355Z",
+      "lastSurfacedAt": "2026-11-23T16:43:34.355Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
