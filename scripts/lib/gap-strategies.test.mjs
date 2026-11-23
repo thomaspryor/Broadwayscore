@@ -4,6 +4,19 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+// BRO-7171 2026-11-16: zero free tiers for the host -> no request, no evidence,
+// and the table skips the free refetch and keeps the capped paid fetch.
+import { test as _t0 } from 'node:test';
+import _a0 from 'node:assert/strict';
+import { createRequire as _cr0 } from 'node:module';
+
+// BRO-7962: a bot check or a declared paywall is "no access" on the route, never
+// proof the LINK is wrong. The correct Times link for a NO_URL review was
+// refused this way (trial 2026-11-21) and skipped by every later night.
+import { test as _t62 } from 'node:test';
+import _a62 from 'node:assert/strict';
+import { createRequire as _cr62 } from 'node:module';
+
 const require = createRequire(import.meta.url);
 const S = require('./gap-strategies.js');
 const { earliestCaptureTimestamp, latestCaptureTimestamp } = require('./fetch-archive-fallback.js');
@@ -306,12 +319,6 @@ test('urlFind freeOnly: no paid SERP, no Bright Data, SERP left open', async () 
     assert.ok(!UF.METHOD_DONE.has('skipped_paid'));
   } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
 });
-
-// BRO-7171 2026-11-16: zero free tiers for the host -> no request, no evidence,
-// and the table skips the free refetch and keeps the capped paid fetch.
-import { test as _t0 } from 'node:test';
-import _a0 from 'node:assert/strict';
-import { createRequire as _cr0 } from 'node:module';
 {
   const req = _cr0(import.meta.url);
   const S = req('./gap-strategies.js');
@@ -322,6 +329,18 @@ import { createRequire as _cr0 } from 'node:module';
     const deps = { freeTiersForUrl: () => [], fetchPage: async () => { called++; return { content: '<p>x</p>' }; } };
     const r = await S.refetchFree({ url: 'https://www.broadwayworld.com/a' }, deps);
     _a0.deepEqual([r.outcome, r.reason, called], ['non_evidence', 'no_free_tier', 0]);
+  });
+  // BRO-8092 cousin: URL_REDISCOVER fetches the SERP's url through the same free-only fetch; a
+  // url no free tier can fetch (BroadwayWorld) made zero requests and its fetch_error read as evidence.
+  _t0('urlRediscover: a found url with zero free tiers -> non_evidence no_free_tier, fetchPage never called (BRO-8092)', async () => {
+    let called = 0;
+    const deps = {
+      freeTiersForUrl: () => [],
+      fetchPage: async () => { called++; throw new Error('no tiers ran'); },
+      discoverCorrectUrl: async () => 'https://www.broadwayworld.com/article/Review-Roundup-Example-20260301',
+    };
+    const r = await S.urlRediscover({ showId: 's', outletId: 'bww', url: '' }, { scrapingBeeKey: 'k' }, deps);
+    _a0.deepEqual([r.outcome, r.reason, called, r.serpRan], ['non_evidence', 'no_free_tier', 0, true]);
   });
   _t0('selectStrategy: no free tier skips REFETCH_FREE and falls to PAID_FETCH last', () => {
     const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, recency: 'recent', showAgeDays: 10 });
@@ -388,13 +407,6 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, 'REFETCH_FREE');
   });
 }
-
-// BRO-7962: a bot check or a declared paywall is "no access" on the route, never
-// proof the LINK is wrong. The correct Times link for a NO_URL review was
-// refused this way (trial 2026-11-21) and skipped by every later night.
-import { test as _t62 } from 'node:test';
-import _a62 from 'node:assert/strict';
-import { createRequire as _cr62 } from 'node:module';
 {
   const req = _cr62(import.meta.url);
   const S = req('./gap-strategies.js');
@@ -599,6 +611,12 @@ import { createRequire as _cr62 } from 'node:module';
   _t62('refetchFree: all tiers challenged -> rejected/bot_challenge, plain failure unchanged', async () => {
     _a62.deepEqual([(await S.refetchFree({ url: 'https://www.telegraph.co.uk/a' }, deps(thrower(CHALLENGE)))).reason], ['bot_challenge']);
     _a62.notEqual((await S.refetchFree({ url: 'https://www.telegraph.co.uk/a' }, deps(thrower(null)))).reason, 'bot_challenge');
+  });
+  _t62('paidFetch: Bright Data answering with a bot check is rejected/bot_challenge, not fetch_error (BRO-8092 cousin)', async () => {
+    const r = await S.paidFetch({ url: 'https://www.telegraph.co.uk/a' }, { ...deps(thrower(CHALLENGE)), paidTierAvailable: () => true });
+    _a62.deepEqual([r.outcome, r.reason], ['rejected', 'bot_challenge']);
+    const plain = await S.paidFetch({ url: 'https://www.telegraph.co.uk/a' }, { ...deps(thrower(null)), paidTierAvailable: () => true });
+    _a62.notEqual(plain.reason, 'bot_challenge');
   });
   _t62('fetchCandidateText: a fully challenged link is walled (handoff), not an error', async () => {
     const got = await UF.fetchCandidateText('https://www.telegraph.co.uk/a', { allowBd: true }, deps(thrower(CHALLENGE)));

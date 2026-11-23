@@ -191,7 +191,9 @@ function stripGuardianTopicsFooter(text) {
 // of it is removed separately (INDEPENDENT_TOPIC_TAG_RE): a tag such as
 // "More about Oklahoma!" left behind would read as a finished sentence and
 // pass a cut review as complete (review).
-const INDEPENDENT_COMMENTS_FOOTER_RE = /Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
+// BRO-8092 cousin: older Wayback copies carry the widget without its "Join our commenting
+// forum" heading (11 stored-truncated Independent files, e.g. betrayal-2013, clybourne-park).
+const INDEPENDENT_COMMENTS_FOOTER_RE = /(?:Join our commenting forum\s*)?Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
 // Only the LAST "More about" run before the widget, so a cut sentence that
 // itself opens "More about ..." stays and still reads as truncated.
 const INDEPENDENT_TOPIC_TAG_RE = /More about\b(?:(?!More about\b)[^\n]){0,120}$/;
@@ -203,9 +205,22 @@ const STANDARD_SHOPPING_FOOTER_RE = /\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
 const STANDARD_TAG_BLOCK_RE = /MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,1000}$/;
 // Anchored to the caption's own words, never "any prose before N / M" (that ate a
 // short cut sentence and passed it as complete, review).
-const STANDARD_GALLERY_CAPTION_RE = /(?:\b[A-Z][a-z]+['\u2019]s best [a-z]+(?: [a-z]+){0,2}|\bLatest [a-z]+ reviews|\bBest [^.!?\n]{0,80}? - in pictures) \d{1,2} \/ \d{1,3}$/;
-// The Standard's ticket call to action that sits above the gallery.
-const STANDARD_TICKET_CTA_RE = /\bBuy tickets for [^.!?\n]{0,80}? with GO London$/;
+const STANDARD_GALLERY_CAPTION_RE = /(?:\b[A-Z][a-z]+['\u2019]s best [a-z]+(?: [a-z]+){0,2}|\bLatest [a-z]+ reviews|\bBest [^.!?\n]{0,80}? - in pictures|\bWhat to see at the theatre [\u2013-] in pictures) \d{1,2} \/ \d{1,3}$/;
+// The Standard's ticket call to action that sits above the gallery ("GO London"; 2015-16 pages
+// say "Going Out Tickets", BRO-8092 cousin).
+// Titles may carry a full stop ("wonder.land", "Mr. Burns"): bounded by the anchored
+// "with <seller>$", so the lazy run cannot reach back into the review (review).
+const STANDARD_TICKET_CTA_RE = /\bBuy tickets for [^!?\n]{0,80}? with (?:GO London|Going Out Ticke ?ts|Evening Standard Tickets)$/;
+// 2015-16 boilerplate sentence between the ticket line and the social line.
+const STANDARD_VISIT_LINE_RE = /\bVisit standard\.co\.uk\/theatre for the latest news and reviews from London['\u2019]s theatre scene\.$/;
+// 2015-16 Standard pages end on the Going Out social line after the gallery (BRO-8092 cousin:
+// 10 stored-truncated files whose Shopping widget was already stripped still ended on it).
+const STANDARD_FOLLOW_LINE_RE = /\bFollow Going Out on Facebook and on Twitter @ESgoingout$/;
+// The same tail on its own, when the Shopping widget was already stripped (review: the
+// Shopping-only path never reached these): social line, optionally a MORE ABOUT tag block.
+const STANDARD_GOING_OUT_TAIL_RE = /\bFollow Going Out on Facebook and on Twitter @ESgoingout(?:\s+MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,300})?$/;
+const stripStandardTailLines = (t) => t.replace(STANDARD_VISIT_LINE_RE, '').trimEnd()
+  .replace(STANDARD_GALLERY_CAPTION_RE, '').trimEnd().replace(STANDARD_TICKET_CTA_RE, '').trimEnd();
 // The classifier counts words on the unstripped text, so a footer is only cut
 // from a body that is review-length on its own (shortest real flip: 1,901
 // chars); a short excerpt plus widget words must not read as complete.
@@ -221,9 +236,11 @@ function stripCmsWidgetFooters(text) {
       out = out.slice(0, m.index).trimEnd();
       // no leading \s* in these: on a long whitespace run it went quadratic (review); trim instead
       if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '').trimEnd();
-      if (re === STANDARD_SHOPPING_FOOTER_RE) out = out.replace(STANDARD_TAG_BLOCK_RE, '').trimEnd().replace(STANDARD_GALLERY_CAPTION_RE, '').trimEnd().replace(STANDARD_TICKET_CTA_RE, '').trimEnd();
+      if (re === STANDARD_SHOPPING_FOOTER_RE) out = stripStandardTailLines(out.replace(STANDARD_TAG_BLOCK_RE, '').trimEnd().replace(STANDARD_FOLLOW_LINE_RE, '').trimEnd());
     }
   }
+  const g = STANDARD_GOING_OUT_TAIL_RE.exec(out);
+  if (g && g.index >= CMS_FOOTER_MIN_BODY) out = stripStandardTailLines(out.slice(0, g.index).trimEnd());
   return out;
 }
 

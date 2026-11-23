@@ -178,19 +178,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // --- steps -------------------------------------------------------------------
 
-// In-profile probe. Returns { status, cookies, detail }: cookies only when logged in.
-async function profileSession(context, cfg, probe, { waitMs } = {}) {
-  const r = await bprobe.loadProbe(context, probe, { waitMs });
-  const all = (await context.cookies()).filter(keepDomain(cfg));
-  const hasAuthCookie = renew.hasAuthCookie(all, cfg.authCookies);
-  let status = bprobe.classify(probe, r);
-  let detail = bprobe.describe(probe, r);
-  // A metered wall can show a visitor the whole article (Telegraph, 1 in 4
-  // fresh loads): no auth cookie means no session, whatever the body says.
-  if (status === 'logged-in' && !hasAuthCookie) { status = 'logged-out'; detail += ', but no auth cookie (metered free view)'; }
-  if (status !== 'logged-in') return { status, cookies: null, detail, page: r, hasAuthCookie };
-  return { status, detail, page: r, hasAuthCookie, cookies: all };
-}
+// In-profile probe (cookies only when logged in): cookie-browser-probe.profileSession (BRO-8092: tested there).
+const profileSession = (context, cfg, probe, o) => bprobe.profileSession(context, cfg, probe, o);
 
 // --manual: the owner logs in by hand inside the SAME persistent profile
 // (same device), so recovery from a needs-human stop never adds a session
@@ -332,7 +321,7 @@ async function runOutlet(outlet, all, opts) {
       if (existing.status === 'error') return done(1, 'in-profile probe page not recognised (bot challenge?); not logging in on an uncertain probe');
       if (existing.status === 'logged-in' && inBrowser) {
         // The control: the same url in a cookie-less profile must be walled.
-        const c = await bprobe.classifyWithControl(probe, existing.page, { loadWithCookies: (alt, o) => bprobe.loadProbe(context, alt, o), profileControl: (pr, o) => bprobe.profileControlProbe(context, pr, cfg.authCookies, o) }).catch((e) => ({ error: e.message }));
+        const c = await bprobe.classifyWithControl(probe, existing.page, bprobe.profileDeps(context, cfg.authCookies)).catch((e) => ({ error: e.message }));
         // Fallback outlets (BRO-7716): the in-profile probe cannot detect a
         // vacuous (free) probe URL, only this control can. A bot-walled
         // control is tolerated for --probe-only (read-only) and fails closed

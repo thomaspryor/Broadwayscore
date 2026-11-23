@@ -39,3 +39,25 @@ test('archiveCopyDisposition: thin archive copy queues a stub when asked, else r
   assert.equal(d({ viaArchive: false, explicitSnapshot: true, stubOnFailure: true, textLength: 313 }), 'refuse');
   assert.equal(d({ viaArchive: true, explicitSnapshot: false, stubOnFailure: true, textLength: 4000 }), 'ok');
 });
+
+// BRO-8000 class guard (BRO-8092): the real default CDX getter (no fetchJson
+// injected) must read the IA 403-auth body as a blocked route, never as
+// "no archive.org capture" (which callers treat as evidence the page is gone).
+test('IA CDX 403 auth refusal is archive_auth_required, not "no capture" (default getter)', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response('<p>This type of CDX query requires authorization.</p>', { status: 403 });
+  try {
+    const r = await fetchWithArchiveFallback('https://o.test/r', { fetchPageFn: async () => { throw new Error('boom'); } });
+    assert.equal(r.html, null);
+    assert.match(r.error, /archive_auth_required/);
+    assert.doesNotMatch(r.error, /no archive\.org capture/);
+    const seen = [];
+    assert.equal(await latestCaptureTimestamp('https://o.test/r', { onError: (e) => seen.push(e.kind) }), null);
+    assert.deepEqual(seen, ['archive_auth_required']);
+    // the ARCHIVE strategy's capture list (defaultFetchJson) reports the same typed block
+    const listed = [];
+    const { listCaptureTimestamps } = require('../../scripts/lib/fetch-archive-fallback.js');
+    assert.deepEqual(await listCaptureTimestamps('https://o.test/r', { onError: (e) => listed.push(e.kind) }), []);
+    assert.deepEqual(listed, ['archive_auth_required']);
+  } finally { globalThis.fetch = realFetch; }
+});

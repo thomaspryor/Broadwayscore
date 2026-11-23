@@ -18,7 +18,7 @@
  * verification in the audit; quarantine at the write chokepoint).
  */
 
-const { buildShowTitleVariants, normalizeForMention, countVariant } = require('./show-title-variants');
+const { buildShowTitleVariants, normalizeForMention, countVariant, countNumericTitleMentions } = require('./show-title-variants');
 const { buildShowKeywordSet, findShowKeywordInText } = require('./review-guards');
 
 const MIN_TEXT_CHARS = 1500;
@@ -30,7 +30,9 @@ function countTitleMentions(text, show) {
   for (const t of titles) {
     // Longest variant counts; shorter prefixes of the same title must not double count.
     const total = buildShowTitleVariants(t).reduce((m, v) => (v.length >= 3 ? Math.max(m, countVariant(norm, v)) : m), 0);
-    best = Math.max(best, total);
+    // Variants under 3 chars are skipped above; a 1-3 digit title ("44") counts only
+    // where it is printed as a title (BRO-8092).
+    best = Math.max(best, total, countNumericTitleMentions(text, t));
   }
   return best;
 }

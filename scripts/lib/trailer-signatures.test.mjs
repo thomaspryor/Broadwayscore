@@ -6,6 +6,10 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
+import { createRequire as _cr7569 } from 'node:module';
+import _t7569 from 'node:test';
+import _a7569 from 'node:assert/strict';
+
 const require = createRequire(import.meta.url);
 const T = require('./trailer-signatures.js');
 const { classifyTierWriteBack } = require('./content-tier-reason-sync.js');
@@ -322,10 +326,6 @@ test('The Stage page tail: prose that looks like a bio or a ", then" line is nev
   assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage'), `${BODY}\n\n${news}`);
   assert.equal(T.stripOutletTrailer(`${BODY}\n\n${news}`, 'thestage', { forClassify: true }), BODY);
 });
-
-import { createRequire as _cr7569 } from 'node:module';
-import _t7569 from 'node:test';
-import _a7569 from 'node:assert/strict';
 {
   const { classifyTrailers, stripKnownTrailers } = _cr7569(import.meta.url)('./trailer-signatures.js');
   void classifyTrailers;
@@ -603,6 +603,23 @@ test('CMS footer: Standard "in pictures" caption and GO London ticket line (real
   assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys x', 'standard').contentTier, 'truncated');
 });
 
+// BRO-8092 cousins of BRO-7943 (real corpus tails, 15 stored-truncated files flip to complete, 0 lost):
+// older Independent pages carry the comments widget without its "Join our commenting forum" heading,
+// and 2015-16 Standard pages end on "Buy tickets ... with Going Out Tickets" + the Going Out social line.
+test('CMS footer cousins: headless Independent widget, Standard Going Out lines (BRO-8092)', () => {
+  const indy = ' It would be a shame if this fine production didn’t come home to London. Join thought-provoking conversations, follow other Independent readers and see their replies';
+  assert.equal(tier(BODY + indy, 'independent').contentTier, 'complete');
+  assert.equal(tier(BODY.slice(0, -40) + ' Join thought-provoking conversations, follow other Independent readers and see their replies', 'independent').contentTier, 'truncated');
+  const std = [
+    ' Until April 2, Arts Theatre (020 7836 8463, artstheatrewestend.co.uk ) What to see at the theatre – in pictures 1 / 10 Follow Going Out on Facebook and on Twitter @ESgoingout MORE ABOUT Theatre reviews Shopping Best Buys Best mirrors to make a statement',
+    ' Until April 30, Dominion Theatre (0845 200 7982) Buy tickets for War of the Worlds with Going Out Tickets Follow Going Out on Facebook and on Twitter @ESgoingout Shopping Best Buys Best mirrors',
+    ' Until March 12 (020 7452 3000) Buy tickets for People, Places and Things with Going Out Tickets Latest theatre reviews 1 / 50 Follow Going Out on Facebook and on Twitter @ESgoingout Shopping Best Buys Best mirrors',
+  ];
+  for (const t of std) assert.equal(tier(BODY + t, 'standard').contentTier, 'complete', t.slice(0, 60));
+  // a review cut mid-sentence in front of the Going Out lines stays truncated
+  assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Painkiller with Going Out Tickets Follow Going Out on Facebook and on Twitter @ESgoingout Shopping Best Buys x', 'standard').contentTier, 'truncated');
+});
+
 // ---------------------------------------------------------------------------
 // BRO-8012: literal pre-filter. Each pre-filtered furniture regex names the
 // literals it cannot match without; furnitureMatch skips the regex (a full-text
@@ -694,4 +711,20 @@ test('BRO-8012 prefilter: plain prose runs none of the pre-filtered regexes (reb
 test('BRO-8012 foldCase: folds the characters JS /i treats as ASCII letters', () => {
   assert.equal(PF.foldCase('Webſite HERE Kelvin dırect'), 'website here kelvin direct');
   assert.ok(/website here/i.test('WEBSITE HERE') && PF.foldCase('WEBSITE HERE').includes('website here'));
+});
+
+test('Standard 2015-16 Going Out tail is stripped without a Shopping footer; ticket titles may hold a full stop (BRO-8092 review)', () => {
+  const { stripCmsWidgetFooters } = createRequire(import.meta.url)('./trailer-signatures.js');
+  const body = 'The production is handsome and the cast commit fully to every scene of this long evening. '.repeat(20).trim();
+  // real shape: the-libertine-west-end-2016/standard--henry-hitchings.json
+  const lib = `${body} Until Dec 3, Theatre Royal Haymarket Buy tickets for The Libertine with Evening Standard Tickets Follow Going Out on Facebook and on Twitter @ESgoingout MORE ABOUT Arts Dominic Cooper`;
+  assert.equal(stripCmsWidgetFooters(lib), `${body} Until Dec 3, Theatre Royal Haymarket`);
+  // real shape: _pending/peter-pan-off-west-end-2026/standard--fiona-mountford.json
+  const pp = `${body} In rep until Feb 4, National Theatre Buy tickets for Peter Pan with Evening Standard Tickets Visit standard.co.uk/theatre for the latest news and reviews from London’s theatre scene. Follow Going Out on Facebook and on Twitter @ESgoingout`;
+  assert.equal(stripCmsWidgetFooters(pp), `${body} In rep until Feb 4, National Theatre`);
+  const wl = `${body} Until April 30 Buy tickets for wonder.land with Going Out Tickets Follow Going Out on Facebook and on Twitter @ESgoingout`;
+  assert.equal(stripCmsWidgetFooters(wl), `${body} Until April 30`);
+  // a short body never loses its tail (widget words near the top are not a footer)
+  const short = 'A brief note. Follow Going Out on Facebook and on Twitter @ESgoingout';
+  assert.equal(stripCmsWidgetFooters(short), short);
 });

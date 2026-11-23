@@ -281,7 +281,50 @@ function textMentionsShortTitle(text, title, minHits = 2, opts = {}) {
   return (text.match(re) || []).length >= minHits ? t.toLowerCase() : null;
 }
 
+/**
+ * A 1-3 digit title ("44", "13") printed AS a title: quoted (“44”, "13,",
+ * ‘44’) or followed by "The Musical" after an optional colon or dash
+ * ("44 The Musical", "44—The Musical", "13: The Musical"). A bare number is
+ * never counted (dates, ages, counts), which is why textMentionsShortTitle
+ * excludes digits. Before this every stored review of 44-off-broadway-2025
+ * (8) and 13-2008 (6) failed validateShowMentioned, and the gap engine
+ * refused the logged-in WaPo read of "44" as show_not_mentioned (BRO-8092).
+ * Returns the title or null. Pure.
+ */
+function numericTitleHits(text, title) {
+  const t = String(title || '').trim().replace(/[.!?]+$/, '');
+  if (!text || typeof text !== 'string' || !/^\d{1,3}$/.test(t)) return { quoted: 0, musical: 0 };
+  const quoted = new RegExp(`(?<![0-9'’])[“"‘']${t}(?![0-9])[,.:;!?]?[”"’']`, 'g');
+  // Capitalised "Musical" only: "13 the musical director" is not the title.
+  // One optional whitespace run per side of the dash (two adjacent \s* went quadratic, review).
+  const musical = new RegExp(`(?<![0-9$£€.,/:#])${t}\\s*(?:[:–—-]\\s*)?(?:The|THE|the) (?:Musical|MUSICAL)\\b`, 'g');
+  return { quoted: (text.match(quoted) || []).length, musical: (text.match(musical) || []).length };
+}
+
+/** How many times a 1-3 digit title is printed as a title (quoted or "N The Musical"). Pure. */
+function countNumericTitleMentions(text, title) {
+  const h = numericTitleHits(text, title);
+  return h.quoted + h.musical;
+}
+
+/**
+ * A 1-3 digit title ("44", "13") printed AS a title: "N The Musical" once
+ * (after an optional colon or dash: "44—The Musical", "13: The Musical"), or
+ * quoted twice (“13,” ... “13”): one quoted number can be an age or a score.
+ * A bare number is never counted (dates, ages, counts), which is why
+ * textMentionsShortTitle excludes digits. Before this every stored review of
+ * 44-off-broadway-2025 (8) and 13-2008 (6) failed validateShowMentioned, and
+ * the gap engine refused the logged-in WaPo read of "44" as
+ * show_not_mentioned (BRO-8092). Returns the title or null. Pure.
+ */
+function textMentionsNumericTitle(text, title) {
+  const h = numericTitleHits(text, title);
+  return h.musical >= 1 || h.quoted >= 2 ? String(title).trim().replace(/[.!?]+$/, '') : null;
+}
+
 module.exports = {
+  textMentionsNumericTitle,
+  countNumericTitleMentions,
   normalizeForMention,
   buildShowTitleVariants,
   countVariant,

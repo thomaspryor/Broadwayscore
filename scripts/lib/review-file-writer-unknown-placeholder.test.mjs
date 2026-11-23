@@ -40,3 +40,16 @@ test('creates the placeholder when the outlet has no other file', () => {
   const r = write(dir);
   assert.doesNotMatch(String(r.reason || ''), /outlet-already-covered/);
 });
+
+// BRO-8092 class guard (BRO-7569 ship-check fix 1165ff7bf01): a stub/excerpt sibling with a url has
+// nothing usable to read, so it is not coverage and the placeholder carrying the excerpt must still be
+// created. Red with the `contentTier === 'complete' || fullText >= 800` clause reverted.
+test('does not count a stub or short-excerpt sibling as coverage (BRO-8092)', () => {
+  for (const thin of [{ contentTier: 'stub', fullText: 'x'.repeat(200) }, { contentTier: 'excerpt', fullText: '' }]) {
+    const r = write(setup(thin));
+    assert.doesNotMatch(String(r.reason || ''), /outlet-already-covered/, JSON.stringify(thin));
+  }
+  // a long-text sibling without a tier stamp still counts
+  const r = write(setup({ contentTier: undefined, fullText: 'x'.repeat(900) }));
+  assert.match(String(r.reason || ''), /outlet-already-covered/);
+});

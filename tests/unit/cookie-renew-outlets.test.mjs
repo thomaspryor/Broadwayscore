@@ -535,3 +535,50 @@ test('profileControlProbe: a failed cookie restore is logged and rethrown, never
   } finally { console.error = orig; }
   assert.ok(errs.some((m) => /RESTORE FAILED/.test(m)), 'restore failure must be logged');
 });
+
+test('BRO-8092 class guard: renew-cookies reads rotation alternates in the real profile with the 8s wait', async () => {
+  const p = COOKIE_PROBES.newyorker;
+  const full = { html: '<p>article</p>', body: 'x'.repeat(8474) };
+  const walled = { html: '<div data-testid="paywall-bar-thin">', body: 'x'.repeat(645) };
+  const waits = [];
+  // A real-shaped context: loadProbe drives page.goto / waitForTimeout / content.
+  // The logged-out profile's paywall bar renders only on the slow read.
+  const page = {
+    goto: async () => ({ status: () => 200 }),
+    waitForTimeout: async (ms) => { waits.push(ms); },
+    content: async () => (waits[waits.length - 1] >= 8000 ? walled.html : full.html),
+  };
+  const ctx = { pages: () => [page], cookies: async () => [], clearCookies: async () => {}, addCookies: async () => {} };
+  const deps = bprobe.profileDeps(ctx, ['wpn_session']);
+  const anon = async (pr) => (pr.url === p.url ? full : walled);
+  const r = await bprobe.classifyWithControl(p, full, { anon, ...deps });
+  assert.ok(waits.length >= 1 && waits.every((w) => w === 8000), `alternates loaded with waitForTimeout 8000 in the profile, got ${waits}`);
+  assert.equal(r.status, 'vacuous', 'a logged-out profile whose bar renders late must not pass');
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(REPO, 'scripts/renew-cookies.js'), 'utf8');
+  assert.ok(src.includes('bprobe.profileDeps(context, cfg.authCookies)'), 'renew-cookies must take its in-profile deps from profileDeps');
+});
+
+test('BRO-8092 class guard (BRO-7705): profileSession never calls a metered free read without the auth cookie a session', async () => {
+  const cfg = renew.RENEW_OUTLETS.newyorker;
+  // Full article, no paywall bar: the probe alone reads logged-in.
+  const probe = { ...COOKIE_PROBES.newyorker, extractBody: () => 'x'.repeat(9000) };
+  const ctxWith = (jar) => ({
+    pages: () => [{ goto: async () => ({ status: () => 200 }), waitForTimeout: async () => {}, content: async () => '<p>article</p>' }],
+    cookies: async () => jar,
+  });
+  const free = await bprobe.profileSession(ctxWith([{ name: 'other', domain: '.newyorker.com', value: 'v' }]), cfg, probe);
+  assert.equal(free.status, 'logged-out', 'no CN_access = no session, whatever the body says');
+  assert.equal(free.cookies, null);
+  // An auth-cookie name on a look-alike domain is not this outlet's session.
+  const lookalike = await bprobe.profileSession(ctxWith([{ name: 'CN_access', domain: '.notnewyorker.com', value: 'v' }]), cfg, probe);
+  assert.equal(lookalike.status, 'logged-out');
+  const real = await bprobe.profileSession(ctxWith([{ name: 'CN_access', domain: '.newyorker.com', value: 'v' }]), cfg, probe);
+  assert.equal(real.status, 'logged-in');
+  assert.deepEqual(real.cookies.map((c) => c.name), ['CN_access']);
+  // The CLI uses this one implementation, and gates adopt/login on a confirmed wall.
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(REPO, 'scripts/renew-cookies.js'), 'utf8');
+  assert.ok(src.includes('bprobe.profileSession(context, cfg, probe, o)'), 'renew-cookies must use cookie-browser-probe.profileSession');
+  assert.match(src, /else if \(!c\.ok\) return done\(1, `profile reads logged out but it is not confirmed/, 'renew-cookies lost the confirmed-wall gate before adopt/login');
+});
