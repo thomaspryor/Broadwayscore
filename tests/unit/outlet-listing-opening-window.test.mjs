@@ -134,3 +134,21 @@ test('window runs do not bump the feed fail streak (daily-run threshold)', () =>
   const daily = poller.buildFeedHealthReport(hm, [], { previous, partial: true });
   assert.equal(daily.outlets.nytg.failStreak, 2);
 });
+
+// BRO-7401: The Ugly One (Arcola) was previewing with openingDate null when Everything Theatre posted its
+// review (2026-11-20 23:40 UTC); the 01:16 window run read the review but had no show to match it to.
+test('a previewing show with no openingDate is in the window from previews start (The Ugly One)', () => {
+  const at = Date.parse('2026-11-21T01:16:21Z');
+  const ugly = { id: 'the-ugly-one-off-west-end-2026', category: 'off-west-end', status: 'previews', openingDate: null, previewsStartDate: '2026-11-17' };
+  assert.deepEqual(ow.selectWindowShows([ugly], at).map((s) => s.id), [ugly.id]);
+  assert.deepEqual(ow.selectLateWindowShows([ugly], at).map((s) => s.id), [ugly.id]);
+  // Bounded: previews 7 + 10 days back is the last in-window day; one day later it drops out.
+  const last = Date.parse('2026-12-04T12:00:00Z');
+  assert.equal(ow.selectWindowShows([ugly], last).length, 1);
+  assert.equal(ow.selectWindowShows([ugly], last + 86400000).length, 0);
+  // Not before previews start, not for closed/announced undated shows, and a dated show uses openingDate only.
+  assert.equal(ow.selectWindowShows([{ ...ugly, previewsStartDate: '2026-11-25' }], at).length, 0);
+  assert.equal(ow.selectWindowShows([{ ...ugly, status: 'closed' }], at).length, 0);
+  assert.equal(ow.selectWindowShows([{ ...ugly, status: 'announced' }], at).length, 0);
+  assert.equal(ow.selectWindowShows([{ ...ugly, openingDate: '2026-11-10' }], at).length, 0);
+});

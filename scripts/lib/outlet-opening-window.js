@@ -45,15 +45,34 @@ function windowDaysFor(category) {
   return WINDOW_DAYS_BY_CATEGORY[category] ?? WINDOW_DAYS_PAST;
 }
 
+// BRO-7401: a running show with no openingDate yet (press night not in shows.json) still has a press
+// night somewhere after previews start. The Ugly One (Arcola, previews 2026-11-17) had openingDate null
+// until after 2026-11-21 08:56 UTC, so the 01:16/02:15/05:22/07:36 window runs left it out of the match
+// pool even though they read Everything Theatre's review (posted 2026-11-20 23:40); the sweep found it at
+// 07:57. Such a show stays in the window from previews start for (p90 previews-to-press-night gap per
+// market, 2026 shows.json: OWE 10, WE 17, OB 19, BW 30) plus the market's normal window.
+const UNDATED_PRESS_NIGHT_DAYS = Object.freeze({ 'off-west-end': 10, 'west-end': 17, 'off-broadway': 19, broadway: 30 });
+const UNDATED_STATUSES = new Set(['previews', 'open']);
+
+/** UTC day the window counts from, and the extra days it allows: openingDate, else (running, undated) previewsStartDate. */
+function windowAnchor(s) {
+  const d = utcDay(s.openingDate);
+  if (d !== null) return { day: d, extra: 0 };
+  if (!UNDATED_STATUSES.has(s.status)) return null;
+  const p = utcDay(s.previewsStartDate);
+  return p === null ? null : { day: p, extra: UNDATED_PRESS_NIGHT_DAYS[s.category] ?? WINDOW_DAYS_PAST };
+}
+
 /** Shows whose openingDate is 0..N UTC days ago, N = windowDaysFor(category) unless maxDaysPast is
- *  given (status-independent: a press night can pass while status is still "previews" or "upcoming"). */
+ *  given (status-independent: a press night can pass while status is still "previews" or "upcoming").
+ *  A previewing/open show with no openingDate counts from previewsStartDate (see windowAnchor). */
 function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = null } = {}) {
   const today = Math.floor(now / DAY_MS);
   return allShows.filter((s) => {
     if (!WINDOW_CATEGORIES.has(s.category)) return false;
-    const d = utcDay(s.openingDate);
-    const limit = maxDaysPast ?? windowDaysFor(s.category);
-    return d !== null && today - d >= 0 && today - d <= limit;
+    const a = windowAnchor(s);
+    const limit = (maxDaysPast ?? windowDaysFor(s.category)) + (a ? a.extra : 0);
+    return a !== null && today - a.day >= 0 && today - a.day <= limit;
   });
 }
 
@@ -195,5 +214,5 @@ function activeCollectShowIds(runs) {
 module.exports = {
   needsCollection, showsNeedingCollection, activeCollectShowIds,
   WINDOW_DAYS_PAST, WINDOW_DAYS_BY_CATEGORY, windowDaysFor, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
-  selectWindowShows, selectLateWindowShows, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
+  selectWindowShows, selectLateWindowShows, windowAnchor, UNDATED_PRESS_NIGHT_DAYS, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };
