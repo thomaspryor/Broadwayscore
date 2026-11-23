@@ -132,6 +132,14 @@ function checkoutKind(wt) {
   } catch { return 'other'; }
 }
 
+/** `git worktree lock` writes <gitdir>/locked; a locked tree is never reaped. */
+function isGitLocked(wt) {
+  try {
+    const m = fs.readFileSync(path.join(wt, '.git'), 'utf8').match(/^gitdir:\s*(.+)\s*$/m);
+    return !!m && fs.existsSync(path.join(m[1].trim(), 'locked'));
+  } catch { return true; }
+}
+
 function git(wt, args) {
   return execFileSync('git', ['-C', wt, ...args], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
@@ -164,6 +172,7 @@ function decide(parent, { now = Date.now(), snapshot, deadGraceMin = DEAD_GRACE_
   if (hasOpenPathUnder(snapshot === undefined ? openPathSnapshot() : snapshot, real)) return { reap: false, reason: 'a process holds a file under it (or lsof failed)' };
   const kind = checkoutKind(wt);
   if (kind === 'registered') {
+    if (isGitLocked(wt)) return { reap: false, kind, reason: 'git worktree is locked' };
     if (!canReapCheckout(wt)) return { reap: false, kind, reason: 'dirty, ignored work, live lease or process' };
     try { execFileSync('git', ['-C', wt, 'merge-base', '--is-ancestor', 'HEAD', 'origin/main'], { timeout: GIT_TIMEOUT_MS, stdio: 'ignore' }); }
     catch { return { reap: false, kind, reason: 'HEAD not on origin/main' }; }
@@ -233,7 +242,7 @@ function listCandidates({ roots = defaultRoots(), repos = [], prefix = null } = 
  * Reap every eligible temp checkout. Never throws.
  * @returns {{removed:number, freedKb:number, results:object[], skipped?:string}}
  */
-function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, dryRun = false, now = Date.now(), log = () => {} } = {}) {
+function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, deadGraceMin = DEAD_GRACE_MIN, dryRun = false, now = Date.now(), log = () => {} } = {}) {
   const summary = { removed: 0, freedKb: 0, results: [] };
   if (process.env.TEMP_CHECKOUT_REAP_DISABLED === '1') return { ...summary, skipped: 'TEMP_CHECKOUT_REAP_DISABLED=1' };
   try {
@@ -242,7 +251,7 @@ function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, dryR
     const snapshot = openPathSnapshot();
     if (snapshot === null) { log('lsof failed; keeping every temp checkout this run'); return { ...summary, skipped: 'lsof failed' }; }
     for (const parent of candidates) {
-      const r = reapOne(parent, { dryRun, snapshot, now, deadOnly });
+      const r = reapOne(parent, { dryRun, snapshot, now, deadOnly, deadGraceMin });
       summary.results.push({ parent, ...r });
       if (r.removed) { summary.removed++; summary.freedKb += r.kb || 0; log(`REMOVE-TMP ${parent} — freed ${r.kb}KB, ${r.reason}`); }
       else if (r.wouldRemove) log(`WOULD-REMOVE-TMP ${parent} — ${r.kb}KB, ${r.reason}`);

@@ -40,6 +40,12 @@ function makeRepo({ withNodeModules = true } = {}) {
   git('config', 'user.name', 'T');
   git('remote', 'add', 'origin', origin);
   if (withNodeModules) fs.mkdirSync(path.join(work, 'node_modules'));
+  // BRO-8124: like the real repo, ignore node_modules. Without this the
+  // node_modules symlink prepareCheckWorkdir adds makes every checkout read
+  // dirty, removeCheckout keeps it, t.after then deletes this repo under it,
+  // and each run of this file leaked 3 orphan linear-done-verify-* dirs.
+  // info/exclude is shared by linked worktrees, so no commit is needed.
+  fs.appendFileSync(path.join(work, '.git', 'info', 'exclude'), '\nnode_modules\n');
   return { root, work, git };
 }
 

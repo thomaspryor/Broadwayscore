@@ -78,7 +78,7 @@ const { execFileSync } = require('child_process');
 
 const { defaultDetail, tapDetail, runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
-const { isRunnableTestFile, floorSummaryLine } = require('./merge-post-merge-test-gate.js');
+const { isRunnableTestFile, floorSummaryLine, reapKilledBaselineCheckouts } = require('./merge-post-merge-test-gate.js');
 const { segmentHeads } = require('./land-train.js');
 const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
 const { collectBuildScriptDependencies } = require('./build-script-dependencies.js');
@@ -698,6 +698,12 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
         detail: tapDetail,
         summary: floorSummaryLine,
       });
+      // BRO-8124: a floor killed at MERGED_TREE_TIMEOUT_MS leaks its 1-4GB
+      // baseline checkout; it is dead now, so reap it here, not hours later.
+      try {
+        const reaped = reapKilledBaselineCheckouts();
+        if (reaped.removed) log(`[land] reaped ${reaped.removed} leaked floor baseline checkout(s), ${Math.round(reaped.freedKb / 1024)}MB`);
+      } catch { /* best-effort; GC and the next checkout retry */ }
     }
 
     // tier 3's "no runnable check" refusal is right when NOTHING proved the

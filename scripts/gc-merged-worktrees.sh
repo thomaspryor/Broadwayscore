@@ -134,6 +134,21 @@ fi
 # override fails ENOENT, the stale-pid branch finds no pid file, and the script
 # reports "another invocation already in progress" forever when nothing is.
 mkdir -p "$(dirname "$GC_LOCK_DIR")" 2>/dev/null || true
+# BRO-8124: reap leaked makeFreshCheckout temp checkouts BEFORE the global
+# lock. On 2026-11-23 one GC pass held that lock for 10 hours, so every hourly
+# run and bsc-runner's disk-pressure self-heal hit SKIP-RUN and 19GB of
+# 1-4GB checkouts piled up. This pass has its own safety rules (dead owner or
+# 60m idle, nothing open under it, HEAD on origin/main) and takes ~seconds.
+# Skipped under the WORKTREE_GC_REPOS_JSON test seam unless the test names
+# its own TEMP_CHECKOUT_REAP_ROOTS, so a fixture run never scans the real /tmp.
+if [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] || [ -n "${TEMP_CHECKOUT_REAP_ROOTS:-}" ]; then
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/reap-temp-checkouts.js" ]; then
+    _tcr_args=(--all --repo "$PRIMARY_REPO")
+    [ "$DRY_RUN" = "1" ] && _tcr_args+=(--dry-run)
+    node "$SCRIPT_DIR/lib/reap-temp-checkouts.js" "${_tcr_args[@]}" 2>&1 \
+      | while IFS= read -r _tcr_line; do echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] $_tcr_line"; done | tee -a "$LOG" || true
+  fi
+fi
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1
@@ -496,60 +511,33 @@ stale_unmerged=()
 # Process shared-parser records containing path, branch and lock state.
 # Reads $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS,
 # which gc_one_repo() sets before invoking this per repo.
-# Detached temp checkouts leaked by a killed caller (BRO-5364).
+# Detached temp checkouts leaked by a killed caller (BRO-5364, BRO-8124).
 # makeFreshCheckout (acceptance-check-core.js) creates <tmpdir>/<prefix>XXXXXX/main
-# with `git worktree add --detach` and removes it in a finally block; a killed
-# caller leaks it, and the detached-HEAD SKIP in flush() kept it forever
-# (2026-10-14: a day-old 1.2GB merge-test-gate-baseline checkout helped take /
-# to 2.1GB free). Reaped only when ALL hold: under a temp root, parent is a
-# known makeFreshCheckout mkdtemp name (keep TMP_CHECKOUT_PREFIXES in step
-# with the callers; gc-reap-stale-tmp-checkout.test.mjs fails on a new
-# prefix), the parent and every file idle > TMP_CHECKOUT_MAX_AGE_MIN, and HEAD
-# already on origin/main. Returns 0 when handled, 1 to fall through to SKIP.
-TMP_CHECKOUT_MAX_AGE_MIN="${TMP_CHECKOUT_MAX_AGE_MIN:-360}"
+# with `git worktree add --detach`; a killed caller leaks it, and the
+# detached-HEAD SKIP in flush() kept it forever. The decision (known prefix
+# under a temp root, dead owner >10m or ownerless idle >60m, nothing open under
+# it, clean, HEAD on origin/main) lives in ONE place, reap-temp-checkouts.js,
+# which also runs before the lock above. Returns 0 when handled, 1 to fall
+# through to SKIP.
 reap_stale_tmp_checkout() {
-  local wt="$1" parent sz owner reap_reason
-  case "$wt" in
-    *..*) return 1 ;;
-    /tmp/*/main|/private/tmp/*/main|/var/folders/*/main|/private/var/folders/*/main) ;;
-    *) return 1 ;;
-  esac
-  parent="${wt%/main}"
-  case "${parent##*/}" in
-    acceptance-check-??????|auto-recheck-??????|card-relevance-check-??????|close-verify-??????|\
-    close-verify-dryrun-??????|done-evidence-??????|landed-but-open-??????|linear-done-verify-??????|\
-    merge-test-gate-baseline-??????|open-backlog-sweep-??????|zombie-verify-??????) ;;
-    *) return 1 ;;
-  esac
-  [ -f "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" ] || return 1
-  owner=$(node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" owner "$wt") || return 1
-  case "$owner" in
-    dead)
-      # The creator died. Allow provisioning/subprocess teardown to settle first.
-      [ -n "$(find "$parent" -maxdepth 0 -mmin +10 2>/dev/null)" ] || return 1
-      reap_reason="dead owner, older than 10m"
-      ;;
-    legacy)
-      [ -n "$(find "$parent" -maxdepth 0 -mmin +"$TMP_CHECKOUT_MAX_AGE_MIN" 2>/dev/null)" ] || return 1
-      find "$wt" -path "$wt/node_modules" -prune -o -mmin -"$TMP_CHECKOUT_MAX_AGE_MIN" -print 2>/dev/null | grep -q . && return 1
-      reap_reason="legacy checkout idle >${TMP_CHECKOUT_MAX_AGE_MIN}m"
-      ;;
-    *) return 1 ;;
-  esac
-  node "$SCRIPT_DIR/lib/acceptance-checkout-owner.js" safe "$wt" || return 1
-  git -C "$wt" merge-base --is-ancestor HEAD origin/main 2>/dev/null || return 1
-  sz=$(du -sk "$wt" 2>/dev/null | awk '{print $1}')
-  sz=${sz:-0}
+  local wt="$1" out kb reason
+  case "$wt" in */main) ;; *) return 1 ;; esac
+  [ -f "$SCRIPT_DIR/lib/reap-temp-checkouts.js" ] || return 1
   if [ "$DRY_RUN" = "1" ]; then
-    log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — $reap_reason, HEAD on origin/main"
+    out=$(node "$SCRIPT_DIR/lib/reap-temp-checkouts.js" --one "$wt" --dry-run 2>/dev/null) || return 1
   else
-    LC_ALL=C git worktree remove "$wt" >/dev/null 2>&1 || return 1
-    rm -f "$parent/.acceptance-owner.json"
-    rmdir "$parent" 2>/dev/null || true
-    log "REMOVE-TMP [$CURRENT_REPO_NAME] $wt — freed $(human_kb "$sz"), $reap_reason, HEAD on origin/main"
+    out=$(node "$SCRIPT_DIR/lib/reap-temp-checkouts.js" --one "$wt" 2>/dev/null) || return 1
+  fi
+  kb=$(printf '%s' "$out" | awk '{print $2}')
+  case "$kb" in ''|*[!0-9]*) kb=0 ;; esac
+  reason=$(printf '%s' "$out" | cut -d' ' -f3-)
+  if [ "$DRY_RUN" = "1" ]; then
+    log "WOULD-REMOVE-TMP  [$CURRENT_REPO_NAME] $wt — $reason"
+  else
+    log "REMOVE-TMP [$CURRENT_REPO_NAME] $wt — freed $(human_kb "$kb"), $reason"
   fi
   removed=$((removed+1))
-  removed_freed_kb=$((removed_freed_kb + sz))
+  removed_freed_kb=$((removed_freed_kb + kb))
   return 0
 }
 

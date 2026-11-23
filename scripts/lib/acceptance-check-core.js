@@ -129,6 +129,16 @@ function sleepMs(ms) {
  *   "pre-existing").
  * @returns {{dir:string, wt:string, repo:string}}
  */
+/**
+ * BRO-8124: before making a checkout, reap dead-owner siblings of the same
+ * prefix that a killed earlier caller leaked (SIGKILL, or a SIGTERM that hit
+ * while this process sat blocked in spawnSync, skip registerExitCleanup).
+ * Never throws; TEMP_CHECKOUT_REAP_DISABLED=1 turns it off.
+ */
+function reapDeadSiblings(prefix) {
+  try { require('./reap-temp-checkouts.js').reapTempCheckouts({ roots: [os.tmpdir()], prefix, deadOnly: true }); } catch { /* best-effort */ }
+}
+
 function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null, lockRetryDelaysMs = LOCK_RETRY_DELAYS_MS } = {}) {
   // Every git call here is TIME-BOXED. A synchronous caller (notion-brain's
   // close-time check) is holding a person or a sync sweep hostage while this
@@ -163,6 +173,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // that exact commit instead — the fetch above still runs first so the sha
   // is guaranteed reachable even if it only just landed on origin.
   const sha = pinnedSha || execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
+  reapDeadSiblings(prefix);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
@@ -225,6 +236,7 @@ function shouldCloneAfterFetchFailure(err, pinnedSha) {
  */
 function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
   const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  reapDeadSiblings(prefix);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };

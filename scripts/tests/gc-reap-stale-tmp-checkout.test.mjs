@@ -18,6 +18,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 const SCRIPT = fileURLToPath(new URL('../gc-merged-worktrees.sh', import.meta.url));
 const REPOS_HELPER = fileURLToPath(new URL('../lib/worktree-gc-repos.js', import.meta.url));
@@ -134,10 +137,11 @@ test('every makeFreshCheckout prefix in scripts/ is on the GC reap allowlist', (
     { cwd: root, encoding: 'utf8' });
   const prefixes = [...new Set([...src.matchAll(/prefix: '([a-z-]+)'/g)].map((m) => m[1]))];
   assert.ok(prefixes.length >= 5, `prefix scan looks broken: ${prefixes}`);
-  const gc = fs.readFileSync(SCRIPT, 'utf8');
+  // BRO-8124: the allowlist lives in reap-temp-checkouts.js, which the GC delegates to.
+  const { TEMP_CHECKOUT_PREFIXES } = require(fileURLToPath(new URL('../lib/reap-temp-checkouts.js', import.meta.url)));
   // acceptance-check- is makeFreshCheckout's default prefix.
   for (const p of ['acceptance-check-', ...prefixes]) {
-    assert.ok(gc.includes(`${p}??????`), `gc-merged-worktrees.sh reap allowlist is missing ${p}`);
+    assert.ok(TEMP_CHECKOUT_PREFIXES.includes(p), `reap-temp-checkouts.js TEMP_CHECKOUT_PREFIXES is missing ${p}`);
   }
 });
 
