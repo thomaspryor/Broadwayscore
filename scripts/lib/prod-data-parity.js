@@ -75,8 +75,19 @@ function buildSnapshot() {
   if (!sample.length) throw new Error('No generated show details; run the show-details generator first');
   const commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
   const snapshot = { version: 1, commit, showsBlobSha: blobSha(showsBytes), reviewsBlobSha: blobSha(reviewsBytes), sample };
+  // BRO-8056 G1: a refreshed page computes with the build's instant; the probe needs it to
+  // recompute that page's expectation. prebuild.sh writes the manifest before this snapshot.
+  const refreshBuildInstant = readRefreshBuildInstant();
+  if (refreshBuildInstant != null) snapshot.refreshBuildInstant = refreshBuildInstant;
   snapshot.id = createHash('sha256').update(JSON.stringify(snapshot)).digest('hex');
   return snapshot;
+}
+
+function readRefreshBuildInstant() {
+  try {
+    const m = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'show-refresh-manifest.json'), 'utf8'));
+    return Number.isFinite(m?.buildInstant) ? m.buildInstant : null;
+  } catch { return null; }
 }
 
 function validateSnapshot(snapshot) {
@@ -84,6 +95,7 @@ function validateSnapshot(snapshot) {
       || !/^[a-f0-9]{40}$/.test(snapshot.showsBlobSha || '') || !/^[a-f0-9]{40}$/.test(snapshot.reviewsBlobSha || '')
       || !/^[a-f0-9]{64}$/.test(snapshot.id || '') || !Array.isArray(snapshot.sample)
       || !snapshot.sample.length || snapshot.sample.length > 20) throw new Error('Invalid deployed parity snapshot');
+  if (snapshot.refreshBuildInstant !== undefined && !Number.isFinite(snapshot.refreshBuildInstant)) throw new Error('Invalid parity refresh build instant');
   const ids = new Set();
   for (const s of snapshot.sample) {
     if (!s.id || ids.has(s.id) || !/^[a-z0-9-]+$/.test(s.slug || '')
@@ -137,12 +149,39 @@ function readPage(html) {
   return { score: scores[0], reviewCount: counts[0] || 0 };
 }
 
+// BRO-8056 G1: the page's show-refresh marker (src/lib/show-refresh-core.ts SHOW_REFRESH_REV_META).
+// Absent (reader off), 'base' or 'base-error' => the page used the build's data.
+const REFRESH_META = 'show-refresh-rev';
+function readRefreshMarker(html) {
+  const value = load(html)(`meta[name="${REFRESH_META}"]`).first().attr('content');
+  if (value === undefined || value === 'base' || value === 'base-error') return { kind: 'base', value: value ?? null };
+  if (/^[0-9a-f]{16}$/.test(value)) return { kind: 'hash', value };
+  return { kind: 'invalid', value };
+}
+
+/**
+ * The parity row a page rendered from published slice show/<id>/<hash>.json must show:
+ * read the slice with the reader's anon key, check its hash, recompute it the way the
+ * page does (scripts/lib/show-refresh/expected-parity-row.ts). Throws when it cannot,
+ * and the probe counts that page as unavailable, never mismatched.
+ */
+async function defaultRefreshExpectation(id, hash, snapshot) {
+  if (!Number.isFinite(snapshot.refreshBuildInstant)) throw new Error('snapshot has no refresh build instant');
+  const store = require('./show-refresh/store');
+  const { sliceHash } = require('./show-refresh/slice');
+  const read = await store.readJsonObject(store.readerStoreFromEnv(process.env), store.showObjectPath(id, hash));
+  if (read.state !== 'ok') throw new Error(`refresh slice ${read.state === 'error' ? read.error : 'missing'}`);
+  if (sliceHash(read.value) !== hash) throw new Error('refresh slice hash mismatch');
+  const { expectedParityRow } = require('tsx/cjs/api').require('./show-refresh/expected-parity-row.ts', __filename);
+  return expectedParityRow(read.value, { buildInstant: snapshot.refreshBuildInstant });
+}
+
 function comparePage(expected, actual) {
   return ['score', 'reviewCount'].filter(key => expected[key] !== actual[key])
     .map(field => ({ field, expected: expected[field], actual: actual[field] }));
 }
 
-async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch } = {}) {
+async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch, refreshExpectation = defaultRefreshExpectation } = {}) {
   // Own-site uptime/numeric monitoring, not third-party scraping. No paid proxy.
   async function get(url, json = false) {
     const response = await fetchImpl(url, { cache: 'no-store', headers: { 'cache-control': 'no-cache' }, signal: AbortSignal.timeout(20000) });
@@ -158,9 +197,26 @@ async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch
     let next = 0;
     await Promise.all(Array.from({ length: 4 }, async () => {
       while (next < snapshot.sample.length) {
-        const expected = snapshot.sample[next++];
+        const row = snapshot.sample[next++];
         try {
-          const html = await get(new URL(`/show/${expected.slug}`, base));
+          const html = await get(new URL(`/show/${row.slug}`, base));
+          let expected = row;
+          const marker = readRefreshMarker(html);
+          if (marker.kind === 'invalid') {
+            result.mismatched++;
+            result.rows.push({ id: row.id, differences: [{ field: 'refresh marker', expected: 'base or a slice hash', actual: marker.value }] });
+            continue;
+          }
+          if (marker.kind === 'hash') {
+            try {
+              const overlay = await refreshExpectation(row.id, marker.value, snapshot);
+              expected = { ...row, score: overlay.score, reviewCount: overlay.reviewCount, refreshHash: marker.value };
+            } catch (err) {
+              result.unavailable++;
+              result.rows.push({ id: row.id, error: `refreshed page ${marker.value}: ${err.message}` });
+              continue;
+            }
+          }
           let actual;
           try { actual = readPage(html); }
           catch (err) {
@@ -173,7 +229,7 @@ async function probe({ base = 'https://broadwayscorecard.com', fetchImpl = fetch
           if (differences.length) result.mismatched++; else result.matched++;
         } catch (err) {
           result.unavailable++;
-          result.rows.push({ id: expected.id, error: err.message });
+          result.rows.push({ id: row.id, error: err.message });
         }
       }
     }));
@@ -234,4 +290,4 @@ async function main(args = process.argv.slice(2)) {
 }
 
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(err => { console.error(err.message); process.exitCode = 2; });
-module.exports = { selectSample, buildSnapshot, validateSnapshot, readPage, comparePage, probe, runProbe, main };
+module.exports = { selectSample, buildSnapshot, validateSnapshot, readPage, readRefreshMarker, comparePage, probe, runProbe, main, defaultRefreshExpectation };

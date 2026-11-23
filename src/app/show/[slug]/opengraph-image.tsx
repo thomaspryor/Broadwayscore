@@ -48,7 +48,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
 
 export default async function OGImage({ params: pendingParams }: { params: Promise<{ slug: string }> }) {
   const params = await pendingParams;
-  const show = getShowForRender(params.slug)?.show;
+  const show = (await getShowForRender(params.slug))?.show;
 
   // Fall back to homepage OG if no show / no image / flag-gated category
   if (!show || !isCategoryEnabled(show.category)) {
