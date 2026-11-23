@@ -15,6 +15,7 @@
  * Needs SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY.
  * Exit 0 ok, 1 failure, 2 usage.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const store = require('./lib/show-refresh/store');
 const { putVerified } = require('./lib/live-score/storage');
@@ -32,10 +33,18 @@ function parseArgs(argv) {
   return o;
 }
 
-/** Healthy = bucket exists, is private, kill.json and home.json both read ok. */
+/**
+ * Healthy = bucket exists and is private, kill.json is a valid kill object
+ * (boolean killed) and home.json a schema-1 object. A readable but malformed
+ * file is reported as state 'malformed', not 'ok'.
+ */
 function statusHealthy(st) {
   return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok';
 }
+
+const validKill = (v) => Boolean(v) && typeof v === 'object' && typeof v.killed === 'boolean';
+const validHome = (v) => Boolean(v) && typeof v === 'object' && !Array.isArray(v) && v.schema === 1 && typeof v.shows === 'object' && v.shows !== null;
+const shape = (read, valid) => (read.state === 'ok' && !valid(read.value) ? 'malformed' : read.state);
 
 async function status(s) {
   const meta = await s.getBucket();
@@ -46,22 +55,36 @@ async function status(s) {
   return {
     bucket: s.bucket,
     public: meta.public,
-    kill: { state: kill.state, killed: eff.killed, reason: eff.reason, seq: kill.value && kill.value.seq, at: kill.value && kill.value.at },
-    home: { state: home.state, generation: home.value && home.value.generation, shows: home.value && home.value.shows ? Object.keys(home.value.shows).length : null },
+    kill: { state: shape(kill, validKill), killed: eff.killed, reason: eff.reason, seq: kill.value && kill.value.seq, at: kill.value && kill.value.at },
+    home: { state: shape(home, validHome), generation: home.value && home.value.generation, shows: home.value && home.value.shows ? Object.keys(home.value.shows).length : null },
   };
 }
 
-/** No-cache write, then a keyless read through a fresh signed URL, all inside 5 s. */
+/**
+ * Plan row 15: sign ONE URL, write v1, read it keyless, overwrite with v2,
+ * read the SAME URL again. Both reads must match, all within 5 s. This proves
+ * what the reader relies on: a no-cache object read through a long-lived
+ * signed URL shows an overwrite promptly (no stale CDN copy).
+ */
 async function selftest(s, { fetchImpl = fetch, now = Date.now } = {}) {
   const t0 = now();
-  const text = JSON.stringify({ probe: t0, rand: Math.random().toString(36).slice(2) });
-  await putVerified(s, SELFTEST_PATH, text, { cacheControl: store.CACHE.mutable, cacheBust: t0 });
+  const probe = (v) => JSON.stringify({ probe: t0, v, rand: Math.random().toString(36).slice(2) });
+  const v1 = probe(1);
+  await putVerified(s, SELFTEST_PATH, v1, { cacheControl: store.CACHE.mutable, cacheBust: t0 });
   const url = await s.signUrl(SELFTEST_PATH, 60);
-  const res = await fetchImpl(url, { signal: AbortSignal.timeout(SELFTEST_BUDGET_MS) });
-  const body = await res.text();
+  const read = async () => {
+    const res = await fetchImpl(url, { signal: AbortSignal.timeout(SELFTEST_BUDGET_MS) });
+    return { status: res.status, body: await res.text() };
+  };
+  const r1 = await read();
+  const v2 = probe(2);
+  await putVerified(s, SELFTEST_PATH, v2, { cacheControl: store.CACHE.mutable, cacheBust: t0 + 1 });
+  const r2 = await read();
   const ms = now() - t0;
-  const ok = res.status === 200 && body === text && ms <= SELFTEST_BUDGET_MS;
-  return { ok, ms, status: res.status, matched: body === text };
+  const matched = r1.body === v1 && r2.body === v2;
+  const status = r2.status === 200 ? r1.status : r2.status;
+  const ok = r1.status === 200 && r2.status === 200 && matched && ms <= SELFTEST_BUDGET_MS;
+  return { ok, ms, status, matched, overwriteSeen: r2.body === v2 };
 }
 
 async function main(argv = process.argv.slice(2), env = process.env, out = console.log) {
@@ -87,13 +110,14 @@ async function main(argv = process.argv.slice(2), env = process.env, out = conso
     }
     case 'selftest': {
       const r = await selftest(s);
-      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: status ${r.status}, matched ${r.matched}, ${r.ms} ms (budget ${SELFTEST_BUDGET_MS})`);
+      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: status ${r.status}, matched ${r.matched}, overwrite seen ${r.overwriteSeen}, ${r.ms} ms (budget ${SELFTEST_BUDGET_MS})`);
       return r.ok ? 0 : 1;
     }
     case 'reader-urls': {
       if (!a.out || a.out === true) { out('--out=FILE is required (URLs are never printed)'); return 2; }
       const urls = await store.readerUrls(s);
       fs.writeFileSync(a.out, Object.entries(urls).map(([k, v]) => `${k}=${v}`).join('\n') + '\n', { mode: 0o600 });
+      fs.chmodSync(a.out, 0o600); // writeFileSync's mode only applies when it creates the file
       out(`wrote ${Object.keys(urls).join(', ')} to ${a.out}`);
       return 0;
     }

@@ -1,10 +1,12 @@
 name: Show Refresh Kill Switch
 
 # BRO-8056 phase 1c: the reader kill switch for per-show publishing. kill sets
-# kill.json killed:true in the private show-refresh bucket; within one reader
-# poll every show page renders the build's own data again. unkill reverses it.
-# status prints the current state. Nothing reads the store until phase 2 lands
-# (flag OFF), so today this changes nothing a visitor sees.
+# kill.json killed:true in the private show-refresh bucket (written, read back
+# and confirmed); the phase-2 reader then renders the build's own data. How
+# fast a page reflects it depends on the reader's caching, which phase 2 sets
+# and measures (no promise here). unkill reverses it. status prints the
+# current state. Nothing reads the store until phase 2 lands (flag OFF), so
+# today this changes nothing a visitor sees.
 #
 # Run: Actions -> Show Refresh Kill Switch -> action + reason.
 # No npm ci: the CLI uses only Node built-ins.
@@ -47,15 +49,19 @@ jobs:
           ACTION: ${{ inputs.action }}
           REASON: ${{ inputs.reason }}
         run: |
-          set -o pipefail  # the tee below must not hide a failed kill
+          set -eo pipefail  # the tee must not hide a failed kill
           # An empty reason must never block an emergency kill.
           REASON="${REASON:-workflow $ACTION by $GITHUB_ACTOR}"
           if [ "$ACTION" = "status" ]; then
-            node scripts/show-refresh-store.js --status
+            node scripts/show-refresh-store.js --status | tee -a "$GITHUB_STEP_SUMMARY"
           else
-            node scripts/show-refresh-store.js "--$ACTION" "--reason=$REASON"
-            node scripts/show-refresh-store.js --status
-          fi | tee -a "$GITHUB_STEP_SUMMARY"
+            # The kill/unkill itself confirms the stored state; a failure here fails the job.
+            node scripts/show-refresh-store.js "--$ACTION" "--reason=$REASON" | tee -a "$GITHUB_STEP_SUMMARY"
+            # Status afterwards is informational: an unhealthy home.json must not
+            # turn a successful kill red.
+            node scripts/show-refresh-store.js --status | tee -a "$GITHUB_STEP_SUMMARY" \
+              || echo "::warning::kill.json was set, but the store status check is unhealthy (see summary)"
+          fi
 
       - name: Notify on failure
         if: failure()

@@ -183,7 +183,7 @@ describe('show-refresh store', () => {
     assert.equal((await store.readJsonObject(down, 'home.json')).state, 'error');
   });
 
-  test('setKill increments seq, records reason, and refuses to write blind', async () => {
+  test('setKill increments seq, records reason; unkill refuses to write blind', async () => {
     reset();
     const s = store.storeFromEnv(env());
     await store.setupStore(s);
@@ -193,17 +193,100 @@ describe('show-refresh store', () => {
     const u = await store.setKill(s, { killed: false, reason: 'fixed' });
     assert.equal(u.seq, 3);
     fake.state.failNext = 1;
-    await assert.rejects(store.setKill(s, { killed: true }), /unreadable/);
+    await assert.rejects(store.setKill(s, { killed: false }), /refusing a blind unkill/);
     assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).seq, 3);
   });
 
-  test('effectiveKill fails closed on error and malformed, open on missing', () => {
-    assert.equal(store.effectiveKill({ state: 'missing' }).killed, false);
+  test('a KILL still lands when kill.json is unreadable, with a seq above any earlier one', async () => {
+    reset();
+    const s = store.storeFromEnv(env());
+    await store.setupStore(s);
+    fake.state.failNext = 1; // the pre-read fails; the write and read-back work
+    const now = 1_800_000_000_000;
+    const k = await store.setKill(s, { killed: true, reason: 'emergency', now });
+    assert.equal(k.killed, true);
+    assert.equal(k.seq, now);
+    const stored = JSON.parse(fake.state.objects.get('show-refresh/kill.json'));
+    assert.equal(stored.killed, true);
+    assert.equal(stored.seq, now);
+  });
+
+  test('setKill overwrites a kill.json that is not valid JSON', async () => {
+    reset();
+    const s = store.storeFromEnv(env());
+    await store.setupStore(s);
+    fake.state.objects.set('show-refresh/kill.json', '{not json');
+    const u = await store.setKill(s, { killed: false, reason: 'repair' });
+    assert.equal(u.seq, 1);
+    assert.equal(JSON.parse(fake.state.objects.get('show-refresh/kill.json')).killed, false);
+  });
+
+  test('setKill fails loudly when a concurrent writer changes kill.json after our write', async () => {
+    reset();
+    const base = store.storeFromEnv(env());
+    await store.setupStore(base);
+    let gets = 0;
+    // The third GET (after the pre-read and putVerified's read-back) sees a rival write.
+    const s = { ...base, get: async (path, o) => {
+      gets++;
+      if (gets === 3) fake.state.objects.set('show-refresh/kill.json', JSON.stringify({ schema: 1, killed: false, seq: 99 }));
+      return base.get(path, o);
+    } };
+    await assert.rejects(store.setKill(s, { killed: true, reason: 'x' }), /changed under us .*killed=false seq=99/);
+  });
+
+  test('effectiveKill fails closed on missing, error and malformed', () => {
+    assert.equal(store.effectiveKill({ state: 'missing' }).killed, true);
     assert.equal(store.effectiveKill({ state: 'error', error: 'x' }).killed, true);
     assert.equal(store.effectiveKill({ state: 'ok', value: { killed: 'no' } }).killed, true);
     assert.equal(store.effectiveKill({ state: 'ok', value: null }).killed, true);
     assert.equal(store.effectiveKill({ state: 'ok', value: { killed: false } }).killed, false);
     assert.equal(store.effectiveKill({ state: 'ok', value: { killed: true, reason: 'r' } }).reason, 'r');
+  });
+
+  test('getBucket: not-found is null, any other 400 throws', async () => {
+    const mk = (status, body) => makeStorage({ baseUrl: 'http://x', serviceKey: 'k', bucket: 'b', isPublic: false,
+      fetchImpl: async () => new Response(body, { status }) });
+    assert.equal(await mk(400, '{"statusCode":"404","error":"Bucket not found"}').getBucket(), null);
+    assert.equal(await mk(404, '').getBucket(), null);
+    await assert.rejects(mk(400, '{"statusCode":"403","error":"Unauthorized"}').getBucket(), /getBucket 400/);
+  });
+
+  test('isObjectMissing: object not found is missing, bucket not found is not', () => {
+    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"not_found","message":"Object not found"}' }), true);
+    assert.equal(store.isObjectMissing({ status: 400, text: '{"statusCode":"404","error":"Bucket not found"}' }), false);
+  });
+
+  test('--status reports a malformed home.json or kill.json and exits 1', async () => {
+    const { main } = require('../../scripts/show-refresh-store.js');
+    const run = async (args) => { const lines = []; const code = await main(args, env(), (l) => lines.push(l)); return { code, out: lines.join('\n') }; };
+    reset();
+    await run(['--setup']);
+    fake.state.objects.set('show-refresh/home.json', '[]');
+    const r = await run(['--status']);
+    assert.equal(r.code, 1);
+    assert.match(r.out, /"state": "malformed"/);
+    reset();
+    await run(['--setup']);
+    fake.state.objects.set('show-refresh/kill.json', '{"killed":"yes"}');
+    assert.equal((await run(['--status'])).code, 1);
+  });
+
+  test('selftest fails when an overwrite is not visible through the same signed URL', async () => {
+    reset();
+    const base = store.storeFromEnv(env());
+    await store.setupStore(base);
+    let first;
+    const fetchImpl = async (url, o) => {
+      const res = await fetch(url, o);
+      const body = await res.text();
+      if (first === undefined) first = body; // a stale cache would keep serving v1
+      return new Response(first, { status: res.status });
+    };
+    const { selftest } = require('../../scripts/show-refresh-store.js');
+    const r = await selftest(base, { fetchImpl });
+    assert.equal(r.ok, false);
+    assert.equal(r.overwriteSeen, false);
   });
 
   test('putShowObject writes immutable cache-control and reads back', async () => {

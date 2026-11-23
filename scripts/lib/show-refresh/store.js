@@ -14,7 +14,11 @@
  * held (unrevealed) shows are never published. A signed URL is tied to the
  * PATH (it survives overwrites) and cannot be revoked one at a time:
  * rotation = re-sign (`show-refresh-store.js --reader-urls`), update the
- * Vercel env, redeploy. Why private at all (plan v14-final 1.2): covered.json,
+ * Vercel env, redeploy. Re-signing does NOT revoke the old URL: it stays valid
+ * until it expires. Real revocation means rotating the project's storage
+ * signing key (which voids every signed URL) or moving the object to a new
+ * path. Decide before phase 3a whether that is acceptable or the bucket
+ * should be public (its contents are already-public page data). Why private at all (plan v14-final 1.2): covered.json,
  * health.json and flagged/ are internal state, and the bucket is never
  * listable or enumerable without a credential. Revisit before phase 3a if the
  * per-object signing cost outweighs that.
@@ -63,7 +67,7 @@ function storeFromEnv(env = process.env, { timeoutMs = 10000, fetchImpl } = {}) 
  */
 function isObjectMissing(r) {
   const t = r.text || '';
-  if (/bucket/i.test(t)) return false;
+  if (/bucket not found/i.test(t)) return false;
   return r.status === 404 || (r.status === 400 && /"statusCode"\s*:\s*"404"/.test(t));
 }
 
@@ -98,25 +102,40 @@ async function putShowObject(storage, id, hash, text) {
 }
 
 /**
- * Kill state. Reads the current kill.json so seq always increases; an
- * unreadable kill.json (store error) aborts rather than overwriting blind.
+ * Kill state. Reads the current kill.json so seq always increases.
+ * - Store unreadable (network / 5xx): refuse, unless the request is KILL. A
+ *   kill must work when it is most needed, so it writes blind with
+ *   seq = max(prev+1, now): still monotonic against any earlier write.
+ * - kill.json invalid JSON / malformed: overwrite (there is nothing to keep).
+ * After writing, re-read and confirm the stored state is the one requested
+ * (a concurrent writer wins visibly, never silently).
  */
 async function setKill(storage, { killed, reason = '', by = '', now = Date.now() }) {
+  const want = Boolean(killed);
   const cur = await readJsonObject(storage, PATHS.kill);
-  if (cur.state === 'error') throw new Error(`setKill: kill.json unreadable (${cur.error})`);
-  const seq = (cur.state === 'ok' && Number.isInteger(cur.value.seq) ? cur.value.seq : 0) + 1;
-  const next = { schema: 1, killed: Boolean(killed), reason: String(reason).slice(0, 500), by: String(by).slice(0, 200), at: new Date(now).toISOString(), seq };
+  const unreadable = cur.state === 'error' && cur.error !== 'invalid JSON';
+  if (unreadable && !want) throw new Error(`setKill: kill.json unreadable (${cur.error}); refusing a blind unkill`);
+  const prevSeq = cur.state === 'ok' && cur.value && Number.isInteger(cur.value.seq) ? cur.value.seq : 0;
+  const seq = unreadable ? Math.max(prevSeq + 1, now) : prevSeq + 1;
+  const next = { schema: 1, killed: want, reason: String(reason).slice(0, 500), by: String(by).slice(0, 200), at: new Date(now).toISOString(), seq };
   await putMutable(storage, PATHS.kill, next);
+  const back = await readJsonObject(storage, PATHS.kill, { cacheBust: now + 1 });
+  if (back.state !== 'ok' || !back.value || back.value.killed !== want || back.value.seq !== seq) {
+    throw new Error(`setKill: kill.json changed under us (now ${back.state === 'ok' ? `killed=${back.value && back.value.killed} seq=${back.value && back.value.seq}` : back.state})`);
+  }
   return next;
 }
 
 /**
- * A kill state the reader can act on. Missing kill.json = not killed (fresh
- * store); an unreadable one = killed (fail closed: the reader renders the build).
+ * A kill state the reader can act on. Fails CLOSED on anything but a valid
+ * kill.json: missing (setupStore seeds it before any reader exists, so a
+ * missing file means something deleted it), unreadable or malformed all mean
+ * killed, and the reader renders the build.
  */
 function effectiveKill(read) {
-  if (read.state === 'missing') return { killed: false, reason: 'no kill.json' };
-  if (read.state !== 'ok' || !read.value || typeof read.value.killed !== 'boolean') return { killed: true, reason: `kill.json ${read.state === 'ok' ? 'malformed' : read.state}` };
+  if (read.state !== 'ok' || !read.value || typeof read.value.killed !== 'boolean') {
+    return { killed: true, reason: `kill.json ${read.state === 'ok' ? 'malformed' : read.state}` };
+  }
   return { killed: read.value.killed, reason: read.value.reason || '' };
 }
 
@@ -139,7 +158,19 @@ async function setupStore(storage, { by = 'setup' } = {}) {
   return { bucket: created, seeded };
 }
 
-/** Signed read-only URLs for the reader (home.json, kill.json). */
+/**
+ * Signed read-only URLs for the reader (home.json, kill.json).
+ *
+ * WARNING (measured 2026-11-23, `show-refresh-store.js --selftest`): Supabase's
+ * CDN can cache a signed URL's response (cf-cache-status HIT, age 23 s and
+ * counting, an extra query param does not bust it), so after an overwrite the
+ * SAME signed URL can keep serving the old bytes; the authenticated endpoint
+ * and a freshly signed URL saw the new ones. Intermittent: selftest.json
+ * failed 4 of 4 runs, a fresh path flipped at once in 2 of 2. Fine for immutable show/<id>/<hash>.json objects, NOT for
+ * mutable kill.json / home.json. The selftest fails until phase 2 picks a
+ * read path for mutable objects (BRO-8056 card notes the options); do not
+ * point a reader at these two URLs before then.
+ */
 async function readerUrls(storage, { expiresIn = READER_URL_SECONDS } = {}) {
   return {
     SHOW_REFRESH_HOME_URL: await storage.signUrl(PATHS.home, expiresIn),

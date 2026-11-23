@@ -11,9 +11,16 @@ const compilerRules = Object.fromEntries(nextVitals.flatMap(config =>
 
 export const SHOW_PAGE_FILES = ['src/app/show/**', 'src/components/show-page/**'];
 const viaSeam = 'Read this show through getShowForRender() from @/lib/show-render (BRO-8056).';
-export const SHOW_PAGE_RESTRICTED_IMPORTS = ['@/lib/data-core', '../../lib/data-core', '../../../lib/data-core', '../../../../lib/data-core'].map(name => ({ name, importNames: ['getShowBySlug'], message: viaSeam }))
-  .concat(['@/lib/data-consensus', '../../lib/data-consensus', '../../../lib/data-consensus'].map(name => ({ name, importNames: ['getCriticConsensus'], message: viaSeam })))
-  .concat(['@/lib/data-audience', '../../lib/data-audience', '../../../lib/data-audience'].map(name => ({ name, importNames: ['getAudienceBuzz', 'getAudienceBuzzBySlug'], message: viaSeam })));
+// Patterns (not a list of paths) so every relative depth and the @/lib/data
+// barrel are covered. Other-show getters (getShowById, ...) stay allowed.
+const lib = (mod) => `^(@/lib/|(\\.\\./)+lib/)${mod}$`;
+const THIS_SHOW = {
+  'data-core': ['getShowBySlug'],
+  'data-consensus': ['getCriticConsensus'],
+  'data-audience': ['getAudienceBuzz', 'getAudienceBuzzBySlug'],
+  data: ['getShowBySlug', 'getCriticConsensus', 'getAudienceBuzz', 'getAudienceBuzzBySlug'],
+};
+export const SHOW_PAGE_RESTRICTED_PATTERNS = Object.entries(THIS_SHOW).map(([mod, importNames]) => ({ regex: lib(mod), importNames, message: viaSeam }));
 
 export default [...nextVitals, {
   rules: {
@@ -32,5 +39,5 @@ export default [...nextVitals, {
   // metadata, JSON-LD and reviews.json together. Other shows' lookups
   // (getShowById for a tour parent, related shows) are allowed.
   files: SHOW_PAGE_FILES,
-  rules: { 'no-restricted-imports': ['error', { paths: SHOW_PAGE_RESTRICTED_IMPORTS }] },
+  rules: { 'no-restricted-imports': ['error', { patterns: SHOW_PAGE_RESTRICTED_PATTERNS }] },
 }];

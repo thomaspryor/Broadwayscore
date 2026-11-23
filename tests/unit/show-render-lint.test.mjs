@@ -20,6 +20,9 @@ const bad = [
   ["import { getCriticConsensus } from '@/lib/data-consensus';\nexport const x = getCriticConsensus;\n", 'src/app/show/[slug]/reviews.json/route.ts'],
   ["import { getAudienceBuzz } from '@/lib/data-audience';\nexport const x = getAudienceBuzz;\n", 'src/components/show-page/Example.tsx'],
   ["import { getShowBySlug } from '../../lib/data-core';\nexport const x = getShowBySlug;\n", 'src/components/show-page/Example.tsx'],
+  // ship-check gaps: the @/lib/data barrel and a deeper relative path.
+  ["import { getCriticConsensus } from '@/lib/data';\nexport const x = getCriticConsensus;\n", 'src/app/show/[slug]/page.tsx'],
+  ["import { getAudienceBuzzBySlug } from '../../../../lib/data-audience';\nexport const x = getAudienceBuzzBySlug;\n", 'src/app/show/[slug]/reviews.json/route.ts'],
 ];
 
 for (const [code, file] of bad) {
@@ -32,6 +35,7 @@ for (const [code, file] of bad) {
 
 test('other-show lookups and the seam itself stay allowed', async () => {
   assert.equal((await ruleHits("import { getShowById, getTourStops } from '@/lib/data-core';\nexport const x = [getShowById, getTourStops];\n", 'src/components/show-page/ShowTrustLines.tsx')).length, 0);
+  assert.equal((await ruleHits("import { audiencePlatformUrlFrom, getShowScoreUrl } from '@/lib/data-audience';\nexport const x = [audiencePlatformUrlFrom, getShowScoreUrl];\n", 'src/app/show/[slug]/page.tsx')).length, 0);
   assert.equal((await ruleHits("import { getShowForRender } from '@/lib/show-render';\nexport const x = getShowForRender;\n", 'src/app/show/[slug]/page.tsx')).length, 0);
   // The rule is scoped to show-page files: other pages are untouched.
   assert.equal((await ruleHits("import { getShowBySlug } from '@/lib/data-core';\nexport const x = getShowBySlug;\n", 'src/app/browse/page.tsx')).length, 0);

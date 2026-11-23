@@ -188,13 +188,24 @@ export function getAudiencePlatformUrl(
   showId: string,
   _showTitle: string,
 ): string | undefined {
+  return audiencePlatformUrlFrom(sourceKey, showId, audienceBuzz.shows[showId]);
+}
+
+/**
+ * Same as getAudiencePlatformUrl, but reads the buzz the caller already has
+ * (BRO-8056: a show page passes getShowForRender().audienceBuzz so the links
+ * come from the same data as the rest of the page).
+ */
+export function audiencePlatformUrlFrom(
+  sourceKey: string,
+  showId: string,
+  buzz: AudienceBuzzData | undefined,
+): string | undefined {
   // Show Score uses curated URL map
   if (sourceKey === 'showScore') {
     return getShowScoreUrl(showId);
   }
-
   // Use scraper-stored URL (no fallback generation — avoids 404s)
-  const buzz = audienceBuzz.shows[showId];
   const sourceData = buzz?.sources?.[sourceKey];
   return sourceData?.url || undefined;
 }

@@ -36,9 +36,12 @@ function makeStorage({ baseUrl, serviceKey, bucket = DEFAULT_BUCKET, isPublic = 
   /** Bucket metadata ({ id, public, ... }), or null when it does not exist. */
   async function getBucket() {
     const res = await call(`${root}/bucket/${bucket}`, { headers: auth });
-    if (res.status === 404 || res.status === 400) return null;
-    if (!res.ok) throw new Error(`getBucket ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
-    return res.json();
+    if (res.ok) return res.json();
+    const text = (await res.text().catch(() => '')).slice(0, 500);
+    // Supabase answers a missing bucket with 404, or 400 {"statusCode":"404",
+    // "error":"Bucket not found"}. Any other 400 (bad key, bad request) is a failure.
+    if (res.status === 404 || (res.status === 400 && /not.?found/i.test(text))) return null;
+    throw new Error(`getBucket ${res.status} ${text.slice(0, 200)}`);
   }
 
   /** cacheControl (a full header value) wins over cacheSeconds (max-age only). */

@@ -1,9 +1,10 @@
+// LIVE-DATA-LANE: reads data/shows.json, critic-consensus.json, audience-buzz.json (untracked core data); runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-8056 1b-iii: a show's slice carries the RAW critic-consensus and
  * audience-buzz entries; normalizeCriticConsensus / normalizeAudienceBuzz turn
  * them into exactly what the build's getters (and so getShowForRender) return.
- * Runs on real core data (skips when data/ is not present, e.g. a fresh CI
- * checkout without the private data repo).
+ * Runs on real core data (skips when data/ is not present, or holds only the
+ * empty stubs a cloud checkout gets without the private data repo).
  *
  * Run: npx tsx --test tests/unit/show-render-slice-parity.test.ts
  */
@@ -13,7 +14,9 @@ import fs from 'fs';
 import path from 'path';
 
 const DATA = path.join(__dirname, '../../data');
-const have = ['shows.json', 'critic-consensus.json', 'audience-buzz.json'].every(f => fs.existsSync(path.join(DATA, f)));
+const FILES = ['shows.json', 'critic-consensus.json', 'audience-buzz.json'];
+// Stub files ({"shows":{}} or a few KB) do not exercise the parity: skip, do not fail.
+const have = FILES.every(f => fs.existsSync(path.join(DATA, f)) && fs.statSync(path.join(DATA, f)).size > 100_000);
 
 test('slice consensus + audience normalize to the build getters for every show', { skip: !have && 'core data not present' }, async () => {
   const { getCriticConsensus, normalizeCriticConsensus } = await import('../../src/lib/data-consensus');
