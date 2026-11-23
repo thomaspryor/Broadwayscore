@@ -40,4 +40,6 @@ test('land.yml warms the memo after a landing that touched a key file', () => {
   assert.match(body, /memo-warm-needed\.js/);
   assert.match(body, /rebuild-fast\.yml --ref main/);
   assert.match(body, /MEMO_WARM_DISABLED/);
+  assert.match(body, /land-result\.json/, 'must read the files land.js pushed');
+  assert.doesNotMatch(body, /rev-parse HEAD/, 'the land job HEAD is not the landed commit');
 });

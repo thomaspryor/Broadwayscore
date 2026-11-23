@@ -33,15 +33,33 @@ function needsWarm(changedFiles, keyFiles = memoKeyFiles()) {
 
 module.exports = { memoKeyFiles, needsWarm };
 
+/**
+ * Files a landing changed, from land.js's result file (`files` is the diff of
+ * the tree it actually pushed, train riders included). The land job's own
+ * checkout is NOT the landed commit (landing happens in a throwaway worktree),
+ * so a HEAD-based diff would see nothing.
+ */
+function filesFromResult(resultPath) {
+  const r = JSON.parse(require('fs').readFileSync(resultPath, 'utf8'));
+  if (r.landed !== true || r.pushed !== true) return [];
+  return Array.isArray(r.files) ? r.files : [];
+}
+
+module.exports.filesFromResult = filesFromResult;
+
 if (require.main === module) {
-  const [base, head] = process.argv.slice(2);
-  if (!base || !head) { console.error('usage: memo-warm-needed.js <baseSha> <headSha>'); process.exit(2); }
+  const arg = process.argv[2];
+  if (!arg) { console.error('usage: memo-warm-needed.js <land-result.json>  |  <baseSha> <headSha>'); process.exit(2); }
   let files;
   try {
-    files = execFileSync('git', ['diff', '--name-only', base, head], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean);
+    files = process.argv[3]
+      ? execFileSync('git', ['diff', '--name-only', arg, process.argv[3]], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean)
+      : filesFromResult(arg);
   } catch (e) {
-    console.error(`git diff failed: ${e.message.split('\n')[0]}`);
-    console.log('true'); // fail toward warming: an extra rebuild-fast is cheap, a cold press night is not
+    // Fail closed: a bad input must not turn every landing into a rebuild-fast
+    // that holds the depth-1 group on a press night.
+    console.error(`memo-warm-needed failed: ${e.message.split('\n')[0]}`);
+    console.log('false');
     process.exit(0);
   }
   console.log(needsWarm(files) ? 'true' : 'false');
