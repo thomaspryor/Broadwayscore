@@ -652,7 +652,7 @@
     "title": "Data audit failing: Validate review-text files",
     "description": "The \"Validate review-text files\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45209414321",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45210794168",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -669,10 +669,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45209414321)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45210794168)"
       }
     ],
-    "queuedAt": "2026-11-23T15:58:20.180Z"
+    "queuedAt": "2026-11-23T16:06:35.356Z"
   },
   {
     "conditionKey": "land:land/bro-8165-func-size-guard",
