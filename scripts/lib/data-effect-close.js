@@ -65,9 +65,9 @@ const SIZE_BEFORE_RE = /\b(?:limit(?:ed)?\s+to|page\s+size|max(?:imum)?|up\s+to|
 const SIZE_AFTER_RE = /^[ \t]*,?[ \t]*(?:per\b|cap\b|limit\b|max\b|at\s+a\s+time\b)/i;
 // "1039 show pages", "360 data testid review card" (screenshot width) count UI, not data; "file.tsx:360" is a line number.
 // Filler words stay on the same line and are never connectives ("95% OR each remaining gap").
-const FILLER = String.raw`(?!(?:or|and|of|for|to|in|on|at|with|per|from|than|by|the|a|an)\b)[a-z_-]+[ \t]+`;
-const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}[ \t]+(?:${FILLER}){0,3}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
-const DATA_REV_RE = new RegExp(String.raw`(?<![-\w])${DATA_NOUN}[ \t]*[:=][ \t]*~?(\d[\d,]*)\b(?![-./]\d)`, 'gi');
+const FILLER = String.raw`(?:(?!(?:or|and|of|for|to|in|on|at|with|per|from|than|by|the|a|an)\b)[a-z_-]+|(?:19|20)\d\d(?:-\d{2,4})?)[ \t]+`;
+const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}(?:-\d[\d,]*)?[ \t]+(?:${FILLER}){0,3}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
+const DATA_REV_RE = new RegExp(String.raw`(?<![-\w])${DATA_NOUN}[ \t]*[:=][ \t]*~?(\d[\d,]*)(?:-\d[\d,]*)?\b(?![./]\d)`, 'gi');
 // An EFFECT: line in the card's own description (any line, bulleted or not) means its author asked for a
 // measured result at close; inline prose quoting `EFFECT: ...` and NO-DATA-EFFECT / NO-EFFECT-CHECK do not count.
 // Bullets, numbered items ("1. EFFECT:") and checkboxes ("- [ ] EFFECT:") all count.
@@ -85,18 +85,19 @@ function bigDataCount(text) {
     const lead = /\d[\d,]*/.exec(m[0]);
     if (lead && big(lead[0]) && !year(lead[0]) && !sized(m)) return m[0].trim();
   }
-  for (const m of text.matchAll(DATA_REV_RE)) if (big(m[1]) && !sized(m)) return m[0].trim();
+  for (const m of text.matchAll(DATA_REV_RE)) if (big(m[1]) && !(year(m[1]) && /\d-\d/.test(m[0])) && !sized(m)) return m[0].trim();
   return null;
 }
 
 /** PURE. {phrase, strong} for the phrase that makes this a data-count card, or null. */
 function dataCountMatch({ title = '', description = '' } = {}) {
-  if (DESC_EFFECT_RE.test(stripFences(description))) return { phrase: 'the card asks for an EFFECT: line', strong: true, inferred: true };
   const text = [String(title || ''), acceptanceSection(description)].join('\n').replace(NOT_DATA_RE, ' ');
+  // The original strong phrases first, so DATA_EFFECT_COUNT_NOUN_GATE=advisory never downgrades them.
   for (const re of [VERB_COUNT_RE, QUEUE_RE, STRONG_COUNT_RE]) {
     const m = re.exec(text);
     if (m) return { phrase: m[0].trim(), strong: true };
   }
+  if (DESC_EFFECT_RE.test(stripFences(description))) return { phrase: 'the card asks for an EFFECT: line', strong: true, inferred: true };
   const big = bigDataCount(text);
   if (big) return { phrase: big, strong: true, inferred: true };
   for (const re of [PCT_RE, WEAK_COUNT_RE]) {
@@ -115,9 +116,12 @@ function dataCountPhrase(args) {
 const LINE_RE = (name) => new RegExp(String.raw`^[ \t>*_+-]*(?:\d+[.)][ \t]*)?(?:\[[ xX]\][ \t]*)?${name}(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.+)$`, 'gim');
 function lastValue(texts, name) {
   let val = null;
-  for (const t of texts) for (const m of String(t || '').matchAll(LINE_RE(name))) if (m[1].trim()) val = m[1].trim();
+  for (const t of texts) for (const m of stripFences(t).matchAll(LINE_RE(name))) if (m[1].trim()) val = m[1].trim();
   return val;
 }
+// Gemini ship-check: a comment quoting a refusal (blockquote) or its indented example must not count as
+// the measurement. Measurement lines are read only from unquoted, non-code-indented lines.
+const unquoted = (t) => stripFences(t).split('\n').filter((l) => !/^[ \t]*>/.test(l) && !/^(?: {4}|\t)/.test(l)).join('\n');
 
 // Arrows only: "from 2026-11-21 to 2026-11-22" is a date span, not a measurement (ship-check finding).
 const ARROW_RE = /(\d[\d,.]*\s*%?)[^\d\n]{0,40}?(?:->|→|=>|⟶)\s*[^\d\n]{0,25}?(\d[\d,.]*\s*%?)/;
@@ -154,7 +158,7 @@ function checkDataEffect({ title = '', description = '', texts = [] } = {}) {
   const bypass = lastValue(all, 'NO-DATA-EFFECT');
   if (bypass && bypass.length >= 10) return null;
   // EFFECT lines on the description are the card author's wish, not a measurement: comments only.
-  const effect = lastValue(texts, 'EFFECT');
+  const effect = lastValue(texts.map(unquoted), 'EFFECT');
   if (!effect) return { ok: false, phrase, strong, inferred, effect: null, notes: ['no EFFECT: line on the close'] };
   const m = effectIsMeasured(effect);
   return { ok: m.ok, phrase, strong, inferred, effect, notes: m.notes };
@@ -215,7 +219,7 @@ function checkSampleAudit({ texts = [], minSample = MIN_SAMPLE } = {}) {
 function dataEffectMessage(identifier, r) {
   return `${identifier || 'This card'} is about a data count ("${r.phrase}"), and a passing test does not show that count moved. ` +
     `Done needs an EFFECT line on the close comment, measured just now, e.g.\n` +
-    '    EFFECT: _pending queue 6,838 -> 412, measured by `node scripts/<the count command>`\n' +
+    '    (example) EFFECT: _pending queue 6,838 -> 412, measured by `node scripts/<the count command>`\n' +
     (r.notes.length ? `Problem: ${r.notes.join('; ')}.\n` : '') +
     'If the count can only move later (next cron, next drain), leave the card Paused with RECHECK-AFTER: YYYY-MM-DD and a VERIFY command ' +
     'that measures the count (scripts/autonomous-acceptance-recheck.js re-runs it once the date passes). ' +

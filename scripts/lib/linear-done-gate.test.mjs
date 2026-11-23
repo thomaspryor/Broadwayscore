@@ -371,7 +371,7 @@ test('BRO-8079 ship-check: ordinary titles are not data-count cards; weak count 
 
 test('BRO-8079 ship-check: the nightly recheck auto-close of a Paused RECHECK-AFTER card is warned, not refused', () => {
   const gate = checkLinearDoneTransition({
-    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node scripts/validate-data.js\nRECHECK-AFTER: 2026-11-25',
+    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node scripts/slow-market-grade.js --opened-from=2025-09-01 --opened-to=2026-06-01 --check-gaps\nRECHECK-AFTER: 2026-11-25',
     commentText: 'Auto-closed by the nightly acceptance re-check: `node scripts/count-pending.js --max=500` passed on main.',
     verifyCmdEvidence: passingVerify, env: {},
   });
@@ -492,4 +492,38 @@ test('BRO-8079 reopen dry-run: CLI flags, year ranges, connectives and line brea
     const m = dataCountMatch({ title: t });
     assert.equal(Boolean(m && m.strong), false, t);
   }
+});
+
+test('BRO-8079 Gemini ship-check: a quoted refusal (fenced, blockquoted or indented example) never satisfies the EFFECT requirement', () => {
+  const { checkDataEffect, dataEffectMessage } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  const refusal = dataEffectMessage('BRO-7930', { phrase: 'promotes 0', notes: [] });
+  for (const quoted of ['```\n' + refusal + '\n```', refusal.split('\n').map((l) => `> ${l}`).join('\n'), refusal, '    EFFECT: queue 6,838 -> 412 via `node scripts/count.js`']) {
+    const r = checkDataEffect({ title: BRO_7930_TITLE, description: '', texts: [quoted] });
+    assert.equal(r.ok, false, quoted.slice(0, 60));
+  }
+});
+
+test('BRO-8079 Gemini ship-check: machine closes are exempt only on a measuring command this gate executed', () => {
+  const card = REAL_CARDS['BRO-7930'];
+  const auto = 'Auto-closed by the nightly acceptance re-check: passed on main.';
+  for (const verify of ['node scripts/validate-data.js', 'npx tsc --noEmit', 'test -f scripts/lib/x.js']) {
+    const gate = checkLinearDoneTransition({ targetStateType: 'completed', identifier: 'BRO-7930', title: card.title, description: `VERIFY: ${verify}`, commentText: auto, verifyCmdEvidence: passingVerify, env: {} });
+    assert.equal(gate.allowed, false, verify);
+  }
+  // PR-EVIDENCE route: nothing executed, so a machine close is not exempt
+  const pr = checkLinearDoneTransition({
+    targetStateType: 'completed', identifier: 'BRO-7930', title: card.title, description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: `${auto}\nPR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/0123456789abcdef)`,
+    verifyEvidence: () => ({ verified: true, reason: 'stub' }), verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(pr.allowed, false);
+});
+
+test('BRO-8079 Gemini ship-check: original strong phrases stay blocking under DATA_EFFECT_COUNT_NOUN_GATE=advisory even with an EFFECT: description line; ranges count', () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  const m = dataCountMatch({ title: BRO_7930_TITLE, description: '* EFFECT: queue before -> after' });
+  assert.equal(m.strong, true);
+  assert.equal(Boolean(m.inferred), false);
+  assert.equal(dataCountMatch({ title: 'P1: ~500-600 real 2025-26 reviews in _pending' }).strong, true);
+  assert.equal(dataCountMatch({ title: 'Repair reviews: 2000' }).strong, true);
 });

@@ -362,7 +362,8 @@ const SAMPLE_AUDIT_BLOCKING_FROM = '2026-11-29';
 
 // A check that only runs unit tests cannot measure a data count (the BRO-7930 loop: the nightly recheck
 // re-ran `node --test ...`, passed, and the queue never moved).
-const UNIT_TEST_CMD_RE = /\bnode\s+--test\b|\.test\.(?:m?[jt]s|tsx?)\b|\b(?:vitest|jest|mocha)\b|\bplaywright\s+test\b|\bnpm\s+(?:run\s+)?test\b/;
+// Gemini ship-check: also the other safe-form checks that measure code, not data.
+const UNIT_TEST_CMD_RE = /\bnode\s+--test\b|\.test\.(?:m?[jt]s|tsx?|sh)\b|\b(?:vitest|jest|mocha)\b|\bplaywright\s+test\b|\bnpm\s+(?:run\s+)?(?:test|lint)\b|\brun-unit-tests\.js\b|^\s*test\s+-[efd]\b|\btsc\b|\bvalidate-data\.js\b/;
 
 function dataEffectCloseCheck({ identifier, title = '', description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}, result = {}) {
   const out = [];
@@ -377,8 +378,8 @@ function dataEffectCloseCheck({ identifier, title = '', description = '', commen
     let automated = false;
     try { automated = require('./red-cause-tag.js').isAutomatedClose(commentText); } catch { /* not automated */ }
     // BRO-8079 reopen (Codex ship-check): a machine close on a unit-test-only check is not a measurement.
-    const closeCmd = (result && result.cmd) || commentText;
-    const automatedOnMeasurement = automated && !UNIT_TEST_CMD_RE.test(String(closeCmd || ''));
+    // Only a command THIS gate executed counts (PR-EVIDENCE sweeps and stuck/board closers run nothing).
+    const automatedOnMeasurement = automated && Boolean(result && result.cmdExecution && result.cmd) && !UNIT_TEST_CMD_RE.test(String(result.cmd));
     // DATA_EFFECT_COUNT_NOUN_GATE=advisory rolls back only the reopen's inferred rules (EFFECT: in the
     // description, number >= 10 next to a data noun), leaving the original strong phrases blocking.
     const inferredAdvisory = de && de.inferred && env.DATA_EFFECT_COUNT_NOUN_GATE === 'advisory';
