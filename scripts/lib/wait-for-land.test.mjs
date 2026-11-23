@@ -309,7 +309,7 @@ test('prodPlan skips the wait only when the branch provably changes no deploy-ga
   const main = 'b'.repeat(40);
   const none = prodPlan({ mainSha: main, siteFiles: [] });
   assert.equal(none.watch, false);
-  assert.equal(none.nothingToDeploy, true, 'a hooks/docs-only landing never deploys before the 6h backstop');
+  assert.equal(none.nothingToDeploy, true, 'a hooks/docs-only landing never deploys before the staleness backstop');
   assert.equal(prodPlan({ mainSha: main, siteFiles: ['src/app/page.tsx'] }).watch, true);
   assert.equal(prodPlan({ mainSha: main, siteFiles: null }).watch, true, 'ref never seen (landed before the wait) or diff failed: wait');
   const noMain = prodPlan({ mainSha: null, siteFiles: [] });
