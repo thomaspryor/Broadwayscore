@@ -51,6 +51,14 @@ test('Off-Broadway and London theater pages render verified venue info, not a "c
     assert.ok(src.includes('<VenueInfoCard'), `${rel} no longer renders VenueInfoCard`);
     assert.ok(!/coming soon|after launch/i.test(src), `${rel} promises details "coming soon" again`);
   }
+  // The theater index pages carried the same orphaned promise (no card behind it).
+  for (const rel of [
+    'src/app/off-broadway/theater/OffBroadwayTheaterIndexClient.tsx',
+    'src/app/west-end/theater/LondonTheaterIndexClient.tsx',
+  ]) {
+    const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.ok(!/coming soon|after launch/i.test(src), `${rel} promises venue details "coming soon" again`);
+  }
 });
 
 test('every renamed Broadway house resolves to an address through its current name', () => {
