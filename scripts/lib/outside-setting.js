@@ -16,6 +16,7 @@
 // (2026-11-20/21, see outside-setting.test.mjs header) before it was wired.
 // Narrow on purpose (ship-check): bare origin (origin/main), console (console output), client and dashboard read as
 // ordinary engineering words, so they count only when qualified.
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 const OUTSIDE_NOUN = String.raw`(?:(?:authorized |javascript |js |site |allowed )origins?|origins?(?![\/\w-])(?=[^.\n]{0,40}\b(?:google|oauth|client|console|allow|authoriz))|o-?auth|(?:oauth|web|google|apple|sign-?in) client(?: id)?|client id|console(?![ .](?:output|logs?|errors?|warnings?|window|messages?|statements?)\b|\.\w)|(?:vercel|supabase|posthog|resend|google|apple|stripe|cloudflare|sentry|impact|formspree|provider|admin) dashboard|dns|domain|registrar|cname|txt record|spf|dkim|app store|app-store|testflight|associated domains?|redirect uri|google cloud|apple developer|vercel (?:project|setting|env)|supabase (?:auth|provider|dashboard|setting)|resend domain|third-party setting|outside setting|external setting|provider setting)`;
 const ADMIT_RE = new RegExp([
   String.raw`\bnot (?:checkable|verifiable|testable|visible) from (?:a |the |this )?(?:cloud|container|sandbox|session|here)\b`,
@@ -104,7 +105,7 @@ function isLiveRead(name, input) {
 const EXISTENCE_ONLY_RE = /^\s*(?:test\s+-[efdrs]\b|\[\s+-[efdrs]\b|ls\b|true\b|echo\b|cat\b|stat\b|cd\b|grep\b|rg\b|wc\b|head\b|tail\b|node\s+-e\b|:)/;
 /** PURE. Is this acceptance command a real check (not existence-only)? */
 const acceptanceIsReal = (cmd) => {
-  const segs = String(cmd || '').split(/&&|\|\||;|\|/).map((s) => s.trim()).filter(Boolean);
+  const segs = splitUnquoted(String(cmd || '')).map((s) => s.trim()).filter(Boolean);
   return segs.length > 0 && segs.some((s) => !EXISTENCE_ONLY_RE.test(s));
 };
 

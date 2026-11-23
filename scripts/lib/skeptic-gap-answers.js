@@ -93,6 +93,7 @@ function answerLines(texts) {
   return out;
 }
 
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 const norm = (s) => String(s || '').replace(/`/g, '').replace(/\s+/g, ' ').trim();
 const PATH_TOKEN_RE = /(?:[\w.-]+\/)*[\w-]+\.(?:m?[jt]sx?|cjs|sh|py|json|ya?ml|sql)\b/g;
 /** File basenames a text names (`scripts/lib/x.mjs` -> `x.mjs`). */
@@ -101,37 +102,6 @@ function fileNames(text) { return new Set([...String(text || '').matchAll(PATH_T
 function segments(cmd) {
   const t = norm(cmd);
   return splitUnquoted(t).map((s) => s.trim()).filter((s) => s && !/^cd\s/.test(s));
-}
-/**
- * Split on && || ; | that sit OUTSIDE '...' and "..." (a `|` in `--test-name-pattern='a|b'` is not a pipe; BRO-8095).
- * A backslash escapes the next char outside single quotes. A quote that never closes (an apostrophe in a `# it's`
- * comment) is treated as a plain character and the scan restarts, so one stray apostrophe neither swallows the later
- * `&&` nor re-opens the split-inside-quotes hole for an `echo 'x | node --test f'` (ship-check, 3 reviewers).
- */
-function splitUnquoted(t) {
-  const literal = new Set();
-  for (;;) {
-    let open = -1;
-    const out = [];
-    let cur = '';
-    let q = '';
-    let qAt = -1;
-    for (let i = 0; i < t.length; i++) {
-      const c = t[i];
-      if (c === '\\' && q !== "'") { cur += c + (t[i + 1] || ''); i++; continue; }
-      if (q) { if (c === q) q = ''; cur += c; continue; }
-      if ((c === "'" || c === '"') && !literal.has(i)) { q = c; qAt = i; cur += c; continue; }
-      if (c === ';' || c === '|' || (c === '&' && t[i + 1] === '&')) {
-        if (c !== ';' && t[i + 1] === c) i++;
-        out.push(cur); cur = '';
-        continue;
-      }
-      cur += c;
-    }
-    if (q) open = qAt;
-    if (open === -1) { out.push(cur); return out; }
-    literal.add(open);
-  }
 }
 
 /**

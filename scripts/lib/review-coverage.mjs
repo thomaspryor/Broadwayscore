@@ -62,6 +62,7 @@ import { isMainModule } from './is-main-module.mjs';
 const { evaluateGapAnswers, answerInstructions, ranBeforeLastEditAdvice } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
+const { splitUnquoted } = createRequire(import.meta.url)('./shell-split-unquoted.js');
 const { ISSUE_ID_MARKER_PREFIX } = createRequire(import.meta.url)('./linear-session-reporting.js');
 // `linear-session.js report` prints this right after the comment is created (BRO-8072).
 const POSTED_REPORT_RE = new RegExp(`${ISSUE_ID_MARKER_PREFIX}[0-9a-f-]{8,}`, 'i');
@@ -316,7 +317,7 @@ const TESTED_RE = /(?:^|\n)[\s*#>_`=\u2500-\u257f-]*TESTED\b/;
 const SKILL_FILE_RE = /\.claude\/commands\/[a-z-]+\.md|\.agents\/skills\/[a-z-]+\/SKILL\.md/;
 const LOOK_ONLY_RE = /^(?:echo|printf|ls|cat|head|tail|wc|grep|rg|sed|awk|cut|sort|uniq|tr|jq|find|diff|stat|file|which|date|nl|column|cd|pwd|git|true|sleep|wait|export|set|test|\[)$/;
 function runsSomething(command) {
-  return stripHeredocBodies(String(command || '')).split(/&&|\|\||[;|\n]/).some((seg) => {
+  return splitUnquoted(stripHeredocBodies(String(command || '')).replace(/\n/g, ';')).some((seg) => {
     const words = seg.trim().replace(/^[({]\s*/, '').split(/\s+/).filter((w) => w && !/^[A-Za-z_][A-Za-z0-9_]*=/.test(w));
     return words.length > 0 && !LOOK_ONLY_RE.test(words[0]);
   });
