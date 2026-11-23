@@ -48,12 +48,16 @@ const { assessFullText, getBestTextForScoring } = require('./text-quality');
  * (BRO-7171, BRO-7943, BRO-8012, BRO-8081) left it stale. TEXT_SELECTOR_SOURCE_SHA256
  * pins text-quality.js + trailer-signatures.js (scripts/lib/text-selector-version.js);
  * tests/unit/rescore-flagging.test.mjs fails when they change without a bump of both.
- * To bump: set the date to now (UTC) and the hash to
+ * On a hash mismatch: ALWAYS update the hash to
  *   node -e "console.log(require('./scripts/lib/text-selector-version').computeTextSelectorSourceHash())"
+ * Bump the DATE too (to the UTC time the change lands) only when the edit changes
+ * what the selector picks; each date bump re-queues once, at real spend, every file
+ * scored from an excerpt that the selector now reads as full text. Comment-only or
+ * refactor edits: hash only.
  */
 // BRO-8117: text-quality.js photo-credit corruption regex tightened (114 complete full texts were read as 'corrupted').
 const TEXT_SELECTOR_CHANGED_AT = '2026-11-23T12:00:00Z';
-const TEXT_SELECTOR_SOURCE_SHA256 = 'a598fad1a59ec73fe60b5a9ba441711c700caecc760b8cbb2201e6beae711b3a';
+const TEXT_SELECTOR_SOURCE_SHA256 = '61111a36ec87b2ffb506de880a2d6b421a97c311e274d6b0db97f5068076bd66';
 
 /**
  * Scored from an excerpt by an OLD selector, and the CURRENT selector now picks
