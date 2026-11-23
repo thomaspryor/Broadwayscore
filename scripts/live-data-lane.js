@@ -40,6 +40,12 @@
  *       the unit test files changed since the base (LAND_BASE, else
  *       origin/main) under the tracer and --check's them. ADVISORY (::warning::,
  *       exit 0) until LAND_LIVE_DATA_LANE_BLOCKING=1 (CLAUDE.md §19).
+ *       --refuse-undeclared (BRO-8107, the local pre-flight in
+ *       merge-worktree-to-main.sh): exit 1 on an undeclared live test only; a
+ *       crash or an incomplete trace warns and exits 0, so a local tooling
+ *       problem never blocks a landing that land.yml would judge anyway.
+ *       --files=a,b traces exactly these node test files instead of the diff.
+ *       LIVE_DATA_LANE_TRACE_TIMEOUT_MS caps each runner (default 10 min).
  */
 'use strict';
 
@@ -184,7 +190,10 @@ function unitBatches(root = ROOT) {
 
 /** Trace-run the files (test failures are ignored: only the reads matter). */
 // Per runner; node + tsx together stay under 20 minutes of the land budget.
-const TRACE_TIMEOUT_MS = 10 * 60 * 1000;
+function traceTimeoutMs(env = process.env) {
+  const n = Math.round(Number(env.LIVE_DATA_LANE_TRACE_TIMEOUT_MS));
+  return Number.isFinite(n) && n >= 1000 ? n : 10 * 60 * 1000;
+}
 
 function traceRun(files, runner, log, root = ROOT) {
   if (!files.length) return true;
@@ -193,8 +202,8 @@ function traceRun(files, runner, log, root = ROOT) {
   for (const k of ['NODE_TEST_CONTEXT', 'LIVE_DATA_TEST']) delete env[k];
   const args = ['--import', hook, '--test', '--test-reporter=dot', '--test-timeout', '300000', ...files];
   const r = runner === 'tsx'
-    ? spawnSync('npx', ['tsx', ...args], { cwd: root, env, stdio: ['ignore', 'ignore', 'inherit'], timeout: TRACE_TIMEOUT_MS })
-    : spawnSync(process.execPath, args, { cwd: root, env, stdio: ['ignore', 'ignore', 'inherit'], timeout: TRACE_TIMEOUT_MS });
+    ? spawnSync('npx', ['tsx', ...args], { cwd: root, env, stdio: ['ignore', 'ignore', 'inherit'], timeout: traceTimeoutMs() })
+    : spawnSync(process.execPath, args, { cwd: root, env, stdio: ['ignore', 'ignore', 'inherit'], timeout: traceTimeoutMs() });
   console.log(`# traced ${files.length} ${runner} file(s), test exit ${r.status} (test results are not judged here)`);
   // A failing test still leaves its reads in the log; a run killed by the
   // timeout or a signal (or one that never started) does not, so its trace
@@ -206,7 +215,7 @@ function traceRun(files, runner, log, root = ROOT) {
 // manifest, a full tmp dir) is a warning and exit 0. Once blocking, the same
 // throw fails the gate, since a check that cannot run proves nothing.
 function verifyChanged(args) {
-  const blocking = process.env.LAND_LIVE_DATA_LANE_BLOCKING === '1';
+  const blocking = process.env.LAND_LIVE_DATA_LANE_BLOCKING === '1' && !args.includes('--refuse-undeclared');
   try {
     return verifyChangedInner(args);
   } catch (e) {
@@ -216,10 +225,16 @@ function verifyChanged(args) {
 }
 
 function verifyChangedInner(args) {
-  const blocking = process.env.LAND_LIVE_DATA_LANE_BLOCKING === '1';
+  const refuseUndeclared = args.includes('--refuse-undeclared');
+  const blocking = process.env.LAND_LIVE_DATA_LANE_BLOCKING === '1' && !refuseUndeclared;
   const baseArg = args.find((a) => a.startsWith('--base='));
   const base = baseArg ? baseArg.slice(7) : (process.env.LAND_BASE || 'origin/main');
+  const filesArg = args.find((a) => a.startsWith('--files='));
   let changed;
+  if (filesArg) {
+    const node = filesArg.slice(8).split(',').filter(Boolean);
+    return judgeTraced({ node, tsx: [], blocking, refuseUndeclared, label: 'given by --files' });
+  }
   try {
     changed = execFileSync('git', ['diff', '--name-only', '--diff-filter=AMR', `${base}...HEAD`], { cwd: ROOT, encoding: 'utf8' })
       .split('\n').filter(Boolean);
@@ -229,7 +244,18 @@ function verifyChangedInner(args) {
     return blocking ? 1 : 0;
   }
   const { node, tsx } = changedUnitTests(changed, unitBatches());
-  console.log(`live-data-lane: ${node.length + tsx.length} changed unit test file(s) since ${base}`);
+  return judgeTraced({ node, tsx, blocking, refuseUndeclared, label: `since ${base}` });
+}
+
+/** PURE. The fixture seam to name when a test reaches shows.json through the shared guards (BRO-8107). */
+function fixtureHint(reasons) {
+  return (reasons || []).some((r) => r.startsWith('data/shows.json'))
+    ? " (data/shows.json via a shared guard: add process.on('exit', require('<rel>/scripts/lib/shows-json-path.js').useShowsFixture([...shows])) after createRequire, which points SHOWS_JSON_PATH at a temp fixture)"
+    : '';
+}
+
+function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
+  console.log(`live-data-lane: ${node.length + tsx.length} changed unit test file(s) ${label}`);
   if (!node.length && !tsx.length) return 0;
   // A bulk edit (a marker sweep, a rename) would re-run hundreds of files
   // inside the land; the full trace (--classify/--check on a traced batch run)
@@ -247,16 +273,17 @@ function verifyChangedInner(args) {
   }
   const scope = [...node, ...tsx];
   const { undeclared, stale } = check(classify(readTrace([log]), gitIndex()), (t) => declaredFile(t), scope);
-  const level = blocking ? 'error' : 'warning';
+  const level = blocking || refuseUndeclared ? 'error' : 'warning';
   for (const u of undeclared) {
-    console.log(`::${level}::${u.test} reads live data (${u.reasons.slice(0, 3).join('; ')}) but would run in test.yml's blocking batch, so a bot data commit can turn main red. Fix: assert on a fixture, or add "// ${MARKER} <why>" to its first 40 lines so it runs in check-corpus-drift.yml instead.`);
+    console.log(`::${level}::${u.test} reads live data (${u.reasons.slice(0, 3).join('; ')}) but would run in test.yml's blocking batch, so a bot data commit can turn main red. Fix: assert on a fixture${fixtureHint(u.reasons)}, or add "// ${MARKER} <why>" to its first 40 lines so it runs in check-corpus-drift.yml instead.`);
   }
   for (const t of stale) console.log(`::notice::${t} declares ${MARKER} but read no live data here; drop the marker if that holds, so it blocks again.`);
-  console.log(`live-data-lane: ${undeclared.length} undeclared live test(s), ${stale.length} stale marker(s)${blocking ? '' : ' (ADVISORY until LAND_LIVE_DATA_LANE_BLOCKING=1)'}.`);
+  console.log(`live-data-lane: ${undeclared.length} undeclared live test(s), ${stale.length} stale marker(s)${blocking ? '' : refuseUndeclared ? ' (local pre-flight: refuses undeclared only)' : ' (ADVISORY until LAND_LIVE_DATA_LANE_BLOCKING=1)'}.`);
+  if (refuseUndeclared) return undeclared.length ? 1 : 0;
   return (undeclared.length || !complete) && blocking ? 1 : 0;
 }
 
-module.exports = { changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
+module.exports = { fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
 
 const USAGE = 'Usage: live-data-lane.js --filter=blocking|live [files] | --classify|--check|--mark <trace.jsonl>... | --verify-changed [--base=<sha>]';
 
