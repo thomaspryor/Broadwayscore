@@ -1055,6 +1055,12 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
  * Reads the working tree, so the caller runs it only when HEAD is the pushed commit and clean.
  * LAND_LIVE_DATA_PREFLIGHT_DISABLE=1 turns it off. -> { status: fail|clean|skip|off, message?, reason? }
  */
+/** Tracked files with staged or unstaged changes (untracked ignored). */
+function trackedDirty(root) {
+  const r = git(root, ['status', '--porcelain', '--untracked-files=no']);
+  return ok(r) ? out(r).split('\n').filter(Boolean) : ['(git status failed)'];
+}
+
 export function liveDataLaneCheck({ root, base = 'origin/main', env = process.env, seams = {}, budgetMs }) {
   if (env.LAND_LIVE_DATA_PREFLIGHT_DISABLE === '1') return { status: 'off', reason: 'LAND_LIVE_DATA_PREFLIGHT_DISABLE=1' };
   if (!(budgetMs >= 20000)) return { status: 'skip', reason: 'hook time budget exhausted' };
@@ -1062,10 +1068,12 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
     const script = path.join(root, 'scripts', 'live-data-lane.js');
     if (!seams.run && !(fs.existsSync(script) && fs.readFileSync(script, 'utf8').includes('--refuse-undeclared'))) return { status: 'skip', reason: 'live-data-lane.js --refuse-undeclared not in this tree' };
     const r = (seams.run || spawnSync)(process.execPath, [script, '--verify-changed', '--refuse-undeclared', `--base=${base}`], {
-      cwd: root, encoding: 'utf8', timeout: budgetMs + 15000, maxBuffer: 16 * 1024 * 1024,
+      cwd: root, encoding: 'utf8', timeout: budgetMs + 5000, maxBuffer: 16 * 1024 * 1024,
       // Per runner (node, then tsx): half each, so the pair stays inside the budget.
       env: { ...env, LIVE_DATA_LANE_TRACE_TIMEOUT_MS: String(Math.floor(budgetMs / 2)) },
     });
+    // An incomplete trace (a runner timed out) exits 0 with this line: it proves nothing.
+    if (r.status === 0 && /NOT VERIFIED locally/.test(String(r.stdout || ''))) return { status: 'skip', reason: 'trace incomplete', warning: 'live-data-lane preflight: a trace run timed out, so this push was not checked for undeclared live-data tests; land.yml will judge it.' };
     if (r.status === 0) return { status: 'clean' };
     if (r.status !== 1) return { status: 'skip', reason: `live-data-lane gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
     const errors = String(r.stdout || '').split('\n').filter((l) => l.startsWith('::error::')).map((l) => `  - ${l.slice(9)}`);
@@ -1152,12 +1160,15 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
-    // BRO-8107: after the fast tests, in whatever hook time is left (240s total, 10s margin).
+    // BRO-8107: after the fast tests, in the hook time left. Ends by 205s from start, leaving
+    // the coordinator warnings (<=20s) inside the wrapper's 260s.
     const ld = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
       : !checkTests ? { status: 'skip', reason: 'working tree is not the pushed commit' }
-      : liveDataLaneCheck({ root, base, env, seams: seams.liveDataLane || {}, budgetMs: 230000 - (Date.now() - started) });
+      : (seams.trackedDirty || trackedDirty)(root).length ? { status: 'skip', reason: 'uncommitted tracked changes: the trace would run them, not the pushed commit' }
+      : liveDataLaneCheck({ root, base, env, seams: seams.liveDataLane || {}, budgetMs: 200000 - (Date.now() - started) });
     v.detail.liveDataLane = ld;
     if (ld.status === 'fail') { v.decision = 'block'; v.message = ld.message; }
+    if (ld.warning) v.warnings = [...(v.warnings || []), ld.warning];
     logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, liveDataLane: ld.status, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });

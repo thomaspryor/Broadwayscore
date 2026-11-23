@@ -1039,9 +1039,16 @@ test('liveDataLaneCheck: an undeclared live test blocks; anything else never doe
   assert.equal(liveDataLaneCheck({ root: wt, env: {}, seams: runner(refused), budgetMs: 5000 }).status, 'skip', 'budget exhausted');
   assert.equal(liveDataLaneCheck({ root: wt, env: { LAND_LIVE_DATA_PREFLIGHT_DISABLE: '1' }, seams: runner(refused), budgetMs: 100000 }).status, 'off');
   assert.equal(liveDataLaneCheck({ root: wt, env: {}, budgetMs: 100000 }).status, 'skip', 'a tree without the --refuse-undeclared floor');
+  const incomplete = liveDataLaneCheck({ root: wt, env: {}, seams: runner({ status: 0, stdout: '::warning::live-data-lane: a trace run timed out ... NOT VERIFIED locally: land.yml will judge it.\n' }), budgetMs: 100000 });
+  assert.equal(incomplete.status, 'skip', 'an incomplete trace is never clean');
+  assert.match(incomplete.warning, /not checked/);
   // Through the hook: the refusal blocks the push with the named test.
   sh(wt, 'git reset -q --hard origin/main && mkdir -p scripts/lib && echo "module.exports = 2;" > scripts/lib/y.js && git add -A && git commit -qm code');
   const v = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => [], fastTests: { run: () => ({ status: 0, stdout: JSON.stringify({ status: 'clean', ran: 1, ms: 1000, newFailures: [] }) }) }, liveDataLane: runner(refused) } });
   assert.equal(v.decision, 'block', JSON.stringify(v.results?.[0]?.detail?.liveDataLane));
   assert.match(v.message, /lint-workflows::live-data-lane/);
+  // Uncommitted tracked code would be traced instead of the pushed commit: skip, never judge.
+  const v2 = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => [], fastTests: { run: () => ({ status: 0, stdout: JSON.stringify({ status: 'clean', ran: 1, ms: 1000, newFailures: [] }) }) }, liveDataLane: runner(refused), trackedDirty: () => [' M scripts/lib/y.js'] } });
+  assert.notEqual(v2.decision, 'block');
+  assert.match(v2.results[0].detail.liveDataLane.reason, /uncommitted tracked changes/);
 });

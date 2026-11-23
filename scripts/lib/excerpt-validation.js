@@ -11,10 +11,9 @@
  * DRY_RUN_CROSS_SHOW=false is set.
  */
 
-const fs = require('fs');
 const { isWithinPriorRun } = require('./wrong-production-autoclear');
 const { cleanRole, isNoInfoRole } = require('./cast-role');
-const { showsJsonPath } = require('./shows-json-path');
+const { showsJsonPath, readShowsList } = require('./shows-json-path');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -65,7 +64,7 @@ function getMatchableTitles() {
   const showsPath = showsJsonPath();
   if (_titleCache && _titleCachePath === showsPath) return _titleCache;
 
-  const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows || [];
+  const shows = readShowsList(showsPath); // {shows} or a bare array
   _titleCachePath = showsPath;
 
   _titleCache = new Map();

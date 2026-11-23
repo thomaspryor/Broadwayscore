@@ -202,10 +202,24 @@ function traceTimeoutMs(env = process.env) {
  * ~/.broadwayscore-state copy), so a local trace without them missed the read
  * that refused BRO-8107's own landing (land run 45116819850).
  */
+// Credentials never reach the traced tests: CI mode unlocks real sends on a Mac
+// (local-send-guard.js allows GITHUB_ACTIONS), and only reads are judged here.
+const SECRET_ENV_RE = /(API_KEY|TOKEN|SECRET|PASSWORD|WEBHOOK|COOKIE|CREDENTIAL|^RESEND_|^BUFFER_|^SUPABASE_SERVICE)/i;
+
 function traceEnv(base, log) {
   const env = { ...base, LIVE_DATA_READ_LOG: log, CI: 'true', GITHUB_ACTIONS: 'true' };
   for (const k of ['NODE_TEST_CONTEXT', 'LIVE_DATA_TEST']) delete env[k];
+  for (const k of Object.keys(env)) if (SECRET_ENV_RE.test(k)) delete env[k];
   return env;
+}
+
+/**
+ * PURE. Which files to put back after a local trace: tracked files under data/
+ * (the ledgers CI-mode libraries write) that were clean before it. Code and
+ * anything dirty before are never touched, so a concurrent edit to source survives.
+ */
+function traceWritesToRestore(before, after) {
+  return [...after].filter((f) => !before.has(f) && f.startsWith('data/'));
 }
 
 /** Tracked files with local modifications (porcelain v1 paths). */
@@ -293,7 +307,9 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   const complete = [traceRun(node, 'node', log), traceRun(tsx, 'tsx', log)].every(Boolean);
   if (before) {
     const after = dirtyTracked() || new Set();
-    const touched = [...after].filter((f) => !before.has(f));
+    const touched = traceWritesToRestore(before, after);
+    const other = [...after].filter((f) => !before.has(f) && !touched.includes(f));
+    if (other.length) console.log(`::warning::live-data-lane: tracked file(s) changed during the trace and were left as they are: ${other.join(', ')}`);
     if (touched.length) {
       try { execFileSync('git', ['checkout', '--', ...touched], { cwd: ROOT, stdio: 'ignore' }); console.log(`# restored ${touched.length} tracked file(s) the trace modified: ${touched.join(', ')}`); } catch { console.log(`::warning::live-data-lane: the trace modified ${touched.join(', ')}; restore them before merging.`); }
     }
@@ -313,7 +329,7 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   return (undeclared.length || !complete) && blocking ? 1 : 0;
 }
 
-module.exports = { traceEnv, fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
+module.exports = { traceEnv, traceWritesToRestore, fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
 
 const USAGE = 'Usage: live-data-lane.js --filter=blocking|live [files] | --classify|--check|--mark <trace.jsonl>... | --verify-changed [--base=<sha>]';
 

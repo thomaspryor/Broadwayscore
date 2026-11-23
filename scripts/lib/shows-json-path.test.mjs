@@ -143,3 +143,18 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
     }
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('excerpt-validation reads a bare-array shows fixture too (readShowsList), not an empty map', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sjp-ev-'));
+  const prev = process.env.SHOWS_JSON_PATH;
+  try {
+    const f = path.join(dir, 'shows.json');
+    fs.writeFileSync(f, JSON.stringify([{ id: 'example-show-2026', title: 'Example Show Title' }]));
+    process.env.SHOWS_JSON_PATH = f;
+    const { getMatchableTitles } = require('./excerpt-validation.js');
+    assert.deepEqual([...getMatchableTitles().keys()], ['example-show-2026']);
+  } finally {
+    if (prev === undefined) delete process.env.SHOWS_JSON_PATH; else process.env.SHOWS_JSON_PATH = prev;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

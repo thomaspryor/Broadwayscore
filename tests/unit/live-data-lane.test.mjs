@@ -268,3 +268,14 @@ test('traceEnv: tracer runs with CI env, its own log, and no inherited test-runn
   assert.equal('NODE_TEST_CONTEXT' in env, false);
   assert.equal('LIVE_DATA_TEST' in env, false);
 });
+
+test('traceEnv drops credentials (CI mode would unlock real sends on a Mac)', () => {
+  const env = L.traceEnv({ PATH: '/bin', RESEND_API_KEY: 'k', OPENAI_API_KEY: 'k', GH_TOKEN: 't', SUPABASE_SERVICE_ROLE_KEY: 'k', SLACK_WEBHOOK_URL: 'u', HOME: '/h' }, '/tmp/r.jsonl');
+  assert.deepEqual(Object.keys(env).sort(), ['CI', 'GITHUB_ACTIONS', 'HOME', 'LIVE_DATA_READ_LOG', 'PATH']);
+});
+
+test('traceWritesToRestore: only data/ files that were clean before; never code or pre-dirty files', () => {
+  const before = new Set(['data/audit/a.jsonl', 'scripts/x.js']);
+  const after = new Set(['data/audit/a.jsonl', 'data/audit/stage-latency.jsonl', 'scripts/x.js', 'scripts/y.js']);
+  assert.deepEqual(L.traceWritesToRestore(before, after), ['data/audit/stage-latency.jsonl']);
+});
