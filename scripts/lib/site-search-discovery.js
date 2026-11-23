@@ -1552,6 +1552,19 @@ async function isCleanWpNoMatch(config, searchTitle, showTitle, body, openingDat
 // urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
+ * BRO-8126: outlet slugs drop the show's generic descriptor (BWW
+ * /westend/article/Review-CEILIDH-Shoreditch-Town-Hall-20261030 for "Ceilidh The
+ * Musical"), so the raw-title check rejects the real review and the first pass
+ * never sees it. Retry with the cleaned search title (cleanSearchTitle strips
+ * "The Musical"/"- A Play" only behind an article or separator, so real titles
+ * like "Slave Play" are untouched). Kept here, not in the shared urlLooksLikeReview.
+ */
+function siteSearchUrlMatchesTitle(url, showTitle, searchTitle) {
+  if (urlLooksLikeReview(url, showTitle)) return true;
+  return !!searchTitle && searchTitle !== showTitle && urlLooksLikeReview(url, searchTitle);
+}
+
+/**
  * Search a single outlet's website for a review.
  *
  * @param {string} outletId - Outlet identifier
@@ -1611,7 +1624,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         if (seen.has(url)) continue;
         // skipUrlFilter: config already scoped results to reviews (e.g. Variety /legit/reviews/).
         // Applying urlLooksLikeReview() would reintroduce title-matching and drop valid URLs.
-        if (!config.skipUrlFilter && !urlLooksLikeReview(url, showTitle)) continue;
+        if (!config.skipUrlFilter && !siteSearchUrlMatchesTitle(url, showTitle, searchTitle)) continue;
         seen.add(url);
         // outletIdOverride lets a sibling entry (e.g. 'vulture-opera') push the
         // canonical outlet id (e.g. 'vulture') downstream so outlet-registry
@@ -1806,6 +1819,7 @@ function dailyMailHeadlineMatches(showTitle, headline) {
 }
 
 module.exports = {
+  siteSearchUrlMatchesTitle,
   operaTitleMatch,
   dailyMailHeadlineMatches,
   searchOutletSites,
