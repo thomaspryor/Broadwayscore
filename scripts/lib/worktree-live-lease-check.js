@@ -69,7 +69,9 @@ function realpathOrSelf(p) {
   try { return fs.realpathSync(p); } catch { return path.resolve(p); }
 }
 
-function hasLiveLease(worktreePath, { leaseRoot = LEASE_ROOT, isAliveFn = pidLooksLikeClaude } = {}) {
+// BSC_JOB_LEASE_ROOT: tests point this at an empty fixture dir so they never
+// read the real data/audit/job-leases (live-data-lane, BRO-8124).
+function hasLiveLease(worktreePath, { leaseRoot = process.env.BSC_JOB_LEASE_ROOT || LEASE_ROOT, isAliveFn = pidLooksLikeClaude } = {}) {
   const { leases, unreadable } = readLeases(leaseRoot);
   if (unreadable) return true; // can't disprove liveness — fail safe
   const target = realpathOrSelf(worktreePath);

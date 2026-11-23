@@ -3,6 +3,15 @@
  * repo is gone are reaped; anything with a file open under it, a live owner,
  * an unknown name or a symlinked path is kept.
  */
+import { mkdtempSync as __bro8124Mk, rmSync as __bro8124Rm } from 'node:fs';
+import { tmpdir as __bro8124Tmp } from 'node:os';
+// BRO-8124: checkoutInUse -> hasLiveLease must not read the real
+// data/audit/job-leases (live-data-lane); point it at an empty fixture dir.
+if (!process.env.BSC_JOB_LEASE_ROOT) {
+  process.env.BSC_JOB_LEASE_ROOT = __bro8124Mk(`${__bro8124Tmp()}/lease-fixture-`);
+  const __leaseDir = process.env.BSC_JOB_LEASE_ROOT;
+  process.on('exit', () => { try { __bro8124Rm(__leaseDir, { recursive: true, force: true }); } catch { /* best-effort */ } });
+}
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
