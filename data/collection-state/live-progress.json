@@ -1,78 +1,21 @@
 {
-  "updatedAt": "2026-11-23T18:35:55.863Z",
-  "processed": 176,
-  "failed": 173,
-  "successRate": "50.4%",
+  "updatedAt": "2026-11-23T18:43:23.342Z",
+  "processed": 240,
+  "failed": 200,
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 104,
+    "playwright": 138,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 22,
+    "scrapingbee": 20,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 43
+    "archive": 58
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-23T16:04:53.624Z",
-      "event": "bb-session",
-      "session": "34c1fc69",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-23T16:04:53.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T16:32:10.968Z",
-      "event": "bb-session",
-      "session": "2bf85937",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655598"
-    },
-    {
-      "t": "2026-11-23T16:32:11.110Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-23T16:54:38.562Z",
-      "event": "bb-session",
-      "session": "d7c56341",
-      "url": "https://parterre.com/broadcast/109261/la-boheme/"
-    },
-    {
-      "t": "2026-11-23T17:11:03.826Z",
-      "event": "bb-session",
-      "session": "909ea6ef",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-11-23T17:11:03.979Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-23T17:11:33.302Z",
-      "event": "bb-session",
-      "session": "a0ddca10",
-      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
-    },
-    {
-      "t": "2026-11-23T17:11:55.350Z",
-      "event": "bb-session",
-      "session": "cd4c9beb",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-23T17:12:02.058Z",
-      "event": "bb-session",
-      "session": "2482d08b",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
     {
       "t": "2026-11-23T17:13:09.681Z",
       "event": "bb-session",
@@ -129,6 +72,63 @@
       "event": "bb-session",
       "session": "6fb780c0",
       "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-23T18:15:13.382Z",
+      "event": "bb-session",
+      "session": "87ad5aee",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-23T18:15:13.675Z",
+      "event": "bb-session",
+      "session": "4aa7d04b",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-23T18:15:14.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-23T18:15:22.920Z",
+      "event": "bb-session",
+      "session": "942bcfa6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-23T18:16:28.723Z",
+      "event": "bb-session",
+      "session": "304aba16",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-23T18:16:36.913Z",
+      "event": "bb-session",
+      "session": "16d396c5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-23T18:19:05.444Z",
+      "event": "bb-session",
+      "session": "667cbe5d",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T18:19:06.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-23T18:19:14.591Z",
+      "event": "bb-session",
+      "session": "54022b70",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T18:19:15.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
