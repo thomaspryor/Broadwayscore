@@ -592,8 +592,8 @@ function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS, extraEnv 
   // BRO-8179: one throwaway TMPDIR per run, removed when the run returns, so
   // every legacy test's os.tmpdir() mkdtemp litter (360 test files never
   // clean up) dies with the run instead of piling up in /private/tmp.
-  // extraEnv still wins, so a caller can pin TMPDIR.
-  const tmpScope = scopedTestTmpdir('bro-testrun-');
+  // extraEnv still wins, so a caller can pin TMPDIR. Off: BRO_KEEP_TEST_TMPDIR=1.
+  const tmpScope = process.env.BRO_KEEP_TEST_TMPDIR === '1' ? { env: {}, cleanup: () => {} } : scopedTestTmpdir('bro-testrun-');
   const env = { ...testChildEnv(process.env), ...tmpScope.env, ...(extraEnv || {}) };
   // --test-reporter=tap (not the default spec reporter) so parseTapOutput()
   // can key failures by <repo-relative-file>::<test name> for the baseline

@@ -264,3 +264,19 @@ test('BRO-8179 stale tmp: walk limit = unknown, never idle', () => {
   assert.equal(S.touchedSince(d, Date.now() - DAY_MS, 3), true, 'limit counts as touched (keep)');
   assert.equal(S.walkAge(d, Date.now() - DAY_MS), 'idle');
 });
+
+test('BRO-8179 stale tmp: unreadable git status gets 7d grace (not forever); an edit inside an untracked dir protects a clone', () => {
+  const r = root();
+  const fake = (name, ageMs) => { const d = path.join(r, name); fs.mkdirSync(path.join(d, '.git'), { recursive: true }); fs.writeFileSync(path.join(d, 'f'), 'x'); ageTree(d, ageMs); return d; };
+  const fake2d = fake('bro-fakegit-young', 2 * DAY_MS);
+  const fake8d = fake('bro-fakegit-old', 8 * DAY_MS);
+  const d = path.join(r, 'bro-untracked-dir');
+  execFileSync('git', ['init', '-q', d], { stdio: 'ignore' });
+  fs.mkdirSync(path.join(d, 'notes')); fs.writeFileSync(path.join(d, 'notes', 'n.md'), 'draft');
+  ageTree(d, 10 * DAY_MS);
+  const t = (Date.now() - 2 * DAY_MS) / 1000; fs.utimesSync(path.join(d, 'notes', 'n.md'), t, t);
+  S.reapStaleTmp({ root: r, snapshotFn: () => [], measure: false });
+  assert.equal(fs.existsSync(fake2d), true, 'unreadable status, 2d idle: kept');
+  assert.equal(fs.existsSync(fake8d), false, 'unreadable status, 8d idle: reaped');
+  assert.equal(fs.existsSync(d), true, 'file edited 2d ago inside an untracked dir keeps the clone');
+});

@@ -1252,14 +1252,14 @@ async function main() {
   }
 
   // BRO-8179: /private/tmp item count + GB, so tmp growth shows before the
-  // disk runs out. warn and error are both named (the reaper should keep it
-  // well under the warn line; crossing it means the reaper stopped).
+  // disk runs out. Only error reaches the email (the reaper should keep it
+  // well under the warn line; crossing the error line means it stopped).
   if (!skipMacLocal) try {
     const { readTmpSpace, tmpSpaceResults } = require('./lib/disk-space-digest.js');
     const { count, gb } = readTmpSpace();
     for (const row of tmpSpaceResults(count, gb)) {
       console.log(`[digest] ${row.name} (this Mac): ${row.status} ${row.message}`);
-      if (row.status === 'error' || row.status === 'warn') {
+      if (row.status === 'error') { // warn stays log-only, like the sibling Mac-local rows
         if (!sections.health) sections.health = {};
         if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
         sections.health.errors.push({ name: `${row.name} (this Mac)`, message: row.message, hint: row.hint });

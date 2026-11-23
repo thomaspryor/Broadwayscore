@@ -55,7 +55,13 @@ const KEEP_NAME_RE = /^(?:\.|claude|com\.apple|launch|tmux-|ssh-|powerlog|KSOutO
 // is itself a git checkout with no local work (tracked content is on a remote).
 const WALK_LIMIT = 50000;
 const PRUNE_DIRS = new Set(['node_modules', 'objects']);
-const GIT_ENV = { ...process.env, GIT_OPTIONAL_LOCKS: '0' }; // no index refresh write (would reset the idle clock)
+// No index refresh write (would reset the idle clock); drop inherited repo
+// pointers so `git -C` always inspects the checkout it is given.
+const GIT_ENV = (() => {
+  const e = { ...process.env, GIT_OPTIONAL_LOCKS: '0' };
+  for (const k of ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_OBJECT_DIRECTORY']) delete e[k];
+  return e;
+})();
 
 function hasGit(p) {
   try { fs.lstatSync(path.join(p, '.git')); return true; } catch { return false; }
@@ -89,12 +95,21 @@ function git(repo, args) {
  */
 function gitLocalWork(repo) {
   try {
-    const status = git(repo, ['status', '--porcelain=v1', '--untracked-files=normal']);
-    const files = status.split('\n').filter(Boolean).map((l) => path.join(repo, l.slice(3).replace(/^.* -> /, '').replace(/^"|"$/g, '')));
+    // -z: raw paths (no quoting/octal escapes); -uall: every untracked file,
+    // so an edit inside an untracked dir is seen. Rename entries carry the
+    // source path as an extra NUL field, which lstat just skips if gone.
+    const status = git(repo, ['status', '--porcelain=v1', '-z', '--untracked-files=all']);
+    const files = status.split('\0').filter(Boolean).map((f) => path.join(repo, /^.. /.test(f) ? f.slice(3) : f));
     let unique = false;
     let hasHead = true;
     try { git(repo, ['rev-parse', '-q', '--verify', 'HEAD']); } catch { hasHead = false; }
-    if (hasHead) unique = git(repo, ['rev-list', '-1', 'HEAD', '--branches', '--tags', '--not', '--remotes']).trim() !== '';
+    // A linked worktree (.git is a file) shares the main repo's branches; only
+    // its own HEAD matters, else every worktree of a repo with any unpushed
+    // branch would count as local work.
+    let linked = false;
+    try { linked = fs.lstatSync(path.join(repo, '.git')).isFile(); } catch { /* none */ }
+    const refs = linked ? ['HEAD'] : ['HEAD', '--branches', '--tags'];
+    if (hasHead) unique = git(repo, ['rev-list', '-1', ...refs, '--not', '--remotes']).trim() !== '';
     try { git(repo, ['rev-parse', '-q', '--verify', 'refs/stash']); unique = true; } catch { /* no stash */ }
     return files.length || unique ? { files, unique, unknown: false } : null;
   } catch { return { files: [], unique: false, unknown: true }; }
@@ -196,7 +211,8 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   for (const repo of repos) {
     const work = gitLocalWork(repo);
     if (!work) continue;
-    if (work.unknown) return { reap: false, reason: 'git status unreadable' };
+    // Unreadable status (fake .git fixture, orphaned worktree, timeout) gets
+    // the same 7d grace as real local work, not forever.
     if (st.mtimeMs > longCutoff || newestLocalWorkMs(repo, work) > longCutoff) return { reap: false, reason: 'git checkout with local work, younger than 7d' };
   }
   return { reap: true, path: p, isDir, cutoff, bytes: acc.bytes, reason: `idle >${ageH}h, nothing open` };
