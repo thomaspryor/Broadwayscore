@@ -10,7 +10,6 @@ import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 import { isLondonMarket } from '@/lib/market-utils';
 import { formatReviewDate } from '@/lib/date-utils';
-import { fetchMoreRows } from '@/lib/reviews-more';
 import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/tier-display';
 import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
@@ -62,29 +61,24 @@ interface ReviewsListProps {
    * are in the server markup. The flags come from the full list so the tier
    * key and city sort render exactly as they would with everything inline.
    */
-  // rev: the page's show-refresh marker, set only while the reader is on
-  // (BRO-8170 gap 3); rows from another revision are then never used.
-  more?: { url: string; totalCount: number; hasTierChips: boolean; hasStops: boolean; rev?: string };
+  more?: { url: string; totalCount: number; hasTierChips: boolean; hasStops: boolean };
 }
 
-// Resolves to the rows, 'mismatch' (reviews.json is from another revision than
-// this page, even after one retry: show the inline rows only), or null (error).
-type MoreRows = ReviewListItem[] | 'mismatch' | null;
-const moreCache = new Map<string, Promise<MoreRows>>();
-function loadMore(url: string, rev: string | undefined): Promise<MoreRows> {
-  const key = `${url}#${rev ?? ''}`;
-  let p = moreCache.get(key);
+const moreCache = new Map<string, Promise<ReviewListItem[] | null>>();
+function loadMore(url: string): Promise<ReviewListItem[] | null> {
+  let p = moreCache.get(url);
   if (!p) {
-    p = fetchMoreRows<ReviewListItem>(url, rev).then((r): MoreRows => {
-      if (r.state === 'ok') return r.rows;
-      // Not kept: the next mount (another visit in this tab) asks again once
-      // the regeneration has finished.
-      if (r.state === 'mismatch') { moreCache.delete(key); return 'mismatch'; }
-      console.error('Failed to load more reviews:', r.error);
-      moreCache.delete(key); // allow retry on the next interaction
-      return null;
-    });
-    moreCache.set(key, p);
+    p = fetch(url)
+      .then(r => {
+        if (!r.ok) throw new Error(`${url} HTTP ${r.status}`);
+        return r.json() as Promise<ReviewListItem[]>;
+      })
+      .catch((e) => {
+        console.error('Failed to load more reviews:', e);
+        moreCache.delete(url); // allow retry on the next interaction
+        return null;
+      });
+    moreCache.set(url, p);
   }
   return p;
 }
@@ -484,29 +478,25 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
 
 type SortMode = 'score' | 'date' | 'city';
 
-export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, category, showTiers = true, more: moreProp }: ReviewsListProps) {
+export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, category, showTiers = true, more }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
   const [rest, setRest] = useState<ReviewListItem[] | null>(null);
-  // reviews.json held another revision: behave as if there were no more rows.
-  const [mismatched, setMismatched] = useState(false);
-  const more = mismatched ? undefined : moreProp;
   const moreUrl = more?.url;
-  const moreRev = moreProp?.rev;
   // Prefetch when the browser is idle so Show more and the sorts are instant;
   // an interaction before that fetches too.
   useEffect(() => {
     if (!moreUrl) return;
     let cancelled = false;
-    const go = () => { loadMore(moreUrl, moreRev).then(d => { if (cancelled || !d) return; if (d === 'mismatch') setMismatched(true); else setRest(d); }); };
+    const go = () => { loadMore(moreUrl).then(d => { if (!cancelled && d) setRest(d); }); };
     const hasIdle = 'requestIdleCallback' in window;
     const id = hasIdle ? window.requestIdleCallback(go) : window.setTimeout(go, 1500);
     return () => {
       cancelled = true;
       if (hasIdle) window.cancelIdleCallback(id); else window.clearTimeout(id);
     };
-  }, [moreUrl, moreRev]);
-  const ensureMore = () => { if (moreUrl && !rest) loadMore(moreUrl, moreRev).then(d => { if (!d) return; if (d === 'mismatch') setMismatched(true); else setRest(d); }); };
+  }, [moreUrl]);
+  const ensureMore = () => { if (moreUrl && !rest) loadMore(moreUrl).then(d => { if (d) setRest(d); }); };
   const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
   const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
   const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;

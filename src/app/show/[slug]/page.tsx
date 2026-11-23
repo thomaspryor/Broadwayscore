@@ -17,7 +17,7 @@ import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, audiencePlatformUrlFrom } from '@/lib/data-audience';
 import { getShowForRender } from '@/lib/show-render';
-import { showRefreshConfigured, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
+import { showRefreshEnabled, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
@@ -265,10 +265,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       description: truncatedDescription,
     },
     // BRO-8056 refresh marker (plan row 10): which data this render used. Only
-    // while the flag is set, so flag-off pages stay byte-identical to today.
-    // Configured, not enabled (BRO-8170): pages prerendered by a flag-on build
-    // carry 'base' too, so a marker check never mistakes them for reader-off.
-    ...(showRefreshConfigured() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
+    // while the reader is on, so flag-off pages stay byte-identical to today.
+    ...(showRefreshEnabled() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
   };
 }
 
@@ -1036,9 +1034,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 totalCount: reviewItems.length,
                 hasTierChips: reviewItems.some(r => r.tier),
                 hasStops: reviewItems.some(r => r.stopLabel),
-                // BRO-8170 gap 3: rows from another revision are never mixed in.
-                // Configured, not Enabled: a page prerendered by a flag-on build is 'base' and must say so.
-                ...(showRefreshConfigured() ? { rev: render.rev } : {}),
               } : undefined}
               initialCount={REVIEWS_INLINE_COUNT}
               category={show.category}
