@@ -118,4 +118,37 @@ function shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, 
   return { suppress: true, reason: `excerpt_only_${rejection}_aggregator_listed` };
 }
 
-module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, shouldSuppressExcerptOnlyAggregatorListed, urlSlugNamesShow, urlSlugIsReviewOfShow };
+/**
+ * BRO-8097: the same verdict-on-a-teaser failure when the stored body is not empty but is still a teaser.
+ * Waverly Gallery (NY Post), Red (TheaterMania), Junk, Frankie & Johnny (Vulture) were rejected not_a_review
+ * on a 150-190 char lede that the scraper stored as fullText (contentTier truncated). scoredTextType was
+ * 'fullText', so the excerpt-only guards above never fired. A body under THIN_BODY_CHARS cannot show whether
+ * the article evaluates anything, so the verdict is not evidence. Hold the flag and let the refetch decide
+ * when an aggregator lists the file or the URL has a "review" path segment/slug.
+ * Pure; shared with the stale-verdict sweep (stale-automated-text-verdict.js isThinTextNotAReview).
+ */
+const THIN_BODY_CHARS = 600;
+
+function hasListingOrReviewUrlEvidence(fileData) {
+  if (!fileData) return false;
+  const listed = AGGREGATOR_EXCERPT_FIELDS.some((f) => typeof fileData[f] === 'string' && fileData[f].trim().length > 0)
+    || (typeof fileData.dtliThumb === 'string' && fileData.dtliThumb.trim().length > 0);
+  if (listed) return true;
+  let path;
+  try { path = new URL(fileData.url).pathname; } catch { path = String(fileData.url || ''); }
+  return /(^|[\/_-])reviews?([\/_.-]|$)/i.test(path);
+}
+
+function isThinBody(fileData) {
+  const len = typeof fileData?.fullText === 'string' ? fileData.fullText.trim().length : 0;
+  return len < THIN_BODY_CHARS;
+}
+
+function shouldSuppressThinTextNotAReview({ rejection, fileData }) {
+  if (rejection !== 'not_a_review') return { suppress: false, reason: null };
+  if (!isThinBody(fileData)) return { suppress: false, reason: null };
+  if (!hasListingOrReviewUrlEvidence(fileData)) return { suppress: false, reason: null };
+  return { suppress: true, reason: 'thin_text_not_a_review_listed_or_review_url' };
+}
+
+module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, shouldSuppressExcerptOnlyAggregatorListed, shouldSuppressThinTextNotAReview, hasListingOrReviewUrlEvidence, isThinBody, THIN_BODY_CHARS, urlSlugNamesShow, urlSlugIsReviewOfShow };

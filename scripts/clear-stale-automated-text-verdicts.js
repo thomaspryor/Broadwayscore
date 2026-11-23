@@ -42,7 +42,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
-const { staleAutomatedTextVerdicts, neutralizeStaleAutomatedTextVerdict, isPreContextWrongProduction, neutralizePreContextWrongProduction, RESCORE_REASON, RECHECK_RESCORE_REASON } = require('./lib/stale-automated-text-verdict');
+const { staleAutomatedTextVerdicts, neutralizeStaleAutomatedTextVerdict, isPreContextWrongProduction, neutralizePreContextWrongProduction, isThinTextNotAReview, neutralizeThinTextNotAReview, RESCORE_REASON, RECHECK_RESCORE_REASON } = require('./lib/stale-automated-text-verdict');
 const { markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isScoreable } = require('./lib/is-scoreable');
 
@@ -50,6 +50,8 @@ const { isScoreable } = require('./lib/is-scoreable');
 // goes through with --force-bulk. A larger daily batch means the predicate
 // or a writer regressed.
 const SURGE_THRESHOLD = 25;
+// BRO-8097: the thin-teaser backlog (~200 files) drains at most this many per run so the daily sweep stays under the surge guard.
+const THIN_PER_RUN = 15;
 
 const USAGE = `clear-stale-automated-text-verdicts.js — clear automated not_a_review/garbage_text/truncated_text verdicts that predate the complete fullText now on disk, and requeue the file for LLM scoring.
 
@@ -80,8 +82,9 @@ function loadShows() {
   return map;
 }
 
-function scan(dir, shows, showFilter) {
+function scan(dir, shows, showFilter, thinUncapped = false) {
   const matches = [];
+  let thinCount = 0;
   let showDirs = listShowDirs(dir);
   if (showFilter) showDirs = showDirs.filter((d) => d === showFilter);
   for (const showDir of showDirs) {
@@ -98,6 +101,7 @@ function scan(dir, shows, showFilter) {
       // BRO-4391: wrong_production verdicts issued before the declared
       // priorRuns/tourLegs were in the prompt get one re-judge with them.
       if (!kinds.length && isPreContextWrongProduction(data, show)) kinds.push('wrongProductionRecheck');
+      if (!kinds.length && isThinTextNotAReview(data) && (thinCount < THIN_PER_RUN || thinUncapped)) { kinds.push('thinTextNotAReview'); thinCount++; }
       if (!kinds.length) continue;
       matches.push({ path: fp, rel: `${showDir}/${file}`, show, kinds, data });
     }
@@ -120,14 +124,15 @@ function processRecord(m, now) {
   };
   const trial = JSON.parse(JSON.stringify(d));
   const recheck = m.kinds.includes('wrongProductionRecheck');
-  const neutralize = (rec) => (recheck ? neutralizePreContextWrongProduction(rec, m.show, now) : neutralizeStaleAutomatedTextVerdict(rec, now));
+  const thin = m.kinds.includes('thinTextNotAReview');
+  const neutralize = (rec) => (thin ? neutralizeThinTextNotAReview(rec, now) : recheck ? neutralizePreContextWrongProduction(rec, m.show, now) : neutralizeStaleAutomatedTextVerdict(rec, now));
   neutralize(trial);
   const scoreable = isScoreable(trial, m.show, m.path);
   if (scoreable) {
     neutralize(d);
-    markRescoreNeeded(d, recheck ? RECHECK_RESCORE_REASON : RESCORE_REASON, now);
+    markRescoreNeeded(d, thin ? 'not_a_review verdict judged on a teaser body (BRO-8097)' : recheck ? RECHECK_RESCORE_REASON : RESCORE_REASON, now);
   }
-  const last = scoreable ? d.priorAutomatedTextVerdicts[d.priorAutomatedTextVerdicts.length - 1] : null;
+  const last = scoreable && d.priorAutomatedTextVerdicts ? d.priorAutomatedTextVerdicts[d.priorAutomatedTextVerdicts.length - 1] : null;
   return {
     rel: m.rel, kinds: m.kinds, before, changed: scoreable, needsRescore: d.needsRescore === true,
     parkedScore: last && last.parkedScore ? Object.keys(last.parkedScore) : null,
@@ -144,7 +149,7 @@ function main() {
     process.exit(2);
   }
   const shows = loadShows();
-  const matches = scan(opts.dir, shows, opts.show);
+  const matches = scan(opts.dir, shows, opts.show, opts.forceBulk);
 
   const now = new Date().toISOString();
   const rows = matches.map((m) => processRecord(m, now));
@@ -182,4 +187,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { scan, processRecord, SURGE_THRESHOLD };
+module.exports = { scan, processRecord, SURGE_THRESHOLD, THIN_PER_RUN };

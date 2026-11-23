@@ -248,6 +248,36 @@ function neutralizeStaleAutomatedTextVerdict(d, now) {
 }
 
 /**
+ * BRO-8097: an ensemble not_a_review rejection written on a teaser (body under THIN_BODY_CHARS) for a file an
+ * aggregator lists or whose URL is a review page. Real second reviews were hidden this way (Waverly Gallery NY
+ * Post, Red TheaterMania). One re-judge per file: the breadcrumb clearedBy retires the predicate, and the
+ * writer guard (shouldSuppressThinTextNotAReview) stops a re-rejection on the same thin body.
+ */
+const THIN_CLEARED_BY = 'thin-text-not-a-review';
+function isThinTextNotAReview(d) {
+  const { isThinBody, hasListingOrReviewUrlEvidence } = require('./excerpt-wrongshow-guard');
+  if (!d || typeof d !== 'object') return false;
+  if (d.rejectionReason !== 'not_a_review' || d.rejectedBy !== ENSEMBLE_REJECTER) return false;
+  if (d.duplicateOf || d.wrongShow === true || hasHumanVerdict(d)) return false;
+  if (!isThinBody(d) || !hasListingOrReviewUrlEvidence(d)) return false;
+  const history = Array.isArray(d.priorAutomatedTextVerdicts) ? d.priorAutomatedTextVerdicts : [];
+  return !history.some((h) => h && h.clearedBy === THIN_CLEARED_BY);
+}
+
+/** Clear the thin-text verdict + park the teaser-derived score. Does NOT raise needsRescore. Mutates. */
+function neutralizeThinTextNotAReview(d, now) {
+  if (!isThinTextNotAReview(d)) return false;
+  const at = now || new Date().toISOString();
+  const prior = { clearedAt: at, clearedBy: THIN_CLEARED_BY, textFetchedAt: d.textFetchedAt || null };
+  _clearInto(d, REJECTION_FIELDS, prior);
+  if (d.promptVersion != null) { prior.promptVersion = d.promptVersion; d.promptVersion = null; }
+  const parked = parkTextDerivedScore(d, at);
+  if (parked) prior.parkedScore = parked;
+  _pushBreadcrumb(d, prior);
+  return true;
+}
+
+/**
  * BRO-4391: an automated wrong_production rejection on a review dated inside
  * one of the show's DECLARED priorRuns/tourLegs windows, never re-judged with
  * that runs context. The ensemble rejected these (The Car Man at Curve
@@ -367,6 +397,9 @@ function voidRejectionOnBodyReplacement(d, now, clearedBy = 'junk-body-replaceme
 }
 
 module.exports = {
+  isThinTextNotAReview,
+  neutralizeThinTextNotAReview,
+  THIN_CLEARED_BY,
   voidRejectionOnBodyReplacement,
   isHumanRejecter,
   isAutomatedRejecter,
