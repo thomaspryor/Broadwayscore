@@ -233,7 +233,9 @@ function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
   for (const name of names.sort()) {
     const rel = path.join('data', name);
     try {
-      if (!fs.statSync(path.join(fromRoot, rel)).isDirectory()) continue;
+      // stat follows symlinks (data/review-texts is one); a dangling link throws into the catch below.
+      const st = fs.statSync(path.join(fromRoot, rel));
+      if (!st.isDirectory()) continue;
       if (fs.existsSync(path.join(toRoot, rel))) continue;
       if (ignored(rel)) missing.push(rel);
     } catch { /* unreadable entry: not evidence of a data difference */ }
