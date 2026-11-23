@@ -1012,7 +1012,7 @@ export function getAllTheaters(): Theater[] {
     const current = byFormerName.get(t.name);
     const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? (current ? getTheaterAddress(current.name) : undefined) ?? undefined;
     // The old-name page shows the current building's photo, so it carries that photo's credit too.
-    if (current) return { ...t, address, website: t.website ?? current.website, images: t.images?.exterior ? t.images : current.images, nowKnownAs: { name: current.name, slug: current.slug } };
+    if (current) return { ...t, address, website: t.website ?? current.website, images: t.images?.exterior ? t.images : current.images, geo: t.geo ?? (address && address === current.address ? current.geo : undefined), nowKnownAs: { name: current.name, slug: current.slug } };
     return address === t.address ? t : { ...t, address };
   });
 

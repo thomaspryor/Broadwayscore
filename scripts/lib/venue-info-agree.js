@@ -189,7 +189,8 @@ function inCity(lat, lng, city) {
  * facts researched under its old spellings: each field the page's own decision lacks is filled
  * from the first folded-in decision that has it. An address moves only with its geocode.
  * @param {{fields: object, how: object, geo: ?{lat:number,lng:number}}} d mutated and returned
- * @param {Array<{fields: object, how: object, geo: ?{lat:number,lng:number}}>} donors
+ * @param {Array<{key?: string, fields: object, how: object, geo: ?{lat:number,lng:number}}>} donors
+ *   a donor with `key` is recorded in d.foldedFrom[field], so the next rebuild can re-derive it
  */
 function fillFromFolded(d, donors) {
   for (const dd of donors) {
@@ -198,6 +199,7 @@ function fillFromFolded(d, donors) {
       if (f === 'address' && !dd.geo) continue;
       d.fields[f] = val;
       d.how[f] = dd.how[f];
+      if (dd.key) (d.foldedFrom ||= {})[f] = dd.key;
       if (f === 'address') d.geo = dd.geo;
     }
   }
@@ -205,18 +207,22 @@ function fillFromFolded(d, donors) {
 }
 
 /**
- * store["<market>/<slug>"], else the entry kept under a spelling that folds into that page
- * (VENUE_PAGE_NAME_FOLDS, BRO-8173), so a merged page keeps facts researched under its old name.
+ * store["<market>/<slug>"] when usable, else a usable entry kept under a spelling that folds into
+ * that page (VENUE_PAGE_NAME_FOLDS, BRO-8173), so a merged page keeps facts researched under its
+ * old name. A failed or empty own record never hides a good folded one; with none usable, the
+ * page's own record (or the first folded one) comes back as-is.
+ * @param {(rec: object) => boolean} [usable] default: any truthy record
  */
-function pickWithFolded(store, key, folds = require('./page-name-sources').VENUE_PAGE_NAME_FOLDS) {
-  if (store[key]) return store[key];
+function pickWithFolded(store, key, folds = require('./page-name-sources').VENUE_PAGE_NAME_FOLDS, usable = Boolean) {
   const { slugify } = require('./url-slug');
   const [market, slug] = key.split('/');
-  for (const [from, to] of Object.entries(folds)) {
+  const candidates = [store[key]];
+  for (const [from, to] of Object.entries(folds || {})) {
     const old = `${market}/${slugify(from)}`;
-    if (slugify(to) === slug && old !== key && store[old]) return store[old];
+    if (slugify(to) === slug && old !== key) candidates.push(store[old]);
   }
-  return undefined;
+  const present = candidates.filter(Boolean);
+  return present.find((r) => usable(r)) || present[0];
 }
 
 module.exports = {

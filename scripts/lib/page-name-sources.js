@@ -160,6 +160,13 @@ const VENUE_PAGE_NAME_FOLDS = {
   'Richmond': 'Richmond Theatre',
   'The Arts at Marble Arch powered by TodayTix': 'The Arts at Marble Arch',
   'The Arts at Marble Arch Powered by TodayTix': 'The Arts at Marble Arch',
+  'Dorfman (Cottesloe)': 'Dorfman Theatre',
+  // Theatre Row's own studios: one page per studio (the complex page still groups them).
+  'Theatre Row – Theater Four': 'Theatre Row, Theatre Four',
+  'Theatre Five at Theatre Row': 'Theatre Five @ Theatre Row',
+  'Theatre Row (Theatre 5)': 'Theatre Five @ Theatre Row',
+  'Theatre Row, Theatre 5': 'Theatre Five @ Theatre Row',
+  'Theatre Row – Theatre Five': 'Theatre Five @ Theatre Row',
 };
 
 /** @param {string} venue @returns {string} the canonical page name for a raw venue string */

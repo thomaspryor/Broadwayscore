@@ -274,12 +274,14 @@ async function main() {
   const all = venueList(false);
   // Facts researched under a spelling that now folds into this page (BRO-8173) still count.
   const { pickWithFolded } = require('./lib/venue-info-agree');
-  const pick = pickWithFolded;
+  const usableAccess = (r) => !!(r.gemini && r.openai && !r.gemini.error && !r.openai.error);
+  const usableSeats = (r) => !!(r.seatplan || r.aviewfrommyseat);
+  const pick = (store, k, usable) => pickWithFolded(store, k, undefined, usable);
   const out = {};
   const rejects = {};
   for (const v of all) {
     const entry = {};
-    const a = pick(raw.access, v.key);
+    const a = pick(raw.access, v.key, usableAccess);
     if (a && a.gemini && a.openai && v.website) {
       const pages = await accessPages(v.website); // cached on disk, same text the models saw
       const r = agreeAccess(a.gemini, a.openai, pages);
@@ -288,7 +290,7 @@ async function main() {
       }
       if (r.rejected.length) rejects[v.key] = r.rejected;
     }
-    const s = pick(raw.seats, v.key);
+    const s = pick(raw.seats, v.key, usableSeats);
     if (s && (s.seatplan || s.aviewfrommyseat)) {
       entry.seatLinks = {};
       if (s.seatplan) entry.seatLinks.seatplan = s.seatplan;
