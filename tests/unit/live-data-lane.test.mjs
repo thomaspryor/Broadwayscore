@@ -189,6 +189,41 @@ test('verify-changed CLI: nothing changed vs HEAD exits 0; land gauntlet wires i
   assert.doesNotMatch(y, /\n\s+LAND_LIVE_DATA_LANE_BLOCKING:/, 'land.yml must not export the blocking name to whole jobs');
 });
 
+// BRO-8107: the local pre-flight (merge-worktree-to-main.sh) refuses an
+// undeclared live test, and only that: a declared one passes, and so does a
+// trace that cannot run (land.yml judges those). Probe tests live in a tmp dir
+// so no parallel scripts/lib batch collects them.
+test('verify-changed --refuse-undeclared: undeclared live test exits 1 with the fix; marker or fixture exits 0', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8107-lane-'));
+  try {
+    const read = (target) => `import fs from 'node:fs';\nimport { test } from 'node:test';\ntest('reads', () => { try { fs.readFileSync(${JSON.stringify(target)}); } catch {} });\n`;
+    const live = path.join(dir, 'probe-live.test.mjs');
+    fs.writeFileSync(live, read(path.join(ROOT, 'data', 'shows.json')));
+    const declared = path.join(dir, 'probe-declared.test.mjs');
+    fs.writeFileSync(declared, `// ${P.MARKER} probe\n` + read(path.join(ROOT, 'data', 'shows.json')));
+    const fixture = path.join(dir, 'probe-fixture.test.mjs');
+    fs.writeFileSync(fixture, read(path.join(dir, 'shows.json')));
+    const run = (f) => spawnSync(process.execPath, ['scripts/live-data-lane.js', '--verify-changed', '--refuse-undeclared', `--files=${path.relative(ROOT, f)}`], { cwd: ROOT, encoding: 'utf8', env: cleanEnv({}) });
+    const red = run(live);
+    assert.equal(red.status, 1, red.stdout + red.stderr);
+    assert.match(red.stdout, /::error::.*probe-live\.test\.mjs reads live data \(data\/shows\.json.*useShowsFixture/);
+    for (const f of [declared, fixture]) {
+      const ok = run(f);
+      assert.equal(ok.status, 0, ok.stdout + ok.stderr);
+      assert.match(ok.stdout, /0 undeclared live test/);
+    }
+    // Not blocking on its own tooling: a bad base warns and exits 0 even when the land variable is armed.
+    const bad = spawnSync(process.execPath, ['scripts/live-data-lane.js', '--verify-changed', '--refuse-undeclared', '--base=no-such-ref-bro8107'], { cwd: ROOT, encoding: 'utf8', env: cleanEnv({ LAND_LIVE_DATA_LANE_BLOCKING: '1' }) });
+    assert.equal(bad.status, 0, bad.stdout + bad.stderr);
+    assert.match(bad.stdout, /::warning::live-data-lane: cannot diff/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('fixtureHint names the shows fixture seam only for a shows.json read', () => {
+  assert.match(L.fixtureHint(['data/shows.json (untracked core data)']), /useShowsFixture/);
+  assert.equal(L.fixtureHint(['data/audit/x.json (bot ledger)']), '');
+});
+
 test('verify-changed CLI: a bad base warns and exits 0 when advisory, fails when blocking', () => {
   const adv = spawnSync(process.execPath, ['scripts/live-data-lane.js', '--verify-changed', '--base=no-such-ref-bro7101'], { cwd: ROOT, encoding: 'utf8', env: cleanEnv({}) });
   assert.equal(adv.status, 0, adv.stdout + adv.stderr);
