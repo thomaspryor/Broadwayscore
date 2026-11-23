@@ -17,7 +17,7 @@ const theaterMeta = require('../../data/theater-metadata.json');
 
 const ALLOWED = new Set(['address', 'website', 'capacity', 'yearOpened', 'operator']);
 // Set from the first full research run (BRO-8088); lower only with a written reason.
-const MIN_VENUES_WITH_ADDRESS = 250;
+const MIN_VENUES_WITH_ADDRESS = 320; // first full run: 358
 
 test('venue-info.json holds at least the verified address floor', () => {
   const n = Object.values(info.venues).filter((v) => v.fields?.address).length;
@@ -55,5 +55,14 @@ test('every renamed Broadway house resolves to an address through its current na
   for (const [name, meta] of Object.entries(theaterMeta)) {
     if (name === '_meta' || !meta.formerNames) continue;
     assert.ok(VENUE_ADDRESSES[name], `${name} (formerly ${meta.formerNames.join(', ')}) has no registry address`);
+  }
+});
+
+test('every Broadway theater with a curated exterior photo has its image file (hero shows only these)', () => {
+  const { slugify } = require('../../scripts/lib/url-slug.js');
+  for (const [name, meta] of Object.entries(theaterMeta)) {
+    if (name === '_meta' || !meta.images?.exterior) continue;
+    const file = path.join(ROOT, 'public/images/theaters', `${slugify(name)}.jpg`);
+    assert.ok(fs.existsSync(file), `${name}: missing ${path.relative(ROOT, file)}`);
   }
 });
