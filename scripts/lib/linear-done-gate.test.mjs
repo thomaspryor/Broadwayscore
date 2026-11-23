@@ -485,3 +485,11 @@ test('BRO-8079 reopen ship-check: DATA_EFFECT_COUNT_NOUN_GATE=advisory rolls bac
   const original = checkLinearDoneTransition({ targetStateType: 'completed', identifier: 'BRO-7930', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs', verifyCmdEvidence: passingVerify, env: { DATA_EFFECT_COUNT_NOUN_GATE: 'advisory' } });
   assert.equal(original.allowed, false);
 });
+
+test('BRO-8079 reopen dry-run: CLI flags, year ranges, connectives and line breaks do not make a count', () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  for (const t of ['node scripts/x.js --show=2012', 'West End seasons shows: 2012-13', 'every outlet >= 95% for 2025-26 shows, OR each remaining gap', '30 da\n\nA test file']) {
+    const m = dataCountMatch({ title: t });
+    assert.equal(Boolean(m && m.strong), false, t);
+  }
+});

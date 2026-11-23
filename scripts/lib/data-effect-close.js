@@ -64,8 +64,10 @@ const DATA_NOUN = String.raw`(?:reviews?|stubs?|candidates?|gaps?|files?|urls?|l
 const SIZE_BEFORE_RE = /\b(?:limit(?:ed)?\s+to|page\s+size|max(?:imum)?|up\s+to|at\s+most|cap(?:ped)?\s+(?:at|to)|sample[ds]?|sampling|test(?:ed)?\s+on|lines?|top|first|last|every|each)\s+$/i;
 const SIZE_AFTER_RE = /^[ \t]*,?[ \t]*(?:per\b|cap\b|limit\b|max\b|at\s+a\s+time\b)/i;
 // "1039 show pages", "360 data testid review card" (screenshot width) count UI, not data; "file.tsx:360" is a line number.
-const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}\s+(?:[a-z_-]+\s+){0,3}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
-const DATA_REV_RE = new RegExp(String.raw`\b${DATA_NOUN}\s*[:=]\s*~?(\d[\d,]*)\b`, 'gi');
+// Filler words stay on the same line and are never connectives ("95% OR each remaining gap").
+const FILLER = String.raw`(?!(?:or|and|of|for|to|in|on|at|with|per|from|than|by|the|a|an)\b)[a-z_-]+[ \t]+`;
+const DATA_FWD_RE = new RegExp(String.raw`(?<!:)${NUM}[ \t]+(?:${FILLER}){0,3}?${DATA_NOUN}\b(?![ \t-]*(?:pages?|cards?|widths?)\b)`, 'gi');
+const DATA_REV_RE = new RegExp(String.raw`(?<![-\w])${DATA_NOUN}[ \t]*[:=][ \t]*~?(\d[\d,]*)\b(?![-./]\d)`, 'gi');
 // An EFFECT: line in the card's own description (any line, bulleted or not) means its author asked for a
 // measured result at close; inline prose quoting `EFFECT: ...` and NO-DATA-EFFECT / NO-EFFECT-CHECK do not count.
 // Bullets, numbered items ("1. EFFECT:") and checkboxes ("- [ ] EFFECT:") all count.
