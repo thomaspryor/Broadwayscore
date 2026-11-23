@@ -4235,38 +4235,11 @@ async function getWorkflowRunSummary() {
     // one result instead of each computing a distinct since= and missing.
     const { runs: results, partial } = await cachedFetch('workflow-run-summary-24h', async () => {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      // Use REST API with per_page=100 (covers most days in 1-2 calls)
-      const runs = [];
-      let page = 1;
-      const maxPages = 3; // Cap at 300 runs to avoid rate limit issues
-      let partial = false;
-
-      while (page <= maxPages) {
+      return collectRunPages(async (page) => {
         const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs?created=%3E${since}&per_page=100&page=${page}`;
-        let response;
-        try {
-          response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
-        } catch (pageErr) {
-          // A failure on page 2+ must not discard page 1's already-fetched
-          // runs (fetchGitHubJSON throws on non-2xx, unlike the old fetchJSON
-          // which silently parsed whatever body came back) — degrade to
-          // "partial results" instead of losing everything. A page-1 failure
-          // means zero data was ever fetched — keep propagating that to the
-          // outer catch so it reports skipped/error rather than a false "0
-          // failures" clean read.
-          if (page === 1) throw pageErr;
-          console.error(`[Workflows] page ${page} fetch failed, using ${runs.length} run(s) from earlier pages: ${pageErr.message}`);
-          partial = true;
-          break;
-        }
-        if (!response || !response.workflow_runs) break;
-        runs.push(...response.workflow_runs);
-        if (response.workflow_runs.length < 100) break;
-        page++;
-        // Cap reached with more pages unread: coverage is incomplete (BRO-7307).
-        if (page > maxPages) partial = true;
-      }
-      return { runs, partial };
+        const response = await fetchGitHubJSON(url, { token, caller: 'health-check.js', headers: { 'User-Agent': 'bsc-health-check' } });
+        return response && response.workflow_runs;
+      }, { maxPages: 3, onPageError: (page, err) => console.error(`[Workflows] page ${page} fetch failed, using runs from earlier pages: ${err.message}`) });
     });
 
     // Own try/catch: this optional list must never blank the repeat-failure data above.

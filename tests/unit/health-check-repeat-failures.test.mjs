@@ -76,6 +76,26 @@ test('BRO-3178: getWorkflowRunSummary fetches step details before grouping', asy
   assert.equal(urls.filter(u => u.includes('/actions/runs?')).length, 2, 'all-events run list plus the push-on-main list (BRO-7589)');
 });
 
+test('BRO-8068: missing first all-events page skips the summary', async t => {
+  const healthPath = require.resolve('../../scripts/health-check.js');
+  const savedModule = require.cache[healthPath];
+  const savedToken = process.env.GH_TOKEN;
+  t.after(() => {
+    require.cache[healthPath] = savedModule;
+    if (savedToken === undefined) delete process.env.GH_TOKEN;
+    else process.env.GH_TOKEN = savedToken;
+  });
+  process.env.GH_TOKEN = 'test-only';
+  const cache = require('../../scripts/lib/gh-api-cache.js');
+  t.mock.method(cache, 'cachedFetch', async (_key, fn) => fn());
+  t.mock.method(cache, 'hasLowHeadroom', () => false);
+  t.mock.method(require('../../scripts/lib/gh-api-client.js'), 'fetchGitHubJSON', async () => null);
+  delete require.cache[healthPath];
+  const summary = await require(healthPath).getWorkflowRunSummary();
+  assert.equal(summary.skipped, true);
+  assert.match(summary.error, /page 1 returned no workflow_runs array/);
+});
+
 test('repeatFailureResults: count>=3 is error, exactly 2 is warn', () => {
   const results = repeatFailureResults({
     skipped: false,
