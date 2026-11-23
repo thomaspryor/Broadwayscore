@@ -1428,6 +1428,37 @@
     "queuedAt": "2026-11-23T05:44:20.779Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-8091-mwss86kh",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-8091-mwss86kh",
+    "description": "land.yml did not land land/job/linear-BRO-8091-mwss86kh: the rebase gate went red at 2652ac0cb5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45119918842",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8091-mwss86kh"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "2652ac0cb5c0ad42834437e23609b8159da450a4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45119918842"
+      }
+    ],
+    "queuedAt": "2026-11-23T05:50:31.592Z"
+  },
+  {
     "conditionKey": "land:land/worktree-agent-aa92440a50bd86398",
     "title": "Landing blocked: unit-tests-node red on land/worktree-agent-aa92440a50bd86398",
     "description": "land.yml did not land land/worktree-agent-aa92440a50bd86398: the unit-tests-node gate went red at acb5b26e97. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45119559602",
