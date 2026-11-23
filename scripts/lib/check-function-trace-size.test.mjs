@@ -54,6 +54,26 @@ test('scanTraces flags only the function over the limit, with a readable name', 
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('scanTraces boundary: exactly at the limit passes, one byte over fails', () => {
+  const root = fixture();
+  try {
+    const dir = join(root, '.next', 'server');
+    const exact = scanTraces(dir, { limitBytes: 310 * KB }).find((r) => r.name === 'app/api/over');
+    assert.equal(exact.totalBytes, 310 * KB);
+    assert.equal(exact.over, false);
+    assert.equal(scanTraces(dir, { limitBytes: 310 * KB - 1 }).find((r) => r.name === 'app/api/over').over, true);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('scanTraces also scans shared runtime traces at the .next root', () => {
+  const root = fixture();
+  try {
+    writeFileSync(join(root, '.next', 'next-server.js.nft.json'), JSON.stringify({ files: ['../node_modules/big/blob.bin'] }));
+    const over = spawnSync('node', [SCRIPT, join(root, '.next'), '--limit-mb=0.1'], { encoding: 'utf8' });
+    assert.match(over.stdout, /FAIL \.\.\/next-server/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('CLI exits 1 and names the biggest files when over, 0 when under, 2 with no build', () => {
   const root = fixture();
   try {
@@ -76,6 +96,19 @@ test('CLI exits 1 and names the biggest files when over, 0 when under, 2 with no
     writeFileSync(join(emptyRoot, '.next', 'server', 'app', 'x.js.nft.json'), JSON.stringify({ files: ['a', 'b'] }));
     assert.equal(spawnSync('node', [SCRIPT, join(emptyRoot, '.next')], { encoding: 'utf8' }).status, 2);
     rmSync(emptyRoot, { recursive: true, force: true });
+    // Unreadable trace, boundary (> not >=), space-form limit, bad limit, annotation on fail-closed exits.
+    const corruptRoot = mkdtempSync(join(tmpdir(), 'trace-corrupt-'));
+    mkdirSync(join(corruptRoot, '.next', 'server', 'app'), { recursive: true });
+    writeFileSync(join(corruptRoot, '.next', 'server', 'app', 'c.js.nft.json'), '{not json');
+    const corrupt = spawnSync('node', [SCRIPT, join(corruptRoot, '.next')], { encoding: 'utf8' });
+    assert.equal(corrupt.status, 2);
+    assert.match(corrupt.stdout, /::warning title=Trace size check could not run::/);
+    rmSync(corruptRoot, { recursive: true, force: true });
+    const spaced = spawnSync('node', [SCRIPT, next, '--limit-mb', '0.1'], { encoding: 'utf8' });
+    assert.equal(spaced.status, 1, 'space-form limit applies and is not read as the .next dir');
+    assert.match(over.stdout, /::warning title=Function trace over/);
+    assert.equal(spawnSync('node', [SCRIPT, next, '--limit-mb=abc'], { encoding: 'utf8' }).status, 2);
+    assert.equal(spawnSync('node', [SCRIPT, next, '--limit-mb='], { encoding: 'utf8' }).status, 2);
     const none = spawnSync('node', [SCRIPT, join(root, 'nope')], { encoding: 'utf8' });
     assert.equal(none.status, 2);
   } finally { rmSync(root, { recursive: true, force: true }); }

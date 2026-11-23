@@ -86,42 +86,59 @@ function findNftFiles(dir) {
  * @param {{limitBytes: number, statSize?: Function}} opts
  * @returns {{ name: string, totalBytes: number, over: boolean, fileCount: number, missing: number, top: object[] }[]}
  */
-function scanTraces(serverDir, { limitBytes, statSize: rawStat = fsStatSize }) {
+function scanTraces(serverDir, { limitBytes, statSize: rawStat = fsStatSize, extraNftFiles = [] }) {
   // Traces share most node_modules files; stat each absolute path once.
   const cache = new Map();
   const statSize = (abs) => {
     if (!cache.has(abs)) cache.set(abs, rawStat(abs));
     return cache.get(abs);
   };
-  return findNftFiles(serverDir).map((nftPath) => {
+  return [...findNftFiles(serverDir), ...extraNftFiles].map((nftPath) => {
     let nft;
-    try { nft = JSON.parse(fs.readFileSync(nftPath, 'utf8')); } catch { nft = { files: [] }; }
+    let unreadable = false;
+    try { nft = JSON.parse(fs.readFileSync(nftPath, 'utf8')); } catch { nft = { files: [] }; unreadable = true; }
     const r = sizeTrace(nft, path.dirname(nftPath), statSize);
     const name = path.relative(serverDir, nftPath).split(path.sep).join('/').replace(/\.js\.nft\.json$|\.nft\.json$/, '');
-    return { name, ...r, over: r.totalBytes > limitBytes };
+    return { name, ...r, unreadable, over: r.totalBytes > limitBytes };
   });
 }
 
 function main() {
   const args = process.argv.slice(2);
-  const limitArg = args.find((a) => a.startsWith('--limit-mb='));
-  const limitMb = limitArg ? Number(limitArg.split('=')[1]) : DEFAULT_LIMIT_MB;
-  const nextDir = path.resolve(args.find((a) => !a.startsWith('--')) || '.next');
+  // Accept both `--limit-mb=200` and `--limit-mb 200`.
+  const li = args.findIndex((a) => a === '--limit-mb' || a.startsWith('--limit-mb='));
+  let limitArg;
+  let limitRaw;
+  const used = new Set();
+  if (li >= 0) {
+    used.add(li);
+    if (args[li] === '--limit-mb') { limitRaw = args[li + 1]; used.add(li + 1); limitArg = `--limit-mb ${limitRaw}`; }
+    else { limitRaw = args[li].split('=')[1]; limitArg = args[li]; }
+  }
+  const limitMb = li >= 0 ? (limitRaw === undefined || limitRaw === '' ? NaN : Number(limitRaw)) : DEFAULT_LIMIT_MB;
+  const nextDir = path.resolve(args.find((a, i) => !used.has(i) && !a.startsWith('--')) || '.next');
   const repoRoot = path.dirname(nextDir);
   const serverDir = path.join(nextDir, 'server');
-  if (!Number.isFinite(limitMb) || limitMb <= 0) { console.log(`bad --limit-mb: ${limitArg}`); process.exit(2); }
-  if (!fs.existsSync(serverDir)) { console.log(`no build output at ${serverDir}`); process.exit(2); }
+  // Every fail-closed exit also prints an annotation: with continue-on-error a
+  // broken check must still be visible on the run, not a green step.
+  const bail = (msg) => { console.log(`::warning title=Trace size check could not run::${msg}`); console.log(msg); process.exit(2); };
+  if (!Number.isFinite(limitMb) || limitMb <= 0) bail(`bad --limit-mb: ${limitArg}`);
+  if (!fs.existsSync(serverDir)) bail(`no build output at ${serverDir}`);
 
-  const results = scanTraces(serverDir, { limitBytes: limitMb * MB });
+  // Shared runtime traces (.next/next-server.js.nft.json ...) sit beside server/; Vercel ships them in lambdas.
+  const rootTraces = fs.readdirSync(nextDir).filter((f) => f.endsWith('.nft.json')).map((f) => path.join(nextDir, f));
+  const results = scanTraces(serverDir, { limitBytes: limitMb * MB, extraNftFiles: rootTraces });
   // Fail closed: a path-resolution break would size every file as missing and
   // report 0 MB, which must not read as healthy.
   const listed = results.reduce((n, r) => n + r.fileCount + r.missing, 0);
   const missing = results.reduce((n, r) => n + r.missing, 0);
-  if (!results.length) { console.log(`no .nft.json traces under ${serverDir}`); process.exit(2); }
+  if (!results.length) bail(`no .nft.json traces under ${serverDir}`);
+  const unreadable = results.filter((r) => r.unreadable);
+  if (unreadable.length) bail(`${unreadable.length} unreadable .nft.json trace(s), e.g. ${unreadable[0].name}`);
+  if (listed === 0) bail('traces list no files at all');
   console.log(`${listed - missing}/${listed} traced files found on disk (${missing} missing)`);
   if (listed && missing / listed > MAX_MISSING_RATIO) {
-    console.log(`more than ${MAX_MISSING_RATIO * 100}% of traced files are missing: path resolution is likely broken`);
-    process.exit(2);
+    bail(`more than ${MAX_MISSING_RATIO * 100}% of traced files are missing: path resolution is likely broken`);
   }
   const over = results.filter((r) => r.over).sort((a, b) => b.totalBytes - a.totalBytes);
   const largest = [...results].sort((a, b) => b.totalBytes - a.totalBytes)[0];
