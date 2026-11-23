@@ -355,11 +355,12 @@ const MID_TEXT_CHROME_BLOCKS = [
 // and "Become a member" read as a paywall. Cut marker-to-end only when the exact
 // two-part marker matches and a review of at least MID_TEXT_CHROME_MIN_BODY chars precedes it.
 const TAIL_CHROME_CUTS = [
-  { name: 'bristol247-footer', re: /Become a member of Bristol24\/7\s+Share\s+Share on Facebook[\s\S]*$/i },
+  // BRO-8012: hint = a literal the regex cannot match without; a cheap test skips the full-text scan.
+  { name: 'bristol247-footer', hint: /Become a member of Bristol24\/7/i, re: /Become a member of Bristol24\/7\s+Share\s+Share on Facebook[\s\S]*$/i },
   // National World article footer: "... Until October 26. Continue Reading Related topics: Chichester
   // summer Devon". The tag list hid the review's real last sentence, so Portsmouth News reviews
   // read as truncated. Only a short, sentence-free tag list at the very end is cut.
-  { name: 'nationalworld-related-topics', re: /\s*(?:\bContinue\s+Reading\s+)?\bRelated\s+topics:[^.!?\n]{0,200}$/i },
+  { name: 'nationalworld-related-topics', hint: /topics:/i, re: /\s*(?:\bContinue\s+Reading\s+)?\bRelated\s+topics:[^.!?\n]{0,200}$/i },
 ];
 // Same floor as DOW_JONES_MIN_BODY: article text must follow the block, and what is left must still be a review.
 const MID_TEXT_CHROME_MIN_BODY = 300;
@@ -381,7 +382,8 @@ function stripMidTextChromeBlocks(text) {
     out = out.replace(re, (m, offset, whole) =>
       (whole.length - offset - m.length >= MID_TEXT_CHROME_MIN_BODY ? '\n' : m));
   }
-  for (const { re } of TAIL_CHROME_CUTS) {
+  for (const { hint, re } of TAIL_CHROME_CUTS) {
+    if (!hint.test(out)) continue;
     const m = re.exec(out);
     if (m && m.index >= MID_TEXT_CHROME_MIN_BODY) out = out.slice(0, m.index);
   }
@@ -511,7 +513,7 @@ const PROMO_BOOKING_COPY_MIN_HITS = 2;
  */
 function detectPromoBookingCopy(text) {
   const t = (typeof text === 'string') ? text : '';
-  const substantial = t.trim().length >= 500 && _countTheaterKeywords(t) >= 3;
+  const substantial = t.trim().length >= 500 && _countTheaterKeywords(t, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN;
   const matches = [];
   let strongHits = 0;
   for (const pattern of PROMO_BOOKING_COPY_PATTERNS) {
@@ -652,6 +654,8 @@ const THEATER_KEYWORDS = [
   'ensemble', 'understudy', 'matinee', 'evening show', 'off-broadway',
   'west end', 'playbill', 'shubert', 'nederlander', 'lyceum', 'booth',
 ];
+// Theater keywords a text needs to read as substantial review content.
+const SUBSTANTIAL_KEYWORD_MIN = 3;
 
 /**
  * Check if text contains ad blocker message
@@ -1561,7 +1565,7 @@ function isGarbageContent(text) {
   // it; a banner with too little behind it falls through to the cookie check.
   if (typeof text === 'string') {
     const stripped = stripLeadingCookieConsentBlock(text);
-    if (stripped !== text && stripped.trim().length >= 1500 && _countTheaterKeywords(stripped) >= 3) text = stripped;
+    if (stripped !== text && stripped.trim().length >= 1500 && _countTheaterKeywords(stripped, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN) text = stripped;
   }
 
   // BRO-5684: known mid-article publisher chrome blocks are not review prose.
@@ -1589,7 +1593,7 @@ function isGarbageContent(text) {
   // If the pattern is trailing junk on an otherwise valid review, don't reject the
   // entire review: collect-review-texts.js calls stripExemptedChrome() (below) right after
   // cleanText(), which removes the exempted line. cleanText() itself does NOT cover these.
-  const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
+  const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed, SUBSTANTIAL_KEYWORD_MIN) >= SUBSTANTIAL_KEYWORD_MIN;
 
   // Check for cookie consent / GDPR banner — always garbage, even with theater keywords
   // (consent text contains generic words like "show", "performance" that fool keyword checks)
@@ -1728,9 +1732,15 @@ function isGarbageContent(text) {
  * @param {string} text
  * @returns {number}
  */
-function _countTheaterKeywords(text) {
+function _countTheaterKeywords(text, cap = Infinity) {
+  // BRO-8012: every caller only asks ">= 3", so stop counting at the cap
+  // instead of scanning all 47 keywords (a hot path of the rebuild tier pass).
   const lower = text.toLowerCase();
-  return THEATER_KEYWORDS.filter(kw => lower.includes(kw)).length;
+  let n = 0;
+  for (const kw of THEATER_KEYWORDS) {
+    if (lower.includes(kw) && ++n >= cap) break;
+  }
+  return n;
 }
 
 /**
@@ -2153,7 +2163,7 @@ function _stripExemptedChromeLines(text) {
   let out = text;
   for (let pass = 0; pass < 6; pass++) {
     const trimmed = out.trim();
-    if (trimmed.length < 500 || _countTheaterKeywords(trimmed) < 3) break;
+    if (trimmed.length < 500 || _countTheaterKeywords(trimmed, SUBSTANTIAL_KEYWORD_MIN) < SUBSTANTIAL_KEYWORD_MIN) break;
     const probes = [
       [detectAdBlocker, true, false, AD_BLOCKER_PATTERNS],
       [detectPaywall, true, false, PAYWALL_PATTERNS],
@@ -2204,10 +2214,12 @@ function endsWithSentencePunctuation(s) {
  * Only strips when the trailer is short and follows a punctuated sentence end,
  * so a review truncated mid-sentence right before an address stays flagged.
  */
+const LISTINGS_TRAILER_RE = /\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i;
 function stripVenueListingsTrailer(text, outletId) {
   let t = text;
   for (let i = 0; i < 3; i++) {
-    const listings = t.replace(/\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i, '');
+    // BRO-8012: the literal check skips a full-text scan; the regex cannot match without it.
+    const listings = /information/i.test(t) ? t.replace(LISTINGS_TRAILER_RE, '') : t;
     if (listings !== t) { t = listings; continue; }
     const addr = /([.!?]["'\u201d\u2019)]?)\s+(?:[A-Z0-9][\w'’&-]*,?\s+){1,10}(?:NY|NJ|CT)\s+\d{5}(?:-\d{4})?\s*$/.exec(t);
     if (addr) { t = t.slice(0, addr.index + addr[1].length); continue; }
