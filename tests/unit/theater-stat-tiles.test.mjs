@@ -33,6 +33,23 @@ test('finds the theater detail pages', () => {
   assert.ok(pages.length >= 3, `expected >= 3 theater pages, found ${pages.length}`);
 });
 
+test('getTheaterAvgScore: malformed venue data never produces NaN or a wrong sample size', () => {
+  const get = loadAvgScoreHelper();
+  assert.deepEqual(get([]), { avgScore: null });
+  const mixed = get([
+    { criticScore: { score: 'abc' } },
+    { criticScore: { score: NaN } },
+    { criticScore: { score: Infinity } },
+    { criticScore: { score: undefined } },
+    { criticScore: null },
+    { criticScore: { score: 60 } },
+    { criticScore: { score: 71 } },
+  ]);
+  assert.equal(mixed.avgScore, 66);
+  assert.equal(mixed.sampleLabel, 'based on 2 shows');
+  assert.deepEqual(get([{ criticScore: { score: 'x' } }, { criticScore: { score: NaN } }]), { avgScore: null });
+});
+
 for (const p of pages) {
   const rel = path.relative(root, p);
   test(`${rel} builds its stats row with StatGrid`, () => {

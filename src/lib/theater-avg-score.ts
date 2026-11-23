@@ -10,7 +10,7 @@ interface ScoredShowLike {
 export function getTheaterAvgScore(shows: ScoredShowLike[]): { avgScore: number | null; sampleLabel?: string } {
   const scores = shows
     .map(show => show.criticScore?.score)
-    .filter((score): score is number => score != null);
+    .filter((score): score is number => typeof score === 'number' && Number.isFinite(score));
   if (scores.length === 0) return { avgScore: null };
   const avgScore = Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
   return { avgScore, sampleLabel: `based on ${scores.length} ${scores.length === 1 ? 'show' : 'shows'}` };
