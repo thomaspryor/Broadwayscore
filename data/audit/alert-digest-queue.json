@@ -1146,5 +1146,36 @@
     "testId": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd",
     "fields": [],
     "queuedAt": "2026-11-23T18:37:33.463Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8163-score-gate",
+    "title": "Landing blocked: rebase red on land/bro-8163-score-gate",
+    "description": "land.yml did not land land/bro-8163-score-gate: the rebase gate went red at e24766bd83. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-8163-score-gate @ e24766bd83 (origin/land/bro-8163-score-gate) → origin/main @ d9512930f6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ d9512930f6: Rebasing (1/6) error: could not apply baaaa96a908... VISUAL-OK-1440: standing rule, specials and short Broadway/West End runs show a Critic Score at 3 reviews (BRO-8163) hint: Resolve all conflicts manually, mark t Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45237294018",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8163-score-gate"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e24766bd83f770f002fb65c56d3a9d7e1abf0d08"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45237294018"
+      }
+    ],
+    "queuedAt": "2026-11-23T18:48:20.780Z"
   }
 ]
