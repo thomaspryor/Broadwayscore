@@ -19,10 +19,11 @@
  * --rebuild-only re-derives venue-info.json from the raw checkpoint with no model calls.
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { stubTheaterName, londonShows, offBroadwayShows } = require('./lib/page-name-sources');
-const { slugify } = require('./lib/url-slug');
+const { slugify, foldDiacritics } = require('./lib/url-slug');
 const { agree, addressesAgree, streetKey, inCity } = require('./lib/venue-info-agree');
 
 const ROOT = path.join(__dirname, '..');
@@ -140,7 +141,7 @@ async function siteText(url) {
 function siteNamesAddress(text, address) {
   const k = streetKey(address);
   if (!k.number || !k.street) return false;
-  const norm = ` ${String(text).toLowerCase().replace(/[^a-z0-9]+/g, ' ')} `;
+  const norm = ` ${foldDiacritics(String(text)).toLowerCase().replace(/[^a-z0-9]+/g, ' ')} `;
   const firstWord = k.street.split(' ').find((w) => !['w', 'e', 'n', 's'].includes(w)) || k.street.split(' ')[0];
   const re = new RegExp(`\\b${k.number}\\s+(?:[a-z]+\\s+){0,2}${firstWord.replace(/(st|nd|rd|th)$/, '(?:$1)?')}`);
   return re.test(norm);

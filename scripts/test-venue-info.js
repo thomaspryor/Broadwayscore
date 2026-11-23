@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 // BRO-8088 acceptance: venue agreement rules + verified venue data guards.
 const { spawnSync } = require('child_process');
 const path = require('path');
