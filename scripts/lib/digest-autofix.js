@@ -860,6 +860,10 @@ function reattachedLiveState(filed) {
   return filed.stateType === 'started' ? 'tracked' : null;
 }
 
+// BRO-8158: linear-client backs off 60s per 429 (5 attempts); a 30s kill made the
+// dedup lookup fail open and file a duplicate. Must outlast one backoff.
+const FIND_TIMEOUT_MS = Number(process.env.DIGEST_AUTOFIX_FIND_TIMEOUT_MS) || 150000;
+
 function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, cloudFiled = false, ignoreNumbers = false, testId = null, execFn = execFileSync } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
@@ -872,7 +876,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   // duplicate, same as a transient Linear outage).
   try {
     const findBy = (term, extra) => execFn('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', term, ...extra],
-      { cwd: REPO, encoding: 'utf8', timeout: 30000 });
+      { cwd: REPO, encoding: 'utf8', timeout: FIND_TIMEOUT_MS });
     // BRO-7102 item 4: an open card for the SAME failing test, filed by the alert
     // router's live-data or main test.yml filer under another title, is this row's card.
     // A failed marker lookup falls through to the title lookup (one Linear blip

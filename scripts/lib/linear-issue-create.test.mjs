@@ -684,3 +684,23 @@ test('createLinearIssue: a failed VERIFY path probe never prevents filing', (t) 
   assert.equal(board.created.length, 1);
   assert.ok(warnings.some(w => w.includes('missing-VERIFY-path check failed open: git unavailable')));
 }));
+
+// BRO-8158: digest-autofix's START-NOW (dispatch) filing opened a fresh card each day while a
+// Paused twin waiting on an owner DECISION NEEDED with the same title was open.
+test('BRO-8158: a dispatch filing from digest-autofix is noted on a Paused twin waiting on an owner decision', async () => {
+  const { reuseOpenTwin } = require('./linear-issue-create.js');
+  const twin = { id: 'u1', identifier: 'BRO-8047', title: 'BSC Daily: Press night: score gate undecided', url: 'https://x', state: { name: 'Paused', type: 'backlog' } };
+  const decision = 'Problem...\n\nDECISION NEEDED: should the four short-run shows hide their Critic Score?\nWhy this is your call: taste\n';
+  const notes = [];
+  const mk = (description) => ({ findOpenIssueByTitle: async () => twin, getIssue: async () => ({ ...twin, description }), addComment: async (id, n) => { notes.push([id, n]); } });
+  const r = await reuseOpenTwin({ title: twin.title, body: 'today', client: mk(decision), mode: 'dispatch', dedupeOptOut: 'digest-autofix' });
+  assert.equal(r && r.issue.identifier, 'BRO-8047');
+  assert.equal(notes.length, 1);
+  // A Paused twin with no owner decision still gets a real card.
+  assert.equal(await reuseOpenTwin({ title: twin.title, body: 'today', client: mk('Problem only, no ask'), mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);
+  // A session's own --dispatch (no opt-out) is never swallowed by a decision card.
+  assert.equal(await reuseOpenTwin({ title: twin.title, body: 'today', client: mk(decision), mode: 'dispatch' }), null);
+  // A failing description read files normally.
+  const broken = { findOpenIssueByTitle: async () => twin, getIssue: async () => { throw new Error('429'); }, addComment: async () => {} };
+  assert.equal(await reuseOpenTwin({ title: twin.title, body: '', client: broken, mode: 'dispatch', dedupeOptOut: 'digest-autofix' }), null);
+});
