@@ -1589,3 +1589,60 @@ test('BRO-8202: WOS id variant + null-url primary settle as same article; real o
   assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).url, URL_);
   assert.ok(!fs.existsSync(stub) || !/different article/.test(JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason || ''));
 });
+
+describe('BRO-8195: browser recovery lists paywalled _pending stubs', () => {
+  // A fresh corpus dir, never the live one: the helper reads REVIEW_TEXTS_DIR at load.
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-rt-'));
+  process.on('exit', () => fs.rmSync(rt, { recursive: true, force: true }));
+  const write = (rel, obj) => { fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true }); fs.writeFileSync(path.join(rt, rel), JSON.stringify(obj, null, 2)); };
+  const NYT = 'https://www.nytimes.com/2017/01/05/theater/hundred-days-review-under-the-radar.html';
+  write('_pending/hundred-days-off-broadway-2017/nytimes--49a11b48.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: NYT, criticName: 'Unknown', pendingFetchFailures: 3,
+    promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed on paywalled outlet nytimes; needs the logged-in browser path, not retried by the paid scraper (BRO-8091)' });
+  write('_pending/hundred-days-off-broadway-2017/nytimes--junk0001.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: 'https://www.nytimes.com/2017/01/05/movies/x.html', promoteSkippedReason: 'off-topic URL, not a review (BRO-7078)' });
+  write('_pending/hundred-days-off-broadway-2017/nytimes--nourl.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: null });
+  write('_pending/cloud-9-west-end-2026/times-uk--63ed18d9.json', { showId: 'cloud-9-west-end-2026', outletId: 'times-uk', url: 'https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-fchw23k6r' });
+  write('some-show-2017/nytimes--ben-brantley.json', { url: 'https://www.nytimes.com/2017/a.html', contentTier: 'excerpt' });
+
+  const loadHelpers = () => {
+    const prev = process.env.REVIEW_TEXTS_DIR;
+    process.env.REVIEW_TEXTS_DIR = rt;
+    const key = require.resolve('../../scripts/lib/browser-recovery-helpers.js');
+    delete require.cache[key];
+    try { return require(key); } finally { process.env.REVIEW_TEXTS_DIR = prev; }
+  };
+  const H = loadHelpers();
+
+  test('a subscriber-fetch-failed _pending stub is a candidate; other settles and url-less stubs are not', () => {
+    const c = H.loadCandidates({ filePrefix: 'nytimes', includePending: true });
+    const ids = c.map((x) => x.reviewId).sort();
+    assert.deepEqual(ids, ['_pending/hundred-days-off-broadway-2017/nytimes--49a11b48.json', 'some-show-2017/nytimes--ben-brantley.json']);
+    const p = c.find((x) => x.pending);
+    assert.equal(p.url, NYT);
+    assert.equal(p.showId, 'hundred-days-off-broadway-2017');
+    assert.equal(p.file, 'nytimes--49a11b48.json');
+  });
+
+  test('an open subscriber stub with a url is listed too; without includePending nothing under _pending is', () => {
+    assert.ok(H.loadCandidates({ filePrefix: 'times-uk', includePending: true }).some((x) => x.reviewId === '_pending/cloud-9-west-end-2026/times-uk--63ed18d9.json'));
+    assert.ok(!H.loadCandidates({ filePrefix: ['nytimes', 'times-uk'] }).some((x) => x.pending));
+  });
+
+  test('processPendingCandidate hands the logged-in html to the drain, and settles a stub the drain keeps', async () => {
+    const [cand] = H.loadCandidates({ filePrefix: 'nytimes', includePending: true }).filter((x) => x.pending);
+    let seen = null;
+    const fakeDrain = async (showId, deps) => {
+      const d = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+      assert.equal(d.promoteSkippedReason, null, 'the subscriber settle is re-opened before the drain runs');
+      seen = { showId, files: deps.files, html: (await deps.fetch(cand.url)).content, other: await deps.fetch('https://x.test/') };
+      return { promoted: 0 };
+    };
+    const tracker = new Set();
+    const r = await H.processPendingCandidate(cand, '<html>logged in</html>', { processShow: fakeDrain, tracker });
+    assert.deepEqual(seen, { showId: 'hundred-days-off-broadway-2017', files: ['nytimes--49a11b48.json'], html: '<html>logged in</html>', other: null });
+    assert.equal(r.outcome, 'settled');
+    const after = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+    assert.match(after.promoteSkippedReason, /^subscriber-browser-read-no-promote/);
+    assert.ok(tracker.has(path.resolve(cand.filePath)));
+    assert.ok(!H.pendingSubscriberStubEligible(after), 'a stub the logged-in read could not promote is not retried every run');
+  });
+});
