@@ -1,54 +1,23 @@
 {
   "processed": [
-    "downstate-2026/pages-on-stages--mason-pilevsky.json",
-    "downstate-2026/talkinbroadway--unknown.json"
-  ],
-  "failed": [
-    "downstate-2026/nytimes--unknown.json",
-    "downstate-2026/nydailynews--unknown.json",
-    "downstate-2026/pages-on-stages--unknown.json"
+    "elektra-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "downstate-2026/pages-on-stages--mason-pilevsky.json"
+      "elektra-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "downstate-2026/talkinbroadway--unknown.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-23T22:13:33.651Z",
-  "lastProcessed": "downstate-2026/talkinbroadway--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-23T22:13:53.686Z",
-      "event": "bb-session",
-      "session": "fc3a07af",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-23T22:13:54.407Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T22:14:13.003Z",
-      "event": "bb-session",
-      "session": "c475fbdf",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-23T22:14:13.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-23T22:18:43.221Z",
+  "lastProcessed": "elektra-off-broadway-2026/theater-pizzazz--unknown.json",
+  "log": []
 }
