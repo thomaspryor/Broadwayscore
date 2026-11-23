@@ -4,13 +4,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
 
 // ── BRO-8167: per-job memory cap (watchdog backstop) ────────────────────────
 // Drives the REAL memoryCapPass/runLeasePass with a fake process table.
 import fsMc from 'node:fs';
 import osMc from 'node:os';
 import pathMc from 'node:path';
+const require = createRequire(import.meta.url);
 
 // before the HOME-sandboxed BRO-2412/3904 tests above get a fresh copy.
 const mcLib = require('./lib/job-memory-cap.js');
