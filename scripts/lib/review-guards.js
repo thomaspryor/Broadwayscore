@@ -3387,9 +3387,10 @@ function isNonReviewDemotedByFreshCV(data, opts) {
   const cvTime = Date.parse(cv.verifiedAt);
   if (Number.isNaN(cvTime)) return false;
 
-  // BRO-8135: deliberately NOT routed through cvSameVerdictWindow. This is the un-flagging
-  // (demotion) direction, so a refetch-after-verdict keeps the label (conservative); the
-  // stale-CV bug fixed there is the re-EXCLUDE direction.
+  // BRO-8135: deliberately NOT routed through cvSameVerdictWindow. contentHash covers only the first
+  // CV_WINDOW_CHARS, so a same-head refetch can still carry a different (longer or cut) tail. This
+  // branch un-excludes a "not a review" label on the CV's say-so, which needs proof the verdict read
+  // the stored body; the head hash alone does not prove that, so it stays timestamp-only.
   if (data.textFetchedAt) {
     const fetchedAt = Date.parse(data.textFetchedAt);
     if (!Number.isNaN(fetchedAt) && fetchedAt > cvTime) return false;

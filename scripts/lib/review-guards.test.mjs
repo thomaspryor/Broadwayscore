@@ -15,6 +15,8 @@ const {
   isStaleCvPromotedWrongProduction,
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
+  isStaleCvNonReviewVerdictOverruled,
+  isMisFamilyCvPromotedWrongShow,
   cvSameVerdictWindow,
   shouldPromoteViaStaleCvReasonFallback,
   isReviewContentTrustworthy,
@@ -553,6 +555,31 @@ test('BRO-8135 fallback predicate: genuinely stale CV (changed text) still promo
   assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000) })), true);
   assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000), wrongShow: true })), false);
   assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000), wrongShowReason: 'fine' })), false);
+});
+
+// BRO-8135: other computeCvIsStale callers under the same-hash rule.
+const nr8135 = (over = {}) => mk8135({
+  llmScore: { score: 70, confidence: 'high' },
+  llmMetadata: { scoredAt: '2026-06-07T00:00:00.000Z' },
+  ...over,
+}, { wrongArticle: true, wrongProduction: false, issues: [], reasoning: 'a feature piece' });
+
+test('BRO-8135 isStaleCvNonReviewVerdictOverruled: changed text overrules, same-head refetch does not', () => {
+  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135({ fullText: 'B'.repeat(3000) })), true);
+  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135()), false);
+  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135({ fullText: TXT8135.slice(0, 2500) + 'longer tail' })), false);
+});
+test('BRO-8135 isMisFamilyCvPromotedWrongShow: staleness input follows the same-hash rule', () => {
+  const f = nr8135({ wrongShow: true, wrongShowReason: 'CV-promoted: not a review' });
+  assert.equal(isMisFamilyCvPromotedWrongShow(f, { cvIsStale: computeCvIsStale(f) }), true);
+  const g = { ...f, fullText: 'B'.repeat(3000) };
+  assert.equal(isMisFamilyCvPromotedWrongShow(g, { cvIsStale: computeCvIsStale(g) }), false);
+});
+test('BRO-8135 isStaleCvPromotedWrongShow (flag-contradiction caller): same-hash clean CV self-heals, changed text does not', () => {
+  const f = mk8135({ wrongShow: true, contentVerificationPromoted: 'rebuild: promoted from contentVerification (x, high)', wrongShowReason: 'CV-promoted: x' }, { wrongProduction: false });
+  assert.equal(isStaleCvPromotedWrongShow(f, computeCvIsStale(f)), isStaleCvPromotedWrongShow(f, false));
+  const g = { ...f, fullText: 'B'.repeat(3000) };
+  assert.equal(isStaleCvPromotedWrongShow(g, computeCvIsStale(g)), false);
 });
 
 /* ──────────────────────────────────────────────────────────────────────────
