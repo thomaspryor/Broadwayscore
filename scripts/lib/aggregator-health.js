@@ -118,7 +118,7 @@ function peerArchivedIds(source, sources, archives) {
   for (const o of sources) {
     if (o.id === source.id || o.retired || o.market !== source.market) continue;
     const a = archives && archives[o.id];
-    if (!(a instanceof Set)) continue;
+    if (!(a instanceof Set) || a.size === 0) continue; // an empty folder is unreadable, not "nothing expected"
     readable = true;
     for (const id of a) out.add(id);
   }
