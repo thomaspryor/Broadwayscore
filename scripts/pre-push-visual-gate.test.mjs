@@ -264,11 +264,14 @@ function ledgerEntry(fx, uiFiles, branch = BRANCH) {
   appendFileSync(fx.ledger, JSON.stringify({ ts: new Date().toISOString(), sessionId: 's', branch, commitSha: 'f'.repeat(40), contentHash: 'oldhash000000000', uiFiles }) + '\n');
 }
 
+// What visual-qa records: the blob of each file as screenshotted (here: as committed at HEAD).
+function blobs(fx, files) { return Object.fromEntries(files.map((f) => [f, git(fx.repo, 'rev-parse', `HEAD:${f}`)])); }
+
 test('BRO-8156: owner yes, then a visual-qa re-run (newer verdict file) still clears the gate', (t) => {
   const fx = makeFixture(t);
   assertGateLive(fx);
   // Screenshots of Foo.tsx were first shown before the yes (scopeFirstAt); the re-run rewrote the file afterwards.
-  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], scopeFirstAt: '2026-10-12T00:00:00Z' });
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], uiFileHashes: blobs(fx, [UI_FILE]), scopeFirstAt: '2026-10-12T00:00:00Z' });
   const tr = writeTranscript(fx, 'yes ship it');
   const red = runHook(fx, tr, { hook: redHook(fx) });
   assert.equal(red.status, 2, 'red: without BRO-8156 the re-run voids the yes');
@@ -283,7 +286,7 @@ test('BRO-8156: a tweak to an already-approved file clears the gate with no new 
   assertGateLive(fx);
   ledgerEntry(fx, [UI_FILE]);
   commitFile(fx.repo, UI_FILE, 'export const Foo = () => <p className="wrap">x</p>;\n', 'ui: wrap fix');
-  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], scopeFirstAt: new Date().toISOString() });
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], uiFileHashes: blobs(fx, [UI_FILE]), scopeFirstAt: new Date().toISOString() });
   const tr = writeTranscript(fx, NEUTRAL_USER);
   assert.equal(runHook(fx, tr, { hook: redHook(fx) }).status, 2, 'red: without BRO-8156 the tweak re-asks');
   const r = runHook(fx, tr);
@@ -291,12 +294,27 @@ test('BRO-8156: a tweak to an already-approved file clears the gate with no new 
   assert.match(readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8'), /scope-reuse/);
 });
 
+test('BRO-8156: an edit made after the last passing visual-qa run does not ride the earlier yes', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  ledgerEntry(fx, [UI_FILE]);
+  const screenshotted = blobs(fx, [UI_FILE]);
+  commitFile(fx.repo, UI_FILE, 'export const Foo = () => <section>redesign</section>;\n', 'ui: redesign, no visual-qa run');
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], uiFileHashes: screenshotted, scopeFirstAt: '2026-10-12T00:00:00Z' });
+  const tr = writeTranscript(fx, 'yes ship it');
+  assert.equal(runHook(fx, tr).status, 2, 'stale verdict: neither the ledger scope nor the carried scopeFirstAt applies');
+  // The same push after visual-qa re-screenshots the new content clears with the earlier yes.
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], uiFileHashes: blobs(fx, [UI_FILE]), scopeFirstAt: '2026-10-12T00:00:00Z' });
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 0, r.stderr);
+});
+
 test('BRO-8156: a NEW UI file (or route) still asks the owner', (t) => {
   const fx = makeFixture(t);
   assertGateLive(fx);
   ledgerEntry(fx, [UI_FILE]);
   commitFile(fx.repo, 'src/app/new-route/page.tsx', 'export default function P(){return <main>new</main>}\n', 'ui: new route');
-  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE, 'src/app/new-route/page.tsx'], scopeFirstAt: new Date().toISOString() });
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE, 'src/app/new-route/page.tsx'], uiFileHashes: blobs(fx, [UI_FILE, 'src/app/new-route/page.tsx']), scopeFirstAt: new Date().toISOString() });
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /new UI file\(s\) since the owner's yes: src\/app\/new-route\/page\.tsx/, 'the ask names the new file');
@@ -309,7 +327,7 @@ test('BRO-8156: a new file sorted after five approved ones is still compared (no
   for (const f of approved) commitFile(fx.repo, f, `export const X = () => <div>${f}</div>;\n`, `ui: ${f}`);
   ledgerEntry(fx, [...approved, UI_FILE]);
   commitFile(fx.repo, 'src/components/Zed.tsx', 'export const Z = () => <div>z</div>;\n', 'ui: Zed');
-  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [...approved, UI_FILE, 'src/components/Zed.tsx'], scopeFirstAt: new Date().toISOString() });
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [...approved, UI_FILE, 'src/components/Zed.tsx'], uiFileHashes: blobs(fx, [...approved, UI_FILE, 'src/components/Zed.tsx']), scopeFirstAt: new Date().toISOString() });
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 2, r.stderr);
 });

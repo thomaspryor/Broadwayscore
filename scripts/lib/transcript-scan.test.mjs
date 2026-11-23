@@ -1189,11 +1189,13 @@ test('BRO-8156 scope: entries older than the ledger TTL do not count; legacy ent
 });
 
 test('BRO-8156 re-run: visual-qa carries scopeFirstAt for the same (or smaller) file set, restarts it for a new file', () => {
-  const prev = { uiFiles: ['src/a.tsx', 'src/b.css'], scopeFirstAt: '2026-11-23T10:00:00.000Z' };
+  const prev = { overallPass: true, uiFiles: ['src/a.tsx', 'src/b.css'], scopeFirstAt: '2026-11-23T10:00:00.000Z' };
   assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx', 'src/b.css'], '2026-11-23T12:00:00.000Z'), '2026-11-23T10:00:00.000Z');
   assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T10:00:00.000Z');
   assert.equal(__scope.carryScopeFirstAt(prev, ['src/a.tsx', 'src/app/new/page.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T12:00:00.000Z');
   assert.equal(__scope.carryScopeFirstAt(null, ['src/a.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T12:00:00.000Z');
+  // A failed run's screenshots were never shown for approval, so it never starts or carries the window.
+  assert.equal(__scope.carryScopeFirstAt({ ...prev, overallPass: false }, ['src/a.tsx'], '2026-11-23T12:00:00.000Z'), '2026-11-23T12:00:00.000Z');
   // A changed file set forces the verdict rewrite even when the pixels (contentHash) did not move.
   assert.equal(__scope.scopeMetadataChanged({ uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }, { uiFiles: ['src/a.tsx', 'src/c.tsx'], uiFileHashes: { 'src/a.tsx': '1', 'src/c.tsx': '2' } }), true);
   assert.equal(__scope.scopeMetadataChanged({ uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }, { uiFiles: ['src/a.tsx'], uiFileHashes: { 'src/a.tsx': '1' } }), false);
@@ -1214,6 +1216,19 @@ test('BRO-8156 commit proof (pure): passing verdict with matching blobs passes; 
   assert.equal(__scope.commitProof({ ...ok, uiFileHashes: { 'src/components/A.tsx': 'older' } }, staged).ok, false);
   assert.equal(__scope.commitProof({ schemaVersion: 2, overallPass: true }, staged).ok, false);
   assert.equal(__scope.commitProof({ ...ok, uiFileHashes: {} }, staged).ok, false);
+  // A rename's old path (staged as deleted, never screenshotted) does not block; a deletion the run saw as present does.
+  assert.equal(__scope.commitProof(ok, { ...staged, 'src/components/Old.tsx': null }).ok, true);
+  assert.equal(__scope.commitProof({ ...ok, uiFileHashes: { ...ok.uiFileHashes, 'src/components/Old.tsx': 'b0' } }, { ...staged, 'src/components/Old.tsx': null }).ok, false);
+});
+
+test('BRO-8156 push scope (pure): headCurrent needs a passing verdict that screenshotted every file as pushed', () => {
+  const head = { 'src/a.tsx': 'h1', 'src/b.tsx': 'h2' };
+  const v = { overallPass: true, uiFileHashes: { 'src/a.tsx': 'h1', 'src/b.tsx': 'h2' } };
+  assert.equal(__scope.headCurrent(v, head).ok, true);
+  assert.equal(__scope.headCurrent({ ...v, overallPass: false }, head).ok, false);
+  assert.equal(__scope.headCurrent({ ...v, uiFileHashes: { 'src/a.tsx': 'h1', 'src/b.tsx': 'old' } }, head).ok, false);
+  assert.equal(__scope.headCurrent({ ...v, uiFileHashes: { 'src/a.tsx': 'h1' } }, head).ok, false);
+  assert.equal(__scope.headCurrent({ overallPass: true }, head).ok, false);
 });
 
 // The REAL scripts/hooks/commit-msg in a throwaway repo whose scripts/ is this repo's scripts/.

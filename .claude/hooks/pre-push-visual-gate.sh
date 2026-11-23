@@ -326,9 +326,16 @@ fi
 # >>> BRO-8156 scope reuse (the replay test strips this block to prove the red case)
 # One owner yes per feature branch covers later revisions of the SAME UI files (a re-run of visual-qa, a wrap fix):
 # allowed when a fresh ledger entry the owner approved on this branch lists every gated UI file and the current
-# verdict passes. A new UI file or route is not in that list, so it still asks. Never records or mints (no TTL renewal,
+# verdict passes and shows HEAD's content. A new UI file or route is not in that list, so it still asks. Never records or mints (no TTL renewal,
 # no durable marker for a diff the owner did not see). Canonical-root copy only; any error -> the normal ask below.
-if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ]; then
+# The verdict must also show every gated file exactly as HEAD has it (visual-scope.js head-current), so an old passing
+# verdict plus a later unscreenshotted edit never rides the earlier yes.
+_CURRENT=0
+if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ] \
+   && node "$CANONICAL_ROOT/scripts/lib/visual-scope.js" head-current --cwd="$SESSION_ROOT" --verdict="$VERDICT_PATH" --files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null; then
+  _CURRENT=1
+fi
+if [ "$_CURRENT" = 1 ]; then
   _SCOPE=$(node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=scope-allowed --repo="$CANONICAL_ROOT" --branch="$BRANCH" --ui-files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null)
   if [ "$(printf '%s' "$_SCOPE" | jq -r '.allowed // false' 2>/dev/null)" = "true" ]; then
     _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"; mkdir -p "$_logdir" 2>/dev/null
@@ -341,7 +348,7 @@ fi
 # by visual-qa across re-runs and tweaks; a new file restarts it), so re-running visual-qa never voids the yes.
 _AFTER_ARG="--after-file=$VERDICT_PATH"
 _SFA=$(jq -r '.scopeFirstAt // empty' "$VERDICT_PATH" 2>/dev/null)
-if [ "$OVERALL_PASS" = "true" ] && [ -n "$_SFA" ] && jq -e --arg g "$UI_FILES_GATED" '(.uiFiles // null) as $u | $u != null and (($g | split("\n") | map(select(. != ""))) - $u | length == 0)' "$VERDICT_PATH" >/dev/null 2>&1; then
+if [ "$_CURRENT" = 1 ] && [ -n "$_SFA" ] && jq -e --arg g "$UI_FILES_GATED" '(.uiFiles // null) as $u | $u != null and (($g | split("\n") | map(select(. != ""))) - $u | length == 0)' "$VERDICT_PATH" >/dev/null 2>&1; then
   _AFTER_ARG="--after=$_SFA"
 fi
 # <<< BRO-8156 scope reuse
@@ -374,7 +381,7 @@ if [ -n "$HEAD_SHA" ]; then
   node "$CANONICAL_ROOT/scripts/lib/visual-qa-ledger.mjs" --query=record \
     --repo="$CANONICAL_ROOT" --branch="$BRANCH" --commit="$HEAD_SHA" \
     --hash="$VERDICT_HASH" --session="$session_id" \
-    --ui-files="$(jq -r --arg a "$UI_FILES_ALL" '($a | split("\n") | map(select(. != ""))) as $all | if (.uiFiles | type) == "array" then [$all[] | select(. as $f | $u_files | index($f))] else $all end | join(",")' --argjson u_files "$(jq -c '.uiFiles // []' "$VERDICT_PATH" 2>/dev/null || echo '[]')" "$VERDICT_PATH" 2>/dev/null)" \
+    --ui-files="$(jq -r --arg a "$UI_FILES_ALL" '($a | split("\n") | map(select(. != ""))) as $all | if (.uiFiles | type) == "array" then [$all[] | select(. as $f | $u_files | index($f))] else [] end | join(",")' --argjson u_files "$(jq -c '.uiFiles // []' "$VERDICT_PATH" 2>/dev/null || echo '[]')" "$VERDICT_PATH" 2>/dev/null)" \
     >/dev/null 2>&1 || true  # BRO-8156: only files the owner's screenshots covered (verdict.uiFiles) join the approved scope
 fi
 

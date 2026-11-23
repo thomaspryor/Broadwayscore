@@ -14,6 +14,7 @@
  * verdict screenshotted. Content hashes, not mtimes, so checkout/rebase/stash cannot fake or break freshness.
  *
  * CLI: node visual-scope.js commit-proof [--cwd=DIR]   -> exit 0 proof ok, 1 not (reason on stderr)
+ *      node visual-scope.js head-current --verdict=P --files=a,b [--cwd=DIR] -> exit 0 when the verdict shows HEAD's blobs
  */
 'use strict';
 const fs = require('fs');
@@ -60,7 +61,8 @@ function covers(superset, subset) {
 
 /** The previous verdict's scopeFirstAt when its file set covers the new one, else `now` (ISO). */
 function carryScopeFirstAt(existing, uiFiles, now = new Date().toISOString()) {
-  if (existing && typeof existing.scopeFirstAt === 'string' && Array.isArray(existing.uiFiles)
+  // Only a PASSING earlier run starts the window: a failed run's screenshots were never shown for approval.
+  if (existing && existing.overallPass === true && typeof existing.scopeFirstAt === 'string' && Array.isArray(existing.uiFiles)
       && !Number.isNaN(Date.parse(existing.scopeFirstAt)) && covers(existing.uiFiles, uiFiles)) return existing.scopeFirstAt;
   return now;
 }
@@ -110,9 +112,32 @@ function commitProof(verdict, staged) {
   if (verdict.overallPass !== true) return { ok: false, why: 'the latest visual-qa verdict did not pass' };
   const seen = verdict.uiFileHashes && typeof verdict.uiFileHashes === 'object' ? verdict.uiFileHashes : null;
   if (!seen) return { ok: false, why: 'verdict predates file tracking (re-run visual-qa)' };
-  const stale = files.filter((f) => !Object.prototype.hasOwnProperty.call(seen, f) || seen[f] !== staged[f]);
+  // A staged deletion of a file the run never saw has nothing to screenshot (the rename's old path, a removed component).
+  const stale = files.filter((f) => !(staged[f] === null && !Object.prototype.hasOwnProperty.call(seen, f))
+    && (!Object.prototype.hasOwnProperty.call(seen, f) || seen[f] !== staged[f]));
   if (stale.length) return { ok: false, why: `changed after the last visual-qa run: ${stale.slice(0, 5).join(', ')}` };
   return { ok: true, why: `passing visual-qa verdict covers all ${files.length} staged UI file(s)` };
+}
+
+/** HEAD blob id per file (null when the file is not in HEAD). */
+function headBlobs(cwd, files) {
+  const r = {};
+  for (const f of files) { try { r[f] = git(cwd, ['rev-parse', '--verify', '-q', `HEAD:${f}`]) || null; } catch { r[f] = null; } }
+  return r;
+}
+
+/**
+ * Pure decision for the push gate's scope reuse: does the passing verdict show every gated file exactly as HEAD has it?
+ * Without this, an old passing verdict plus a later unscreenshotted edit could ride an earlier owner yes.
+ */
+function headCurrent(verdict, head) {
+  const files = Object.keys(head || {});
+  if (!verdict || verdict.overallPass !== true) return { ok: false, why: 'no passing verdict' };
+  const seen = verdict.uiFileHashes && typeof verdict.uiFileHashes === 'object' ? verdict.uiFileHashes : null;
+  if (!seen) return { ok: false, why: 'verdict predates file tracking' };
+  const stale = files.filter((f) => !Object.prototype.hasOwnProperty.call(seen, f) || seen[f] !== head[f]);
+  if (stale.length) return { ok: false, why: `pushed content differs from the screenshots: ${stale.slice(0, 5).join(', ')}` };
+  return { ok: true, why: `verdict screenshotted all ${files.length} file(s) as pushed` };
 }
 
 function main(argv) {
@@ -133,9 +158,17 @@ function main(argv) {
     console.error(`[visual-scope] ${r.ok ? 'ok' : 'no proof'}: ${r.why}`);
     return r.ok ? 0 : 1;
   }
-  console.error('usage: visual-scope.js commit-proof [--cwd=DIR]');
+  if (cmd === 'head-current') {
+    const files = String(opt.files || '').split(',').map((x) => x.trim()).filter(Boolean);
+    let verdict = null;
+    try { verdict = JSON.parse(fs.readFileSync(opt.verdict, 'utf8')); } catch { verdict = null; }
+    const r = files.length ? headCurrent(verdict, headBlobs(cwd, files)) : { ok: false, why: 'no files' };
+    console.error(`[visual-scope] ${r.ok ? 'current' : 'not current'}: ${r.why}`);
+    return r.ok ? 0 : 1;
+  }
+  console.error('usage: visual-scope.js commit-proof|head-current [--cwd=DIR] [--verdict=PATH --files=a,b]');
   return 2;
 }
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-module.exports = { UI_RE, uiWorkingFiles, blobHashes, covers, carryScopeFirstAt, scopeMetadataChanged, findVerdictPath, stagedBlobs, commitProof };
+module.exports = { UI_RE, uiWorkingFiles, blobHashes, covers, carryScopeFirstAt, scopeMetadataChanged, findVerdictPath, stagedBlobs, commitProof, headBlobs, headCurrent };
