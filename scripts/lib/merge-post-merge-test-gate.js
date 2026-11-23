@@ -133,6 +133,7 @@
 //   origin/main is at call time.
 
 const { spawnSync } = require('node:child_process');
+const { scopedTestTmpdir } = require('./test-tmpdir.js');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -588,18 +589,27 @@ function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS, extraEnv 
   // .test.mjs (running under `node --test` already) or, in principle, this
   // gate invoked from inside some other test-runner wrapper — strip it so
   // the child always reports its own real exit code.
-  const env = { ...testChildEnv(process.env), ...(extraEnv || {}) };
+  // BRO-8179: one throwaway TMPDIR per run, removed when the run returns, so
+  // every legacy test's os.tmpdir() mkdtemp litter (360 test files never
+  // clean up) dies with the run instead of piling up in /private/tmp.
+  // extraEnv still wins, so a caller can pin TMPDIR.
+  const tmpScope = scopedTestTmpdir('bro-testrun-');
+  const env = { ...testChildEnv(process.env), ...tmpScope.env, ...(extraEnv || {}) };
   // --test-reporter=tap (not the default spec reporter) so parseTapOutput()
   // can key failures by <repo-relative-file>::<test name> for the baseline
   // diff below. `not ok N - <test name>` still carries the literal test name,
   // so any caller matching on that substring in `output` is unaffected.
-  return spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...testFiles], {
-    cwd,
-    encoding: 'utf8',
-    env,
-    timeout: timeoutMs,
-    maxBuffer: 64 * 1024 * 1024,
-  });
+  try {
+    return spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...testFiles], {
+      cwd,
+      encoding: 'utf8',
+      env,
+      timeout: timeoutMs,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+  } finally {
+    tmpScope.cleanup();
+  }
 }
 
 // Pure: which of `mergedFailures` are NOT present in `baselineFailures`, and
@@ -1015,6 +1025,7 @@ function reapKilledBaselineCheckouts({ roots } = {}) {
 
 module.exports = {
   reapKilledBaselineCheckouts,
+  defaultExec,
   TEST_GATE_TIMEOUT_MS,
   TEST_GATE_MAX_TIMEOUT_MS,
   TEST_GATE_LOCAL_MIN_TIMEOUT_MS,

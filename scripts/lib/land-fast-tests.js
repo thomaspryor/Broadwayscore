@@ -300,8 +300,11 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
   const common = ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files];
   const [cmd, args] = gate === GATE_TSX ? ['npx', ['tsx', ...common]] : ['node', common];
   const t0 = Date.now();
+  // BRO-8179: throwaway TMPDIR per run (removed on close) so legacy tests'
+  // mkdtemp litter does not pile up in /private/tmp. Off: BRO_KEEP_TEST_TMPDIR=1.
+  const tmpScope = env.BRO_KEEP_TEST_TMPDIR === '1' ? { env: {}, cleanup: () => {} } : require('./test-tmpdir.js').scopedTestTmpdir('bro-testrun-');
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { cwd: root, env: { ...env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+    const child = spawn(cmd, args, { cwd: root, env: { ...env, ...tmpScope.env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
     if (child.pid) liveGroups.add(child.pid);
     const chunks = [];
     child.stdout.on('data', (d) => chunks.push(d));
@@ -313,11 +316,12 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
       try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
     }, timeoutMs);
     child.on('close', (code) => {
+      tmpScope.cleanup();
       liveGroups.delete(child.pid);
       clearTimeout(timer);
       resolve({ exit: timedOut || code === null ? 124 : code, text: Buffer.concat(chunks).toString('utf8'), ms: Date.now() - t0 });
     });
-    child.on('error', (e) => { clearTimeout(timer); resolve({ exit: 127, text: String(e.message), ms: Date.now() - t0 }); });
+    child.on('error', (e) => { clearTimeout(timer); tmpScope.cleanup(); resolve({ exit: 127, text: String(e.message), ms: Date.now() - t0 }); });
   });
 }
 
@@ -484,6 +488,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, colocatedTests, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, colocatedTests, writeScopeDir, runFast, runGateFiles, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }
