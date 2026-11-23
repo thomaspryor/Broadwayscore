@@ -114,9 +114,14 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   if (n >= 5 && list.length < n) {
     // A packed week where some openings have no Critic Score yet: lead with how
     // many got reviewed and who scored highest (owner's wording, 2026-10-18).
-    const T = topScorer.show.title;
-    subjectOptions.push(`${list.length} ${M.on === 'on Broadway' ? 'Broadway' : 'off-Broadway'} shows get reviews this week, with ${T} scoring the highest with critics`);
-    subjectOptions.push(`${list.length} ${M.on === 'on Broadway' ? 'Broadway' : 'off-Broadway'} shows get reviews, ${T} scores highest with critics`);
+    // A tie at the top names both (BRO-8064: "The Fantasticks scores highest" when Much Ado had the same 79).
+    const tied = list.filter(x => scoreOf(x) === scoreOf(topScorer));
+    const T = tied.length === 2 ? `${tied[0].show.title} and ${tied[1].show.title}` : topScorer.show.title;
+    const mk = M.on === 'on Broadway' ? 'Broadway' : 'off-Broadway';
+    if (tied.length <= 2) {
+      subjectOptions.push(`${list.length} ${mk} shows get reviews this week, with ${T} ${tied.length > 1 ? 'tied for' : 'scoring'} the highest with critics`);
+      subjectOptions.push(`${list.length} ${mk} shows get reviews, ${T} ${tied.length > 1 ? 'tie for highest' : 'scores highest'} with critics`);
+    }
   }
   if (n >= 2) {
     subjectOptions.push(`${L} and ${n - 1} other show${n - 1 === 1 ? '' : 's'} open ${M.on} this week`);
@@ -138,7 +143,8 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
     if (size === 'busy') sentences.push(`An unusually busy week in New York, with ${word(total)} openings.`);
     else if (size === 'quiet') sentences.push(total === 1 ? 'A quieter week in New York, with just one opening.' : `A quieter week in New York, with ${word(total)} openings.`);
-    if (n >= 5 && reviewed < n) sentences.push(`${capitalize(word(reviewed))} of the ${word(n)} openings ${M.the} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with ${scoreOf(top)}/100.`);
+    const tops = list.filter(x => scoreOf(x) === scoreOf(top));
+    if (n >= 5 && reviewed < n) sentences.push(`${capitalize(word(reviewed))} of the ${word(n)} openings ${M.the} got enough reviews for a Critic Score, and ${tops.length === 2 ? `${tops[0].show.title} and ${tops[1].show.title} tied for the highest` : tops.length > 2 ? `${word(tops.length)} tied for the highest` : `${top.show.title} scored the highest`} with ${scoreOf(top)}/100.`);
   }
   else if (total === 1) sentences.push('A slow week in New York, with just one opening.');
   else if (total === 2) sentences.push('A slow week in New York, with just two openings.');
@@ -148,8 +154,9 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
     // Resend wording, 2026-10-18).
     const reviewed = list.length;
     const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
+    const tops = list.filter(x => scoreOf(x) === scoreOf(top));
     const tail = reviewed < n
-      ? ` ${reviewed} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with ${scoreOf(top)}/100.`
+      ? ` ${reviewed} got enough reviews for a Critic Score, and ${tops.length === 2 ? `${tops[0].show.title} and ${tops[1].show.title} tied for the highest` : tops.length > 2 ? `${word(tops.length)} tied for the highest` : `${top.show.title} scored the highest`} with ${scoreOf(top)}/100.`
       : '';
     sentences.push(`A packed week ${M.the}, with ${word(n)} openings.${tail}`);
   }

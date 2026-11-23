@@ -3237,6 +3237,8 @@ try {
   if (process.env.NEWSLETTER_PRINT_SUBJECT_FACTS === '1') {
     const f = buildSubjectFacts(_sw);
     process.stderr.write(`[newsletter] subject facts:\n${f.lines.map(l => '  - ' + l).join('\n')}\n[newsletter] recent subjects: ${JSON.stringify(await recentSubjects())}\n`);
+    // Whole fact object as JSON, for replaying the writer's checks offline (BRO-8064).
+    if (process.env.NEWSLETTER_SUBJECT_FACTS_JSON) fs.writeFileSync(process.env.NEWSLETTER_SUBJECT_FACTS_JSON, JSON.stringify(f, null, 1));
   }
   if (_aiOff) {
     process.stderr.write(`[newsletter] AI subject off: ${_aiOff}\n`);

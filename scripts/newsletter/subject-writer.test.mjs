@@ -2,7 +2,7 @@
 // network calls stubbed. Requires the real module, no copied logic.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine } from './subject-writer.mjs';
+import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine, judgePrompt } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -146,7 +146,7 @@ test('openings lead: with this week\'s openings in the facts, a closings-only su
   const probs = checkCandidate(closingLead, p).join();
   assert.match(probs, /subject must be about this week's openings/);
   assert.match(probs, /first sentence must name one of this week's openings/);
-  const openingLead = { angle: 'best opening', subject: 'The Bridge scores 76/100, the week\'s standout', preheader: 'Critics scored it 76. The Revlon Girl (83) closes Saturday.', lede: 'The Bridge (76) is the week\'s new opening, and critics liked it. The Revlon Girl (83) closes Saturday.' };
+  const openingLead = { angle: 'best opening', subject: 'The Bridge scores a solid 76/100 at the Bush', preheader: 'Critics scored it 76. The Revlon Girl (83) closes Saturday.', lede: 'The Bridge (76) is the week\'s new opening, and critics liked it. The Revlon Girl (83) closes Saturday.' };
   assert.deepEqual(checkCandidate(openingLead, p), []);
   // A group angle on the openings is fine without a title.
   assert.ok(!checkCandidate({ ...openingLead, subject: 'How the week\'s London openings landed' }, p).some(x => /subject must/.test(x)));
@@ -435,7 +435,8 @@ const tgGood = {
 
 test('a show that already closed may be praised but never called still on or closing (BRO-8053)', () => {
   assert.deepEqual(tgPool.closedTitles, ['Top Gunchained']);
-  assert.deepEqual(checkCandidate(tgGood, tgPool), []);
+  // Only the closed-show rule here; tgGood leads with a thin show on purpose (see BRO-8064 tests).
+  assert.doesNotMatch(checkCandidate(tgGood, tgPool).join(), /already closed/);
   // The live 2026-11-22 preheader.
   assert.match(checkCandidate({ ...tgGood, preheader: "It's the week's best London score, and its final performance is Saturday, Nov 21." }, tgPool).join(), /preheader talks about a show that has already closed/);
   assert.match(checkCandidate({ ...tgGood, subject: 'Last chance: Top Gunchained hits 79/100' }, tgPool).join(), /subject talks about a show that has already closed/);
@@ -457,7 +458,7 @@ test('closed-show check: review cases (comma titles, follow-on sentences, phrasi
   const fp = buildPool(f);
   assert.ok(fp.closedTitles.includes('Oh, Mary!'), 'a comma in the title does not cut it short');
   const ok = { angle: 'best-reviewed opening', subject: 'Oh, Mary! hits 79/100 from 6 critics', preheader: 'It topped London this week. Eurotrash sits at 77.', lede: 'Oh, Mary! was the best-scoring London opening at a solid 79/100. Eurotrash is close behind at 77, and Goblin lands at 70.' };
-  assert.deepEqual(checkCandidate(ok, fp), []);
+  assert.doesNotMatch(checkCandidate(ok, fp).join(), /already closed/);
   const bad = (field, text) => assert.match(checkCandidate({ ...ok, [field]: text }, fp).join(), /already closed/, text);
   bad('subject', 'Last chance: Oh, Mary! hits 79/100');
   // A follow-on sentence that names no show is about the show named before it.
@@ -471,13 +472,13 @@ test('closed-show check: review cases (comma titles, follow-on sentences, phrasi
 });
 
 test('a reused subject drops saved alternates that today\'s checks reject (BRO-8053)', () => {
-  const prev = { ...tgGood, alternates: [
+  const prev = { ...rxGood, subject: 'Three London openings, with Eurotrash at 77/100', alternates: [
     { subject: 'Top Gunchained hits 79/100, final performance Saturday', preheader: 'Eurotrash is close behind and sits at 77.', angle: 'last chance' },
-    { subject: 'Eurotrash lands at 77/100 from 26 critics', preheader: 'Goblin also opened this week and sits at 70.', angle: 'best-reviewed opening' },
+    { subject: 'Three openings in London, Eurotrash at 77/100', preheader: 'Goblin also opened this week and sits at 70.', angle: 'the week as a group' },
   ] };
   const r = reusable(prev, tgFacts);
-  assert.ok(r, 'the kept candidate still passes');
-  assert.deepEqual(r.alternates.map(a => a.subject), ['Eurotrash lands at 77/100 from 26 critics']);
+  assert.ok(r, 'the kept candidate still passes: ' + checkCandidate(prev, tgPool).join(' | '));
+  assert.deepEqual(r.alternates.map(a => a.subject), ['Three openings in London, Eurotrash at 77/100']);
 });
 
 test('closed-show check: second review round (attribution by position, phrasings, titles ending in "!", any fact line)', () => {
@@ -509,4 +510,110 @@ test('a title shared by a running and a closed show is never treated as closed',
   const fp = buildPool(f);
   assert.ok(fp.closedTitles.includes('Goblin: The Return'));
   assert.ok(!fp.closedTitles.includes('Goblin'), 'short form "Goblin" belongs to the running show too');
+});
+
+// BRO-8064 (owner, 2026-11-22). West End 2026-11-16 went out as "Goblin posts a
+// solid 75/100 from 5 critics": one thinly reviewed show, not the top score, in a
+// week of seven openings, with numbers that had gone stale (Goblin was 77 from 6).
+// The New York lede said The Good Thief "tops every New York opening at 82" with a
+// 91 card in the same email.
+const W16 = (t, rest) => `Opening: ${t}, Off West End, play at Some Theatre, opened this week, on Tuesday, Nov 17. ${rest}`;
+const we16Facts = {
+  edition: 'west-end',
+  lines: [
+    'The email covers the week of Monday, Nov 16 to Sunday, Nov 22.',
+    W16('Eurotrash', 'Critic Score 78/100 from 28 critics.'),
+    W16('Top Gunchained', 'Critic Score 79/100 from 6 critics. It has already closed: its final performance was Saturday, Nov 21.'),
+    W16('Goblin', 'Critic Score 77/100 from 6 critics.'),
+    W16('Florence', 'Critic Score 71/100 from 10 critics. It has already closed: its final performance was Saturday, Nov 21.'),
+    W16('The Ugly One', 'Critic Score 70/100 from 7 critics.'),
+    W16('A Homo Alone 2: Yikes, We Did It Again!', 'Critic Score 68/100 from 12 critics.'),
+    W16('Cinderella', 'Critic Score 67/100 from 8 critics.'),
+    'Opening: Cranford, Off West End, play at Orange Tree Theatre, opened recently, on Tuesday, Nov 3. Critic Score 87/100 from 25 critics.',
+    'Opening: Nero, Off West End, play at Southwark Playhouse, opened recently, on Friday, Nov 6. Critic Score 39/100 from 25 critics.',
+    closedFactLine('Top Gunchained'), closedFactLine('Florence'),
+  ],
+  titles: ['Eurotrash', 'Top Gunchained', 'Goblin', 'Florence', 'The Ugly One', 'A Homo Alone 2: Yikes, We Did It Again!', 'Cinderella', 'Cranford', 'Nero'].map((title, i) => ({ id: `w${i}`, slug: `w${i}`, title })),
+  leadTitles: ['Eurotrash', 'Top Gunchained', 'Goblin', 'Florence', 'The Ugly One', 'A Homo Alone 2: Yikes, We Did It Again!', 'Cinderella'],
+  topLeadTitles: [],
+};
+const we16Pool = buildPool(we16Facts);
+const we16Good = {
+  angle: 'the week as a group',
+  subject: 'Seven London openings, with Eurotrash at 78/100',
+  preheader: 'Florence and Top Gunchained have already closed; Cranford is still the one to beat.',
+  lede: 'Eurotrash lands at a solid 78/100, the most reviewed of seven London openings. A Homo Alone 2 (68) and Cinderella (67) round out a warm week.',
+};
+const we16Live = {
+  angle: 'the surprise',
+  subject: 'Goblin posts a solid 75/100 from 5 critics',
+  preheader: 'No negative reviews among them. Eurotrash is close behind.',
+  lede: "Goblin scores a solid 75/100, and critics broadly liked it without a single negative review. It sits just behind Eurotrash (77), the week's most reviewed London opening.",
+};
+
+test('BRO-8064: the roundup leads with the best-supported opening, never a thinly reviewed one', () => {
+  assert.deepEqual(we16Pool.leadShows, ['Eurotrash'], 'closed and thin shows never lead; Eurotrash has 28 critics');
+  assert.ok(we16Pool.thinTitles.includes('Goblin') && we16Pool.thinTitles.includes('Top Gunchained'));
+  assert.match(we16Pool.sheet, /Lead opening: Eurotrash\./);
+  assert.match(we16Pool.sheet, /Openings this week: 7 London productions/);
+  assert.deepEqual(checkCandidate(we16Good, we16Pool), []);
+  const live = checkCandidate(we16Live, we16Pool).join(' | ');
+  assert.match(live, /7 shows opened this week, so the subject must cover the week/);
+  assert.match(live, /subject names Goblin first; the lead opening is Eurotrash/);
+  assert.match(live, /too few critics/);
+  assert.match(live, /opening paragraph must start with the lead opening \(Eurotrash\), not Goblin/);
+  // Leading with Eurotrash alone still fails: seven shows opened.
+  assert.match(checkCandidate({ ...we16Good, subject: 'Eurotrash lands at a solid 78/100 from 28 critics' }, we16Pool).join(), /must cover the week/);
+  // Naming two openings, the lead first, is a week subject.
+  assert.ok(!checkCandidate({ ...we16Good, subject: 'Eurotrash at 78/100, A Homo Alone 2 at 68' }, we16Pool).some(x => /cover the week|names .* first/.test(x)));
+});
+
+test('BRO-8064: every score and critic count sits with its own show, so stale numbers are rewritten, not reused', () => {
+  assert.match(checkCandidate({ ...we16Good, subject: 'Seven London openings, with Eurotrash at 75/100' }, we16Pool).join(), /gives Eurotrash a score of 75; its Critic Score is 78/);
+  assert.match(checkCandidate({ ...we16Good, lede: 'Eurotrash lands at a solid 78/100 from 27 critics, the pick of seven London openings. Cinderella (67) is warm too.' }, we16Pool).join(), /gives Eurotrash 27 critics; it has 28/);
+  assert.match(checkCandidate({ ...we16Good, lede: 'Eurotrash lands at a solid 78/100, the most reviewed of seven London openings. Cinderella (68) is warm too.' }, we16Pool).join(), /Cinderella a score of 68/);
+  // A number that belongs to another show (Goblin's stale 75 was Ilford Boy's real score) no longer slips through.
+  assert.equal(reusable({ ...we16Live, alternates: [] }, we16Facts), null);
+  assert.ok(reusable({ ...we16Good, alternates: [] }, we16Facts));
+});
+
+test('BRO-8064: a show is called the top or bottom only when it holds that score among every show listed', () => {
+  const bad = (field, text) => assert.match(checkCandidate({ ...we16Good, [field]: text }, we16Pool).join(), /as the (top|bottom)/, text);
+  const fine = (field, text) => assert.doesNotMatch(checkCandidate({ ...we16Good, [field]: text }, we16Pool).join(), /as the (top|bottom)/, text);
+  bad('subject', 'Eurotrash tops seven London openings at 78/100');
+  bad('subject', 'Seven London openings, led by Eurotrash at 78/100');
+  bad('lede', 'Eurotrash is the best of seven London openings at a solid 78/100. Cinderella (67) trails.');
+  fine('lede', 'Eurotrash lands at a solid 78/100, the most reviewed of seven London openings. Nero (39) trails the field.');
+  fine('lede', 'Cranford still leads London at 87, and Eurotrash lands at a solid 78/100 among seven London openings.');
+  // New York, 2026-11-16: 82 called the top with a 91 (three reviews) in the email.
+  const ny = {
+    edition: 'broadway',
+    lines: [
+      'Opening: The Fantasticks, Broadway, musical at Helen Hayes Theater, opened this week, on Monday, Nov 16. Critic Score 79/100 from 29 critics.',
+      'Opening: Much Ado About Nothing, Broadway, play at Winter Garden Theatre, opened this week, on Thursday, Nov 19. Critic Score 79/100 from 23 critics.',
+      'Opening: Blue Man Group, Broadway, special at Lunt-Fontanne Theatre, opened this week, on Tuesday, Nov 17. Critic Score 48/100 from 9 critics.',
+      'Opening: The Good Thief, Off-Broadway, play at Some Theatre, opened this week, on Tuesday, Nov 17. Critic Score 82/100 from 12 critics.',
+      'Opening: The Charioteer, Off-Broadway, play at cell, opened recently, on Sunday, Nov 8. Critic Score 91/100 from 3 critics.',
+    ],
+    titles: ['The Fantasticks', 'Much Ado About Nothing', 'Blue Man Group', 'The Good Thief', 'The Charioteer'].map((title, i) => ({ id: `n${i}`, slug: `n${i}`, title })),
+    leadTitles: ['The Fantasticks', 'Much Ado About Nothing', 'Blue Man Group', 'The Good Thief'],
+    topLeadTitles: ['The Fantasticks', 'Much Ado About Nothing', 'Blue Man Group'],
+  };
+  const np = buildPool(ny);
+  assert.deepEqual(np.leadShows, ['The Fantasticks', 'Much Ado About Nothing'], 'a Broadway tie keeps both; Broadway outranks Off-Broadway');
+  const nyLive = { angle: 'the week as a group', subject: "How New York's four openings scored", preheader: 'Grosses climbed 10% week-over-week at the box office.', lede: "The Fantasticks and Much Ado About Nothing share the Broadway high at a solid 79/100. The Good Thief tops every New York opening at 82 Off-Broadway, while Blue Man Group trails at 48." };
+  // One ranking problem is reported per field: the first sentence, then the live second one alone.
+  assert.match(checkCandidate(nyLive, np).join(), /ranks The Fantasticks \(79\) as the top \("the Broadway high"\), but the email lists a show at 91/);
+  assert.match(checkCandidate({ ...nyLive, lede: 'The Fantasticks lands at a solid 79/100 on Broadway. The Good Thief tops every New York opening at 82 Off-Broadway, while Blue Man Group trails at 48.' }, np).join(), /ranks The Good Thief \(82\) as the top/);
+  const nyOk = { ...nyLive, preheader: 'Off-Broadway, The Good Thief lands at 82. Blue Man Group sits at 48.', lede: 'The Fantasticks and Much Ado About Nothing both land at a solid 79/100 on Broadway. Off-Broadway, The Good Thief scores 82, and Blue Man Group sits at 48.' };
+  assert.doesNotMatch(checkCandidate(nyOk, np).join(), /as the (top|bottom)|lead opening|cover the week/);
+  assert.match(checkCandidate({ ...nyOk, subject: "How New York's six openings scored" }, np).join(), /says "six openings", but the facts count/);
+});
+
+test('BRO-8064: the writer and judge are told to cover the week and use the lead', () => {
+  const w = writerPrompt(we16Pool);
+  assert.match(w, /7 shows opened this week, so every subject covers the WEEK/);
+  assert.doesNotMatch(w, /the surprise/);
+  assert.match(w, /RANKINGS: never call a show the top/);
+  assert.match(judgePrompt(we16Pool, [we16Good]), /prefer a subject about the week as a whole/);
 });

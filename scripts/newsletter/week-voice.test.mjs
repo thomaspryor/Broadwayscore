@@ -130,6 +130,17 @@ test('packed week: calendar count stays, and the lede says how many got a Critic
   assert.doesNotMatch(text, /most reviews/);
 });
 
+// BRO-8064: 2026-11-16 said "The Fantasticks scores highest" when Much Ado About Nothing had the same 79.
+test('packed week: a tie at the top names both shows, never one as the highest', () => {
+  const list = [o('The Fantasticks', 79, 29), o('Much Ado About Nothing', 79, 23), o('Now You See Me Live', 60, 8), o('Blue Man Group', 48, 9)];
+  const v = composeWeekVoice({ bw: list, counts: { bw: 5 } });
+  assert.match(v.subject, /The Fantasticks and Much Ado About Nothing tie for highest|^The Fantasticks and \d other shows/);
+  assert.doesNotMatch(v.subject, /The Fantasticks scores highest/);
+  const text = plain(v.sentences.join(' '));
+  assert.doesNotMatch(text, /The Fantasticks scored the highest/);
+  assert.match(text, /The Fantasticks and Much Ado About Nothing tied for the highest with 79\/100/);
+});
+
 // Oct 26 2026 (owner, 2026-11-02): A Few Good Men already had its own
 // opening-night email, so the weekly leads with Off Broadway and names the
 // owner's three picks: most-reviewed (The Heart), best-reviewed with 5+
