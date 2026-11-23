@@ -91,13 +91,19 @@ function showNames(show, allShows) {
     out.push({ name: a.trim(), kind: 'aka' });
   }
   // BRO-8125: an author-possessive billing ("Clifford Odets’ Waiting for Lefty") is printed without the author
-  // ("‘Waiting for Lefty’ Review", NYT). Same rule as outlet-listing-helpers titleForms (BRO-7402): the owner must be a
+  // ("‘Waiting for Lefty’ Review", NYT). Same intent as outlet-listing-helpers titleForms (BRO-7402): the owner must be a creativeTeam name of the show, not a
   // person on the show's own cast or creative team (so "Joe Turner's Come and Gone" gets no form) and three or more
   // words must remain. Matched like an aka (full-title matcher plus the other-production guard).
   const bare = authorPossessiveRest(show.title);
   if (bare && !seen.has(normTitle(bare.rest))) {
-    const people = registry().peopleByTitle.get(normTitle(show.title)) || new Set();
-    if (bare.ownerWords.length && bare.ownerWords.every((w) => people.has(w))) {
+    // Same rule as outlet-listing-helpers titleForms: the owner equals ONE creativeTeam name of a show billed with
+    // this title (not a bag of cast words), and the rest is not itself another show's billed title (BRO-8125 review:
+    // "How the Grinch Stole Christmas!" and "Waiting for Lefty" at a regional house would otherwise collide).
+    const r = registry();
+    const owners = r.ownersByTitle.get(normTitle(show.title)) || new Set();
+    const restKey = normTitle(bare.rest);
+    const restIsBilled = r.titles.some((t) => normTitle(t) === restKey);
+    if (bare.ownerWords.length && owners.has(bare.ownerWords.join(' ')) && !restIsBilled) {
       seen.add(normTitle(bare.rest));
       out.push({ name: bare.rest, kind: 'aka' });
     }
@@ -118,6 +124,7 @@ let _registry = null; // { akaByTitle, venueByTitle, peopleByTitle, marketsByTit
 function buildRegistry(shows) {
   const akaByTitle = new Map();
   const venueByTitle = new Map();
+  const ownersByTitle = new Map(); // normalised full names of the creative team only (BRO-8125 author-possessive owner)
   const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const marketsByTitle = new Map(); // categories of the shows billed with a title (BRO-7785)
   const titles = [];
@@ -144,13 +151,19 @@ function buildRegistry(shows) {
       if (!peopleByTitle.has(k)) peopleByTitle.set(k, new Set());
       for (const w of normTitle(name).split(' ')) if (w.length > 1) peopleByTitle.get(k).add(w);
     }
+    for (const p of Array.isArray(s.creativeTeam) ? s.creativeTeam : []) {
+      const name = typeof p === 'string' ? p : p && p.name;
+      if (typeof name !== 'string' || !name.trim()) continue;
+      if (!ownersByTitle.has(k)) ownersByTitle.set(k, new Set());
+      ownersByTitle.get(k).add(normTitle(name).split(' ').filter((w) => w.length > 1).join(' '));
+    }
     for (const a of Array.isArray(s.akaTitles) ? s.akaTitles : []) {
       if (!usableAka(a, s.title)) continue;
       if (!akaByTitle.has(k)) akaByTitle.set(k, []);
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, peopleByTitle, marketsByTitle, titles, homeVenues, entries };
+  return { akaByTitle, venueByTitle, peopleByTitle, ownersByTitle, marketsByTitle, titles, homeVenues, entries };
 }
 function registry() {
   if (!_registry) {

@@ -26,6 +26,7 @@ test('feedAppliesToMarket still restricts market-pinned feeds', () => {
   assert.equal(rss.feedAppliesToMarket(we, 'broadway'), false);
 });
 
+// Window rule only (it ignores market); the market fix itself is guarded by the first test.
 test('Lives of Others: NYT headline and slug (no review word) is accepted inside the review-free window', () => {
   names.setPressNameShows([]);
   const item = {
@@ -58,5 +59,19 @@ test('author-possessive form needs the owner on the show team and 3+ words left'
   // Fewer than 3 words left: no form.
   assert.equal(names.authorPossessiveRest('Neil Simon’s Fools'), null);
   assert.equal(names.authorPossessiveRest('Clifford Odets’ Waiting for Lefty').rest, 'Waiting for Lefty');
+  names.setPressNameShows(null);
+});
+
+test('author-possessive form: owner must be one creativeTeam name, and the rest may not be another show\'s billed title', () => {
+  // Owner only in the cast, not the creative team: no form.
+  names.setPressNameShows([{ title: 'Dr. Seuss’ How the Grinch Stole Christmas!', category: 'broadway', cast: [{ name: 'Dr Seuss' }] }]);
+  assert.equal(names.showNames({ title: 'Dr. Seuss’ How the Grinch Stole Christmas!' }).length, 1);
+  assert.equal(rss.titleMatchesShow('Jim Carrey Returns for How the Grinch Stole Christmas! Sequel', 'Dr. Seuss’ How the Grinch Stole Christmas!', {}), false);
+  // The rest is another show's billed title: no form.
+  names.setPressNameShows([
+    { title: 'Clifford Odets’ Waiting for Lefty', category: 'off-broadway', creativeTeam: [{ name: 'Clifford Odets' }] },
+    { title: 'Waiting for Lefty', category: 'regional' },
+  ]);
+  assert.equal(names.showNames({ title: 'Clifford Odets’ Waiting for Lefty' }).length, 1);
   names.setPressNameShows(null);
 });
