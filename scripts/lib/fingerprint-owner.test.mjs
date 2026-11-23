@@ -42,3 +42,12 @@ test('no url keeps readdir order', () => {
   ]);
   assert.equal(owners.get('fp'), 'a.json');
 });
+
+test('stale mutual pair heals in ONE pass: forum file points at the owner even though the owner still holds the old pointer', () => {
+  const ownerMeta = { duplicateTextOf: 'talkinbroadway--alix-cohen.json' };
+  assert.equal(duplicateTextTarget('talkinbroadway--alix-cohen.json', 'theater-pizzazz--alix-cohen.json', ownerMeta), 'theater-pizzazz--alix-cohen.json');
+});
+
+test('duplicateOf cycle guard kept', () => {
+  assert.equal(duplicateTextTarget('a.json', 'b.json', { duplicateOf: 'a.json' }), null);
+});
