@@ -49,6 +49,31 @@ const NON_THEATRE_GENRES = new Set([
 ]);
 
 /**
+ * A run already declared as a priorRuns entry on another row (Punch: Young Vic
+ * run on punch-west-end-2025's priorRuns). Producing houses transfer often, so
+ * minting the earlier run as its own row would double-count it (BRO-8120).
+ * Same venue family, opening within 14 days of the declared run, and the
+ * titles equal or one a subtitle-extension of the other.
+ * @returns {object|null} the show that declares the run
+ */
+function findDeclaredPriorRun(shows, title, venue, startDate) {
+  const t = normalizeTitle(title || '');
+  const start = Date.parse(startDate);
+  if (!t || !venue || !Number.isFinite(start)) return null;
+  for (const s of shows || []) {
+    const st = normalizeTitle(s.title || '');
+    if (!st || !(st === t || t.startsWith(st + ' ') || st.startsWith(t + ' '))) continue;
+    for (const run of [...(s.priorRuns || []), ...(s.tourLegs || [])]) {
+      if (!run || !run.venue) continue;
+      const d = Date.parse(run.openingDate || run.previewsStartDate);
+      if (!Number.isFinite(d) || Math.abs(d - start) > 14 * 86400000) continue;
+      if (venuesMatch(run.venue, venue) || venueFamily(run.venue) === venueFamily(venue)) return s;
+    }
+  }
+  return null;
+}
+
+/**
  * Coarse venue identity for matching SIGNALS (review titles, Olivier lines)
  * to a listing. venuesMatch() alone misses the National Theatre's naming
  * variants ("National Theatre Lyttelton" vs "Lyttelton Theatre", "Olivier
@@ -164,6 +189,7 @@ module.exports = {
   MIN_RUN_DAYS,
   NON_THEATRE_GENRES,
   isWeHistoricalVenue,
+  findDeclaredPriorRun,
   historicalCategoryForVenue,
   venueFamily,
   recordsAgree,

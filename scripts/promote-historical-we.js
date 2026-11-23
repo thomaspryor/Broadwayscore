@@ -50,7 +50,7 @@ const { venuesMatch } = require('./lib/deduplication');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { productionIdYear } = require('./lib/todaytix-dates');
-const { venueFamily, decideWeHistoricalPromotion, isWeHistoricalVenue, historicalCategoryForVenue, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
+const { venueFamily, decideWeHistoricalPromotion, isWeHistoricalVenue, historicalCategoryForVenue, findDeclaredPriorRun, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { oltPath } = require('./build-we-olt-season');
@@ -254,6 +254,8 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
       // A review-led row can be a re-review of a continuing run (Phantom 2021).
       || (c.origin === 'review-led' && findContinuingRun(shows, entry.title, startDate));
     if (dup) { skipped.push({ title: c.title, reason: `duplicate of ${dup.id || dup.title}` }); continue; }
+    const declared = findDeclaredPriorRun(shows, entry.title, entry.venue, startDate);
+    if (declared) { skipped.push({ title: c.title, reason: `declared as a priorRun of ${declared.id}` }); continue; }
     const subtitleDup = findSubtitleDuplicateTitle(pool, entry.title, entry.venue, dupOpts);
     if (subtitleDup) { skipped.push({ title: c.title, reason: `subtitle-variant duplicate of "${subtitleDup}"` }); continue; }
     // venue-write-guard-ok: read-only probe of the retired registry, nothing is written to a venue field

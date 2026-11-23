@@ -57,6 +57,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { evaluateDateGuard } = require('./lib/date-guard');
+const { getMarketMinReviews } = require('./lib/min-reviews');
 const { getOutletTier } = require('./lib/review-normalization');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { todaytixMarket } = require('./lib/todaytix-market');
@@ -90,6 +91,7 @@ function synopsisNeedsLook(text) {
 }
 
 const MIN_SCORED = 5;
+// Off-West-End rows display at their own market minimum (min-reviews.js), not the West End 5 (BRO-8120).
 const MIN_DISPLAYABLE_SHARE = 0.7;
 // Owner decisions (BRO-6487): 2012-13 has too few surviving reviews (about 2.8 per
 // show; The Stage and The Times unreachable) to reach 0.70, so it is held to a
@@ -161,7 +163,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
       const tier = getOutletTier(r.outletId);
       if (tier === 1 || tier === 2) { t12++; if (r.url) t12WithUrl++; }
     }
-    perShow.push({ id: show.id, scored: scored.length, total: rows.length, displayable: scored.length >= MIN_SCORED });
+    perShow.push({ id: show.id, scored: scored.length, total: rows.length, displayable: scored.length >= (show.category === 'off-west-end' ? getMarketMinReviews('off-west-end') : MIN_SCORED) });
   }
 
   const badPosters = [];
