@@ -1010,5 +1010,36 @@
       }
     ],
     "queuedAt": "2026-11-23T17:10:04.225Z"
+  },
+  {
+    "conditionKey": "land:land/review-bundle",
+    "title": "Landing blocked: unit-tests-node red on land/review-bundle",
+    "description": "land.yml did not land land/review-bundle: the unit-tests-node gate went red at be1674b0f5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45224084232",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/review-bundle"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "be1674b0f52e07ea20ba9095a7949b4e26a848c9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45224084232"
+      }
+    ],
+    "queuedAt": "2026-11-23T17:17:58.198Z"
   }
 ]
