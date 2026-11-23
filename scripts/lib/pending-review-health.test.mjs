@@ -120,3 +120,15 @@ __t2('BRO-2735: refetch rebuild keeps exclusion flags and score provenance', () 
   __a2.equal(out.firstSeenAt, '2026-01-01T00:00:00Z');
   __a2.equal(stub.fullText, '');
 });
+
+// BRO-8093 class guard: every bookkeeping field the _pending drain stamps on a stub (data.pending*/promote* = ...)
+// must survive a gather-reviews / poller re-discovery, or the drain's verdicts silently reset.
+test('every stub field the drain stamps is preserved by mergePendingRecord (re-discovery keeps drain bookkeeping)', () => {
+  const src = fs.readFileSync(new URL('../replay-pending-bylines.js', import.meta.url), 'utf8');
+  const stamped = new Set([...src.matchAll(/\bdata\.((?:pending|promote)[A-Za-z]+)\s*=(?!=)/g)].map(m => m[1]));
+  assert.ok(stamped.has('pendingFetchAttemptedAt') && stamped.has('promoteSkippedReason'), 'scan found the drain stamps');
+  const existing = Object.fromEntries([...stamped].map(k => [k, `v-${k}`]));
+  const again = h.mergePendingRecord({ ...existing, firstSeenAt: '2026-10-10T00:00:00Z' }, { url: 'u', criticName: 'Unknown' }, '2026-10-12T00:00:00Z');
+  const lost = [...stamped].filter(k => again[k] !== `v-${k}`);
+  assert.deepEqual(lost, [], `re-discovery drops drain bookkeeping: ${lost.join(', ')}`);
+});
