@@ -40554,7 +40554,7 @@
       "resolvedAt": "2026-11-09T18:54:18.217Z"
     },
     "test-yml:data-validation-red:audit-review-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit review contamination",
       "firstSeen": "2026-11-09T20:22:26.713Z",
@@ -40567,7 +40567,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 4,
-      "sweptTracker": "BRO-7500"
+      "sweptTracker": "BRO-7500",
+      "resolvedAt": "2026-11-23T02:45:30.408Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
@@ -41437,13 +41439,13 @@
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-21T17:50:45.565Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T02:45:15.418Z",
+      "lastSeen": "2026-11-23T02:45:30.478Z",
       "lastNotifiedAt": "2026-11-22T18:35:44.084Z",
       "lastSurfacedAt": "2026-11-22T18:35:44.084Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8062",
-      "silentRefires": 22
+      "silentRefires": 23
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
       "status": "resolved",
@@ -41581,11 +41583,11 @@
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
-      "incidentOpenedAt": "2026-11-23T02:45:15.737Z",
+      "incidentOpenedAt": "2026-11-23T02:45:30.846Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T02:45:15.737Z",
-      "lastNotifiedAt": "2026-11-23T02:45:15.737Z",
-      "lastSurfacedAt": "2026-11-23T02:45:15.737Z",
+      "lastSeen": "2026-11-23T02:45:30.846Z",
+      "lastNotifiedAt": "2026-11-23T02:45:30.846Z",
+      "lastSurfacedAt": "2026-11-23T02:45:30.846Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null
