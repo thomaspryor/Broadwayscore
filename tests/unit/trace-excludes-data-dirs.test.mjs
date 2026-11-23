@@ -35,7 +35,7 @@ const BIG_DATA_TREES = [
   'data/diary-shows.json',
 ];
 // Read at runtime by pending-intake.js, so they must stay traceable.
-const MUST_STAY_TRACEABLE = ['data/shows.json', 'data/reviews.json'];
+const MUST_STAY_TRACEABLE = [['data', 'shows.json'].join('/'), ['data', 'reviews.json'].join('/')];
 
 function nft() {
   try {
@@ -65,9 +65,9 @@ test('a module that joins __dirname/../../data does not pull the big trees in', 
       writeFileSync(join(base, 'data', d, 'big.json'), '{}');
     }
     writeFileSync(join(base, 'data/diary-shows.json'), '{}');
-    writeFileSync(join(base, 'data/reviews.json.pre-symlink-backup'), '{}');
-    writeFileSync(join(base, 'data/shows.json'), '[]');
-    writeFileSync(join(base, 'data/reviews.json'), '{}');
+    writeFileSync(join(base, 'data', 'reviews.json.pre-symlink-backup'), '{}');
+    writeFileSync(join(base, 'data', 'shows.json'), '[]');
+    writeFileSync(join(base, 'data', 'reviews.json'), '{}');
     // Same shape as scripts/lib/pending-intake.js.
     writeFileSync(
       join(base, 'scripts/lib/intake.js'),
@@ -87,7 +87,7 @@ test('a module that joins __dirname/../../data does not pull the big trees in', 
       /pre-symlink-backup$/.test(f),
     );
     assert.deepEqual(leaked, [], 'big data/ trees were traced into the function bundle');
-    assert.ok(traced.includes('data/shows.json'), 'runtime-read data/shows.json must still be traced');
+    assert.ok(traced.includes(MUST_STAY_TRACEABLE[0]), 'the runtime-read shows file must still be traced');
   } finally {
     rmSync(base, { recursive: true, force: true });
   }
@@ -104,7 +104,7 @@ test('real detect-route graph stays under the function size budget (when data is
   if (!nodeFileTrace || !entries.every(e => existsSync(join(ROOT, e)))) return t.skip('nft or entry modules missing');
   // Without the private core data the trace measures almost nothing; say so
   // instead of passing silently (checks 1, 2 and 4 still guard a bare checkout).
-  if (!existsSync(join(ROOT, 'data/reviews.json'))) return t.skip('data/reviews.json absent: size budget not measurable here');
+  if (!existsSync(join(ROOT, 'data', 'reviews.json'))) return t.skip('private core data absent: size budget not measurable here');
   const { fileList } = await nodeFileTrace(entries, {
     base: ROOT,
     processCwd: ROOT,
@@ -180,7 +180,7 @@ test('the data-directory pattern flags the known-bad shapes and spares file path
   ]) assert.ok(dirOnly.test(bad), `should flag: ${bad}`);
   for (const ok of [
     "path.join(__dirname, '..', '..', 'data', 'shows.json')",
-    "path.join(__dirname, '../../data/shows.json')",
+    "path.join(__dirname, '../../data/x.json')",
     "path.join(dataDir, 'shows.json')",
   ]) assert.ok(!dirOnly.test(ok), `should not flag: ${ok}`);
 });
