@@ -124,11 +124,13 @@ function main(argv) {
   if (!wt) { console.error('usage: worktree-ignored-inputs.js --worktree=<path> [--main=<main checkout>]'); return 2; }
   let items;
   try { items = gatherIgnoredInputs(wt, mainCheckout); } catch (err) {
-    console.log(`probe failed: ${String(err.message).split('\n')[0]}`);
+    console.error(`probe failed: ${String(err.message).split('\n')[0]}`);
     return 1;
   }
   const r = decideIgnoredInputs(items);
-  if (!r.safe) { console.log(`keeps: ${r.blocker}`); return 1; }
+  // Exit 0 for BOTH verdicts so gc_probe (which drops output on a nonzero
+  // exit) passes the keep reason through; nonzero means the probe failed.
+  if (!r.safe) { console.log(`keeps: ${r.blocker}`); return 0; }
   console.log(r.discardedCopies.length ? `discards setup copies: ${r.discardedCopies.join(' ')}` : 'ok');
   return 0;
 }

@@ -169,7 +169,8 @@ if [ "$gc_lock_acquired" != "1" ]; then
   exit 0
 fi
 echo $$ > "$GC_LOCK_DIR/pid" 2>/dev/null || true
-trap 'rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
+GC_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/gc-merged-worktrees.XXXXXX")
+trap 'rm -rf "$GC_TMP_DIR" 2>/dev/null; rmdir "$GC_LOCK_DIR" 2>/dev/null || rm -rf "$GC_LOCK_DIR" 2>/dev/null' EXIT
 
 # UTC (BRO-2608): see SKIP-RUN comment above — this log is read for
 # freshness from a UTC runner, so its timestamps must be TZ-independent.
@@ -595,9 +596,13 @@ worktree_inputs_safe() {
   # kept every bootstrapped worktree. Missing helper or a probe failure keeps.
   [ -f "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" ] || return 1
   out=$(gc_probe 30 node "$SCRIPT_DIR/lib/worktree-ignored-inputs.js" --worktree="$wt" --main="$REPO") || {
-    LAST_INPUTS_REASON="${out:-probe unavailable}"; return 1; }
-  case "$out" in "discards setup copies:"*) log "NOTE  [$CURRENT_REPO_NAME] $(basename "$wt") — $out" ;; esac
-  return 0
+    LAST_INPUTS_REASON="(probe unavailable)"; return 1; }
+  case "$out" in
+    ok) return 0 ;;
+    "discards setup copies:"*) log "NOTE  [$CURRENT_REPO_NAME] $(basename "$wt") — $out"; return 0 ;;
+    "keeps: "*) LAST_INPUTS_REASON="(${out})"; return 1 ;;
+    *) LAST_INPUTS_REASON="(probe unavailable)"; return 1 ;;
+  esac
 }
 
 retire_stale_job_worktree() {
@@ -718,11 +723,33 @@ flush() {
   else
     unmerged=$(echo "$cherry_raw" | grep -c '^+')
   fi
-  local is_ancestor has_unmerged has_live_lease removable cwd_pin worktree_idle pin_blocked decide_rc
+  local is_ancestor has_unmerged has_live_lease removable cwd_pin worktree_idle pin_blocked decide_rc rebase_out
   is_ancestor=0
   [ "$landed_status" = "0" ] && is_ancestor=1
   has_unmerged=0
   [ "$unmerged" != "0" ] && has_unmerged=1
+
+  # BRO-8178: land.yml rebases job branches, so a landed job's shas are never
+  # ancestors of origin/main and a patch changed during conflict resolution
+  # shows '+' in git cherry. 37 finished job worktrees (~800MB each) sat as
+  # "unmerged" forever. Only a SUCCESSFUL cherry with '+' lines qualifies (a
+  # timeout stays unmerged); a landed verdict then takes the ordinary merged
+  # path below (lease, pin, lock, ignored-input and dirty checks unchanged,
+  # branch ref kept). Kill switch: WORKTREE_GC_REBASE_LANDED=0.
+  if [ "$has_unmerged" = "1" ] && [ "$cherry_status" = "0" ] && [ "${WORKTREE_GC_REBASE_LANDED:-1}" != "0" ] \
+      && [ -f "$SCRIPT_DIR/lib/headless-unlanded-detection.js" ]; then
+    case "$(basename "$path")" in
+      job-*)
+        if rebase_out=$(gc_probe 30 node "$SCRIPT_DIR/lib/headless-unlanded-detection.js" --branch-landed \
+            --repo="$REPO" --branch="$branch" --tips-file="${GC_LANDING_TIPS_FILE:-}"); then
+          case "$rebase_out" in
+            "landed "*)
+              log "NOTE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch rebase-landed: ${rebase_out#landed } (BRO-8178)"
+              has_unmerged=0; unmerged=0 ;;
+          esac
+        fi ;;
+    esac
+  fi
 
   # Live-lease guard (BRO-2319): a data/audit/job-leases/* lease with a live
   # pid pointed at this exact path means a job is actively using it RIGHT
@@ -979,6 +1006,16 @@ gc_one_repo() {
   else
     # unbounded-fetch-ok: only reached when timeout/gtimeout is absent (rare local machine); see file header.
     git fetch origin main -q 2>/dev/null || log "WARN: [$repo_name] git fetch failed (offline?) — using cached origin/main"
+  fi
+
+  # BRO-8178: landings.jsonl tips, read once per repo run for the rebase-proof
+  # landed check in flush(). Empty file = signal 1 unavailable (content tie
+  # still runs); a failed write leaves the check to fall back to keeping.
+  GC_LANDING_TIPS_FILE="$GC_TMP_DIR/landing-tips-$repo_name.txt"
+  : > "$GC_LANDING_TIPS_FILE"
+  if [ -f "$SCRIPT_DIR/lib/headless-unlanded-detection.js" ]; then
+    gc_probe 60 node "$SCRIPT_DIR/lib/headless-unlanded-detection.js" --repo="$REPO" --write-tips="$GC_LANDING_TIPS_FILE" >/dev/null \
+      || log "WARN  [$repo_name] landings.jsonl tips unavailable; rebase-landed detection uses the content check only"
   fi
 
   local worktree_list

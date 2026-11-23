@@ -231,7 +231,96 @@ function makeStrandedLandedPredicate({ cwd } = {}) {
   };
 }
 
+/**
+ * BRO-8178: has a job branch's work landed even though land.yml rebased it?
+ * gc-merged-worktrees.sh kept 37 finished job worktrees (~800MB each) as
+ * "N unmerged commit(s)" because the rebase rewrote every sha and a patch
+ * changed during conflict resolution defeats `git cherry`. Two rebase-proof
+ * signals, strongest first:
+ *   1. every non-merge commit on the branch is reachable from origin/main or
+ *      from a landings.jsonl `tip` (land.yml records the PRE-rebase tip, which
+ *      is the job's own commit, so its ancestors are what was landed),
+ *   2. every file the branch changed since its merge-base is byte-identical
+ *      on origin/main (nothing the branch holds is missing from main).
+ * Subject-line matching is deliberately NOT a signal: generic subjects such as
+ * "address ship-check findings" repeat across jobs. Callers keep the branch ref
+ * anyway, so a LANDED verdict only removes the checkout, never commits.
+ * @param {object} o
+ * @param {string} o.repo   any checkout of the repository
+ * @param {string} o.branch branch name or sha
+ * @param {string[]} [o.tips] landings.jsonl tips (unresolvable ones are skipped)
+ * @param {string} [o.upstream] default origin/main
+ * @returns {{landed:boolean, reason:string}}
+ */
+const MAX_CONTENT_TIE_FILES = 2000;
+function branchLandedDespiteRebase({ repo, branch, tips = [], upstream = 'origin/main' }) {
+  const git = (args, input) => execFileSync('git', ['-C', repo, ...args], {
+    encoding: 'utf8', input, stdio: [input === undefined ? 'ignore' : 'pipe', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024,
+  });
+  const wanted = [...new Set(tips.filter((t) => /^[0-9a-f]{40}$/.test(String(t))))];
+  let known = [];
+  if (wanted.length) {
+    const out = git(['cat-file', '--batch-check=%(objectname) %(objecttype)'], `${wanted.join('\n')}\n`);
+    known = out.split('\n').filter((l) => / commit$/.test(l)).map((l) => l.split(' ')[0]);
+  }
+  const outstanding = git(['rev-list', '--no-merges', '--stdin'], `${branch}\n^${upstream}\n${known.map((t) => `^${t}`).join('\n')}\n`).trim();
+  if (!outstanding) return { landed: true, reason: 'every commit is on main or inside a landings.jsonl tip' };
+  const base = git(['merge-base', upstream, branch]).trim();
+  const files = git(['diff', '--no-renames', '--name-only', '-z', base, branch]).split('\0').filter(Boolean);
+  if (files.length === 0) return { landed: true, reason: 'branch has no net change against its merge-base' };
+  if (files.length > MAX_CONTENT_TIE_FILES) return { landed: false, reason: `too many changed files (${files.length}) for a content check` };
+  try {
+    git(['diff', '--quiet', upstream, branch, '--', ...files.map((f) => `:(literal)${f}`)]);
+    return { landed: true, reason: `all ${files.length} changed file(s) identical on ${upstream}` };
+  } catch {
+    return { landed: false, reason: `${outstanding.split('\n').length} commit(s) not on ${upstream} and changed files differ` };
+  }
+}
+
+/** landings.jsonl tips recorded within `days` (one read per GC run, not per worktree). */
+function recentLandingTips(repo, { days = 30, nowMs = Date.now() } = {}) {
+  const since = nowMs - days * 24 * 3600 * 1000;
+  return readOriginLandings(repo)
+    .filter((r) => r && r.tip && !(Date.parse(r.ts) < since))
+    .map((r) => r.tip);
+}
+
+// CLI for gc-merged-worktrees.sh:
+//   --write-tips=<file> --repo=<path>            write recent tips, one per line
+//   --branch-landed --repo=<path> --branch=<b> [--tips-file=<file>]
+//     prints "landed <reason>" or "unlanded <reason>", exit 0; nonzero = error (caller keeps).
+function cli(argv) {
+  const get = (n) => { const a = argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : ''; };
+  const repo = get('repo');
+  if (!repo) return 2;
+  if (get('write-tips')) {
+    fs.writeFileSync(get('write-tips'), `${recentLandingTips(repo).join('\n')}\n`);
+    return 0;
+  }
+  if (argv.includes('--branch-landed')) {
+    const branch = get('branch');
+    if (!branch) return 2;
+    let tips = [];
+    if (get('tips-file')) {
+      try { tips = fs.readFileSync(get('tips-file'), 'utf8').split('\n').filter(Boolean); } catch { tips = []; }
+    }
+    const r = branchLandedDespiteRebase({ repo, branch, tips });
+    console.log(`${r.landed ? 'landed' : 'unlanded'} ${r.reason}`);
+    return 0;
+  }
+  return 2;
+}
+
+if (require.main === module) {
+  try { process.exit(cli(process.argv.slice(2))); } catch (err) {
+    console.error(String(err && err.message || err).split('\n')[0]);
+    process.exit(1);
+  }
+}
+
 module.exports = {
+  branchLandedDespiteRebase,
+  recentLandingTips,
   makeStrandedLandedPredicate,
   classifyJobDoneLanding,
   resolveLandedVerdict,
