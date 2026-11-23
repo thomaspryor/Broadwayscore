@@ -16,9 +16,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { mkdtempSync, mkdirSync, writeFileSync, existsSync, statSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync, statSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -93,7 +93,7 @@ test('a module that joins __dirname/../../data does not pull the big trees in', 
   }
 });
 
-test('real detect-route graph stays under the function size budget (when data is present)', async () => {
+test('real detect-route graph stays under the function size budget (when data is present)', async (t) => {
   const nodeFileTrace = nft();
   const entries = [
     'scripts/lib/review-normalization.js',
@@ -101,7 +101,10 @@ test('real detect-route graph stays under the function size budget (when data is
     'scripts/lib/critic-fill-rules.js',
     'scripts/lib/review-write-guard.js',
   ];
-  if (!nodeFileTrace || !entries.every(e => existsSync(join(ROOT, e)))) return;
+  if (!nodeFileTrace || !entries.every(e => existsSync(join(ROOT, e)))) return t.skip('nft or entry modules missing');
+  // Without the private core data the trace measures almost nothing; say so
+  // instead of passing silently (checks 1, 2 and 4 still guard a bare checkout).
+  if (!existsSync(join(ROOT, 'data/reviews.json'))) return t.skip('data/reviews.json absent: size budget not measurable here');
   const { fileList } = await nodeFileTrace(entries, {
     base: ROOT,
     processCwd: ROOT,
@@ -124,21 +127,30 @@ test('real detect-route graph stays under the function size budget (when data is
 // relative require() graph from the detect route's entry modules and fail on
 // any module that names the data/ DIRECTORY itself (path.join(..., 'data') with
 // no file after it). Name the file instead: path.join(__dirname,'..','..','data','x.json').
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 
-test('modules reachable from the ingest detect route never name the data/ directory', () => {
-  const entries = [
-    'scripts/lib/review-normalization.js',
-    'scripts/lib/byline-normalization.js',
-    'scripts/lib/critic-fill-rules.js',
-    'scripts/lib/review-write-guard.js',
-  ].map(e => join(ROOT, e)).filter(existsSync);
+test('modules reachable from src/ server code never name the data/ directory', () => {
+  // Entries: every scripts/lib module that src/ loads through cjsRequire(...)
+  // (admin-ingest-detect.ts uses createRequire, so a plain import scan misses
+  // it), plus the detect route's own helpers.
+  const entrySet = new Set([
+    'review-normalization', 'byline-normalization', 'critic-fill-rules', 'review-write-guard',
+  ].map(n => join(ROOT, 'scripts/lib', n + '.js')));
+  for (const f of walkSrc(join(ROOT, 'src'))) {
+    const src = readFileSync(f, 'utf8');
+    for (const m of src.matchAll(/scripts\/lib\/([A-Za-z0-9_./-]+?)['"]/g)) {
+      const base = join(ROOT, 'scripts/lib', m[1]);
+      const hit = [base, base + '.js', join(base, 'index.js')].find(p => existsSync(p) && statSync(p).isFile());
+      if (hit) entrySet.add(hit);
+    }
+  }
   const seen = new Set();
-  const queue = [...entries];
+  const queue = [...entrySet].filter(existsSync);
   const offenders = [];
-  // path.join(<anything>, 'data') or path.resolve(...,'data') closing right after 'data'.
-  const dirOnly = /path\.(?:join|resolve)\([^)\n]*['"]data['"]\s*\)/;
+  // A path.join/resolve whose 'data' (or '../../data', 'data/') argument is the
+  // last argument, or is followed by a non-literal argument: both name the
+  // directory itself, so NFT bundles the whole tree. Multi-line aware.
+  const dataArg = String.raw`['"](?:\.{1,2}\/)*data\/?['"]`;
+  const dirOnly = new RegExp(String.raw`path\.(?:join|resolve)\([^;]*?${dataArg}\s*(?:\)|,\s*[^'"\s])`);
   while (queue.length) {
     const f = queue.pop();
     if (seen.has(f)) continue;
@@ -151,6 +163,33 @@ test('modules reachable from the ingest detect route never name the data/ direct
       if (hit) queue.push(hit);
     }
   }
-  assert.ok(seen.size > 5, `graph walk found only ${seen.size} modules; the walker is broken`);
+  assert.ok(seen.size > 50, `graph walk found only ${seen.size} modules; the walker is broken`);
   assert.deepEqual(offenders, [], 'these modules name the data/ directory, so NFT bundles all of data/ into the function (BRO-8136)');
 });
+
+test('the data-directory pattern flags the known-bad shapes and spares file paths', () => {
+  const dataArg = String.raw`['"](?:\.{1,2}\/)*data\/?['"]`;
+  const dirOnly = new RegExp(String.raw`path\.(?:join|resolve)\([^;]*?${dataArg}\s*(?:\)|,\s*[^'"\s])`);
+  for (const bad of [
+    "path.join(__dirname, '..', '..', 'data')",
+    "path.join(__dirname, '../../data')",
+    "path.resolve(__dirname,'../../../data')",
+    "path.join(__dirname, '..', '..', 'data/')",
+    "path.join(\n  __dirname,\n  '..',\n  'data',\n)",
+    "path.join(ROOT, 'data', sub)",
+  ]) assert.ok(dirOnly.test(bad), `should flag: ${bad}`);
+  for (const ok of [
+    "path.join(__dirname, '..', '..', 'data', 'shows.json')",
+    "path.join(__dirname, '../../data/shows.json')",
+    "path.join(dataDir, 'shows.json')",
+  ]) assert.ok(!dirOnly.test(ok), `should not flag: ${ok}`);
+});
+
+function walkSrc(dir, out = []) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) walkSrc(p, out);
+    else if (/\.(ts|tsx)$/.test(name)) out.push(p);
+  }
+  return out;
+}

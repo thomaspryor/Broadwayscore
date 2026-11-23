@@ -84,10 +84,6 @@ const nextConfig = {
     '**/*': [
       'data/audit/**',
       'data/review-texts/**',
-      // BRO-6277: show art (7k+ files, ~570MB with sm/ variants) is static
-      // output only. A server module building an fs path from process.cwd()
-      // once traced all of it into functions and broke every prod deploy
-      // (2026-10-26, BRO-6305; tests/unit/trace-excludes-public.test.mjs).
       // ~2400 cast files (~300MB total). Tony pages now consume cast data
       // via data/actor-slugs.json (generated at prebuild). If any code path
       // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
@@ -97,6 +93,10 @@ const nextConfig = {
       // which makes NFT bundle all of public/images (~640MB) into every page
       // function ("off-broadway" hit 792MB > 250MB, 11 failed deploys 2026-10-26).
       // Vercel serves public/ from the CDN; the existsSync only runs at build time.
+      // BRO-6277: show art (7k+ files, ~570MB with sm/ variants) is static
+      // output only. A server module building an fs path from process.cwd()
+      // once traced all of it into functions and broke every prod deploy
+      // (2026-10-26, BRO-6305; tests/unit/trace-excludes-public.test.mjs).
       'public/images/**',
       // BRO-8136: backstop for the denylist. pending-intake.js once built
       // path.join(__dirname,'..','..','data'), and NFT bundled all of data/ (1.5GB)
