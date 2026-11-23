@@ -1052,3 +1052,14 @@ test('liveDataLaneCheck: an undeclared live test blocks; anything else never doe
   assert.notEqual(v2.decision, 'block');
   assert.match(v2.results[0].detail.liveDataLane.reason, /uncommitted tracked changes/);
 });
+
+test('trackedDirty: uncommitted code counts; a dirty data/ ledger does not (BRO-8107)', async () => {
+  const { trackedDirty } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  sh(wt, 'mkdir -p data/audit scripts/lib && echo 1 > data/audit/l.jsonl && echo 1 > scripts/lib/z.js && git add -A && git commit -qm t');
+  assert.deepEqual(trackedDirty(wt), []);
+  sh(wt, 'echo 2 >> data/audit/l.jsonl');
+  assert.deepEqual(trackedDirty(wt), [], 'a ledger written by a test run');
+  sh(wt, 'echo 2 >> scripts/lib/z.js');
+  assert.deepEqual(trackedDirty(wt), [' M scripts/lib/z.js']);
+});

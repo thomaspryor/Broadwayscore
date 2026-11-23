@@ -1055,10 +1055,15 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
  * Reads the working tree, so the caller runs it only when HEAD is the pushed commit and clean.
  * LAND_LIVE_DATA_PREFLIGHT_DISABLE=1 turns it off. -> { status: fail|clean|skip|off, message?, reason? }
  */
-/** Tracked files with staged or unstaged changes (untracked ignored). */
-function trackedDirty(root) {
+/**
+ * Tracked code with staged or unstaged changes (untracked ignored). data/ is
+ * left out: test runs dirty bot ledgers there, and the trace judges reads, not
+ * their content, so a dirty ledger does not change the verdict.
+ */
+export function trackedDirty(root) {
   const r = git(root, ['status', '--porcelain', '--untracked-files=no']);
-  return ok(r) ? out(r).split('\n').filter(Boolean) : ['(git status failed)'];
+  if (!ok(r)) return ['(git status failed)'];
+  return r.stdout.split('\n').filter(Boolean).filter((l) => !l.slice(3).startsWith('data/'));
 }
 
 export function liveDataLaneCheck({ root, base = 'origin/main', env = process.env, seams = {}, budgetMs }) {
@@ -1169,7 +1174,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.liveDataLane = ld;
     if (ld.status === 'fail') { v.decision = 'block'; v.message = ld.message; }
     if (ld.warning) v.warnings = [...(v.warnings || []), ld.warning];
-    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, liveDataLane: ld.status, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, liveDataLane: ld.status, liveDataLaneReason: ld.reason || null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];
