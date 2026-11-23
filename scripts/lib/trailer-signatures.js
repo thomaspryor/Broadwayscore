@@ -545,10 +545,62 @@ const FURN_RUNNING_TIME_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)Running time
 // A match may start on the sentence end it follows ([.!?] + space): the cut keeps that punctuation.
 const cutOf = (m) => m.index + ((m[0].match(/^[.!?]["'”’)]?/) || [''])[0].length);
 
+// BRO-8012: every furniture regex is anchored at the end but not at the start,
+// so each one walks the whole text, and stripFurnitureTail runs on every review
+// on every rebuild (~22 full scans a file, the largest slice of the rebuild's
+// tier pass). Each regex below can only match when a literal it requires is in
+// the text, so a cheap includes() check skips the scan and never changes a
+// result. Literals for /i regexes are lower-case and checked against foldCase(t).
+// tests/unit/furniture-prefilter.test.mjs proves every literal is required.
+const FURN_CODE_LITERALS = [
+  { cs: ['document.getElementById('] },
+  { cs: ['window.dataLayer'] },
+  { cs: ['WordSection'] },
+  { cs: ['mso-'] },
+  { cs: ['css:'] },
+];
+const FURN_FOOTER_LITERALS = [
+  { cs: ['Time Out Theater'] },
+  { ci: ['picture this post'] },
+  { cs: ['CLICK HERE TO READ MORE ARTICLES BY '] },
+  { cs: ['For more shows visit Theatre in Chicago'] },
+  { cs: ['Image:'] },
+  { cs: [' and his reviews, click here to go to his website'] },
+  { ci: ['website here'] },
+  { ci: ['watch '] },
+  { cs: ['Tags:'] },
+  { cs: ['Did you catch this show', 'What have you been to see lately'] },
+  { cs: ['Running time:'] },
+];
+const FURN_TICKETS_LITERALS = { ci: ['ticket'] };
+const FURN_RUNNING_TIME_LITERALS = { cs: ['Running time:'] };
+const FURN_TIMEOUT_CREDITS_LITERALS = { cs: ['Directed by'] };
+
+// Lower-case, plus the three characters JS case-insensitive matching treats as
+// an ASCII letter that toLowerCase() leaves alone (long s, dotless i, Kelvin).
+function foldCase(t) {
+  const lower = t.toLowerCase();
+  return /[\u017F\u0131\u212A]/.test(lower) ? lower.replace(/\u017F/g, 's').replace(/\u0131/g, 'i').replace(/\u212A/g, 'k') : lower;
+}
+
+// true when the text holds one of the literals (or the regex has none listed)
+function mayMatch(lits, t, folded) {
+  if (lits.cs) return lits.cs.some((l) => t.includes(l));
+  return lits.ci.some((l) => folded().includes(l));
+}
+
 function furnitureMatch(t) {
-  for (const re of FURN_CODE_RES) { const m = re.exec(t); if (m) return { cut: cutOf(m), code: true }; }
-  for (const re of FURN_FOOTER_RES) { const m = re.exec(t); if (m) return { cut: cutOf(m), code: false }; }
-  const tk = FURN_TICKETS_RE.exec(t);
+  let foldedText = null;
+  const folded = () => (foldedText === null ? (foldedText = foldCase(t)) : foldedText);
+  for (let i = 0; i < FURN_CODE_RES.length; i++) {
+    if (!mayMatch(FURN_CODE_LITERALS[i], t, folded)) continue;
+    const m = FURN_CODE_RES[i].exec(t); if (m) return { cut: cutOf(m), code: true };
+  }
+  for (let i = 0; i < FURN_FOOTER_RES.length; i++) {
+    if (!mayMatch(FURN_FOOTER_LITERALS[i], t, folded)) continue;
+    const m = FURN_FOOTER_RES[i].exec(t); if (m) return { cut: cutOf(m), code: false };
+  }
+  const tk = mayMatch(FURN_TICKETS_LITERALS, t, folded) && FURN_TICKETS_RE.exec(t);
   if (tk) return { cut: cutOf(tk), code: false };
   const cr = FURN_CREDIT_RE.exec(t);
   if (cr && !DANGLING_END_RE.test(cr[1]) && namesOnly(cr[1])) return { cut: cutOf(cr), code: false };
@@ -556,9 +608,9 @@ function furnitureMatch(t) {
   if (rn) return { cut: cutOf(rn), code: false };
   const bu = FURN_BARE_UNTIL_RE.exec(t);
   if (bu) return { cut: cutOf(bu), code: false };
-  const rt = FURN_RUNNING_TIME_RE.exec(t);
+  const rt = mayMatch(FURN_RUNNING_TIME_LITERALS, t, folded) && FURN_RUNNING_TIME_RE.exec(t);
   if (rt) return { cut: cutOf(rt), code: false };
-  const tc = FURN_TIMEOUT_CREDITS_RE.exec(t);
+  const tc = mayMatch(FURN_TIMEOUT_CREDITS_LITERALS, t, folded) && FURN_TIMEOUT_CREDITS_RE.exec(t);
   if (tc) return { cut: cutOf(tc), code: false };
   return null;
 }
@@ -665,4 +717,17 @@ module.exports = {
   trailerFixesEnabled,
   FOURTHWALSH_FOOTER_RE,
   OUTLET_TRAILER_STRIPPERS,
+  // BRO-8012: test seam for the literal pre-filter (tests/unit/furniture-prefilter.test.mjs)
+  _furniture: {
+    furnitureMatch, foldCase,
+    pairs: [
+      ...FURN_CODE_RES.map((re, i) => [re, FURN_CODE_LITERALS[i]]),
+      ...FURN_FOOTER_RES.map((re, i) => [re, FURN_FOOTER_LITERALS[i]]),
+      [FURN_TICKETS_RE, FURN_TICKETS_LITERALS],
+      [FURN_RUNNING_TIME_RE, FURN_RUNNING_TIME_LITERALS],
+      [FURN_TIMEOUT_CREDITS_RE, FURN_TIMEOUT_CREDITS_LITERALS],
+    ],
+    codeCount: FURN_CODE_RES.length, codeLiteralCount: FURN_CODE_LITERALS.length,
+    footerCount: FURN_FOOTER_RES.length, footerLiteralCount: FURN_FOOTER_LITERALS.length,
+  },
 };
