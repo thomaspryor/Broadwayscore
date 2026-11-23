@@ -308,7 +308,7 @@ async function main() {
       break;
 
     case 'shows':
-      // BRO-8085: tokens may be show ids or slugs; only the slug is the page address.
+      // BRO-8085: tokens may be show ids, slugs or aliases; only the slug is the page address.
       urls = slugsForCli(specificShows, loadShowsForSlugs(fs, path, __dirname)).map(s => `https://${SITE_HOST}/show/${s}`);
       // Also submit homepage since show listings may have changed
       urls.push(`https://${SITE_HOST}/`);
