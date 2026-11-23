@@ -164,6 +164,10 @@ export interface Theater {
   name: string;
   slug: string;
   address?: string;
+  /** Official venue website (verified, BRO-8088). */
+  website?: string;
+  /** Set on a renamed Broadway house's old-name page: the current name of the same building. */
+  nowKnownAs?: { name: string; slug: string };
   capacity?: number;
   yearBuilt?: number;
   operator?: string;

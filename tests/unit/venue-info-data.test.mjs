@@ -1,0 +1,59 @@
+// BRO-8088: guards for verified venue facts on Off-Broadway / London / renamed Broadway theater pages.
+// The "coming soon, enriching after launch" note shipped with no card behind it and the pages
+// stayed bare for months. These fail if the verified data is lost or thinned, if an
+// unverified field sneaks in, or if the placeholder note returns.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+const info = require('../../data/venue-info.json');
+const { inCity } = require('../../scripts/lib/venue-info-agree.js');
+const { VENUE_ADDRESSES } = require('../../scripts/lib/venue-addresses.js');
+const theaterMeta = require('../../data/theater-metadata.json');
+
+const ALLOWED = new Set(['address', 'website', 'capacity', 'yearOpened', 'operator']);
+// Set from the first full research run (BRO-8088); lower only with a written reason.
+const MIN_VENUES_WITH_ADDRESS = 250;
+
+test('venue-info.json holds at least the verified address floor', () => {
+  const n = Object.values(info.venues).filter((v) => v.fields?.address).length;
+  assert.ok(n >= MIN_VENUES_WITH_ADDRESS, `only ${n} venues have a verified address (floor ${MIN_VENUES_WITH_ADDRESS})`);
+});
+
+test('every published field is one of the allowed facts and says how it was verified', () => {
+  for (const [key, v] of Object.entries(info.venues)) {
+    assert.match(key, /^(off-broadway|london)\/[a-z0-9-]+$/, key);
+    for (const f of Object.keys(v.fields)) {
+      assert.ok(ALLOWED.has(f), `${key}: unexpected field ${f}`);
+      assert.match(String(v.how?.[f] || ''), /^(gemini\+openai|gemini\+official-site|openai\+official-site)$/, `${key}.${f} has no verification record`);
+    }
+    assert.ok(Array.isArray(v.sources) && v.sources.length > 0, `${key}: no sources`);
+  }
+});
+
+test('geocoded addresses sit inside the right city', () => {
+  for (const [key, v] of Object.entries(info.venues)) {
+    if (v.lat == null) continue;
+    const city = key.startsWith('london/') ? 'london' : 'nyc';
+    assert.ok(inCity(v.lat, v.lng, city), `${key} geocodes outside ${city}: ${v.lat},${v.lng}`);
+  }
+});
+
+test('Off-Broadway and London theater pages render verified venue info, not a "coming soon" note', () => {
+  for (const rel of ['src/app/off-broadway/theater/[slug]/page.tsx', 'src/app/west-end/theater/[slug]/page.tsx']) {
+    const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.ok(src.includes('<VenueInfoCard'), `${rel} no longer renders VenueInfoCard`);
+    assert.ok(!/coming soon|after launch/i.test(src), `${rel} promises details "coming soon" again`);
+  }
+});
+
+test('every renamed Broadway house resolves to an address through its current name', () => {
+  for (const [name, meta] of Object.entries(theaterMeta)) {
+    if (name === '_meta' || !meta.formerNames) continue;
+    assert.ok(VENUE_ADDRESSES[name], `${name} (formerly ${meta.formerNames.join(', ')}) has no registry address`);
+  }
+});
