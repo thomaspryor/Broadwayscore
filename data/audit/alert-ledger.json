@@ -48619,13 +48619,13 @@
       "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
       "firstSeen": "2026-11-23T00:31:00.296Z",
       "incidentOpenedAt": "2026-11-23T00:31:00.296Z",
-      "lastSeen": "2026-11-23T15:22:25.021Z",
+      "lastSeen": "2026-11-23T15:32:28.803Z",
       "lastNotifiedAt": "2026-11-23T00:31:00.296Z",
       "lastSurfacedAt": "2026-11-23T00:31:00.296Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 49
+      "silentRefires": 50
     },
     "land:land/bro-8065-takeover": {
       "status": "resolved",
@@ -49128,6 +49128,19 @@
       "lastSeen": "2026-11-23T15:18:42.085Z",
       "lastNotifiedAt": "2026-11-23T15:18:42.085Z",
       "lastSurfacedAt": "2026-11-23T15:18:42.085Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-8124-temp-checkout-reap": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: lint-workflows red on land/bro-8124-temp-checkout-reap",
+      "firstSeen": "2026-11-23T15:32:28.707Z",
+      "incidentOpenedAt": "2026-11-23T15:32:28.707Z",
+      "lastSeen": "2026-11-23T15:32:28.707Z",
+      "lastNotifiedAt": "2026-11-23T15:32:28.707Z",
+      "lastSurfacedAt": "2026-11-23T15:32:28.707Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

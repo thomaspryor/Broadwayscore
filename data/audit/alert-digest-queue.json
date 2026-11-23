@@ -491,5 +491,36 @@
       }
     ],
     "queuedAt": "2026-11-23T15:18:42.086Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8124-temp-checkout-reap",
+    "title": "Landing blocked: lint-workflows red on land/bro-8124-temp-checkout-reap",
+    "description": "land.yml did not land land/bro-8124-temp-checkout-reap: the lint-workflows gate went red at ee83a3b346. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45201774020",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8124-temp-checkout-reap"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "ee83a3b346da358182a6ac937c67552f23c1c6ac"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45201774020"
+      }
+    ],
+    "queuedAt": "2026-11-23T15:32:28.708Z"
   }
 ]
