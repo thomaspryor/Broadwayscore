@@ -129,6 +129,18 @@ function isLockedWorktree(repo) {
   } catch { return false; }
 }
 
+/**
+ * True when the checkout has a remote on a network host (https/ssh/git URL
+ * or scp-style user@host:path). A test sandbox clones from a bare repo in the
+ * same temp dir (a filesystem path) or has no remote; real session clones
+ * point at GitHub. Unreadable config counts as no network remote.
+ */
+function hasNetworkRemote(repo) {
+  let out = '';
+  try { out = git(repo, ['config', '--get-regexp', '^remote\\..*\\.url$']); } catch { return false; }
+  return out.split('\n').some((l) => /\s(?:(?:https?|ssh|git):\/\/|[\w.-]+@[\w.-]+:)/.test(l));
+}
+
 /** Back-compat boolean: any local work (or unreadable). */
 function gitHasLocalWork(p) { return gitLocalWork(p) !== null; }
 
@@ -222,8 +234,14 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   const repos = findGitRepos(p);
   if (walk === 'limit' && !(repos.length === 1 && repos[0] === p)) return { reap: false, reason: 'too big to judge (walk limit), not a clean checkout' };
   const longCutoff = now - LONG_AGE_H * 3600 * 1000;
+  // mkdtemp-named entry = made by a program; its checkouts with no network
+  // remote are test sandboxes (brh-checkpoint-*, scratch repos), so their
+  // "unpushed" commits get no 7d grace. Measured 2026-11-23: these were
+  // ~16.7k of the entries the 7d rule kept.
+  const mkdtempNamed = (() => { const m = MKDTEMP_RE.exec(name); return !!(m && /[0-9A-Z]/.test(m[1])); })();
   for (const repo of repos) {
     if (isLockedWorktree(repo)) return { reap: false, reason: 'locked git worktree' };
+    if (mkdtempNamed && !hasNetworkRemote(repo)) continue;
     const work = gitLocalWork(repo);
     if (!work) continue;
     // Unreadable status (fake .git fixture, orphaned worktree, timeout) gets
@@ -323,7 +341,7 @@ function formatSummary(s, dryRun) {
   return `STALE-TMP-REAP scanned=${s.scanned} ${dryRun ? 'would_remove' : 'removed'}=${s.removed} freed=${gb}GB (${Math.round(s.freedKb / 1024)}MB)${s.skipped ? ` skipped=${s.skipped}` : ''} kept: ${kept || 'none'}`;
 }
 
-module.exports = { DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, gitLocalWork, findGitRepos, walkAge, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
+module.exports = { hasNetworkRemote, DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, gitLocalWork, findGitRepos, walkAge, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
 
 // CLI: node scripts/lib/reap-stale-tmp.js [--dry-run] [--root DIR] [--max-age-h N] [--budget-min N] [--no-measure]
 if (require.main === module) {

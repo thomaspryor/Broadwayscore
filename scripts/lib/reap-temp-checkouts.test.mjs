@@ -239,6 +239,14 @@ test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named
   const unpushed = clone('bro-unpushed'); g(unpushed, 'checkout', '-qb', 'no-upstream'); fs.writeFileSync(path.join(unpushed, 'b.txt'), 'b'); g(unpushed, 'add', '.'); g(unpushed, 'commit', '-qm', 'local');
   const stashed = clone('bro-stashed'); fs.writeFileSync(path.join(stashed, 'a.txt'), 'wip'); g(stashed, 'stash', '-q');
   const nestedTop = path.join(r, 'bro-Nest12'); clone('bro-Nest12/repo'); fs.writeFileSync(path.join(nestedTop, 'repo', 'a.txt'), 'nested edit');
+  // A real session clone points at a network remote (the refs stay as cloned).
+  g(path.join(nestedTop, 'repo'), 'remote', 'set-url', 'origin', 'https://github.com/example/repo.git');
+  // A self-contained test sandbox: mkdtemp name, clone of a bare repo in the same dir, unpushed commit.
+  const sandbox = path.join(r, 'brh-checkpoint-0c3eCS');
+  fs.mkdirSync(sandbox); execFileSync('git', ['clone', '-q', '--bare', origin, path.join(sandbox, 'o.git')], { stdio: 'ignore' });
+  execFileSync('git', ['clone', '-q', path.join(sandbox, 'o.git'), path.join(sandbox, 'local')], { stdio: 'ignore' });
+  fs.writeFileSync(path.join(sandbox, 'local', 'c.txt'), 'c'); g(path.join(sandbox, 'local'), 'add', '.'); g(path.join(sandbox, 'local'), 'commit', '-qm', 'unpushed');
+  ageTree(sandbox, 2 * DAY_MS);
   for (const d of [clean, dirty, unpushed, stashed, nestedTop]) ageTree(d, 2 * DAY_MS);
   assert.equal(S.gitHasLocalWork(clean), false, 'pushed clean clone has no local work');
   for (const d of [dirty, unpushed, stashed]) assert.equal(S.gitHasLocalWork(d), true, d);
@@ -252,7 +260,8 @@ test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named
   assert.equal(fs.existsSync(stashed), true, 'stash kept');
   assert.equal(fs.existsSync(nestedTop), true, 'dirty clone nested in a mkdtemp-named dir kept');
   assert.equal(fs.existsSync(clean), false, 'pushed clean idle clone removed');
-  assert.equal(s.removed, 2, JSON.stringify(s));
+  assert.equal(fs.existsSync(sandbox), false, 'self-contained test sandbox (local-path remote) removed despite its unpushed commit');
+  assert.equal(s.removed, 3, JSON.stringify(s));
 });
 
 test('BRO-8179 stale tmp: walk limit = unknown, never idle', () => {
