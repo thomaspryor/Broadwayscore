@@ -44,7 +44,8 @@ export function evaluate(f) {
     const v = f.verdict || {};
     const fresh = !!v.exists && v.schemaOk !== false && v.overallPass === true && !!v.uiPatchId && v.uiPatchId === v.currentPatchId;
     // BRO-8164: an already-approved diff needs no new screenshots, unless the verdict names a different diff.
-    const approvedStill = !!f.approval?.approved && (!v.uiPatchId || v.uiPatchId === v.currentPatchId);
+    // An empty id is only trusted when the durable marker matched (it is keyed on this exact diff); the ledger matches on contentHash alone.
+    const approvedStill = !!f.approval?.approved && (v.uiPatchId === v.currentPatchId || (!v.uiPatchId && !!f.approval?.durable));
     const ok = fresh || approvedStill;
     add('verdict', approvedStill && !fresh ? 'visual verdict: already approved, no new screenshots needed' : 'visual verdict exists and matches this diff', ok,
       !v.exists ? 'no verdict.json for this branch' : v.schemaOk === false ? 'verdict is an old schema' : v.overallPass !== true ? 'verdict says the visual check did not pass' : v.uiPatchId !== v.currentPatchId ? 'verdict is for an older version of the UI diff' : '',
@@ -164,15 +165,15 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
         f.fixOnly = { allowed: r.status === 0 && j.allowed === true, reason: j.reason || '' };
       }
     } catch { f.fixOnly = { allowed: false, reason: 'classifier did not run' }; }
-    let approved = false;
+    let approved = false; let durable = false;
     try {
-      if (v.currentPatchId && require('./lib/visual-approval-durable.js').hasDurableApproval(cwd, v.currentPatchId)) approved = true;
+      if (v.currentPatchId && require('./lib/visual-approval-durable.js').hasDurableApproval(cwd, v.currentPatchId)) { approved = true; durable = true; }
       if (!approved && v.hash) {
-        const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-qa-ledger.mjs'), '--query=push-allowed', `--repo=${cwd}`, `--current-content-hash=${v.hash}`], { encoding: 'utf8' });
+        const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-qa-ledger.mjs'), '--query=push-allowed', `--repo=${canon || cwd}`, `--current-content-hash=${v.hash}`], { encoding: 'utf8' });
         approved = JSON.parse(r.stdout || '{}').allowed === true;
       }
     } catch { /* not approved */ }
-    f.approval = { approved };
+    f.approval = { approved, durable };
   }
   if (judge) {
     try {
