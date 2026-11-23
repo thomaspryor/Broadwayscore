@@ -19,6 +19,8 @@
  * construction, which is the point.
  */
 
+const { approvedFixStillBound } = require('./approved-fix-flag');
+
 /**
  * True when a review-text record has already been triaged out and must not be
  * reported as an unreviewed cross-outlet suspect.
@@ -32,6 +34,12 @@ function isTriagedOut(d, explainExclusion) {
   if (!d || typeof d !== 'object') return false;
   // A human/agent checked the page byline and confirmed the pairing is legit.
   if (d.crossOutletVerified === true) return true;
+  // BRO-7391: an approved data plan (approvedFixes, execute-approved-fix) set this
+  // exact criticName from the page's own byline. That is the same evidence a
+  // crossOutletVerified stamp records, but plans never wrote the stamp, so the
+  // audit re-reported every human-verified re-credit (BRO-8038: wicked-2003
+  // TheaterMania re-credited to Peter Filichia by plan fc2f07f3).
+  if (hasApprovedCriticName(d)) return true;
   // Already recorded as a bad attribution; reporting it again is noise.
   if (d.wrongAttribution === true) return true;
   // Excluded from scoring for being the wrong production/show. Whatever outlet
@@ -59,6 +67,20 @@ function isTriagedOut(d, explainExclusion) {
 }
 
 /**
+ * True when an approved fix set criticName to the record's CURRENT criticName and
+ * the content it judged is still the record's content (a later rewrite of the
+ * byline or the article drops the evidence).
+ *
+ * @param {object} d parsed review-text JSON
+ * @returns {boolean}
+ */
+function hasApprovedCriticName(d) {
+  if (!d || !Array.isArray(d.approvedFixes) || typeof d.criticName !== 'string' || !d.criticName) return false;
+  return d.approvedFixes.some((f) => f && f.field === 'criticName' && f.newValue === d.criticName
+    && approvedFixStillBound(f, d));
+}
+
+/**
  * Exact registry-alias canonicalizer (BRO-4695). Built from the SAME registry
  * document the audit reads, so aliases and defaultCritic homes can never come
  * from two different checkouts. Deliberately NOT normalizeOutlet(): that does
@@ -76,4 +98,4 @@ function makeOutletCanonicalizer(registryDoc) {
   };
 }
 
-module.exports = { makeOutletCanonicalizer, isTriagedOut };
+module.exports = { makeOutletCanonicalizer, isTriagedOut, hasApprovedCriticName };
