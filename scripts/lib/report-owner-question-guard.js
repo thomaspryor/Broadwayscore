@@ -42,7 +42,21 @@ function checkHiddenOwnerQuestion({ status, summary, verification, description }
   if (reportHasBlock || hasRealBlock(description)) {
     // The block the owner will be emailed: the report's (it is promoted to the description) or the card's.
     const problems = unclearBlock(reportHasBlock ? [summary, verification].filter(Boolean).join('\n') : description);
-    if (!problems.length) return { hidden: false };
+    if (!problems.length) {
+      // The card after this report: a clear report replaces an unclear promoted block, but a hand-written
+      // unclear block on the card stays, and the emailer would hold it with no time-out.
+      const after = promotedDecisionDescription({ status, summary, verification, description }) || String(description || '');
+      const left = hasRealBlock(after) ? unclearBlock(after) : [];
+      if (!left.length) return { hidden: false };
+      return {
+        hidden: true,
+        unclear: true,
+        reason:
+          `The card's own DECISION NEEDED (in its description) is unclear: ${left.join('; ')}. This report cannot replace it, ` +
+          'and the owner email stays held until it reads plainly (BRO-8199). Rewrite that block in the card description ' +
+          `(Linear save_issue, or updateIssue in scripts/lib/linear-client.js), each on its own line:\n${TEMPLATE}`,
+      };
+    }
     return {
       hidden: true,
       unclear: true,

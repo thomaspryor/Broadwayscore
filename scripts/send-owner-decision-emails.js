@@ -195,11 +195,13 @@ async function main(argv = process.argv.slice(2)) {
   // BRO-8199: said once on the card, so the next session on it rewrites the block; the next run then emails it.
   if (!opts.dryRun) {
     for (const { d, muddled } of unclear) {
-      if (hasComment(d, CLARITY_NEEDED_MARK)) continue;
+      // Keyed on the question, so a rewrite that is still unclear gets its own note.
+      const mark = `${CLARITY_NEEDED_MARK} ${link.questionHash(d.question || d.title).slice(0, 12)}`;
+      if (hasComment(d, mark)) continue;
       try {
         const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
         await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
-          { input: { issueId: issue.issue.id, body: `${CLARITY_NEEDED_MARK} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it.` } });
+          { input: { issueId: issue.issue.id, body: `${mark} this decision is not emailed to the owner yet: ${muddled}. The owner is not technical and answers from the email alone. Rewrite the DECISION NEEDED block at the top of the description, each on its own line: DECISION NEEDED (one plain sentence), In plain words (what the subject is, two or three sentences, no code names), Why this is your call, Option A, Option B, My recommendation, Default. The next run emails it.` } });
       } catch (err) { console.error(`[owner-decision-emails] could not note the unclear question on ${d.identifier}: ${err.message}`); }
     }
   }

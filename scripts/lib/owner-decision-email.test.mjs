@@ -118,7 +118,7 @@ test('BRO-8199: the BRO-5123 email is held as unclear and says why', () => {
   const { clarityHold } = require('./owner-decision-email.js');
   const r = clarityHold({ question: BRO5123_Q, description: BRO5123_DESC });
   assert.ok(r, 'held');
-  for (const want of [/camelCase/, /card number/, /internal tool words/, /Option A/, /Why this is your call/, /My recommendation/]) assert.match(r, want);
+  for (const want of [/camelCase/, /internal tool words/, /Option A/, /Why this is your call/, /My recommendation/]) assert.match(r, want);
 });
 
 test('BRO-8199: the same decision written plainly is not held, and the plain-words line is in the email', () => {
@@ -144,4 +144,30 @@ test('BRO-8199: kill switch OWNER_DECISION_CLARITY_HOLD_DISABLED=1 sends as befo
   process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED = '1';
   try { assert.equal(clarityHold({ question: BRO5123_Q, description: BRO5123_DESC }), null); }
   finally { delete process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED; }
+});
+
+test('BRO-8199 review: visual approvals are never held; "verify" and card numbers in prose are fine', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  const { jargonIn } = require('../../src/lib/owner-decision-link.js');
+  assert.deepEqual(jargonIn('Should we verify the ticket prices before launch?'), []);
+  assert.equal(clarityHold({ question: 'Is the [BRO-12](https://linear.app/x) badge change OK?', description: 'DECISION NEEDED: Is the [BRO-12](https://linear.app/x) badge change OK?\nWhy this is your call: taste.\nOption A - ship: x / y\nOption B - drop: x / y\nMy recommendation: A because x.' }), null);
+  const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
+  const vis = `DECISION NEEDED: Approve the visual change to src/components/ScoreBadge.tsx? (ref 0123456789ab)\nVISUAL-APPROVAL: patch=${'a'.repeat(40)} verdict=${'b'.repeat(40)} hold=visual-hold/badge`;
+  assert.ok(parseVisualApproval(vis), 'fixture is a real visual approval');
+  assert.equal(clarityHold({ question: 'Approve the visual change to src/components/ScoreBadge.tsx?', description: vis }), null);
+});
+
+test('BRO-8199 review: the full card question is judged, not the 220-character cut', () => {
+  const { clarityHold } = require('./owner-decision-email.js');
+  const long = `Should we ${'really '.repeat(50)}do it?`;
+  const desc = `DECISION NEEDED: ${long}\nWhy this is your call: x.\nOption A - yes: a / b\nOption B - no: a / b\nMy recommendation: A because x.`;
+  assert.match(clarityHold({ question: long.slice(0, 219) + '…', description: desc }) || '', /characters/);
+});
+
+test('BRO-8199 review: the digest offers no answer buttons on an unclear question', () => {
+  const { answerButtonsFor } = require('./digest-answer-buttons.js');
+  const issue = { identifier: 'BRO-5123', title: 'Star deals', description: BRO5123_DESC, labels: { nodes: [] } };
+  assert.equal(answerButtonsFor(issue, { secret, now: 0 }), null);
+  const ok = answerButtonsFor({ ...issue, description: CLEAR_DESC }, { secret, now: 0 });
+  assert.ok(Array.isArray(ok) && ok.length >= 3, 'a clear question keeps its buttons');
 });

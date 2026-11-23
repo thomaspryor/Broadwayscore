@@ -201,18 +201,22 @@ const JARGON_RES = [
   [/\b[a-z]{2,}[A-Z][a-z]+[A-Za-z]*\b/, 'a code name in camelCase'],
   [/\b[A-Za-z0-9]+_[A-Za-z0-9_]+\b/, 'a code name with underscores'],
   [/\b[\w.-]+\/[\w./-]+\.(?:js|mjs|ts|tsx|json|md|yml|sh)\b/, 'a file path'],
-  [/\bBRO-\d+\b/, 'a card number'],
-  [/\b(?:Codex|backtest|worktree|VERIFY|RECHECK-AFTER|shadow mode|checker ruling)\b/i, 'internal tool words'],
+  [/\b(?:Codex|backtest|worktree|checker ruling)\b/i, 'internal tool words'],
+  [/\bVERIFY:|\bRECHECK-AFTER\b/, 'internal tool words'],
 ];
 const CLEAR_QUESTION_MAX = 300;
 function jargonIn(text) {
   const t = String(text || '');
-  return JARGON_RES.filter(([re]) => re.test(t)).map(([, what]) => what);
+  return [...new Set(JARGON_RES.filter(([re]) => re.test(t)).map(([, what]) => what))];
 }
 function decisionClarityProblems({ question, description }) {
+  // A visual approval is written by visual-approval.js with a signed ref; hand edits would break
+  // the approval, and the screenshot carries the meaning.
+  if (parseVisualApproval(description)) return [];
   const block = parseDecisionBlock(description);
   const problems = [];
-  const q = String(question || '');
+  // Judged as the owner reads it: card numbers and link markup are already stripped from emails.
+  const q = displayQuestion(question);
   if (q.length > CLEAR_QUESTION_MAX) problems.push(`the question is ${q.length} characters; keep it to one plain sentence under ${CLEAR_QUESTION_MAX}`);
   const jargon = jargonIn(q);
   if (jargon.length) problems.push(`the question has ${jargon.join(', ')}`);

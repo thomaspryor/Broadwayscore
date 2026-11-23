@@ -91,7 +91,14 @@ function backgroundHtml(block) {
  */
 function clarityHold({ question, description }) {
   if (process.env.OWNER_DECISION_CLARITY_HOLD_DISABLED === '1') return null; // kill switch
-  const problems = decisionClarityProblems({ question, description });
+  // The notifier cuts questions at 220 characters, so judge the card's full question line.
+  const { findDecisionQuestion } = require('./decision-card-parse.js');
+  const full = findDecisionQuestion(String(description || ''));
+  // A label-only card (awaiting-owner, no DECISION NEEDED block) has nothing to judge; it keeps its buttons.
+  if (!full) return null;
+  // A one-tap action ("Tap <signed link> and press Allow") is its own instruction, with nothing to choose.
+  if (require('./owner-decision-notify.js').questionLink(full.question)) return null;
+  const problems = decisionClarityProblems({ question: full.question, description });
   return problems.length ? problems.join('; ') : null;
 }
 

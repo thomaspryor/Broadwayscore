@@ -181,10 +181,13 @@ function buildDecisionsSection(issues, { max = 8, now = new Date(), secret = pro
     // https://... and press Allow") links to THAT, not the card: the digest
     // wraps the whole title in one anchor, so an inner URL is not tappable.
     items: shown.map((d) => {
+      // BRO-8199: a question held as unclear is listed without answer buttons, so the digest
+      // never asks the owner to approve something they cannot follow.
+      const unclear = require('./owner-decision-email.js').clarityHold({ question: d.question, description: (byId.get(d.identifier) || {}).description });
       const ageDays = d.createdAt ? Math.floor((now.getTime() - new Date(d.createdAt).getTime()) / 86400000) : null;
       return {
         title: d.question,
-        detail: `${d.identifier}: ${d.title}${holds.get(d.identifier) && holds.get(d.identifier).reason === 'maybe-answered' ? ' (you may have answered this already in a comment)' : ''}`,
+        detail: `${d.identifier}: ${d.title}${holds.get(d.identifier) && holds.get(d.identifier).reason === 'maybe-answered' ? ' (you may have answered this already in a comment)' : ''}${unclear ? ' (being reworded so it reads plainly; no need to answer yet)' : ''}`,
         url: d.actionLink || d.url,
         // BRO-6131: what the digest card shows. cardUrl is the Linear card even
         // when `url` is a signed one-tap link taken from the question.
@@ -209,6 +212,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date(), secret = pro
 module.exports = {
   MAX_LISTED,
   buildDecisionsSection,
+  questionLink,
   collapseSelfLinks,
   extractDecisionQuestion,
   findOwnerDecisions,

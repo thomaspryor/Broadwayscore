@@ -140,3 +140,10 @@ test('BRO-8199: a clear report replaces an unclear promoted block on the card', 
   // A clear promoted block is left alone.
   assert.equal(promotedDecisionDescription({ status: 'paused', summary: BLOCK, description: `${BLOCK}\n\n${PROMOTED_MARKER}\n\nx` }), null);
 });
+
+test('BRO-8199 review: a clear report cannot hide an unclear hand-written block on the card', () => {
+  const desc = 'Card body.\n\nDECISION NEEDED: Should sourcedStarDeals go live per the Codex checker ruling?';
+  const r = checkHiddenOwnerQuestion({ status: 'paused', summary: BLOCK, description: desc });
+  assert.equal(r.hidden, true);
+  assert.match(r.reason, /card's own DECISION NEEDED/);
+});

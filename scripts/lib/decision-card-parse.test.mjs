@@ -92,7 +92,7 @@ test('non-decision rows (review queue) split the id, show a button, and drop uns
 
 test('a context URL in the question is not the button target; a signed owner link is; long questions get the card title as headline', () => {
   const quoted = { identifier: 'BRO-6110', title: 'DECISION NEEDED: Is Cyrus Team Cloud still used?', url: 'https://linear.app/x/issue/BRO-6110', createdAt: '2026-10-21T00:00:00Z',
-    description: `DECISION NEEDED: Do you still use Cyrus? The relay https://cyrus-relay.vercel.app now returns 404 so the drain job logs fetch failed every tick and has done for weeks now.\nOption A - Retire: x / y\nOption B - Keep: x / y` };
+    description: `DECISION NEEDED: Do you still use Cyrus? The relay https://cyrus-relay.vercel.app now returns 404 so the drain job logs fetch failed every tick and has done for weeks now.\nWhy this is your call: it is your account.\nOption A - Retire: x / y\nOption B - Keep: x / y\nMy recommendation: A because x.` };
   const signed = { identifier: 'BRO-7', title: 'DECISION NEEDED: Renew Gmail login', url: 'https://linear.app/x/issue/BRO-7', createdAt: '2026-10-24T00:00:00Z',
     description: 'DECISION NEEDED: Tap https://broadwayscorecard.com/api/admin/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef and press Allow' };
   const now = new Date('2026-10-24T12:00:00Z');
