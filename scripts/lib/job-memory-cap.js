@@ -109,7 +109,7 @@ function sampleFootprints(pids, execFn = execFileSync) {
  * are compressed/swapped (the 2026-11-23 numbers were footprint). null when
  * ps fails (fail open).
  */
-function sampleJobRows(rootPids, { psExec = execFileSync, fpExec = execFileSync } = {}) {
+function sampleJobRows(rootPids, { psExec = execFileSync, fpExec = execFileSync, alive = pidAlive } = {}) {
   const rows = sampleProcessTable(psExec);
   if (!rows) return null;
   const members = new Set();
@@ -117,7 +117,9 @@ function sampleJobRows(rootPids, { psExec = execFileSync, fpExec = execFileSync 
   const fp = sampleFootprints([...members], fpExec);
   return rows.map(r => {
     if (fp.has(r.pid)) return { ...r, footprintBytes: fp.get(r.pid) };
-    return members.has(r.pid) ? { ...r, footprintMissing: true } : r;
+    // A member that exited between ps and footprint (a short-lived git/ps
+    // child) holds no memory now; only a still-running one is a real gap.
+    return members.has(r.pid) && alive(r.pid) ? { ...r, footprintMissing: true } : r;
   });
 }
 
