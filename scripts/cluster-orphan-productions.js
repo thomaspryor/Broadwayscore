@@ -72,9 +72,13 @@ function collect() {
     const specs = REVERT.split(',').flatMap((p) => JSON.parse(fs.readFileSync(p, 'utf8')));
     const targets = new Set(specs.map((s) => s.id));
     const keep = new Set(KEEP_SHOWS ? KEEP_SHOWS.split(',') : []); // spec ids that pre-existed the fix (rehome target only)
+    const badKeep = [...keep].filter((id) => !targets.has(id));
+    if (badKeep.length) { console.error(`--keep-shows ids not in the spec(s): ${badKeep.join(',')}`); process.exit(2); }
     const added = new Set([...targets].filter((id) => !keep.has(id)));
-    ({ records: all, shows } = L.revertRehome(all, shows, added, targets));
+    let missingHosts;
+    ({ records: all, shows, missingHosts } = L.revertRehome(all, shows, added, targets));
     console.log(`SIMULATED REVERT of ${targets.size} spec'd productions (${added.size} removed from shows view)`);
+    if (missingHosts.length) console.warn(`WARN: ${missingHosts.length} rehomed file(s) point at a host not in shows.json (not counted): ${missingHosts.slice(0, 5).join('; ')}`);
   }
   return L.findOrphans(all, shows, outlets, Date.now());
 }
@@ -89,7 +93,7 @@ const gated = clusters.filter((c) => c.count >= MIN);
 const keyTotals = L.gateKeyTotals(clusters, MIN);
 const summary = { orphanReviews: orphans.length, clusters: clusters.length, clustersAtLeastMin: gated.length, min: MIN, reviewsInGatedClusters: gated.reduce((a, c) => a + c.count, 0) };
 
-if (UPDATE && REVERT) { console.error('refusing --update-baseline with --simulate-revert'); process.exit(2); }
+if (UPDATE && (REVERT || process.env.SHOWS_FILE)) { console.error('refusing --update-baseline with --simulate-revert or SHOWS_FILE (baseline must come from data/shows.json)'); process.exit(2); }
 if (UPDATE) {
   const out = { generatedAt: new Date().toISOString(), summary, clusters: keyTotals };
   fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });

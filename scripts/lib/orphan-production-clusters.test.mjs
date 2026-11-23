@@ -90,6 +90,19 @@ test('gate: a missing production fails, adding it + rehoming passes, and the rev
   assert.deepEqual(runGate(k.records, k.shows), []);
 });
 
+test('revertRehome leaves non-orphan (different-title) reroutes in place and reports hosts missing from shows', () => {
+  const target = { id: 'oscar-2025', title: 'Good Night, Oscar', openingDate: '2025-08-06' };
+  const other = { id: 'cats-2016', title: 'Cats', openingDate: '2016-07-31' };
+  const recs = [
+    ['oscar-2025', 'a.json', { reroutedFrom: 'cats-2016' }],
+    ['oscar-2025', 'b.json', { reroutedFrom: 'gone-2023' }],
+  ];
+  const v = L.revertRehome(recs, [target, other], new Set(), new Set(['oscar-2025']));
+  assert.equal(v.records[0][0], 'oscar-2025');
+  assert.equal(v.records[1][0], 'gone-2023');
+  assert.deepEqual(v.missingHosts, ['oscar-2025/b.json -> gone-2023']);
+});
+
 test('gate: a flagged copy whose URL is live elsewhere is not counted; baseline ratchet allows equal, fails growth', () => {
   const nowG = Date.parse('2026-11-20');
   const host = { id: 'h-2010', title: 'When We Are Married', openingDate: '2010-01-01', closingDate: '2010-03-01' };
