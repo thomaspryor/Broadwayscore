@@ -11,13 +11,21 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const require = createRequire(import.meta.url);
-const cfg = require('../../next.config.js');
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+// Read the excludes from next.config.js source: require()-ing it runs
+// writeSiteImageVersions(), which reads untracked data and makes this a live-data test.
+function tracingExcludes() {
+  const src = fs.readFileSync(path.join(ROOT, 'next.config.js'), 'utf8');
+  const start = src.indexOf('outputFileTracingExcludes');
+  assert.ok(start >= 0, 'outputFileTracingExcludes missing from next.config.js');
+  const block = src.slice(start, src.indexOf('],', start));
+  return [...block.matchAll(/^\s*'([^']+)',/gm)].map((m) => m[1]);
+}
 
 const LIMIT_BYTES = 1_000_000;
 // data/ subdirectories a server function genuinely reads at runtime (keep them traced).
@@ -41,7 +49,7 @@ function isExcluded(dir, excludes) {
 }
 
 test('every tracked data/ dir over 1MB is excluded from function tracing or a declared runtime read', () => {
-  const excludes = cfg.outputFileTracingExcludes['**/*'];
+  const excludes = tracingExcludes();
   const sizes = trackedDataDirSizes();
   assert.ok(sizes.size > 0, 'git ls-tree returned no data/ dirs');
   const offenders = [...sizes]
@@ -51,7 +59,7 @@ test('every tracked data/ dir over 1MB is excluded from function tracing or a de
 });
 
 test('the BRO-8147 bulk dirs stay excluded', () => {
-  const excludes = cfg.outputFileTracingExcludes['**/*'];
+  const excludes = tracingExcludes();
   for (const d of ['video-reviews-transcripts', 'pending-fixes', 'archive', 'aggregator-archive']) {
     assert.ok(isExcluded(d, excludes), `data/${d}/** missing from outputFileTracingExcludes`);
   }
