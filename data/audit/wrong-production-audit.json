@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T17:55:05.664Z",
+  "timestamp": "2026-11-23T18:52:21.312Z",
   "stats": {
-    "totalReviews": 84345,
-    "alreadyFlagged": 22517,
+    "totalReviews": 84346,
+    "alreadyFlagged": 22518,
     "dateGuardCatches": 242,
-    "directorMismatch": 3885,
+    "directorMismatch": 3886,
     "tvFilmSignals": 2423,
     "londonSignals": 3986,
     "offBroadwaySignals": 788,
     "yearMismatch": 396,
-    "noPublishDate": 8210
+    "noPublishDate": 8211
   },
   "findings": [
     {
@@ -2131,6 +2131,20 @@
       "score": 64,
       "publishDate": "2024-11-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/a-christmas-carol-old-vic-review-john-simm/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2024",
+      "file": "times-uk--ben-dowell.json",
+      "score": null,
+      "publishDate": "2024-11-21",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-john-simm-old-vic-w2wtzgpqq",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34856,7 +34870,7 @@
     {
       "showId": "inside-no-9-stage-fright-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 84,
+      "score": 85,
       "publishDate": "2025-01-29",
       "url": "https://www.ft.com/content/a41d94a6-9dff-44ce-9cfe-9b49356abe26",
       "findings": [
@@ -43340,7 +43354,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 35,
+      "score": 36,
       "publishDate": "2024-04-04",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13267321/Successions-Brian-Cox-stars-American-stage-epic-three-half-hours-feel-like-cheerless-misery-ultra-marathon-writes-PATRICK-MARMION.html",
       "findings": [
@@ -75162,7 +75176,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2024-02-08",
       "url": "https://www.thetimes.co.uk/article/the-hills-of-california-theatre-review-jez-butterworths-new-play-falters-at-the-end-p9qhvmhxw",
       "findings": [
@@ -75176,7 +75190,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2024-02-11",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/jez-butterworths-the-hills-of-california-metoo-in-blackpool-nxtk9kwmd",
       "findings": [
@@ -113544,7 +113558,7 @@
     {
       "showId": "high-society-off-west-end-2026",
       "file": "firstnightmagazine--guillermo-nazara.json",
-      "score": 76,
+      "score": 81,
       "publishDate": "2026-06-06",
       "url": "https://firstnightmagazine.com/2026/06/06/review-of-high-society-2026-barbican-flimsy-narrative-rides-high-on-spectacle-and-thats-alright-with-me/",
       "findings": [
@@ -113600,7 +113614,7 @@
     {
       "showId": "high-society-off-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
-      "score": 87,
+      "score": 89,
       "publishDate": "June 4th, 2026",
       "url": "https://www.londontheatre.co.uk/theatre-news/news/get-to-know-the-swellegant-cast-of-high-society-at-the-barbican",
       "findings": [
@@ -113725,7 +113739,7 @@
     {
       "showId": "high-society-off-west-end-2026",
       "file": "thestage--neil-norman.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "June 4th, 2026",
       "url": "https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london",
       "findings": [
@@ -113753,7 +113767,7 @@
     {
       "showId": "high-society-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 77,
+      "score": 72,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/high-society-review-join-the-swell-party-for-this-cole-porter-revival-wtpdr659h",
       "findings": [
@@ -115591,7 +115605,7 @@
     {
       "showId": "infinite-life-west-end-2023",
       "file": "londontheatre1--ben-ross.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2023-12-01",
       "url": "https://www.londontheatre1.com/reviews/infinite-life-a-new-play-by-annie-baker-review/",
       "findings": [
@@ -115885,7 +115899,7 @@
     {
       "showId": "inside-no-9-stage-fright-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 87,
+      "score": 86,
       "publishDate": "2025-02-02",
       "url": "https://www.thetimes.com/article/2c276444-8abe-4461-97b8-803306fd7e50",
       "findings": [
@@ -116699,7 +116713,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-07-08",
       "url": "https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review-febrile-classic-captures-burning-energy-original",
       "findings": [
@@ -116858,7 +116872,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-07-08",
       "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
       "findings": [
@@ -123876,7 +123890,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 36,
+      "score": 35,
       "publishDate": "2025-04-30",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/my-master-builder-review-ewan-mcgregor-cant-save-a-dodgy-ibsen-revamp-cj93ngnsg",
       "findings": [
@@ -125982,7 +125996,7 @@
     {
       "showId": "oklahoma-west-end-2023",
       "file": "times-uk--clive-davis.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "March 1st, 2023",
       "url": "https://www.thetimes.co.uk/article/oklahoma-theatre-review-wyndham-hm7p5kjth",
       "findings": [
@@ -129729,7 +129743,7 @@
     {
       "showId": "pygmalion-west-end-2023",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "2023-09-20",
       "url": "https://www.thetimes.co.uk/article/pygmalion-review-overacting-drowns-out-the-sting-of-shaw-s-comedy-lvcdnkq3f",
       "findings": [
@@ -134843,7 +134857,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "October 13th, 2023",
       "url": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
       "findings": [
@@ -135081,7 +135095,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2023-02-15",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-11761329/A-Shadow-Cabinet-minister-ruined-lust-tragedy-PATRICK-MARMION-reviews-Phaedra.html",
       "findings": [
@@ -135123,7 +135137,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "observer--susannah-clapp.json",
-      "score": 67,
+      "score": 69,
       "publishDate": "2023-02-15",
       "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
       "findings": [
@@ -135137,7 +135151,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "times-uk--clive-davis.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2023-02-15",
       "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
       "findings": [
@@ -137838,7 +137852,7 @@
     {
       "showId": "the-confessions-west-end-2023",
       "file": "west-end-best-friend--erifyli-gigante.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "October 24th, 2023",
       "url": "https://www.westendbestfriend.co.uk/news/review-the-confessions-national-theatre",
       "findings": [
@@ -138047,7 +138061,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "sunday-times--quentin-letts.json",
-      "score": 40,
+      "score": 41,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
       "findings": [
