@@ -912,8 +912,12 @@ flush() {
   # again (bsc-runner.js takes its lease independently of this GC). Re-check
   # the lease and the branch tip right before removing, as the retire path does.
   if [ "$rebase_landed" = "1" ]; then
-    gc_probe 10 node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
-    if [ "$?" != "1" ] || [ "$head_sha" != "$(gc_probe 10 git rev-parse "$branch")" ]; then
+    local lease_rc=0
+    if [ -f "$SCRIPT_DIR/lib/worktree-live-lease-check.js" ]; then
+      gc_probe 10 node "$SCRIPT_DIR/lib/worktree-live-lease-check.js" --path="$path" >/dev/null 2>&1
+      lease_rc=$?
+    fi
+    if [ "$lease_rc" != "1" ] || [ "$head_sha" != "$(gc_probe 10 git rev-parse "$branch")" ]; then
       log "SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — $branch rebase-landed but a job resumed or moved the branch since the check; not removing"
       skipped=$((skipped+1)); path="" branch=""; return
     fi

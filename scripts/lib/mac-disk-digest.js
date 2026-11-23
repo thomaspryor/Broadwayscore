@@ -45,8 +45,9 @@ function listWorktrees(repo) {
 }
 
 /** I/O. `repos` = main checkouts whose worktrees count. Never throws. */
-function collectMacDisk({ repos, home = os.homedir(), duTimeoutMs = 120000 } = {}) {
+function collectMacDisk({ repos = [], home = os.homedir(), duTimeoutMs = 120000 } = {}) {
   let freeGb = null;
+  if (!repos.length) return { freeGb, worktrees: { total: 0, job: 0 }, sizes: null };
   try {
     const df = execFileSync('df', ['-Pk', repos[0]], { encoding: 'utf8', timeout: 10000 });
     const avail = Number(df.trim().split('\n')[1].split(/\s+/)[3]);

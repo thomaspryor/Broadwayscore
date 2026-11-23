@@ -18,8 +18,9 @@
  *   - an empty directory,
  *   - a regenerable build/cache/audit-churn path (DISPOSABLE_PATTERNS),
  *   - a setup-local-data.sh plain copy (SETUP_COPIED_DATA_FILES) that is either
- *     byte-identical to the main checkout or untouched since the worktree was
- *     bootstrapped (mtime within SETUP_WINDOW_MS of the worktree's creation),
+ *     byte-identical to the main checkout or untouched since setup wrote it
+ *     (mtime no later than setup's own last symlink, .env / data/shows.json,
+ *     plus SETUP_SLACK_MS; setup writes the copies before those symlinks),
  *     reported back by name so the GC log records what was discarded. A copy a
  *     session edited later (e.g. append-season-payback-history.ts) keeps it,
  *   - a regular file byte-identical to the same path in the main checkout.
@@ -91,8 +92,10 @@ function decideIgnoredInputs(items) {
   return { safe: true, blocker: null, discardedCopies };
 }
 
-// setup-local-data.sh runs within minutes of `git worktree add`.
-const SETUP_WINDOW_MS = 10 * 60 * 1000;
+// Symlinks setup-local-data.sh creates (and nothing edits). Their lstat mtime
+// is when setup finished; the plain copies are written before them.
+const SETUP_SYMLINK_MARKERS = ['.env', '.env.local', 'data/shows.json', 'data/reviews.json'];
+const SETUP_SLACK_MS = 5000;
 
 function sameBytes(a, b) {
   try {
@@ -105,9 +108,13 @@ function sameBytes(a, b) {
 
 /** I/O: gather facts for each ignored entry of worktree `wt`. */
 function gatherIgnoredInputs(wt, mainCheckout) {
-  // A linked worktree's .git FILE is written once, by `git worktree add`.
-  let createdMs = null;
-  try { const g = fs.lstatSync(path.join(wt, '.git')); if (g.isFile()) createdMs = g.mtimeMs; } catch { /* unknown */ }
+  let setupDoneMs = null;
+  for (const rel of SETUP_SYMLINK_MARKERS) {
+    try {
+      const l = fs.lstatSync(path.join(wt, rel));
+      if (l.isSymbolicLink() && (setupDoneMs === null || l.mtimeMs > setupDoneMs)) setupDoneMs = l.mtimeMs;
+    } catch { /* absent */ }
+  }
   const out = execFileSync('git', ['--no-optional-locks', '-C', wt, 'ls-files', '--others', '--ignored', '--exclude-standard', '--directory', '-z'],
     { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 });
   return out.split('\0').filter(Boolean).map((entry) => {
@@ -122,8 +129,8 @@ function gatherIgnoredInputs(wt, mainCheckout) {
     } else if (st.isFile() && mainCheckout) {
       facts.identicalToMain = sameBytes(abs, path.join(mainCheckout, entry));
     }
-    if (st.isFile() && createdMs !== null) {
-      facts.untouchedSinceSetup = st.mtimeMs <= createdMs + SETUP_WINDOW_MS;
+    if (st.isFile() && setupDoneMs !== null) {
+      facts.untouchedSinceSetup = st.mtimeMs <= setupDoneMs + SETUP_SLACK_MS;
     }
     return { entry, facts };
   });
