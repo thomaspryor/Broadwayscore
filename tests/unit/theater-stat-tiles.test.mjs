@@ -122,3 +122,24 @@ for (const p of pages) {
     assert.doesNotMatch(src, /scoredShows\s*=/, 'compute the average via getTheaterAvgScore, not inline');
   });
 }
+
+// Index pages (venue lists) must use the same helper, so the average is computed in one place.
+function findTheaterIndexPages(dir, out = []) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) findTheaterIndexPages(p, out);
+    else if (e.name === 'page.tsx' && /[\\/]theater[\\/]page\.tsx$/.test(p)) out.push(p);
+  }
+  return out;
+}
+const indexPages = findTheaterIndexPages(path.join(root, 'src', 'app'));
+test('finds the theater index pages', () => {
+  assert.ok(indexPages.length >= 3, `expected >= 3 theater index pages, found ${indexPages.length}`);
+});
+for (const p of indexPages) {
+  test(`${path.relative(root, p)} computes avgScore via getTheaterAvgScore`, () => {
+    const src = fs.readFileSync(p, 'utf8');
+    assert.match(src, /getTheaterAvgScore\(t\.allShows\)/);
+    assert.doesNotMatch(src, /scoredShows\s*=/);
+  });
+}
