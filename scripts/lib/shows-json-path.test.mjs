@@ -163,3 +163,10 @@ test('excerpt-validation reads a bare-array shows fixture too (readShowsList), n
 test('the old useShowsFixture home fails loudly and names the new module (BRO-8107)', () => {
   assert.throws(() => require('./shows-json-path.js').useShowsFixture([]), /moved to scripts\/lib\/shows-json-fixture\.js/);
 });
+
+test('no message string spells a placeholder require(...) that static require-graph scanners would follow (BRO-8107)', () => {
+  for (const rel of ['scripts/lib/shows-json-path.js', 'scripts/lib/shows-json-fixture.js', 'scripts/live-data-lane.js', 'scripts/lib/land-preflight.mjs']) {
+    const src = fs.readFileSync(path.join(HERE, '..', '..', rel), 'utf8');
+    assert.doesNotMatch(src, /require\(\s*['"]<[^'"]*['"]\s*\)/, `${rel} spells a fake require edge`);
+  }
+});

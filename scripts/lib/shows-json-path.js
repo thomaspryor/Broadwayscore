@@ -39,7 +39,7 @@ function readShowsList(p = showsJsonPath()) {
 
 /** Moved (BRO-8107): a clear failure for callers written against the old home. */
 function useShowsFixture() {
-  throw new Error("useShowsFixture moved to scripts/lib/shows-json-fixture.js (BRO-8107): require('<rel>/scripts/lib/shows-json-fixture.js').useShowsFixture([...shows])");
+  throw new Error('useShowsFixture moved to scripts/lib/shows-json-fixture.js (BRO-8107): call useShowsFixture([...shows]) from that module instead');
 }
 
 module.exports = { showsJsonPath, readShowsList, useShowsFixture, REPO_SHOWS_PATH };
