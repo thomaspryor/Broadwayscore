@@ -209,3 +209,38 @@ test('BRO-7145 review: driver commits stay first-pass-miss evidence (text-gap / 
   assert.deepEqual(og.firstPassMisses([{ ...mod, category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'text-gap']]);
   assert.deepEqual(og.firstPassMisses([{ ...run(mk(true)), category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'discovery-gap']]);
 });
+
+test('BRO-7145: a hand ingest that only re-adds an outlet already live (false alarm) is not hands; a real missed review still is', () => {
+  // Desire Under the Elms 2026-11-19: Guardian live from the listing poller at 19:13 the day
+  // before; a probe-driven ingest-urls dispatch added a stub that was later deleted.
+  const ingest = (name) => ({ sha: 'ffff333344', at: iso(embargo + 40 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [`${show.id}/${name}`], added: [`${show.id}/${name}`] });
+  const run = (fs, c) => og.gradeOpening({ show, files: fs, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const live = { ...good(1), _file: `${show.id}/guardian--arifa-akbar.json`, outletId: 'guardian', firstSeenAt: iso(embargo + 20 * 3600000) };
+  // added file since deleted: redundant
+  const gone = run([...files, live], ingest('guardian--unknown.json'));
+  assert.notEqual(gone.verdict, 'needed-hands');
+  assert.equal(gone.redundantHands.length, 1);
+  assert.equal(gone.redundantHands[0].cause, 'false-alarm');
+  // added file kept as a duplicate of the live one: redundant
+  const dup = { ...good(2), _file: `${show.id}/guardian--unknown.json`, outletId: 'guardian', duplicateOf: 'guardian--arifa-akbar.json', firstSeenAt: iso(embargo + 40 * 3600000) };
+  assert.notEqual(run([...files, live, dup], ingest('guardian--unknown.json')).verdict, 'needed-hands');
+  // the ingest added a live, non-duplicate review (a second critic): real hands
+  const second = { ...good(3), _file: `${show.id}/guardian--other.json`, outletId: 'guardian', firstSeenAt: iso(embargo + 40 * 3600000) };
+  assert.equal(run([...files, live, second], ingest('guardian--other.json')).verdict, 'needed-hands');
+  // the outlet's earlier file arrived AFTER the ingest: the ingest was the find, real hands
+  const later = { ...live, firstSeenAt: iso(embargo + 50 * 3600000) };
+  assert.equal(run([...files, later], ingest('guardian--unknown.json')).verdict, 'needed-hands');
+  // no earlier file for the outlet: real hands
+  assert.equal(run(files, ingest('guardian--unknown.json')).verdict, 'needed-hands');
+});
+
+test('BRO-7145 review: the ingest run\'s own file (first seen minutes before its commit, then renamed) is not an earlier live review', () => {
+  const ingest = { sha: 'ffff555566', at: iso(embargo + 40 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [`${show.id}/whatsonstage--unknown.json`], added: [`${show.id}/whatsonstage--unknown.json`] };
+  const run = (fs) => og.gradeOpening({ show, files: fs, commits: [ingest], gapResult, missingCited: 0, nowMs: closed });
+  const renamed = { ...good(4), _file: `${show.id}/whatsonstage--sarah-crompton.json`, outletId: 'whatsonstage', firstSeenAt: iso(embargo + 40 * 3600000 - 46000) };
+  assert.equal(run([...files, renamed]).verdict, 'needed-hands');
+  const handMade = { ...renamed, firstSeenAt: iso(embargo + 20 * 3600000), source: 'ingest-urls' };
+  assert.equal(run([...files, handMade]).verdict, 'needed-hands');
+});

@@ -152,6 +152,7 @@ const CAUSE_LABEL = {
   attribution: 'critic or outlet attribution',
   'scoring-by-hand': 'score set by hand',
   'content-tier': 'content tier or non-review flag',
+  'false-alarm': 'hand ingest of a review already live',
   other: 'other fix',
 };
 const CAUSE_BY_FIELD = {
@@ -170,6 +171,8 @@ function causeOfFields(fields) {
 }
 
 const FIRST_PASS_CAUSES = new Set(['discovery-gap', 'text-gap']);
+// BRO-7145: how long before a hand ingest the outlet's own file must have been live for the ingest to be redundant.
+const REDUNDANT_MARGIN_H = 2;
 // Automated second-pass ingests (bot-authored, never hand work).
 const SWEEP_FIND_SUBJECT = /^ingest: /i;
 // A sweep find before the embargo, or in the first hours while the
@@ -381,6 +384,37 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
       sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: 'discovery-gap', fileChange: 'added', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
     }
   }
+  // BRO-7145: a hand ingest that only re-adds an outlet the pipeline already had
+  // live is a false alarm answered by hand, not a review the opening missed
+  // (Desire Under the Elms 2026-11-19: the coverage probe listed a dead Guardian
+  // URL, a worker ingested it, while Arifa Akbar's review had been live since the
+  // listing poller filed it the evening before). It stays visible as
+  // redundantHands, outside the verdict.
+  const redundantHands = [];
+  if ((files || []).length) {
+    for (let i = signals.length - 1; i >= 0; i--) {
+      const s = signals[i];
+      if (!COMMIT_SIGNAL_KINDS.has(s.kind) || s.fileChange !== 'added' || !s.outletId) continue;
+      const c = bySha.get(String(s.source || '').split(' ')[0]);
+      if (!c || !Array.isArray(c.added)) continue;
+      const addedPaths = c.added.filter((p) => p.startsWith(`${show.id}/`) && outletIdFromFile(p, show.id) === s.outletId);
+      if (!addedPaths.length) continue;
+      const at = toMs(s.at);
+      const addedFiles = files.filter((f) => addedPaths.includes(f._file));
+      // Every file it added is gone or is a duplicate of another file now.
+      if (addedFiles.some((f) => !f.duplicateOf)) continue;
+      // The earlier file must be the pipeline's own and predate the ingest by a
+      // margin: an ingest run writes firstSeenAt minutes before its commit, and a
+      // later rename leaves the hand's own file outside addedPaths (Thelma & Louise
+      // 2026-09-17: whatsonstage first seen 46 s before the ingest-urls commit).
+      const earlier = files.some((f) => !addedPaths.includes(f._file) && outletOfFile(f) === s.outletId
+        && !f.duplicateOf && f.ingestOrigin !== 'manual' && f.source !== 'ingest-urls'
+        && toMs(f.firstSeenAt) != null && toMs(f.firstSeenAt) < at - REDUNDANT_MARGIN_H * HOUR && isLiveFile(f, show, rtDir));
+      if (!earlier) continue;
+      redundantHands.unshift({ ...s, cause: 'false-alarm' });
+      signals.splice(i, 1);
+    }
+  }
   const hard = signals.filter((s) => s.kind !== 'ingest-dispatch');
   let verdict;
   if (signals.length) verdict = 'needed-hands';
@@ -416,6 +450,7 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
     onlyIngestDispatches: verdict === 'needed-hands' && hard.length === 0,
     signals,
     ...(sweepFinds.length ? { sweepFinds } : {}),
+    ...(redundantHands.length ? { redundantHands } : {}),
     historyCovers,
     // BRO-7166: usual critics (standing set) with no review yet; never moves the verdict.
     expectedMissing: Array.isArray(expectedMissing) && expectedMissing.length ? expectedMissing : null,
