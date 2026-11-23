@@ -135,7 +135,8 @@ function hasListingOrReviewUrlEvidence(fileData) {
     || (typeof fileData.dtliThumb === 'string' && fileData.dtliThumb.trim().length > 0);
   if (listed) return true;
   let path;
-  try { path = new URL(fileData.url).pathname; } catch { path = String(fileData.url || ''); }
+  try { path = new URL(fileData.url).pathname; } catch { path = ''; }
+  if (/roundup|reviews-/i.test(path)) return false;
   return /(^|[\/_-])reviews?([\/_.-]|$)/i.test(path);
 }
 

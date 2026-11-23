@@ -50,3 +50,9 @@ test('sweep predicate: leaves human verdicts, real bodies, other rejecters, dupe
   assert.equal(isThinTextNotAReview(red({ duplicateOf: 'a.json' })), false);
   assert.equal(isThinTextNotAReview(red({ rejectionReason: 'wrong_show' })), false);
 });
+
+test('url evidence: roundup urls and unparseable urls do not count as a review page', () => {
+  const f = (url) => guard({ rejection: 'not_a_review', fileData: red({ dtliExcerpt: null, url }) }).suppress;
+  assert.equal(f('https://x.com/red-review-roundup'), false);
+  assert.equal(f('not a url /review'), false);
+});

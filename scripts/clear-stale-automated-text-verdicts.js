@@ -160,11 +160,13 @@ function main() {
   const now = new Date().toISOString();
   const rows = matches.map((m) => processRecord(m, now));
   const requeued = rows.filter((r) => r.changed).length;
+  // Thin-teaser clears are capped by THIN_PER_RUN already; counting them would trip the surge guard on an ordinary day.
+  const surgeCount = rows.filter((r) => r.changed && !r.kinds.includes('thinTextNotAReview')).length;
   const parked = rows.filter((r) => r.parkedScore).length;
 
   // Surge guard counts files this run would WRITE — the untouched
   // other-blocker residue matches every day and must not eat the budget.
-  if (opts.apply && shouldRefuseSurge(requeued, SURGE_THRESHOLD, opts.forceBulk)) {
+  if (opts.apply && shouldRefuseSurge(surgeCount, SURGE_THRESHOLD, opts.forceBulk)) {
     console.error(`::error::Refusing to clear ${requeued} stale automated text verdicts (> ${SURGE_THRESHOLD}). A batch this large usually means the predicate or a writer regressed — re-run with --force-bulk if this is a legitimate backlog cleanup.`);
     process.exit(1);
   }
