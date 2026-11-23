@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-23T20:46:35.174Z",
+  "timestamp": "2026-11-23T21:06:30.902Z",
   "stats": {
-    "totalReviews": 84427,
+    "totalReviews": 84428,
     "alreadyFlagged": 22522,
     "dateGuardCatches": 242,
     "directorMismatch": 3887,
     "tvFilmSignals": 2423,
-    "londonSignals": 3988,
+    "londonSignals": 3989,
     "offBroadwaySignals": 788,
     "yearMismatch": 394,
     "noPublishDate": 8270
@@ -135787,6 +135787,19 @@
       "file": "theatremonkey--unknown.json",
       "publishDate": null,
       "url": "https://www.theatremonkey.com/show/the-afronauts/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-11-23",
+      "url": "https://www.timeout.com/london/theatre/the-afronauts",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
