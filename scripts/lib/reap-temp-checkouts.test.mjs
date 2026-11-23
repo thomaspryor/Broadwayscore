@@ -152,3 +152,68 @@ test('BRO-8124: lsof parse skips the cleaning process itself; check-run dirt is 
   for (const l of [' M data/audit/stage-latency.jsonl', ' D LICENSE', 'D  b.txt', '?? .bro-3151-test-kkNL7v/hamilton-2015/x.json', '?? scripts/__pycache__/a.pyc']) assert.equal(isCheckRunDirt(l), true, l);
   for (const l of [' M scripts/lib/foo.js', '?? notes.md', 'R  a -> b', ' M data/shows.json', '?? "weird name"']) assert.equal(isCheckRunDirt(l), false, l);
 });
+
+// ── BRO-8179: generic stale /private/tmp reaper (reap-stale-tmp.js) ──
+const S = require('./reap-stale-tmp.js');
+const DAY_MS = 24 * 3600 * 1000;
+
+function ageTree(p, ms) {
+  const t = (Date.now() - ms) / 1000;
+  const st = fs.lstatSync(p);
+  if (st.isDirectory()) for (const n of fs.readdirSync(p)) ageTree(path.join(p, n), ms);
+  fs.utimesSync(p, t, t);
+}
+
+test('BRO-8179 stale tmp: old idle dir removed; open-file dir, claude-*, young dir, dotfile, symlink, inner-recent dir kept', async () => {
+  const r = root();
+  const mk = (name, ageMs) => { const d = path.join(r, name); fs.mkdirSync(path.join(d, 'sub'), { recursive: true }); fs.writeFileSync(path.join(d, 'sub', 'f.txt'), 'x'); ageTree(d, ageMs); return d; };
+  const idle = mk('orj-abc123', 2 * DAY_MS);
+  const held = mk('merge-test-gate-held', 2 * DAY_MS);
+  const claude = mk('claude-501', 2 * DAY_MS);
+  const young = mk('bro-young', 60 * 1000);
+  const dot = mk('.X11-unix-fake', 2 * DAY_MS);
+  const innerRecent = mk('bromain', 2 * DAY_MS);
+  fs.writeFileSync(path.join(innerRecent, 'sub', 'fresh.txt'), 'y');
+  fs.utimesSync(innerRecent, (Date.now() - 2 * DAY_MS) / 1000, (Date.now() - 2 * DAY_MS) / 1000);
+  const oldFile = path.join(r, 'verify-edits-chain-123');
+  fs.writeFileSync(oldFile, 'z'); ageTree(oldFile, 2 * DAY_MS);
+  const link = path.join(r, 'old-link');
+  fs.symlinkSync(idle, link);
+  // A real process holding a file open under `held`.
+  const holder = spawn('tail', ['-f', path.join(held, 'sub', 'f.txt')], { stdio: 'ignore' });
+  try {
+    await new Promise((res) => setTimeout(res, 400));
+    const s = S.reapStaleTmp({ root: r, measure: false });
+    assert.equal(s.skipped, undefined, JSON.stringify(s));
+    assert.equal(fs.existsSync(idle), false, 'old idle dir removed');
+    assert.equal(fs.existsSync(oldFile), false, 'old idle file removed');
+    assert.equal(fs.existsSync(held), true, 'old dir with an open file kept');
+    assert.equal(fs.existsSync(claude), true, 'claude-* kept');
+    assert.equal(fs.existsSync(young), true, 'young dir kept');
+    assert.equal(fs.existsSync(dot), true, 'dotfile kept');
+    assert.equal(fs.existsSync(innerRecent), true, 'dir with a recent file inside kept');
+    assert.equal(fs.lstatSync(link).isSymbolicLink(), true, 'symlink kept');
+    assert.equal(s.removed, 2);
+  } finally { holder.kill(); }
+});
+
+test('BRO-8179 stale tmp: lsof failure keeps everything; dry-run deletes nothing', () => {
+  const r = root();
+  const d = path.join(r, 'img-coverage-x'); fs.mkdirSync(d); ageTree(d, 3 * DAY_MS);
+  const s1 = S.reapStaleTmp({ root: r, snapshotFn: () => null, measure: false });
+  assert.equal(s1.skipped, 'lsof failed');
+  assert.equal(fs.existsSync(d), true);
+  const s2 = S.reapStaleTmp({ root: r, dryRun: true, snapshotFn: () => [], measure: false });
+  assert.equal(s2.removed, 1);
+  assert.equal(fs.existsSync(d), true, 'dry run keeps it');
+  // A process opening it between scan and delete keeps it (fresh lsof).
+  let calls = 0;
+  const s3 = S.reapStaleTmp({ root: r, snapshotFn: () => (++calls === 1 ? [] : [path.join(r, 'img-coverage-x', 'f')]), measure: false });
+  assert.equal(s3.removed, 0);
+  assert.equal(fs.existsSync(d), true);
+});
+
+test('BRO-8179 stale tmp: protected names', () => {
+  for (const n of ['claude-501', '.X11-unix', 'com.apple.launchd.x', 'tmux-501', 'acceptance-check-abc123']) assert.equal(S.isProtectedName(n), true, n);
+  for (const n of ['orj-abc', 'bro-sb', 'merge-test-gate-x', 'verify-edits-chain-1']) assert.equal(S.isProtectedName(n), false, n);
+});
