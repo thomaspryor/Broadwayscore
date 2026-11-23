@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+// venue-write-guard-ok: addressConflicts is an audit report (data/audit), never written to shows.json venue fields.
 /**
  * research-venue-details.js — verified venue facts for Off-Broadway and London venue pages (BRO-8088).
  *

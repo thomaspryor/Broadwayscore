@@ -64,10 +64,12 @@ function getGoogleMapsUrl(address: string): string {
  * page (Brooks Atkinson) uses its current building's photo (BRO-8088); demolished houses
  * (Morosco, Bijou) have none, and a missing file used to render a broken image.
  */
-function getTheaterImageUrl(slug: string, theater: Pick<Theater, 'images' | 'nowKnownAs'>): string | null {
-  // Photos exist for exactly the curated houses (theater-metadata.json images.exterior).
-  const photoSlug = theater.nowKnownAs?.slug ?? (theater.images?.exterior ? slug : null);
-  return photoSlug ? versionedImagePath(`/images/theaters/${photoSlug}.jpg`) : null;
+function getTheaterImageUrl(pageSlug: string, theater: Pick<Theater, 'images' | 'nowKnownAs'>): string | null {
+  // Photos exist for exactly the curated houses (theater-metadata.json images.exterior);
+  // a renamed house's old-name page shows the current building's photo.
+  const slug = theater.nowKnownAs?.slug ?? (theater.images?.exterior ? pageSlug : null);
+  if (!slug) return null;
+  return versionedImagePath(`/images/theaters/${slug}.jpg`);
 }
 
 export default async function TheaterPage(props: { params: Promise<{ slug: string }> }) {
