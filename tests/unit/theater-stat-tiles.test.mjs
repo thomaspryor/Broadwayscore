@@ -14,6 +14,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -41,11 +42,52 @@ for (const p of pages) {
   });
 }
 
-test('StatGrid pins labels on top, centers the value block, supports badge slot and columns', () => {
-  const grid = fs.readFileSync(path.join(root, 'src/components/show-cards/StatGrid.tsx'), 'utf8');
-  assert.match(grid, /card [^"]*flex flex-col/);
-  assert.match(grid, /flex-1 flex flex-col items-center justify-center/);
-  assert.match(grid, /node\?: ReactNode/);
-  assert.match(grid, /stat\.node/);
-  assert.match(grid, /columns/);
+// Render the real component (no copied logic): transpile StatGrid.tsx and call it.
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
+function loadStatGrid() {
+  const src = fs.readFileSync(path.join(root, 'src/components/show-cards/StatGrid.tsx'), 'utf8');
+  const out = ts.transpileModule(src, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, target: ts.ScriptTarget.ES2020 } }).outputText;
+  const mod = { exports: {} };
+  new Function('require', 'exports', 'module', 'React', out)(require, mod.exports, mod, React);
+  return mod.exports.StatGrid;
+}
+const StatGrid = loadStatGrid();
+const html = props => renderToStaticMarkup(React.createElement(StatGrid, props));
+const badge = React.createElement('span', { className: 'BADGE' }, '72');
+
+test('a row with a badge node: labels on top, value block centered, subtitle can truncate', () => {
+  const out = html({
+    columns: 2,
+    stats: [
+      { label: 'Past Shows', value: 20, subtitle: 'a very long subtitle that must truncate' },
+      { label: 'Avg Score', value: 72, node: badge },
+    ],
+  });
+  assert.equal((out.match(/class="card [^"]*flex flex-col items-center"/g) || []).length, 2);
+  assert.equal((out.match(/flex-1 w-full min-w-0 flex flex-col items-center justify-center/g) || []).length, 2);
+  assert.match(out, /BADGE/);
+  assert.match(out, /truncate [^"]*w-full/);
+  assert.ok(out.indexOf('Past Shows') < out.indexOf('>20<'), 'label comes before value');
+});
+
+test('a row with no node renders exactly as before (cast, critic, creative, biz pages)', () => {
+  const out = html({
+    stats: [
+      { label: 'Highest', value: 91, subtitle: 'a very long subtitle that must truncate', subValue: '2nd' },
+      { label: 'Lowest', value: 40 },
+    ],
+  });
+  assert.doesNotMatch(out, /flex-col/);
+  assert.doesNotMatch(out, /justify-center/);
+  assert.doesNotMatch(out, /truncate [^"]*w-full/);
+  assert.match(out, /class="card p-2\.5 sm:p-4 text-center"/);
+});
+
+test('columns prop maps to literal Tailwind classes', () => {
+  assert.match(html({ columns: 2, stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-2 /);
+  assert.match(html({ columns: 3, stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-3 /);
+  assert.match(html({ stats: [{ label: 'a', value: 1 }] }), /grid grid-cols-2 sm:grid-cols-4 /);
 });

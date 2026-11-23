@@ -20,15 +20,17 @@ const COLUMNS = {
 } as const;
 
 export function StatGrid({ stats, className, columns = 4 }: { stats: Stat[]; className?: string; columns?: 2 | 3 | 4 }) {
+  // A tile holding a node (a 68px ScoreBadge on desktop) stretches every tile in its row.
+  // Only then do labels pin to the top and the value block center in the space below, so a
+  // plain number never floats at the top of an empty box. Rows with no node render exactly
+  // as they always did (cast, critic, creative and biz pages).
+  const stretched = stats.some(stat => stat.node);
   return (
     <div className={`grid ${COLUMNS[columns]} gap-2 sm:gap-3${className ? ` ${className}` : ''}`}>
       {stats.map(stat => (
-        // Tiles in a row stretch to the tallest one (a 68px ScoreBadge). Labels stay
-        // aligned at the top; the value block is centered in the space below, so a
-        // plain number never floats at the top of an empty box.
-        <div key={stat.label} className="card p-2.5 sm:p-4 text-center flex flex-col items-center">
+        <div key={stat.label} className={`card p-2.5 sm:p-4 text-center${stretched ? ' flex flex-col items-center' : ''}`}>
           <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1 sm:mb-2">{stat.label}</p>
-          <div className="flex-1 flex flex-col items-center justify-center">
+          <div className={stretched ? 'flex-1 w-full min-w-0 flex flex-col items-center justify-center' : undefined}>
           {stat.node ?? (
             <p
               className={`text-xl sm:text-2xl font-bold ${stat.dimmed ? 'text-fg-muted' : 'text-white'}`}
@@ -46,7 +48,7 @@ export function StatGrid({ stats, className, columns = 4 }: { stats: Stat[]; cla
             </p>
           )}
           {stat.subtitle && (
-            <p className="text-[10px] text-fg-muted truncate mt-0.5 sm:mt-1">{stat.subtitle}</p>
+            <p className={`text-[10px] text-fg-muted truncate mt-0.5 sm:mt-1${stretched ? ' w-full' : ''}`}>{stat.subtitle}</p>
           )}
           </div>
         </div>
