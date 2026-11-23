@@ -1,19 +1,65 @@
 {
-  "updatedAt": "2026-11-23T01:51:23.507Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-23T02:02:49.599Z",
+  "processed": 57,
+  "failed": 124,
+  "successRate": "31.5%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 4,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 20
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-11-23T00:07:05.783Z",
+      "event": "bb-session",
+      "session": "12f943dd",
+      "url": "https://deadline.com/2024/03/godzilla-x-kong-the-new-empire-review-the-titans-of"
+    },
+    {
+      "t": "2026-11-23T00:14:46.096Z",
+      "event": "bb-session",
+      "session": "844eeb60",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655598"
+    },
+    {
+      "t": "2026-11-23T00:14:46.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-23T00:22:17.889Z",
+      "event": "bb-session",
+      "session": "6e39d93b",
+      "url": "https://www.nytimes.com/2024/04/20/theater/peter-morgan-patriots-the-crown.html"
+    },
+    {
+      "t": "2026-11-23T00:22:18.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T00:23:50.919Z",
+      "event": "bb-session",
+      "session": "ef0f017a",
+      "url": "https://www.nytimes.com/2023/11/13/theater/jajas-african-hair-braiding-black-wom"
+    },
+    {
+      "t": "2026-11-23T00:23:51.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T00:30:33.644Z",
+      "event": "bb-session",
+      "session": "d90c94ce",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/bad-cinderella-to-close-on-broa"
+    }
+  ]
 }
