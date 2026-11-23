@@ -12,7 +12,8 @@
 //   2. A synthetic fixture shaped like pending-intake.js, traced with the
 //      config's own excludes, does not drag those trees in (fails if an
 //      exclude is dropped or stops matching).
-//   3. When the real trees exist, the real detect-route graph stays small.
+//   3. (real detect-route size budget: trace-excludes-data-dirs-live-data.test.mjs,
+//      which reads the private core data and so runs in the live-data lane.)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -23,8 +24,17 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const config = require(join(ROOT, 'next.config.js'));
-const excludes = (config.outputFileTracingExcludes || {})['**/*'] || [];
+// Read the excludes from next.config.js as text. Loading the config would run
+// its prebuild side effect (writeSiteImageVersions reads untracked data/), which
+// would make this blocking test depend on live data (BRO-7101 live-data lane).
+function readExcludes() {
+  const text = readFileSync(join(ROOT, 'next.config.js'), 'utf8');
+  const m = text.match(/outputFileTracingExcludes:\s*\{\s*'\*\*\/\*':\s*\[([\s\S]*?)\n\s*\],\s*\n\s*\},/);
+  assert.ok(m, 'could not find outputFileTracingExcludes["**/*"] in next.config.js');
+  return new Function(`return [${m[1]}];`)();
+}
+const excludes = readExcludes();
+assert.ok(excludes.length > 5, 'outputFileTracingExcludes parsed to fewer than 6 entries');
 
 const BIG_DATA_TREES = [
   'data/aggregator-archive/**',
@@ -93,36 +103,6 @@ test('a module that joins __dirname/../../data does not pull the big trees in', 
   }
 });
 
-test('real detect-route graph stays under the function size budget (when data is present)', async (t) => {
-  const nodeFileTrace = nft();
-  const entries = [
-    'scripts/lib/review-normalization.js',
-    'scripts/lib/byline-normalization.js',
-    'scripts/lib/critic-fill-rules.js',
-    'scripts/lib/review-write-guard.js',
-  ];
-  if (!nodeFileTrace || !entries.every(e => existsSync(join(ROOT, e)))) return t.skip('nft or entry modules missing');
-  // Without the private core data the trace measures almost nothing; say so
-  // instead of passing silently (checks 1, 2 and 4 still guard a bare checkout).
-  if (!existsSync(join(ROOT, 'data', 'reviews.json'))) return t.skip('private core data absent: size budget not measurable here');
-  const { fileList } = await nodeFileTrace(entries, {
-    base: ROOT,
-    processCwd: ROOT,
-    ignore: [...excludes, 'node_modules/**'],
-  });
-  let total = 0;
-  for (const f of fileList) {
-    try {
-      const st = statSync(join(ROOT, f));
-      if (st.isFile()) total += st.size;
-    } catch { /* file vanished or unreadable */ }
-  }
-  const mb = total / 1e6;
-  // Vercel's hard limit is 250MB uncompressed including node_modules; the
-  // repo-file part of this graph measured 138MB on 2026-11-23 after the fix.
-  assert.ok(mb < 200, `detect route traces ${mb.toFixed(0)}MB of repo files (budget 200MB); a data/ tree is leaking in`);
-});
-
 // Root-cause guard (works in a bare CI checkout, needs no data): follow the
 // relative require() graph from the detect route's entry modules and fail on
 // any module that names the data/ DIRECTORY itself (path.join(..., 'data') with
@@ -159,6 +139,9 @@ test('modules reachable from src/ server code never name the data/ directory', (
     if (dirOnly.test(src)) offenders.push(f.slice(ROOT.length + 1));
     for (const m of src.matchAll(/require\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g)) {
       const base = resolve(dirname(f), m[1]);
+      // Follow code only: a require() of a data/*.json table is a runtime read of
+      // a file we must not open here (this test stays independent of live data).
+      if (/\.json$/.test(base) || base.startsWith(join(ROOT, 'data'))) continue;
       const hit = [base, base + '.js', join(base, 'index.js')].find(p => existsSync(p) && statSync(p).isFile());
       if (hit) queue.push(hit);
     }
