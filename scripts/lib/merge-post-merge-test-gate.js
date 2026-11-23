@@ -243,6 +243,19 @@ function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
   return missing;
 }
 
+// TAP names of tests the run SKIPPED (`ok N - name # SKIP reason`). A
+// live-lane failure is only unjudged when the baseline skipped that very test
+// (no corpus there); a test the baseline actually ran was judged on equal
+// terms, so its NEW failure still blocks (review of BRO-8110).
+function skippedTestNames(tapOutput) {
+  const names = new Set();
+  for (const line of String(tapOutput || '').split('\n')) {
+    const m = /^\s*ok \d+ - (.+?)\s+#\s*SKIP\b/i.exec(line);
+    if (m) names.add(m[1]);
+  }
+  return names;
+}
+
 // Pure-ish (reads the test files' first lines): split NEW failures into those
 // the branch owns and those in LIVE-DATA-LANE files, which cannot be judged
 // when dataDiff is non-empty (see ignoredDataDirsMissingFrom). A live file the
@@ -250,12 +263,18 @@ function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
 // does a file isBridged() says read the SAME corpus in both runs (it honours
 // REVIEW_TEXTS_DIR, which runTestGate points the baseline run at): that one
 // was judged fairly, so a regression in it still blocks (Codex review).
-function splitLiveUnjudged(newFailures, cwd, dataDiff, baselineRoot, isLive = isDeclaredLiveFile, isBridged = () => false) {
+//
+// "Live" and "bridged" are read from the BASELINE copy, never the merged tree:
+// otherwise a branch could add a LIVE-DATA-LANE header to an existing test and
+// turn its own regression there into a warning (review of BRO-8110). And only
+// tests the baseline SKIPPED (baselineSkipped) can be unjudged.
+function splitLiveUnjudged(newFailures, cwd, dataDiff, baselineRoot, isLive = isDeclaredLiveFile, isBridged = () => false, baselineSkipped = new Set()) {
   if (!dataDiff || dataDiff.length === 0) return { blocking: newFailures, liveUnjudged: [] };
   const blocking = [];
   const liveUnjudged = [];
   for (const f of newFailures) {
-    const unjudged = Boolean(f && f.file && isLive(f.file, cwd) && !isBridged(f.file) && baselineRoot && fs.existsSync(path.join(baselineRoot, f.file)));
+    const unjudged = Boolean(f && f.file && baselineRoot && fs.existsSync(path.join(baselineRoot, f.file))
+      && baselineSkipped.has(f.name) && isLive(f.file, baselineRoot) && !isBridged(f.file));
     (unjudged ? liveUnjudged : blocking).push(f);
   }
   return { blocking, liveUnjudged };
@@ -926,12 +945,14 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     const baselineEnv = bridgeCorpus ? { REVIEW_TEXTS_DIR: safeRealpath(path.join(cwd, 'data', 'review-texts')) } : null;
     const isBridged = (rel) => {
       if (!bridgeCorpus && !(env && env.REVIEW_TEXTS_DIR)) return false;
-      try { return fs.readFileSync(path.join(cwd, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
+      try { return fs.readFileSync(path.join(baselineRoot, rel), 'utf8').includes('REVIEW_TEXTS_DIR'); } catch { return false; }
     };
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
+    let baselineSkipped = new Set();
     if (baselineTestFiles.length > 0) {
       const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs, baselineEnv);
+      baselineSkipped = skippedTestNames(baselineResult.stdout);
       const baselineParsed = parseTapOutput(`${baselineResult.stdout || ''}`, safeRealpath(baselineRoot));
       // Same fail-safe guard as the merged run above, mirrored for the
       // baseline: a baseline run that exited non-zero but parsed zero
@@ -952,7 +973,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     }
     const diffed = diffFailingSets(baselineFailures, mergedFailures);
     const { preExisting } = diffed;
-    const { blocking: newFailures, liveUnjudged } = splitLiveUnjudged(diffed.newFailures, cwd, dataDiff, baselineRoot, isDeclaredLiveFile, isBridged);
+    const { blocking: newFailures, liveUnjudged } = splitLiveUnjudged(diffed.newFailures, cwd, dataDiff, baselineRoot, isDeclaredLiveFile, isBridged, baselineSkipped);
     let combinedOutput = output;
     if (liveUnjudged.length > 0) {
       combinedOutput += `\n\n⚠ post-merge test floor: LIVE-DATA-LANE failures NOT judged here, NOT blocking — the merged tree sees ${dataDiff.join(', ')} and the origin/main baseline does not, so a new-vs-pre-existing call would compare different data (BRO-8110). check-corpus-drift.yml judges these; if one is real, file a card:\n${formatFailureList('  ', liveUnjudged)}`;
@@ -1063,6 +1084,7 @@ module.exports = {
   baselineCheckoutOptions,
   ignoredDataDirsMissingFrom,
   splitLiveUnjudged,
+  skippedTestNames,
 };
 
 if (require.main === module) {

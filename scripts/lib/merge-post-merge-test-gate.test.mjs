@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, TEST_GATE_LOCAL_MIN_TIMEOUT_MS, TEST_GATE_CI_TIMEOUT_MS, testChildEnv, floorSummaryLine, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, TEST_GATE_LOCAL_MIN_TIMEOUT_MS, TEST_GATE_CI_TIMEOUT_MS, testChildEnv, floorSummaryLine, computeTestGateTimeoutMs, skippedTestNames } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -315,21 +315,25 @@ test('runTestGate baseline mode: a branch that ADDS a new failure is still block
 // read as NEW, blocking every local land. When the trees do not see the same
 // gitignored data, a LIVE-DATA-LANE file's failure is reported, not blocking;
 // everything else keeps its old verdict.
-function corpusTestSrc(live) {
+function corpusTestSrc(live, { corpusFree = false, passes = false } = {}) {
+  const body = corpusFree
+    // A test in a live file that never reads the corpus: runs in both trees.
+    ? (passes ? "  assert.ok(true);\n" : "  assert.equal(1, 2, 'code regression');\n")
+    : "  const dir = path.join(process.cwd(), 'data', 'corpus');\n  if (!fs.existsSync(dir)) { t.skip('no corpus'); return; }\n  assert.equal(fs.readdirSync(dir).length, 0, 'mexodus auto-cleared');\n";
   return (live ? '// LIVE-DATA-LANE: reads data/corpus\n' : '')
     + "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport fs from 'node:fs';\nimport path from 'node:path';\n"
-    + "test('corpus: no auto-clear over an ensemble verdict', (t) => {\n  const dir = path.join(process.cwd(), 'data', 'corpus');\n  if (!fs.existsSync(dir)) { t.skip('no corpus'); return; }\n  assert.equal(fs.readdirSync(dir).length, 0, 'mexodus auto-cleared');\n});\n";
+    + "test('corpus: no auto-clear over an ensemble verdict', (t) => {\n" + body + "});\n";
 }
-function corpusTrees({ live = true, inBaseline = true, corpus = true } = {}) {
-  const mk = (withTest) => {
+function corpusTrees({ live = true, inBaseline = true, corpus = true, baselineLive = live, corpusFree = false } = {}) {
+  const mk = (withTest, isLive, opts) => {
     const d = makeScratchRepo();
     spawnSync('git', ['init', '-q'], { cwd: d });
     fs.writeFileSync(path.join(d, '.gitignore'), '/data/corpus\n');
-    if (withTest) fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), corpusTestSrc(live));
+    if (withTest) fs.writeFileSync(path.join(d, 'scripts', 'lib', 'corpus.test.mjs'), corpusTestSrc(isLive, opts));
     return d;
   };
-  const baselineDir = mk(inBaseline);
-  const mergedDir = mk(true);
+  const baselineDir = mk(inBaseline, baselineLive, { corpusFree, passes: true });
+  const mergedDir = mk(true, live, { corpusFree, passes: false });
   fs.mkdirSync(path.join(mergedDir, 'data', 'corpus'), { recursive: true });
   fs.writeFileSync(path.join(mergedDir, 'data', 'corpus', 'bad.json'), '{}');
   if (!corpus) {
@@ -362,6 +366,21 @@ test('runTestGate (BRO-8110): a live test the branch adds (absent from the basel
   const { result } = corpusTrees({ inBaseline: false });
   assert.equal(result.passed, false);
   assert.match(result.output, /NEW since origin\/main/);
+});
+test('runTestGate (BRO-8110 review): a branch that ADDS the LIVE-DATA-LANE header to an existing test cannot exempt its failure', () => {
+  const { result } = corpusTrees({ live: true, baselineLive: false });
+  assert.equal(result.passed, false, result.output);
+  assert.match(result.output, /NEW since origin\/main/);
+});
+test('runTestGate (BRO-8110 review): a live-file test the baseline RAN (not skipped) still blocks when it regresses', () => {
+  const { result } = corpusTrees({ corpusFree: true });
+  assert.equal(result.passed, false, result.output);
+  assert.match(result.output, /NEW since origin\/main/);
+  assert.doesNotMatch(result.output, /NOT judged here/);
+});
+test('skippedTestNames reads TAP SKIP directives only', () => {
+  const names = skippedTestNames('ok 1 - a # SKIP no corpus\nok 2 - b\nnot ok 3 - c\n  ok 4 - d # skip\n');
+  assert.deepEqual([...names].sort(), ['a', 'd']);
 });
 // Corpus tests honouring REVIEW_TEXTS_DIR (autoclear-vs-ensemble does) are
 // run on the baseline against the merged tree's corpus, so they are judged:
