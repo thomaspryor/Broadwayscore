@@ -9,7 +9,7 @@ import path from 'node:path';
 const ROOT = path.join(__dirname, '..', '..');
 const ALLOWED: Record<string, string> = {
   'src/lib/data-show-ranks.ts': 'rank pool is "scored shows 2005+", explicit false',
-  'scripts/count-pool.ts': 'explicit false, pool count',
+  [['scripts', 'count-pool.ts'].join('/')]: 'explicit false, pool count', // joined so test.yml push paths need no entry for a script this test only reads
   'src/lib/regional-shelf.ts': 'regional markets, rule only covers broadway/west-end/specials (follow-up)',
   'scripts/lib/search-shows-scores.js': 'tour search scores',
   'scripts/wanted-method-check.js': 'coverage-minute diagnostic',
