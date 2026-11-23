@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T19:36:46.966Z",
+  "timestamp": "2026-11-23T19:52:23.723Z",
   "stats": {
-    "totalReviews": 84374,
-    "alreadyFlagged": 22519,
+    "totalReviews": 84396,
+    "alreadyFlagged": 22518,
     "dateGuardCatches": 242,
-    "directorMismatch": 3886,
+    "directorMismatch": 3887,
     "tvFilmSignals": 2423,
-    "londonSignals": 3986,
+    "londonSignals": 3988,
     "offBroadwaySignals": 788,
     "yearMismatch": 396,
-    "noPublishDate": 8239
+    "noPublishDate": 8251
   },
   "findings": [
     {
@@ -18953,6 +18953,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2024",
+      "file": "times-uk--rachel-halliburton.json",
+      "score": null,
+      "publishDate": "2024-08-29",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/death-of-england-closing-time-review-z5cbw6t7q",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -124849,6 +124868,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 77,
+      "publishDate": "2026-11-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
