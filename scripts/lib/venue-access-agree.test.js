@@ -148,3 +148,10 @@ test('step-free / lift claims scoped to one area are dropped; whole-building cla
   const lift = 'There is lift access to each level of the theatre.';
   assert.equal(both('elevator', true, lift, lift).access.elevator, true);
 });
+
+// BRO-8112: the checkpoint stores emails redacted, the page text keeps them; both must still match.
+test('quoteInText treats a redacted email and the real one as the same', () => {
+  const page = 'To guarantee access to headsets, please email contact@dixonplace.org 48 hours before the performance.';
+  const quote = 'To guarantee access to headsets, please email [email] 48 hours before the performance.';
+  assert.equal(require('./venue-access-agree').quoteInText(quote, page), true);
+});

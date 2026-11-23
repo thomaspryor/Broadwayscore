@@ -55,6 +55,9 @@ const NOTE_SLOGAN = /\b(aims?|aspires?|strives?|committed|commitment|proud|voted
 /** Lowercase, strip accents/punctuation, collapse whitespace: the form quotes are compared in. */
 function normalize(t) {
   return String(t || '')
+    // The raw checkpoint stores emails as [email] (public-repo PII lint), so compare both forms alike.
+    .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/g, ' email ')
+    .replace(/\[email\]/g, ' email ')
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
