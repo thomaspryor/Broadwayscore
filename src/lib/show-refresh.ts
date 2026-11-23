@@ -8,19 +8,30 @@
 //
 // Off unless SHOW_REFRESH_READER=on. During `next build` it never fetches
 // (spike S0: builds make zero store requests) and returns the build's data.
-// Pointers are cached 60 s and slices forever, all under tag 'show-refresh',
-// so the kill route's revalidateTag('show-refresh') drops every cached read.
-// Errors are thrown inside the cached functions so they are never cached,
-// then caught here and turned into 'base-error'.
+//
+// Caching (BRO-8170 gap 1): every read is cached with NO time-based expiry.
+// A cache entry's revalidate becomes the ceiling of the ISR page that reads
+// it, so a short pointer TTL (it was 60 s) would re-render every show page,
+// reviews.json and OG image each minute once the flag is on. Freshness comes
+// from explicit invalidation instead: pointers carry SHOW_REFRESH_POINTER_TAG,
+// which /api/show-refresh/revalidate drops on every call, and every read
+// carries SHOW_REFRESH_TAG, which the kill switch drops. The pointer cache can
+// never be staler than the page it feeds, because both are revalidated by the
+// same call. tests/unit/show-refresh-wiring.test.ts pins this.
+//
+// All store reads of one render share one deadline (gap 7). Errors are thrown
+// inside the cached functions so they are never cached, then caught here and
+// turned into 'base-error'.
 import 'server-only';
 import fs from 'fs';
 import path from 'path';
 import { unstable_cache } from 'next/cache';
 import {
-  decideShowRefresh, showRefreshEnabled, SHOW_REFRESH_TAG, type RefreshDecision, type RefreshManifest, type StoreRead,
+  decideShowRefresh, showRefreshEnabled, SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG,
+  type RefreshDecision, type RefreshManifest, type StoreRead,
 } from './show-refresh-core';
 
-export { showRefreshEnabled, SHOW_REFRESH_TAG };
+export { showRefreshEnabled, SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG };
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const store = require('../../scripts/lib/show-refresh/store') as {
@@ -33,9 +44,9 @@ const store = require('../../scripts/lib/show-refresh/store') as {
 const { sliceHash } = require('../../scripts/lib/show-refresh/slice') as { sliceHash(s: unknown): string };
 /* eslint-enable @typescript-eslint/no-require-imports */
 
-/** Per-read network budget (plan 1.3). */
-const READ_TIMEOUT_MS = 2500;
-const POINTER_TTL_S = 60;
+/** Network budget (plan 1.3): per client request, and for all reads of one render together. */
+export const READ_TIMEOUT_MS = 2500;
+export const READ_DEADLINE_MS = 2500;
 
 let manifestMemo: { value: RefreshManifest | null } | null = null;
 /** The manifest this deployment was built with, or null (missing / unreadable / wrong shape). */
@@ -53,6 +64,13 @@ export function buildManifest(): RefreshManifest | null {
   return value;
 }
 
+/** Slugs this deployment could render from a slice: prerendered and not held at build. Null without a manifest. */
+export function refreshableSlugs(): string[] | null {
+  const m = buildManifest();
+  if (!m) return null;
+  return Object.values(m.shows).filter(s => s && typeof s.slug === 'string' && !s.held).map(s => s.slug);
+}
+
 /** A read that the cache may keep: 'ok' and 'missing'. 'error' throws so it is not cached. */
 async function cacheable(read: () => Promise<StoreRead>): Promise<StoreRead> {
   const r = await read();
@@ -68,7 +86,8 @@ function sliceClient() { return store.readerStoreFromEnv(process.env, { timeoutM
 const cachedPointer = unstable_cache(
   (p: string) => cacheable(() => store.readJsonObject(stateClient(), p)),
   ['show-refresh-pointer'],
-  { revalidate: POINTER_TTL_S, tags: [SHOW_REFRESH_TAG] },
+  // revalidate: false, never a number: see the header (gap 1).
+  { revalidate: false, tags: [SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG] },
 );
 const cachedSlice = unstable_cache(
   // A missing slice throws too: slices are immutable once present, so caching
@@ -95,5 +114,6 @@ export function readShowRefresh(slug: string): Promise<RefreshDecision> {
     readHome: () => safe(() => cachedPointer(store.PATHS.home)),
     readSlice: (id, hash) => safe(() => cachedSlice(id, hash)),
     sliceHash,
+    deadlineMs: READ_DEADLINE_MS,
   });
 }

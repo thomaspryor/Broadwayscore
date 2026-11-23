@@ -6,12 +6,16 @@
  * is a slice hash; marker 'base' keeps the prebuild snapshot row.
  *
  * Row shape = prod-data-parity buildSnapshot's sample row: { score, reviewCount },
- * score null below the display gate (slim `cs` null), the scored review count either way
+ * score null whenever the page shows TBD, the scored review count either way
  * (snapshot reads slim scoreResult.rc, which is not gated).
+ *
+ * BRO-8170 gap 5: TBD is the page's own verdict, computeShowTBD (min-review
+ * gate, previews/upcoming, coverage floor), not hasEnoughReviews alone, which
+ * misses the last two and would report a correct TBD page as a mismatch.
+ * Same call as page.tsx (computeShowTBD(show), wall clock).
  */
 import { computeOneShow } from '../../../src/lib/compute-one-show';
-import { hasEnoughReviews } from '../../../src/config/score-buckets';
-import { scoreGateArg } from '../../../src/config/scoring';
+import { computeShowTBD } from '../../../src/lib/show-score-tbd';
 import type { RawShow, RawReview, RawAudience, RawBuzzThread } from '../../../src/lib/engine';
 
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -22,7 +26,7 @@ export interface ParityRow { score: number | null; reviewCount: number }
 
 export function expectedParityRow(
   slice: { row: unknown; reviews: unknown[]; blogReviews: unknown[]; audience: unknown[]; buzz: unknown[] },
-  ctx: { buildInstant: number; versionImage?: <T extends string | null | undefined>(p: T) => T },
+  ctx: { buildInstant: number; versionImage?: <T extends string | null | undefined>(p: T) => T; now?: number },
 ): ParityRow {
   const show = computeOneShow(slice.row as RawShow, slice.reviews as RawReview[], {
     blogReviews: slice.blogReviews as RawReview[],
@@ -34,6 +38,5 @@ export function expectedParityRow(
   });
   const cs = show.criticScore;
   if (!cs || cs.score == null) return { score: null, reviewCount: 0 };
-  const enough = hasEnoughReviews(cs.reviewCount, show.category, (cs.tier1Count ?? 0) + (cs.tier2Count ?? 0), scoreGateArg(show.id));
-  return { score: enough ? Math.round(cs.score) : null, reviewCount: cs.reviewCount };
+  return { score: computeShowTBD(show, ctx.now) ? null : Math.round(cs.score), reviewCount: cs.reviewCount };
 }

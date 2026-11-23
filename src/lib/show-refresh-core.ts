@@ -13,6 +13,8 @@ export const REV_BASE_ERROR = 'base-error';
 
 /** Cache tag on every store read; revalidateTag(SHOW_REFRESH_TAG) drops them all. */
 export const SHOW_REFRESH_TAG = 'show-refresh';
+/** Cache tag on the kill / home pointer reads only; every revalidate call drops it. */
+export const SHOW_REFRESH_POINTER_TAG = 'show-refresh-pointer';
 
 /** Page marker: `<meta name="show-refresh-rev" content="<rev>">` (plan row 10). */
 export const SHOW_REFRESH_REV_META = 'show-refresh-rev';
@@ -70,6 +72,41 @@ export interface RefreshDeps {
   readSlice(id: string, hash: string): Promise<StoreRead>;
   /** 16-hex content hash of a slice (slice.js sliceHash). */
   sliceHash(slice: unknown): string;
+  /**
+   * One budget, in ms, for ALL store reads of this decision (kill, home, slice
+   * together), counted from the call. A read still pending when it runs out
+   * becomes an error, so the render falls back to the build ('base-error').
+   * Unset = no shared deadline (each read keeps only its own client timeout).
+   */
+  deadlineMs?: number;
+  /** Clock for deadlineMs (tests). Default Date.now. */
+  now?(): number;
+}
+
+export const READ_DEADLINE_ERROR = 'store read deadline exceeded';
+
+/**
+ * `read()` raced against an absolute deadline. Never rejects: a throw or the
+ * deadline both resolve to a StoreRead error, and the timer is always cleared.
+ */
+export async function readWithDeadline(
+  read: () => Promise<StoreRead>, deadline: number | null, now: () => number = Date.now,
+): Promise<StoreRead> {
+  const asErr = (e: unknown): StoreRead => ({ state: 'error', error: e instanceof Error ? e.message : String(e) });
+  if (deadline == null) {
+    try { return await read(); } catch (e) { return asErr(e); }
+  }
+  const remaining = deadline - now();
+  if (!(remaining > 0)) return { state: 'error', error: READ_DEADLINE_ERROR };
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const expired = new Promise<StoreRead>(resolve => {
+    timer = setTimeout(() => resolve({ state: 'error', error: READ_DEADLINE_ERROR }), remaining);
+  });
+  try {
+    return await Promise.race([read().catch(asErr), expired]);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export type RefreshDecision =
@@ -112,16 +149,19 @@ export async function decideShowRefresh(slug: string, deps: RefreshDeps): Promis
   const manifest = deps.manifest;
   if (!manifest || !isRecord(manifest.shows) || typeof manifest.manifestId !== 'string') return base('no usable build manifest');
   let id: string | null = null;
+  const now = deps.now ?? Date.now;
+  const deadline = Number.isFinite(deps.deadlineMs) ? now() + (deps.deadlineMs as number) : null;
+  const timed = (read: () => Promise<StoreRead>) => readWithDeadline(read, deadline, now);
   try {
     id = manifestIdForSlug(manifest, slug);
     if (!id) return base('not prerendered by this build');
     const built = manifest.shows[id];
     if (!isRecord(built) || typeof built.hash !== 'string') return baseError('build manifest entry malformed', id);
     if (built.held) return base('held at build', id);
-    const kill = killedBy(await deps.readKill());
+    const kill = killedBy(await timed(() => deps.readKill()));
     if (kill.killed) return kill.error ? baseError('kill state unreadable', id) : base('killed', id);
 
-    const home = await deps.readHome();
+    const home = await timed(() => deps.readHome());
     if (home.state === 'error') return baseError(`home unreadable: ${home.error}`, id);
     if (home.state === 'missing') return base('no published index', id);
     if (!isRecord(home.value) || typeof home.value.manifestId !== 'string') return baseError('published index malformed', id);
@@ -134,7 +174,7 @@ export async function decideShowRefresh(slug: string, deps: RefreshDeps): Promis
     if (entry.hash === built.hash) return base('published hash equals build', id);
     if (!/^[0-9a-f]{16}$/.test(entry.hash)) return baseError('published hash malformed', id);
 
-    const obj = await deps.readSlice(id, entry.hash);
+    const obj = await timed(() => deps.readSlice(id as string, entry.hash as string));
     if (obj.state !== 'ok') return baseError(`slice ${obj.state === 'error' ? `unreadable: ${obj.error}` : 'missing'}`, id);
     const slice = obj.value;
     if (!isRecord(slice) || !isRecord(slice.row) || !isRecord(slice.coverage)) return baseError('slice malformed', id);

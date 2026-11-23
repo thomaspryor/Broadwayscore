@@ -239,3 +239,56 @@ test('real data: a changed slice reaches show, consensus and audience; TBD falls
   const errored = renderForDecision(p.slug, { rev: 'h4', reason: 'published', showId: p.id, slice: broken as never }, manifest.buildInstant);
   assert.equal(errored?.rev, REV_BASE_ERROR, 'a slice that throws in compute renders the build, marked base-error');
 });
+
+// ---- BRO-8170 gap 7: one shared deadline across the kill, home and slice reads ----
+test('gap 7: the deadline is shared: reads under it pass, the read that crosses it is base-error', async () => {
+  const { readWithDeadline, READ_DEADLINE_ERROR } = await import('../../src/lib/show-refresh-core');
+  let t = 0;
+  const now = () => t;
+  // Fake clock: each read "takes" 40 ms; the budget is 70 ms, so the third read starts past it.
+  const slow = (r: StoreRead) => async () => { t += 40; return r; };
+  const { deps, hash } = setup();
+  const d = await decideShowRefresh('hamilton', {
+    ...deps, deadlineMs: 70, now,
+    readKill: slow(ok({ killed: false, seq: 1 })),
+    readHome: slow(ok({ manifestId: 'm1', shows: { 'hamilton-2015': { hash } } })),
+    readSlice: slow(ok(fakeSlice())),
+  });
+  assert.equal(d.rev, REV_BASE_ERROR);
+  assert.match(d.reason, new RegExp(READ_DEADLINE_ERROR));
+  t = 0;
+  const fine = await decideShowRefresh('hamilton', { ...setup().deps, deadlineMs: 1000, now });
+  assert.equal(fine.rev, hash, 'well under the deadline: published');
+  // readWithDeadline: a hung read resolves at the deadline, a throw becomes an error read.
+  const hung = await readWithDeadline(() => new Promise<StoreRead>(() => {}), Date.now() + 30);
+  assert.deepEqual(hung, { state: 'error', error: READ_DEADLINE_ERROR });
+  assert.deepEqual(await readWithDeadline(async () => { throw new Error('x'); }, null), { state: 'error', error: 'x' });
+});
+
+// ---- BRO-8170 gap 5: parity expects the page's TBD verdict (computeShowTBD) ----
+test('gap 5: expectedParityRow is TBD exactly when the page is (previews, coverage floor), not on review count alone',
+  { skip: !haveData && 'core data not present' }, async () => {
+    const { expectedParityRow } = await import('../../scripts/lib/show-refresh/expected-parity-row');
+    const { computeShowTBD } = await import('../../src/lib/show-score-tbd');
+    const { renderForDecision } = await import('../../src/lib/show-render');
+    const { manifest, picks } = await realSlices(40);
+    const p = picks.find(x => x.slice && x.slice.reviews.length >= 8);
+    assert.ok(p, 'need a scored show');
+    const scored = expectedParityRow(p.slice, { buildInstant: manifest.buildInstant });
+    assert.equal(typeof scored.score, 'number', `${p.id} scores`);
+    // Same slice, now in previews: enough reviews, but the page shows TBD.
+    const previews = structuredClone(p.slice);
+    previews.row = { ...previews.row, status: 'previews', openingDate: '2099-01-01', closingDate: null, previewsStartDate: null };
+    // No public-score stamp, so the BRO-7750 floor does not keep the score up.
+    previews.coverage = { ...previews.coverage, scorePublicSince: null };
+    const row = expectedParityRow(previews, { buildInstant: manifest.buildInstant });
+    assert.equal(row.score, null, 'previews => TBD, as the page renders it');
+    assert.equal(row.reviewCount, scored.reviewCount, 'count is reported either way');
+    // And it agrees with the page's own gate on every pick.
+    for (const x of picks.filter(y => y.slice)) {
+      const r = renderForDecision(x.slug, { rev: 'h', reason: 'published', showId: x.id, slice: x.slice }, manifest.buildInstant);
+      if (!r || r.rev !== 'h') continue;
+      const want = computeShowTBD(r.show) ? null : Math.round(r.show.criticScore!.score!);
+      assert.equal(expectedParityRow(x.slice, { buildInstant: manifest.buildInstant }).score, want, x.id);
+    }
+  });

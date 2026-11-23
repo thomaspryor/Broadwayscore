@@ -1,0 +1,83 @@
+/**
+ * BRO-8170 gap 3: ReviewsList never mixes reviews.json rows from another
+ * revision with the five rows embedded in the page (src/lib/reviews-more.ts).
+ *
+ * Run: npx tsx --test tests/unit/reviews-more.test.ts
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'fs';
+import path from 'path';
+import { fetchMoreRows, sameRenderData, MORE_RETRY_DELAY_MS } from '../../src/lib/reviews-more';
+import { SHOW_REFRESH_REV_HEADER } from '../../src/lib/show-refresh-core';
+
+const H1 = '0123456789abcdef';
+const H2 = 'fedcba9876543210';
+
+function res(rows: unknown[], rev: string | null, status = 200) {
+  return {
+    ok: status < 400, status,
+    headers: new Headers(rev == null ? {} : { [SHOW_REFRESH_REV_HEADER]: rev }),
+    json: async () => rows,
+  };
+}
+
+function fakeFetch(...answers: ReturnType<typeof res>[]) {
+  const calls: Array<{ url: string; init?: RequestInit }> = [];
+  const f = async (url: string, init?: RequestInit) => { calls.push({ url, init }); return answers[Math.min(calls.length - 1, answers.length - 1)]; };
+  return { f, calls };
+}
+const sleeps: number[] = [];
+const sleep = async (ms: number) => { sleeps.push(ms); };
+
+test('sameRenderData: build data matches build data; slice hashes must be equal', () => {
+  assert.equal(sameRenderData('base', 'base-error'), true);
+  assert.equal(sameRenderData('base-error', null), true);
+  assert.equal(sameRenderData(H1, H1), true);
+  assert.equal(sameRenderData(H1, 'base'), false);
+  assert.equal(sameRenderData('base', H1), false);
+  assert.equal(sameRenderData(H1, H2), false);
+});
+
+test('matching revision: rows used, one request', async () => {
+  const { f, calls } = fakeFetch(res([{ a: 1 }], H1));
+  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep }), { state: 'ok', rows: [{ a: 1 }] });
+  assert.equal(calls.length, 1);
+});
+
+test('stale reviews.json: retried once past the browser cache, then used when it matches', async () => {
+  sleeps.length = 0;
+  const { f, calls } = fakeFetch(res([{ old: 1 }], H2), res([{ fresh: 1 }], H1));
+  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep }), { state: 'ok', rows: [{ fresh: 1 }] });
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1].init?.cache, 'no-store');
+  assert.deepEqual(sleeps, [MORE_RETRY_DELAY_MS]);
+});
+
+test('still another revision after the retry: mismatch, the old rows are never returned', async () => {
+  const { f } = fakeFetch(res([{ old: 1 }], 'base'), res([{ old: 1 }], 'base'));
+  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep }), { state: 'mismatch' });
+});
+
+test('reader off (no expected rev): rows used as before, header ignored, no retry', async () => {
+  const { f, calls } = fakeFetch(res([{ a: 1 }], H2));
+  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', undefined, { fetch: f, sleep }), { state: 'ok', rows: [{ a: 1 }] });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].init, undefined, 'same request as before the change');
+});
+
+test('HTTP error: error, not rows', async () => {
+  const { f } = fakeFetch(res([], H1, 500));
+  const r = await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep });
+  assert.equal(r.state, 'error');
+});
+
+test('wiring: the page passes its marker only while the reader is on; ReviewsList checks it', () => {
+  const page = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/page.tsx'), 'utf8');
+  assert.match(page, /\.\.\.\(showRefreshEnabled\(\) \? \{ rev: render\.rev \} : \{\}\)/);
+  const list = fs.readFileSync(path.join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
+  assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
+  assert.doesNotMatch(list, /\bfetch\(url\)/, 'no unchecked fetch of reviews.json left in ReviewsList');
+  const route = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/reviews.json/route.ts'), 'utf8');
+  assert.match(route, /SHOW_REFRESH_REV_HEADER\]: render\?\.rev/);
+});
