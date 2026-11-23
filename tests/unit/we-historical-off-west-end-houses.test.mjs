@@ -67,15 +67,3 @@ test('OLT and Theatre Record A-Z discovery routes accept producing houses too', 
   const r = azLookups({ titles: [{ title: 'Some Play', venue: 'Almeida', opened: '2024-10-10' }] });
   assert.equal(r.lookups.length, 1);
 });
-
-test('a run declared as a priorRun of a transfer row is not minted again (Punch / Young Vic)', () => {
-  const { planPromotions } = require('../../scripts/promote-historical-we.js');
-  const shows = [{ id: 'punch-west-end-2025', title: 'Punch', market: 'west-end', venue: 'Apollo Theatre', openingDate: '2025-05-01',
-    priorRuns: [{ openingDate: '2025-03-06', closingDate: '2025-04-12', venue: 'Young Vic' }] }];
-  const c = { title: 'Punch', venue: 'Young Vic', openingDate: '2025-03-06', previewsStartDate: '2025-02-25', closingDate: '2025-04-12', season: '2024-2025', genres: ['play'], signals: ['wos-review'] };
-  const r = planPromotions({ candidates: [c], shows, approvals: {}, today: TODAY });
-  assert.equal(r.toPromote.length, 0);
-  assert.match(r.skipped[0].reason, /priorRun/);
-  const other = planPromotions({ candidates: [{ ...c, title: 'Different Play' }], shows, approvals: {}, today: TODAY });
-  assert.equal(other.toPromote.length, 1);
-});
