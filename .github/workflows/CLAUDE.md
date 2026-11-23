@@ -385,11 +385,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/enrich-ibdb-dates.js`
 - **Requires:** `SCRAPINGBEE_API_KEY` (primary), `BRIGHTDATA_TOKEN` (fallback)
 - **Modes:**
-  - `enrich` (default): Fill missing/null dates. Overwrites an existing openingDate only when IBDB moved an opening the rule in `scripts/lib/ibdb-opening-refresh.js` lets it replace (Broadway IBDB-sourced or unconfirmed source, no human correction, shift <=180 days, not before previews, not more than 14 days past; BRO-8188)
-- **Near-opening refresh (BRO-8188):** `update-show-status.yml` runs `enrich-ibdb-dates.js --near-opening` daily before setting statuses (advisory step), checking every Broadway show with a press night 14 days ago to 45 days ahead, so a postponed opening moves the lane, pollers and status the same day.
+  - `enrich` (default): Fill missing/null dates. Overwrites an existing openingDate only when IBDB moved an opening the rule in `scripts/lib/ibdb-opening-refresh.js` lets it replace (Broadway IBDB-sourced or unconfirmed source, no human correction, press night 14 days ago to 45 days ahead, shift <=60 days, not before previews; BRO-8188)
   - `verify`: Compare IBDB vs shows.json, report discrepancies (read-only)
   - `force`: Overwrite all dates with IBDB values
 - **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
+- **Near-opening refresh (BRO-8188):** `update-show-status.yml` runs `enrich-ibdb-dates.js --near-opening` daily before setting statuses (advisory step), for every Broadway show with a press night 14 days ago to 45 days ahead, so a postponed opening moves the lane, pollers and status the same day. That pass changes `openingDate` only (no ibdbUrl/previews/closing/creative-team writes). On success it writes `data/audit/pipeline-health/ibdb-near-opening.last-success`; `health-check.js` warns in the digest after 72h without one.
 
 ## `process-review-formspree.yml`
 - **Runs:** Weekly on Mondays at 6 AM UTC (1 AM EST) — safety net now that `/api/submit-review` creates+dispatches instantly on submit — or manually

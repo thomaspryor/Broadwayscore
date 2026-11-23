@@ -50,6 +50,13 @@ test('refuses a jump to another production, a date before previews, and old hist
   assert.equal(decideOpeningRefresh(wonderfulLife, '2026-11-23', Date.parse('2027-01-20T12:00:00Z')).refresh, false);
 });
 
+test('ship-check: only near press night, and at most 60 days from the stored date', () => {
+  const farFuture = { ...wonderfulLife, status: 'upcoming', previewsStartDate: '2027-03-01', openingDate: '2027-04-01' };
+  assert.equal(decideOpeningRefresh(farFuture, '2027-04-10', NOW).refresh, false);
+  assert.equal(decideOpeningRefresh(wonderfulLife, '2027-01-18', NOW).refresh, false); // 61 days
+  assert.equal(decideOpeningRefresh(wonderfulLife, '2027-01-16', NOW).refresh, true);  // 59 days
+});
+
 test('near-opening selection: Broadway shows with a press night from 14 days ago to 45 days ahead', () => {
   const shows = [
     wonderfulLife,

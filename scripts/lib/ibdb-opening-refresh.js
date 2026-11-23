@@ -21,7 +21,8 @@
 const DAY_MS = 24 * 60 * 60 * 1000;
 const NEAR_BEFORE_DAYS = 45;   // a press night up to 45 days away can still be moved
 const NEAR_AFTER_DAYS = 14;    // a stored press night up to 14 days past may have been a postponed one
-const MAX_SHIFT_DAYS = 180;    // a bigger jump is another production, not a moved opening
+const MAX_SHIFT_DAYS = 60;     // single-source cap, same as discovery-reconcile.js RECONCILE_MAX_SHIFT_DAYS: a bigger
+                               // jump from IBDB alone is more likely a parse error or another production
 const { isUnconfirmedDateSource } = require('./date-source-confidence');
 const ACTIVE_STATUSES = new Set(['announced', 'upcoming', 'previews', 'open']);
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
@@ -52,6 +53,8 @@ function selectNearOpeningShows(shows, nowMs, { beforeDays = NEAR_BEFORE_DAYS, a
 function decideOpeningRefresh(show, ibdbOpeningDate, nowMs, { afterDays = NEAR_AFTER_DAYS } = {}) {
   const no = (reason) => ({ refresh: false, reason });
   if (!show || !show.openingDate) return no('no stored opening date (the fill-missing path owns it)');
+  // Only shows near press night: a far-future date can wait until it enters the window, and history stays put.
+  if (selectNearOpeningShows([show], nowMs, { afterDays }).length === 0) return no('not within 14 days past / 45 days ahead of press night');
   const ibdbMs = dayMs(ibdbOpeningDate);
   const storedMs = dayMs(show.openingDate);
   if (!Number.isFinite(ibdbMs) || !Number.isFinite(storedMs)) return no('a date is not YYYY-MM-DD');
