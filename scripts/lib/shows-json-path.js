@@ -37,4 +37,9 @@ function readShowsList(p = showsJsonPath()) {
 // shows-json-fixture.js, so this reader stays write-free in the require graph of
 // safe-form audit scripts (safe-form-allowlist.test.mjs).
 
-module.exports = { showsJsonPath, readShowsList, REPO_SHOWS_PATH };
+/** Moved (BRO-8107): a clear failure for callers written against the old home. */
+function useShowsFixture() {
+  throw new Error("useShowsFixture moved to scripts/lib/shows-json-fixture.js (BRO-8107): require('<rel>/scripts/lib/shows-json-fixture.js').useShowsFixture([...shows])");
+}
+
+module.exports = { showsJsonPath, readShowsList, useShowsFixture, REPO_SHOWS_PATH };

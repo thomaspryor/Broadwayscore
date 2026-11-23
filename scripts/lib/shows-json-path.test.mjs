@@ -159,3 +159,7 @@ test('excerpt-validation reads a bare-array shows fixture too (readShowsList), n
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('the old useShowsFixture home fails loudly and names the new module (BRO-8107)', () => {
+  assert.throws(() => require('./shows-json-path.js').useShowsFixture([]), /moved to scripts\/lib\/shows-json-fixture\.js/);
+});

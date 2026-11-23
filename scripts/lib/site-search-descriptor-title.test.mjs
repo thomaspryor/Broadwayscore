@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 // BRO-8107: shows come from a fixture, not live data/shows.json (keeps this in the blocking batch).
-process.on('exit', require('./shows-json-path.js').useShowsFixture([]));
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 // show-names reads data/shows.json directly (not via SHOWS_JSON_PATH): give it an empty registry.
 require('./show-names').setPressNameShows([]);
 const { siteSearchUrlMatchesTitle } = require('./site-search-discovery');
