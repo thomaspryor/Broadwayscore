@@ -80,6 +80,12 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
       const { isScoreable } = require(lib + '/is-scoreable.js');
       const { safeWriteReview } = require(lib + '/review-write-guard.js');
       const { createOrMergeReviewFile } = require(lib + '/review-file-writer.js');
+      // Content guards reached from the same write/scoring paths (BRO-8107
+      // follow-up: content-quality's title list made pending-triage live).
+      const CQ = require(lib + '/content-quality.js');
+      const { getMatchableTitles } = require(lib + '/excerpt-validation.js');
+      const { curtainupSuffixYear } = require(lib + '/content-filters.js');
+      const { resolveShowMeta } = require(lib + '/show-identity.js');
       const texts = ${JSON.stringify(texts)};
       const review = { showId: 'example-show-2026', outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Jesse Green', url: 'https://www.nytimes.com/2026/03/02/theater/example-show-review.html', publishDate: '2026-03-02', fullText: 'Example Show is a review. '.repeat(40) };
       const out = {};
@@ -90,6 +96,10 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
         const entries = {
           isScoreable: () => isScoreable(review, { id: 'example-show-2026', title: 'Example Show' }, texts + '/example-show-2026/nytimes--jesse-green.json'),
           safeWriteReview: () => safeWriteReview(texts + '/example-show-2026/nytimes--jesse-green-' + tag + '.json', review),
+          verifyFullTextContent: () => CQ.verifyFullTextContent(review.fullText, { id: 'example-show-2026', title: 'Example Show' }),
+          getMatchableTitles: () => getMatchableTitles(),
+          curtainupSuffixYear: () => curtainupSuffixYear('https://www.curtainup.com/example' + (tag === 'A' ? '22' : '23') + '.html'),
+          resolveShowMeta: () => resolveShowMeta('example-show-2026'),
           createOrMergeReviewFile: () => createOrMergeReviewFile('example-show-2026', { outletId: 'variety', outlet: 'Variety', criticName: 'Frank Rizzo', url: 'https://variety.com/2026/legit/reviews/example-show-' + tag + '.html', source: 'test' }, { reviewTextsDir: texts, knownShowIds: ['example-show-2026'] }),
         };
         out[tag] = {};

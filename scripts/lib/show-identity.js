@@ -41,16 +41,19 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const { pickShowTitleForHeuristic } = require('./review-guards');
+const { showsJsonPath } = require('./shows-json-path');
 
 let _showsCache = null;
+let _showsCachePath = null;
 
 /** @returns {Array<Object>} shows.json entries, or [] if unreadable. */
 function loadShows() {
-  if (_showsCache) return _showsCache;
+  // BRO-8107: SHOWS_JSON_PATH-aware, cache keyed by path (a fixture is honoured).
+  const p = showsJsonPath();
+  if (_showsCache && _showsCachePath === p) return _showsCache;
+  _showsCachePath = p;
   try {
-    const p = path.join(__dirname, '..', '..', 'data', 'shows.json');
     const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
     _showsCache = raw.shows || raw;
   } catch (e) {

@@ -11,10 +11,10 @@
  * DRY_RUN_CROSS_SHOW=false is set.
  */
 
-const path = require('path');
 const fs = require('fs');
 const { isWithinPriorRun } = require('./wrong-production-autoclear');
 const { cleanRole, isNoInfoRole } = require('./cast-role');
+const { showsJsonPath } = require('./shows-json-path');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -54,16 +54,19 @@ const COMMON_WORD_TITLES = new Set([
 const MIN_TITLE_LENGTH = 8;
 
 let _titleCache = null;
+let _titleCachePath = null;
 
 /**
  * Build title → showId map from shows.json (cached after first call)
  * Only includes titles >= MIN_TITLE_LENGTH and not in COMMON_WORD_TITLES
  */
 function getMatchableTitles() {
-  if (_titleCache) return _titleCache;
+  // BRO-8107: SHOWS_JSON_PATH-aware, cache keyed by path (a fixture is honoured).
+  const showsPath = showsJsonPath();
+  if (_titleCache && _titleCachePath === showsPath) return _titleCache;
 
-  const showsPath = path.join(__dirname, '../../data/shows.json');
   const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows || [];
+  _titleCachePath = showsPath;
 
   _titleCache = new Map();
 

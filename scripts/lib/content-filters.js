@@ -113,12 +113,14 @@ function isNotBroadway(text, options = {}) {
  */
 const NUMBERED_TITLE_WORDS_STATIC = ['catch22', 'apollo13', 'ocean11', 'area51', 'rent96'];
 let numberedTitleWordsCache = null;
+let numberedTitleWordsCachePath = null;
 /** Compact "word+2-digit number" tokens from show titles (catch22, photograph51). */
 function numberedTitleWords() {
-  if (numberedTitleWordsCache) return numberedTitleWordsCache;
+  // BRO-8107: SHOWS_JSON_PATH-aware, cache keyed by path (a fixture is honoured).
+  const raw = require('./shows-json-path').showsJsonPath();
+  if (numberedTitleWordsCache && numberedTitleWordsCachePath === raw) return numberedTitleWordsCache;
   const words = new Set(NUMBERED_TITLE_WORDS_STATIC);
   try {
-    const raw = require('path').join(__dirname, '..', '..', 'data', 'shows.json');
     const data = JSON.parse(require('fs').readFileSync(raw, 'utf8'));
     for (const s of (Array.isArray(data) ? data : data.shows || [])) {
       const title = String((s && s.title) || '').toLowerCase().replace(/['’]s\b/g, '').replace(/['’]/g, '');
@@ -126,6 +128,7 @@ function numberedTitleWords() {
     }
   } catch { /* shows.json absent: static list only */ }
   numberedTitleWordsCache = words;
+  numberedTitleWordsCachePath = raw;
   return words;
 }
 
