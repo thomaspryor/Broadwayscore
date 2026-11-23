@@ -615,5 +615,36 @@
       }
     ],
     "queuedAt": "2026-11-23T15:46:55.937Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8165-func-size-guard",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8165-func-size-guard",
+    "description": "land.yml did not land land/bro-8165-func-size-guard: the scripts-lib-tests gate went red at cb602ceb34. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45209072976",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8165-func-size-guard"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "cb602ceb345c96830444e0e39bd546979b901741"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45209072976"
+      }
+    ],
+    "queuedAt": "2026-11-23T15:53:46.195Z"
   }
 ]
