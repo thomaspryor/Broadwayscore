@@ -22,7 +22,7 @@ const prompt = P.buildPlannerPrompt({
 function executorActionTypes() {
   const src = fs.readFileSync(path.join(here, '..', 'execute-approved-fix.js'), 'utf8');
   const body = src.slice(src.indexOf('switch (action.type)'));
-  const end = body.indexOf('default:');
+  const end = body.indexOf('Unknown action type');
   const types = [...body.slice(0, end).matchAll(/case '([a-z-]+)':/g)].map((m) => m[1]);
   if (/case htmlHandoff\.ACTION_TYPE:/.test(body.slice(0, end))) types.push(handoff.ACTION_TYPE);
   return types;
@@ -52,7 +52,8 @@ test('the built prompt names every advertised action type and the review-field-e
   assert.match(prompt, /review-field-edit — Fix one field on one review record/);
   assert.match(prompt, /field: url|- url: only repairs a url that is provably wrong/);
   assert.match(prompt, /Do NOT answer "review records are not in the allowed editable files"/);
-  assert.match(prompt, /outletId itself is NOT an editable field/);
+  assert.match(prompt, /Do NOT use a move to change a review's outlet/);
+  assert.doesNotMatch(prompt, /outletId itself is NOT an editable field/);
 });
 
 test('review records context gives file, url and critic for the show (inferred filenames when no review-texts)', () => {
@@ -72,4 +73,17 @@ test('the planner script builds its prompt through the shared builder, not an in
   const src = fs.readFileSync(path.join(here, '..', 'generate-remediation-plan.js'), 'utf8');
   assert.match(src, /buildPlannerPrompt\(/);
   assert.doesNotMatch(src, /You may include these action types/);
+});
+
+test('reader message reaches the planner and focus rows sort first past the cap', () => {
+  const p = P.buildPlannerPrompt({ diagnosis: { ...diagnosis, originalMessage: 'Dale link is wrong https://x.example/r' }, fixAction: 's', contextParts: [], allowedFieldsList: '', allowedScripts: [] });
+  assert.match(p, /https:\/\/x\.example\/r/);
+  const show = { id: 's1', title: 'S' };
+  const rows = Array.from({ length: 10 }, (_, i) => ({ showId: 's1', outletId: `o${i}`, criticName: i === 9 ? 'Zed Target' : `C${i}`, url: `https://e/${i}` }));
+  const ctx = P.buildReviewRecordContext(show, rows, { limit: 3, focusText: 'the zed target review' });
+  assert.match(ctx, /Zed Target/);
+});
+test('verifier context keeps review records', () => {
+  const src = fs.readFileSync(path.join(here, '..', 'generate-remediation-plan.js'), 'utf8');
+  assert.match(src, /startsWith\('## Review Records'\)/);
 });
