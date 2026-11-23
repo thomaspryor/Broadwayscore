@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-11-21T22:27:50.687Z",
-    "completedAt": "2026-11-21T22:27:50.725Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44956286308",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-21T23:17:29.781Z",
-    "completedAt": "2026-11-21T23:17:29.784Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44960038511",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-21T23:25:53.566Z",
     "completedAt": "2026-11-21T23:25:58.533Z",
     "totalReviews": 84181,
@@ -375543,6 +375503,62 @@
     },
     "costUsd": 0,
     "runId": "45275977717",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T22:14:21.287Z",
+    "completedAt": "2026-11-23T22:16:52.070Z",
+    "totalReviews": 84812,
+    "processed": 57,
+    "skipped": 84739,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 346960,
+      "output": 20385,
+      "cacheRead": 239522,
+      "cacheWrite": 26373,
+      "total": 943611
+    },
+    "costUsd": 0.351664425,
+    "runId": "45276499625",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "everyday-rapture-2010",
+        "outletId": "nytimes",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "chaplin-2012",
+        "outletId": "usatoday",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "end-of-the-rainbow-2012",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T22:17:06.020Z",
+    "completedAt": "2026-11-23T22:19:32.147Z",
+    "totalReviews": 21,
+    "processed": 21,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 56180,
+      "output": 5133,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 61313
+    },
+    "costUsd": 0.0533139,
+    "runId": "45276499625",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
