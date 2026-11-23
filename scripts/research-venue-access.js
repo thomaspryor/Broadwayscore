@@ -36,6 +36,7 @@ const { FIELDS, agreeAccess, htmlToText, accessLinks, titleNamesVenue } = requir
 const ROOT = path.join(__dirname, '..');
 const INFO_PATH = path.join(ROOT, 'data/venue-info.json');
 const META_PATH = path.join(ROOT, 'data/theater-metadata.json');
+const EMAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/g;
 const RAW_PATH = path.join(ROOT, 'data/audit/venue-access-raw.json');
 const OUT_PATH = path.join(ROOT, 'data/venue-access.json');
 const CACHE_DIR = process.env.VENUE_ACCESS_CACHE_DIR || path.join(os.tmpdir(), 'venue-access-pages');
@@ -209,7 +210,9 @@ async function main() {
   ask.spend.maxUsd = Number(args['max-usd'] || 15);
   const workers = Number(args.workers || 4);
   const raw = readJson(RAW_PATH, { access: {}, seats: {}, broadway: {} });
-  const save = () => fs.writeFileSync(RAW_PATH, JSON.stringify(raw, null, 1));
+  // Venue contact emails appear in official-page quotes. The public repo's PII lint refuses
+  // email-shaped strings under data/audit, so the checkpoint stores them redacted.
+  const save = () => fs.writeFileSync(RAW_PATH, JSON.stringify(raw, null, 1).replace(EMAIL_RE, '[email]'));
 
   if (phases.has('broadway')) {
     const meta = readJson(META_PATH, {});
