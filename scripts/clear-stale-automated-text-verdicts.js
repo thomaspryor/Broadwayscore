@@ -101,7 +101,13 @@ function scan(dir, shows, showFilter, thinUncapped = false) {
       // BRO-4391: wrong_production verdicts issued before the declared
       // priorRuns/tourLegs were in the prompt get one re-judge with them.
       if (!kinds.length && isPreContextWrongProduction(data, show)) kinds.push('wrongProductionRecheck');
-      if (!kinds.length && isThinTextNotAReview(data) && (thinCount < THIN_PER_RUN || thinUncapped)) { kinds.push('thinTextNotAReview'); thinCount++; }
+      if (!kinds.length && isThinTextNotAReview(data) && (thinCount < THIN_PER_RUN || thinUncapped)) {
+        // Count only files the clear would actually requeue: ones another guard still excludes match every run and
+        // would otherwise eat the cap and starve the rest of the backlog (ship-check finding).
+        const trial = JSON.parse(JSON.stringify(data));
+        neutralizeThinTextNotAReview(trial);
+        if (isScoreable(trial, show, fp)) { kinds.push('thinTextNotAReview'); thinCount++; }
+      }
       if (!kinds.length) continue;
       matches.push({ path: fp, rel: `${showDir}/${file}`, show, kinds, data });
     }
