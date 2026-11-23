@@ -88,6 +88,28 @@ function siteHost(url) {
   }
 }
 
+function siteUrl(u) {
+  return new URL(/^https?:\/\//i.test(u) ? u : `https://${u}`);
+}
+
+/**
+ * The agreed website. Both sources often point at the venue's own page on a group or
+ * operator site (lwtheatres.co.uk/theatres/adelphi); keep that path when they agree on it,
+ * otherwise fall back to the shared host's homepage.
+ */
+function pickWebsite(a, b) {
+  try {
+    const ua = siteUrl(a);
+    const ub = siteUrl(b);
+    const pa = ua.pathname.replace(/\/+$/, '').toLowerCase();
+    const pb = ub.pathname.replace(/\/+$/, '').toLowerCase();
+    if (pa && pa === pb) return `${ua.origin}${ua.pathname.replace(/\/+$/, '')}`;
+    return `${ua.origin}/`;
+  } catch {
+    return null;
+  }
+}
+
 function websitesAgree(a, b) {
   const ha = siteHost(a);
   const hb = siteHost(b);
@@ -142,7 +164,7 @@ function agree(g, o) {
   };
   // Prefer the longer address string (more complete: postcode, city) of the two agreeing ones.
   check('address', addressesAgree, (a, b) => (String(b).length > String(a).length ? b : a));
-  check('website', websitesAgree, (a) => `${new URL(/^https?:\/\//i.test(a) ? a : `https://${a}`).origin}/`);
+  check('website', (a, b) => websitesAgree(a, b) && !!pickWebsite(a, b), pickWebsite);
   check('capacity', capacitiesAgree, (a, b) => Math.min(Number(a), Number(b)));
   check('yearOpened', yearsAgree, (a) => Number(a));
   check('operator', operatorsAgree, (a, b) => (String(a).length <= String(b).length ? a : b));
@@ -164,6 +186,7 @@ module.exports = {
   postcodeOf,
   addressesAgree,
   siteHost,
+  pickWebsite,
   websitesAgree,
   capacitiesAgree,
   yearsAgree,

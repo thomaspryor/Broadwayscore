@@ -37,7 +37,8 @@ test('every published field is one of the allowed facts and says how it was veri
 
 test('geocoded addresses sit inside the right city', () => {
   for (const [key, v] of Object.entries(info.venues)) {
-    if (v.lat == null) continue;
+    if (!v.fields.address) continue;
+    assert.ok(v.lat != null && v.lng != null, `${key}: published address was never placed on a map`);
     const city = key.startsWith('london/') ? 'london' : 'nyc';
     assert.ok(inCity(v.lat, v.lng, city), `${key} geocodes outside ${city}: ${v.lat},${v.lng}`);
   }

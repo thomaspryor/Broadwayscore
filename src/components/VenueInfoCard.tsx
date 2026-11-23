@@ -35,7 +35,7 @@ export default function VenueInfoCard({ theater }: { theater: VenueFacts }) {
             rel="noopener noreferrer"
             className="flex items-center text-xs text-brand hover:underline sm:mt-0.5"
           >
-            Get directions
+            Get directions<span className="sr-only"> (opens in a new tab)</span>
           </a>
         </>
       ),
@@ -47,6 +47,7 @@ export default function VenueInfoCard({ theater }: { theater: VenueFacts }) {
       value: (
         <a href={theater.website} target="_blank" rel="noopener noreferrer" className="text-brand hover:underline break-all">
           {displayHost(theater.website)}
+          <span className="sr-only"> (official website, opens in a new tab)</span>
         </a>
       ),
     });

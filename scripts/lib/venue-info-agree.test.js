@@ -3,7 +3,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const {
-  streetKey, postcodeOf, addressesAgree, websitesAgree, capacitiesAgree, yearsAgree, operatorsAgree, agree, inCity,
+  pickWebsite, streetKey, postcodeOf, addressesAgree, websitesAgree, capacitiesAgree, yearsAgree, operatorsAgree, agree, inCity,
 } = require('./venue-info-agree');
 
 test('streetKey normalizes street words, directions and ordinals', () => {
@@ -74,4 +74,10 @@ test('inCity boxes', () => {
   assert.ok(inCity(40.7301, -74.0003, 'nyc'));
   assert.ok(!inCity(51.51, -0.12, 'nyc'));
   assert.ok(inCity(51.5138, -0.1272, 'london'));
+});
+
+test('website keeps the venue page when both sources name it, else the homepage', () => {
+  assert.equal(pickWebsite('https://lwtheatres.co.uk/theatres/adelphi/', 'lwtheatres.co.uk/theatres/adelphi'), 'https://lwtheatres.co.uk/theatres/adelphi');
+  assert.equal(pickWebsite('https://www.atgtickets.com/venues/richmond-theatre/', 'https://www.atgtickets.com/venues/new-wimbledon-theatre/'), 'https://www.atgtickets.com/');
+  assert.equal(pickWebsite('https://www.donmarwarehouse.com', 'https://www.donmarwarehouse.com/'), 'https://www.donmarwarehouse.com/');
 });

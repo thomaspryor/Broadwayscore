@@ -69,6 +69,13 @@ type VenueInfoEntry = {
 const VENUE_INFO = (venueInfoData as unknown as { venues: Record<string, VenueInfoEntry> }).venues;
 
 /** Verified address for an Off-Broadway / London show's venue page, if one exists (BRO-8088). */
+const US_ZIP = /\b\d{5}(-\d{4})?\b/;
+const UK_POSTCODE = /\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b/i;
+function addressInOtherCity(category: string | undefined, address: string): boolean {
+  if (category === 'off-broadway') return UK_POSTCODE.test(address) && !US_ZIP.test(address);
+  return US_ZIP.test(address) && !UK_POSTCODE.test(address);
+}
+
 function verifiedVenueAddress(category: string | undefined, venue: string | undefined | null): string | undefined {
   const market: VenueInfoMarket | null = category === 'off-broadway' ? 'off-broadway'
     : category === 'west-end' || category === 'off-west-end' ? 'london' : null;
@@ -154,8 +161,14 @@ export function getAllShows(): ComputedShow[] {
     // Off-Broadway / London rows mostly carry no theaterAddress; the verified venue
     // address (data/venue-info.json) fills the show page's "where" line (BRO-8088).
     .map(show => {
+      // Fill a missing address, or replace one that is plainly in the other city (a London
+      // show carrying a New York ZIP). A production-specific address is otherwise kept: a
+      // company that moved, or two spaces sharing a name, must not be sent to the wrong door.
       const verified = verifiedVenueAddress(show.category, show.venue);
-      return verified && verified !== show.theaterAddress ? { ...show, theaterAddress: verified } : show;
+      if (!verified || verified === show.theaterAddress) return show;
+      return !show.theaterAddress || addressInOtherCity(show.category, show.theaterAddress)
+        ? { ...show, theaterAddress: verified }
+        : show;
     });
 
   return computedShowsCache;
@@ -955,7 +968,8 @@ export function getAllTheaters(): Theater[] {
   _theatersCache = _theatersCache.map(t => {
     const current = byFormerName.get(t.name);
     const address = t.address ?? getTheaterAddress(t.name) ?? current?.address ?? undefined;
-    if (current) return { ...t, address, nowKnownAs: { name: current.name, slug: current.slug } };
+    // The old-name page shows the current building's photo, so it carries that photo's credit too.
+    if (current) return { ...t, address, images: t.images?.exterior ? t.images : current.images, nowKnownAs: { name: current.name, slug: current.slug } };
     return address === t.address ? t : { ...t, address };
   });
 
