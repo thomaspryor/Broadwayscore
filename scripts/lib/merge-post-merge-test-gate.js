@@ -788,7 +788,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // the total includes any retry plus the baseline checkout and run, so the
   // merged run's own time is reported apart from the total.
   const mergedSec = wallSec();
-  const timing = () => `merged ${mergedSec}s, total ${wallSec()}s, cap ${Math.round(timeoutMs / 1000)}s per run`;
+  const timing = () => `merged ${mergedSec}s${retriedUnparseable ? ' (2 runs)' : ''}, total ${wallSec()}s, cap ${Math.round(timeoutMs / 1000)}s per run`;
 
   if (mergedPassed || !makeBaselineCheckout) {
     // This branch serves BOTH the passing and failing halves, so the reason
