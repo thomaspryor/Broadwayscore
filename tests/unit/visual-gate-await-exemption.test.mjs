@@ -25,10 +25,17 @@ const FIX_CASES = {
   'await added to a data getter': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s); return <A r={r}/>;`],
   'await added with parentheses before optional chaining': [`const r = f(s)?.show; return <A r={r}/>;`, `const r = (await f(s))?.show; return <A r={r}/>;`],
   'async + await added inside a cache() getter, caller awaits too': [`const h = cache((s) => { const v = f(s)?.show; return v; }); const x = h(s); return <A x={x}/>;`, `const h = cache(async (s) => { const v = (await f(s))?.show; return v; }); const x = await h(s); return <A x={x}/>;`],
+  'async helper in a file that also re-exports something else': [`const h = (s) => { const v = f(s); return v; }; const x = await h(s); return <A x={x}/>;`, `const h = async (s) => { const v = await f(s); return v; }; const x = await h(s); return <A x={x}/>;`, "export { B as B2 };"],
+  'await added inside a parenthesised getter that was already parenthesised': [`const r = (f(s))?.show; return <A r={r}/>;`, `const r = (await f(s))?.show; return <A r={r}/>;`],
+  // Accepted residual (documented in visual-design-diff.js): the BRO-8056 shape, a guard on the awaited const.
+  'await added to a const that a not-found guard then checks': [`const r = f(s); if (!r) return null; return <A r={r}/>;`, `const r = await f(s); if (!r) return null; return <A r={r}/>;`],
   'await added to a getter result then used': [`const hd = g(s); return <A line={hd.line}/>;`, `const hd = await g(s); return <A line={hd.line}/>;`],
 };
-for (const [name, [a, b]] of Object.entries(FIX_CASES)) {
-  test(`fix: ${name}`, { skip: SKIP_TS }, () => { const r = classify(a, b); assert.equal(r.design, false, r.reason); });
+for (const [name, [a, b, tail]] of Object.entries(FIX_CASES)) {
+  test(`fix: ${name}`, { skip: SKIP_TS }, () => {
+    const r = tail ? D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(a) + tail, newSource: wrap(b) + tail }) : classify(a, b);
+    assert.equal(r.design, false, r.reason);
+  });
 }
 
 const DESIGN_CASES = {
@@ -42,13 +49,24 @@ const DESIGN_CASES = {
   'async added to a helper that a caller still calls without await': [`const h = cache((s) => { const v = f(s); return v; }); const x = h(s); return <A x={x}/>;`, `const h = cache(async (s) => { const v = await f(s); return v; }); const x = h(s); return <A x={x}/>;`],
   'async added to a helper passed by reference': [`const h = (s) => { const v = f(s); return v; }; return <A h={h}/>;`, `const h = async (s) => { const v = await f(s); return v; }; return <A h={h}/>;`],
   'async added to an inline callback': [`const v = L.map((s) => { const r = f(s); return r; }); return <A v={v}/>;`, `const v = L.map(async (s) => { const r = await f(s); return r; }); return <A v={v}/>;`],
+  'await added inside an if condition': [`if (f()) return null; return <A/>;`, `if (await f()) return null; return <A/>;`],
+  'await added in a ternary condition': [`return f() ? <A/> : <B/>;`, `return (await f()) ? <A/> : <B/>;`],
+  'await added to a const that feeds className': [`const c = f(); return <div className={c}/>;`, `const c = await f(); return <div className={c}/>;`],
+  'async added to a class method': [`class K { m(){ const v = f(); return v; } } return <A/>;`, `class K { async m(){ const v = await f(); return v; } } return <A/>;`],
+  'async helper exported by name': [`const h = (s) => { const v = f(s); return v; }; return <A/>;`, `const h = async (s) => { const v = await f(s); return v; }; return <A/>;`, "export { h };"],
   'parenthesised grouping changed (no await)': [`const n = (a + b) * c; return <A n={n}/>;`, `const n = a + b * c; return <A n={n}/>;`],
   'await plus a new identifier': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s) ?? fallback; return <A r={r}/>;`],
 };
-for (const [name, [a, b]] of Object.entries(DESIGN_CASES)) {
-  test(`design (fail closed): ${name}`, { skip: SKIP_TS }, () => { const r = classify(a, b); assert.equal(r.design, true, r.reason); });
+for (const [name, [a, b, tail]] of Object.entries(DESIGN_CASES)) {
+  test(`design (fail closed): ${name}`, { skip: SKIP_TS }, () => {
+    const r = tail ? D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(a) + tail, newSource: wrap(b) + tail }) : classify(a, b);
+    assert.equal(r.design, true, r.reason);
+  });
 }
 
+test('a string literal that starts with ~ cannot pose as an inserted token', { skip: SKIP_TS }, () => {
+  assert.equal(classify(`const r = f(s); return <A r={r}/>;`, `const q = "~AwaitExpression"; const r = f(s); return <A r={r}/>;`).design, true);
+});
 test('kill switch passed through the env option (as selfClear does) also disables it', { skip: SKIP_TS }, () => {
   const o = D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(`const r = f(s); return <A r={r}/>;`), newSource: wrap(`const r = await f(s); return <A r={r}/>;`), env: { VISUAL_AWAIT_TRANSPARENT_DISABLED: '1' } });
   assert.equal(o.design, true);

@@ -17,9 +17,10 @@
 //      so reworded copy, a changed handler, href or data path is a fix; a moved, added or removed element, a changed
 //      class, style, literal or tag target is design.
 //   4. (BRO-8169) the one exception to "identical": the new skeleton may ADD insertable tokens. An `await` (and the
-//      parentheses directly around it) on a non-JSX expression outside any JSX, and `async` on a function whose body has
-//      no JSX and awaits on its own. Removing any of these stays design (a Promise would then reach a condition or a
-//      class), as does `async` with no await of its own (callers would get a Promise). `for await` is not exempt.
+//      parentheses directly around it) on a non-JSX expression outside any JSX, not written straight into a branch
+//      condition, and not initialising a const that feeds className/class/style; and `async` on a non-exported named function
+//      whose body has no JSX, awaits on its own, and whose every use in the file is `await name(...)`. Removing any
+//      of these stays design (a Promise would then reach a condition or a class). `for await` is not exempt.
 //      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
 //
 // One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
@@ -77,12 +78,37 @@ function skeleton(ts, sf, env = process.env) {
   };
   scanUse(sf, false);
   const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
-  // BRO-8169: tokens a diff may ADD without changing what draws (prefixed '~'; see insertOnlyMatch).
-  const INS = env.VISUAL_AWAIT_TRANSPARENT_DISABLED === '1' ? '' : '~';
+  // BRO-8169: tokens a diff may ADD without changing what draws. Their indexes go in out.insertable (a side set, so
+  // no literal text can pose as one); see insertOnlyMatch. The kill switch leaves the set empty: exact old behaviour.
+  const insertableIdx = new Set();
+  const awaitExemptOn = env.VISUAL_AWAIT_TRANSPARENT_DISABLED !== '1';
   const isFn = (x) => ts.isFunctionDeclaration(x) || ts.isFunctionExpression(x) || ts.isArrowFunction(x) || ts.isMethodDeclaration(x);
   const JSX_KINDS = new Set([K.JsxElement, K.JsxSelfClosingElement, K.JsxFragment, K.JsxExpression, K.JsxAttribute, K.JsxSpreadAttribute, K.JsxOpeningElement]);
   const insideJsx = (x) => { for (let p = x.parent; p; p = p.parent) if (JSX_KINDS.has(p.kind)) return true; return false; };
-  const insertableAwait = (x) => ts.isAwaitExpression(x) && !insideJsx(x) && !hasJsx(x.expression);
+  // An await written straight into a branch condition, or whose const feeds a class/style, stays design: if the callee
+  // was already async, the old code tested a Promise (always truthy) or drew "[object Promise]". Accepted residual risk:
+  // a const that later reaches a condition (`const r = await get(); if (!r) notFound()`) is allowed, because that is
+  // the normal shape when the callee just became async (BRO-8056 p2), and the visual-qa verdict still has to pass.
+  const CLS_ATTR = /^(className|class|style)$/;
+  const upParens = (x) => { while (x.parent && ts.isParenthesizedExpression(x.parent)) x = x.parent; return x; };
+  const decidesDrawing = (x) => {
+    const e = upParens(x), p = e.parent;
+    if (!p) return false;
+    if ((ts.isIfStatement(p) || ts.isWhileStatement(p) || ts.isDoStatement(p)) && p.expression === e) return true;
+    if (ts.isForStatement(p) && p.condition === e) return true;
+    if (ts.isConditionalExpression(p) && p.condition === e) return true;
+    if (ts.isPrefixUnaryExpression(p) && p.operator === K.ExclamationToken) return true;
+    if (ts.isBinaryExpression(p) && [K.AmpersandAmpersandToken, K.BarBarToken, K.QuestionQuestionToken].includes(p.operatorToken.kind)) return true;
+    if (ts.isTemplateSpan(p)) return true; // `${promise}` text
+    return false;
+  };
+  const nameFeedsClass = (name) => { let hit = false; const w = (x, inCls) => { if (hit) return; let c = inCls; if (ts.isJsxAttribute(x)) c = CLS_ATTR.test(x.name.getText(sf)); if (ts.isIdentifier(x) && x.text === name && !(x.parent && ts.isVariableDeclaration(x.parent) && x.parent.name === x) && c) { hit = true; return; } ts.forEachChild(x, (y) => w(y, c)); }; w(sf, false); return hit; };
+  const insertableAwait = (x) => {
+    if (!ts.isAwaitExpression(x) || insideJsx(x) || hasJsx(x.expression) || decidesDrawing(x)) return false;
+    const d = upParens(x).parent; // `const v = await f()`: v must not later feed className/class/style
+    if (d && ts.isVariableDeclaration(d) && d.initializer === upParens(x) && ts.isIdentifier(d.name) && nameFeedsClass(d.name.text)) return false;
+    return true;
+  };
   const ownsAwait = (fn) => { let f = false; const w = (x) => { if (f) return; if (x !== fn.body && isFn(x)) return; if (ts.isAwaitExpression(x)) { f = true; return; } ts.forEachChild(x, w); }; if (fn.body) w(fn.body); return f; };
   // A newly async function returns a Promise, so every caller must await it. Only a function bound to a non-exported
   // const/function name whose every other mention in the file is `await name(...)` qualifies; an inline callback,
@@ -96,8 +122,8 @@ function skeleton(ts, sf, env = process.env) {
     const stmt = d.parent && d.parent.parent;
     return stmt && ts.isVariableStatement(stmt) ? { name: d.name, stmt } : null;
   };
-  const exported = (stmt) => !!(stmt.modifiers && stmt.modifiers.some((m) => m.kind === K.ExportKeyword))
-    || sf.statements.some((st) => ts.isExportDeclaration(st) || ts.isExportAssignment(st));
+  // `export { h }` / `export default h` are bare references, which everyUseAwaited already refuses.
+  const exported = (stmt) => !!(stmt.modifiers && stmt.modifiers.some((m) => m.kind === K.ExportKeyword));
   const everyUseAwaited = (b) => { let ok = true; const w = (x) => { if (!ok) return; if (ts.isIdentifier(x) && x !== b.name && x.text === b.name.text) { const c = x.parent; if (!(c && ts.isCallExpression(c) && c.expression === x && c.parent && ts.isAwaitExpression(c.parent))) ok = false; } ts.forEachChild(x, w); }; w(sf); return ok; };
   const insertableAsync = (x) => {
     if (x.kind !== K.AsyncKeyword || !x.parent || !isFn(x.parent) || !x.parent.body || hasJsx(x.parent.body) || !ownsAwait(x.parent)) return false;
@@ -157,7 +183,8 @@ function skeleton(ts, sf, env = process.env) {
       return;
     }
     const insertable = insertableAwait(n) || (ts.isParenthesizedExpression(n) && insertableAwait(n.expression)) || insertableAsync(n);
-    out.push(insertable ? INS + K[n.kind] : K[n.kind]);
+    if (insertable && awaitExemptOn) insertableIdx.add(out.length);
+    out.push(K[n.kind]);
     if (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) out.push(`op${n.operator}`);
     if (ts.isIdentifier(n) || ts.isPrivateIdentifier(n)) out.push(n.text);
     else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(norm(n.text));
@@ -168,20 +195,22 @@ function skeleton(ts, sf, env = process.env) {
   };
   visit(sf);
   out.imports = imports;
+  out.insertable = insertableIdx;
   return out;
 }
 
 /**
- * BRO-8169: is `after` equal to `before` with only insertable ('~'-prefixed) tokens added? Insert-only on purpose:
- * a '~' token present before must still be present after (a removed await stays design). A greedy walk is enough:
+ * BRO-8169: is `after` equal to `before` with only insertable tokens (indexes in after.insertable) added? Insert-only
+ * on purpose: every token present before must still be present after (a removed await stays design). A greedy walk is enough:
  * whenever it succeeds it has found such an embedding, and when it fails we fail closed.
  * -> { ok, added, at } (at = first token that broke the match).
  */
 function insertOnlyMatch(before, after) {
+  const insertable = after.insertable || new Set();
   let i = 0, j = 0, added = 0;
   while (i < before.length || j < after.length) {
     if (i < before.length && j < after.length && before[i] === after[j]) { i++; j++; continue; }
-    if (j < after.length && after[j][0] === '~') { j++; added++; continue; }
+    if (j < after.length && insertable.has(j)) { j++; added++; continue; }
     return { ok: false, added, at: after[j] || before[i] || '' };
   }
   return { ok: true, added, at: '' };
@@ -205,7 +234,7 @@ function classifyFile({ file, oldSource, newSource, env = process.env }) {
     for (const [name, target] of sa.imports) if (sb.imports.has(name) && sb.imports.get(name) !== target) return design(`import ${name} now points at a different module or export`);
     const m = insertOnlyMatch(sa, sb);
     if (m.ok) return { design: false, reason: m.added ? `page structure and style tokens unchanged (only ${m.added} await/async added)` : 'page structure and style tokens unchanged' };
-    return design(`layout/style changed near ${JSON.stringify((m.at || '').replace(/^~/, '').slice(0, 60))}`);
+    return design(`layout/style changed near ${JSON.stringify((m.at || '').slice(0, 60))}`);
   } catch (e) {
     return design(`classifier error (fail closed): ${e && e.message}`);
   }
