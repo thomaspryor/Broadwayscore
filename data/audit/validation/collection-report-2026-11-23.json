@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-23T03:45:29.776Z",
+  "runDate": "2026-11-23T04:02:11.612Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 51,
+    "failed": 52,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,24 +28,24 @@
     "archive": 30
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 51,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 52,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -55,7 +55,7 @@
   },
   "thisRun": {
     "processed": 0,
-    "failed": 51,
+    "failed": 52,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -77,6 +77,7 @@
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
+      "nine-night-off-west-end-2026",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
       "ragtime-2009",
@@ -151,6 +152,7 @@
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "the-nap-2018/nypost--johnny-oleksinski.json",
+    "nine-night-off-west-end-2026/times-uk--clive-davis.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "suffs-2024/guardian--adrian-horton.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
@@ -420,7 +422,8 @@
       "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
       "relative-motion-off-west-end-2026/reviewsgate--william-russell.json",
       "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-      "dogstar-off-west-end-2026/reviewsgate--william-russell.json"
+      "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+      "nine-night-off-west-end-2026/times-uk--clive-davis.json"
     ]
   },
   "tierDetails": {
@@ -554,6 +557,14 @@
       "speculations-off-west-end-2026/westminsterextra--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
