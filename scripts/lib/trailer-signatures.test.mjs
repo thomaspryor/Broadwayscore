@@ -660,7 +660,18 @@ test('BRO-8012 prefilter: each regex matches its sample, and stops matching once
   });
 });
 
-test('BRO-8012 prefilter: furniture samples still strip (pre-filter lets every match through)', () => {
+// the other branch of each alternation, so a literal only one branch carries fails
+const PF_BRANCH_SAMPLES = [
+  'Follow Time Out Theater on X: @TimeOutTheater',
+  '· What have you been to see lately? Tell us about it',
+  'WATCH THE VIDEO HERE',
+  'TICKETS: https://example.com/tix',
+];
+
+test('BRO-8012 prefilter: furnitureMatch still finds every sample (pre-filter lets every match through)', () => {
+  for (const tail of [...PF_SAMPLES, ...PF_BRANCH_SAMPLES]) {
+    assert.notEqual(PF.furnitureMatch(`${FT_PROSE} ${tail}`), null, `not matched: ${tail}`);
+  }
   for (const tail of PF_SAMPLES.slice(0, 16)) {
     assert.notEqual(FT.stripKnownTrailers(`${FT_PROSE} ${tail}`, 'unknown-outlet').length, `${FT_PROSE} ${tail}`.length, `not stripped: ${tail}`);
   }

@@ -517,7 +517,7 @@ const FURN_NAMES = "((?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|
 // tier pass). Each entry names literals its regex cannot match without (cs:
 // exact case; ci: lower-case, for an /i regex, checked against foldCase(t)), so
 // a cheap includes() skips the scan and never changes a result. A new regex
-// needs one. tests/unit/furniture-prefilter.test.mjs checks every entry.
+// needs one. scripts/lib/trailer-signatures.test.mjs checks every entry.
 // Template / script residue: never prose, so the whole tail goes.
 const FURN_CODE_RES = [
   { re: /\s*Δ\s*document\.getElementById\([\s\S]*$/, cs: ['document.getElementById('] },
@@ -699,7 +699,7 @@ module.exports = {
   trailerFixesEnabled,
   FOURTHWALSH_FOOTER_RE,
   OUTLET_TRAILER_STRIPPERS,
-  // BRO-8012: test seam for the literal pre-filter (tests/unit/furniture-prefilter.test.mjs)
+  // BRO-8012: test seam for the literal pre-filter (scripts/lib/trailer-signatures.test.mjs)
   _furniture: {
     furnitureMatch, foldCase,
     // every pre-filtered regex with its literals; unfiltered: the regexes that have no single required literal
