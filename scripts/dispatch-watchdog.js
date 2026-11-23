@@ -94,6 +94,8 @@ const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcome
   --ensure-tab          create/adopt/resurrect the 👑 OWNER watchdog tab
   --health              stale-heartbeat pager (for launchd, outside cmux)
   --status [--json]     print current classification without acting
+  --mem-report          print each live job's process-tree RSS vs the cap (read-only, no kills)
+  --mem-report          print each live job's process-tree RSS vs the cap (read-only, no kills)
 `;
 
 function watchdogOff() {
@@ -402,7 +404,28 @@ function diskPressureInputs() {
   return {
     diskFreeGB: runner.freeDiskGB(runner.REPO),
     diskFloorGB: runner.parseDispatchFloorGB(process.env.BSC_DISPATCH_DISK_FLOOR_GB),
+    // BRO-8167: same verdict bsc-runner's admission check uses.
+    memoryPressure: runner.shouldRefuseForMemory(runner.currentMemoryVerdict()),
   };
+}
+
+// BRO-8167: per-job process-tree RSS cap over the live job leases.
+const MEMORY_CAP_STATE_PATH = path.join(REPO, 'data', 'audit', 'job-memory-cap-state.json');
+async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledger = dispatchLedger, killFn = undefined, statePath = MEMORY_CAP_STATE_PATH, capGB = undefined } = {}) {
+  const cap = require('./lib/job-memory-cap.js');
+  const runner = require('./lib/bsc-runner.js');
+  return cap.runLeasePass({
+    jobs: jobs || cap.liveJobsFromLeases(path.join(REPO, 'data', 'audit', 'job-leases')),
+    rows: rows === undefined ? cap.sampleProcessTable() : rows,
+    statePath,
+    capGB: capGB || cap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB),
+    dryRun, ledger, ...(killFn ? { killFn } : {}),
+    alert: ({ taskId, reason }) => pageOwner({
+      conditionKey: `job-memory-cap:${taskId}`,
+      title: `Killed runaway worker ${taskId} (memory cap)`,
+      description: `Watchdog killed the headless worker for ${taskId}: ${reason}. It is recorded as a failed job; re-dispatch once the cause is understood.`,
+    }),
+  });
 }
 
 // ── actions ────────────────────────────────────────────────────────────────
@@ -526,6 +549,10 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     console.error(`[watchdog] holding dispatch: ${hold}`);
     try { require('./lib/bsc-runner.js').routeDiskPressureAlert(`${hold} — watchdog is holding all redispatches until it clears`); } catch (e) { console.error(`[watchdog] disk-pressure alert failed: ${e.message}`); }
   }
+
+  // BRO-8167 backstop: the runner samples its own tree (claude-cli.js); this
+  // catches a worker whose runner is gone or wedged. Never blocks the sweep.
+  try { await memoryCapPass({ dryRun: false }); } catch (e) { console.error(`[watchdog] memory-cap pass failed: ${e.message}`); }
 
   for (const item of plan.toPark) {
     // Card #1233: item.deaths is substantive-only unless the park itself was
@@ -1368,6 +1395,11 @@ async function main() {
     return 0;
   }
   if (argv.includes('--ensure-tab')) return ensureTab();
+  if (argv.includes('--mem-report')) { // BRO-8167: read-only, no kills, no state
+    const r = await memoryCapPass({ dryRun: true });
+    if (!r.perJob.length) console.log('[memory-cap] no live job leases with a running pid');
+    return 0;
+  }
   if (argv.includes('--sweep')) return sweepOnce({ dryRun: argv.includes('--dry-run') });
   if (argv.includes('--dashboard')) return dashboardLoop();
   if (argv.includes('--health')) return health();
@@ -1390,7 +1422,7 @@ if (require.main === module) {
     .catch(e => { console.error(`watchdog fatal: ${e.message}`); process.exitCode = 1; });
 }
 module.exports = {
-  main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
+  main, ensureTab, memoryCapPass, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   deliverDispatcherWakes, // BRO-8079
   pageIfKillSwitchStale,
   // BRO-2412: exported so the heartbeat-fresh-but-no-dispatch path is tested

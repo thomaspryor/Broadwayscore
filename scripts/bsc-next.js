@@ -1606,6 +1606,12 @@ function main(argv = process.argv.slice(2), deps = {}) {
           process.exitCode = 1;
           return;
         }
+        if (r.stage === 'memory-pressure') {
+          // BRO-8167: same nothing-spawned shape as disk-pressure.
+          console.error(`[bsc-next] task #${task.id} dispatch refused: memory pressure. Retry once the Mac recovers.`);
+          process.exitCode = 1;
+          return;
+        }
         // Task #1896: only NOW (not before runJob() was even called) is this
         // a real dispatch — 'lease-held' above means nothing was actually
         // spawned, and the dispatch claim must release immediately in that

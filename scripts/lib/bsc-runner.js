@@ -238,6 +238,15 @@ function parseDispatchFloorGB(raw, warn = console.error) {
   return n;
 }
 
+// BRO-8167: kernel memory-pressure admission. Pure decision + thin I/O.
+function shouldRefuseForMemory(verdict, env = process.env) {
+  if (String(env.BSC_DISPATCH_MEM_GUARD || '').trim() === '0') return false;
+  return Boolean(verdict) && verdict.dispatchViable === false;
+}
+function currentMemoryVerdict() {
+  try { return require('./swap-pressure.js').currentVmPressure(); } catch { return null; }
+}
+
 const GC_SCRIPT = path.join(REPO, 'scripts', 'gc-merged-worktrees.sh');
 
 // Same `df -Pk` parse as scripts/lib/disk-floor-check.sh's ensure_disk_floor,
@@ -442,6 +451,19 @@ async function runJob(opts) {
     return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
 
+  // BRO-8167: memory admission. The kernel's own pressure verdict (never raw
+  // free pages, see swap-pressure.js header) must be normal before a new
+  // worker is stacked on the machine. ABANDONED, not FAILED, for the same
+  // reason as disk-pressure above. Fail-open: no verdict (non-macOS/sysctl
+  // error) never refuses. BSC_DISPATCH_MEM_GUARD=0 turns it off.
+  const memVerdict = opts.memoryPressureFn ? opts.memoryPressureFn() : currentMemoryVerdict();
+  if (shouldRefuseForMemory(memVerdict)) {
+    const detail = `kernel memory pressure is ${memVerdict.level} (not normal) — refusing dispatch for task ${taskId}`;
+    console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
+    try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `memory-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
+    return { ok: false, jobId, stage: 'memory-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
+  }
+
   // Card #1454: acquireLease() (mkdirSync-based) can throw (e.g. LEASE_ROOT
   // unwritable) before ever returning ok/not-ok — without this catch, that
   // exception propagated straight to the caller's own .catch(), which only
@@ -594,6 +616,10 @@ async function runJob(opts) {
         sessionId: res.sessionId, cwd, model: model || null,
         costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,
         exitSignal: res.exitSignal || undefined,
+        // BRO-8167: memory-cap kill rides as fields (stage stays 'error').
+        reason: res.memoryCap ? res.memoryCap.reason : undefined,
+        memoryCapGB: res.memoryCap ? res.memoryCap.capGB : undefined,
+        rssGB: res.memoryCap ? res.memoryCap.rssGB : undefined,
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
@@ -615,7 +641,7 @@ async function runJob(opts) {
 
 module.exports = {
   gitSafeJobId, provisionJobWorktree,
-  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
+  runJob, shouldRefuseForMemory, currentMemoryVerdict, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB, routeDiskPressureAlert,
 };
