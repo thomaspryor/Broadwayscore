@@ -59,7 +59,13 @@ PRIMARY_REPO="/Users/tompryor/Broadwayscore"
 # the committed audit log. Production never sets it.
 LOG="${WORKTREE_GC_LOG:-$PRIMARY_REPO/data/audit/worktree-gc.log}"
 DRY_RUN=0
-[ "${1:-}" = "--dry-run" ] && DRY_RUN=1
+case "${1:-}" in
+  "") ;;
+  --dry-run) DRY_RUN=1 ;;
+  -h|--help) echo "usage: gc-merged-worktrees.sh [--dry-run]"; exit 0 ;;
+  *) echo "unrecognised argument: $1" >&2; echo "usage: gc-merged-worktrees.sh [--dry-run]" >&2; exit 2 ;;
+esac
+[ "$#" -le 1 ] || { echo "too many arguments" >&2; exit 2; }
 
 STALE_DAYS="${WORKTREE_GC_STALE_DAYS:-3}"
 DISK_FLOOR_GB="${WORKTREE_GC_DISK_FLOOR_GB:-20}"

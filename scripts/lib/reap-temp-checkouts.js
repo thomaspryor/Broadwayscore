@@ -313,6 +313,9 @@ module.exports = {
 //   --all [--repo R]... [--dry-run]   every eligible checkout; prints log lines.
 if (require.main === module) {
   const argv = process.argv.slice(2);
+  require('./strict-cli-flags').enforceArgs(argv,
+    { flags: ['--dry-run', '--all'], valueFlags: ['--one', '--repo'] },
+    'usage: reap-temp-checkouts.js --one <tmp>/<prefix>XXXXXX/main [--dry-run] | --all [--repo R]... [--dry-run]');
   const dryRun = argv.includes('--dry-run');
   const oneIdx = argv.indexOf('--one');
   if (oneIdx !== -1) {

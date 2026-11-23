@@ -349,6 +349,9 @@ module.exports = { hasNetworkRemote, DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_
 // CLI: node scripts/lib/reap-stale-tmp.js [--dry-run] [--root DIR] [--max-age-h N] [--budget-min N] [--no-measure]
 if (require.main === module) {
   const argv = process.argv.slice(2);
+  require('./strict-cli-flags').enforceArgs(argv,
+    { flags: ['--dry-run', '--no-measure'], valueFlags: ['--root', '--max-age-h', '--budget-min'] },
+    'usage: reap-stale-tmp.js [--dry-run] [--root DIR] [--max-age-h N] [--budget-min N] [--no-measure]');
   const val = (f) => { const i = argv.indexOf(f); return i === -1 ? undefined : argv[i + 1]; };
   const dryRun = argv.includes('--dry-run');
   const opts = { dryRun, measure: !argv.includes('--no-measure'), log: (l) => console.log(l) };

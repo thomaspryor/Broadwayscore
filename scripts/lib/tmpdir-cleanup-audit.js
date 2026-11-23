@@ -38,6 +38,9 @@ function flagged(files) {
 }
 
 function main(argv) {
+  require('./strict-cli-flags').enforceArgs(argv,
+    { flags: ['--strict', '--write-baseline'], valueFlags: ['--files'] },
+    'usage: tmpdir-cleanup-audit.js [--files LIST] [--strict] [--write-baseline]');
   const filesArg = argv.includes('--files') ? argv[argv.indexOf('--files') + 1] : null;
   const files = filesArg ? filesArg.split(',').filter(Boolean) : listTestFiles();
   const hits = flagged(files);
