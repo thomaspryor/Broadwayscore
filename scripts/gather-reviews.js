@@ -4336,7 +4336,12 @@ function createReviewFile(showId, reviewData, options = {}) {
       console.log(`    ⊘ ${normalizedOutletId}: ${_intakeReject} — not routed to _pending (BRO-8023): ${review.url}`);
       return 'pendingIntakeReject'; // a string so the caller's logExclusion records it (audit trail)
     }
-    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
+    // BRO-8090 root cause: the show was picked by TITLE alone, so a sibling production's review was filed (and
+    // later settled out-of-window) under the wrong one. File it under the unique same-title sibling whose window
+    // holds its date.
+    const pendingShowId = require('./lib/pending-sibling-productions').intakeShowIdForStub(_showMeta, _allShows, require('./lib/pending-triage').stubDateIso(review.publishDate), review) || showId;
+    if (pendingShowId !== showId) { review.showId = pendingShowId; review.rehomedFrom = showId; require('./lib/pending-sibling-productions').stripForeignShowFlags(review); }
+    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', pendingShowId);
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     const urlHash = (() => {
       let h = 0;
@@ -4351,7 +4356,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     let existingPending = null;
     try { existingPending = JSON.parse(fs.readFileSync(pendingPath, 'utf8')); } catch { /* new stub */ }
     fs.writeFileSync(pendingPath, JSON.stringify(mergePendingRecord(existingPending, review), null, 2));
-    console.log(`    → no byline — routing to pending: _pending/${showId}/${pendingFilename}`);
+    console.log(`    → no byline — routing to pending: _pending/${pendingShowId}/${pendingFilename}`);
     return true;
   }
 

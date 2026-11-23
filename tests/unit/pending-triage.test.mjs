@@ -603,3 +603,385 @@ test('BRO-8023: a ".html" review slug naming "interview" is not rejected as an i
   const r = pendingIntakeRejectReason({ url: 'https://www.nytimes.com/2026/05/02/theater/the-interview-review.html' }, null);
   assert.equal(r, null);
 });
+
+// ---- BRO-8090: opaque urls are never "not this show"; a sibling-owned article is rehomed, not settled ----
+const S = require('../../scripts/lib/pending-sibling-productions.js');
+const V = require('../../scripts/lib/show-match-verifier.js');
+const { pendingPromoteRejectReason, isInconclusiveReject } = require('../../scripts/replay-pending-bylines.js');
+
+// Real shows.json rows (2026-11-22).
+const YEES = { id: 'king-of-the-yees-off-broadway-2026', title: 'King of the Yees', market: 'broadway', venue: 'Signature Theatre Company/Alice Griffin Jewel Box Theater', previewsStartDate: '2026-10-06', openingDate: '2026-10-19', closingDate: '2026-11-15' };
+const A1536 = { id: '1536-off-west-end-2026', title: '1536', market: 'west-end', venue: 'Almeida Theatre', previewsStartDate: '2025-05-06', openingDate: '2025-05-13', closingDate: '2025-06-07' };
+const B1536 = { id: '1536-west-end-2026', title: '1536', market: 'west-end', venue: 'Ambassadors Theatre', previewsStartDate: '2026-05-02', openingDate: '2026-05-12', closingDate: '2026-08-01' };
+const GHOST23 = { id: '2-22-a-ghost-story-west-end-2023', title: '2:22 A Ghost Story', market: 'west-end', venue: 'Lyric Theatre', previewsStartDate: '2023-01-21', openingDate: '2023-02-01', closingDate: '2023-04-23' };
+const GHOST26 = { id: '222-a-ghost-story-off-broadway-2026', title: '2:22 A Ghost Story', market: 'broadway', venue: 'Other Venue', previewsStartDate: '2026-03-01', openingDate: '2026-03-12', closingDate: '2026-06-01' };
+const ALL = [YEES, A1536, B1536, GHOST23, GHOST26];
+
+describe('BRO-8090 A: opaque urls are judged on page text, never settled by the slug', () => {
+  const OPAQUE = [
+    'https://www.talkinbroadway.com/page/ob/10_19_26b.html',
+    'https://www.ft.com/content/4347fa86-1c2d-4a1e-9b0a-6f3d2e8c9a10',
+    'https://variety.com/review/VE1117941432.html',
+  ];
+  for (const u of OPAQUE) test(`isOpaqueSlug: ${u}`, () => assert.equal(V.isOpaqueSlug(u), true));
+  test('a url with title-ish words is not opaque', () => {
+    assert.equal(V.isOpaqueSlug('https://www.standard.co.uk/culture/theatre/1536-at-ambassadors-theatre-review-b1282189.html'), false);
+    assert.equal(V.isOpaqueSlug('https://www.nytimes.com/2026/10/19/theater/king-of-the-yees-review.html'), false);
+  });
+  test('King of the Yees opaque Talkin\' Broadway url whose page names the show is NOT rejected', () => {
+    const html = '<html><head><title>Talkin\' Broadway Off-Broadway Reviews</title></head><body><h2>King of the Yees</h2><p>Lloyd Suh\'s King of the Yees, at the Signature, opens tonight.</p></body></html>';
+    const r = pendingPromoteRejectReason(OPAQUE[0], html, YEES, '2026-10-19');
+    assert.equal(r, null, String(r));
+  });
+  test('opaque url whose page does not name the show is inconclusive (unsettled), not "not this show"', () => {
+    const r = pendingPromoteRejectReason(OPAQUE[1], '<html><title>FT</title><body>Markets rally.</body></html>', YEES, '2026-10-19');
+    assert.equal(isInconclusiveReject(r), true, String(r));
+    assert.doesNotMatch(String(r), /not this show/);
+  });
+  test('an opaque url whose only mention of the show is a sidebar link stays inconclusive (Codex ship-check)', () => {
+    const html = '<html><title>FT</title><body><h1>Markets rally</h1><p>Stocks rose.</p><aside>Also read: King of the Yees review</aside></body></html>';
+    const r = pendingPromoteRejectReason(OPAQUE[1], html, YEES, '2026-10-19');
+    assert.equal(isInconclusiveReject(r), true, String(r));
+  });
+  test('a DESCRIPTIVE slug sharing no title word still settles as not this show', () => {
+    const r = pendingPromoteRejectReason('https://www.nytimes.com/2026/10/19/theater/hamilton-review.html', '<html><title>x</title><body>nothing</body></html>', YEES, '2026-10-19');
+    assert.match(String(r), /not this show \(url-token-mismatch\)/);
+  });
+});
+
+describe('BRO-8090 B: an out-of-window article owned by exactly one sibling production is rehomed', () => {
+  test('1536 Ambassadors review (Almeida stub) resolves to 1536-west-end-2026', () => {
+    const r = S.resolveOutOfWindowStub({ show: A1536, allShows: ALL, publishDate: '2026-05-13', stub: {} });
+    assert.deepEqual([r.kind, r.sibling], ['rehome', '1536-west-end-2026']);
+  });
+  test('sibling already holding the url (live copy or scored) = duplicate', () => {
+    assert.equal(S.resolveOutOfWindowStub({ show: A1536, allShows: ALL, publishDate: '2026-05-13', hasCopy: () => true }).kind, 'duplicate');
+    assert.equal(S.resolveOutOfWindowStub({ show: A1536, allShows: ALL, publishDate: '2026-05-13', holdsUrl: () => true }).kind, 'duplicate');
+  });
+  test('no sibling window fits = outside-all; a stub already rehomed once is never bounced again', () => {
+    assert.equal(S.resolveOutOfWindowStub({ show: A1536, allShows: ALL, publishDate: '2019-01-01' }).kind, 'outside-all');
+    assert.notEqual(S.resolveOutOfWindowStub({ show: A1536, allShows: ALL, publishDate: '2026-05-13', stub: { rehomedFrom: 'x' } }).kind, 'rehome');
+  });
+  test('rehomedStub retargets showId, clears the settle, takes the verdict date', () => {
+    const o = S.rehomedStub({ showId: A1536.id, publishDate: '2025-05-18', promoteSkippedReason: 'x', promoteSkippedAt: 'y', url: 'u' }, A1536.id, B1536.id, { publishDate: '2026-05-13', nowIso: 'n' });
+    assert.equal(o.showId, B1536.id); assert.equal(o.publishDate, '2026-05-13'); assert.equal(o.rehomedFrom, A1536.id);
+    assert.equal(o.promoteSkippedReason, undefined);
+  });
+  test('triage with a stub date inside the sibling window returns rehome, not junk (222 A Ghost Story)', () => {
+    const v = T.triagePendingStub({ url: 'https://example.com/theatre/222-ghost-story-review', publishDate: '2023-02-03' }, { showId: GHOST26.id, show: GHOST26, allShows: ALL, heldIndex: new Map() });
+    assert.deepEqual([v.verdict, v.sibling], ['rehome', GHOST23.id]);
+  });
+  test('triage without a sibling list keeps the old junk settle (old callers unchanged)', () => {
+    const v = T.triagePendingStub({ url: 'https://example.com/theatre/222-ghost-story-review', publishDate: '2023-02-03' }, { showId: GHOST26.id, show: GHOST26, heldIndex: new Map() });
+    assert.equal(v.verdict, 'junk');
+  });
+  test('rehomeStubFile moves the file, and refuses to overwrite a sibling copy', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090-'));
+    fs.mkdirSync(path.join(root, '_pending', A1536.id), { recursive: true });
+    const f = 'standard--1e731241.json';
+    const data = { showId: A1536.id, url: 'u', publishDate: '2025-05-18' };
+    fs.writeFileSync(path.join(root, '_pending', A1536.id, f), JSON.stringify(data));
+    assert.equal(S.rehomeStubFile({ root, file: f, fromShowId: A1536.id, toShowId: B1536.id, data, publishDate: '2026-05-13' }), 'rehomed');
+    assert.equal(fs.existsSync(path.join(root, '_pending', A1536.id, f)), false);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(root, '_pending', B1536.id, f), 'utf8')).showId, B1536.id);
+    fs.writeFileSync(path.join(root, '_pending', A1536.id, f), JSON.stringify(data));
+    assert.equal(S.rehomeStubFile({ root, file: f, fromShowId: A1536.id, toShowId: B1536.id, data }), 'sibling-has-copy');
+    assert.equal(fs.existsSync(path.join(root, '_pending', A1536.id, f)), true);
+  });
+});
+
+describe('BRO-8090 root cause: intake files a stub under the sibling whose window holds its date', () => {
+  test('intakeShowIdForStub routes by date; in-window or ambiguous stays put', () => {
+    assert.equal(S.intakeShowIdForStub(A1536, ALL, '2026-05-13'), B1536.id);
+    assert.equal(S.intakeShowIdForStub(A1536, ALL, '2025-05-18'), A1536.id);
+    assert.equal(S.intakeShowIdForStub(A1536, ALL, '2019-01-01'), A1536.id);
+    assert.equal(S.intakeShowIdForStub(A1536, ALL, null), A1536.id);
+  });
+  test('gather-reviews pending writer uses it (guard against reverting the wiring)', () => {
+    const src = fs.readFileSync(new URL('../../scripts/gather-reviews.js', import.meta.url), 'utf8');
+    assert.match(src, /intakeShowIdForStub\(_showMeta, _allShows, require\('.\/lib\/pending-triage'\)\.stubDateIso\(review\.publishDate\), review\)/);
+    assert.match(src, /path\.join\(REVIEW_TEXTS_DIR, '_pending', pendingShowId\)/);
+  });
+});
+
+describe('BRO-8090: a many-production title needs venue corroboration before a rehome', () => {
+  const mk = (id, venue, open, close) => ({ id, title: 'A Christmas Carol', venue, previewsStartDate: open, openingDate: open, closingDate: close, market: 'west-end' });
+  const FAM = [mk('acc-2012', 'Noel Coward', '2012-11-01', '2012-12-31'), mk('acc-2022', 'Old Vic', '2022-11-01', '2022-12-31'),
+    mk('acc-2023', 'Old Vic', '2023-11-20', '2024-01-10'), mk('acc-2024', 'Old Vic', '2024-11-15', '2025-01-05')];
+  test('Dundee Rep review dated in the Old Vic window stays settled (unverified-family)', () => {
+    const stub = { url: 'https://www.whatsonstage.com/news/a-christmas-carol-at-dundee-rep-theatre-review_1555376/' };
+    assert.equal(S.resolveOutOfWindowStub({ show: FAM[0], allShows: FAM, publishDate: '2023-12-04', stub }).kind, 'unverified-family');
+  });
+  test('the same review naming the Old Vic rehomes', () => {
+    const stub = { url: 'https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-john-simm-old-vic-w2wtzgpqq' };
+    assert.equal(S.resolveOutOfWindowStub({ show: FAM[0], allShows: FAM, publishDate: '2023-12-04', stub }).kind, 'rehome');
+  });
+});
+
+describe('BRO-8090: guards found by the real-data sample audit', () => {
+  const MAT = [{ id: 'matilda-off-2026', title: 'Matilda the Musical', venue: 'Theatre Row', market: 'broadway', previewsStartDate: '2026-01-01', openingDate: '2026-01-10', closingDate: '2026-03-01' },
+    { id: 'matilda-west-end-2021', title: 'Matilda the Musical', venue: 'Cambridge Theatre', market: 'west-end', previewsStartDate: '2022-11-01', openingDate: '2022-11-10', closingDate: '2023-03-01' }];
+  test('a film review dated inside a stage run is not rehomed', () => {
+    const r = S.resolveOutOfWindowStub({ show: MAT[0], allShows: MAT, publishDate: '2022-12-23', stub: { url: 'https://www.thewrap.com/matilda-the-musical-film-review-netflix-emma-thompson/' } });
+    assert.equal(r.kind, 'screen-not-stage');
+  });
+  test('a venue homepage settled by url-token-mismatch is NOT un-settled; an opaque article path is', async () => {
+    const R = require('../../scripts/rejudge-settled-pending.js');
+    const base = { promoteSkippedReason: 'not this show (url-token-mismatch)' };
+    assert.equal(R.rejudgeSettledStub({ stub: { ...base, url: 'https://delfontmackintosh.co.uk/' }, show: YEES, allShows: ALL }).action, 'keep');
+    assert.equal(R.rejudgeSettledStub({ stub: { ...base, url: 'https://www.talkinbroadway.com/page/ob/10_19_26b.html' }, show: YEES, allShows: ALL }).action, 'unsettle');
+  });
+});
+
+describe('BRO-8090: an open-ended sibling window needs venue corroboration (Tosca, Harry Potter)', () => {
+  const TOSCA26 = { id: 'tosca-off-broadway-2026', title: 'Tosca', venue: 'Metropolitan Opera House', previewsStartDate: '2026-11-01', openingDate: '2026-11-01', closingDate: '2027-05-27' };
+  const TOSCA17 = { id: 'tosca-off-broadway-2017', title: 'Tosca', venue: 'Metropolitan Opera House', openingDate: '2017-12-31' };
+  test('Oxford International Opera Tosca is not rehomed onto the undated 2017 Met production', () => {
+    const r = S.resolveOutOfWindowStub({ show: TOSCA26, allShows: [TOSCA26, TOSCA17], publishDate: '2026-09-28', stub: { url: 'https://seenandheard-international.com/2026/09/oxford-international-opera-makes-its-debut-with-a-b' } });
+    assert.notEqual(r.kind, 'rehome');
+  });
+  test('a review that names the sibling venue still rehomes', () => {
+    const r = S.resolveOutOfWindowStub({ show: TOSCA26, allShows: [TOSCA26, TOSCA17], publishDate: '2018-01-10', stub: { url: 'https://www.thestage.co.uk/reviews/tosca-review-metropolitan-opera-house' } });
+    assert.equal(r.kind, 'rehome');
+  });
+});
+
+// Real shows.json rows (2026-11-22). The Oh, Mary! family has 4 entries, so the date alone never moves a stub.
+const OHM = [
+  { id: 'oh-mary-2024', title: 'Oh, Mary!', category: 'broadway', venue: 'Lyceum Theatre', previewsStartDate: '2024-06-26', openingDate: '2024-07-11', closingDate: '2025-12-01' },
+  { id: 'oh-mary-west-end-2025', title: 'Oh, Mary!', category: 'west-end', venue: 'Trafalgar Theatre', previewsStartDate: '2025-12-03', openingDate: '2025-12-18', closingDate: '2027-06-05' },
+  { id: 'oh-mary-off-broadway-2024', title: 'Oh, Mary!', category: 'off-broadway', venue: 'Lucille Lortel Theatre', previewsStartDate: '2024-01-26', openingDate: '2024-02-11', closingDate: '2024-05-26' },
+  { id: 'oh-mary-tour-2026', title: 'Oh, Mary!', category: 'tour', venue: 'North American Tour', openingDate: '2026-09-19' },
+];
+const MINCE = [
+  { id: 'operation-mincemeat-2025', title: 'Operation Mincemeat', category: 'broadway', venue: 'John Golden Theatre', previewsStartDate: '2025-02-15', openingDate: '2025-03-20', closingDate: '2027-07-04' },
+  { id: 'operation-mincemeat-west-end-2024', title: 'Operation Mincemeat', category: 'west-end', venue: 'Fortune Theatre', previewsStartDate: '2023-03-29', openingDate: '2023-05-09' },
+  { id: 'operation-mincemeat-tour-2026', title: 'Operation Mincemeat', category: 'tour', venue: 'North American Tour', openingDate: '2026-09-20' },
+];
+
+describe('BRO-8090: a big family or 2+ fitting siblings are told apart by venue or market in the url', () => {
+  test('Time Out "oh-mary-broadway-review" filed under the West End run rehomes to the Broadway run', () => {
+    const stub = { url: 'https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola' };
+    const r = S.resolveOutOfWindowStub({ show: OHM[1], allShows: OHM, publishDate: '2024-07-11', stub });
+    assert.equal(r.kind, 'rehome'); assert.equal(r.sibling, 'oh-mary-2024');
+  });
+  test('the same family without a market word stays settled (NYT url has none)', () => {
+    const stub = { url: 'https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html' };
+    assert.equal(S.resolveOutOfWindowStub({ show: OHM[1], allShows: OHM, publishDate: '2024-07-12', stub }).kind, 'unverified-family');
+  });
+  test('Operation Mincemeat Broadway review under the tour: 2 siblings fit, the url names Broadway', () => {
+    const stub = { url: 'https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review' };
+    const r = S.resolveOutOfWindowStub({ show: MINCE[2], allShows: MINCE, publishDate: '2025-03-20', stub });
+    assert.equal(r.kind, 'rehome'); assert.equal(r.sibling, 'operation-mincemeat-2025');
+  });
+  test('"off-broadway" and the host name never count as Broadway', () => {
+    assert.equal(S.stubNamesMarket({ url: 'https://www.broadwayworld.com/off-broadway/article/x' }, MINCE[0], MINCE[2]), false);
+    assert.equal(S.stubNamesMarket({ url: 'https://www.broadwaynews.com/x-review/' }, MINCE[0], MINCE[2]), false);
+    assert.equal(S.stubNamesMarket({ url: 'https://www.broadwayworld.com/westend/article/x' }, MINCE[1], MINCE[2]), true);
+  });
+  test('a Christmas Carol at the Gate dated inside the Broadway run stays settled', () => {
+    const CC = [{ id: 'a-christmas-carol-west-end-2023', title: 'A Christmas Carol', category: 'west-end', venue: 'The Old Vic', previewsStartDate: '2023-11-13', openingDate: '2023-11-22', closingDate: '2024-01-06' },
+      { id: 'a-christmas-carol-2019', title: 'A Christmas Carol', category: 'broadway', venue: 'Lyceum Theatre', previewsStartDate: '2019-11-07', openingDate: '2019-11-20', closingDate: '2020-01-05' },
+      { id: 'a-christmas-carol-west-end-2022', title: 'A Christmas Carol', category: 'west-end', venue: 'The Old Vic', previewsStartDate: '2022-11-12', openingDate: '2022-11-20', closingDate: '2023-01-07' },
+      { id: 'a-christmas-carol-2022', title: 'A Christmas Carol', category: 'broadway', venue: 'Nederlander Theatre', previewsStartDate: '2022-11-12', openingDate: '2022-11-21', closingDate: '2023-01-01' }];
+    const r = S.resolveOutOfWindowStub({ show: CC[0], allShows: CC, publishDate: '2019-12-01', stub: { url: 'https://www.thetimes.com/uk/article/review-a-christmas-carol-at-the-gate-2tn90znpv' } });
+    assert.notEqual(r.kind, 'rehome');
+  });
+});
+
+describe('BRO-8090 cousins: the no-fetch triage rehomes instead of junking a sibling\'s review', () => {
+  const T = require('../../scripts/lib/pending-triage.js');
+  test('url-date rule: a 2023 Lyric review of 2:22 dated by its url, filed under the 2026 run, rehomes to the 2023 entry', () => {
+    const stub = { url: 'https://www.theguardian.com/stage/2023/feb/02/222-a-ghost-story-review-lyric-theatre' };
+    const v = T.triagePendingStub(stub, { showId: GHOST26.id, show: GHOST26, allShows: ALL, sameTitleShows: T.sameTitleShowsFrom(GHOST26, ALL) });
+    assert.equal(v.verdict, 'rehome', JSON.stringify(v)); assert.equal(v.sibling, GHOST23.id); assert.equal(v.publishDate, '2023-02-02');
+  });
+  test('url-date rule with no sibling in the window still settles as junk', () => {
+    const stub = { url: 'https://www.theguardian.com/stage/2019/may/14/1536-review' };
+    assert.equal(T.triagePendingStub(stub, { showId: B1536.id, show: B1536, allShows: ALL }).verdict, 'junk');
+  });
+  test('url-date rule: the sibling already holding the url is a duplicate settle', () => {
+    const stub = { url: 'https://www.theguardian.com/stage/2023/feb/02/222-a-ghost-story-review-lyric-theatre' };
+    const v = T.triagePendingStub(stub, { showId: GHOST26.id, show: GHOST26, allShows: ALL, siblingHasCopy: (sid) => sid === GHOST23.id });
+    assert.equal(v.verdict, 'junk'); assert.match(v.reason, /already holds this url/);
+  });
+  test('sibling-venue rule: "twelfth-night-at-the-young-vic" under the Olivier run rehomes to the Young Vic entry', () => {
+    const OL = { id: 'twelfth-night-west-end-2017', title: 'Twelfth Night', category: 'west-end', venue: 'Olivier Theatre', previewsStartDate: '2017-02-15', openingDate: '2017-02-22', closingDate: '2017-05-13' };
+    const YV = { id: 'twelfth-night-off-west-end-2014', title: 'Twelfth Night', category: 'off-west-end', venue: 'Young Vic', previewsStartDate: '2014-03-01', openingDate: '2014-03-10', closingDate: '2014-04-12' };
+    const all = [OL, YV];
+    const stub = { url: 'https://example.com/theatre/twelfth-night-at-the-young-vic-review' };
+    const v = T.triagePendingStub(stub, { showId: OL.id, show: OL, allShows: all, sameTitleShows: T.sameTitleShowsFrom(OL, all) });
+    assert.equal(v.verdict, 'rehome', JSON.stringify(v)); assert.equal(v.sibling, YV.id);
+    // Without the full list (old callers) the old junk settle stands.
+    assert.equal(T.triagePendingStub(stub, { showId: OL.id, show: OL, sameTitleShows: T.sameTitleShowsFrom(OL, all) }).verdict, 'junk');
+  });
+});
+
+describe('BRO-8090 root cause: the write guard quarantines a sibling\'s review into the sibling\'s _pending', () => {
+  const G = require('../../scripts/lib/review-write-guard.js');
+  test('a 2026 Ambassadors review written under the 2025 Almeida entry is quarantined under 1536-west-end-2026', () => {
+    G._setShowsCacheForTest(new Map(ALL.map((s) => [s.id, s])));
+    const q = G._quarantineTarget(A1536.id, A1536, { url: 'https://www.standard.co.uk/culture/theatre/1536-ambassadors-review-b1', publishDate: '2026-05-13' });
+    assert.equal(q.dirId, B1536.id); assert.equal(q.payload.showId, B1536.id); assert.equal(q.payload.rehomedFrom, A1536.id);
+  });
+  test('no fitting sibling: stays under its own show', () => {
+    G._setShowsCacheForTest(new Map(ALL.map((s) => [s.id, s])));
+    assert.equal(G._quarantineTarget(A1536.id, A1536, { url: 'https://x.com/1536-review', publishDate: '2019-01-01' }).dirId, A1536.id);
+  });
+});
+
+describe('BRO-8090 sample-audit guards: the url says it is about something else', () => {
+  test('a Romeo and Juliet review is never moved to & Juliet (longer tracked title in the slug)', () => {
+    const AJ = [{ id: 'and-juliet-west-end-2019', title: '& Juliet', category: 'west-end', venue: 'Shaftesbury Theatre', previewsStartDate: '2019-11-02', openingDate: '2019-11-20', closingDate: '2023-03-25' },
+      { id: 'and-juliet-2022', title: '& Juliet', category: 'broadway', venue: 'Stephen Sondheim Theatre', previewsStartDate: '2022-10-28', openingDate: '2022-11-17', closingDate: '2025-07-27' },
+      { id: 'romeo-and-juliet-west-end-2024', title: 'Romeo & Juliet', category: 'west-end', venue: 'Duke of York\'s Theatre', previewsStartDate: '2024-05-11', openingDate: '2024-05-23', closingDate: '2024-08-03' }];
+    const r = S.resolveOutOfWindowStub({ show: AJ[0], allShows: AJ, publishDate: '2024-05-23', stub: { url: 'https://www.thetimes.com/culture/theatre-dance/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg' } });
+    assert.equal(r.kind, 'longer-title');
+    const bourne = S.resolveOutOfWindowStub({ show: AJ[0], allShows: AJ, publishDate: '2023-08-07', stub: { url: 'https://ew.com/romeo-juliet-review-matthew-bourne-mounts-searing-ballet-8557736' } });
+    assert.equal(bourne.kind, 'longer-title');
+    // a real & Juliet review still moves
+    const ok = S.resolveOutOfWindowStub({ show: AJ[0], allShows: AJ, publishDate: '2022-11-17', stub: { url: 'https://www.thewrap.com/and-juliet-broadway-review/' } });
+    assert.equal(ok.kind, 'rehome'); assert.equal(ok.sibling, 'and-juliet-2022');
+  });
+  test('a Summer Holiday review at the Crucible, Sheffield is not The Crucible', () => {
+    const CR = [{ id: 'the-crucible-west-end-2022', title: 'The Crucible', category: 'west-end', venue: 'National Theatre', previewsStartDate: '2022-09-01', openingDate: '2022-09-22', closingDate: '2022-11-05' },
+      { id: 'the-crucible-crucible-regional-2024', title: 'The Crucible', category: 'regional', venue: 'Crucible Theatre, Sheffield', previewsStartDate: '2026-06-20', openingDate: '2026-06-25', closingDate: '2026-07-18' }];
+    const r = S.resolveOutOfWindowStub({ show: CR[0], allShows: CR, publishDate: '2026-07-01', stub: { url: 'https://www.thetimes.com/culture/theatre-dance/article/summer-holiday-review-cliff-richard-musical-crucible-sheffield-blackpool-grand-ptw7d77lz' } });
+    assert.equal(r.kind, 'title-not-in-url');
+    const ok = S.resolveOutOfWindowStub({ show: CR[0], allShows: CR, publishDate: '2026-07-01', stub: { url: 'https://www.thestage.co.uk/reviews/the-crucible-review-crucible-theatre-sheffield' } });
+    assert.equal(ok.kind, 'rehome');
+  });
+  test('a url naming Broadway never moves a stub to the West End sibling (Oedipus)', () => {
+    const OE = [{ id: 'oedipus-2025', title: 'Oedipus', category: 'broadway', venue: 'Studio 54', previewsStartDate: '2026-10-01', openingDate: '2026-10-20', closingDate: '2027-01-10' },
+      { id: 'oedipus-west-end-2025', title: 'Oedipus', category: 'west-end', venue: 'Wyndham\'s Theatre', previewsStartDate: '2024-10-04', openingDate: '2024-10-15', closingDate: '2025-03-31' }];
+    const r = S.resolveOutOfWindowStub({ show: OE[0], allShows: OE, publishDate: '2025-03-06', stub: { url: 'https://deadline.com/2025/03/oedipus-broadway-mark-strong-lesley-manville-roundabout-season-1236312536/' } });
+    assert.equal(r.kind, 'market-mismatch');
+  });
+  test('a Times travel piece naming Kyoto is not the play Kyoto', () => {
+    const KY = [{ id: 'kyoto-west-end-2025', title: 'Kyoto', category: 'west-end', venue: 'Soho Place', previewsStartDate: '2025-06-02', openingDate: '2025-06-10', closingDate: '2025-08-30' },
+      { id: 'kyoto-off-broadway-2025', title: 'Kyoto', category: 'off-broadway', venue: 'Mitzi E. Newhouse Theater', previewsStartDate: '2025-10-16', openingDate: '2025-11-03', closingDate: '2026-01-04' }];
+    const r = S.resolveOutOfWindowStub({ show: KY[0], allShows: KY, publishDate: '2025-11-06', stub: { url: 'https://www.thetimes.com/travel/destinations/asia-travel/japan/intrepid-travel-tokyo-mishima-kawane-kyoto-osaka-tour-review-zmwrs5cbb' } });
+    assert.equal(r.kind, 'travel-not-stage');
+  });
+  test('opaque slugs carry no title evidence (King of the Yees talkinbroadway page)', () => {
+    assert.equal(S.urlContradictsTitle({ url: 'https://www.talkinbroadway.com/page/ob/10_19_26b.html' }, YEES, null, ALL), null);
+  });
+});
+
+describe('BRO-8090 second sample audit', () => {
+  test('"minions-and-monsters-review" is not The Monsters (compound title)', () => {
+    const M = [{ id: 'the-monsters-off-broadway-2026', title: 'The Monsters', category: 'off-broadway', venue: 'Manhattan Theatre Club', previewsStartDate: '2026-10-01', openingDate: '2026-10-20', closingDate: '2026-12-01' },
+      { id: 'the-monsters-regional-2026', title: 'The Monsters', category: 'regional', venue: 'Some Rep', previewsStartDate: '2026-06-01', openingDate: '2026-06-10', closingDate: '2026-07-20' }];
+    assert.equal(S.resolveOutOfWindowStub({ show: M[0], allShows: M, publishDate: '2026-06-29', stub: { url: 'https://deadline.com/2026/06/minions-and-monsters-review-pierre-coffin-allison-janney-trey-parker-1236969888/' } }).kind, 'compound-title');
+    assert.equal(S.resolveOutOfWindowStub({ show: M[0], allShows: M, publishDate: '2026-06-29', stub: { url: 'https://www.thestage.co.uk/reviews/review-and-the-monsters-play' } }).kind, 'rehome');
+  });
+  test('a "uk-tour" review never moves to the New York run (People, Places and Things)', () => {
+    const P = [{ id: 'people-places-and-things-west-end-2016', title: 'People, Places and Things', category: 'west-end', venue: 'Wyndham\'s Theatre', previewsStartDate: '2016-03-15', openingDate: '2016-03-23', closingDate: '2016-06-18' },
+      { id: 'people-places-and-things-off-broadway-2017', title: 'People, Places and Things', category: 'off-broadway', venue: 'St. Ann\'s Warehouse', previewsStartDate: '2017-10-03', openingDate: '2017-10-10', closingDate: '2017-11-19' }];
+    assert.equal(S.resolveOutOfWindowStub({ show: P[0], allShows: P, publishDate: '2017-10-16', stub: { url: 'https://www.whatsonstage.com/news/review-people-places-and-things-uk-tour_44890/' } }).kind, 'market-mismatch');
+  });
+  test('a stub the sibling\'s own triage would junk is not moved (Deadline box-office story)', () => {
+    const H = [{ id: 'harry-potter-and-the-cursed-child-one-part-west-end-2026', title: 'Harry Potter and the Cursed Child', category: 'west-end', venue: 'Palace Theatre', previewsStartDate: '2026-09-01', openingDate: '2026-09-10' },
+      { id: 'harry-potter-2021', title: 'Harry Potter and the Cursed Child', category: 'broadway', venue: 'Lyric Theatre', previewsStartDate: '2021-10-12', openingDate: '2021-11-16', closingDate: '2027-01-01' }];
+    assert.equal(S.resolveOutOfWindowStub({ show: H[0], allShows: H, publishDate: '2025-12-09', stub: { url: 'https://deadline.com/2025/12/broadway-box-office-tom-felton-harry-potter-cursed-child-ragtime-1236643496/' } }).kind, 'junk-for-sibling');
+  });
+});
+
+describe('BRO-8090 ship-check fixes', () => {
+  test('rehomeStubFile: same-named destination with a DIFFERENT url gets a hashed name; the same url is a duplicate', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090r-'));
+    for (const d of [GHOST26.id, GHOST23.id]) fs.mkdirSync(path.join(root, '_pending', d), { recursive: true });
+    const other = { url: 'https://www.telegraph.co.uk/theatre/what-to-see/some-other-review/' };
+    fs.writeFileSync(path.join(root, '_pending', GHOST23.id, 'telegraph--dominic-cavendish.json'), JSON.stringify(other));
+    const data = { url: 'https://www.telegraph.co.uk/theatre/what-to-see/2-22-a-ghost-story-review-lyric/' };
+    fs.writeFileSync(path.join(root, '_pending', GHOST26.id, 'telegraph--dominic-cavendish.json'), JSON.stringify(data));
+    const out = S.rehomeStubFile({ root, file: 'telegraph--dominic-cavendish.json', fromShowId: GHOST26.id, toShowId: GHOST23.id, data, publishDate: '2023-02-01' });
+    assert.equal(out, 'rehomed');
+    const files = fs.readdirSync(path.join(root, '_pending', GHOST23.id)).sort();
+    assert.equal(files.length, 2, files.join(','));
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, '_pending', GHOST23.id, 'telegraph--dominic-cavendish.json'), 'utf8')), other, 'the other article is untouched');
+    assert.equal(fs.existsSync(path.join(root, '_pending', GHOST26.id, 'telegraph--dominic-cavendish.json')), false);
+    assert.equal(files.filter((f) => f.endsWith('.tmp')).length, 0);
+    // moving the same url again is a duplicate, not a third copy
+    fs.writeFileSync(path.join(root, '_pending', GHOST26.id, 'x.json'), JSON.stringify(other));
+    fs.writeFileSync(path.join(root, '_pending', GHOST23.id, 'x.json'), JSON.stringify({ url: other.url + '?utm_source=x' }));
+    assert.equal(S.rehomeStubFile({ root, file: 'x.json', fromShowId: GHOST26.id, toShowId: GHOST23.id, data: other }), 'sibling-has-copy');
+  });
+  test('two same-title revivals at the named venue: settled, never moved (no owner id)', () => {
+    const T = require('../../scripts/lib/pending-triage.js');
+    const OL = { id: 'tn-west-end-2017', title: 'Twelfth Night', category: 'west-end', venue: 'Olivier Theatre', previewsStartDate: '2017-02-15', openingDate: '2017-02-22', closingDate: '2017-05-13' };
+    const Y1 = { id: 'tn-off-west-end-2014', title: 'Twelfth Night', category: 'off-west-end', venue: 'Young Vic', previewsStartDate: '2014-03-01', openingDate: '2014-03-10', closingDate: '2014-04-12' };
+    const Y2 = { id: 'tn-off-west-end-2004', title: 'Twelfth Night', category: 'off-west-end', venue: 'Young Vic', previewsStartDate: '2004-03-01', openingDate: '2004-03-10', closingDate: '2004-04-12' };
+    for (const all of [[OL, Y1, Y2], [OL, Y2, Y1]]) {
+      const v = T.triagePendingStub({ url: 'https://www.thestage.co.uk/reviews/twelfth-night-at-the-young-vic-review' }, { showId: OL.id, show: OL, allShows: all, sameTitleShows: T.sameTitleShowsFrom(OL, all) });
+      assert.equal(v.verdict, 'junk', JSON.stringify(v));
+    }
+  });
+  test('the venue route obeys the same guards (a url naming Broadway is not the Young Vic run)', () => {
+    const T = require('../../scripts/lib/pending-triage.js');
+    const BW = { id: 'tn-2026', title: 'Twelfth Night', category: 'broadway', venue: 'Lyceum Theatre', previewsStartDate: '2026-02-15', openingDate: '2026-02-22', closingDate: '2026-05-13' };
+    const Y1 = { id: 'tn-off-west-end-2014', title: 'Twelfth Night', category: 'off-west-end', venue: 'Young Vic', previewsStartDate: '2014-03-01', openingDate: '2014-03-10', closingDate: '2014-04-12' };
+    const v = T.triagePendingStub({ url: 'https://www.thestage.co.uk/reviews/broadway-twelfth-night-at-the-young-vic-review' }, { showId: BW.id, show: BW, allShows: [BW, Y1], sameTitleShows: T.sameTitleShowsFrom(BW, [BW, Y1]) });
+    assert.notEqual(v.verdict, 'rehome');
+  });
+  test('the sibling re-check uses the verdict date, not the stale stub date (Codex repro)', () => {
+    const r = S.resolveOutOfWindowStub({ show: GHOST26, allShows: ALL, publishDate: '2023-02-01', stub: { url: 'https://www.theguardian.com/stage/2-22-a-ghost-story-review-lyric', publishDate: '2026-03-15' } });
+    assert.equal(r.kind, 'rehome', JSON.stringify(r));
+  });
+  test('processShow (triage path) moves an out-of-window stub to the sibling and deletes nothing else', async () => {
+    const { processShow } = require('../../scripts/replay-pending-bylines.js');
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090p-'));
+    const src = path.join(root, '_pending', GHOST26.id);
+    fs.mkdirSync(src, { recursive: true });
+    const stub = { outletId: 'times-uk', criticName: 'Unknown', url: 'https://www.thetimes.com/culture/theatre-dance/article/2-22-a-ghost-story-review-haunted-cheryl-makes-a-confident-west-end-debut-6kdxd9cnh', publishDate: '2023-02-01' };
+    fs.writeFileSync(path.join(src, 'times-uk--rh.json'), JSON.stringify(stub));
+    let fetches = 0;
+    await processShow(GHOST26.id, { root, show: GHOST26, allShows: ALL, dryRun: false, triageOnly: true, heldIndex: new Map(), explicitScope: false,
+      fetch: async () => { fetches++; return { content: '' }; }, alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 } });
+    assert.equal(fetches, 0);
+    assert.equal(fs.existsSync(path.join(src, 'times-uk--rh.json')), false);
+    const moved = JSON.parse(fs.readFileSync(path.join(root, '_pending', GHOST23.id, 'times-uk--rh.json'), 'utf8'));
+    assert.equal(moved.showId, GHOST23.id); assert.equal(moved.rehomedFrom, GHOST26.id); assert.ok(!moved.promoteSkippedReason);
+  });
+});
+
+describe('BRO-8090 second ship-check fixes (Gemini)', () => {
+  test('rehomedStub drops the old show\'s auto wrong-production stamp and quarantine reasons, keeps a human stamp', () => {
+    const auto = S.rehomedStub({ url: 'u', wrongProduction: true, wrongProductionNote: 'Auto-flagged: published 400 days before show earliest date 2026-03-01', pendingReason: 'date_implausible', _dateImplausibleDetail: 'x' }, A1536.id, B1536.id, { nowIso: 'now' });
+    assert.equal(auto.wrongProduction, undefined); assert.equal(auto.wrongProductionNote, undefined);
+    assert.equal(auto.pendingReason, undefined); assert.equal(auto._dateImplausibleDetail, undefined);
+    const human = S.rehomedStub({ url: 'u', wrongProduction: true, wrongProductionNote: 'Auto-flagged: x', wrongProductionManual: true }, A1536.id, B1536.id, {});
+    assert.equal(human.wrongProduction, true);
+    const other = S.rehomedStub({ url: 'u', wrongProduction: true, wrongProductionNote: 'LLM: reviews the 1998 revival' }, A1536.id, B1536.id, {});
+    assert.equal(other.wrongProduction, true);
+  });
+  test('write guard: sibling route strips the date_implausible stamp; an existing sibling file is never overwritten', () => {
+    const G = require('../../scripts/lib/review-write-guard.js');
+    G._setShowsCacheForTest(new Map(ALL.map((s) => [s.id, s])));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090q-'));
+    const filePath = path.join(root, A1536.id, 'standard--nick-curtis.json');
+    const payload = { url: 'https://www.standard.co.uk/culture/theatre/1536-ambassadors-review-b1', publishDate: '2026-05-13', pendingReason: 'date_implausible', _dateImplausibleDetail: 'd' };
+    const q = G._quarantineTarget(A1536.id, A1536, payload, filePath);
+    assert.equal(q.dirId, B1536.id); assert.equal(q.payload.pendingReason, undefined); assert.equal(q.payload._dateImplausibleDetail, undefined);
+    fs.mkdirSync(path.join(root, '_pending', B1536.id), { recursive: true });
+    fs.writeFileSync(path.join(root, '_pending', B1536.id, 'standard--nick-curtis.json'), '{"url":"other"}');
+    const q2 = G._quarantineTarget(A1536.id, A1536, payload, filePath);
+    assert.equal(q2.dirId, A1536.id); assert.equal(q2.payload.pendingReason, 'date_implausible');
+  });
+  test('after corroboration narrows 2 fitting siblings to one, the url is re-checked against THAT sibling', () => {
+    const X = { id: 'hampstead-2010', title: 'Hampstead', category: 'west-end', venue: 'Some Theatre', previewsStartDate: '2010-01-01', openingDate: '2010-01-10', closingDate: '2010-02-01' };
+    const H = { id: 'hampstead-2024', title: 'Hampstead', category: 'off-west-end', venue: 'Hampstead Theatre', previewsStartDate: '2024-01-01', openingDate: '2024-01-10', closingDate: '2024-03-01' };
+    const L = { id: 'hampstead-2024-lyric', title: 'Hampstead', category: 'west-end', venue: 'Lyric Theatre', previewsStartDate: '2024-01-05', openingDate: '2024-01-12', closingDate: '2024-03-01' };
+    // The slug names the venue only ("hampstead-theatre-..."), not the play: with the venue words stripped no title is left.
+    const r = S.resolveOutOfWindowStub({ show: X, allShows: [X, H, L], publishDate: '2024-01-20', stub: { url: 'https://www.thestage.co.uk/news/hampstead-theatre-season-announced-review' } });
+    assert.equal(r.kind, 'title-not-in-url', JSON.stringify(r));
+  });
+  test('rejudge-settled-pending: --help prints usage; --apply refuses without the held-url index', () => {
+    const { execFileSync, spawnSync } = require('child_process');
+    const script = path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts/rejudge-settled-pending.js');
+    assert.match(execFileSync(process.execPath, [script, '--help'], { encoding: 'utf8' }), /Usage: node scripts\/rejudge-settled-pending\.js/);
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090h-')); fs.mkdirSync(path.join(root, '_pending'));
+    const r = spawnSync(process.execPath, [script, `--root=${root}`, '--apply', `--reviews-json=${path.join(root, 'missing.json')}`], { encoding: 'utf8' });
+    assert.equal(r.status, 2); assert.match(r.stderr, /refusing --apply/);
+  });
+});

@@ -132,6 +132,41 @@ function openingYearOf(show, openingDateOverride) {
   return m ? parseInt(m[1], 10) : null;
 }
 
+const OPAQUE_INCONCLUSIVE = 'opaque-url-inconclusive';
+// Path words that name a section or a file type, not a show.
+const GENERIC_PATH_WORDS = new Set(['page', 'html', 'htm', 'php', 'asp', 'aspx', 'review', 'reviews', 'content', 'article', 'articles',
+  'story', 'stories', 'news', 'culture', 'theatre', 'theater', 'arts', 'stage', 'entertainment', 'index', 'post', 'posts', 'node',
+  'amp', 'features', 'feature', 'critics', 'listing', 'listings', 'online', 'nyc', 'london', 'broadway', 'plays', 'play', 'musical']);
+
+/** The url path holds no word that could name a show (only ids, dates, section and file-type words). Pure. */
+function isOpaqueSlug(url) {
+  return !urlSlugTokens(url).some((t) => /^[a-z]{3,}$/.test(t) && !GENERIC_PATH_WORDS.has(t));
+}
+
+/**
+ * The page itself is about the show: its <title>, a heading, its og/twitter title or description, or its <article>
+ * names the whole title; or, with none of those, the body names it at least twice. A single mention elsewhere is
+ * sidebar / "also read" text and never authorizes an opaque url (Codex ship-check, BRO-8090). Title needs 2+ words,
+ * or one word of 5+ letters. Pure.
+ */
+function bodyNamesTitle(html, title) {
+  const toks = titleTokens(title);
+  if (!html || !toks.length || (toks.length === 1 && toks[0].length < 5)) return false;
+  const norm = (x) => ' ' + foldDiacritics(String(x || '').replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' '))
+    .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  const phrase = ' ' + foldDiacritics(String(title)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  const h = String(html);
+  const strong = [];
+  for (const re of [/<title[^>]*>([\s\S]*?)<\/title>/gi, /<h[1-3][^>]*>([\s\S]*?)<\/h[1-3]>/gi, /<article[^>]*>([\s\S]*?)<\/article>/gi]) {
+    let m; while ((m = re.exec(h))) strong.push(m[1]);
+  }
+  const metaRe = /<meta[^>]+(?:property|name)=["'](?:og:title|og:description|twitter:title|description)["'][^>]*>/gi;
+  let mm; while ((mm = metaRe.exec(h))) { const c = mm[0].match(/content=["']([^"']*)["']/i); if (c) strong.push(c[1]); }
+  if (strong.some((x) => norm(x).includes(phrase))) return true;
+  const body = norm(h);
+  return body.split(phrase).length - 1 >= 2;
+}
+
 function verifyAggregatorUrl({ url, html, show, openingDate } = {}) {
   const signals = {};
   if (!show || !show.title) {
@@ -199,7 +234,16 @@ function verifyAggregatorUrl({ url, html, show, openingDate } = {}) {
   // names the show). Without any html signal it stays a hard reject.
   if (slugMatches.length === 0) {
     const venueInBody = bodyContainsVenue(html, show.venue);
-    if (pageTitleMatches.length === 0 && !venueInBody) {
+    // BRO-8090: an opaque slug (talkinbroadway .../10_19_26b.html, ft.com/content/<uuid>, variety .../VE1117941432.html)
+    // carries no title words, so "shares no token" says nothing. Judge it on the page text; if the page does not
+    // name the show either, the answer is "cannot tell", never a settled "not this show".
+    if (pageTitleMatches.length === 0 && !venueInBody && isOpaqueSlug(url)) {
+      if (bodyNamesTitle(html, show.title)) {
+        signals.urlSlugBypass = 'opaque-body-title';
+      } else {
+        return { isValid: false, confidence: 'low', rejectReason: OPAQUE_INCONCLUSIVE, signals };
+      }
+    } else if (pageTitleMatches.length === 0 && !venueInBody) {
       return {
         isValid: false,
         confidence: 'high',
@@ -207,7 +251,7 @@ function verifyAggregatorUrl({ url, html, show, openingDate } = {}) {
         signals,
       };
     }
-    signals.urlSlugBypass = 'page-or-venue';
+    if (!signals.urlSlugBypass) signals.urlSlugBypass = 'page-or-venue';
   }
 
   // Date sanity: BWW URL with embedded date 2+ years off the opening date is
@@ -254,4 +298,4 @@ function verifyAggregatorUrl({ url, html, show, openingDate } = {}) {
   return { isValid: true, confidence, rejectReason: null, signals };
 }
 
-module.exports = { verifyAggregatorUrl, titleTokens, urlSlugTokens, extractHtmlTitle };
+module.exports = { OPAQUE_INCONCLUSIVE, isOpaqueSlug, bodyNamesTitle, verifyAggregatorUrl, titleTokens, urlSlugTokens, extractHtmlTitle };
