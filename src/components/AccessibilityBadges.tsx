@@ -78,3 +78,5 @@ export default function AccessibilityBadges({ accessibility, className = 'border
     </div>
   );
 }
+
+// BRO-8164 probe: no-op comment
