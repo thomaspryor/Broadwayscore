@@ -870,6 +870,7 @@ function selectBestExcerpt(data, showTitle) {
     }
 
     excerpt = trimToCompleteSentence(stripLeadingParenAside(stripCaptionChrome(excerpt)));
+    if (!excerpt) return null; // a caption-only candidate has nothing left to quote
     if (PAREN_ASIDE_START_RE.test(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'parenthetical-aside', source });
       return null;

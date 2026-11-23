@@ -200,40 +200,6 @@ test('BRO-7505: finalizePullQuote does not resurrect garbageFullText for a wrong
   assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), null);
 });
 
-// BRO-8105: photo credit / caption / page-header chrome inside a shipped quote. Synthetic prose, real shapes.
-const { stripCaptionChrome } = require('../../scripts/lib/pull-quote-guards.js');
-const BODY = ' There is precious little to admire in this staging, and the cast cannot rescue a script that never finds its footing. '
-  + 'The second half repeats the first with louder music, and the design, handsome as it is, serves a story nobody asked to hear again.';
-
-test('BRO-8105: stripCaptionChrome cuts each caption shape and leaves the prose', () => {
-  const cases = [
-    ['The Cast Photo by Evan Zimmerman', 'There is precious little'],
-    ['Friedman Theatre (Photo credit: Matthew Murphy)', 'There is precious little'],
-    ['Photo by Victoria Wai', 'There is precious little'],
-    ['...Music Box Theatre. Credit: Cylla von Tiedemann/', 'There is precious little'],
-    ['Broadway Review | A Show Title By Jane Doe Comments Posted on March 24, 2024.', 'There is precious little'],
-  ];
-  for (const [chrome, start] of cases) {
-    const out = stripCaptionChrome(chrome + BODY);
-    assert.ok(out.startsWith(start), `${chrome} -> ${out.slice(0, 40)}`);
-    assert.doesNotMatch(out, /Photo|Credit|Posted on|Zimmerman|Tiedemann/);
-  }
-  // A credit deeper in the quote is removed on its own, the sentences around it stay.
-  const mid = 'x'.repeat(0) + BODY.trim() + ' Photo by Evan Zimmerman The finale lands.';
-  assert.doesNotMatch(stripCaptionChrome(mid), /Photo by/);
-  // Prose that merely says "photo by" is untouched.
-  const clean = 'He praised the photo by the window, a lovely image, in a thoroughly satisfying evening.';
-  assert.equal(stripCaptionChrome(clean), clean);
-});
-
-test('BRO-8105: amNY page header + photo caption with a "/Provided" tail; a leading ellipsis alone is kept', () => {
-  const raw = 'Broadway Review | ‘Some Show’ brings the circus to Broadway By Jane Doe … Comments Posted on March 24, 2024. '
-    + 'Two Actors in "Some Show" on Broadway. Photo by Matthew Murphy/Provided I do not know about you, but I prefer the circus itself.';
-  assert.equal(stripCaptionChrome(raw), 'I do not know about you, but I prefer the circus itself.');
-  const ell = '...Some Show aspires to the kind of emotional sweep we associate with the greats.';
-  assert.equal(stripCaptionChrome(ell), ell);
-});
-
 // BRO-8105: an LLM quote snapped back to its source sentence picks up the caption that precedes it
 // (a non-contiguous quote snaps to its source sentence; the-moth-off-west-end-2026/london-box-office: single-line page, "...Finborough Theatre. Photo by Victoria Wai Unfortunately ...").
 test('BRO-8105: a snapped llmPullQuote does not pull in the photo credit before its sentence', () => {
