@@ -65,12 +65,16 @@ test('scanTraces boundary: exactly at the limit passes, one byte over fails', ()
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test('scanTraces also scans shared runtime traces at the .next root', () => {
+test('shared runtime traces at the .next root add to every function; null files is unreadable', () => {
   const root = fixture();
   try {
     writeFileSync(join(root, '.next', 'next-server.js.nft.json'), JSON.stringify({ files: ['../node_modules/big/blob.bin'] }));
-    const over = spawnSync('node', [SCRIPT, join(root, '.next'), '--limit-mb=0.1'], { encoding: 'utf8' });
-    assert.match(over.stdout, /FAIL \.\.\/next-server/);
+    // shared runtime is added to every function, not judged alone: under (10 KB + 300 KB blob) ok at 305 KB, over at 309 KB
+    const res = scanTraces(join(root, '.next', 'server'), { limitBytes: 1e9, extraNftFiles: [join(root, '.next', 'next-server.js.nft.json')] });
+    assert.equal(res.find((r) => r.name === 'app/api/under').totalBytes, 310 * KB);
+    assert.equal(res.some((r) => r.name.includes('next-server')), false);
+    writeFileSync(join(root, '.next', 'server', 'app', 'api', 'bad.js.nft.json'), JSON.stringify({ files: null }));
+    assert.equal(scanTraces(join(root, '.next', 'server'), { limitBytes: 1e9 }).find((r) => r.name === 'app/api/bad').unreadable, true);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

@@ -554,9 +554,11 @@ jobs:
         # BRO-8154: on 2026-11-23 api/admin/ingest-review/detect traced 341 MB and
         # every prod deploy failed for ~7h, found only after the ~1.3 GB upload.
         # Sums each .next/server/**/*.nft.json (node_modules included) and fails
-        # above 230 MB, naming the 5 biggest files. Advisory first (§19): arm
-        # (drop continue-on-error) after ~10 green main runs show the "largest:"
-        # figure with headroom.
+        # above 230 MB, naming the 5 biggest files (Next's shared runtime trace is
+        # added to each function). Advisory first (§19). Before arming (dropping
+        # continue-on-error), calibrate the "largest:" figure against the packaged
+        # .vercel/output/functions/*.func sizes: .nft traces are a proxy, and
+        # static routes also have traces (BRO-8154 review findings).
         continue-on-error: true
         run: node scripts/lib/check-function-trace-size.js .next
 

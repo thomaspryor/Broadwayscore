@@ -36,14 +36,15 @@ const MAX_MISSING_RATIO = 0.5;
  * @param {string} nftDir           directory the listed paths are relative to
  * @param {(abs: string) => (number|null)} statSize
  * @param {number} [topN]
+ * @param {string[]} [sharedAbs]    absolute paths every function also ships (Next's shared runtime)
  * @returns {{ totalBytes: number, fileCount: number, missing: number, top: {file: string, bytes: number}[] }}
  */
-function sizeTrace(nft, nftDir, statSize, topN = 5) {
+function sizeTrace(nft, nftDir, statSize, topN = 5, sharedAbs = []) {
   const seen = new Set();
   const sized = [];
   let missing = 0;
-  for (const rel of (nft && nft.files) || []) {
-    const abs = path.resolve(nftDir, rel);
+  const all = [...(((nft && nft.files) || []).map((rel) => path.resolve(nftDir, rel))), ...sharedAbs];
+  for (const abs of all) {
     if (seen.has(abs)) continue; // a file listed twice is shipped once
     seen.add(abs);
     const bytes = statSize(abs);
@@ -93,14 +94,27 @@ function scanTraces(serverDir, { limitBytes, statSize: rawStat = fsStatSize, ext
     if (!cache.has(abs)) cache.set(abs, rawStat(abs));
     return cache.get(abs);
   };
-  return [...findNftFiles(serverDir), ...extraNftFiles].map((nftPath) => {
-    let nft;
-    let unreadable = false;
-    try { nft = JSON.parse(fs.readFileSync(nftPath, 'utf8')); } catch { nft = { files: [] }; unreadable = true; }
-    const r = sizeTrace(nft, path.dirname(nftPath), statSize);
+  const read = (nftPath) => {
+    try {
+      const nft = JSON.parse(fs.readFileSync(nftPath, 'utf8'));
+      if (!nft || !Array.isArray(nft.files)) return { nft: { files: [] }, unreadable: true };
+      return { nft, unreadable: false };
+    } catch { return { nft: { files: [] }, unreadable: true }; }
+  };
+  // Vercel ships Next's shared runtime (.next/next-server.js.nft.json ...) in every
+  // lambda, so those files count toward each function's size, not as a function.
+  const shared = extraNftFiles.map((f) => ({ f, ...read(f) }));
+  const sharedAbs = shared.flatMap(({ f, nft }) => nft.files.map((rel) => path.resolve(path.dirname(f), rel)));
+  const sharedBad = shared.filter((x) => x.unreadable).map((x) => ({
+    name: path.relative(serverDir, x.f).split(path.sep).join('/'), totalBytes: 0, over: false, fileCount: 0, missing: 0, top: [], unreadable: true,
+  }));
+  const own = findNftFiles(serverDir).map((nftPath) => {
+    const { nft, unreadable } = read(nftPath);
+    const r = sizeTrace(nft, path.dirname(nftPath), statSize, 5, sharedAbs);
     const name = path.relative(serverDir, nftPath).split(path.sep).join('/').replace(/\.js\.nft\.json$|\.nft\.json$/, '');
     return { name, ...r, unreadable, over: r.totalBytes > limitBytes };
   });
+  return [...own, ...sharedBad];
 }
 
 function main() {
