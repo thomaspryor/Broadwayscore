@@ -1318,7 +1318,7 @@ function stripLeadingChrome(fullText, opts = {}) {
 // of the prose that follows ("There", "Unfortunately") is never eaten.
 const CREDIT_NAME = "[A-Z][\\w'\u2019.-]+(?:\\s+(?:[A-Z]\\.|van|von|de|der|del|la|le|da|di|Mc[A-Z]\\w+))?\\s+[A-Z][\\w'\u2019.-]+";
 const CREDIT_PAREN_RE = new RegExp("\\(\\s*(?:Photos?(?:\\s+credit)?|Credit|Courtesy|Photographer)\\s*(?:by|:)\\s*[^()]{1,80}\\)\\s*", 'i');
-const CREDIT_PHOTO_BY_RE = new RegExp("(?:\\b(?:The\\s+)?(?:Cast\\s+|Company\\s+)?Photos?\\s+(?:by|credit:?)\\s+" + CREDIT_NAME + "|\\bCredit:\\s*" + CREDIT_NAME + "\\s*/)\\s*");
+const CREDIT_PHOTO_BY_RE = new RegExp("(?:\\b(?:The\\s+)?(?:Cast\\s+|Company\\s+)?Photos?\\s+(?:by|credit:?)\\s+" + CREDIT_NAME + "|\\bCredit:\\s*" + CREDIT_NAME + "\\s*/)(?:\\s*\\/\\s*(?:Provided|Courtesy)\\b)?\\s*");
 // An outlet's page header ("Broadway Review | Title ... By X ... Comments
 // Posted on March 24, 2024.") that runs into the first sentence.
 const PAGE_HEADER_RE = /^[\s"'\u201c\u2018]*(?:Broadway|Off-Broadway|Theat(?:er|re))\s+Review\s*\|.{0,400}?\bPosted\s+on\s+[A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4}\.?\s*/;
@@ -1327,17 +1327,20 @@ const CAPTION_HEAD_WINDOW = 240;
 function stripCaptionChrome(excerpt) {
   if (typeof excerpt !== 'string' || !excerpt) return excerpt;
   let out = excerpt;
+  let cut = false;
   const hdr = out.match(PAGE_HEADER_RE);
-  if (hdr) out = out.slice(hdr[0].length);
+  if (hdr) { out = out.slice(hdr[0].length); cut = true; }
   for (const re of [CREDIT_PAREN_RE, CREDIT_PHOTO_BY_RE]) {
     const m = out.match(re);
     if (!m) continue;
+    cut = true;
     const end = m.index + m[0].length;
     // Credit at the head of the quote: the caption text before it goes too.
     // A credit deeper in the quote is removed on its own.
     out = end <= CAPTION_HEAD_WINDOW ? out.slice(end) : (out.slice(0, m.index) + out.slice(end));
   }
-  return out.replace(/^[\s\u2026.]+(?=["\u201c\u2018']?[A-Z])/, '').trim();
+  // Only tidy the seam when a caption was cut: a quote that opens "..." on its own keeps it.
+  return cut ? out.replace(/^[\s\u2026./]+(?=["\u201c\u2018']?[A-Z])/, '').trim() : excerpt;
 }
 function hasCaptionChrome(excerpt) {
   return typeof excerpt === 'string' && stripCaptionChrome(excerpt) !== excerpt.trim();
