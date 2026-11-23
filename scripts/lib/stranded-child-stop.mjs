@@ -15,10 +15,10 @@ import { isMainModule } from './is-main-module.mjs';
 
 export const BLOCK_BUDGET = 2;
 const SAFE_RE = /^\W*SAFE TO (?:ARCHIVE|EXIT)\b/i;
-const BAD_BUCKET_RE = /(FAILED|BLOCKED|IDLE)/;
-const SID_RE = /\bsession_[0-9A-Za-z]{10,}/;
+const BAD_BUCKET_RE = /(FAILED|BLOCKED|IDLE)/i;
+const SID_RE = /\b(?:session|cse)_[0-9A-Za-z]{10,}/;
 
-const toolName = (n) => String(n || '').replace(/^mcp__[^_]+(?:-[^_]+)*__/, '');
+const toolName = (n) => String(n || '').toLowerCase().split('__').pop(); // both server spellings (claude-code-remote / Claude_Code_Remote)
 
 /** Walk the transcript; -> Map childId -> { title, lastBucket|null, archived } */
 export function childStates(transcriptPath) {
@@ -28,6 +28,7 @@ export function childStates(transcriptPath) {
   for (const raw of lines) {
     if (!raw.trim()) continue;
     let o; try { o = JSON.parse(raw); } catch { continue; }
+    if (o.isSidechain) continue;
     const c = o.message && o.message.content;
     if (!Array.isArray(c)) continue;
     for (const b of c) {
@@ -39,11 +40,13 @@ export function childStates(transcriptPath) {
         if (u.name === 'create_session') {
           const id = (text.match(SID_RE) || [])[0];
           if (id) kids.set(id, { title: u.input.title || id, lastBucket: null, archived: false });
-        } else if (u.name === 'get_session' || u.name === 'list_events') {
-          const id = u.input.session_id || (text.match(SID_RE) || [])[0];
-          const k = kids.get(id); if (!k) continue;
-          const bm = text.match(/STATUS_BUCKET_([A-Z_]+)/) || text.match(/SESSION_STATUS_([A-Z_]+)/);
-          if (bm) k.lastBucket = bm[1];
+        } else if (u.name === 'get_session') {
+          // Only get_session is authoritative (list_events carries historical text). Read the field, not any mention.
+          const k = kids.get(u.input.session_id); if (!k) continue;
+          let bucket = null;
+          try { const o2 = JSON.parse(text); const c2 = o2.ccr || o2; bucket = c2.status_bucket || c2.session_status || null; if (c2.external_metadata && c2.external_metadata.last_init_error) bucket = 'FAILED'; } catch { /* not JSON */ }
+          if (bucket === null) { const m = text.match(/"status_bucket"\s*:\s*"([A-Z_]+)"/); if (m) bucket = m[1]; }
+          if (bucket) k.lastBucket = String(bucket).replace(/^SESSION_STATUS_(?:BUCKET_)?/, '');
         } else if (u.name === 'archive_session') {
           const k = kids.get(u.input.session_id); if (k) k.archived = true;
         }
@@ -84,12 +87,12 @@ export function main(argv, { env = process.env, stdin = null } = {}) {
   try { kids = childStates(input.transcript_path); } catch { return 0; }
   const d = decide({ kids, closing: input.last_assistant_message || '', env });
   if (d.decision !== 'block') return 0;
-  const id = createHash('sha1').update(String(input.transcript_path)).digest('hex').slice(0, 12);
+  const id = createHash('sha1').update(String(input.transcript_path) + '\u0000' + String(input.session_id || '')).digest('hex').slice(0, 12);
   const counter = path.join(os.tmpdir(), `stranded-child-stop-${id}`);
   let n = 0;
   try { n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0; } catch { /* first */ }
   if (n >= BLOCK_BUDGET) return 0;
-  try { fs.writeFileSync(counter, String(n + 1)); } catch { /* best effort */ }
+  try { fs.writeFileSync(counter, String(n + 1)); } catch { return 0; } // cannot persist the cap: fail open, never wedge Stop
   process.stderr.write(d.message + '\n');
   return 2;
 }

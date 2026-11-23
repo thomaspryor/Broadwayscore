@@ -90,3 +90,24 @@ test('(c) over the NO-* bypass budget -> BLOCKED; within budget and fenced/short
   assert.doesNotMatch(r.stderr, /VE:BYPASSBUDGET/, 'fenced and too-short lines are not counted');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('(b) status is read from the get_session field, not any mention in the text', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'chr-b3-'));
+  const tricky = use('mcp__claude-code-remote__get_session', { session_id: KID }, `{"ccr":{"id":"${KID}","title":"SESSION_STATUS_BUCKET_FAILED retry","status_bucket":"SESSION_STATUS_BUCKET_COMPLETED"}}`);
+  const r = runHook(transcript(dir, [CREATE, tricky]), SAFE);
+  assert.doesNotMatch(r.stderr, /VE:STRANDEDKID/, r.stderr.slice(0, 300));
+  const initFail = use('mcp__claude-code-remote__get_session', { session_id: KID }, `{"ccr":{"id":"${KID}","status_bucket":"SESSION_STATUS_BUCKET_WORKING","external_metadata":{"last_init_error":"setup failed"}}}`);
+  const r2 = runHook(transcript(fs.mkdtempSync(path.join(os.tmpdir(), 'chr-b4-')), [CREATE, initFail]), SAFE);
+  assert.equal(r2.status, 2, r2.stderr.slice(0, 300));
+  assert.match(r2.stderr, /VE:STRANDEDKID/);
+});
+
+test('(b)+(c) both server spellings are seen, and repeating one bypass reworded is not over budget', () => {
+  const under = use('mcp__Claude_Code_Remote__create_session', { title: 'BRO-9: fix it' }, `{"ccr":{"id":"${KID}"}}`);
+  const r = runHook(transcript(fs.mkdtempSync(path.join(os.tmpdir(), 'chr-s-')), [under]), SAFE);
+  assert.equal(r.status, 2, r.stderr.slice(0, 300));
+  assert.match(r.stderr, /VE:STRANDEDKID/);
+  const texts = ['NO-VERIFY: docs only change one', 'NO-VERIFY: docs only change two', 'NO-VERIFY: docs only change three', 'NO-VERIFY: docs only change four'];
+  const r2 = runHook(transcript(fs.mkdtempSync(path.join(os.tmpdir(), 'chr-s2-')), [], texts), SAFE);
+  assert.doesNotMatch(r2.stderr, /VE:BYPASSBUDGET/);
+});
