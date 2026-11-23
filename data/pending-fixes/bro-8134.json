@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-8134",
+  "planId": "4f99bc67-d8d2-4dca-85bb-c64426be9d2d",
+  "status": "pending",
+  "createdAt": "2026-11-23T11:56:30.132Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Release Front Row Center (Tom Storch, 4.5/5) Fantasma review wrongly excluded as wrongShow/not-a-review; read the stored text: it is a full review of this 59E59/Primary Stages production",
+    "steps": [
+      "fantasma-off-broadway-2026/front-row-center--tom-storch.json: wrongShowManualClear",
+      "fantasma-off-broadway-2026/front-row-center--tom-storch.json: nonReviewManualClear",
+      "fantasma-off-broadway-2026/front-row-center--tom-storch.json: isNonReview",
+      "fantasma-off-broadway-2026/front-row-center--tom-storch.json: rejectionReason",
+      "fantasma-off-broadway-2026/front-row-center--tom-storch.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fantasma-off-broadway-2026/front-row-center--tom-storch.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fantasma-off-broadway-2026/front-row-center--tom-storch.json: wrongShowManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fantasma-off-broadway-2026/front-row-center--tom-storch.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fantasma-off-broadway-2026/front-row-center--tom-storch.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fantasma-off-broadway-2026/front-row-center--tom-storch.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "fantasma-off-broadway-2026/front-row-center--tom-storch.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fantasma-off-broadway-2026/front-row-center--tom-storch.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "fantasma-off-broadway-2026/front-row-center--tom-storch.json: rejectionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fantasma-off-broadway-2026/front-row-center--tom-storch.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "fantasma-off-broadway-2026/front-row-center--tom-storch.json: wrongShow"
+      }
+    ]
+  }
+}
