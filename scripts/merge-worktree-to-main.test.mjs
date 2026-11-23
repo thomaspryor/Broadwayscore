@@ -219,6 +219,22 @@ test('the landing script wires the coverage check into prove_and_finish', () => 
   assert.ok(existsSync(LIB_PATH));
 });
 
+// BRO-8107: land.yml's live-data-lane refusal used to be found only CI-side,
+// after a worker's 2h budget. The default path must run the same tracer on the
+// branch tree, refusing (die) on an undeclared live test, before the land push.
+test('the default landing path runs the live-data-lane floor before pushing land/<branch>', () => {
+  const src = readFileSync(LAND_SCRIPT, 'utf8');
+  const fn = src.slice(src.indexOf('land_via_landing_branch() {'));
+  const body = fn.slice(0, fn.indexOf('\n}\n'));
+  const call = body.indexOf('--verify-changed --refuse-undeclared --base="$fork"');
+  assert.ok(call > 0, 'land_via_landing_branch traces the changed tests with --refuse-undeclared against the fork point');
+  assert.match(body.slice(call, call + 400), /then\s+die "live-data-lane floor:/, 'an undeclared live test refuses the landing');
+  assert.ok(call < body.indexOf('DRY_RUN=1 — floors done'), 'runs in the pre-flight floors, so DRY_RUN exercises it');
+  assert.ok(call < body.indexOf('push the tip to land/<branch>'), 'runs before the land/** push');
+  const lane = readFileSync(join(HERE, 'live-data-lane.js'), 'utf8');
+  assert.match(lane, /--refuse-undeclared/, 'the flag the script probes for exists');
+});
+
 test('touchesCodePaths follows the workflow push paths, not a prefix guess', () => {
   const wf = `on:\n  push:\n    branches: [main]\n    paths:\n      - 'src/**'\n      - 'scripts/lib/**'\n      # c\n      - 'scripts/one.js'\n  pull_request:\n    branches: [main]\n  schedule:\n    - cron: '0 6 * * *'\n`;
   const pats = lib.pushPathsFromWorkflow(wf);

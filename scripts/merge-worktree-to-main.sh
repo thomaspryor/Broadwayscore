@@ -82,7 +82,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 # the branch that ships a newer script never defers to the older origin
 # copy (2026-09-20: a byte-compare did exactly that and the old copy merged
 # the WIP branch into the shared main checkout).
-MERGE_SCRIPT_VERSION=4
+MERGE_SCRIPT_VERSION=5
 # Runs BEFORE any lib is sourced: a detached copy (`git show origin/main:… >
 # /tmp/x.sh && bash /tmp/x.sh`) has no scripts/lib beside it, and an old
 # worktree's copy may lack libs a newer version needs — so the re-exec
@@ -366,6 +366,27 @@ land_via_landing_branch() {
         if ! echo "$changed" | (cd "$src_dir" && MERGE_TEST_GATE_BASELINE_SHA="$fork" node "$gate"); then
           die "colocated test floor failed on $BRANCH — see the gate's own 'post-merge test floor: FAILED (...)' line above (MERGE_SKIP_POST_MERGE_TEST_GATE=1 to bypass)"
         fi
+      fi
+    fi
+    # ── live-data-lane floor (BRO-8107) ──────────────────────────────────────
+    # land.yml's lint-workflows::live-data-lane refuses a branch whose changed
+    # unit tests read live data (data/shows.json via a shared guard, an audit
+    # ledger) without a LIVE-DATA-LANE marker. Found there, it costs a 25-min
+    # round trip and stranded 3 worker landings in one day (BRO-8065/8079/8092).
+    # Same tracer, run here first. No data guard on purpose: the tracer logs the
+    # path before the read, so a bare worktree is judged correctly. Refuses
+    # only an undeclared live test; a crash or a timed-out trace warns and
+    # land.yml decides. Skipped on a resume (land/<branch> already at the tip).
+    local lane="$src_dir/scripts/live-data-lane.js" land_tip=""
+    land_tip=$(g rev-parse -q --verify "refs/remotes/origin/$land_name" 2>/dev/null || true)
+    if [ "${MERGE_SKIP_LIVE_DATA_LANE:-}" = "1" ]; then
+      log "live-data-lane floor: skipped (MERGE_SKIP_LIVE_DATA_LANE=1)"
+    elif [ "$land_tip" = "$tip" ]; then
+      log "live-data-lane floor: skipped (origin/$land_name is already at ${tip:0:10}; resuming the wait)"
+    elif [ -f "$lane" ] && grep -q -- '--refuse-undeclared' "$lane" && command -v node >/dev/null 2>&1; then
+      log "live-data-lane floor: tracing $BRANCH's changed unit tests vs ${fork:0:10} (scripts/live-data-lane.js)"
+      if ! (cd "$src_dir" && LIVE_DATA_LANE_TRACE_TIMEOUT_MS="${LIVE_DATA_LANE_TRACE_TIMEOUT_MS:-240000}" node "$lane" --verify-changed --refuse-undeclared --base="$fork"); then
+        die "live-data-lane floor: a changed test reads live data without a LIVE-DATA-LANE marker; land.yml would refuse it at lint-workflows::live-data-lane. Fix per the ::error:: line above (a fixture first, e.g. scripts/lib/shows-json-path.js useShowsFixture for data/shows.json; else the marker), commit, re-run (MERGE_SKIP_LIVE_DATA_LANE=1 to bypass)"
       fi
     fi
     log "push audits + tsc: run by scripts/hooks/pre-push on the land/** push below (range ${fork:0:10}..${tip:0:10})"
