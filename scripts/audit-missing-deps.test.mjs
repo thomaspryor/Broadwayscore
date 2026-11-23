@@ -215,7 +215,7 @@ test('tsx invocations produce script events (every runner form)', () => {
 
 test('TypeScript graph: types stripped, type-only imports ignored, .js maps to .ts, @/ alias is local', () => {
   const dir = fixture({
-    'tsconfig.json': '{}',
+    'package.json': '{}', 'tsconfig.json': '{}', 'scripts/tsconfig.json': '{}',
     'scripts/main.ts': "import type { T } from 'types-only-pkg'; import { h } from './lib/helper.js'; import cfg from '@/config/x'; import axios from 'axios'; console.log(cfg, axios, h('a')); const n: number = 1; interface I { a: string }",
     'scripts/lib/helper.ts': "export const h = (x: string): string => x; require('cheerio');",
     'src/config/x.ts': 'export default {} as const;',
@@ -230,4 +230,17 @@ test('a tsx step before any install reports the missing eager dependency', () =>
   const result = auditWorkflow(workflow('      - run: npx tsx scripts/job.ts'), { root: dir });
   assert.equal(result.findings.length, 1);
   assert.deepEqual(result.findings[0].packages, ['cheerio']);
+});
+
+test('tsx runner/preload packages, .tsx entries and package.json-rooted alias are audited', () => {
+  assert.deepEqual(commandEvents('node -r some-preload scripts/a.js\ntsx scripts/b.ts\nnpx tsx scripts/c.tsx'), [
+    { type: 'script', script: 'scripts/a.js', preloads: ['some-preload'] },
+    { type: 'script', script: 'scripts/b.ts', preloads: ['tsx'] },
+    { type: 'script', script: 'scripts/c.tsx' },
+  ]);
+  const dir = fixture({ 'package.json': '{}', 'scripts/tsconfig.json': '{}', 'scripts/m.ts': "import c from '@/config/x'; console.log(c);", 'src/config/x.ts': 'export default 1;' });
+  const result = dependencyGraph(path.join(dir, 'scripts/m.ts'));
+  assert.deepEqual([result.errors, result.packages], [[], []]);
+  const r = auditWorkflow(workflow('      - run: node -r missing-pkg scripts/n.js'), { root: fixture({ 'scripts/n.js': "require('fs');" }) });
+  assert.deepEqual(r.findings[0].packages, ['missing-pkg']);
 });

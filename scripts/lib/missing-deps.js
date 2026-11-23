@@ -12,7 +12,7 @@ function sourceRequires(source, file = '') {
   const acorn = require('acorn'); // Direct devDependency, installed by lint-workflows.
   // BRO-8080: tsx-run scripts are TypeScript. Strip types first (transpile only,
   // no type-check); type-only imports are elided, so they are not dependencies.
-  if (/\.[cm]?ts$/.test(file)) {
+  if (/\.[cm]?tsx?$/.test(file)) {
     source = require('typescript').transpileModule(source, {
       compilerOptions: { target: 99, module: 99, verbatimModuleSyntax: false, isolatedModules: true },
     }).outputText;
@@ -57,7 +57,7 @@ function resolveLocal(from, specifier) {
   const swapped = base.replace(/\.js$/, '.ts').replace(/\.mjs$/, '.mts').replace(/\.cjs$/, '.cts');
   if (swapped !== base) bases.push(swapped);
   for (const b of bases) {
-    for (const suffix of ['', '.js', '.cjs', '.mjs', '.ts', '.mts', '.cts', '.json', '/index.js', '/index.cjs', '/index.ts']) {
+    for (const suffix of ['', '.js', '.cjs', '.mjs', '.ts', '.mts', '.cts', '.tsx', '.json', '/index.js', '/index.cjs', '/index.ts']) {
       const file = b + suffix;
       if (fs.existsSync(file) && fs.statSync(file).isFile()) return file;
     }
@@ -67,7 +67,7 @@ function resolveLocal(from, specifier) {
 
 function repoRoot(file) {
   let dir = path.dirname(file);
-  while (dir !== path.dirname(dir) && !fs.existsSync(path.join(dir, 'tsconfig.json'))) dir = path.dirname(dir);
+  while (dir !== path.dirname(dir) && !fs.existsSync(path.join(dir, 'package.json'))) dir = path.dirname(dir);
   return dir;
 }
 
@@ -144,9 +144,12 @@ function commandEvents(source) {
     // BRO-8080: TypeScript runners. `npx [-y] tsx`, bare `tsx`, and node with a
     // tsx loader (`--import tsx`, `--loader tsx`, `-r tsx/cjs`, `=` forms too).
     let tsRunner = false;
+    const preloads = [];
+    const bare = words[i] === 'tsx';
     if (words[i] === 'npx' || words[i] === 'pnpx' || (words[i] === 'pnpm' && words[i + 1] === 'exec')) {
       i += words[i] === 'pnpm' ? 2 : 1;
       while (/^(?:-y|--yes|--no|--no-install|--prefer-offline|--quiet|-q)$/.test(words[i] || '')) i++;
+      if (/^tsx@[\w.^~-]+$/.test(words[i] || '')) words[i] = 'tsx';
       if (words[i] !== 'tsx') { i = words.length; }
     }
     if (words[i] === 'tsx') { tsRunner = true; i++; }
@@ -156,16 +159,22 @@ function commandEvents(source) {
         const flag = words[i];
         if (/^(?:--import|--loader|--experimental-loader|--require|-r)$/.test(flag)) {
           if (/^tsx(?:\/|$)/.test(words[i + 1] || '')) tsRunner = true;
+          if (words[i + 1] && !/^[./]/.test(words[i + 1]) && !isBuiltin(words[i + 1])) preloads.push(words[i + 1]);
           i += 2; continue;
         }
-        if (/^--(?:import|loader|experimental-loader|require)=tsx(?:\/|$)/.test(flag)) { tsRunner = true; i++; continue; }
+        if (/^--(?:import|loader|experimental-loader|require)=tsx(?:\/|$)/.test(flag)) { tsRunner = true; preloads.push(flag.split('=')[1]); i++; continue; }
         if (tsRunner && /^--(?:tsconfig|env-file)$/.test(flag)) { i += 2; continue; }
         if (/^--(?:no-warnings|experimental-[\w-]+|tsconfig=.*|env-file=.*|no-cache|clear-screen=\w+|ignore-scripts)$/.test(flag) || tsRunner) { i++; continue; }
         break;
       }
-      const ext = tsRunner ? 'js|cjs|mjs|ts|mts|cts' : 'js|cjs|mjs';
+      const ext = tsRunner ? 'js|cjs|mjs|ts|mts|cts|tsx' : 'js|cjs|mjs';
       if (new RegExp('^(?:\\.\\/)?scripts\\/[\\w./-]+\\.(?:' + ext + ')$').test(words[i] || '')) {
-        events.push({ type: 'script', script: words[i].replace(/^\.\//, '') });
+        // Preloads (-r/--import/--loader) and a bare `tsx` binary must be installed
+        // before node starts, whatever the script itself requires.
+        if (bare) preloads.push('tsx');
+        const event = { type: 'script', script: words[i].replace(/^\.\//, '') };
+        if (preloads.length) event.preloads = preloads.map(x => (x.startsWith('@') ? x.split('/').slice(0, 2) : x.split('/').slice(0, 1)).join('/'));
+        events.push(event);
       }
     } else if (words[i] === 'npm' && /^(?:ci|install)$/.test(words[i + 1] || '')) {
       const args = words.slice(i + 2);
@@ -230,6 +239,7 @@ function auditWorkflow(raw, { root, cache = new Map() }) {
         }
         const installed = installs.some(when => conditionCovered(condition, when));
         const graph = dependencyGraph(path.join(root, event.script), cache);
+        for (const pkg of event.preloads || []) graph.packages.push({ package: pkg, kind: 'eager', chain: [{ file: 'runner preload', line: 0, specifier: pkg }] });
         scripts.push({ job, script: event.script, installed, packages: graph.packages });
         if (installed) continue;
         for (const error of graph.errors) errors.push({ job, script: event.script, ...error });
