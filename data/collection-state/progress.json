@@ -1,131 +1,23 @@
 {
   "processed": [
-    "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
-    "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-    "carrie-the-musical-regional-2026/theatermania--unknown.json",
-    "carrie-the-musical-regional-2026/broadwayworld--richard-sasanow.json",
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
-    "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
-    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-    "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
-    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
-    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json"
+    "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json"
   ],
-  "failed": [
-    "peter-pan-off-west-end-2026/british-theatre--unknown.json",
-    "peter-pan-off-west-end-2026/thestage--oliver-jones.json",
-    "peter-pan-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
-    "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
-    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "downstate-2026/nytimes--unknown.json"
-  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
-      "carrie-the-musical-regional-2026/theatermania--unknown.json",
-      "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
-      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
-      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json"
+      "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json"
-    ],
-    "scrapingbee": [
-      "carrie-the-musical-regional-2026/broadwayworld--richard-sasanow.json",
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-23T21:37:24.601Z",
-  "lastProcessed": "downstate-2026/nytimes--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-23T21:44:51.049Z",
-      "event": "bb-session",
-      "session": "15f254fe",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
-    },
-    {
-      "t": "2026-11-23T21:44:51.552Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-23T21:47:21.985Z",
-      "event": "bb-session",
-      "session": "f348c78d",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-23T21:47:22.393Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T21:49:23.544Z",
-      "event": "bb-session",
-      "session": "720904c0",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-23T21:49:23.964Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T21:49:40.454Z",
-      "event": "bb-session",
-      "session": "7262c845",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-23T21:49:40.871Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T21:51:44.157Z",
-      "event": "bb-session",
-      "session": "bf7f714a",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-23T21:51:44.605Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-23T21:52:01.751Z",
-      "event": "bb-session",
-      "session": "668670d6",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-23T21:52:02.164Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-23T22:13:32.892Z",
+  "lastProcessed": "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json",
+  "log": []
 }
