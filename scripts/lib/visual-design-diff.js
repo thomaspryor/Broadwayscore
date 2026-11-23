@@ -54,7 +54,7 @@ function parse(ts, file, text) {
  * types, comments, JSX text (copy), import/export statements (compared separately), and the inside of "quiet" roots
  * (effect callbacks, on* handlers, key/ref/href/to/name/htmlFor props), where only strings and DOM style/class writes count.
  */
-function skeleton(ts, sf) {
+function skeleton(ts, sf, env = process.env) {
   const out = [];
   const imports = new Map(); // local binding -> "module::importedName"
   const K = ts.SyntaxKind;
@@ -78,13 +78,32 @@ function skeleton(ts, sf) {
   scanUse(sf, false);
   const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
   // BRO-8169: tokens a diff may ADD without changing what draws (prefixed '~'; see insertOnlyMatch).
-  const INS = process.env.VISUAL_AWAIT_TRANSPARENT_DISABLED === '1' ? '' : '~';
+  const INS = env.VISUAL_AWAIT_TRANSPARENT_DISABLED === '1' ? '' : '~';
   const isFn = (x) => ts.isFunctionDeclaration(x) || ts.isFunctionExpression(x) || ts.isArrowFunction(x) || ts.isMethodDeclaration(x);
   const JSX_KINDS = new Set([K.JsxElement, K.JsxSelfClosingElement, K.JsxFragment, K.JsxExpression, K.JsxAttribute, K.JsxSpreadAttribute, K.JsxOpeningElement]);
   const insideJsx = (x) => { for (let p = x.parent; p; p = p.parent) if (JSX_KINDS.has(p.kind)) return true; return false; };
   const insertableAwait = (x) => ts.isAwaitExpression(x) && !insideJsx(x) && !hasJsx(x.expression);
   const ownsAwait = (fn) => { let f = false; const w = (x) => { if (f) return; if (x !== fn.body && isFn(x)) return; if (ts.isAwaitExpression(x)) { f = true; return; } ts.forEachChild(x, w); }; if (fn.body) w(fn.body); return f; };
-  const insertableAsync = (x) => x.kind === K.AsyncKeyword && x.parent && isFn(x.parent) && x.parent.body && !hasJsx(x.parent.body) && ownsAwait(x.parent);
+  // A newly async function returns a Promise, so every caller must await it. Only a function bound to a non-exported
+  // const/function name whose every other mention in the file is `await name(...)` qualifies; an inline callback,
+  // an export (callers in other files) or any bare reference stays design.
+  const bindingOf = (fn) => {
+    if (ts.isFunctionDeclaration(fn)) return fn.name ? { name: fn.name, stmt: fn } : null;
+    let x = fn;
+    while (x.parent && ts.isCallExpression(x.parent) && x.parent.arguments.includes(x)) x = x.parent; // cache(async () => ...)
+    const d = x.parent;
+    if (!d || !ts.isVariableDeclaration(d) || d.initializer !== x || !ts.isIdentifier(d.name)) return null;
+    const stmt = d.parent && d.parent.parent;
+    return stmt && ts.isVariableStatement(stmt) ? { name: d.name, stmt } : null;
+  };
+  const exported = (stmt) => !!(stmt.modifiers && stmt.modifiers.some((m) => m.kind === K.ExportKeyword))
+    || sf.statements.some((st) => ts.isExportDeclaration(st) || ts.isExportAssignment(st));
+  const everyUseAwaited = (b) => { let ok = true; const w = (x) => { if (!ok) return; if (ts.isIdentifier(x) && x !== b.name && x.text === b.name.text) { const c = x.parent; if (!(c && ts.isCallExpression(c) && c.expression === x && c.parent && ts.isAwaitExpression(c.parent))) ok = false; } ts.forEachChild(x, w); }; w(sf); return ok; };
+  const insertableAsync = (x) => {
+    if (x.kind !== K.AsyncKeyword || !x.parent || !isFn(x.parent) || !x.parent.body || hasJsx(x.parent.body) || !ownsAwait(x.parent)) return false;
+    const b = bindingOf(x.parent);
+    return !!b && !exported(b.stmt) && everyUseAwaited(b);
+  };
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
   const visit = (n) => {
@@ -169,7 +188,7 @@ function insertOnlyMatch(before, after) {
 }
 
 /** -> { design: boolean, reason } for one file. oldSource/newSource null = file absent on that side. */
-function classifyFile({ file, oldSource, newSource }) {
+function classifyFile({ file, oldSource, newSource, env = process.env }) {
   const design = (reason) => ({ design: true, reason });
   if (!/^src\/.*\.(tsx|jsx)$/.test(file)) return design('style or config file (CSS/SCSS/Tailwind/PostCSS)');
   if (typeof oldSource !== 'string') return design('new file');
@@ -180,8 +199,8 @@ function classifyFile({ file, oldSource, newSource }) {
     const a = parse(ts, file, oldSource);
     const b = parse(ts, file, newSource);
     if (!a || !b) return design('does not parse (fail closed)');
-    const sa = skeleton(ts, a);
-    const sb = skeleton(ts, b);
+    const sa = skeleton(ts, a, env);
+    const sb = skeleton(ts, b, env);
     // A binding present on both sides that now points somewhere else (a swapped icon, component or constant) changes what draws.
     for (const [name, target] of sa.imports) if (sb.imports.has(name) && sb.imports.get(name) !== target) return design(`import ${name} now points at a different module or export`);
     const m = insertOnlyMatch(sa, sb);
@@ -195,7 +214,7 @@ function classifyFile({ file, oldSource, newSource }) {
 const gitIn = (cwd) => (args) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] });
 
 /** Design files among `files` for a base...head range. Fail closed: any error returns every file. */
-function designFiles(range, files, cwd) {
+function designFiles(range, files, cwd, env = process.env) {
   try {
     const git = gitIn(cwd);
     const [baseRef, headRef] = range.split('...');
@@ -203,7 +222,7 @@ function designFiles(range, files, cwd) {
     const show = (ref, f) => { try { return git(['show', `${ref}:${f}`]); } catch { return null; } };
     const out = [];
     for (const f of files) {
-      const r = classifyFile({ file: f, oldSource: show(base, f), newSource: show(headRef, f) });
+      const r = classifyFile({ file: f, oldSource: show(base, f), newSource: show(headRef, f), env });
       if (r.design) out.push({ file: f, reason: r.reason });
     }
     return out;
@@ -224,7 +243,7 @@ function selfClear({ cwd, range = 'origin/main...HEAD', verdict = null, env = pr
     const [baseRef, headRef] = range.split('...');
     const files = gitIn(cwd)(['diff', '--name-only', '--no-renames', range]).split('\n').filter((f) => f && D.UI_RE.test(f));
     if (!files.length) return no('no UI files in the diff');
-    const design = designFiles(range, files, cwd);
+    const design = designFiles(range, files, cwd, env);
     if (design.length) return no('design change: the owner approves how it looks', design);
     if (!verdict) return no('fix-only, but no visual-qa verdict yet');
     if (String(verdict.schemaVersion) !== '2') return no('fix-only, but the verdict is an old schema');

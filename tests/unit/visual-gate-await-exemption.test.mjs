@@ -24,7 +24,7 @@ const read = (f) => readFileSync(join(FIX, f), 'utf8');
 const FIX_CASES = {
   'await added to a data getter': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s); return <A r={r}/>;`],
   'await added with parentheses before optional chaining': [`const r = f(s)?.show; return <A r={r}/>;`, `const r = (await f(s))?.show; return <A r={r}/>;`],
-  'async + await added inside a cache() getter': [`const h = cache((s) => { const v = f(s)?.show; return v; }); return <A/>;`, `const h = cache(async (s) => { const v = (await f(s))?.show; return v; }); return <A/>;`],
+  'async + await added inside a cache() getter, caller awaits too': [`const h = cache((s) => { const v = f(s)?.show; return v; }); const x = h(s); return <A x={x}/>;`, `const h = cache(async (s) => { const v = (await f(s))?.show; return v; }); const x = await h(s); return <A x={x}/>;`],
   'await added to a getter result then used': [`const hd = g(s); return <A line={hd.line}/>;`, `const hd = await g(s); return <A line={hd.line}/>;`],
 };
 for (const [name, [a, b]] of Object.entries(FIX_CASES)) {
@@ -39,6 +39,9 @@ const DESIGN_CASES = {
   'await added whose operand holds JSX': [`const el = f(<A/>); return el;`, `const el = await f(<A/>); return el;`],
   'async added with no await in the function': [`const h = cache((s) => f(s)); return <A h={h}/>;`, `const h = cache(async (s) => f(s)); return <A h={h}/>;`],
   'async added to a JSX-returning function': [`const C = () => { const v = f(); return <A v={v}/>; }; return <C/>;`, `const C = async () => { const v = await f(); return <A v={v}/>; }; return <C/>;`],
+  'async added to a helper that a caller still calls without await': [`const h = cache((s) => { const v = f(s); return v; }); const x = h(s); return <A x={x}/>;`, `const h = cache(async (s) => { const v = await f(s); return v; }); const x = h(s); return <A x={x}/>;`],
+  'async added to a helper passed by reference': [`const h = (s) => { const v = f(s); return v; }; return <A h={h}/>;`, `const h = async (s) => { const v = await f(s); return v; }; return <A h={h}/>;`],
+  'async added to an inline callback': [`const v = L.map((s) => { const r = f(s); return r; }); return <A v={v}/>;`, `const v = L.map(async (s) => { const r = await f(s); return r; }); return <A v={v}/>;`],
   'parenthesised grouping changed (no await)': [`const n = (a + b) * c; return <A n={n}/>;`, `const n = a + b * c; return <A n={n}/>;`],
   'await plus a new identifier': [`const r = f(s); return <A r={r}/>;`, `const r = await f(s) ?? fallback; return <A r={r}/>;`],
 };
@@ -46,6 +49,10 @@ for (const [name, [a, b]] of Object.entries(DESIGN_CASES)) {
   test(`design (fail closed): ${name}`, { skip: SKIP_TS }, () => { const r = classify(a, b); assert.equal(r.design, true, r.reason); });
 }
 
+test('kill switch passed through the env option (as selfClear does) also disables it', { skip: SKIP_TS }, () => {
+  const o = D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(`const r = f(s); return <A r={r}/>;`), newSource: wrap(`const r = await f(s); return <A r={r}/>;`), env: { VISUAL_AWAIT_TRANSPARENT_DISABLED: '1' } });
+  assert.equal(o.design, true);
+});
 test('kill switch VISUAL_AWAIT_TRANSPARENT_DISABLED=1 makes an added await design again', { skip: SKIP_TS }, () => {
   process.env.VISUAL_AWAIT_TRANSPARENT_DISABLED = '1';
   try { assert.equal(classify(`const r = f(s); return <A r={r}/>;`, `const r = await f(s); return <A r={r}/>;`).design, true); }
