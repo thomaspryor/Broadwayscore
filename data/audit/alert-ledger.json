@@ -785,13 +785,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-23T11:56:08.555Z",
+      "lastSeen": "2026-11-23T21:33:46.643Z",
       "lastNotifiedAt": "2026-11-17T11:15:25.761Z",
       "lastSurfacedAt": "2026-11-17T11:15:25.761Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-7661",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "affiliate:bot-divergence": {
       "status": "open",
@@ -40364,7 +40364,7 @@
       "resolveReason": "absent"
     },
     "aggregator-health:theatre-reviews:coverage-drop": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 86% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
       "firstSeen": "2026-11-09T10:44:27.716Z",
@@ -40374,7 +40374,9 @@
       "lastSurfacedAt": "2026-11-21T10:44:13.257Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7961"
+      "linearIdentifier": "BRO-7961",
+      "resolvedAt": "2026-11-23T21:30:36.706Z",
+      "resolveReason": "finding cleared"
     },
     "land:land/job/linear-BRO-7080-mw93zp4s": {
       "status": "resolved",
@@ -45622,7 +45624,7 @@
       "resolvedAt": "2026-11-18T11:36:48.539Z"
     },
     "aggregator-health:thestage-roundups:coverage-drop": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 56% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
       "firstSeen": "2026-11-18T11:07:31.074Z",
@@ -45632,7 +45634,9 @@
       "lastSurfacedAt": "2026-11-23T11:52:54.429Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T21:30:36.134Z",
+      "resolveReason": "finding cleared"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain": {
       "status": "open",
