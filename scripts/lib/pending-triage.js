@@ -550,4 +550,17 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { noUrlStubVerdict, distinctiveTitleWord, textMissesTitle, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };
+/**
+ * BRO-8195: the critic printed in a _pending stub's own text, when the fetched page named nobody. Uses the
+ * corpus byline reader (outlet extractors + the strict closing-credit rule), so a stub is never named by a
+ * looser rule than a scored file. Pure. Returns the name or null.
+ */
+function textBylineFallback(data, show) {
+  if (!data || !data.fullText) return null;
+  const { extractBylineFromText } = require('./byline-from-text');
+  const hit = extractBylineFromText(data.outletId, String(data.fullText), { showTitle: show && show.title });
+  return hit && hit.known && hit.name ? hit.name : null;
+}
+
+module.exports = {
+  textBylineFallback, noUrlStubVerdict, distinctiveTitleWord, textMissesTitle, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };

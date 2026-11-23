@@ -1827,3 +1827,32 @@ test('BRO-8195: misfiled stub whose sibling holds a settled copy settles in plac
   assert.match(after.promoteSkippedReason, /private-lives-2011.*already settled/);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+// BRO-8195: the drain read the byline from the fetched page only; a stub whose own text prints the critic
+// ("Review by Evan Prenter" under the shared "Sam - Admin" account) sat open as "no byline detected" forever.
+test('BRO-8195: drain names the critic from the stub text when the page has no byline, and promotes', async () => {
+  assert.equal(T.textBylineFallback({ outletId: 'all-that-dazzles-uk', fullText: 'Review: The Invention of Love (Hampstead Theatre) Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long does it take' }, { title: 'The Invention of Love' }), 'Evan Prenter');
+  assert.equal(T.textBylineFallback({ outletId: 'sierz-co-uk', fullText: 'Home » Reviews » The Invention of Love. Can men really love each other' }, {}), null);
+  assert.equal(T.textBylineFallback({ outletId: 'x' }, {}), null);
+
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-txt-'));
+  const show = { id: 'the-invention-of-love-west-end-2024', title: 'The Invention of Love', openingDate: '2024-12-16', closingDate: '2025-02-01', category: 'west-end' };
+  fs.mkdirSync(path.join(root, '_pending', show.id), { recursive: true });
+  fs.mkdirSync(path.join(root, show.id), { recursive: true });
+  const body = 'Review: The Invention of Love (Hampstead Theatre) Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long does it take to work out the meaning of life? '
+    + 'The Invention of Love at Hampstead Theatre is Tom Stoppard at his densest. '.repeat(40);
+  const stub = path.join(root, '_pending', show.id, 'all-that-dazzles-uk--sam-admin.json');
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'all-that-dazzles-uk', outlet: 'All That Dazzles (UK)', criticName: 'Sam - Admin', source: 'submit-review-form',
+    url: 'https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre', publishDate: '2024-12-18', fullText: body, contentTier: 'complete' }));
+  const d = {
+    root, show, allShows: [show], dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => ({ content: '<html><head><title>Review: The Invention of Love</title></head><body><article><p>' + body + '</p></article></body></html>' }),
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  await processShow(show.id, d);
+  const promoted = path.join(root, show.id, 'all-that-dazzles-uk--evan-prenter.json');
+  assert.ok(fs.existsSync(promoted), `expected promotion to ${promoted}; _pending now: ${fs.existsSync(stub) ? fs.readFileSync(stub, 'utf8').slice(0, 300) : 'gone'}`);
+  assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).criticName, 'Evan Prenter');
+  fs.rmSync(root, { recursive: true, force: true });
+});

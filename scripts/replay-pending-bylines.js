@@ -1016,6 +1016,14 @@ async function processShow(showId, deps = {}) {
       }
     }
 
+    // BRO-8195: the page gave no byline but the stub's own text prints one ("Review by Evan Prenter" under an
+    // All That Dazzles headline whose page author is the shared "Sam - Admin" account). The same reader the
+    // corpus backfill uses; without it these stubs sat open as "no byline detected" every run.
+    if ((!byline || byline === 'Unknown') && data.fullText) {
+      const printed = pendingTriage.textBylineFallback(data, show);
+      if (printed) { console.log(`  [${file}] byline from the stub's own text: ${printed} (BRO-8195)`); byline = printed; }
+    }
+
     // BRO-8023: the byline is the show's own playwright/composer: a venue or listing page, never a review.
     if (byline && pendingTriage.bylineIsShowCreator(byline, show)) {
       console.log(`  [${file}] byline "${byline}" is on the show's creative team — not a review, tagged`);
