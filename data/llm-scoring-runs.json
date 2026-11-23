@@ -1,45 +1,5 @@
 [
   {
-    "startedAt": "2026-11-21T21:51:37.194Z",
-    "completedAt": "2026-11-21T21:55:08.209Z",
-    "totalReviews": 21,
-    "processed": 21,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 57588,
-      "output": 5105,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 62693
-    },
-    "costUsd": 0.0539597,
-    "runId": "44953104837",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-21T22:11:59.196Z",
-    "completedAt": "2026-11-21T22:11:59.198Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44954708945",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-20T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-21T22:13:27.302Z",
     "completedAt": "2026-11-21T22:13:30.908Z",
     "totalReviews": 4,
@@ -375543,6 +375503,46 @@
     },
     "costUsd": 0,
     "runId": "45262024031",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T21:25:17.791Z",
+    "completedAt": "2026-11-23T21:25:21.781Z",
+    "totalReviews": 31,
+    "processed": 1,
+    "skipped": 30,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4567,
+      "output": 283,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 12914
+    },
+    "costUsd": 0.021035549999999997,
+    "runId": "45268385159",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-22T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-23T21:30:19.628Z",
+    "completedAt": "2026-11-23T21:30:19.685Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45268385159",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
