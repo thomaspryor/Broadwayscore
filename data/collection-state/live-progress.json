@@ -1,25 +1,47 @@
 {
-  "updatedAt": "2026-11-23T21:13:49.951Z",
-  "processed": 57,
-  "failed": 43,
-  "successRate": "57.0%",
+  "updatedAt": "2026-11-23T21:15:27.512Z",
+  "processed": 302,
+  "failed": 13,
+  "successRate": "95.9%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 177,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 5,
+    "scrapingdog": 33,
+    "scrapingbee": 20,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-23T20:44:34.999Z",
+      "t": "2026-11-23T17:18:27.358Z",
       "event": "bb-session",
-      "session": "cc81251a",
+      "session": "65b73625",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T17:18:27.581Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-23T17:18:34.628Z",
+      "event": "bb-session",
+      "session": "9b696bf4",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T17:18:34.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-23T17:57:25.306Z",
+      "event": "bb-session",
+      "session": "b0c3c915",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
     },
     {
@@ -30,8 +52,35 @@
     {
       "t": "2026-11-23T21:11:58.426Z",
       "event": "bb-session",
-      "session": "298d3600",
-      "url": "http://www.publictheater.org/"
+      "session": "667cbe5d",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T18:19:06.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-23T18:19:14.591Z",
+      "event": "bb-session",
+      "session": "54022b70",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-23T18:19:15.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-23T21:15:20.822Z",
+      "event": "bb-session",
+      "session": "8b5a4c06",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-23T21:15:21.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
