@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// hygiene-help-flag-ok: test file, no CLI args; only builds a throwaway temp repo and asserts
 // BRO-8164: the working-tree patch id must equal the committed id for the same UI content (so the durable marker mints),
 // and editing after the screenshot must change it. Real functions, real git repo.
 'use strict';
