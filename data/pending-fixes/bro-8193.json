@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-8193",
+  "planId": "94e3db58-f0e7-426f-abfc-ed0733378869",
+  "status": "pending",
+  "createdAt": "2026-11-23T20:47:19.069Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Letterboxd film page for the 2026 movie is not a review of the Off-Broadway production; flag as non-review",
+    "steps": [
+      "wuthering-heights-off-broadway-2026/letterboxd--unknown.json: isNonReviewReason",
+      "wuthering-heights-off-broadway-2026/letterboxd--unknown.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): letterboxd.com/film/wuthering-heights-2026 is the 2026 film's reviews index, not a review of this production",
+        "description": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "wuthering-heights-off-broadway-2026/letterboxd--unknown.json: isNonReview"
+      }
+    ]
+  }
+}
