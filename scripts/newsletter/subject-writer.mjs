@@ -214,11 +214,14 @@ export const ROUNDUP_MIN = 3;
 const COUNT_WORD = `(\\d{1,2}|${ONES.join('|')})`;
 // "Seven London openings", "New York's six openings", "4 new shows".
 const OPENING_COUNT_RE = new RegExp(String.raw`(?<!\b(?:the|these|those|its|their|both)\s)\b` + COUNT_WORD
-  + String.raw`\s+(?:new\s+)?(?:(?:London|New York|NYC|Broadway|Off-Broadway|West End|Off West End|Off-West End)(?:'s)?\s+)?(?:openings|shows|productions|premieres|plays|musicals)\b`, 'gi');
+  + String.raw`\s+(new\s+)?(?:(?:London|New York|NYC|Broadway|Off-Broadway|West End|Off West End|Off-West End)(?:'s)?\s+)?(?:openings|premieres|(?:shows|productions|plays|musicals)\b(?:(?<=new\s+(?:\S+\s+){0,3}\S+)|(?=\s+(?:opened|open|opening|debuted|premiered))))\b`, 'gi');
+// "Two shows close Saturday" is not an opening count (review, BRO-8064): a bare
+// "N shows" counts only as "N new shows" or "N shows opened".
 // Ranking words. A show may be called the top (or the bottom) only when it holds
 // the highest (lowest) Critic Score of every show the email lists.
-const TOP_RE = /\b(?:tops|topped|topping|top score|highest|best|leads|led|leading|the (?:[\w-]+ )?high|beats?|outscor\w*|strongest|standout|No\.?\s?1|number one)\b/i;
-const BOTTOM_RE = /\b(?:trails?|trailing|trailed|lowest|worst|bottom|weakest|last place)\b/i;
+// Plain uses stay legal: "led by a starry cast", "leads its audience", "at its best", "trails only X".
+const TOP_RE = /\b(?:tops|topped|topping|top|highest|(?<!\b(?:its|their|at) )best(?!-)|leads?(?! (?:a|an|its|the|their|audiences?|by)\b)|led(?! by (?:a|an|its|their|director|writer)\b)|leading(?! (?:a|an|its|the|role|man|lady)\b)|the (?:[\w'’-]+ )?high|beats?|outscor\w*|strongest|standout|No\.?\s?1|number one)\b/i;
+const BOTTOM_RE = /\b(?:trails?(?! only\b)|trailing(?! only\b)|trailed(?! only\b)|lowest|worst|bottom|weakest|last place|low point|the (?:[\w'’-]+ )?low)\b/i;
 const toNum = (w) => /^\d+$/.test(w) ? Number(w) : ONES.indexOf(String(w).toLowerCase());
 
 /** Each show's Critic Score and critic count, read from its Opening or Closing soon line. */
@@ -274,15 +277,22 @@ export function roundupProblems({ subject, preheader, lede }, pool) {
   const sentencesOf = (t) => splitSentences(t, pool.titleNames || []);
   const clausesOf = (t) => sentencesOf(t).flatMap(x => x.split(/,\s+(?:and|but|while|as|with)\s+|;\s+|:\s+|\s+(?:while|whereas)\s+/));
   const fields = [['subject', subject], ['preheader', preheader], ['lede', lede]];
+  // A clause that names no show but says "it"/"its" is about the last show named
+  // before it ("Then there is The Good Thief. It tops every opening at 82.").
+  const withCarry = (text) => { let last = null; return clausesOf(text).map(c => {
+    let hits = titleHits(c, ft);
+    if (hits.length) last = hits[hits.length - 1].title;
+    else if (last && /(?:it|its|it's|it’s|the (?:show|play|musical|production|revival))/i.test(c)) hits = [{ title: last, at: 0, end: 0 }];
+    return [c, hits];
+  }); };
   // 1. Every score and critic count sits with its own show: a stored subject
   // whose numbers went stale ("Goblin ... 75/100 from 5 critics" after Goblin
   // moved to 77 from 6) fails here, so it is rewritten instead of reused.
   for (const [field, text] of fields) {
     let done = false;
     // Per clause: "X lands at 82, while Y's special trails at 48" binds 48 to Y or to nothing, never X.
-    for (const sentence of clausesOf(text)) {
+    for (const [sentence, hits] of withCarry(text)) {
       if (done) break;
-      const hits = titleHits(sentence, ft);
       if (!hits.length) continue;
       const bare = maskHits(sentence, hits).replace(DATE_RE, (m) => ' '.repeat(m.length));
       const claims = [
@@ -303,8 +313,7 @@ export function roundupProblems({ subject, preheader, lede }, pool) {
   const scores = [...stats.values()].map(s => s.score);
   const max = Math.max(...scores), min = Math.min(...scores);
   for (const [field, text] of fields) {
-    const bad = clausesOf(text).map(clause => {
-      const hits = titleHits(clause, ft);
+    const bad = withCarry(text).map(([clause, hits]) => {
       if (!hits.length) return null;
       const bare = maskHits(clause, hits);
       for (const [re, want, word] of [[TOP_RE, max, 'top'], [BOTTOM_RE, min, 'bottom']]) {
@@ -362,7 +371,7 @@ export function buildPool(facts) {
   if (weekOpenings.length >= 2 && leadShows.length) {
     const mk = facts.edition === 'west-end' ? ['London', 'West End', 'Off West End'] : ['New York', 'Broadway', 'Off-Broadway'];
     derived.push(`Openings this week: ${weekOpenings.length} ${mk[0]} productions opened this week (${mainOpenings.length} ${mk[1]}, ${weekOpenings.length - mainOpenings.length} ${mk[2]}). Those are the only opening counts you may state.`);
-    derived.push(`Lead opening: ${leadShows.join(' and ')}. ${leadShows.length > 1 ? 'They are' : 'It is'} the best-supported of this week's openings. A subject or opening paragraph that names a show names ${leadShows.length > 1 ? 'one of these' : 'this one'} first.`);
+    derived.push(`Lead opening: ${leadShows.join(' and ')}. ${leadShows.length > 1 ? 'They are' : 'It is'} the most reviewed of this week's openings with the higher score. A subject or opening paragraph that names a show names ${leadShows.length > 1 ? 'one of these' : 'this one'} first.`);
     if (thinTitles.length) derived.push(`Too few critics so far to single out: ${thinTitles.join('; ')}. Never name them in the subject or the first sentence.`);
   }
   if (showStats.size) {
@@ -618,7 +627,7 @@ Rules:
 2. Subject: 30 to 50 characters is best, never over ${SUBJECT_MAX}. One story. Sound like a friend who reads every review, not a database. Specific beats clever. Name a show when it helps.
    THE CRITIC SCORE IS THE STAR. It is our own number, 0 to 100, built from every critic's review. Lead with it as "77/100 from 33 critics" (the critic count belongs in the subject only, never in the opening paragraph). Never use our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold, Critical Miss) and never write "recommended" or "recommend": the label is not the news, the number is. You may add ONE plain word that fits the number (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). A subject that names a show must carry that show's score. Good: "Cloud 9 lands at a solid 77/100 from 33 critics". "Hamlet Hail to the Thief hits 78/100 from 26 critics". Bad: "Critics recommend Cloud 9", "Dogstar gets a Mixed 64", "Cloud 9 (77) is Recommended from 33 reviews".
 3. Preview text (shown after the subject in the inbox): 40 to ${PREHEADER_MAX} characters. It adds the next thing a reader wants to know; never repeat the subject.
-4. Opening paragraph: the editorial voice, 2 or 3 short sentences, like a friend telling you what happened this week. Lead with the Critic Score as a number out of 100, then say what it means or what stood out. Do NOT give the number of critics or reviews: the cards show it. Lead with the edition's main-market opening (Broadway or West End) whenever one opened this week, never an Off-Broadway or Off West End show. Scores are OURS: never say a critic or reviewer "gave", "awarded" or "rated" a show a score. If a critic matters, name no critic: say the show "scores" or "lands at" a number. The show cards below it already show every theatre, opening date, score and critic count, so NEVER repeat venues, opening dates or days of the week for an opening ("opened at the Lyttelton Theatre on Tuesday"), and never name a critic or outlet or quote a critic's score. Use plain words and contractions; no stiff phrases like "the only Broadway opening this week" or "the most of any". Good: "Cloud 9 lands at a solid 77/100, the best of a quiet week. Dogstar trails at 64." Bad: "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Bad: "The pan of the week went to Nero, which a critic gave 13 out of 100." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
+4. Opening paragraph: the editorial voice, 2 or 3 short sentences, like a friend telling you what happened this week. Lead with the Critic Score as a number out of 100, then say what it means or what stood out. Do NOT give the number of critics or reviews: the cards show it. Lead with the edition's main-market opening (Broadway or West End) whenever one opened this week, never an Off-Broadway or Off West End show. Scores are OURS: never say a critic or reviewer "gave", "awarded" or "rated" a show a score. If a critic matters, name no critic: say the show "scores" or "lands at" a number. The show cards below it already show every theatre, opening date, score and critic count, so NEVER repeat venues, opening dates or days of the week for an opening ("opened at the Lyttelton Theatre on Tuesday"), and never name a critic or outlet or quote a critic's score. Use plain words and contractions; no stiff phrases like "the only Broadway opening this week" or "the most of any". Good: "Cloud 9 lands at a solid 77/100 in a quiet week. Dogstar comes in at 64." Bad: "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Bad: "The pan of the week went to Nero, which a critic gave 13 out of 100." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
 5. Never use: "opens to X reviews", "with critics", "big/busy/packed week", "scoring 75 or higher", "the reviews are in", dashes as punctuation, quotation marks, exclamation marks, emoji, clickbait, "not X, but Y".
 6. HOW CRITICS FELT comes only from the "Reception" lines. Describe a show's reception exactly as its Reception line does. Never call a show split, divided or polarizing, and never say not every critic liked it, unless its Reception line says critics were split. The rave and the pan of the week are ONE review each: they say nothing about the other critics, so never build the subject or preview text on one, and never quote the spread between a show's best and worst review.
 7. RANKINGS: never call a show the top, best, highest, the leader or the high, or say it tops, leads or beats anything (nor lowest, trailing, the bottom), unless the facts' Highest (or Lowest) Critic Score line names it. Readers see every card's score; a show that "tops" the week with a higher number on the page below is a mistake. Give scores without ranking them.
