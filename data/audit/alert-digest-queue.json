@@ -336,5 +336,36 @@
     "testId": "tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
     "fields": [],
     "queuedAt": "2026-11-23T14:53:31.567Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8150-fn-size-guard",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8150-fn-size-guard",
+    "description": "land.yml did not land land/bro-8150-fn-size-guard: the scripts-lib-tests gate went red at b11e1e7c18. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45199383252",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8150-fn-size-guard"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b11e1e7c18d662058015e7f1c45d0a0dc88a852b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45199383252"
+      }
+    ],
+    "queuedAt": "2026-11-23T15:02:05.624Z"
   }
 ]
