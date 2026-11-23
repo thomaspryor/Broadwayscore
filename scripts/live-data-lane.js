@@ -269,7 +269,7 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   fs.writeFileSync(log, '');
   const complete = [traceRun(node, 'node', log), traceRun(tsx, 'tsx', log)].every(Boolean);
   if (!complete) {
-    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: a trace run timed out or was killed, so its reads are incomplete; a clean result below proves nothing.`);
+    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: a trace run timed out or was killed, so its reads are incomplete; a clean result below proves nothing.${refuseUndeclared ? ' NOT VERIFIED locally: land.yml will judge it.' : ''}`);
   }
   const scope = [...node, ...tsx];
   const { undeclared, stale } = check(classify(readTrace([log]), gitIndex()), (t) => declaredFile(t), scope);

@@ -15,6 +15,13 @@ const require = createRequire(import.meta.url);
 // BRO-8107: the shared guards this reaches read shows from a fixture, not the live
 // data/shows.json, so this test stays in test.yml's blocking batch.
 process.on('exit', require('../../scripts/lib/shows-json-path.js').useShowsFixture([]));
+// replay-pending-bylines.js resolves the review-texts root at import; on a
+// checkout with the private corpus that lists it (a live read). Empty fixture dir.
+if (!process.env.REVIEW_TEXTS_DIR) {
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'pending-triage-rt-'));
+  process.env.REVIEW_TEXTS_DIR = rt;
+  process.on('exit', () => fs.rmSync(rt, { recursive: true, force: true }));
+}
 const T = require('../../scripts/lib/pending-triage.js');
 const { offTopicSectionReason } = require('../../scripts/lib/non-review-url-patterns.js');
 

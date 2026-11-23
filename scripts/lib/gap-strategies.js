@@ -298,15 +298,17 @@ const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused'
 
 /** Corpus index, shows and registry, built once per process. */
 function urlFindEnvironment({ dir, rootDir }) {
-  if (urlFindEnv) return urlFindEnv;
+  const showsPath = process.env.SHOWS_JSON_PATH || require('path').join(rootDir, 'data', 'shows.json');
+  const key = `${dir}\0${rootDir}\0${showsPath}`;
+  if (urlFindEnv && urlFindEnv.key === key) return urlFindEnv;
   const fs = require('fs');
   const path = require('path');
   const UF = require('./gap-url-find');
   const reg = JSON.parse(fs.readFileSync(path.join(rootDir, 'data', 'outlet-registry.json'), 'utf8'));
   // SHOWS_JSON_PATH first (BRO-8107), as every shared shows reader does.
-  const showsRaw = JSON.parse(fs.readFileSync(process.env.SHOWS_JSON_PATH || path.join(rootDir, 'data', 'shows.json'), 'utf8'));
+  const showsRaw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const titles = new Map((showsRaw.shows || showsRaw).map((s) => [s.id, s.title]));
-  urlFindEnv = { registry: reg.outlets || reg, corpus: UF.buildCorpusIndex(dir, (id) => titles.get(id)), archiveDir: path.join(rootDir, 'data', 'aggregator-archive') };
+  urlFindEnv = { key, registry: reg.outlets || reg, corpus: UF.buildCorpusIndex(dir, (id) => titles.get(id)), archiveDir: path.join(rootDir, 'data', 'aggregator-archive') };
   return urlFindEnv;
 }
 

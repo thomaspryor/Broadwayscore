@@ -153,10 +153,14 @@ function _syncShowCaches() {
   }
   return p;
 }
-// Parsed once per path through require()'s cache; accepts {shows} or a bare array.
+// Parsed once per path (readShowsList: fs, so a relative override resolves
+// like every other reader and a missing file is a logged read, not a silent
+// require() resolution failure). Accepts {shows} or a bare array.
+let _showsListMemo = null;
 function _requireShows() {
-  const raw = require(_syncShowCaches());
-  return Array.isArray(raw) ? raw : raw.shows;
+  const p = _syncShowCaches();
+  if (!_showsListMemo || _showsListMemo.path !== p) _showsListMemo = { path: p, list: require('./shows-json-path').readShowsList(p) };
+  return _showsListMemo.list;
 }
 // BSC_CRITIC_REGISTRY_PATH lets tests point Guard G at a fixture registry; the live
 // file is rewritten by rebuild bots, so assertions against it drift (BRO-4550).

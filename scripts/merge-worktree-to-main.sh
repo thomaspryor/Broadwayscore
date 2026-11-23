@@ -373,8 +373,12 @@ land_via_landing_branch() {
     # unit tests read live data (data/shows.json via a shared guard, an audit
     # ledger) without a LIVE-DATA-LANE marker. Found there, it costs a 25-min
     # round trip and stranded 3 worker landings in one day (BRO-8065/8079/8092).
-    # Same tracer, run here first. No data guard on purpose: the tracer logs the
-    # path before the read, so a bare worktree is judged correctly. Refuses
+    # Same tracer, run here first. No data guard on purpose: the tracer logs a
+    # read's path before the read, so a missing data/shows.json still counts.
+    # Best effort, not proof: a read a library only reaches after an
+    # existsSync() probe (the review-texts resolver) happens in land.yml's
+    # populated checkout but not in a bare worktree, so land.yml still decides.
+    # Refuses
     # only an undeclared live test; a crash or a timed-out trace warns and
     # land.yml decides. Skipped on a resume (land/<branch> already at the tip).
     local lane="$src_dir/scripts/live-data-lane.js" land_tip=""

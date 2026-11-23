@@ -1,5 +1,5 @@
-// BRO-8107: the shared guards (review-write-guard, review-guards, review-file-writer,
-// gap-acceptance) read shows.json from showsJsonPath(), so SHOWS_JSON_PATH points a
+// BRO-8107: the shared guards (review-write-guard, review-guards, review-file-writer)
+// read shows.json from showsJsonPath(), so SHOWS_JSON_PATH points a
 // test at a fixture instead of the live corpus, and a change of path re-reads.
 // Without this seam every test reaching safeWriteReview / isScoreable /
 // createOrMergeReviewFile was a live-data test, and land.yml refused 3 worker
@@ -25,6 +25,8 @@ test('showsJsonPath: env first (read at call time), else the repo copy', () => {
     process.env.SHOWS_JSON_PATH = '/tmp/x/shows.json';
     assert.equal(showsJsonPath(), '/tmp/x/shows.json');
     assert.equal(showsJsonPath({ homeFallback: true }), '/tmp/x/shows.json');
+    process.env.SHOWS_JSON_PATH = 'fixtures/shows.json';
+    assert.equal(showsJsonPath(), path.resolve('fixtures/shows.json'), 'a relative override is made absolute (require() and fs must agree)');
   } finally {
     if (prev === undefined) delete process.env.SHOWS_JSON_PATH; else process.env.SHOWS_JSON_PATH = prev;
   }
@@ -60,7 +62,7 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
   try {
     const A = path.join(dir, 'a', 'shows.json');
     const B = path.join(dir, 'b', 'shows.json');
-    for (const f of [A, B]) { fs.mkdirSync(path.dirname(f)); fs.writeFileSync(f, JSON.stringify({ shows: [{ id: 'example-show-2026', title: 'Example Show', openingDate: '2026-03-01' }] })); }
+    for (const [f, title] of [[A, 'Example Show'], [B, 'Example Show Revised']]) { fs.mkdirSync(path.dirname(f)); fs.writeFileSync(f, JSON.stringify({ shows: [{ id: 'example-show-2026', title, openingDate: '2026-03-01' }] })); }
     const texts = path.join(dir, 'texts');
     fs.mkdirSync(path.join(texts, 'example-show-2026'), { recursive: true });
     const child = `
@@ -83,15 +85,28 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
       const out = {};
       for (const [tag, file] of [['A', ${JSON.stringify(A)}], ['B', ${JSON.stringify(B)}]]) {
         process.env.SHOWS_JSON_PATH = file;
-        reads.length = 0;
-        isScoreable(review, { id: 'example-show-2026', title: 'Example Show' }, texts + '/example-show-2026/nytimes--jesse-green.json');
-        try { safeWriteReview(texts + '/example-show-2026/nytimes--jesse-green-' + tag + '.json', review); } catch {}
-        try { createOrMergeReviewFile('example-show-2026', { outletId: 'variety', outlet: 'Variety', criticName: 'Frank Rizzo', url: 'https://variety.com/2026/legit/reviews/example-show-' + tag + '.html', source: 'test' }, { reviewTextsDir: texts, knownShowIds: ['example-show-2026'] }); } catch {}
-        out[tag] = [...new Set(reads)];
+        // One entry point at a time, so a guard that never reads (or reads a stale
+        // path) cannot hide behind another guard's read.
+        const entries = {
+          isScoreable: () => isScoreable(review, { id: 'example-show-2026', title: 'Example Show' }, texts + '/example-show-2026/nytimes--jesse-green.json'),
+          safeWriteReview: () => safeWriteReview(texts + '/example-show-2026/nytimes--jesse-green-' + tag + '.json', review),
+          createOrMergeReviewFile: () => createOrMergeReviewFile('example-show-2026', { outletId: 'variety', outlet: 'Variety', criticName: 'Frank Rizzo', url: 'https://variety.com/2026/legit/reviews/example-show-' + tag + '.html', source: 'test' }, { reviewTextsDir: texts, knownShowIds: ['example-show-2026'] }),
+        };
+        out[tag] = {};
+        for (const [name, fn] of Object.entries(entries)) {
+          reads.length = 0;
+          let error = null;
+          try { fn(); } catch (e) { error = String(e && e.message); }
+          out[tag][name] = { reads: [...new Set(reads)], error };
+        }
       }
       process.stdout.write('\\nRESULT ' + JSON.stringify(out) + '\\n');
     `;
-    const env = { ...process.env };
+    // Guard G reads the critic registry; point it at a fixture too, or this
+    // test is itself a live-data test.
+    const registry = path.join(dir, 'critic-registry.json');
+    fs.writeFileSync(registry, JSON.stringify({ critics: {} }));
+    const env = { ...process.env, BSC_CRITIC_REGISTRY_PATH: registry };
     delete env.SHOWS_JSON_PATH;
     delete env.NODE_TEST_CONTEXT;
     const r = spawnSync(process.execPath, ['-e', child], { encoding: 'utf8', env, timeout: 60000 });
@@ -101,10 +116,13 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
     const out = JSON.parse(line.slice(7));
     // require() reports the realpath (/private/tmp on macOS); compare resolved paths.
     const real = (p) => { try { return fs.realpathSync(p); } catch { return p; } };
-    for (const tag of Object.keys(out)) out[tag] = [...new Set(out[tag].map(real))];
     for (const [tag, file] of [['A', real(A)], ['B', real(B)]]) {
-      assert.ok(out[tag].includes(file), `run ${tag} read its fixture (got ${JSON.stringify(out[tag])})`);
-      assert.deepEqual(out[tag].filter((p) => p !== file), [], `run ${tag} read only its fixture, never the repo copy or the previous fixture`);
+      for (const [name, { reads, error }] of Object.entries(out[tag])) {
+        assert.equal(error, null, `${name} (fixture ${tag}) threw`);
+        const got = [...new Set(reads.map(real))];
+        assert.ok(got.includes(file), `${name} read fixture ${tag} (got ${JSON.stringify(got)})`);
+        assert.deepEqual(got.filter((p) => p !== file), [], `${name} read only fixture ${tag}, never the repo copy or the previous fixture`);
+      }
     }
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

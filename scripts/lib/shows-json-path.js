@@ -19,7 +19,8 @@ const REPO_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
  *   absent, use ~/broadway-scorecard-data/shows.json (gap tooling run outside a checkout).
  */
 function showsJsonPath({ homeFallback = false } = {}) {
-  if (process.env.SHOWS_JSON_PATH) return process.env.SHOWS_JSON_PATH;
+  // Absolute, so require() (relative to its caller) and fs reads (relative to cwd) agree.
+  if (process.env.SHOWS_JSON_PATH) return path.resolve(process.env.SHOWS_JSON_PATH);
   if (homeFallback && !fs.existsSync(REPO_SHOWS_PATH)) {
     return path.join(require('os').homedir(), 'broadway-scorecard-data', 'shows.json');
   }
