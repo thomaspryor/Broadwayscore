@@ -69,7 +69,7 @@ function runOfflineProbe() {
     const name = 'Autofix: daily canary (dispatch pipeline proof)';
     const result = await probeHealthRowLive(name);
     const row = { name, verdict: result.verdict, status: result.matched?.status };
-    console.log(JSON.stringify({ gitFetchCalls, assessmentCalls, row, deadmanRows, corpusStandinReads: corpusStandinReads.length, ms: Math.round(process.uptime() * 1000) }));
+    console.log(JSON.stringify({ gitFetchCalls, assessmentCalls, row, deadmanRows, corpusStandinReads: [...new Set(corpusStandinReads)].sort(), ms: Math.round(process.uptime() * 1000) }));
   })();
 }
 
@@ -85,7 +85,7 @@ test('BRO-3823: the real live probe assesses the autofix canary without git fetc
   const { gitFetchCalls, assessmentCalls, row, deadmanRows, corpusStandinReads, ms } = JSON.parse(result.stdout);
   // The stand-in must actually intercept, or the corpus cost (and the
   // load-dependent timeout) silently comes back.
-  assert.ok(corpusStandinReads > 0, 'corpus reads must hit the stand-in');
+  assert.deepEqual(corpusStandinReads, ['reviews', 'shows'], 'both corpus files must be read through the stand-in');
   assert.deepEqual(assessmentCalls, { assessCanaryRow: 1, assessThroughputRow: 1 });
   assert.ok(row.status, 'the real canary health row must be evaluated');
   t.diagnostic(JSON.stringify({ row, gitFetchCalls: gitFetchCalls.length, corpusStandinReads, ms }));
