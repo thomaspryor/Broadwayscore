@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
 const { describeGscError } = require('./lib/gsc-error-hint');
+const { loadShowsForSlugs, slugsForCli } = require('./lib/show-page-slugs');
 
 const SITE_HOST = 'https://broadwayscorecard.com';
 const SITE_URL_GSC = 'sc-domain:broadwayscorecard.com'; // GSC property format
@@ -74,7 +75,7 @@ Usage:
 
 Options:
   --urls <paths>       Comma-separated URL paths
-  --shows <ids>        Comma-separated show slugs (submits show page + homepage)
+  --shows <ids>        Comma-separated show IDs or page slugs (submits show page + homepage)
   --type <type>        URL_UPDATED (default) or URL_DELETED
   --submit-sitemap     Re-submit sitemap.xml via Search Console Sitemaps API
   --test-auth          Test authentication for both indexing + webmasters scopes
@@ -322,7 +323,8 @@ async function main() {
       return `${SITE_HOST}${u.startsWith('/') ? '' : '/'}${u}`;
     });
   } else if (specificShows.length > 0) {
-    urls = specificShows.map(s => `${SITE_HOST}/show/${s}`);
+    // BRO-8085: tokens may be show ids or slugs; only the slug is the page address.
+    urls = slugsForCli(specificShows, loadShowsForSlugs(fs, path, __dirname)).map(s => `${SITE_HOST}/show/${s}`);
     // Also submit homepage since listings changed
     urls.push(`${SITE_HOST}/`);
     urls.push(`${SITE_HOST}/rankings`);
