@@ -472,6 +472,20 @@ function possessiveLeadShowId(title, index) {
  * reverse). "MIDNIGHT AT THE NEVER GET" -> head "midnight" matches the show Midnight, but its venue is not
  * "the never get", so nothing is suppressed.
  */
+const VENUE_GENERIC_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'playhouse', 'stage', 'broadway', 'hall', 'house', 'arts', 'of', 'and', 'for', 'at', 'new', 'york', 'nyc', 'london', 'company']);
+const VENUE_PLACEHOLDER_RE = /\b(?:tour|tba|tbd|various|multiple|undisclosed)\b/;
+/** Whole-word venue match on the distinctive words only ("theatre"/"center"/"playhouse" prove nothing). */
+function venueWordsMatch(tail, venue) {
+  if (!venue || VENUE_PLACEHOLDER_RE.test(venue)) return false;
+  const words = (v) => new Set(v.split(/\s+/).filter((w) => w && !VENUE_GENERIC_WORDS.has(w)));
+  const T = words(tail);
+  const V = words(venue);
+  if (!T.size || !V.size) return false;
+  const common = [...T].filter((w) => V.has(w));
+  if (!common.length || common.join('').length < 5) return false;
+  return common.length === T.size || common.length === V.size;
+}
+
 function venueTailShowId(title, index) {
   const t = String(title || '');
   const re = /\s+at\s+/gi;
@@ -483,7 +497,7 @@ function venueTailShowId(title, index) {
     if (!head || !tail || tail.length < 5) continue;
     for (const e of (index.statusByVariant && index.statusByVariant.get(head)) || []) {
       if (!e.full || !e.id || !e.status || e.status === 'closed' || !e.venue) continue;
-      if (e.venue.includes(tail) || tail.includes(e.venue)) ids.add(e.id);
+      if (venueWordsMatch(tail, e.venue)) ids.add(e.id);
     }
   }
   return ids.size === 1 ? [...ids][0] : null;
