@@ -23,7 +23,9 @@ function gather(input) {
   let cwd = path.dirname(path.resolve(file));
   while (!fs.existsSync(cwd) && cwd !== path.dirname(cwd)) cwd = path.dirname(cwd); // new nested dir: nearest existing ancestor
   const top = git(['rev-parse', '--show-toplevel'], cwd).trim();
-  const abs = path.resolve(file);
+  // git reports the symlink-resolved top (macOS /tmp -> /private/tmp); resolve the file's nearest existing ancestor the same way (BRO-8110).
+  const realCwd = fs.realpathSync(cwd);
+  const abs = path.join(realCwd, path.relative(cwd, path.resolve(file)));
   const rel = path.relative(top, abs);
   if (rel.startsWith('..')) return null;
   const isNewFile = !fs.existsSync(abs);

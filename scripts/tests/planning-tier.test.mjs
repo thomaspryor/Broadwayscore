@@ -93,6 +93,20 @@ test('hook driver end to end: 4th file in a new dir warns; garbage input fails o
   assert.equal(ign.stdout, '');
 });
 
+test('hook driver resolves symlinked repo paths (BRO-8110: macOS /tmp -> /private/tmp made the hook exit silently)', () => {
+  const real = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'ptier-real-')));
+  const link = real + '-link';
+  fs.symlinkSync(real, link);
+  execFileSync('git', ['init', '-q'], { cwd: real });
+  fs.mkdirSync(path.join(real, 'scripts/newsys'), { recursive: true });
+  fs.writeFileSync(path.join(real, 'scripts/tracked.js'), '');
+  execFileSync('git', ['add', 'scripts/tracked.js'], { cwd: real });
+  execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-qm', 'x'], { cwd: real });
+  for (const f of ['a', 'b', 'c']) fs.writeFileSync(path.join(real, `scripts/newsys/${f}.js`), '');
+  const r = spawnSync('node', [HOOK], { input: JSON.stringify({ tool_name: 'Write', session_id: 'zz', tool_input: { file_path: path.join(link, 'scripts/newsys/d.js'), content: 'x' } }), cwd: link, encoding: 'utf8', env: { ...process.env, PLANNING_TIER_MODE: 'warn' } });
+  assert.match(r.stdout, /SUBSTANTIAL/);
+});
+
 test('prevention: planning commands cite only CLAUDE.md sections that exist', () => {
   const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
   const md = fs.readFileSync(path.join(root, 'CLAUDE.md'), 'utf8');
