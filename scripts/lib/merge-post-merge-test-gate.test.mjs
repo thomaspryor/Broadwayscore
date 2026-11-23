@@ -1611,3 +1611,50 @@ test('land-branch opts the CI land gate out of load scaling (BRO-7947)', () => {
   const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
   assert.match(land, /MERGE_TEST_GATE_NO_LOAD_SCALING: '1'/);
 });
+
+// --- BRO-8124: a floor killed mid-way must not leak its baseline checkout ---
+// The floor's baseline checkout is made by the real makeFreshCheckout with the
+// real baselineCheckoutOptions; the child is then SIGKILLed (what a job cancel
+// or an escalated cap kill does), so no finally / exit handler runs. land-
+// branch.js calls reapKilledBaselineCheckouts() right after the floor returns;
+// with that call the 1-4GB merge-test-gate-baseline-* dir must be gone.
+test('BRO-8124: killing a floor mid-baseline leaves no merge-test-gate-baseline dir once the caller reaps', async () => {
+  const { reapKilledBaselineCheckouts } = require('./merge-post-merge-test-gate.js');
+  const fsm = require('node:fs');
+  const osm = require('node:os');
+  const pathm = require('node:path');
+  const cp = require('node:child_process');
+  const tmp = fsm.realpathSync(fsm.mkdtempSync(pathm.join(osm.tmpdir(), 'bro8124-floor-')));
+  const sh = (cwd, ...args) => cp.execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  try {
+    const origin = pathm.join(tmp, 'origin.git');
+    const repo = pathm.join(tmp, 'repo');
+    sh(tmp, 'init', '-q', '--bare', origin);
+    sh(tmp, 'init', '-q', '-b', 'main', repo);
+    fsm.writeFileSync(pathm.join(repo, 'a.txt'), 'a\n');
+    sh(repo, '-c', 'user.email=t@t', '-c', 'user.name=t', 'add', '-A');
+    sh(repo, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-q', '-m', 'seed');
+    sh(repo, 'remote', 'add', 'origin', origin);
+    sh(repo, 'push', '-q', 'origin', 'main');
+    const program = `
+      const { baselineCheckoutOptions } = require(process.argv[1]);
+      const { makeFreshCheckout } = require(process.argv[2]);
+      const co = makeFreshCheckout(baselineCheckoutOptions({ MERGE_TEST_GATE_REPO_DIR: process.argv[3] }));
+      console.log(JSON.stringify({ dir: co.dir, wt: co.wt }));
+      process.kill(process.pid, 'SIGKILL');
+    `;
+    const r = cp.spawnSync(process.execPath, ['-e', program, require.resolve('./merge-post-merge-test-gate.js'), require.resolve('./acceptance-check-core.js'), repo], {
+      encoding: 'utf8', timeout: 60000, env: { ...process.env, TMPDIR: tmp },
+    });
+    assert.equal(r.signal, 'SIGKILL', r.stderr);
+    const co = JSON.parse(r.stdout.trim().split('\n').at(-1));
+    assert.ok(pathm.basename(co.dir).startsWith('merge-test-gate-baseline-'));
+    assert.ok(fsm.existsSync(co.wt), 'precondition: the killed floor leaked its checkout');
+    const reaped = reapKilledBaselineCheckouts({ roots: [tmp] });
+    assert.equal(reaped.removed, 1, JSON.stringify(reaped.results));
+    assert.equal(fsm.existsSync(co.dir), false, 'leaked baseline dir must be gone');
+    assert.ok(!sh(repo, 'worktree', 'list').includes(co.wt), 'worktree must be deregistered');
+  } finally {
+    fsm.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

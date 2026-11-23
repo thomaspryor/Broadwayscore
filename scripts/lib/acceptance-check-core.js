@@ -43,9 +43,8 @@ const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
 const { defaultDetail, tapDetail, checksEnv, cardCheckArgv, prepareCheckWorkdir, readTsxRunTests, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { envCauseOf, needsTsxRunner } = require('./check-env-cause.js');
 const { refreshDataClone } = require('./data-clone-refresh.js');
-const { writeOwner, checkoutInUse, OWNER_FILE } = require('./acceptance-checkout-owner.js');
+const { writeOwner, removableTempCheckout, OWNER_FILE } = require('./acceptance-checkout-owner.js');
 const { registerExitCleanup } = require('./temp-worktree.js');
-const { holdsIgnoredWork } = require('./codex-runner.js');
 const { acquireStorage } = require('./mac-storage-budget.js');
 const ownedCheckouts = new Map();
 const checkoutReservations = new WeakMap();
@@ -131,6 +130,17 @@ function sleepMs(ms) {
  *   "pre-existing").
  * @returns {{dir:string, wt:string, repo:string}}
  */
+/**
+ * BRO-8124: before making a checkout, reap dead-owner siblings of the same
+ * prefix that a killed earlier caller leaked (SIGKILL, or a SIGTERM that hit
+ * while this process sat blocked in spawnSync, skip registerExitCleanup).
+ * Never throws; bounded to ~60s so a backlog cannot stall a close-time
+ * caller (GC reaps the rest); TEMP_CHECKOUT_REAP_DISABLED=1 turns it off.
+ */
+function reapDeadSiblings(prefix) {
+  try { require('./reap-temp-checkouts.js').reapTempCheckouts({ roots: [os.tmpdir()], prefix, deadOnly: true, budgetMs: 60000, measure: false }); } catch { /* best-effort */ }
+}
+
 function makeFreshCheckout(options = {}) {
   const release = acquireStorage({ directory: os.tmpdir(), sizeGiB: 5, floorGiB: 15 });
   try {
@@ -179,6 +189,7 @@ function provisionFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-chec
   // that exact commit instead — the fetch above still runs first so the sha
   // is guaranteed reachable even if it only just landed on origin.
   const sha = pinnedSha || execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
+  reapDeadSiblings(prefix);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
@@ -241,6 +252,7 @@ function shouldCloneAfterFetchFailure(err, pinnedSha) {
  */
 function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
   const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  reapDeadSiblings(prefix);
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
@@ -269,21 +281,30 @@ function unpreparedReason(wt, dataClone) {
   return reasons.length ? reasons.join('; ') : null;
 }
 
-/** Preserve a checkout when it is busy, dirty, locked, or contains new commits. */
+/**
+ * Preserve a checkout when it is busy, holds .env/review-texts work, is
+ * locked, has a file open, or contains new commits. Dirt the checks wrote does
+ * NOT preserve it (BRO-8124: a fixture row in the tracked stage-latency.jsonl
+ * kept every land-floor baseline, 2.3GB each); the rule is shared with the
+ * reaper via removableTempCheckout.
+ */
 function removeCheckout(co) {
   if (!co) return;
   const repo = co.repo || DEFAULT_REPO;
   try {
     if (fs.existsSync(co.wt)) {
-      if (holdsIgnoredWork(co.wt) || checkoutInUse(co.wt)) return false;
-      const git = (args) => execFileSync('git', ['-C', co.wt, ...args], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
-      if (git(['status', '--porcelain', '--untracked-files=all'])) return false;
-      if (co.sha && git(['rev-parse', 'HEAD']) !== co.sha) return false;
+      const ok = removableTempCheckout(co.wt, { sha: co.sha || null, standalone: Boolean(co.standalone) });
+      if (!ok.ok) { console.error(`[acceptance-checkout] retained ${co.dir}: ${ok.reason}`); return false; }
+      // --force discards the dirt, so first prove nothing holds a file under
+      // it (a stray test grandchild with another cwd escapes checkoutInUse).
+      const { openPathSnapshot, hasOpenPathUnder } = require('./reap-temp-checkouts.js');
+      const snap = openPathSnapshot({ excludePid: process.pid }); // our own fds/cwd are not a reason to keep it
+      if (hasOpenPathUnder(snap, fs.realpathSync(co.dir))) { console.error(`[acceptance-checkout] retained ${co.dir}: a process holds a file under it${snap === null ? ' (lsof failed)' : ''}`); return false; }
       if (co.standalone) {
-        if (git(['rev-list', '--count', 'origin/main..HEAD']) !== '0') return false;
         fs.rmSync(co.wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
       } else {
-        execFileSync('git', ['worktree', 'remove', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+        const forces = ok.force === 2 ? ['-f', '-f'] : ['--force'];
+        execFileSync('git', ['worktree', 'remove', ...forces, co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
       }
     }
     fs.rmSync(path.join(co.dir, OWNER_FILE), { force: true });

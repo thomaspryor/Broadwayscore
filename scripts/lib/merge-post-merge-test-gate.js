@@ -998,7 +998,23 @@ function baselineCheckoutOptions(env) {
   };
 }
 
+// BRO-8124: a floor killed at its cap (land-branch.js execFileSync timeout,
+// a job cancel, SIGKILL) never reaches its finally/exit cleanup and leaks its
+// 1-4GB baseline checkout. The caller runs this right after the floor returns:
+// the floor process is gone by then, so its checkout has a dead owner and is
+// reaped with no grace (still only when nothing is open under it and HEAD is
+// on origin/main). Never throws.
+function reapKilledBaselineCheckouts({ roots } = {}) {
+  try {
+    const os = require('os');
+    return require('./reap-temp-checkouts.js').reapTempCheckouts({
+      roots: roots || [os.tmpdir()], prefix: baselineCheckoutOptions({}).prefix, deadOnly: true, deadGraceMin: 0, budgetMs: 120000,
+    });
+  } catch { return { removed: 0, freedKb: 0, results: [] }; }
+}
+
 module.exports = {
+  reapKilledBaselineCheckouts,
   TEST_GATE_TIMEOUT_MS,
   TEST_GATE_MAX_TIMEOUT_MS,
   TEST_GATE_LOCAL_MIN_TIMEOUT_MS,

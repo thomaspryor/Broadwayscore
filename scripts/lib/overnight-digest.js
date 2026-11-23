@@ -191,7 +191,9 @@ function stuckPipelineRow({ signals = [], errors = [], macSourcesPresent = false
 
 // ── Impure gatherer — every source fails soft ───────────────────────────────
 
-function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
+// skipCmux: fixture-repo tests have no cmux to ask; the live app timed out
+// under land-floor load and failed stuck-pipeline.test.mjs (BRO-8124 landing).
+function gatherDigest({ repo, hours = 24, skipFetch = false, skipCmux = false } = {}) {
   const digest = { generatedAt: new Date().toISOString(), hours, commits: null, stuck: {}, errors: [] };
   // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
   // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
@@ -281,7 +283,7 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
 
   // 3. Automated cmux sessions still open (and duplicate dispatches).
   try {
-    if (fs.existsSync(CMUX_BIN)) {
+    if (!skipCmux && fs.existsSync(CMUX_BIN)) {
       digest.stuck.workspaces = parseWorkspaces(cmuxRun(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
     }
   } catch (err) {

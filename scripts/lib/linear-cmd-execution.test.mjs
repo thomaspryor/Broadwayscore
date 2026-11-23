@@ -40,6 +40,12 @@ function makeRepo({ withNodeModules = true } = {}) {
   git('config', 'user.name', 'T');
   git('remote', 'add', 'origin', origin);
   if (withNodeModules) fs.mkdirSync(path.join(work, 'node_modules'));
+  // BRO-8124: like the real repo, ignore node_modules. Without this the
+  // node_modules symlink prepareCheckWorkdir adds makes every checkout read
+  // dirty, removeCheckout keeps it, t.after then deletes this repo under it,
+  // and each run of this file leaked 3 orphan linear-done-verify-* dirs.
+  // info/exclude is shared by linked worktrees, so no commit is needed.
+  fs.appendFileSync(path.join(work, '.git', 'info', 'exclude'), '\nnode_modules\n');
   return { root, work, git };
 }
 
@@ -205,4 +211,22 @@ __test7632('BRO-7632: bullet, bold and lowercase VERIFY forms are checked too; s
     __assert7632.ok(__r7632.findPlaceholderVerify(f), f);
   const h = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'check exited 3 (cannot verify): upstream timeout error' }, {});
   __assert7632.match(h, /environment problem/);
+});
+
+// BRO-8124 class guard: this file leaked 3 linear-done-verify-* checkouts per
+// run (109 found in /tmp on 2026-11-23). Runs last: any checkout this process
+// still owns after the tests above finished is a leak.
+test('BRO-8124: no linear-done-verify checkout owned by this process survives the tests', () => {
+  const leaked = [];
+  for (const root of new Set([os.tmpdir(), '/tmp'])) {
+    let names = [];
+    try { names = fs.readdirSync(root).filter((n) => n.startsWith('linear-done-verify-')); } catch { continue; }
+    for (const n of names) {
+      try {
+        const owner = JSON.parse(fs.readFileSync(path.join(root, n, '.acceptance-owner.json'), 'utf8'));
+        if (owner.pid === process.pid) leaked.push(path.join(root, n));
+      } catch { /* not ours */ }
+    }
+  }
+  assert.deepEqual(leaked, []);
 });

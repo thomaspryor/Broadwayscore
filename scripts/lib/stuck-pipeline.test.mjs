@@ -78,7 +78,7 @@ test('BRO-7276: digest recognizes rebased patches while retaining real unlanded 
     git(root, 'add', 'other'); git(root, 'commit', '-qm', 'main moved');
     git(root, 'cherry-pick', git(landed, 'rev-parse', 'HEAD'));
     git(root, 'update-ref', 'refs/remotes/origin/main', 'HEAD');
-    const result = digest.gatherDigest({ repo: root, skipFetch: true });
+    const result = digest.gatherDigest({ repo: root, skipFetch: true, skipCmux: true });
     assert.deepEqual(result.stuck.worktrees.map(x => x.split(':')[0]).sort(), ['job-unlanded', 'stranded']);
     assert.deepEqual(result.errors, []);
   } finally {

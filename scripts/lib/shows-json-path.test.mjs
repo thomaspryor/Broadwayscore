@@ -109,6 +109,11 @@ test('shared guards read shows.json only from SHOWS_JSON_PATH and re-read when i
     const env = { ...process.env, BSC_CRITIC_REGISTRY_PATH: registry };
     delete env.SHOWS_JSON_PATH;
     delete env.NODE_TEST_CONTEXT;
+    // BRO-8124: with NODE_TEST_CONTEXT gone the child is not a test run to
+    // stage-latency.js, so createOrMergeReviewFile appended a fake
+    // review-first-seen row to the TRACKED data/audit/stage-latency.jsonl
+    // (it also left every land-floor baseline checkout dirty).
+    env.STAGE_LATENCY_LOG = path.join(dir, 'stage-latency.jsonl');
     const r = spawnSync(process.execPath, ['-e', child], { encoding: 'utf8', env, timeout: 60000 });
     assert.equal(r.status, 0, r.stderr);
     const line = r.stdout.split('\n').find((l) => l.startsWith('RESULT '));

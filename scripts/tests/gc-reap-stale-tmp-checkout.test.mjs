@@ -18,6 +18,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 const SCRIPT = fileURLToPath(new URL('../gc-merged-worktrees.sh', import.meta.url));
 const REPOS_HELPER = fileURLToPath(new URL('../lib/worktree-gc-repos.js', import.meta.url));
@@ -84,9 +87,10 @@ function buildFixture() {
   return { tmp, repo, leaked, fresh, unique, wrong, foreign };
 }
 
-function runGc(fx, { dryRun }) {
+function runGc(fx, { dryRun, extraEnv = {} }) {
   const env = {
     ...process.env,
+    ...extraEnv,
     WORKTREE_GC_LOG: path.join(fx.tmp, dryRun ? 'dry.log' : 'real.log'),
     WORKTREE_GC_LOCK_DIR: path.join(fx.tmp, `${dryRun ? 'dry' : 'real'}.lock`),
     WORKTREE_GC_REPOS_JSON: JSON.stringify([
@@ -134,14 +138,15 @@ test('every makeFreshCheckout prefix in scripts/ is on the GC reap allowlist', (
     { cwd: root, encoding: 'utf8' });
   const prefixes = [...new Set([...src.matchAll(/prefix: '([a-z-]+)'/g)].map((m) => m[1]))];
   assert.ok(prefixes.length >= 5, `prefix scan looks broken: ${prefixes}`);
-  const gc = fs.readFileSync(SCRIPT, 'utf8');
+  // BRO-8124: the allowlist lives in reap-temp-checkouts.js, which the GC delegates to.
+  const { TEMP_CHECKOUT_PREFIXES } = require(fileURLToPath(new URL('../lib/reap-temp-checkouts.js', import.meta.url)));
   // acceptance-check- is makeFreshCheckout's default prefix.
   for (const p of ['acceptance-check-', ...prefixes]) {
-    assert.ok(gc.includes(`${p}??????`), `gc-merged-worktrees.sh reap allowlist is missing ${p}`);
+    assert.ok(TEMP_CHECKOUT_PREFIXES.includes(p), `reap-temp-checkouts.js TEMP_CHECKOUT_PREFIXES is missing ${p}`);
   }
 });
 
-test('dead owners are reaped promptly while live, dirty, unmerged and locked trees survive', () => {
+test('dead owners and dirty idle checkouts are reaped while live, unmerged and locked trees survive', () => {
   const fx = buildFixture();
   const marker = (co, owner) => fs.writeFileSync(path.join(co.parent, '.acceptance-owner.json'), JSON.stringify(owner));
   // Fresh source mtimes are allowed once the recorded owner has died.
@@ -155,8 +160,19 @@ test('dead owners are reaped promptly while live, dirty, unmerged and locked tre
   const dirtyParent = fs.mkdtempSync(path.join(fx.tmp, 'acceptance-check-'));
   const dirty = path.join(dirtyParent, 'main');
   git(fx.repo, 'worktree', 'add', '-q', '--detach', dirty, 'main');
-  fs.writeFileSync(path.join(dirty, 'untracked'), 'work');
+  // BRO-8124: what a check run wrote (audit-ledger churn, a deletion) no longer keeps it.
+  fs.mkdirSync(path.join(dirty, 'data', 'audit'), { recursive: true });
+  fs.writeFileSync(path.join(dirty, 'data', 'audit', 'stage-latency.jsonl'), 'row\n');
+  fs.unlinkSync(path.join(dirty, 'a.txt'));
   backdate(dirtyParent);
+  // A real edit a check run never makes is still kept (until 24h idle).
+  const editedParent = fs.mkdtempSync(path.join(fx.tmp, 'acceptance-check-'));
+  const edited = path.join(editedParent, 'main');
+  git(fx.repo, 'worktree', 'add', '-q', '--detach', edited, 'main');
+  fs.writeFileSync(path.join(edited, 'untracked'), 'work');
+  // 2h idle: past the 60m ownerless window, inside the 24h edited-tree window.
+  const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+  for (const f of execFileSync('find', [editedParent], { encoding: 'utf8' }).trim().split('\n')) fs.utimesSync(f, twoHoursAgo, twoHoursAgo);
   const lockedParent = fs.mkdtempSync(path.join(fx.tmp, 'acceptance-check-'));
   const locked = path.join(lockedParent, 'main');
   git(fx.repo, 'worktree', 'add', '-q', '--detach', locked, 'main');
@@ -164,5 +180,22 @@ test('dead owners are reaped promptly while live, dirty, unmerged and locked tre
   backdate(lockedParent);
   const out = runGc(fx, { dryRun: false });
   assert.ok(!fs.existsSync(fx.leaked.wt), out);
-  for (const wt of [fx.fresh.wt, fx.unique.wt, dirty, locked]) assert.ok(fs.existsSync(wt), wt);
+  assert.ok(!fs.existsSync(dirtyParent), `dirty idle checkout must be reaped: ${out}`);
+  for (const wt of [fx.fresh.wt, fx.unique.wt, edited, locked]) assert.ok(fs.existsSync(wt), wt);
+});
+
+// BRO-8124: on 2026-11-23 one GC pass held the global lock for 10 hours, so
+// every other invocation (hourly launchd, bsc-runner's disk-pressure
+// self-heal) hit SKIP-RUN and no leaked checkout was reaped. The temp-checkout
+// pass now runs BEFORE the lock: a SKIP-RUN invocation must still reap.
+test('a SKIP-RUN invocation (lock held by a live run) still reaps leaked temp checkouts', () => {
+  const fx = buildFixture();
+  const lock = path.join(fx.tmp, 'real.lock');
+  fs.mkdirSync(lock);
+  fs.writeFileSync(path.join(lock, 'pid'), String(process.pid));
+  const out = runGc(fx, { dryRun: false, extraEnv: { TEMP_CHECKOUT_REAP_ROOTS: fx.tmp } });
+  assert.match(out, /SKIP-RUN/, out);
+  assert.match(out, /REMOVE-TMP /, out);
+  assert.ok(!fs.existsSync(fx.leaked.parent), `leaked checkout must be reaped despite the held lock:\n${out}`);
+  for (const k of ['fresh', 'unique', 'wrong', 'foreign']) assert.ok(fs.existsSync(fx[k].wt), k);
 });

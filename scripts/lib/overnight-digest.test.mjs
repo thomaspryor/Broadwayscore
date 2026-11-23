@@ -149,7 +149,7 @@ test('gatherDigest ignores routine reconcile heartbeat/success kinds', () => {
       { ts: now, kind: 'timeout-resume', detail: 'resuming timed-out session' },
       { ts: now, kind: 'flagless-revived', detail: 'revived workspace' },
     ]);
-    const digest = gatherDigest({ repo });
+    const digest = gatherDigest({ repo, skipCmux: true });
     assert.equal(digest.stuck.headlessJobs, undefined);
   } finally {
     fs.rmSync(repo, { recursive: true, force: true });
@@ -165,7 +165,7 @@ test('gatherDigest surfaces genuinely actionable reconcile kinds', () => {
       { ts: now, kind: 'orphan', detail: 'job j1 (task #1) has no live claude process' },
       { ts: now, kind: 'zombie-flip', detail: 'in_progress task #2 flipped back to pending' },
     ]);
-    const digest = gatherDigest({ repo });
+    const digest = gatherDigest({ repo, skipCmux: true });
     assert.equal(digest.stuck.headlessJobs.length, 2);
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[orphan]')));
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
@@ -187,7 +187,7 @@ test('gatherDigest suppresses an actionable event once its correlated resolving 
       // A different job under the same task is NOT resolved by j1's fix.
       { ts: now, kind: 'orphan', taskId: '7', jobId: 'j2', detail: 'job j2 has no live claude process' },
     ]);
-    const digest = gatherDigest({ repo });
+    const digest = gatherDigest({ repo, skipCmux: true });
     assert.equal(digest.stuck.headlessJobs.length, 1);
     assert.match(digest.stuck.headlessJobs[0], /job j2/);
   } finally {
@@ -204,7 +204,7 @@ test('gatherDigest does not correlate flagless-session (shared pseudo-taskId) or
       { ts: now, kind: 'flagless-revived', taskId: 'sweep', detail: 'revived a different workspace' },
       { ts: now, kind: 'zombie-flip', taskId: '99', detail: 'in_progress task #99 flipped back to pending' },
     ]);
-    const digest = gatherDigest({ repo });
+    const digest = gatherDigest({ repo, skipCmux: true });
     assert.equal(digest.stuck.headlessJobs.length, 2);
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[flagless-session]')));
     assert.ok(digest.stuck.headlessJobs.some(l => l.includes('[zombie-flip]')));
@@ -221,7 +221,7 @@ test('gatherDigest({ skipFetch: true }) never shells out to git fetch', () => {
     // skipFetch must skip the fetch specifically; `git log` still runs and
     // fails soft (no .git here), which is the pre-existing, unrelated
     // "couldn't read git history" path.
-    const digest = gatherDigest({ repo, skipFetch: true });
+    const digest = gatherDigest({ repo, skipFetch: true, skipCmux: true });
     assert.ok(!digest.errors.some(e => /git fetch failed/.test(e)), `unexpected fetch error: ${JSON.stringify(digest.errors)}`);
   } finally {
     fs.rmSync(repo, { recursive: true, force: true });
@@ -274,7 +274,7 @@ test('gatherDigest drops a rebuild regression whose show has recovered (BRO-6432
     const rev = (id, n) => Array.from({ length: n }, () => ({ showId: id }));
     fs.writeFileSync(path.join(repo, 'data', 'reviews.json'),
       JSON.stringify({ _meta: { lastUpdated: new Date(Date.now() + 1000).toISOString() }, reviews: [...rev('recovered', 3), ...rev('still-low', 1)] }));
-    const digest = gatherDigest({ repo, skipFetch: true });
+    const digest = gatherDigest({ repo, skipFetch: true, skipCmux: true });
     assert.equal(digest.stuck.reviewRegressions.length, 1);
     assert.match(digest.stuck.reviewRegressions[0], /^still-low:/);
   } finally {
@@ -288,10 +288,10 @@ test('gatherDigest keeps a regression when reviews.json is missing or older than
     fs.mkdirSync(path.join(repo, 'data', 'audit'), { recursive: true });
     fs.writeFileSync(path.join(repo, 'data', 'audit', 'rebuild-regression.json'),
       JSON.stringify({ timestamp: new Date().toISOString(), regressions: [{ showId: 's', oldCount: 2, newCount: 1, dropped: 1, reason: 'x' }] }));
-    assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
+    assert.equal(gatherDigest({ repo, skipFetch: true, skipCmux: true }).stuck.reviewRegressions.length, 1);
     fs.writeFileSync(path.join(repo, 'data', 'reviews.json'),
       JSON.stringify({ _meta: { lastUpdated: '2020-01-01T00:00:00Z' }, reviews: [{ showId: 's' }, { showId: 's' }] }));
-    assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
+    assert.equal(gatherDigest({ repo, skipFetch: true, skipCmux: true }).stuck.reviewRegressions.length, 1);
   } finally {
     fs.rmSync(repo, { recursive: true, force: true });
   }
