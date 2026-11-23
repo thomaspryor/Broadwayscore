@@ -1328,20 +1328,6 @@
     "queuedAt": "2026-11-23T21:17:27.143Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-23T21:55:35.222Z"
-  },
-  {
     "conditionKey": "watchdog-park:linear:BRO-8191",
     "title": "Watchdog parked #linear:BRO-8191 — redispatch never produced a launch",
     "description": "Watchdog: card \"Root cause: \"Press night: score gate undecided\" keeps coming back (5 cards in 30 days)\" was claimed for redispatch at 2026-11-23T20:58:56.736Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8191), then re-arm with node scripts/linear-next.js --id BRO-8191 --force once fixed.",
@@ -1532,6 +1518,20 @@
       }
     ],
     "queuedAt": "2026-11-23T22:47:45.450Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T23:35:54.476Z"
   },
   {
     "conditionKey": "red-first-skip:BRO-6866",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T21:56:03.217Z",
+  "generatedAt": "2026-11-23T23:39:41.756Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,6 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -162,37 +158,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 902,
-  "matchedGaps": 3,
+  "itemsScanned": 910,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/cinderella-lyric-hammersmith-london/",
-      "headline": "Cinderella – Lyric Hammersmith, London",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/elektra-an-ancient-story-in-high-concept-packaging/",
-      "headline": "&#8216;Elektra&#8217; – An Ancient Story in High Concept Packaging",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/uk-reviews/eurotrash/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=eurotrash",
-      "headline": "Eurotrash",
-      "publishDate": "2026-11-23"
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
