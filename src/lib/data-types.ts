@@ -177,6 +177,8 @@ export interface Theater {
   /** Set on a renamed Broadway house's old-name page: the current name of the same building. */
   nowKnownAs?: { name: string; slug: string };
   capacity?: number;
+  /** Map position of the published address (schema.org geo, BRO-8173). Only set alongside that address. */
+  geo?: { lat: number; lng: number };
   yearBuilt?: number;
   operator?: string;
   formerNames?: string[];

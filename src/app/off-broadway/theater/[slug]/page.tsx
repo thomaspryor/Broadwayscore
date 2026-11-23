@@ -56,7 +56,10 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const currentShowText = theater.currentShow
     ? `Currently showing: ${theater.currentShow.title}.`
     : 'View show history and information.';
-  const description = `${theater.name} in New York City. ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
+  // Address and seat count lead (BRO-8173): what people search a venue for.
+  const where = theater.address ? `, an Off-Broadway theater at ${theater.address}` : ' in New York City';
+  const capacityText = theater.capacity ? ` ${theater.capacity.toLocaleString()} seats.` : '';
+  const description = `${theater.name}${where}.${capacityText} ${currentShowText} See all ${theater.showCount} shows, scores, and theater details.`;
 
   return {
     title: { absolute: `${theater.name}: Off-Broadway Theater` },
@@ -99,6 +102,8 @@ export default async function OffBroadwayTheaterPage(props: { params: Promise<{ 
     country: 'US',
     address: theater.address,
     website: theater.website,
+    geo: theater.geo,
+    capacity: theater.capacity,
     pastShows: [],
   });
 

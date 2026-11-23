@@ -134,6 +134,32 @@ const VENUE_PAGE_NAME_FOLDS = {
   'National Theatre (Dorfman)': 'Dorfman Theatre',
   'County Hall': 'London County Hall',
   'Lower E Side': 'Lower Eastside Girls Club',
+  // BRO-8173 SEO audit: "The X" / "X" and Theatre/Theater spellings of one house.
+  // Target = the spelling with the most shows (a proper-case name breaks a tie).
+  'Players Theatre': 'The Players Theatre',
+  'Public Theater': 'The Public Theater',
+  'The Public Theater/Martinson Hall': 'Public Theater/Martinson Hall',
+  'The Public Theater/Shiva Theater': 'Public Theater/Shiva Theater',
+  'The Public Theater/Newman Theater': 'Public Theater/Newman Theater',
+  'The Public Theater/LuEsther Hall': 'Public Theater/LuEsther Hall',
+  'The Public Theater – LuEsther Hall': 'Public Theater/LuEsther Hall',
+  'Mitzi E. Newhouse Theatre': 'Mitzi E. Newhouse Theater',
+  'Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre': 'The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre',
+  'Robert W. Wilson MCC Theater Space': 'The Robert W. Wilson MCC Theater Space',
+  "Theatre at St. Jean's": "Theater at St. Jean's",
+  'Theater at St. Jean': "Theater at St. Jean's",
+  'Duke on 42nd Street': 'The Duke on 42nd Street',
+  'The West End Theatre': 'West End Theatre',
+  'the cell': 'The Cell Theatre',
+  'The Sheen Center': 'Sheen Center',
+  'The Triad': 'The Triad Theatre',
+  'Lyric Hammersmith Theatre': 'Lyric Hammersmith',
+  'Dorfman': 'Dorfman Theatre',
+  'Lyttelton': 'Lyttelton Theatre',
+  'Olivier': 'Olivier Theatre',
+  'Richmond': 'Richmond Theatre',
+  'The Arts at Marble Arch powered by TodayTix': 'The Arts at Marble Arch',
+  'The Arts at Marble Arch Powered by TodayTix': 'The Arts at Marble Arch',
 };
 
 /** @param {string} venue @returns {string} the canonical page name for a raw venue string */
