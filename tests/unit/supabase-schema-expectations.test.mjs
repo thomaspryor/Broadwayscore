@@ -340,3 +340,30 @@ test('an iOS-only per-user table that delete-account does not touch is reported'
   const fnSource = "await deleteRows(base, auth, 'push_tokens', q);";
   assert.deepEqual(findUndeletedUserTables(live, fnSource, DELETE_ACCOUNT_EXEMPT), ['ios_only_notes']);
 });
+
+// BRO-8056: a storage.objects policy is keyed schema-qualified on both sides
+// (migration parser and live catalog query), or it reads as unapplied forever.
+test('storage.objects policies are keyed storage.objects:<name>; public stays bare', () => {
+  const r = deriveExpectations([{ name: 's.sql', sql: `
+CREATE POLICY show_refresh_anon_read ON storage.objects FOR SELECT TO anon USING (bucket_id = 'show-refresh');
+CREATE POLICY "Own rows" ON public.watchlist FOR SELECT USING (true);
+CREATE POLICY gone ON storage.objects FOR SELECT USING (true);
+DROP POLICY IF EXISTS gone ON storage.objects;
+` }]);
+  assert.ok(r.expected.has('policy:storage.objects:show_refresh_anon_read'));
+  assert.ok(r.expected.has('policy:watchlist:Own rows'));
+  assert.ok(!r.expected.has('policy:objects:show_refresh_anon_read'));
+  assert.ok(!r.expected.has('policy:storage.objects:gone'));
+});
+
+test('live catalog query reads storage policies with the same key shape', async () => {
+  const { LIVE_CATALOG_QUERY } = await import('../../scripts/lib/supabase-schema-expectations.js');
+  assert.match(LIVE_CATALOG_QUERY, /FROM pg_policies WHERE schemaname IN \('public', 'storage'\)/);
+  assert.match(LIVE_CATALOG_QUERY, /CASE WHEN schemaname = 'public' THEN '' ELSE schemaname \|\| '\.' END \|\| tablename/);
+});
+
+test('the real show-refresh migration derives the storage-qualified key', () => {
+  const file = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'supabase', 'migrations', '20261123_show_refresh_anon_read.sql');
+  const r = deriveExpectations([{ name: 'm.sql', sql: fs.readFileSync(file, 'utf8') }]);
+  assert.ok(r.expected.has('policy:storage.objects:show_refresh_anon_read'), [...r.expected.keys()].join(','));
+});
