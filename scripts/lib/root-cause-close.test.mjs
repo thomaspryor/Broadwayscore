@@ -375,6 +375,13 @@ test('BRO-7552: an EFFECT that defers the measurement is not an effect, even wit
 
 test('ship-check BRO-7552: pending detection ignores "pending-review" compounds and "no longer pending", catches deferral wordings', async () => {
   const { isPendingEffect } = await import('./root-cause-close.js').then((m) => m.default || m);
-  for (const t of ['24->3/h; pending-review queue 40->0', 'no longer pending: 24->3/h']) assert.equal(isPendingEffect(t), false, t);
-  for (const t of ['ledger numbers pending', 'awaiting ledger rows', 'numbers tomorrow', 'will confirm after the next cron run', 'not yet observed', 'TBC']) assert.equal(isPendingEffect(t), true, t);
+  for (const t of ['24->3/h; pending-review queue 40->0', 'no longer pending: 24->3/h']) assert.equal(rcc.isPendingEffect(t), false, t);
+  for (const t of ['ledger numbers pending', 'awaiting ledger rows', 'numbers tomorrow', 'will confirm after the next cron run', 'not yet observed', 'TBC']) assert.equal(rcc.isPendingEffect(t), true, t);
+});
+
+test('BRO-8079: "pending" inside a command or path is the thing measured, not a deferral', () => {
+  assert.equal(rcc.isPendingEffect('_pending queue 6,838 -> 412 via `node scripts/count-pending.js`'), false);
+  assert.equal(rcc.isPendingEffect('data/_pending/ files 300 -> 2'), false);
+  assert.equal(rcc.isPendingEffect('12 -> 3, rest pending'), true);
+  assert.equal(rcc.isPendingEffect('ledger numbers pending (2026-11-16)'), true);
 });

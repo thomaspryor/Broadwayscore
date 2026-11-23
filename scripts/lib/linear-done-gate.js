@@ -351,6 +351,35 @@ function outsideSettingCloseCheck({ description = '', commentText = '', existing
   }
 }
 
+// BRO-8079: a data-count card (title or acceptance names a queue size, gap count, % coverage,
+// "promotes N") closed Done on a unit-test VERIFY while its count never moved (BRO-7930: 6,838 waiting,
+// Done, then 6,786 a day later). Such a card needs a measured `EFFECT: <before> -> <after>` line naming
+// the command, or it stays Paused with RECHECK-AFTER. BLOCKING now; DATA_EFFECT_DONE_GATE=advisory rolls
+// it back. A worker Outcome that reports a rate on real data needs a SAMPLE-AUDIT: block of 20+ urls
+// (BRO-8065's "98% settled" sample found wrong settles). ADVISORY until SAMPLE_AUDIT_BLOCKING_FROM;
+// SAMPLE_AUDIT_DONE_GATE=advisory rolls that back. Any error fails open.
+const SAMPLE_AUDIT_BLOCKING_FROM = '2026-11-29';
+
+function dataEffectCloseCheck({ identifier, title = '', description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}) {
+  const out = [];
+  try {
+    const dec = require('./data-effect-close.js');
+    const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
+    const de = dec.checkDataEffect({ title, description, texts: comments });
+    if (de && !de.ok) {
+      out.push({ verdict: 'data-effect-unmeasured', blocking: env.DATA_EFFECT_DONE_GATE !== 'advisory', message: dec.dataEffectMessage(identifier, de) });
+    }
+    const sa = dec.checkSampleAudit({ texts: comments });
+    if (sa && !sa.ok) {
+      const blocking = env.SAMPLE_AUDIT_DONE_GATE !== 'advisory' && nowMs >= Date.parse(`${SAMPLE_AUDIT_BLOCKING_FROM}T00:00:00Z`);
+      out.push({ verdict: 'sample-audit-missing', blocking, message: dec.sampleAuditMessage(identifier, sa) + (blocking ? '' : ` Advisory now; refused from ${SAMPLE_AUDIT_BLOCKING_FROM}.`) });
+    }
+  } catch {
+    return [];
+  }
+  return out;
+}
+
 function checkLinearDoneTransition(args = {}) {
   let result = checkDoneEvidence(args);
   if (args.targetStateType !== 'completed') return result;
@@ -368,6 +397,11 @@ function checkLinearDoneTransition(args = {}) {
     result = osc.blocking && result.allowed !== false
       ? { ...result, gated: true, allowed: false, verdict: 'outside-setting-unseen', reason: osc.message }
       : addWarning(result, osc.message);
+  }
+  for (const de of dataEffectCloseCheck(args)) {
+    result = de.blocking && result.allowed !== false
+      ? { ...result, gated: true, allowed: false, verdict: de.verdict, reason: de.message }
+      : addWarning(result, de.message);
   }
   const rw = recurrenceWarning(args);
   if (rw) {
@@ -395,4 +429,4 @@ function checkLinearDoneTransition(args = {}) {
   return result;
 }
 
-module.exports = { checkLinearDoneTransition, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, outsideSettingCloseCheck, OUTSIDE_SETTING_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseCheck };
+module.exports = { checkLinearDoneTransition, dataEffectCloseCheck, SAMPLE_AUDIT_BLOCKING_FROM, recordedCheckCloseCheck, CHECK_ON_MAIN_BLOCKING_FROM, outsideSettingCloseCheck, OUTSIDE_SETTING_BLOCKING_FROM, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseCheck };

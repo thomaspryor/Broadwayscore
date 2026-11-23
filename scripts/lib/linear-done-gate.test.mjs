@@ -222,3 +222,108 @@ test('BRO-7994 outsideSettingCloseCheck: NO-OUTSIDE-SETTING on the card clears i
   const card = 'OUTSIDE-SETTING: Google web client must list both site origins\nNO-OUTSIDE-SETTING: the origins were already listed before this change shipped';
   assert.equal(outsideSettingCloseCheck({ description: card, nowMs: Date.parse('2026-11-28T12:00:00Z'), env: {} }, {}), null);
 });
+
+// ── BRO-8079: Done checked process, not results ─────────────────────────────
+const BRO_7930_TITLE = '_pending intake drain promotes 0 (6,838 waiting) + 313 limbo files neither scored nor rejected';
+const passingVerify = () => ({ allowed: true, verdict: 'pass', reason: 'exit 0' });
+const NOW_BLOCKING = Date.parse('2026-12-01T00:00:00Z');
+
+test('BRO-8079: a data-count card with only a passing unit-test VERIFY is REFUSED Done', () => {
+  const gate = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    identifier: 'BRO-7930',
+    title: BRO_7930_TITLE,
+    description: 'VERIFY: node --test scripts/lib/pending-drain.test.mjs',
+    commentText: 'Outcome: drain fixed, tests pass.',
+    verifyCmdEvidence: passingVerify,
+    env: {},
+  });
+  assert.equal(gate.allowed, false);
+  assert.equal(gate.verdict, 'data-effect-unmeasured');
+  assert.match(gate.reason, /promotes 0/);
+  assert.match(gate.reason, /RECHECK-AFTER/);
+});
+
+test('BRO-8079: the same card is ALLOWED with a measured EFFECT before -> after line naming the command', () => {
+  const gate = checkLinearDoneTransition({
+    targetStateType: 'completed',
+    identifier: 'BRO-7930',
+    title: BRO_7930_TITLE,
+    description: 'VERIFY: node --test scripts/lib/pending-drain.test.mjs',
+    commentText: 'Outcome: drain fixed.\nEFFECT: _pending queue 6,838 -> 412 after one drain, measured by `node scripts/count-pending.js`',
+    verifyCmdEvidence: passingVerify,
+    env: {},
+  });
+  assert.equal(gate.allowed, true, gate.reason);
+});
+
+test('BRO-8079: an EFFECT with no numbers, no command, or "pending" is still refused', () => {
+  for (const effect of [
+    'EFFECT: the queue drains now',
+    'EFFECT: 6,838 -> 412',
+    'EFFECT: 6,838 -> numbers pending, `node scripts/count-pending.js`',
+  ]) {
+    const gate = checkLinearDoneTransition({
+      targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+      commentText: effect, verifyCmdEvidence: passingVerify, env: {},
+    });
+    assert.equal(gate.allowed, false, effect);
+    assert.equal(gate.verdict, 'data-effect-unmeasured', effect);
+  }
+});
+
+test('BRO-8079: an EFFECT line written into the card DESCRIPTION is a wish, not a measurement', () => {
+  const gate = checkLinearDoneTransition({
+    targetStateType: 'completed', title: BRO_7930_TITLE,
+    description: 'VERIFY: node --test scripts/lib/x.test.mjs\nEFFECT: 6,838 -> 0 via `node scripts/count-pending.js`',
+    verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(gate.allowed, false);
+});
+
+test('BRO-8079: a non-data card is untouched; NO-DATA-EFFECT and the advisory env clear a false positive', () => {
+  const plain = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'Rename the board report header', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(plain.allowed, true);
+  const bypass = checkLinearDoneTransition({
+    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: 'NO-DATA-EFFECT: the count in the title is the incident, this card only renames the script',
+    verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(bypass.allowed, true);
+  const advisory = checkLinearDoneTransition({
+    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    verifyCmdEvidence: passingVerify, env: { DATA_EFFECT_DONE_GATE: 'advisory' },
+  });
+  assert.equal(advisory.allowed, true);
+  assert.match(advisory.warning, /data count/);
+});
+
+test('BRO-8079: a worker Outcome claiming a settle rate needs a SAMPLE-AUDIT of 20+ urls (blocking from its date)', () => {
+  const claim = 'Outcome: 2025-26: 98% settled/junk/duplicate.\nNO-DATA-EFFECT: rate card, see sample audit below';
+  const refused = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: claim, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
+  });
+  assert.equal(refused.allowed, false);
+  assert.equal(refused.verdict, 'sample-audit-missing');
+  const urls = Array.from({ length: 20 }, (_, i) => `- https://www.talkinbroadway.com/page/ob/sample-${i}.html settled correctly`).join('\n');
+  const allowed = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: `${claim}\nSAMPLE-AUDIT: 20 random settled stubs\n${urls}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
+  });
+  assert.equal(allowed.allowed, true, allowed.reason);
+  const short = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: `${claim}\nSAMPLE-AUDIT: 3 urls\n${urls.split('\n').slice(0, 3).join('\n')}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
+  });
+  assert.equal(short.allowed, false);
+  const early = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    commentText: claim, verifyCmdEvidence: passingVerify, nowMs: Date.parse('2026-11-23T00:00:00Z'), env: {},
+  });
+  assert.equal(early.allowed, true);
+  assert.match(early.warning, /SAMPLE-AUDIT/);
+});

@@ -124,8 +124,11 @@ function parseRootCauseBlock(texts) {
 // change carried "EFFECT: ... ledger numbers pending" and was relayed as verified.
 const PENDING_EFFECT_RE = /(?<!no longer )(?<!not )\bpending\b(?!-)|\bnot (?:yet )?(?:observable|observed|measured|measurable|proven|known)\b|\bnot observable yet\b|\b(?:tbd|tba|tbc)\b|\bto be (?:measured|determined|confirmed)\b|\bunmeasured\b|\bmeasure(?:d)? later\b|\bafter the recheck\b|\bawaiting (?:the )?(?:ledger|numbers|rows|data|results?)\b|\b(?:numbers|results|figures|ledger rows?) (?:to follow|tomorrow|later)\b|\bwill (?:confirm|measure|check|verify)\b/i;
 /** PURE. Does this EFFECT value defer the measurement instead of reporting it? */
+// BRO-8079: the word inside a command or path (`node scripts/count-pending.js`, data/_pending/) names
+// the thing measured, not a deferral, so backtick spans and path tokens are dropped before the test.
 function isPendingEffect(value) {
-  return PENDING_EFFECT_RE.test(String(value || ''));
+  const prose = String(value || '').replace(/`[^`]*`/g, ' ').replace(/\S*[\/_.][\w./-]*pending[\w./-]*/gi, ' ');
+  return PENDING_EFFECT_RE.test(prose);
 }
 
 /**
