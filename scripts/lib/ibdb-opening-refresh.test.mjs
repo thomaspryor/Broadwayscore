@@ -28,7 +28,15 @@ test('no change when IBDB agrees', () => {
 
 test('never overrides a human correction or a stronger source', () => {
   assert.equal(decideOpeningRefresh({ ...wonderfulLife, humanCorrectedOpeningDate: '2026-11-18' }, '2026-11-23', NOW).refresh, false);
-  assert.equal(decideOpeningRefresh({ ...wonderfulLife, openingDateSource: 'review-cluster' }, '2026-11-23', NOW).refresh, false);
+  for (const src of ['review-derived-press-night', 'playbill', 'playbill-manual', 'human-correction']) {
+    assert.equal(decideOpeningRefresh({ ...wonderfulLife, openingDateSource: src }, '2026-11-23', NOW).refresh, false, src);
+  }
+});
+
+test('weak sources from the shared rule (isUnconfirmedDateSource) are refreshable', () => {
+  for (const src of ['previews-fallback', 'first-performance-no-press-night-found', 'todaytix']) {
+    assert.equal(decideOpeningRefresh({ ...wonderfulLife, openingDateSource: src }, '2026-11-23', NOW).refresh, true, src);
+  }
 });
 
 test('a missing source counts as refreshable (legacy rows)', () => {

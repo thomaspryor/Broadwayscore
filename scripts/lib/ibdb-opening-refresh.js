@@ -6,7 +6,12 @@
  * moved to 2026-11-23 and IBDB updated, but enrich-ibdb-dates.js only ever filled MISSING dates (and its weekly run
  * filtered out shows whose dates were all set), so the stored date stayed 11-18. Every press-night path keys off
  * openingDate: the lane, poller and watchdog ran on the 18th, stood down, and the real night's reviews arrived
- * only by hand. The same class hit Now You See Me Live (BRO-7808, first performance stored as press night).
+ * only by hand.
+ *
+ * Which stored dates IBDB may replace: an IBDB date (Broadway; IBDB is the Broadway authority) or any source the
+ * shared rule calls unconfirmed (isUnconfirmedDateSource: fallbacks, listings, null). Playbill, playbill-manual,
+ * review-derived press nights and human corrections outrank it and are left alone; a disagreement there stays a
+ * reported discrepancy. Runs daily from update-show-status.yml, before statuses are set.
  *
  * Two pure pieces, used by enrich-ibdb-dates.js:
  *   selectNearOpeningShows  which Broadway shows a daily near-opening pass looks at
@@ -17,7 +22,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const NEAR_BEFORE_DAYS = 45;   // a press night up to 45 days away can still be moved
 const NEAR_AFTER_DAYS = 14;    // a stored press night up to 14 days past may have been a postponed one
 const MAX_SHIFT_DAYS = 180;    // a bigger jump is another production, not a moved opening
-const REFRESHABLE_SOURCES = new Set(['ibdb', '', null, undefined]);
+const { isUnconfirmedDateSource } = require('./date-source-confidence');
 const ACTIVE_STATUSES = new Set(['announced', 'upcoming', 'previews', 'open']);
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -52,7 +57,8 @@ function decideOpeningRefresh(show, ibdbOpeningDate, nowMs, { afterDays = NEAR_A
   if (!Number.isFinite(ibdbMs) || !Number.isFinite(storedMs)) return no('a date is not YYYY-MM-DD');
   if (ibdbOpeningDate === show.openingDate) return no('IBDB agrees');
   if (show.humanCorrectedOpeningDate) return no('a person corrected this date');
-  if (!REFRESHABLE_SOURCES.has(show.openingDateSource)) return no(`openingDateSource ${show.openingDateSource} outranks IBDB`);
+  const fromIbdb = show.openingDateSource === 'ibdb' && (show.category || 'broadway') === 'broadway';
+  if (!fromIbdb && !isUnconfirmedDateSource(show)) return no(`openingDateSource ${show.openingDateSource} outranks IBDB`);
   if (Math.abs(ibdbMs - storedMs) > MAX_SHIFT_DAYS * DAY_MS) return no(`IBDB date ${ibdbOpeningDate} is over ${MAX_SHIFT_DAYS} days from ${show.openingDate}: another production`);
   const previewsMs = dayMs(show.previewsStartDate);
   if (Number.isFinite(previewsMs) && ibdbMs < previewsMs) return no(`IBDB date ${ibdbOpeningDate} is before previews ${show.previewsStartDate}`);
