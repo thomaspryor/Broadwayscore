@@ -1,26 +1,31 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * BRO-8056 phase 1c: operate the private show-refresh store.
+ * BRO-8056: operate the show-refresh store (Storage bucket + state table).
  *
- *   --status                     bucket visibility, kill state, home.json generation
- *   --setup                      create the private bucket, seed kill.json + home.json
- *   --kill --reason="..."        set kill.json killed:true (the reader renders the build)
+ *   --status                     bucket visibility, kill state, home generation
+ *   --setup                      create the private bucket, seed the kill + home rows
+ *   --kill --reason="..."        set kill killed:true (the reader renders the build)
  *   --unkill --reason="..."      set killed:false
- *   --selftest                   write a no-cache probe, read it back through a signed
- *                                URL with no key, within 5 s (plan row 15)
- *   --reader-urls --out=FILE     write SHOW_REFRESH_HOME_URL / SHOW_REFRESH_KILL_URL to
- *                                FILE (mode 600). Never printed: signed URLs are secrets.
+ *   --selftest                   prove the reader's path on the real store (plan row 15):
+ *                                a state-row overwrite is seen through the anon key,
+ *                                anon reads kill/home and a fresh show/ slice, and anon
+ *                                can neither read internal objects nor write or delete
+ *                                anything. Gate before any reader is switched on.
  *
- * Needs SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY.
+ * Needs SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY;
+ * --status and --selftest also need NEXT_PUBLIC_SUPABASE_ANON_KEY (reader view).
  * Exit 0 ok, 1 failure, 2 usage.
  */
 require('./lib/cli-help').exitOnHelp(module);
-const fs = require('fs');
 const store = require('./lib/show-refresh/store');
 const { putVerified } = require('./lib/live-score/storage');
 
-const SELFTEST_PATH = 'selftest.json';
+// Slice probes live under show/_selftest/ (ID_RE never starts with '_', so no
+// show id collides), one fresh name per run; the internal probe sits under
+// flagged/, which anon must not read.
+const SELFTEST_SLICE_DIR = 'show/_selftest';
+const SELFTEST_INTERNAL_PATH = 'flagged/_selftest.json';
 const SELFTEST_BUDGET_MS = 5000;
 
 function parseArgs(argv) {
@@ -35,91 +40,125 @@ function parseArgs(argv) {
 
 /**
  * Healthy = bucket exists and is private, kill.json is a valid kill object
- * (boolean killed) and home.json a schema-1 object. A readable but malformed
- * file is reported as state 'malformed', not 'ok'.
+ * (boolean killed) and home.json a schema-1 object, as seen by BOTH the writer
+ * (service key) and the reader (anon key). A readable but malformed file is
+ * reported as state 'malformed', not 'ok'. A dropped RLS policy or rotated
+ * anon key shows up as reader state 'missing' (the reader then renders the
+ * build everywhere), so it fails --status instead of passing silently.
  */
 function statusHealthy(st) {
-  return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok';
+  return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok'
+    && (!st.reader || (st.reader.kill === 'ok' && st.reader.home === 'ok'));
 }
 
 const validKill = (v) => Boolean(v) && typeof v === 'object' && typeof v.killed === 'boolean';
 const validHome = (v) => Boolean(v) && typeof v === 'object' && !Array.isArray(v) && v.schema === 1 && typeof v.shows === 'object' && v.shows !== null;
 const shape = (read, valid) => (read.state === 'ok' && !valid(read.value) ? 'malformed' : read.state);
 
-async function status(s) {
-  const meta = await s.getBucket();
-  if (!meta) return { bucket: 'missing', kill: { state: 'missing' }, home: { state: 'missing' } };
-  const kill = await store.readJsonObject(s, store.PATHS.kill);
-  const home = await store.readJsonObject(s, store.PATHS.home);
+/** ctx = { storage, state } (writer) ; reader = { storage, state } (anon) or null. */
+async function status(ctx, reader) {
+  const meta = await ctx.storage.getBucket();
+  const kill = await store.readJsonObject(ctx.state, store.PATHS.kill);
+  const home = await store.readJsonObject(ctx.state, store.PATHS.home);
   const eff = store.effectiveKill(kill);
-  return {
-    bucket: s.bucket,
-    public: meta.public,
+  const out = {
+    bucket: meta ? ctx.storage.bucket : 'missing',
+    public: meta ? meta.public : null,
     kill: { state: shape(kill, validKill), killed: eff.killed, reason: eff.reason, seq: kill.value && kill.value.seq, at: kill.value && kill.value.at },
     home: { state: shape(home, validHome), generation: home.value && home.value.generation, shows: home.value && home.value.shows ? Object.keys(home.value.shows).length : null },
   };
+  if (reader) {
+    out.reader = {
+      kill: shape(await store.readJsonObject(reader.state, store.PATHS.kill), validKill),
+      home: shape(await store.readJsonObject(reader.state, store.PATHS.home), validHome),
+    };
+  }
+  return out;
 }
 
+const refused = async (fn) => { try { const n = await fn(); return n === 0; } catch { return true; } };
+
 /**
- * Plan row 15: sign ONE URL, write v1, read it keyless, overwrite with v2,
- * read the SAME URL again. Both reads must match, all within 5 s. This proves
- * what the reader relies on: a no-cache object read through a long-lived
- * signed URL shows an overwrite promptly (no stale CDN copy).
+ * Plan row 15, on the reader's real path.
+ * State (mutable pointers): writer upserts the probe row v1, anon reads it;
+ * writer overwrites v2, anon reads again. Both must match, every round, within
+ * 5 s a round (3 rounds: the stale-CDN failure on Storage was intermittent).
+ * Slices: writer puts a never-used show/_selftest/<rand>.json, anon reads it.
+ * Denials: anon reads kill/home but not an internal Storage object; anon writes
+ * and deletes on both the table and Storage are refused and change nothing.
  */
-async function selftest(s, { fetchImpl = fetch, now = Date.now } = {}) {
+async function selftest(ctx, reader, { now = Date.now, rounds = 3 } = {}) {
   const t0 = now();
-  const probe = (v) => JSON.stringify({ probe: t0, v, rand: Math.random().toString(36).slice(2) });
-  const v1 = probe(1);
-  await putVerified(s, SELFTEST_PATH, v1, { cacheControl: store.CACHE.mutable, cacheBust: t0 });
-  const url = await s.signUrl(SELFTEST_PATH, 60);
-  const read = async () => {
-    const res = await fetchImpl(url, { signal: AbortSignal.timeout(SELFTEST_BUDGET_MS) });
-    return { status: res.status, body: await res.text() };
-  };
-  const r1 = await read();
-  const v2 = probe(2);
-  await putVerified(s, SELFTEST_PATH, v2, { cacheControl: store.CACHE.mutable, cacheBust: t0 + 1 });
-  const r2 = await read();
+  const rand = () => Math.random().toString(36).slice(2);
+  const probe = (v) => ({ probe: t0, v, rand: rand() });
+  const failures = [];
+  let last;
+  for (let i = 0; i < rounds; i++) {
+    const v1 = probe(`${i}a`);
+    await store.putMutable(ctx.state, store.PATHS.probe, v1);
+    const r1 = await store.readJsonObject(reader.state, store.PATHS.probe);
+    const v2 = probe(`${i}b`);
+    await store.putMutable(ctx.state, store.PATHS.probe, v2);
+    const r2 = await store.readJsonObject(reader.state, store.PATHS.probe);
+    const same = (r, v) => r.state === 'ok' && store.canonical(r.value) === store.canonical(v);
+    if (!same(r1, v1)) failures.push(`round ${i}: first anon read ${r1.state} not v1`);
+    if (!same(r2, v2)) failures.push(`round ${i}: anon read after overwrite ${r2.state === 'ok' && same(r2, v1) ? 'STALE (old value)' : `${r2.state} not v2`}`);
+    last = v2;
+  }
   const ms = now() - t0;
-  const matched = r1.body === v1 && r2.body === v2;
-  const status = r2.status === 200 ? r1.status : r2.status;
-  const ok = r1.status === 200 && r2.status === 200 && matched && ms <= SELFTEST_BUDGET_MS;
-  return { ok, ms, status, matched, overwriteSeen: r2.body === v2 };
+  if (ms > SELFTEST_BUDGET_MS * rounds) failures.push(`slow: ${ms} ms for ${rounds} rounds`);
+  for (const p of [store.PATHS.kill, store.PATHS.home]) {
+    const r = await store.readJsonObject(reader.state, p);
+    if (r.state !== 'ok') failures.push(`anon cannot read state ${p} (${r.state})`);
+  }
+  // Slice: fresh name, so a CDN copy cannot exist yet.
+  const slicePath = `${SELFTEST_SLICE_DIR}/${rand()}.json`;
+  const sliceText = JSON.stringify(probe('slice'));
+  await putVerified(ctx.storage, slicePath, sliceText, { cacheControl: store.CACHE.immutable, cacheBust: now() });
+  const slice = await reader.storage.get(slicePath);
+  if (slice.status !== 200 || slice.text !== sliceText) failures.push(`anon slice read ${slice.status} ${slice.text === sliceText ? '' : 'wrong bytes'}`.trim());
+  // Denials.
+  await putVerified(ctx.storage, SELFTEST_INTERNAL_PATH, JSON.stringify(probe('internal')), { cacheControl: store.CACHE.mutable, cacheBust: now() });
+  const internal = await reader.storage.get(SELFTEST_INTERNAL_PATH);
+  if (internal.status === 200) failures.push(`anon READ internal ${SELFTEST_INTERNAL_PATH}`);
+  if (!(await refused(() => reader.state.put(store.PATHS.probe, JSON.stringify(probe('anon')))))) failures.push('anon state write succeeded');
+  if (!(await refused(() => reader.state.remove(store.PATHS.probe)))) failures.push('anon state delete succeeded');
+  const stateAfter = await store.readJsonObject(ctx.state, store.PATHS.probe);
+  if (stateAfter.state !== 'ok' || store.canonical(stateAfter.value) !== store.canonical(last)) failures.push(`anon write/delete changed the probe row (now ${stateAfter.state})`);
+  if (!(await refused(() => reader.storage.put(slicePath, 'x', { cacheControl: store.CACHE.mutable })))) failures.push('anon Storage PUT succeeded');
+  await refused(() => reader.storage.remove(slicePath));
+  const sliceAfter = await ctx.storage.get(slicePath, { cacheBust: now() });
+  if (sliceAfter.status !== 200 || sliceAfter.text !== sliceText) failures.push(`anon write/delete changed the slice probe (now ${sliceAfter.status})`);
+  await ctx.storage.remove(slicePath).catch(() => {});
+  return { ok: failures.length === 0, ms, rounds, failures };
 }
 
 async function main(argv = process.argv.slice(2), env = process.env, out = console.log) {
   let a;
   try { a = parseArgs(argv); } catch (e) { out(String(e.message)); return 2; }
-  const modes = ['status', 'setup', 'kill', 'unkill', 'selftest', 'reader-urls'].filter((k) => a[k]);
-  if (modes.length !== 1) { out('pick exactly one of --status --setup --kill --unkill --selftest --reader-urls'); return 2; }
+  const modes = ['status', 'setup', 'kill', 'unkill', 'selftest'].filter((k) => a[k]);
+  if (modes.length !== 1) { out('pick exactly one of --status --setup --kill --unkill --selftest'); return 2; }
   const by = env.GITHUB_ACTOR ? `gh:${env.GITHUB_ACTOR}` : (env.USER || 'local');
-  const s = store.storeFromEnv(env);
+  const ctx = { storage: store.storeFromEnv(env), state: store.stateFromEnv(env) };
+  const readerFor = (timeoutMs) => ({ storage: store.readerStoreFromEnv(env, { timeoutMs }), state: store.readerStateFromEnv(env, { timeoutMs }) });
   switch (modes[0]) {
     case 'status': {
-      const st = await status(s);
+      const st = await status(ctx, readerFor(10000));
       out(JSON.stringify(st, null, 2));
       return statusHealthy(st) ? 0 : 1;
     }
-    case 'setup': out(JSON.stringify(await store.setupStore(s, { by }))); return 0;
+    case 'setup': out(JSON.stringify(await store.setupStore(ctx.storage, ctx.state, { by }))); return 0;
     case 'kill':
     case 'unkill': {
       if (!a.reason || a.reason === true) { out('--reason="..." is required'); return 2; }
-      const k = await store.setKill(s, { killed: modes[0] === 'kill', reason: a.reason, by });
-      out(`kill.json now killed=${k.killed} seq=${k.seq}`);
+      const k = await store.setKill(ctx.state, { killed: modes[0] === 'kill', reason: a.reason, by });
+      out(`kill now killed=${k.killed} seq=${k.seq}`);
       return 0;
     }
     case 'selftest': {
-      const r = await selftest(s);
-      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: status ${r.status}, matched ${r.matched}, overwrite seen ${r.overwriteSeen}, ${r.ms} ms (budget ${SELFTEST_BUDGET_MS})`);
+      const r = await selftest(ctx, readerFor(SELFTEST_BUDGET_MS));
+      out(`selftest ${r.ok ? 'PASS' : 'FAIL'}: ${r.rounds} state overwrite rounds through the anon reader in ${r.ms} ms${r.failures.length ? `; ${r.failures.join('; ')}` : ''}`);
       return r.ok ? 0 : 1;
-    }
-    case 'reader-urls': {
-      if (!a.out || a.out === true) { out('--out=FILE is required (URLs are never printed)'); return 2; }
-      const urls = await store.readerUrls(s);
-      fs.writeFileSync(a.out, Object.entries(urls).map(([k, v]) => `${k}=${v}`).join('\n') + '\n', { mode: 0o600 });
-      fs.chmodSync(a.out, 0o600); // writeFileSync's mode only applies when it creates the file
-      out(`wrote ${Object.keys(urls).join(', ')} to ${a.out}`);
-      return 0;
     }
   }
   return 2;
