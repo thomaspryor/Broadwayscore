@@ -700,6 +700,11 @@ function stripKnownTrailers(text, outletId) {
 // One definition for text-gap-classify (gap triage) and the pull-quote selector.
 const TRAILER_ONLY_SIGNALS = new Set(['no_ending_punctuation', 'has_footer_junk']);
 
+// The severe paywall / "continue reading" prompts of content-quality.js TRUNCATION_SIGNALS.severe, copied here because
+// requiring content-quality would put its file-writing dependencies into every read-only script that reaches this file
+// (safe-form-allowlist.test.mjs). trailer-signatures.test.mjs fails if a pattern there is not matched by this one.
+const PAYWALL_PROMPT_TAIL_RE = /subscribe\s+to\s+(?:continue|read|access)|sign\s+in\s+to\s+(?:continue|read|access)|log\s+in\s+to\s+(?:continue|read)|\bmembers?\s+only|read\s+more\s*\.{0,3}$|continue\s+reading|click\s+here\s+to\s+read|full\s+(?:article|story)\s+(?:available|requires)/i;
+
 /**
  * A review file stored as "truncated" whose only evidence is the ending of the
  * page (a run-info / star-rating / listing line with no full stop), not a cut
@@ -721,10 +726,7 @@ function isTrailerOnlyTruncation(data) {
   if (!(signals.length > 0 && signals.every((s) => TRAILER_ONLY_SIGNALS.has(s)))) return false;
   // detectTruncationSignals scans severe (paywall / "continue reading") patterns only in the first 70% of a 1500+ char
   // body, so a paywall prompt that ends a long preview leaves just the trailer-only signals (Gemini ship-check).
-  // Looked up lazily: content-quality and this file require each other.
-  const severe = require('./content-quality').TRUNCATION_SIGNALS.severe;
-  const tail = String(data.fullText || '').slice(-600);
-  return !severe.some((re) => re.test(tail));
+  return !PAYWALL_PROMPT_TAIL_RE.test(String(data.fullText || '').slice(-600));
 }
 
 const TRAILER_SAFE_TAIL = 500; // the footer-junk scan reads the last 500 chars, so nothing it can see is quotable (BRO-8084)
@@ -750,6 +752,7 @@ function trailerSafeBody(fullText, outletId) {
 
 module.exports = {
   TRAILER_ONLY_SIGNALS,
+  PAYWALL_PROMPT_TAIL_RE,
   isTrailerOnlyTruncation,
   trailerSafeBody,
   stripWsjToolbarTail,

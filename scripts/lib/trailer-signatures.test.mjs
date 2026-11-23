@@ -735,3 +735,18 @@ test('BRO-8012 foldCase: folds the characters JS /i treats as ASCII letters', ()
   assert.equal(PF.foldCase('Webſite HERE Kelvin dırect'), 'website here kelvin direct');
   assert.ok(/website here/i.test('WEBSITE HERE') && PF.foldCase('WEBSITE HERE').includes('website here'));
 });
+
+// BRO-8084: PAYWALL_PROMPT_TAIL_RE is a copy of content-quality's severe paywall list (a require would pull file-writing
+// modules into read-only scripts). Every severe pattern must be matched by it, so the copy cannot drift.
+test('BRO-8084: PAYWALL_PROMPT_TAIL_RE covers every TRUNCATION_SIGNALS.severe pattern', () => {
+  const { TRUNCATION_SIGNALS } = require('./content-quality.js');
+  const samples = ['subscribe to continue', 'subscribe to read', 'subscribe to access', 'sign in to continue', 'sign in to read', 'sign in to access',
+    'log in to continue', 'log in to read', 'members only', 'member only', 'read more...', 'read more', 'continue reading', 'click here to read',
+    'full article available', 'full story requires'];
+  assert.equal(TRUNCATION_SIGNALS.severe.length, 8, 'a severe pattern was added or removed: update PAYWALL_PROMPT_TAIL_RE and these samples');
+  for (const re of TRUNCATION_SIGNALS.severe) {
+    const hit = samples.filter((x) => re.test(x));
+    assert.ok(hit.length > 0, `no sample exercises ${re}`);
+    for (const x of hit) assert.ok(T.PAYWALL_PROMPT_TAIL_RE.test(x), `PAYWALL_PROMPT_TAIL_RE misses "${x}" that ${re} matches`);
+  }
+});
