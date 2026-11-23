@@ -143,6 +143,35 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
+      # BRO-8188: a postponed press night. IBDB moved It's a Wonderful Life from
+      # 11-18 to 11-23, but enrich-ibdb-dates.js only filled missing dates, so
+      # every press-night path watched the wrong night. Refresh the opening date
+      # of Broadway shows within 14 days past / 45 days ahead of press night from
+      # IBDB before statuses are set, so Check 2c can move an early "open" back
+      # to previews the same run. Rules: scripts/lib/ibdb-opening-refresh.js.
+      # Advisory: a failed IBDB fetch must never block the status update.
+      - name: Refresh near-opening dates from IBDB
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          # On failure put shows.json and the push-refusal sentinel back as they
+          # were, so a refused refresh never blocks this job's own shows.json push.
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          had_sentinel=0; [ -f "$SENTINEL" ] && had_sentinel=1
+          cp data/shows.json "${RUNNER_TEMP:-/tmp}/shows.pre-ibdb-refresh.json"
+          status=0
+          timeout 600 node scripts/enrich-ibdb-dates.js --near-opening || status=$?
+          if [ "$status" -ne 0 ]; then
+            cp "${RUNNER_TEMP:-/tmp}/shows.pre-ibdb-refresh.json" data/shows.json
+            if [ "$had_sentinel" -eq 0 ]; then rm -f "$SENTINEL"; fi
+            echo "::warning::near-opening IBDB refresh exited $status; shows.json restored, status update continues"
+          fi
+
       # Step 1: Update existing show statuses
       # ShowScore refresh runs on weekly Wed schedule or manual include_showscore=true
       - name: Update show statuses

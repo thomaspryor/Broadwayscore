@@ -385,7 +385,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/enrich-ibdb-dates.js`
 - **Requires:** `SCRAPINGBEE_API_KEY` (primary), `BRIGHTDATA_TOKEN` (fallback)
 - **Modes:**
-  - `enrich` (default): Fill missing/null dates only, never overwrite existing
+  - `enrich` (default): Fill missing/null dates. Overwrites an existing openingDate only when IBDB moved an opening the rule in `scripts/lib/ibdb-opening-refresh.js` lets it replace (Broadway IBDB-sourced or unconfirmed source, no human correction, shift <=180 days, not before previews, not more than 14 days past; BRO-8188)
+- **Near-opening refresh (BRO-8188):** `update-show-status.yml` runs `enrich-ibdb-dates.js --near-opening` daily before setting statuses (advisory step), checking every Broadway show with a press night 14 days ago to 45 days ahead, so a postponed opening moves the lane, pollers and status the same day.
   - `verify`: Compare IBDB vs shows.json, report discrepancies (read-only)
   - `force`: Overwrite all dates with IBDB values
 - **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
