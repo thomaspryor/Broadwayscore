@@ -43,8 +43,16 @@ const { assessFullText, getBestTextForScoring } = require('./text-quality');
  * reviews stayed scored from an excerpt. Bump this when text-quality.js changes
  * what the selector picks: each file is then re-flagged once, and the loop guard
  * holds again after a rescore that ran on the new selector.
+ *
+ * Bumped 2026-11-23 (BRO-8093 audit): 24 selector commits after 2026-11-10
+ * (BRO-7171, BRO-7943, BRO-8012, BRO-8081) left it stale. TEXT_SELECTOR_SOURCE_SHA256
+ * pins text-quality.js + trailer-signatures.js (scripts/lib/text-selector-version.js);
+ * tests/unit/rescore-flagging.test.mjs fails when they change without a bump of both.
+ * To bump: set the date to now (UTC) and the hash to
+ *   node -e "console.log(require('./scripts/lib/text-selector-version').computeTextSelectorSourceHash())"
  */
-const TEXT_SELECTOR_CHANGED_AT = '2026-11-10T12:00:00Z';
+const TEXT_SELECTOR_CHANGED_AT = '2026-11-23T05:00:00Z';
+const TEXT_SELECTOR_SOURCE_SHA256 = 'a598fad1a59ec73fe60b5a9ba441711c700caecc760b8cbb2201e6beae711b3a';
 
 /**
  * Scored from an excerpt by an OLD selector, and the CURRENT selector now picks
@@ -335,4 +343,4 @@ function queueRescoreForCvPartialWindow(data, show, filePath) {
   return true;
 }
 
-module.exports = { TEXT_SELECTOR_CHANGED_AT, isExcerptScoreFromOldSelector, classifyExcerptScoredFullText, CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };
+module.exports = { TEXT_SELECTOR_CHANGED_AT, TEXT_SELECTOR_SOURCE_SHA256, isExcerptScoreFromOldSelector, classifyExcerptScoredFullText, CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };
