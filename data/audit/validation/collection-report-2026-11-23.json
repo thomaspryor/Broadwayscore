@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-11-23T21:41:13.889Z",
+  "runDate": "2026-11-23T22:15:41.516Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 60,
     "priority": "all",
-    "showFilter": "club-nvrlnd-off-west-end-2026,peter-pan-off-west-end-2026,the-unauthorized-hallmark-ish-parody-musical-tour-2026,santas-first-christmas-off-west-end-2026,carrie-the-musical-regional-2026,elephant-in-the-womb-regional-2026",
-    "aggressive": false,
+    "showFilter": "cinderella-lyric-hammersmith-off-west-end-2026",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 3,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "57.1%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 2,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,13 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 3,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "carrie-the-musical-regional-2026",
-      "club-nvrlnd-off-west-end-2026",
-      "peter-pan-off-west-end-2026",
-      "santas-first-christmas-off-west-end-2026"
+      "cinderella-lyric-hammersmith-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -69,55 +66,28 @@
     }
   },
   "processed": [
-    "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
-    "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-    "carrie-the-musical-regional-2026/theatermania--unknown.json",
-    "carrie-the-musical-regional-2026/broadwayworld--richard-sasanow.json"
+    "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json"
   ],
-  "failed": [
-    "peter-pan-off-west-end-2026/british-theatre--unknown.json",
-    "peter-pan-off-west-end-2026/thestage--oliver-jones.json",
-    "peter-pan-off-west-end-2026/times-uk--dominic-maxwell.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
-      "carrie-the-musical-regional-2026/theatermania--unknown.json",
-      "carrie-the-musical-regional-2026/broadwayworld--richard-sasanow.json"
+      "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json"
     ],
-    "failed": [
-      "peter-pan-off-west-end-2026/british-theatre--unknown.json",
-      "peter-pan-off-west-end-2026/thestage--oliver-jones.json",
-      "peter-pan-off-west-end-2026/times-uk--dominic-maxwell.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
-      "carrie-the-musical-regional-2026/theatermania--unknown.json"
+      "cinderella-lyric-hammersmith-off-west-end-2026/thereviewshub--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json"
-    ],
-    "scrapingbee": [
-      "carrie-the-musical-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "British Theatre Guide": {
-      "count": 1,
-      "domain": "britishtheatreguide.info",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
