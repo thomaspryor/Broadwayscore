@@ -354,3 +354,16 @@ test('scored-absent: a whole-show rebuild skip (upcoming any market, Broadway pr
   assert.deepEqual([r[0].status, r[0].reason], ['explained', 'skippedUpcomingShows']);
 });
 }
+
+// BRO-8093 audit of BRO-7945: the guard above is only as good as its wiring. If rebuild-all-reviews.js stops taking
+// its whole-show skip from wholeShowSkipReason (a private copy can drift and drop files with no reason) or stops
+// running the scored-absent audit at the end of a full rebuild with its own ledgers, nothing else would notice.
+test('rebuild wiring: whole-show skips come from wholeShowSkipReason and the full rebuild runs the scored-absent audit', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../rebuild-all-reviews.js'), 'utf8');
+  assert.match(src, /require\('\.\/lib\/scored-absent'\)/);
+  assert.match(src, /const wholeShowSkip = wholeShowSkipReason\(/);
+  assert.match(src, /wholeShowSkip === 'skippedPreviewsShows'/);
+  assert.match(src, /wholeShowSkip === 'skippedUpcomingShows'/);
+  assert.doesNotMatch(src, /showStatusMap\[showId\] === ['"](previews|upcoming)['"]/, 'a private status check bypasses wholeShowSkipReason');
+  assert.match(src, /require\('\.\/audit-scored-absent'\)\.run\(\{[^}]*ledgers[^}]*textsDir: reviewTextsDir/);
+});
