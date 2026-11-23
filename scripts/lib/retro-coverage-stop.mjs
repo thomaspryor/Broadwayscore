@@ -213,19 +213,29 @@ const webId = (v) => (String(v || '').match(/session_[A-Za-z0-9]+/) || [])[0] ||
 /** PURE. landed: [{ session, landedDay }] (cloud sessions that landed code). Rows are the three ledgers' parsed lines.
  *  -> [{ session, landedDay, kind: 'retro'|'cost', reason }] for each record that is missing and not yet named as a gap.
  *  `asOf` is the audit day; a session that landed on or after it is still running or inside its grace day. */
-export function findRecordGaps({ landed, retroRows = [], costRows = [], gapRows = [], asOf }) {
-  const retro = new Set(retroRows.map((r) => webId(r.webSessionId)).filter(Boolean));
+export function findRecordGaps({ landed, retroRows = [], costRows = [], gapRows = [], ledgerSessions = [], asOf }) {
+  // Same legacy matching as retroCoverageGaps (BRO-7911): rows before webSessionId existed match by a linked commit sha, and a
+  // session whose own commit touched the retro ledger (ledgerSessions: Claude-Session trailers) is covered.
+  const retro = new Set([...retroRows.map((r) => webId(r.webSessionId)), ...ledgerSessions.map(webId)].filter(Boolean));
+  const linked = [];
+  for (const r of retroRows) for (const l of r.links || []) if (/^[0-9a-f]{7,40}$/.test(l)) linked.push(l);
   const cost = new Set(costRows.map((r) => webId(r.session)).filter(Boolean));
   const named = new Set(gapRows.map((g) => `${webId(g.session)}\u0000${g.kind}`));
+  // Latest landing first, THEN the grace cutoff: a session that landed yesterday and again today is still inside its grace.
   const seen = new Map();
   for (const l of landed || []) {
     const id = webId(l.session);
-    if (!id || !l.landedDay || (asOf && l.landedDay >= asOf)) continue;
-    if (!seen.has(id) || l.landedDay > seen.get(id)) seen.set(id, l.landedDay);
+    if (!id || !l.landedDay) continue;
+    const cur = seen.get(id) || { landedDay: '', shas: [] };
+    if (l.landedDay > cur.landedDay) cur.landedDay = l.landedDay;
+    if (l.sha) cur.shas.push(String(l.sha));
+    seen.set(id, cur);
   }
   const out = [];
-  for (const [session, landedDay] of seen) {
-    if (!retro.has(session) && !named.has(`${session}\u0000retro`)) out.push({ session, landedDay, kind: 'retro', reason: GAP_REASON });
+  for (const [session, { landedDay, shas }] of seen) {
+    if (asOf && landedDay >= asOf) continue;
+    const retroOk = retro.has(session) || shas.some((sha) => linked.some((l) => sha.startsWith(l)));
+    if (!retroOk && !named.has(`${session}\u0000retro`)) out.push({ session, landedDay, kind: 'retro', reason: GAP_REASON });
     if (!cost.has(session) && !named.has(`${session}\u0000cost`)) out.push({ session, landedDay, kind: 'cost', reason: GAP_REASON });
   }
   return out;

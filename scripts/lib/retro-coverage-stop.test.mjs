@@ -292,3 +292,8 @@ test('BRO-8078: real rows or an already-named gap close it; a session inside its
 test('BRO-8078: sessions with no id (Mac, Codex, bots) are never gaps', () => {
   assert.deepEqual(findRecordGaps({ landed: [{ session: '', landedDay: '2026-11-20' }, { session: null, landedDay: '2026-11-20' }], asOf: '2026-11-22' }), []);
 });
+test('BRO-8078 review: a sha-linked or ledger-trailer retro (no webSessionId) is covered, and the latest landing sets the grace', () => {
+  const landed = [{ session: 'session_01AAA', landedDay: '2026-11-20', sha: 'e31b47e56aaaaaaa' }, { session: 'session_01BBB', landedDay: '2026-11-20', sha: 'bbbbbbbbbbbb' }, { session: 'session_01CCC', landedDay: '2026-11-20', sha: 'cccccccccc' }, { session: 'session_01CCC', landedDay: '2026-11-22', sha: 'dddddddddd' }];
+  const g = findRecordGaps({ landed, asOf: '2026-11-22', retroRows: [{ links: ['e31b47e56'] }], ledgerSessions: ['https://claude.ai/code/session_01BBB'], costRows: [{ session: 'session_01AAA' }, { session: 'session_01BBB' }] });
+  assert.deepEqual(g, []);
+});

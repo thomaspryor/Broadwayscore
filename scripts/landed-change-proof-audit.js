@@ -234,11 +234,11 @@ async function main() {
     const jl = (f) => readLedger(path.join(ROOT, f));
     const gapFile = path.join(ROOT, gaps.GAP_LEDGER);
     recordGaps = gaps.findRecordGaps({
-      landed: rows.filter((r) => r.source === 'cloud' && !r.marker).map((r) => ({ session: r.session, landedDay: r.landedDay })),
-      retroRows: jl('data/audit/session-retro.jsonl'), costRows: jl('data/audit/claude-session-cost.jsonl'), gapRows: jl(gaps.GAP_LEDGER), asOf: auditDay,
+      landed: rows.filter((r) => r.source === 'cloud' && !r.marker).map((r) => ({ session: r.session, landedDay: r.landedDay, sha: r.sha })), ledgerSessions,
+      retroRows: jl('data/audit/session-retro.jsonl'), costRows: jl('data/audit/claude-session-cost.jsonl'), gapRows: jl(gaps.GAP_LEDGER), asOf: lib.dayMinus(auditDay, 1), // a full day of grace: the window ends at 00:00Z, so landedDay < auditDay alone is ~4h
     });
     console.error(`[landed-proof] record gaps: ${recordGaps.length} (${recordGaps.filter((g) => g.kind === 'retro').length} retro, ${recordGaps.filter((g) => g.kind === 'cost').length} cost)`);
-    if (recordGaps.length && !dryRun) {
+    if (recordGaps.length && !dryRun && typeof only !== 'string') { // a --sha proof check is read-only
       fs.mkdirSync(path.dirname(gapFile), { recursive: true });
       fs.appendFileSync(gapFile, recordGaps.map((g) => JSON.stringify({ v: 1, ...g, recordedAt: new Date().toISOString(), source: 'landed-change-proof-audit' })).join('\n') + '\n');
     }

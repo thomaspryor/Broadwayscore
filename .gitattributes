@@ -23,6 +23,7 @@ src/config/feature-flags.ts merge=ours
 # go here; they need real 3-way merges.
 data/audit/stage-latency.jsonl merge=union
 data/audit/session-retro.jsonl merge=union
+data/audit/session-record-gaps.jsonl merge=union
 # Bot-only daily append log (scripts/report-discovery-share.js via check-arm-yield.yml).
 data/audit/pending-growth-ledger.jsonl merge=union
 # Bot-only append log, written by scripts/lib/owner-alert-router.js. 5+
