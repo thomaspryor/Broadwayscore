@@ -14,7 +14,9 @@ import { refreshableSlugs } from '@/lib/show-refresh';
 
 export const dynamic = 'force-dynamic';
 // `all` revalidates ~1.6k paths (3 per refreshable show); give it room.
-export const maxDuration = 60;
+// Not 60: that value is reserved for the reviews.json fs readers, which Vercel
+// packs into one function by equal options (BRO-8155, trace-route-excludes.js).
+export const maxDuration = 55;
 
 export async function POST(req: Request) {
   // Secret first: an unauthorised caller never gets the body parsed.

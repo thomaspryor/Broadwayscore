@@ -394,6 +394,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `NEW_YORKER_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 1 cross-repo writers (of 6 workflows using it): `data-health-check.yml` |
 | `NEXT_PUBLIC_SUPABASE_URL` | 3 cross-repo writers (of 20 workflows using it): `data-health-check.yml`, `rebuild-fast.yml`, `update-mezzanine.yml` |
 | `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
