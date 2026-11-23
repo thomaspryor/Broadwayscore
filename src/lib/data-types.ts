@@ -159,6 +159,8 @@ export interface TheaterAccessibility {
   denied?: Array<'wheelchair' | 'stepFree' | 'elevator' | 'hearingLoop' | 'assistiveListening'>;
   /** The venue's own page the facts were read from (BRO-8112). */
   sourceUrl?: string;
+  /** ISO date (YYYY-MM-DD) the venue's page was last read for these facts. */
+  checkedAt?: string;
 }
 
 export interface TheaterExternalLinks {
