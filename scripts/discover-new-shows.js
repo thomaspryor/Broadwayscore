@@ -48,7 +48,7 @@ const { validateChangeStability } = require('./lib/change-stability-guard');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, ibdbWrongProduction, expectedShowYear } = require('./lib/ibdb-year-guard');
-const { getTheaterAddress } = require('./lib/venue-addresses');
+const { registryAddressFor } = require('./lib/venue-addresses');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
@@ -3442,7 +3442,7 @@ async function discoverShows() {
         previewsStartDate: show.previewsStartDate || null,
         openingDateSource: show.openingDateSource || null,
         tags: tags,
-        theaterAddress: getTheaterAddress(show.venue) || null,
+        theaterAddress: null, // set after classifyShow below: the registry is market-scoped
         ticketLinks: [],
         cast: [],
         creativeTeam: show.creativeTeam || [],
@@ -3485,6 +3485,7 @@ async function discoverShows() {
       // Broadway branch. Do NOT inline this logic again; keep it require()-able so
       // tests/unit/discover-new-shows-category.test.mjs can assert the real function.
       Object.assign(showEntry, classifyShow(show));
+      showEntry.theaterAddress = registryAddressFor(show.venue, showEntry.market);
 
       const duplicate = duplicateOfCandidate(data.shows, showEntry);
       if (duplicate) { console.log(`Skip ${showEntry.id}: exists as ${duplicate.existing.id}`); continue; }

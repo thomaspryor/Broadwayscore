@@ -14,7 +14,13 @@
 // address. A hand-entered or unknown address is never touched, so a wrong
 // registry entry cannot silently rewrite correct data (the risk validate-data's
 // autofix cap guards against).
-const { VENUE_ADDRESSES, getTheaterAddress } = require('./venue-addresses.js');
+const { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor } = require('./venue-addresses.js');
+
+/** A New York address on a non-NYC show, or a non-NYC registry address on a Broadway/OB show. */
+function wrongMarket(address, market) {
+  const nyc = /New York, NY/.test(address);
+  return market === 'broadway' ? !nyc : nyc || market === 'west-end';
+}
 
 const KNOWN_ADDRESSES = new Set(Object.values(VENUE_ADDRESSES));
 
@@ -27,6 +33,15 @@ const KNOWN_ADDRESSES = new Set(Object.values(VENUE_ADDRESSES));
 function syncStaleTheaterAddresses(shows) {
   const changed = [];
   for (const show of shows || []) {
+    // A registry address from another market (a London "Lyric Theatre" given the Broadway Lyric's
+    // New York address by name) is provably wrong: clear it so the page falls back to verified data.
+    if (show && show.theaterAddress && show.market && KNOWN_ADDRESSES.has(show.theaterAddress)
+        && !registryAddressFor(show.venue, show.market) && wrongMarket(show.theaterAddress, show.market)) {
+      // venue-write-guard-ok: only theaterAddress is written.
+      changed.push({ id: show.id, venue: show.venue, from: show.theaterAddress, to: null });
+      show.theaterAddress = null;
+      continue;
+    }
     // Same scope as validate-data.js's registry cross-check (Broadway only).
     if (!show || !show.theaterAddress || (show.category || 'broadway') !== 'broadway') continue;
     const canonical = getTheaterAddress(show.venue);

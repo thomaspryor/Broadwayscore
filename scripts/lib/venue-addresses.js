@@ -148,4 +148,18 @@ function getTheaterAddress(venueName) {
   return VENUE_ADDRESSES[venueName] || null;
 }
 
-module.exports = { VENUE_ADDRESSES, getTheaterAddress };
+/**
+ * The registry address for a show's venue, only when it belongs to the show's market. The registry
+ * holds New York and UK-regional houses keyed by bare name, so a London "Lyric Theatre" would
+ * otherwise get the Broadway Lyric's New York address. London has no registry entries.
+ * @param {string} venueName
+ * @param {string} market shows.json market: 'broadway' (all NYC), 'west-end', 'regional', 'tour'
+ * @returns {string|null}
+ */
+function registryAddressFor(venueName, market) {
+  const addr = getTheaterAddress(venueName);
+  if (!addr || market === 'west-end' || market === 'tour') return null;
+  return (market === 'broadway') === /New York, NY/.test(addr) ? addr : null;
+}
+
+module.exports = { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor };

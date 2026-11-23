@@ -55,3 +55,21 @@ test('saveShows syncs a stale address on write (every writer is covered, not one
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('a registry address from another market is cleared (London Lyric got the Broadway Lyric address)', async () => {
+  const { syncStaleTheaterAddresses } = await import('./venue-address-sync.js');
+  const { registryAddressFor } = await import('./venue-addresses.js');
+  const shows = [
+    { id: 'a-west-end-2026', market: 'west-end', category: 'west-end', venue: 'Lyric Theatre', theaterAddress: '214 W 43rd St, New York, NY 10036' },
+    { id: 'b', market: 'broadway', category: 'broadway', venue: 'Lyric Theatre', theaterAddress: '214 W 43rd St, New York, NY 10036' },
+    { id: 'c', market: 'west-end', category: 'west-end', venue: 'Lyric Theatre', theaterAddress: '29 Shaftesbury Avenue, London W1D 7ES' },
+  ];
+  const changed = syncStaleTheaterAddresses(shows);
+  assert.deepEqual(changed.map((c) => c.id), ['a-west-end-2026']);
+  assert.equal(shows[0].theaterAddress, null);
+  assert.equal(shows[1].theaterAddress, '214 W 43rd St, New York, NY 10036');
+  assert.equal(shows[2].theaterAddress, '29 Shaftesbury Avenue, London W1D 7ES', 'a hand-entered London address is never touched');
+  assert.equal(registryAddressFor('Lyric Theatre', 'west-end'), null);
+  assert.equal(registryAddressFor('Lyric Theatre', 'broadway'), '214 W 43rd St, New York, NY 10036');
+  assert.equal(registryAddressFor('Crucible Theatre', 'broadway'), null);
+});
