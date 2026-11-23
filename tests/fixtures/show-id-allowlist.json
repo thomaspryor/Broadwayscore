@@ -1,6 +1,22 @@
 {
-  "_comment": "BRO-4315 baseline for tests/unit/show-id-market-suffix.test.mjs. marketSuffix: ids awaiting a rename (scripts/rename-show-id.js via the rename-show-id approved-fix action); remove an entry once its rename lands. yearDrift: live ids whose year disagrees with their dates; kept as-is (ids are URLs, see scripts/lib/id-year-drift.js) unless renamed deliberately. New entries are never added to hide a fresh mismatch: fix the id or the category instead.",
-  "marketSuffix": [],
+  "_comment": "BRO-4315 baseline for tests/unit/show-id-market-suffix.test.mjs. marketSuffix: BRO-8069 legacy ids awaiting a coordinated rename across private data and review texts; remove entries once renamed. yearDrift: live ids whose year disagrees with their dates; kept as-is unless renamed deliberately. New mismatches should be fixed at their source.",
+  "marketSuffix": [
+    "alice-in-wonderland-west-end-2025",
+    "alls-well-that-ends-well-west-end-2024",
+    "an-oak-tree-west-end-2025",
+    "brigadoon-west-end-2025",
+    "cymbeline-west-end-2025",
+    "cyrano-west-end-2024",
+    "hold-on-to-your-butts-west-end-2024",
+    "in-praise-of-love-west-end-2025",
+    "marie-and-rosetta-west-end-2025",
+    "the-glass-menagerie-west-end-2025",
+    "the-invention-of-love-west-end-2024",
+    "the-lady-from-the-sea-west-end-2025",
+    "the-maids-west-end-2025",
+    "the-seagull-west-end-2025",
+    "the-three-sisters-west-end-2025"
+  ],
   "yearDrift": [
     "10-things-i-hate-about-you-on-broadway-2024",
     "58th-street-off-west-end-2026",
