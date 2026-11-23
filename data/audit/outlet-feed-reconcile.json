@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T19:42:13.341Z",
+  "generatedAt": "2026-11-23T20:39:37.797Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -137,6 +137,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -155,15 +159,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 909,
-  "matchedGaps": 3,
-  "possibleGaps": 3,
+  "itemsScanned": 904,
+  "matchedGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
@@ -175,24 +175,6 @@
       "publishDate": "2026-11-23"
     },
     {
-      "showId": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "level": "matched",
-      "outletId": "lighting-and-sound-america",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7YB9HW",
-      "headline": "Theatre&#32;in&#32;Review:&#32;Elektra&#32;(Theatre&#32;for&#32;a&#32;New&#32;Audience)",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review/",
-      "headline": "It’s a Wonderful Life: A Live Radio Play Broadway Review",
-      "publishDate": "2026-11-23"
-    },
-    {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
@@ -200,15 +182,6 @@
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "level": "possible",
-      "outletId": "nytg",
-      "url": "https://newyorktheatreguide.com/reviews/its-a-wonderful-life-a-live-radio-play-broadway-review",
-      "headline": "‘It’s a Wonderful Life: A Live Radio Play’ Broadway review — starry show puts a new spin on a holiday chestnut",
-      "publishDate": null
     },
     {
       "showId": "much-ado-about-nothing-2026",

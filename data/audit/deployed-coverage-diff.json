@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-23T19:42:12.995Z",
+  "generatedAt": "2026-11-23T20:39:37.428Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 358,
-  "clean": 358,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 365,
+  "clean": 363,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "openingDate": "2026-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.78 vs local 70.5 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-23T20:39:30.834Z"
+    },
+    {
+      "showId": "confederates-regional-2026-fountain-theatre",
+      "title": "Confederates",
+      "openingDate": "2026-10-31",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.61 vs local 75.78 (Δ0.83)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-23T20:39:30.834Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
