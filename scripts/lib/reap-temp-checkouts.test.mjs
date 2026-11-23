@@ -218,7 +218,7 @@ test('BRO-8179 stale tmp: protected names', () => {
   for (const n of ['orj-abc', 'bro-sb', 'merge-test-gate-x', 'verify-edits-chain-1']) assert.equal(S.isProtectedName(n), false, n);
 });
 
-test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named dir, lock, hook state kept; 2d dirty clone kept, 2d clean clone reaped', () => {
+test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named dir, lock, hook state kept; local-work clones kept, pushed clean clone reaped', () => {
   const r = root();
   const H = 3600 * 1000;
   const mk = (name, ageMs) => { const d = path.join(r, name); fs.mkdirSync(d, { recursive: true }); fs.writeFileSync(path.join(d, 'f.txt'), 'x'); ageTree(d, ageMs); return d; };
@@ -227,23 +227,40 @@ test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named
   const lock = mk('gc.lock', 3 * DAY_MS);
   const hookState = path.join(r, 'linear-issue-claimed-e3382528-4f8a-46c4-ab01-a73a14706c00');
   fs.writeFileSync(hookState, 'x'); ageTree(hookState, 3 * DAY_MS);
-  const git = (cwd, ...a) => execFileSync('git', ['-C', cwd, ...a], { stdio: 'ignore' });
-  const clone = (name, dirty) => {
-    const d = path.join(r, name); fs.mkdirSync(d);
-    git(d, 'init', '-q'); fs.writeFileSync(path.join(d, 'a.txt'), 'a');
-    if (!dirty) { git(d, 'add', '.'); git(d, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'x'); }
-    ageTree(d, 2 * DAY_MS); return d;
-  };
-  const dirty = clone('bro-dirty-clone', true);
-  const clean = clone('bro-clean-clone', false);
-  assert.equal(S.gitHasLocalWork(dirty), true);
-  assert.equal(S.gitHasLocalWork(clean), false);
+  const g = (cwd, ...a) => execFileSync('git', ['-C', cwd, '-c', 'user.email=t@t', '-c', 'user.name=t', ...a], { stdio: 'ignore' });
+  // An origin outside the reap root, so a clone of it has its commits on a remote.
+  const originParent = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8179-origin-'));
+  after(() => fs.rmSync(originParent, { recursive: true, force: true }));
+  const origin = path.join(originParent, 'o');
+  fs.mkdirSync(origin); g(origin, 'init', '-q'); fs.writeFileSync(path.join(origin, 'a.txt'), 'a'); g(origin, 'add', '.'); g(origin, 'commit', '-qm', 'x');
+  const clone = (rel) => { const d = path.join(r, rel); fs.mkdirSync(path.dirname(d), { recursive: true }); execFileSync('git', ['clone', '-q', origin, d], { stdio: 'ignore' }); return d; };
+  const clean = clone('bro-clean-clone');
+  const dirty = clone('bro-dirty-clone'); fs.writeFileSync(path.join(dirty, 'a.txt'), 'edited');
+  const unpushed = clone('bro-unpushed'); g(unpushed, 'checkout', '-qb', 'no-upstream'); fs.writeFileSync(path.join(unpushed, 'b.txt'), 'b'); g(unpushed, 'add', '.'); g(unpushed, 'commit', '-qm', 'local');
+  const stashed = clone('bro-stashed'); fs.writeFileSync(path.join(stashed, 'a.txt'), 'wip'); g(stashed, 'stash', '-q');
+  const nestedTop = path.join(r, 'bro-Nest12'); clone('bro-Nest12/repo'); fs.writeFileSync(path.join(nestedTop, 'repo', 'a.txt'), 'nested edit');
+  for (const d of [clean, dirty, unpushed, stashed, nestedTop]) ageTree(d, 2 * DAY_MS);
+  assert.equal(S.gitHasLocalWork(clean), false, 'pushed clean clone has no local work');
+  for (const d of [dirty, unpushed, stashed]) assert.equal(S.gitHasLocalWork(d), true, d);
   const s = S.reapStaleTmp({ root: r, snapshotFn: () => [], measure: false });
   assert.equal(fs.existsSync(fixture), false, 'mkdtemp fixture idle >3h removed');
   assert.equal(fs.existsSync(handNamed), true, 'hand-named dir keeps 24h');
   assert.equal(fs.existsSync(lock), true, 'lock keeps 7d');
   assert.equal(fs.existsSync(hookState), true, 'hook state keeps 7d');
-  assert.equal(fs.existsSync(dirty), true, 'dirty clone keeps 7d');
-  assert.equal(fs.existsSync(clean), false, 'clean idle clone removed');
-  assert.equal(s.removed, 2);
+  assert.equal(fs.existsSync(dirty), true, 'dirty clone kept');
+  assert.equal(fs.existsSync(unpushed), true, 'commit on a branch with no upstream kept');
+  assert.equal(fs.existsSync(stashed), true, 'stash kept');
+  assert.equal(fs.existsSync(nestedTop), true, 'dirty clone nested in a mkdtemp-named dir kept');
+  assert.equal(fs.existsSync(clean), false, 'pushed clean idle clone removed');
+  assert.equal(s.removed, 2, JSON.stringify(s));
+});
+
+test('BRO-8179 stale tmp: walk limit = unknown, never idle', () => {
+  const r = root();
+  const d = path.join(r, 'big-tree'); fs.mkdirSync(d);
+  for (let i = 0; i < 5; i++) fs.writeFileSync(path.join(d, `f${i}`), 'x');
+  ageTree(d, 3 * DAY_MS);
+  assert.equal(S.walkAge(d, Date.now() - DAY_MS, 3), 'limit');
+  assert.equal(S.touchedSince(d, Date.now() - DAY_MS, 3), true, 'limit counts as touched (keep)');
+  assert.equal(S.walkAge(d, Date.now() - DAY_MS), 'idle');
 });

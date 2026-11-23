@@ -41,8 +41,9 @@ const DEFAULT_ROOT = '/private/tmp';
 const MAX_AGE_H = Number(process.env.TMP_REAP_MAX_AGE_H) > 0 ? Number(process.env.TMP_REAP_MAX_AGE_H) : 24;
 const SHORT_AGE_H = 3;
 const LONG_AGE_H = 7 * 24;
-// Hook/session state the ~/.claude hooks key per session and read back later.
-const HOOK_STATE_RE = /^(?:linear-issue-(?:claimed|reported)-|finish-line-|verify-edits-satisfied-|notion-card-|notion-create-failed|ctx-nudge-|pn-refresh-|owner-steps-|scoring-delta-baseline-|push-retry-|core-data-snapshot)/;
+// Hook/session state the ~/.claude hooks key per session and read back later,
+// plus other long-lived state that only lands here when TMPDIR is unset.
+const HOOK_STATE_RE = /^(?:linear-issue-(?:claimed|reported)-|finish-line-|verify-edits-satisfied-|notion-card-|notion-create-failed|ctx-nudge-|pn-refresh-|owner-steps-|scoring-delta-baseline-|scoring-delta-stamps|bsc-compact-state|bsc-pending-waits|push-retry-|core-data-snapshot)|-launchd\.log$|-browser-profile$/;
 const UUID_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 const LOCK_RE = /(?:[.\-_]lock|\.lck)$/i;
 // prefix + 6-char mkdtemp/mktemp suffix that has a digit or capital (an
@@ -50,33 +51,71 @@ const LOCK_RE = /(?:[.\-_]lock|\.lck)$/i;
 const MKDTEMP_RE = /[-_.]([A-Za-z0-9]{6})$/;
 // Names nothing in this repo creates but the OS, launchd agents or tools rely on.
 const KEEP_NAME_RE = /^(?:\.|claude|com\.apple|launch|tmux-|ssh-|powerlog|KSOutOfProcessFetcher|MozillaUpdateLock|boost_interprocess)/i;
-// Bounded walk: a huge clone is judged by what was seen before the cap plus
-// its explicit git markers instead of stat-ing every file.
+// Bounded walk. Hitting the cap means "unknown": the entry is kept unless it
+// is itself a git checkout with no local work (tracked content is on a remote).
 const WALK_LIMIT = 50000;
 const PRUNE_DIRS = new Set(['node_modules', 'objects']);
+const GIT_ENV = { ...process.env, GIT_OPTIONAL_LOCKS: '0' }; // no index refresh write (would reset the idle clock)
 
 function hasGit(p) {
   try { fs.lstatSync(path.join(p, '.git')); return true; } catch { return false; }
 }
 
-/** Uncommitted or unpushed work in a git checkout; unreadable counts as dirty. */
-function gitHasLocalWork(p) {
-  try {
-    const out = execFileSync('git', ['-C', p, 'status', '--porcelain=v1', '-b', '--untracked-files=normal'],
-      { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024,
-        // No index refresh write: a rewritten .git/index would reset the idle clock.
-        env: { ...process.env, GIT_OPTIONAL_LOCKS: '0' } });
-    const lines = out.split('\n').filter(Boolean);
-    if (lines.length > 1) return true; // dirty
-    return /\[ahead \d+/.test(lines[0] || '');
-  } catch { return true; }
+/** Git checkouts at p or up to two levels below it (the mktemp -d + clone into $d/repo layout). */
+function findGitRepos(p) {
+  if (hasGit(p)) return [p];
+  const out = [];
+  const visit = (d, depth) => {
+    let ents;
+    try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of ents) {
+      if (!e.isDirectory() || PRUNE_DIRS.has(e.name) || e.name === '.git') continue;
+      const c = path.join(d, e.name);
+      if (hasGit(c)) out.push(c); else if (depth < 2) visit(c, depth + 1);
+    }
+  };
+  visit(p, 1);
+  return out;
 }
 
-/** Age tier for one entry name (git-dirty LONG is decided later, it costs a spawn). */
+function git(repo, args) {
+  return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024, env: GIT_ENV });
+}
+
+/**
+ * Local work in one checkout. Returns null (none), or {files:[abs paths],
+ * unique:bool, unknown:bool}. Commits on no remote (unpushed branch, branch
+ * with no upstream, detached HEAD, repo with no remote) and stashes count.
+ */
+function gitLocalWork(repo) {
+  try {
+    const status = git(repo, ['status', '--porcelain=v1', '--untracked-files=normal']);
+    const files = status.split('\n').filter(Boolean).map((l) => path.join(repo, l.slice(3).replace(/^.* -> /, '').replace(/^"|"$/g, '')));
+    let unique = false;
+    let hasHead = true;
+    try { git(repo, ['rev-parse', '-q', '--verify', 'HEAD']); } catch { hasHead = false; }
+    if (hasHead) unique = git(repo, ['rev-list', '-1', 'HEAD', '--branches', '--tags', '--not', '--remotes']).trim() !== '';
+    try { git(repo, ['rev-parse', '-q', '--verify', 'refs/stash']); unique = true; } catch { /* no stash */ }
+    return files.length || unique ? { files, unique, unknown: false } : null;
+  } catch { return { files: [], unique: false, unknown: true }; }
+}
+
+/** Back-compat boolean: any local work (or unreadable). */
+function gitHasLocalWork(p) { return gitLocalWork(p) !== null; }
+
+/** Newest mtime among a checkout's local-work evidence (dirty paths + git markers). */
+function newestLocalWorkMs(repo, work) {
+  let newest = 0;
+  const paths = [...work.files, ...['.git/index', '.git/HEAD', '.git/logs/HEAD', '.git/refs/stash', '.git/logs/refs/stash'].map((m) => path.join(repo, m))];
+  for (const f of paths) { try { newest = Math.max(newest, fs.lstatSync(f).mtimeMs); } catch { /* absent */ } }
+  return newest;
+}
+
+/** Age tier for one entry name. SHORT never applies to anything holding a git checkout. */
 function ageTierH(name, isDir, p, maxAgeH = MAX_AGE_H) {
   if (HOOK_STATE_RE.test(name) || UUID_RE.test(name) || LOCK_RE.test(name)) return Math.max(LONG_AGE_H, maxAgeH);
   const m = MKDTEMP_RE.exec(name);
-  if (m && /[0-9A-Z]/.test(m[1]) && !(isDir && hasGit(p))) return Math.min(SHORT_AGE_H, maxAgeH);
+  if (m && /[0-9A-Z]/.test(m[1]) && !(isDir && findGitRepos(p).length)) return Math.min(SHORT_AGE_H, maxAgeH);
   return maxAgeH;
 }
 
@@ -98,30 +137,36 @@ function openTopNames(snapshot, root) {
 }
 
 /**
- * True when anything under dir changed after cutoffMs. Early-exits on the
- * first recent mtime. Unreadable subtrees count as recent (keep).
+ * 'recent' when anything under dir changed after cutoffMs (early exit),
+ * 'limit' when the walk hit `limit` entries first (unknown), else 'idle'.
+ * Unreadable subtrees count as recent (keep).
  */
-function touchedSince(dir, cutoffMs, limit = WALK_LIMIT, acc = null) {
+function walkAge(dir, cutoffMs, limit = WALK_LIMIT, acc = null) {
   for (const marker of ['.git/index', '.git/HEAD', '.git/logs/HEAD']) {
-    try { if (fs.lstatSync(path.join(dir, marker)).mtimeMs > cutoffMs) return true; } catch { /* absent */ }
+    try { if (fs.lstatSync(path.join(dir, marker)).mtimeMs > cutoffMs) return 'recent'; } catch { /* absent */ }
   }
   const stack = [dir];
   let seen = 0;
   while (stack.length) {
     const d = stack.pop();
     let ents;
-    try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch (e) { if (e.code === 'ENOENT') continue; return true; }
+    try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch (e) { if (e.code === 'ENOENT') continue; return 'recent'; }
     for (const ent of ents) {
-      if (++seen > limit) return false; // markers + first `limit` entries were all old
+      if (++seen > limit) return 'limit';
       const p = path.join(d, ent.name);
       let st;
       try { st = fs.lstatSync(p); } catch { continue; }
-      if (st.mtimeMs > cutoffMs) return true;
+      if (st.mtimeMs > cutoffMs) return 'recent';
       if (acc) acc.bytes += (st.blocks || 0) * 512;
       if (ent.isDirectory() && !PRUNE_DIRS.has(ent.name)) stack.push(p);
     }
   }
-  return false;
+  return 'idle';
+}
+
+/** True when anything under dir changed after cutoffMs, or the walk could not finish. */
+function touchedSince(dir, cutoffMs, limit = WALK_LIMIT, acc = null) {
+  return walkAge(dir, cutoffMs, limit, acc) !== 'idle';
 }
 
 /** Pure-ish decision for one top-level entry. Never deletes. */
@@ -139,15 +184,22 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   const cutoff = now - ageH * 3600 * 1000;
   if (st.mtimeMs > cutoff) return { reap: false, reason: `younger than ${ageH}h` };
   if (!openNames || openNames.has(name)) return { reap: false, reason: 'open handle under it (or lsof failed)' };
-  // acc: on-disk bytes seen by the walk (pruned node_modules/.git objects and
-  // past-WALK_LIMIT entries not counted) = a cheap lower bound on freed space.
+  // acc: on-disk bytes seen by the walk (pruned node_modules/.git objects not
+  // counted) = a cheap lower bound on freed space.
   const acc = { bytes: (st.blocks || 0) * 512 };
-  if (isDir && touchedSince(p, cutoff, WALK_LIMIT, acc)) return { reap: false, reason: `something inside changed within ${ageH}h` };
-  if (isDir && ageH < LONG_AGE_H && hasGit(p) && gitHasLocalWork(p)) {
-    const longCutoff = now - LONG_AGE_H * 3600 * 1000;
-    if (st.mtimeMs > longCutoff || touchedSince(p, longCutoff)) return { reap: false, reason: 'git checkout with local work, younger than 7d' };
+  if (!isDir) return { reap: true, path: p, isDir, cutoff, bytes: acc.bytes, reason: `idle >${ageH}h, nothing open` };
+  const walk = walkAge(p, cutoff, WALK_LIMIT, acc);
+  if (walk === 'recent') return { reap: false, reason: `something inside changed within ${ageH}h` };
+  const repos = findGitRepos(p);
+  if (walk === 'limit' && !(repos.length === 1 && repos[0] === p)) return { reap: false, reason: 'too big to judge (walk limit), not a clean checkout' };
+  const longCutoff = now - LONG_AGE_H * 3600 * 1000;
+  for (const repo of repos) {
+    const work = gitLocalWork(repo);
+    if (!work) continue;
+    if (work.unknown) return { reap: false, reason: 'git status unreadable' };
+    if (st.mtimeMs > longCutoff || newestLocalWorkMs(repo, work) > longCutoff) return { reap: false, reason: 'git checkout with local work, younger than 7d' };
   }
-  return { reap: true, path: p, isDir, bytes: acc.bytes, reason: `idle >${ageH}h, nothing open` };
+  return { reap: true, path: p, isDir, cutoff, bytes: acc.bytes, reason: `idle >${ageH}h, nothing open` };
 }
 
 function duKb(p) {
@@ -176,6 +228,9 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
       const fresh = openTopNames(snapshotFn({ excludePid: process.pid }), real);
       for (const d of batch) {
         if (fresh === null || fresh.has(path.basename(d.path))) { summary.kept['opened since scan'] = (summary.kept['opened since scan'] || 0) + 1; continue; }
+        // Touched (not held open) since the scan: keep.
+        let now2; try { now2 = fs.lstatSync(d.path).mtimeMs; } catch { continue; }
+        if (now2 > d.cutoff) { summary.kept['touched since scan'] = (summary.kept['touched since scan'] || 0) + 1; continue; }
         const kb = measure && d.isDir ? duKb(d.path) : Math.ceil(d.bytes / 1024);
         if (dryRun) { summary.removed++; summary.freedKb += kb; continue; }
         try {
@@ -208,7 +263,7 @@ function formatSummary(s, dryRun) {
   return `STALE-TMP-REAP scanned=${s.scanned} ${dryRun ? 'would_remove' : 'removed'}=${s.removed} freed=${gb}GB (${Math.round(s.freedKb / 1024)}MB)${s.skipped ? ` skipped=${s.skipped}` : ''} kept: ${kept || 'none'}`;
 }
 
-module.exports = { DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
+module.exports = { DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, gitLocalWork, findGitRepos, walkAge, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
 
 // CLI: node scripts/lib/reap-stale-tmp.js [--dry-run] [--root DIR] [--max-age-h N] [--budget-min N] [--no-measure]
 if (require.main === module) {
