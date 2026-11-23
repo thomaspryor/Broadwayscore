@@ -247,47 +247,52 @@ if (!show) {
   // has no fetchable article; without this every fetch tier burned credits
   // and the run exited "fetch failed" with no actionable message. The writer
   // (BRO-4458) already refuses to file such a URL, so stop before fetching.
-  if (isUnresolvableRedirectUrl(url)) {
-    console.error(`Refusing to ingest — ${url.slice(0, 80)} is an unresolvable redirect/cache/non-http URL, not an article. Find the real article URL (search the outlet) and re-run with it.`);
-    process.exit(1);
-  }
+  // BRO-8204: one function so the canonical URL a Substack share link resolves to
+  // after the fetch passes every refusal the submitted URL did.
+  function refuseUrlOrExit(url) {
+    if (isUnresolvableRedirectUrl(url)) {
+      console.error(`Refusing to ingest — ${url.slice(0, 80)} is an unresolvable redirect/cache/non-http URL, not an article. Find the real article URL (search the outlet) and re-run with it.`);
+      process.exit(1);
+    }
 
-  if (isBlockedReviewUrl(url)) {
-    console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
-    process.exit(1);
-  }
+    if (isBlockedReviewUrl(url)) {
+      console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
+      process.exit(1);
+    }
 
-  // Listing / ticketing / venue pages the shared URL classifier recognizes
-  // (BRO-4185 G: ~100 such files were written through /submit-review and the
-  // census, e.g. tickpick, ents24, lovetheatre, westend.com/shows). Only these
-  // reasons refuse: the classifier's broader candidate-filter reasons
-  // (non-review-host, aggregator-internal-nav) also match 300+ scored real
-  // reviews (WNYC, 4Columns, BroadwayWorld review articles), so they stay out.
-  {
-    const verdict = classifyReviewUrl(url);
-    if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
-      console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
+    // Listing / ticketing / venue pages the shared URL classifier recognizes
+    // (BRO-4185 G: ~100 such files were written through /submit-review and the
+    // census, e.g. tickpick, ents24, lovetheatre, westend.com/shows). Only these
+    // reasons refuse: the classifier's broader candidate-filter reasons
+    // (non-review-host, aggregator-internal-nav) also match 300+ scored real
+    // reviews (WNYC, 4Columns, BroadwayWorld review articles), so they stay out.
+    {
+      const verdict = classifyReviewUrl(url);
+      if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
+        console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
+        process.exit(1);
+      }
+    }
+
+    // Per-show blocklist — honor _blocklist.json, the sidecar whose WHOLE PURPOSE
+    // is making an operator's deletion stick (scripts/lib/poller-blocklist.js).
+    // gather-reviews.js has honored it since the Rocky Horror 2026-04-23 incident,
+    // but THIS path never did — and this is the path audit-aggregator-gap's
+    // auto-recovery drives (audit-t1-silent-gaps.js recoverFromOwnUrl execs this
+    // script) as well as the public /submit-review form. BRO-3247: a
+    // wrong-production Lighting & Sound America review of a DIFFERENT "Safe House"
+    // (the 2025 Enda Walsh production at St. Ann's Warehouse) was deleted from
+    // safe-house-off-broadway-2026 on 2026-09-14 and re-ingested here within
+    // hours, twice, because deleting a file leaves nothing behind that this
+    // entry point consults. Refuse before fetching so a blocked URL also stops
+    // burning scraper credit on every audit cycle.
+    const _blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
+    if (_blocked) {
+      console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blocked.reason || 'no reason recorded'}. See ${path.join(reviewTextsDir, showId, '_blocklist.json')} (scripts/block-review.js manages it).`);
       process.exit(1);
     }
   }
-
-  // Per-show blocklist — honor _blocklist.json, the sidecar whose WHOLE PURPOSE
-  // is making an operator's deletion stick (scripts/lib/poller-blocklist.js).
-  // gather-reviews.js has honored it since the Rocky Horror 2026-04-23 incident,
-  // but THIS path never did — and this is the path audit-aggregator-gap's
-  // auto-recovery drives (audit-t1-silent-gaps.js recoverFromOwnUrl execs this
-  // script) as well as the public /submit-review form. BRO-3247: a
-  // wrong-production Lighting & Sound America review of a DIFFERENT "Safe House"
-  // (the 2025 Enda Walsh production at St. Ann's Warehouse) was deleted from
-  // safe-house-off-broadway-2026 on 2026-09-14 and re-ingested here within
-  // hours, twice, because deleting a file leaves nothing behind that this
-  // entry point consults. Refuse before fetching so a blocked URL also stops
-  // burning scraper credit on every audit cycle.
-  const _blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
-  if (_blocked) {
-    console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blocked.reason || 'no reason recorded'}. See ${path.join(reviewTextsDir, showId, '_blocklist.json')} (scripts/block-review.js manages it).`);
-    process.exit(1);
-  }
+  refuseUrlOrExit(url);
 
   let html;
   let fetchFailure = null;
@@ -328,17 +333,16 @@ if (!show) {
   // BRO-8204: substack.com/home/post/p-<id> names no publication, so the outlet
   // resolved to a generic "substack" and the misattribution guard held the review.
   // Adopt the page's own canonical URL so outlet, filename and stored url are the
-  // publication's; re-check the blocklist against it.
+  // publication's; re-run every URL refusal against it. The share URL is kept in
+  // alternateUrls so submission-landing.js and the gap audit still match it.
+  let shareUrl = null;
   if (!fetchFailure) {
     const canonical = require('./lib/non-review-url-patterns').substackShareCanonicalUrl(url, html);
     if (canonical && canonical !== url) {
       console.log(`↪ ${url} is a Substack share link; ingesting its canonical URL ${canonical}`);
+      shareUrl = url;
       url = canonical;
-      const _blockedCanon = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
-      if (_blockedCanon) {
-        console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blockedCanon.reason || 'no reason recorded'}.`);
-        process.exit(1);
-      }
+      refuseUrlOrExit(url);
     }
   }
 
@@ -782,6 +786,7 @@ if (!show) {
     console.log(`  → Score routed to ${routed.field}`);
   }
 
+  if (shareUrl) fields.alternateUrls = [shareUrl];
   const result = createOrMergeReviewFile(showId, {
     outletId,
     outlet: outletName,

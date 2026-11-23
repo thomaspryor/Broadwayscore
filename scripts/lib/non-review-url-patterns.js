@@ -1257,13 +1257,17 @@ function isSubstackShareUrl(url) {
 }
 function substackShareCanonicalUrl(url, html) {
   if (!isSubstackShareUrl(url) || typeof html !== 'string') return null;
-  const tag = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i);
-  const href = tag && tag[0].match(/\bhref=["']([^"']+)["']/i);
+  const tag = html.match(/<link\s[^>]*?(?<![\w-])rel\s*=\s*["']canonical["'][^>]*>/i);
+  const href = tag && tag[0].match(/(?<![\w-])href\s*=\s*["']([^"']+)["']/i);
   let c;
   try { c = new URL(href ? href[1].replace(/&amp;/g, '&') : ''); } catch { return null; }
   if (!/^https?:$/.test(c.protocol)) return null;
   const host = c.hostname.toLowerCase().replace(/^www\./, '');
   if (host === 'substack.com' || host === 'open.substack.com') return null;
+  // A Substack post's own URL is always /p/<slug>, on <name>.substack.com or the
+  // publication's custom domain. Anything else (a canonical pointed at some
+  // other site's article) is not this post and must not re-home the review.
+  if (!/^\/p\/[a-z0-9][a-z0-9-]*\/?$/i.test(c.pathname)) return null;
   return c.toString();
 }
 

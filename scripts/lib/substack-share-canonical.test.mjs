@@ -29,3 +29,17 @@ test('non-share URLs and unusable canonicals are left alone', () => {
   assert.equal(isSubstackShareUrl('https://substack.com/browse'), false);
   assert.equal(isSubstackShareUrl('https://www.substack.com/home/post/p-9'), true);
 });
+
+test('a canonical that is not a /p/<slug> post cannot re-home the review', () => {
+  const share = 'https://substack.com/home/post/p-1';
+  assert.equal(substackShareCanonicalUrl(share, page('https://www.nytimes.com/2026/11/20/theater/review.html')), null);
+  assert.equal(substackShareCanonicalUrl(share, page('https://someone.substack.com/')), null);
+});
+
+test('attribute order, spacing and data- attributes', () => {
+  const share = 'https://substack.com/home/post/p-1';
+  const want = 'https://x.substack.com/p/review';
+  assert.equal(substackShareCanonicalUrl(share, `<link href='${want}' rel='canonical'>`), want);
+  assert.equal(substackShareCanonicalUrl(share, `<link rel = "canonical" href = "${want}">`), want);
+  assert.equal(substackShareCanonicalUrl(share, `<link data-rel="canonical" href="${want}">`), null);
+});
