@@ -77,7 +77,9 @@ function loadMore(url: string, rev: string | undefined): Promise<MoreRows> {
   if (!p) {
     p = fetchMoreRows<ReviewListItem>(url, rev).then((r): MoreRows => {
       if (r.state === 'ok') return r.rows;
-      if (r.state === 'mismatch') return 'mismatch';
+      // Not kept: the next mount (another visit in this tab) asks again once
+      // the regeneration has finished.
+      if (r.state === 'mismatch') { moreCache.delete(key); return 'mismatch'; }
       console.error('Failed to load more reviews:', r.error);
       moreCache.delete(key); // allow retry on the next interaction
       return null;
@@ -621,6 +623,14 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
             </>
           )}
         </button>
+      )}
+      {/* BRO-8170 gap 3: the rest could not be matched to this page's data
+          (only while the show-refresh reader is on). Say so instead of a
+          button that silently goes away. */}
+      {mismatched && moreProp && moreProp.totalCount > reviews.length && (
+        <p className="mt-2 text-center text-xs text-fg-muted" role="status" data-testid="reviews-more-updating">
+          The other {moreProp.totalCount - reviews.length} reviews are being updated. Reload the page in a moment to see them.
+        </p>
       )}
     </div>
   );
