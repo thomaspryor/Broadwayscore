@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T17:33:46.819Z",
+  "timestamp": "2026-11-23T17:55:05.664Z",
   "stats": {
-    "totalReviews": 84341,
+    "totalReviews": 84345,
     "alreadyFlagged": 22517,
     "dateGuardCatches": 242,
-    "directorMismatch": 3887,
+    "directorMismatch": 3885,
     "tvFilmSignals": 2423,
     "londonSignals": 3986,
     "offBroadwaySignals": 788,
     "yearMismatch": 396,
-    "noPublishDate": 8209
+    "noPublishDate": 8210
   },
   "findings": [
     {
@@ -87308,34 +87308,6 @@
       "score": 92,
       "publishDate": "2025-02-22",
       "url": "https://chicagocultureauthority.com/2025/02/22/michelle-lauto-serves-up-a-breakout-performance-in-waitress-at-the-paramount/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from waitress-2021"
-        }
-      ]
-    },
-    {
-      "showId": "waitress-tour-2026",
-      "file": "austin101magazine--jerristarbuck.json",
-      "score": 94,
-      "publishDate": "2026-10-22",
-      "url": "https://austin101magazine.com/review-the-10th-anniversary-tour-of-waitress-serves-up-a-masterpiece-at-bass-concert-hall/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from waitress-2021"
-        }
-      ]
-    },
-    {
-      "showId": "waitress-tour-2026",
-      "file": "manchestertheatres--robert-jones.json",
-      "score": 91,
-      "publishDate": "2026-10-28",
-      "url": "https://www.manchestertheatres.com/news/review-_-waitress-is-honest,-authentic,-heartfelt,-and-baked-with-real-care",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
