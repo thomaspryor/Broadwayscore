@@ -10,6 +10,7 @@ import { createRequire } from 'module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 // BRO-8107: the shared guards this reaches read shows from a fixture, not the live
@@ -642,4 +643,281 @@ test('BRO-7930: a stub whose byline lands on the same critic\'s OTHER article is
   const fetchesAfterFirst = c.n;
   await processShow(PUNCH.id, d);
   assert.equal(c.n, fetchesAfterFirst, 'a tagged stub is not fetched again on the next sweep');
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// BRO-8089: settle triage junk where it is written, and stop producers re-sending the same quarantine every run.
+// ---------------------------------------------------------------------------------------------------------------
+describe('BRO-8089: _pending intake settles what the drain would settle', () => {
+  const HENRY = { id: 'henry-iv-off-broadway-2015', title: 'Henry IV', openingDate: '2015-11-06', closingDate: '2015-12-13' };
+  const ctx = { byId: new Map([[HENRY.id, HENRY]]), allShows: [HENRY], heldIndex: new Map() };
+
+  test('gather-reviews writes an identity-junk no-byline stub already settled (kept, not refused); a candidate stays open', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-gather-'));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const script = `
+      const intake = require(${JSON.stringify(path.resolve('scripts/lib/pending-intake.js'))});
+      intake._setContextForTests({ byId: new Map([[${JSON.stringify(HENRY.id)}, ${JSON.stringify(HENRY)}]]), allShows: [${JSON.stringify(HENRY)}], heldIndex: new Map() });
+      const g = require(${JSON.stringify(path.resolve('scripts/gather-reviews.js'))});
+      const base = { outletId: 'variety', outlet: 'Variety', criticName: 'Unknown', source: 'show-score' };
+      const junk = g.createReviewFile(${JSON.stringify(HENRY.id)}, { ...base, url: 'https://variety.com/legit/reviews/london-theater-review-henry-iv-1201325786/', publishDate: '2014-10-10' });
+      const real = g.createReviewFile(${JSON.stringify(HENRY.id)}, { ...base, outletId: 'nytimes', outlet: 'NYT', url: 'https://www.nytimes.com/2015/11/07/theater/henry-iv-review.html', publishDate: '2015-11-07' });
+      process.stdout.write(JSON.stringify({ junk, real }));`;
+    const r = spawnSync(process.execPath, ['-e', script], { env: { ...process.env, REVIEW_TEXTS_DIR: root }, encoding: 'utf8', timeout: 120000 });
+    assert.equal(r.status, 0, r.stderr);
+    assert.deepEqual(JSON.parse(r.stdout.trim().split('\n').pop()), { junk: true, real: true });
+    const dir = path.join(root, '_pending', HENRY.id);
+    const recs = fs.readdirSync(dir).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
+    assert.equal(recs.length, 2, 'both kept on disk');
+    const junkRec = recs.find((x) => x.url.includes('variety'));
+    const realRec = recs.find((x) => x.url.includes('nytimes'));
+    assert.match(junkRec.promoteSkippedReason || '', /outside this production's window.*BRO-8089 intake triage/);
+    assert.equal(T.isSettledPendingStub(junkRec), true);
+    assert.equal(T.isSettledPendingStub(realRec), false, 'an in-window candidate is left for the drain to fetch');
+  });
+
+  test('pending-intake fails open (candidate) when data cannot load', () => {
+    const { intakeVerdict } = require('../../scripts/lib/pending-intake.js');
+    assert.equal(intakeVerdict({ url: 'https://x.com/a', publishDate: '1999-01-01' }, HENRY.id, { dataDir: '/nonexistent-bro8089' }).verdict, 'candidate');
+  });
+
+  function quarantineOnce(root, extra = {}) {
+    const { safeWriteReview, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+    const sid = 'cyrano-de-bergerac-west-end-2026';
+    const showRow = { id: sid, title: 'Cyrano de Bergerac', previewsStartDate: '2026-03-10', openingDate: '2026-03-25', closingDate: '2026-06-01' };
+    _setShowsCacheForTest(new Map([[sid, showRow]]));
+    require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const res = safeWriteReview(target, { publishDate: '2025-08-01', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2025/aug/01/cyrano-review', ...extra });
+    return { res, qPath: path.join(root, '_pending', sid, 'guardian--arifa-akbar.json') };
+  }
+
+  test('write guard: a date_implausible quarantine is settled on arrival', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-q-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const { res, qPath } = quarantineOnce(root, { firstSeenAt: '2026-11-21T16:42:04.561Z' });
+    assert.equal(res.skipped, 'date_implausible');
+    assert.ok(res.quarantinedPath, 'still a completed move for move-then-delete callers');
+    const q = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    assert.match(q.promoteSkippedReason, /BRO-8089 intake triage/);
+  });
+
+  test('write guard: the same out-of-window review re-sent next run does not rewrite the settled stub (show-score churn)', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-churn-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const { qPath } = quarantineOnce(root, { firstSeenAt: '2026-11-21T16:42:04.561Z' });
+    const before = fs.readFileSync(qPath, 'utf8');
+    const { res } = quarantineOnce(root, { firstSeenAt: '2026-11-22T16:56:35.296Z' });
+    assert.ok(res.quarantinedPath);
+    assert.equal(fs.readFileSync(qPath, 'utf8'), before, 'settled stub left byte-identical; firstSeenAt not reset');
+  });
+
+  test('write guard: an open stub re-quarantined keeps its oldest firstSeenAt; an un-settled (nulled) stub is not re-settled', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-open-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const { qPath } = quarantineOnce(root, { firstSeenAt: '2026-11-01T00:00:00.000Z' });
+    const rec = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    rec.promoteSkippedReason = null; rec.promoteSkippedAt = null; // the drain's retry un-settles this way
+    fs.writeFileSync(qPath, JSON.stringify(rec));
+    quarantineOnce(root, { firstSeenAt: '2026-11-22T00:00:00.000Z' });
+    const after = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    assert.equal(after.firstSeenAt, '2026-11-01T00:00:00.000Z');
+    assert.equal(T.isSettledPendingStub(after), false);
+  });
+
+  test('open-stub growth week over week files an auto Fix card (ACTION), quiet when flat', async () => {
+    const { raiseDrainHealthAlerts } = require('../../scripts/replay-pending-bylines.js');
+    const row = (at, n) => ({ at, scope: 'all-pending', pending: 100, promoted: 1, dropped: 0, rejected: 0, tagged: 0, inspected: 5, openByEra: { '2025-26': n, '2015-24': 0, 'pre-2015': 0 } });
+    const calls = [];
+    const deps = { alert: async (o) => { calls.push(o); }, resolve: async (k) => { calls.push({ resolved: k }); } };
+    await raiseDrainHealthAlerts([row('2026-11-08T00:00:00Z', 100), row('2026-11-15T00:00:00Z', 160)], deps);
+    const a = calls.find((c) => c.conditionKey === 'pending-open-growth');
+    assert.ok(a, 'growth alert raised');
+    assert.equal(a.disposition, 'auto');
+    assert.equal(a.cardAction, 'Fix');
+    calls.length = 0;
+    await raiseDrainHealthAlerts([row('2026-11-08T00:00:00Z', 100), row('2026-11-15T00:00:00Z', 101)], deps);
+    assert.ok(calls.some((c) => c.resolved === 'pending-open-growth'));
+  });
+});
+
+describe('BRO-8089 ship-check: intake context and re-quarantine merges', () => {
+  test('loadContext reads the real reviews.json shape ({_meta, reviews:[rows]}) into a non-empty held index', (t) => {
+    const { loadContext } = require('../../scripts/lib/pending-intake.js');
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-ctx-'));
+    t.after(() => fs.rmSync(d, { recursive: true, force: true }));
+    fs.writeFileSync(path.join(d, 'shows.json'), JSON.stringify({ shows: [{ id: 'a-2026', title: 'A' }] }));
+    fs.writeFileSync(path.join(d, 'reviews.json'), JSON.stringify({ _meta: {}, reviews: [{ showId: 'a-2026', url: 'https://www.nytimes.com/2026/01/01/theater/a-review.html' }] }));
+    const ctx = loadContext(d);
+    assert.equal(ctx.heldIndex.size, 1, 'an empty index makes every non-review-host url look unscored');
+  });
+  test('an empty held index fails open (candidate), never settles', () => {
+    const { intakeVerdict } = require('../../scripts/lib/pending-intake.js');
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-empty-'));
+    fs.writeFileSync(path.join(d, 'shows.json'), JSON.stringify({ shows: [] }));
+    fs.writeFileSync(path.join(d, 'reviews.json'), JSON.stringify({ _meta: {}, reviews: [] }));
+    assert.equal(intakeVerdict({ url: 'https://www.bam.org/theater/2026/x' }, 'x-2026', { dataDir: d }).verdict, 'candidate');
+  });
+  test('a settled quarantine re-sent WITH recovered text is merged (text kept, settlement kept), not discarded', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-text-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const { qPath } = quarantineOnce2(root, {});
+    assert.ok(T.isSettledPendingStub(JSON.parse(fs.readFileSync(qPath, 'utf8'))));
+    quarantineOnce2(root, { fullText: 'Recovered article body. '.repeat(20) });
+    const after = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    assert.match(after.fullText, /Recovered article body/);
+    assert.equal(T.isSettledPendingStub(after), true);
+  });
+  test('an explicit null un-settle survives two producer replays', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-null-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const { qPath } = quarantineOnce2(root, {});
+    const rec = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    rec.promoteSkippedReason = null; rec.promoteSkippedAt = null;
+    fs.writeFileSync(qPath, JSON.stringify(rec));
+    quarantineOnce2(root, {}); quarantineOnce2(root, {});
+    const after = JSON.parse(fs.readFileSync(qPath, 'utf8'));
+    assert.equal(after.promoteSkippedReason, null);
+    assert.equal(T.isSettledPendingStub(after), false);
+  });
+  function quarantineOnce2(root, extra) {
+    const { safeWriteReview, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+    const sid = 'cyrano-de-bergerac-west-end-2026';
+    const showRow = { id: sid, title: 'Cyrano de Bergerac', previewsStartDate: '2026-03-10', openingDate: '2026-03-25', closingDate: '2026-06-01' };
+    _setShowsCacheForTest(new Map([[sid, showRow]]));
+    require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    safeWriteReview(target, { publishDate: '2025-08-01', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2025/aug/01/cyrano-review', ...extra });
+    return { qPath: path.join(root, '_pending', sid, 'guardian--arifa-akbar.json') };
+  }
+});
+
+describe('BRO-8089 ship-check pass 2: text is never lost on a re-quarantine', () => {
+  function q(root, extra) {
+    const { safeWriteReview, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+    const sid = 'cyrano-de-bergerac-west-end-2026';
+    const showRow = { id: sid, title: 'Cyrano de Bergerac', previewsStartDate: '2026-03-10', openingDate: '2026-03-25', closingDate: '2026-06-01' };
+    _setShowsCacheForTest(new Map([[sid, showRow]]));
+    require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    safeWriteReview(target, { publishDate: '2025-08-01', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2025/aug/01/cyrano-review', ...extra });
+    return path.join(root, '_pending', sid, 'guardian--arifa-akbar.json');
+  }
+  test('a settled stub holding a teaser is upgraded by a re-send with the full article', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-up-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const p = q(root, { fullText: 'Teaser only.' });
+    q(root, { fullText: 'The complete article. '.repeat(40) });
+    const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.match(after.fullText, /complete article/);
+    assert.equal(T.isSettledPendingStub(after), true);
+  });
+  test('an un-settled stub with recovered text keeps it when a textless re-send arrives', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-keep-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const p = q(root, {});
+    const rec = JSON.parse(fs.readFileSync(p, 'utf8'));
+    Object.assign(rec, { promoteSkippedReason: null, promoteSkippedAt: null, fullText: 'Recovered body. '.repeat(30), contentTier: 'complete' });
+    fs.writeFileSync(p, JSON.stringify(rec));
+    q(root, {});
+    const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.match(after.fullText, /Recovered body/);
+    assert.equal(after.contentTier, 'complete');
+    assert.equal(after.promoteSkippedReason, null);
+  });
+});
+
+describe('BRO-8089 ship-check pass 3: longer body and scraped rating survive a re-quarantine', () => {
+  function q(root, extra) {
+    const { safeWriteReview, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+    const sid = 'cyrano-de-bergerac-west-end-2026';
+    const showRow = { id: sid, title: 'Cyrano de Bergerac', previewsStartDate: '2026-03-10', openingDate: '2026-03-25', closingDate: '2026-06-01' };
+    _setShowsCacheForTest(new Map([[sid, showRow]]));
+    require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    safeWriteReview(target, { publishDate: '2025-08-01', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2025/aug/01/cyrano-review', ...extra });
+    return path.join(root, '_pending', sid, 'guardian--arifa-akbar.json');
+  }
+  test('a replayed teaser does not replace a settled full article', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-teaser-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const p = q(root, { fullText: 'The complete article. '.repeat(60), contentTier: 'complete' });
+    q(root, { fullText: 'Teaser.', contentTier: 'excerpt' });
+    const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.match(after.fullText, /complete article/);
+    assert.equal(after.contentTier, 'complete');
+  });
+  test('a textless re-send keeps the scraped rating read with a recovered body', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-rating-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const p = q(root, {});
+    const rec = JSON.parse(fs.readFileSync(p, 'utf8'));
+    Object.assign(rec, { promoteSkippedReason: null, fullText: 'Recovered body. '.repeat(30), originalScore: '4/5', scoreExtractedFrom: 'scraped-html' });
+    fs.writeFileSync(p, JSON.stringify(rec));
+    q(root, {});
+    const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.equal(after.originalScore, '4/5');
+    assert.equal(after.pendingReason, 'date_implausible');
+  });
+});
+
+test('BRO-8089: two different urls quarantined under one critic filename both survive repeated runs', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-collide-'));
+  t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+  const { safeWriteReview, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+  const sid = 'the-dead-1904-off-broadway-2026';
+  const showRow = { id: sid, title: 'The Dead, 1904', previewsStartDate: '2026-11-21', openingDate: '2026-11-24', closingDate: '2027-01-03' };
+  _setShowsCacheForTest(new Map([[sid, showRow]]));
+  require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+  const target = path.join(root, sid, 'theatermania--pete-hempstead.json');
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  const A = { publishDate: '2018-11-29', criticName: 'Pete Hempstead', url: 'https://www.theatermania.com/off-broadway/reviews/a-holiday-party-turns-political-in-the-dead-1904_87180.html' };
+  const B = { publishDate: '2017-11-30', criticName: 'Pete Hempstead', url: 'https://www.theatermania.com/off-broadway/reviews/the-dead-1904-irish-rep_83000.html' };
+  for (let run = 0; run < 2; run++) { safeWriteReview(target, { ...A }); safeWriteReview(target, { ...B }); }
+  const dir = path.join(root, '_pending', sid);
+  const urls = fs.readdirSync(dir).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).url).sort();
+  assert.deepEqual(urls, [A.url, B.url].sort());
+  const before = fs.readdirSync(dir).map((f) => fs.readFileSync(path.join(dir, f), 'utf8')).join('|');
+  safeWriteReview(target, { ...A }); safeWriteReview(target, { ...B });
+  assert.equal(fs.readdirSync(dir).map((f) => fs.readFileSync(path.join(dir, f), 'utf8')).join('|'), before, 'a third run rewrites nothing');
+});
+
+describe('BRO-8089 ship-check pass 4', () => {
+  function setup(sid, showRow) {
+    const g = require('../../scripts/lib/review-write-guard.js');
+    g._setShowsCacheForTest(new Map([[sid, showRow]]));
+    require('../../scripts/lib/pending-intake.js')._setContextForTests({ byId: new Map([[sid, showRow]]), allShows: [showRow], heldIndex: new Map() });
+    return g.safeWriteReview;
+  }
+  const sid = 'cyrano-de-bergerac-west-end-2026';
+  const showRow = { id: sid, title: 'Cyrano de Bergerac', previewsStartDate: '2026-03-10', openingDate: '2026-03-25', closingDate: '2026-06-01' };
+  const base = { publishDate: '2025-08-01', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2025/aug/01/cyrano-review' };
+  test('a teaser keeps the longer body, its word count and its rating; the oldest firstSeenAt wins', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-p4-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const write = setup(sid, showRow);
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    write(target, { ...base, firstSeenAt: '2026-11-20T00:00:00.000Z', fullText: 'Full article. '.repeat(60), textWordCount: 120, originalScore: '4/5', scoreExtractedFrom: 'scraped-html' });
+    write(target, { ...base, firstSeenAt: '2026-11-01T00:00:00.000Z', fullText: 'Teaser.', textWordCount: 1 });
+    const after = JSON.parse(fs.readFileSync(path.join(root, '_pending', sid, 'guardian--arifa-akbar.json'), 'utf8'));
+    assert.equal(after.textWordCount, 120);
+    assert.equal(after.originalScore, '4/5');
+    assert.equal(after.firstSeenAt, '2026-11-01T00:00:00.000Z');
+  });
+  test('a filename collision reports the url-hashed sibling as quarantinedPath', (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8089-p4b-'));
+    t.after(() => { fs.rmSync(root, { recursive: true, force: true }); require('../../scripts/lib/pending-intake.js')._resetForTests(); });
+    const write = setup(sid, showRow);
+    const target = path.join(root, sid, 'guardian--arifa-akbar.json');
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    const r1 = write(target, { ...base });
+    const r2 = write(target, { ...base, url: 'https://www.theguardian.com/stage/2025/jul/02/other-review' });
+    assert.notEqual(r1.quarantinedPath, r2.quarantinedPath);
+    assert.equal(JSON.parse(fs.readFileSync(r2.quarantinedPath, 'utf8')).url, 'https://www.theguardian.com/stage/2025/jul/02/other-review');
+  });
 });

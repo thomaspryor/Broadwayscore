@@ -1490,13 +1490,107 @@ function preserveFlaggedFields(filePath, review) {
 // Quarantine writes to _pending/<show>/ bypass safeWriteReview, so they need
 // the same sparse-checkout check: in a sparse clone a tracked _pending file
 // outside the sparse set would otherwise be replaced wholesale.
-function _writeQuarantine(pendingPath, content) {
+function _writeQuarantine(pendingPath, content, opts) {
   if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(pendingPath)) {
     console.error(`[review-write-guard] NOT quarantining to ${pendingPath}: tracked but outside this sparse checkout`);
     return false;
   }
-  fs.writeFileSync(pendingPath, content);
-  return true;
+  // BRO-8089: a producer re-sends the same out-of-window review every run (show-score: 111 of the 162 "new"
+  // stubs on 2026-11-22 were the same files quarantined, and settled, the day before). Rewriting wholesale reset
+  // firstSeenAt and threw away the drain's settlement, so the queue looked like it refilled daily. Same url
+  // already quarantined: a settled stub is left alone; an open one keeps its oldest firstSeenAt.
+  let existing = null;
+  try { existing = JSON.parse(fs.readFileSync(pendingPath, 'utf8')); } catch { /* new quarantine */ }
+  let next = content;
+  // Two different articles by one critic map to one quarantine filename (the show-score run swapped
+  // theatermania--pete-hempstead.json between two urls every day, erasing the other each time). The second url
+  // goes to a url-hashed sibling, so neither is lost and each later re-send lands on its own file.
+  const incomingUrl = (() => { try { return JSON.parse(content).url; } catch { return null; } })();
+  if (existing && existing.url && incomingUrl && !_sameQuarantineUrl(existing, content)) {
+    const hash = require('crypto').createHash('md5').update(require('./pending-triage').normalizeReviewUrl(incomingUrl)).digest('hex').slice(0, 8);
+    const aside = pendingPath.replace(/\.json$/, `--u${hash}.json`);
+    if (aside !== pendingPath) return _writeQuarantine(aside, content, opts);
+  }
+  if (existing && _sameQuarantineUrl(existing, content)) {
+    const merged = _mergeIntoExistingQuarantine(existing, content);
+    if (merged === null) return pendingPath; // settled, and the re-send carries nothing new: leave the file alone
+    next = merged;
+    // The record already carries a settlement decision (a tag, or the drain's retry null): never re-judge it here.
+    if (_SETTLE_KEYS.some((k) => Object.prototype.hasOwnProperty.call(existing, k))) opts = { ...(opts || {}), settleJunk: false };
+  }
+  fs.writeFileSync(pendingPath, _settleQuarantineAtIntake(pendingPath, next, opts));
+  return pendingPath; // truthy: the path actually written (a url-hashed sibling on a filename collision)
+}
+
+const _SETTLE_KEYS = ['promoteSkippedReason', 'promoteSkippedAt', 'rssIdentityRejected'];
+const _BODY_KEYS = ['fullText', 'contentTier', 'contentTierReason', 'isFullReview', 'wordCount', 'textWordCount', 'textStatus', 'fetchMethod', 'textFetchedAt'];
+const _RATING_KEYS = ['originalScore', 'originalScoreNormalized', 'originalScoreSource', 'scoreExtractedFrom'];
+const _hasText = (r) => typeof (r && r.fullText) === 'string' && r.fullText.trim().length > 0;
+
+/**
+ * Re-quarantine of a url already in _pending. Returns null when the existing stub is settled and the incoming
+ * record carries no article text (a plain re-send: nothing to write). A textless re-send keeps the stub's body. Otherwise the incoming record, with
+ * the existing stub's oldest firstSeenAt and its settlement keys (including an explicit null) carried over, so
+ * recovered text is never discarded and an operator's un-settle survives any number of replays. Pure.
+ */
+function _mergeIntoExistingQuarantine(existing, content) {
+  let rec;
+  try { rec = JSON.parse(content); } catch { return content; }
+  const settled = require('./pending-triage').isSettledPendingStub(existing);
+  // A textless re-send of a settled stub changes nothing.
+  if (settled && !_hasText(rec)) return null;
+  // The gather-reviews _pending merge policy (pending-review-health.js): oldest firstSeenAt, drain bookkeeping,
+  // exclusion flags, and a recovered body + its scraped rating survive a textless re-discovery.
+  const merged = require('./pending-review-health').mergePendingRecord(existing, rec);
+  merged.pendingReason = rec.pendingReason || existing.pendingReason;
+  // Both carry text: the longer body wins (a replayed teaser never replaces a recovered article).
+  if (_hasText(rec) && _hasText(existing) && existing.fullText.trim().length > rec.fullText.trim().length) {
+    for (const k of _BODY_KEYS) if (existing[k] !== undefined) merged[k] = existing[k];
+    // The rating read with that body stays with it, unless the re-send brings a rating of its own.
+    if (existing.originalScore != null && rec.originalScore == null) {
+      for (const k of _RATING_KEYS) if (existing[k] !== undefined) merged[k] = existing[k];
+    }
+  } else if (!_hasText(rec) && _hasText(existing) && existing.textWordCount !== undefined) {
+    merged.textWordCount = existing.textWordCount;
+  }
+  // Oldest first-seen clock wins (mergePendingRecord prefers the existing one even when the re-send is older).
+  const a = Date.parse(existing.firstSeenAt || ''), b = Date.parse(rec.firstSeenAt || '');
+  if (Number.isFinite(a) && Number.isFinite(b)) merged.firstSeenAt = a <= b ? existing.firstSeenAt : rec.firstSeenAt;
+  // An explicit null (the drain's un-settle) is carried too; mergePendingRecord keeps only non-null values.
+  for (const k of _SETTLE_KEYS) if (Object.prototype.hasOwnProperty.call(existing, k)) merged[k] = existing[k];
+  return JSON.stringify(merged, null, 2) + '\n';
+}
+
+function _sameQuarantineUrl(existing, content) {
+  try {
+    const { normalizeReviewUrl } = require('./pending-triage');
+    const u = JSON.parse(content).url;
+    return !!(u && existing.url && normalizeReviewUrl(u) === normalizeReviewUrl(existing.url));
+  } catch { return false; }
+}
+
+
+/**
+ * BRO-8089: the date_implausible / cross_market quarantine wrote 219 of the 599 _pending arrivals in the 14 days
+ * to 2026-11-22, every one of them triage junk: the stub's own date is outside the production's window, which the drain's
+ * no-fetch triage (pending-triage.js) calls junk. Settle it at write time (promoteSkippedReason, KEPT and
+ * recoverable, so the move still counts as complete) instead of leaving it open until the weekly drain.
+ * Only `opts.settleJunk` quarantines; a recreated-excluded-url stub needs a human look and stays open.
+ * Fails open (returns content unchanged) on any error.
+ */
+function _settleQuarantineAtIntake(pendingPath, content, opts) {
+  if (!opts || !opts.settleJunk) return content;
+  try {
+    const rec = JSON.parse(content);
+    if (rec.promoteSkippedReason) return content;
+    const showId = path.basename(path.dirname(pendingPath));
+    const v = require('./pending-intake').intakeVerdict(rec, showId);
+    // Only junk settles: the drain leaves a 'duplicate' (url already scored for this show) for a fetch.
+    if (v.verdict !== 'junk') return content;
+    rec.promoteSkippedReason = `${v.reason} (BRO-8089 intake triage)`;
+    rec.promoteSkippedAt = new Date().toISOString();
+    return JSON.stringify(rec, null, 2) + '\n';
+  } catch { return content; }
 }
 
 // A quarantine that could not be saved must not be reported with a
@@ -1886,9 +1980,10 @@ function safeWriteReview(filePath, newData, options = {}) {
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
             };
-            if (!_writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
+            const _qPath = _writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n', { settleJunk: true });
+            if (!_qPath) return { ...QUARANTINE_NOT_SAVED };
             console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
-            return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
+            return { wrote: false, skipped: 'date_implausible', quarantinedPath: _qPath, daysBefore: verdict.daysBefore };
           }
         }
 
@@ -1931,16 +2026,17 @@ function safeWriteReview(filePath, newData, options = {}) {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                if (!_writeQuarantine(pendingPath, JSON.stringify({
+                const _qPath = _writeQuarantine(pendingPath, JSON.stringify({
                   ...newData,
                   pendingReason: 'cross_market_contamination',
                   _crossMarketDetail: detail,
-                }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
+                }, null, 2) + '\n', { settleJunk: true });
+                if (!_qPath) return { ...QUARANTINE_NOT_SAVED };
                 console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
                 return {
                   wrote: false,
                   skipped: 'cross_market_contamination',
-                  quarantinedPath: pendingPath,
+                  quarantinedPath: _qPath,
                   sibDiff: xv.sibDiff,
                   thisDiff: xv.thisDiff,
                 };
@@ -2365,13 +2461,14 @@ function safeWriteReview(filePath, newData, options = {}) {
         const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
         fs.mkdirSync(pendingDir, { recursive: true });
         const pendingPath = path.join(pendingDir, path.basename(filePath));
-        if (!_writeQuarantine(pendingPath, JSON.stringify({
+        const _qPath = _writeQuarantine(pendingPath, JSON.stringify({
           ...newData,
           pendingReason: 'recreated_previously_excluded_url',
           _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
-        }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
+        }, null, 2) + '\n');
+        if (!_qPath) return { ...QUARANTINE_NOT_SAVED };
         console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
-        return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
+        return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: _qPath };
       }
     }
   }

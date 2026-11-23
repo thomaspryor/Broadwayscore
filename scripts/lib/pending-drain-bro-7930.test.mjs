@@ -211,7 +211,7 @@ test('raiseDrainHealthAlerts fires the zero-promote alert and resolves the growt
   const h = await raiseDrainHealthAlerts([z(), z(), z(), z()], { alert: async o => { fired.push(o.conditionKey); }, resolve: async k => { resolved.push(k); } });
   assert.equal(h.zeroPromote, true);
   assert.deepEqual(fired, ['pending-drain-zero-promote']);
-  assert.deepEqual(resolved, ['pending-drain-growth']);
+  assert.deepEqual(resolved, ['pending-drain-growth', 'pending-open-growth']); // BRO-8089: the open-growth condition resolves when quiet
 });
 
 // Ship-check findings (BRO-7930): scoped cursors, stale needsRefetch, 4-digit numeric titles, wedge on unreadable stub.

@@ -22,7 +22,8 @@ const {
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const showScorePath = path.join(__dirname, '../data/show-score.json');
-const reviewTextsDir = path.join(__dirname, '../data/review-texts');
+// REVIEW_TEXTS_DIR override (as gather-reviews.js): lets a real run be replayed against a scratch copy (BRO-8089).
+const reviewTextsDir = require('./lib/review-texts-env-dir').reviewTextsDirFromEnv(path.join(__dirname, '../data/review-texts'));
 
 function main() {
   console.log('Converting Show Score data to review-text files...\n');

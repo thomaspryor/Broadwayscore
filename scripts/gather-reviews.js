@@ -4337,7 +4337,6 @@ function createReviewFile(showId, reviewData, options = {}) {
       return 'pendingIntakeReject'; // a string so the caller's logExclusion records it (audit trail)
     }
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
-    if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     const urlHash = (() => {
       let h = 0;
       for (const c of review.url) { h = ((h << 5) - h + c.charCodeAt(0)) | 0; }
@@ -4350,7 +4349,20 @@ function createReviewFile(showId, reviewData, options = {}) {
     // and replay bookkeeping (promoteSkippedReason → re-fetched junk every run).
     let existingPending = null;
     try { existingPending = JSON.parse(fs.readFileSync(pendingPath, 'utf8')); } catch { /* new stub */ }
-    fs.writeFileSync(pendingPath, JSON.stringify(mergePendingRecord(existingPending, review), null, 2));
+    // BRO-8089: settle on arrival. The drain's production-identity triage (stub date outside the run, bare title,
+    // sibling venue, url another production scores) used to run only at the weekly drain, so a NEW stub it already
+    // calls junk sat open in _pending for up to a week. Tag it settled now, exactly as the drain would: KEPT and
+    // recoverable, never refused (those rules flag 82 scored reviews, so refusal stays page-kind only, BRO-8023).
+    let _record = mergePendingRecord(existingPending, review);
+    if (!existingPending) {
+      const _intake = require('./lib/pending-intake').intakeVerdict(_record, showId);
+      if (_intake.verdict === 'junk') {
+        _record = { ..._record, promoteSkippedReason: `${_intake.reason} (BRO-8089 intake triage)`, promoteSkippedAt: new Date().toISOString() };
+        console.log(`    ⊘ ${normalizedOutletId}: ${_intake.reason} — settled at intake (kept in _pending, BRO-8089): ${review.url}`);
+      }
+    }
+    if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
+    fs.writeFileSync(pendingPath, JSON.stringify(_record, null, 2));
     console.log(`    → no byline — routing to pending: _pending/${showId}/${pendingFilename}`);
     return true;
   }

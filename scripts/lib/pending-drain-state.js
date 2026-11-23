@@ -58,4 +58,49 @@ function evaluateDrainHealth(history) {
   return { zeroPromote: zeroRuns >= ZERO_PROMOTE_RUNS, growth, zeroRuns, delta };
 }
 
-module.exports = { STATE_FILE, loadState, saveState, evaluateDrainHealth, ZERO_PROMOTE_RUNS, GROWTH_RUNS, GROWTH_MIN_ABS };
+/**
+ * BRO-8089: open (unsettled) _pending stubs per era, counted at each sweep. A stub the drain tagged
+ * (promoteSkippedReason / rssIdentityRejected) is settled; everything else still needs a decision.
+ * @returns {{'2025-26':number,'2015-24':number,'pre-2015':number}}
+ */
+function countOpenByEra(pendingRoot) {
+  const { isSettledPendingStub, showEra } = require('./pending-triage');
+  const out = { '2025-26': 0, '2015-24': 0, 'pre-2015': 0 };
+  let dirs = [];
+  try { dirs = fs.readdirSync(pendingRoot, { withFileTypes: true }).filter((d) => d.isDirectory()); } catch { return out; }
+  for (const d of dirs) {
+    let files = [];
+    try { files = fs.readdirSync(path.join(pendingRoot, d.name)).filter((f) => f.endsWith('.json')); } catch { continue; }
+    for (const f of files) {
+      let data;
+      try { data = JSON.parse(fs.readFileSync(path.join(pendingRoot, d.name, f), 'utf8')); } catch { data = null; }
+      if (data && isSettledPendingStub(data)) continue;
+      out[showEra(d.name)]++;
+    }
+  }
+  return out;
+}
+
+const OPEN_GROWTH_MIN_DAYS = 6;   // compare against the newest row at least this old (sweeps run weekly)
+const OPEN_GROWTH_MIN_ABS = 25;   // ignore noise: an era must grow by at least this many open stubs
+
+/**
+ * Pure. Era whose open-stub count rose week over week. `history` rows carry `openByEra` (see countOpenByEra);
+ * the latest row is compared with the newest row at least OPEN_GROWTH_MIN_DAYS older.
+ * @returns {{firing:boolean, eras:Array<{era:string,from:number,to:number,delta:number}>}}
+ */
+function evaluateOpenGrowth(history) {
+  const rows = (history || []).filter((r) => r && r.scope !== 'dry' && r.openByEra && Number.isFinite(Date.parse(r.at)));
+  if (rows.length < 2) return { firing: false, eras: [] };
+  const last = rows[rows.length - 1];
+  const base = [...rows].reverse().find((r) => Date.parse(last.at) - Date.parse(r.at) >= OPEN_GROWTH_MIN_DAYS * 864e5);
+  if (!base) return { firing: false, eras: [] };
+  const eras = [];
+  for (const era of Object.keys(last.openByEra)) {
+    const from = base.openByEra[era] || 0, to = last.openByEra[era] || 0;
+    if (to - from >= OPEN_GROWTH_MIN_ABS) eras.push({ era, from, to, delta: to - from });
+  }
+  return { firing: eras.length > 0, eras };
+}
+
+module.exports = { countOpenByEra, evaluateOpenGrowth, OPEN_GROWTH_MIN_ABS, OPEN_GROWTH_MIN_DAYS, STATE_FILE, loadState, saveState, evaluateDrainHealth, ZERO_PROMOTE_RUNS, GROWTH_RUNS, GROWTH_MIN_ABS };

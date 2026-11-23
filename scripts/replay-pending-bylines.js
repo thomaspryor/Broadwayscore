@@ -1004,9 +1004,21 @@ async function raiseDrainHealthAlerts(history, deps = {}) {
       hint: 'Check which show dirs grew: du over data/review-texts/_pending; look for a bare-title show (generic-title-guard).',
     }],
   ];
+  // BRO-8089: open (unsettled) candidates per era rising week over week = intake is outrunning the drain.
+  const og = drainState.evaluateOpenGrowth(history);
+  conds.push(['pending-open-growth', og.firing, {
+    title: `_pending open stubs rose week over week: ${og.eras.map((e) => `${e.era} ${e.from}->${e.to}`).join(', ')}`,
+    description: `Unsettled _pending stubs grew by ${og.eras.map((e) => `${e.delta} (${e.era})`).join(', ')} since last week's sweep. Producers are writing stubs the drain has not settled; the intake triage (scripts/lib/pending-intake.js) should stop junk at the source.`,
+    hint: 'Run: node scripts/replay-pending-bylines.js --all-pending --triage-only --dry-run, group by source; add the missing triage rule or fix the producer.',
+  }]);
   for (const [conditionKey, firing, body] of conds) {
     try {
-      if (firing) await alert({ conditionKey, ...body, disposition: 'digest', severity: 'warning', cooldownHours: 24 });
+      // BRO-8089: open-stub growth is machine-fixable (a missing triage rule or a producer emitting junk), so it
+      // files a dispatchable Fix card (ACTION), not a digest line; the others stay digest.
+      const disp = conditionKey === 'pending-open-growth'
+        ? { disposition: 'auto', cardAction: 'Fix', severity: 'error', cooldownHours: 168 }
+        : { disposition: 'digest', severity: 'warning', cooldownHours: 24 };
+      if (firing) await alert({ conditionKey, ...body, ...disp });
       else await resolve(conditionKey, { reason: 'drain healthy on the latest sweep' });
     } catch (e) { console.log(`  drain alert ${conditionKey} failed: ${e.message}`); }
   }
@@ -1128,7 +1140,7 @@ if (require.main === module) {
       if (!dryRun) {
         state.cursors = nextCursors;
         state.turn = (state.turn || 0) + 1;
-        state.history.push({ at: new Date().toISOString(), scope: allPending ? 'all-pending' : 'all-open', promoted: totalPromoted, dropped: totalDropped, rejected: totalRejected, tagged: totalTagged, inspected: totalInspected, pending });
+        state.history.push({ at: new Date().toISOString(), scope: allPending ? 'all-pending' : 'all-open', promoted: totalPromoted, dropped: totalDropped, rejected: totalRejected, tagged: totalTagged, inspected: totalInspected, pending, openByEra: drainState.countOpenByEra(PENDING_ROOT) });
         drainState.saveState(REVIEW_TEXTS_ROOT, state);
         await raiseDrainHealthAlerts(state.history);
         // BRO-7930 limbo gate: every unflagged, unscored file older than the grace window gets a route.
