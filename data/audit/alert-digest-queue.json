@@ -898,7 +898,7 @@
   {
     "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
     "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
-    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/job/linear-BRO-8110-mwtgr1m7. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218694895",
+    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8156-approval-churn. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -917,15 +917,15 @@
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218694895"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731"
       }
     ],
-    "queuedAt": "2026-11-23T17:11:27.297Z"
+    "queuedAt": "2026-11-23T17:14:14.569Z"
   },
   {
     "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c",
     "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
-    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/job/linear-BRO-8110-mwtgr1m7. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218694895",
+    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8156-approval-churn. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -944,10 +944,10 @@
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218694895"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45218344731"
       }
     ],
-    "queuedAt": "2026-11-23T17:11:27.324Z"
+    "queuedAt": "2026-11-23T17:14:14.600Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-8167-mwtgpag4",
