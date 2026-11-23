@@ -157,7 +157,7 @@ function computeCriticalGoldForMarket(listType, membershipFilter, season, uncapp
     // Same display gate as the site badge (scripts/lib/min-reviews.js, BRO-4312):
     // deduped scored count, +2 when no T1/T2 review, curated-historical carve-out.
     // A gold list ranks by score, so it only includes shows that display one.
-    if (!hasEnoughReviews(scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show.id))) continue;
+    if (!hasEnoughReviews(scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show))) continue;
     if (scoreResult.s < cfg.minScore) continue;
 
     const rounded = Math.round(scoreResult.s * 10) / 10;

@@ -131,7 +131,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // exist; scored shows must clear the per-market minimum-reviews threshold.
   // Without this, a previews show with 2 high-T1 reviews would show "Rave
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
-  const isCuratedHistorical = scoreGateArg(show.id);
+  const isCuratedHistorical = scoreGateArg(show);
   const isTBD = computeShowTBD(show);
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
@@ -521,7 +521,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const reviewCount = show.criticScore?.reviewCount || 0;
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
-  const isCuratedHistoricalShow = scoreGateArg(show.id);
+  const isCuratedHistoricalShow = scoreGateArg(show);
   const showTBD = computeShowTBD(show);
   // Computed here from the full review list (showForHero strips publishDate)
   // and shared by both heroes, so they always agree on whether it shows.

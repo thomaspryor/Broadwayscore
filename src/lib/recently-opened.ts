@@ -7,6 +7,7 @@
 // Keeping the definition here (rather than duplicating the inline logic) means
 // a threshold change updates both surfaces at once — see the includability-
 // predicate rule in CLAUDE.md.
+import { scoreGateArg } from '@/config/scoring';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // How long after opening a show stays in the "recently opened" window. Off-
@@ -20,7 +21,10 @@ export const RECENTLY_OPENED_AWAITING_DAYS = 30;
 interface AwaitingShowShape {
   status?: string;
   category?: string;
+  id?: string;
+  type?: string;
   openingDate?: string;
+  closingDate?: string | null;
   criticScore?: { reviewCount?: number; tier1Count?: number; tier2Count?: number } | null;
 }
 
@@ -55,7 +59,7 @@ export function isRecentlyOpenedAwaitingReviews(
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   // Already has (or has cleared the bar for) a score → not awaiting.
-  if (hasEnoughReviews(reviewCount, show.category ?? 'off-broadway', t1t2)) return false;
+  if (hasEnoughReviews(reviewCount, show.category ?? 'off-broadway', t1t2, scoreGateArg(show))) return false;
   // Fail closed on a missing/unparseable opening date: without one we can't
   // place the show in the recency window, and a dateless "open" record is
   // usually an incomplete stub we shouldn't surface with an empty "Opened —".

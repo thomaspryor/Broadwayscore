@@ -48,7 +48,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                   reviewCount={show.criticScore?.reviewCount}
                   category={show.category}
                   tier1And2Count={show.criticScore ? (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0) : undefined}
-                  isCuratedHistorical={scoreGateArg(show.id)}
+                  isCuratedHistorical={scoreGateArg(show)}
                 />
               </div>
             </div>

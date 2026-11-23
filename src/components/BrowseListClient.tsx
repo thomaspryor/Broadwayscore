@@ -187,7 +187,7 @@ export default function BrowseListClient({
     const getEffectiveScore = (s: BrowseShow): number | null => {
       const reviewCount = s.criticScore?.reviewCount ?? 0;
       const t1t2 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
-      if (!hasEnoughReviews(reviewCount, s.category, t1t2, scoreGateArg(s.id))) return null;
+      if (!hasEnoughReviews(reviewCount, s.category, t1t2, scoreGateArg(s))) return null;
       return s.criticScore?.score ?? null;
     };
 

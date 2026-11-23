@@ -13,6 +13,7 @@
  */
 const path = require('path');
 const { hasEnoughReviews } = require('./lib/min-reviews');
+const { scoreGateArg } = require('./lib/should-hide-reviews');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -37,7 +38,7 @@ function coverage(shows, reviews, outletRegistry) {
     c.shows += 1;
     c.reviews += revs.length;
     const res = revs.length ? computeCriticScore(revs, outletRegistry, s.category, s.type) : null;
-    if (res && hasEnoughReviews(res.rc, s.category, res.t1 + res.t2)) c.scoreable += 1;
+    if (res && hasEnoughReviews(res.rc, s.category, res.t1 + res.t2, scoreGateArg(s))) c.scoreable += 1;
     else belowBar.push({ id: s.id, city: s.city || null, reviews: revs.length });
   }
   const total = Object.values(cities).reduce((a, c) => ({ shows: a.shows + c.shows, reviews: a.reviews + c.reviews, scoreable: a.scoreable + c.scoreable }), { shows: 0, reviews: 0, scoreable: 0 });

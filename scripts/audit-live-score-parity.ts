@@ -14,7 +14,7 @@ for (const s of shows) {
   const reviewCount = s.criticScore?.reviewCount ?? 0;
   const t12 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
   const legacy = applyCoverageFloor(
-    !hasEnoughReviews(reviewCount, s.category, t12, scoreGateArg(s.id)) || s.status === 'previews' || s.status === 'upcoming',
+    !hasEnoughReviews(reviewCount, s.category, t12, scoreGateArg(s)) || s.status === 'previews' || s.status === 'upcoming',
     { scorePublicSince: s.scorePublicSince, coverageState: s.cov?.state, coverageAcked: s.coverageAcked },
   );
   const v = buildScoreRegionView(s, false);

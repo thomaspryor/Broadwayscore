@@ -873,7 +873,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       // client's getEffectiveScore.
       const cs = show.criticScore;
       const t1t2 = (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0);
-      if (!hasEnoughReviews(cs?.reviewCount ?? 0, show.category, t1t2, scoreGateArg(show.id))) {
+      if (!hasEnoughReviews(cs?.reviewCount ?? 0, show.category, t1t2, scoreGateArg(show))) {
         return 'Not Enough Reviews Yet';
       }
       const score = cs?.score ?? 0;

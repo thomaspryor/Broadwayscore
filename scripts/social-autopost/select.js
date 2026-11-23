@@ -10,6 +10,7 @@
 
 const { evaluateScoreConfidence } = require('../lib/score-confidence-gate');
 const { hasEnoughReviews } = require('../lib/min-reviews');
+const { scoreGateArg } = require('../lib/should-hide-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
@@ -158,7 +159,7 @@ function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now = D
     if (g.ok) gate = { ...g, coverageComplete: true };
   }
   if (!gate.ok) return { ok: false, why: 'not-confident', gate };
-  if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { ok: false, why: 'too-few-reviews', gate };
+  if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2, scoreGateArg(show))) return { ok: false, why: 'too-few-reviews', gate };
   return { ok: true, gate };
 }
 

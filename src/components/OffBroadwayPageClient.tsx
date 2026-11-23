@@ -16,6 +16,7 @@ import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
 import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
@@ -87,7 +88,7 @@ const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 function obHasEnoughReviews(show: OffBroadwayShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  return hasEnoughReviews(rc, 'off-broadway', t1t2);
+  return hasEnoughReviews(rc, 'off-broadway', t1t2, scoreGateArg(show));
 }
 
 // Map URL params to internal values

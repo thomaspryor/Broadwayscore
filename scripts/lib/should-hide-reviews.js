@@ -13,6 +13,7 @@
 'use strict';
 
 const path = require('path');
+const { standingMinReviews } = require('./score-gate-rule');
 
 const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
 
@@ -47,28 +48,35 @@ function isCuratedHistoricalShow(showId) {
   return !!showId && _loadCurated().has(showId);
 }
 
-let _gateOverrides = null;
-function _loadGateOverrides() {
-  if (_gateOverrides) return _gateOverrides;
+let _gateFile = null;
+function _loadGateFile() {
+  if (_gateFile) return _gateFile;
   try {
     const data = require(path.join(__dirname, '..', '..', 'data', 'score-gate-overrides.json'));
-    _gateOverrides = (data && data.shows) || {};
+    _gateFile = { shows: (data && data.shows) || {}, kept: (data && data.keptMarketMinimum) || {} };
   } catch {
-    _gateOverrides = {};
+    _gateFile = { shows: {}, kept: {} };
   }
-  return _gateOverrides;
+  return _gateFile;
 }
 
 /**
- * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750):
- * an owner-approved per-show minimum from data/score-gate-overrides.json when one
- * exists, else whether the show is curated historical. Mirrors scoreGateArg() in
- * src/config/scoring.ts.
- * @param {string} showId @returns {boolean|number}
+ * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750, BRO-8163). Pass the show object
+ * ({ id, type, category, openingDate, closingDate }); a bare id works but cannot apply the standing rule.
+ * Order: an owner-approved per-show minimum in data/score-gate-overrides.json, else a recorded keptMarketMinimum
+ * (skips the rule), else 3 for a special or short Broadway / West End run (score-gate-rule.js), else whether the show
+ * is curated historical. Mirrors scoreGateArg() in src/config/scoring.ts.
+ * @param {string|{id?:string,type?:string,category?:string,openingDate?:string,closingDate?:string}} showOrId
+ * @returns {boolean|number}
  */
-function scoreGateArg(showId) {
-  const o = showId ? _loadGateOverrides()[showId] : null;
+function scoreGateArg(showOrId) {
+  const show = showOrId && typeof showOrId === 'object' ? showOrId : null;
+  const showId = show ? show.id : showOrId;
+  const f = _loadGateFile();
+  const o = showId ? f.shows[showId] : null;
   if (o && Number.isFinite(o.minReviews) && o.minReviews >= 1) return o.minReviews;
+  const rule = show ? standingMinReviews(show, f.kept) : null;
+  if (rule) return rule;
   return isCuratedHistoricalShow(showId);
 }
 

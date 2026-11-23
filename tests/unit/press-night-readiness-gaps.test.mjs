@@ -33,41 +33,19 @@ test('item 4 (BRO-8146): regional and touring are sweep-only and not named; an u
   assert.equal(u.find((x) => x.id === 'odd').inDays, 2);
 });
 
-test('item 8: specials, and Broadway/West End <=8-week runs, inside 7 days need a decision; a lowered or kept decision settles it; a short Off-Broadway run is not asked', () => {
-  const shows = [
-    show('special', 'off-broadway', '2026-11-19', { type: 'special' }),
-    show('short', 'broadway', '2026-11-20', { closingDate: '2026-12-20' }),
-    show('eight-weeks', 'broadway', '2026-11-20', { closingDate: '2027-01-15' }),
-    show('long', 'broadway', '2026-11-20', { closingDate: '2027-06-01' }),
-    show('open-ended', 'broadway', '2026-11-20'),
-    show('later', 'broadway', '2026-12-01', { type: 'special' }),
-    show('decided-number', 'broadway', '2026-11-20', { type: 'special' }),
-    show('decided-keep', 'broadway', '2026-11-20', { type: 'special' }),
-    show('malformed', 'broadway', '2026-11-20', { type: 'special' }),
-    show('ob-short', 'off-broadway', '2026-11-20', { closingDate: '2026-12-20' }),
-    show('ob-special', 'off-broadway', '2026-11-20', { type: 'special' }),
-  ];
-  const overrides = { shows: { 'decided-number': { minReviews: 3 }, malformed: { minReviews: '3' } }, keptMarketMinimum: { 'decided-keep': { approvedBy: 'owner' } } };
-  const u = g.scoreGateUndecided(shows, overrides, { nowMs: NOW });
-  assert.deepEqual(u.map((x) => [x.id, x.reason]), [['special', 'special'], ['eight-weeks', 'short run (56 days)'], ['malformed', 'special'], ['ob-special', 'special'], ['short', 'short run (30 days)']]);
-});
-
-test('rows: a warn row per gap with the shows named, a same-name pass row when clear', () => {
-  const rows = g.pressNightReadinessResults({ shows: [show('odd', 'mystery-market', '2026-11-18'), show('s', 'broadway', '2026-11-18', { type: 'special' })], overrides: { shows: {} }, nowMs: NOW, embargoAt });
-  assert.deepEqual(rows.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'warn'], ['Press night: score gate undecided', 'warn']]);
+test('rows: a warn row with the shows named, a same-name pass row when clear (item 8 retired, BRO-8163)', () => {
+  const rows = g.pressNightReadinessResults({ shows: [show('odd', 'mystery-market', '2026-11-18'), show('s', 'broadway', '2026-11-18', { type: 'special' })], nowMs: NOW, embargoAt });
+  assert.deepEqual(rows.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'warn']]);
   assert.match(rows[0].message, /odd \(mystery-market, tonight\)/);
-  // 02:15Z on the 19th is still the 18th in New York: a show opening the 19th opens tomorrow, not tonight.
-  const late = g.scoreGateUndecided([show('x', 'broadway', '2026-11-19', { type: 'special' })], {}, { nowMs: Date.parse('2026-11-19T02:15:00Z') });
-  assert.equal(late[0].inDays, 1);
-  assert.match(rows[1].message, /s \(special, opens tonight\)/);
-  const clear = g.pressNightReadinessResults({ shows: [], overrides: { shows: {} }, nowMs: NOW, embargoAt });
-  assert.deepEqual(clear.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'pass'], ['Press night: score gate undecided', 'pass']]);
+  const clear = g.pressNightReadinessResults({ shows: [], nowMs: NOW, embargoAt });
+  assert.deepEqual(clear.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'pass']]);
+  assert.equal(g.scoreGateUndecided, undefined, 'the score-gate row is retired; the standing rule decides every special and short run');
 });
 
-test('health-check wires both rows, with playbook entries (no silent low-urgency default); no live data read (BRO-8146 live-data-lane)', () => {
+test('health-check wires the row, with a playbook entry (no silent low-urgency default); no live data read (BRO-8146 live-data-lane)', () => {
   assert.equal(typeof health.checkPressNightReadiness, 'function');
-  const rows = g.pressNightReadinessResults({ shows: [], overrides: { shows: {} }, nowMs: NOW, embargoAt });
-  assert.deepEqual(rows.map((r) => r.name), ['Press night: openings not watched', 'Press night: score gate undecided']);
+  const rows = g.pressNightReadinessResults({ shows: [], nowMs: NOW, embargoAt });
+  assert.deepEqual(rows.map((r) => r.name), ['Press night: openings not watched']);
   for (const r of rows) {
     const e = health.getPlaybookEntry(r.name);
     assert.ok(e && e.urgency === 'this-week' && e.ownerText && e.workerInstruction, r.name);

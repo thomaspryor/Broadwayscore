@@ -14,6 +14,7 @@ import { createShowSerializer } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import WestEndPageClient from '@/components/WestEndPageClient';
 import type { WestEndShow } from '@/components/WestEndPageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
@@ -190,6 +191,7 @@ export default function WestEndPage() {
     s.criticScore?.reviewCount ?? 0,
     s.category || 'west-end',
     (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0),
+    scoreGateArg(s),
   );
   const topMusicals = serializedShows
     .filter(s => s.type === 'musical' && s.status === 'open' && s.criticScore?.score && weHasEnoughReviews(s))

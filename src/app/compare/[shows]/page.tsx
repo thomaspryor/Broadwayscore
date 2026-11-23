@@ -377,7 +377,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                     </h2>
                   </Link>
                   <div className="flex flex-col items-center mb-3">
-                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={scoreGateArg(show.id)} />
+                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={scoreGateArg(show)} />
                     {(() => {
                       const tier = score != null ? getScoreTier(Math.round(score), show.category) : null;
                       return tier ? (

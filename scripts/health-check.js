@@ -414,9 +414,6 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Press night: openings not watched$/, urgency: 'this-week',
     ownerText: "Some shows open soon with a missing or unrecognised market, so our opening-night watch cannot run for them and their reviews arrive through the daily sweeps instead of within minutes. Nothing is needed from you.",
     workerInstruction: "(Regional and touring openings are sweep-only by design and never listed, BRO-8146.) The named shows have a missing or unknown category (every lane market gets an hour automatically); fix the category or add the market to EMBARGO_HOUR_LOCAL and MARKET_TZ. Old text follows: the named shows have no embargo hour (scripts/lib/press-night-record.js EMBARGO_HOUR_LOCAL covers only Broadway, Off-Broadway, West End, Off-West End) and no reviewEmbargoAt. If a show is important enough to watch live, set its reviewEmbargoAt from a cited press release; otherwise confirm the daily sweeps (gather-reviews) pick it up the day after." },
-  { match: /^Press night: score gate undecided$/, urgency: 'this-week',
-    ownerText: "A special or short-run Broadway or West End show opens within a week and may get too few reviews to show a Critic Score. A decision on whether to show a score with fewer reviews is needed before opening night.",
-    workerInstruction: "For the shows named, put ONE plain-English DECISION NEEDED question to the owner covering the list (docs/owner-email-guidelines.md; run node scripts/lib/owner-decision-recall.js \"score gate\" first): lower the minimum (Blue Man Group got 3, BRO-7750) or keep the market minimum. Record the answer in data/score-gate-overrides.json (shows.<id> with minReviews N to lower it, or keptMarketMinimum.<id> to keep the market minimum) with approvedBy and reason." },
 
   { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
     ownerText: "The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Nothing is needed from you.",
@@ -5227,17 +5224,16 @@ function checkCardVerifiabilityBacklog() {
     ...ownerJudgmentLimboResults(cvLinear),
   ];
 }
-/** BRO-7779 items 4 and 8: openings with no press-night watch, and special/short runs with no score-gate decision. */
+/** BRO-7779 item 4: openings with no press-night watch (item 8, the score-gate row, retired by BRO-8163). */
 function checkPressNightReadiness({ nowMs = Date.now() } = {}) {
   try {
     const { pressNightReadinessResults } = require('./lib/press-night-readiness-gaps');
     const { embargoInfo } = require('./lib/press-night-record');
     const raw = readJSON(path.join(DATA_DIR, 'shows.json'));
     const shows = Array.isArray(raw) ? raw : (raw.shows || []);
-    const overrides = readJSON(path.join(DATA_DIR, 'score-gate-overrides.json'));
-    return pressNightReadinessResults({ shows, overrides, nowMs, embargoAt: (s) => embargoInfo(s).at });
+    return pressNightReadinessResults({ shows, nowMs, embargoAt: (s) => embargoInfo(s).at });
   } catch (err) {
-    return ['Press night: openings not watched', 'Press night: score gate undecided'].map((name) => ({ name, status: 'error', message: `Check crashed: ${err.message}` }));
+    return ['Press night: openings not watched'].map((name) => ({ name, status: 'error', message: `Check crashed: ${err.message}` }));
   }
 }
 

@@ -123,7 +123,7 @@ const ShowListCard = memo(function ShowListCard({
     }
   } else {
     score = criticScore;
-    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show.id)) ? getScoreTier(score, category) : null;
+    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? getScoreTier(score, category) : null;
     audienceGrade = show.audienceGrade;
   }
 
@@ -402,7 +402,7 @@ const ShowListCard = memo(function ShowListCard({
       ) : (
         // Critics mode
         <>
-          {show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show.id)) ? (
+          {show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? (
             <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-fg-muted">
               Not Yet Rated
             </span>
@@ -423,7 +423,7 @@ const ShowListCard = memo(function ShowListCard({
             showCrown
             category={category}
             tier1And2Count={t1t2}
-            isCuratedHistorical={scoreGateArg(show.id)}
+            isCuratedHistorical={scoreGateArg(show)}
           />
           {showReviewCount && reviewCount > 0 && (
             <span className="text-[10px] text-gray-400 whitespace-nowrap" data-testid="card-review-count">
