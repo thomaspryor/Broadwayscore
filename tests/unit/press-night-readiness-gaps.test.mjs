@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data) for the real-data cases. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7779 items 4 and 8: an opening with no press-night watch, and a special or short run with no score-gate
 // decision, each surface as a named daily health row instead of staying silent. Real functions (CLAUDE.md rule 15).
 import test from 'node:test';

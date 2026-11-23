@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data) to prove the TS and JS gate agree on every show. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7750 / BRO-8163: the site (src/config/scoring.ts) and the scripts
 // (scripts/lib/should-hide-reviews.js + score-gate-rule.js) each carry a scoreGateArg. If they drift,
 // the show page and the app/feeds disagree on whether a show has a score.
