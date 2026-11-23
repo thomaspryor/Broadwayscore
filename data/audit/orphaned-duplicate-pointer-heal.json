@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-23T04:39:40.485Z",
+  "generated": "2026-11-23T04:58:35.409Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 46,
+  "count": 47,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -78,6 +78,13 @@
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "fantasma-off-broadway-2026",
+      "loserFile": "front-row-center--unknown.json",
+      "targetFile": "front-row-center--tom-storch.json",
+      "reason": "orphaned-duplicate-heal: front-row-center--tom-storch.json was flagged invalid after front-row-center--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
