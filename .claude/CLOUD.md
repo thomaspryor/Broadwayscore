@@ -106,6 +106,10 @@ Several repos attached (or a bad `create_session` source_url) start in `/home/us
 
 The environment has production keys (read+write) for PostHog, Sentry and Supabase, plus scraper, Resend, Bing, Impact and Formspree keys; no GA4 or Anthropic key; VERCEL_TOKEN, logins and cookies are withheld. Run a committed script with production read keys: `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` (land the script first). Data changes use `execute-approved-fix.yml` or their own workflows. Variable names, the no-`gh` route and paywalled fetches: `docs/cloud-production-keys-runbook.md`.
 
+## Newsletter copy edits (BRO-8109)
+
+The owner asks to change a newsletter subject, intro or other copy → run the `newsletter-edit` skill first. This week's draft gets fixed in about 3 minutes by re-dispatching `newsletter-draft.yml` with `subjectOverride`/`ledeOverride`. That PATCHes the Resend draft and never sends. Never call Resend directly. Do the code fix for future weeks after the draft is fixed, never before (BRO-8064 lost four hours doing it the other way round).
+
 ## Opening-night lane switch (BRO-6622)
 
 Lane variables 403 in cloud: dispatch `opening-night-lane-switch.yml` (`set`/`clear` `LANE_ONLY_MARKETS`|`LANE_STANDDOWN`, or `rollback`), `mode` `dry-run` first, then `live`. Steps: `docs/opening-night-lane-switch-runbook.md`.
