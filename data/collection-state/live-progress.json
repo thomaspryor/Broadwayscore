@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-23T02:02:49.599Z",
-  "processed": 57,
-  "failed": 124,
-  "successRate": "31.5%",
+  "updatedAt": "2026-11-23T02:16:19.562Z",
+  "processed": 77,
+  "failed": 139,
+  "successRate": "35.6%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 4,
-    "brightdata": 4,
+    "scrapingdog": 3,
+    "scrapingbee": 5,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 22
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -60,6 +60,17 @@
       "event": "bb-session",
       "session": "d90c94ce",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/bad-cinderella-to-close-on-broa"
+    },
+    {
+      "t": "2026-11-23T02:07:38.789Z",
+      "event": "bb-session",
+      "session": "c83b31a7",
+      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/03/29/all-about-me-t"
+    },
+    {
+      "t": "2026-11-23T02:07:39.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
