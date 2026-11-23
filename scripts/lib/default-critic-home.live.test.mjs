@@ -1,5 +1,8 @@
 // LIVE-DATA-LANE: reads data/outlet-registry.json + data/reviews.json. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7391 CLASS-GUARD for "cross-outlet attribution drift" (cards BRO-6860, BRO-6976, BRO-7038).
+// Since BRO-8038 the audit itself ignores homeless defaults (buildEvidencedDefaultHomes,
+// unit-guarded in cross-outlet-triage.test.mjs), so this lane is registry hygiene:
+// a homeless default still mis-fills blank bylines via critic-fill-rules.js.
 // A registry defaultCritic the outlet has never published under is what makes
 // audit-cross-outlet-attributions.js mint false suspects (BRO-7038: Mark Kennedy at
 // news-tribune). Adding a NEW one fails this test in check-corpus-drift.yml (daily
