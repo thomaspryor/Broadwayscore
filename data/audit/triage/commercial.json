@@ -1,20 +1,20 @@
 {
   "system": "commercial",
   "status": "warn",
-  "lastChecked": "2026-11-23T10:54:31.407Z",
+  "lastChecked": "2026-11-23T20:39:11.055Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial: rows held for a person",
-      "status": "warn",
-      "message": "3 row(s) in data/commercial-pending-review.json held for a person past 7 days: the-rocky-horror-show (11 days): the record carries a human-reviewed designation: a person must decide; billy-crystal-860-2026 (11 days): record validation: commercial.json: \"billy-crystal-860\" has designation \"Easy Winner\" but recouped=null (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md); springsteen-on-broadway-2021 (8 days): backfill research row: needs a person to release it."
+      "status": "pass",
+      "message": "13 row(s) held for a person, none past 7 days."
     },
     {
       "name": "Commercial: season share cards",
-      "status": "pass",
-      "message": "All 27 commercial seasons have custom share cards"
+      "status": "warn",
+      "message": "Missing custom share cards for 1/28 commercial seasons: season-2020-2021.png"
     }
   ]
 }

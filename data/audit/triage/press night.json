@@ -1,20 +1,15 @@
 {
   "system": "press night",
-  "status": "warn",
-  "lastChecked": "2026-11-23T10:54:31.408Z",
+  "status": "pass",
+  "lastChecked": "2026-11-23T20:39:11.059Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Press night: openings not watched",
-      "status": "warn",
-      "message": "5 opening(s) in the next 14 days have no press-night watch (no embargo hour for their market, so no lane or probe runs; reviews arrive only through the daily sweeps): Adia & Clora Snatch Joy (regional, tomorrow); Cygnet's A Magical Holiday (regional, tomorrow); Frozen (regional, in 4 days); 13 Going on 30 (regional, in 8 days); A CHRISTMAS CAROL A Musical Ghost Story (regional, in 10 days)"
-    },
-    {
-      "name": "Press night: score gate undecided",
-      "status": "warn",
-      "message": "4 special or short-run show(s) open within 7 days with no score-gate decision, so few reviews may keep the Critic Score hidden: The Afronauts (short run (26 days), opens tonight); A Christmas Carol (short run (46 days), opens tomorrow); The Dead, 1904 (special, opens tomorrow); Adriana Mater - English National Opera (short run (14 days), opens in 5 days)"
+      "status": "pass",
+      "message": "Every opening in the next 14 days has a press-night watch"
     }
   ]
 }

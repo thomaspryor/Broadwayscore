@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "warn",
-  "lastChecked": "2026-11-23T10:54:31.406Z",
+  "lastChecked": "2026-11-23T20:39:11.054Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,47 +9,47 @@
     {
       "name": "Data quality: provider spend ledger",
       "status": "pass",
-      "message": "Newest entry (day=2026-11-21) 1d past its end-of-day"
+      "message": "Newest entry (day=2026-11-22) 21h past its end-of-day"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
       "status": "warn",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (1d ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (9h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "status": "warn",
-      "message": "2 NEW unhandled CV.wrongProduction review(s) since last run (156 total across 126 show(s), 1d ago)"
+      "status": "pass",
+      "message": "No new unhandled violations since last run (155 known baseline across 4946 show(s), 9h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
       "status": "warn",
-      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 839 total across 603 show(s), 24h ago)"
+      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 862 total across 612 show(s), 9h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No open violations with contamination evidence (229 known baseline across 4936 show(s); 1 new hit(s) with no contamination evidence added to the backlog, 24h ago)"
+      "message": "No open violations with contamination evidence (229 known baseline across 4946 show(s), 9h ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (38 known baseline across 4936 show(s), 24h ago)"
+      "message": "No new violations since last run (38 known baseline across 4946 show(s), 9h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "status": "pass",
-      "message": "No open violations with a same-title earlier production (4 known baseline across 4936 show(s); 1 new hit(s) with no a same-title earlier production added to the backlog, 24h ago)"
+      "status": "warn",
+      "message": "1 unverified revival flag(s) with a same-title earlier production open (1 new since last run; 5 total across 5 show(s), 9h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
       "status": "warn",
-      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 6 more were covered by a weekly round-up, 24h ago)"
+      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 6 more were covered by a weekly round-up, 9h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "status": "warn",
-      "message": "5 show(s) stuck announced/upcoming/previews 2+ days after apparently opening: is-anything-ok-off-broadway-2026, miracle-on-south-division-street-off-broadway-2026, stories-from-the-brink-off-broadway-2026, heavenly-baba-off-broadway-2026, pea-dinneen-raising-her-voice-off-broadway-2026 (1 newer still settling, 11 silenced by contamination, 24h ago)"
+      "status": "pass",
+      "message": "No stale 'announced' shows (11 silenced by contamination, 9h ago)"
     }
   ]
 }

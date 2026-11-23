@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "pass",
-  "lastChecked": "2026-11-23T10:54:31.406Z",
+  "lastChecked": "2026-11-23T20:39:11.053Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "84600 files, 52447 reviews (surplus: 32153)"
+      "message": "84754 files, 52764 reviews (surplus: 31990)"
     },
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "36 open shows all have reviews and grosses"
+      "message": "35 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -24,12 +24,12 @@
     {
       "name": "Sync: cast coverage",
       "status": "pass",
-      "message": "38 active Broadway shows all have cast data"
+      "message": "37 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "6136 shows, 350 open, 52668 reviews (all at or above baseline)"
+      "message": "6138 shows, 322 open, 52764 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
