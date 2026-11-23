@@ -192,7 +192,7 @@ function pickText(n) {
  * Compact per-show shape for the mobile app (BRO-8075). Same publish rule and
  * order as the web card (publishableSeatNotes), no evidence quotes:
  *   { t: 'watch-out'|'value'|'note', lo: 'Center Orchestra, rows A to C',
- *     lv, sd?, rw?, c: claim, sh?: short, l: [{ n: label, u: url }] }
+ *     lv, sd?, rw?, c: claim, sh?: short, va?: verifiedAt, l: [{ n: label, u: url }] }
  * Returns [] when the theater does not clear the bar, so the app falls back to
  * the old seating sections. `today` is passed through for tests.
  */
@@ -202,6 +202,7 @@ function mobileSeatNotes(notes, opts) {
     if (n.side) o.sd = n.side;
     if (n.rows) o.rw = String(n.rows);
     if (n.short) o.sh = n.short;
+    if (n.verifiedAt) o.va = n.verifiedAt; // lets the app re-check value-note expiry and show "checked Nov 2026"
     o.l = noteSourceLinks(n).map((x) => ({ n: x.label, u: x.url }));
     return o;
   });

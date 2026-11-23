@@ -800,7 +800,9 @@ for (const show of visibleShows) {
   }
 
   // Seating sections + venue scores — look up by venue name
-  const theater = show.venue ? theaterMeta[show.venue] : null;
+  // Web parity (show page): theater scorecards are Broadway-only; West End / Off-Broadway / regional / tour houses with a Broadway-named venue must not borrow NYC seating.
+  const BROADWAY_THEATER_CATEGORY = !['west-end', 'off-west-end', 'off-broadway', 'regional', 'tour'].includes(show.category);
+  const theater = show.venue && BROADWAY_THEATER_CATEGORY ? theaterMeta[show.venue] : null;
   // BRO-8018: seating advice describes the current production's house, so closed shows get none (web parity).
   if (theater) {
     const sections = theater.structuredTips?.seating?.sections;

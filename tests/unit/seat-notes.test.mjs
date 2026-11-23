@@ -374,3 +374,17 @@ describe('mobileSeatNotes (BRO-8075)', () => {
     assert.deepStrictEqual(mobileSeatNotes([watch, stale], { today }), []);
   });
 });
+
+describe('mobileSeatNotes verifiedAt + market gate (BRO-8075)', () => {
+  const { mobileSeatNotes } = require('../../scripts/lib/seat-notes-publish.js');
+  test('carries verifiedAt so the app can re-check expiry', () => {
+    const out = mobileSeatNotes([watch, value], { today: new Date('2026-11-23') });
+    assert.deepStrictEqual(out.map((n) => n.va), ['2026-11-22', '2026-11-22']);
+  });
+  test('generator gates the theater lookup to Broadway categories (no NYC seats on West End shows)', async () => {
+    const { readFileSync } = await import('node:fs');
+    const src = readFileSync(new URL('../../scripts/generate-mobile-show-details.js', import.meta.url), 'utf8');
+    assert.match(src, /\['west-end', 'off-west-end', 'off-broadway', 'regional', 'tour'\]\.includes\(show\.category\)/);
+    assert.match(src, /show\.venue && BROADWAY_THEATER_CATEGORY \? theaterMeta\[show\.venue\]/);
+  });
+});
