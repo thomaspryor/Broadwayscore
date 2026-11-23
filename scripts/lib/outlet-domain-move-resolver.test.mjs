@@ -115,3 +115,11 @@ test('CLI --apply writes decided hosts so the detector row clears, and leaves th
   assert.deepEqual(findProbableDomainMoves(reg.outlets, census).map((m) => m.host), ['rollingstone.co.uk']);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+test('the hourly census job runs the resolver before staging, and stages the registry (wiring guard)', () => {
+  const yml = fs.readFileSync(fileURLToPath(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url)), 'utf8');
+  const run = yml.indexOf('node scripts/resolve-outlet-domain-moves.js --apply');
+  const loop = yml.indexOf('for f in data/outlet-registry.json ');
+  assert.ok(run > 0, 'audit-aggregator-gap.yml must run resolve-outlet-domain-moves.js --apply');
+  assert.ok(loop > run, 'the commit loop must stage data/outlet-registry.json after the resolver ran');
+});

@@ -731,6 +731,7 @@ on:
       - 'scripts/discover-regional-serp-reviews.js'
       - 'scripts/uk-regional-coverage.js'
       - 'scripts/drain-unknown-outlets.js' # BRO-7934: ingest-caller-guard.test.mjs
+      - 'scripts/resolve-outlet-domain-moves.js' # BRO-7822: outlet-domain-move-resolver.test.mjs
       - 'scripts/uk-regional-census-match.js' # BRO-7934: ingest-caller-guard.test.mjs
       - 'scripts/uk-regional-census-productions.js'
       - 'scripts/eval-v52.js'

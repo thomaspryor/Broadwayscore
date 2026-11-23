@@ -377,7 +377,7 @@ const AUTO_FIX_PLAYBOOK = [
     workerInstruction: "Find the review-text file named in this check (fullText, a real byline, no rejection flags, but no contentTier) and restore contentTier so it reaches reviews.json." },
   { match: /^Quality: outlet domain moves$/, urgency: 'this-week',
     ownerText: "A critic outlet looks like it moved to a new web address (for example, a critic switching to Substack), so its new reviews are being missed. Nothing is needed from you.",
-    workerInstruction: "Confirm the probable outlet domain move named in this check and add the new host to that outlet's domainAliases." },
+    workerInstruction: "Run node scripts/resolve-outlet-domain-moves.js to see why the hourly auto-resolver (BRO-7822) left each host. Judge each one: add the host to that outlet's domainAliases if it moved, or to notDomainMoves if it is a different paper." },
   { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
     ownerText: "Reviews from one outlet are suddenly coming in empty, which usually means the outlet redesigned its website. Nothing is needed from you.",
     workerInstruction: "Check the outlet stub-rate flag named in this check (a spike in stub-tier, 0-char extractions over the last 30 days), confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet. TheaterMania broke this way in 2026." },
@@ -1562,7 +1562,9 @@ function checkQuality() {
         name: 'Quality: outlet domain moves',
         status: 'warn',
         message: `${moves.length} unregistered host(s) name-match a registered outlet (e.g. ${worst.host} → ${worst.outletId}) — probable domain move dropping reviews via domain-mismatch`,
-        hint: 'Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases in data/outlet-registry.json.',
+        // BRO-7822: the hourly census job auto-resolves the unambiguous shapes
+        // (scripts/resolve-outlet-domain-moves.js); what is left here needs judgment.
+        hint: 'The hourly resolver left these for judgment; `node scripts/resolve-outlet-domain-moves.js` prints why. Confirm the host really belongs to that outlet, then add it to that outlet\'s domainAliases (moved) or notDomainMoves (different paper) in data/outlet-registry.json.',
       };
     }),
 
