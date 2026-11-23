@@ -25,6 +25,23 @@ test('cousin: outside-setting acceptanceIsReal judges the command, not a string 
   assert.equal(acceptanceIsReal('cd x && node scripts/check.js'), true);
 });
 
+test('BRO-8095 skeptic: tricky real-world strings split as a shell would', () => {
+  assert.deepEqual(trim("echo 'x | node --test f'"), ["echo 'x | node --test f'"]);
+  assert.deepEqual(trim('cmd --flag="a && b"'), ['cmd --flag="a && b"']);
+  assert.deepEqual(trim("# it's not closed && next"), ["# it's not closed", 'next']);
+  assert.deepEqual(trim('node --test a.mjs \\&\\& b'), ['node --test a.mjs \\&\\& b'], 'escaped && stays one command');
+  assert.deepEqual(trim('a;b'), ['a', 'b']);
+  assert.deepEqual(trim(''), ['']);
+  assert.deepEqual(trim("echo 'unclosed | node --test f"), ["echo 'unclosed", 'node --test f'], 'unclosed quote falls back to splitting');
+});
+
+test('BRO-8095 skeptic: live consumers keep their verdicts on known-good and known-bad commands', () => {
+  const real = ["node --test --test-name-pattern='lead|pickLead' a.test.mjs", 'cd x && node scripts/check.js', 'cat x | node --test a.test.mjs', 'npm test; node --test b.test.mjs'];
+  const bad = ["echo 'node --test a.test.mjs'", "echo 'x | node --test f.test.mjs'", "grep 'a|node --test x.test.mjs' f", 'echo "a && node --test f.test.mjs"'];
+  for (const c of real) assert.equal(acceptanceIsReal(c), true, c);
+  for (const c of bad) assert.equal(acceptanceIsReal(c), false, c);
+});
+
 test('class guard: no gate in scripts/lib splits a command with a raw && || ; | regex', () => {
   const RAW = /\.split\(\/(?:&&\|\\\|\\\||\(\?:\\\|\\\|\|&&)/;
   const allow = new Set(['dispatch-timeout-match.js', 'cmux-launch-guard.js', 'always-commit-after-validate.js', 'infra-review-scope.js', 'audit-workflow-hygiene-rules.js']); // BRO-8095 follow-up card; shrink, never grow
