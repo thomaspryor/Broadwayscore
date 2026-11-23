@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "showId": "fantasma-off-broadway-2026",
+  "night": "2026-11-22",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-23T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-23T02:30:04.088Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-23T04:55:12.182Z",
+    "lastOkSampleAt": "2026-11-23T04:55:12.182Z"
+  },
+  "firstLiveAt": "2026-11-23T02:30:04.088Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-23T02:30:04.088Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-23T04:00:08.766Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-22",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "any"
+  },
+  "perReview": [
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-23T02:30:04.088Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-23T05:00:30.993Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-23T05:00:31.073Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-23T05:00:34.359Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-22T22:14:06.262Z",
+        "scoredAt": "2026-11-22T22:36:58.868Z",
+        "publishDate": "2026-11-22",
+        "url": "culturesauce.com/fantasma-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "front-row-center--tom-storch.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "Tom Storch",
+        "firstSeenAt": "2026-11-23T00:45:06.165Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-22",
+        "url": "thefrontrowcenter.com/2026/11/fantasma",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "front-row-center--unknown.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "Tom Storch",
+        "firstSeenAt": "2026-11-23T00:45:06.165Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-22",
+        "url": "thefrontrowcenter.com/2026/11/fantasma",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--moshe-bloxenheim.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Moshe Bloxenheim",
+        "firstSeenAt": "2026-11-23T04:47:02.309Z",
+        "scoredAt": "2026-11-23T04:54:54.670Z",
+        "publishDate": "2026-11-22",
+        "url": "talkinbroadway.com/page/ob/11_22_26.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
