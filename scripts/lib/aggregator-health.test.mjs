@@ -327,3 +327,10 @@ test('BRO-8127: The Stage tolerates editorial swing (ratio 0.5) but a collapse o
   assert.equal(run(2, 2), 1, '80% -> 20% is a collapse');
   assert.equal(run(4, 0), 1, 'dead latest quarter always flags');
 });
+
+test('BRO-8127: peerArchivedIds is null (fall back to all shows) when no peer archive has content', () => {
+  const src = [{ id: 'a', market: 'west-end' }, { id: 'b', market: 'west-end' }, { id: 'c', market: 'broadway' }];
+  assert.equal(H.peerArchivedIds(src[0], src, { a: new Set(['x']), b: new Set() }), null);
+  assert.equal(H.peerArchivedIds(src[0], src, { a: new Set(['x']), c: new Set(['y']) }), null, 'other market is not a peer');
+  assert.deepEqual([...H.peerArchivedIds(src[0], src, { b: new Set(['z']) })], ['z']);
+});
