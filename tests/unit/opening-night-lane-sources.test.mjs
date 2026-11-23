@@ -173,10 +173,11 @@ test('NYT and WSJ are found through feeds: WSJ Arts & Culture (where its theater
   assert.ok(cov.covered.nytimes.some((s) => s.startsWith('feed ')), JSON.stringify(cov.covered.nytimes));
 });
 
-test('NYT on a West End night is a stated gap, not a silent miss (its Theater feed is Broadway-only)', () => {
+test('NYT on a West End night has a polled feed, no gap (BRO-8125: its Theater feed was Broadway-only)', () => {
   const cov = ls.laneSourceCoverage(['nytimes'], { category: 'west-end' });
   assert.deepEqual(cov.missing, []);
-  assert.match(cov.gaps.nytimes || "", /Broadway only/);
+  assert.equal(cov.gaps.nytimes, undefined);
+  assert.ok(cov.covered.nytimes.some((x) => x.startsWith('feed ')), JSON.stringify(cov.covered.nytimes));
 });
 
 test('last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)', (t) => {

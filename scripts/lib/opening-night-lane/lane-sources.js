@@ -115,7 +115,7 @@ const LANE_SOURCE_GAPS = {
   people: 'people.com answers 402 to datacenter fetches (feed and theater section, probed 2026-11-03); Google News and SERP',
   usatoday: 'usatoday.com answers 402 to datacenter fetches (feed and theater section, probed 2026-11-03); BWW roundup and SERP',
   purewow: 'purewow.com has no feed (404, probed 2026-11-03) and no theater section; SERP',
-  // Broadway is covered by NYT's Theater RSS; that feed is Broadway-market only, and the section page answers runners 403.
+  // NYT's Theater RSS is read for every market (BRO-8125: it was Broadway-only, which missed The Lives of Others).
   // BRO-7199: NYDN runs Chris Jones's Chicago Tribune review under its own URL (Wanted, A Few Good Men); the Tribune
   // section page finds the same review. nydailynews.com/feed answers 403 (probed 2026-11-09).
   nydailynews: "syndicates the Chicago Tribune's Chris Jones review (chicagotribune section page finds it); its feeds answer 403 (2026-11-09); Google News and SERP",
@@ -137,7 +137,6 @@ const LANE_SOURCE_GAPS = {
   // posts with no theater reviews (checked 2026-11-12), so nothing there can find a review on the night.
   soz6: "general news site that reposts other outlets' reviews; its feed carries no theater reviews (2026-11-12); the original outlet's feed or SERP finds the review",
   blogcritics: 'blogcritics.org/feed/ and its theatre category feed answer 301 to the home page (no feed, probed 2026-11-18); BWW roundup and SERP',
-  nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } };
