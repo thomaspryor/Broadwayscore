@@ -745,6 +745,32 @@ async function processShow(showId, deps = {}) {
     }
     const url = data.url;
     if (!url) {
+      // BRO-8195: judged on its own outlet--critic name and date (Theatre Record stubs carry no url, ever).
+      const exists = (sid, name) => fs.existsSync(path.join(root, sid, name));
+      const nu = pendingTriage.noUrlStubVerdict(data, { show, allShows: deps.allShows || (deps.root ? [] : loadAllShows()), file,
+        showHasFile: (name) => exists(showId, name),
+        siblingHasFile: (sid, name) => exists(sid, name) || exists(path.join('_pending', sid), name) });
+      if (nu && nu.verdict === 'rehome') {
+        const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: nu.sibling, data, publishDate: nu.publishDate, nowIso: now().toISOString(), dry });
+        if (out === 'rehomed') {
+          console.log(`  [${file}] triage: ${nu.reason} — rehomed to ${nu.sibling} (BRO-8195)`);
+          verdictCount('rehomed: url-less stub to its sibling');
+          redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
+          tagged++; kept++;
+          continue;
+        }
+      }
+      if (nu && nu.verdict === 'junk') {
+        console.log(`  [${file}] triage: ${nu.reason} — tagged (BRO-8195)`);
+        verdictCount('junk: url-less duplicate');
+        if (!dry) {
+          data.promoteSkippedReason = `${nu.reason} (BRO-8195 triage)`;
+          data.promoteSkippedAt = now().toISOString();
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        tagged++; kept++;
+        continue;
+      }
       console.log(`  [${file}] no URL — skip`);
       verdictCount('no url');
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'no URL to re-fetch');

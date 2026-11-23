@@ -1680,3 +1680,33 @@ describe('BRO-8195: a logged-in read that never reached the article never reache
     assert.ok(!H.pendingSubscriberStubEligible(d));
   });
 });
+
+describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on name and date', () => {
+  // Real rows (2026-11-23 open queue): Seven Methods 2019 stubs dated in the 2021 Royal Court run, which already files them.
+  const S19 = { id: 'seven-methods-of-killing-kylie-jenner-west-end-2019', title: 'Seven Methods of Killing Kylie Jenner', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2019-07-04', openingDate: '2019-07-09', closingDate: '2019-07-27' };
+  const S21 = { id: 'seven-methods-of-killing-kylie-jenner-west-end-2021', title: 'Seven Methods of Killing Kylie Jenner', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2021-06-17', openingDate: '2021-06-22', closingDate: '2021-07-17' };
+  const U25 = { id: 'the-unbelievers-west-end-2025', title: 'The Unbelievers', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2025-10-10', openingDate: '2025-10-16', closingDate: '2025-11-29' };
+  const U26 = { id: 'the-unbelievers-off-broadway-2026', title: 'The Unbelievers', category: 'off-broadway', venue: 'New York City Center', previewsStartDate: '2026-10-20', openingDate: '2026-11-05', closingDate: '2026-12-20' };
+  const all = [S19, S21, U25, U26];
+  const stub = { outletId: 'guardian', criticName: 'Kate Wyver', url: null, publishDate: '2021-06-23', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/06/1-seven-methods', fullText: 'x'.repeat(2000) };
+  const file = 'guardian--kate-wyver.json';
+
+  test('dated in exactly one sibling run that already files the same outlet--critic: settled as a duplicate', () => {
+    const v = T.noUrlStubVerdict(stub, { show: S19, allShows: all, file, showHasFile: () => false, siblingHasFile: (sid, n) => sid === S21.id && n === file });
+    assert.equal(v.verdict, 'junk');
+    assert.equal(v.sibling, S21.id);
+    assert.match(v.reason, /already files guardian--kate-wyver\.json/);
+  });
+
+  test('a Theatre Record date whose year disagrees with its archive link judges nothing (no New York rehome)', () => {
+    const bad = { ...stub, outletId: 'daily-mail', criticName: 'Patrick Marmion', publishDate: '2026-10-24', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/10/34295-the-unbelievers' };
+    assert.equal(T.noUrlStubVerdict(bad, { show: U25, allShows: all, file: 'daily-mail--patrick-marmion.json', showHasFile: () => false, siblingHasFile: () => false }), null);
+  });
+
+  test('in-window stub this show already files: duplicate; a url stub or an unknown name: no verdict', () => {
+    const inWin = { ...stub, publishDate: '2019-07-10', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2019/07/1-x' };
+    assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: (n) => n === file, siblingHasFile: () => false }).verdict, 'junk');
+    assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: () => false, siblingHasFile: () => false }), null);
+    assert.equal(T.noUrlStubVerdict({ ...stub, url: 'https://www.theguardian.com/x' }, { show: S19, allShows: all, file, showHasFile: () => true }), null);
+  });
+});

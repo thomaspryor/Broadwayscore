@@ -417,6 +417,38 @@ function triagePendingStub(data, ctx = {}) {
 }
 
 /**
+ * BRO-8195: a url-less stub (Theatre Record full text: critic + date, never a url) has nothing to fetch, so the
+ * url rules above never judge it and it stayed open forever (43 of the 46 url-less open stubs on 2026-11-23,
+ * each one tagged cross_market_contamination at intake). Judged on its own name and date instead:
+ *  - this show already files the same outlet--critic name: a duplicate, settled;
+ *  - its date sits in exactly one same-title sibling's window (the shared resolveOutOfWindowStub rule): settled
+ *    when that sibling already files the same name, else rehomed to it.
+ * ctx: { show, allShows, file, showHasFile(name), siblingHasFile(showId, name) }. Pure over ctx. null = no verdict.
+ */
+function noUrlStubVerdict(data, ctx = {}) {
+  if (!data || data.url || !ctx.file) return null;
+  const pdIso = stubDateIso(data.publishDate);
+  // A Theatre Record stub whose date year disagrees with its archive link's year has a bad date (a 2025-10 review
+  // stamped 2026-10-24 would rehome a London review to the New York run): judge nothing on that date.
+  const trYear = (String(data.theatreRecordUrl || '').match(/\/archive\/((?:19|20)\d{2})\//) || [])[1];
+  const dateTrusted = pdIso && (!trYear || trYear === pdIso.slice(0, 4));
+  if (dateTrusted && ctx.show && ctx.allShows && isArticleOutsideProductionWindow(ctx.show, pdIso)) {
+    const has = (sid) => !!(ctx.siblingHasFile && ctx.siblingHasFile(sid, ctx.file));
+    // The same outlet--critic name already filed under exactly one sibling whose run holds the date: a duplicate,
+    // with no venue corroboration needed (the name and the date both point at that sibling).
+    const holders = require('./pending-sibling-productions').fittingSiblings(ctx.show, ctx.allShows, pdIso).filter((x) => has(x.id));
+    if (holders.length === 1) return { verdict: 'junk', reason: `url-less stub published ${pdIso} belongs to same-title production ${holders[0].id}, which already files ${ctx.file}`, sibling: holders[0].id };
+    const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
+    if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+    return null;
+  }
+  if (ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  return null;
+}
+
+/**
  * A byline that is a member of the show's own creative team (the playwright on a
  * venue page: "William Shakespeare" on bam.org/Hamlet) means the page is about
  * the show, not a critic's review of it. Pure.
@@ -482,4 +514,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, settledPendingReason, showEra };
+module.exports = { noUrlStubVerdict, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, settledPendingReason, showEra };
