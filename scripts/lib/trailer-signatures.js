@@ -572,6 +572,8 @@ const FURN_CREDIT_RE = new RegExp(`(?:^|\\s|\\||(?<=[\\p{L}\\d.!?]))(?:Review(?:
 const FURN_RUNS_RE = new RegExp(`(?:^|\\s|\\||(?<=[.!?]))(?:(?:It|The\\s+(?:show|production|run))\\s+)?(?:runs|continues|plays|booking|books|bookings?)\\s+(?:until|through|thru|to)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?\\s*$`, 'iu');
 // "Until October 24 KilnTheatre.com", "Until Jan 31", "Details: Midnight, to January 3": a bare run line, only after a sentence end.
 const FURN_BARE_UNTIL_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:Details:\\s*[^.!?\\n]{0,40}?,?\\s*)?(?:Until|To|Through|Runs until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?(?:,?\\s*[\\p{Lu}][^.!?\\n]{1,60}?(?=\\s*\\([\\d ]{8,16}\\)\\.?\\s*$))?(?:,?\\s+[\\w.-]+\\.(?:com|org|net|co\\.uk|org\\.uk|uk)|\\s*\\([\\d ]{8,16}\\))?\\.?\\s*$`, 'u');
+// A date followed by a venue, as used in UK newspaper listings.
+const FURN_DATE_VENUE_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:In rep until|Until)\\s+${FURN_DATE},\\s+${FURN_NAMES}\\.?\\s*$`, 'u');
 // A Time Out capsule's credits: "Public Theater (Off Broadway). By X. Directed by Y. With ensemble cast. Running time:"
 const FURN_TIMEOUT_CREDITS_LITERALS = { cs: ['Directed by'] };
 const FURN_TIMEOUT_CREDITS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)[\p{Lu}][^.!?\n]{2,70}\((?:Off[- ])?Broadway\)\.\s+By\s[^.!?\n]{1,80}\.\s+Directed by\s[^.!?\n]{1,80}\.(?:\s+(?:With|Starring)\s[^.!?\n]{1,200}\.)?(?:\s+Running time:[^.!?\n]{0,60}\.?)?(?:\s+(?:One|Two|No)\s+intermissions?\.?)?\s*$/u;
@@ -615,6 +617,8 @@ function furnitureMatch(t) {
   if (rn) return { cut: cutOf(rn), code: false };
   const bu = FURN_BARE_UNTIL_RE.exec(t);
   if (bu) return { cut: cutOf(bu), code: false };
+  const dv = FURN_DATE_VENUE_RE.exec(t);
+  if (dv && namesOnly(dv[1])) return { cut: cutOf(dv), code: false };
   const rt = mayMatch(FURN_RUNNING_TIME_LITERALS, t, folded) && FURN_RUNNING_TIME_RE.exec(t);
   if (rt) return { cut: cutOf(rt), code: false };
   const tc = mayMatch(FURN_TIMEOUT_CREDITS_LITERALS, t, folded) && FURN_TIMEOUT_CREDITS_RE.exec(t);
@@ -717,6 +721,15 @@ function trailerFixesEnabled() {
 /** Every known trailer, for the ending-punctuation check. */
 function stripKnownTrailers(text, outletId) {
   if (!trailerFixesEnabled()) return text;
+  // This specific Standard news feed was appended to a group of old reviews.
+  // Require both ends of the feed and a completed substantial review before it.
+  if (outletId === 'standard' && typeof text === 'string') {
+    const ticker = /\s+Why Man City fans have brought inflatable bananas to Anfield for Liverpool clash\b[\s\S]{0,1500}Liverpool fans mock Man City over guilty verdict at hostile Anfield\s*$/.exec(text);
+    if (ticker) {
+      const body = text.slice(0, ticker.index).trimEnd();
+      if (body.length >= RELATED_MIN_REMAINING && SENTENCE_END_RE.test(body)) text = body;
+    }
+  }
   return stripFurnitureTail(stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(stripCmsWidgetFooters(text))), outletId, { forClassify: true })));
 }
 

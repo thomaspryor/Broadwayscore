@@ -783,3 +783,27 @@ test('Standard 2015-16 Going Out tail is stripped without a Shopping footer; tic
   const short = 'A brief note. Follow Going Out on Facebook and on Twitter @ESgoingout';
   assert.equal(stripCmsWidgetFooters(short), short);
 });
+
+test('BRO-8098: UK date and venue listings only strip after complete substantial prose', () => {
+  for (const tail of ['Until Dec 3, Theatre Royal Haymarket', 'In rep until Feb 4, National Theatre', 'Until September 17, Theatre Royal Haymarket']) {
+    assert.equal(T.stripKnownTrailers(`${BODY} ${tail}`, 'standard'), BODY);
+    assert.equal(tier(`${BODY} ${tail}`, 'standard').contentTier, 'complete');
+    const cut = `${BODY} The production leaves us with ${tail}`;
+    assert.equal(T.stripKnownTrailers(cut, 'standard'), cut);
+    assert.equal(T.stripKnownTrailers(`A brief review. ${tail}`, 'standard'), `A brief review. ${tail}`);
+  }
+  for (const tail of ['Until Dec 3, the actors continue to', 'Until Dec 3, Theatre Royal and']) {
+    assert.equal(T.stripKnownTrailers(`${BODY} ${tail}`, 'guardian'), `${BODY} ${tail}`);
+  }
+});
+
+test('BRO-8098: Standard news ticker is classify-only and requires a completed body', () => {
+  const ticker = 'Why Man City fans have brought inflatable bananas to Anfield for Liverpool clash Why Man City fans have brought inflatable bananas to Anfield London council unanimously votes for motion to block resources in immigration raids Liverpool vs Man City LIVE: Premier League latest score Angry Liverpool fans mock Man City over guilty verdict at hostile Anfield Liverpool fans mock Man City over guilty verdict at hostile Anfield';
+  assert.equal(T.stripKnownTrailers(`${BODY} ${ticker}`, 'standard'), BODY);
+  assert.equal(tier(`${BODY} ${ticker}`, 'standard').contentTier, 'complete');
+  assert.equal(T.stripKnownTrailers(`${BODY} ${ticker}`, 'guardian'), `${BODY} ${ticker}`);
+  const cut = `${BODY} The acting is ${ticker}`;
+  assert.equal(T.stripKnownTrailers(cut, 'standard'), cut);
+  assert.equal(T.stripKnownTrailers(`Short. ${ticker}`, 'standard'), `Short. ${ticker}`);
+  assert.equal(stripTrailingJunk(`${BODY} ${ticker}`, 'standard'), `${BODY} ${ticker}`);
+});
