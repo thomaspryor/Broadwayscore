@@ -113,7 +113,8 @@ jobs:
           GATE_TRIGGER_WORKFLOW: ${{ github.event.workflow_run.name }}
           GATE_MIN_INTERVAL_MIN: ${{ vars.DEPLOY_MIN_INTERVAL_MIN }}
           # BRO-8198: staleness backstop in minutes (default 180). Kill switch:
-          # set repo var DEPLOY_BACKSTOP_MIN=360 to restore the old 6h bound.
+          # set repo var DEPLOY_BACKSTOP_MIN=360 to restore the old 6h bound
+          # (health-check's freshness alert bars then move to 11h/15h with it).
           GATE_BACKSTOP_MIN: ${{ vars.DEPLOY_BACKSTOP_MIN }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |

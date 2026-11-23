@@ -171,9 +171,13 @@ test('schedule: baseline == HEAD, data status unknown, deploy is fresh — still
   assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
 });
 
-test('schedule: baseline == HEAD, data positively clean, deploy is stale — skips WITHOUT checking age (genuine no-op)', () => {
+test('BRO-8198: baseline == HEAD, tracked data clean, deploy past the backstop — ships (untracked data like audience-buzz needs the bound)', () => {
   const r = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
-  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+  const fresh = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC });
+  assert.deepEqual(fresh, { proceed: false, reason: 'no-new-commits' });
+  const unknownAge = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: null });
+  assert.deepEqual(unknownAge, { proceed: false, reason: 'no-new-commits' });
 });
 
 test('kill switch forces proceed on every event, even baseline==HEAD', () => {

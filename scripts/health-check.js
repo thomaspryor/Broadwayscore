@@ -4001,7 +4001,7 @@ function checkDeployFreshness() {
     const dep = JSON.parse(out);
     const ageH = dep.ageSec / 3600;
     const gate = require('./lib/should-deploy-gate.js');
-    const { backstopSec } = gate.resolveGateTiming(process.env);
+    const { backstopSec, warnings: timingWarnings } = gate.resolveGateTiming(process.env);
     const { warnH: rawWarnH, errorH: rawErrorH } = gate.freshnessAlertHours(backstopSec);
     const warnH = +rawWarnH.toFixed(1); const errorH = +rawErrorH.toFixed(1);
     const backstopH = +(backstopSec / 3600).toFixed(2);
@@ -4011,6 +4011,7 @@ function checkDeployFreshness() {
     const hint = 'Gate stuck or cron dead? Check should-deploy runs with: gh api "repos/{owner}/{repo}/actions/workflows/vercel-deploy.yml/runs?per_page=10" --jq \'.workflow_runs[] | "\\(.created_at) \\(.conclusion)"\' — use that REST form, NOT the gh CLI run-listing shorthand, which is stale on this repo. Then dispatch "Rebuild Reviews (Fast)", or set repo var DEPLOY_GATE_DISABLED=true';
     if (ageH > errorH) return { name: 'Deploy: production freshness', status: 'error', message: msg + ` (>${errorH}h — ${backstopH}h backstop is not firing)`, hint };
     if (ageH > warnH) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ` (>${warnH}h — backstop late; GH cron delays can explain up to ~2h)`, hint };
+    if (timingWarnings.length) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ` (gate timing vars: ${timingWarnings.join('; ')})`, hint };
     return { name: 'Deploy: production freshness', status: 'pass', message: msg };
   })];
 }

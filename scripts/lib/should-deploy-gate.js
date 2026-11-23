@@ -165,8 +165,8 @@ const SITE_PATHS = [
 
 // BRO-8198 (owner decision on BRO-8056 R8, 2026-11-23): list pages may lag up
 // to 3h, so a routine tick deploys once the live deploy is older than 3h even if
-// nothing tracked changed (untracked core data such as audience-buzz.json rides
-// this bound). Was 6h. Repo variable DEPLOY_BACKSTOP_MIN overrides (minutes,
+// nothing tracked changed, including when HEAD is already live (untracked core
+// data such as audience-buzz.json rides this bound). Was 6h. Repo variable DEPLOY_BACKSTOP_MIN overrides (minutes,
 // 60..1440; 360 restores the old 6h) — that is this change's kill switch.
 // The gate only proceeds more often because of it, never less: tracked data and
 // site changes still ship on the min-interval throttle below.
@@ -288,7 +288,12 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
     // the backstop — an unknown age alone doesn't force a proceed here,
     // consistent with the "positive proof only" skip philosophy in the
     // header comment.
-    if (dataDiffResult !== 'clean' && deployAgeSec != null && deployAgeSec > backstopSec) {
+    // BRO-8198: a positively-clean data signal no longer skips past the
+    // backstop either. 'clean' covers only DATA_TRACKED_FILES; untracked site
+    // data (audience-buzz.json) changes without moving HEAD, so the old
+    // clean-and-stale skip left it stale with no bound (Codex ship-check).
+    // 7-day replay: no same-HEAD skip happened past 3h, so this adds ~0 builds.
+    if (deployAgeSec != null && deployAgeSec > backstopSec) {
       return { proceed: true, reason: 'staleness-backstop' };
     }
     return { proceed: false, reason: 'no-new-commits' };
@@ -598,7 +603,9 @@ async function main() {
   writeOutput(proceed, reason, retryAfterSec);
 }
 
-module.exports = { decide, isUrgent, CODE_PATHS, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
+module.exports = {
+  // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, CODE_PATHS, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the
