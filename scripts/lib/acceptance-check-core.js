@@ -133,10 +133,11 @@ function sleepMs(ms) {
  * BRO-8124: before making a checkout, reap dead-owner siblings of the same
  * prefix that a killed earlier caller leaked (SIGKILL, or a SIGTERM that hit
  * while this process sat blocked in spawnSync, skip registerExitCleanup).
- * Never throws; TEMP_CHECKOUT_REAP_DISABLED=1 turns it off.
+ * Never throws; bounded to ~60s so a backlog cannot stall a close-time
+ * caller (GC reaps the rest); TEMP_CHECKOUT_REAP_DISABLED=1 turns it off.
  */
 function reapDeadSiblings(prefix) {
-  try { require('./reap-temp-checkouts.js').reapTempCheckouts({ roots: [os.tmpdir()], prefix, deadOnly: true }); } catch { /* best-effort */ }
+  try { require('./reap-temp-checkouts.js').reapTempCheckouts({ roots: [os.tmpdir()], prefix, deadOnly: true, budgetMs: 60000, measure: false }); } catch { /* best-effort */ }
 }
 
 function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null, lockRetryDelaysMs = LOCK_RETRY_DELAYS_MS } = {}) {

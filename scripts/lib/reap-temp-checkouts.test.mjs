@@ -94,3 +94,42 @@ test('lsof failure keeps everything', () => {
   assert.equal(R.hasOpenPathUnder(['/private/tmp/xy/a'], '/private/tmp/x'), false);
   assert.equal(R.hasOpenPathUnder(['/private/tmp/x/a'], '/private/tmp/x'), true);
 });
+
+test('a truncated lsof (timeout or ENOBUFS) is a failure, exit 1 with output is usable', () => {
+  assert.equal(R.pathsFromLsofError({ status: null, signal: 'SIGTERM', code: 'ETIMEDOUT', stdout: 'n/x\n' }), null);
+  assert.equal(R.pathsFromLsofError({ status: null, code: 'ENOBUFS', stdout: 'n/x\n' }), null);
+  assert.deepEqual(R.pathsFromLsofError({ status: 1, stdout: 'p1\nn/x\n' }), ['/x']);
+  assert.equal(R.pathsFromLsofError({ status: 1, stdout: '' }), null);
+});
+
+test('relative gitdir resolves against the worktree; missing or malformed .git is kept, not orphaned', () => {
+  const r = root();
+  const repoGit = path.join(r, 'repo', '.git', 'worktrees', 'main');
+  fs.mkdirSync(repoGit, { recursive: true });
+  const parent = fs.mkdtempSync(path.join(r, 'linear-done-verify-'));
+  const wt = path.join(parent, 'main');
+  fs.mkdirSync(wt);
+  fs.writeFileSync(path.join(wt, '.git'), `gitdir: ${path.relative(wt, repoGit)}\n`);
+  assert.equal(R.checkoutKind(wt), 'registered');
+  fs.writeFileSync(path.join(wt, '.git'), 'garbage\n');
+  assert.equal(R.checkoutKind(wt), 'other');
+  fs.rmSync(path.join(wt, '.git'));
+  assert.equal(R.checkoutKind(wt), 'other');
+  const o = orphan(r);
+  fs.rmSync(path.join(o.wt, '.git'));
+  const s = R.reapTempCheckouts({ roots: [r] });
+  assert.equal(s.removed, 0, JSON.stringify(s.results));
+  assert.ok(fs.existsSync(o.parent));
+});
+
+test('TEMP_CHECKOUT_REAP_DISABLED=1 stops every entry point, including the single-checkout path', () => {
+  const r = root();
+  const o = orphan(r);
+  process.env.TEMP_CHECKOUT_REAP_DISABLED = '1';
+  try {
+    assert.equal(R.reapOne(o.parent).removed, false);
+    assert.equal(R.reapTempCheckouts({ roots: [r] }).removed, 0);
+    assert.notEqual(spawnSync(process.execPath, [require.resolve('./reap-temp-checkouts.js'), '--one', o.wt], { env: process.env }).status, 0);
+  } finally { delete process.env.TEMP_CHECKOUT_REAP_DISABLED; }
+  assert.ok(fs.existsSync(o.parent));
+});

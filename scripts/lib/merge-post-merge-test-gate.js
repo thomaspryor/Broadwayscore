@@ -975,7 +975,7 @@ function reapKilledBaselineCheckouts({ roots } = {}) {
   try {
     const os = require('os');
     return require('./reap-temp-checkouts.js').reapTempCheckouts({
-      roots: roots || [os.tmpdir()], prefix: baselineCheckoutOptions({}).prefix, deadOnly: true, deadGraceMin: 0,
+      roots: roots || [os.tmpdir()], prefix: baselineCheckoutOptions({}).prefix, deadOnly: true, deadGraceMin: 0, budgetMs: 120000,
     });
   } catch { return { removed: 0, freedKb: 0, results: [] }; }
 }

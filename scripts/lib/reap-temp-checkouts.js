@@ -33,6 +33,8 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { ownerState, canReapCheckout, checkoutInUse, OWNER_FILE } = require('./acceptance-checkout-owner.js');
+const { holdsIgnoredWork } = require('./codex-runner.js');
+const { LSOF } = require('./system-bin.js'); // headless macOS PATH lacks /usr/sbin
 
 // Keep in step with every makeFreshCheckout({prefix}) caller;
 // scripts/tests/gc-reap-stale-tmp-checkout.test.mjs fails on a new prefix.
@@ -55,8 +57,16 @@ function isTempCheckoutName(name) { return NAME_RE.test(name); }
 
 function defaultRoots() {
   if (process.env.TEMP_CHECKOUT_REAP_ROOTS) return process.env.TEMP_CHECKOUT_REAP_ROOTS.split(':').filter(Boolean);
-  return [os.tmpdir(), '/tmp'];
+  const roots = [os.tmpdir(), '/tmp'];
+  // launchd jobs often run without TMPDIR (os.tmpdir() -> /tmp) while
+  // sessions create checkouts under the per-user /var/folders/.../T.
+  if (process.platform === 'darwin') {
+    try { roots.push(execFileSync('getconf', ['DARWIN_USER_TEMP_DIR'], { encoding: 'utf8', timeout: 5000 }).trim()); } catch { /* optional */ }
+  }
+  return roots;
 }
+
+const disabled = () => process.env.TEMP_CHECKOUT_REAP_DISABLED === '1';
 
 /** Real, de-duplicated temp roots. */
 function resolveRoots(roots) {
@@ -84,19 +94,27 @@ function validateParent(parent) {
  */
 function openPathSnapshot() {
   try {
-    const out = execFileSync('lsof', ['-n', '-w', '-F', 'n'], {
+    const out = execFileSync(LSOF, ['-n', '-w', '-F', 'n'], {
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 30000, maxBuffer: 256 * 1024 * 1024,
     });
     const paths = [];
     for (const line of out.split('\n')) if (line.startsWith('n/')) paths.push(line.slice(1));
     return paths;
   } catch (error) {
-    // lsof exits 1 when some processes could not be listed; keep its output.
-    if (error && typeof error.stdout === 'string' && error.stdout.length > 0) {
-      return error.stdout.split('\n').filter((l) => l.startsWith('n/')).map((l) => l.slice(1));
-    }
-    return null;
+    return pathsFromLsofError(error);
   }
+}
+
+/**
+ * lsof exits 1 when some processes could not be listed; that output is still
+ * complete for ours. A timeout (signal) or maxBuffer overflow (ENOBUFS) is a
+ * TRUNCATED list: null, never "nothing is open".
+ */
+function pathsFromLsofError(error) {
+  if (error && error.status === 1 && !error.signal && !error.code && typeof error.stdout === 'string' && error.stdout.length > 0) {
+    return error.stdout.split('\n').filter((l) => l.startsWith('n/')).map((l) => l.slice(1));
+  }
+  return null;
 }
 
 function hasOpenPathUnder(snapshot, real) {
@@ -117,27 +135,35 @@ function recentlyTouched(dir, min) {
   } catch { return true; }
 }
 
-/** registered | orphan | standalone | empty | other */
+/** The worktree's gitdir from its .git file, resolved against wt (git >= 2.48 may write it relative). null if unreadable. */
+function worktreeGitdir(wt) {
+  try {
+    const m = fs.readFileSync(path.join(wt, '.git'), 'utf8').match(/^gitdir:\s*(.+?)\s*$/m);
+    return m ? path.resolve(wt, m[1]) : null;
+  } catch { return null; }
+}
+
+/**
+ * registered | orphan | standalone | empty | other. Orphan means PROVEN
+ * orphan: a readable gitdir pointer whose target is gone. Anything git cannot
+ * describe (no .git, malformed, unreadable) is 'other' and kept.
+ */
 function checkoutKind(wt) {
-  const dotGit = path.join(wt, '.git');
   let st;
   try { st = fs.lstatSync(wt); } catch { return 'empty'; }
   if (!st.isDirectory()) return 'other';
-  try { st = fs.lstatSync(dotGit); } catch { return 'orphan'; }
+  try { st = fs.lstatSync(path.join(wt, '.git')); } catch { return 'other'; }
   if (st.isDirectory()) return 'standalone';
-  try {
-    const m = fs.readFileSync(dotGit, 'utf8').match(/^gitdir:\s*(.+)\s*$/m);
-    if (!m) return 'orphan';
-    return fs.existsSync(m[1].trim()) ? 'registered' : 'orphan';
-  } catch { return 'other'; }
+  if (!st.isFile()) return 'other';
+  const gitdir = worktreeGitdir(wt);
+  if (!gitdir) return 'other';
+  return fs.existsSync(gitdir) ? 'registered' : 'orphan';
 }
 
 /** `git worktree lock` writes <gitdir>/locked; a locked tree is never reaped. */
 function isGitLocked(wt) {
-  try {
-    const m = fs.readFileSync(path.join(wt, '.git'), 'utf8').match(/^gitdir:\s*(.+)\s*$/m);
-    return !!m && fs.existsSync(path.join(m[1].trim(), 'locked'));
-  } catch { return true; }
+  const gitdir = worktreeGitdir(wt);
+  return gitdir === null || fs.existsSync(path.join(gitdir, 'locked'));
 }
 
 function git(wt, args) {
@@ -179,7 +205,7 @@ function decide(parent, { now = Date.now(), snapshot, deadGraceMin = DEAD_GRACE_
     return { reap: true, kind, real, reason: `${why}, HEAD on origin/main` };
   }
   if (kind === 'standalone') {
-    if (checkoutInUse(wt)) return { reap: false, kind, reason: 'in use' };
+    if (holdsIgnoredWork(wt) || checkoutInUse(wt)) return { reap: false, kind, reason: 'ignored work or in use' };
     try {
       if (git(wt, ['status', '--porcelain', '--untracked-files=all'])) return { reap: false, kind, reason: 'dirty standalone clone' };
       if (git(wt, ['rev-list', '--count', 'origin/main..HEAD']) !== '0') return { reap: false, kind, reason: 'standalone clone has commits not on origin/main' };
@@ -187,16 +213,16 @@ function decide(parent, { now = Date.now(), snapshot, deadGraceMin = DEAD_GRACE_
     return { reap: true, kind, real, reason: `${why}, standalone clone on origin/main` };
   }
   if (kind === 'orphan' || kind === 'empty') {
-    if (kind === 'orphan' && checkoutInUse(wt)) return { reap: false, kind, reason: 'in use' };
+    if (kind === 'orphan' && (holdsIgnoredWork(wt) || checkoutInUse(wt))) return { reap: false, kind, reason: 'ignored work or in use' };
     return { reap: true, kind, real, reason: `${why}, ${kind === 'orphan' ? 'its repo is gone (unregistered orphan)' : 'no checkout inside'}` };
   }
   return { reap: false, kind, reason: 'unrecognised layout' };
 }
 
 /** Remove one decided parent. Returns freed KB or null when git refused. */
-function removeParent(d) {
+function removeParent(d, measure = true) {
   const wt = path.join(d.real, 'main');
-  const kb = duKb(d.real);
+  const kb = measure ? duKb(d.real) : 0;
   if (d.kind === 'registered') {
     const common = path.resolve(wt, git(wt, ['rev-parse', '--git-common-dir']));
     // Plain remove, no --force: canReapCheckout proved it clean; a write that
@@ -211,11 +237,14 @@ function removeParent(d) {
 }
 
 /** Decide + (unless dryRun) remove one parent. */
-function reapOne(parent, { dryRun = false, ...opts } = {}) {
+function reapOne(parent, { dryRun = false, measure = true, ...opts } = {}) {
+  if (disabled()) return { removed: false, reap: false, reason: 'TEMP_CHECKOUT_REAP_DISABLED=1' };
   const d = decide(parent, opts);
   if (!d.reap) return { removed: false, ...d };
-  if (dryRun) return { removed: false, wouldRemove: true, kb: duKb(d.real), ...d };
-  try { return { removed: true, kb: removeParent(d), ...d }; }
+  if (dryRun) return { removed: false, wouldRemove: true, kb: measure ? duKb(d.real) : 0, ...d };
+  // Liveness right before deleting: a batch snapshot can be minutes old.
+  if (hasOpenPathUnder(openPathSnapshot(), d.real)) return { removed: false, ...d, reap: false, reason: 'a process opened a file under it since the scan' };
+  try { return { removed: true, ...d, kb: removeParent(d, measure) }; }
   catch (error) { return { removed: false, ...d, reap: false, reason: `removal failed: ${String(error.message || error).split('\n')[0]}` }; }
 }
 
@@ -242,16 +271,20 @@ function listCandidates({ roots = defaultRoots(), repos = [], prefix = null } = 
  * Reap every eligible temp checkout. Never throws.
  * @returns {{removed:number, freedKb:number, results:object[], skipped?:string}}
  */
-function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, deadGraceMin = DEAD_GRACE_MIN, dryRun = false, now = Date.now(), log = () => {} } = {}) {
+function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, deadGraceMin = DEAD_GRACE_MIN, dryRun = false, now = Date.now(), log = () => {}, budgetMs = Infinity, measure = true } = {}) {
   const summary = { removed: 0, freedKb: 0, results: [] };
-  if (process.env.TEMP_CHECKOUT_REAP_DISABLED === '1') return { ...summary, skipped: 'TEMP_CHECKOUT_REAP_DISABLED=1' };
+  if (disabled()) return { ...summary, skipped: 'TEMP_CHECKOUT_REAP_DISABLED=1' };
+  const started = Date.now();
   try {
     const candidates = listCandidates({ roots, repos, prefix });
     if (!candidates.length) return summary;
     const snapshot = openPathSnapshot();
     if (snapshot === null) { log('lsof failed; keeping every temp checkout this run'); return { ...summary, skipped: 'lsof failed' }; }
     for (const parent of candidates) {
-      const r = reapOne(parent, { dryRun, snapshot, now, deadOnly, deadGraceMin });
+      // Synchronous callers (checkout creation, landing) pass a budget so a
+      // large backlog never stalls them; GC and self-heal run unbounded.
+      if (Date.now() - started > budgetMs) { summary.skipped = `budget ${budgetMs}ms spent; rest left for GC`; break; }
+      const r = reapOne(parent, { dryRun, snapshot, now, deadOnly, deadGraceMin, measure });
       summary.results.push({ parent, ...r });
       if (r.removed) { summary.removed++; summary.freedKb += r.kb || 0; log(`REMOVE-TMP ${parent} — freed ${r.kb}KB, ${r.reason}`); }
       else if (r.wouldRemove) log(`WOULD-REMOVE-TMP ${parent} — ${r.kb}KB, ${r.reason}`);
@@ -264,7 +297,7 @@ function reapTempCheckouts({ roots, repos, prefix = null, deadOnly = false, dead
 
 module.exports = {
   TEMP_CHECKOUT_PREFIXES, DEAD_GRACE_MIN, LEGACY_IDLE_MIN,
-  isTempCheckoutName, validateParent, openPathSnapshot, hasOpenPathUnder, checkoutKind,
+  isTempCheckoutName, validateParent, openPathSnapshot, pathsFromLsofError, hasOpenPathUnder, checkoutKind,
   decide, reapOne, listCandidates, reapTempCheckouts,
 };
 
