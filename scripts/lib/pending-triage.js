@@ -367,6 +367,8 @@ function sameTitleShowsFrom(show, allShows) {
 const INTAKE_EXEMPT_SOURCES = new Set(['submit-review-form', 'manual-user-request', 'manual-entry', 'manual-addition', 'manual']);
 function pendingIntakeRejectReason(review, show) {
   if (!review || !review.url || INTAKE_EXEMPT_SOURCES.has(review.source)) return null;
-  return pageKindJunkReason(review.url, show || undefined) || urlDateOutsideWindowReason(review.url, show || undefined);
+  // BRO-8023 ship-check: no URL-date rule at intake. CLAUDE.md forbids extracting metadata from URLs and a refusal here
+  // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
+  return pageKindJunkReason(review.url, show || undefined);
 }
 module.exports = { pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };

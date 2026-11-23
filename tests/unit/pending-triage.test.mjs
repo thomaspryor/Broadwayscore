@@ -550,7 +550,6 @@ describe('pendingIntakeRejectReason (BRO-8023 intake guard)', () => {
     ['girl-interrupted-off-broadway-2026', { url: 'https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html' }],
     ['catch-of-the-day-off-broadway-2026', { url: 'https://www.nytimes.com/live/2026/06/07/theater/tony-awards-2026/lesley-manville-wins-the-tony-for-best-actress-in-a-play' }],
     ['blood-of-my-blood-west-end-2026', { url: 'https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/' }],
-    ['tosca-off-broadway-2026', { url: 'https://www.broadwayworld.com/bwwopera/article/review-met-audience-tips-its-hat-to-fedora-on-new-years-eve-20230101' }],
     ['girls-off-west-end-2026', { url: 'https://www.hollywoodreporter.com/movies/movie-reviews/destroy-all-girls-review-1236665457' }],
     ['spellbound-off-broadway-2026', { url: 'https://deadline.com/2024/11/spellbound-film-review-1236185047/' }],
     ['endgame-off-broadway-2025', { url: 'https://www.hollywoodreporter.com/movies/movie-news/avengers-endgame-encore-box-office-previews-primetime-beast-1236709715' }],
@@ -569,8 +568,8 @@ describe('pendingIntakeRejectReason (BRO-8023 intake guard)', () => {
     assert.equal(v.verdict, 'junk');
     assert.match(v.reason, /outside this production's window/);
   });
-  test('intake refuses it on the url date too (more than a year outside the run)', () => {
-    assert.match(String(T.pendingIntakeRejectReason(TENDER_NAPALM, TENDER)), /more than a year outside/);
+  test('intake does not judge on the url date (CLAUDE.md: no metadata from URLs; the drain tags and keeps)', () => {
+    assert.equal(T.pendingIntakeRejectReason(TENDER_NAPALM, TENDER), null);
   });
   test('intake leaves production-identity rules to the drain (stub date alone, sibling venue, bare title)', () => {
     // Real scored reviews the identity rules flag: Hadestown at the Olivier under the West End entry, a 13 review.
