@@ -161,6 +161,9 @@ function windows(text, ranges, pad = WINDOW_PAD) {
 
 const fmtRanges = (r) => r.map(([a, b]) => (a === b ? `${a}` : `${a}-${b}`)).join(', ');
 
+/** 0 = code, 1 = tests, 2 = docs and generated skill copies: the order files claim the budget in. */
+const fillRank = (p) => (/\.(md|txt)$|^\.agents\//i.test(p) ? 2 : /(^|\/)(tests?|__tests__)\/|\.test\.[cm]?[jt]sx?$|\.spec\.[cm]?[jt]sx?$/.test(p) ? 1 : 0);
+
 /** Read a file for the bundle, or say why not. */
 function readAllowed(root, p, tracked, maxBytes = MAX_FILE_BYTES) {
   if (!tracked.has(p)) return { why: 'not a tracked file' };
@@ -220,7 +223,8 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
       if (e.status === 'D') { deleted.push(e.path); continue; }
       files.push({ path: e.path, weight: weight.get(e.path) || 0, ranges: hunks.get(e.path) || [] });
     }
-    files.sort((a, b) => b.weight - a.weight || a.path.localeCompare(b.path));
+    // When the budget runs short, the code under review goes in before its tests, docs and skill copies.
+    files.sort((a, b) => fillRank(a.path) - fillRank(b.path) || b.weight - a.weight || a.path.localeCompare(b.path));
     // New files nobody `git add`ed are in no diff; name them so the gap is visible, but never send them.
     const un = git(['ls-files', '--others', '--exclude-standard', '-z'], root);
     for (const p of un.out.split('\0').filter(Boolean)) overLimit.push({ path: p, why: 'untracked, never sent (git add it to have it reviewed)' });
@@ -300,6 +304,6 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
 }
 
 module.exports = {
-  buildBundle, parseNameStatus, parseHunks, unquotePath, splitLines, definedNames, pathsFromPrompt, windows, readAllowed,
+  buildBundle, parseNameStatus, parseHunks, unquotePath, splitLines, fillRank, definedNames, pathsFromPrompt, windows, readAllowed,
   SECRET_RE, isSecretPath, MAX_FILE_BYTES, WINDOWED_MAX_BYTES, FULL_FILE_CHARS, DEFAULT_BUDGET_CHARS,
 };

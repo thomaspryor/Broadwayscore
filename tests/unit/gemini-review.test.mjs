@@ -217,6 +217,21 @@ test('buildBundle: plan mode names the files past the 40-file limit instead of d
   assert.equal(b.omitted.filter((o) => /past the first 40/.test(o.why)).length, 5);
 });
 
+test('buildBundle: code claims the budget before tests and docs, even when the test change is bigger', () => {
+  assert.deepEqual(['README.md', 'tests/unit/x.test.mjs', 'scripts/lib/y.js', '.agents/skills/a/SKILL.md', 'src/a.spec.ts'].map(bundleLib.fillRank), [2, 1, 0, 2, 1]);
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'gemrank-'));
+  sh(repo, 'init', '-q', '-b', 'main'); sh(repo, 'config', 'user.email', 't@t'); sh(repo, 'config', 'user.name', 't');
+  fs.writeFileSync(path.join(repo, 'seed.txt'), 'x\n'); sh(repo, 'add', '-A'); sh(repo, 'commit', '-qm', 'seed');
+  fs.mkdirSync(path.join(repo, 'tests'));
+  fs.writeFileSync(path.join(repo, 'tests', 'big.test.mjs'), Array.from({ length: 15 }, (_, i) => `t${i}();`).join('\n') + '\n');
+  fs.writeFileSync(path.join(repo, 'code.js'), 'module.exports = 1;\n');
+  sh(repo, 'add', '-A'); sh(repo, 'commit', '-qm', 'rank');
+  // The budget holds either file alone, not both; the test file is the bigger change.
+  const b = bundleLib.buildBundle({ cwd: repo, base: 'main~1', budgetChars: 260 });
+  assert.deepEqual(b.given, ['code.js']);
+  assert.ok(b.omitted.some((o) => o.path === 'tests/big.test.mjs'));
+});
+
 test('buildBundle: the OMITTED list is capped so a huge change cannot bloat the request', () => {
   const repo = fixtureRepo();
   for (let i = 0; i < 60; i++) fs.writeFileSync(path.join(repo, `gen${i}.js`), `module.exports = ${i};\n`);
