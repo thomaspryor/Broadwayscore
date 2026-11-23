@@ -13,12 +13,13 @@ const NOW = Date.parse('2026-11-18T16:00:00Z');
 const embargoAt = (s) => embargoInfo(s).at;
 const show = (id, category, openingDate, extra = {}) => ({ id, title: id, category, openingDate, status: 'previews', ...extra });
 
-test('item 4: a regional or touring opening (no market hour) is named; Broadway, West End and an override are watched', () => {
+test('item 4 (BRO-8146): regional and touring are sweep-only and not named; an unknown category is named; Broadway and West End are watched', () => {
   const shows = [
     show('bway', 'broadway', '2026-11-20'),
     show('we', 'west-end', '2026-11-21'),
     show('reg', 'regional', '2026-11-21'),
     show('tour', 'tour', '2026-11-20'),
+    show('odd', 'mystery-market', '2026-11-20'),
     show('reg-override', 'regional', '2026-11-22', { reviewEmbargoAt: '2026-11-22T22:00:00-05:00' }),
     show('reg-far', 'regional', '2026-12-20'),
     show('reg-past', 'regional', '2026-11-10'),
@@ -27,9 +28,9 @@ test('item 4: a regional or touring opening (no market hour) is named; Broadway,
   const u = g.unwatchedOpenings(shows, { nowMs: NOW, embargoAt });
   // reg-override: a regional reviewEmbargoAt only counts if press-night-record accepts it; either way it is not silent.
   const ids = u.map((x) => x.id);
-  assert.ok(ids.includes('reg') && ids.includes('tour'), JSON.stringify(u));
-  assert.ok(!ids.includes('bway') && !ids.includes('we') && !ids.includes('reg-far') && !ids.includes('reg-past') && !ids.includes('reg-closed'));
-  assert.equal(u.find((x) => x.id === 'tour').inDays, 2);
+  assert.deepEqual(ids, ['odd'], JSON.stringify(u));
+  assert.ok(!ids.includes('reg') && !ids.includes('tour') && !ids.includes('bway') && !ids.includes('we') && !ids.includes('reg-far') && !ids.includes('reg-past') && !ids.includes('reg-closed'));
+  assert.equal(u.find((x) => x.id === 'odd').inDays, 2);
 });
 
 test('item 8: specials, and Broadway/West End <=8-week runs, inside 7 days need a decision; a lowered or kept decision settles it; a short Off-Broadway run is not asked', () => {
@@ -52,9 +53,9 @@ test('item 8: specials, and Broadway/West End <=8-week runs, inside 7 days need 
 });
 
 test('rows: a warn row per gap with the shows named, a same-name pass row when clear', () => {
-  const rows = g.pressNightReadinessResults({ shows: [show('tour', 'tour', '2026-11-18'), show('s', 'broadway', '2026-11-18', { type: 'special' })], overrides: { shows: {} }, nowMs: NOW, embargoAt });
+  const rows = g.pressNightReadinessResults({ shows: [show('odd', 'mystery-market', '2026-11-18'), show('s', 'broadway', '2026-11-18', { type: 'special' })], overrides: { shows: {} }, nowMs: NOW, embargoAt });
   assert.deepEqual(rows.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'warn'], ['Press night: score gate undecided', 'warn']]);
-  assert.match(rows[0].message, /tour \(tour, tonight\)/);
+  assert.match(rows[0].message, /odd \(mystery-market, tonight\)/);
   // 02:15Z on the 19th is still the 18th in New York: a show opening the 19th opens tomorrow, not tonight.
   const late = g.scoreGateUndecided([show('x', 'broadway', '2026-11-19', { type: 'special' })], {}, { nowMs: Date.parse('2026-11-19T02:15:00Z') });
   assert.equal(late[0].inDays, 1);
@@ -70,4 +71,11 @@ test('health-check wires both rows, with playbook entries (no silent low-urgency
     const e = health.getPlaybookEntry(r.name);
     assert.ok(e && e.urgency === 'this-week' && e.ownerText && e.workerInstruction, r.name);
   }
+});
+
+test('BRO-8146: a show with no category is named; a throwing embargoAt counts as unwatched; regional-only data gives a pass row', () => {
+  assert.deepEqual(g.unwatchedOpenings([show('n', undefined, '2026-11-20')], { nowMs: NOW, embargoAt }).map((x) => x.id), ['n']);
+  assert.equal(g.unwatchedOpenings([show('b', 'broadway', '2026-11-20')], { nowMs: NOW, embargoAt: () => { throw new Error('boom'); } }).length, 1);
+  const [row] = g.pressNightReadinessResults({ shows: [show('r', 'regional', '2026-11-20'), show('t', 'tour', '2026-11-20')], overrides: {}, nowMs: NOW, embargoAt });
+  assert.equal(row.status, 'pass');
 });
