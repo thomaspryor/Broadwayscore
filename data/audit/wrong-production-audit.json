@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-23T00:00:58.810Z",
+  "timestamp": "2026-11-23T00:58:48.150Z",
   "stats": {
-    "totalReviews": 84145,
-    "alreadyFlagged": 22479,
+    "totalReviews": 84150,
+    "alreadyFlagged": 22481,
     "dateGuardCatches": 240,
     "directorMismatch": 3881,
-    "tvFilmSignals": 2416,
-    "londonSignals": 3966,
+    "tvFilmSignals": 2417,
+    "londonSignals": 3969,
     "offBroadwaySignals": 786,
     "yearMismatch": 394,
     "noPublishDate": 8245
@@ -68661,6 +68661,24 @@
       ]
     },
     {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.whatsonstage.com/news/five-reasons-you-need-to-see-the-afronauts-at-the-royal-court_1737279/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-alchemist-off-broadway-2021",
       "file": "vulture--helen-shaw.json",
       "score": 77,
@@ -100974,7 +100992,7 @@
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 79,
+      "score": 75,
       "publishDate": "2026-11-22",
       "url": "https://theatreandtonic.co.uk/blog/cinderella-at-lyric-hammersmith-review-2026",
       "findings": [
@@ -135384,6 +135402,19 @@
       ]
     },
     {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/the-afronauts/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-alchemist-off-broadway-2021",
       "file": "off-off-online--edward-karam.json",
       "score": 78,
@@ -147775,6 +147806,20 @@
       "score": 82,
       "publishDate": "2019-12-11",
       "url": "https://www.londontheatre.co.uk/reviews/review-three-sisters-at-the-national-theatre-lyttelton",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "three-sisters-west-end-2019",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2019-12-11",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/three-sisters-review-uneven-and-overlong-production-that-struggles-to-find-the-right-tone-gv6fxxd7b",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
