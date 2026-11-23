@@ -10,6 +10,7 @@
  *
  * Options:
  *   --dry-run       Show what would change without modifying files
+ *   --near-opening  Check every Broadway show with a press night 14 days ago to 45 days ahead (BRO-8188)
  *   --show=SLUG     Only process a specific show by slug
  *   --missing-only  Only fill in null/missing dates (default behavior)
  *   --verify        Compare IBDB dates vs shows.json, report discrepancies (no writes)
@@ -49,6 +50,10 @@ const verify = args.includes('--verify');
 const force = args.includes('--force');
 const mergeCredits = args.includes('--merge-credits');
 const missingOnly = !force; // Default: only fill missing
+// BRO-8188: daily pass over Broadway shows whose press night is near, regardless of missing fields, so a
+// postponed opening that IBDB moved is picked up (the missing-only filter skipped every fully-dated show).
+const nearOpening = args.includes('--near-opening');
+const { selectNearOpeningShows, decideOpeningRefresh } = require('./lib/ibdb-opening-refresh');
 
 const showArg = args.find(a => a.startsWith('--show='));
 const showSlug = showArg ? showArg.split('=')[1] : null;
@@ -209,7 +214,10 @@ async function main() {
   }
 
   // If missing-only mode, filter to shows with incomplete dates or empty creative team
-  if (missingOnly && !mergeCredits && !verify && !showSlug) {
+  if (nearOpening && !showSlug) {
+    shows = selectNearOpeningShows(shows, Date.now());
+    console.log(`Near-opening mode: ${shows.length} Broadway show(s) with a press night from 14 days ago to 45 days ahead`);
+  } else if (missingOnly && !mergeCredits && !verify && !showSlug) {
     shows = shows.filter(s =>
       !s.previewsStartDate || !s.openingDate || !s.closingDate ||
       !s.creativeTeam || s.creativeTeam.length === 0
@@ -312,7 +320,11 @@ async function main() {
           current: show.openingDate,
           ibdb: ibdb.openingDate
         });
-        if (force) {
+        // BRO-8188: an IBDB-sourced date follows IBDB when the opening moves (no --force needed).
+        // decideOpeningRefresh refuses human corrections, stronger sources, other productions and old history.
+        const refresh = force ? null : decideOpeningRefresh(show, ibdb.openingDate, Date.now());
+        if (refresh) console.log(`    ${refresh.refresh ? '📅' : '·'} openingDate ${show.openingDate} vs IBDB ${ibdb.openingDate}: ${refresh.reason}`);
+        if (force || (refresh && refresh.refresh)) {
           showChanges.push({
             field: 'openingDate',
             old: show.openingDate,
