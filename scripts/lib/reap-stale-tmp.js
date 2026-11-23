@@ -312,7 +312,7 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
     summary.skipped = `error: ${e.message}`;
   } finally {
     if (removedFd !== null) { try { fs.closeSync(removedFd); } catch { /* closed */ } }
-    if (lockDir) { try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* gone */ } }
+    if (lockDir) { try { fs.rmSync(lockDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 }); } catch { /* gone */ } }
   }
   return summary;
 }

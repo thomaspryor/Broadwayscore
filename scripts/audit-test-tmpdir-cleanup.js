@@ -14,6 +14,7 @@
  * (registers t.after rm -rf) or an explicit fs.rmSync in an after() hook.
  * Advisory in CI first (CLAUDE.md section 19).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -54,5 +55,5 @@ function main(argv) {
   return argv.includes('--strict') && fresh.length ? 1 : 0;
 }
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) process.exitCode = main(process.argv.slice(2));
 module.exports = { flagged, main };

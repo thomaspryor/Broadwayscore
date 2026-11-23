@@ -230,7 +230,7 @@ test('BRO-8179 stale tmp tiers: 4h-old mkdtemp fixture reaped; 4h-old hand-named
   const g = (cwd, ...a) => execFileSync('git', ['-C', cwd, '-c', 'user.email=t@t', '-c', 'user.name=t', ...a], { stdio: 'ignore' });
   // An origin outside the reap root, so a clone of it has its commits on a remote.
   const originParent = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8179-origin-'));
-  after(() => fs.rmSync(originParent, { recursive: true, force: true }));
+  after(() => fs.rmSync(originParent, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }));
   const origin = path.join(originParent, 'o');
   fs.mkdirSync(origin); g(origin, 'init', '-q'); fs.writeFileSync(path.join(origin, 'a.txt'), 'a'); g(origin, 'add', '.'); g(origin, 'commit', '-qm', 'x');
   const clone = (rel) => { const d = path.join(r, rel); fs.mkdirSync(path.dirname(d), { recursive: true }); execFileSync('git', ['clone', '-q', origin, d], { stdio: 'ignore' }); return d; };
@@ -298,7 +298,7 @@ test('BRO-8179 stale tmp: one reaper at a time; removed paths logged; locked wor
   const inner = path.join(outer, 'data', 'review-texts'); fs.mkdirSync(inner, { recursive: true }); g(inner, 'init', '-q'); fs.writeFileSync(path.join(inner, 'r.json'), '{}');
   // A locked linked worktree whose main repo lives outside the root.
   const mainParent = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8179-main-'));
-  after(() => fs.rmSync(mainParent, { recursive: true, force: true }));
+  after(() => fs.rmSync(mainParent, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }));
   g(mainParent, 'init', '-q'); fs.writeFileSync(path.join(mainParent, 'a'), 'a'); g(mainParent, 'add', '.'); g(mainParent, 'commit', '-qm', 'x');
   const wt = path.join(r, 'bro-locked-wt'); g(mainParent, 'worktree', 'add', '-q', '--detach', wt); g(mainParent, 'worktree', 'lock', wt);
   for (const d of [outer, wt]) ageTree(d, 10 * DAY_MS);
