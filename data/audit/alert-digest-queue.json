@@ -963,6 +963,33 @@
     "queuedAt": "2026-11-22T23:56:54.742Z"
   },
   {
+    "conditionKey": "land-preexisting:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure]",
+    "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
+    "description": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8075-seat-notes-mobile. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45086817728",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45086817728"
+      }
+    ],
+    "queuedAt": "2026-11-23T00:28:05.305Z"
+  },
+  {
     "conditionKey": "cloud-parity-drift",
     "title": "Cloud parity drift: 7 repo copies differ from ~/.claude — still happening after 7 days",
     "description": "Filed BRO-8077: this has been happening for 7+ days without clearing.\n\nThese repo files differ from their ~/.claude masters. Cloud sessions run only the repo copy:\n- .claude/hooks/infra-post-write-audit.sh\n- .claude/hooks/pre-merge-review-gate.sh\n- .claude/hooks/pre-push-review-gate.sh\n- .claude/hooks/pre-push-visual-gate.sh\n- .claude/hooks/session-start.sh\n- .claude/hooks/verify-edits.sh\n- .claude/hooks/worktree-enforce.sh\n\nMerge best-of-both, make both sides identical, commit the repo side and claude-sync push.",

@@ -48156,13 +48156,13 @@
       "title": "Test red on main: every shows.json id suffix matches its category [testCodeFailure]",
       "firstSeen": "2026-11-22T09:41:14.867Z",
       "incidentOpenedAt": "2026-11-22T09:41:14.867Z",
-      "lastSeen": "2026-11-23T00:07:41.374Z",
+      "lastSeen": "2026-11-23T00:28:05.337Z",
       "lastNotifiedAt": "2026-11-22T09:41:14.867Z",
       "lastSurfacedAt": "2026-11-22T09:41:14.867Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 42
+      "silentRefires": 43
     },
     "land-preexisting:scripts/newsletter/featured-state-persist-order.test.mjs::broadway edition persists every opening it#31ea20cf8f": {
       "status": "open",
@@ -48583,6 +48583,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-11-22T22:32:48.992Z"
+    },
+    "land-preexisting:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure]": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
+      "firstSeen": "2026-11-23T00:28:05.304Z",
+      "incidentOpenedAt": "2026-11-23T00:28:05.304Z",
+      "lastSeen": "2026-11-23T00:28:05.304Z",
+      "lastNotifiedAt": "2026-11-23T00:28:05.304Z",
+      "lastSurfacedAt": "2026-11-23T00:28:05.304Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
