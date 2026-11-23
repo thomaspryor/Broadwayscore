@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-23T12:53:39.363Z",
+  "runDate": "2026-11-23T12:56:38.512Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "dick-whittington-and-his-cat-off-west-end-2026",
+    "showFilter": "the-ugly-one-off-west-end-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,24 +28,24 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "dick-whittington-and-his-cat-off-west-end-2026"
+      "the-ugly-one-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,20 +65,18 @@
       "failed": 0
     }
   },
-  "processed": [
-    "dick-whittington-and-his-cat-off-west-end-2026/harry-theatre-life--unknown.json"
+  "processed": [],
+  "failed": [
+    "the-ugly-one-off-west-end-2026/plays-to-see--unknown.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "dick-whittington-and-his-cat-off-west-end-2026/harry-theatre-life--unknown.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "the-ugly-one-off-west-end-2026/plays-to-see--unknown.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [
-      "dick-whittington-and-his-cat-off-west-end-2026/harry-theatre-life--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -88,6 +86,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Plays To See": {
+      "count": 1,
+      "domain": "playstosee.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
