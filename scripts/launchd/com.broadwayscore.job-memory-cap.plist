@@ -9,8 +9,10 @@
      least 30s apart, so worst case ~2 min after crossing the cap.
      Install: cp scripts/launchd/com.broadwayscore.job-memory-cap.plist ~/Library/LaunchAgents/
               launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.job-memory-cap.plist
-     Liveness: dispatch-watchdog.js --health pages when
-     data/audit/job-memory-cap-state.json is older than 5 min. -->
+     Liveness: dispatch-watchdog.js --health pages when this agent's own
+     heartbeat (data/audit/job-memory-cap-agent.json) is older than 5 min.
+     Off switch (seen by every enforcer, unlike a shell env var):
+     touch ~/.claude/state/job-memory-cap-off -->
 <dict>
   <key>Label</key>
   <string>com.broadwayscore.job-memory-cap</string>

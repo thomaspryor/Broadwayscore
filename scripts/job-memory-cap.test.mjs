@@ -173,7 +173,7 @@ test('BRO-8167: lease with a recycled/non-claude pid is never treated as a live 
 
 test('BRO-8167: BSC_JOB_MEMORY_CAP_OFF=1 disables the watchdog pass; claude-cli cap is opt-in', async () => {
   assert.equal(mcLib.capDisabled({ BSC_JOB_MEMORY_CAP_OFF: '1' }), true);
-  assert.equal(mcLib.capDisabled({}), false);
+  assert.equal(mcLib.capDisabled({}, null), false);
   process.env.BSC_JOB_MEMORY_CAP_OFF = '1';
   try {
     const r = await mcLib.runLeasePass({ jobs: [{ key: 'a', pid: 100, taskId: 't' }], rows: mcRows(40), statePath: '/nonexistent/x', capGB: 8, ledger: {}, killFn: async () => { throw new Error('must not kill'); } });
@@ -373,4 +373,60 @@ test('BRO-8175: --health pages when the 60s agent state is stale or missing, not
   assert.equal(pages.length, 2);
   assert.equal(pages[0].conditionKey, 'job-memory-cap-agent-stale');
   assert.equal(checkMemoryCapLiveness({ statePath, page, env: { BSC_JOB_MEMORY_CAP_OFF: '1' } }).skipped, 'disabled');
+});
+
+
+// ── BRO-8175 ship-check fixes ───────────────────────────────────────────────
+test('BRO-8175: FAILED row is written BEFORE the kill (runner dedupe sees it)', async () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-order-'));
+  const order = [];
+  const pass = (now) => mcLib.runLeasePass({ jobs: [{ key: 'j', pid: 100, taskId: 't', jobId: 'j' }], rows: mcRows(4), statePath: pathMc.join(dir, 's.json'), capGB: 8, now, log: () => {},
+    ledger: { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry: () => order.push('ledger') }, killFn: async () => order.push('kill') });
+  const t0 = Date.now();
+  await pass(t0); await pass(t0 + 60e3);
+  assert.deepEqual(order, ['ledger', 'kill']);
+});
+
+test('BRO-8175: a lock older than LOCK_STALE_MS is reclaimed even if its pid is (re)used by a live process', () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-lock2-'));
+  const lockDir = pathMc.join(dir, 'l.lock');
+  fsMc.mkdirSync(lockDir); fsMc.writeFileSync(pathMc.join(lockDir, 'pid'), String(process.ppid));
+  assert.equal(mcLib.acquirePassLock(lockDir), null, 'young lock with live holder blocks');
+  const release = mcLib.acquirePassLock(lockDir, { now: Date.now() + mcLib.LOCK_STALE_MS + 1000 });
+  assert.equal(typeof release, 'function', 'stale lock reclaimed regardless of pid liveness');
+  // someone else replaced it: our release must not delete their lock
+  fsMc.writeFileSync(pathMc.join(lockDir, 'pid'), String(process.ppid));
+  release();
+  assert.equal(fsMc.existsSync(lockDir), true, 'release only removes a lock we still own');
+});
+
+test('BRO-8175: an under-cap reading with footprint unavailable holds an existing strike (no false recovery)', () => {
+  const job = [{ key: 'k', pid: 100 }];
+  const now = Date.now();
+  const rows = [{ pid: 100, ppid: 1, pgid: 100, rssKB: 3 * GBKB, footprintMissing: true }];
+  const r = mcLib.evaluatePass({ jobs: job, rows, prevStrikes: { k: 1 }, prevStrikeAt: { k: now - 60e3 }, capGB: 8, now });
+  assert.equal(r.nextStrikes.k, 1);
+  assert.equal(r.perJob[0].degraded, true);
+  assert.equal(r.kills.length, 0);
+  const ok = mcLib.evaluatePass({ jobs: job, rows: [{ ...rows[0], footprintMissing: undefined, footprintBytes: 3 * 1024 ** 3 }], prevStrikes: { k: 1 }, prevStrikeAt: { k: now - 60e3 }, capGB: 8, now });
+  assert.equal(ok.nextStrikes.k, undefined, 'a full (footprint) under-cap reading clears it');
+});
+
+test('BRO-8175: off-switch FILE disables the cap (launchd cannot see shell env)', () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-off-'));
+  const f = pathMc.join(dir, 'job-memory-cap-off');
+  assert.equal(mcLib.capDisabled({}, f), false);
+  fsMc.writeFileSync(f, '');
+  assert.equal(mcLib.capDisabled({}, f), true);
+});
+
+test('BRO-8175: agent heartbeat is written even when the pass skipped, and is what --health reads', () => {
+  const wd = require('./dispatch-watchdog.js');
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-hb-'));
+  const hb = pathMc.join(dir, 'agent.json');
+  wd.writeMemoryCapAgentHeartbeat({ perJob: [], killed: [], skipped: 'ps-unavailable' }, hb);
+  const j = JSON.parse(fsMc.readFileSync(hb, 'utf8'));
+  assert.equal(j.skipped, 'ps-unavailable');
+  assert.equal(wd.checkMemoryCapLiveness({ statePath: hb, page: () => { throw new Error('fresh: no page'); }, env: {} }).stale, false);
+  assert.match(wd.MEMORY_CAP_AGENT_HEARTBEAT, /job-memory-cap-agent\.json$/, 'liveness reads the agent-only heartbeat, not the shared strike state');
 });

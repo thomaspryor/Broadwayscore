@@ -432,9 +432,21 @@ async function memoryCapPass({ dryRun, rows = undefined, jobs = undefined, ledge
 
 // BRO-8175: the 60s launchd agent (com.broadwayscore.job-memory-cap) writes
 // the state file's ts every pass. A StartInterval timer can stop silently
-// (BRO-3635), so the 15-min --health tick pages when that ts goes stale.
+// (BRO-3635), so the 15-min --health tick pages when the agent's own heartbeat goes stale.
 const MEMORY_CAP_STALE_MS = 5 * 60 * 1000;
-function checkMemoryCapLiveness({ statePath = MEMORY_CAP_STATE_PATH, now = Date.now(), page = pageOwner, env = process.env } = {}) {
+// Written ONLY by --memory-cap (the launchd agent), on every run including
+// ps-unavailable/locked skips — so the dashboard sweep, which shares the
+// strike state file, can never make a dead agent look alive.
+const MEMORY_CAP_AGENT_HEARTBEAT = path.join(REPO, 'data', 'audit', 'job-memory-cap-agent.json');
+function writeMemoryCapAgentHeartbeat(r, file = MEMORY_CAP_AGENT_HEARTBEAT) {
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    const tmp = `${file}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify({ ts: new Date().toISOString(), pid: process.pid, jobs: r.perJob.length, killed: r.killed.length, degraded: r.perJob.filter(j => j.degraded).length, skipped: r.skipped || null }, null, 2));
+    fs.renameSync(tmp, file);
+  } catch (e) { console.error(`[memory-cap] heartbeat write failed: ${e.message}`); }
+}
+function checkMemoryCapLiveness({ statePath = MEMORY_CAP_AGENT_HEARTBEAT, now = Date.now(), page = pageOwner, env = process.env } = {}) {
   const cap = require('./lib/job-memory-cap.js');
   if (cap.capDisabled(env)) return { stale: false, ageMs: null, skipped: 'disabled' };
   const ageMs = cap.stateAgeMs(statePath, now);
@@ -1420,7 +1432,9 @@ async function main() {
   // BRO-8175: before the dispatch kill switch — pausing dispatch must never
   // also switch off the guard that stops a runaway worker stalling the Mac.
   if (argv.includes('--memory-cap')) {
-    const r = await memoryCapPass({ dryRun: false });
+    let r;
+    try { r = await memoryCapPass({ dryRun: false }); } catch (e) { r = { perJob: [], killed: [], skipped: `error: ${e.message}` }; }
+    writeMemoryCapAgentHeartbeat(r);
     console.log(`[memory-cap] ${new Date().toISOString()} jobs=${r.perJob.length} killed=${r.killed.length}${r.skipped ? ` skipped=${r.skipped}` : ''}`);
     return 0;
   }
@@ -1459,7 +1473,7 @@ if (require.main === module) {
     .catch(e => { console.error(`watchdog fatal: ${e.message}`); process.exitCode = 1; });
 }
 module.exports = {
-  main, ensureTab, memoryCapPass, checkMemoryCapLiveness, MEMORY_CAP_STALE_MS, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
+  main, ensureTab, memoryCapPass, checkMemoryCapLiveness, MEMORY_CAP_STALE_MS, MEMORY_CAP_AGENT_HEARTBEAT, writeMemoryCapAgentHeartbeat, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   deliverDispatcherWakes, // BRO-8079
   pageIfKillSwitchStale,
   // BRO-2412: exported so the heartbeat-fresh-but-no-dispatch path is tested

@@ -33,7 +33,13 @@ const KILL_GRACE_MS = 10 * 1000;
 const GB = 1024 * 1024 * 1024;
 
 /** BSC_JOB_MEMORY_CAP_OFF=1 turns BOTH enforcement points off (rollback switch). */
-function capDisabled(env = process.env) { return String(env.BSC_JOB_MEMORY_CAP_OFF || '').trim() === '1'; }
+// BRO-8175: launchd agents do not see a shell's env, so the off switch is also
+// a file every enforcer (runner, dashboard sweep, 60s agent) checks.
+const OFF_FILE = path.join(require('os').homedir(), '.claude', 'state', 'job-memory-cap-off');
+function capDisabled(env = process.env, offFile = OFF_FILE) {
+  if (String(env.BSC_JOB_MEMORY_CAP_OFF || '').trim() === '1') return true;
+  try { return !!offFile && fs.existsSync(offFile); } catch { return false; }
+}
 
 /** BSC_JOB_MEMORY_CAP_GB -> GB. Blank/invalid/<=0 falls back to the default (a typo must not disable the guard). */
 function parseCapGB(raw, warn = console.error) {
@@ -109,7 +115,10 @@ function sampleJobRows(rootPids, { psExec = execFileSync, fpExec = execFileSync 
   const members = new Set();
   for (const p of rootPids) for (const r of treeOf(p, rows)) members.add(r.pid);
   const fp = sampleFootprints([...members], fpExec);
-  return rows.map(r => (fp.has(r.pid) ? { ...r, footprintBytes: fp.get(r.pid) } : r));
+  return rows.map(r => {
+    if (fp.has(r.pid)) return { ...r, footprintBytes: fp.get(r.pid) };
+    return members.has(r.pid) ? { ...r, footprintMissing: true } : r;
+  });
 }
 
 /** Bytes charged to one process: the larger of RSS and phys_footprint, so the cap never sees less than before. */
@@ -172,9 +181,15 @@ function evaluatePass({ jobs, rows, prevStrikes = {}, capGB = DEFAULT_CAP_GB, re
     const prev = prevStrikes[j.key] || 0;
     const lastAt = prevStrikeAt ? prevStrikeAt[j.key] : undefined;
     const tooSoon = prev > 0 && Number.isFinite(lastAt) && now - lastAt < minGapMs;
-    const strikes = over ? (tooSoon ? prev : prev + 1) : 0;
+    // BRO-8175: an under-cap reading built on RSS fallback (footprint failed
+    // for a tree member) is not proof the job recovered — RSS misses
+    // compressed pages. Hold the strike instead of clearing it.
+    const degraded = tree.some(r => r.footprintMissing);
+    const hold = !over && degraded && prev > 0;
+    const strikes = over ? (tooSoon ? prev : prev + 1) : (hold ? prev : 0);
     if (over) { nextStrikes[j.key] = strikes; nextStrikeAt[j.key] = tooSoon ? lastAt : now; }
-    const entry = { ...j, memBytes, memGB: memBytes / GB, over, strikes, pids: tree.map(r => r.pid) };
+    if (hold) { nextStrikes[j.key] = prev; if (Number.isFinite(lastAt)) nextStrikeAt[j.key] = lastAt; }
+    const entry = { ...j, memBytes, memGB: memBytes / GB, over, degraded, strikes, pids: tree.map(r => r.pid) };
     perJob.push(entry);
     if (strikes >= requiredStrikes) kills.push(entry);
   }
@@ -263,22 +278,30 @@ function pidAlive(pid) { try { process.kill(pid, 0); return true; } catch (e) { 
  * a holder that died (SIGKILL/jetsam under memory pressure) is reclaimed, a
  * pid-less dir is only broken once it is older than 60s.
  */
+const LOCK_STALE_MS = 2 * 60 * 1000; // a pass is ~kills x 10s grace + ps/footprint; 2 min is never legitimate
 function acquirePassLock(lockDir, { alive = pidAlive, now = Date.now() } = {}) {
   const pidFile = path.join(lockDir, 'pid');
+  const mine = String(process.pid);
+  const ownsIt = () => { try { return fs.readFileSync(pidFile, 'utf8').trim() === mine; } catch { return false; } };
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       fs.mkdirSync(path.dirname(lockDir), { recursive: true });
       fs.mkdirSync(lockDir);
-      fs.writeFileSync(pidFile, String(process.pid));
-      return () => { try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* gone */ } };
+      fs.writeFileSync(pidFile, mine);
+      // Same ownership re-read as dispatch-watchdog acquireLock: a reclaimer
+      // that replaced the dir between our mkdir and now wins; we back off.
+      if (!ownsIt()) return null;
+      return () => { if (ownsIt()) { try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* gone */ } } };
     } catch {
+      let ageMs = 0;
+      try { ageMs = now - fs.statSync(lockDir).mtimeMs; } catch { continue; }
       let holder = null;
       try { holder = parseInt(fs.readFileSync(pidFile, 'utf8'), 10); } catch { holder = null; }
-      if (holder) { if (holder !== process.pid && alive(holder)) return null; }
-      else {
-        let ageMs = 0;
-        try { ageMs = now - fs.statSync(lockDir).mtimeMs; } catch { continue; }
-        if (ageMs < 60 * 1000) return null;
+      // A live holder blocks only while the lock is young: after SIGKILL/jetsam
+      // the pid can be reused by any process (EPERM reads as alive).
+      if (ageMs < LOCK_STALE_MS) {
+        if (holder && holder !== process.pid && alive(holder)) return null;
+        if (!holder && ageMs < 60 * 1000) return null;
       }
       try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* raced */ }
     }
@@ -307,7 +330,10 @@ async function runLeasePass({ jobs, rows, statePath, capGB, dryRun = false, ledg
     const killed = [];
     for (const k of kills) {
       const reason = memoryCapReason(k, capGB);
-      await killFn(k.pids);
+      // Row BEFORE the kill (BRO-8175): the runner, if alive, sees its child
+      // close within the SIGTERM grace and checks for an existing terminal
+      // row; written after killTree's 10s grace it found none and appended a
+      // second FAILED row (two dead attempts for one job).
       // stage stays the shared 'error' spelling (claude-cli.js STAGES contract);
       // the cap rides as fields so retry/breaker classification is unchanged.
       // rssGB keeps its BRO-8167 name for ledger readers; it now carries the
@@ -315,6 +341,7 @@ async function runLeasePass({ jobs, rows, statePath, capGB, dryRun = false, ledg
       try {
         ledger.appendEntry({ event: ledger.JOB_EVENTS.FAILED, taskId: k.taskId, jobId: k.jobId, stage: 'implementer-error', reason, memoryCapGB: capGB, rssGB: Number(k.memGB.toFixed(2)), detail: reason, killedBy: 'watchdog-memory-cap' });
       } catch (e) { log(`[memory-cap] ledger write failed: ${e.message}`); }
+      await killFn(k.pids);
       if (alert) { try { alert({ taskId: k.taskId, jobId: k.jobId, reason }); } catch { /* alert is best effort */ } }
       delete nextStrikes[k.key];
       delete nextStrikeAt[k.key];
@@ -326,12 +353,12 @@ async function runLeasePass({ jobs, rows, statePath, capGB, dryRun = false, ledg
 }
 
 function logPerJob(perJob, capGB, log) {
-  for (const j of perJob) log(`[memory-cap] ${j.taskId} job=${j.jobId || '?'} pid=${j.pid} tree=${j.pids.length} proc mem=${j.memGB.toFixed(2)}GB cap=${capGB}GB${j.over ? ` OVER (strike ${j.strikes})` : ''}`);
+  for (const j of perJob) log(`[memory-cap] ${j.taskId} job=${j.jobId || '?'} pid=${j.pid} tree=${j.pids.length} proc mem=${j.memGB.toFixed(2)}GB${j.degraded ? ' (footprint unavailable, RSS only)' : ''} cap=${capGB}GB${j.over ? ` OVER (strike ${j.strikes})` : ''}`);
 }
 
 module.exports = {
   DEFAULT_CAP_GB, REQUIRED_STRIKES, SAMPLE_INTERVAL_MS, KILL_GRACE_MS, MIN_STRIKE_GAP_MS, STRIKE_MAX_AGE_MS,
-  capDisabled, parseCapGB, parsePsTable, sampleProcessTable, treeOf, treeRssBytes, evaluatePass,
+  OFF_FILE, LOCK_STALE_MS, capDisabled, parseCapGB, parsePsTable, sampleProcessTable, treeOf, treeRssBytes, evaluatePass,
   parseFootprintOutput, sampleFootprints, sampleJobRows, procBytes,
   killTree, memoryCapReason, liveJobsFromLeases, runLeasePass,
   readState, readStrikes, writeStrikes, stateAgeMs, acquirePassLock,
