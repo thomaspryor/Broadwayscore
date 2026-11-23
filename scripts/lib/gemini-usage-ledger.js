@@ -56,7 +56,7 @@ const ANTHROPIC_HOST = 'api.anthropic.com';
 // Batch APIs bill at half the synchronous list price (all three vendors).
 const BATCH_DISCOUNT = 0.5;
 const REPO_ROOT = path.join(__dirname, '..', '..');
-// Cloud sessions' rows (BRO-8108); see sessionLedgerPath().
+// Session rows folded in at wrap-up (BRO-8108); see foldSessionRows().
 const TRACKED_SESSION_LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'llm-session-usage.jsonl');
 
 // Gemini: USD per 1M tokens (input, output). Published list prices, standard
@@ -349,12 +349,26 @@ function usageFromResponse(provider, json) {
 function sessionLedgerPath() {
   if (process.env.LLM_SESSION_LEDGER_PATH) return process.env.LLM_SESSION_LEDGER_PATH;
   if (process.env.GEMINI_USAGE_LEDGER_PATH || process.env.GITHUB_ACTIONS || isTestRun()) return _ledgerPath();
-  // BRO-8108: a cloud session's home folder dies with its container, so its rows (every
-  // /ship-check and /plan-review Gemini run) never reached any ledger: a ~$190/day Carbon
-  // bill showed as ~$5. Cloud writes a tracked file instead, committed with the session's
-  // retro row at wrap-up and carried to main by its land push (merge=union).
-  if (process.env.CLAUDE_CODE_REMOTE === 'true') return TRACKED_SESSION_LEDGER_PATH;
   return path.join(os.homedir(), '.claude', 'state', 'llm-session-usage.jsonl');
+}
+
+/**
+ * BRO-8108: a cloud session's home folder dies with its container, so its session rows (every
+ * /ship-check and /plan-review Gemini run) never reached any ledger: a ~$190/day Carbon bill
+ * showed as ~$5. Writing the tracked file mid-session tripped review.js's tree tripwire when
+ * reviewers ran in parallel, so rows stay in the home file during the session and are copied
+ * here at wrap-up (record-claude-session-cost.js), into the tracked merge=union file the
+ * session commits with its cost row. Copies only lines not already there. Returns rows added.
+ */
+function foldSessionRows({ from = sessionLedgerPath(), to = TRACKED_SESSION_LEDGER_PATH } = {}) {
+  if (path.resolve(from) === path.resolve(to)) return 0;
+  const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split('\n').filter((l) => l.trim()); } catch { return []; } };
+  const have = new Set(lines(to));
+  const add = lines(from).filter((l) => { if (have.has(l)) return false; try { JSON.parse(l); } catch { return false; } have.add(l); return true; });
+  if (!add.length) return 0;
+  fs.mkdirSync(path.dirname(to), { recursive: true });
+  fs.appendFileSync(to, add.join('\n') + '\n');
+  return add.length;
 }
 
 /**
@@ -604,4 +618,5 @@ module.exports = {
   install,
   LEDGER_PATH,
   TRACKED_SESSION_LEDGER_PATH,
+  foldSessionRows,
 };

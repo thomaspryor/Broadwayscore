@@ -177,23 +177,33 @@ test('every Gemini pin in models.js has a price row', () => {
   assert.equal(L.estimateCostUsd('gemini-4-carbon', 1e6, 1e6), 24); // old rows still price
 });
 
-// BRO-8108: a cloud session's home folder dies with its container, so session rows written
-// there (every /ship-check Gemini review) never reached any ledger and a ~$190/day bill read as ~$5.
-test('cloud sessions log session rows to the tracked ledger, not the dying home folder', async () => {
+// BRO-8108: a cloud session's home folder dies with its container, so session rows (every
+// /ship-check Gemini review) never reached any ledger and a ~$190/day bill read as ~$5.
+// In-session writes stay in the home file (a tracked write tripped review.js's tree tripwire
+// when reviewers ran in parallel); wrap-up folds them into the tracked file.
+test('cloud sessions still write the home file during the session (no tracked-tree writes)', async () => {
   const { spawnSync } = await import('node:child_process');
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-'));
-  const run = (extra) => {
-    const env = { PATH: process.env.PATH, HOME: home, ...extra };
-    const r = spawnSync(process.execPath, ['-e', 'process.stdout.write(require(process.argv[1]).sessionLedgerPath())', require.resolve('./gemini-usage-ledger.js')], { env, encoding: 'utf8' });
-    assert.equal(r.status, 0, r.stderr);
-    return r.stdout;
-  };
-  assert.equal(run({ CLAUDE_CODE_REMOTE: 'true' }), L.TRACKED_SESSION_LEDGER_PATH);
-  assert.ok(L.TRACKED_SESSION_LEDGER_PATH.endsWith(path.join('data', 'audit', 'llm-session-usage.jsonl')));
-  assert.equal(run({}), path.join(home, '.claude', 'state', 'llm-session-usage.jsonl'));
-  assert.equal(run({ CLAUDE_CODE_REMOTE: 'true', LLM_SESSION_LEDGER_PATH: '/x/y.jsonl' }), '/x/y.jsonl');
+  const r = spawnSync(process.execPath, ['-e', 'process.stdout.write(require(process.argv[1]).sessionLedgerPath())', require.resolve('./gemini-usage-ledger.js')],
+    { env: { PATH: process.env.PATH, HOME: home, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(r.stdout, path.join(home, '.claude', 'state', 'llm-session-usage.jsonl'));
   const attrs = fs.readFileSync(path.join(path.dirname(require.resolve('./gemini-usage-ledger.js')), '..', '..', '.gitattributes'), 'utf8');
   assert.match(attrs, /^data\/audit\/llm-session-usage\.jsonl merge=union$/m);
+});
+
+test('foldSessionRows copies new session rows once into the tracked ledger', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-fold-'));
+  const from = path.join(dir, 'home.jsonl');
+  const to = path.join(dir, 'repo', 'data', 'audit', 'llm-session-usage.jsonl');
+  const a = JSON.stringify({ ts: '2026-11-23T00:00:00Z', provider: 'gemini', model: 'gemini-3.8-flash', costUsd: 0.13 });
+  const b = JSON.stringify({ ts: '2026-11-23T00:01:00Z', provider: 'openai', model: 'gpt-x', costUsd: 0.01 });
+  fs.writeFileSync(from, a + '\nnot json\n' + b + '\n');
+  assert.equal(L.foldSessionRows({ from, to }), 2);
+  assert.equal(L.foldSessionRows({ from, to }), 0, 'a second wrap-up adds nothing');
+  assert.deepEqual(fs.readFileSync(to, 'utf8').trim().split('\n'), [a, b]);
+  assert.equal(L.foldSessionRows({ from: path.join(dir, 'missing.jsonl'), to }), 0);
+  assert.equal(L.foldSessionRows({ from: to, to }), 0, 'same file is a no-op');
 });
 
 test('the usage summary reads committed cloud-session rows', () => {

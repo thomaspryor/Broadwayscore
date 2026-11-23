@@ -72,8 +72,11 @@ function main() {
   if (args['dry-run']) { rows.forEach((r) => console.log(JSON.stringify(r))); return failed ? 1 : 0; }
   const r = rows.length ? appendRows(rows, { file: C.ledgerPath(REPO) }) : { written: 0, replaced: 0 };
   console.log(`${C.LEDGER_REL}: ${r.written} row(s) written (${r.replaced} replaced same-day rows), ${failed} skipped`);
-  const pending = sessionUsagePending(REPO);
-  if (pending) console.log(`${SESSION_USAGE_REL} has uncommitted reviewer-spend rows: commit it with the cost row (BRO-8108).`);
+  // BRO-8108: copy this machine's session LLM rows (reviewer spend) into the tracked ledger now,
+  // since a cloud home folder dies with the container.
+  let folded = 0;
+  try { folded = require('./lib/gemini-usage-ledger.js').foldSessionRows(); } catch (e) { console.error(`session LLM rows not folded: ${e.message}`); }
+  if (folded || sessionUsagePending(REPO)) console.log(`${SESSION_USAGE_REL}: ${folded} session LLM row(s) added; commit it with the cost row (BRO-8108).`);
   return failed ? 1 : 0;
 }
 
