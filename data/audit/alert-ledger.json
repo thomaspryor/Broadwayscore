@@ -48623,13 +48623,13 @@
       "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
       "firstSeen": "2026-11-23T00:31:00.296Z",
       "incidentOpenedAt": "2026-11-23T00:31:00.296Z",
-      "lastSeen": "2026-11-23T16:03:57.623Z",
+      "lastSeen": "2026-11-23T16:14:39.964Z",
       "lastNotifiedAt": "2026-11-23T00:31:00.296Z",
       "lastSurfacedAt": "2026-11-23T00:31:00.296Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 53
+      "silentRefires": 54
     },
     "land:land/bro-8065-takeover": {
       "status": "resolved",
@@ -49045,7 +49045,7 @@
       "resolvedAt": "2026-11-23T14:54:58.487Z"
     },
     "land:land/bro-8112-venue-parity": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-8112-venue-parity",
       "firstSeen": "2026-11-23T14:29:33.966Z",
@@ -49056,7 +49056,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-23T16:14:39.847Z"
     },
     "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)": {
       "status": "open",
