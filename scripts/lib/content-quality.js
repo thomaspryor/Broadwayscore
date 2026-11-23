@@ -847,9 +847,12 @@ function detectWrongArticle(text, showTitle) {
  * @type {string[]}
  */
 let _cachedBroadwayShows = null;
+let _cachedBroadwayShowsPath = null; // cache keyed by the shows.json path (SHOWS_JSON_PATH fixtures)
 
 function loadBroadwayShows() {
-  if (_cachedBroadwayShows) return _cachedBroadwayShows;
+  const _curShowsPath = require('./shows-json-path').showsJsonPath();
+  if (_cachedBroadwayShows && _cachedBroadwayShowsPath === _curShowsPath) return _cachedBroadwayShows;
+  _cachedBroadwayShowsPath = _curShowsPath;
 
   // Try loading from shows.json
   try {
