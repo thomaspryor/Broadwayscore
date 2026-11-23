@@ -280,3 +280,36 @@ test('BRO-8179 stale tmp: unreadable git status gets 7d grace (not forever); an 
   assert.equal(fs.existsSync(fake8d), false, 'unreadable status, 8d idle: reaped');
   assert.equal(fs.existsSync(d), true, 'file edited 2d ago inside an untracked dir keeps the clone');
 });
+
+test('BRO-8179 stale tmp: one reaper at a time; removed paths logged; locked worktree and dirty repo nested under a clean repo kept', () => {
+  const r = root();
+  const g = (cwd, ...a) => execFileSync('git', ['-C', cwd, '-c', 'user.email=t@t', '-c', 'user.name=t', ...a], { stdio: 'ignore' });
+  const victim = path.join(r, 'orj-Zz9yX1'); fs.mkdirSync(victim); ageTree(victim, 2 * DAY_MS);
+  // Live holder: this test process's own pid.
+  fs.mkdirSync(path.join(r, '.bro-reap-stale-tmp.lock')); fs.writeFileSync(path.join(r, '.bro-reap-stale-tmp.lock', 'pid'), String(process.pid));
+  const held = S.reapStaleTmp({ root: r, snapshotFn: () => [], measure: false });
+  assert.match(held.skipped || '', /another reaper running/);
+  assert.equal(fs.existsSync(victim), true);
+  // Dead holder: taken over.
+  fs.writeFileSync(path.join(r, '.bro-reap-stale-tmp.lock', 'pid'), String(deadPid()));
+  // A clean outer repo with a dirty ignored nested clone (data/review-texts shape).
+  const outer = path.join(r, 'bro-outer');
+  fs.mkdirSync(outer); g(outer, 'init', '-q'); fs.writeFileSync(path.join(outer, '.gitignore'), 'data/\n'); g(outer, 'add', '.'); g(outer, 'commit', '-qm', 'x');
+  const inner = path.join(outer, 'data', 'review-texts'); fs.mkdirSync(inner, { recursive: true }); g(inner, 'init', '-q'); fs.writeFileSync(path.join(inner, 'r.json'), '{}');
+  // A locked linked worktree whose main repo lives outside the root.
+  const mainParent = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8179-main-'));
+  after(() => fs.rmSync(mainParent, { recursive: true, force: true }));
+  g(mainParent, 'init', '-q'); fs.writeFileSync(path.join(mainParent, 'a'), 'a'); g(mainParent, 'add', '.'); g(mainParent, 'commit', '-qm', 'x');
+  const wt = path.join(r, 'bro-locked-wt'); g(mainParent, 'worktree', 'add', '-q', '--detach', wt); g(mainParent, 'worktree', 'lock', wt);
+  for (const d of [outer, wt]) ageTree(d, 10 * DAY_MS);
+  { const t = (Date.now() - 2 * DAY_MS) / 1000; fs.utimesSync(path.join(inner, 'r.json'), t, t); }
+  const logFile = path.join(r, '..', `reap-log-${process.pid}.log`);
+  after(() => fs.rmSync(logFile, { force: true }));
+  const s = S.reapStaleTmp({ root: r, snapshotFn: () => [], measure: false, removedLog: logFile });
+  assert.equal(s.skipped, undefined, JSON.stringify(s));
+  assert.equal(fs.existsSync(victim), false, 'dead holder lock taken over, victim reaped');
+  assert.equal(fs.existsSync(inner), true, 'ignored nested clone with a 2d-old uncommitted file kept, though the outer repo is clean');
+  assert.equal(fs.existsSync(wt), true, 'locked worktree kept');
+  assert.match(fs.readFileSync(logFile, 'utf8'), /orj-Zz9yX1/);
+  assert.equal(fs.existsSync(path.join(r, '.bro-reap-stale-tmp.lock')), false, 'lock released');
+});

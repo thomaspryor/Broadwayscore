@@ -303,6 +303,8 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
   // BRO-8179: throwaway TMPDIR per run (removed on close) so legacy tests'
   // mkdtemp litter does not pile up in /private/tmp. Off: BRO_KEEP_TEST_TMPDIR=1.
   const tmpScope = env.BRO_KEEP_TEST_TMPDIR === '1' ? { env: {}, cleanup: () => {} } : require('./test-tmpdir.js').scopedTestTmpdir('bro-testrun-');
+  liveCleanups.add(tmpScope.cleanup); // SIGTERM path (onTerm) removes it too
+  const doneTmp = () => { liveCleanups.delete(tmpScope.cleanup); tmpScope.cleanup(); };
   return new Promise((resolve) => {
     const child = spawn(cmd, args, { cwd: root, env: { ...env, ...tmpScope.env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
     if (child.pid) liveGroups.add(child.pid);
@@ -316,12 +318,12 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
       try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
     }, timeoutMs);
     child.on('close', (code) => {
-      tmpScope.cleanup();
+      doneTmp();
       liveGroups.delete(child.pid);
       clearTimeout(timer);
       resolve({ exit: timedOut || code === null ? 124 : code, text: Buffer.concat(chunks).toString('utf8'), ms: Date.now() - t0 });
     });
-    child.on('error', (e) => { clearTimeout(timer); tmpScope.cleanup(); resolve({ exit: 127, text: String(e.message), ms: Date.now() - t0 }); });
+    child.on('error', (e) => { clearTimeout(timer); doneTmp(); resolve({ exit: 127, text: String(e.message), ms: Date.now() - t0 }); });
   });
 }
 

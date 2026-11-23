@@ -34,6 +34,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFileSync } = require('child_process');
 const { openPathSnapshot, TEMP_CHECKOUT_PREFIXES } = require('./reap-temp-checkouts.js');
 
@@ -69,8 +70,9 @@ function hasGit(p) {
 
 /** Git checkouts at p or up to two levels below it (the mktemp -d + clone into $d/repo layout). */
 function findGitRepos(p) {
-  if (hasGit(p)) return [p];
-  const out = [];
+  // Nested repos are searched even under a top-level repo: an ignored nested
+  // clone (data/review-texts) is invisible to the outer repo's status.
+  const out = hasGit(p) ? [p] : [];
   const visit = (d, depth) => {
     let ents;
     try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
@@ -113,6 +115,18 @@ function gitLocalWork(repo) {
     try { git(repo, ['rev-parse', '-q', '--verify', 'refs/stash']); unique = true; } catch { /* no stash */ }
     return files.length || unique ? { files, unique, unknown: false } : null;
   } catch { return { files: [], unique: false, unknown: true }; }
+}
+
+/** A linked worktree someone ran `git worktree lock` on (gitdir/locked exists). */
+function isLockedWorktree(repo) {
+  try {
+    const dotgit = path.join(repo, '.git');
+    if (!fs.lstatSync(dotgit).isFile()) return false;
+    const m = /^gitdir:\s*(.+)$/m.exec(fs.readFileSync(dotgit, 'utf8'));
+    if (!m) return false;
+    const gitdir = path.resolve(repo, m[1].trim());
+    return fs.existsSync(path.join(gitdir, 'locked'));
+  } catch { return false; }
 }
 
 /** Back-compat boolean: any local work (or unreadable). */
@@ -209,6 +223,7 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   if (walk === 'limit' && !(repos.length === 1 && repos[0] === p)) return { reap: false, reason: 'too big to judge (walk limit), not a clean checkout' };
   const longCutoff = now - LONG_AGE_H * 3600 * 1000;
   for (const repo of repos) {
+    if (isLockedWorktree(repo)) return { reap: false, reason: 'locked git worktree' };
     const work = gitLocalWork(repo);
     if (!work) continue;
     // Unreadable status (fake .git fixture, orphaned worktree, timeout) gets
@@ -228,12 +243,37 @@ function duKb(p) {
  * @returns {{scanned:number, removed:number, freedKb:number, kept:object, skipped?:string}}
  */
 function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAgeH = MAX_AGE_H, dryRun = false, now = Date.now(),
-  budgetMs = Infinity, snapshotFn = openPathSnapshot, measure = true, batchSize = 500, log = () => {} } = {}) {
+  budgetMs = Infinity, snapshotFn = openPathSnapshot, measure = true, batchSize = 500, log = () => {}, removedLog } = {}) {
   const summary = { scanned: 0, removed: 0, freedKb: 0, kept: {} };
   if (process.env.TMP_REAP_DISABLED === '1') return { ...summary, skipped: 'TMP_REAP_DISABLED=1' };
   const started = Date.now();
+  let lockDir = null;
+  let removedFd = null;
   try {
     const real = fs.realpathSync(root);
+    // One reaper at a time (hourly runs can overlap a slow pass). Dot-named,
+    // so this reaper never reaps it; a dead holder's lock is taken over.
+    lockDir = path.join(real, '.bro-reap-stale-tmp.lock');
+    try { fs.mkdirSync(lockDir); } catch (e) {
+      if (e.code !== 'EEXIST') throw e;
+      let holder = 0;
+      try { holder = Number(fs.readFileSync(path.join(lockDir, 'pid'), 'utf8')); } catch { /* none */ }
+      let alive = false;
+      try { if (holder > 0) { process.kill(holder, 0); alive = true; } } catch (k) { alive = k.code === 'EPERM'; }
+      if (alive) { lockDir = null; return { ...summary, skipped: `another reaper running (pid ${holder})` }; }
+    }
+    fs.writeFileSync(path.join(lockDir, 'pid'), String(process.pid));
+    // What was deleted, by name, so a bad pass can be traced (real root only
+    // by default; tests pass their own path or nothing).
+    const logPath = removedLog !== undefined ? removedLog
+      : (real === fs.realpathSync(DEFAULT_ROOT) && !dryRun ? (process.env.TMP_REAP_LOG || path.join(os.homedir(), 'Library', 'Logs', 'bro-reap-stale-tmp.log')) : null);
+    if (logPath) {
+      try {
+        try { if (fs.statSync(logPath).size > 50 * 1024 * 1024) fs.renameSync(logPath, `${logPath}.1`); } catch { /* new */ }
+        fs.mkdirSync(path.dirname(logPath), { recursive: true });
+        removedFd = fs.openSync(logPath, 'a');
+      } catch (e) { log(`removed-log unavailable (${e.message}); continuing`); }
+    }
     let names = fs.readdirSync(real);
     const openNames = openTopNames(snapshotFn({ excludePid: process.pid }), real);
     if (openNames === null) { log('lsof failed; keeping everything this run'); return { ...summary, skipped: 'lsof failed' }; }
@@ -252,6 +292,7 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
         try {
           fs.rmSync(d.path, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 });
           summary.removed++; summary.freedKb += kb;
+          if (removedFd !== null) { try { fs.writeSync(removedFd, `${new Date().toISOString()} ${d.reason} ${d.path}\n`); } catch { /* best effort */ } }
         } catch (e) { summary.kept['removal failed'] = (summary.kept['removal failed'] || 0) + 1; log(`rm failed ${d.path}: ${e.message}`); }
       }
       batch = [];
@@ -269,6 +310,9 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
   } catch (e) {
     log(`stale tmp reap failed (non-fatal): ${e.message}`);
     summary.skipped = `error: ${e.message}`;
+  } finally {
+    if (removedFd !== null) { try { fs.closeSync(removedFd); } catch { /* closed */ } }
+    if (lockDir) { try { fs.rmSync(lockDir, { recursive: true, force: true }); } catch { /* gone */ } }
   }
   return summary;
 }
