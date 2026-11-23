@@ -151,8 +151,9 @@ function main(argv) {
     try { files = lines(git(cwd, ['diff', '--cached', '--name-only', '--no-renames'])).filter((f) => /^src\/(app|components)\/.*\.tsx$/.test(f)); } catch { files = []; }
     let branch = '';
     try { branch = git(cwd, ['branch', '--show-current']); } catch { branch = ''; }
+    // Detached HEAD (rebase, cherry-pick): visual-qa.mjs writes under 'no-branch' then, so look there too.
     let verdict = null;
-    const vp = branch ? findVerdictPath(cwd, branch) : null;
+    const vp = findVerdictPath(cwd, branch || 'no-branch');
     if (vp) { try { verdict = JSON.parse(fs.readFileSync(vp, 'utf8')); } catch { verdict = null; } }
     const r = commitProof(verdict, stagedBlobs(cwd, files));
     console.error(`[visual-scope] ${r.ok ? 'ok' : 'no proof'}: ${r.why}`);

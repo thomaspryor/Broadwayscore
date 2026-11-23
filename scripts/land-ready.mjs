@@ -164,6 +164,11 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
       if (!approved && v.overallPass && (f.gatedFiles || []).length) {
         const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-qa-ledger.mjs'), '--query=scope-allowed', `--repo=${canon || cwd}`, `--branch=${branch}`, `--ui-files=${[...new Set(f.gatedFiles)].sort().join(',')}`], { encoding: 'utf8' });
         approved = JSON.parse(r.stdout || '{}').allowed === true;
+        // ...and, like the hook, only when the verdict screenshotted every gated file as HEAD has it.
+        if (approved && vp) {
+          const c = spawnSync('node', [path.join(HERE, 'lib', 'visual-scope.js'), 'head-current', `--cwd=${cwd}`, `--verdict=${vp}`, `--files=${[...new Set(f.gatedFiles)].sort().join(',')}`], { encoding: 'utf8' });
+          approved = c.status === 0;
+        } else approved = false;
       }
     } catch { /* not approved */ }
     f.approval = { approved };

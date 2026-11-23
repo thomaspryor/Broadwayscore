@@ -203,9 +203,14 @@ export function queryScopeAllowed(repoRoot, { branch, uiFiles } = {}) {
       return { allowed: true, reason: `owner approved these UI files on ${b} at ${e.ts} (contentHash ${e.contentHash})`, approvedAt: e.ts };
     }
   }
-  const newest = readLedger(repoRoot).reverse().find((e) => e.branch === b && Array.isArray(e.uiFiles));
-  const extra = newest ? files.filter((f) => !newest.uiFiles.includes(f)) : files;
-  return { allowed: false, reason: newest ? `new UI file(s) since the owner's yes: ${extra.slice(0, 5).join(', ')}` : `no owner-approved UI scope for ${b}`, newFiles: extra };
+  const fresh = (e) => { const t = Date.parse(e.ts); return Number.isFinite(t) && now - t <= ttl; };
+  const mine = readLedger(repoRoot).reverse().filter((e) => e.branch === b && Array.isArray(e.uiFiles));
+  const newest = mine.find(fresh);
+  if (!newest) {
+    return { allowed: false, reason: mine.length ? `the owner's earlier yes on ${b} (${mine[0].ts}) has expired` : `no owner-approved UI scope for ${b}`, newFiles: files };
+  }
+  const extra = files.filter((f) => !newest.uiFiles.includes(f));
+  return { allowed: false, reason: `new UI file(s) since the owner's yes: ${extra.slice(0, 5).join(', ')}`, newFiles: extra };
 }
 
 // ── CLI ──────────────────────────────────────────────────────────────────────

@@ -91,3 +91,24 @@ test('BRO-7888: a fix-only UI diff with a current passing verdict needs no owner
   assert.equal(evaluate({ ...base, ...ui, fixOnly: { allowed: false, reason: 'design change' } }).owner.line, 'Ask the owner now: yes');
   assert.equal(evaluate({ ...base, ...ui }).owner.line, 'Ask the owner now: yes'); // classifier absent: fail closed
 });
+
+test('BRO-8156: an earlier owner yes counts in land-ready only while the verdict shows HEAD content (same rule as the hook)', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lr8156-'));
+  const g = (...a) => execFileSync('git', a, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }).trim();
+  g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+  mkdirSync(join(dir, 'src/components'), { recursive: true });
+  writeFileSync(join(dir, 'src/components/A.tsx'), 'export default function A(){return <p>a</p>}\n');
+  g('add', '-A'); g('commit', '-qm', 'base'); g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+  g('checkout', '-q', '-b', 'feat');
+  writeFileSync(join(dir, 'src/components/A.tsx'), 'export default function A(){return <p className="b">a</p>}\n');
+  g('add', '-A'); g('commit', '-qm', 'tweak');
+  const vq = join(dir, '.claude', 'visual-qa');
+  mkdirSync(join(vq, 'feat'), { recursive: true });
+  writeFileSync(join(vq, 'approvals.jsonl'), JSON.stringify({ ts: new Date().toISOString(), sessionId: 's', branch: 'feat', commitSha: 'f'.repeat(40), contentHash: 'old', uiFiles: ['src/components/A.tsx'] }) + '\n');
+  const run = (blob) => {
+    writeFileSync(join(vq, 'feat', 'verdict.json'), JSON.stringify({ schemaVersion: 2, overallPass: true, contentHash: 'x', uiFiles: ['src/components/A.tsx'], uiFileHashes: { 'src/components/A.tsx': blob } }));
+    return execFileSync('node', [join(HERE, 'land-ready.mjs'), '--no-doctor', '--no-judge'], { cwd: dir, encoding: 'utf8', env: { ...process.env, CLAUDE_CODE_SESSION_ID: '', LAND_READY_CWD: dir, HOME: dir } });
+  };
+  assert.doesNotMatch(run('0'.repeat(40)), /already approved/, 'stale verdict: the earlier yes must not count');
+  assert.match(run(g('rev-parse', 'HEAD:src/components/A.tsx')), /already approved/, 'current verdict: the earlier yes counts');
+});

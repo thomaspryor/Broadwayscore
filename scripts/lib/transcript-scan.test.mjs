@@ -1184,7 +1184,9 @@ test('BRO-8156 scope: entries older than the ledger TTL do not count; legacy ent
     const old = new Date(Date.now() - 30 * 86400000).toISOString();
     __ap8156(join(repo, '.claude', 'visual-qa', 'approvals.jsonl'), JSON.stringify({ ts: old, branch: 'f', commitSha: 'a', contentHash: 'h', uiFiles: ['src/a.tsx'] }) + '\n');
     __ap8156(join(repo, '.claude', 'visual-qa', 'approvals.jsonl'), JSON.stringify({ ts: new Date().toISOString(), branch: 'f', commitSha: 'b', contentHash: 'h2' }) + '\n');
-    assert.equal(queryScopeAllowed(repo, { branch: 'f', uiFiles: ['src/a.tsx'] }).allowed, false);
+    const r = queryScopeAllowed(repo, { branch: 'f', uiFiles: ['src/a.tsx'] });
+    assert.equal(r.allowed, false);
+    assert.match(r.reason, /has expired/, 'an expired yes says so (not an empty "new UI file(s):" list)');
   } finally { rmSync(repo, { recursive: true, force: true }); }
 });
 
@@ -1278,5 +1280,21 @@ test('BRO-8156 commit-msg (real hook): a passing verdict that screenshotted the 
     assert.equal(r.hook('feat: tiles').status, 1);
     // SKIP-VISUAL-CHECK still works for non-rendering edits.
     assert.equal(r.hook('SKIP-VISUAL-CHECK: types only').status, 0);
+  } finally { rmSync(r.d, { recursive: true, force: true }); }
+});
+
+test('BRO-8156 commit-msg (real hook): in a detached HEAD the verdict visual-qa wrote under no-branch counts', () => {
+  const r = commitRepo();
+  try {
+    r.g('commit', '-q', '--no-verify', '-m', 'A');
+    r.g('checkout', '-q', '--detach');
+    writeFileSync(join(r.d, 'src', 'components', 'A.tsx'), 'export const A = () => <p>rebased</p>;\n');
+    r.g('add', 'src/components/A.tsx');
+    assert.equal(r.hook('feat: tiles').status, 1, 'no verdict yet');
+    const vd = join(r.d, '.claude', 'visual-qa', 'no-branch');
+    __mk8156(vd, { recursive: true });
+    writeFileSync(join(vd, 'verdict.json'), JSON.stringify({ schemaVersion: 2, overallPass: true, uiFileHashes: { 'src/components/A.tsx': r.g('hash-object', 'src/components/A.tsx') } }));
+    const ok = r.hook('feat: tiles');
+    assert.equal(ok.status, 0, ok.stdout + ok.stderr);
   } finally { rmSync(r.d, { recursive: true, force: true }); }
 });
