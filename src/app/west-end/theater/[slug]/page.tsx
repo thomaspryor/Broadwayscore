@@ -18,6 +18,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from '../../../theater/[slug]/TheaterDetailClient';
 import Breadcrumb from '@/components/Breadcrumb';
+import VenueInfoCard from '@/components/VenueInfoCard';
 
 export function generateStaticParams() {
   const slugs = new Set([...getAllLondonTheaterSlugs(), ...getAllWestEndComplexSlugs()]);
@@ -174,7 +175,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
             </div>
           </div>
 
-          {/* Stats row (no capacity — not available for London venues yet) */}
+          {/* Stats row (seats, when verified, are in the Venue info card) */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="card p-3 sm:p-4 text-center">
               <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
@@ -246,12 +247,8 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
             </Link>
           )}
 
-          {/* Placeholder note for missing venue metadata */}
-          <div className="card p-4 mb-4 border border-white/5">
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Venue details for {theater.name} (capacity, accessibility, pre-show dining, and seating tips) are coming soon. We&apos;re enriching all London venues after launch.
-            </p>
-          </div>
+          {/* Verified venue facts (BRO-8088); renders nothing when none are verified */}
+          <VenueInfoCard theater={theater} />
 
           {/* Sub-venues under this complex */}
           {subVenues.length > 0 && (

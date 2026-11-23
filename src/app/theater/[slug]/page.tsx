@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getTheaterBySlug, getAllTheaterSlugs } from '@/lib/data-core';
+import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { versionedImagePath } from '@/lib/versioned-image-path';
@@ -40,7 +41,10 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       description,
       url: canonicalUrl,
       type: 'website',
-      images: [{ url: `${BASE_URL}${getTheaterImageUrl(params.slug)}`, width: 1200, height: 630, alt: `${theater.name} - Broadway Theater` }],
+      images: [(() => {
+        const img = getTheaterImageUrl(params.slug, theater);
+        return img ? { url: `${BASE_URL}${img}`, width: 1200, height: 630, alt: `${theater.name} - Broadway Theater` } : SITE_OG_IMAGE;
+      })()],
     },
     twitter: {
       card: 'summary',
@@ -55,14 +59,22 @@ function getGoogleMapsUrl(address: string): string {
 }
 
 /** Local theater image path (Wikimedia hotlinking deprecated April 2026) */
-function getTheaterImageUrl(slug: string): string {
-  return versionedImagePath(`/images/theaters/${slug}.jpg`);
+/**
+ * Exterior photo for a theater page, or null when none exists. A renamed house's old-name
+ * page (Brooks Atkinson) uses its current building's photo (BRO-8088); demolished houses
+ * (Morosco, Bijou) have none, and a missing file used to render a broken image.
+ */
+function getTheaterImageUrl(slug: string, theater: Pick<Theater, 'images' | 'nowKnownAs'>): string | null {
+  // Photos exist for exactly the curated houses (theater-metadata.json images.exterior).
+  const photoSlug = theater.nowKnownAs?.slug ?? (theater.images?.exterior ? slug : null);
+  return photoSlug ? versionedImagePath(`/images/theaters/${photoSlug}.jpg`) : null;
 }
 
 export default async function TheaterPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const theater = getTheaterBySlug(params.slug);
   if (!theater) notFound();
+  const heroImage = getTheaterImageUrl(params.slug, theater);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -158,11 +170,12 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
         {/* Header */}
         <div className="mb-6">
           {/* Hero image */}
+          {heroImage && (
           <div className="mb-4">
             <div className="relative rounded-xl overflow-hidden" style={{ maxHeight: '240px' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={getTheaterImageUrl(params.slug)}
+                src={heroImage}
                 alt={`${theater.name} exterior`}
                 className="w-full h-full object-cover"
                 style={{ maxHeight: '240px' }}
@@ -173,12 +186,21 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
               <p className="text-[10px] text-fg-muted mt-1 text-right">Photo: {theater.images.attribution}</p>
             )}
           </div>
+          )}
 
           <div className="flex items-center gap-3 mb-3">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{theater.name}</h1>
               {theater.formerNames && theater.formerNames.length > 0 && (
                 <p className="text-fg-muted text-xs mt-0.5">Formerly {theater.formerNames.join(', ')}</p>
+              )}
+              {theater.nowKnownAs && (
+                <p className="text-fg-muted text-xs mt-0.5">
+                  Now the{' '}
+                  <Link href={`/theater/${theater.nowKnownAs.slug}`} className="hover:text-brand transition-colors underline">
+                    {theater.nowKnownAs.name}
+                  </Link>
+                </p>
               )}
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                 {theater.address && (
