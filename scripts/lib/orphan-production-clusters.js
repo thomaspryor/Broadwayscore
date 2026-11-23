@@ -224,11 +224,19 @@ function gateFailures(keyTotals, baseline) {
  * @param {Set<string>} rehomeTargets show dirs files were moved into (may include pre-existing shows)
  */
 function revertRehome(records, shows, addedIds, rehomeTargets) {
+  const byId = new Map(shows.map((s) => [s.id, s]));
   const outShows = shows.filter((s) => !addedIds.has(s.id));
-  const outRecords = records.map(([id, f, j]) => (rehomeTargets.has(id) && j.reroutedFrom && j.reroutedFrom !== id
-    ? [j.reroutedFrom, f, { ...j, wrongProduction: true }]
-    : [id, f, j]));
-  return { records: outRecords, shows: outShows };
+  const missingHosts = [];
+  const outRecords = records.map(([id, f, j]) => {
+    if (!rehomeTargets.has(id) || !j.reroutedFrom || j.reroutedFrom === id) return [id, f, j];
+    const host = byId.get(j.reroutedFrom);
+    const target = byId.get(id);
+    // Only same-title moves are orphan rehomes; other reroutes (cross-market backlog) stay put.
+    if (host && target && !titlesCompatible(normTitle(host.title), normTitle(target.title))) return [id, f, j];
+    if (!host) missingHosts.push(`${id}/${f} -> ${j.reroutedFrom}`);
+    return [j.reroutedFrom, f, { ...j, wrongProduction: true }];
+  });
+  return { records: outRecords, shows: outShows, missingHosts };
 }
 
 module.exports = {
