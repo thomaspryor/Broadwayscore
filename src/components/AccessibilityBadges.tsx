@@ -22,6 +22,14 @@ const LABELS = {
   assistiveListening: 'Assistive Listening',
 } as const;
 type Flag = keyof typeof LABELS;
+// Wording for the muted "No ..." pill: reads unambiguously on its own.
+const DENIED: Record<Flag, string> = {
+  wheelchair: 'wheelchair access',
+  stepFree: 'step-free access',
+  elevator: 'elevator',
+  hearingLoop: 'hearing loop',
+  assistiveListening: 'assistive listening',
+};
 const ORDER: Flag[] = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
 
 const PILL = 'inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium border';
@@ -44,7 +52,7 @@ export default function AccessibilityBadges({ accessibility, className = 'border
         ))}
         {ORDER.filter(f => denied.includes(f)).map(f => (
           <span key={`no-${f}`} className={`${PILL} bg-surface-overlay text-fg-muted border-white/10`}>
-            No {LABELS[f].toLowerCase()}
+            No {DENIED[f]}
           </span>
         ))}
       </div>

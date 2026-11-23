@@ -1,10 +1,20 @@
 {
+ "london/adelphi-theatre": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/alexandra-palace": [
   {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/almeida-theatre": [
@@ -13,9 +23,21 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/apollo-victoria-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
   {
    "field": "hearingLoop",
    "reason": "models disagree",
@@ -29,6 +51,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   },
   {
    "field": "hearingLoop",
@@ -63,12 +89,22 @@
    "openai": null
   }
  ],
+ "london/charing-cross-theatre": [
+  {
+   "field": "assistiveListening",
+   "reason": "quote is off topic"
+  }
+ ],
  "london/criterion-theatre": [
   {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": false,
    "openai": true
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/dominion-theatre": [
@@ -79,12 +115,28 @@
    "openai": null
   }
  ],
+ "london/dorfman": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
+ "london/dorfman-cottesloe": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/dorfman-theatre": [
   {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": null,
    "openai": true
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/finborough-theatre": [
@@ -113,6 +165,12 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "london/hampstead-theatre": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/hampstead-theatre-downstairs": [
@@ -145,6 +203,12 @@
    "openai": false
   }
  ],
+ "london/jermyn-street-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is off topic"
+  }
+ ],
  "london/lightroom": [
   {
    "field": "hearingLoop",
@@ -159,6 +223,10 @@
    "reason": "models disagree",
    "gemini": null,
    "openai": true
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/lyric-hammersmith": [
@@ -191,10 +259,30 @@
    "openai": null
   }
  ],
+ "london/marylebone-theatre": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
+ "london/menier-chocolate-factory": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "assistiveListening",
+   "reason": "quote is off topic"
+  }
+ ],
  "london/new-diorama-theatre": [
   {
    "field": "stepFree",
    "reason": "quote not found in the official page text"
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/olivier": [
@@ -341,6 +429,16 @@
    "reason": "quote is off topic"
   }
  ],
+ "london/soho-theatre-upstairs": [
+  {
+   "field": "stepFree",
+   "reason": "quote is off topic"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/soho-theatre-walthamstow": [
   {
    "field": "elevator",
@@ -361,6 +459,10 @@
   {
    "field": "stepFree",
    "reason": "quote is off topic"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/southwark-playhouse": [
@@ -491,6 +593,12 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "london/young-vic": [
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/young-vic-main-house": [
@@ -713,6 +821,10 @@
  ],
  "off-broadway/black-box-theatre-at-harold-and-miriam-steinberg-center-for-theatre": [
   {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  },
+  {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": true,
@@ -724,6 +836,10 @@
   }
  ],
  "off-broadway/bowery-palace": [
+  {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  },
   {
    "field": "stepFree",
    "reason": "models disagree",
@@ -1171,6 +1287,10 @@
  ],
  "off-broadway/roundabout-theatre-company-black-box-theatre": [
   {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  },
+  {
    "field": "stepFree",
    "reason": "quote is off topic"
   },
@@ -1481,7 +1601,17 @@
    "openai": null
   }
  ],
+ "off-broadway/theatre-five-at-theatre-row": [
+  {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  }
+ ],
  "off-broadway/theatre-five-theatre-row": [
+  {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  },
   {
    "field": "stepFree",
    "reason": "models disagree",
@@ -1498,6 +1628,10 @@
   }
  ],
  "off-broadway/theatre-row-theatre-5": [
+  {
+   "field": "wheelchair",
+   "reason": "quote is off topic"
+  },
   {
    "field": "stepFree",
    "reason": "models disagree",

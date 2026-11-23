@@ -89,6 +89,7 @@ export default async function TheaterPage(props: { params: Promise<{ slug: strin
     name: theater.name,
     slug: theater.slug,
     address: theater.address,
+    website: theater.website,
     currentShow: theater.currentShow ? {
       title: theater.currentShow.title,
       slug: theater.currentShow.slug,
