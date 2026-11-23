@@ -73,13 +73,26 @@ function resolveLandRun(run, { repo, read, readText, cache = new Map() }) {
 
 // Select by creation, not updated_at: rerunning an old push must not hide a
 // newer hand dispatch. Page dispatches until older than the push (bounded).
+// A ref with no push run (typo, or never pushed) used to resolve up to 300 hand
+// dispatches at ~2 API calls each: minutes of silence and a burned quota before
+// "unknown". Dispatches list newest first, so a land of this ref is near the top.
+// Callers that wait interactively pass options.maxUncachedResolves; the default
+// stays unbounded so retry tooling that must find old dispatches is unchanged.
+
 function readLatestLandRun(ref, options) {
   const { repo, read } = options;
+  const cache = options.cache || new Map();
+  const maxUncached = options.maxUncachedResolves ?? Infinity;
+  let uncached = 0;
   let latest = read(`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(ref)}&event=push&per_page=1`).workflow_runs?.[0] || null;
   for (let page = 1; page <= 3; page += 1) {
     const runs = read(`repos/${repo}/actions/workflows/land.yml/runs?event=workflow_dispatch&per_page=100&page=${page}`).workflow_runs || [];
     for (const run of runs) {
       if (latest && Date.parse(run.created_at) < Date.parse(latest.created_at)) return latest;
+      if (run.event === 'workflow_dispatch' && !cache.has(`dispatch:${run.id}:${run.run_attempt}:${run.updated_at}`)) {
+        uncached += 1;
+        if (uncached > maxUncached) return latest;
+      }
       const resolved = resolveLandRun(run, options);
       if (resolved?.head_branch === ref && (!latest || Number(resolved.id) > Number(latest.id))) latest = resolved;
     }

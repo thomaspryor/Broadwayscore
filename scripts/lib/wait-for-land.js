@@ -210,7 +210,7 @@ const readGhText = (endpoint) => runGhWithFallback(
 );
 
 function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = cancellationCache } = {}) {
-  const r = readLatestLandRun(ref, { repo, read, readText, cache });
+  const r = readLatestLandRun(ref, { repo, read, readText, cache, maxUncachedResolves: 25 });
   if (!r) return null;
   let cancellation;
   let jobsUnread = false;

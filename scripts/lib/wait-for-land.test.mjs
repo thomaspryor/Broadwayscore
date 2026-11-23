@@ -528,3 +528,18 @@ test('BRO-7810: land-time prompt names the exact session-retro --record command 
   const src = readFileSync(new URL('./wait-for-land.js', import.meta.url), 'utf8');
   assert.ok((src.match(/retroPrompt\(\)/g) || []).length >= 2, 'both LANDED paths print the prompt');
 });
+
+test('a ref with no push run resolves a bounded number of hand dispatches, not all 300 (missing-branch hang)', () => {
+  const { readLatestLandRun } = require('./land-run-identity.js');
+  const runs = Array.from({ length: 100 }, (_, i) => ({ id: 9000 - i, event: 'workflow_dispatch', run_attempt: 1, status: 'completed', conclusion: 'success', created_at: new Date(Date.now() - i * 1000).toISOString(), updated_at: 'u' + i }));
+  let resolves = 0;
+  const read = (endpoint) => {
+    if (endpoint.includes('event=push')) return { workflow_runs: [] };
+    if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: runs };
+    resolves += 1;
+    return { jobs: [] };
+  };
+  const got = readLatestLandRun('land/does-not-exist-123', { repo: 'o/r', read, readText: () => '', cache: new Map(), maxUncachedResolves: 25 });
+  assert.equal(got, null);
+  assert.ok(resolves <= 25, `expected at most 25 job lookups, made ${resolves}`);
+});
