@@ -21,3 +21,7 @@ test('real titles ending in a descriptor are not stripped to a generic word', ()
 test('unrelated BWW review does not match', () => {
   assert.equal(m('https://www.broadwayworld.com/westend/article/Review-GOBLIN-Park-Theatre-20261119', 'Ceilidh The Musical'), false);
 });
+test('cleaned title with no real word does not fail-open (MJ The Musical)', () => {
+  const u = 'https://www.broadwayworld.com/westend/article/Review-HAMILTON-Victoria-Palace-Theatre-20261104';
+  for (const t of ['MJ The Musical', '9 to 5: the Musical', "Shakespeare's R & J"]) assert.equal(m(u, t), false, t);
+});

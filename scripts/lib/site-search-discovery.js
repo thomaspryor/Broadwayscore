@@ -1561,7 +1561,12 @@ async function isCleanWpNoMatch(config, searchTitle, showTitle, body, openingDat
  */
 function siteSearchUrlMatchesTitle(url, showTitle, searchTitle) {
   if (urlLooksLikeReview(url, showTitle)) return true;
-  return !!searchTitle && searchTitle !== showTitle && urlLooksLikeReview(url, searchTitle);
+  if (!searchTitle || searchTitle === showTitle) return false;
+  // Same rule as urlLooksLikeReview's short-title path: a cleaned title with no
+  // word >2 chars ("MJ The Musical" -> "MJ") fail-opens and accepts any URL.
+  const meaningful = searchTitle.toLowerCase().replace(/[^a-z0-9\s-]/g, '').split(/\s+/)
+    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+  return meaningful.length > 0 && urlLooksLikeReview(url, searchTitle);
 }
 
 /**
