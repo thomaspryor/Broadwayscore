@@ -15,7 +15,7 @@
 // venue-write-guard-ok: reads Theatre Record A-Z text and builds audit lookups; nothing here writes shows.json
 'use strict';
 
-const { isWestEndVenue } = require('./venue-classification');
+const { isWestEndVenue, isOffWestEndProducingHouse } = require('./venue-classification');
 const { normalizeTitle } = require('./title-match');
 
 const WOS_LONDON_MARKET = 83;
@@ -28,7 +28,7 @@ function azVenueName(v) {
 }
 
 function venueIsWestEnd(v) {
-  return isWestEndVenue(v) || isWestEndVenue(`${v} Theatre`);
+  return isWestEndVenue(v) || isWestEndVenue(`${v} Theatre`) || isOffWestEndProducingHouse(v) || isOffWestEndProducingHouse(`${v} Theatre`);
 }
 
 /**
@@ -50,7 +50,7 @@ function azLookups(az, existing = []) {
     const key = normalizeTitle(title);
     if (!key || seen.has(key)) { drop('duplicate title'); continue; }
     seen.add(key);
-    lookups.push({ title, venue: venue ? (venueIsWestEnd(venue) && !isWestEndVenue(venue) ? `${venue} Theatre` : venue) : null, date, url: null, market: [WOS_LONDON_MARKET], source: 'tr-az' });
+    lookups.push({ title, venue: venue ? (venueIsWestEnd(venue) && !isWestEndVenue(venue) && !isOffWestEndProducingHouse(venue) ? `${venue} Theatre` : venue) : null, date, url: null, market: [WOS_LONDON_MARKET], source: 'tr-az' });
   }
   return { lookups, dropped };
 }

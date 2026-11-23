@@ -51,3 +51,19 @@ test('an approval override works for a producing house', () => {
   const r = effectiveDecision(c, { '2024-2025': { 'Some Play': { decision: 'approve', reason: 'ok' } } }, TODAY);
   assert.equal(r.promotable, true);
 });
+
+test('every spelling of a producing house resolves through the real normalizer, incl. The Pit and Tricycle', () => {
+  for (const v of ['The Pit (Barbican)', 'The Pit', 'Barbican Centre', 'Tricycle Theatre', 'Donmar', 'Hampstead Theatre', 'The Bush Theatre', 'Lyric Hammersmith Theatre', 'Southwark Playhouse Elephant']) {
+    assert.equal(isOffWestEndProducingHouse(v), true, v);
+  }
+});
+
+test('OLT and Theatre Record A-Z discovery routes accept producing houses too', () => {
+  const { buildOltCandidates } = require('../../scripts/lib/we-olt-candidates.js');
+  const { azLookups } = require('../../scripts/lib/we-az-lookups.js');
+  const out = buildOltCandidates({ season: '2024-2025', today: TODAY, shows: [], pages: [
+    { title: 'Some Play', venue: 'Almeida Theatre', openingDate: '2024-10-10', previewsStartDate: '2024-09-30', closingDate: '2024-11-30' }] });
+  assert.equal((out.candidates || out).length >= 1, true);
+  const r = azLookups({ titles: [{ title: 'Some Play', venue: 'Almeida', opened: '2024-10-10' }] });
+  assert.equal(r.lookups.length, 1);
+});

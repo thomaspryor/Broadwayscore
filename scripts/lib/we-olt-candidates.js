@@ -29,12 +29,11 @@
 
 const { normalizeTitle } = require('./title-match');
 const { titlesMatch } = require('./title-normalization');
-const { isWestEndVenue } = require('./venue-classification');
 const { isDateInSeason } = require('./we-seasons');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./venue-title-dedup-pool');
 const { venuesMatch } = require('./deduplication');
 const { cleanOltTitle } = require('./olt-archive-parse');
-const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
+const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion, isWeHistoricalVenue } = require('./we-historical-corroboration');
 const { parseTrHeaderDates } = require('./we-review-led-candidates');
 
 const DAY_MS = 86400000;
@@ -155,7 +154,7 @@ function buildOltCandidates({ season, pages, azTitles = [], trPages = [], review
   // Pages cached before cleanOltTitle existed still carry "Duration 2h30".
   const inSeason = collapseItems(pages.map(p => ({ ...p, title: cleanOltTitle(p.title) || null })).filter(p => {
     const start = p.openingDate || p.previewsStartDate;
-    return p.title && start && p.venue && isWestEndVenue(p.venue) && isDateInSeason(start, season);
+    return p.title && start && p.venue && isWeHistoricalVenue(p.venue) && isDateInSeason(start, season);
   }));
   const pool = buildVenueTitlePool(shows);
   const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));

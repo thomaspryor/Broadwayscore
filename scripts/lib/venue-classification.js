@@ -56,7 +56,7 @@ function isWestEndVenue(venue) {
 // runs were never minted and their reviews were orphaned. Name test is a
 // word-boundary regex on the normalised name so "Old Vic"/"Young Vic" and
 // "Barbican"/"Barbican Centre" stay distinct from West End houses.
-const OFF_WEST_END_PRODUCING_HOUSE_RE = /^(almeida|young vic|barbican( theatre| centre)?|the pit( \(barbican\))?|donmar( warehouse)?|hampstead|bush|kiln|arcola|park|orange tree|soho|menier chocolate factory|southwark playhouse( borough| elephant)?|theatre royal stratford east|lyric hammersmith|bridge|regent'?s park open air|sam wanamaker playhouse|riverside studios)$/;
+const OFF_WEST_END_PRODUCING_HOUSE_RE = /^(almeida|young vic|barbican( theatre| centre)?|pit|tricycle|donmar( warehouse)?|hampstead|bush|kiln|arcola|park|orange tree|soho|menier chocolate factory|southwark playhouse( borough| elephant)?|theatre royal stratford east|lyric hammersmith|bridge|regent'?s park open air|sam wanamaker playhouse|riverside studios)$/;
 function isOffWestEndProducingHouse(venue) {
   if (!venue || venue === 'TBA') return false;
   if (isWestEndVenue(venue)) return false;
