@@ -196,8 +196,8 @@ function main() {
       env: { ...process.env, HOME: home, USERPROFILE: home, NO_COLOR: '1' },
     });
     const parsed = parseCliJson(r.stdout);
-    // Snapshot BEFORE logging: in cloud the spend row goes to a tracked file in this repo
-    // (BRO-8108), and our own write must not read as Gemini changing the tree.
+    // Snapshot BEFORE logging: our own spend row must never read as Gemini changing the tree
+    // (LLM_SESSION_LEDGER_PATH may point inside the repo; BRO-8108).
     const afterRun = before === null ? null : snapshot(cwd);
     // Log what was spent even when the review is unusable. No usage (timeout, crash, bad JSON)
     // still writes one row, counted as a call of unknown size, so paid failures are not invisible.

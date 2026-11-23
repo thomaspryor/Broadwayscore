@@ -238,3 +238,17 @@ test('foldSessionRows copies only session rows and never folds the main ledger',
   fs.mkdirSync(path.join(dir, 'adir.jsonl'));
   assert.throws(() => L.foldSessionRows({ from: path.join(dir, 'adir.jsonl'), to }), 'an unreadable source is an error, not "nothing to fold"');
 });
+
+test('foldSessionRows: no glued rows without a final newline, CRLF rows still dedupe', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-nl-'));
+  const from = path.join(dir, 'home.jsonl'); const to = path.join(dir, 'tracked.jsonl');
+  const a = JSON.stringify({ kind: 'session', n: 1 }); const b = JSON.stringify({ kind: 'session', n: 2 });
+  fs.writeFileSync(to, a); // no trailing newline
+  fs.writeFileSync(from, a + '\r\n' + b + '\r\n');
+  assert.equal(L.foldSessionRows({ from, to }), 1, 'the CRLF copy of a is already there');
+  assert.deepEqual(fs.readFileSync(to, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).n), [1, 2]);
+});
+
+test('the Gemini CLI helper model is priced', () => {
+  assert.notEqual(L.estimateCostUsd('gemini-3-flash-preview', 1e6, 1e6), null);
+});

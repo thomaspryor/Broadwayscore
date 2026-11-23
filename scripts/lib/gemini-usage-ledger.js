@@ -65,7 +65,8 @@ const TRACKED_SESSION_LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'llm-s
 const PRICES_PER_M = [
   [/gemini-4-carbon/, [4, 20]], // BRO-8016 reviewer pin: list price from 2026-12-01 ($2/$10 intro until then; apidog, techjack)
   [/gemini-3\.5-flash-lite/, [0.30, 2.50]], // Google pricing page, checked 2026-11-21 (BRO-7511: utility alias + scoring pin)
-  [/gemini-3\.8-flash(?!-)/, [1.50, 7.50]], // BRO-7511: list price from 2027-01-01 (half that until then)
+  [/gemini-3\.8-flash(?!-)/, [1.50, 7.50]],
+  [/gemini-3-flash-preview/, [0.50, 3.00]], // BRO-8108: the Gemini CLI's own helper calls during a review; Google pricing page (Gemini 3 Flash) // BRO-7511: list price from 2027-01-01 (half that until then)
   [/gemini-2\.5-pro/, [1.25, 10]],
   [/gemini-2\.5-flash-lite/, [0.10, 0.40]],
   [/gemini-2\.5-flash/, [0.30, 2.50]],
@@ -364,13 +365,16 @@ function foldSessionRows({ from = sessionLedgerPath(), to = TRACKED_SESSION_LEDG
   // Never fold the main ledger (CI, or GEMINI_USAGE_LEDGER_PATH set): it is committed already.
   if (path.resolve(from) === path.resolve(to) || path.resolve(from) === path.resolve(_ledgerPath())) return 0;
   // A missing file is "nothing to fold"; any other read error throws so the caller reports it.
-  const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split('\n').filter((l) => l.trim()); } catch (e) { if (e.code === 'ENOENT') return []; throw e; } };
+  const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split(/\r?\n/).filter((l) => l.trim()); } catch (e) { if (e.code === 'ENOENT') return []; throw e; } };
   const have = new Set(lines(to));
   const isSessionRow = (l) => { try { return JSON.parse(l).kind === 'session'; } catch { return false; } };
   const add = lines(from).filter((l) => { if (have.has(l) || !isSessionRow(l)) return false; have.add(l); return true; });
   if (!add.length) return 0;
   fs.mkdirSync(path.dirname(to), { recursive: true });
-  fs.appendFileSync(to, add.join('\n') + '\n');
+  // A hand-edited or conflict-resolved file may lack its final newline: never glue two rows.
+  let lead = '';
+  try { const st = fs.statSync(to); if (st.size) { const fd = fs.openSync(to, 'r'); const b = Buffer.alloc(1); fs.readSync(fd, b, 0, 1, st.size - 1); fs.closeSync(fd); if (b[0] !== 10) lead = '\n'; } } catch { /* missing: no lead */ }
+  fs.appendFileSync(to, lead + add.join('\n') + '\n');
   return add.length;
 }
 
