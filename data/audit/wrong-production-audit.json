@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-23T03:24:34.147Z",
+  "timestamp": "2026-11-23T03:45:23.665Z",
   "stats": {
-    "totalReviews": 84174,
+    "totalReviews": 84178,
     "alreadyFlagged": 22507,
     "dateGuardCatches": 240,
     "directorMismatch": 3884,
     "tvFilmSignals": 2419,
-    "londonSignals": 3972,
+    "londonSignals": 3973,
     "offBroadwaySignals": 786,
     "yearMismatch": 395,
     "noPublishDate": 8204
@@ -93363,6 +93363,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-off-broadway-2025",
+      "file": "bamorg--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bam.org/streetcar",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
