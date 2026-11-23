@@ -1,4 +1,5 @@
 'use strict';
+const { foldDiacritics } = require('./url-slug');
 /**
  * venue-info-agree.js — decide which venue facts two independent sources agree on (BRO-8088).
  *
@@ -23,7 +24,7 @@ const NOISE = new Set(['the', 'of', 'and', 'new', 'york', 'ny', 'nyc', 'manhatta
   'london', 'uk', 'united', 'kingdom', 'england', 'usa', 'us', 'greater', 'city', 'westminster']);
 
 function tokens(s) {
-  return String(s || '')
+  return foldDiacritics(String(s || ''))
     .toLowerCase()
     .replace(/[’']/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
