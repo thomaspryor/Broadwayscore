@@ -14,12 +14,18 @@
 // address. A hand-entered or unknown address is never touched, so a wrong
 // registry entry cannot silently rewrite correct data (the risk validate-data's
 // autofix cap guards against).
-const { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor } = require('./venue-addresses.js');
+const { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor, isNycAddress, marketArea } = require('./venue-addresses.js');
 
-/** A New York address on a non-NYC show, or a non-NYC registry address on a Broadway/OB show. */
+/**
+ * A New York address on a non-NYC show, or a non-NYC registry address on a Broadway/OB show.
+ * An unknown market is never "wrong": the sync only clears what it can prove.
+ */
 function wrongMarket(address, market) {
-  const nyc = /New York, NY/.test(address);
-  return market === 'broadway' ? !nyc : nyc || market === 'west-end';
+  const nyc = isNycAddress(address);
+  if (marketArea(market) === 'nyc') return !nyc;
+  if (market === 'regional' || market === 'tour') return nyc;
+  if (market === 'west-end') return true;
+  return false;
 }
 
 const KNOWN_ADDRESSES = new Set(Object.values(VENUE_ADDRESSES));
@@ -44,6 +50,8 @@ function syncStaleTheaterAddresses(shows) {
     }
     // Same scope as validate-data.js's registry cross-check (Broadway only).
     if (!show || !show.theaterAddress || (show.category || 'broadway') !== 'broadway') continue;
+    // A row with no category but a non-NYC market is not Broadway: never hand it a NYC address.
+    if (show.market && marketArea(show.market) !== 'nyc') continue;
     const canonical = getTheaterAddress(show.venue);
     if (!canonical || show.theaterAddress === canonical) continue;
     if (!KNOWN_ADDRESSES.has(show.theaterAddress)) continue;
