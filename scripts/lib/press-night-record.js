@@ -188,9 +188,13 @@ function emptyRecord({ showId, night, market = null, embargoAt, embargoSource = 
   };
 }
 
-// Same identity as lib/dedup-by-critic.js, so counts agree with verify-opening-night-live.js.
+// Same identity as lib/dedup-by-critic.js for every named critic, so counts agree with verify-opening-night-live.js.
+// An unbylined row keeps the legacy 'unknown' key here (dedup-by-critic.js uses '__unknown__'): this key is persisted in
+// press-night records, so changing it would strand saved drops (BRO-8104 review). Real data has 0 critics named 'Unknown'.
 function reviewKey(r) {
-  return require('./dedup-by-critic').reviewIdentityKey({ outlet: String(r.outlet || ''), criticName: String(r.critic || '') });
+  const outlet = String(r.outlet || 'unknown').toLowerCase();
+  const critic = String(r.critic || 'unknown').toLowerCase();
+  return `${outlet}|${critic}`;
 }
 
 function tierNum(t) {
