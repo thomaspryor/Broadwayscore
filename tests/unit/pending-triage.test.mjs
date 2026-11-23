@@ -597,3 +597,10 @@ describe('pendingIntakeRejectReason (BRO-8023 intake guard)', () => {
     assert.equal(T.pendingIntakeRejectReason({ url: 'https://www.thestage.co.uk/reviews/some-play-review-almeida' }, null), null);
   });
 });
+
+test('BRO-8023: a ".html" review slug naming "interview" is not rejected as an interview', async () => {
+  const { createRequire } = await import('node:module');
+  const { pendingIntakeRejectReason } = createRequire(import.meta.url)('../../scripts/lib/pending-triage.js');
+  const r = pendingIntakeRejectReason({ url: 'https://www.nytimes.com/2026/05/02/theater/the-interview-review.html' }, null);
+  assert.equal(r, null);
+});

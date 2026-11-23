@@ -118,7 +118,7 @@ test('pending noise: gather-reviews does not route an off-topic URL to _pending;
   const r = spawnSync(process.execPath, ['-e', script], { env: { ...process.env, REVIEW_TEXTS_DIR: root }, encoding: 'utf8', timeout: 120000 });
   assert.equal(r.status, 0, r.stderr);
   const out = JSON.parse(r.stdout.trim().split('\n').pop());
-  assert.deepEqual(out, { off: false, real: true, live: false, awards: false });
+  assert.deepEqual(out, { off: 'pendingIntakeReject', real: true, live: 'pendingIntakeReject', awards: 'pendingIntakeReject' });
   const files = fs.readdirSync(path.join(root, '_pending', show));
   assert.equal(files.length, 1);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, '_pending', show, files[0]), 'utf8')).url.includes('/lifestyle/arts/'), true);

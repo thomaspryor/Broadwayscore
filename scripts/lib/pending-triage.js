@@ -217,7 +217,7 @@ function pageKindJunkReason(url, show) {
   const listing = listingPageUrlReason(url);
   if (listing) return `${listing} URL, not a review`;
   if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
-  const slug = finalSlug(url);
+  const slug = finalSlug(url).replace(/\.html?$/i, '');
   if (!REVIEW_TOKEN_RE.test(slug) && INTERVIEW_SLUG_RE.test(slug)) return 'interview, not a review';
   if (!REVIEW_TOKEN_RE.test(slug) && CLOSING_DATE_SLUG_RE.test(slug)) return 'closing-date news story, not a review';
   if (PLAYBILL_ARTICLE_RE.test(url)) return 'Playbill news article, not a review';
@@ -364,7 +364,7 @@ function sameTitleShowsFrom(show, allShows) {
  * @param {{url:string, source?:string}} review
  * @param {object|null} show  the shows.json entry (null: the page-kind rules still apply)
  */
-const INTAKE_EXEMPT_SOURCES = new Set(['submit-review-form', 'manual-user-request']);
+const INTAKE_EXEMPT_SOURCES = new Set(['submit-review-form', 'manual-user-request', 'manual-entry', 'manual-addition', 'manual']);
 function pendingIntakeRejectReason(review, show) {
   if (!review || !review.url || INTAKE_EXEMPT_SOURCES.has(review.source)) return null;
   return pageKindJunkReason(review.url, show || undefined) || urlDateOutsideWindowReason(review.url, show || undefined);

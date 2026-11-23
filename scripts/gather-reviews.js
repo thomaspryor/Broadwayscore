@@ -4334,7 +4334,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     const _intakeReject = require('./lib/pending-triage').pendingIntakeRejectReason(review, _showMeta);
     if (_intakeReject) {
       console.log(`    ⊘ ${normalizedOutletId}: ${_intakeReject} — not routed to _pending (BRO-8023): ${review.url}`);
-      return false;
+      return 'pendingIntakeReject'; // a string so the caller's logExclusion records it (audit trail)
     }
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
