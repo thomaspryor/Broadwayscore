@@ -1159,6 +1159,9 @@ const PIPELINE_CHECKS = [
   { file: 'weekly-grosses.last-success', label: 'weekly-grosses', warnH: 240, hint: PIPELINE_PUSH_HINT('Weekly Broadway Grosses') },
   { file: 'weekly-integrity.last-success', label: 'weekly-integrity', warnH: 240, hint: PIPELINE_PUSH_HINT('Weekly Integrity') },
   { file: 'test.last-success', label: 'test', warnH: 48, hint: PIPELINE_PUSH_HINT('Test Suite (test.yml)') },
+  // BRO-8188: written by update-show-status.yml's "Refresh near-opening dates from IBDB" step only when it exits 0
+  // (the step is advisory, so a persistently broken refresh shows up here, not as a red run).
+  { file: 'ibdb-near-opening.last-success', label: 'ibdb-near-opening', warnH: 72, hint: 'Read the "Refresh near-opening dates from IBDB" step of the latest "Update Show Status" runs: a ::warning:: there means IBDB fetches or the validation gate failed.' },
 ];
 
 function checkPipelines() {

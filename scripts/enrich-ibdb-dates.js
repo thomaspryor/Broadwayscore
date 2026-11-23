@@ -243,6 +243,11 @@ async function main() {
   }));
 
   const ibdbResults = await batchLookupIBDBDates(lookupList);
+  const titleCounts = new Map();
+  for (const s of shows) {
+    const k = String(s.title).toLowerCase();
+    titleCounts.set(k, (titleCounts.get(k) || 0) + 1);
+  }
 
   // Process results
   const changes = [];
@@ -322,7 +327,11 @@ async function main() {
         });
         // BRO-8188: an IBDB-sourced date follows IBDB when the opening moves (no --force needed).
         // decideOpeningRefresh refuses human corrections, stronger sources, other productions and old history.
-        const refresh = force ? null : decideOpeningRefresh(show, ibdb.openingDate, Date.now());
+        let refresh = force ? null : decideOpeningRefresh(show, ibdb.openingDate, Date.now());
+        // IBDB results are keyed by title: two selected shows sharing a title could swap dates.
+        if (refresh && refresh.refresh && titleCounts.get(String(show.title).toLowerCase()) > 1) {
+          refresh = { refresh: false, reason: 'another selected show has the same title (IBDB results are keyed by title)' };
+        }
         if (refresh) console.log(`    ${refresh.refresh ? '📅' : '·'} openingDate ${show.openingDate} vs IBDB ${ibdb.openingDate}: ${refresh.reason}`);
         if (force || (refresh && refresh.refresh)) {
           showChanges.push({
@@ -360,12 +369,15 @@ async function main() {
       }
     }
 
-    // Check creativeTeam
-    const creativeTeamChange = await buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits, force });
+    // Check creativeTeam (not in the daily near-opening pass: SERP-verified, so it costs on every run)
+    const creativeTeamChange = nearOpening ? null : await buildVerifiedCreativeTeamChange(show, ibdb, { mergeCredits, force });
     if (creativeTeamChange) showChanges.push(creativeTeamChange);
 
     // Data integrity guards
     const filteredChanges = showChanges.filter(c => {
+      // BRO-8188: the daily near-opening pass only moves opening dates. ibdbUrl/previews/closing stay with the
+      // weekly run (a daily ibdbUrl write would fight update-show-status's shared-ibdbUrl self-heal).
+      if (nearOpening && c.field !== 'openingDate') return false;
       // Never set previewsStartDate >= openingDate
       if (c.field === 'previewsStartDate' && ibdb.openingDate) {
         if (c.new >= ibdb.openingDate) {

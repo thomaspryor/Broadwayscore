@@ -59,8 +59,9 @@ jobs:
     # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
     # "Discover new shows" below) + enrichment ~18 min (incl. BRO-166's
     # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
-    # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
-    # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
+    # 5 min (hard step cap) + near-opening IBDB refresh 10 min (hard `timeout 600`,
+    # BRO-8188, ~9 shows, usually ~1 min) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
+    # below) + setup-node/misc ~5 min ≈ 109-128 min worst case, ~5-24 min margin to 133.
     timeout-minutes: 133
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
@@ -166,7 +167,10 @@ jobs:
           cp data/shows.json "${RUNNER_TEMP:-/tmp}/shows.pre-ibdb-refresh.json"
           status=0
           timeout 600 node scripts/enrich-ibdb-dates.js --near-opening || status=$?
-          if [ "$status" -ne 0 ]; then
+          if [ "$status" -eq 0 ]; then
+            mkdir -p data/audit/pipeline-health
+            date -u > data/audit/pipeline-health/ibdb-near-opening.last-success
+          else
             cp "${RUNNER_TEMP:-/tmp}/shows.pre-ibdb-refresh.json" data/shows.json
             if [ "$had_sentinel" -eq 0 ]; then rm -f "$SENTINEL"; fi
             echo "::warning::near-opening IBDB refresh exited $status; shows.json restored, status update continues"
