@@ -1226,5 +1226,36 @@
       }
     ],
     "queuedAt": "2026-11-23T02:55:16.099Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8084-pullquote-trailer-truncation",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8084-pullquote-trailer-truncation",
+    "description": "land.yml did not land land/bro-8084-pullquote-trailer-truncation: the scripts-lib-tests gate went red at eb31491b08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45102219952",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8084-pullquote-trailer-truncation"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "eb31491b08579c3c23426a9a185226b40537b554"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45102219952"
+      }
+    ],
+    "queuedAt": "2026-11-23T03:06:24.121Z"
   }
 ]
