@@ -81,3 +81,7 @@ test('website keeps the venue page when both sources name it, else the homepage'
   assert.equal(pickWebsite('https://www.atgtickets.com/venues/richmond-theatre/', 'https://www.atgtickets.com/venues/new-wimbledon-theatre/'), 'https://www.atgtickets.com/');
   assert.equal(pickWebsite('https://www.donmarwarehouse.com', 'https://www.donmarwarehouse.com/'), 'https://www.donmarwarehouse.com/');
 });
+
+test('website prefers https when either source gives it', () => {
+  assert.equal(pickWebsite('http://galleryplayers.com/', 'https://galleryplayers.com'), 'https://galleryplayers.com/');
+});

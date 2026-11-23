@@ -16,7 +16,8 @@
  * Usage:
  *   node scripts/research-venue-details.js [--market=off-broadway|london] [--only=slug,slug]
  *     [--limit=N] [--max-usd=40] [--workers=4] [--refresh] [--rebuild-only] [--redecide]
- * --rebuild-only re-derives venue-info.json from the raw checkpoint with no model calls.
+ * --rebuild-only re-derives venue-info.json from the raw checkpoint with no model calls
+ *   (it still geocodes new decisions on OpenStreetMap).
  * --redecide re-applies the agreement rules to every venue (needed after a rule change).
  */
 
@@ -25,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { stubTheaterName, londonShows, offBroadwayShows } = require('./lib/page-name-sources');
 const { slugify, foldDiacritics } = require('./lib/url-slug');
-const { agree, addressesAgree, streetKey, inCity } = require('./lib/venue-info-agree');
+const { agree, addressesAgree, streetKey, inCity, postcodeOf } = require('./lib/venue-info-agree');
 
 const ROOT = path.join(__dirname, '..');
 const RAW_PATH = path.join(ROOT, 'data/audit/venue-info-raw.json');
@@ -113,7 +114,7 @@ async function geocode(address) {
   lastNominatim = Date.now();
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
   try {
-    const res = await fetch(url, { headers: { 'user-agent': 'venue-info-check/1.0' } });
+    const res = await fetch(url, { signal: AbortSignal.timeout(20000), headers: { 'user-agent': 'venue-info-check/1.0' } });
     const j = await res.json();
     if (!Array.isArray(j) || !j.length) return null;
     return { lat: Number(j[0].lat), lng: Number(j[0].lon), display: j[0].display_name };
@@ -138,13 +139,27 @@ async function siteText(url) {
   return text.replace(/\s+/g, ' ');
 }
 
+/** Does a geocoder display name share the address's postcode or a distinctive street word? */
+function mapResultMatchesAddress(display, address) {
+  const norm = (t) => ` ${foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ')} `;
+  const d = norm(display);
+  const pc = postcodeOf(address);
+  if (pc && d.replace(/\s+/g, '').includes(pc.toLowerCase())) return true;
+  const generic = new Set(['street', 'road', 'lane', 'place', 'square', 'avenue', 'court', 'park', 'yard', 'london', 'york', 'new', 'the', 'west', 'east', 'north', 'south']);
+  return norm(address).trim().split(' ').some((w) => w.length > 3 && !generic.has(w) && !/^\d/.test(w) && d.includes(` ${w} `));
+}
+
 /** Does the site text contain this address's house number next to its street words? */
 function siteNamesAddress(text, address) {
   const k = streetKey(address);
   if (!k.number || !k.street) return false;
   const norm = ` ${foldDiacritics(String(text)).toLowerCase().replace(/[^a-z0-9]+/g, ' ')} `;
-  const firstWord = k.street.split(' ').find((w) => !['w', 'e', 'n', 's'].includes(w)) || k.street.split(' ')[0];
-  const re = new RegExp(`\\b${k.number}\\s+(?:[a-z]+\\s+){0,2}${firstWord.replace(/(st|nd|rd|th)$/, '(?:$1)?')}`);
+  // The first distinctive street word ("st" can be Saint, "w" a direction); ordinals must match
+  // whole ("42nd" never matches "420"), and the word must end at a word boundary.
+  const firstWord = k.street.split(' ').find((w) => w.length > 2 && !['ave', 'blvd', 'ter', 'pl', 'sq', 'rd', 'ln'].includes(w));
+  if (!firstWord) return false;
+  const word = /^\d+(st|nd|rd|th)$/.test(firstWord) ? firstWord.replace(/(st|nd|rd|th)$/, '(?:$1)?') : firstWord;
+  const re = new RegExp(`\\b${k.number}\\s+(?:[a-z]+\\s+){0,2}${word}\\b`);
   return re.test(norm);
 }
 
@@ -185,8 +200,13 @@ async function decide(v, raw, { network = true } = {}) {
       .replace(/^(\d+)-\d+\s/, '$1 ')
       .replace(/,?\s*(NY\s+)?\d{5}(-\d{4})?$|\s+[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i, '');
     geo = await geocode(fields.address)
-      || (bare !== fields.address ? await geocode(bare) : null)
-      || await geocode(`${v.name}, ${v.city === 'london' ? 'London' : 'New York'}`);
+      || (bare !== fields.address ? await geocode(bare) : null);
+    if (!geo) {
+      // Last resort, the venue by name: accepted only when the map's own result names the
+      // address's postcode or one of its street words, so it cannot vouch for a made-up address.
+      const byName = await geocode(`${v.name}, ${v.city === 'london' ? 'London' : 'New York'}`);
+      if (byName && mapResultMatchesAddress(byName.display, fields.address)) geo = byName;
+    }
     if (!geo) {
       // An address we could not place on a map is not published (BRO-8088 ship-check).
       disagreements.push({ field: 'address', reason: 'could not geocode', address: fields.address });
@@ -216,6 +236,11 @@ async function main() {
 
   const rawStore = fs.existsSync(RAW_PATH) ? JSON.parse(fs.readFileSync(RAW_PATH, 'utf8')) : {};
   const key = (v) => `${v.market}/${v.slug}`;
+  if (args['rebuild-only'] && !Object.keys(rawStore).length) {
+    // Rebuilding from an empty checkpoint would publish an empty venue file.
+    console.error(`no raw answers at ${path.relative(process.cwd(), RAW_PATH)}; refusing to rebuild`);
+    process.exit(1);
+  }
 
   if (!args['rebuild-only']) {
     require('./lib/llm-usage-install');
