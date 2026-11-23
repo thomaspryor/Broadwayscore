@@ -75,8 +75,9 @@ function main() {
   // BRO-8108: copy this machine's session LLM rows (reviewer spend) into the tracked ledger now,
   // since a cloud home folder dies with the container.
   let folded = 0;
-  try { folded = require('./lib/gemini-usage-ledger.js').foldSessionRows(); } catch (e) { console.error(`session LLM rows not folded: ${e.message}`); }
-  if (folded || sessionUsagePending(REPO)) console.log(`${SESSION_USAGE_REL}: ${folded} session LLM row(s) added; commit it with the cost row (BRO-8108).`);
+  try { folded = require('./lib/gemini-usage-ledger.js').foldSessionRows(); } catch (e) { failed += 1; console.error(`session LLM rows NOT folded (reviewer spend will be missing): ${e.message}`); }
+  if (folded) console.log(`${SESSION_USAGE_REL}: ${folded} session LLM row(s) added; commit it with the cost row (BRO-8108).`);
+  else if (sessionUsagePending(REPO)) console.log(`${SESSION_USAGE_REL} has uncommitted rows: commit it with the cost row (BRO-8108).`);
   return failed ? 1 : 0;
 }
 

@@ -361,10 +361,13 @@ function sessionLedgerPath() {
  * session commits with its cost row. Copies only lines not already there. Returns rows added.
  */
 function foldSessionRows({ from = sessionLedgerPath(), to = TRACKED_SESSION_LEDGER_PATH } = {}) {
-  if (path.resolve(from) === path.resolve(to)) return 0;
-  const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split('\n').filter((l) => l.trim()); } catch { return []; } };
+  // Never fold the main ledger (CI, or GEMINI_USAGE_LEDGER_PATH set): it is committed already.
+  if (path.resolve(from) === path.resolve(to) || path.resolve(from) === path.resolve(_ledgerPath())) return 0;
+  // A missing file is "nothing to fold"; any other read error throws so the caller reports it.
+  const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split('\n').filter((l) => l.trim()); } catch (e) { if (e.code === 'ENOENT') return []; throw e; } };
   const have = new Set(lines(to));
-  const add = lines(from).filter((l) => { if (have.has(l)) return false; try { JSON.parse(l); } catch { return false; } have.add(l); return true; });
+  const isSessionRow = (l) => { try { return JSON.parse(l).kind === 'session'; } catch { return false; } };
+  const add = lines(from).filter((l) => { if (have.has(l) || !isSessionRow(l)) return false; have.add(l); return true; });
   if (!add.length) return 0;
   fs.mkdirSync(path.dirname(to), { recursive: true });
   fs.appendFileSync(to, add.join('\n') + '\n');

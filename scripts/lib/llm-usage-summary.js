@@ -27,13 +27,24 @@ function readRows(p) {
   // Committed session rows (BRO-8108) plus this machine's own, each file once. A row folded
   // into the tracked file at wrap-up stays in the Mac's home file too: count it once.
   const files = [...new Set([base, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath()])];
-  const [first, ...rest] = files.map(readFile);
-  const seen = new Set(rest.length ? first.filter((r) => r.kind === 'session').map((r) => JSON.stringify(r)) : []);
-  const out = first.slice();
-  for (const rows of rest) for (const r of rows) {
-    const k = JSON.stringify(r);
-    if (seen.has(k)) continue;
-    seen.add(k); out.push(r);
+  return mergeRowSets(files.map(readFile));
+}
+
+/**
+ * Concatenate ledgers, keeping each identical session row once (BRO-8108: wrap-up folds home
+ * rows into the tracked file, the Mac home keeps them, and two branches can union-merge the
+ * same fold). Non-session rows are never dropped: two identical API rows are two real flushes. Pure.
+ */
+function mergeRowSets(lists) {
+  const seen = new Set();
+  const out = [];
+  for (const rows of lists) for (const r of rows) {
+    if (r && r.kind === 'session') {
+      const k = JSON.stringify(r);
+      if (seen.has(k)) continue;
+      seen.add(k);
+    }
+    out.push(r);
   }
   return out;
 }
@@ -85,4 +96,4 @@ function digestTitle(rows, day, { top = 3 } = {}) {
   return `${day} · LLM APIs (metered estimate, not the full bill): ${parts.join(' · ')}${topText ? ` · top: ${topText}` : ''}`;
 }
 
-module.exports = { readRows, summarize, digestTitle };
+module.exports = { readRows, mergeRowSets, summarize, digestTitle };

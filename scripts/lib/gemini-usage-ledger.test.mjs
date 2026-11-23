@@ -196,8 +196,8 @@ test('foldSessionRows copies new session rows once into the tracked ledger', () 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-fold-'));
   const from = path.join(dir, 'home.jsonl');
   const to = path.join(dir, 'repo', 'data', 'audit', 'llm-session-usage.jsonl');
-  const a = JSON.stringify({ ts: '2026-11-23T00:00:00Z', provider: 'gemini', model: 'gemini-3.8-flash', costUsd: 0.13 });
-  const b = JSON.stringify({ ts: '2026-11-23T00:01:00Z', provider: 'openai', model: 'gpt-x', costUsd: 0.01 });
+  const a = JSON.stringify({ ts: '2026-11-23T00:00:00Z', provider: 'gemini', kind: 'session', model: 'gemini-3.8-flash', costUsd: 0.13 });
+  const b = JSON.stringify({ ts: '2026-11-23T00:01:00Z', provider: 'openai', kind: 'session', model: 'gpt-x', costUsd: 0.01 });
   fs.writeFileSync(from, a + '\nnot json\n' + b + '\n');
   assert.equal(L.foldSessionRows({ from, to }), 2);
   assert.equal(L.foldSessionRows({ from, to }), 0, 'a second wrap-up adds nothing');
@@ -213,19 +213,28 @@ test('the usage summary reads committed cloud-session rows', () => {
   assert.equal(typeof S.readRows, 'function');
 });
 
-test('a session row folded into the tracked file and still in the home file counts once', async () => {
-  const { spawnSync } = await import('node:child_process');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-dup-'));
-  const home = path.join(dir, 'home'); fs.mkdirSync(path.join(home, '.claude', 'state'), { recursive: true });
-  const row = JSON.stringify({ ts: '2026-11-23T00:00:00.000Z', provider: 'gemini', kind: 'session', caller: 'ship-check', model: 'gemini-3.8-flash', calls: 1, costUsd: 0.5 });
-  fs.writeFileSync(path.join(home, '.claude', 'state', 'llm-session-usage.jsonl'), row + '\n');
-  const base = path.join(dir, 'base.jsonl'); fs.writeFileSync(base, '');
-  const code = `const L=require(process.argv[1]);const fs=require('fs');fs.mkdirSync(require('path').dirname(L.TRACKED_SESSION_LEDGER_PATH),{recursive:true});` +
-    `const S=require(process.argv[2]);const n=S.readRows().filter(r=>r.caller==='ship-check'&&r.ts==='2026-11-23T00:00:00.000Z').length;process.stdout.write(String(n));`;
-  // The same row in an earlier-read file (here the base ledger) and in the machine's home file.
-  fs.writeFileSync(base, row + '\n');
-  const r = spawnSync(process.execPath, ['-e', code, require.resolve('./gemini-usage-ledger.js'), require.resolve('./llm-usage-summary.js')],
-    { env: { PATH: process.env.PATH, HOME: home, GEMINI_USAGE_LEDGER_PATH: base, LLM_SESSION_LEDGER_PATH: path.join(home, '.claude', 'state', 'llm-session-usage.jsonl') }, encoding: 'utf8' });
-  assert.equal(r.status, 0, r.stderr);
-  assert.equal(r.stdout, '1');
+test('mergeRowSets: a session row in the tracked file and the home file counts once; API rows never merge', () => {
+  const { mergeRowSets } = require('./llm-usage-summary.js');
+  const sess = { ts: '2026-11-23T00:00:00.000Z', provider: 'gemini', kind: 'session', caller: 'ship-check', costUsd: 0.5 };
+  const api = { ts: '2026-11-23T00:00:00.000Z', provider: 'gemini', kind: 'api', script: 'x.js', costUsd: 0.1 };
+  const base = [api, { ...api }];
+  const tracked = [sess, { ...sess }]; // a union merge of two branches that folded the same row
+  const home = [{ ...sess }];
+  const out = mergeRowSets([base, tracked, home]);
+  assert.equal(out.filter((r) => r.kind === 'session').length, 1);
+  assert.equal(out.filter((r) => r.kind === 'api').length, 2, 'identical API flushes are real spend');
+});
+
+test('foldSessionRows copies only session rows and never folds the main ledger', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8108-only-'));
+  const from = path.join(dir, 'home.jsonl');
+  const to = path.join(dir, 'tracked.jsonl');
+  const sess = JSON.stringify({ kind: 'session', caller: 'ship-check', costUsd: 0.2 });
+  fs.writeFileSync(from, JSON.stringify({ kind: 'api', script: 'ci.js' }) + '\n' + sess + '\n');
+  assert.equal(L.foldSessionRows({ from, to }), 1);
+  assert.equal(fs.readFileSync(to, 'utf8'), sess + '\n');
+  assert.equal(L.foldSessionRows({ from: L.LEDGER_PATH, to: path.join(dir, 't2.jsonl') }), 0, 'the main ledger is never folded');
+  assert.equal(fs.existsSync(path.join(dir, 't2.jsonl')), false);
+  fs.mkdirSync(path.join(dir, 'adir.jsonl'));
+  assert.throws(() => L.foldSessionRows({ from: path.join(dir, 'adir.jsonl'), to }), 'an unreadable source is an error, not "nothing to fold"');
 });
