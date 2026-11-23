@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-22T23:30:34.013Z",
+  "timestamp": "2026-11-23T00:00:58.810Z",
   "stats": {
     "totalReviews": 84145,
-    "alreadyFlagged": 22478,
+    "alreadyFlagged": 22479,
     "dateGuardCatches": 240,
-    "directorMismatch": 3882,
+    "directorMismatch": 3881,
     "tvFilmSignals": 2416,
-    "londonSignals": 3967,
+    "londonSignals": 3966,
     "offBroadwaySignals": 786,
     "yearMismatch": 394,
-    "noPublishDate": 8246
+    "noPublishDate": 8245
   },
   "findings": [
     {
@@ -26078,25 +26078,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "giant-west-end-2025",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295?ico=more_from_this_author",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
