@@ -31,6 +31,20 @@ export function isLondonMarket(category?: string): boolean {
   return category === 'west-end' || category === 'off-west-end';
 }
 
+/**
+ * Whether a London show page's <title> and OG/Twitter titles add "London" after the
+ * show name (BRO-8085). UK searchers type "[show] london reviews" / "[show] west end
+ * review", and a West End production with a Broadway twin ("Hamilton Reviews: Rave
+ * 90/100") otherwise shares its Broadway page's title, so Google shows the Broadway
+ * one. Same idea as tours adding "National Tour". False outside London and for titles
+ * that already name London or the West End. Opera is the caller's call (its titles
+ * carry the opera house instead).
+ */
+export function londonTitleNeedsSuffix(title: string, category?: string): boolean {
+  if (!isLondonMarket(category)) return false;
+  return !/\blondon\b|\bwest[\s-]*end\b/i.test(title);
+}
+
 /** Returns true for off-broadway and off-west-end — smaller venue markets. */
 export function isOffMarket(category?: string): boolean {
   return category === 'off-broadway' || category === 'off-west-end';

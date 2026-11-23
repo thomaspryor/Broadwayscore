@@ -35,7 +35,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
+import { getCurrencySymbol, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -141,13 +141,18 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // UK flagship houses (RSC, Chichester, ...) are filed under Beyond London, not Broadway tryouts (BRO-5103).
   const isUkRegionalMeta = isRegionalMeta && isUkRegionalShow(show);
   const isTourMeta = show.category === 'tour';
+  const isOperaMeta = isOperaShow(show);
   // A tour shares its Broadway parent's title; the <title>/OG name must tell them apart.
-  const seoTitle = isTourMeta ? `${show.title} National Tour` : show.title;
+  // A London production gets "London" the same way (BRO-8085: "[show] london reviews").
+  // London opera keeps its opera-house label instead.
+  const addsLondon = !isTourMeta && !isOperaMeta && londonTitleNeedsSuffix(show.title, show.category);
+  const seoTitle = isTourMeta ? `${show.title} National Tour` : addsLondon ? `${show.title} London` : show.title;
   // Revivals share a title with their other productions: add the production year so
   // each <title> is distinct, keeping "[Show] Reviews" front-loaded (BRO-5970).
   const sharedYear = getSharedTitleYear(show);
   const titleYearSuffix = sharedYear ? ` (${sharedYear})` : '';
-  const isOperaMeta = isOperaShow(show);
+  // The <title> name: the year goes before "London" so "[show] London Reviews" stays together.
+  const titleName = addsLondon ? `${show.title}${titleYearSuffix} London` : `${seoTitle}${titleYearSuffix}`;
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
   // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
@@ -231,11 +236,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   return {
     title: {
       absolute: hd.line
-        ? `${seoTitle}${titleYearSuffix} Reviews & Met Live in HD${roundedScore && titleSentimentWord ? ` (${roundedScore}/100)` : ''} | ${siteName}`
+        ? `${titleName} Reviews & Met Live in HD${roundedScore && titleSentimentWord ? ` (${roundedScore}/100)` : ''} | ${siteName}`
         : roundedScore && titleSentimentWord
-        ? `${seoTitle}${titleYearSuffix} Reviews: ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
-        // A tour's seoTitle already says "National Tour"; the market label would repeat it.
-        : `${seoTitle}${titleYearSuffix} Reviews${isTourMeta ? '' : ` ${marketLabel}`} | ${siteName}`,
+        ? `${titleName} Reviews: ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
+        // A tour's name already says "National Tour" (a London one "London"); the market label would repeat it.
+        : `${titleName} Reviews${isTourMeta || addsLondon ? '' : ` ${marketLabel}`} | ${siteName}`,
     },
     // An unscored tour is indexed once it is live with a schedule (the page's
     // own content); a closed or unscheduled one with no score stays out of
