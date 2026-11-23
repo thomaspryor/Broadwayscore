@@ -422,7 +422,7 @@
       "linearIdentifier": null
     },
     "provider-spend:overspend": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
@@ -432,7 +432,9 @@
       "lastSurfacedAt": "2026-11-22T10:29:22.171Z",
       "notifyCount": 63,
       "cardId": null,
-      "linearIdentifier": "BRO-6867"
+      "linearIdentifier": "BRO-6867",
+      "resolvedAt": "2026-11-23T11:26:03.631Z",
+      "resolveReason": "no provider over budget for 3 days through 2026-11-22"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "resolved",
@@ -8773,20 +8775,17 @@
       "resolveReason": "BRO-5076: review file no longer exists (removed or renamed)"
     },
     "provider-spend:attribution-gap:brightdata": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "Untracked brightdata spend: ledger explains only 79%, 75% of billed",
+      "title": "Untracked brightdata spend: ledger explains only 77%, 79% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
-      "incidentOpenedAt": "2026-10-09T13:53:46.498Z",
-      "lastSeen": "2026-10-10T13:08:18.214Z",
-      "lastNotifiedAt": "2026-10-09T13:53:46.498Z",
+      "incidentOpenedAt": "2026-11-23T11:27:05.515Z",
+      "lastSeen": "2026-11-23T11:27:05.515Z",
+      "lastNotifiedAt": "2026-11-23T11:27:05.515Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-4936",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-12T03:15:33.929Z",
-      "resolveReason": "attributedPct 90%, 100% through 2026-10-11"
+      "linearIdentifier": "BRO-8132"
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "resolved",
@@ -9971,13 +9970,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 14 P0 older than 24h, 63 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 14 P0 older than 24h, 70 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-22T10:01:54.493Z",
-      "lastNotifiedAt": "2026-11-22T10:01:54.493Z",
+      "lastSeen": "2026-11-23T10:58:19.877Z",
+      "lastNotifiedAt": "2026-11-23T10:58:19.877Z",
       "lastSurfacedAt": "2026-11-17T10:49:52.412Z",
-      "notifyCount": 50,
+      "notifyCount": 51,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17824,13 +17823,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-22T10:29:20.280Z",
+      "lastSeen": "2026-11-23T11:26:02.048Z",
       "lastNotifiedAt": "2026-11-18T10:47:02.532Z",
       "lastSurfacedAt": "2026-11-18T10:47:02.532Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -40280,23 +40279,23 @@
       "title": "Same-critic outlet pairs: 35 show/critic pairs counted at two outlets",
       "firstSeen": "2026-11-09T09:57:37.244Z",
       "incidentOpenedAt": "2026-11-09T09:57:37.244Z",
-      "lastSeen": "2026-11-22T10:02:57.127Z",
-      "lastNotifiedAt": "2026-11-22T10:02:57.127Z",
+      "lastSeen": "2026-11-23T10:59:05.012Z",
+      "lastNotifiedAt": "2026-11-23T10:59:05.012Z",
       "lastSurfacedAt": null,
-      "notifyCount": 14,
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-7207"
     },
     "default-critic-diversity:unflagged": {
       "status": "open",
       "disposition": "auto",
-      "title": "Default-critic diversity: 3 outlets credit blank bylines to one of several critics",
+      "title": "Default-critic diversity: 2 outlets credit blank bylines to one of several critics",
       "firstSeen": "2026-11-09T09:57:49.316Z",
       "incidentOpenedAt": "2026-11-16T09:49:05.745Z",
-      "lastSeen": "2026-11-22T10:03:11.681Z",
-      "lastNotifiedAt": "2026-11-22T10:03:11.681Z",
+      "lastSeen": "2026-11-23T10:59:56.991Z",
+      "lastNotifiedAt": "2026-11-23T10:59:56.991Z",
       "lastSurfacedAt": null,
-      "notifyCount": 14,
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-7586"
     },
@@ -40306,10 +40305,10 @@
       "title": "Approved-fix drift: 4 approved exclusion verdicts silently undone",
       "firstSeen": "2026-11-09T09:58:29.714Z",
       "incidentOpenedAt": "2026-11-22T10:03:39.016Z",
-      "lastSeen": "2026-11-22T10:03:39.016Z",
-      "lastNotifiedAt": "2026-11-22T10:03:39.016Z",
+      "lastSeen": "2026-11-23T11:00:17.331Z",
+      "lastNotifiedAt": "2026-11-23T11:00:17.331Z",
       "lastSurfacedAt": null,
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-8042",
       "notifyCountAtRelease": 3,
@@ -41458,10 +41457,12 @@
       "lastSurfacedAt": "2026-11-22T18:35:44.084Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-8062",
+      "linearIdentifier": null,
       "silentRefires": 27,
       "resolvedAt": "2026-11-23T04:51:22.587Z",
-      "resolveReason": "step passed"
+      "resolveReason": "step passed",
+      "sweptTracker": "BRO-8062",
+      "notifyCountAtRelease": 6
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
       "status": "resolved",
@@ -42771,7 +42772,7 @@
       "resolveReason": "absent"
     },
     "star-band-drift:published-out-of-band": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Star-band drift: 1 published score outside the critic's own rating",
       "firstSeen": "2026-11-12T10:00:07.652Z",
@@ -42781,7 +42782,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-7956"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T10:59:04.520Z",
+      "resolveReason": "no published score out of band",
+      "sweptTracker": "BRO-7956",
+      "notifyCountAtRelease": 6
     },
     "land:land/job/linear-BRO-7401-mwdddk9w": {
       "status": "resolved",
@@ -43828,9 +43833,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-8037",
-      "notifyCountAtRelease": 3,
-      "sweptTracker": "BRO-7760",
+      "linearIdentifier": null,
+      "notifyCountAtRelease": 4,
+      "sweptTracker": "BRO-8037",
       "resolvedAt": "2026-11-23T10:53:54.223Z",
       "resolveReason": "All sampled production pages match their deployed data"
     },
@@ -44842,10 +44847,10 @@
       "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-17T10:50:10.404Z",
       "incidentOpenedAt": "2026-11-17T10:50:10.404Z",
-      "lastSeen": "2026-11-22T10:02:14.333Z",
-      "lastNotifiedAt": "2026-11-22T10:02:14.333Z",
-      "lastSurfacedAt": "2026-11-22T10:02:14.333Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-23T10:58:32.863Z",
+      "lastNotifiedAt": "2026-11-23T10:58:32.863Z",
+      "lastSurfacedAt": "2026-11-23T10:58:32.863Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -46095,10 +46100,10 @@
       "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-19T10:36:59.089Z",
       "incidentOpenedAt": "2026-11-19T10:36:59.089Z",
-      "lastSeen": "2026-11-22T10:02:14.043Z",
-      "lastNotifiedAt": "2026-11-22T10:02:14.043Z",
-      "lastSurfacedAt": "2026-11-22T10:02:14.043Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-23T10:58:32.615Z",
+      "lastNotifiedAt": "2026-11-23T10:58:32.615Z",
+      "lastSurfacedAt": "2026-11-23T10:58:32.615Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -48665,9 +48670,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-8003",
+      "linearIdentifier": null,
       "resolvedAt": "2026-11-23T02:22:17.896Z",
-      "resolveReason": "no unread held-out review looks like a real one"
+      "resolveReason": "no unread held-out review looks like a real one",
+      "sweptTracker": "BRO-8003",
+      "notifyCountAtRelease": 1
     },
     "land:land/job/linear-BRO-8078-mwsizgqt": {
       "status": "resolved",
@@ -48927,6 +48934,58 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "coverage-holes:jenufa-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "jenufa-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "firstSeen": "2026-11-23T10:58:32.528Z",
+      "incidentOpenedAt": "2026-11-23T10:58:32.528Z",
+      "lastSeen": "2026-11-23T10:58:32.528Z",
+      "lastNotifiedAt": "2026-11-23T10:58:32.528Z",
+      "lastSurfacedAt": "2026-11-23T10:58:32.528Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:fantasma-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "fantasma-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "firstSeen": "2026-11-23T10:58:32.739Z",
+      "incidentOpenedAt": "2026-11-23T10:58:32.739Z",
+      "lastSeen": "2026-11-23T10:58:32.739Z",
+      "lastNotifiedAt": "2026-11-23T10:58:32.739Z",
+      "lastSurfacedAt": "2026-11-23T10:58:32.739Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "step-timeout-headroom:near-cap": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Opening-night timeout headroom: 3 steps near their timeout cap",
+      "firstSeen": "2026-11-23T10:59:47.139Z",
+      "incidentOpenedAt": "2026-11-23T10:59:47.139Z",
+      "lastSeen": "2026-11-23T10:59:47.139Z",
+      "lastNotifiedAt": "2026-11-23T10:59:47.139Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-8130"
+    },
+    "provider-spend:attribution-gap:scrapingbee": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Untracked scrapingbee spend: ledger explains only 71%, 80% of billed",
+      "firstSeen": "2026-11-23T11:26:03.656Z",
+      "incidentOpenedAt": "2026-11-23T11:26:03.656Z",
+      "lastSeen": "2026-11-23T11:26:03.656Z",
+      "lastNotifiedAt": "2026-11-23T11:26:03.656Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-8131"
     }
   }
 }

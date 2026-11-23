@@ -1,39 +1,45 @@
 {
-  "generatedAt": "2026-11-22T10:29:22.085Z",
-  "bannerText": "OVER BUDGET: scrapingbee on pace to run out before renewal: ~9970 credits/day (7-day average) x 13 days to 2026-12-05 = 129610 > 18460 left",
+  "generatedAt": "2026-11-23T11:26:03.557Z",
+  "bannerText": "Within budget · streak 16 of 7 verified days",
   "items": [
     {
-      "title": "2026-11-21 · Browserbase: $0.8 (123 sessions, 65.78min)"
+      "title": "2026-11-22 · Browserbase: $0.79 (91 sessions, 61.18min)"
     },
     {
-      "title": "2026-11-21 · Bright Data: $3.01 (131 serp / 1879 unlocker)"
+      "title": "2026-11-22 · Bright Data: $3.5 (97 serp / 2239 unlocker)"
     },
     {
-      "title": "ScrapingBee: 8113 credits (231540 this cycle)"
+      "title": "ScrapingBee: 7845 credits (239385 this cycle)"
     },
     {
-      "title": "ScrapingDog: 114955 credits (1580731 this cycle)"
+      "title": "ScrapingDog: 120151 credits (1700882 this cycle)"
     },
     {
-      "title": "Browserbase attribution: 98% attributed — top callers (covers 98% of billed calls): collect-review-texts.js 113, bww-rr-discover.js 3, gather-reviews.js:the-stage 2, collect-talkinbroadway-index.js 1, sweep-we-aggregators.js:the-stage 1"
+      "title": "Browserbase attribution: 95% attributed — top callers (covers 95% of billed calls): collect-review-texts.js 74, gather-reviews.js:the-stage 8, bww-rr-discover.js 3, collect-talkinbroadway-index.js 1"
     },
     {
-      "title": "Bright Data attribution: 77% attributed — top callers (covers 65% of billed calls): audit-show-review-gap.js 363, ingest-review-from-url.js 303, opening-night-poller.js 295, collect-review-texts.js 223, replay-pending-bylines.js 118"
+      "title": "Bright Data attribution: 79% attributed — top callers (covers 55% of billed calls): audit-show-review-gap.js 398, opening-night-poller.js 263, collect-review-texts.js 228, ingest-review-from-url.js 208, replay-pending-bylines.js 186"
     },
     {
-      "title": "⚠️ Bright Data top-caller coverage low: 65% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+      "title": "⚠️ Bright Data top-caller coverage low: 55% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
     },
     {
-      "title": "ScrapingBee attribution: 71% attributed — top callers (covers 55% of billed credits): opening-night-poller.js 1400cr, collect-review-texts.js 1142cr, gather-reviews.js 1110cr, scrape-show-score-audience.js 445cr, check-cookie-health.js 375cr"
+      "title": "ScrapingBee attribution: 80% attributed — top callers (covers 68% of billed credits): opening-night-poller.js 1789cr, gather-reviews.js 1298cr, scrape-show-score-audience.js 1205cr, collect-review-texts.js 741cr, check-cookie-health.js 300cr"
     },
     {
-      "title": "⚠️ ScrapingBee top-caller coverage low: 55% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+      "title": "⚠️ ScrapingBee top-caller coverage low: 68% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
     },
     {
-      "title": "ScrapingDog attribution: 96% attributed — top callers (covers 81% of billed credits): gather-reviews.js 48508cr, audit-show-review-gap.js 15350cr, discover-opening-night-reviews.js 13552cr, collect-review-texts.js 11474cr, we-major-recovery.js 4285cr"
+      "title": "ScrapingDog attribution: 94% attributed — top callers (covers 79% of billed credits): gather-reviews.js 56876cr, audit-show-review-gap.js 12994cr, collect-review-texts.js 10545cr, discover-opening-night-reviews.js 9794cr, scrape-bww-reviews.js 5279cr"
     },
     {
-      "title": "2026-11-21 · LLM APIs (metered estimate, not the full bill): Claude est $48.05 (6778 calls; 587 repeats) · Gemini est $7.28 (11790 calls; 99 repeats) · OpenAI est $24.21 (5194 calls; 320 search-grounded, 2 repeats) · top: scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $32.50; scripts/llm-scoring/openai-leg-shadow.ts [Scoring Experiment] $18.67; scripts/deep-research-commercial.js [Commercial Weekly Orchestrator] $4.86"
+      "title": "⚠️ ScrapingDog top-caller coverage low: 79% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+    },
+    {
+      "title": "FYI, ride-out pack (not an alarm, owner rule): scrapingbee on pace to run out before renewal: ~9562 credits/day (7-day average) x 12 days to 2026-12-05 = 114744 > 10615 left"
+    },
+    {
+      "title": "2026-11-22 · LLM APIs (metered estimate, not the full bill): Claude est $14.33 (3210 calls) · Gemini est $1.86 (2498 calls; 14 repeats) · OpenAI est $0.42 (736 calls) · top: scripts/audit-touring-contamination.js [Audit Touring Contamination (LLM)] $3.87; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $2.28; scripts/collect-review-texts.js [Collect Review Texts] $1.76"
     }
   ],
   "moreCount": 0

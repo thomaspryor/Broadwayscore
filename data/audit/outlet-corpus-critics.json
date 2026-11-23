@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-22T10:03:18.143Z",
+ "generatedAt": "2026-11-23T11:00:01.852Z",
  "_comment": "BRO-6947: written by scripts/audit-printed-byline-conflicts.js --cache-out. Critics the review corpus files at each outlet (3+ files, 2+ shows). Read by collect-review-texts.js step 1B-v. Names only.",
  "outlets": {
   "12thnight": [
@@ -122,7 +122,6 @@
   "around-the-town-chicago": [
    "Frank Meccia",
    "Alan Bresloff",
-   "Julia W. Rath",
    "Jacob Davis"
   ],
   "arts-knoxville": [
@@ -213,7 +212,8 @@
    "Samantha Genzer"
   ],
   "boston-globe": [
-   "Don Aucoin"
+   "Don Aucoin",
+   "Garrett M. Graff"
   ],
   "boston-herald": [
    "Jed Gottlieb",
@@ -303,18 +303,18 @@
    "Zac Thriffiley",
    "Franco Milazzo",
    "Natalie O'Donoghue",
-   "Debbie Gilpin",
    "Angela Lin",
+   "Debbie Gilpin",
    "Jared Fessler",
    "Emily Werner",
    "Evan Henerson",
    "Tina St. Angelo",
    "David Friscic",
+   "Harker Jones",
    "Marianka Swain",
    "Michael Quintos",
    "Theresa Bertram",
    "Christiana Rose",
-   "Harker Jones",
    "Linda Hodges",
    "Taylor Clemons",
    "Cheryl Markosky",
@@ -334,12 +334,12 @@
    "AniKatrina Fageol",
    "Brett Cullum",
    "Jeffrey Kare",
+   "Jonathan Netek",
    "Louise Penn",
    "Stephi Wild",
    "Aidan O'Connor",
    "Alyson Eng",
    "Elizabeth Cortes",
-   "Jonathan Netek",
    "Laura Jones",
    "Michael Rabice",
    "Misha Davenport",
@@ -374,16 +374,18 @@
    "Jon Bee",
    "Kathleen Anwar",
    "Pamela Roberts",
+   "Peter Rouleau",
    "Sarah Dussome",
    "Tim Shawver",
    "Timoth David Copney",
+   "Cade Lott",
    "Caroline Cronin",
    "Christine Swerczek",
    "Christopher Verleger",
    "Edmund Whelan",
    "Emily Schenk",
+   "Jake Bridges",
    "Joseph Harrison",
-   "Peter Rouleau",
    "R Scott Reedy",
    "Sabrina Wallace",
    "Shari Barrett",
@@ -759,8 +761,8 @@
   "ew": [
    "Thom Geier",
    "Melissa Rose Bernardo",
-   "Emlyn Travis",
    "Leah Greenblatt",
+   "Emlyn Travis",
    "Dalton Ross",
    "Shania Russell",
    "Lisa Schwarzbaum",
@@ -778,12 +780,12 @@
    "Tanner Stransky",
    "Dave Quinn",
    "Kristen Baldwin",
+   "Stephan Lee",
    "Elysa Gardner",
    "Jeff Labrecque",
    "Jessica Shaw",
    "Keith Staskiewicz",
    "Maya Stanton",
-   "Stephan Lee",
    "Adam Markovitz",
    "Caitlin Brody",
    "Melissa Maerz",
@@ -792,7 +794,8 @@
    "David Canfield",
    "Joe McGovern",
    "Joey Nolfi",
-   "Kelly Connolly"
+   "Kelly Connolly",
+   "Maureen Lee Lenker"
   ],
   "exeunt-magazine": [
    "Loren Noveck",
@@ -1016,6 +1019,7 @@
    "Lovia Gyarkye",
    "Caitlin Huston",
    "Anita Gates",
+   "Leslie Felperin",
    "Stephen Dalton"
   ],
   "hollywood-soapbox": [
@@ -1277,8 +1281,8 @@
    "Fiona Gilbert",
    "Peter Yates",
    "Tom Carter",
-   "Bernadette Lintunen",
    "Louis Mazzini",
+   "Bernadette Lintunen",
    "Cal Frankie",
    "Loretta Monaco",
    "Ben Ross",
@@ -1675,9 +1679,9 @@
    "Lindsay B. Davis",
    "Emily Chackerian",
    "Bobby McGuire",
-   "Billy McEntee",
    "Jude Cramer",
-   "Ryan Leeds"
+   "Ryan Leeds",
+   "Billy McEntee"
   ],
   "onin": [
    "Caitlin Neal"
@@ -1838,6 +1842,9 @@
    "Tony Peters",
    "Katelyn Mensah"
   ],
+  "ratedreviewed": [
+   "Christine Stanton"
+  ],
   "readaboutstuff": [
    "Dan English"
   ],
@@ -1884,8 +1891,8 @@
    "Peter Travers",
    "David Browne",
    "Brittany Spanos",
-   "Larisha Paul",
-   "CT Jones"
+   "CT Jones",
+   "Larisha Paul"
   ],
   "san-diego-jewish-world": [
    "Sandi Masori"
@@ -1981,8 +1988,8 @@
    "Glenn Sumi"
   ],
   "socal-thrills": [
-   "Cori Graham",
-   "Russell Tom"
+   "Russell Tom",
+   "Cori Graham"
   ],
   "south-florida-sun-sentinel": [
    "Rod Stafford Hagwood"
@@ -2020,8 +2027,8 @@
    "F. Kathleen Foley",
    "Asa Fris",
    "Joel Beers",
-   "Deborah Klugman",
    "Steven Morris",
+   "Deborah Klugman",
    "Martín Hernández",
    "Molly McLean"
   ],
@@ -2046,9 +2053,10 @@
    "Rob Lester",
    "Barbara Papendorp",
    "Dmitry Zvonkov",
+   "Harvey Perr",
    "Jonas Schwartz",
    "Emily Brenner",
-   "Harvey Perr",
+   "Jason Mannino",
    "Thomas Antoinne"
   ],
   "stagebuddy": [
@@ -2102,13 +2110,13 @@
   "sunday-times": [
    "Quentin Letts",
    "Christopher Hart",
-   "Dominic Maxwell",
    "David Jays",
+   "Dominic Maxwell",
    "Patricia Nicol",
    "Maxie Szalwinska",
    "Jane Edwardes",
-   "Clive Davis",
-   "Victoria Segal"
+   "Victoria Segal",
+   "Clive Davis"
   ],
   "susanelkin": [
    "Susan Elkin"
@@ -2127,8 +2135,8 @@
    "Marc Miller",
    "Christine Malcom",
    "Kimberly Ramirez",
-   "David Hurst",
    "Michael Dale",
+   "David Hurst",
    "Moshe A. Bloxenheim",
    "Christine M. Malcom",
    "Thomas Burke",
@@ -2155,6 +2163,9 @@
    "Hermione Hoby",
    "Tim Auld",
    "Tom Wicker"
+  ],
+  "the-business-press": [
+   "Rick Mauch"
   ],
   "the-cap-times": [
    "Lindsay Christians"
@@ -2301,8 +2312,8 @@
   "theater-scene": [
    "Victor Gluck",
    "Darryl Reilly",
-   "Joel Benjamin",
    "Tony Marinelli",
+   "Joel Benjamin",
    "Joseph Pisano",
    "David Kaufman",
    "Deirdre Donovan",
@@ -2331,11 +2342,11 @@
    "Adam Feldman",
    "Charles Isherwood",
    "Jonas Schwartz",
-   "Christian Lewis",
    "Andy Propst",
+   "Christian Lewis",
+   "Brian Scott Lipton",
    "Meg Masseron",
    "David Rooney",
-   "Brian Scott Lipton",
    "Dan Bacalzo",
    "Francisco Mendoza",
    "Sandy MacDonald",
@@ -2457,8 +2468,8 @@
    "Patrick Shorrock"
   ],
   "thestage": [
-   "Sam Marlowe",
    "Dave Fargnoli",
+   "Sam Marlowe",
    "Mark Shenton",
    "Natasha Tripney",
    "Holly O'Mahony",
@@ -2584,13 +2595,13 @@
    "Clive Davis",
    "Dominic Maxwell",
    "Ann Treneman",
-   "Rachel Halliburton",
    "Libby Purves",
    "Sam Marlowe",
+   "Rachel Halliburton",
    "Donald Hutera",
+   "Allan Radcliffe",
    "Anya Ryan",
    "Kate Maltby",
-   "Allan Radcliffe",
    "Chris Bennion",
    "Susie Goldsbrough",
    "Ben Dowell",
@@ -2662,10 +2673,10 @@
    "A.D. Amorosi",
    "Jeremy Gerard",
    "Peter Debruge",
+   "Brent Lang",
    "Greg Evans",
    "Aramide Timubu",
    "Ayanna Prescod",
-   "Brent Lang",
    "Gordon Cox",
    "Chris Willman",
    "Daniel D’Addario",
