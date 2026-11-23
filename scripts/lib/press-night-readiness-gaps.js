@@ -96,7 +96,7 @@ function pressNightReadinessResults({ shows, overrides, nowMs, embargoAt }) {
     unwatched.length
       ? { name: 'Press night: openings not watched', status: 'warn', items: unwatched,
         message: `${unwatched.length} opening(s) in the next ${UNWATCHED_LOOKAHEAD_DAYS} days have no press-night watch (their category has no press-night market, so no lane or probe runs; reviews arrive only through the daily sweeps): ${list(unwatched, (u) => `${u.title} (${u.category || 'no category'}, ${when(u.inDays)})`)}`,
-        hint: 'The show's category is missing or not a lane market. Fix the category, or add the new market to EMBARGO_HOUR_LOCAL and MARKET_TZ. Regional and touring openings are sweep-only by design and are not listed.' }
+        hint: 'The show category is missing or not a lane market. Fix the category, or add the new market to EMBARGO_HOUR_LOCAL and MARKET_TZ. Regional and touring openings are sweep-only by design and are not listed.' }
       : { name: 'Press night: openings not watched', status: 'pass', message: `Every opening in the next ${UNWATCHED_LOOKAHEAD_DAYS} days has a press-night watch` },
     undecided.length
       ? { name: 'Press night: score gate undecided', status: 'warn', items: undecided,
