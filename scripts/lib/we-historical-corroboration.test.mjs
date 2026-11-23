@@ -61,9 +61,14 @@ test('decide: dated West End run with a review signal is promotable', () => {
   assert.equal(d.promotable, true);
 });
 
-test('decide: non-West-End venue is a persistent no (Off-West End is out of scope)', () => {
-  const d = decideWeHistoricalPromotion({ ...KYOTO, venue: 'Kiln Theatre' }, { today: TODAY });
+test('decide: a venue that is neither West End nor an Off-West-End producing house is a persistent no', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, venue: 'Bristol Old Vic' }, { today: TODAY });
   assert.deepEqual([d.promotable, d.persistent], [false, true]);
+});
+
+test('decide: an Off-West-End producing house is in scope (BRO-8120)', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, venue: 'Kiln Theatre' }, { today: TODAY });
+  assert.equal(d.promotable, true);
 });
 
 test('decide: start outside the season is a persistent no', () => {
