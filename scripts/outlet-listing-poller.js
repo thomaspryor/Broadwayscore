@@ -305,7 +305,12 @@ const OUTLET_STRATEGY_CONFIG = {
   // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
   // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
   // dispatch of outlet-listing-poller.yml (dry_run, outlets=new-york-sun) and adjust the url.
-  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/culture', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true },
+  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/culture', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true,
+    // BRO-8189: A Few Good Men, 2:22 and Blue Man Group were all missed by the first pass. The
+    // culture page is a Next.js shell that 429s plain fetches (its links are unverified), and NY Sun
+    // slugs often omit the show ("a-blue-streak-of-staleness"), so a listing can never name the show.
+    // Per-show SERP (by title) runs beside the listing and its headline carries the show.
+    perShowSerp: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -765,6 +770,24 @@ async function fetchViaListingConfig(outletId, sc) {
   return articles;
 }
 
+// BRO-8189: a listing-html config with perShowSerp also runs the per-show SERP (never in
+// opening-window mode, which is free-only) and merges by URL. A failing listing no longer
+// loses the outlet: the SERP half still returns its results.
+async function fetchViaListingConfigWithSerp(outletId, sc, domain, cutoff, opts, win, shows, serp = serpQuery) {
+  if (!sc.perShowSerp || win || !domain) return fetchViaListingConfig(outletId, sc);
+  let listing = [];
+  let listingErr = null;
+  try { listing = await fetchViaListingConfig(outletId, sc); } catch (err) { listingErr = err; console.warn(`  ⚠ listing failed (${err.message}); per-show SERP still runs`); }
+  const scoped = opts.market ? shows.filter(s => s.category === opts.market || s.market === opts.market) : shows;
+  let perShow = [];
+  try { perShow = await fetchViaSerpPerShow(outletId, domain, cutoff, opts, scoped, serp); } catch (err) { if (listingErr) throw listingErr; console.warn(`  ⚠ per-show SERP failed: ${err.message}`); }
+  const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
+  const seen = new Set(listing.map(a => key(a.url)));
+  const filter = sc.urlFilter;
+  for (const a of perShow) if (!seen.has(key(a.url)) && (!filter || filter.test(a.url))) { seen.add(key(a.url)); listing.push({ ...a, viaSerp: true }); }
+  return listing;
+}
+
 // BRO-8034: one SERP query per show for opaque-URL outlets (financialtimes). Results are
 // merged by URL; each item's SERP headline carries the show title, which is what
 // findMatchingShows matches on (the ft.com/content/<uuid> slug has nothing to match).
@@ -1098,7 +1121,7 @@ async function main() {
           switch (sc.strategy) {
             case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
             case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
-            case 'listing-html': articles = await fetchViaListingConfig(outletId, sc); break;
+            case 'listing-html': articles = await fetchViaListingConfigWithSerp(outletId, sc, domain, cutoff, opts, win, liveShows); break;
             default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
           }
         } catch (err) {
@@ -1390,5 +1413,5 @@ module.exports = {
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
   fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig, fetchXmlWithProxyRetry,
   confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
-  buildFeedHealthReport, fetchViaSerpPerShow,
+  buildFeedHealthReport, fetchViaSerpPerShow, fetchViaListingConfigWithSerp,
 };
