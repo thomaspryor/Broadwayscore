@@ -375508,115 +375508,28 @@
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-23T22:14:21.287Z",
-    "completedAt": "2026-11-23T22:16:52.070Z",
-    "totalReviews": 84812,
-    "processed": 57,
-    "skipped": 84739,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 346960,
-      "output": 20385,
-      "cacheRead": 239522,
-      "cacheWrite": 26373,
-      "total": 943611
-    },
-    "costUsd": 0.351664425,
-    "runId": "45276499625",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "everyday-rapture-2010",
-        "outletId": "nytimes",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "chaplin-2012",
-        "outletId": "usatoday",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "end-of-the-rainbow-2012",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ],
-    "logKeepsSince": "2026-11-22T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-23T22:17:06.020Z",
-    "completedAt": "2026-11-23T22:19:32.147Z",
-    "totalReviews": 21,
-    "processed": 21,
-    "skipped": 0,
+    "startedAt": "2026-11-23T22:28:50.498Z",
+    "completedAt": "2026-11-23T22:28:54.981Z",
+    "totalReviews": 23,
+    "processed": 1,
+    "skipped": 22,
     "errors": 0,
     "tokensUsed": {
-      "input": 56180,
-      "output": 5133,
-      "cacheRead": 0,
+      "input": 5341,
+      "output": 315,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 61313
+      "total": 14072
     },
-    "costUsd": 0.0533139,
-    "runId": "45276499625",
-    "source": "comparative-rescore",
+    "costUsd": 0.0095352,
+    "runId": "45279077591",
+    "source": "index",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-23T22:26:00.702Z",
-    "completedAt": "2026-11-23T22:26:09.087Z",
-    "totalReviews": 41,
-    "processed": 1,
-    "skipped": 40,
-    "errors": 63,
-    "tokensUsed": {
-      "input": 38999,
-      "output": 1447,
-      "cacheRead": 22842,
-      "cacheWrite": 7569,
-      "total": 105775
-    },
-    "costUsd": 0.08525035,
-    "runId": "45278418010",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-        "outletId": "whatnightout",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "menopause-the-musical-tour-2026",
-        "outletId": "oazis",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "ghost-notes-off-broadway-2026",
-        "outletId": "oazis",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
-        "outletId": "patch",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-        "outletId": "jamr",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "hungry-women-off-broadway-2026",
-        "outletId": "melissamaney",
-        "error": "resume_prep_failed:input_validation_failed:body_too_short"
-      }
-    ],
-    "logKeepsSince": "2026-11-22T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-23T22:31:05.296Z",
-    "completedAt": "2026-11-23T22:31:05.338Z",
+    "startedAt": "2026-11-23T22:33:53.289Z",
+    "completedAt": "2026-11-23T22:33:53.335Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -375629,7 +375542,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "45278418010",
+    "runId": "45279077591",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-22T00:00:00.000Z"
