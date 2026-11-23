@@ -127,7 +127,10 @@ const PENDING_EFFECT_RE = /(?<!no longer )(?<!not )\bpending\b(?!-)|\bnot (?:yet
 // BRO-8079: the word inside a command or path (`node scripts/count-pending.js`, data/_pending/) names
 // the thing measured, not a deferral, so backtick spans and path tokens are dropped before the test.
 function isPendingEffect(value) {
-  const prose = String(value || '').replace(/`[^`]*`/g, ' ').replace(/\S*[\/_.][\w./-]*pending[\w./-]*/gi, ' ');
+  // Only command-like backtick spans and path tokens go: `not yet measured` in backticks is still prose.
+  const prose = String(value || '')
+    .replace(/`\s*(?:node|npm|npx|python3?|sqlite3|jq|gh|curl|bash|sh|wc|grep|find|ls|cat)\s[^`]*`|`[^`\s]*[\/.][^`\s]*`/g, ' ')
+    .replace(/(?:[\w-]*[\/.])+[\w-]*pending[\w-]*(?:[\/.][\w-]*)*\/?|\b_pending\b\/?/gi, ' ');
   return PENDING_EFFECT_RE.test(prose);
 }
 

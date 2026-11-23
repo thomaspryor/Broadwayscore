@@ -27,9 +27,15 @@
 
 const MIN_SAMPLE = 20;
 
-// A number followed by the kind of thing a data card counts.
-const COUNT_NOUN = String.raw`(?:waiting|stuck|stranded|limbo|missing|unscored|unmatched|uncollected|pending|orphan(?:ed|s)?|backlog|queued|files?|reviews?|stubs?|gaps?|urls?|rows?|entries|records|shows?|outlets?|critics?|items?)`;
-const COUNT_RE = new RegExp(String.raw`(?<![\w#-])\d[\d,]*(?:\.\d+)?\s+(?:[a-z_-]+\s+){0,2}?${COUNT_NOUN}\b`, 'i');
+// A number followed by the kind of thing a data card counts. STRONG nouns say the count is a
+// backlog that should move (BLOCKING); WEAK ones (shows, reviews, files...) are common in ordinary
+// titles ("Top 10 shows page", "Fix 404 on show pages"), so they only WARN (ship-check finding).
+const STRONG_NOUN = String.raw`(?:waiting|stuck|stranded|limbo|missing|unscored|unmatched|uncollected|undated|unguarded|pending|orphan(?:ed|s)?|backlog|queued|stubs?|gaps?)`;
+const WEAK_NOUN = String.raw`(?:files?|reviews?|urls?|entries|records|shows?|outlets?|critics?)`;
+// Not a count: "top 10", "next 15", "v2", HTTP status codes ("404 on", "500 error").
+const NUM = String.raw`(?<![\w#.-])(?<!\b(?:top|next|first|last|version|v|node|bro|pr|step|part|phase|sprint|s)\s?)(?!(?:[45]\d\d)\s+(?:on|error|errors|page|pages|for|from|when)\b)\d[\d,]*(?:\.\d+)?`;
+const STRONG_COUNT_RE = new RegExp(String.raw`${NUM}\s+(?:[a-z_-]+\s+){0,2}?${STRONG_NOUN}\b`, 'i');
+const WEAK_COUNT_RE = new RegExp(String.raw`${NUM}\s+(?:[a-z_-]+\s+){0,1}?${WEAK_NOUN}\b`, 'i');
 // "promotes 0", "drained 12", "scores 0 of 40"
 const VERB_COUNT_RE = /\b(?:promot(?:es|ed|ing)?|drain(?:s|ed|ing)?|scor(?:es|ed)|ingest(?:s|ed)|recover(?:s|ed)|settl(?:es|ed)|reject(?:s|ed))\s+(?:only\s+)?\d[\d,]*\b/i;
 // "% coverage", "coverage 80%", "73% of shows"
@@ -38,7 +44,7 @@ const PCT_RE = /\b\d{1,3}(?:\.\d+)?\s*%\s*(?:of\s+\w+|coverage|covered|complete|
 const QUEUE_RE = /\b(?:queue|backlog)\s+(?:unmoved|stuck|growing|grew|size|depth|never (?:moved|drains?))\b/i;
 
 // Things that look like counts but are about code or process, not data.
-const NOT_DATA_RE = /\b\d[\d,]*\s+(?:tests?|files? changed|lines?|commits?|workflows?|steps?|calls?|times|minutes?|hours?|days?|seconds?|ms|sessions?|tabs?|workspaces?|jobs?|runs?|reviewers?)\b/gi;
+const NOT_DATA_RE = /\b\d[\d,]*(?:\.\d+)?\s*%?\s+(?:of\s+)?(?:tests?|files? changed|lines?|commits?|workflows?|steps?|calls?|times|minutes?|hours?|days?|seconds?|ms|sessions?|tabs?|workspaces?|jobs?|runs?|reviewers?)\b/gi;
 
 function acceptanceSection(description) {
   const m = /^#{1,4}\s*acceptance criteria\s*$/im.exec(String(description || ''));
@@ -48,14 +54,24 @@ function acceptanceSection(description) {
   return next ? rest.slice(0, next.index) : rest;
 }
 
-/** PURE. Which phrase (if any) makes this a data-count card? */
-function dataCountPhrase({ title = '', description = '' } = {}) {
+/** PURE. {phrase, strong} for the phrase that makes this a data-count card, or null. */
+function dataCountMatch({ title = '', description = '' } = {}) {
   const text = [String(title || ''), acceptanceSection(description)].join('\n').replace(NOT_DATA_RE, ' ');
-  for (const re of [VERB_COUNT_RE, PCT_RE, QUEUE_RE, COUNT_RE]) {
+  for (const re of [VERB_COUNT_RE, QUEUE_RE, STRONG_COUNT_RE]) {
     const m = re.exec(text);
-    if (m) return m[0].trim();
+    if (m) return { phrase: m[0].trim(), strong: true };
+  }
+  for (const re of [PCT_RE, WEAK_COUNT_RE]) {
+    const m = re.exec(text);
+    if (m) return { phrase: m[0].trim(), strong: false };
   }
   return null;
+}
+
+/** PURE. Which phrase (if any) makes this a data-count card? */
+function dataCountPhrase(args) {
+  const m = dataCountMatch(args);
+  return m ? m.phrase : null;
 }
 
 const LINE_RE = (name) => new RegExp(String.raw`^[ \t>*_-]*${name}(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.+)$`, 'gim');
@@ -65,14 +81,21 @@ function lastValue(texts, name) {
   return val;
 }
 
-const ARROW_RE = /(\d[\d,.]*\s*%?)[^\d\n]{0,40}?(?:->|→|=>|⟶|\bto\b)\s*[^\d\n]{0,25}?(\d[\d,.]*\s*%?)/;
-const CMD_RE = /`[^`]{4,}`|\b(?:node|npm|npx|python3?|sqlite3|jq|gh|curl|bash|wc|grep)\s+\S+/;
+// Arrows only: "from 2026-11-21 to 2026-11-22" is a date span, not a measurement (ship-check finding).
+const ARROW_RE = /(\d[\d,.]*\s*%?)[^\d\n]{0,40}?(?:->|→|=>|⟶)\s*[^\d\n]{0,25}?(\d[\d,.]*\s*%?)/;
+const DATE_RE = /\b\d{4}-\d{2}-\d{2}(?:T[\d:.]+Z?)?\b/g;
+// A command: a backtick span that runs something, or a bare command word with an argument.
+const CMD_RE = /`\s*(?:node|npm|npx|python3?|sqlite3|jq|gh|curl|bash|sh|wc|grep|find|ls|cat|scripts\/)[^`]*`|\b(?:node|npm|npx|python3?|sqlite3|jq|gh|curl|bash|wc|grep)\s+\S+/;
+const num = (x) => Number(String(x).replace(/[,%\s]/g, ''));
 
 /** PURE. Is this EFFECT value a measured before -> after with the command that measured it? */
 function effectIsMeasured(value) {
   const v = String(value || '');
   const notes = [];
-  if (!ARROW_RE.test(v)) notes.push('name the number before and after, as "<before> -> <after>"');
+  const arrow = ARROW_RE.exec(v.replace(DATE_RE, ' '));
+  if (!arrow) notes.push('name the number before and after, as "<before> -> <after>"');
+  // BRO-7930's own numbers (6,838 -> 6,838) are a measurement that the fix did nothing.
+  else if (num(arrow[1]) === num(arrow[2])) notes.push(`the count did not move (${arrow[1].trim()} -> ${arrow[2].trim()}): the card is not done; leave it Paused with RECHECK-AFTER or keep working`);
   if (!CMD_RE.test(v)) notes.push('name the command that measured it, in backticks');
   let pending = false;
   try { pending = require('./root-cause-close.js').isPendingEffect(v); } catch { /* fail open on the pending check only */ }
@@ -86,33 +109,46 @@ function effectIsMeasured(value) {
  * else { ok, phrase, effect, notes }.
  */
 function checkDataEffect({ title = '', description = '', texts = [] } = {}) {
-  const phrase = dataCountPhrase({ title, description });
-  if (!phrase) return null;
+  const match = dataCountMatch({ title, description });
+  if (!match) return null;
+  const { phrase, strong } = match;
   const all = [description, ...texts];
   const bypass = lastValue(all, 'NO-DATA-EFFECT');
   if (bypass && bypass.length >= 10) return null;
   // EFFECT lines on the description are the card author's wish, not a measurement: comments only.
   const effect = lastValue(texts, 'EFFECT');
-  if (!effect) return { ok: false, phrase, effect: null, notes: ['no EFFECT: line on the close'] };
+  if (!effect) return { ok: false, phrase, strong, effect: null, notes: ['no EFFECT: line on the close'] };
   const m = effectIsMeasured(effect);
-  return { ok: m.ok, phrase, effect, notes: m.notes };
+  return { ok: m.ok, phrase, strong, effect, notes: m.notes };
 }
 
 // "98% settled/junk/duplicate", "92.5% classified correctly", "settle rate 97%"
 const RATE_CLAIM_RE = /\b\d{1,3}(?:\.\d+)?\s*%\s*(?:of\s+[\w-]+(?:\s+[\w-]+)?\s+)?(?:(?:were|are|was|is|got|get)\s+)?(?:settled|junk|duplicates?|classified|reclassified|rejected|promoted|valid|invalid|wrong(?:ly)?|correct(?:ly)?|false[- ]positives?|matched|resolved|recovered|real|genuine|accurate|precision|recall|accuracy)\b|\b(?:settle|classification|reject(?:ion)?|match|accuracy|precision|false[- ]positive)\s+rate\b[^.\n]{0,20}\d{1,3}(?:\.\d+)?\s*%/i;
 const URL_TOKEN_RE = /\b(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}\/[^\s)\]>'"`,]+/gi;
 
-/** PURE. Distinct urls in the SAMPLE-AUDIT: block (from the marker to the end of that text). */
-function sampleAuditUrls(texts) {
-  let best = [];
+const AUDIT_HEAD_RE = /^[ \t>*_-]*SAMPLE-AUDIT(?:\*\*|__)?[ \t]*:(.*)$/im;
+// The audit line must say how many of the sample were wrong ("25 sampled, 3 wrong", "0 wrong").
+const WRONG_COUNT_RE = /\b\d+\s*(?:\/\s*\d+\s*)?(?:were\s+)?(?:wrong|incorrect|errors?|mis[a-z]*|bad|false[- ]positives?)\b/i;
+
+/** PURE. The newest SAMPLE-AUDIT block: {head, urls}. The block runs to the next FIELD: line or blank-line paragraph. */
+function sampleAuditBlock(texts) {
+  let found = null;
   for (const t of texts) {
     const s = String(t || '');
-    const idx = s.search(/^[ \t>*_-]*SAMPLE-AUDIT(?:\*\*|__)?[ \t]*:/im);
-    if (idx < 0) continue;
-    const urls = [...new Set((s.slice(idx).match(URL_TOKEN_RE) || []).map((u) => u.replace(/^https?:\/\//i, '').replace(/[.;:]+$/, '').toLowerCase()))];
-    if (urls.length >= best.length) best = urls;
+    const m = AUDIT_HEAD_RE.exec(s);
+    if (!m) continue;
+    const rest = s.slice(m.index + m[0].length);
+    const end = rest.search(/^[ \t]*[A-Z][A-Z-]{2,}:|\n[ \t]*\n(?![ \t]*(?:[-*]|\d+[.)])\s)/m);
+    const body = `${m[1]}\n${end < 0 ? rest : rest.slice(0, end)}`;
+    const urls = [...new Set((body.match(URL_TOKEN_RE) || []).map((u) => u.replace(/^https?:\/\//i, '').replace(/[.;:]+$/, '').toLowerCase()))];
+    found = { head: m[1].trim(), urls };
   }
-  return best;
+  return found;
+}
+
+function sampleAuditUrls(texts) {
+  const b = sampleAuditBlock(texts);
+  return b ? b.urls : [];
 }
 
 /**
@@ -130,14 +166,12 @@ function checkSampleAudit({ texts = [], minSample = MIN_SAMPLE } = {}) {
   const all = texts;
   const bypass = lastValue(all, 'NO-SAMPLE-AUDIT');
   if (bypass && bypass.length >= 10) return null;
-  const urls = sampleAuditUrls(texts);
-  const ok = urls.length >= minSample;
-  return {
-    ok,
-    claim,
-    sampled: urls.length,
-    notes: ok ? [] : [`a SAMPLE-AUDIT: block lists ${urls.length} url(s); it needs at least ${minSample} randomly sampled urls, each checked by hand`],
-  };
+  const block = sampleAuditBlock(texts);
+  const urls = block ? block.urls : [];
+  const notes = [];
+  if (urls.length < minSample) notes.push(`a SAMPLE-AUDIT: block lists ${urls.length} url(s); it needs at least ${minSample} randomly sampled urls, each checked by hand`);
+  if (block && !WRONG_COUNT_RE.test(block.head)) notes.push('the SAMPLE-AUDIT: line must say how many of the sample were wrong, e.g. "SAMPLE-AUDIT: 25 random settled stubs, 2 wrong"');
+  return { ok: notes.length === 0, claim, sampled: urls.length, notes };
 }
 
 function dataEffectMessage(identifier, r) {
@@ -152,14 +186,15 @@ function dataEffectMessage(identifier, r) {
 
 function sampleAuditMessage(identifier, r) {
   return `${identifier || 'This card'}'s Outcome reports a rate on real data ("${r.claim}") without a random-sample audit. ` +
-    `Add a comment block starting SAMPLE-AUDIT: that lists at least ${MIN_SAMPLE} randomly sampled urls with what each one really was ` +
-    `(found ${r.sampled}). Self-reported rates were wrong before: BRO-8065 said 98% settled and a 25-stub sample found real reviews settled wrongly. ` +
+    `Add a comment block starting "SAMPLE-AUDIT: <N> sampled, <K> wrong" that lists at least ${MIN_SAMPLE} randomly sampled urls with what each one really was ` +
+    `(found ${r.sampled}; ${r.notes.join('; ')}). Self-reported rates were wrong before: BRO-8065 said 98% settled and a 25-stub sample found real reviews settled wrongly. ` +
     'Not a rate on real data? Add NO-SAMPLE-AUDIT: <reason>.';
 }
 
 module.exports = {
   MIN_SAMPLE,
   dataCountPhrase,
+  dataCountMatch,
   effectIsMeasured,
   checkDataEffect,
   checkSampleAudit,

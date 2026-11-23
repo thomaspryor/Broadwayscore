@@ -103,7 +103,14 @@ test('BRO-8079: mid-turn waits, closed tab gives up, watchdog tab is never typed
   try { assert.equal(deliverDispatcherWakes(busy.deps).length, 0); assert.equal(busy.state(), '', 'mid-turn: no attempt burned'); } finally { fs.rmSync(busy.dir, { recursive: true, force: true }); }
 
   const closed = harness({ live: [{ ref: 'workspace:2', id: 'other', title: 'x' }] });
-  try { deliverDispatcherWakes(closed.deps); assert.match(closed.state(), /"gone"/); assert.equal(closed.sent.length, 0); } finally { fs.rmSync(closed.dir, { recursive: true, force: true }); }
+  try {
+    for (let i = 0; i < 5; i++) deliverDispatcherWakes(closed.deps);
+    assert.equal((closed.state().match(/"attempt"/g) || []).length, wake.MAX_ATTEMPTS, 'a missing tab burns retries, never gives up on one listing');
+    assert.equal(closed.sent.length, 0);
+  } finally { fs.rmSync(closed.dir, { recursive: true, force: true }); }
+
+  const done = harness({ live: [{ ref: 'workspace:41', id: BY.workspaceId, title: '✅ BRO-7930 drain' }] });
+  try { deliverDispatcherWakes(done.deps); assert.equal(done.sent.length, 0); } finally { fs.rmSync(done.dir, { recursive: true, force: true }); }
 
   const crown = harness({ live: [{ ref: 'workspace:1', id: BY.workspaceId, title: '👑 OWNER watchdog — 3 in flight' }] });
   try { deliverDispatcherWakes(crown.deps); assert.equal(crown.sent.length, 0); } finally { fs.rmSync(crown.dir, { recursive: true, force: true }); }
@@ -117,4 +124,46 @@ test('BRO-8079: mid-turn waits, closed tab gives up, watchdog tab is never typed
 
   const off = harness();
   try { off.deps.env = { DISPATCHER_WAKE_DISABLED: '1' }; deliverDispatcherWakes(off.deps); assert.equal(off.sent.length, 0); } finally { fs.rmSync(off.dir, { recursive: true, force: true }); }
+});
+
+test('BRO-8079 ship-check: the notice names the dispatching session so another conversation in the tab can ignore it', () => {
+  const [w] = wake.planDispatcherWakes([launch('linear:BRO-8065', '2026-11-22T19:00:00Z'), stranded], { nowMs: NOW });
+  assert.match(w.message, /CLAUDE_CODE_SESSION_ID does not start with 12bb3cbc/);
+});
+
+test('BRO-8079 ship-check: orphaned, disk-pressure abandoned and tab-lane dead rows wake; a lease-held racing launch does not hide a live job failure', () => {
+  const l = launch('linear:BRO-1', '2026-11-22T19:00:00Z');
+  for (const bad of [{ event: 'job-orphaned' }, { event: 'job-abandoned', reason: 'disk-pressure: disk free 3.1GB' }, { event: 'dead' }, { event: 'vanished' }]) {
+    assert.equal(wake.planDispatcherWakes([l, { ts: '2026-11-22T21:00:00Z', taskId: 'linear:BRO-1', ...bad }], { nowMs: NOW }).length, 1, bad.event);
+  }
+  assert.equal(wake.planDispatcherWakes([l, { ts: '2026-11-22T21:00:00Z', taskId: 'linear:BRO-1', event: 'job-abandoned', reason: 'task already has a live job' }], { nowMs: NOW }).length, 0);
+  const { dispatchedBy, ...unstamped } = l; // eslint-disable-line no-unused-vars
+  const raced = [
+    l, { ts: '2026-11-22T19:00:05Z', event: 'job-spawned', taskId: 'linear:BRO-1' },
+    { ...unstamped, ts: '2026-11-22T20:00:00Z' }, { ts: '2026-11-22T20:00:01Z', event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'task already has a live job' },
+    { ts: '2026-11-22T21:00:00Z', event: 'job-stranded', taskId: 'linear:BRO-1' },
+  ];
+  const wakes = wake.planDispatcherWakes(raced, { nowMs: NOW });
+  assert.equal(wakes.length, 1);
+  assert.equal(wakes[0].workspaceId, BY.workspaceId);
+});
+
+test('BRO-8079 ship-check: deliveries are capped, not candidates, so busy tabs cannot starve older wakes', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatcher-wake-cap-'));
+  try {
+    const rows = [];
+    for (let i = 0; i < 8; i++) {
+      rows.push({ ...launch(`linear:BRO-${i}`, '2026-11-22T19:00:00Z'), dispatchedBy: { sessionId: 's', workspaceId: `W${i}` } });
+      rows.push({ ts: `2026-11-22T21:0${i}:00Z`, event: 'job-failed', taskId: `linear:BRO-${i}` });
+    }
+    const live = rows.filter((r) => r.event === 'launch').map((r, i) => ({ ref: `workspace:${i + 10}`, id: r.dispatchedBy.workspaceId, title: `t${i}` }));
+    const busy = new Set(['workspace:17', 'workspace:16', 'workspace:15', 'workspace:14', 'workspace:13']); // the 5 newest
+    const sent = [];
+    deliverDispatcherWakes({
+      env: {}, nowMs: NOW, statePath: path.join(dir, 's.jsonl'), offFile: path.join(dir, 'off'), readLedger: () => rows,
+      listWorkspaces: () => live, top: (ref) => (busy.has(ref) ? BUSY_TSV : IDLE_TSV), log: () => {},
+      send: (ref) => sent.push(ref),
+    });
+    assert.deepEqual(sent.sort(), ['workspace:10', 'workspace:11', 'workspace:12']);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

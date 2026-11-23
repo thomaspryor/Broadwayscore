@@ -312,12 +312,12 @@ test('BRO-8079: a worker Outcome claiming a settle rate needs a SAMPLE-AUDIT of 
   const urls = Array.from({ length: 20 }, (_, i) => `- https://www.talkinbroadway.com/page/ob/sample-${i}.html settled correctly`).join('\n');
   const allowed = checkLinearDoneTransition({
     targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
-    commentText: `${claim}\nSAMPLE-AUDIT: 20 random settled stubs\n${urls}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
+    commentText: `${claim}\nSAMPLE-AUDIT: 20 random settled stubs, 0 wrong\n${urls}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
   });
   assert.equal(allowed.allowed, true, allowed.reason);
   const short = checkLinearDoneTransition({
     targetStateType: 'completed', title: 'Settle 2025-26 stub backlog', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
-    commentText: `${claim}\nSAMPLE-AUDIT: 3 urls\n${urls.split('\n').slice(0, 3).join('\n')}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
+    commentText: `${claim}\nSAMPLE-AUDIT: 3 urls, 0 wrong\n${urls.split('\n').slice(0, 3).join('\n')}`, verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {},
   });
   assert.equal(short.allowed, false);
   const early = checkLinearDoneTransition({
@@ -337,4 +337,52 @@ test('BRO-8079 part 2: a job-stranded row produces a wake for the dispatching se
   ], { nowMs: Date.parse('2026-11-22T22:30:00Z') });
   assert.equal(wakes.length, 1);
   assert.equal(wakes[0].workspaceId, by.workspaceId);
+});
+
+test('BRO-8079 ship-check: unchanged counts, date spans and non-command backticks are not a measurement', () => {
+  for (const effect of [
+    'EFFECT: _pending queue 6,838 -> 6,838, measured by `node scripts/count-pending.js`',
+    'EFFECT: measured from 2026-11-21 to 2026-11-22 via `node scripts/count-pending.js`',
+    'EFFECT: 6,838 -> 412 `looks good now`',
+  ]) {
+    const gate = checkLinearDoneTransition({
+      targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+      commentText: effect, verifyCmdEvidence: passingVerify, env: {},
+    });
+    assert.equal(gate.allowed, false, effect);
+  }
+});
+
+test('BRO-8079 ship-check: ordinary titles are not data-count cards; weak count phrases only warn', async () => {
+  const { dataCountMatch } = require(path.join(REPO, 'scripts/lib/data-effect-close.js'));
+  for (const t of ['Fix 404 on show pages', 'P1: 500 error on review page', 'Top 10 shows page redesign', 'Upgrade to Next 15 reviews', 'Mobile shows 2 rows of cards', 'Render top 20 items in list', 'Get 100% of tests passing']) {
+    assert.equal(dataCountMatch({ title: t }), null, t);
+  }
+  assert.equal(dataCountMatch({ title: BRO_7930_TITLE }).strong, true);
+  assert.equal(dataCountMatch({ title: 'TR wrong_show repair, part 3: 88 files still rejected' }).strong, false);
+  const weak = checkLinearDoneTransition({
+    targetStateType: 'completed', title: 'TR wrong_show repair, part 3: 88 files still rejected', description: 'VERIFY: node --test scripts/lib/x.test.mjs',
+    verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(weak.allowed, true);
+  assert.match(weak.warning, /data count/);
+});
+
+test('BRO-8079 ship-check: the nightly recheck auto-close of a Paused RECHECK-AFTER card is warned, not refused', () => {
+  const gate = checkLinearDoneTransition({
+    targetStateType: 'completed', title: BRO_7930_TITLE, description: 'VERIFY: node --test scripts/lib/x.test.mjs\nRECHECK-AFTER: 2026-11-25',
+    commentText: 'Auto-closed by the nightly acceptance re-check: `node scripts/count-pending.js --max=500` passed on main.',
+    verifyCmdEvidence: passingVerify, env: {},
+  });
+  assert.equal(gate.allowed, true, gate.reason);
+  assert.match(gate.warning, /data count/);
+});
+
+test('BRO-8079 ship-check: SAMPLE-AUDIT urls after the block (Key Files, PR links) do not count, and the wrong count is required', () => {
+  const urls = Array.from({ length: 20 }, (_, i) => `- https://www.standard.co.uk/culture/theatre/r-${i}`).join('\n');
+  const base = { targetStateType: 'completed', title: 'Settle stubs', description: 'VERIFY: node --test scripts/lib/x.test.mjs', verifyCmdEvidence: passingVerify, nowMs: NOW_BLOCKING, env: {} };
+  const noWrong = checkLinearDoneTransition({ ...base, commentText: `98% settled/junk.\nSAMPLE-AUDIT: 20 random\n${urls}` });
+  assert.equal(noWrong.allowed, false);
+  const outside = checkLinearDoneTransition({ ...base, commentText: `98% settled/junk.\nSAMPLE-AUDIT: 2 sampled, 0 wrong\n- https://a.com/x\n\nKey files:\n${urls}` });
+  assert.equal(outside.allowed, false);
 });

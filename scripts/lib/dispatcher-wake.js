@@ -27,9 +27,17 @@
  * or the file ~/.claude/state/dispatcher-wake-off.
  */
 
-const BAD_EVENTS = new Set(['job-failed', 'job-stranded', 'job-blocked', 'job-stopped-short', 'watchdog-park']);
-// Rows that mean the task moved on after a bad row: re-dispatched, retried, finished or landed.
-const MOVED_ON_EVENTS = new Set(['launch', 'job-spawned', 'job-retried', 'job-done', 'landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
+// Bad outcomes. job-orphaned: SIGKILL/OOM with no exit row. dead/vanished: the cmux-tab lane's deaths.
+// job-abandoned counts only for disk pressure (the job never ran); a lease-held abandon means another
+// job for the task is running fine (see isBadRow).
+const BAD_EVENTS = new Set(['job-failed', 'job-stranded', 'job-blocked', 'job-stopped-short', 'job-orphaned', 'watchdog-park', 'dead', 'vanished', 'job-abandoned']);
+// Rows that mean the task moved on after a bad row: re-dispatched, retried, finished, closed done or landed.
+const LANDED_EVENTS = (() => { try { return [...require('./dispatch-ledger.js').LANDED_ACK_EVENTS]; } catch { return ['landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']; } })();
+const MOVED_ON_EVENTS = new Set(['launch', 'job-spawned', 'job-retried', 'job-done', 'prune-closed', ...LANDED_EVENTS]);
+const isLeaseHeldAbandon = (e) => e.event === 'job-abandoned' && !/^disk-pressure/.test(String(e.reason || ''));
+function isBadRow(e) {
+  return BAD_EVENTS.has(e.event) && !(e.event === 'job-abandoned' && !/^disk-pressure/.test(String(e.reason || '')));
+}
 const MIN_AGE_MS = 10 * 60 * 1000;
 const MAX_AGE_MS = 24 * 3600 * 1000;
 const MAX_ATTEMPTS = 3;
@@ -70,32 +78,44 @@ function nextStep(row, card) {
 }
 
 /** PURE. One line, no newlines (sendToWorkspace refuses multi-line text). */
-function wakeMessage(row, subject) {
+function wakeMessage(row, subject, sessionId) {
   const card = cardLabel(row.taskId);
-  const title = subject ? ` ("${String(subject).replace(/^BRO-\d+\s+/, '').slice(0, 90)}")` : '';
+  // Card titles are data, not instructions: keep them short and quoted.
+  const title = subject ? ` ("${String(subject).replace(/^BRO-\d+\s+/, '').replace(/["`$\\]/g, "'").slice(0, 90)}")` : '';
   const at = String(row.ts || '').slice(11, 16);
-  return `${NOTICE_PREFIX} The job you dispatched for ${card}${title} ended ${row.event} at ${at}Z without landing: ${nextStep(row, card)}.`.replace(/\s*\n\s*/g, ' ');
+  // The tab may now hold a different conversation (the session id is not observable from cmux), so the
+  // notice names the dispatching session and tells any other session to ignore it (ship-check finding).
+  const who = sessionId ? ` If your CLAUDE_CODE_SESSION_ID does not start with ${String(sessionId).slice(0, 8)}, this is not yours: ignore it.` : '';
+  return `${NOTICE_PREFIX} The job this tab dispatched for ${card}${title} ended ${row.event} at ${at}Z without landing: ${nextStep(row, card)}.${who}`.replace(/\s*\n\s*/g, ' ');
 }
 
 /**
  * PURE. entries: dispatch-ledger rows (any order). attempts: Map key -> {attempts, sent}.
  * Returns [{key, taskId, event, workspaceId, sessionId, message}] newest first, capped.
  */
-function planDispatcherWakes(entries, { attempts = new Map(), nowMs = Date.now(), minAgeMs = MIN_AGE_MS, maxAgeMs = MAX_AGE_MS, maxPerSweep = MAX_PER_SWEEP } = {}) {
+function planDispatcherWakes(entries, { attempts = new Map(), nowMs = Date.now(), minAgeMs = MIN_AGE_MS, maxAgeMs = MAX_AGE_MS, maxPerSweep = Infinity } = {}) {
   const byTask = new Map();
   const rows = (Array.isArray(entries) ? entries : []).filter((e) => e && e.taskId && e.ts && !Number.isNaN(Date.parse(e.ts)));
   rows.sort((a, b) => Date.parse(a.ts) - Date.parse(b.ts));
   for (const e of rows) {
+    const t = byTask.get(e.taskId) || { last: null, launch: null, prevLaunch: null, prevLast: null };
+    // A lease-held abandon: a second launch raced a live job and did nothing, so the task's real
+    // launch and state are the ones before it (ship-check finding: the racing unstamped launch would
+    // otherwise hide the live job's later failure).
+    if (isLeaseHeldAbandon(e)) {
+      if (t.launch && t.prevLaunch !== undefined && t.last === t.launch) { t.launch = t.prevLaunch; t.last = t.prevLast; }
+      byTask.set(e.taskId, t);
+      continue;
+    }
     if (!BAD_EVENTS.has(e.event) && !MOVED_ON_EVENTS.has(e.event)) continue;
-    const t = byTask.get(e.taskId) || { last: null, launch: null };
+    if (e.event === 'launch') { t.prevLaunch = t.launch; t.prevLast = t.last; t.launch = e; }
     t.last = e;
-    if (e.event === 'launch') t.launch = e;
     byTask.set(e.taskId, t);
   }
   const wakes = [];
   for (const [taskId, t] of byTask) {
     const row = t.last;
-    if (!row || !BAD_EVENTS.has(row.event)) continue;
+    if (!row || !isBadRow(row)) continue;
     const age = nowMs - Date.parse(row.ts);
     if (age < minAgeMs || age > maxAgeMs) continue;
     const by = t.launch && t.launch.dispatchedBy;
@@ -104,21 +124,20 @@ function planDispatcherWakes(entries, { attempts = new Map(), nowMs = Date.now()
     const key = `${taskId}|${t.launch.ts}`;
     const a = attempts.get(key);
     if (a && (a.sent || a.attempts >= MAX_ATTEMPTS)) continue;
-    wakes.push({ key, taskId, event: row.event, ts: row.ts, workspaceId: by.workspaceId, sessionId: by.sessionId || null, message: wakeMessage(row, t.launch.subject) });
+    wakes.push({ key, taskId, event: row.event, ts: row.ts, workspaceId: by.workspaceId, sessionId: by.sessionId || null, message: wakeMessage(row, t.launch.subject, by.sessionId) });
   }
   wakes.sort((x, y) => Date.parse(y.ts) - Date.parse(x.ts));
   return wakes.slice(0, maxPerSweep);
 }
 
-/** PURE. Fold the wake-state jsonl rows ({key, outcome: 'attempt'|'sent'|'gone'}) into Map key -> {attempts, sent}. */
+/** PURE. Fold the wake-state jsonl rows ({key, outcome: 'attempt'|'sent'}) into Map key -> {attempts, sent}. */
 function foldAttempts(rows) {
   const m = new Map();
   for (const r of rows || []) {
     if (!r || !r.key) continue;
     const cur = m.get(r.key) || { attempts: 0, sent: false };
     if (r.outcome === 'attempt') cur.attempts += 1;
-    // 'gone': the dispatching tab closed or no longer runs Claude; nothing left to wake.
-    if (r.outcome === 'sent' || r.outcome === 'gone') cur.sent = true;
+    if (r.outcome === 'sent') cur.sent = true;
     m.set(r.key, cur);
   }
   return m;
@@ -129,17 +148,21 @@ function foldAttempts(rows) {
  * workspace: {ref, id, title} from listWorkspacesWithCwd, or undefined. topTsv: `cmux top` output or null.
  * Returns {send:true} or {send:false, why, retry} (retry=false means do not count an attempt).
  */
-function deliveryDecision({ workspace, topTsv, isWatchdogTitle = () => false, hasLiveClaude, hasRunningClaude }) {
-  if (!workspace) return { send: false, why: 'dispatching tab is closed', retry: false, gone: true };
-  if (isWatchdogTitle(workspace.title)) return { send: false, why: 'dispatching tab is the watchdog', retry: false, gone: true };
+// A closed tab, a ✅ finished tab, the watchdog tab or a tab with no live Claude each burn one attempt
+// (retry:true) rather than giving up at once: one partial cmux listing must not silence a wake for good.
+function deliveryDecision({ workspace, topTsv, isWatchdogTitle = () => false, isDoneTitle = () => false, hasLiveClaude, hasRunningClaude }) {
+  if (!workspace) return { send: false, why: 'dispatching tab not in the listing', retry: true };
+  if (isWatchdogTitle(workspace.title)) return { send: false, why: 'dispatching tab is the watchdog', retry: true };
+  if (isDoneTitle(workspace.title)) return { send: false, why: 'dispatching tab is marked done', retry: true };
   if (topTsv == null) return { send: false, why: 'cannot read the tab state', retry: true };
-  if (!hasLiveClaude(topTsv)) return { send: false, why: 'no live Claude in the dispatching tab', retry: false, gone: true };
+  if (!hasLiveClaude(topTsv)) return { send: false, why: 'no live Claude in the dispatching tab', retry: true };
   if (hasRunningClaude(topTsv)) return { send: false, why: 'dispatching session is mid-turn; next tick', retry: false };
   return { send: true };
 }
 
 module.exports = {
   BAD_EVENTS,
+  isBadRow,
   MOVED_ON_EVENTS,
   MIN_AGE_MS,
   MAX_AGE_MS,

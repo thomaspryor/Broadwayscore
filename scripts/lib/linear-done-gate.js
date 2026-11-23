@@ -366,12 +366,18 @@ function dataEffectCloseCheck({ identifier, title = '', description = '', commen
     const dec = require('./data-effect-close.js');
     const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
     const de = dec.checkDataEffect({ title, description, texts: comments });
+    // Machine closers (the nightly acceptance recheck closing a Paused RECHECK-AFTER card on its
+    // passing measurement command, the stuck-card closer) close on an EXECUTED check, which is the
+    // path the refusal itself recommends, so they are warned, not refused (ship-check finding).
+    // Weak count phrases ("12 reviews") warn too: they are common in ordinary titles.
+    let automated = false;
+    try { automated = require('./red-cause-tag.js').isAutomatedClose(commentText); } catch { /* not automated */ }
     if (de && !de.ok) {
-      out.push({ verdict: 'data-effect-unmeasured', blocking: env.DATA_EFFECT_DONE_GATE !== 'advisory', message: dec.dataEffectMessage(identifier, de) });
+      out.push({ verdict: 'data-effect-unmeasured', blocking: de.strong && !automated && env.DATA_EFFECT_DONE_GATE !== 'advisory', message: dec.dataEffectMessage(identifier, de) });
     }
     const sa = dec.checkSampleAudit({ texts: comments });
     if (sa && !sa.ok) {
-      const blocking = env.SAMPLE_AUDIT_DONE_GATE !== 'advisory' && nowMs >= Date.parse(`${SAMPLE_AUDIT_BLOCKING_FROM}T00:00:00Z`);
+      const blocking = !automated && env.SAMPLE_AUDIT_DONE_GATE !== 'advisory' && nowMs >= Date.parse(`${SAMPLE_AUDIT_BLOCKING_FROM}T00:00:00Z`);
       out.push({ verdict: 'sample-audit-missing', blocking, message: dec.sampleAuditMessage(identifier, sa) + (blocking ? '' : ` Advisory now; refused from ${SAMPLE_AUDIT_BLOCKING_FROM}.`) });
     }
   } catch {

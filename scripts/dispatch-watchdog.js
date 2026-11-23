@@ -907,7 +907,7 @@ const DISPATCHER_WAKE_OFF_FILE = path.join(STATE_DIR, 'dispatcher-wake-off');
 function deliverDispatcherWakes(deps = {}) {
   const wake = require('./lib/dispatcher-wake.js');
   const {
-    env = process.env, nowMs = Date.now(), readLedger = () => dispatchLedger.readEntries(),
+    env = process.env, nowMs = Date.now(), readLedger = readLedgerCached,
     statePath = DISPATCHER_WAKE_STATE, offFile = DISPATCHER_WAKE_OFF_FILE,
     listWorkspaces = () => cmuxws.listWorkspacesWithCwd(),
     top = (ref) => cmuxws.run(['top', '--workspace', ref, '--processes', '--format', 'tsv']),
@@ -932,10 +932,10 @@ function deliverDispatcherWakes(deps = {}) {
       const ws = live.find((x) => x.id && x.id === w.workspaceId);
       let tsv = null;
       if (ws) { try { tsv = top(ws.ref); } catch { tsv = null; } }
-      const d = wake.deliveryDecision({ workspace: ws, topTsv: tsv, isWatchdogTitle, hasLiveClaude: cmuxws.hasLiveClaude, hasRunningClaude: cmuxws.hasRunningClaude });
+      if (delivered.length >= wake.MAX_PER_SWEEP) break; // cap DELIVERIES, so busy tabs cannot starve older wakes
+      const d = wake.deliveryDecision({ workspace: ws, topTsv: tsv, isWatchdogTitle, isDoneTitle: cmuxws.isDoneTitle, hasLiveClaude: cmuxws.hasLiveClaude, hasRunningClaude: cmuxws.hasRunningClaude });
       if (!d.send) {
-        if (d.gone) record(w.key, 'gone', { taskId: w.taskId, why: d.why });
-        else if (d.retry) record(w.key, 'attempt', { taskId: w.taskId, why: d.why });
+        if (d.retry) record(w.key, 'attempt', { taskId: w.taskId, why: d.why });
         continue;
       }
       record(w.key, 'attempt', { taskId: w.taskId, ref: ws.ref });
@@ -1030,8 +1030,11 @@ async function dashboardLoop() {
           try { await executeSweep(plan, { heartbeat: true }); }
           finally { releaseLock(); }
         }
-        // BRO-8079: after the lock is released (cmux calls must not stretch the tick under it).
-        deliverDispatcherWakes();
+        // BRO-8079: its own short lock AFTER the sweep's is released (cmux calls must not stretch the
+        // sweep under it, and two dashboards must not both read the same unsent state and double-send).
+        if (acquireLock()) {
+          try { deliverDispatcherWakes(); } finally { releaseLock(); }
+        }
         writeHeartbeat({ mode: 'dashboard', ...summarize(plan) });
         console.clear();
         console.log(core.renderNarrative(plan));
