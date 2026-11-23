@@ -13,6 +13,8 @@ import { SHOW_REFRESH_TAG, SHOW_REFRESH_POINTER_TAG } from '@/lib/show-refresh-c
 import { refreshableSlugs } from '@/lib/show-refresh';
 
 export const dynamic = 'force-dynamic';
+// `all` revalidates ~1.6k paths (3 per refreshable show); give it room.
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   // Secret first: an unauthorised caller never gets the body parsed.
@@ -30,5 +32,5 @@ export async function POST(req: Request) {
   if (plan.tag) revalidateTag(SHOW_REFRESH_TAG, { expire: 0 });
   revalidateTag(SHOW_REFRESH_POINTER_TAG, { expire: 0 });
   for (const p of plan.paths) revalidatePath(p);
-  return NextResponse.json({ ok: true, tag: plan.tag, pointerTag: true, count: plan.paths.length, paths: plan.paths }, { headers: { 'cache-control': 'no-store' } });
+  return NextResponse.json({ ok: true, tag: plan.tag, pointerTag: true, count: plan.paths.length, sample: plan.paths.slice(0, 6) }, { headers: { 'cache-control': 'no-store' } });
 }

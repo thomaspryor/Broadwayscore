@@ -438,6 +438,10 @@ jobs:
           # BRO-7139: same kill switch the board-dispatch job reads, so a
           # deliberate off does not raise the ledger freshness row.
           BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
+          # BRO-8170 gap 4: prod-data-parity reads a refreshed page's published
+          # slice (public anon reads) to know what that page must render.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included

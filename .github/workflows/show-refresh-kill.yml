@@ -6,7 +6,8 @@ name: Show Refresh Kill Switch
 # fast a page reflects it depends on the reader's caching, which phase 2 sets
 # and measures (no promise here). unkill reverses it. status prints the
 # current state. Nothing reads the store until phase 2 lands (flag OFF), so
-# today this changes nothing a visitor sees.
+# today this changes nothing a visitor sees. After a kill or unkill the
+# job revalidates every cached show page (scripts/show-refresh-revalidate.js).
 #
 # Run: Actions -> Show Refresh Kill Switch -> action + reason.
 # No npm ci: the CLI uses only Node built-ins.
@@ -64,6 +65,26 @@ jobs:
             node scripts/show-refresh-store.js --status | tee -a "$GITHUB_STEP_SUMMARY" \
               || echo "::warning::the kill row was set, but the store status check is unhealthy (see summary)"
           fi
+
+      # BRO-8170 gap 2: the kill row only changes what the NEXT render reads.
+      # Pages, reviews.json and OG images already cached from a slice keep
+      # serving it until their 24 h ISR expiry, so drop them now. Separate step
+      # so a failed kill never reaches it, and its own failure (wrong secret,
+      # 5xx) turns the run red and notifies. Exit 3 = SHOW_REFRESH_REVALIDATE_SECRET
+      # unset here: a warning while the reader is off.
+      - name: Revalidate cached show pages
+        if: inputs.action != 'status'
+        env:
+          SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
+        run: |
+          set -o pipefail
+          rc=0
+          node scripts/show-refresh-revalidate.js | tee -a "$GITHUB_STEP_SUMMARY" || rc=$?
+          if [ "$rc" = 3 ]; then
+            echo "::warning::cached show pages were not revalidated: SHOW_REFRESH_REVALIDATE_SECRET is not set (fine while the reader flag is off)"
+            exit 0
+          fi
+          exit "$rc"
 
       - name: Notify on failure
         if: failure()
