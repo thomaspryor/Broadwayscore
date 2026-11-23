@@ -9,7 +9,7 @@
  *
  * Sources (all free JSON APIs, runnable locally, no credentials):
  *   - WhatsOnStage London listings (lib/wos-rest-listings.js), filtered to
- *     isWestEndVenue(): the dated primary listing — venue, previews,
+ *     isWeHistoricalVenue() (West End + Off-West-End producing houses): the dated primary listing — venue, previews,
  *     opening, closing.
  *   - WhatsOnStage review posts in the season window: review signal.
  *   - Olivier ceremony nominees for the two ceremonies a season can fall in
@@ -38,9 +38,8 @@ const path = require('path');
 const { validateSeason, getSeasonDates, isDateInSeason } = require('./lib/we-seasons');
 const { normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
-const { isWestEndVenue } = require('./lib/venue-classification');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
-const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./lib/we-historical-corroboration');
+const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion, isWeHistoricalVenue } = require('./lib/we-historical-corroboration');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `discover-historical-shows-we.js — List West End productions for a season that are not in shows.json. Writes candidates only.
@@ -101,7 +100,7 @@ function collapseDuplicateListings(rows) {
 function buildCandidates({ season, listings, reviews, oliviers, shows, today }) {
   const inSeason = listings.filter(l => {
     const start = l.openingDate || l.previewsStartDate;
-    return start && l.venue && isWestEndVenue(l.venue) && isDateInSeason(start, season);
+    return start && l.venue && isWeHistoricalVenue(l.venue) && isDateInSeason(start, season);
   });
   const pool = buildVenueTitlePool(shows);
   const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
@@ -147,7 +146,7 @@ function buildCandidates({ season, listings, reviews, oliviers, shows, today }) 
 
   // Reviews of West End-venue productions that matched no listing: surfaced
   // for a human, never promoted (they carry no dates to build a row from).
-  const unlistedReviews = reviews.filter(r => r.venue && isWestEndVenue(r.venue)
+  const unlistedReviews = reviews.filter(r => r.venue && isWeHistoricalVenue(r.venue)
     && isDateInSeason(r.date, season)
     && !inSeason.some(l => signalMatchesListing(r, l)));
 

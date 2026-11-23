@@ -47,10 +47,10 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { foldDiacritics, normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
-const { sanitizeVenueForWrite, isWestEndVenue } = require('./lib/venue-classification');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { productionIdYear } = require('./lib/todaytix-dates');
-const { venueFamily, decideWeHistoricalPromotion, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
+const { venueFamily, decideWeHistoricalPromotion, isWeHistoricalVenue, historicalCategoryForVenue, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { oltPath } = require('./build-we-olt-season');
@@ -120,7 +120,7 @@ function effectiveDecision(candidate, approvals, today = new Date().toISOString(
   if (!override) return base;
   if (override.decision === 'reject') return { promotable: false, reason: `rejected in approvals file: ${override.reason || 'no reason given'}` };
   if (override.decision === 'approve') {
-    if (!candidate.venue || !isWestEndVenue(candidate.venue)) return { promotable: false, reason: 'approved, but no West End venue' };
+    if (!candidate.venue || !isWeHistoricalVenue(candidate.venue)) return { promotable: false, reason: 'approved, but no West End or Off-West-End producing venue' };
     if (!(candidate.openingDate || candidate.previewsStartDate) || !candidate.closingDate) return { promotable: false, reason: 'approved, but start or closing date missing' };
     // Rows are written status:'closed'; an approval can't close a running show.
     if (candidate.closingDate >= today) return { promotable: false, reason: `approved, but not closed yet (closes ${candidate.closingDate})` };
@@ -178,7 +178,8 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
   if (!year) return null;
   // Historical rows use the full id as the slug (Broadway/OB historical
   // precedent): same-title productions in different years stay distinct.
-  const id = `${withMarketSuffix(slugify(normalizedTitle), 'west-end')}-${year}`;
+  const category = historicalCategoryForVenue(candidate.venue) || 'west-end';
+  const id = `${withMarketSuffix(slugify(normalizedTitle), category)}-${year}`;
   const reviewLed = candidate.origin === 'review-led';
   const olt = candidate.origin === 'olt';
   const ref = candidate.origin === 'reference';
@@ -193,7 +194,8 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
     openingDate: candidate.openingDate || null,
     closingDate: candidate.closingDate,
     status: 'closed',
-    category: 'west-end',
+    category,
+    // Off-West-End rows keep market 'west-end' (the London pool), like every existing one.
     market: 'west-end',
     // validate-market-expansion requires a type for non-announced west-end
     // rows (BRO-3716); see inferShowType for the order.
@@ -403,7 +405,7 @@ function main() {
   // Jun 2014, Haymarket Sep 2014) is added once, by the earlier season.
   // This season's own pending rows stay out so a rerun rewrites its plan.
   const liveIds = new Set(showsData.shows.map(s => s.id));
-  const queued = loadPendingAddShows().filter(s => s.category === 'west-end' && s.season !== season && !liveIds.has(s.id));
+  const queued = loadPendingAddShows().filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && s.season !== season && !liveIds.has(s.id));
   const knownShows = [...showsData.shows, ...queued];
   const refCandidates = referenceFile
     ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: knownShows, justifications: loadGapJustifications(ROOT, season) })

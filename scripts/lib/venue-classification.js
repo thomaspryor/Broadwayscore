@@ -49,6 +49,20 @@ function isWestEndVenue(venue) {
   return WEST_END_VENUES.has(normalizeVenueName(venue));
 }
 
+// Off-West-End London PRODUCING houses (BRO-8120): subsidised/commissioning
+// theatres whose own runs get West End critic coverage. The historical WE
+// backfill (discover-historical-shows-we.js / promote-historical-we.js) used
+// to take WEST_END_VENUES only, so closed Almeida/Young Vic/Barbican/Donmar
+// runs were never minted and their reviews were orphaned. Name test is a
+// word-boundary regex on the normalised name so "Old Vic"/"Young Vic" and
+// "Barbican"/"Barbican Centre" stay distinct from West End houses.
+const OFF_WEST_END_PRODUCING_HOUSE_RE = /^(almeida|young vic|barbican( theatre| centre)?|the pit( \(barbican\))?|donmar( warehouse)?|hampstead|bush|kiln|arcola|park|orange tree|soho|menier chocolate factory|southwark playhouse( borough| elephant)?|theatre royal stratford east|lyric hammersmith|bridge|regent'?s park open air|sam wanamaker playhouse|riverside studios)$/;
+function isOffWestEndProducingHouse(venue) {
+  if (!venue || venue === 'TBA') return false;
+  if (isWestEndVenue(venue)) return false;
+  return OFF_WEST_END_PRODUCING_HOUSE_RE.test(normalizeVenueName(venue).toLowerCase().trim());
+}
+
 // Theatres OUTSIDE New York that TodayTix nonetheless lists in its NYC feed
 // (location=1) — and, worse, tags "Off Broadway". They are touring houses
 // playing 2-3 day road dates of shows that are not New York productions at all.
@@ -543,4 +557,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, getShowMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndProducingHouse, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, getShowMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

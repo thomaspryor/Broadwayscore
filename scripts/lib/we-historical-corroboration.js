@@ -24,7 +24,7 @@
 const { normalizeTitle } = require('./title-match');
 const { titlesMatch } = require('./title-normalization');
 const { venuesMatch } = require('./deduplication');
-const { isWestEndVenue, normalizeVenueName } = require('./venue-classification');
+const { isWestEndVenue, isOffWestEndProducingHouse, normalizeVenueName } = require('./venue-classification');
 const { isDateInSeason } = require('./we-seasons');
 
 const DEFAULT_DAY_TOLERANCE = 14;
@@ -55,6 +55,18 @@ const NON_THEATRE_GENRES = new Set([
  * (National Theatre)") and "@sohoplace" vs "sohoplace". Not used for
  * shows.json dedup ids — only to decide "is this signal about this listing".
  */
+/** In scope for the historical backfill: a West End house or an Off-West-End producing house (BRO-8120). */
+function isWeHistoricalVenue(venue) {
+  return isWestEndVenue(venue) || isOffWestEndProducingHouse(venue);
+}
+
+/** 'west-end' | 'off-west-end' for an in-scope venue, else null. */
+function historicalCategoryForVenue(venue) {
+  if (isWestEndVenue(venue)) return 'west-end';
+  if (isOffWestEndProducingHouse(venue)) return 'off-west-end';
+  return null;
+}
+
 function venueFamily(venue) {
   // Test the RAW name too: normalizeVenueName("National Theatre") is just
   // "national", which no longer says which building it is.
@@ -128,7 +140,7 @@ function decideWeHistoricalPromotion(candidate, opts = {}) {
   const no = (reason, persistent) => ({ promotable: false, persistent, reason });
   if (!candidate?.title) return no('no title', true);
   if (!candidate.venue) return no('no venue', true);
-  if (!isWestEndVenue(candidate.venue)) return no(`not a West End venue: ${candidate.venue}`, true);
+  if (!isWeHistoricalVenue(candidate.venue)) return no(`not a West End or Off-West-End producing venue: ${candidate.venue}`, true);
   const start = candidate.openingDate || candidate.previewsStartDate;
   if (!start) return no('no opening or previews date', false);
   if (!isDateInSeason(start, candidate.season)) return no(`starts ${start}, outside season ${candidate.season}`, true);
@@ -151,6 +163,8 @@ module.exports = {
   WE_HISTORICAL_DISCOVERY_SOURCES,
   MIN_RUN_DAYS,
   NON_THEATRE_GENRES,
+  isWeHistoricalVenue,
+  historicalCategoryForVenue,
   venueFamily,
   recordsAgree,
   signalMatchesListing,

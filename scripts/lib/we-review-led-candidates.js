@@ -34,9 +34,8 @@
 const { titlesMatch } = require('./title-normalization');
 const { normalizeTitle } = require('./title-match');
 const { venuesMatch } = require('./deduplication');
-const { isWestEndVenue } = require('./venue-classification');
 const { isDateInSeason, getSeasonForDate } = require('./we-seasons');
-const { venueFamily, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
+const { venueFamily, decideWeHistoricalPromotion, isWeHistoricalVenue } = require('./we-historical-corroboration');
 const { archiveMonth, monthIndex } = require('./tr-production-pick');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./venue-title-dedup-pool');
 
@@ -65,7 +64,7 @@ const sameVenueFamily = (a, b) => !!a && !!b && (venuesMatch(a, b) || venueFamil
  * Unlisted reviews worth a TR lookup, one per title + venue family.
  * WOS tags each review post with markets; Edinburgh's Royal Lyceum reviews
  * ("Red Dust Road at the Lyceum Theatre") carry no London tag, and the
- * Lyceum name alone passes isWestEndVenue.
+ * Lyceum name alone passes the venue check.
  * @returns {{lookups: Array, dropped: Array<{title: string, reason: string}>}}
  */
 function selectLookups(unlistedReviews, season) {
@@ -75,7 +74,7 @@ function selectLookups(unlistedReviews, season) {
     const title = cleanReviewTitle(r.title);
     const drop = reason => dropped.push({ title, venue: r.venue, reason });
     if (!Array.isArray(r.market) || !r.market.includes(WOS_LONDON_MARKET)) { drop('WOS review not tagged London'); continue; }
-    if (!r.venue || !isWestEndVenue(r.venue)) { drop('not a West End venue'); continue; }
+    if (!r.venue || !isWeHistoricalVenue(r.venue)) { drop('not a West End or Off-West-End producing venue'); continue; }
     if (!r.date || !isDateInSeason(r.date, season)) { drop('review outside season'); continue; }
     if (NON_THEATRE_TITLE.test(title)) { drop('concert/screening/magic title'); continue; }
     if (lookups.some(l => normalizeTitle(l.title) === normalizeTitle(title) && sameVenueFamily(l.venue, r.venue))) { drop('duplicate review'); continue; }
