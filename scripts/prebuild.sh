@@ -24,6 +24,13 @@ build_show_refresh_manifest() {
     || echo '[show-refresh-manifest] WARNING: runner failed to start; show refresh is off for this build.'
 }
 
+# Pin the page-parity reference to this build's canonical scores and review data
+# and to this build's show-refresh manifest (refreshBuildInstant). Must run
+# after build_show_refresh_manifest.
+pin_parity_snapshot() {
+  node scripts/lib/prod-data-parity.js --snapshot
+}
+
 # Always run: validation + gitignored output
 node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
@@ -81,8 +88,9 @@ node scripts/generate-blog-reviews-for-scoring.js
 # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)
 node scripts/generate-mobile-show-details.js
-# Pin the page-parity reference to this build's canonical scores and review data.
-node scripts/lib/prod-data-parity.js --snapshot
+# Page-parity reference: pinned by pin_parity_snapshot right after
+# build_show_refresh_manifest on both CI paths below, because the snapshot
+# records the manifest's buildInstant (BRO-8056 G1) and so must follow it.
 
 # Web Stats catalog (gitignored): a slim projection of mobile-shows.json, so it
 # runs on BOTH paths — here from the committed mobile-shows.json, and at the end
@@ -91,6 +99,7 @@ if [ "$SKIP_HEAVY_PREBUILD" = "true" ]; then
   echo "Skipping heavy prebuild (code-only change — committed data files are current)"
   node scripts/generate-stats-shows.js
   build_show_refresh_manifest
+  pin_parity_snapshot
   exit 0
 fi
 
@@ -106,3 +115,4 @@ node scripts/generate-off-broadway-archive.js
 node scripts/generate-off-west-end-archive.js
 node scripts/generate-west-end-archive.js
 build_show_refresh_manifest
+pin_parity_snapshot

@@ -15,8 +15,9 @@ import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
-import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
+import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, audiencePlatformUrlFrom } from '@/lib/data-audience';
 import { getShowForRender } from '@/lib/show-render';
+import { showRefreshEnabled, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
@@ -94,8 +95,8 @@ export const revalidate = 86400;
 
 // Metadata and both hero layouts share one request snapshot, even across UTC
 // midnight. The cached page passes the wording through hydration unchanged.
-const getLiveInHdForRender = cache((slug: string) => {
-  const show = getShowForRender(slug)?.show;
+const getLiveInHdForRender = cache(async (slug: string) => {
+  const show = (await getShowForRender(slug))?.show;
   const hd = isOperaShow(show) ? show?.liveInHd : null;
   const today = new Date().toISOString().slice(0, 10);
   return { line: liveInHdLine(hd, today), description: liveInHdDescription(hd, today) };
@@ -115,7 +116,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const show = getShowForRender(params.slug)?.show;
+  const render = await getShowForRender(params.slug);
+  const show = render?.show;
   // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
   if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
 
@@ -220,7 +222,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}`
   ).trim();
   // Put the date immediately after the verdict, ahead of venue and synopsis.
-  const hd = getLiveInHdForRender(params.slug);
+  const hd = await getLiveInHdForRender(params.slug);
   const fullDescription = `${descriptionLead}${hd.description ? ` ${hd.description}` : ''}${statusPart}${synopsisSnippet ? ` ${synopsisSnippet}` : ''}`.trim();
   const truncatedDescription = fullDescription.length > 160
     ? fullDescription.slice(0, 157).replace(/\s\S*$/, '...')
@@ -262,6 +264,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       title: twitterTitle,
       description: truncatedDescription,
     },
+    // BRO-8056 refresh marker (plan row 10): which data this render used. Only
+    // while the reader is on, so flag-off pages stay byte-identical to today.
+    ...(showRefreshEnabled() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
   };
 }
 
@@ -283,14 +288,17 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
 
 export default async function ShowPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const render = getShowForRender(params.slug);
+  const render = await getShowForRender(params.slug);
   const show = render?.show;
 
   if (!render || !show || !isCategoryEnabled(show.category)) {
     notFound();
   }
 
-  const lastUpdated = getShowLastUpdated(show.id);
+  // BRO-8056: a page rendered from a published slice holds data newer than the build's
+  // timestamps; its render time is when that data was applied (ISR renders on revalidate).
+  const refreshed = isRefreshedRev(render.rev);
+  const lastUpdated = refreshed ? new Date().toISOString() : getShowLastUpdated(show.id);
   const castFileForSchema = getShowCastFile(show.id);
   const performers = castFileForSchema?.openingNightCast
     ?.filter(m =>
@@ -306,7 +314,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const isRegional = show.category === 'regional';
   const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
-  const hd = getLiveInHdForRender(params.slug);
+  const hd = await getLiveInHdForRender(params.slug);
 
   // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
   const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(foldVenueName(show.venue))) : undefined;
@@ -358,8 +366,10 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // index is built on first call. 'all' format slice powers the hero rank
   // line; the bottom WhereItRanks card additionally requests the show's-own-
   // format slice.
-  const ranks = featureFlags.showRanks ? getShowRanks(show.id, { format: 'all' }) : null;
-  const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
+  // Ranks compare build-time scores across every show, so a refreshed page (newer
+  // score) leaves them out until the next deploy rather than show a stale rank (BRO-8056).
+  const ranks = featureFlags.showRanks && !refreshed ? getShowRanks(show.id, { format: 'all' }) : null;
+  const ranksByFormat = featureFlags.showRanks && !refreshed && (show.type === 'musical' || show.type === 'play')
     ? getShowRanks(show.id, { format: show.type })
     : null;
   // The Profitability Scorecard was released 2026-10-26 (BRO-6192); to pull it, set the
@@ -488,7 +498,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const audiencePlatformUrls: Record<string, string> = audienceBuzz ? Object.fromEntries(
     Object.keys(audienceBuzz.sources)
       .filter(k => k !== 'showScore')
-      .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
+      // From the page's own buzz (render.audienceBuzz), so a refreshed page links what it shows (BRO-8056).
+      .map(k => [k, audiencePlatformUrlFrom(k, show.id, audienceBuzz)])
       .filter((entry): entry is [string, string] => entry[1] != null)
   ) : {};
   const currentMonday = getScheduleCurrentMonday();
