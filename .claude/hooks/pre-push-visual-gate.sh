@@ -332,7 +332,7 @@ fi
 # verdict plus a later unscreenshotted edit never rides the earlier yes.
 _CURRENT=0
 if [ "$OVERALL_PASS" = "true" ] && [ -n "$UI_FILES_GATED" ] \
-   && node "$CANONICAL_ROOT/scripts/lib/visual-scope.js" head-current --cwd="$SESSION_ROOT" --verdict="$VERDICT_PATH" --files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null; then
+   && node "$CANONICAL_ROOT/scripts/lib/visual-scope.js" head-current --cwd="$SESSION_ROOT" --ref="$DIFF_REF" --verdict="$VERDICT_PATH" --files="$(printf '%s' "$UI_FILES_GATED" | paste -sd, -)" 2>/dev/null; then
   _CURRENT=1
 fi
 if [ "$_CURRENT" = 1 ]; then

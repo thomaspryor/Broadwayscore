@@ -309,6 +309,25 @@ test('BRO-8156: an edit made after the last passing visual-qa run does not ride 
   assert.equal(r.status, 0, r.stderr);
 });
 
+test('BRO-8156: pushing another local branch compares THAT branch\'s content, not HEAD\'s', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  ledgerEntry(fx, [UI_FILE]);
+  ledgerEntry(fx, [UI_FILE], 'other');
+  const v = { schemaVersion: 2, contentHash: HASH, overallPass: true, uiFiles: [UI_FILE], uiFileHashes: blobs(fx, [UI_FILE]), scopeFirstAt: new Date().toISOString() };
+  writeVerdict(fx, v);
+  // 'other' was screenshotted and approved at the same content as HEAD, then got a commit nobody screenshotted.
+  mkdirSync(join(fx.repo, '.claude', 'visual-qa', 'other'), { recursive: true });
+  writeFileSync(join(fx.repo, '.claude', 'visual-qa', 'other', 'verdict.json'), JSON.stringify(v));
+  git(fx.repo, 'checkout', '-q', '-b', 'other');
+  commitFile(fx.repo, UI_FILE, 'export const Foo = () => <aside>unseen</aside>;\n', 'ui: unseen redesign');
+  git(fx.repo, 'checkout', '-q', BRANCH);
+  const cmd = 'git push origin other';
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER), { command: cmd });
+  assert.equal(r.status, 2, 'the pushed branch has content the verdict never screenshotted');
+  assert.equal(runHook(fx, writeTranscript(fx, NEUTRAL_USER)).status, 0, 'the checked-out branch itself still reuses the yes');
+});
+
 test('BRO-8156: a NEW UI file (or route) still asks the owner', (t) => {
   const fx = makeFixture(t);
   assertGateLive(fx);

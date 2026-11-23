@@ -14,7 +14,7 @@
  * verdict screenshotted. Content hashes, not mtimes, so checkout/rebase/stash cannot fake or break freshness.
  *
  * CLI: node visual-scope.js commit-proof [--cwd=DIR]   -> exit 0 proof ok, 1 not (reason on stderr)
- *      node visual-scope.js head-current --verdict=P --files=a,b [--cwd=DIR] -> exit 0 when the verdict shows HEAD's blobs
+ *      node visual-scope.js head-current --verdict=P --files=a,b [--ref=PUSHED] [--cwd=DIR] -> exit 0 when the verdict shows HEAD's blobs
  */
 'use strict';
 const fs = require('fs');
@@ -119,10 +119,10 @@ function commitProof(verdict, staged) {
   return { ok: true, why: `passing visual-qa verdict covers all ${files.length} staged UI file(s)` };
 }
 
-/** HEAD blob id per file (null when the file is not in HEAD). */
-function headBlobs(cwd, files) {
+/** Blob id per file at `ref` (the ref being pushed; default HEAD). null when the file is not in that commit. */
+function headBlobs(cwd, files, ref = 'HEAD') {
   const r = {};
-  for (const f of files) { try { r[f] = git(cwd, ['rev-parse', '--verify', '-q', `HEAD:${f}`]) || null; } catch { r[f] = null; } }
+  for (const f of files) { try { r[f] = git(cwd, ['rev-parse', '--verify', '-q', `${ref}:${f}`]) || null; } catch { r[f] = null; } }
   return r;
 }
 
@@ -163,7 +163,7 @@ function main(argv) {
     const files = String(opt.files || '').split(',').map((x) => x.trim()).filter(Boolean);
     let verdict = null;
     try { verdict = JSON.parse(fs.readFileSync(opt.verdict, 'utf8')); } catch { verdict = null; }
-    const r = files.length ? headCurrent(verdict, headBlobs(cwd, files)) : { ok: false, why: 'no files' };
+    const r = files.length ? headCurrent(verdict, headBlobs(cwd, files, opt.ref || 'HEAD')) : { ok: false, why: 'no files' };
     console.error(`[visual-scope] ${r.ok ? 'current' : 'not current'}: ${r.why}`);
     return r.ok ? 0 : 1;
   }
