@@ -111,11 +111,14 @@ test('pending noise: gather-reviews does not route an off-topic URL to _pending;
     const base = { outletId: 'hollywood-reporter', outlet: 'The Hollywood Reporter', criticName: 'Unknown', source: 'site-search' };
     const off = g.createReviewFile(${JSON.stringify(show)}, { ...base, url: ${JSON.stringify(NOISE[0])} });
     const real = g.createReviewFile(${JSON.stringify(show)}, { ...base, url: 'https://www.hollywoodreporter.com/lifestyle/arts/blood-of-my-blood-theater-review-1236800000/' });
-    process.stdout.write(JSON.stringify({ off, real }));`;
+    // BRO-8023: an awards live blog and a predictions post passed the off-topic-only intake rule.
+    const live = g.createReviewFile(${JSON.stringify(show)}, { ...base, outletId: 'nytimes', url: 'https://www.nytimes.com/live/2026/06/07/theater/tony-awards-2026/lesley-manville-wins-the-tony-for-best-actress-in-a-play' });
+    const awards = g.createReviewFile(${JSON.stringify(show)}, { ...base, outletId: 'nytimes', url: 'https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html' });
+    process.stdout.write(JSON.stringify({ off, real, live, awards }));`;
   const r = spawnSync(process.execPath, ['-e', script], { env: { ...process.env, REVIEW_TEXTS_DIR: root }, encoding: 'utf8', timeout: 120000 });
   assert.equal(r.status, 0, r.stderr);
   const out = JSON.parse(r.stdout.trim().split('\n').pop());
-  assert.deepEqual(out, { off: false, real: true });
+  assert.deepEqual(out, { off: false, real: true, live: false, awards: false });
   const files = fs.readdirSync(path.join(root, '_pending', show));
   assert.equal(files.length, 1);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, '_pending', show, files[0]), 'utf8')).url.includes('/lifestyle/arts/'), true);

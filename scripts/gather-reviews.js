@@ -4329,9 +4329,11 @@ function createReviewFile(showId, reviewData, options = {}) {
     // BRO-7078: the shared writer refuses off-topic sections (sport, obituary,
     // film/TV review sections) for new files, but this raw _pending write never
     // reaches it, so title-word hits became no-byline stubs (site-search noise).
-    const _offTopic = require('./lib/non-review-url-patterns').offTopicSectionReason(review.url);
-    if (_offTopic) {
-      console.log(`    ⊘ ${normalizedOutletId}: ${_offTopic} URL — not routed to _pending (BRO-7078): ${review.url}`);
+    // BRO-8023: the off-topic rule alone let awards posts, live blogs, TV recaps and
+    // years-old productions through; apply the drain's page-kind triage rules here.
+    const _intakeReject = require('./lib/pending-triage').pendingIntakeRejectReason(review, _showMeta);
+    if (_intakeReject) {
+      console.log(`    ⊘ ${normalizedOutletId}: ${_intakeReject} — not routed to _pending (BRO-8023): ${review.url}`);
       return false;
     }
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);

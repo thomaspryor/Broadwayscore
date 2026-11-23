@@ -540,3 +540,60 @@ test('BRO-8065: --shard=1/n .. n/n together cover every show exactly once', () =
     }
   }
 });
+
+// BRO-8023 intake: gather-reviews refused only off-topic sections before writing a no-byline stub, so these real
+// queue rows were written and sat in _pending. The intake guard is the drain's triage, so both judge them alike.
+describe('pendingIntakeRejectReason (BRO-8023 intake guard)', () => {
+  const TENDER = { id: 'tender-off-west-end-2026', title: 'Tender', openingDate: '2026-07-09', closingDate: '2026-08-01', category: 'off-west-end',
+    priorRuns: [{ openingDate: '2024-11-19', closingDate: '2024-12-21', venue: 'Bush Theatre Studio' }] };
+  const INTAKE_JUNK = [
+    ['girl-interrupted-off-broadway-2026', { url: 'https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html' }],
+    ['catch-of-the-day-off-broadway-2026', { url: 'https://www.nytimes.com/live/2026/06/07/theater/tony-awards-2026/lesley-manville-wins-the-tony-for-best-actress-in-a-play' }],
+    ['blood-of-my-blood-west-end-2026', { url: 'https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/' }],
+    ['tosca-off-broadway-2026', { url: 'https://www.broadwayworld.com/bwwopera/article/review-met-audience-tips-its-hat-to-fedora-on-new-years-eve-20230101' }],
+    ['girls-off-west-end-2026', { url: 'https://www.hollywoodreporter.com/movies/movie-reviews/destroy-all-girls-review-1236665457' }],
+    ['spellbound-off-broadway-2026', { url: 'https://deadline.com/2024/11/spellbound-film-review-1236185047/' }],
+    ['endgame-off-broadway-2025', { url: 'https://www.hollywoodreporter.com/movies/movie-news/avengers-endgame-encore-box-office-previews-primetime-beast-1236709715' }],
+  ];
+  const showOf = (id) => (id === TENDER.id ? TENDER : SHOWS_8065[id] ? { id, ...SHOWS_8065[id] } : null);
+  for (const [id, review] of INTAKE_JUNK) {
+    test(`refused at intake: ${review.url}`, () => {
+      assert.ok(T.pendingIntakeRejectReason({ ...review, source: 'site-search' }, showOf(id)), review.url);
+    });
+  }
+  // A stored stub date is production identity, not page kind: the drain settles it (tag and keep), intake does not.
+  const TENDER_NAPALM = { url: 'http://theater.nytimes.com/2012/08/30/theater/reviews/tender-napalm-by-philip-ridley-at-59e59-theaters.html?ref=theater',
+    publishDate: 'August 30, 2012', source: 'dtli' };
+  test('the drain settles a 2012 Tender Napalm review (url date) under the 2026 Tender without a fetch', () => {
+    const v = T.triagePendingStub(TENDER_NAPALM, { showId: TENDER.id, show: TENDER, heldIndex: new Map() });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /outside this production's window/);
+  });
+  test('intake refuses it on the url date too (more than a year outside the run)', () => {
+    assert.match(String(T.pendingIntakeRejectReason(TENDER_NAPALM, TENDER)), /more than a year outside/);
+  });
+  test('intake leaves production-identity rules to the drain (stub date alone, sibling venue, bare title)', () => {
+    // Real scored reviews the identity rules flag: Hadestown at the Olivier under the West End entry, a 13 review.
+    const hades = { id: 'hadestown-west-end-2024', title: 'Hadestown', openingDate: '2024-02-21', category: 'west-end', venue: 'Lyric Theatre' };
+    assert.equal(T.pendingIntakeRejectReason({ url: 'https://www.telegraph.co.uk/theatre/what-to-see/hadestown-review-nationals-olivier-theatre-enjoyable-winter/' }, hades), null);
+    assert.equal(T.pendingIntakeRejectReason({ url: 'http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html' }, { id: '13-2008', title: '13', openingDate: '2008-10-05' }), null);
+    assert.equal(T.pendingIntakeRejectReason({ url: 'https://example.com/some-play-review', publishDate: '2012-01-01' }, TENDER), null);
+  });
+  test('the old intake rule (off-topic section only) let most of them through', () => {
+    const passedOld = INTAKE_JUNK.filter(([, r]) => !offTopicSectionReason(r.url)).length;
+    assert.ok(passedOld >= 4, `${passedOld}`);
+  });
+  for (const [id, url] of [...REAL_8065, ...NEEDS_FETCH_8065]) {
+    test(`still written to _pending: ${url}`, () => {
+      assert.equal(T.pendingIntakeRejectReason({ url, source: 'site-search' }, showOf(id)), null);
+    });
+  }
+  test('human submissions are never refused here', () => {
+    assert.equal(T.pendingIntakeRejectReason({ url: 'https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html', source: 'submit-review-form' },
+      showOf('girl-interrupted-off-broadway-2026')), null);
+  });
+  test('no show entry: url-only rules still apply, dates are not guessed', () => {
+    assert.ok(T.pendingIntakeRejectReason({ url: 'https://www.nytimes.com/live/2026/06/07/theater/tony-awards-2026/x' }, null));
+    assert.equal(T.pendingIntakeRejectReason({ url: 'https://www.thestage.co.uk/reviews/some-play-review-almeida' }, null), null);
+  });
+});

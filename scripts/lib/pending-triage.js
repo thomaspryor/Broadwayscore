@@ -206,6 +206,39 @@ function isSettledPendingStub(data) {
 }
 
 /**
+ * The url is not a review PAGE at all, whatever production it names: an off-topic or film/TV section, a listing,
+ * an interview, a news story, an awards post or live blog, a TV recap, a photo-call announcement. These are the
+ * rules that judge the kind of page, not which production it covers, so intake can apply them too
+ * (pendingIntakeRejectReason). Pure. Returns the reject reason or null.
+ */
+function pageKindJunkReason(url, show) {
+  const offTopic = offTopicSectionReason(url);
+  if (offTopic) return `${offTopic} URL, not a review`;
+  const listing = listingPageUrlReason(url);
+  if (listing) return `${listing} URL, not a review`;
+  if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
+  const slug = finalSlug(url);
+  if (!REVIEW_TOKEN_RE.test(slug) && INTERVIEW_SLUG_RE.test(slug)) return 'interview, not a review';
+  if (!REVIEW_TOKEN_RE.test(slug) && CLOSING_DATE_SLUG_RE.test(slug)) return 'closing-date news story, not a review';
+  if (PLAYBILL_ARTICLE_RE.test(url)) return 'Playbill news article, not a review';
+  // BRO-8065 rules (see the constants above). Objective evidence first (a fan-site host, an episode number): these
+  // fire even when the slug names the show.
+  const host = hostKey(url);
+  if (host && NON_THEATRE_HOSTS.has(host)) return `${host} is a watch/TV fan site, not a theatre review`;
+  if (TV_EPISODE_RE.test(slug)) return 'TV episode recap, not a review';
+  // Text rules: never when the url names this show (a stage review filed under /movies/, a Tony-winner's review).
+  if (!urlNamesShow(url, show)) {
+    const segs = pathSegments(url).slice(0, -1);
+    // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
+    if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return 'film/TV section URL, not a stage review';
+    if (segs[0] === 'live') return 'live-blog URL, not a review';
+    if (!REVIEW_TOKEN_RE.test(slug.replace(/\.html?$/i, '')) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return 'awards coverage, not a review';
+  }
+  if (ANNOUNCEMENT_SLUG_RE.test(url)) return 'production-photo announcement, not a review';
+  return null;
+}
+
+/**
  * @param {object} data  the _pending stub
  * @param {{showId:string, show?:object, heldIndex?:Map<string,Set<string>>, showTitleOf?:(id:string)=>string}} ctx
  * @returns {{verdict:'duplicate'|'junk'|'candidate', reason:string|null, heldBy?:string[]}}
@@ -213,14 +246,8 @@ function isSettledPendingStub(data) {
 function triagePendingStub(data, ctx = {}) {
   const url = data && data.url;
   if (!url) return { verdict: 'candidate', reason: null };
-  const offTopic = offTopicSectionReason(url);
-  if (offTopic) return { verdict: 'junk', reason: `${offTopic} URL, not a review` };
-  const listing = listingPageUrlReason(url);
-  if (listing) return { verdict: 'junk', reason: `${listing} URL, not a review` };
-  if (isBlockedReviewUrl(url)) return { verdict: 'junk', reason: 'aggregator/listing/feature URL, not an outlet review' };
-  const slug = finalSlug(url);
-  if (!REVIEW_TOKEN_RE.test(slug) && INTERVIEW_SLUG_RE.test(slug)) return { verdict: 'junk', reason: 'interview, not a review' };
-  if (!REVIEW_TOKEN_RE.test(slug) && CLOSING_DATE_SLUG_RE.test(slug)) return { verdict: 'junk', reason: 'closing-date news story, not a review' };
+  const kind = pageKindJunkReason(url, ctx.show);
+  if (kind) return { verdict: 'junk', reason: kind };
   // A show with no dates cannot use the production window; its id year against a /YYYY/ url year still settles
   // a 2-years-off article (observer.com/2024/12/a-complete-unknown-review filed under myth-off-broadway-2026).
   if (ctx.show && !ctx.show.openingDate && !ctx.show.previewsStartDate) {
@@ -228,13 +255,6 @@ function triagePendingStub(data, ctx = {}) {
     const bad = idYear ? urlYearConflict(url, idYear, ctx.show.title) : null;
     if (bad) return { verdict: 'junk', reason: `url year ${bad} is more than a year from the show's ${idYear} (show has no dates)` };
   }
-  if (PLAYBILL_ARTICLE_RE.test(url)) return { verdict: 'junk', reason: 'Playbill news article, not a review' };
-  // BRO-8065 rules (see the constants above). None fires when the slug names this show and says "review".
-  // Objective evidence first (a fan-site host, an episode number, the url's own date): these fire even when the
-  // slug names the show, exactly as the drain's post-fetch date rule would (28-years-later-review under The Years).
-  const host = hostKey(url);
-  if (host && NON_THEATRE_HOSTS.has(host)) return { verdict: 'junk', reason: `${host} is a watch/TV fan site, not a theatre review` };
-  if (TV_EPISODE_RE.test(slug)) return { verdict: 'junk', reason: 'TV episode recap, not a review' };
   const dateReason = urlDateOutsideWindowReason(url, ctx.show);
   if (dateReason) return { verdict: 'junk', reason: dateReason };
   // A bare numeric / 1-2 letter / generic title ("44", "G", "The Story") the url never spells out: a site-search
@@ -253,15 +273,6 @@ function triagePendingStub(data, ctx = {}) {
   }
   const sibling = siblingVenueReason(url, ctx.show, ctx.sameTitleShows);
   if (sibling) return { verdict: 'junk', reason: sibling };
-  // Text rules: never when the url names this show (a stage review filed under /movies/, a Tony-winner's review).
-  if (!urlNamesShow(url, ctx.show)) {
-    const segs = pathSegments(url).slice(0, -1);
-    // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
-    if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return { verdict: 'junk', reason: 'film/TV section URL, not a stage review' };
-    if (segs[0] === 'live') return { verdict: 'junk', reason: 'live-blog URL, not a review' };
-    if (!REVIEW_TOKEN_RE.test(slug.replace(/\.html?$/i, '')) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return { verdict: 'junk', reason: 'awards coverage, not a review' };
-  }
-  if (ANNOUNCEMENT_SLUG_RE.test(url)) return { verdict: 'junk', reason: 'production-photo announcement, not a review' };
   // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
   // only settles a stub on a host the corpus has never scored a review from (venue sites such as bam.org).
   if (ctx.heldIndex && nonReviewHostMatch(url) && !heldHosts(ctx.heldIndex).has(hostKey(url))) {
@@ -341,4 +352,21 @@ function sameTitleShowsFrom(show, allShows) {
   }
   return (_sameTitleMemo.get(allShows).get(key(show.title)) || []).filter((o) => o.id !== show.id);
 }
-module.exports = { sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+/**
+ * BRO-8023 intake guard: the reject reason for a no-byline hit BEFORE it is written to _pending, or null.
+ * gather-reviews' raw _pending write applied only offTopicSectionReason, so site-search title-word hits the drain
+ * later tags as junk (an NYT Tony live blog, awards predictions, an Outlander recap, a 2023 Met Tosca) were still
+ * written, one stub each. Intake applies the drain's page-kind rules plus the url's own date more than a year
+ * outside the run (7 of the 50,022 scored urls flagged). It does NOT apply the production-identity rules (stored
+ * stub date, bare title, sibling venue): over the same urls those flag 82 scored reviews (63 on the stored date
+ * alone; Hadestown at the Olivier), so they stay with the drain, which tags and KEEPS the stub. Human submissions
+ * are never refused here. Pure.
+ * @param {{url:string, source?:string}} review
+ * @param {object|null} show  the shows.json entry (null: the page-kind rules still apply)
+ */
+const INTAKE_EXEMPT_SOURCES = new Set(['submit-review-form', 'manual-user-request']);
+function pendingIntakeRejectReason(review, show) {
+  if (!review || !review.url || INTAKE_EXEMPT_SOURCES.has(review.source)) return null;
+  return pageKindJunkReason(review.url, show || undefined) || urlDateOutsideWindowReason(review.url, show || undefined);
+}
+module.exports = { pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
