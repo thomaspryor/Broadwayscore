@@ -862,14 +862,16 @@ async function processShow(showId, deps = {}) {
       console.log(`  [${file}] triage: ${tri.reason} — rehomed to ${tri.sibling} (BRO-8090)`);
       const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: tri.sibling, data, publishDate: tri.publishDate, nowIso: now().toISOString(), dry });
       if (out === 'sibling-copy-settled') {
-        // The owner's copy of this url is settled there: leave this one as it is (never two settled copies).
-        console.log(`  [${file}] ${tri.sibling} holds a settled copy of this url — left in place (BRO-8090)`);
-        verdictCount('kept: sibling holds a settled copy');
-        kept++;
-        continue;
+        // The owner's copy of this url is settled there: never move a second copy over it. This misfiled copy
+        // is settled in place too (BRO-8195): left untagged it counted as open forever and was re-triaged
+        // every run (private-lives-1975 holding the 2011 revival's NYT review).
+        console.log(`  [${file}] ${tri.sibling} holds a settled copy of this url — settled in place (BRO-8090/BRO-8195)`);
+        verdictCount('settled: sibling holds a settled copy');
       }
-      if (out === 'sibling-has-copy' && !dry) {
-        data.promoteSkippedReason = `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
+      if ((out === 'sibling-has-copy' || out === 'sibling-copy-settled') && !dry) {
+        data.promoteSkippedReason = out === 'sibling-copy-settled'
+          ? `belongs to same-title production ${tri.sibling}, whose _pending copy is already settled (BRO-8195)`
+          : `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
         data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
         try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
       }

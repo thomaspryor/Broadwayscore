@@ -1802,3 +1802,28 @@ describe('BRO-8195: a url-less stub dated outside every tracked production settl
     assert.equal(T.noUrlStubVerdict({ ...stub, publishDate: '2024-02-15' }, { show: J, allShows: [J], file: 'observer--clare-brennan.json', showHasFile: () => false, siblingHasFile: () => false }), null);
   });
 });
+
+// BRO-8195: a misfiled copy whose same-title sibling already holds a SETTLED copy of the url was left untagged,
+// so it counted as an open _pending stub forever and was re-triaged every run (private-lives-1975 / 2011 NYT).
+test('BRO-8195: misfiled stub whose sibling holds a settled copy settles in place (never stays open)', async () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-sib-'));
+  const old = { id: 'private-lives-1975', title: 'Private Lives', openingDate: '1975-02-06', closingDate: '1975-06-01', category: 'broadway' };
+  const rev = { id: 'private-lives-2011', title: 'Private Lives', openingDate: '2011-11-17', closingDate: '2011-12-31', category: 'broadway' };
+  const URL_ = 'http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html';
+  for (const s of [old, rev]) fs.mkdirSync(path.join(root, '_pending', s.id), { recursive: true });
+  const stub = path.join(root, '_pending', old.id, 'nytimes--unknown.json');
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'nytimes', criticName: 'Unknown', url: URL_, source: 'dtli' }));
+  fs.writeFileSync(path.join(root, '_pending', rev.id, 'nytimes--unknown.json'),
+    JSON.stringify({ outletId: 'nytimes', criticName: 'Unknown', url: URL_, promoteSkippedReason: 'subscriber-browser-read-no-promote: x (BRO-8195)' }));
+  const d = {
+    root, show: old, allShows: [old, rev], dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => { throw new Error('must not fetch'); },
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  await processShow(old.id, d);
+  const after = JSON.parse(fs.readFileSync(stub, 'utf8'));
+  assert.ok(T.isSettledPendingStub(after), `stub must be settled, got ${JSON.stringify(after)}`);
+  assert.match(after.promoteSkippedReason, /private-lives-2011.*already settled/);
+  fs.rmSync(root, { recursive: true, force: true });
+});
