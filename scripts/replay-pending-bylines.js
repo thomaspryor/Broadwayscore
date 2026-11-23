@@ -395,12 +395,19 @@ function isRedundantPendingStub(data, landedFile) {
  * the caller then settles the stub with a typed reason. The url-year and non-Met-opera rejects and the same-article
  * collision drop used to unlinkSync directly: 435 stubs (2026-11-20..23) left no file on any show and no tag.
  */
-function removePendingStubAsFiled(filepath, landedPath, url) {
-  let landedUrl = null;
-  try { landedUrl = JSON.parse(fs.readFileSync(landedPath, 'utf8')).url; } catch { return false; }
+function showFilesUrl(showDir, url) {
   const a = canonicalReviewUrl(url);
-  if (!a || canonicalReviewUrl(landedUrl) !== a) return false;
-  fs.unlinkSync(filepath);
+  if (!a || !fs.existsSync(showDir)) return null;
+  // Any file of the show, not only a duplicateOf chain's terminal (whose url may differ from the matched copy).
+  for (const f of fs.readdirSync(showDir)) {
+    if (!f.endsWith('.json')) continue;
+    try { if (canonicalReviewUrl(JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')).url) === a) return f; } catch { /* unreadable: skip */ }
+  }
+  return null;
+}
+function removePendingStubAsFiled(filepath, showDir, url, dry) {
+  if (!showFilesUrl(showDir, url)) return false;
+  if (!dry) fs.unlinkSync(filepath);
   return true;
 }
 
@@ -629,11 +636,16 @@ async function processShow(showId, deps = {}) {
       continue;
     }
     // BRO-8194: settle (tag with a typed reason, keep on disk). The drain never deletes an unpromoted stub.
+    // Returns false when the tag did not persist (the guard refused or threw): the caller must not count progress.
     const settleStub = (reason) => {
-      if (dry) return;
+      if (dry) return true;
       data.promoteSkippedReason = reason;
       data.promoteSkippedAt = now().toISOString();
-      try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      try {
+        const res = require('./lib/review-write-guard').safeWriteReview(filepath, data);
+        if (res && res.wrote === false) { console.log(`  [${file}] could not tag: ${res.skipped || 'write refused'}`); return false; }
+        return true;
+      } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); return false; }
     };
     // BRO-8065: a stub whose url is a bot-wall interstitial gets the guarded article url back. A skip that was
     // decided from the wall's url alone (it named no show) is re-opened, so the real review is fetched.
@@ -748,7 +760,7 @@ async function processShow(showId, deps = {}) {
     const landed = findExistingFileForUrl(showId, data.outletId, url, root);
     let landedData = null;
     if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
-    if (isRedundantPendingStub(data, landed) && (dry || removePendingStubAsFiled(filepath, path.join(root, showId, landed), url))) {
+    if (isRedundantPendingStub(data, landed) && removePendingStubAsFiled(filepath, path.join(root, showId), url, dry)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       verdictCount('duplicate: url already filed for this show');
       droppedRedundant++;
@@ -812,8 +824,8 @@ async function processShow(showId, deps = {}) {
       // BRO-8194: settled with a typed reason and KEPT, never deleted (a reject must leave a trace).
       console.log(`  [${file}] REJECT: non-Met opera house URL — tagged, kept`);
       verdictCount('rejected: non-Met opera house url');
-      settleStub('non-Met opera house url (BRO-8194 reject)');
-      rejected++;
+      if (settleStub('non-Met opera house url (BRO-8194 reject)')) rejected++;
+      kept++;
       continue;
     }
     if (openingYear) {
@@ -826,8 +838,8 @@ async function processShow(showId, deps = {}) {
       if (badYear && !runYears.includes(Number(badYear))) {
         console.log(`  [${file}] REJECT: URL year ${badYear} > ±1y from ${openingYear} — tagged, kept`);
         verdictCount('rejected: url year more than a year from opening');
-        settleStub(`url year ${badYear} is more than a year from opening ${openingYear} (BRO-8194 reject)`);
-        rejected++;
+        if (settleStub(`url year ${badYear} is more than a year from opening ${openingYear} (BRO-8194 reject)`)) rejected++;
+        kept++;
         continue;
       }
     }
@@ -977,15 +989,14 @@ async function processShow(showId, deps = {}) {
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
       // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
       if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
-        if (dry || removePendingStubAsFiled(filepath, newPath, url)) {
+        if (removePendingStubAsFiled(filepath, path.join(root, showId), url, dry)) {
           console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this url`);
           droppedRedundant++;
           continue;
         }
         // BRO-8194: same article under another link form: settle with the file it collides with, never delete.
         console.log(`  [${file}] ${newFilename} already carries this article (other url form) — tagged, kept`);
-        settleStub(`collision-with-existing-critic-file: ${newFilename} (same article, BRO-8194)`);
-        tagged++;
+        if (settleStub(`collision-with-existing-critic-file: ${newFilename} (same article, BRO-8194)`)) tagged++;
         kept++;
         continue;
       }
@@ -1228,7 +1239,7 @@ if (require.main === module) {
 
     console.log(`\n━━━ Replay complete ━━━`);
     console.log(`Promoted: ${totalPromoted}`);
-    console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
+    console.log(`Rejected (wrong-prod or wrong-year, tagged and kept): ${totalRejected}`);
     console.log(`Dropped (url already filed, stub had nothing extra): ${totalDropped}`);
     console.log(`Tagged as settled junk (skipped from now on): ${totalTagged}`);
     console.log(`Kept in _pending: ${totalKept}`);

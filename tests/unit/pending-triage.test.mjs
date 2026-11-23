@@ -1486,9 +1486,10 @@ describe('BRO-8194: the drain never deletes a _pending stub without a trace', ()
     assert.ok(helperStart > 0, 'removePendingStubAsFiled exists');
     const bad = [];
     lines.forEach((l, i) => {
-      if (!/\bunlinkSync\(/.test(l) || /^\s*(\*|\/\/)/.test(l)) return;
+      if (!/\b(unlinkSync|unlink|rmSync|rm|renameSync|rename)\(/.test(l) || /^\s*(\*|\/\/)/.test(l)) return;
       if (i > helperStart && i < helperEnd) return;
-      if (/writeFileSync\(newPath/.test(lines[i - 1] || '')) return; // promotion: the show's file holds the stub now
+      // promotion: the show's file was written (same data, same url) just before the stub is removed
+      if (lines.slice(Math.max(0, i - 3), i).some((x) => /writeFileSync\(newPath/.test(x))) return;
       bad.push(`${i + 1}: ${l.trim()}`);
     });
     assert.deepEqual(bad, [], 'a drain path deletes a stub without promoting it or proving its url is filed');
@@ -1521,6 +1522,32 @@ describe('BRO-8194: the drain never deletes a _pending stub without a trace', ()
     const r = await processShow(PUNCH.id, deps(root));
     assert.equal(fs.existsSync(p), false);
     assert.equal(r.droppedRedundant, 1);
+  });
+
+  test('a stub whose url the show files under a duplicateOf copy is dropped, not refetched (chain terminal url differs)', async () => {
+    const U = 'https://culturesauce.com/punch-west-end-review-young-vic/';
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8194c-'));
+    const pdir = path.join(root, '_pending', PUNCH.id);
+    fs.mkdirSync(pdir, { recursive: true });
+    fs.mkdirSync(path.join(root, PUNCH.id), { recursive: true });
+    fs.writeFileSync(path.join(root, PUNCH.id, 'culturesauce--thom-geier.json'), JSON.stringify({ outletId: 'culturesauce', criticName: 'Thom Geier', url: 'https://culturesauce.com/punch-review-canonical-form-x/', fullText: 'word '.repeat(600), contentTier: 'complete' }));
+    fs.writeFileSync(path.join(root, PUNCH.id, 'culturesauce--tg.json'), JSON.stringify({ outletId: 'culturesauce', criticName: 'TG', url: U, duplicateOf: 'culturesauce--thom-geier.json' }));
+    const p = path.join(pdir, 'culturesauce--abc.json');
+    fs.writeFileSync(p, JSON.stringify({ outletId: 'culturesauce', criticName: 'Unknown', url: U }));
+    const r = await processShow(PUNCH.id, deps(root));
+    assert.equal(fs.existsSync(p), false);
+    assert.equal(r.droppedRedundant, 1);
+  });
+
+  test('dry run predicts the live outcome for a same-article collision (no phantom drop)', async () => {
+    const primary = { file: 'culturesauce--thom-geier.json', data: { outletId: 'culturesauce', criticName: 'Thom Geier', url: 'https://culturesauce.com/punch-west-end-review-young-vic/', fullText: 'word '.repeat(600), contentTier: 'complete' } };
+    const { root, p } = stubRoot({ outletId: 'culturesauce', criticName: 'Unknown', url: 'https://culturesauce.com/theatre/punch-west-end-review-young-vic/' }, primary);
+    const before = fs.readFileSync(p, 'utf8');
+    const d = deps(root, async () => ({ content: '<html><head><meta name="author" content="Thom Geier"><meta property="article:published_time" content="2025-09-27T10:00:00Z"></head><body></body></html>' }));
+    d.dryRun = true;
+    const r = await processShow(PUNCH.id, d);
+    assert.equal(r.droppedRedundant || 0, 0);
+    assert.equal(fs.readFileSync(p, 'utf8'), before);
   });
 
   test('settledPendingReason reads the RSS identity reason too (the 25 "empty reason" settles were typed)', () => {
