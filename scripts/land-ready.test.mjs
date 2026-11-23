@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,6 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { evaluate, render } from './land-ready.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const cleanup = (d) => rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 const base = { doctor: { ok: true }, dirty: [], uiFiles: [], gatedFiles: [], renderImpactDropped: [], touchesSrc: false, transcript: { found: true }, coverage: { ran: true, complete: true, missing: [] }, judge: { decision: 'allow' } };
 
 test('a clean branch with no UI files needs no owner approval and every box is ticked', () => {
@@ -52,6 +53,7 @@ test('dirty tree and a blocked land dry run are listed together; no commit-label
 
 test('CLI on a real branch with a UI change and no transcript lists every open item and ends on the owner line', () => {
   const dir = mkdtempSync(join(tmpdir(), 'lr-'));
+  try {
   const g = (...a) => execFileSync('git', a, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' });
   g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
   mkdirSync(join(dir, 'src/components'), { recursive: true });
@@ -69,6 +71,7 @@ test('CLI on a real branch with a UI change and no transcript lists every open i
   assert.match(out, /\[ \] \/ship-check/);
   assert.doesNotMatch(out, /VISUAL-OK/); // BRO-8156: no commit-label item
   assert.match(out.trim().split('\n').pop(), /^Ask the owner now: no$/);
+  } finally { cleanup(dir); }
 });
 
 test('a verdict whose overallPass is not true never counts as ready (BRO-7849 ship-check)', () => {
@@ -94,6 +97,7 @@ test('BRO-7888: a fix-only UI diff with a current passing verdict needs no owner
 
 test('BRO-8156: an earlier owner yes counts in land-ready only while the verdict shows HEAD content (same rule as the hook)', () => {
   const dir = mkdtempSync(join(tmpdir(), 'lr8156-'));
+  try {
   const g = (...a) => execFileSync('git', a, { cwd: dir, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }).trim();
   g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
   mkdirSync(join(dir, 'src/components'), { recursive: true });
@@ -111,6 +115,7 @@ test('BRO-8156: an earlier owner yes counts in land-ready only while the verdict
   };
   assert.doesNotMatch(run('0'.repeat(40)), /already approved/, 'stale verdict: the earlier yes must not count');
   assert.match(run(g('rev-parse', 'HEAD:src/components/A.tsx')), /already approved/, 'current verdict: the earlier yes counts');
+  } finally { cleanup(dir); }
 });
 
 test('BRO-8164: an already-approved diff passes the verdict item with an empty id, fails on a different id, unapproved+empty still fails', () => {
