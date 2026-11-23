@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-8023: no-fetch _pending triage. Fixtures are the real queue rows from the
  * 2026-11-21 sample: title-word site-search hits (film/TV reviews, section
