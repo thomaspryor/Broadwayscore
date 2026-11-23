@@ -86,6 +86,14 @@ function readOriginLandings(cwd) {
   } catch { return []; }
 }
 
+// One landings.jsonl parse per repo per process (the file is large; the
+// retired-branch fallback can run for dozens of job-done rows per sweep).
+const _landingsCache = new Map();
+function cachedOriginLandings(repo) {
+  if (!_landingsCache.has(repo)) _landingsCache.set(repo, readOriginLandings(repo));
+  return _landingsCache.get(repo);
+}
+
 function cherryPlusFor(cwd, sha) {
   try {
     const out = execFileSync('git', ['-C', cwd, 'cherry', 'origin/main', sha], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
@@ -128,8 +136,52 @@ function classifyJobDoneLanding({ cwdExists, landedVerdict, dirty = false }) {
  * @param {string} opts.cwd
  * @returns {{status:'landed'|'unlanded'|'unknown', sha:string|null, verdict:string|null, dirty:boolean}}
  */
+/**
+ * BRO-8178: gc-merged-worktrees.sh retires idle job-* worktrees (branch ref
+ * KEPT) before this file's 7-day re-check window ends. For a gone
+ * <repo>/.claude/worktrees/job-<x> cwd, the kept job/<x> ref in <repo> is the
+ * same HEAD the worktree had, so the check still runs. null = no such ref.
+ */
+function retiredJobBranchCheckout(cwd) {
+  const m = /^(.*)\/\.claude\/worktrees\/job-([^/]+)\/?$/.exec(String(cwd || ''));
+  if (!m || !fs.existsSync(m[1])) return null;
+  try {
+    const sha = execFileSync('git', ['-C', m[1], 'rev-parse', '--verify', '-q', `refs/heads/job/${m[2]}^{commit}`], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    return sha ? { repo: m[1], sha, branch: `job/${m[2]}` } : null;
+  } catch { return null; }
+}
+
+/** Re-create a retired job worktree from its kept branch. Returns the branch name, or null. */
+function restoreRetiredJobWorktree(cwd) {
+  const retired = retiredJobBranchCheckout(cwd);
+  if (!retired) return null;
+  try {
+    execFileSync('git', ['-C', retired.repo, 'worktree', 'add', '-q', cwd, retired.branch], { stdio: ['ignore', 'ignore', 'pipe'] });
+    return fs.existsSync(cwd) ? retired.branch : null;
+  } catch { return null; }
+}
+
 function detectJobLanding({ cwd } = {}) {
   if (!cwd || !fs.existsSync(cwd)) {
+    const retired = retiredJobBranchCheckout(cwd);
+    if (retired) {
+      const { repo, sha, branch } = retired;
+      const ancestry = checkLanded({ sha, cwd: repo, ref: 'origin/main' });
+      let verdict = ancestry.verdict;
+      if (verdict === 'NOT_LANDED') {
+        // Same three rebase-proof signals the GC used before retiring it (no
+        // per-job git cherry: the 5-minute watchdog sweep cannot afford it).
+        verdict = resolveLandedVerdict({ ancestryVerdict: verdict, sha, landings: cachedOriginLandings(repo) }).verdict;
+        if (verdict === 'NOT_LANDED') {
+          try {
+            if (branchLandedDespiteRebase({ repo, branch, tips: cachedOriginLandings(repo).map((r) => r && r.tip).filter(Boolean) }).landed) verdict = 'LANDED';
+          } catch { verdict = 'UNKNOWN'; }
+        }
+      }
+      return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: verdict, dirty: false }), sha, verdict, dirty: false };
+    }
     return { status: classifyJobDoneLanding({ cwdExists: false, landedVerdict: null }), sha: null, verdict: null, dirty: false };
   }
   let dirty = false;
@@ -231,7 +283,160 @@ function makeStrandedLandedPredicate({ cwd } = {}) {
   };
 }
 
+/**
+ * BRO-8178: has a job branch's work landed even though land.yml rebased it?
+ * gc-merged-worktrees.sh kept 37 finished job worktrees (~800MB each) as
+ * "N unmerged commit(s)" because the rebase rewrote every sha and a patch
+ * changed during conflict resolution defeats `git cherry`. Two rebase-proof
+ * signals, strongest first:
+ *   1. every commit (merges included) on the branch is reachable from origin/main or
+ *      from a landings.jsonl `tip` (land.yml records the PRE-rebase tip, which
+ *      is the job's own commit, so its ancestors are what was landed),
+ *   2. every file the branch changed since its merge-base is byte-identical
+ *      on origin/main (nothing the branch holds is missing from main).
+ *   3. every outstanding commit is accounted for on origin/main by subject:
+ *      its subject names the branch's own BRO id and a distinct origin/main
+ *      commit after the merge-base has that exact subject and touches a
+ *      subset of its files; a merge commit carries no edits of
+ *      its own; a commit touching only STATE.md (headless scratch handoff) is
+ *      ignored. Catches landings whose files main has changed since (signal 2
+ *      fails) and that predate landings.jsonl tips (signal 1 fails): 7 of 25
+ *      job worktrees on 2026-11-23. Generic subjects without the branch's BRO
+ *      id never match. Callers keep the branch ref
+ * anyway, so a LANDED verdict only removes the checkout, never commits.
+ * @param {object} o
+ * @param {string} o.repo   any checkout of the repository
+ * @param {string} o.branch branch name or sha
+ * @param {string[]} [o.tips] landings.jsonl tips (unresolvable ones are skipped)
+ * @param {string} [o.upstream] default origin/main
+ * @returns {{landed:boolean, reason:string}}
+ */
+const MAX_CONTENT_TIE_FILES = 2000;
+function branchLandedDespiteRebase({ repo, branch, tips = [], upstream = 'origin/main' }) {
+  const git = (args, input) => execFileSync('git', ['-C', repo, ...args], {
+    encoding: 'utf8', input, stdio: [input === undefined ? 'ignore' : 'pipe', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024,
+  });
+  const wanted = [...new Set(tips.filter((t) => /^[0-9a-f]{40}$/.test(String(t))))];
+  let known = [];
+  if (wanted.length) {
+    const out = git(['cat-file', '--batch-check=%(objectname) %(objecttype)'], `${wanted.join('\n')}\n`);
+    known = out.split('\n').filter((l) => / commit$/.test(l)).map((l) => l.split(' ')[0]);
+  }
+  // The land rebase drops merge commits (land-rebase.sh), so a merge INSIDE a
+  // recorded tip whose combined diff is non-empty (an evil merge: edits beyond
+  // what either parent had) may not have reached main. Such a branch gets no
+  // receipt-only clearance; it must pass the content check below.
+  if (known.length) {
+    const merges = git(['rev-list', '--merges', '--stdin'], `${branch}\n^${upstream}\n`).trim().split('\n').filter(Boolean);
+    const evil = merges.slice(0, 200).some((m) => git(['diff-tree', '--cc', '--no-commit-id', '-p', m]).trim() !== '');
+    if (evil || merges.length > 200) known = [];
+  }
+  // Merge commits count too: a conflict resolution committed in a merge after
+  // the landed tip is work `git cherry` cannot see (see cherryPlusFor).
+  const outstanding = git(['rev-list', '--stdin'], `${branch}\n^${upstream}\n${known.map((t) => `^${t}`).join('\n')}\n`).trim();
+  if (!outstanding) return { landed: true, reason: 'every commit is on main or inside a landings.jsonl tip' };
+  const base = git(['merge-base', upstream, branch]).trim();
+  const files = git(['diff', '--no-renames', '--name-only', '-z', base, branch]).split('\0').filter(Boolean);
+  if (files.length === 0) return { landed: true, reason: 'branch has no net change against its merge-base' };
+  if (files.length > MAX_CONTENT_TIE_FILES) return { landed: false, reason: `too many changed files (${files.length}) for a content check` };
+  try {
+    git(['diff', '--quiet', upstream, branch, '--', ...files.map((f) => `:(literal)${f}`)]);
+    return { landed: true, reason: `all ${files.length} changed file(s) identical on ${upstream}` };
+  } catch { /* fall through to the subject signal */ }
+  const unaccounted = unaccountedBySubject({ git, branch, base, upstream, outstanding: outstanding.split('\n') });
+  if (unaccounted === 0) return { landed: true, reason: `every outstanding commit's ${branchBroId(branch)} subject is on ${upstream}` };
+  return { landed: false, reason: `${outstanding.split('\n').length} commit(s) not on ${upstream} and changed files differ` };
+}
+
+function branchBroId(branch) {
+  const m = /\bBRO-\d+\b/i.exec(String(branch));
+  return m ? m[0].toUpperCase() : null;
+}
+
+/** Signal 3: how many outstanding commits main does NOT account for by subject (Infinity = signal unusable). */
+function unaccountedBySubject({ git, branch, base, upstream, outstanding }) {
+  const id = branchBroId(branch);
+  if (!id || outstanding.length > 200) return Infinity;
+  // subject -> [file-set key, ...] for every main commit since the merge-base.
+  // A branch commit must match a main commit with the same subject AND the
+  // touched files within the branch commit's, and each main commit is used once, so a
+  // different fix (or a second commit) under a reused subject is not
+  // accounted for (Codex 2026-11-23).
+  const mainBySubject = new Map();
+  for (const block of git(['log', '--no-merges', '--format=%x01%s', '--name-only', `${base}..${upstream}`]).split('\x01').slice(1)) {
+    const [subj, ...names] = block.split('\n');
+    const key = names.filter(Boolean).sort().join('\0');
+    if (!mainBySubject.has(subj)) mainBySubject.set(subj, []);
+    mainBySubject.get(subj).push(key);
+  }
+  let missing = 0;
+  for (const sha of outstanding) {
+    const [parents, subject] = git(['log', '-1', '--format=%P%x00%s', sha]).replace(/\n$/, '').split('\0');
+    if (parents.trim().split(/\s+/).length > 1) {
+      if (git(['diff-tree', '--cc', '--no-commit-id', '-p', sha]).trim() !== '') missing += 1;
+      continue;
+    }
+    const touched = git(['diff-tree', '--no-commit-id', '--name-only', '-r', '-z', sha]).split('\0').filter(Boolean);
+    if (touched.length > 0 && touched.every((f) => f === 'STATE.md')) continue;
+    const candidates = subject.toUpperCase().includes(id) ? mainBySubject.get(subject) : null;
+    // The landed copy may touch FEWER files (the rebase drops a file whose
+    // change main already had) but never others: main's set must be a
+    // non-empty subset of the branch commit's.
+    const mine = new Set(touched);
+    const at = candidates ? candidates.findIndex((k) => k !== '' && k.split('\0').every((f) => mine.has(f))) : -1;
+    if (at === -1) { missing += 1; continue; }
+    candidates.splice(at, 1);
+  }
+  return missing;
+}
+
+/** landings.jsonl tips recorded within `days` (one read per GC run, not per worktree). */
+function recentLandingTips(repo, { days = 30, nowMs = Date.now() } = {}) {
+  const since = nowMs - days * 24 * 3600 * 1000;
+  return readOriginLandings(repo)
+    .filter((r) => r && r.tip && Date.parse(r.ts) >= since)
+    .map((r) => r.tip);
+}
+
+// CLI for gc-merged-worktrees.sh:
+//   --write-tips=<file> --repo=<path>            write recent tips, one per line
+//   --branch-landed --repo=<path> --branch=<b> [--tips-file=<file>]
+//     prints "landed <reason>" or "unlanded <reason>", exit 0; nonzero = error (caller keeps).
+function cli(argv) {
+  const get = (n) => { const a = argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : ''; };
+  const repo = get('repo');
+  if (!repo) return 2;
+  if (get('write-tips')) {
+    fs.writeFileSync(get('write-tips'), `${recentLandingTips(repo).join('\n')}\n`);
+    return 0;
+  }
+  if (argv.includes('--branch-landed')) {
+    const branch = get('branch');
+    if (!branch) return 2;
+    let tips = [];
+    if (get('tips-file')) {
+      try { tips = fs.readFileSync(get('tips-file'), 'utf8').split('\n').filter(Boolean); } catch { tips = []; }
+    }
+    const r = branchLandedDespiteRebase({ repo, branch, tips });
+    console.log(`${r.landed ? 'landed' : 'unlanded'} ${r.reason}`);
+    return 0;
+  }
+  return 2;
+}
+
+if (require.main === module) {
+  const { exitFlushed } = require('./exit-flushed.js');
+  try { exitFlushed(cli(process.argv.slice(2))); } catch (err) {
+    console.error(String(err && err.message || err).split('\n')[0]);
+    exitFlushed(1);
+  }
+}
+
 module.exports = {
+  retiredJobBranchCheckout,
+  restoreRetiredJobWorktree,
+  branchLandedDespiteRebase,
+  recentLandingTips,
   makeStrandedLandedPredicate,
   classifyJobDoneLanding,
   resolveLandedVerdict,

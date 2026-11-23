@@ -11,19 +11,27 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
+// BRO-8178: createReviewFile writes under REVIEW_TEXTS_DIR (read once when
+// gather-reviews.js loads). Point it at a temp corpus so a killed run can never
+// leave __test-odgc-* fixtures in the real data/review-texts (it did: 6 dirs
+// in the private review-texts repo, which failed autoclear-vs-ensemble's corpus
+// test on an unrelated landing).
+const REVIEW_TEXTS_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'odgc-review-texts-'));
+process.env.REVIEW_TEXTS_DIR = REVIEW_TEXTS_DIR;
+process.on('exit', () => fs.rmSync(REVIEW_TEXTS_DIR, { recursive: true, force: true }));
 const { createReviewFile } = require('../gather-reviews.js');
 const { isCrossOutletUrl } = require('./review-normalization.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.join(__dirname, '..', '..');
 
-const REVIEW_TEXTS_DIR = path.join(process.cwd(), 'data', 'review-texts');
 
 function withTempShowDir(showId, fn) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);

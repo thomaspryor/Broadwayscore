@@ -20,6 +20,7 @@
 
 const fs = require('fs');
 const { runJob } = require('./lib/bsc-runner.js');
+const { restoreRetiredJobWorktree } = require('./lib/headless-unlanded-detection.js');
 
 const RESUME_PROMPT =
   'Your previous headless run on this task hit its wall-clock budget and was terminated. '
@@ -41,8 +42,14 @@ async function main(argv = process.argv.slice(2)) {
     process.exit(2);
   }
   if (!fs.existsSync(cwd)) {
-    console.error(`[resume-headless-job] cwd gone (${cwd}) — nothing to resume into`);
-    process.exit(1);
+    // BRO-8178: the worktree GC retires idle unlanded job worktrees after 3
+    // days but keeps the job/<x> branch; check it back out to resume.
+    const restored = restoreRetiredJobWorktree(cwd);
+    if (!restored) {
+      console.error(`[resume-headless-job] cwd gone (${cwd}) — nothing to resume into`);
+      process.exit(1);
+    }
+    console.log(`[resume-headless-job] restored retired worktree ${cwd} from ${restored}`);
   }
   const r = await runJob({
     taskId, subject: `resume #${taskId}`, isolate: false, cwd,

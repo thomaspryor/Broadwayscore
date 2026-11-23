@@ -803,6 +803,9 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
     const ms = sections.macLocalSkipped;
     (ms.alarm ? alarms : parts).push(`<p style="font-size:12px;color:${ms.alarm ? '#b91c1c' : '#666'};margin:0 0 12px;">${ms.alarm ? '⚠️ ' : ''}${esc(ms.text)}</p>`);
   }
+  if (sections.macDisk) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(sections.macDisk.text)}</p>`);
+  }
   // Dead cmux tab triage (BRO-3050): rendered only when main() collected it.
   // The line itself (incl. "no verdict" for degraded/unavailable runs) is
   // decided in lib/cmux-triage-digest.js, never here.
@@ -1896,6 +1899,16 @@ async function main() {
     const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
+  }
+  // BRO-8178: free disk, worktree count and top consumers. The email is sent
+  // from GitHub, which cannot see the Mac, so the Mac's worktree GC posts this
+  // as a mac/disk commit status and every sender reads it back.
+  try {
+    const { readMacDiskStatus, digestLineFromStatus } = require('./lib/mac-disk-digest.js');
+    sections.macDisk = { text: digestLineFromStatus(await readMacDiskStatus({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN })) };
+    console.log(`[digest] ${sections.macDisk.text}`);
+  } catch (err) {
+    console.error(`[digest] WARN could not read the Mac disk status: ${String(err.message).slice(0, 120)}`);
   }
   const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: cloudAutofix ? 'cloud' : noAutofix, skipMacLocal, now });
 
