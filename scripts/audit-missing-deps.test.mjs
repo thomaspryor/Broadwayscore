@@ -196,3 +196,38 @@ test('existing hygiene caller emits missing-deps warnings without failing its ga
   assert.match(result.stdout, /::warning::missing-deps: check\.yml job check runs scripts\/probe-scrapingdog-billing\.js.*axios/);
   assert.match(result.stdout, /missing-deps \(advisory\): 1 script invocation\(s\), 1 unmet eager dependency graph\(s\)/);
 });
+
+// BRO-8080: tsx-run scripts were invisible to the audit.
+test('tsx invocations produce script events (every runner form)', () => {
+  assert.deepEqual(commandEvents(`
+    npx tsx scripts/a.ts --flag
+    tsx scripts/b.ts
+    node --import tsx scripts/c.ts
+    node --loader=tsx scripts/d.mts
+    node -r tsx/cjs scripts/e.cts
+    npx -y tsx --tsconfig t.json scripts/f.ts
+    node scripts/g.ts
+    npx tsc scripts/h.ts
+    npx prettier scripts/i.js
+    echo "npx tsx scripts/echo.ts"
+  `).map(e => e.script), ['scripts/a.ts', 'scripts/b.ts', 'scripts/c.ts', 'scripts/d.mts', 'scripts/e.cts', 'scripts/f.ts']);
+});
+
+test('TypeScript graph: types stripped, type-only imports ignored, .js maps to .ts, @/ alias is local', () => {
+  const dir = fixture({
+    'tsconfig.json': '{}',
+    'scripts/main.ts': "import type { T } from 'types-only-pkg'; import { h } from './lib/helper.js'; import cfg from '@/config/x'; import axios from 'axios'; console.log(cfg, axios, h('a')); const n: number = 1; interface I { a: string }",
+    'scripts/lib/helper.ts': "export const h = (x: string): string => x; require('cheerio');",
+    'src/config/x.ts': 'export default {} as const;',
+  });
+  const result = dependencyGraph(path.join(dir, 'scripts/main.ts'));
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.packages.map(x => x.package).sort(), ['axios', 'cheerio']);
+});
+
+test('a tsx step before any install reports the missing eager dependency', () => {
+  const dir = fixture({ 'scripts/job.ts': "import cheerio from 'cheerio'; console.log(cheerio);" });
+  const result = auditWorkflow(workflow('      - run: npx tsx scripts/job.ts'), { root: dir });
+  assert.equal(result.findings.length, 1);
+  assert.deepEqual(result.findings[0].packages, ['cheerio']);
+});
