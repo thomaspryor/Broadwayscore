@@ -327,3 +327,14 @@ test('BRO-8079: a worker Outcome claiming a settle rate needs a SAMPLE-AUDIT of 
   assert.equal(early.allowed, true);
   assert.match(early.warning, /SAMPLE-AUDIT/);
 });
+
+test('BRO-8079 part 2: a job-stranded row produces a wake for the dispatching session (full suite: dispatcher-wake.test.mjs)', () => {
+  const { planDispatcherWakes } = require(path.join(REPO, 'scripts/lib/dispatcher-wake.js'));
+  const by = { sessionId: '12bb3cbc', workspaceId: 'AAAA-1111' };
+  const wakes = planDispatcherWakes([
+    { ts: '2026-11-22T19:00:00Z', event: 'launch', taskId: 'linear:BRO-8065', subject: 'BRO-8065 settle stubs', dispatchedBy: by },
+    { ts: '2026-11-22T21:54:38Z', event: 'job-stranded', taskId: 'linear:BRO-8065', sha: 'd48e51d594d4b656aad548febf99acf4a3ff0e5b' },
+  ], { nowMs: Date.parse('2026-11-22T22:30:00Z') });
+  assert.equal(wakes.length, 1);
+  assert.equal(wakes[0].workspaceId, by.workspaceId);
+});

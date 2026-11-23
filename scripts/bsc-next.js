@@ -184,6 +184,8 @@ const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 // bsc-prune.js journals the matching 'dead' breadcrumb once a launch's
 // workspace turns up idle-and-unmarked. See scripts/lib/dispatch-ledger.js.
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+// BRO-8079: launch rows name the interactive session that dispatched them, so dispatch-watchdog can wake it.
+const { dispatchedByField } = require('./lib/dispatcher-wake.js');
 // Pre-launch guard/gate predicates (task #1303 plan review, 2026-08-12):
 // findLiveWorkspaceForTask/deadDispatchGuard/checkDeadDispatch/parkedGuard/
 // staleOutcomeGuard/notionIdOf, plus evaluateVerifiability and
@@ -713,7 +715,7 @@ function runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntri
     let ledgerWritten = false;
     try {
       appendLedgerEntryFn({
-        event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
+        event: 'launch', ...dispatchedByField(), taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model,
         // Task #1790: the closed-card override is auditable, as its refusal
         // message promises. Null unless someone deliberately passed the flag.
         allowClosedCard: args['allow-closed-card'] || null,
@@ -1586,7 +1588,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // acceptance recheck keys on event==='launch' && notionId, and the
     // verifyCmd must be captured while the card text is in hand — otherwise
     // headless work silently escapes the days-later re-verification.
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
+    try { appendLedgerEntryFn({ event: 'launch', ...dispatchedByField(), taskId: String(task.id), subject: task.subject, workspaceRef: `headless:${task.id}`, model, verifyCmd: verifyH.cmd, verifyReason: verifyH.reason, allowUnverifiable: (!verifyH.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, contentHash: cardHash }); }
     catch (e) { console.error(`[bsc-next] WARN dispatch-ledger launch write failed (non-fatal): ${e.message}`); }
     runJob({ taskId: String(task.id), subject: task.subject, prompt: seed, model, isolate: true })
       .then(r => {
@@ -1701,7 +1703,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const verify = verifyGate; // extracted once at the dispatch gate above
     if (verify.reason) console.error(`[bsc-next] no verify command recorded for #${task.id}: ${verify.reason}`);
     if (verify.cmd) console.log(`  verify armed: ${verify.cmd}`);
-    try { appendLedgerEntryFn({ event: 'launch', taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
+    try { appendLedgerEntryFn({ event: 'launch', ...dispatchedByField(), taskId: String(task.id), subject: task.subject, workspaceRef: res.ref, model, verifyCmd: verify.cmd, verifyReason: verify.reason, allowUnverifiable: (!verify.cmd && args['allow-unverifiable']) || null, allowPhantomPath: args['allow-phantom-path'] || null, allowVacuousCheck: args['allow-vacuous-check'] || null, notionId: pid || null, allowClosedCard: args['allow-closed-card'] || null, allowReopenSuspect: args['allow-reopen-suspect'] || null, adoptedLate: res.adoptedLate || null, contentHash: cardHash,
       // Task #1904: the live cmux terminal-runtime count at create time. Until
       // now the ceiling correlation could only be established by live
       // experiment on the machine — recording it makes every future dispatch a

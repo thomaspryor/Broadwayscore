@@ -104,6 +104,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+// BRO-8079: launch rows name the interactive session that dispatched them, so dispatch-watchdog can wake it.
+const { dispatchedByField } = require('./lib/dispatcher-wake.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { buildAutoTitle, projectOf } = require('./lib/workspace-naming.js');
 const { pickLinearModel } = require('./lib/bsc-next-model.js');
@@ -1229,7 +1231,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // record of intent, written before anything that could fail partway.
     try {
       appendLedgerEntryFn({
-        event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
+        event: 'launch', ...dispatchedByField(), taskId, subject: pseudoTask.subject, workspaceRef: `headless:${taskId}`,
         model, verifyCmd: gate.cmd, verifyReason: gate.reason, verifySource: gate.source || null,
         allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
         // BRO-2569: journals a phantom-path override the same way — the
@@ -1371,7 +1373,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // entry a retry's hasLiveLedgerEntry() check will find).
   try {
     appendLedgerEntryFn({
-      event: 'launch', taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
+      event: 'launch', ...dispatchedByField(), taskId, subject: pseudoTask.subject, workspaceRef: res.ref, model,
       verifyCmd: gate.cmd, verifyReason: gate.reason, verifySource: gate.source || null,
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2569 — see the headless launch entry above for why this is journaled.

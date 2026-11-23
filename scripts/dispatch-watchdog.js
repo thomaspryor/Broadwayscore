@@ -897,6 +897,63 @@ function renderWriteBackLeak(now = Date.now()) {
   return lines.join('\n');
 }
 
+// BRO-8079: tell the session that dispatched a job when it ends without landing
+// (lib/dispatcher-wake.js has the why). Dashboard loop only: it runs inside cmux, so it can
+// reach the socket; the launchd --sweep backup cannot. At most MAX_ATTEMPTS tries per launch,
+// recorded in ~/.claude/state/dispatcher-wake.jsonl ('sent' only after cmux accepted the keys).
+// Fail-soft: any error is logged and the loop carries on.
+const DISPATCHER_WAKE_STATE = path.join(STATE_DIR, 'dispatcher-wake.jsonl');
+const DISPATCHER_WAKE_OFF_FILE = path.join(STATE_DIR, 'dispatcher-wake-off');
+function deliverDispatcherWakes(deps = {}) {
+  const wake = require('./lib/dispatcher-wake.js');
+  const {
+    env = process.env, nowMs = Date.now(), readLedger = () => dispatchLedger.readEntries(),
+    statePath = DISPATCHER_WAKE_STATE, offFile = DISPATCHER_WAKE_OFF_FILE,
+    listWorkspaces = () => cmuxws.listWorkspacesWithCwd(),
+    top = (ref) => cmuxws.run(['top', '--workspace', ref, '--processes', '--format', 'tsv']),
+    send = (ref, text, title) => cmuxws.sendToWorkspace(ref, cmuxws.flattenToSingleLine(text), { expectedTitle: title }),
+    log = (m) => console.error(m),
+  } = deps;
+  const delivered = [];
+  try {
+    if (env.DISPATCHER_WAKE_DISABLED === '1' || fs.existsSync(offFile)) return delivered;
+    let stateRows = [];
+    try { stateRows = fs.readFileSync(statePath, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }); } catch { /* none yet */ }
+    const wakes = wake.planDispatcherWakes(readLedger(), { attempts: wake.foldAttempts(stateRows), nowMs });
+    if (!wakes.length) return delivered;
+    const record = (key, outcome, extra = {}) => {
+      fs.mkdirSync(path.dirname(statePath), { recursive: true });
+      fs.appendFileSync(statePath, JSON.stringify({ ts: new Date(nowMs).toISOString(), key, outcome, ...extra }) + '\n');
+    };
+    let live;
+    try { live = listWorkspaces(); } catch (e) { log(`[watchdog] dispatcher wake: cannot list workspaces (${e.message})`); return delivered; }
+    if (!Array.isArray(live) || !live.length) return delivered; // cmux unobservable: say nothing, try next tick
+    for (const w of wakes) {
+      const ws = live.find((x) => x.id && x.id === w.workspaceId);
+      let tsv = null;
+      if (ws) { try { tsv = top(ws.ref); } catch { tsv = null; } }
+      const d = wake.deliveryDecision({ workspace: ws, topTsv: tsv, isWatchdogTitle, hasLiveClaude: cmuxws.hasLiveClaude, hasRunningClaude: cmuxws.hasRunningClaude });
+      if (!d.send) {
+        if (d.gone) record(w.key, 'gone', { taskId: w.taskId, why: d.why });
+        else if (d.retry) record(w.key, 'attempt', { taskId: w.taskId, why: d.why });
+        continue;
+      }
+      record(w.key, 'attempt', { taskId: w.taskId, ref: ws.ref });
+      try {
+        send(ws.ref, w.message, ws.title);
+        record(w.key, 'sent', { taskId: w.taskId, ref: ws.ref, event: w.event });
+        delivered.push({ ...w, ref: ws.ref });
+        log(`[watchdog] dispatcher wake: told ${ws.ref} ("${ws.title}") that ${w.taskId} ended ${w.event}`);
+      } catch (e) {
+        log(`[watchdog] dispatcher wake for ${w.taskId} failed (${e.message}); will retry`);
+      }
+    }
+  } catch (e) {
+    log(`[watchdog] dispatcher wake failed: ${e.message}`);
+  }
+  return delivered;
+}
+
 async function sweepOnce({ dryRun }) {
   await refreshLinearTasks();          // BRO-3390: Linear is a task source now
   const now = Date.now();
@@ -973,6 +1030,8 @@ async function dashboardLoop() {
           try { await executeSweep(plan, { heartbeat: true }); }
           finally { releaseLock(); }
         }
+        // BRO-8079: after the lock is released (cmux calls must not stretch the tick under it).
+        deliverDispatcherWakes();
         writeHeartbeat({ mode: 'dashboard', ...summarize(plan) });
         console.clear();
         console.log(core.renderNarrative(plan));
@@ -1329,6 +1388,7 @@ if (require.main === module) {
 }
 module.exports = {
   main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
+  deliverDispatcherWakes, // BRO-8079
   pageIfKillSwitchStale,
   // BRO-2412: exported so the heartbeat-fresh-but-no-dispatch path is tested
   // through the REAL health(), not a copy of its wiring.
