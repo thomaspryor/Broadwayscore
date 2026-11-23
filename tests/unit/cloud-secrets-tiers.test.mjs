@@ -173,6 +173,16 @@ test('cloud mode with only the non-withheld Tier 1 keys exits 0 and does not cla
   const r = spawnSync(process.execPath, ['scripts/check-cloud-secrets.js'], { env, encoding: 'utf8' });
   assert.equal(r.status, 0, `expected exit 0, got ${r.status}:\n${r.stdout}\n${r.stderr}`);
   assert.doesNotMatch(r.stdout, /MISSING/);
-  assert.doesNotMatch(r.stdout, /All Tier 1 secrets present in the environment/,
-    'must not claim every Tier 1 secret is present while withheld keys are absent');
+  if (CLOUD_WITHHELD.length > 0) {
+    assert.doesNotMatch(r.stdout, /All Tier 1 secrets present in the environment/,
+      'must not claim every Tier 1 secret is present while withheld keys are absent');
+  } else {
+    // Nothing is withheld (the owner gave cloud ANTHROPIC_API_KEY, 2026-11-23): all present is the true claim.
+    assert.match(r.stdout, /All Tier 1 secrets present in the environment/);
+  }
+});
+
+test('ANTHROPIC_API_KEY is Tier 1 and counts as missing in cloud when absent (owner added it 2026-11-23)', () => {
+  assert.ok(TIER_1.includes('ANTHROPIC_API_KEY'));
+  assert.equal(isWithheldInCloud('ANTHROPIC_API_KEY', { CLAUDE_CODE_REMOTE: 'true' }), false);
 });
