@@ -62,6 +62,17 @@ function usableAka(t, ownTitle) {
   return normTitle(t) !== normTitle(ownTitle);
 }
 
+// Up to three capitalised words ending in a possessive, then the title proper (outlet-listing-helpers' AUTHOR_POSSESSIVE_RE).
+const AUTHOR_POSSESSIVE_RE = /^((?:[A-Z][\p{L}.-]*\s+){0,2}[A-Z][\p{L}.-]*)(?:['\u2019]s|['\u2019])\s+(.+)$/u;
+/** {ownerWords, rest} for "Clifford Odets’ Waiting for Lefty", else null. Needs 3+ words after the owner. Pure. */
+function authorPossessiveRest(title) {
+  const m = String(title || '').trim().match(AUTHOR_POSSESSIVE_RE);
+  if (!m) return null;
+  const rest = m[2].trim();
+  if (sigWords(rest).length < 2 || rest.split(/\s+/).length < 3) return null;
+  return { ownerWords: normTitle(m[1]).split(' ').filter((w) => w.length > 1), rest };
+}
+
 /**
  * Every press title of a show: billed (show.title), aka (akaTitles, always trusted), main (the title before a
  * subtitle, only when unique among allShows). The one definition every matcher follows; see rss-discovery
@@ -78,6 +89,18 @@ function showNames(show, allShows) {
     if (!usableAka(a, show.title) || seen.has(normTitle(a))) continue;
     seen.add(normTitle(a));
     out.push({ name: a.trim(), kind: 'aka' });
+  }
+  // BRO-8125: an author-possessive billing ("Clifford Odets’ Waiting for Lefty") is printed without the author
+  // ("‘Waiting for Lefty’ Review", NYT). Same rule as outlet-listing-helpers titleForms (BRO-7402): the owner must be a
+  // person on the show's own cast or creative team (so "Joe Turner's Come and Gone" gets no form) and three or more
+  // words must remain. Matched like an aka (full-title matcher plus the other-production guard).
+  const bare = authorPossessiveRest(show.title);
+  if (bare && !seen.has(normTitle(bare.rest))) {
+    const people = registry().peopleByTitle.get(normTitle(show.title)) || new Set();
+    if (bare.ownerWords.length && bare.ownerWords.every((w) => people.has(w))) {
+      seen.add(normTitle(bare.rest));
+      out.push({ name: bare.rest, kind: 'aka' });
+    }
   }
   const split = mainTitleSplit(show.title);
   const titles = Array.isArray(allShows) ? allShows.map((x) => (typeof x === 'string' ? x : x && x.title)).filter(Boolean) : null;
@@ -502,7 +525,7 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 }
 
 module.exports = {
-  akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
+  authorPossessiveRest, akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
   pressAkaForTitle, pressVenuesForTitle, registryShowTitles, registryShows, setPressNameShows, otherProductionCue,
   billedTitleOtherProductionCue, wrongStagingGuardOff, isHomeHouse, textNamesOwnVenue, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
 };

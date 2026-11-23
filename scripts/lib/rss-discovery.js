@@ -43,7 +43,9 @@ const THEATER_FEEDS = [
   { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway', trackRecoupment: true },
   // playbill.com/feed is defunct (404 as of March 2026). The live news feed is in
   // BROADWAY_BUSINESS_FEEDS (BRO-6211), recoupment poller only.
-  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
+  // No `market`: NYT reviews West End and regional openings too (BRO-8125: The Lives of Others, 2026-10-29, was never read
+  // because checkRSSFeeds skips a feed whose market differs from the show's). openingWindowFeedAccepts keeps identity + date window.
+  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true },
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
   { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway', reviewsOnly: true },
@@ -564,6 +566,11 @@ function singleBylineName(creator) {
   return name;
 }
 
+/** A feed restricted to one market (feed.market) is skipped for shows of another; an unrestricted feed is read for all. */
+function feedAppliesToMarket(feed, market) {
+  return !(market && feed && feed.market && feed.market !== market);
+}
+
 /**
  * Check all RSS feeds for reviews of a show.
  *
@@ -583,7 +590,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
 
   for (const feed of ALL_FEEDS) {
     // Skip feeds restricted to a different market
-    if (market && feed.market && feed.market !== market) continue;
+    if (!feedAppliesToMarket(feed, market)) continue;
     // Skip feeds not in the outlet filter (when provided)
     if (outletFilter && !outletFilter.includes(feed.outletId)) continue;
     try {
@@ -680,4 +687,4 @@ function rssStubIdentityOk(stub, showTitle) {
     || urlSlugMatchesShow(stub.url, showTitle));
 }
 
-module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, itemNamesShow, headlineNamesOtherStaging, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { feedAppliesToMarket, rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, itemNamesShow, headlineNamesOtherStaging, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
