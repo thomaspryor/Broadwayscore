@@ -498,11 +498,15 @@ jobs:
           # function over 250MB uncompressed fails THIS step with its name and
           # largest dependencies, instead of uploading and failing server-side
           # with NOW_SANDBOX_WORKER_MAX_UNCOMPRESSED_FUNCTION_SIZE (2026-11-23:
-          # ~8h of failed prod deploys). Same 250MB threshold Vercel enforces,
-          # so it cannot block a deploy Vercel would accept. Undocumented flag:
-          # tests/unit/check-function-bundle-size.test.mjs fails if the CLI
-          # stops honoring it.
-          VERCEL_ANALYZE_BUILD_OUTPUT: '1'
+          # ~8h of failed prod deploys). Same 250MB threshold Vercel enforces.
+          # The CLI's count can differ slightly from the server's (it does not
+          # dedupe a file that is both inside .func and in filePathMap), so a
+          # false block is possible: set repo variable
+          # FUNCTION_SIZE_BLOCK_DISABLED=true to turn it off without a commit.
+          # Undocumented flag: tests/unit/check-function-bundle-size.test.mjs
+          # fails if the CLI stops honoring it. Same flag in vercel-preview.yml,
+          # vercel-demo.yml and scripts/deploy-now.js.
+          VERCEL_ANALYZE_BUILD_OUTPUT: ${{ vars.FUNCTION_SIZE_BLOCK_DISABLED == 'true' && '0' || '1' }}
         run: |
           # Card #90 (2026-08-14): under a burst of concurrent pushes, Vercel's
           # server-side "latest wins" dedup can CANCEL this run's deployment

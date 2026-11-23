@@ -45,19 +45,24 @@ function safeStat(p) {
   try { return fs.statSync(p); } catch { return null; }
 }
 
-/** Walk a directory following symlinks; calls onFile(relPath, absPath, size). Guards symlink loops. */
-function walkFiles(root, onFile, rel = '', seenDirs = new Set()) {
+/**
+ * Walk a directory following symlinks; calls onFile(relPath, absPath, size).
+ * Loop guard tracks the realpaths on the CURRENT branch only, so two
+ * destinations that symlink to the same source are both counted (Vercel
+ * counts both) while a link back to an ancestor is not followed.
+ */
+function walkFiles(root, onFile, rel = '', ancestors = new Set()) {
   let real;
   try { real = fs.realpathSync(path.join(root, rel)); } catch { return; }
-  if (seenDirs.has(real)) return;
-  seenDirs.add(real);
+  if (ancestors.has(real)) return;
+  const branch = new Set(ancestors).add(real);
   let entries;
   try { entries = fs.readdirSync(path.join(root, rel)); } catch { return; }
   for (const name of entries) {
     const r = rel ? path.join(rel, name) : name;
     const st = safeStat(path.join(root, r));
     if (!st) continue;
-    if (st.isDirectory()) walkFiles(root, onFile, r, seenDirs);
+    if (st.isDirectory()) walkFiles(root, onFile, r, branch);
     else if (st.isFile()) onFile(r, path.join(root, r), st.size);
   }
 }
@@ -95,10 +100,17 @@ function measureFunction(funcDir, projectRoot) {
   walkFiles(funcDir, (rel, _abs, size) => files.set(rel.split(path.sep).join('/'), size));
   const missing = [];
   let cfg = null;
-  try { cfg = JSON.parse(fs.readFileSync(path.join(funcDir, '.vc-config.json'), 'utf8')); } catch { /* no config */ }
-  const map = (cfg && cfg.filePathMap) || {};
-  const mapped = Object.keys(map).length;
-  for (const [inFunc, onDisk] of Object.entries(map)) {
+  let configError = null;
+  const cfgPath = path.join(funcDir, '.vc-config.json');
+  if (safeStat(cfgPath)) {
+    try { cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch (e) { configError = e.message; }
+  }
+  const map = (cfg && cfg.filePathMap && typeof cfg.filePathMap === 'object') ? cfg.filePathMap : {};
+  // Same filter as the Vercel CLI's analysis: only string targets count.
+  const entries = Object.entries(map).filter(([k, v]) => typeof k === 'string' && typeof v === 'string');
+  const mapped = entries.length;
+  for (const [rawInFunc, onDisk] of entries) {
+    const inFunc = rawInFunc.replace(/\/+$/, '');
     if (files.has(inFunc)) continue;
     const st = safeStat(path.resolve(projectRoot, onDisk));
     if (!st) { missing.push(onDisk); continue; }
@@ -113,7 +125,7 @@ function measureFunction(funcDir, projectRoot) {
   let bytes = 0;
   for (const s of files.values()) bytes += s;
   const sorted = [...files.entries()].map(([p, b]) => ({ path: p, bytes: b })).sort((a, b) => b.bytes - a.bytes);
-  return { bytes, files: sorted, missing, mapped };
+  return { bytes, files: sorted, missing, mapped, configError };
 }
 
 /** Top directories (first 2 path segments) by bytes, to show what was traced in. */
@@ -175,7 +187,10 @@ function main(argv) {
     console.error(`::error::${res.missingTotal}/${res.mappedTotal} .vc-config.json filePathMap entries are missing under ${projectRoot}; sizes would be undercounted. Run from the directory vercel build ran in, or pass --project-root.`);
     return 2;
   }
-  if (res.missingTotal) console.log(`  note: ${res.missingTotal}/${res.mappedTotal} filePathMap entries not found on disk (not counted)`);
+  for (const f of res.funcs) {
+    if (f.configError) console.log(`::warning::function ${f.name}: unreadable .vc-config.json (${f.configError}); its traced files were not counted`);
+    if (f.missing.length) console.log(`  note: ${f.name}: ${f.missing.length}/${f.mapped} filePathMap entries not found on disk (not counted), e.g. ${f.missing.slice(0, 3).join(', ')}`);
+  }
   if (res.failed.length === 0) { console.log('OK: no function near the size limit'); return 0; }
   if (process.env.FUNCTION_SIZE_GUARD_DISABLED === 'true') {
     console.log('::warning::FUNCTION_SIZE_GUARD_DISABLED=true, not failing');

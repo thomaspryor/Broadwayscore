@@ -139,12 +139,67 @@ test('deploy Build step enables the Vercel CLI size analysis, and the CLI still 
   const wf = readFileSync(join(ROOT, '.github', 'workflows', 'vercel-deploy.yml'), 'utf8');
   const build = wf.match(/\n      - name: Build\n([\s\S]*?)\n      - name: /);
   assert.ok(build, 'Build step not found in vercel-deploy.yml');
-  assert.match(build[1], /VERCEL_ANALYZE_BUILD_OUTPUT:\s*'1'/, 'Build step must set VERCEL_ANALYZE_BUILD_OUTPUT: \'1\'');
+  const FLAG = /VERCEL_ANALYZE_BUILD_OUTPUT: \$\{\{ vars\.FUNCTION_SIZE_BLOCK_DISABLED == 'true' && '0' \|\| '1' \}\}/;
+  assert.match(build[1], FLAG, 'Build step must enable VERCEL_ANALYZE_BUILD_OUTPUT (default on)');
+  for (const other of ['vercel-preview.yml', 'vercel-demo.yml']) {
+    assert.match(readFileSync(join(ROOT, '.github', 'workflows', other), 'utf8'), FLAG, `${other} must enable the size analysis too`);
+  }
+  assert.match(readFileSync(join(ROOT, 'scripts', 'deploy-now.js'), 'utf8'), /VERCEL_ANALYZE_BUILD_OUTPUT:/, 'deploy-now.js must enable the size analysis too');
   assert.match(build[1], /npx vercel build/);
   assert.match(wf, /check-function-bundle-size\.js \.vercel\/output/, 'advisory early-warning step missing');
-  let cli;
-  try { cli = readFileSync(join(ROOT, 'node_modules', 'vercel', 'dist', 'commands', 'build', 'index.js'), 'utf8'); } catch { /* no node_modules */ }
-  if (cli === undefined) return; // bare checkout: workflow half still checked
+  // Resolve like require() does (walks up), so a worktree without its own
+  // node_modules still checks the installed CLI. In CI (npm ci ran) a missing
+  // or moved CLI file is a failure, never a silent skip.
+  let pkg;
+  try { pkg = require.resolve('vercel/package.json', { paths: [ROOT] }); } catch { /* not installed */ }
+  if (!pkg) {
+    assert.ok(!process.env.CI, 'vercel CLI not installed in CI; cannot verify it honors VERCEL_ANALYZE_BUILD_OUTPUT');
+    return; // bare local checkout: workflow half still checked
+  }
+  const cli = readFileSync(join(dirname(pkg), 'dist', 'commands', 'build', 'index.js'), 'utf8');
   assert.match(cli, /process\.env\.VERCEL_ANALYZE_BUILD_OUTPUT === "1"/, 'installed vercel CLI no longer reads VERCEL_ANALYZE_BUILD_OUTPUT');
   assert.match(cli, /NOW_SANDBOX_WORKER_MAX_LAMBDA_SIZE/, 'installed vercel CLI no longer throws on oversized functions');
+});
+
+test('two map entries symlinked to one source dir are both counted; non-string and trailing-slash entries are safe', () => {
+  const root = mkdtempSync(join(tmpdir(), 'fnsize-'));
+  const out = join(root, '.vercel', 'output');
+  try {
+    sparse(join(root, 'shared', 'blob.bin'), 100 * MB);
+    const fn = join(out, 'functions', 'api', 'x.func');
+    mkdirSync(join(fn, 'links'), { recursive: true });
+    symlinkSync(join(root, 'shared'), join(fn, 'links', 'a'));
+    symlinkSync(join(root, 'shared'), join(fn, 'links', 'b'));
+    writeFileSync(join(fn, '.vc-config.json'), JSON.stringify({ filePathMap: { 'bad': 42, 'shared/': 'shared' } }));
+    const res = checkOutput(out, { projectRoot: root });
+    const x = res.funcs[0];
+    // links/a + links/b + shared (via map) = 300MB
+    assert.ok(x.bytes >= 300 * MB && x.bytes < 300 * MB + 4096, String(x.bytes));
+    assert.equal(x.mapped, 1, 'non-string target ignored like the CLI');
+    assert.ok(x.files.some((f) => f.path === 'shared/blob.bin'), 'trailing slash normalised');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('symlink loop back to an ancestor terminates', () => {
+  const root = mkdtempSync(join(tmpdir(), 'fnsize-'));
+  const out = join(root, '.vercel', 'output');
+  try {
+    const fn = join(out, 'functions', 'loop.func');
+    sparse(join(fn, 'd', 'f.bin'), MB);
+    symlinkSync(fn, join(fn, 'd', 'up'));
+    const res = checkOutput(out, { projectRoot: root });
+    assert.ok(res.funcs[0].bytes >= MB && res.funcs[0].bytes < 2 * MB, String(res.funcs[0].bytes));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('unreadable .vc-config.json is reported, not silently treated as empty', () => {
+  const root = mkdtempSync(join(tmpdir(), 'fnsize-'));
+  const out = join(root, '.vercel', 'output');
+  try {
+    sparse(join(out, 'functions', 'broken.func', 'index.js'), MB);
+    writeFileSync(join(out, 'functions', 'broken.func', '.vc-config.json'), '{not json');
+    const r = spawnSync(process.execPath, [SCRIPT, out, `--project-root=${root}`], { encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stdout, /::warning::function broken: unreadable \.vc-config\.json/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
