@@ -13,6 +13,15 @@
  * name and its 5 biggest files.
  *
  * Usage: node scripts/lib/check-function-trace-size.js [.next dir] [--limit-mb=230]
+ *        node scripts/lib/check-function-trace-size.js --vercel-output [.vercel/output dir] [--limit-mb=230]
+ *
+ * --vercel-output (BRO-8165) measures the PACKAGED functions, the thing Vercel's
+ * 250 MB limit actually applies to: every .vercel/output/functions/**\/*.func
+ * directory, symlinks followed, `.vc-config.json` filePathMap targets added,
+ * each real lambda counted once. It fails closed (exit 2) when the output is
+ * missing or the largest function is implausibly small (< 5 MB), which means
+ * the measurement is broken, not that the build is healthy (--min-largest-mb=N
+ * overrides the floor).
  * Exit 0 = every function under the limit, 1 = at least one over, 2 = no build
  * output, no traces, or most traced files missing (resolution broken).
  */
@@ -66,6 +75,96 @@ function fsStatSize(abs) {
   }
 }
 
+/**
+ * Size one packaged .func directory (BRO-8165). Walks the tree with lstat,
+ * follows symlinks (dedupe by realpath so a file or dir reached twice counts
+ * once, and a symlink cycle ends), and adds the files named by
+ * `.vc-config.json` filePathMap (repo-relative targets Vercel packs into the
+ * lambda without copying them into the .func dir).
+ *
+ * @param {string} funcDir
+ * @param {{repoRoot?: string, topN?: number, fsx?: object}} [opts]
+ * @returns {{ totalBytes: number, fileCount: number, top: {file: string, bytes: number}[] }}
+ */
+function sizeFuncDir(funcDir, { repoRoot = process.cwd(), topN = 10, fsx = fs } = {}) {
+  const seenReal = new Set();
+  const sized = [];
+  const addFile = (abs, label) => {
+    let real;
+    let st;
+    try { real = fsx.realpathSync(abs); st = fsx.statSync(real); } catch { return; }
+    if (!st.isFile() || seenReal.has(real)) return;
+    seenReal.add(real);
+    sized.push({ file: label || abs, bytes: st.size });
+  };
+  const walk = (dir) => {
+    let real;
+    try { real = fsx.realpathSync(dir); } catch { return; }
+    if (seenReal.has('dir:' + real)) return; // symlink cycle or dir reached twice
+    seenReal.add('dir:' + real);
+    let entries;
+    try { entries = fsx.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.isSymbolicLink()) {
+        let st;
+        try { st = fsx.statSync(p); } catch { continue; }
+        if (st.isDirectory()) walk(p); else addFile(p);
+      } else addFile(p);
+    }
+  };
+  walk(funcDir);
+  try {
+    const cfg = JSON.parse(fsx.readFileSync(path.join(funcDir, '.vc-config.json'), 'utf8'));
+    for (const target of Object.values((cfg && cfg.filePathMap) || {})) {
+      if (typeof target === 'string') addFile(path.resolve(repoRoot, target), path.resolve(repoRoot, target));
+    }
+  } catch { /* no config or no filePathMap: nothing extra to count */ }
+  const totalBytes = sized.reduce((sum, f) => sum + f.bytes, 0);
+  sized.sort((a, b) => b.bytes - a.bytes || (a.file < b.file ? -1 : 1));
+  return { totalBytes, fileCount: sized.length, top: sized.slice(0, topN) };
+}
+
+/** Every *.func directory under functionsDir (not descending into one), sorted. */
+function findFuncDirs(functionsDir) {
+  const out = [];
+  const walk = (d) => {
+    let entries;
+    try { entries = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      const p = path.join(d, e.name);
+      let isDir = e.isDirectory();
+      if (!isDir && e.isSymbolicLink()) { try { isDir = fs.statSync(p).isDirectory(); } catch { isDir = false; } }
+      if (!isDir) continue;
+      if (e.name.endsWith('.func')) out.push(p); else if (!e.isSymbolicLink()) walk(p);
+    }
+  };
+  walk(functionsDir);
+  return out.sort();
+}
+
+/**
+ * Size every packaged function. Several routes can symlink to one real lambda;
+ * those are one function (deduped by realpath), reported under the first name.
+ *
+ * @returns {{ name: string, totalBytes: number, over: boolean, fileCount: number, top: object[], aliases: string[] }[]}
+ */
+function scanFuncOutput(functionsDir, { limitBytes, repoRoot, fsx = fs }) {
+  const byReal = new Map();
+  for (const dir of findFuncDirs(functionsDir)) {
+    let real;
+    try { real = fsx.realpathSync(dir); } catch { continue; }
+    const name = path.relative(functionsDir, dir).split(path.sep).join('/').replace(/\.func$/, '');
+    if (byReal.has(real)) { byReal.get(real).aliases.push(name); continue; }
+    byReal.set(real, { name, dir, aliases: [] });
+  }
+  return [...byReal.values()].map(({ name, dir, aliases }) => {
+    const r = sizeFuncDir(dir, { repoRoot, fsx });
+    return { name, aliases, ...r, over: r.totalBytes > limitBytes };
+  });
+}
+
 /** Every *.nft.json under dir, recursive, sorted. */
 function findNftFiles(dir) {
   const out = [];
@@ -117,6 +216,39 @@ function scanTraces(serverDir, { limitBytes, statSize: rawStat = fsStatSize, ext
   return [...own, ...sharedBad];
 }
 
+// A real Next lambda ships Next's runtime (tens of MB). A "largest function" below
+// this means the walk found nothing, not that the build is small.
+const MIN_PLAUSIBLE_LARGEST_MB = 5;
+
+function mainVercelOutput(outDirArg, limitMb, limitArg) {
+  const outDir = path.resolve(outDirArg);
+  const functionsDir = path.join(outDir, 'functions');
+  const bail = (msg) => { console.log(`::warning title=Packaged function size check could not run::${msg}`); console.log(msg); process.exit(2); };
+  if (!Number.isFinite(limitMb) || limitMb <= 0) bail(`bad --limit-mb: ${limitArg}`);
+  if (!fs.existsSync(functionsDir)) bail(`no packaged functions at ${functionsDir}`);
+  const repoRoot = path.dirname(path.dirname(outDir)); // <repo>/.vercel/output -> <repo>
+  const minArg = process.argv.slice(2).find((a) => a.startsWith('--min-largest-mb='));
+  const minLargestMb = minArg ? Number(minArg.split('=')[1]) : MIN_PLAUSIBLE_LARGEST_MB;
+  if (!Number.isFinite(minLargestMb) || minLargestMb < 0) bail(`bad ${minArg}`);
+  const results = scanFuncOutput(functionsDir, { limitBytes: limitMb * MB, repoRoot });
+  if (!results.length) bail(`no *.func directories under ${functionsDir}`);
+  const ranked = [...results].sort((a, b) => b.totalBytes - a.totalBytes);
+  for (const r of ranked.slice(0, 10)) {
+    console.log(`${(r.totalBytes / MB).toFixed(1).padStart(7)} MB  ${String(r.fileCount).padStart(6)} files  ${r.name}${r.aliases.length ? ` (+${r.aliases.length} aliases)` : ''}`);
+  }
+  console.log(`checked ${results.length} packaged functions, limit ${limitMb} MB (Vercel caps at 250 MB); largest: ${ranked[0].name} ${(ranked[0].totalBytes / MB).toFixed(1)} MB`);
+  if (ranked[0].totalBytes < minLargestMb * MB) {
+    bail(`largest packaged function is only ${(ranked[0].totalBytes / MB).toFixed(1)} MB (< ${minLargestMb} MB): the measurement is broken, not healthy`);
+  }
+  const over = ranked.filter((r) => r.over);
+  for (const r of over) {
+    console.log(`::warning title=Packaged function over ${limitMb} MB::${r.name} is ${(r.totalBytes / MB).toFixed(1)} MB`);
+    console.log(`FAIL ${r.name}: ${(r.totalBytes / MB).toFixed(1)} MB across ${r.fileCount} files (limit ${limitMb} MB)`);
+    for (const f of r.top) console.log(`       ${(f.bytes / MB).toFixed(1).padStart(7)} MB  ${path.relative(repoRoot, f.file).split(path.sep).join('/')}`);
+  }
+  process.exit(over.length ? 1 : 0);
+}
+
 function main() {
   const args = process.argv.slice(2);
   // Accept both `--limit-mb=200` and `--limit-mb 200`.
@@ -130,6 +262,8 @@ function main() {
     else { limitRaw = args[li].split('=')[1]; limitArg = args[li]; }
   }
   const limitMb = li >= 0 ? (limitRaw === undefined || limitRaw === '' ? NaN : Number(limitRaw)) : DEFAULT_LIMIT_MB;
+  const vercelMode = args.includes('--vercel-output');
+  if (vercelMode) return mainVercelOutput(args.find((a, i) => !used.has(i) && !a.startsWith('--')) || '.vercel/output', limitMb, limitArg);
   const nextDir = path.resolve(args.find((a, i) => !used.has(i) && !a.startsWith('--')) || '.next');
   const repoRoot = path.dirname(nextDir);
   const serverDir = path.join(nextDir, 'server');
@@ -166,6 +300,6 @@ function main() {
   process.exit(over.length ? 1 : 0);
 }
 
-module.exports = { sizeTrace, scanTraces, findNftFiles, fsStatSize, DEFAULT_LIMIT_MB };
+module.exports = { sizeTrace, scanTraces, findNftFiles, fsStatSize, sizeFuncDir, findFuncDirs, scanFuncOutput, DEFAULT_LIMIT_MB };
 
 if (require.main === module) main();

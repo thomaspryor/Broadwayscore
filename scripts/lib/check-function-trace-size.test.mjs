@@ -117,3 +117,82 @@ test('CLI exits 1 and names the biggest files when over, 0 when under, 2 with no
     assert.equal(none.status, 2);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+// ---- BRO-8165: packaged .vercel/output/functions/*.func measurement ----
+import { symlinkSync, truncateSync } from 'node:fs';
+const { sizeFuncDir, scanFuncOutput } = require('./check-function-trace-size.js');
+const MB = 1024 * 1024;
+
+function vercelFixture() {
+  const root = mkdtempSync(join(tmpdir(), 'func-size-'));
+  const fns = join(root, '.vercel', 'output', 'functions');
+  mkdirSync(join(fns, 'api', 'a.func', 'node_modules', 'x'), { recursive: true });
+  writeFileSync(join(fns, 'api', 'a.func', 'index.js'), Buffer.alloc(10 * KB));
+  writeFileSync(join(fns, 'api', 'a.func', 'node_modules', 'x', 'big.bin'), Buffer.alloc(300 * KB));
+  // b.func is a route alias of the same real lambda as a.func
+  symlinkSync(join(fns, 'api', 'a.func'), join(fns, 'api', 'b.func'));
+  // c.func: own tree + symlinked file (same real file as in a) + cycle + filePathMap target outside the dir
+  mkdirSync(join(fns, 'c.func'), { recursive: true });
+  writeFileSync(join(fns, 'c.func', 'own.js'), Buffer.alloc(20 * KB));
+  symlinkSync(join(fns, 'api', 'a.func', 'index.js'), join(fns, 'c.func', 'linked.js'));
+  symlinkSync(join(fns, 'c.func'), join(fns, 'c.func', 'loop'));
+  writeFileSync(join(root, 'mapped.bin'), Buffer.alloc(200 * KB));
+  writeFileSync(join(fns, 'c.func', '.vc-config.json'), JSON.stringify({ filePathMap: { 'mapped.bin': 'mapped.bin' } }));
+  return { root, fns, out: join(root, '.vercel', 'output') };
+}
+
+test('sizeFuncDir counts files, follows symlinks once, survives cycles, adds filePathMap targets', () => {
+  const { root, fns } = vercelFixture();
+  try {
+    const a = sizeFuncDir(join(fns, 'api', 'a.func'), { repoRoot: root });
+    assert.equal(a.totalBytes, 310 * KB);
+    assert.equal(a.top[0].bytes, 300 * KB);
+    const c = sizeFuncDir(join(fns, 'c.func'), { repoRoot: root });
+    // own.js 20 + linked.js 10 (symlink to a real file, counted once) + mapped.bin 200 + .vc-config.json
+    assert.equal(c.totalBytes, 20 * KB + 10 * KB + 200 * KB + Buffer.byteLength(JSON.stringify({ filePathMap: { 'mapped.bin': 'mapped.bin' } })));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('scanFuncOutput folds symlinked route aliases into one lambda and flags only the one over', () => {
+  const { root, fns } = vercelFixture();
+  try {
+    const res = scanFuncOutput(fns, { limitBytes: 250 * KB, repoRoot: root });
+    assert.equal(res.length, 2, 'a.func and its b.func alias are one lambda');
+    const a = res.find((r) => r.name === 'api/a');
+    assert.deepEqual(a.aliases, ['api/b']);
+    assert.equal(a.over, true);
+    assert.equal(res.find((r) => r.name === 'c').over, false);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI --vercel-output: a 260 MB function fails with the biggest file named (red), under the limit passes (green)', () => {
+  const { root, fns, out } = vercelFixture();
+  try {
+    const big = join(fns, 'api', 'a.func', 'node_modules', 'x', 'huge.bin');
+    writeFileSync(big, '');
+    truncateSync(big, 260 * MB); // sparse: size counts, disk does not
+    const red = spawnSync('node', [SCRIPT, '--vercel-output', out, '--min-largest-mb=0'], { encoding: 'utf8' });
+    assert.equal(red.status, 1, red.stdout);
+    assert.match(red.stdout, /FAIL api\/a: 26\d\.\d MB/);
+    assert.match(red.stdout, /huge\.bin/);
+    rmSync(big);
+    const green = spawnSync('node', [SCRIPT, '--vercel-output', out, '--min-largest-mb=0'], { encoding: 'utf8' });
+    assert.equal(green.status, 0, green.stdout);
+    assert.match(green.stdout, /checked 2 packaged functions/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('CLI --vercel-output fails closed (exit 2): missing output, no .func dirs, implausibly small largest function', () => {
+  const { root, out } = vercelFixture();
+  try {
+    assert.equal(spawnSync('node', [SCRIPT, '--vercel-output', join(root, 'nope')], { encoding: 'utf8' }).status, 2);
+    // default floor (5 MB): the 310 KB fixture reads as a broken measurement, not a healthy build
+    const small = spawnSync('node', [SCRIPT, '--vercel-output', out], { encoding: 'utf8' });
+    assert.equal(small.status, 2);
+    assert.match(small.stdout, /measurement is broken/);
+    const empty = mkdtempSync(join(tmpdir(), 'func-empty-'));
+    mkdirSync(join(empty, 'functions'), { recursive: true });
+    assert.equal(spawnSync('node', [SCRIPT, '--vercel-output', empty], { encoding: 'utf8' }).status, 2);
+    rmSync(empty, { recursive: true, force: true });
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

@@ -562,6 +562,18 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/check-function-trace-size.js .next
 
+      - name: Guard — PACKAGED function size under Vercel's 250 MB limit (advisory)
+        # BRO-8165: the step above sizes .nft.json traces (a proxy). This one sizes
+        # what `vercel deploy --prebuilt` uploads: every .vercel/output/functions/**/*.func
+        # (symlinks followed, filePathMap targets added, route aliases of one lambda
+        # counted once), prints the 10 biggest, and names the top 10 files of any
+        # function over 230 MB, so a leak fails here instead of as a generic "did not
+        # reach READY" after the upload. Exit 2 = measurement broken (fails closed).
+        # Advisory first (§19): arm (drop continue-on-error) once this prints sane
+        # sizes on real runs and agrees with the trace step's "largest:" line.
+        continue-on-error: true
+        run: node scripts/lib/check-function-trace-size.js --vercel-output .vercel/output
+
       # BRO-7983: supersede stacked dispatches. This run's Build succeeded and it is about
       # to deploy, so cancel older main runs still before their own "Deploy to Production":
       # this run built newer code + core data. Placed AFTER Build on purpose: cancelling at
