@@ -1488,5 +1488,36 @@
       }
     ],
     "queuedAt": "2026-11-23T05:49:59.101Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-8017",
+    "title": "Landing blocked: lint-workflows red on land/codex-bro-8017",
+    "description": "land.yml did not land land/codex-bro-8017: the lint-workflows gate went red at bdf4807962. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45119278526",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-8017"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "bdf480796286593087c9ed843f31c451c1bc0dc6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45119278526"
+      }
+    ],
+    "queuedAt": "2026-11-23T06:03:47.883Z"
   }
 ]
