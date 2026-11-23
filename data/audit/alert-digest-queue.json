@@ -1099,5 +1099,36 @@
       }
     ],
     "queuedAt": "2026-11-23T17:53:58.137Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8146-unwatched-regional",
+    "title": "Landing blocked: lint-workflows red on land/bro-8146-unwatched-regional",
+    "description": "land.yml did not land land/bro-8146-unwatched-regional: the lint-workflows gate went red at c80e39a924. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45230179542",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8146-unwatched-regional"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "c80e39a924ee55dffa869d46c0e997d74e6f1273"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45230179542"
+      }
+    ],
+    "queuedAt": "2026-11-23T18:11:10.885Z"
   }
 ]
