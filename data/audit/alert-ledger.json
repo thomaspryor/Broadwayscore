@@ -367,13 +367,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-23T03:38:42.410Z",
+      "lastSeen": "2026-11-23T04:28:33.980Z",
       "lastNotifiedAt": "2026-11-22T06:03:09.455Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 88,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -1015,7 +1015,7 @@
       "resolvedAt": "2026-10-13T16:45:36.950Z"
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2235/1750 reqs)",
@@ -1028,8 +1028,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 45,
-      "sweptTracker": "BRO-6885",
-      "resolvedAt": "2026-11-23T04:15:11.094Z"
+      "sweptTracker": "BRO-6885"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "resolved",
@@ -19493,7 +19492,7 @@
       "title": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-23T03:38:03.285Z",
+      "lastSeen": "2026-11-23T04:27:26.655Z",
       "lastNotifiedAt": "2026-11-23T02:37:03.228Z",
       "lastSurfacedAt": null,
       "notifyCount": 69,
@@ -19510,7 +19509,7 @@
         "la-distance-bam-off-broadway-2026",
         "much-ado-about-nothing-2026"
       ],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -41597,7 +41596,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1,
-      "resolvedAt": "2026-11-23T04:00:23.065Z",
+      "resolvedAt": "2026-11-23T03:49:47.973Z",
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
