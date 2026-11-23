@@ -38,15 +38,19 @@ const norm = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace
  */
 function isPublicationName(byline, outletEntry, outletId) {
   const b = norm(byline);
-  if (!b) return false;
-  const names = [outletEntry && outletEntry.displayName, outletId, ...((outletEntry && outletEntry.aliases) || [])];
-  return names.some((n) => n && norm(n) === b);
+  if (!b || !outletEntry) return false;
+  if (outletEntry.defaultCritic && norm(outletEntry.defaultCritic) === b) return false;
+  if (outletEntry.displayName && norm(outletEntry.displayName) === b) return true;
+  // id/aliases are slugs ("stephenkearley") that can equal a PERSON's name: only a
+  // one-token byline ("the-broadgays", "BroadGAYS") is read as a publication handle.
+  if (/\s/.test(String(byline).trim())) return false;
+  return [outletId, ...(outletEntry.aliases || [])].some((n) => n && norm(n) === b);
 }
 
 /** Submitter-typed name: one line, 2-60 chars, not itself the publication. */
-function cleanSubmitter(s) {
+function cleanSubmitter(s, outletEntry, outletId) {
   const v = String(s || '').replace(/\s+/g, ' ').trim();
-  return v.length >= 2 && v.length <= 60 && !isUnknown(v) ? v : '';
+  return v.length >= 2 && v.length <= 60 && !isUnknown(v) && !isPublicationName(v, outletEntry, outletId) ? v : '';
 }
 
 /**
@@ -56,10 +60,11 @@ function cleanSubmitter(s) {
 function criticFromReviewsTitle(...sources) {
   for (const src of sources) {
     const head = String(src || '').trim().slice(0, 200);
-    const m = /^([A-Za-z][A-Za-z.'’-]*(?:\s+[A-Za-z][A-Za-z.'’-]*){1,3}?)\s+reviews\s+\S/i.exec(head);
+    // Name words keep their original casing: capitalised (or ALL CAPS) only.
+    const m = /^([A-Z][A-Za-z.'’-]*(?:\s+[A-Z][A-Za-z.'’-]*){1,3}?)\s+[Rr][Ee][Vv][Ii][Ee][Ww][Ss]\s+\S/.exec(head);
     if (!m) continue;
     const name = m[1].trim();
-    if (/^(the|a|an|our|my|we|critics?)\b/i.test(name)) continue;
+    if (/^(the|a|an|our|my|we|critics?)\b/i.test(name) || /\b(earns?|rave|raves|glowing|to|for|of|and|in|on|at)\b/i.test(name)) continue;
     return name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
   }
   return null;
@@ -77,7 +82,7 @@ function resolveCritic({ criticArg, lsaCritic, byline: rawByline, stageCritic, o
   const dc = canFill ? String(outletEntry.defaultCritic).trim() : '';
   let byline = rawByline;
   if (byline && isPublicationName(nameFromAuthorUrl(byline), outletEntry, outletId)) {
-    byline = cleanSubmitter(submitterCritic) || criticFromReviewsTitle(pageTitle, text) || '';
+    byline = cleanSubmitter(submitterCritic, outletEntry, outletId) || criticFromReviewsTitle(pageTitle, text) || '';
   }
   const b = byline ? String(nameFromAuthorUrl(byline)).trim() : '';
   if (b && !isUnknown(b)) {

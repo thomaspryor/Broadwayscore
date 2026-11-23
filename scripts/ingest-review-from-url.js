@@ -582,7 +582,8 @@ if (!show) {
     outletEntry: (require('../data/outlet-registry.json').outlets || {})[outletId],
     outletId,
     submitterCritic: getArg('submitter-critic'),
-    pageTitle: (/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i.exec(html) || /<title[^>]*>([^<]+)</i.exec(html) || [])[1],
+    pageTitle: ((/<meta[^>]+property=["']og:title["'][^>]+content=(["'])(.+?)\1/i.exec(html) || [])[2]) ||
+      ((/<title[^>]*>([^<]+)</i.exec(html) || [])[1]),
     text,
   });
 
