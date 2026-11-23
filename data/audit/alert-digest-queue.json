@@ -818,5 +818,36 @@
       }
     ],
     "queuedAt": "2026-11-23T16:43:34.391Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8155-fn-size",
+    "title": "Landing blocked: rebase red on land/bro-8155-fn-size",
+    "description": "land.yml did not land land/bro-8155-fn-size: the rebase gate went red at 1d85fab9e9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45219078288",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8155-fn-size"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "1d85fab9e940a49b79eb4e9968ee79ead0c4d769"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45219078288"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:47:22.934Z"
   }
 ]
