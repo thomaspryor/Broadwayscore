@@ -685,10 +685,12 @@ function runClaudeCli(opts) {
     // over-cap samples => SIGTERM tree, SIGKILL survivors. Reported as
     // STAGES.ERROR plus a memoryCap field (never a new stage spelling, see
     // header) so retry/breaker classification is unchanged. Fails open when
-    // ps is unavailable. memoryCapGB: null disables (tests).
+    // ps is unavailable. Opt-in via opts.memoryCapGB.
     let memoryCapHit = null;
     let memStrikes = {};
-    const memCapGB = opts.memoryCapGB === undefined ? memCap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB) : opts.memoryCapGB;
+    // Opt-in: only dispatched-job callers (bsc-runner.runJob) pass memoryCapGB;
+    // monitors and dataset builders keep their old behaviour.
+    const memCapGB = opts.memoryCapGB || null;
     const memSampler = (memCapGB && pid) ? setInterval(() => {
       if (settled || memoryCapHit) return;
       const rows = (opts.sampleRows || memCap.sampleProcessTable)();

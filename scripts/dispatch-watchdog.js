@@ -95,7 +95,6 @@ const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcome
   --health              stale-heartbeat pager (for launchd, outside cmux)
   --status [--json]     print current classification without acting
   --mem-report          print each live job's process-tree RSS vs the cap (read-only, no kills)
-  --mem-report          print each live job's process-tree RSS vs the cap (read-only, no kills)
 `;
 
 function watchdogOff() {
@@ -550,6 +549,11 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     try { require('./lib/bsc-runner.js').routeDiskPressureAlert(`${hold} — watchdog is holding all redispatches until it clears`); } catch (e) { console.error(`[watchdog] disk-pressure alert failed: ${e.message}`); }
   }
 
+  // BRO-8167: memory hold alert (cooldown-gated digest, like the disk hold).
+  if (flags.memoryPressure) {
+    console.error('[watchdog] holding dispatch: kernel memory pressure not normal');
+    pageOwner({ conditionKey: 'dispatch-memory-pressure', title: 'Dispatch paused: Mac memory pressure', description: 'The kernel reports memory pressure above normal, so every new worker launch is refused and the watchdog is holding redispatches until it recovers. If this persists with few workers running, another app is using the memory (BSC_DISPATCH_MEM_GUARD=0 turns the check off).', cooldownHours: 6 });
+  }
   // BRO-8167 backstop: the runner samples its own tree (claude-cli.js); this
   // catches a worker whose runner is gone or wedged. Never blocks the sweep.
   try { await memoryCapPass({ dryRun: false }); } catch (e) { console.error(`[watchdog] memory-cap pass failed: ${e.message}`); }

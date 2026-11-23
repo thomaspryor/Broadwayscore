@@ -26,6 +26,9 @@ const SAMPLE_INTERVAL_MS = 30 * 1000;
 const KILL_GRACE_MS = 10 * 1000;
 const GB = 1024 * 1024 * 1024;
 
+/** BSC_JOB_MEMORY_CAP_OFF=1 turns BOTH enforcement points off (rollback switch). */
+function capDisabled(env = process.env) { return String(env.BSC_JOB_MEMORY_CAP_OFF || '').trim() === '1'; }
+
 /** BSC_JOB_MEMORY_CAP_GB -> GB. Blank/invalid/<=0 falls back to the default (a typo must not disable the guard). */
 function parseCapGB(raw, warn = console.error) {
   const trimmed = String(raw == null ? '' : raw).trim();
@@ -100,6 +103,7 @@ function evaluatePass({ jobs, rows, prevStrikes = {}, capGB = DEFAULT_CAP_GB, re
   for (const j of jobs) {
     const tree = treeOf(j.pid, rows);
     if (!tree.length) continue; // dead / unknown pid: not ours to judge
+    if (j.pid === process.pid || j.pid === process.ppid) continue; // never judge the watchdog/dispatcher itself
     const rssBytes = tree.reduce((s, r) => s + r.rssKB * 1024, 0);
     const over = rssBytes > capBytes;
     const strikes = over ? (prevStrikes[j.key] || 0) + 1 : 0;
@@ -127,15 +131,20 @@ function memoryCapReason(entry, capGB) {
 
 // ── watchdog backstop ───────────────────────────────────────────────────────
 
-/** Live job leases that recorded a pid: [{key, pid, taskId, jobId}]. */
-function liveJobsFromLeases(leaseRoot, { isAlive = (p) => { try { process.kill(p, 0); return true; } catch { return false; } } } = {}) {
+/**
+ * Live job leases that recorded a pid: [{key, pid, taskId, jobId}].
+ * Liveness is bsc-runner's own leaseLooksLive (pid is a claude process AND
+ * started near the lease), so a stale lease whose pid was recycled by an
+ * unrelated process is never signalled.
+ */
+function liveJobsFromLeases(leaseRoot, { looksLive = (lease) => require('./bsc-runner.js').leaseLooksLive(lease) } = {}) {
   const out = [];
   let dirs = [];
   try { dirs = fs.readdirSync(leaseRoot); } catch { return out; }
   for (const d of dirs) {
     try {
       const lease = JSON.parse(fs.readFileSync(path.join(leaseRoot, d, 'lease.json'), 'utf8'));
-      if (lease && Number.isInteger(lease.pid) && lease.pid > 1 && isAlive(lease.pid)) {
+      if (lease && Number.isInteger(lease.pid) && lease.pid > 1 && looksLive(lease)) {
         out.push({ key: lease.jobId || d, pid: lease.pid, taskId: d, jobId: lease.jobId || null });
       }
     } catch { /* unreadable lease: skip */ }
@@ -143,8 +152,14 @@ function liveJobsFromLeases(leaseRoot, { isAlive = (p) => { try { process.kill(p
   return out;
 }
 
-function readStrikes(statePath) {
-  try { return JSON.parse(fs.readFileSync(statePath, 'utf8')).strikes || {}; } catch { return {}; }
+// Strikes older than this are not "consecutive" (e.g. after a watchdog outage).
+const STRIKE_MAX_AGE_MS = 10 * 60 * 1000;
+function readStrikes(statePath, now = Date.now()) {
+  try {
+    const st = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    if (!(now - Date.parse(st.ts) <= STRIKE_MAX_AGE_MS)) return {};
+    return st.strikes || {};
+  } catch { return {}; }
 }
 function writeStrikes(statePath, strikes) {
   try {
@@ -158,6 +173,7 @@ function writeStrikes(statePath, strikes) {
  * not touch state. Returns { perJob, killed }.
  */
 async function runLeasePass({ jobs, rows, statePath, capGB, dryRun = false, ledger, killFn = killTree, alert = null, log = console.log }) {
+  if (capDisabled()) return { perJob: [], killed: [], skipped: 'disabled' };
   if (!rows) return { perJob: [], killed: [], skipped: 'ps-unavailable' };
   const { perJob, kills, nextStrikes } = evaluatePass({ jobs, rows, prevStrikes: dryRun ? {} : readStrikes(statePath), capGB });
   for (const j of perJob) log(`[memory-cap] ${j.taskId} job=${j.jobId || '?'} pid=${j.pid} tree=${j.pids.length} proc RSS=${j.rssGB.toFixed(2)}GB cap=${capGB}GB${j.over ? ` OVER (strike ${j.strikes})` : ''}`);
@@ -181,6 +197,6 @@ async function runLeasePass({ jobs, rows, statePath, capGB, dryRun = false, ledg
 
 module.exports = {
   DEFAULT_CAP_GB, REQUIRED_STRIKES, SAMPLE_INTERVAL_MS, KILL_GRACE_MS,
-  parseCapGB, parsePsTable, sampleProcessTable, treeOf, treeRssBytes, evaluatePass,
+  capDisabled, parseCapGB, parsePsTable, sampleProcessTable, treeOf, treeRssBytes, evaluatePass,
   killTree, memoryCapReason, liveJobsFromLeases, runLeasePass,
 };

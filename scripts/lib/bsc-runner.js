@@ -31,6 +31,7 @@ const { detectJobLanding } = require('./headless-unlanded-detection.js');
 const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
 const { acquireStorage } = require('./mac-storage-budget.js');
 const { isSlimTree, treeModeArgs } = require('./codex-runner.js');
+const jobMemCap = require('./job-memory-cap.js'); // BRO-8167
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -241,7 +242,9 @@ function parseDispatchFloorGB(raw, warn = console.error) {
 // BRO-8167: kernel memory-pressure admission. Pure decision + thin I/O.
 function shouldRefuseForMemory(verdict, env = process.env) {
   if (String(env.BSC_DISPATCH_MEM_GUARD || '').trim() === '0') return false;
-  return Boolean(verdict) && verdict.dispatchViable === false;
+  // Critical only: 'warning' is this Mac's routine state under load (see
+  // swap-pressure.js header); refusing on it would stall the queue for hours.
+  return Boolean(verdict) && verdict.critical === true;
 }
 function currentMemoryVerdict() {
   try { return require('./swap-pressure.js').currentVmPressure(); } catch { return null; }
@@ -458,7 +461,7 @@ async function runJob(opts) {
   // error) never refuses. BSC_DISPATCH_MEM_GUARD=0 turns it off.
   const memVerdict = opts.memoryPressureFn ? opts.memoryPressureFn() : currentMemoryVerdict();
   if (shouldRefuseForMemory(memVerdict)) {
-    const detail = `kernel memory pressure is ${memVerdict.level} (not normal) — refusing dispatch for task ${taskId}`;
+    const detail = `kernel memory pressure is ${memVerdict.level} — refusing dispatch for task ${taskId}`;
     console.error(`[bsc-runner] REFUSING dispatch: ${detail}`);
     try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `memory-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
     return { ok: false, jobId, stage: 'memory-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
@@ -536,6 +539,8 @@ async function runJob(opts) {
       // has a fresh clock and needs the same commit-early contract.
       prompt: buildBudgetPreamble(timeoutMs) + sparseNotice + prompt,
       cwd, model, resumeSessionId, timeoutMs, graceMs, logFile,
+      // BRO-8167: dispatched jobs opt in to the process-tree memory cap.
+      memoryCapGB: jobMemCap.capDisabled() ? null : jobMemCap.parseCapGB(process.env.BSC_JOB_MEMORY_CAP_GB),
       // BRO-3442: every bsc-runner spawn IS a headless `claude -p` job, resume
       // included — this is the fix for Gate H's cwd-sniffing heuristic
       // (exit-status-gate.sh: cwd under .claude/worktrees/job-*) missing the
@@ -611,7 +616,11 @@ async function runJob(opts) {
       // Adversarial review caught that; without this line the whole change is
       // cosmetic for its own use case. `undefined` on a normal failure so the
       // row shape is unchanged for everything except a signalled death.
-      ledger.appendEntry({
+      // BRO-8167: the watchdog's memory-cap backstop may already have written this
+      // job's terminal row; a second one would count as two dead attempts.
+      let alreadyFailed = false;
+      try { alreadyFailed = ledger.readEntries().some(e => e.jobId === jobId && e.event === ledger.JOB_EVENTS.FAILED && e.killedBy === 'watchdog-memory-cap'); } catch { /* fail open: write the row */ }
+      if (!alreadyFailed) ledger.appendEntry({
         event: ledger.JOB_EVENTS.FAILED, taskId, jobId, stage: res.stage,
         sessionId: res.sessionId, cwd, model: model || null,
         costUSD: res.costUSD, costEstimated: res.costEstimated || undefined,

@@ -453,11 +453,11 @@ test('BRO-8167: runJob refuses launch under kernel memory pressure (ABANDONED, n
   }
 });
 
-test('BRO-8167: shouldRefuseForMemory — normal/unknown pass, warning/critical refuse, env off-switch', () => {
+test('BRO-8167: shouldRefuseForMemory — normal/warning/unknown pass, critical refuses, env off-switch', () => {
   const { shouldRefuseForMemory } = require('./lib/bsc-runner.js');
   const sp = require('./lib/swap-pressure.js');
   assert.equal(shouldRefuseForMemory(sp.classifyVmPressureLevel(1), {}), false);
-  assert.equal(shouldRefuseForMemory(sp.classifyVmPressureLevel(2), {}), true);
+  assert.equal(shouldRefuseForMemory(sp.classifyVmPressureLevel(2), {}), false, 'warning is routine load; must not refuse');
   assert.equal(shouldRefuseForMemory(sp.classifyVmPressureLevel(4), {}), true);
   assert.equal(shouldRefuseForMemory(null, {}), false, 'no verdict fails open');
   assert.equal(shouldRefuseForMemory(sp.classifyVmPressureLevel(4), { BSC_DISPATCH_MEM_GUARD: '0' }), false);
@@ -491,4 +491,40 @@ test('BRO-8167: claude-cli kills a runaway tree after 2 over-cap samples (stage 
   assert.ok(r.memoryCap, 'memoryCap field present');
   assert.match(r.memoryCap.reason, /^memory-cap 1GB/);
   assert.match(r.errorDetail, /memory-cap/);
+});
+
+test('BRO-8167: lease with a recycled/non-claude pid is never treated as a live job (never signalled)', () => {
+  const root = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'leases-'));
+  for (const [d, pid] of [['linear:BRO-a', 4242], ['linear:BRO-b', 4343]]) {
+    fsMc.mkdirSync(pathMc.join(root, d));
+    fsMc.writeFileSync(pathMc.join(root, d, 'lease.json'), JSON.stringify({ pid, jobId: `j-${pid}` }));
+  }
+  const jobs = mcLib.liveJobsFromLeases(root, { looksLive: (l) => l.pid === 4242 });
+  assert.deepEqual(jobs.map(j => j.pid), [4242]);
+});
+
+test('BRO-8167: BSC_JOB_MEMORY_CAP_OFF=1 disables the watchdog pass; claude-cli cap is opt-in', async () => {
+  assert.equal(mcLib.capDisabled({ BSC_JOB_MEMORY_CAP_OFF: '1' }), true);
+  assert.equal(mcLib.capDisabled({}), false);
+  process.env.BSC_JOB_MEMORY_CAP_OFF = '1';
+  try {
+    const r = await mcLib.runLeasePass({ jobs: [{ key: 'a', pid: 100, taskId: 't' }], rows: mcRows(40), statePath: '/nonexistent/x', capGB: 8, ledger: {}, killFn: async () => { throw new Error('must not kill'); } });
+    assert.equal(r.skipped, 'disabled');
+  } finally { delete process.env.BSC_JOB_MEMORY_CAP_OFF; }
+  // opt-in: no memoryCapGB => no sampler => a "huge" fake table never kills
+  const { runClaudeCli } = require('./lib/claude-cli.js');
+  const bin = pathMc.join(osMc.tmpdir(), `fake-claude-ok-${process.pid}.sh`);
+  fsMc.writeFileSync(bin, '#!/bin/sh\nexec sleep 1\n', { mode: 0o755 });
+  const r2 = await runClaudeCli({ prompt: 'x', cwd: osMc.tmpdir(), env: { CLAUDE_BIN: bin }, memorySampleMs: 20, sampleRows: () => [{ pid: 1, ppid: 0, pgid: 1, rssKB: 99 * GBKB }], timeoutMs: 20000 });
+  fsMc.rmSync(bin, { force: true });
+  assert.equal(r2.memoryCap, null);
+});
+
+test('BRO-8167: a strike older than 10 min is not "consecutive"', async () => {
+  const dir = fsMc.mkdtempSync(pathMc.join(osMc.tmpdir(), 'memcap-age-'));
+  const statePath = pathMc.join(dir, 's.json');
+  fsMc.writeFileSync(statePath, JSON.stringify({ ts: new Date(Date.now() - 3600e3).toISOString(), strikes: { 'job-x': 1 } }));
+  const killed = [];
+  const r = await mcLib.runLeasePass({ jobs: [{ key: 'job-x', pid: 100, taskId: 't', jobId: 'job-x' }], rows: mcRows(4), statePath, capGB: 8, ledger: { JOB_EVENTS: { FAILED: 'job-failed' }, appendEntry() {} }, killFn: async (p) => killed.push(p), log: () => {} });
+  assert.equal(r.killed.length, 0, 'stale strike must not combine with one fresh over-cap pass');
 });
