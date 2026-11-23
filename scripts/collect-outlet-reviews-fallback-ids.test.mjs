@@ -1,4 +1,5 @@
 // BRO-8103: every id in collect-outlet-reviews.js MARKET_OUTLETS_FALLBACK must exist in the registry.
+// LIVE-DATA-LANE: validates hardcoded ids against live data/outlet-registry.json (drift check, not a unit invariant)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
