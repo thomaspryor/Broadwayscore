@@ -14,18 +14,24 @@ const fs = require('fs');
 const path = require('path');
 const { triagePendingStub, buildHeldUrlIndex, sameTitleShowsFrom } = require('./pending-triage');
 
-const DATA_DIR = path.join(__dirname, '..', '..', 'data');
+// BRO-8136: literal FILE paths, never the data/ directory itself. A module in the
+// admin ingest-review API function's require graph that names data/ makes Next's
+// file tracing bundle the whole directory (1.5GB) and breaks every deploy.
+const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+const REVIEWS_PATH = path.join(__dirname, '..', '..', 'data', 'reviews.json');
 let _ctx = null;
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
 /** Lazily-built, per-process triage context: show lookup + scored-url index. */
-function loadContext(dataDir = DATA_DIR) {
-  const shows = readJson(path.join(dataDir, 'shows.json'));
+function loadContext(dataDir) {
+  const showsPath = dataDir ? path.join(dataDir, 'shows.json') : SHOWS_PATH;
+  const reviewsPath = dataDir ? path.join(dataDir, 'reviews.json') : REVIEWS_PATH;
+  const shows = readJson(showsPath);
   const allShows = shows.shows || shows;
   const byId = new Map(allShows.map((s) => [s.id, s]));
   // reviews.json is { _meta, reviews: [row, ...] } (rebuild-all-reviews.js); same read as the drain's loadHeldIndex.
-  const rv = readJson(path.join(dataDir, 'reviews.json'));
+  const rv = readJson(reviewsPath);
   const rows = Array.isArray(rv) ? rv : rv.reviews;
   if (!Array.isArray(rows) || rows.length === 0) throw new Error('reviews.json has no review rows');
   const heldIndex = buildHeldUrlIndex(rows);

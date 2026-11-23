@@ -88,7 +88,6 @@ const nextConfig = {
       // output only. A server module building an fs path from process.cwd()
       // once traced all of it into functions and broke every prod deploy
       // (2026-10-26, BRO-6305; tests/unit/trace-excludes-public.test.mjs).
-      'public/images/**',
       // ~2400 cast files (~300MB total). Tony pages now consume cast data
       // via data/actor-slugs.json (generated at prebuild). If any code path
       // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
@@ -99,6 +98,17 @@ const nextConfig = {
       // function ("off-broadway" hit 792MB > 250MB, 11 failed deploys 2026-10-26).
       // Vercel serves public/ from the CDN; the existsSync only runs at build time.
       'public/images/**',
+      // BRO-8136: backstop for the denylist. pending-intake.js once built
+      // path.join(__dirname,'..','..','data'), and NFT bundled all of data/ (1.5GB)
+      // into api/admin/ingest-review/detect (341MB > 250MB; every deploy failed
+      // 2026-11-23). The module now names files, these trees are never read by a
+      // function. tests/unit/trace-excludes-data-dirs.test.mjs guards both.
+      'data/aggregator-archive/**',
+      'data/video-reviews-transcripts/**',
+      'data/pending-fixes/**',
+      'data/archive/**',
+      'data/*.pre-symlink-backup',
+      'data/diary-shows.json',
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',
