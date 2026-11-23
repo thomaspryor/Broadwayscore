@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T19:52:23.723Z",
+  "timestamp": "2026-11-23T20:10:23.609Z",
   "stats": {
-    "totalReviews": 84396,
-    "alreadyFlagged": 22518,
+    "totalReviews": 84418,
+    "alreadyFlagged": 22523,
     "dateGuardCatches": 242,
     "directorMismatch": 3887,
     "tvFilmSignals": 2423,
     "londonSignals": 3988,
     "offBroadwaySignals": 788,
-    "yearMismatch": 396,
-    "noPublishDate": 8251
+    "yearMismatch": 394,
+    "noPublishDate": 8268
   },
   "findings": [
     {
@@ -43148,34 +43148,6 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
-      "file": "theater-life--david-sheward.json",
-      "score": 82,
-      "publishDate": "2019-10-23",
-      "url": "https://theaterlife.com/scotland-pa-little-shop-of-horrors-forbidden-broadway-the-next-generation-the-lightning-thief-the-percy-jackson-musical/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2003 (2x) more than 2019 (0x). 2003 matches production: little-shop-of-horrors-2003"
-        }
-      ]
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
-      "file": "theater-life--unknown.json",
-      "score": 78,
-      "publishDate": "2019-10-23",
-      "url": "https://theaterlife.com/scotland-pa-little-shop-of-horrors-forbidden-broadway-the-next-generation-the-lightning-thief-the-percy-jackson-musical/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2003 (2x) more than 2019 (1x). 2003 matches production: little-shop-of-horrors-2003"
-        }
-      ]
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "thewrap--robert-hofler.json",
       "score": 74,
       "publishDate": "2019-10-18",
@@ -77434,7 +77406,7 @@
     {
       "showId": "the-night-of-the-iguana-west-end-2019",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2019-07-19",
       "url": "https://www.dailymail.com/tvshowbiz/article-7263255/PATRICK-MARMION-reviews-Night-Iguana.html",
       "findings": [
@@ -78542,7 +78514,7 @@
     {
       "showId": "the-old-man-and-the-pool-west-end-2023",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "September 18th, 2023",
       "url": "https://www.whatsonstage.com/news/the-old-man-and-the-pool-at-wyndhams-theatre-review_1527521/",
       "findings": [
@@ -81839,7 +81811,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2025-03-07",
       "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
       "findings": [
@@ -81858,7 +81830,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "guardian--susannah-clapp.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2025-03-07",
       "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
       "findings": [
@@ -124874,7 +124846,7 @@
     {
       "showId": "nine-night-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-11-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj",
       "findings": [
@@ -141625,7 +141597,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2025-09-21",
       "url": "https://www.theguardian.com/stage/2025/sep/19/the-land-of-the-living-review-juliet-stevenson-dorfman-theatre",
       "findings": [
@@ -141653,7 +141625,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2025-09-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-land-of-the-living-nt-review",
       "findings": [
@@ -141667,7 +141639,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 64,
+      "score": 66,
       "publishDate": "2025-09-19",
       "url": "https://www.londontheatre.co.uk/reviews/the-land-of-the-living-review-juliet-stevenson-gives-a-powerhouse",
       "findings": [
@@ -141681,7 +141653,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "standard--anya-ryan.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2025-09-19",
       "url": "https://www.standard.co.uk/culture/theatre/the-land-of-the-living-national-theatre-review-juliet-stevenson-b1248614.html",
       "findings": [
@@ -142295,7 +142267,7 @@
     {
       "showId": "the-little-foxes-off-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2024-12-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-little-foxes-review",
       "findings": [
@@ -143467,7 +143439,7 @@
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
       "file": "timeout-london--leonie-cooper.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "December 20th, 2023",
       "url": "https://www.timeout.com/london/theatre/the-motive-and-the-cue-review-1",
       "findings": [
@@ -143872,7 +143844,7 @@
     {
       "showId": "the-old-man-and-the-pool-west-end-2023",
       "file": "standard--bruce-dessau.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "September 16th, 2023",
       "url": "https://www.standard.co.uk/culture/comedy/mike-birbiglia-the-old-man-and-the-pool-at-review-wyndhams-b1107289.html",
       "findings": [
@@ -144446,7 +144418,7 @@
     {
       "showId": "the-pillowman-west-end-2023",
       "file": "times-uk--clive-davis.json",
-      "score": 37,
+      "score": 36,
       "publishDate": "June 22nd, 2023",
       "url": "https://www.thetimes.co.uk/article/the-pillowman-review-tale-of-art-and-suffering-is-a-struggle-to-sit-through-dzn92lwrh",
       "findings": [
@@ -145743,7 +145715,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-03-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
       "findings": [
@@ -147290,7 +147262,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 93,
+      "score": 92,
       "publishDate": "2023-11-24",
       "url": "https://www.mailplus.co.uk/edition/showbiz/theatre/330664/dahls-witches-cast-a-spell-over-me",
       "findings": [
@@ -147346,7 +147318,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "musical-theatre-review--ian-bowkett.json",
-      "score": 95,
+      "score": 94,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/the-witches-national-theatre/",
       "findings": [
@@ -147613,7 +147585,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "telegraph--dzifa-benson.json",
-      "score": 60,
+      "score": 57,
       "publishDate": "2024-08-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-years-almeida-theatre-review-annie-ernaux/",
       "findings": [
@@ -147725,7 +147697,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "whatsonstage--alun-hood.json",
-      "score": 57,
+      "score": 62,
       "publishDate": "2024-08-02",
       "url": "https://www.whatsonstage.com/news/the-years-at-the-almeida-theatre-review_1619423/",
       "findings": [
@@ -150136,7 +150108,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "city-am--lucy-kenningham.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2024-04-05",
       "url": "https://www.cityam.com/underdog-other-other-bronte-dorfman-theatre-review/",
       "findings": [
@@ -150220,7 +150192,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "April 5th, 2024",
       "url": "https://www.whatsonstage.com/news/underdog-the-other-other-bronte-at-the-national-theatre-review_1590165/",
       "findings": [
