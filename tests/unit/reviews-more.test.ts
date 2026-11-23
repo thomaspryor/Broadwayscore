@@ -77,6 +77,7 @@ test('wiring: the page passes its marker only while the reader is on; ReviewsLis
   assert.match(page, /\.\.\.\(showRefreshEnabled\(\) \? \{ rev: render\.rev \} : \{\}\)/);
   const list = fs.readFileSync(path.join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
   assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
+  assert.match(list, /loadMore\(moreUrl, moreRev\)/);
   assert.doesNotMatch(list, /\bfetch\(url\)/, 'no unchecked fetch of reviews.json left in ReviewsList');
   const route = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/reviews.json/route.ts'), 'utf8');
   assert.match(route, /SHOW_REFRESH_REV_HEADER\]: render\?\.rev/);
