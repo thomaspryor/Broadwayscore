@@ -130,5 +130,33 @@
       }
     ],
     "queuedAt": "2026-11-23T13:46:06.074Z"
+  },
+  {
+    "conditionKey": "worktree-gc:stale:web",
+    "title": "Infra: worktree GC stale for repo web",
+    "description": "worktree-gc.log has no DIGEST[web] line in the last 10.1h while other repos may still be logging, so the web repo's GC pass may have silently stopped.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T14:05:05.358Z"
+  },
+  {
+    "conditionKey": "worktree-gc:stale:ios",
+    "title": "Infra: worktree GC stale for repo ios",
+    "description": "worktree-gc.log has no DIGEST[ios] line in the last 10.1h while other repos may still be logging, so the ios repo's GC pass may have silently stopped.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T14:05:05.362Z"
   }
 ]
