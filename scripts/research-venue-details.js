@@ -27,7 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const { stubTheaterName, londonShows, offBroadwayShows } = require('./lib/page-name-sources');
 const { slugify, foldDiacritics } = require('./lib/url-slug');
-const { agree, addressesAgree, streetKey, inCity, postcodeOf } = require('./lib/venue-info-agree');
+const { agree, addressesAgree, streetKey, inCity, postcodeOf, fillFromFolded } = require('./lib/venue-info-agree');
 
 const ROOT = path.join(__dirname, '..');
 const RAW_PATH = path.join(ROOT, 'data/audit/venue-info-raw.json');
@@ -268,6 +268,14 @@ async function main() {
   const outVenues = {};
   const disputes = {};
   const addressConflicts = [];
+  // Raw answers researched under a spelling that now folds into another page (BRO-8173).
+  const foldedInto = new Map();
+  for (const [k, r] of Object.entries(rawStore)) {
+    const market = k.split('/')[0];
+    const folded = stubTheaterName(r.name);
+    const target = folded && `${market}/${slugify(folded)}`;
+    if (target && target !== k) foldedInto.set(target, [...(foldedInto.get(target) || []), k]);
+  }
   let i = 0;
   for (const v of all) {
     const raw = rawStore[key(v)];
@@ -279,6 +287,12 @@ async function main() {
     const d = sameRaw && !args.redecide
       ? { fields: prev.fields, how: prev.how, geo: prev.lat != null ? { lat: prev.lat, lng: prev.lng } : null, disagreements: prev._disagreements || [] }
       : await decide(v, raw);
+    const donorKeys = foldedInto.get(key(v)) || [];
+    if (donorKeys.length && ['address', 'website', 'capacity', 'yearOpened', 'operator'].some((f) => d.fields[f] == null)) {
+      const donors = [];
+      for (const k of donorKeys) donors.push(await decide({ ...v, name: rawStore[k].name }, rawStore[k]));
+      fillFromFolded(d, donors);
+    }
     if (d.disagreements.length) disputes[key(v)] = { name: v.name, disagreements: d.disagreements };
     if (d.fields.address) {
       for (const a of v.existingAddresses) {
