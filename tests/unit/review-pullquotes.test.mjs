@@ -199,3 +199,40 @@ test('BRO-7505: finalizePullQuote does not resurrect garbageFullText for a wrong
   const data = { showId: 'some-show-2014', outletId: 'ap', criticName: 'A Critic', fullText: null, garbageFullText: body, fullTextWrongAuthor: true };
   assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), null);
 });
+
+// BRO-8105: photo credit / caption / page-header chrome inside a shipped quote. Synthetic prose, real shapes.
+const { stripCaptionChrome } = require('../../scripts/lib/pull-quote-guards.js');
+const BODY = ' There is precious little to admire in this staging, and the cast cannot rescue a script that never finds its footing. '
+  + 'The second half repeats the first with louder music, and the design, handsome as it is, serves a story nobody asked to hear again.';
+
+test('BRO-8105: stripCaptionChrome cuts each caption shape and leaves the prose', () => {
+  const cases = [
+    ['The Cast Photo by Evan Zimmerman', 'There is precious little'],
+    ['Friedman Theatre (Photo credit: Matthew Murphy)', 'There is precious little'],
+    ['Photo by Victoria Wai', 'There is precious little'],
+    ['...Music Box Theatre. Credit: Cylla von Tiedemann/', 'There is precious little'],
+    ['Broadway Review | A Show Title By Jane Doe Comments Posted on March 24, 2024.', 'There is precious little'],
+  ];
+  for (const [chrome, start] of cases) {
+    const out = stripCaptionChrome(chrome + BODY);
+    assert.ok(out.startsWith(start), `${chrome} -> ${out.slice(0, 40)}`);
+    assert.doesNotMatch(out, /Photo|Credit|Posted on|Zimmerman|Tiedemann/);
+  }
+  // A credit deeper in the quote is removed on its own, the sentences around it stay.
+  const mid = 'x'.repeat(0) + BODY.trim() + ' Photo by Evan Zimmerman The finale lands.';
+  assert.doesNotMatch(stripCaptionChrome(mid), /Photo by/);
+  // Prose that merely says "photo by" is untouched.
+  const clean = 'He praised the photo by the window, a lovely image, in a thoroughly satisfying evening.';
+  assert.equal(stripCaptionChrome(clean), clean);
+});
+
+test('BRO-8105: selectBestExcerpt never ships a quote that opens with a photo credit (fullText steps 6 and 7)', () => {
+  const para = 'There is precious little to admire in this staging, and the cast cannot rescue a script that never finds its footing. '
+    + 'The second half repeats the first with louder music, and the design, handsome as it is, serves a story nobody asked to hear again. '
+    + 'It runs long, and the ending arrives well after the point has been made twice over.';
+  for (const head of ['The Cast Photo by Evan Zimmerman ', 'Friedman Theatre (Photo credit: Matthew Murphy) ', 'Photo by Victoria Wai ']) {
+    const q = selectBestExcerpt({ showId: 'some-show-2026', fullText: head + para + '\n\n' + para });
+    assert.ok(q, `fixture must still produce a quote for ${head}`);
+    assert.doesNotMatch(q, /Photo|Credit|Zimmerman|Murphy|Victoria Wai/, q);
+  }
+});
