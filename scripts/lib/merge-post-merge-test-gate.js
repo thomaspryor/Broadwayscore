@@ -221,9 +221,12 @@ function safeRealpath(p) {
 // MERGE_SKIP_POST_MERGE_TEST_GATE=1). Lists each gitignored data/ directory the
 // merged tree has and the baseline lacks: when any exist, the two runs did not
 // see the same data, so a live-lane file's NEW failure cannot be pinned on the
-// branch (runTestGate reports it, unblocking). Nothing is linked: linking the
-// corpus into the baseline would hand it a writable handle and still race the
-// corpus between the two runs (Codex review). land.yml runs with no corpus on
+// branch (runTestGate reports it, unblocking). Nothing is linked into the
+// baseline tree; tests that honour REVIEW_TEXTS_DIR are pointed at the merged
+// corpus instead (runTestGate), the same live path the merged run already
+// reads, so the baseline gains no write access the merged run lacks. The
+// corpus can still change between the two runs (CI pushes), a rare race that
+// at worst flips one verdict. land.yml runs with no corpus on
 // either side, so the list is empty there and its behavior is unchanged.
 function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
   const ignored = isIgnored || ((rel) => spawnSync('git', ['check-ignore', '-q', rel], { cwd: fromRoot }).status === 0);
@@ -247,13 +250,23 @@ function ignoredDataDirsMissingFrom(fromRoot, toRoot, { isIgnored } = {}) {
 // live-lane failure is only unjudged when the baseline skipped that very test
 // (no corpus there); a test the baseline actually ran was judged on equal
 // terms, so its NEW failure still blocks (review of BRO-8110).
+// node's TAP carries no file for a passing or skipped test, and test names
+// are not unique across files (tap-failure-parser.js), so a name is returned
+// only when EVERY baseline test of that name was skipped: if any same-named
+// test ran (ok / not ok without SKIP), the skip cannot be pinned on the
+// failing file and the failure stays blocking.
 function skippedTestNames(tapOutput) {
-  const names = new Set();
+  const skipped = new Set();
+  const ran = new Set();
   for (const line of String(tapOutput || '').split('\n')) {
-    const m = /^\s*ok \d+ - (.+?)\s+#\s*SKIP\b/i.exec(line);
-    if (m) names.add(m[1]);
+    const m = /^\s*(?:not )?ok \d+ - (.+?)\s*$/.exec(line);
+    if (!m) continue;
+    const skip = /^(.+?)\s+#\s*SKIP\b/i.exec(m[1]);
+    if (skip) skipped.add(skip[1]);
+    else ran.add(m[1].replace(/\s+#\s*TODO\b.*$/i, ''));
   }
-  return names;
+  for (const n of ran) skipped.delete(n);
+  return skipped;
 }
 
 // Pure-ish (reads the test files' first lines): split NEW failures into those

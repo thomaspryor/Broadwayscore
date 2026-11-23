@@ -382,6 +382,10 @@ test('skippedTestNames reads TAP SKIP directives only', () => {
   const names = skippedTestNames('ok 1 - a # SKIP no corpus\nok 2 - b\nnot ok 3 - c\n  ok 4 - d # skip\n');
   assert.deepEqual([...names].sort(), ['a', 'd']);
 });
+test('skippedTestNames (BRO-8110 review): a name another baseline test RAN is not treated as skipped (TAP has no file for ok lines)', () => {
+  const names = skippedTestNames('ok 1 - shared # SKIP no corpus\nok 2 - shared\nok 3 - only # SKIP x\nnot ok 4 - other\nok 5 - other # SKIP y\n');
+  assert.deepEqual([...names], ['only']);
+});
 // Corpus tests honouring REVIEW_TEXTS_DIR (autoclear-vs-ensemble does) are
 // run on the baseline against the merged tree's corpus, so they are judged:
 // a pre-existing corpus failure reads pre-existing, a code regression blocks.
