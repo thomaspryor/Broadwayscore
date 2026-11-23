@@ -851,6 +851,37 @@
     "queuedAt": "2026-11-23T16:47:22.934Z"
   },
   {
+    "conditionKey": "land:land/bro-8164-visual-phase2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8164-visual-phase2",
+    "description": "land.yml did not land land/bro-8164-visual-phase2: the scripts-lib-tests gate went red at 57b62e2901. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45217697263",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8164-visual-phase2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "57b62e29015eb3bc212761281c8e4a790f500a1c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45217697263"
+      }
+    ],
+    "queuedAt": "2026-11-23T16:53:28.155Z"
+  },
+  {
     "conditionKey": "watchdog-park:linear:BRO-8002",
     "title": "Watchdog parked #linear:BRO-8002 — redispatch never produced a launch",
     "description": "Watchdog: card \"Check the 2026-11-22 Maestro nightly passed the Home Browse-all flows (BRO-7988 follow-up)\" was claimed for redispatch at 2026-11-23T16:05:37.517Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8002), then re-arm with node scripts/linear-next.js --id BRO-8002 --force once fixed.",
