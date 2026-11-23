@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-23T00:58:48.150Z",
+  "timestamp": "2026-11-23T01:23:34.139Z",
   "stats": {
-    "totalReviews": 84150,
-    "alreadyFlagged": 22481,
+    "totalReviews": 84153,
+    "alreadyFlagged": 22485,
     "dateGuardCatches": 240,
-    "directorMismatch": 3881,
-    "tvFilmSignals": 2417,
-    "londonSignals": 3969,
+    "directorMismatch": 3883,
+    "tvFilmSignals": 2418,
+    "londonSignals": 3971,
     "offBroadwaySignals": 786,
     "yearMismatch": 394,
-    "noPublishDate": 8245
+    "noPublishDate": 8234
   },
   "findings": [
     {
@@ -25993,6 +25993,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -47891,6 +47896,24 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2022-07-19",
+      "url": "https://www.theguardian.com/stage/2022/jul/19/much-ado-about-nothing-review-screwball-shakespeare-goes-with-a-swing",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
       "file": "whatsonstage--mickey-jo-boucher.json",
       "score": 53,
       "publishDate": "2022-07-19",
@@ -52055,6 +52078,19 @@
       ]
     },
     {
+      "showId": "orlando-off-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2026-11-20",
+      "url": "https://loureviews.blog/2026/11/20/play-review-orlando-a-pornobiography-at-new-diorama-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "orlando-west-end-2022",
       "file": "britishtheatrecom--libby-purves.json",
       "score": 69,
@@ -54744,6 +54780,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2023-06-07",
+      "url": "https://www.standard.co.uk/culture/theatre/patriots-noel-coward-theatre-review-transfer-almeida-tom-hollander-b1086024.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
         }
       ]
     },
