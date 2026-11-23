@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/recurrence-classes.json (bot ledger) through the close-check modules. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * linear-done-gate.test.mjs — BRO-3885 acceptance.
  *

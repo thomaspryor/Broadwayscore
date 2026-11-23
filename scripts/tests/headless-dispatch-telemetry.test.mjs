@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: writes and reads test leases under data/audit/job-leases (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Card #1454: headless dispatch lane telemetry. Requires the REAL exported
 // functions (CLAUDE.md rule 15) — never reimplements ledger/lease logic here.
 //

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/recurrence-classes.json (bot ledger) through the close-check modules. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7103 item 8: close-time root-cause check. Requires the real modules (§15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
