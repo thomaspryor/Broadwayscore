@@ -135,3 +135,16 @@ test('notes: slogans and seating descriptions are dropped, and a note cannot con
     { wheelchair: ans(true, 'Wheelchair users can sit in row A'), elevator: ans(false, 'There is no lift to every level'), note: 'A lift serves the stalls bar.' }, [page]);
   assert.equal(denied.access.note, undefined);
 });
+
+test('step-free / lift claims scoped to one area are dropped; whole-building claims stay (Codex review)', () => {
+  const part = 'There is step free access to the main foyer, The Scratch Bar and ground floor public spaces.';
+  assert.deepEqual(both('stepFree', true, part, part).access, {});
+  const bar = 'Bar - Step-free access by lift from the foyer area.';
+  assert.deepEqual(both('elevator', true, bar, bar).access, {});
+  const row = 'Limited stairs or stair free access is in Row F of the Dress circle.';
+  assert.deepEqual(both('stepFree', true, row, row).access, {});
+  const whole = 'There is step-free access to all levels of the theatre.';
+  assert.equal(both('stepFree', true, whole, whole).access.stepFree, true);
+  const lift = 'There is lift access to each level of the theatre.';
+  assert.equal(both('elevator', true, lift, lift).access.elevator, true);
+});
