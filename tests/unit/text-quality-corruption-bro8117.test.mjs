@@ -29,3 +29,9 @@ test('BRO-8117: genuine multi-signal furniture still reads corrupted', () => {
   const t = PROSE.repeat(3) + ' (Photo: X) Privacy Policy Cookie Settings Follow us on Twitter';
   assert.equal(assessFullText(t, false, { trustedComplete: true }), 'corrupted');
 });
+
+test('BRO-8117 (codex P1): unparenthesized credits still flag', () => {
+  for (const c of ['Photo by Jeremy Daniel', 'Images courtesy of the production', 'Getty Images']) {
+    assert.equal(checkCorruption(PROSE + c).isCorrupted, true, c);
+  }
+});
