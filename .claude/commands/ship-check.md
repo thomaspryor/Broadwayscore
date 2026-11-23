@@ -280,7 +280,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
 
      Reference specific files (path:line) for every finding. No generic advice. Under 600 words. Bullet points only.
 
-     If the diff below ends at the cut marker, it was truncated: open the changed files to see the rest before concluding anything about them.
+     If the diff below ends at the cut marker, it was truncated: the attached files (with their changed lines named) show the rest.
 
      THE DIFF TO REVIEW:
      PROMPT_HEAD
@@ -322,7 +322,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
 
-4. **Gemini (with codebase access) — Correctness review (BRO-7987)** — Run via Bash. A third model family that reads the code: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend, on models.js GEMINI_REVIEW (gemini-3.8-flash since BRO-8108; Carbon, BRO-8016, cost about $190 a day; 2.5-pro often opened no files); it retries once if a run opens none). Codex challenges the design; this one hunts correctness bugs, so the two overlap little.
+4. **Gemini (with the code attached) — Correctness review (BRO-7987, BRO-8160)** — Run via Bash. A third model family that sees the code: `scripts/gemini/review.js` sends your prompt plus a packed bundle (every changed file's current text with its changed lines named, windows around the changes in a file too big to send whole, and the lines elsewhere that use names the change defines) in one request to models.js GEMINI_REVIEW (gemini-3.8-flash), and logs the spend. Anything that does not fit its budget is listed to the model as OMITTED, which it must name under NOT CHECKED. It replaced an agentic CLI that browsed the repo with file tools and cost about $190 a day (BRO-8160). Codex challenges the design; this one hunts correctness bugs, so the two overlap little.
    ```bash
    GEMINI_OUT=$(mktemp /tmp/ship-check-gemini.XXXXXX)
    DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
@@ -334,7 +334,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    if [ "$D1" -eq 0 ] && [ "$D2" -eq 0 ]; then echo "ERROR: no changes against $BASE; nothing to review"; exit 1; fi
    {
    cat <<'PROMPT_HEAD'
-   You are a senior code reviewer. You can READ this repository with your file tools (read_file, grep_search, glob, list_directory). Use them: open every file the diff touches and the code it calls or is called by, and check each claim against the real code before you make it. Every finding must cite file:line. No generic advice. Do not run setup or preflight commands; you cannot, and none are needed.
+   You are a senior code reviewer. The current text of every file the diff touches, and the lines elsewhere that use what it defines, are attached after the diff. Check each claim against that code before you make it. Every finding must cite file:line. No generic advice.
 
    Find, most severe first:
    1. Correctness bugs: wrong units, off-by-one, inverted conditions, wrong argument order, a caller the diff did not update, a return value it ignores.
@@ -343,18 +343,18 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    4. Security: secrets printed or logged, injection, unsanitised input reaching a shell.
    If you find nothing real, say "No findings" and list what you checked. Under 500 words. Bullet points only.
 
-   If the diff below ends at the cut marker, it was truncated: open the changed files to see the rest before concluding anything about them.
+   If the diff below ends at the cut marker, it was truncated: the attached files (with their changed lines named) show the rest.
 
    THE DIFF TO REVIEW:
    PROMPT_HEAD
    git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ package.json CLAUDE.md 2>/dev/null | awk 'NR<=2000; NR==2001{print "=== DIFF CUT AT 2000 LINES ==="}'
    echo; echo "=== UNCOMMITTED CHANGES ==="
    git diff HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ package.json CLAUDE.md 2>/dev/null | awk 'NR<=1000; NR==1001{print "=== DIFF CUT AT 1000 LINES ==="}'
-   } | node scripts/gemini/review.js --caller=ship-check > "$GEMINI_OUT"
+   } | node scripts/gemini/review.js --caller=ship-check --base="$BASE" > "$GEMINI_OUT"
    GEMINI_RC=$?
    cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
    ```
-   Its status line (stderr) goes in the coverage banner: `GEMINI_RC=0` with `ok … reads=N` ran with repo access (`no-reads`: it opened no files, so its file:line claims are unverified); `3` `MISSING: <reason>` (no key, or the CLI could not be installed: print the reason as a degraded-review line); `1` `FAILED:`/`EMPTY:` (a coverage failure, not a pass); `4` `UNSAFE:` (the read-only lock did not hold: do not use the review, run `git status` and `git diff` on the files it names to see whether Gemini or another process, such as a parallel reviewer or a hook, made the change; never revert a change you have not confirmed came from Gemini; report a Gemini write as a P0 about the review tooling). Its line numbers can be a few lines off; open the file before acting on a finding.
+   Its status line (stderr) goes in the coverage banner: `GEMINI_RC=0` with `ok … reads=N partial=P unbundled=U … usd=X` reviewed N attached files (P of them as windows; U left out for size or as secrets, named in its NOT CHECKED list); `no-reads` means no files were attached, so its file:line claims are unverified; `3` `MISSING: <reason>` (no key: print the reason as a degraded-review line); `1` `FAILED:`/`EMPTY:` (a coverage failure, not a pass). Its line numbers come from the attached files; open the file before acting on a finding.
 
 5. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:
 
@@ -369,7 +369,7 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
 Present findings in a structured report.
 
 **Reviewer coverage (print this FIRST — a degraded review is NOT a passed review):**
-State exactly which reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback, (4) Gemini correctness review: its `GEMINI-REVIEW:` status line with the file-read count, or its MISSING/FAILED/UNSAFE reason. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review, e.g. a failed data preflight — task #1320), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review (blocked by data preflight) — fell back to gpt-5.4-mini`; do not fold either into a bare "reviewed, no findings" line, since an empty/refused-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
+State exactly which reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback, (4) Gemini correctness review: its `GEMINI-REVIEW:` status line with the attached-file count and cost, or its MISSING/FAILED/EMPTY reason. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). If reviewer 3 hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review, e.g. a failed data preflight — task #1320), the `⚠️` line must say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review (blocked by data preflight) — fell back to gpt-5.4-mini`; do not fold either into a bare "reviewed, no findings" line, since an empty/refused-but-"passing" Codex run and a real zero-findings Codex run must never look identical. Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
 
 **P0 — Blockers** (must fix before shipping):
 - Build/lint/type errors

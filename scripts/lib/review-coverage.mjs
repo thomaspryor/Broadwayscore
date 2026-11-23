@@ -100,7 +100,7 @@ export function geminiReviewOk(content) {
   if (!GEMINI_OK_LINE_RE.test(text)) return false;
   return text.replace(GEMINI_OK_LINE_RE_G, '').trim().length >= MIN_RESULT_CHARS;
 }
-// review.js:232 `GEMINI-REVIEW: ok model=M reads=N[ retried=1][ tree-check=...]`, pinned by a test on the producer.
+// review.js main() `GEMINI-REVIEW: ok model=M reads=N partial=P unbundled=U ...`, pinned by a test on the producer.
 const GEMINI_OK_LINE_SRC = String.raw`^GEMINI-REVIEW: ok model=\S+ reads=[1-9]\d*(?: \S+)*[ \t]*$`;
 const GEMINI_OK_LINE_RE = new RegExp(GEMINI_OK_LINE_SRC, 'm');
 const GEMINI_OK_LINE_RE_G = new RegExp(GEMINI_OK_LINE_SRC, 'gm');

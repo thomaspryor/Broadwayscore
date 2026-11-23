@@ -18,7 +18,7 @@ module.exports = {
   // gemini-3.8-flash as its replacement (BRO-7511). Thinks by default, so callers
   // send no thinkingConfig and keep maxOutputTokens high enough for thoughts.
   GEMINI_PRO: 'gemini-3.8-flash',
-  // Repo-reading code reviewer (scripts/gemini/review.js, plan-review's Gemini curl). Its own pin so
+  // Code reviewer (scripts/gemini/review.js: one request with the code attached since BRO-8160; plan-review's Gemini curl). Its own pin so
   // a reviewer upgrade never moves the utility or scoring callers. BRO-8016 (owner 2026-11-21: "use a
   // powerful model") moved it to gemini-4-carbon; BRO-8108 (owner 2026-11-23, after a ~$190/day
   // Google Cloud anomaly from Carbon reviews) chose gemini-3.8-flash: it opened 5 files on the

@@ -197,13 +197,13 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > THE PLAN:
    > [paste the full plan text here]
 
-4. **Gemini (with codebase access) — Consistency & Gap Checker** — Run via Bash. Since BRO-7987 Gemini reads the repository the way Codex does: `scripts/gemini/review.js` runs the Gemini CLI headless and read-only (a policy file allows only its file-reading tools; it installs the pinned CLI in cloud, refuses a run that changed the working tree, and logs the spend).
+4. **Gemini (with the named files attached) — Consistency & Gap Checker** — Run via Bash. `scripts/gemini/review.js` attaches the current text of every tracked file the plan names (secret-looking names and binaries never sent) and sends it with the prompt in one request, then logs the spend (BRO-7987; one request since BRO-8160, the agentic CLI cost about $190 a day). So name the files the plan touches by their repo path.
    ```bash
    [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty; write it (and export PLAN_FILE in this same shell) before running this reviewer"; exit 1; }
    GEMINI_OUT=$(mktemp /tmp/plan-review-gemini.XXXXXX)
    {
    cat <<'PROMPT_HEAD'
-   You can READ this repository with your file tools (read_file, grep_search, glob, list_directory). Before you claim anything about a file, script or workflow the plan names, open it. Cite file:line for every code-level claim. Do not run setup or preflight commands; you cannot, and none are needed.
+   The current text of the repository files this plan names is attached after it. Before you claim anything about a file, script or workflow the plan names, check the attached text. Cite file:line for every code-level claim. If a file you need is not attached, say so instead of guessing.
 
    Review this plan for internal contradictions, gaps between stated goals and actual steps, and assumptions that are never validated.
 
@@ -228,10 +228,9 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    cat "$GEMINI_OUT"; rm -f "$GEMINI_OUT"; echo "GEMINI_RC=$GEMINI_RC"
    ```
    Its status line (stderr) says what happened. Put it in the coverage banner (Phase 3):
-   - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with repo access. `no-reads` instead of `ok` means it opened no files, so the banner says its code claims are unverified.
-   - `GEMINI_RC=3`, `MISSING: <reason>`: run the plan-text-only curl below instead and print `Gemini: MISSING (<reason>), plan-text curl ran instead, no repo access`. If the reason is `GEMINI_API_KEY is not set`, record Gemini as **MISSING** with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed). Don't silently drop it.
+   - `GEMINI_RC=0`, `GEMINI-REVIEW: ok model=… reads=N`: Gemini ran with N repo files attached. `no-reads` instead of `ok` means the plan named no tracked file, so the banner says its code claims are unverified.
+   - `GEMINI_RC=3`, `MISSING: <reason>`: run the plan-text-only curl below instead and print `Gemini: MISSING (<reason>), plan-text curl ran instead, no repo access`. If the reason is `GEMINI_API_KEY is not set` (the only MISSING reason now), record Gemini as **MISSING** with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed). Don't silently drop it.
    - `GEMINI_RC=1`, `FAILED:` or `EMPTY:`: a coverage failure, not a pass. Run the curl below too and print the reason in the banner.
-   - `GEMINI_RC=4`, `UNSAFE:`: the working tree changed while Gemini ran. Either the read-only lock failed or another process (a parallel reviewer, a hook, a pull) edited those files. Do not use its review. Run `git status` and `git diff` on the named files and work out which it was; never revert a change you have not confirmed came from Gemini. If Gemini wrote it, report a P0 about the review tooling. Then run the curl below.
 
    Fallback (plan text only, no repo access): check `jq -e '.error'` on the response and surface any API error instead of emitting empty output.
    ```
@@ -321,7 +320,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
 
 ### Phase 3: Present results
 
-**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran with repo access (`scripts/gemini/review.js`, and how many files it read) or only on the plan-text curl. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review — task #1320), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review — fell back to gpt-5.4-mini`; don't fold either into a bare "reviewed" line, since an empty/refused-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
+**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran with repo files attached (`scripts/gemini/review.js`, and its reads= count) or only on the plan-text curl. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. If the Codex lens hit `CODEX_EMPTY` (Codex CLI present, exited 0, but produced no usable text — task #1081) or `CODEX_REFUSED` (Codex explicitly declined to review — task #1320), say so explicitly, e.g. `⚠️ Codex ran but returned empty output (CLI flake, not missing) — fell back to gpt-5.4-mini` or `⚠️ Codex refused to review — fell back to gpt-5.4-mini`; don't fold either into a bare "reviewed" line, since an empty/refused-but-"passing" Codex run and a real zero-findings run must never look identical. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
 
 Show all six critiques clearly with headers:
 - **Codex (Production & Architecture)**
