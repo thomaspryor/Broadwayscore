@@ -624,14 +624,6 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
           )}
         </button>
       )}
-      {/* BRO-8170 gap 3: the rest could not be matched to this page's data
-          (only while the show-refresh reader is on). Say so instead of a
-          button that silently goes away. */}
-      {mismatched && moreProp && moreProp.totalCount > reviews.length && (
-        <p className="mt-2 text-center text-xs text-fg-muted" role="status" data-testid="reviews-more-updating">
-          The other {moreProp.totalCount - reviews.length} reviews are being updated. Reload the page in a moment to see them.
-        </p>
-      )}
     </div>
   );
 }
