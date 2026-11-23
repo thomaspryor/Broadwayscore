@@ -1228,6 +1228,20 @@
     "queuedAt": "2026-11-23T02:55:16.099Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-23.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-23T03:17:32.444Z"
+  },
+  {
     "conditionKey": "land:land/bro-8084-pullquote-trailer-truncation",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-8084-pullquote-trailer-truncation",
     "description": "land.yml did not land land/bro-8084-pullquote-trailer-truncation: the scripts-lib-tests gate went red at eb31491b08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45102219952",
