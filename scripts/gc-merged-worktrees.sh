@@ -151,6 +151,20 @@ if [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] || [ -n "${TEMP_CHECKOUT_REAP_ROOTS:-}" 
       | while IFS= read -r _tcr_line; do echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] $_tcr_line"; done | tee -a "$LOG" || true
   fi
 fi
+# BRO-8179: reap every other stale top-level /private/tmp entry (test mkdtemp
+# litter, idle session clones): ~140k entries / ~20GB a day, never removed
+# because macOS clears /tmp only at reboot. Own safety rules (age tiers, lsof,
+# git local work) in reap-stale-tmp.js; budgeted so one pass cannot hold the
+# hourly run. Test seam: skipped under WORKTREE_GC_REPOS_JSON unless the test
+# names its own TMP_REAP_ROOT, so a fixture run never touches the real /tmp.
+if [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] || [ -n "${TMP_REAP_ROOT:-}" ]; then
+  if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/reap-stale-tmp.js" ]; then
+    _str_args=(--budget-min "${TMP_REAP_BUDGET_MIN:-20}" --no-measure)
+    [ "$DRY_RUN" = "1" ] && _str_args+=(--dry-run)
+    node "$SCRIPT_DIR/lib/reap-stale-tmp.js" "${_str_args[@]}" 2>&1 \
+      | while IFS= read -r _str_line; do echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] $_str_line"; done | tee -a "$LOG" || true
+  fi
+fi
 gc_lock_acquired=0
 if mkdir "$GC_LOCK_DIR" 2>/dev/null; then
   gc_lock_acquired=1

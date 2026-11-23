@@ -101,7 +101,7 @@ function openTopNames(snapshot, root) {
  * True when anything under dir changed after cutoffMs. Early-exits on the
  * first recent mtime. Unreadable subtrees count as recent (keep).
  */
-function touchedSince(dir, cutoffMs, limit = WALK_LIMIT) {
+function touchedSince(dir, cutoffMs, limit = WALK_LIMIT, acc = null) {
   for (const marker of ['.git/index', '.git/HEAD', '.git/logs/HEAD']) {
     try { if (fs.lstatSync(path.join(dir, marker)).mtimeMs > cutoffMs) return true; } catch { /* absent */ }
   }
@@ -117,6 +117,7 @@ function touchedSince(dir, cutoffMs, limit = WALK_LIMIT) {
       let st;
       try { st = fs.lstatSync(p); } catch { continue; }
       if (st.mtimeMs > cutoffMs) return true;
+      if (acc) acc.bytes += (st.blocks || 0) * 512;
       if (ent.isDirectory() && !PRUNE_DIRS.has(ent.name)) stack.push(p);
     }
   }
@@ -138,12 +139,15 @@ function decideEntry(root, name, { now = Date.now(), maxAgeH = MAX_AGE_H, openNa
   const cutoff = now - ageH * 3600 * 1000;
   if (st.mtimeMs > cutoff) return { reap: false, reason: `younger than ${ageH}h` };
   if (!openNames || openNames.has(name)) return { reap: false, reason: 'open handle under it (or lsof failed)' };
-  if (isDir && touchedSince(p, cutoff)) return { reap: false, reason: `something inside changed within ${ageH}h` };
+  // acc: on-disk bytes seen by the walk (pruned node_modules/.git objects and
+  // past-WALK_LIMIT entries not counted) = a cheap lower bound on freed space.
+  const acc = { bytes: (st.blocks || 0) * 512 };
+  if (isDir && touchedSince(p, cutoff, WALK_LIMIT, acc)) return { reap: false, reason: `something inside changed within ${ageH}h` };
   if (isDir && ageH < LONG_AGE_H && hasGit(p) && gitHasLocalWork(p)) {
     const longCutoff = now - LONG_AGE_H * 3600 * 1000;
     if (st.mtimeMs > longCutoff || touchedSince(p, longCutoff)) return { reap: false, reason: 'git checkout with local work, younger than 7d' };
   }
-  return { reap: true, path: p, isDir, bytes: isDir ? 0 : st.size, reason: `idle >${ageH}h, nothing open` };
+  return { reap: true, path: p, isDir, bytes: acc.bytes, reason: `idle >${ageH}h, nothing open` };
 }
 
 function duKb(p) {
@@ -172,7 +176,7 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
       const fresh = openTopNames(snapshotFn({ excludePid: process.pid }), real);
       for (const d of batch) {
         if (fresh === null || fresh.has(path.basename(d.path))) { summary.kept['opened since scan'] = (summary.kept['opened since scan'] || 0) + 1; continue; }
-        const kb = measure ? (d.isDir ? duKb(d.path) : Math.ceil(d.bytes / 1024)) : 0;
+        const kb = measure && d.isDir ? duKb(d.path) : Math.ceil(d.bytes / 1024);
         if (dryRun) { summary.removed++; summary.freedKb += kb; continue; }
         try {
           fs.rmSync(d.path, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 });
@@ -199,9 +203,9 @@ function reapStaleTmp({ root = process.env.TMP_REAP_ROOT || DEFAULT_ROOT, maxAge
 }
 
 function formatSummary(s, dryRun) {
-  const gb = (s.freedKb / 1024 / 1024).toFixed(2);
+  const gb = (s.freedKb / 1024 / 1024).toFixed(2); // --no-measure: walk lower bound
   const kept = Object.entries(s.kept).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, v]) => `${k}=${v}`).join('; ');
-  return `STALE-TMP-REAP scanned=${s.scanned} ${dryRun ? 'would_remove' : 'removed'}=${s.removed} freed=${gb}GB${s.skipped ? ` skipped=${s.skipped}` : ''} kept: ${kept || 'none'}`;
+  return `STALE-TMP-REAP scanned=${s.scanned} ${dryRun ? 'would_remove' : 'removed'}=${s.removed} freed=${gb}GB (${Math.round(s.freedKb / 1024)}MB)${s.skipped ? ` skipped=${s.skipped}` : ''} kept: ${kept || 'none'}`;
 }
 
 module.exports = { DEFAULT_ROOT, MAX_AGE_H, SHORT_AGE_H, LONG_AGE_H, ageTierH, gitHasLocalWork, isProtectedName, openTopNames, touchedSince, decideEntry, reapStaleTmp, formatSummary };
