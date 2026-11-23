@@ -1389,3 +1389,18 @@ describe('BRO-8090 ship-check 2026-11-23 (Claude + Codex reviewers)', () => {
     assert.notEqual(V.verifyAggregatorUrl({ url: 'https://www.ft.com/content/fe1c433f-2786-4c16-b3e3-61e386182235', html, show: YEES }).isValid, true);
   });
 });
+describe('BRO-8091 noBylineTerminalReason: fetched, bodied, bylineless page on an old show settles', () => {
+  const { noBylineTerminalReason } = require('../../scripts/lib/pending-triage.js');
+  const body = 'x'.repeat(400);
+  const old = { openingDate: '2009-10-04' };
+  const NOW = Date.parse('2026-11-23');
+  test('settles an archive page: fetched, real body, old show', () => {
+    assert.match(noBylineTerminalReason({ pendingRefetchedAt: 'x', fullText: body }, old, NOW), /^no-byline-on-page/);
+  });
+  test('keeps: never fetched / no body / opening window / no show', () => {
+    assert.equal(noBylineTerminalReason({ fullText: body }, old, NOW), null);
+    assert.equal(noBylineTerminalReason({ pendingRefetchedAt: 'x', fullText: 'short' }, old, NOW), null);
+    assert.equal(noBylineTerminalReason({ pendingRefetchedAt: 'x', fullText: body }, { openingDate: '2026-11-01' }, NOW), null);
+    assert.equal(noBylineTerminalReason({ pendingRefetchedAt: 'x', fullText: body }, null, NOW), null);
+  });
+});

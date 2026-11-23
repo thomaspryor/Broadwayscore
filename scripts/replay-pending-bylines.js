@@ -888,6 +888,12 @@ async function processShow(showId, deps = {}) {
     if (!byline || byline === 'Unknown') {
       if (isUnrecoverablePendingStub(data, null)) {
         noteUnrecoverable(file, filepath, data, 'no byline in page and no recoverable body');
+      } else if (pendingTriage.noBylineTerminalReason(data, show)) {
+        data.promoteSkippedReason = pendingTriage.noBylineTerminalReason(data, show);
+        data.promoteSkippedAt = now().toISOString();
+        console.log(`  [${file}] no byline on fetched page — settled (BRO-8091)`);
+        if (!dry) { try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); } }
+        tagged++;
       } else {
         console.log(`  [${file}] no byline detected — keep in pending`);
         if (!data.pendingRefetchedAt) stampFetchAttempt(filepath, data, dry, now().toISOString(), 'no-byline');

@@ -210,6 +210,21 @@ function buildHeldUrlIndex(reviewRows) {
   return idx;
 }
 
+/**
+ * BRO-8091: the page WAS fetched, it has a real body, and it names no author, on a show outside its
+ * post-opening window (a late byline can no longer appear). 173 pre-2015 TheaterMania archive pages
+ * ended here (their JSON-LD author is a migration account id, no name), and with only "keep" they were
+ * re-fetched, paid, every era run. Settle them with a typed reason; clearing promoteSkippedReason
+ * re-opens one if a byline rule ever learns to read these pages. Pure. Returns the reason or null.
+ */
+function noBylineTerminalReason(data, show, nowMs = Date.now()) {
+  if (!data || !data.pendingRefetchedAt) return null;           // no successful fetch this run
+  if (String(data.fullText || '').trim().length < 200) return null; // no real body: handled by unrecoverable path
+  const op = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  if (!Number.isFinite(op) || nowMs - op < 90 * 86400000) return null; // opening week(s): byline may still land
+  return 'no-byline-on-page: fetched page has a body but no author (archive page); not promotable without a critic (BRO-8091)';
+}
+
 const SETTLED_KEYS = ['promoteSkippedReason', 'rssIdentityRejected'];
 /** A stub the drain already settled (it never fetches it again). Pure. */
 function isSettledPendingStub(data) {
@@ -438,4 +453,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
+module.exports = { noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra };
