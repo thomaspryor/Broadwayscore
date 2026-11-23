@@ -210,29 +210,47 @@ test('BRO-7145 review: driver commits stay first-pass-miss evidence (text-gap / 
   assert.deepEqual(og.firstPassMisses([{ ...run(mk(true)), category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'discovery-gap']]);
 });
 
-test('BRO-7145: a hand ingest that only re-adds an outlet already live (false alarm) is not hands; a real missed review still is', () => {
-  // Desire Under the Elms 2026-11-19: Guardian live from the listing poller at 19:13 the day
+test('BRO-7145: a hand ingest that only re-adds an outlet already live (false alarm) is not hands; real finds still are', () => {
+  // Desire Under the Elms 2026-11-19: Guardian live from the listing poller (text fetched) the day
   // before; a probe-driven ingest-urls dispatch added a stub that was later deleted.
-  const ingest = (name) => ({ sha: 'ffff333344', at: iso(embargo + 40 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
-    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [`${show.id}/${name}`], added: [`${show.id}/${name}`] });
+  const T = embargo + 40 * 3600000;
+  const ingest = (names, extraFiles = []) => ({ sha: 'ffff333344', at: iso(T), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [...names, ...extraFiles].map((n) => `${show.id}/${n}`), added: names.map((n) => `${show.id}/${n}`) });
   const run = (fs, c) => og.gradeOpening({ show, files: fs, commits: [c], gapResult, missingCited: 0, nowMs: closed });
-  const live = { ...good(1), _file: `${show.id}/guardian--arifa-akbar.json`, outletId: 'guardian', firstSeenAt: iso(embargo + 20 * 3600000) };
+  const live = { ...good(1), _file: `${show.id}/guardian--arifa-akbar.json`, outletId: 'guardian', ingestOrigin: 'automated', source: 'outlet-listing-poller',
+    firstSeenAt: iso(T - 21 * 3600000), textFetchedAt: iso(T - 20 * 3600000) };
+  const stubAdd = ingest(['guardian--unknown.json']);
   // added file since deleted: redundant
-  const gone = run([...files, live], ingest('guardian--unknown.json'));
+  const gone = run([...files, live], stubAdd);
   assert.notEqual(gone.verdict, 'needed-hands');
   assert.equal(gone.redundantHands.length, 1);
   assert.equal(gone.redundantHands[0].cause, 'false-alarm');
-  // added file kept as a duplicate of the live one: redundant
-  const dup = { ...good(2), _file: `${show.id}/guardian--unknown.json`, outletId: 'guardian', duplicateOf: 'guardian--arifa-akbar.json', firstSeenAt: iso(embargo + 40 * 3600000) };
-  assert.notEqual(run([...files, live, dup], ingest('guardian--unknown.json')).verdict, 'needed-hands');
-  // the ingest added a live, non-duplicate review (a second critic): real hands
-  const second = { ...good(3), _file: `${show.id}/guardian--other.json`, outletId: 'guardian', firstSeenAt: iso(embargo + 40 * 3600000) };
-  assert.equal(run([...files, live, second], ingest('guardian--other.json')).verdict, 'needed-hands');
-  // the outlet's earlier file arrived AFTER the ingest: the ingest was the find, real hands
-  const later = { ...live, firstSeenAt: iso(embargo + 50 * 3600000) };
-  assert.equal(run([...files, later], ingest('guardian--unknown.json')).verdict, 'needed-hands');
-  // no earlier file for the outlet: real hands
-  assert.equal(run(files, ingest('guardian--unknown.json')).verdict, 'needed-hands');
+  assert.match(og.gradeLine(gone), /ran on its own\. A person also re-added guardian, already live, not counted\./);
+  // added file kept as a duplicate OF the live review: redundant; duplicate of something else: hands
+  const dup = (target) => ({ ...good(2), _file: `${show.id}/guardian--unknown.json`, outletId: 'guardian', duplicateOf: target, firstSeenAt: iso(T) });
+  assert.notEqual(run([...files, live, dup('guardian--arifa-akbar.json')], stubAdd).verdict, 'needed-hands');
+  assert.equal(run([...files, live, dup('guardian--someone-else.json')], stubAdd).verdict, 'needed-hands');
+  // a hand-created duplicate of the live review is also redundant
+  assert.notEqual(run([...files, live, { ...dup('guardian--arifa-akbar.json'), ingestOrigin: 'manual' }], stubAdd).verdict, 'needed-hands');
+  // the ingest added a live second critic: real hands
+  const second = { ...good(3), _file: `${show.id}/guardian--other.json`, outletId: 'guardian', firstSeenAt: iso(T) };
+  assert.equal(run([...files, live, second], ingest(['guardian--other.json'])).verdict, 'needed-hands');
+  // ...even after that second critic is renamed (added path gone, renamed file first seen at the commit)
+  const renamed = { ...second, _file: `${show.id}/guardian--jane-doe.json` };
+  assert.equal(run([...files, live, renamed], stubAdd).verdict, 'needed-hands');
+  // a commit that also modified the live file carries a repair: hands
+  assert.equal(run([...files, live], ingest(['guardian--unknown.json'], ['guardian--arifa-akbar.json'])).verdict, 'needed-hands');
+  // earlier file only a stub at ingest time (text fetched after): hands
+  assert.equal(run([...files, { ...live, textFetchedAt: iso(T + 3600000) }], stubAdd).verdict, 'needed-hands');
+  // earlier file not the pipeline's own: hands
+  assert.equal(run([...files, { ...live, ingestOrigin: 'manual' }], stubAdd).verdict, 'needed-hands');
+  // margin edge: text fetched 1.9h before is too close, 2.1h is enough
+  assert.equal(run([...files, { ...live, firstSeenAt: iso(T - 1.9 * 3600000), textFetchedAt: iso(T - 1.9 * 3600000) }], stubAdd).verdict, 'needed-hands');
+  assert.notEqual(run([...files, { ...live, firstSeenAt: iso(T - 2.1 * 3600000), textFetchedAt: iso(T - 2.1 * 3600000) }], stubAdd).verdict, 'needed-hands');
+  // earlier file not live (wrong production): hands
+  assert.equal(run([...files, { ...live, wrongProduction: true }], stubAdd).verdict, 'needed-hands');
+  // no earlier file for the outlet: hands
+  assert.equal(run(files, stubAdd).verdict, 'needed-hands');
 });
 
 test('BRO-7145 review: the ingest run\'s own file (first seen minutes before its commit, then renamed) is not an earlier live review', () => {

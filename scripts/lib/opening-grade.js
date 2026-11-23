@@ -394,23 +394,47 @@ function gradeOpening({ show, files = [], publishedReviews = null, commits = [],
   if ((files || []).length) {
     for (let i = signals.length - 1; i >= 0; i--) {
       const s = signals[i];
-      if (!COMMIT_SIGNAL_KINDS.has(s.kind) || s.fileChange !== 'added' || !s.outletId) continue;
-      const c = bySha.get(String(s.source || '').split(' ')[0]);
-      if (!c || !Array.isArray(c.added)) continue;
-      const addedPaths = c.added.filter((p) => p.startsWith(`${show.id}/`) && outletIdFromFile(p, show.id) === s.outletId);
+      if (!s.outletId) continue;
+      let addedPaths;
+      let c = null;
+      if (s.kind === 'hand-created-file' && s.file) {
+        if (outletIdFromFile(s.file, show.id) !== s.outletId) continue;
+        addedPaths = [s.file];
+      }
+      else if (COMMIT_SIGNAL_KINDS.has(s.kind) && s.fileChange === 'added') {
+        c = bySha.get(String(s.source || '').split(' ')[0]);
+        if (!c || !Array.isArray(c.added)) continue;
+        addedPaths = c.added.filter((p) => p.startsWith(`${show.id}/`) && outletIdFromFile(p, show.id) === s.outletId);
+      } else continue;
       if (!addedPaths.length) continue;
       const at = toMs(s.at);
-      const addedFiles = files.filter((f) => addedPaths.includes(f._file));
-      // Every file it added is gone or is a duplicate of another file now.
-      if (addedFiles.some((f) => !f.duplicateOf)) continue;
-      // The earlier file must be the pipeline's own and predate the ingest by a
-      // margin: an ingest run writes firstSeenAt minutes before its commit, and a
-      // later rename leaves the hand's own file outside addedPaths (Thelma & Louise
-      // 2026-09-17: whatsonstage first seen 46 s before the ingest-urls commit).
-      const earlier = files.some((f) => !addedPaths.includes(f._file) && outletOfFile(f) === s.outletId
-        && !f.duplicateOf && f.ingestOrigin !== 'manual' && f.source !== 'ingest-urls'
-        && toMs(f.firstSeenAt) != null && toMs(f.firstSeenAt) < at - REDUNDANT_MARGIN_H * HOUR && isLiveFile(f, show, rtDir));
-      if (!earlier) continue;
+      // Codex review: a commit that also modified or deleted the outlet's files
+      // may carry a real repair; only pure additions can be false alarms.
+      const touched = (c ? c.files || [] : addedPaths).filter((p) => p.startsWith(`${show.id}/`) && outletIdFromFile(p, show.id) === s.outletId);
+      if (touched.some((p) => !addedPaths.includes(p))) continue;
+      const mine = files.filter((f) => outletIdFromFile(f._file, show.id) === s.outletId);
+      const addedFiles = mine.filter((f) => addedPaths.includes(f._file));
+      // The pipeline's own review of this outlet: automated, complete text in
+      // hand a margin before the ingest (firstSeenAt alone is a stub's birth),
+      // and still live.
+      const before = at - REDUNDANT_MARGIN_H * HOUR;
+      const earlier = mine.filter((f) => !addedPaths.includes(f._file) && !f.duplicateOf
+        && f.ingestOrigin === 'automated' && f.source !== 'ingest-urls'
+        && toMs(f.firstSeenAt) != null && toMs(f.firstSeenAt) < before
+        && toMs(f.textFetchedAt) != null && toMs(f.textFetchedAt) < before && isLiveFile(f, show, rtDir));
+      if (!earlier.length) continue;
+      const earlierNames = new Set(earlier.map((f) => String(f._file).split('/').pop()));
+      if (s.kind === 'hand-created-file' && !addedFiles.length) continue;
+      if (addedFiles.length) {
+        // Kept files must be duplicates OF that earlier review, not of anything.
+        if (addedFiles.some((f) => !earlierNames.has(String(f.duplicateOf || '').split('/').pop()))) continue;
+      } else {
+        // Every added file is gone. A rename leaves the ingest's own review
+        // under a new name (Thelma & Louise 2026-09-17): any other file of the
+        // outlet first seen near the commit means the ingest found something.
+        const near = mine.some((f) => !earlier.includes(f) && toMs(f.firstSeenAt) != null && Math.abs(toMs(f.firstSeenAt) - at) <= REDUNDANT_MARGIN_H * HOUR);
+        if (near) continue;
+      }
       redundantHands.unshift({ ...s, cause: 'false-alarm' });
       signals.splice(i, 1);
     }
@@ -560,7 +584,10 @@ function gradeLine(g) {
   const usual = Array.isArray(g.expectedMissing) && g.expectedMissing.length
     ? ` Usual critics with no review yet: ${g.expectedMissing.map((m) => m.name || m.outletId).join(', ')}.`
     : '';
-  return `${head}: ${count}${late}, ${tail}.${usual}`;
+  // BRO-7145: a false alarm answered by hand is not counted, but is said.
+  const r = Array.isArray(g.redundantHands) ? new Set(g.redundantHands.map((x) => x.outletId).filter(Boolean)) : new Set();
+  const redundant = r.size ? ` A person also re-added ${[...r].join(', ')}, already live, not counted.` : '';
+  return `${head}: ${count}${late}, ${tail}.${usual}${redundant}`;
 }
 
 /** Per-market tallies. */
