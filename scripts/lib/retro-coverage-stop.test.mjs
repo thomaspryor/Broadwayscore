@@ -270,3 +270,25 @@ test('BRO-7911: the retro gate still runs when the chain block cap is spent', ()
     fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(chain, { force: true }); fs.rmSync(counter, { force: true });
   }
 });
+
+// BRO-8078: the backstop for sessions the Stop gate never reaches.
+import { findRecordGaps, GAP_LEDGER, GAP_REASON } from './retro-coverage-stop.mjs';
+test('BRO-8078: findRecordGaps names a retro and a cost gap for a landing session with neither row', () => {
+  const landed = [{ session: 'https://claude.ai/code/session_01AAA', landedDay: '2026-11-21' }];
+  const g = findRecordGaps({ landed, asOf: '2026-11-22' });
+  assert.deepEqual(g.map((x) => x.kind).sort(), ['cost', 'retro']);
+  assert.equal(g[0].reason, GAP_REASON);
+  assert.equal(GAP_LEDGER, 'data/audit/session-record-gaps.jsonl');
+});
+test('BRO-8078: real rows or an already-named gap close it; a session inside its grace day is not a gap', () => {
+  const landed = [{ session: 'session_01AAA', landedDay: '2026-11-21' }, { session: 'session_01BBB', landedDay: '2026-11-21' }, { session: 'session_01CCC', landedDay: '2026-11-22' }];
+  const g = findRecordGaps({
+    landed, asOf: '2026-11-22',
+    retroRows: [{ webSessionId: 'session_01AAA' }], costRows: [{ session: 'session_01AAA' }],
+    gapRows: [{ session: 'session_01BBB', kind: 'retro' }],
+  });
+  assert.deepEqual(g.map((x) => `${x.session}:${x.kind}`), ['session_01BBB:cost']);
+});
+test('BRO-8078: sessions with no id (Mac, Codex, bots) are never gaps', () => {
+  assert.deepEqual(findRecordGaps({ landed: [{ session: '', landedDay: '2026-11-20' }, { session: null, landedDay: '2026-11-20' }], asOf: '2026-11-22' }), []);
+});

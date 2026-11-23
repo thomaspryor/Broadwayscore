@@ -227,6 +227,23 @@ async function main() {
   const retroGap = lib.retroCoverageGaps(rows.filter((r) => r.source === 'cloud'), retroRows, lib.dayMinus(auditDay, 1), ledgerSessions);
   console.error(`[landed-proof] retro coverage (advisory) for ${lib.dayMinus(auditDay, 1)}: ${retroGap.landed} web session(s) landed code, ${retroGap.covered} with a retro row, ${retroGap.missing.length} without${retroGap.missing.length ? ': ' + retroGap.missing.map((m) => m.session).join(' ') : ''}`);
 
+  // BRO-8078: the backstop. Every cloud session that landed code a day or more ago gets a retro and a cost row, or a named gap row.
+  let recordGaps = [];
+  try {
+    const gaps = await import('./lib/retro-coverage-stop.mjs');
+    const jl = (f) => readLedger(path.join(ROOT, f));
+    const gapFile = path.join(ROOT, gaps.GAP_LEDGER);
+    recordGaps = gaps.findRecordGaps({
+      landed: rows.filter((r) => r.source === 'cloud' && !r.marker).map((r) => ({ session: r.session, landedDay: r.landedDay })),
+      retroRows: jl('data/audit/session-retro.jsonl'), costRows: jl('data/audit/claude-session-cost.jsonl'), gapRows: jl(gaps.GAP_LEDGER), asOf: auditDay,
+    });
+    console.error(`[landed-proof] record gaps: ${recordGaps.length} (${recordGaps.filter((g) => g.kind === 'retro').length} retro, ${recordGaps.filter((g) => g.kind === 'cost').length} cost)`);
+    if (recordGaps.length && !dryRun) {
+      fs.mkdirSync(path.dirname(gapFile), { recursive: true });
+      fs.appendFileSync(gapFile, recordGaps.map((g) => JSON.stringify({ v: 1, ...g, recordedAt: new Date().toISOString(), source: 'landed-change-proof-audit' })).join('\n') + '\n');
+    }
+  } catch (e) { console.error(`[landed-proof] record gaps skipped: ${e && e.message}`); }
+
   const s = lib.summarize(rows);
   const byDay = {};
   for (const r of rows) (byDay[r.landedDay] ||= []).push(r);
@@ -255,7 +272,7 @@ async function main() {
     const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);
     for (const r of follow) r.card = id;
   }
-  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { retroMissing: retroGap.missing.length, retroLanded: retroGap.landed, codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
+  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { retroMissing: retroGap.missing.length, retroLanded: retroGap.landed, recordGaps: recordGaps.length, codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
   fs.mkdirSync(path.dirname(ledger), { recursive: true });
   if (add.length) fs.appendFileSync(ledger, add.map((r) => JSON.stringify(r)).join('\n') + '\n');
   console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);

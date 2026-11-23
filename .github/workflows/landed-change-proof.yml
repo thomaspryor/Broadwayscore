@@ -61,6 +61,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/landed-change-proof.jsonl 2>/dev/null || true
+          # BRO-8078: own line, a missing pathspec makes a combined git add stage nothing.
+          git add data/audit/session-record-gaps.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No proof ledger changes"
           else

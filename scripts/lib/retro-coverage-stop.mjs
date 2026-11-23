@@ -199,6 +199,38 @@ export function costRuns(events) {
   return out;
 }
 
+// BRO-8078: the Stop gate above is the only thing that makes a session record its retro and cost rows, and it can be
+// skipped by design: it fires only on a SAFE TO ARCHIVE / ACTION NEEDED close, gives up after MAX_NUDGES, fails open, and
+// never sees a session that ended without a close (killed, context ended, a worker). Audit 2026-11-21T18:00Z on:
+// 9 of 33 cloud landing sessions had no retro row and 17 no cost row. This is the backstop that cannot be skipped: the daily
+// landed-change-proof audit calls findRecordGaps over every cloud session that landed code at least a day ago and writes
+// one gap row per missing record (data/audit/session-record-gaps.jsonl) with a NAMED reason. A gap row is not a fake
+// retro or a $0 cost (both would corrupt the rollups); it is the "named reason" that makes the gap visible and closed.
+// A real row that arrives later wins: gap rows only count while no real row exists.
+export const GAP_LEDGER = 'data/audit/session-record-gaps.jsonl';
+export const GAP_REASON = 'no row on main one day after the session landed code: it closed without recording (Stop gate not reached, skipped or out of nudges)';
+const webId = (v) => (String(v || '').match(/session_[A-Za-z0-9]+/) || [])[0] || null;
+/** PURE. landed: [{ session, landedDay }] (cloud sessions that landed code). Rows are the three ledgers' parsed lines.
+ *  -> [{ session, landedDay, kind: 'retro'|'cost', reason }] for each record that is missing and not yet named as a gap.
+ *  `asOf` is the audit day; a session that landed on or after it is still running or inside its grace day. */
+export function findRecordGaps({ landed, retroRows = [], costRows = [], gapRows = [], asOf }) {
+  const retro = new Set(retroRows.map((r) => webId(r.webSessionId)).filter(Boolean));
+  const cost = new Set(costRows.map((r) => webId(r.session)).filter(Boolean));
+  const named = new Set(gapRows.map((g) => `${webId(g.session)}\u0000${g.kind}`));
+  const seen = new Map();
+  for (const l of landed || []) {
+    const id = webId(l.session);
+    if (!id || !l.landedDay || (asOf && l.landedDay >= asOf)) continue;
+    if (!seen.has(id) || l.landedDay > seen.get(id)) seen.set(id, l.landedDay);
+  }
+  const out = [];
+  for (const [session, landedDay] of seen) {
+    if (!retro.has(session) && !named.has(`${session}\u0000retro`)) out.push({ session, landedDay, kind: 'retro', reason: GAP_REASON });
+    if (!cost.has(session) && !named.has(`${session}\u0000cost`)) out.push({ session, landedDay, kind: 'cost', reason: GAP_REASON });
+  }
+  return out;
+}
+
 const MSG = {
   norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
   unlanded: 'Retro not on main: the last `session-retro.js --record` row was never carried to main by a land push after it (a row left in a worktree or on a claude/ branch is invisible to the weekly rollup). Commit it and land it: `git add data/audit/session-retro.jsonl && git commit -m "retro: session row"`, then `git push origin HEAD:refs/heads/land/<name>` and follow the Land run. Next time run --record before your final land push so it rides that push. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',

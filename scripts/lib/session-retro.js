@@ -310,6 +310,8 @@ function readLedger(file = LEDGER) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) : [];
 }
 
+// BRO-8078: several rows per session are expected (each --record appends: first run, then again with --fixes/--no-action).
+// Every reader takes the LAST row per sessionId (rollup below, retroStatus); the coverage audit matches by webSessionId.
 function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.log, spawn = require('child_process').spawnSync } = {}) {
   const cutoff = Date.now() - days * 86400000;
   const all = readLedger(ledger);
