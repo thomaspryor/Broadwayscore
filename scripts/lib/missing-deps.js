@@ -8,8 +8,15 @@ const path = require('path');
 const { isBuiltin } = require('module');
 const { readWorkflowJobBlocks, splitWorkflowSteps, runLineMatches } = require('./audit-workflow-hygiene-rules');
 
-function sourceRequires(source) {
+function sourceRequires(source, file = '') {
   const acorn = require('acorn'); // Direct devDependency, installed by lint-workflows.
+  // BRO-8080: tsx-run scripts are TypeScript. Strip types first (transpile only,
+  // no type-check); type-only imports are elided, so they are not dependencies.
+  if (/\.[cm]?ts$/.test(file)) {
+    source = require('typescript').transpileModule(source, {
+      compilerOptions: { target: 99, module: 99, verbatimModuleSyntax: false, isolatedModules: true },
+    }).outputText;
+  }
   let ast;
   try {
     ast = acorn.parse(source, { ecmaVersion: 'latest', sourceType: 'script', locations: true, allowReturnOutsideFunction: true });
@@ -45,11 +52,23 @@ function sourceRequires(source) {
 
 function resolveLocal(from, specifier) {
   const base = path.resolve(path.dirname(from), specifier);
-  for (const suffix of ['', '.js', '.cjs', '.mjs', '.json', '/index.js', '/index.cjs']) {
-    const file = base + suffix;
-    if (fs.existsSync(file) && fs.statSync(file).isFile()) return file;
+  const bases = [base];
+  // tsx resolves `./x.js` to `./x.ts` (and .mjs/.cjs to .mts/.cts).
+  const swapped = base.replace(/\.js$/, '.ts').replace(/\.mjs$/, '.mts').replace(/\.cjs$/, '.cts');
+  if (swapped !== base) bases.push(swapped);
+  for (const b of bases) {
+    for (const suffix of ['', '.js', '.cjs', '.mjs', '.ts', '.mts', '.cts', '.json', '/index.js', '/index.cjs', '/index.ts']) {
+      const file = b + suffix;
+      if (fs.existsSync(file) && fs.statSync(file).isFile()) return file;
+    }
   }
   return null;
+}
+
+function repoRoot(file) {
+  let dir = path.dirname(file);
+  while (dir !== path.dirname(dir) && !fs.existsSync(path.join(dir, 'tsconfig.json'))) dir = path.dirname(dir);
+  return dir;
 }
 
 function dependencyGraph(entry, cache = new Map()) {
@@ -61,7 +80,7 @@ function dependencyGraph(entry, cache = new Map()) {
     if (seen.has(key) || file.endsWith('.json')) return;
     seen.add(key);
     if (!cache.has(file)) {
-      try { cache.set(file, { requires: sourceRequires(fs.readFileSync(file, 'utf8')) }); }
+      try { cache.set(file, { requires: sourceRequires(fs.readFileSync(file, 'utf8'), file) }); }
       catch (err) { cache.set(file, { error: err.message }); }
     }
     const parsed = cache.get(file);
@@ -69,8 +88,11 @@ function dependencyGraph(entry, cache = new Map()) {
     for (const dep of parsed.requires) {
       const kind = inherited === 'eager' ? dep.kind : inherited;
       const nextChain = [...chain, { file, line: dep.line, specifier: dep.specifier }];
-      if (dep.specifier.startsWith('.')) {
-        const local = resolveLocal(file, dep.specifier);
+      if (dep.specifier.startsWith('.') || dep.specifier.startsWith('@/')) {
+        // `@/x` is tsconfig's paths alias for src/x (honored by tsx), not a package.
+        const local = dep.specifier.startsWith('@/')
+          ? resolveLocal(path.join(repoRoot(file), 'src', '_'), './' + dep.specifier.slice(2))
+          : resolveLocal(file, dep.specifier);
         if (local) walk(local, kind, nextChain);
         else if (kind === 'eager') errors.push({ file, error: `Unresolved local module: ${dep.specifier}` });
       } else if (!isBuiltin(dep.specifier) && !path.isAbsolute(dep.specifier)) {
@@ -119,10 +141,30 @@ function commandEvents(source) {
     let i = 0;
     while (/^(?:env|if|then|do|[A-Za-z_]\w*=.*)$/.test(words[i] || '')) i++;
     if (words[i] === 'timeout') i += 2;
-    if (words[i] === 'node' || words[i] === 'nodejs') {
-      i++;
-      while (/^--(?:no-warnings|experimental-[\w-]+)$/.test(words[i] || '')) i++;
-      if (/^(?:\.\/)?scripts\/[\w./-]+\.(?:js|cjs|mjs)$/.test(words[i] || '')) {
+    // BRO-8080: TypeScript runners. `npx [-y] tsx`, bare `tsx`, and node with a
+    // tsx loader (`--import tsx`, `--loader tsx`, `-r tsx/cjs`, `=` forms too).
+    let tsRunner = false;
+    if (words[i] === 'npx' || words[i] === 'pnpx' || (words[i] === 'pnpm' && words[i + 1] === 'exec')) {
+      i += words[i] === 'pnpm' ? 2 : 1;
+      while (/^(?:-y|--yes|--no|--no-install|--prefer-offline|--quiet|-q)$/.test(words[i] || '')) i++;
+      if (words[i] !== 'tsx') { i = words.length; }
+    }
+    if (words[i] === 'tsx') { tsRunner = true; i++; }
+    if (tsRunner || words[i] === 'node' || words[i] === 'nodejs') {
+      if (!tsRunner) i++;
+      while (i < words.length && /^-/.test(words[i])) {
+        const flag = words[i];
+        if (/^(?:--import|--loader|--experimental-loader|--require|-r)$/.test(flag)) {
+          if (/^tsx(?:\/|$)/.test(words[i + 1] || '')) tsRunner = true;
+          i += 2; continue;
+        }
+        if (/^--(?:import|loader|experimental-loader|require)=tsx(?:\/|$)/.test(flag)) { tsRunner = true; i++; continue; }
+        if (tsRunner && /^--(?:tsconfig|env-file)$/.test(flag)) { i += 2; continue; }
+        if (/^--(?:no-warnings|experimental-[\w-]+|tsconfig=.*|env-file=.*|no-cache|clear-screen=\w+|ignore-scripts)$/.test(flag) || tsRunner) { i++; continue; }
+        break;
+      }
+      const ext = tsRunner ? 'js|cjs|mjs|ts|mts|cts' : 'js|cjs|mjs';
+      if (new RegExp('^(?:\\.\\/)?scripts\\/[\\w./-]+\\.(?:' + ext + ')$').test(words[i] || '')) {
         events.push({ type: 'script', script: words[i].replace(/^\.\//, '') });
       }
     } else if (words[i] === 'npm' && /^(?:ci|install)$/.test(words[i + 1] || '')) {
