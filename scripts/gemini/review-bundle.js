@@ -37,6 +37,7 @@ const CALLER_HITS_PER_NAME = 8;
 const CALLER_LINES_MAX = 80;
 const CALLER_HITS_SKIP = 200; // a name used this often is too generic to be a caller list
 const MAX_PROMPT_PATHS = 40;
+const OMITTED_LIST_MAX = 40;
 const KEYWORDS = new Set(['if', 'for', 'while', 'switch', 'catch', 'function', 'return', 'async', 'await', 'constructor', 'require', 'module', 'exports', 'default', 'this', 'true', 'false', 'null', 'undefined', 'const', 'main']);
 
 function git(args, cwd) {
@@ -244,7 +245,12 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
     'Check each claim against this text before you make it. If something you need is not here, do not guess: name it under NOT CHECKED.',
   ];
   if (deleted.length) intro.push(`DELETED by this change (see the diff): ${deleted.join(', ')}`);
-  if (omitted.length) intro.push(`OMITTED (not given to you; list each under NOT CHECKED): ${omitted.map((o) => `${o.path} (${o.why})`).join('; ')}`);
+  if (omitted.length) {
+    // A change of hundreds of files must not turn this list into the bulk of the request.
+    const shown = omitted.slice(0, OMITTED_LIST_MAX).map((o) => `${o.path} (${o.why})`);
+    const more = omitted.length - shown.length;
+    intro.push(`OMITTED (not given to you; list each under NOT CHECKED): ${shown.join('; ')}${more > 0 ? `; and ${more} more files (say "${more} more files not checked")` : ''}`);
+  }
   if (!given.length && !partial.length) intro.push('No repository files were attached.');
   const text = `${intro.join('\n')}\n\n${parts.join('\n')}=== END OF REPOSITORY CONTEXT ===\nEnd your answer with "NOT CHECKED:" listing what you could not verify from the material given (or "nothing").\n`;
   return { text, given, partial, omitted, deleted, callerLines };

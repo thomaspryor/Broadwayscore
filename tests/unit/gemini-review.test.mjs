@@ -150,6 +150,18 @@ test('buildBundle: a small budget omits files visibly (never silently); budget 0
   assert.match(none.text, /No repository files were attached/);
 });
 
+test('buildBundle: the OMITTED list is capped so a huge change cannot bloat the request', () => {
+  const repo = fixtureRepo();
+  for (let i = 0; i < 60; i++) fs.writeFileSync(path.join(repo, `gen${i}.js`), `module.exports = ${i};\n`);
+  sh(repo, 'add', '-A');
+  sh(repo, 'commit', '-qm', 'many');
+  const b = bundleLib.buildBundle({ cwd: repo, base: 'main', budgetChars: 0 });
+  assert.ok(b.omitted.length > 60);
+  const line = b.text.split('\n').find((l) => l.startsWith('OMITTED'));
+  assert.equal((line.match(/did not fit the review budget|secret|binary/g) || []).length, 40);
+  assert.match(line, new RegExp(`and ${b.omitted.length - 40} more files`));
+});
+
 test('buildBundle: a base that does not resolve is an error; no base attaches the files the prompt names', () => {
   const repo = fixtureRepo();
   assert.match(bundleLib.buildBundle({ cwd: repo, base: 'no-such-ref' }).error, /does not resolve/);
