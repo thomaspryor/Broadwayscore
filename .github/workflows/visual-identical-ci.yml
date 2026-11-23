@@ -29,18 +29,31 @@ jobs:
       HOLD_BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
       FEATURES: "criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts"
     steps:
+      # BRO-8164: blobless clones fetch file contents lazily over the network; abort a stalled
+      # transfer fast instead of hanging to the job timeout (opening-night-poller.yml pattern).
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
       - name: Checkout main (base, and the trusted scripts)
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
-          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+          # BRO-8164: full commit graph (patch-id and the ancestry check need it) but no historical
+          # blobs. Full blobs took 35-40 min and every run was cancelled (land.yml, BRO-423).
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Checkout the held branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ env.HOLD_BRANCH }}
           path: head
-          fetch-depth: 0 # hygiene-full-blobs-ok: patch-id and the ancestry check need full history
+          # BRO-8164: full commit graph (patch-id and the ancestry check need it) but no historical
+          # blobs. Full blobs took 35-40 min and every run was cancelled (land.yml, BRO-423).
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Pin the base and merge main into head
         id: pin
