@@ -25,7 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
 const { describeGscError } = require('./lib/gsc-error-hint');
-const { loadShowsForSlugs, slugsForCli } = require('./lib/show-page-slugs');
+const { loadShowsForSlugs, googleShowUrls } = require('./lib/show-page-slugs');
 
 const SITE_HOST = 'https://broadwayscorecard.com';
 const SITE_URL_GSC = 'sc-domain:broadwayscorecard.com'; // GSC property format
@@ -299,18 +299,6 @@ function loadServiceAccount() {
   }
 }
 
-/**
- * URLs for --shows. URL_DELETED: a removed show is no longer in shows.json, so each token is
- * the old slug, and live pages (homepage, rankings) must never get a deletion notice.
- * Otherwise tokens may be show ids, slugs or aliases; only the slug is the page address,
- * and the homepage + rankings follow because listings changed (BRO-8085).
- */
-function showUrls(tokens, type, loadShows) {
-  if (type === 'URL_DELETED') return tokens.map(s => String(s).trim()).filter(Boolean).map(s => `${SITE_HOST}/show/${s}`);
-  const urls = slugsForCli(tokens, loadShows()).map(s => `${SITE_HOST}/show/${s}`);
-  return [...urls, `${SITE_HOST}/`, `${SITE_HOST}/rankings`];
-}
-
 async function main() {
   const serviceAccount = loadServiceAccount();
 
@@ -335,7 +323,7 @@ async function main() {
       return `${SITE_HOST}${u.startsWith('/') ? '' : '/'}${u}`;
     });
   } else if (specificShows.length > 0) {
-    urls = showUrls(specificShows, notificationType, () => loadShowsForSlugs(fs, path, __dirname));
+    urls = googleShowUrls(specificShows, notificationType, () => loadShowsForSlugs(fs, path, __dirname), SITE_HOST);
   } else {
     console.error('No URLs specified. Use --urls, --shows, --submit-sitemap, or --test-auth.');
     process.exit(1);
@@ -387,7 +375,7 @@ async function main() {
 }
 
 // Export for use by other scripts
-module.exports = { getAccessToken, loadServiceAccount, reportGscHint, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SCOPE_WEBMASTERS_WRITE, SITE_HOST, SITE_URL_GSC, showUrls };
+module.exports = { getAccessToken, loadServiceAccount, reportGscHint, readQuotaLedger, writeQuotaLedger, recordQuotaUsage, getQuotaRemaining, SCOPE_INDEXING, SCOPE_WEBMASTERS, SCOPE_WEBMASTERS_WRITE, SITE_HOST, SITE_URL_GSC };
 
 // Only run main() when executed directly (not when required as module)
 if (require.main === module) {
