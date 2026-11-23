@@ -119,6 +119,20 @@ function extractFunctionBodies(sql) {
   return out;
 }
 
+// Policy keys name the table bare for public (the historical key shape) and
+// schema-qualified for storage ('storage.objects:<policy>'), the one other
+// schema this project's migrations write policies into (BRO-8056). Without
+// the qualifier a storage policy would be expected as public 'objects' and
+// report as unapplied forever.
+const POLICY_SCHEMAS = ['storage'];
+function policyTableKey(raw) {
+  const t = String(raw || '').trim();
+  const m = t.match(/^"?([A-Za-z_][\w]*)"?\./);
+  const schema = m && m[1].toLowerCase();
+  const table = unquoteIdent(t);
+  return schema && POLICY_SCHEMAS.includes(schema) ? `${schema}.${table}` : table;
+}
+
 function unquoteIdent(raw) {
   if (!raw) return raw;
   let name = raw.trim();
@@ -285,11 +299,11 @@ function parseStatement(stmt, file, expected) {
     return true;
   }
   if ((m = stmt.match(/\bCREATE\s+POLICY\s+("[^"]+"|[\w]+)\s+ON\s+("[^"]+"|[\w.]+)/i))) {
-    add('policy', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
+    add('policy', `${policyTableKey(m[2])}:${unquoteIdent(m[1])}`);
     return true;
   }
   if ((m = stmt.match(/\bDROP\s+POLICY\s+(?:IF\s+EXISTS\s+)?("[^"]+"|[\w]+)\s+ON\s+("[^"]+"|[\w.]+)/i))) {
-    remove('policy', `${unquoteIdent(m[2])}:${unquoteIdent(m[1])}`);
+    remove('policy', `${policyTableKey(m[2])}:${unquoteIdent(m[1])}`);
     return true;
   }
   if ((m = stmt.match(/\bCREATE\s+(?:OR\s+REPLACE\s+)?FUNCTION\s+("[^"]+"|[\w.]+)\s*\(/i))) {
@@ -424,7 +438,7 @@ UNION ALL SELECT 'view', viewname, NULL FROM pg_views WHERE schemaname = 'public
 UNION ALL SELECT 'column', table_name || '.' || column_name, NULL FROM information_schema.columns WHERE table_schema = 'public'
 UNION ALL SELECT 'constraint', rel.relname || ':' || conname, NULL FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
 UNION ALL SELECT 'index', indexname, NULL FROM pg_indexes WHERE schemaname = 'public'
-UNION ALL SELECT 'policy', tablename || ':' || policyname, cmd || ' TO ' || array_to_string(roles, ',') || ' USING (' || coalesce(qual, '') || ') CHECK (' || coalesce(with_check, '') || ')' FROM pg_policies WHERE schemaname = 'public'
+UNION ALL SELECT 'policy', CASE WHEN schemaname = 'public' THEN '' ELSE schemaname || '.' END || tablename || ':' || policyname, cmd || ' TO ' || array_to_string(roles, ',') || ' USING (' || coalesce(qual, '') || ') CHECK (' || coalesce(with_check, '') || ')' FROM pg_policies WHERE schemaname IN ('public', 'storage')
 UNION ALL SELECT 'function', p.proname, md5(btrim(regexp_replace(p.prosrc, '[ \t\n\r\f\v]+', ' ', 'g'), ' ')) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
 UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname, NULL FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
 UNION ALL SELECT 'fnconfig', p.proname || ':' || lower(split_part(cfg, '=', 1)), NULL FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace CROSS JOIN LATERAL unnest(p.proconfig) AS cfg WHERE n.nspname = 'public'
@@ -519,6 +533,7 @@ module.exports = {
   diffFunctionBodies,
   findUnexpectedPolicies,
   policyDefHash,
+  policyTableKey,
   findUndeletedUserTables,
   liveSiblings,
   LIVE_CATALOG_QUERY,

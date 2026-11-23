@@ -62,6 +62,10 @@ const KNOWN_LIVE_ONLY_POLICIES = {
   "watchlist:Users can insert own watchlist": { def: 'ed1efb1ea29d', why: 'base schema: own rows only (auth.uid() = user_id)' },
   "watchlist:Users can read own watchlist": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
   "watchlist:Users can update own watchlist": { def: '096635213bde', why: 'base schema: own rows only (auth.uid() = user_id)' },
+  "storage.objects:diary-photos: delete own": { def: '104310535b50', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
+  "storage.objects:diary-photos: insert own": { def: '79e89559004d', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
+  "storage.objects:diary-photos: select own": { def: '52a284b9066b', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
+  "storage.objects:diary-photos: update own": { def: 'b48d5f4d55fd', why: 'iOS repo storage RLS for the diary-photos bucket: own folder only (auth.uid() = first path segment)' },
 };
 const DELETE_ACCOUNT_FN = path.join(__dirname, '..', 'supabase', 'functions', 'delete-account', 'handler.mjs');
 
