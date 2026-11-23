@@ -112,18 +112,13 @@ const nextConfig = {
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',
-      // BRO-8147: pipeline-only bulk dirs. Server routes that load scripts/lib
-      // (admin ingest -> review-normalization -> ... -> rebuild-all-reviews.js)
-      // reach modules whose static path.join(__dirname,'..','data') makes NFT
-      // trace ALL of data/ into the function. api/admin/ingest-review/detect hit
-      // 341MB > 250MB and every prod deploy failed from 2026-11-23 07:17Z.
-      // No src/ code reads these at runtime. Guard:
-      // tests/unit/trace-excludes-bulk-data.test.mjs (every tracked data/ dir
-      // over 1MB must be excluded here or allowlisted as a runtime read).
-      'data/video-reviews-transcripts/**',
+      // BRO-8147: more pipeline-only dirs (the BRO-8136 list above covers the
+      // biggest). rebuild-all-reviews.js, gap-reference-sources.js and
+      // lbo-roundup-discover.js also reach admin API functions via
+      // review-completeness and name data/, so NFT can still pull all of it.
+      // Guard: tests/unit/trace-excludes-bulk-data.test.mjs (every tracked
+      // data/ dir over 1MB is excluded here or a declared runtime read).
       'data/video-reviews-discovery/**',
-      'data/pending-fixes/**',
-      'data/archive/**',
       'data/llm-scores/**',
       'data/backups/**',
       'data/opening-night-monitor/**',
