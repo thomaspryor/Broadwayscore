@@ -318,11 +318,14 @@ function triagePendingStub(data, ctx = {}) {
     // there unless the stub's own date rules that entry out, or the entry already carries the url.
     const sib = (ctx.allShows || []).find((x) => x && x.id === sibling.id);
     const pdIso0 = stubDateIso(data.publishDate);
-    if (sib && !(pdIso0 && isArticleOutsideProductionWindow(sib, pdIso0))) {
-      const held0 = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
-      if ((ctx.siblingHasCopy && ctx.siblingHasCopy(sib.id)) || (held0 && held0.has(sib.id))) {
-        return { verdict: 'junk', reason: `${sibling.reason}, which already holds this url`, sibling: sib.id };
-      }
+    // A rehome needs a date inside the sibling's run (sample audit 2026-11-23): venues host the same title again
+    // (RST Macbeth 2018 vs 2025, Sadler's Wells Singin' 2021 vs 2027) and "royal-lyceum" names the Lyceum too.
+    // Dateless, it stays settled here with the sibling named; the duplicate settle needs no date.
+    const held0 = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
+    if (sib && ((ctx.siblingHasCopy && ctx.siblingHasCopy(sib.id)) || (held0 && held0.has(sib.id)))) {
+      return { verdict: 'junk', reason: `${sibling.reason}, which already holds this url`, sibling: sib.id };
+    }
+    if (sib && pdIso0 && !isArticleOutsideProductionWindow(sib, pdIso0)) {
       const blocked = require('./pending-sibling-productions').siblingRehomeBlocker(data, ctx.show, sib, ctx.allShows, pdIso0);
       if (!blocked) return { verdict: 'rehome', reason: sibling.reason, sibling: sib.id, publishDate: pdIso0 || null };
     }

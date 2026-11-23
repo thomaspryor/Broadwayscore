@@ -1028,7 +1028,8 @@ describe('BRO-8090: a many-production title needs venue corroboration before a r
     mk('acc-2023', 'Old Vic', '2023-11-20', '2024-01-10'), mk('acc-2024', 'Old Vic', '2024-11-15', '2025-01-05')];
   test('Dundee Rep review dated in the Old Vic window stays settled (unverified-family)', () => {
     const stub = { url: 'https://www.whatsonstage.com/news/a-christmas-carol-at-dundee-rep-theatre-review_1555376/' };
-    assert.equal(S.resolveOutOfWindowStub({ show: FAM[0], allShows: FAM, publishDate: '2023-12-04', stub }).kind, 'unverified-family');
+    // The slug names Dundee Rep, not the Old Vic: venue-mismatch (BRO-8090 audit) settles it before the family rule.
+    assert.ok(['unverified-family', 'venue-mismatch'].includes(S.resolveOutOfWindowStub({ show: FAM[0], allShows: FAM, publishDate: '2023-12-04', stub }).kind));
   });
   test('the same review naming the Old Vic rehomes', () => {
     const stub = { url: 'https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-john-simm-old-vic-w2wtzgpqq' };
@@ -1127,9 +1128,12 @@ describe('BRO-8090 cousins: the no-fetch triage rehomes instead of junking a sib
     const OL = { id: 'twelfth-night-west-end-2017', title: 'Twelfth Night', category: 'west-end', venue: 'Olivier Theatre', previewsStartDate: '2017-02-15', openingDate: '2017-02-22', closingDate: '2017-05-13' };
     const YV = { id: 'twelfth-night-off-west-end-2014', title: 'Twelfth Night', category: 'off-west-end', venue: 'Young Vic', previewsStartDate: '2014-03-01', openingDate: '2014-03-10', closingDate: '2014-04-12' };
     const all = [OL, YV];
-    const stub = { url: 'https://example.com/theatre/twelfth-night-at-the-young-vic-review' };
+    const stub = { url: 'https://example.com/theatre/twelfth-night-at-the-young-vic-review', publishDate: '2014-03-11' };
     const v = T.triagePendingStub(stub, { showId: OL.id, show: OL, allShows: all, sameTitleShows: T.sameTitleShowsFrom(OL, all) });
     assert.equal(v.verdict, 'rehome', JSON.stringify(v)); assert.equal(v.sibling, YV.id);
+    // Dateless: a venue hosts the same title again, so the venue alone never moves it (sample audit 2026-11-23).
+    const { publishDate: _d, ...dateless } = stub;
+    assert.equal(T.triagePendingStub(dateless, { showId: OL.id, show: OL, allShows: all, sameTitleShows: T.sameTitleShowsFrom(OL, all) }).verdict, 'junk');
     // Without the full list (old callers) the old junk settle stands.
     assert.equal(T.triagePendingStub(stub, { showId: OL.id, show: OL, sameTitleShows: T.sameTitleShowsFrom(OL, all) }).verdict, 'junk');
   });
@@ -1301,5 +1305,40 @@ describe('BRO-8090 second ship-check fixes (Gemini)', () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8090h-')); fs.mkdirSync(path.join(root, '_pending'));
     const r = spawnSync(process.execPath, [script, `--root=${root}`, '--apply', `--reviews-json=${path.join(root, 'missing.json')}`], { encoding: 'utf8' });
     assert.equal(r.status, 2); assert.match(r.stderr, /refusing --apply/);
+  });
+});
+
+// Real cases the 2026-11-23 sample audit (43 pending re-judgements on broadway-review-texts main) caught being moved
+// to the wrong production. Real shows.json rows; red before the guards in pending-sibling-productions.js.
+describe('BRO-8090 audit 2026-11-23: a fitting date is not enough when the stub points elsewhere', () => {
+  const G13 = { id: 'ghosts-west-end-2013', title: 'Ghosts', category: 'west-end', venue: 'Trafalgar Theatre', previewsStartDate: '2013-12-17', openingDate: '2014-01-14', closingDate: '2014-03-22' };
+  const G25 = { id: 'ghosts-off-broadway-2025', title: 'Ghosts', category: 'off-broadway', venue: 'Mitzi E. Newhouse Theater', previewsStartDate: '2025-02-13', openingDate: '2025-03-10', closingDate: '2025-04-26' };
+  const ALLG = [G13, G25];
+  test('a London-only outlet (Time Out London) is not moved to the New York run', () => {
+    const stub = { outletId: 'timeout-london', url: 'https://www.timeout.com/london/theatre/ghosts-1-review' };
+    assert.equal(S.resolveOutOfWindowStub({ show: G13, allShows: ALLG, publishDate: '2025-04-16', stub }).kind, 'outlet-market-mismatch');
+  });
+  test('a slug naming another venue (Lyric Hammersmith) is not moved to the Mitzi Newhouse run', () => {
+    const stub = { outletId: 'whatsonstage', url: 'https://www.whatsonstage.com/news/ghosts-at-lyric-hammersmith-theatre-review_1674175/' };
+    assert.equal(S.resolveOutOfWindowStub({ show: G13, allShows: ALLG, publishDate: '2025-04-17', stub }).kind, 'venue-mismatch');
+  });
+  test('a UK outlet reviewing a US production, filed under another US entry, still moves within the US', () => {
+    const T17 = { id: 'tosca-off-broadway-2017', title: 'Tosca', category: 'off-broadway', venue: 'Metropolitan Opera House', previewsStartDate: '2017-12-31', openingDate: '2017-12-31', closingDate: '2021-01-31' };
+    const T26 = { id: 'tosca-off-broadway-2026', title: 'Tosca', category: 'off-broadway', venue: 'Metropolitan Opera House', previewsStartDate: '2026-01-10', openingDate: '2026-01-10', closingDate: '2026-02-10' };
+    const stub = { outletId: 'british-theatre', url: 'https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674' };
+    assert.equal(S.stubContradictsSibling(stub, T17, T26), null);
+    assert.equal(S.stubContradictsSibling({ outletId: 'timeout-london', url: stub.url }, G25, G13), 'outlet-market-mismatch');
+  });
+  test('a dual-market outlet naming the sibling venue still rehomes', () => {
+    const stub = { outletId: 'whatsonstage', url: 'https://www.whatsonstage.com/news/ghosts-at-the-mitzi-e-newhouse-theater-review_1/' };
+    assert.equal(S.resolveOutOfWindowStub({ show: G13, allShows: ALLG, publishDate: '2025-04-17', stub }).kind, 'rehome');
+  });
+  test('Royal Lyceum Edinburgh, dateless, is never moved to the Broadway Lyceum Macbeth', () => {
+    const M13 = { id: 'macbeth-west-end-2013', title: 'Macbeth', category: 'west-end', venue: 'Trafalgar Studios', previewsStartDate: '2013-02-09', openingDate: '2013-02-22', closingDate: '2013-04-27' };
+    const M08 = { id: 'macbeth-2008', title: 'Macbeth', category: 'broadway', venue: 'Lyceum Theatre', previewsStartDate: '2008-03-28', openingDate: '2008-04-08', closingDate: '2008-05-24' };
+    const all = [M13, M08];
+    const v = T.triagePendingStub({ outletId: 'whatsonstage', url: 'https://www.whatsonstage.com/news/macbeth-an-undoing-at-royal-lyceum-theatre-edinburgh-review_58311/' },
+      { showId: M13.id, show: M13, allShows: all, sameTitleShows: T.sameTitleShowsFrom(M13, all) });
+    assert.notEqual(v.verdict, 'rehome', JSON.stringify(v));
   });
 });

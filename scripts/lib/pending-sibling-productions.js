@@ -89,6 +89,45 @@ function stubNamesMarket(stub, sib, show) {
 /** The stub itself points at this sibling (its venue, or its market where the stub's own show is elsewhere). Pure. */
 function stubCorroboratesSibling(stub, sib, show) { return stubNamesVenue(stub, sib) || stubNamesMarket(stub, sib, show); }
 
+/**
+ * BRO-8090 sample audit (2026-11-23): evidence on the stub that it is NOT the sibling's review, even though its date
+ * fits the sibling's window. Two London reviews of the 2025 Lyric Hammersmith Ghosts were moved to the 2025 New York
+ * Ghosts (Mitzi Newhouse) on date alone.
+ *   outlet-market-mismatch  a single-market outlet (outlet-registry region, not dual-market) filed under its own
+ *                           market's entry, while the sibling is in the other market group
+ *   venue-mismatch          the slug names a venue ("-at-the-lyric-hammersmith-theatre-") that is not the sibling's
+ * Returns the reason or null. Pure over the registry (loaded once; missing registry = no outlet evidence).
+ */
+let _outletMaps;
+function outletMarketGroup(outletId) {
+  if (_outletMaps === undefined) {
+    try { _outletMaps = require('./outlet-region-map').buildOutletMaps(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf8'))); } catch { _outletMaps = null; }
+  }
+  if (!_outletMaps || !outletId) return null;
+  const id = String(outletId).toLowerCase();
+  if (_outletMaps.dualMarket.has(id)) return null;
+  const region = _outletMaps.outletRegionMap[id];
+  if (!region || region === 'dual') return null;
+  return region === 'london' || region === 'uk' ? 'uk' : 'us';
+}
+const SLUG_VENUE_RE = /-at-(?:the-)?([a-z0-9]+(?:-[a-z0-9]+){0,3}?)-(?:theatre|theater|playhouse)(?:-|$)/;
+function stubContradictsSibling(stub, sib, show) {
+  if (!stub || !sib) return null;
+  const want = MARKET_GROUP[sib.category];
+  const have = outletMarketGroup(stub.outletId);
+  // Only when the outlet's market is also where it was filed (a London outlet under a West End entry): a UK site
+  // reviewing a Met Opera HD screening, filed under another Met entry, is moving within its own market.
+  const filed = show ? MARKET_GROUP[show.category] : have;
+  if (want && have && want !== have && filed === have) return 'outlet-market-mismatch';
+  let slug = '';
+  try { slug = `-${new URL(String(stub.url)).pathname.split('/').filter(Boolean).pop() || ''}-`.toLowerCase().replace(/\.html?-$/, '-'); } catch { return null; }
+  const m = slug.match(SLUG_VENUE_RE);
+  const named = m && require('./pending-triage').venuePhrase(m[1].replace(/-/g, ' '));
+  const own = require('./pending-triage').venuePhrase(String(sib.venue || '').split('/')[0]);
+  if (named && own && !named.includes(own) && !own.includes(named)) return 'venue-mismatch';
+  return null;
+}
+
 const _titleIndexMemo = new WeakMap();
 function _titlePhrases(allShows) {
   if (!_titleIndexMemo.has(allShows)) _titleIndexMemo.set(allShows, [...new Set((allShows || []).map((x) => normalizeTitle((x && x.title) || '')).filter(Boolean))]);
@@ -169,6 +208,8 @@ function siblingRehomeBlocker(stub, show, sib, allShows, publishDate) {
   const groups = urlMarketGroups(stub && stub.url);
   if (groups.size && MARKET_GROUP[sib.category] && !groups.has(MARKET_GROUP[sib.category])) return 'market-mismatch';
   if (stub && stub.url && SCREEN_URL_RE.test(stub.url)) return 'screen-not-stage';
+  const against = stubContradictsSibling(stub, sib, show);
+  if (against) return against;
   const contra = urlContradictsTitle(stub, show, sib, allShows);
   if (contra) return contra;
   if (stub && stub.rehomedFrom) return 'already-rehomed';
@@ -180,8 +221,11 @@ function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = (
   if (fitByDate.length === 0) return { kind: 'outside-all', sibling: null };
   // A url that names a market rules out a sibling in the other one ("oedipus-broadway-..." is not the West End run).
   const groups = urlMarketGroups(stub && stub.url);
-  const fit = groups.size ? fitByDate.filter((s) => !MARKET_GROUP[s.category] || groups.has(MARKET_GROUP[s.category])) : fitByDate;
+  let fit = groups.size ? fitByDate.filter((s) => !MARKET_GROUP[s.category] || groups.has(MARKET_GROUP[s.category])) : fitByDate;
   if (fit.length === 0) return { kind: 'market-mismatch', sibling: null, candidates: fitByDate.map((s) => s.id) };
+  const contradicted = fit.map((s) => stubContradictsSibling(stub, s, show));
+  if (contradicted.every(Boolean)) return { kind: contradicted[0], sibling: null, candidates: fit.map((s) => s.id) };
+  fit = fit.filter((_, i) => !contradicted[i]);
   const contra = urlContradictsTitle(stub, show, fit.length === 1 ? fit[0] : null, allShows);
   if (contra) return { kind: contra, sibling: null, candidates: fit.map((s) => s.id) };
   // A screen adaptation of the same title (Matilda film, Jersey Boys film) dated inside a stage run is not a review of it.
@@ -304,4 +348,4 @@ function rehomeStubFile({ root, file, fromShowId, toShowId, data, publishDate, n
   return 'sibling-has-copy';
 }
 
-module.exports = { stripForeignShowFlags, siblingRehomeBlocker, siblingTriageJunk, sameArticleUrl, siblingHoldsSameUrl, urlContradictsTitle, urlMarketGroups, stubNamesMarket, stubCorroboratesSibling, stubNamesVenue, rehomeStubFile, makeFetchCache, siblingForArticle, fittingSiblings, resolveOutOfWindowStub, rehomedStub, intakeShowIdForStub };
+module.exports = { stubContradictsSibling, outletMarketGroup, stripForeignShowFlags, siblingRehomeBlocker, siblingTriageJunk, sameArticleUrl, siblingHoldsSameUrl, urlContradictsTitle, urlMarketGroups, stubNamesMarket, stubCorroboratesSibling, stubNamesVenue, rehomeStubFile, makeFetchCache, siblingForArticle, fittingSiblings, resolveOutOfWindowStub, rehomedStub, intakeShowIdForStub };
