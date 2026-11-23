@@ -39,9 +39,30 @@ function urlsSameArticle(a, b) {
   return x.last.length >= 20 && y.last.length >= 20 && editDistance(x.last, y.last, 2) <= 2;
 }
 
+/** Outlet article id in the last path segment: WhatsOnStage "..._48696.html" / "..._48696/" (BRO-8202). */
+function outletArticleId(u) {
+  try {
+    const x = new URL(String(u || '').trim());
+    const last = x.pathname.split('/').filter(Boolean).pop() || '';
+    const m = last.replace(/\.[a-z0-9]{2,5}$/i, '').match(/_(\d{4,})$/);
+    return m ? `${x.hostname.toLowerCase().replace(/^www\./, '')}|${m[1]}` : null;
+  } catch { return null; }
+}
+const day = (d) => (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? d.slice(0, 10) : null);
+
+/**
+ * BRO-8202: same article without matching url slugs. (a) same outlet article id (WOS _NNNNN under another path/slug);
+ * (b) the primary has no url at all and both carry the same publishDate (same critic, same outlet, same day).
+ */
+function sameArticleByIdOrDate(stub, existing) {
+  const a = outletArticleId(stub && stub.url), b = outletArticleId(existing && existing.url);
+  if (a && a === b) return true;
+  return !!(stub && stub.url && existing && !existing.url && day(stub.publishDate) && day(stub.publishDate) === day(existing.publishDate));
+}
+
 /** @returns {'same-article'|'different-article'} */
 function classifyTargetCollision(stub, existing) {
-  return urlsSameArticle(stub && stub.url, existing && existing.url) ? 'same-article' : 'different-article';
+  return urlsSameArticle(stub && stub.url, existing && existing.url) || sameArticleByIdOrDate(stub, existing) ? 'same-article' : 'different-article';
 }
 
 /**
@@ -59,4 +80,4 @@ function promotionBlockRule(candidate, show, filePath, { guards, noSignalRules }
   return rule && !noSignalRules.includes(rule) ? rule : null;
 }
 
-module.exports = { promotionBlockRule, urlsSameArticle, classifyTargetCollision, editDistance };
+module.exports = { sameArticleByIdOrDate, outletArticleId, promotionBlockRule, urlsSameArticle, classifyTargetCollision, editDistance };

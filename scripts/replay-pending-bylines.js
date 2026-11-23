@@ -201,7 +201,7 @@ const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
 const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
 const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./lib/pending-drain-order');
 const drainState = require('./lib/pending-drain-state');
-const { classifyTargetCollision, promotionBlockRule } = require('./lib/pending-drain-collision');
+const { classifyTargetCollision, promotionBlockRule, urlsSameArticle, sameArticleByIdOrDate } = require('./lib/pending-drain-collision');
 
 // Newest strands first (BRO-4408), so a budget-limited run reaches a fresh
 // opening-night review before re-fetching old no-byline strands.
@@ -532,7 +532,7 @@ async function processShow(showId, deps = {}) {
   const files = deps.files || fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
-  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0;
+  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0, urlBackfilled = 0;
   // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
   // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
   let tagged = 0, inspected = 0, lastFile = null;
@@ -578,7 +578,7 @@ async function processShow(showId, deps = {}) {
     stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
   // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, urlBackfilled, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -987,6 +987,23 @@ async function processShow(showId, deps = {}) {
       let existing = null;
       try { existing = JSON.parse(fs.readFileSync(newPath, 'utf8')); } catch { /* unreadable primary: fall through to keep */ }
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
+      // BRO-8202: same article under another url form (WOS id) or a primary with no url: backfill the url, never mislabel.
+      let idDateSame = false;
+      if (existing && verdict === 'same-article' && !urlsSameArticle(data.url, existing.url) && sameArticleByIdOrDate(data, existing)) {
+        idDateSame = true;
+        if (!existing.url && data.url) {
+          if (!dry) {
+            existing.url = data.url;
+            try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); urlBackfilled++; } catch (e) { console.log(`  [${file}] could not backfill url: ${e.message}`); }
+          } else urlBackfilled++;
+          console.log(`  [${file}] ${dry ? 'would backfill' : 'backfilled'} url onto ${newFilename}`);
+        }
+      }
+      if (idDateSame && !SCORE_FIELDS.some((k) => present(data[k]) && !present(existing[k])) && !isRedundantPendingStub(data, newFilename)) {
+        if (settleStub(`same article as ${newFilename} (url variant) (BRO-8202)`)) tagged++;
+        kept++;
+        continue;
+      }
       // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
       if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
         if (removePendingStubAsFiled(filepath, path.join(root, showId), url, dry)) {

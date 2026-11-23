@@ -1556,3 +1556,36 @@ describe('BRO-8194: the drain never deletes a _pending stub without a trace', ()
     assert.equal(T.settledPendingReason({ rssIdentityRejected: true }), '');
   });
 });
+
+// BRO-8202: same article under another url form / a primary with url null is NOT "a different article".
+test('BRO-8202: WOS id variant + null-url primary settle as same article; real other article stays different', async () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const { classifyTargetCollision } = require('../../scripts/lib/pending-drain-collision.js');
+  assert.equal(classifyTargetCollision(
+    { url: 'https://www.whatsonstage.com/news/review-betrayal-harold-pinter-theatre_48696/' },
+    { url: 'https://www.whatsonstage.com/london-theatre/reviews/betrayal-harold-pinter-tom-hiddleston-zawe-ashton_48696.html' }), 'same-article');
+  assert.equal(classifyTargetCollision(
+    { url: 'https://www.whatsonstage.com/news/review-x_48697/' },
+    { url: 'https://www.whatsonstage.com/london-theatre/reviews/y_48696.html' }), 'different-article');
+  assert.equal(classifyTargetCollision({ url: 'https://www.thetimes.com/a/b-zv0', publishDate: '2023-03-09' }, { url: null, publishDate: '2023-03-09' }), 'same-article');
+  assert.equal(classifyTargetCollision({ url: 'https://www.thetimes.com/a/b-zv0', publishDate: '2023-03-10' }, { url: null, publishDate: '2023-03-09' }), 'different-article');
+
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8202-'));
+  const show = { id: 'bonnie-and-clyde-west-end-2023', title: 'Bonnie & Clyde', openingDate: '2023-03-09', closingDate: '2023-06-01' };
+  fs.mkdirSync(path.join(root, '_pending', show.id), { recursive: true });
+  fs.mkdirSync(path.join(root, show.id), { recursive: true });
+  const prim = path.join(root, show.id, 'times-uk--dominic-maxwell.json');
+  fs.writeFileSync(prim, JSON.stringify({ outletId: 'times-uk', criticName: 'Dominic Maxwell', url: null, publishDate: '2023-03-09', fullText: 'word '.repeat(600), contentTier: 'complete' }));
+  const stub = path.join(root, '_pending', show.id, 'times-uk--344a463.json');
+  const URL_ = 'https://www.thetimes.com/culture/theatre-dance/article/bonnie-amp-clyde-review-sing-when-youre-shooting-zv0z90lsh';
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'times-uk', criticName: 'Unknown', url: URL_, publishDate: '2023-03-09', fullText: 'word '.repeat(300) }));
+  const d = {
+    root, show, dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => ({ content: '<html><head><meta name="author" content="Dominic Maxwell"><title>r</title></head><body><article><p>' + 'Bonnie and Clyde review. '.repeat(80) + '</p></article></body></html>' }),
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  const r = await processShow(show.id, d);
+  assert.equal(r.urlBackfilled, 1);
+  assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).url, URL_);
+  assert.ok(!fs.existsSync(stub) || !/different article/.test(JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason || ''));
+});
