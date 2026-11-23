@@ -360,7 +360,12 @@ function outsideSettingCloseCheck({ description = '', commentText = '', existing
 // SAMPLE_AUDIT_DONE_GATE=advisory rolls that back. Any error fails open.
 const SAMPLE_AUDIT_BLOCKING_FROM = '2026-11-29';
 
-function dataEffectCloseCheck({ identifier, title = '', description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}) {
+// A check that only runs unit tests cannot measure a data count (the BRO-7930 loop: the nightly recheck
+// re-ran `node --test ...`, passed, and the queue never moved).
+// Gemini ship-check: also the other safe-form checks that measure code, not data.
+const UNIT_TEST_CMD_RE = /\bnode\s+--test\b|\.test\.(?:m?[jt]s|tsx?|sh)\b|\b(?:vitest|jest|mocha)\b|\bplaywright\s+test\b|\bnpm\s+(?:run\s+)?(?:test|lint)\b|\brun-unit-tests\.js\b|^\s*test\s+-[efd]\b|\btsc\b|\bvalidate-data\.js\b/;
+
+function dataEffectCloseCheck({ identifier, title = '', description = '', commentText = '', existingComments = [], nowMs = Date.now(), env = process.env } = {}, result = {}) {
   const out = [];
   try {
     const dec = require('./data-effect-close.js');
@@ -372,8 +377,14 @@ function dataEffectCloseCheck({ identifier, title = '', description = '', commen
     // Weak count phrases ("12 reviews") warn too: they are common in ordinary titles.
     let automated = false;
     try { automated = require('./red-cause-tag.js').isAutomatedClose(commentText); } catch { /* not automated */ }
+    // BRO-8079 reopen (Codex ship-check): a machine close on a unit-test-only check is not a measurement.
+    // Only a command THIS gate executed counts (PR-EVIDENCE sweeps and stuck/board closers run nothing).
+    const automatedOnMeasurement = automated && Boolean(result && result.cmdExecution && result.cmd) && !UNIT_TEST_CMD_RE.test(String(result.cmd));
+    // DATA_EFFECT_COUNT_NOUN_GATE=advisory rolls back only the reopen's inferred rules (EFFECT: in the
+    // description, number >= 10 next to a data noun), leaving the original strong phrases blocking.
+    const inferredAdvisory = de && de.inferred && env.DATA_EFFECT_COUNT_NOUN_GATE === 'advisory';
     if (de && !de.ok) {
-      out.push({ verdict: 'data-effect-unmeasured', blocking: de.strong && !automated && env.DATA_EFFECT_DONE_GATE !== 'advisory', message: dec.dataEffectMessage(identifier, de) });
+      out.push({ verdict: 'data-effect-unmeasured', blocking: de.strong && !automatedOnMeasurement && !inferredAdvisory && env.DATA_EFFECT_DONE_GATE !== 'advisory', message: dec.dataEffectMessage(identifier, de) });
     }
     const sa = dec.checkSampleAudit({ texts: comments });
     if (sa && !sa.ok) {
@@ -404,7 +415,7 @@ function checkLinearDoneTransition(args = {}) {
       ? { ...result, gated: true, allowed: false, verdict: 'outside-setting-unseen', reason: osc.message }
       : addWarning(result, osc.message);
   }
-  for (const de of dataEffectCloseCheck(args)) {
+  for (const de of dataEffectCloseCheck(args, result)) {
     result = de.blocking && result.allowed !== false
       ? { ...result, gated: true, allowed: false, verdict: de.verdict, reason: de.message }
       : addWarning(result, de.message);

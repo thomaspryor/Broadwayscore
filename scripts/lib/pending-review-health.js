@@ -67,6 +67,14 @@ const PRESERVED_PENDING_FIELDS = [
   'rssIdentityRejected',
   'pendingUnrecoverableAt',
   'pendingRefetchedAt',
+  // BRO-8093 (cousin of BRO-8023): the drain's fetch-attempt stamp. A poller re-discovery rewrote the stub without
+  // it (tristan-and-yseult nydailynews, twice), so the floors report counted an attempted stub as an untouched gap.
+  'pendingFetchAttemptedAt',
+  'pendingFetchAttemptResult',
+  // The rss identity strike counter and the reason/date of the final verdict (rssIdentityRejected itself was kept).
+  'rssIdentityFetchFailures',
+  'rssIdentityRejectedReason',
+  'rssIdentityRejectedAt',
 ];
 
 function hasText(value) {

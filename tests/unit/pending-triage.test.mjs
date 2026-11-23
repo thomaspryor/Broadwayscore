@@ -603,3 +603,32 @@ test('BRO-8023: a ".html" review slug naming "interview" is not rejected as an i
   const r = pendingIntakeRejectReason({ url: 'https://www.nytimes.com/2026/05/02/theater/the-interview-review.html' }, null);
   assert.equal(r, null);
 });
+
+// BRO-7930 class guard (audit BRO-8093): a byline that resolves to a filename already holding the same critic's
+// OTHER article was "kept pending" forever and re-fetched on every sweep (43 of ~82 unresolved open-show stubs,
+// the main reason the drain printed Promoted: 0 while starving the rest of the budget). It must be tagged once
+// (kept on disk, reason recorded) and never fetched again.
+test('BRO-7930: a stub whose byline lands on the same critic\'s OTHER article is tagged once, not re-fetched every run', async () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7930c-'));
+  const pdir = path.join(root, '_pending', PUNCH.id);
+  fs.mkdirSync(pdir, { recursive: true });
+  fs.mkdirSync(path.join(root, PUNCH.id), { recursive: true });
+  fs.writeFileSync(path.join(root, PUNCH.id, 'culturesauce--thom-geier.json'), JSON.stringify({ outletId: 'culturesauce', criticName: 'Thom Geier', url: 'https://culturesauce.com/punch-west-end-review/', fullText: 'word '.repeat(600), contentTier: 'complete' }));
+  const stub = path.join(pdir, 'culturesauce--def.json');
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'culturesauce', criticName: 'Unknown', url: 'https://culturesauce.com/punch-young-vic-second-look-review/' }));
+  const c = { n: 0 };
+  const d = {
+    root, show: PUNCH, dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => { c.n++; return { content: '<html><head><meta name="author" content="Thom Geier"><meta property="article:published_time" content="2025-09-27T10:00:00Z"><title>Punch review</title></head><body><article><p>' + 'Punch at the Young Vic is a play. '.repeat(80) + '</p></article></body></html>' }; },
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  const r1 = await processShow(PUNCH.id, d);
+  assert.equal(r1.promoted, 0);
+  assert.equal(r1.tagged, 1, 'the colliding stub is tagged, not silently kept');
+  assert.equal(fs.existsSync(stub), true, 'kept on disk (KEEP-not-delete)');
+  assert.match(JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason || '', /already holds a different article/);
+  const fetchesAfterFirst = c.n;
+  await processShow(PUNCH.id, d);
+  assert.equal(c.n, fetchesAfterFirst, 'a tagged stub is not fetched again on the next sweep');
+});
