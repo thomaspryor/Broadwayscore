@@ -531,26 +531,6 @@ const mk8135 = (over = {}, cv = {}) => ({
   ...over,
 });
 
-test('BRO-8135 computeCvIsStale: stale timestamp + matching hash => not stale', () => {
-  assert.equal(computeCvIsStale(mk8135()), false);
-  assert.equal(cvSameVerdictWindow(mk8135()), true);
-});
-test('BRO-8135 computeCvIsStale: hash mismatch => stale', () => {
-  assert.equal(computeCvIsStale(mk8135({ fullText: 'B'.repeat(3000) })), true);
-});
-test('BRO-8135 computeCvIsStale: no contentHash => stale by timestamp', () => {
-  const f = mk8135({}, { contentHash: undefined });
-  assert.equal(cvSameVerdictWindow(f), false);
-  assert.equal(computeCvIsStale(f), true);
-});
-test('BRO-8135 computeCvIsStale: empty fullText => stale by timestamp, never hashed', () => {
-  const f = mk8135({ fullText: '' });
-  assert.equal(cvSameVerdictWindow(f), false);
-  assert.equal(computeCvIsStale(f), true);
-});
-test('BRO-8135 computeCvIsStale: same first 2500 chars, different tail => not stale', () => {
-  assert.equal(computeCvIsStale(mk8135({ fullText: TXT8135.slice(0, 2500) + 'tail changed' })), false);
-});
 test('BRO-8135 fallback predicate: fresh clean CV on same text does not re-exclude', () => {
   assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135()), false);
 });
@@ -560,30 +540,20 @@ test('BRO-8135 fallback predicate: genuinely stale CV (changed text) still promo
   assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000), wrongShowReason: 'fine' })), false);
 });
 
-// BRO-8135: other computeCvIsStale callers under the same-hash rule.
-const nr8135 = (over = {}) => mk8135({
-  llmScore: { score: 70, confidence: 'high' },
-  llmMetadata: { scoredAt: '2026-06-07T00:00:00.000Z' },
-  ...over,
-}, { wrongArticle: true, wrongProduction: false, issues: [], reasoning: 'a feature piece' });
+test('BRO-8135 fallback predicate: a CV that flagged wrongArticle/wrongProduction/film-TV never exempts the old reason', () => {
+  for (const cv of [{ wrongArticle: true }, { wrongProduction: true }, { isFilmTv: true }, { isValid: false }]) {
+    assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({}, cv)), true, JSON.stringify(cv));
+  }
+});
+test('BRO-8135 fallback predicate: no contentHash or empty fullText cannot prove sameness, so the reason still promotes', () => {
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({}, { contentHash: undefined })), true);
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: '' })), true);
+});
+test('BRO-8135 computeCvIsStale stays timestamp-based for every other caller (same hash is still stale by timestamp)', () => {
+  assert.equal(computeCvIsStale(mk8135()), true);
+});
 
-test('BRO-8135 isStaleCvNonReviewVerdictOverruled: changed text overrules, same-head refetch does not', () => {
-  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135({ fullText: 'B'.repeat(3000) })), true);
-  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135()), false);
-  assert.equal(isStaleCvNonReviewVerdictOverruled(nr8135({ fullText: TXT8135.slice(0, 2500) + 'longer tail' })), false);
-});
-test('BRO-8135 isMisFamilyCvPromotedWrongShow: staleness input follows the same-hash rule', () => {
-  const f = nr8135({ wrongShow: true, wrongShowReason: 'CV-promoted: not a review' });
-  assert.equal(isMisFamilyCvPromotedWrongShow(f, { cvIsStale: computeCvIsStale(f) }), true);
-  const g = { ...f, fullText: 'B'.repeat(3000) };
-  assert.equal(isMisFamilyCvPromotedWrongShow(g, { cvIsStale: computeCvIsStale(g) }), false);
-});
-test('BRO-8135 isStaleCvPromotedWrongShow (flag-contradiction caller): same-hash clean CV self-heals, changed text does not', () => {
-  const f = mk8135({ wrongShow: true, contentVerificationPromoted: 'rebuild: promoted from contentVerification (x, high)', wrongShowReason: 'CV-promoted: x' }, { wrongProduction: false });
-  assert.equal(isStaleCvPromotedWrongShow(f, computeCvIsStale(f)), isStaleCvPromotedWrongShow(f, false));
-  const g = { ...f, fullText: 'B'.repeat(3000) };
-  assert.equal(isStaleCvPromotedWrongShow(g, computeCvIsStale(g)), false);
-});
+
 
 /* ──────────────────────────────────────────────────────────────────────────
  * isReviewContentTrustworthy (task #1553) — extracted from rebuild-all-

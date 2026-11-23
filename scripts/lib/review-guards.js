@@ -2903,24 +2903,25 @@ function computeCvIsStale(data) {
   if (!data) return false;
   const cv = data.contentVerification;
   if (!cv) return false;
-  // BRO-8135: a later re-fetch of byte-identical text (same hash) does not make the verdict stale.
-  const sameText = cvSameVerdictWindow(data);
-  if (!sameText && data.textFetchedAt && cv.verifiedAt) {
+  if (data.textFetchedAt && cv.verifiedAt) {
     const fetchedAt = new Date(data.textFetchedAt).getTime();
     const verifiedAt = new Date(cv.verifiedAt).getTime();
     if (fetchedAt > verifiedAt) return true;
   }
-  if (cv.contentHash && data.fullText && !sameText) return true;
+  if (cv.contentHash && data.fullText) {
+    const currentHash = require('./content-verifier').contentHash(data.fullText); // lazy: content-verifier requires this module
+    if (cv.contentHash !== currentHash) return true;
+  }
   return false;
 }
 
 /**
  * BRO-8135: true when the CV verdict covers the current text's SAME VERDICT WINDOW: the stored
  * contentHash equals the hash of the current fullText. contentHash covers only the first
- * CV_WINDOW_CHARS (2500) chars, so a changed tail still matches; partial-window verdicts stay
- * governed by isCvVerdictFromPartialWindow / isCvPartialWindowAdvisory, not by this. A
- * textFetchedAt newer than verifiedAt then only means the same page was re-fetched, so the
- * stale-CV wrongShowReason fallback must not re-exclude on an older reason.
+ * CV_WINDOW_CHARS (2500) chars, so a changed tail still matches. It proves "the verifier read
+ * this same window", not "the same body", so it is used ONLY by the stale-CV wrongShowReason
+ * fallback below. It is deliberately NOT folded into computeCvIsStale, whose other callers
+ * (promotion, demotion, self-heal) need timestamp staleness kept.
  * Returns false when contentHash is missing or fullText is empty (cannot prove sameness).
  *
  * @param {object} data - Review-text JSON
@@ -2933,15 +2934,19 @@ function cvSameVerdictWindow(data) {
 }
 
 /**
- * BRO-8135: pure predicate for rebuild's stale-CV wrongShowReason fallback. True only when
- * the CV is stale, the file is not already wrongShow, and the stored reason describes a wrong
- * article. With cvSameVerdictWindow the CV is not stale, so a fresh clean verdict is never
- * overridden by an older collector reason.
+ * BRO-8135: pure predicate for rebuild's stale-CV wrongShowReason fallback (called only when
+ * the CV is already stale by timestamp or hash). True when the file is not already wrongShow and
+ * the stored reason describes a wrong article, EXCEPT when a fresh CLEAN verdict (valid, not
+ * wrongArticle/wrongProduction/film-TV) covers the same verdict window: that verdict read this
+ * text and cleared it, so an older collector reason must not re-exclude it.
  */
 function shouldPromoteViaStaleCvReasonFallback(data) {
   if (!data || data.wrongShow === true || !data.wrongShowReason) return false;
-  if (!computeCvIsStale(data)) return false;
-  return /wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason);
+  if (!/wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason)) return false;
+  const cv = data.contentVerification;
+  const clean = !!cv && cv.isValid !== false && !cv.wrongArticle && !cv.wrongProduction && !cv.isFilmTv;
+  if (clean && cvSameVerdictWindow(data)) return false;
+  return true;
 }
 
 /**
@@ -3387,10 +3392,6 @@ function isNonReviewDemotedByFreshCV(data, opts) {
   const cvTime = Date.parse(cv.verifiedAt);
   if (Number.isNaN(cvTime)) return false;
 
-  // BRO-8135: deliberately NOT routed through cvSameVerdictWindow. contentHash covers only the first
-  // CV_WINDOW_CHARS, so a same-head refetch can still carry a different (longer or cut) tail. This
-  // branch un-excludes a "not a review" label on the CV's say-so, which needs proof the verdict read
-  // the stored body; the head hash alone does not prove that, so it stays timestamp-only.
   if (data.textFetchedAt) {
     const fetchedAt = Date.parse(data.textFetchedAt);
     if (!Number.isNaN(fetchedAt) && fetchedAt > cvTime) return false;
