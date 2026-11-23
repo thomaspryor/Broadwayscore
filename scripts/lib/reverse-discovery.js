@@ -465,6 +465,31 @@ function possessiveLeadShowId(title, index) {
 }
 
 /**
+ * BRO-8149: a BWW roundup headline "THE GOOD THIEF at Irish Repertory Theatre" carries the venue as a tail, which
+ * the extractor deliberately does not split (a bare " at the " split truncates real titles, see the 2026-07-26
+ * revert in extractShowTitleFromBwwRoundup). Resolve it here instead, where the venue can prove the split: the
+ * head must be exactly one non-closed catalogued title AND that show's venue must contain the tail (or the
+ * reverse). "MIDNIGHT AT THE NEVER GET" -> head "midnight" matches the show Midnight, but its venue is not
+ * "the never get", so nothing is suppressed.
+ */
+function venueTailShowId(title, index) {
+  const t = String(title || '');
+  const re = /\s+at\s+/gi;
+  let m;
+  const ids = new Set();
+  while ((m = re.exec(t))) {
+    const head = normalizeTitle(t.slice(0, m.index));
+    const tail = normalizeTitle(t.slice(m.index + m[0].length).replace(/^the\s+/i, ''));
+    if (!head || !tail || tail.length < 5) continue;
+    for (const e of (index.statusByVariant && index.statusByVariant.get(head)) || []) {
+      if (!e.full || !e.id || !e.status || e.status === 'closed' || !e.venue) continue;
+      if (e.venue.includes(tail) || tail.includes(e.venue)) ids.add(e.id);
+    }
+  }
+  return ids.size === 1 ? [...ids][0] : null;
+}
+
+/**
  * Resolve which catalogued show a source title refers to, for evidence
  * recording (the inverse of findUnmatchedCandidates: MATCHED items carry the
  * "this show has published reviews" signal that evidence-anchored selection
@@ -488,7 +513,7 @@ function resolveMatchedShowId(title, index) {
       }
     }
   }
-  if (ids.size === 0) return possessiveLeadShowId(title, index);
+  if (ids.size === 0) return possessiveLeadShowId(title, index) || venueTailShowId(title, index);
   return ids.size === 1 ? [...ids][0] : null;
 }
 
@@ -723,7 +748,7 @@ function buildShowTitleIndex(shows, market = null) {
       for (const v of titleVariants(n)) {
         exact.add(v);
         if (!statusByVariant.has(v)) statusByVariant.set(v, []);
-        statusByVariant.get(v).push({ id: s.id || s.slug || null, status: s.status || null, closingDate: s.closingDate || null, full: v === n });
+        statusByVariant.get(v).push({ id: s.id || s.slug || null, status: s.status || null, closingDate: s.closingDate || null, full: v === n, venue: s.venue ? normalizeTitle(s.venue) : null });
       }
       if (n.includes(' ') && n.length >= 8) containment.add(n);
     }
@@ -748,7 +773,8 @@ function titleMatchesIndex(title, index, opts = {}) {
   // Strokes") only differ by an 's — try the stripped variant too, so a
   // Playbill-style headline can't false-positive as a missing show.
   return titleCandidates(title).some((c) => titleMatchesIndexSingle(c, index, opts)) ||
-    possessiveLeadShowId(title, index) !== null;
+    possessiveLeadShowId(title, index) !== null ||
+    venueTailShowId(title, index) !== null;
 }
 
 function titleMatchesIndexSingle(title, index, opts = {}) {
