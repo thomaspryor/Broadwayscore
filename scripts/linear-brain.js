@@ -921,6 +921,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // because that is what every Linear-side reader — linear-brain find,
     // linear-client getIssue, the issue URL — already keys on.
     printBoardCardId(result.issue.identifier);
+    // BRO-8158: stdout marker so digest-autofix's fileCard learns the card was reused (and its state), not newly filed.
+    if (result.mode === 'reused') console.log(`REUSED: ${result.issue.identifier} state=${result.issue.state ? result.issue.state.type : ''}`);
     if (result.mode === 'reused' && result.nearDuplicate) {
       console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open and this title repeats it (score ${result.nearDuplicate.score.toFixed(2)}); the notes were added there as a comment (state=${result.stateName}). If it is really different work, re-run with --new-anyway "<reason>".`);
     } else if (result.mode === 'reused') {
