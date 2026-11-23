@@ -1016,5 +1016,36 @@
     "tracked": "BRO-4772",
     "fields": [],
     "queuedAt": "2026-11-23T00:40:37.017Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8065-takeover",
+    "title": "Landing blocked: lint-workflows red on land/bro-8065-takeover",
+    "description": "land.yml did not land land/bro-8065-takeover: the lint-workflows gate went red at b0e0815c5d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45091356090",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8065-takeover"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "b0e0815c5d660b539679aa4e3b0e563d051ae061"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45091356090"
+      }
+    ],
+    "queuedAt": "2026-11-23T01:17:00.013Z"
   }
 ]
