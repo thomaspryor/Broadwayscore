@@ -49387,13 +49387,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-23T23:39:36.316Z",
+      "lastSeen": "2026-11-23T23:54:52.380Z",
       "lastNotifiedAt": "2026-11-23T17:11:27.296Z",
       "lastSurfacedAt": "2026-11-23T17:11:27.296Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 28
+      "silentRefires": 27
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49401,13 +49401,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-23T23:39:36.348Z",
+      "lastSeen": "2026-11-23T23:54:52.438Z",
       "lastNotifiedAt": "2026-11-23T17:11:27.324Z",
       "lastSurfacedAt": "2026-11-23T17:11:27.324Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 28
+      "silentRefires": 27
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -49655,7 +49655,7 @@
       "silentRefires": 1
     },
     "land:land/bro-8198-backstop-3h": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-8198-backstop-3h",
       "firstSeen": "2026-11-23T22:19:44.234Z",
@@ -49665,7 +49665,8 @@
       "lastSurfacedAt": "2026-11-23T22:19:44.234Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-23T23:54:52.143Z"
     },
     "land:land/bro-8188-force-draft": {
       "status": "resolved",
