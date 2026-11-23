@@ -453,6 +453,7 @@ function stampFetchAttempt(filepath, data, dry, nowIso, why) {
   if (dry || !data || data.pendingFetchAttemptedAt) return;
   data.pendingFetchAttemptedAt = nowIso;
   data.pendingFetchAttemptResult = why;
+  if (data.pendingFetchFailures == null) data.pendingFetchFailures = 0; // BRO-8091: marks a stamp written after the counter existed (a stamp without a counter is a legacy failure #1)
   try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not stamp fetch attempt: ${e.message}`); }
 }
 
@@ -460,9 +461,13 @@ function stampFetchAttempt(filepath, data, dry, nowIso, why) {
  * BRO-8091: count a failed fetch on the stub; the 2nd settles it with a typed reason (fetchFailedTerminalReason) instead of
  * leaving it a paid candidate every run. A stamp from before the counter existed is failure #1.
  */
+function nextFetchFailureCount(data) {
+  const legacy = data.pendingFetchFailures == null && ['fetch-failed', 'unrecoverable', 'no-content'].includes(data.pendingFetchAttemptResult) ? 1 : 0;
+  return (Number(data.pendingFetchFailures) || legacy) + 1;
+}
 function recordFetchFailure(filepath, data, dry) {
   if (dry || !data) return;
-  data.pendingFetchFailures = (Number(data.pendingFetchFailures) || (['fetch-failed', 'unrecoverable', 'no-content'].includes(data.pendingFetchAttemptResult) ? 1 : 0)) + 1;
+  data.pendingFetchFailures = nextFetchFailureCount(data);
   const terminal = pendingTriage.fetchFailedTerminalReason(data);
   if (terminal) { data.promoteSkippedReason = terminal; data.promoteSkippedAt = new Date().toISOString(); }
   try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  could not record fetch failure: ${e.message}`); }
@@ -547,7 +552,7 @@ async function processShow(showId, deps = {}) {
     }
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
-    if (!/^fetch failed/.test(reason)) recordFetchFailure(filepath, data, dry); // fetch-failed already counted in the catch
+    if (/^fetch returned no content/.test(reason)) recordFetchFailure(filepath, data, dry); // fetch-failed is counted in the catch; 'no url' / 'no byline' are not fetch failures
     stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
   // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
@@ -1110,6 +1115,8 @@ module.exports = {
   findExistingFileForUrl,
   isRedundantPendingStub,
   sameTrailingArticleId,
+  nextFetchFailureCount,
+  stampFetchAttempt,
   primaryBodyIsSound,
   sameArticleSettleReason,
   // Liveness of the --all-open scope (audit S7-T7) — exported for

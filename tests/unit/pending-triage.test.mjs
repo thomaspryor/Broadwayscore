@@ -1435,3 +1435,20 @@ describe('BRO-8091 sameTrailingArticleId: one outlet article under two url forms
     assert.match(sameArticleSettleReason(stub, primary, 'hollywood-reporter--frank-scheck.json'), /same article already filed/);
   });
 });
+
+describe('BRO-8091 first fetch failure must not settle (review P1: the fresh stamp was read as a prior failure)', () => {
+  const { nextFetchFailureCount, stampFetchAttempt } = require('../../scripts/replay-pending-bylines.js');
+  const { fetchFailedTerminalReason } = require('../../scripts/lib/pending-triage.js');
+  test('stamp then count: first failure = 1 (open), second = 2 (settled)', () => {
+    const d = {};
+    stampFetchAttempt('/nonexistent/x.json', d, false, 'now', 'fetch-failed'); // write guard failure is logged, the data is still stamped
+    assert.equal(nextFetchFailureCount(d), 1);
+    assert.equal(fetchFailedTerminalReason({ ...d, pendingFetchFailures: 1 }), null);
+    d.pendingFetchFailures = 1;
+    assert.equal(nextFetchFailureCount(d), 2);
+  });
+  test('a legacy stamp with no counter is failure #1, so the next one is #2', () => {
+    assert.equal(nextFetchFailureCount({ pendingFetchAttemptResult: 'fetch-failed', pendingFetchAttemptedAt: 'x' }), 2);
+    assert.equal(nextFetchFailureCount({ pendingFetchAttemptResult: 'no-byline', pendingFetchAttemptedAt: 'x' }), 1);
+  });
+});
