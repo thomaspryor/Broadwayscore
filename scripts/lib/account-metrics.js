@@ -501,13 +501,20 @@ function addStep(a, r) {
 /** Funnel rows (per source × device type) → per-source rows + mobile/desktop totals. */
 function summarizeFunnel(rows) {
   const bySource = new Map();
-  const totals = { mobile: emptyStep(), desktop: emptyStep(), other: emptyStep(), all: emptyStep() };
+  // oneTap: Google's automatic corner card (desktop). Google shows it unasked, so it
+  // is kept out of the device totals: counted as "saw the sign-in box" it made
+  // computers read 24% started vs 33% for the real box (2026-11-23).
+  const totals = { mobile: emptyStep(), desktop: emptyStep(), other: emptyStep(), all: emptyStep(), oneTap: emptyStep() };
   for (const r of rows) {
     const src = r.src && SOURCE_LABELS[r.src] ? r.src : (r.src || (r.dev === 'App' ? 'app' : 'unknown'));
     const dev = deviceGroup(r.dev);
     const key = `${src}|${dev}`;
     if (!bySource.has(key)) bySource.set(key, { source: src, label: SOURCE_LABELS[src] || src, device: dev, ...emptyStep() });
     addStep(bySource.get(key), r);
+    if (src === 'one_tap') {
+      addStep(totals.oneTap, r);
+      continue;
+    }
     addStep(totals[dev], r);
     addStep(totals.all, r);
   }
@@ -645,7 +652,9 @@ function weeklySummaryLines(d) {
     // The iPhone app has no sign-in box event, so it reports starts and finishes only.
     // "other" also holds finishes from a device whose start was not seen.
     const app = f.other && (f.other.started || f.other.completed) ? `iPhone app / other: ${f.other.started} started, ${f.other.completed} finished` : null;
-    const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers'), app].filter(Boolean);
+    const ot = f.oneTap;
+    const oneTap = ot && (ot.shown || ot.started || ot.completed) ? `Google's automatic sign-in card on computers (not counted above): ${ot.shown} saw it, ${ot.started} started, ${ot.completed} finished` : null;
+    const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers'), app, oneTap].filter(Boolean);
     if (parts.length) lines.push(`Sign-up funnel, last 30 days. ${parts.join('. ')}.`);
   }
   if (d.oneTapSkips && d.oneTapSkips.length) {

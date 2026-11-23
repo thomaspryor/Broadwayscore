@@ -55,6 +55,17 @@ test('summarizeAccounts counts totals, new per day/week and accounts that saved 
   assert.equal(s.weeks.at(-1).partial, true);
 });
 
+test('summarizeFunnel keeps Google One Tap out of the computer totals (2026-11-23)', () => {
+  const f = m.summarizeFunnel([
+    { src: 'one_tap', dev: 'Desktop', shown: 114, started: 0, completed: 0, acted: 0 },
+    { src: 'header', dev: 'Desktop', shown: 220, started: 73, completed: 62, acted: 0 },
+  ]);
+  assert.deepEqual(f.totals.desktop, { shown: 220, started: 73, completed: 62, acted: 0 });
+  assert.equal(f.totals.all.shown, 220);
+  assert.deepEqual(f.totals.oneTap, { shown: 114, started: 0, completed: 0, acted: 0 });
+  assert.ok(f.sources.some((x) => x.source === 'one_tap'), 'still listed as its own source row');
+});
+
 test('summarizeFunnel splits phones from computers and keeps per-source rows', () => {
   const f = m.summarizeFunnel([
     { src: 'show_bookmark', dev: 'Mobile', shown: 5, started: 0, completed: 0, acted: 0 },
