@@ -111,3 +111,28 @@ test('class guard: every recover-*-browser.js that calls processRecoveredText ha
     assert.match(src, /outcome\.code === 'file_vanished'/, `${f} must not count a vanished file as blocked`);
   }
 });
+
+// BRO-8092 class guard (BRO-7569 cousin): every standalone browser recovery script that loads
+// candidates for a headline-identity outlet (gap-acceptance HEADLINE_IDENTITY_OUTLETS: The Stage,
+// The Times) must pass the fetched page's own headline to processRecoveredText. Without it the
+// gate refuses every review whose body never prints the show title (BRO-7569: Times recoveries
+// all refused show_not_mentioned until 501f879742b).
+test('every headline-identity browser recovery script passes the page headline to the gate (BRO-8092)', () => {
+  const { HEADLINE_IDENTITY_OUTLETS } = require('./gap-acceptance.js');
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const scripts = fs.readdirSync(dir).filter((f) => /^recover-.*-browser\.js$/.test(f));
+  assert.ok(scripts.length >= 5, `expected the recover-*-browser.js family, found ${scripts.length}`);
+  const checked = [];
+  for (const f of scripts) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    const m = src.match(/loadCandidates\(\{\s*filePrefix:\s*(\[[^\]]*\]|'[^']*')/);
+    if (!m) continue;
+    const prefixes = [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
+    if (!prefixes.some((p) => HEADLINE_IDENTITY_OUTLETS.has(p))) continue;
+    checked.push(f);
+    const calls = src.split('processRecoveredText(').slice(1).map((c) => c.slice(0, 600));
+    assert.ok(calls.length > 0, `${f}: no processRecoveredText call`);
+    for (const c of calls) assert.match(c, /headline:\s*require\('\.\/lib\/gap-acceptance'\)\.pageHeadline\(|headline:\s*pageHeadline\(/, `${f}: processRecoveredText call does not pass the page headline`);
+  }
+  assert.ok(checked.includes('recover-thetimes-browser.js') && checked.includes('recover-thestage-browser.js'), `checked: ${checked.join(', ')}`);
+});

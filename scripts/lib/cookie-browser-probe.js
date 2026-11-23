@@ -163,8 +163,44 @@ async function profileControlProbe(context, probe, authCookies, { waitMs } = {})
   }
 }
 
+/**
+ * In-profile probe for renew-cookies. Returns { status, cookies, detail,
+ * page, hasAuthCookie }: cookies only when logged in. A metered wall can show
+ * a visitor the whole article (Telegraph, 1 in 4 fresh loads), so no auth
+ * cookie means no session, whatever the body says (BRO-7705).
+ * @param {import('playwright').BrowserContext} context
+ * @param {{cookieDomains:string[], authCookies:string[]}} cfg  RENEW_OUTLETS entry
+ */
+async function profileSession(context, cfg, probe, { waitMs } = {}) {
+  const renew = require('./cookie-renew');
+  const r = await loadProbe(context, probe, { waitMs });
+  const all = (await context.cookies()).filter((c) => renew.cookieInDomains(c, cfg.cookieDomains));
+  const hasAuthCookie = renew.hasAuthCookie(all, cfg.authCookies);
+  let status = classify(probe, r);
+  let detail = describe(probe, r);
+  if (status === 'logged-in' && !hasAuthCookie) { status = 'logged-out'; detail += ', but no auth cookie (metered free view)'; }
+  if (status !== 'logged-in') return { status, cookies: null, detail, page: r, hasAuthCookie };
+  return { status, detail, page: r, hasAuthCookie, cookies: all };
+}
+
+/**
+ * The in-profile deps classifyWithControl needs from an open persistent
+ * context (renew-cookies). One place so the caller cannot drop an option:
+ * BRO-7922 wired loadWithCookies as (alt) => loadProbe(context, alt), which
+ * silently turned the 8s alternate read back into the default 3s (a late
+ * paywall bar on a logged-out profile = false OK). BRO-8092.
+ * @param {import('playwright').BrowserContext} context
+ * @param {string[]} authCookies
+ */
+function profileDeps(context, authCookies) {
+  return {
+    loadWithCookies: (alt, o) => loadProbe(context, alt, o),
+    profileControl: (pr, o) => profileControlProbe(context, pr, authCookies, o),
+  };
+}
+
 function describe(probe, r) {
   return `body ${r.body.length} chars, floor ${probe.minBody}${probe.wallMarker ? `, wall marker ${probe.wallMarker.test(r.html) ? 'present' : 'absent'}` : ''}`;
 }
 
-module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, profileControlProbe, confirmWall, describe };
+module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, profileControlProbe, profileDeps, profileSession, confirmWall, describe };

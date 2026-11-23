@@ -84,6 +84,9 @@ function walledReason(html) {
 
 /** Fetch `url` through the free fetchPage tiers only (no Bright Data / ScrapingBee). */
 async function fetchFree(url, deps) {
+  // zero free tiers for this host: nothing would be fetched, so no evidence. Here, not only in
+  // refetchFree, so every free-only fetch (urlRediscover's SERP url too) gets it (BRO-8092).
+  if (deps.freeTiersForUrl && deps.freeTiersForUrl(url).length === 0) return { ok: false, outcome: 'non_evidence', reason: 'no_free_tier' };
   let res;
   try {
     res = await deps.fetchPage(url, { tiers: FREE_TIERS });
@@ -267,6 +270,11 @@ async function paidFetch(c, deps = defaultDeps()) {
   try { res = await deps.fetchPage(c.url, { tiers: ['brightdata'] }); } catch (e) {
     // the night's BD budget / breaker withheld THIS request: not evidence
     const capped = !!deps.bdBlockedCount && deps.bdBlockedCount() > blockedBefore;
+    // BRO-7962 cousin (BRO-8092): Bright Data answered with a bot check / wall
+    // (err.challengeHtml): same no-access outcome as that page returned as
+    // content (fromHtml) and as REFETCH_FREE, not a bare fetch_error.
+    const walled = capped ? null : walledFetchError(e);
+    if (walled) return walled;
     const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
     const reason = classifyFetchFailure({ message: e.message, bdWasCapped: capped });
     return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason, error: String(e.message || '').slice(0, 200), httpStatus: require('./gap-recovery-ledger').httpStatusFrom(e.message) };

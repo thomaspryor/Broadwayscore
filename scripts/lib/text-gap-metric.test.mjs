@@ -124,3 +124,39 @@ test('the enum covers what classifyIncompleteReason can write', () => {
     assert.ok(INCOMPLETE_REASON_ENUM.includes(r), r);
   }
 });
+
+test('a rejected non-review beside a complete same-outlet review is not a gap; alone it stays open (BRO-8092)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gapmetric-rnr-'));
+  const w = (rel, obj) => {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(dir, rel), JSON.stringify(obj));
+  };
+  const shows = new Map([['show-a', { id: 'show-a', openingDate: '2026-03-01' }]]);
+  const rejected = { contentTier: 'stub', fullText: '', rejectionReason: 'not_a_review', incompleteReason: 'scraper_garbage' };
+  // real shape: a-few-good-men-2026/variety--anna-tingley.json (/shop/ ticket listing) beside variety--daniel-daddario.json
+  w('show-a/variety--daniel-daddario.json', review({ outletId: 'variety', criticName: 'Daniel DAddario' }));
+  w('show-a/variety--anna-tingley.json', review({ outletId: 'variety', criticName: 'Anna Tingley', url: 'https://variety.com/shop/broadway-show-tickets-where-to-buy-1234970196/', ...rejected }));
+  // real shape: the-waverly-gallery-2018/nypost--johnny-oleksinski.json, a real second review
+  // rejected on a teaser; its url is a review url, so it stays a gap
+  w('show-a/nypost--joe-d.json', review({ outletId: 'nypost', criticName: 'Joe D', url: 'https://nypost.com/2018/10/25/elaine-may-leads-a-strong-ensemble/' }));
+  w('show-a/nypost--johnny-oleksinski.json', review({ outletId: 'nypost', criticName: 'Johnny Oleksinski', url: 'https://nypost.com/2018/10/26/elaine-may-is-brilliant-in-the-waverly-gallery/', ...rejected }));
+  // garbage_text is about the fetched body, not the page: stays a gap
+  w('show-a/variety--garbage.json', review({ outletId: 'variety', criticName: 'G', url: 'https://variety.com/shop/other-1/', ...rejected, rejectionReason: 'garbage_text' }));
+  // no complete sibling: the verdict alone may be a paywall misread (BRO-7962), stays a gap
+  w('show-a/financialtimes--sarah-hemming.json', review({ outletId: 'financialtimes', criticName: 'Sarah Hemming', url: 'https://variety.com/shop/ft-x-1/', ...rejected }));
+  // sibling complete but ITSELF rejected: no real review in hand, stays a gap
+  w('show-a/guardian--x.json', review({ outletId: 'guardian', rejectionReason: 'not_a_review' }));
+  w('show-a/guardian--y.json', review({ outletId: 'guardian', url: 'https://variety.com/shop/gu-y-1/', ...rejected }));
+  // invalid tier from a garbage fetch, no not_a_review verdict: stays a gap (review finding)
+  w('show-a/variety--invalid.json', review({ outletId: 'variety', criticName: 'I', url: 'https://variety.com/shop/inv-2/', contentTier: 'invalid', fullText: '' }));
+  const by = Object.fromEntries(scanCorpus({ dir, shows, nowMs: NOW }).rows.map((r) => [r.file, r]));
+  assert.equal(by['variety--anna-tingley.json'].gapClass, 'EXCLUDED');
+  assert.equal(by['variety--anna-tingley.json'].subclass, 'rejected_non_review_beside_complete');
+  assert.equal(by['variety--anna-tingley.json'].open, false);
+  assert.equal(by['variety--daniel-daddario.json'].gapClass, 'COMPLETE');
+  assert.equal(by['financialtimes--sarah-hemming.json'].open, true);
+  assert.equal(by['guardian--y.json'].open, true);
+  assert.equal(by['nypost--johnny-oleksinski.json'].open, true);
+  assert.equal(by['variety--garbage.json'].open, true);
+  assert.equal(by['variety--invalid.json'].open, true);
+});

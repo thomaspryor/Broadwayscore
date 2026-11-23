@@ -81,6 +81,9 @@ test('the driver wires the subscriber-read proof and records its detail (guards 
   assert.match(src, /PO\.subscriberReadProof\(/);
   assert.match(src, /subscriber_read_complete/);
   assert.match(src, /PO\.subscriberReadDetail\(/);
+  // BRO-8092: selectStrategy defaults hasAnyAdapter to hasAdapter, so unwiring it
+  // silently re-sends nightly-off subscriber outlets (wsj, sunday-times) to Bright Data.
+  assert.match(src, /hasAnyAdapter:\s*!!require\('\.\/lib\/browser-outlet-adapters'\)\.adapterFor\(review\.outletId\)/);
 });
 
 test('equal length but different text is no completeness proof (review: same-size unrelated page)', () => {

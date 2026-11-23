@@ -8,7 +8,7 @@
  * @module content-quality
  */
 
-const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle, textMentionsNumericTitle } = require('./show-title-variants');
 const { hasExcerpt: hasAnyExcerpt, getLongestExcerpt } = require('./excerpt-fields');
 const { stripKnownTrailers, trailerFixesEnabled } = require('./trailer-signatures');
 
@@ -1007,6 +1007,11 @@ function validateShowMentioned(text, showTitle, showId) {
   const shortHit = textMentionsShortTitle(text, showTitle);
   if (shortHit) {
     return { valid: true, confidence: 'medium', reason: `Short show title "${shortHit}" found 2+ times as a proper noun` };
+  }
+  // Check 0b: a 1-3 digit title ("44", "13") printed as a title (BRO-8092).
+  const numericHit = textMentionsNumericTitle(text, showTitle);
+  if (numericHit) {
+    return { valid: true, confidence: 'medium', reason: `Numeric show title "${numericHit}" found quoted or as "${numericHit} The Musical"` };
   }
 
   // Check 1: Exact show title match

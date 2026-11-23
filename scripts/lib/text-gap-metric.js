@@ -101,6 +101,7 @@ function scanCorpus({ dir, shows, outlets = {}, nowMs, outletFilter = null, show
       showRows.push({ row, review });
     }
     excludeUnknownStubsBesideNamed(showRows);
+    excludeRejectedNonReviewBesideComplete(showRows);
   }
   return { rows, excludedSidecars, filesRead, unreadable };
 }
@@ -127,6 +128,51 @@ function excludeUnknownStubsBesideNamed(showRows) {
     if (!namedIncluded.has(key(review))) continue;
     row.gapClass = 'EXCLUDED';
     row.subclass = 'unknown_stub_named_sibling';
+    row.open = false;
+  }
+}
+
+/**
+ * BRO-8092: a file the canonical isRejectedNonReview calls not a review
+ * (ensemble not_a_review, invalid tier, high-confidence CV wrongArticle / news
+ * articleType; its json-ld-star and manual-clear carve-outs kept) is not a gap when
+ * the same outlet's review of this show is already complete in a sibling file:
+ * nothing is missing. Before this the nightly engine re-attempted them and the
+ * floors report counted them, e.g. a-few-good-men-2026/variety--anna-tingley.json
+ * (a /shop/ ticket listing) beside the complete variety--daniel-daddario.json,
+ * and cats-the-jellicle-ball-2026/variety--brent-lang.json (a closing-news
+ * story) beside variety--frank-rizzo.json: 2 of Variety's 5 floor gaps.
+ * Three signals, never fewer. The verdict alone is not enough: the 65-row
+ * corpus sample (BRO-8092) found real second reviews rejected after the
+ * ensemble read a ~160-char teaser (the-waverly-gallery-2018/
+ * nypost--johnny-oleksinski.json, red-2010/theatermania--david-finkle.json),
+ * and garbage_text is about the fetched body, not the page. So the stored url
+ * must also be one the canonical url classifier refuses (ticketing listing,
+ * site utility, off-topic host), and a complete same-outlet sibling must hold
+ * the review. Otherwise the row stays open. Mutates rows.
+ */
+function excludeRejectedNonReviewBesideComplete(showRows) {
+  const { normalizeOutlet } = require('./review-normalization');
+  const { isRejectedNonReview } = require('./review-guards');
+  // garbage_text rejects the fetched body, not the page (scraper_garbage on incompleteReason is a fetch note and is fine).
+  const garbageRejection = (r) => /garbage/.test(String(r.rejectionReason || ''));
+  const { classifyReviewUrl } = require('./non-review-url-patterns');
+  const key = (r) => normalizeOutlet(r.outletId || r.outlet || '');
+  const urlRefused = (r) => /^https?:\/\//i.test(String(r.url || '')) && classifyReviewUrl(r.url).ok === false;
+  const completeBy = new Map();
+  for (const { row, review } of showRows) {
+    if (row.gapClass !== 'COMPLETE' || isRejectedNonReview(review)) continue;
+    if (!completeBy.has(key(review))) completeBy.set(key(review), []);
+    completeBy.get(key(review)).push(row.file);
+  }
+  for (const { row, review } of showRows) {
+    // An explicit not_a_review verdict, never an invalid tier alone (a garbage fetch
+    // sets that, and a bad url + bad body are one failure, not two signals: review).
+    if (!row.open || review.rejectionReason !== 'not_a_review' || !isRejectedNonReview(review) || garbageRejection(review) || !urlRefused(review)) continue;
+    const sibs = (completeBy.get(key(review)) || []).filter((f) => f !== row.file);
+    if (!sibs.length) continue;
+    row.gapClass = 'EXCLUDED';
+    row.subclass = 'rejected_non_review_beside_complete';
     row.open = false;
   }
 }

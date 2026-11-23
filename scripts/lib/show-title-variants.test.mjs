@@ -227,3 +227,33 @@ test('textMentionsShortTitle allowUncurated counts short alpha titles only when 
   assert.equal(tm('On March 13, then May 13.', '13', 2, { allowUncurated: true }), null, 'digits never count');
   assert.equal(tm('G and G.', 'G', 2, { allowUncurated: true }), null, 'single letters never count');
 });
+
+test('numeric titles count only when printed as a title, quoted or "N The Musical" (BRO-8092)', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { textMentionsNumericTitle } = req('./show-title-variants.js');
+  const { validateShowMentioned } = req('./content-quality.js');
+  const pad = ' The cast sings the score with energy and the staging moves along briskly through both acts.'.repeat(3);
+  // real shapes from data/review-texts/44-off-broadway-2025 and 13-2008
+  assert.equal(textMentionsNumericTitle('Review: 44—The Musical has arrived Off-Broadway.', '44'), '44');
+  assert.equal(textMentionsNumericTitle('since I was seeing “44 The Musical” on Election Day', '44'), '44');
+  assert.equal(textMentionsNumericTitle('the musical “13,” the other Broadway show. When “13” ends its run', '13'), '13');
+  assert.equal(textMentionsNumericTitle('“13: The Musical” is a Netflix film', '13'), '13');
+  // bare numbers are dates, ages, counts: never a mention
+  assert.equal(textMentionsNumericTitle('beginning February 13, 2009, the 13 actors and 44 minutes', '13'), null);
+  assert.equal(textMentionsNumericTitle('the 44th president and $44 tickets', '44'), null);
+  assert.equal(textMentionsNumericTitle('“44” appears', 'Hamilton'), null);
+  // review findings: lowercase "musical director", minutes-seconds, hashtag
+  assert.equal(textMentionsNumericTitle('He was 13 the musical prodigy; she was 13 — the musical director', '13'), null);
+  assert.equal(textMentionsNumericTitle('running time 1\'44" total', '44'), null);
+  assert.equal(textMentionsNumericTitle('#13 The Musical trends', '13'), null);
+  // one quoted number is an age or score, not a title (Codex review)
+  assert.equal(textMentionsNumericTitle("He turned '44' in May.", '44'), null);
+  const { countNumericTitleMentions } = req('./show-title-variants.js');
+  assert.equal(countNumericTitleMentions('“44” opened. “44” is a parody. 44—The Musical runs.', '44'), 3);
+  const t0 = Date.now(); textMentionsNumericTitle('44' + ' '.repeat(50000) + 'x', '44');
+  assert.ok(Date.now() - t0 < 200, 'no quadratic whitespace scan');
+  assert.equal(textMentionsNumericTitle('librettist Robert Horn (13 the Musical, TV)', '13'), '13');
+  assert.equal(validateShowMentioned('In “44 – The Musical” the president sings.' + pad, '44', '44-off-broadway-2025').valid, true);
+  assert.equal(validateShowMentioned('On February 13 the 13 kids sang.' + pad, '13', '13-2008').valid, false);
+});
