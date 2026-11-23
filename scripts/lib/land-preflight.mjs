@@ -1086,7 +1086,7 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
     return {
       status: 'fail',
       message: `land.yml would refuse this push at lint-workflows::live-data-lane (BRO-8107):\n${errors.slice(0, 5).join('\n')}\n` +
-        'Fix: point the test at a fixture (useShowsFixture from scripts/lib/shows-json-path.js), or add "// LIVE-DATA-LANE: <why>" to its first 40 lines. ' +
+        'Fix: point the test at a fixture (useShowsFixture from scripts/lib/shows-json-fixture.js), or add "// LIVE-DATA-LANE: <why>" to its first 40 lines. ' +
         `Re-run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}\n` +
         'If the read is not yours, bypass this push with `# NO-LAND-PREFLIGHT: <reason>`.',
     };

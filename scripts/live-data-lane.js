@@ -283,7 +283,7 @@ function verifyChangedInner(args) {
 /** PURE. The fixture seam to name when a test reaches shows.json through the shared guards (BRO-8107). */
 function fixtureHint(reasons) {
   return (reasons || []).some((r) => r.startsWith('data/shows.json'))
-    ? " (data/shows.json via a shared guard: add process.on('exit', require('<rel>/scripts/lib/shows-json-path.js').useShowsFixture([...shows])) after createRequire, which points SHOWS_JSON_PATH at a temp fixture)"
+    ? " (data/shows.json via a shared guard: add process.on('exit', require('<rel>/scripts/lib/shows-json-fixture.js').useShowsFixture([...shows])) after createRequire, which points SHOWS_JSON_PATH at a temp fixture)"
     : '';
 }
 

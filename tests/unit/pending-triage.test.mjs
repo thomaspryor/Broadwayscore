@@ -15,7 +15,7 @@ import { spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 // BRO-8107: the shared guards this reaches read shows from a fixture, not the live
 // data/shows.json, so this test stays in test.yml's blocking batch.
-process.on('exit', require('../../scripts/lib/shows-json-path.js').useShowsFixture([]));
+process.on('exit', require('../../scripts/lib/shows-json-fixture.js').useShowsFixture([]));
 // replay-pending-bylines.js resolves the review-texts root at import; on a
 // checkout with the private corpus that lists it (a live read). Empty fixture dir.
 if (!process.env.REVIEW_TEXTS_DIR) {

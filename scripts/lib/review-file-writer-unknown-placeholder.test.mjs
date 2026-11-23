@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 // BRO-8107: the shared guards this reaches read shows from a fixture, not the live
 // data/shows.json, so this test stays in test.yml's blocking batch.
-process.on('exit', require('./shows-json-path.js').useShowsFixture([]));
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 const show = 'example-show-2026';
 

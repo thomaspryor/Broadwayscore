@@ -15,7 +15,8 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const { showsJsonPath, readShowsList, useShowsFixture, REPO_SHOWS_PATH } = require('./shows-json-path.js');
+const { showsJsonPath, readShowsList, REPO_SHOWS_PATH } = require('./shows-json-path.js');
+const { useShowsFixture } = require('./shows-json-fixture.js');
 
 test('showsJsonPath: env first (read at call time), else the repo copy', () => {
   const prev = process.env.SHOWS_JSON_PATH;

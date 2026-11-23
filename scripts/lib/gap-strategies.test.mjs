@@ -20,7 +20,7 @@ import { createRequire as _cr62 } from 'node:module';
 const require = createRequire(import.meta.url);
 // BRO-8107: the shared guards this reaches read shows from a fixture, not the live
 // data/shows.json, so this test stays in test.yml's blocking batch.
-process.on('exit', require('./shows-json-path.js').useShowsFixture([]));
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const S = require('./gap-strategies.js');
 const { earliestCaptureTimestamp, latestCaptureTimestamp } = require('./fetch-archive-fallback.js');
 
