@@ -224,6 +224,11 @@ test('runJob: lease-held (another job already running this task) writes job-aban
       appended.push(entry);
       return { ts: new Date().toISOString(), ...entry };
     };
+    // BRO-8079: runJob checks the REAL disk before the lease, so on a Mac under disk pressure
+    // (99% full, 8GB free, 2026-11-22) this test hit 'disk-pressure', ran the self-heal GC and
+    // routed a real alert. A floor of 0 keeps it testing the lease path only.
+    const prevFloor = process.env.BSC_DISPATCH_DISK_FLOOR_GB;
+    process.env.BSC_DISPATCH_DISK_FLOOR_GB = '0';
 
     try {
       const claim = bscRunner.acquireLease(taskId, { jobId: holderJobId, subject: 'test-holder', pid: FAKE_PID }, { isAliveFn: alwaysAlive });
@@ -241,6 +246,7 @@ test('runJob: lease-held (another job already running this task) writes job-aban
     } finally {
       dispatchLedger.appendEntry = originalAppendEntry;
       if (claimed) bscRunner.releaseLease(taskId, holderJobId);
+      if (prevFloor === undefined) delete process.env.BSC_DISPATCH_DISK_FLOOR_GB; else process.env.BSC_DISPATCH_DISK_FLOOR_GB = prevFloor;
     }
   });
 
