@@ -236,3 +236,11 @@ test('BRO-8105: selectBestExcerpt never ships a quote that opens with a photo cr
     assert.doesNotMatch(q, /Photo|Credit|Zimmerman|Murphy|Victoria Wai/, q);
   }
 });
+
+test('BRO-8105: amNY page header + photo caption with a "/Provided" tail; a leading ellipsis alone is kept', () => {
+  const raw = 'Broadway Review | ‘Some Show’ brings the circus to Broadway By Jane Doe … Comments Posted on March 24, 2024. '
+    + 'Two Actors in "Some Show" on Broadway. Photo by Matthew Murphy/Provided I do not know about you, but I prefer the circus itself.';
+  assert.equal(stripCaptionChrome(raw), 'I do not know about you, but I prefer the circus itself.');
+  const ell = '...Some Show aspires to the kind of emotional sweep we associate with the greats.';
+  assert.equal(stripCaptionChrome(ell), ell);
+});
