@@ -55,7 +55,7 @@ const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMark
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsShowTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack, applyTierResultInMemory } = require('./lib/content-tier-reason-sync');
-const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
+const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { runOutletMismatchCleanup, renameAndRepoint, makeDirIO } = require('./lib/outlet-mismatch-heal');
@@ -81,7 +81,7 @@ const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
 const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
 const { otherFitsReviewYearBetter, showRunYears } = require('./lib/url-cross-production');
-const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, shouldPromoteViaStaleCvReasonFallback, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -2546,14 +2546,8 @@ const crossShowFingerprints = new Map();
           && hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
         if (cv.confidence !== 'high' && cv.confidence !== 'medium' && !cvLowButStrong) continue;
         // Staleness check
-        let stale = false;
-        if (d.textFetchedAt && cv.verifiedAt) {
-          if (new Date(d.textFetchedAt).getTime() > new Date(cv.verifiedAt).getTime()) stale = true;
-        }
-        if (!stale && cv.contentHash && d.fullText) {
-          const h = cvContentHash(d.fullText);
-          if (cv.contentHash !== h) stale = true;
-        }
+        // BRO-8135: shared computeCvIsStale (same-hash re-fetch is not stale).
+        const stale = computeCvIsStale(d);
         // EXCEPTION: never skip staleness for high-confidence wrongArticle findings
         // that name a DIFFERENT SHOW (hasStrongDifferentShowSignal) — that judgment
         // is stable across a refetch (we re-fetch the same URL, which yields the same
@@ -3386,25 +3380,10 @@ showDirs.forEach(showId => {
         const cv = data.contentVerification;
 
         // Staleness check: if text was fetched after verification, skip promotion
-        let cvIsStale = false;
-        if (data.textFetchedAt && cv.verifiedAt) {
-          const fetchedAt = new Date(data.textFetchedAt).getTime();
-          const verifiedAt = new Date(cv.verifiedAt).getTime();
-          if (fetchedAt > verifiedAt) {
-            cvIsStale = true;
-            stats.staleContentVerificationSkippedPromotion = (stats.staleContentVerificationSkippedPromotion || 0) + 1;
-          }
-        }
-
-        // Staleness guard 2: if verification was done on different content than current fullText,
-        // skip promotion. The verifier may have re-scraped the URL and gotten a different page.
-        if (!cvIsStale && cv.contentHash && data.fullText) {
-          const currentHash = cvContentHash(data.fullText);
-          if (cv.contentHash !== currentHash) {
-            cvIsStale = true;
-            stats.contentHashMismatchSkippedPromotion = (stats.contentHashMismatchSkippedPromotion || 0) + 1;
-          }
-        }
+        // BRO-8135: shared computeCvIsStale; a re-fetch of the same verdict window (same
+        // contentHash) is not stale, so the wrongShowReason fallback below cannot re-exclude it.
+        let cvIsStale = computeCvIsStale(data);
+        if (cvIsStale) stats.staleContentVerificationSkippedPromotion = (stats.staleContentVerificationSkippedPromotion || 0) + 1;
 
         // EXCEPTION (mirrors pre-pass): high-confidence wrongArticle naming a
         // DIFFERENT SHOW is trusted even on stale CV — re-fetching the same URL
@@ -3533,8 +3512,7 @@ showDirs.forEach(showId => {
         // promote wrongShow anyway. The wrongShowReason was set by the collector LLM and
         // describes the actual content mismatch — staleness of the verification timestamp
         // doesn't invalidate the finding if the text is still wrong.
-        if (cvIsStale && data.wrongShow !== true && data.wrongShowReason
-            && /wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason)) {
+        if (cvIsStale && shouldPromoteViaStaleCvReasonFallback(data)) {
           // CV outlet-style override (S3-T5 followup): defer for long-biographical
           // outlets even on the stale-CV fallback path. The wrongShowReason itself
           // is a CV-derived signal, so the same FP class applies.

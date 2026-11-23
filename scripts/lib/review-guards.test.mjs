@@ -15,6 +15,8 @@ const {
   isStaleCvPromotedWrongProduction,
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
+  cvSameVerdictWindow,
+  shouldPromoteViaStaleCvReasonFallback,
   isReviewContentTrustworthy,
 } = require('./review-guards.js');
 
@@ -511,6 +513,46 @@ test('computeCvIsStale: false when the CV verdict postdates the fetch', () => {
     contentVerification: { verifiedAt: '2026-06-05T23:55:34.160Z' },
   };
   assert.equal(computeCvIsStale(f), false);
+});
+
+// BRO-8135: same-hash re-fetch is not stale; the stale-CV wrongShowReason fallback must not re-exclude.
+const { contentHash: cvHash8135 } = require('./content-verifier');
+const TXT8135 = 'A'.repeat(3000);
+const mk8135 = (over = {}, cv = {}) => ({
+  fullText: TXT8135,
+  textFetchedAt: '2026-06-06T00:00:00.000Z',
+  wrongShowReason: 'Collector LLM: wrong show, different production',
+  contentVerification: { verifiedAt: '2026-06-05T00:00:00.000Z', contentHash: cvHash8135(TXT8135), wrongArticle: false, isValid: true, ...cv },
+  ...over,
+});
+
+test('BRO-8135 computeCvIsStale: stale timestamp + matching hash => not stale', () => {
+  assert.equal(computeCvIsStale(mk8135()), false);
+  assert.equal(cvSameVerdictWindow(mk8135()), true);
+});
+test('BRO-8135 computeCvIsStale: hash mismatch => stale', () => {
+  assert.equal(computeCvIsStale(mk8135({ fullText: 'B'.repeat(3000) })), true);
+});
+test('BRO-8135 computeCvIsStale: no contentHash => stale by timestamp', () => {
+  const f = mk8135({}, { contentHash: undefined });
+  assert.equal(cvSameVerdictWindow(f), false);
+  assert.equal(computeCvIsStale(f), true);
+});
+test('BRO-8135 computeCvIsStale: empty fullText => stale by timestamp, never hashed', () => {
+  const f = mk8135({ fullText: '' });
+  assert.equal(cvSameVerdictWindow(f), false);
+  assert.equal(computeCvIsStale(f), true);
+});
+test('BRO-8135 computeCvIsStale: same first 2500 chars, different tail => not stale', () => {
+  assert.equal(computeCvIsStale(mk8135({ fullText: TXT8135.slice(0, 2500) + 'tail changed' })), false);
+});
+test('BRO-8135 fallback predicate: fresh clean CV on same text does not re-exclude', () => {
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135()), false);
+});
+test('BRO-8135 fallback predicate: genuinely stale CV (changed text) still promotes', () => {
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000) })), true);
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000), wrongShow: true })), false);
+  assert.equal(shouldPromoteViaStaleCvReasonFallback(mk8135({ fullText: 'B'.repeat(3000), wrongShowReason: 'fine' })), false);
 });
 
 /* ──────────────────────────────────────────────────────────────────────────

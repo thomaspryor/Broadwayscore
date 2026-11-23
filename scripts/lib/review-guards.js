@@ -2903,16 +2903,45 @@ function computeCvIsStale(data) {
   if (!data) return false;
   const cv = data.contentVerification;
   if (!cv) return false;
-  if (data.textFetchedAt && cv.verifiedAt) {
+  // BRO-8135: a later re-fetch of byte-identical text (same hash) does not make the verdict stale.
+  const sameText = cvSameVerdictWindow(data);
+  if (!sameText && data.textFetchedAt && cv.verifiedAt) {
     const fetchedAt = new Date(data.textFetchedAt).getTime();
     const verifiedAt = new Date(cv.verifiedAt).getTime();
     if (fetchedAt > verifiedAt) return true;
   }
-  if (cv.contentHash && data.fullText) {
-    const currentHash = require('./content-verifier').contentHash(data.fullText); // lazy: content-verifier requires this module
-    if (cv.contentHash !== currentHash) return true;
-  }
+  if (cv.contentHash && data.fullText && !sameText) return true;
   return false;
+}
+
+/**
+ * BRO-8135: true when the CV verdict covers the current text's SAME VERDICT WINDOW: the stored
+ * contentHash equals the hash of the current fullText. contentHash covers only the first
+ * CV_WINDOW_CHARS (2500) chars, so a changed tail still matches; partial-window verdicts stay
+ * governed by isCvVerdictFromPartialWindow / isCvPartialWindowAdvisory, not by this. A
+ * textFetchedAt newer than verifiedAt then only means the same page was re-fetched, so the
+ * stale-CV wrongShowReason fallback must not re-exclude on an older reason.
+ * Returns false when contentHash is missing or fullText is empty (cannot prove sameness).
+ *
+ * @param {object} data - Review-text JSON
+ * @returns {boolean}
+ */
+function cvSameVerdictWindow(data) {
+  const cv = data && data.contentVerification;
+  if (!cv || !cv.contentHash || !data.fullText) return false;
+  return cv.contentHash === require('./content-verifier').contentHash(data.fullText); // lazy: content-verifier requires this module
+}
+
+/**
+ * BRO-8135: pure predicate for rebuild's stale-CV wrongShowReason fallback. True only when
+ * the CV is stale, the file is not already wrongShow, and the stored reason describes a wrong
+ * article. With cvSameVerdictWindow the CV is not stale, so a fresh clean verdict is never
+ * overridden by an older collector reason.
+ */
+function shouldPromoteViaStaleCvReasonFallback(data) {
+  if (!data || data.wrongShow === true || !data.wrongShowReason) return false;
+  if (!computeCvIsStale(data)) return false;
+  return /wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason);
 }
 
 /**
@@ -3358,6 +3387,9 @@ function isNonReviewDemotedByFreshCV(data, opts) {
   const cvTime = Date.parse(cv.verifiedAt);
   if (Number.isNaN(cvTime)) return false;
 
+  // BRO-8135: deliberately NOT routed through cvSameVerdictWindow. This is the un-flagging
+  // (demotion) direction, so a refetch-after-verdict keeps the label (conservative); the
+  // stale-CV bug fixed there is the re-EXCLUDE direction.
   if (data.textFetchedAt) {
     const fetchedAt = Date.parse(data.textFetchedAt);
     if (!Number.isNaN(fetchedAt) && fetchedAt > cvTime) return false;
@@ -7253,6 +7285,8 @@ module.exports = {
   isStaleGenericHomepageWrongShow,
   isStaleBulkTitleWrongShow,
   computeCvIsStale,
+  cvSameVerdictWindow,
+  shouldPromoteViaStaleCvReasonFallback,
   isNonReviewDemotedByFreshCV,
   isUrlCorrectedReverifiedReview,
   isStaleCvNonReviewVerdictOverruled,
