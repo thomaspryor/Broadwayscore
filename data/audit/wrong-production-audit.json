@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-11-23T02:37:48.347Z",
+  "timestamp": "2026-11-23T02:55:50.773Z",
   "stats": {
-    "totalReviews": 84167,
+    "totalReviews": 84169,
     "alreadyFlagged": 22505,
     "dateGuardCatches": 240,
     "directorMismatch": 3883,
@@ -14462,6 +14462,19 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "folio-weekly--cessy-newmon.json",
+      "publishDate": "2025-11-19",
+      "url": "https://folioweekly.com/2025/11/19/clues-abound-onstage-downtown/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "gephardt-daily--nancy-van-valkenburg.json",
       "score": 80,
       "publishDate": "2026-02-13",
@@ -14507,19 +14520,6 @@
       "score": 61,
       "publishDate": "2026-03-15",
       "url": "https://munroreview.com/2026/03/15/theater-review-a-clever-script-for-clue-delivers-laughs-but-one-note-performances-diminish-the-farce/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "clue-tour-2025",
-      "file": "northwest-arkansas-democrat-gazette--monica-hooper.json",
-      "publishDate": "11/19/2025",
-      "url": "https://www.nwaonline.com/news/2025/nov/08/high-energy-cast-and-dynamic-set-mix-with/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
