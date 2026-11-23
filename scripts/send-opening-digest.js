@@ -46,6 +46,7 @@ const https = require('https');
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
 const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
+const { scoreGateArg } = require('./lib/should-hide-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const { rowConfidence } = require('./lib/score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
 const { isLocalOnlyShow } = require('./lib/local-market');
@@ -290,9 +291,9 @@ function computeCriticScore(showReviews, market, showType) {
 }
 
 /** The score the site shows for these reviews, or null while it shows TBD. */
-function displayedCriticScore(showReviews, market, showType) {
+function displayedCriticScore(showReviews, market, showType, show) {
   const result = canonicalComputeCriticScore(showReviews, outletRegistry, market, showType);
-  if (!result || !hasEnoughReviews(result.rc, market, result.t1 + result.t2)) return null;
+  if (!result || !hasEnoughReviews(result.rc, market, result.t1 + result.t2, scoreGateArg(show || null))) return null;
   return Math.round(result.s);
 }
 
@@ -349,7 +350,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       // Below it the row renders "TBD" — the review-progress line still shows
       // the running count, so the owner sees momentum without a premature verdict.
       // Same gate as the site badge (deduped scored count, +2 when no T1/T2), BRO-4312.
-      const score = displayedCriticScore(reviews, market, s.type);
+      const score = displayedCriticScore(reviews, market, s.type, s);
       const q = scoreQualifies(reviews, market);
       const audience = getAudience(audienceBuzz, s.id, s);
       const excluded = excludedMap.has(s.id);

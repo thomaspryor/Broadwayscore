@@ -8,6 +8,7 @@ import { getAwardWinnerSets } from '@/lib/data-awards';
 import type { ComputedShow } from '@/lib/data-types';
 import { createShowSerializer } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
@@ -99,7 +100,8 @@ export default function HomePage() {
   const shelfScoreFilter = (s: typeof allShows[number]) =>
     s.criticScore?.score && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
-      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+      scoreGateArg(s),
     );
 
   const bestRecentShows = allShows

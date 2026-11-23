@@ -10,6 +10,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL, SITE_OG_IMA
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
 import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
 import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
@@ -133,6 +134,7 @@ export default function OffBroadwayPage() {
     s.criticScore?.reviewCount ?? 0,
     'off-broadway',
     (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0),
+    scoreGateArg(s),
   );
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);

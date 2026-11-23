@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS, getScoreTierRange } from '@/components/show-cards';
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import ScrollRow from '@/components/ScrollRow';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
@@ -35,7 +36,7 @@ function operaTitleSlug(fullSlug: string): string {
 function operaHasEnoughReviews(show: ShowCardShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  return hasEnoughReviews(rc, 'off-broadway', t1t2);
+  return hasEnoughReviews(rc, 'off-broadway', t1t2, scoreGateArg(show));
 }
 
 

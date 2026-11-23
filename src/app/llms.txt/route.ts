@@ -4,6 +4,7 @@
 
 import { getBroadwayShows, getWestEndShows, getOffWestEndShows, getAllBrowseSlugs } from '@/lib/data-core';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import { featureFlags } from '@/config/feature-flags';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -32,6 +33,7 @@ export async function GET() {
     .filter(s => s.criticScore?.score != null && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
       (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+      scoreGateArg(s),
     ))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 5);

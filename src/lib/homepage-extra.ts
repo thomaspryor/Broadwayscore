@@ -15,6 +15,7 @@ import { shortCity } from '@/lib/tour-schedule';
 import type { ComputedShow } from '@/lib/data-types';
 import { createShowSerializer } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { scoreGateArg } from '@/config/scoring';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import { formatShowDate } from '@/lib/date-utils';
 import { formatClosingLabel, isRepeatedlyExtended } from '@/lib/closing-label';
@@ -47,6 +48,7 @@ export function buildHomepageExtra(): HomepageExtra {
     s.criticScore?.score != null && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
       (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+      scoreGateArg(s),
     )
   );
   // Opera shelf: small universe (typically 3-4 Met productions running concurrently),
@@ -112,7 +114,8 @@ export function buildHomepageExtra(): HomepageExtra {
   const bestOffBroadwayList = obShows
     .filter(s => s.criticScore?.score && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
-      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0)
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+      scoreGateArg(s),
     ))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow);
