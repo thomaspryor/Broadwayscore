@@ -93,6 +93,8 @@ const EXEMPT = {
     "staged: audit-aggregator-gap.yml lists this file in its audit-state for-f loop and git adds \"$f\"",
   "scripts/audit-wrong-article.js|data/audit/wrong-article-verified.json":
     "manual mode only: --record-verified/--verify-file write VERIFIED_PATH; data-health-check.yml runs --adjudicate and the default check, which do not",
+  "scripts/resolve-outlet-domain-moves.js|data/audit/unknown-aggregator-outlets.json":
+    "read-only: the census is the resolver's input (BRO-7822); it writes only data/outlet-registry.json, staged by audit-aggregator-gap.yml's Commit audit JSON step",
   "scripts/check-opening-night-drift.js|data/audit/drift-detector-allowlist.json":
     "read-only: ALLOWLIST_FILE is an input; saveState writes the separate drift-state.json, already staged by check-opening-night-drift.yml",
   "scripts/check-provider-spend.js|data/audit/scraper-spend-ledger.jsonl":

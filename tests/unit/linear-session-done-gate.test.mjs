@@ -28,6 +28,23 @@ afterEach(() => {
 // instead of a decapitated TAP stream. See tests/helpers/process-exit-guard.mjs.
 guardProcessExit();
 
+// live-data-lane: never read the untracked shows.json or the bot-written recurrence
+// ledger from this blocking-batch test. An empty shows fixture and an absent
+// recurrence snapshot (the done gate fails open on a missing file) keep it hermetic.
+import { createRequire as __lsCreateRequire } from 'node:module';
+import { tmpdir as __lsTmpdir } from 'node:os';
+import { join as __lsJoin } from 'node:path';
+{
+  const __req = __lsCreateRequire(import.meta.url);
+  const restoreShows = __req('../../scripts/lib/shows-json-path.js').useShowsFixture([]);
+  const prevRc = process.env.RECURRENCE_CLASSES_PATH;
+  process.env.RECURRENCE_CLASSES_PATH = __lsJoin(__lsTmpdir(), `no-recurrence-classes-${process.pid}.json`);
+  process.on('exit', () => {
+    restoreShows();
+    if (prevRc === undefined) delete process.env.RECURRENCE_CLASSES_PATH; else process.env.RECURRENCE_CLASSES_PATH = prevRc;
+  });
+}
+
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
@@ -527,4 +544,44 @@ test('claim: the host-only session ref never counts as "this session"', () => {
   const lsr = require('../../scripts/lib/linear-session-reporting.js');
   assert.equal(lsr.isSessionSpecificRef(lsr.claimSessionRef({}, 'mac')), false);
   assert.equal(lsr.isSessionSpecificRef(lsr.claimSessionRef({ CLAUDE_CODE_REMOTE_SESSION_ID: 'cse_A' }, 'mac')), true);
+});
+
+// BRO-8152: a paused report's DECISION NEEDED block is copied to the description (the only text the
+// owner emailer reads); the in-process machine caller (skipOwnerQuestionGuard) never writes it.
+for (const skip of [false, true]) {
+  test(`report --status=paused copies DECISION NEEDED to the description (skipOwnerQuestionGuard=${skip})`, async () => {
+    const calls = mockFetch({ issue: { description: 'Original body' }, updateShouldBeCalled: true });
+    TEAM_STATES.push({ id: 'state-paused', name: 'Paused', type: 'backlog' });
+    await withStubbedExit(async () => {
+      await cmdReport({ issue: 'BRO-9458', status: 'paused',
+        summary: 'Checked it.\nDECISION NEEDED: Should the gate drop to 3 reviews for the short run?\nMy recommendation: yes.' },
+      skip ? { skipOwnerQuestionGuard: true } : {});
+    }).finally(() => TEAM_STATES.pop());
+    const descWrites = calls.filter((c) => c.query.includes('issueUpdate') && JSON.stringify(c.variables).includes('"description"'));
+    if (skip) { assert.equal(descWrites.length, 0); return; }
+    assert.equal(descWrites.length, 1);
+    const written = JSON.stringify(descWrites[0].variables);
+    assert.match(written, /DECISION NEEDED: Should the gate drop/);
+    assert.match(written, /Original body/);
+  });
+}
+
+test('BRO-8152: the promotion re-reads the card, so an edit made after the first read survives', async () => {
+  const calls = mockFetch({ issue: { description: 'Old body' }, updateShouldBeCalled: true });
+  const base = global.fetch;
+  let reads = 0;
+  global.fetch = async (url, opts) => {
+    const q = JSON.parse(opts.body).query;
+    if (q.includes('issue(id:') && ++reads >= 2) return { json: async () => makeIssueResponse({ description: 'Newer edit by someone else' }) };
+    return base(url, opts);
+  };
+  TEAM_STATES.push({ id: 'state-paused', name: 'Paused', type: 'backlog' });
+  await withStubbedExit(async () => {
+    await cmdReport({ issue: 'BRO-9458', status: 'paused', summary: 'DECISION NEEDED: Keep the gate at 3 reviews for the short run?' });
+  }).finally(() => TEAM_STATES.pop());
+  const w = calls.filter((c) => c.query.includes('issueUpdate') && JSON.stringify(c.variables).includes('"description"'));
+  assert.equal(w.length, 1);
+  const s = JSON.stringify(w[0].variables);
+  assert.match(s, /Newer edit by someone else/);
+  assert.doesNotMatch(s, /Old body/);
 });

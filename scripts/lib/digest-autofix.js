@@ -857,8 +857,14 @@ function startNowNotes(notes, { cloudFiled = false } = {}) {
 // cloud-worked card would surface to the owner as "no live session".
 function reattachedLiveState(filed) {
   if (!filed || !filed.existing) return null;
+  // BRO-8158: a Paused card waiting on an owner decision absorbed this filing; nothing to dispatch.
+  if (filed.decisionHeld) return 'tracked';
   return filed.stateType === 'started' ? 'tracked' : null;
 }
+
+// BRO-8158: linear-client backs off 60s per 429 (5 attempts); a 30s kill made the
+// dedup lookup fail open and file a duplicate. Must outlast one backoff.
+const FIND_TIMEOUT_MS = Number(process.env.DIGEST_AUTOFIX_FIND_TIMEOUT_MS) || 100000;
 
 function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, cloudFiled = false, ignoreNumbers = false, testId = null, execFn = execFileSync } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
@@ -872,7 +878,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   // duplicate, same as a transient Linear outage).
   try {
     const findBy = (term, extra) => execFn('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', term, ...extra],
-      { cwd: REPO, encoding: 'utf8', timeout: 30000 });
+      { cwd: REPO, encoding: 'utf8', timeout: FIND_TIMEOUT_MS });
     // BRO-7102 item 4: an open card for the SAME failing test, filed by the alert
     // router's live-data or main test.yml filer under another title, is this row's card.
     // A failed marker lookup falls through to the title lookup (one Linear blip
@@ -930,7 +936,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   // here (see header comment above) — this call only ever files; the
   // caller's own dispatchDetached() (below) is the real dispatch.
   const parkArgs = ['--park', `${AUTOFIX_FILED_MARKER}; runAutofix dispatches via linear-next separately in the same pass.`];
-  const run = (args) => execFileSync('node', args, { cwd: REPO, encoding: 'utf8', timeout: 60000 });
+  const run = (args) => execFn('node', args, { cwd: REPO, encoding: 'utf8', timeout: 120000 });
   try {
     let out;
     if (startNow) {
@@ -957,6 +963,14 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
     if (!m) {
       log(`[digest-autofix] WARN issue created but identifier not found in output for "${title}"`);
       return { ok: false, identifier: null };
+    }
+    // BRO-8158: linear-issue-create noted this filing on an open twin instead of
+    // opening a card (linear-brain prints REUSED:). It is an existing card, so
+    // it must read as tracked/Paused, never as new work to dispatch.
+    const reused = out.match(/^REUSED: (BRO-\d+) state=(\w*)/m);
+    if (reused) {
+      log(`[digest-autofix] "${title}" was noted on open ${reused[1]} instead of a new card`);
+      return { ok: true, identifier: reused[1], existing: true, ...(reused[2] ? { stateType: reused[2] } : {}), ...(reused[2] === 'backlog' ? { decisionHeld: true } : {}) };
     }
     log(`[digest-autofix] filed issue ${m[1]}${startNow ? ' (START-NOW)' : ''}: ${title}`);
     return { ok: true, identifier: m[1] };

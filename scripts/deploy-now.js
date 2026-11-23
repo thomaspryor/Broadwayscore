@@ -93,7 +93,9 @@ function deploy() {
   const { sha, msg } = preflight();
   const token = loadVercelToken();
 
-  const env = { ...process.env, VERCEL_TOKEN: token };
+  // BRO-8150: same function-size check as vercel-deploy.yml's Build step: a
+  // function over Vercel's 250MB limit fails `vercel build` here, by name.
+  const env = { ...process.env, VERCEL_TOKEN: token, VERCEL_ANALYZE_BUILD_OUTPUT: process.env.FUNCTION_SIZE_BLOCK_DISABLED === 'true' ? '0' : '1' };
   const t0 = Date.now();
 
   console.log('→ vercel pull (fetching production env)...');

@@ -53,4 +53,54 @@ function checkHiddenOwnerQuestion({ status, summary, verification, description }
   };
 }
 
-module.exports = { checkHiddenOwnerQuestion, GUARDED_STATUSES };
+// BRO-8152: the guard above is satisfied by a block in the REPORT, but the report posts as a comment
+// and the owner emailer (owner-decision-notify.js) reads only the description. Paused P1/P2 cards
+// sat for days with their question unseen (BRO-7980 score gate, BRO-7976 spend) while the digest
+// counted them as "has a fix ticket". So the report's block is copied to the top of the description.
+const PROMOTED_MARKER = '<!-- decision-promoted-from-report -->';
+const MAX_PROMOTED_CHARS = 2500;
+
+/**
+ * PURE. The description to write after a report, or null when nothing changes: only for a
+ * paused/blocked/in-review report whose summary or verification carries a real
+ * "DECISION NEEDED:" and whose description has none yet. Works on code-stripped text, so a
+ * fenced or inline-code example is never promoted as the question.
+ * @param {{status: string, summary?: string, verification?: string, description?: string}} p
+ * @returns {string|null}
+ */
+function promotedDecisionDescription({ status, summary, verification, description } = {}) {
+  if (process.env.DECISION_PROMOTE_DISABLED === '1') return null; // kill switch
+  if (!GUARDED_STATUSES.has(status)) return null;
+  const { findDecisionQuestion, SETTLED_RE } = require('./decision-card-parse.js');
+  const desc = String(description || '').replace(/\r\n?/g, '\n');
+  // Heading-form blocks ("## DECISION NEEDED" + question line) count too: the emailer reads them.
+  if (hasRealBlock(desc) || findDecisionQuestion(desc)) return null;
+  const text = [summary, verification].filter(Boolean).join('\n').replace(/\r\n?/g, '\n');
+  if (!hasRealBlock(text)) return null;
+  const lines = stripCode(text);
+  let block;
+  const found = findDecisionQuestion(lines.join('\n'));
+  if (found) block = lines.slice(found.index).join('\n');
+  else {
+    // Inline in a paragraph ("Report. DECISION NEEDED - pick A?"): cut that line at the marker.
+    const INLINE = /\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*[:\u2013\u2014-]\s*\S/;
+    const i = lines.findIndex((l) => l.includes('DECISION NEEDED') && INLINE.test(l));
+    if (i < 0) return null;
+    const line = lines[i];
+    block = [line.slice(line.search(INLINE)), ...lines.slice(i + 1)].join('\n');
+  }
+  // Dash form passes the guard; the emailer needs the colon.
+  block = block.trim().replace(/^(\**DECISION NEEDED\**(?:\s*\([^)]*\))?)\s*[\u2013\u2014-]\s*/, '$1: ');
+  if (block.length > MAX_PROMOTED_CHARS) block = `${block.slice(0, MAX_PROMOTED_CHARS - 1)}\u2026`;
+  const q = findDecisionQuestion(block);
+  if (!q) return null;
+  // Never re-ask an answered question (BRO-6539 shape): only an answered/settled line on the card
+  // that already holds this question suppresses it, never ordinary context.
+  const { foldDiacritics } = require('./title-match');
+  const norm = (t) => foldDiacritics(String(t).toLowerCase()).replace(/[^a-z0-9]+/g, ' ').trim();
+  const nq = norm(q.question).slice(0, 80);
+  if (nq.length >= 15 && desc.split('\n').some((l) => SETTLED_RE.test(l.replace(/^[\s>*#-]+/, '')) && norm(l).includes(nq))) return null;
+  return `${block}\n\n${PROMOTED_MARKER}\n\n${desc}`;
+}
+
+module.exports = { checkHiddenOwnerQuestion, GUARDED_STATUSES, promotedDecisionDescription, PROMOTED_MARKER };

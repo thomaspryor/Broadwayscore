@@ -345,6 +345,7 @@ function findProbableDomainMoves(outlets, unknownHosts) {
           outletId,
           occurrences: entry.occurrences ?? null,
           sampleUrls: entry.sampleUrls || [],
+          shows: entry.shows || [],
         });
         break; // one match per host is enough to flag it
       }

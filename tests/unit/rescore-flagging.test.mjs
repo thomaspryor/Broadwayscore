@@ -390,3 +390,17 @@ test('BRO-7345: classifier exempts non-LLM scores, unscored, and already-queued 
   assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ contentTier: 'truncated' })), null);
   assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ wrongShow: true })), 'excluded');
 });
+
+// BRO-7345 recurrence (BRO-8093 audit): TEXT_SELECTOR_CHANGED_AT sat at 2026-11-10 through 24 later
+// selector commits, so complete reviews the newer selector reads as full text stayed "settled" on an
+// excerpt score. The selector sources are pinned by content hash; any edit must bump date + hash.
+test('BRO-7345: text-selector source hash pin is current (repin; bump TEXT_SELECTOR_CHANGED_AT if selection changed)', () => {
+  const { TEXT_SELECTOR_SOURCE_SHA256 } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
+  const { computeTextSelectorSourceHash, TEXT_SELECTOR_SOURCES } = require(path.join(REPO, 'scripts/lib/text-selector-version.js'));
+  const actual = computeTextSelectorSourceHash();
+  assert.equal(actual, TEXT_SELECTOR_SOURCE_SHA256,
+    `${TEXT_SELECTOR_SOURCES.join(' / ')} changed: set TEXT_SELECTOR_SOURCE_SHA256 in scripts/lib/rescore-flagging.js to ` +
+    `'${actual}'. If the edit changes what getBestTextForScoring picks, also bump TEXT_SELECTOR_CHANGED_AT to the ` +
+    'landing time (UTC) so excerpt scores from the old selector get re-queued once (see its docblock).');
+  assert.ok(Date.parse(TEXT_SELECTOR_CHANGED_AT) <= Date.now(), 'TEXT_SELECTOR_CHANGED_AT must not be in the future');
+});

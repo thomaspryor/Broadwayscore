@@ -43,6 +43,15 @@ function hasRecoupedClaim(entry) {
   return entry.recouped === true || entry._recoupedClaim === true;
 }
 
+// BRO-8137: a research row that found no figure (no capitalization, weekly cost, recoupment date, recoupment
+// estimate or recoupment claim) has nothing to publish. Holding it for a person just ages it into the health
+// row "Commercial: rows held for a person"; it belongs in the rejected log.
+function carriesNoFigures(entry) {
+  if (!entry || hasRecoupedClaim(entry) || entry.recouped === false) return false; // "did not recoup" is a claim too
+  const has = v => v !== null && v !== undefined && v !== '';
+  return !['capitalization', 'weeklyRunningCost', 'recoupedDate', 'estimatedRecoupmentPct'].some(k => has(entry[k]));
+}
+
 // Review holds are review REQUESTS about data already in commercial.json —
 // never appliable, even via --show. Applying one would clobber the rich
 // existing entry with the hold's sparse placeholder fields. The reviewer
@@ -438,6 +447,7 @@ module.exports = {
   canonicalDesignation,
   meetsConfidenceThreshold,
   hasRecoupedClaim,
+  carriesNoFigures,
   isReviewHold,
   isAutoApplyableClaim,
   recoupClaimDesignationAction,

@@ -1982,3 +1982,17 @@ test('covers-digest-row matches a real planAutofix row (prefixed title) by plain
   assert.ok(plan.every((r) => r.state === 'tracked' || r.state !== 'needs-card'));
   assert.ok(plan.some((r) => r.state === 'tracked'));
 });
+
+// BRO-8158: a filing absorbed by a Paused decision card is tracked, never new, never dispatched.
+test('BRO-8158: fileCard reads linear-brain REUSED output as an existing, held card', async () => {
+  const { createRequire } = await import('module');
+  const { fileCard, reattachedLiveState } = createRequire(import.meta.url)('./digest-autofix.js');
+  const execFn = (_n, args) => (args.includes('find') ? 'null'
+    : '{\n  "identifier": "BRO-8047"\n}\nREUSED: BRO-8047 state=backlog\n');
+  const r = fileCard('BSC Daily: x', 'n', { execFn, startNow: true, ignoreNumbers: true });
+  assert.equal(r.identifier, 'BRO-8047');
+  assert.equal(r.existing, true);
+  assert.equal(reattachedLiveState(r), 'tracked');
+  const fresh = fileCard('BSC Daily: x', 'n', { execFn: (_n, a) => (a.includes('find') ? 'null' : '{ "identifier": "BRO-9" }\n'), startNow: true });
+  assert.equal(fresh.existing, undefined);
+});

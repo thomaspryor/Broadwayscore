@@ -227,7 +227,9 @@ function checkDoneEvidence({ targetStateType, title = '', description = '', comm
 // Reads the detector's committed snapshot; any read error fails open.
 function loadRecurrenceSnapshot() {
   try {
-    return JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../../data/audit/recurrence-classes.json'), 'utf8'));
+    // RECURRENCE_CLASSES_PATH: tests point this at a fixture so they never read the bot ledger (live-data-lane).
+    const p = process.env.RECURRENCE_CLASSES_PATH || require('path').join(__dirname, '../../data/audit/recurrence-classes.json');
+    return JSON.parse(require('fs').readFileSync(p, 'utf8'));
   } catch {
     return null;
   }

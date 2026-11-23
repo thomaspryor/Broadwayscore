@@ -407,7 +407,7 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
   // near-duplicate check below still refuses an open match instead.
   // BRO-7880: nor for a NOT-BEFORE filing: a twin would get the hold as a comment, which no picker reads.
   if (reuseTwin && macOnly === undefined && notBefore === undefined && !selfFiled) {
-    const reused = await reuseOpenTwin({ title, body, client, mode });
+    const reused = await reuseOpenTwin({ title, body, client, mode, dedupeOptOut });
     if (reused) return reused;
   }
 
@@ -760,7 +760,33 @@ async function rollUpFlood({ title, body, client, source, kind }) {
   }
 }
 
-async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
+// BRO-8158: a Paused (backlog) twin waiting on an owner DECISION NEEDED. A
+// dispatch-mode filing is refused by twinServes (it would swallow a card meant
+// for a worker), so digest-autofix's START-NOW filing opened a fresh card each
+// day (BRO-7980, 8047, 8139). The decision card cannot be worked until the
+// owner answers, so the repeat is noted there instead. Only for digest-autofix
+// filings (a session's own --dispatch must still get its card). Fail open.
+const PAUSED_DECISION_ABSORBERS = ['digest-autofix'];
+async function pausedDecisionTwinAbsorbs(twin, mode, dedupeOptOut, client) {
+  if (mode === 'park' || !PAUSED_DECISION_ABSORBERS.includes(dedupeOptOut)) return false;
+  if (!twin || !twin.state || twin.state.type !== 'backlog') return false;
+  try {
+    const full = twin.description !== undefined ? twin
+      : (client ? (client.getIssue ? await client.getIssue(twin.identifier) : null) : await linear.getIssue(twin.identifier));
+    if (!full) return false;
+    const { findOwnerDecisions } = require('./owner-decision-notify.js');
+    const merged = { ...twin, ...full };
+    if (findOwnerDecisions([merged]).length > 0) return true;
+    // A paused worker's DECISION NEEDED lives in its "Session report (paused)" COMMENT, not the
+    // description (BRO-7980/8047): the dispatcher's own pause-history rule names it awaiting-owner.
+    return require('./linear-dispatch.js').pausedHoldReason(merged) === 'awaiting-owner';
+  } catch (e) {
+    console.warn(`[linear-issue-create] could not read ${twin && twin.identifier} for a decision check, filing normally: ${e.message}`);
+    return false;
+  }
+}
+
+async function reuseOpenTwin({ title, body, client, mode = 'park', dedupeOptOut }) {
   if (process.env.LINEAR_TITLE_DEDUPE_DISABLED === '1') return null;
   const find = client ? (client.findOpenIssueByTitle && client.findOpenIssueByTitle.bind(client)) : defaultFindOpenIssueByTitle;
   if (!find) return null;
@@ -780,7 +806,8 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
       twin = null;
     }
   }
-  if (!twin || !twin.identifier || !twinServes(twin, mode)) return null;
+  if (!twin || !twin.identifier) return null;
+  if (!twinServes(twin, mode) && !(await pausedDecisionTwinAbsorbs(twin, mode, dedupeOptOut, client))) return null;
   const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z ${twin.title === title ? 'with the same title' : `as "${title}" (only a count changed)`}; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
   // A finding that did not land on the twin must still be filed (audits treat
   // a returned card as proof the finding was saved).
@@ -790,6 +817,6 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
 }
 
 module.exports = {
-  createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
+  createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pausedDecisionTwinAbsorbs, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
   effectiveCreatePriority, priorityFromTitle, missingVerifyReason, missingVerifyPathWarning, vacuousVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

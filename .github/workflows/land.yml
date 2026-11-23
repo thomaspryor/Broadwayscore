@@ -1733,6 +1733,42 @@ jobs:
           dispatch_with_retry vercel-deploy.yml --ref main -f source=land \
             || echo "::warning::deploy dispatch failed after retries — the next pipeline or heartbeat dispatch ships this landing"
 
+      - name: Warm the fingerprint memo
+        # BRO-8148: a landing that edits a memo key file (the four files in
+        # scripts/lib/fingerprint-memo.js versionedSources) changes the
+        # rebuild-fp-memo-v1-<hash> cache key, so the next rebuild runs cold
+        # (~10.7 min vs ~6 warm). On 2026-11-22 the Fantasma opening-night
+        # inline rebuild hit exactly that and went live 34.7 min after first
+        # seen (bar 30). Dispatch rebuild-fast on main now so the cold run
+        # happens at landing time and saves the memo where main-scoped runs
+        # (poller included) can restore it; a Land run is on land/** and its
+        # own cache saves are invisible to main. Reads the files land.js pushed
+        # (/tmp/land-result.json); fails closed: a bad input means no dispatch. Rollback: repo variable MEMO_WARM_DISABLED=true.
+        if: ${{ !cancelled() && steps.land.outputs.landed == 'true' && steps.admit.outcome == 'success' && vars.MEMO_WARM_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LANDED_SHA: ${{ steps.land.outputs.sha }}
+        run: |
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+          # This job's checkout is not the landed commit (land.js lands in a
+          # throwaway worktree); its result file lists the files it pushed.
+          if [ ! -f /tmp/land-result.json ] || [ ! -f scripts/lib/memo-warm-needed.js ]; then
+            echo "::warning::memo warm skipped: no land result file or helper in this checkout"
+            exit 0
+          fi
+          if ! NEEDED=$(node scripts/lib/memo-warm-needed.js /tmp/land-result.json); then
+            echo "::warning::memo warm check crashed; not dispatching"
+            exit 0
+          fi
+          if [ "$NEEDED" = "true" ]; then
+            dispatch_with_retry rebuild-fast.yml --ref main -f reason="Memo warm after landing ${LANDED_SHA:0:9}" \
+              || echo "::warning::memo warm dispatch failed after retries; the next rebuild runs cold once"
+          else
+            echo "No memo key file changed in this landing; nothing to warm."
+          fi
+
       - name: Fail the job on a refused landing
         id: refused
         if: steps.land.outputs.landed != 'true'
