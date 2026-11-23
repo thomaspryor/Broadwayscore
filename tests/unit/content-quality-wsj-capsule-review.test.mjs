@@ -160,3 +160,23 @@ test('newyorker-subscriber-browser-session also gets the trusted-capture bypass'
   assert.equal(result.contentTier, 'complete',
     `Expected complete via isTrustedSubscriberCapture bypass for newyorker, got ${result.contentTier} (reason: ${result.tierReason})`);
 });
+
+// ── BRO-8081: WSJ toolbar chrome tail (structural, no private repo) ─────────
+const { stripWsjToolbarTail } =
+  require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'trailer-signatures.js'));
+const WSJ_CHROME = ' Save Article Sign In to Save Subscribe to WSJ Text Size Regular Medium Large Google+ Print';
+
+test('BRO-8081: WSJ toolbar chrome tail is stripped; mid-text and non-chrome untouched', () => {
+  const body = NEUTRAL_TEXT + ' If not…well, it probably won’t.';
+  assert.equal(stripWsjToolbarTail(body + WSJ_CHROME), body);
+  assert.equal(stripWsjToolbarTail(body), body);
+  const mid = body + WSJ_CHROME + ' And the review goes on for a while after that point, honestly.';
+  assert.equal(stripWsjToolbarTail(mid), mid);
+});
+
+test('BRO-8081: complete WSJ review ending in toolbar chrome classifies complete', () => {
+  const body = NEUTRAL_TEXT + ' If not…well, it probably won’t.';
+  const base = { outlet: 'The Wall Street Journal', outletId: 'wsj',
+    fetchMethod: 'wsj-subscriber-browser-session', url: 'https://www.wsj.com/articles/test-review' };
+  assert.equal(classifyContentTier({ ...base, fullText: body + WSJ_CHROME }).contentTier, 'complete');
+});
