@@ -5,7 +5,7 @@
  * Item 4, "Press night: openings not watched". The opening-night lane times every night off an embargo hour, and
  * press-night-record.js EMBARGO_HOUR_LOCAL only has one for Broadway, Off-Broadway, the West End and Off-West End.
  * A regional or touring opening has no hour (and no reviewEmbargoAt override), so no lane, probe or record ever
- * starts for it and nothing said so. Each such opening in the next UNWATCHED_LOOKAHEAD_DAYS is now named.
+ * starts for it and nothing said so. Each such opening in the next UNWATCHED_LOOKAHEAD_DAYS was named (BRO-8146: regional and touring are now sweep-only and not listed; the row names only an unknown or missing category).
  *
  * Item 8, "Press night: score gate undecided". A special, or a short engagement (UNDER SHORT_RUN_DAYS between
  * opening and closing), draws few critics, so the market minimum can keep its Critic Score hidden all run
@@ -27,9 +27,9 @@ const isDay = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && N
 // Today in New York: the check runs at 02:15Z, still the previous evening there, and a UTC date would call tomorrow tonight.
 const dayOf = (ms, timeZone = 'America/New_York') => new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
 // BRO-8146: regional and touring openings are sweep-only by design (no lane market, no embargo hour; 1,300+ regional
-// shows, mostly community theatre). Naming each one daily made the row permanent noise. A regional with a
-// reviewEmbargoAt is watched anyway. The row now covers the markets the lane is meant to run in: any of those
-// without an hour is a real gap.
+// shows, mostly community theatre). Naming each one daily made the row permanent noise. press-night-record ignores a
+// reviewEmbargoAt on a category with no market, so an override would not change that. The row now only names a show
+// whose category the lane does not know (missing or new market): fix the category or add the market.
 const SWEEP_ONLY_CATEGORIES = new Set(['regional', 'tour']);
 const GATED_SHORT_RUN_CATEGORIES = new Set(['broadway', 'west-end']);
 const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / DAY_MS);
@@ -95,8 +95,8 @@ function pressNightReadinessResults({ shows, overrides, nowMs, embargoAt }) {
   return [
     unwatched.length
       ? { name: 'Press night: openings not watched', status: 'warn', items: unwatched,
-        message: `${unwatched.length} opening(s) in the next ${UNWATCHED_LOOKAHEAD_DAYS} days have no press-night watch (no embargo hour for their market, so no lane or probe runs; reviews arrive only through the daily sweeps): ${list(unwatched, (u) => `${u.title} (${u.category}, ${when(u.inDays)})`)}`,
-        hint: 'A lane market (Broadway, Off-Broadway, West End, Off-West End) with no embargo hour is a gap: add the market hour (EMBARGO_HOUR_LOCAL) or a reviewEmbargoAt for the show. Regional and touring openings are sweep-only by design and are not listed.' }
+        message: `${unwatched.length} opening(s) in the next ${UNWATCHED_LOOKAHEAD_DAYS} days have no press-night watch (their category has no press-night market, so no lane or probe runs; reviews arrive only through the daily sweeps): ${list(unwatched, (u) => `${u.title} (${u.category || 'no category'}, ${when(u.inDays)})`)}`,
+        hint: 'The show's category is missing or not a lane market. Fix the category, or add the new market to EMBARGO_HOUR_LOCAL and MARKET_TZ. Regional and touring openings are sweep-only by design and are not listed.' }
       : { name: 'Press night: openings not watched', status: 'pass', message: `Every opening in the next ${UNWATCHED_LOOKAHEAD_DAYS} days has a press-night watch` },
     undecided.length
       ? { name: 'Press night: score gate undecided', status: 'warn', items: undecided,

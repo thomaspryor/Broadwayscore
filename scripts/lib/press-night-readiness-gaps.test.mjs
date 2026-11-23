@@ -16,10 +16,15 @@ test('regional and touring openings without an hour are sweep-only, not listed (
   assert.equal(row.status, 'pass');
 });
 
-test('a lane market with no embargo hour is still named', () => {
+test('an unknown category is still named, a real market is not', () => {
   const shows = [show('x', 'mystery-market', '2026-11-24'), show('b', 'broadway', '2026-11-24')];
   const out = lib.unwatchedOpenings(shows, { nowMs: NOW, embargoAt });
   assert.deepEqual(out.map((u) => u.id), ['x']);
+});
+
+test('a show with no category is named', () => {
+  const out = lib.unwatchedOpenings([show('n', undefined, '2026-11-24')], { nowMs: NOW, embargoAt });
+  assert.deepEqual(out.map((u) => u.id), ['n']);
 });
 
 test('an embargoAt that throws is unwatched for a non-sweep-only market', () => {
