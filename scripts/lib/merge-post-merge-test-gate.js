@@ -784,6 +784,11 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     output += `\n\n⚠ post-merge test floor: first merged run died unparseably (${first}); re-ran once, second run: ${describeExit(result)}`;
   }
   const mergedPassed = result.status === 0;
+  // BRO-7947/8094: wall time on EVERY result line. The cap applies per run, and
+  // the total includes any retry plus the baseline checkout and run, so the
+  // merged run's own time is reported apart from the total.
+  const mergedSec = wallSec();
+  const timing = () => `merged ${mergedSec}s, total ${wallSec()}s, cap ${Math.round(timeoutMs / 1000)}s per run`;
 
   if (mergedPassed || !makeBaselineCheckout) {
     // This branch serves BOTH the passing and failing halves, so the reason
@@ -838,7 +843,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: false,
       output: `${output}\n\n⚠ post-merge test floor: merged run was killed before finishing (${describeExit(result)}); tests after the kill point never ran, so a baseline diff cannot clear it — blocking as a fail-safe`,
-      reason: `ran ${testFiles.length} file(s); merged run killed before finishing (${describeExit(result)}); baseline NOT consulted`,
+      reason: `ran ${testFiles.length} file(s) (${timing()}); merged run killed before finishing (${describeExit(result)}); baseline NOT consulted`,
     };
   }
   if (mergedFailures.size === 0) {
@@ -846,7 +851,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: false,
       output: `${output}\n\n⚠ post-merge test floor: merged tree exited non-zero but no individual test failure could be parsed (crash/timeout/syntax error, not a normal assertion failure)${retriedUnparseable ? ' on BOTH the first run and the re-run' : ''}. The origin/main baseline was NOT consulted, so this is NOT established as a NEW failure or a branch collision — blocking as a fail-safe rather than risk a silent pass`,
-      reason: `ran ${testFiles.length} file(s); merged run failed unparseably${retriedUnparseable ? ' twice' : ''} (${describeExit(result)}); baseline NOT consulted`,
+      reason: `ran ${testFiles.length} file(s) (${timing()}); merged run failed unparseably${retriedUnparseable ? ' twice' : ''} (${describeExit(result)}); baseline NOT consulted`,
     };
   }
   let checkout = null;
@@ -898,7 +903,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: newFailures.length === 0,
       output: combinedOutput,
-      reason: `ran ${testFiles.length} file(s) vs origin/main baseline: ${newFailures.length} new, ${preExisting.length} pre-existing`,
+      reason: `ran ${testFiles.length} file(s) (${timing()}) vs origin/main baseline: ${newFailures.length} new, ${preExisting.length} pre-existing`,
     };
   } catch (err) {
     // Baseline infra failed (network, worktree lock, unprepared checkout) —
@@ -910,7 +915,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: false,
       output: `${output}\n\n⚠ post-merge test floor: could not build an origin/main baseline to distinguish pre-existing failures (${err.message}) — blocking on the merged-tree failure as a fail-safe`,
-      reason: `ran ${testFiles.length} file(s); baseline checkout unavailable`,
+      reason: `ran ${testFiles.length} file(s) (${timing()}); baseline checkout unavailable`,
     };
   } finally {
     if (checkout && removeBaselineCheckout) removeBaselineCheckout(checkout);

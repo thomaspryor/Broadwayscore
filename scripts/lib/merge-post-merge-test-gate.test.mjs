@@ -356,6 +356,10 @@ test('runTestGate baseline mode: a branch that merely does not fix a pre-existin
   assert.equal(result.passed, true);
   assert.match(result.output, /pre-existing on origin\/main/);
   assert.match(result.reason, /0 new, 1 pre-existing/);
+  // BRO-7947/8094: the baseline-path pass names merged-run and total wall time
+  // plus the per-run cap, so floor duration is visible on every landing.
+  assert.match(result.reason, /\(merged \d+s, total \d+s, cap \d+s per run\) vs origin\/main baseline: /);
+  assert.equal(floorSummaryLine(`post-merge test floor: passed (${result.reason})\n`), `passed (${result.reason})`);
 });
 
 test('runTestGate baseline mode: a passing merged tree never invokes makeBaselineCheckout (zero cost on the clean path)', () => {

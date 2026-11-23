@@ -59,6 +59,8 @@ test('CLI e2e: added error() fails, advisory env downgrades, warn() passes', () 
     g('commit', '-qam', 'add error');
     const bad = cli(); assert.equal(bad.status, 1, bad.stdout + bad.stderr); assert.match(bad.stdout, /BRO-7949/);
     assert.equal(cli({ GATE_ARM_VALIDATOR_ADVISORY: '1' }).status, 0);
+    // BRO-8094: test.yml sets '0' (armed); that value must block, not only an unset one.
+    assert.equal(cli({ GATE_ARM_VALIDATOR_ADVISORY: '0' }).status, 1);
     writeFileSync(path.join(dir, V), 'function error(m){}\nfunction warn(m){}\nwarn("a");\nwarn(`bad`);\n');
     g('commit', '-qam', 'warn');
     assert.equal(cli().status, 0);
