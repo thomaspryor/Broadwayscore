@@ -41,10 +41,14 @@ function decodeEntities(s) {
     .replace(/&#39;|&#x27;/g, "'").replace(/&amp;/g, '&');
 }
 
+function postPath(u) {
+  try { return new URL(u).pathname.replace(/\/+$/, ''); } catch { return null; }
+}
+
 // Feed JSON (string or parsed) → minimal classic-Blogger HTML, or null.
 // No author meta: the feed's author is the Blogger account (often a house
 // handle like "NYTR"), not the critic; the caller's --critic or the body wins.
-function bloggerFeedToHtml(feed) {
+function bloggerFeedToHtml(feed, { postId = null, pageUrl = null } = {}) {
   let d = feed;
   if (typeof d === 'string') {
     // fetch providers sometimes wrap JSON in <pre>/<body>; take the outer object
@@ -57,6 +61,17 @@ function bloggerFeedToHtml(feed) {
   const e = d && d.entry;
   const content = e && e.content && e.content.$t;
   if (typeof content !== 'string' || content.trim().length < 200) return null;
+  // Identity: the entry must be the post we asked for (id and/or alternate link).
+  if (postId) {
+    const id = (e.id && e.id.$t) || '';
+    if (!new RegExp(`\\.post-${postId}$`).test(id)) return null;
+  }
+  if (pageUrl) {
+    const alt = (e.link || []).find((l) => l && l.rel === 'alternate');
+    if (alt && alt.href && postPath(alt.href) !== postPath(pageUrl)) return null;
+  }
+  // A feed set to "until jump break" ends at a Read-more link: not the full review.
+  if (/<a[^>]+href=['"][^'"]*#more['"]/i.test(content)) return null;
   const title = (e.title && e.title.$t) || '';
   const published = (e.published && e.published.$t) || '';
   return [
@@ -84,8 +99,8 @@ async function expandBloggerDynamicViews(html, pageUrl, fetchFn) {
   try {
     const r = await fetchFn(feedUrl);
     const raw = typeof r === 'string' ? r : (r && (r.content || r.html || r.body)) || '';
-    const rebuilt = bloggerFeedToHtml(raw);
-    if (!rebuilt) return { html, expanded: false, feedUrl, error: 'feed entry had no usable content' };
+    const rebuilt = bloggerFeedToHtml(raw, { postId, pageUrl });
+    if (!rebuilt) return { html, expanded: false, feedUrl, error: 'feed entry missing, truncated, or not this post' };
     return { html: rebuilt, expanded: true, feedUrl };
   } catch (err) {
     return { html, expanded: false, feedUrl, error: err && err.message };

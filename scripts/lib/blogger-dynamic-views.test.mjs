@@ -15,6 +15,8 @@ const shell = fs.readFileSync(path.join(here, '__fixtures__/blogger-dynamic-view
 const URL_ = 'https://newyorktheatrereview.blogspot.com/2026/09/we-have-to-talk-about-john-cameron-page.html?m=1';
 const para = 'Falls for Jodie is a tightly drawn two-hander at The Tank, and the direction moves the actors well around a small space. ';
 const feed = { entry: {
+  id: { $t: 'tag:blogger.com,1999:blog-4235279950148760642.post-6339047144160648619' },
+  link: [{ rel: 'alternate', href: 'https://newyorktheatrereview.blogspot.com/2026/09/we-have-to-talk-about-john-cameron-page.html' }],
   title: { $t: 'We Have to Talk About John' },
   published: { $t: '2026-09-29T22:27:00.647-04:00' },
   author: [{ name: { $t: 'NYTR' } }],
@@ -71,4 +73,17 @@ test('no author meta (Blogger account handle is not the critic); quotes in title
   const html = bdv.bloggerFeedToHtml(f);
   assert.doesNotMatch(html, /name="author"/);
   assert.match(html, /O&#39;Hara&#39;s &quot;Play&quot;/);
+});
+
+test('a feed entry for a different post is refused', async () => {
+  const other = { entry: { ...feed.entry, id: { $t: 'tag:blogger.com,1999:blog-1.post-999999' } } };
+  const r = await bdv.expandBloggerDynamicViews(shell, URL_, async () => JSON.stringify(other));
+  assert.equal(r.expanded, false);
+  const otherLink = { entry: { ...feed.entry, link: [{ rel: 'alternate', href: 'https://newyorktheatrereview.blogspot.com/2026/09/another-post.html' }] } };
+  assert.equal((await bdv.expandBloggerDynamicViews(shell, URL_, async () => JSON.stringify(otherLink))).expanded, false);
+});
+
+test('a jump-break (Read more) truncated feed is refused', async () => {
+  const cut = { entry: { ...feed.entry, content: { $t: `${feed.entry.content.$t}<a href='https://x.blogspot.com/p.html#more'>Read more »</a>` } } };
+  assert.equal((await bdv.expandBloggerDynamicViews(shell, URL_, async () => JSON.stringify(cut))).expanded, false);
 });
