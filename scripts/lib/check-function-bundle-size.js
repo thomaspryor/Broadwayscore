@@ -201,4 +201,4 @@ function main(argv) {
 
 module.exports = { checkOutput, measureFunction, findFunctionDirs, classify, topDirs, LIMIT_BYTES, WARN_BYTES, FAIL_BYTES };
 
-if (require.main === module) process.exit(main(process.argv));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv));
