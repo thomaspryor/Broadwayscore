@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./opening-date-fallback');
 
 const ROOT = path.join(__dirname, '..', '..');
 const ACK_PATH = path.join(ROOT, 'data', 'audit', 'stale-announced-shows-ack.json');
@@ -293,15 +294,19 @@ function carryFirstFlagged(prevSnap, nowFlagged, nowIso) {
  * christmas, peter-pan, club-nvrlnd, julius-caesar-globe, Nov 2026; dick-
  * whittington would have been next). Eligibility comes from the real
  * previewsFallbackOpening, not a copy (CLAUDE.md §15).
+ * The fallback writes an unconfirmed date (opening = first preview); the
+ * enrichers replace it when a real press night turns up.
  * @returns {Date|null} end of the wait (fire day + AUTOMATION_BUFFER_DAYS), or null
  */
 const AUTOMATION_BUFFER_DAYS = 1; // update-show-status runs once a day; one late cron must not file a card
-function automationResolvesBy(f) {
+function automationResolvesBy(f, now) {
   if (!f || f.openingDate || f.status !== 'previews') return null;
   const start = f.previewsStartDate;
   if (!start || !/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
-  const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./opening-date-fallback');
   const startMs = Date.parse(start + 'T00:00:00Z');
+  // A future first preview with in-run reviews is itself the defect this audit
+  // exists for (date slipped / wrong); never let it buy a months-long wait.
+  if (!now || startMs > now.getTime()) return null;
   const fireDay = new Date(startMs + PREVIEWS_FALLBACK_GRACE_DAYS * 86400000).toISOString().slice(0, 10);
   if (!previewsFallbackOpening(f, fireDay)) return null;
   return new Date(startMs + (PREVIEWS_FALLBACK_GRACE_DAYS + 1 + AUTOMATION_BUFFER_DAYS) * 86400000);
@@ -318,7 +323,7 @@ function partitionByGrace(flagged, now, graceDays = GRACE_DAYS) {
     // No stamp (snapshot from before BRO-7277) = age unknown: fail loud, not quiet.
     const t = f && f.firstFlaggedAt ? Date.parse(f.firstFlaggedAt) : NaN;
     const ageDays = Number.isFinite(t) ? (now.getTime() - t) / 86400000 : Infinity;
-    const resolvesBy = automationResolvesBy(f);
+    const resolvesBy = automationResolvesBy(f, now);
     const automationPending = !!resolvesBy && now.getTime() < resolvesBy.getTime();
     (ageDays >= graceDays && !automationPending ? persistent : settling).push(f);
   }

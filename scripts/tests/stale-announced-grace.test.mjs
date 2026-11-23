@@ -70,16 +70,24 @@ test('fallback-eligible flag still unresolved after the fallback date + buffer w
 });
 
 test('no scheduled automation for non-fallback markets, announced rows, or dated rows', () => {
-  assert.equal(automationResolvesBy({ ...dw, category: 'west-end' }), null);
-  assert.equal(automationResolvesBy({ ...dw, status: 'announced', previewsStartDate: null }), null);
-  assert.equal(automationResolvesBy({ ...dw, openingDate: '2026-11-25' }), null);
   const now = new Date('2026-11-27T11:00:00Z');
+  assert.equal(automationResolvesBy({ ...dw, category: 'west-end' }, now), null);
+  assert.equal(automationResolvesBy({ ...dw, status: 'announced', previewsStartDate: null }, now), null);
+  assert.equal(automationResolvesBy({ ...dw, openingDate: '2026-11-25' }, now), null);
   // long-running previews: the fallback window ended long ago, so it warns
   assert.equal(staleAnnouncedFlagResult({ flagged: [{ ...dw, previewsStartDate: '2026-01-01' }] }, 3, now).status, 'warn');
   assert.equal(staleAnnouncedFlagResult({ flagged: [{ ...dw, category: 'west-end' }] }, 3, now).status, 'warn');
   assert.equal(staleAnnouncedFlagResult({ flagged: [{ id: 'x', status: 'announced', category: 'off-broadway', previewsStartDate: null, openingDate: null, firstFlaggedAt: '2026-11-20T10:00:00Z' }] }, 3, now).status, 'warn');
 });
 
-test('automationResolvesBy = previews start + fallback grace + 1 day + buffer', () => {
-  assert.equal(automationResolvesBy(dw).toISOString(), '2026-12-01T00:00:00.000Z');
+test('automationResolvesBy = previews start + fallback grace + 1 day + buffer, both sides of the boundary', () => {
+  assert.equal(automationResolvesBy(dw, new Date('2026-11-27T00:00:00Z')).toISOString(), '2026-12-01T00:00:00.000Z');
+  assert.equal(staleAnnouncedFlagResult({ flagged: [dw] }, 3, new Date('2026-11-30T23:59:00Z')).status, 'pass');
+  assert.equal(staleAnnouncedFlagResult({ flagged: [dw] }, 3, new Date('2026-12-01T00:00:00Z')).status, 'warn');
+});
+
+test('a future previewsStartDate never buys a wait (reviewer finding)', () => {
+  const fut = { ...dw, previewsStartDate: '2027-06-01', firstFlaggedAt: '2026-11-01T00:00:00Z' };
+  assert.equal(automationResolvesBy(fut, new Date('2026-11-27T11:00:00Z')), null);
+  assert.equal(staleAnnouncedFlagResult({ flagged: [fut] }, 3, new Date('2026-11-27T11:00:00Z')).status, 'warn');
 });
