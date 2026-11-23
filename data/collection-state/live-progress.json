@@ -1,19 +1,71 @@
 {
-  "updatedAt": "2026-11-23T22:19:03.489Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-23T22:24:03.531Z",
+  "processed": 77,
+  "failed": 43,
+  "successRate": "64.2%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 50,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-11-23T21:47:34.530Z",
+      "event": "bb-session",
+      "session": "795f8132",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-23T21:47:34.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-23T21:51:18.913Z",
+      "event": "bb-session",
+      "session": "493b2c53",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-23T21:51:38.176Z",
+      "event": "bb-session",
+      "session": "6df5ec73",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-23T22:10:20.441Z",
+      "event": "bb-session",
+      "session": "6a2686ac",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-23T22:13:55.701Z",
+      "event": "bb-session",
+      "session": "c66d2b38",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-23T22:13:56.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T22:14:15.727Z",
+      "event": "bb-session",
+      "session": "b63e18b9",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-23T22:14:16.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
