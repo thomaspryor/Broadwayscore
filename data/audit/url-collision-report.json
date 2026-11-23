@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-23T00:56:00.972Z",
+  "generatedAt": "2026-11-23T01:54:35.426Z",
   "summary": {
-    "total": 17,
-    "high": 11,
+    "total": 18,
+    "high": 12,
     "medium": 4,
     "low": 2
   },
@@ -114,6 +114,33 @@
       "suggestedWinner": "giant-royal-court-off-west-end-2024",
       "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.express.co.uk/entertainment/theatre/1780257/groundhog-day-tim-minchin-andy-karl-musical-theatre",
+      "normalizedUrl": "https://express.co.uk/entertainment/theatre/1780257/groundhog-day-tim-minchin-andy-karl-musical-theatre",
+      "candidates": [
+        {
+          "showId": "groundhog-day-west-end-2016",
+          "file": "express-uk--neil-norman.json",
+          "publishDate": "2016-08-19",
+          "openingDate": "2016-08-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "express-uk"
+        },
+        {
+          "showId": "groundhog-day-west-end-2023",
+          "file": "sunday-express--unknown.json",
+          "publishDate": null,
+          "openingDate": "2023-06-08",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "sunday-express"
+        }
+      ],
+      "suggestedWinner": "groundhog-day-west-end-2016",
+      "reason": "publishDate 2016-08-19 is 3 days from groundhog-day-west-end-2016 opening (2016-08-16)",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/hadestown-review",
