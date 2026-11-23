@@ -46,11 +46,12 @@ const { assessFullText, getBestTextForScoring } = require('./text-quality');
  *
  * Bumped 2026-11-23 (BRO-8093 audit): 24 selector commits after 2026-11-10
  * (BRO-7171, BRO-7943, BRO-8012, BRO-8081) left it stale. TEXT_SELECTOR_SOURCE_SHA256
- * pins text-quality.js + trailer-signatures.js (scripts/lib/text-selector-version.js);
- * tests/unit/rescore-flagging.test.mjs fails when they change without a bump of both.
+ * pins the selector sources listed in TEXT_SELECTOR_SOURCES (scripts/lib/text-selector-version.js);
+ * tests/unit/rescore-flagging.test.mjs fails when any of them changes without a repin.
+ * The test forces the decision below; it cannot check the date was bumped when it should be.
  * On a hash mismatch: ALWAYS update the hash to
  *   node -e "console.log(require('./scripts/lib/text-selector-version').computeTextSelectorSourceHash())"
- * Bump the DATE too (to the UTC time the change lands) only when the edit changes
+ * Bump the DATE too (to the current UTC time; later is safe, earlier loses files) only when the edit changes
  * what the selector picks; each date bump re-queues once, at real spend, every file
  * scored from an excerpt that the selector now reads as full text. Comment-only or
  * refactor edits: hash only.

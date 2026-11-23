@@ -394,7 +394,7 @@ test('BRO-7345: classifier exempts non-LLM scores, unscored, and already-queued 
 // BRO-7345 recurrence (BRO-8093 audit): TEXT_SELECTOR_CHANGED_AT sat at 2026-11-10 through 24 later
 // selector commits, so complete reviews the newer selector reads as full text stayed "settled" on an
 // excerpt score. The selector sources are pinned by content hash; any edit must bump date + hash.
-test('BRO-7345: text selector sources unchanged since TEXT_SELECTOR_CHANGED_AT was last bumped', () => {
+test('BRO-7345: text-selector source hash pin is current (repin; bump TEXT_SELECTOR_CHANGED_AT if selection changed)', () => {
   const { TEXT_SELECTOR_SOURCE_SHA256 } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
   const { computeTextSelectorSourceHash, TEXT_SELECTOR_SOURCES } = require(path.join(REPO, 'scripts/lib/text-selector-version.js'));
   const actual = computeTextSelectorSourceHash();
