@@ -59,8 +59,10 @@ test('CI, Vercel and an explicit local refresh retain the full publishing path',
   assert.ok(ci.calls.indexOf('build-cast-manifest.js') < ci.calls.indexOf('build-slug-redirects.js'));
   assert.ok(ci.calls.indexOf('generate-blog-reviews-for-scoring.js') < ci.calls.indexOf('generate-mobile-show-details.js'));
   assert.ok(ci.calls.indexOf('generate-mobile-data.js') < ci.calls.indexOf('generate-stats-shows.js'));
-  // BRO-8056: the show-refresh manifest hashes the final data files, so it runs last.
-  assert.equal(ci.calls.at(-1), 'run-show-refresh-manifest.js');
+  // BRO-8056: the show-refresh manifest hashes the final data files, so it runs
+  // after every generator; the page-parity snapshot pins that manifest, so it follows it.
+  assert.equal(ci.calls.at(-2), 'run-show-refresh-manifest.js');
+  assert.equal(ci.calls.at(-1), 'prod-data-parity.js');
   assert.ok(ci.calls.indexOf('generate-blog-reviews-for-scoring.js') < ci.calls.indexOf('run-show-refresh-manifest.js'));
   for (const env of [{ CI: '1' }, { VERCEL: '1' }, { REGENERATE_BUILD_DATA: 'true' }]) {
     const result = prebuild(t, env);
@@ -74,8 +76,9 @@ test('the code-only CI path still refreshes show details before skipping heavy g
   assert.equal(result.status, 0, result.stderr);
   assert.ok(result.calls.includes('generate-mobile-show-details.js'));
   assert.ok(!result.calls.includes('generate-mobile-data.js'));
-  assert.equal(result.calls.at(-2), 'generate-stats-shows.js');
-  assert.equal(result.calls.at(-1), 'run-show-refresh-manifest.js');
+  assert.equal(result.calls.at(-3), 'generate-stats-shows.js');
+  assert.equal(result.calls.at(-2), 'run-show-refresh-manifest.js');
+  assert.equal(result.calls.at(-1), 'prod-data-parity.js');
 });
 
 test('validation failures still abort local prebuild', t => {
