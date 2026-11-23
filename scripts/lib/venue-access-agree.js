@@ -37,6 +37,10 @@ const PARTIAL = {
   elevator: /\b(to|up to|access to|reach)\s+(the\s+)?(circle|balcony|gallery|upper|bar|first|second|third|fourth|floor|level|dress|grand|studio|rehearsal|offices?|roof)/i,
   hearingLoop: /box office|foyer|kiosk|\bbar\b|reception|portable|neck[- ]?loop|personal|on request|upon request|available to (borrow|request)/i,
 };
+// A yes for step-free or lift that is scoped to one area (foyer, bar, studio, one row, car park) does not
+// tell a visitor they can reach the auditorium, unless the same quote also says all levels / the auditorium.
+const PARTIAL_YES = /\b(car park|foyer|bars?|caf[eé]|restaurant|toilets?|box office|studio|cinema|roof garden|rehearsal|offices?|row [a-z]\b|limited|only|some|several|certain|first two rows|freight|by request)\b/i;
+const COVERS_ALL = /all (levels|floors|areas|spaces|3 levels)|each (floor|level)|every (floor|level)|throughout|auditorium|\bstalls\b|to the (theatre|theater)\b/i;
 const WHOLE_VENUE = /auditorium|theatre|theater|stalls|performance|seating|seats/i;
 const NEGATION_BEFORE = /\b(no|not|cannot|without|nor|never|isn t|aren t|don t|doesn t|unable)\s*$/;
 
@@ -118,6 +122,7 @@ function agreeAccess(g, o, pages) {
     if (a.value === true && (negatedInText(a.quote, texts) || negatedInText(b.quote, texts))) { rejected.push({ field: f, reason: 'quote follows a negation' }); continue; }
     // A partial claim (one floor, box office only, loop on request) is not a whole-venue fact.
     const partial = (q) => {
+      if ((f === 'elevator' || f === 'stepFree') && a.value === true && PARTIAL_YES.test(q) && !COVERS_ALL.test(q)) return true;
       if (f === 'elevator') return PARTIAL.elevator.test(q);
       if (f === 'hearingLoop') return a.value === false ? PARTIAL.hearingLoop.test(q) || /\b(but|however)\b/i.test(q) : PARTIAL.hearingLoop.test(q) && !WHOLE_VENUE.test(q);
       return false;
@@ -202,4 +207,4 @@ function titleNamesVenue(title, venueName) {
   return words.every((w) => t.includes(w));
 }
 
-module.exports = { FIELDS, TOPIC, PARTIAL, normalize, quoteInText, negatedInText, agreeAccess, htmlToText, accessLinks, titleNamesVenue };
+module.exports = { FIELDS, TOPIC, PARTIAL, PARTIAL_YES, COVERS_ALL, normalize, quoteInText, negatedInText, agreeAccess, htmlToText, accessLinks, titleNamesVenue };

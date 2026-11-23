@@ -35,6 +35,10 @@
  ],
  "london/apollo-victoria-theatre": [
   {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "elevator",
    "reason": "quote is about part of the venue, not the whole building"
   },
@@ -43,6 +47,16 @@
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  }
+ ],
+ "london/arcola-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/barbican-theatre": [
@@ -61,6 +75,12 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "london/battersea-arts-centre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/bridge-theatre": [
@@ -153,6 +173,12 @@
    "openai": true
   }
  ],
+ "london/gillian-lynne-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/globe-theatre": [
   {
    "field": "wheelchair",
@@ -165,6 +191,12 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "london/hammersmith": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/hampstead-theatre": [
@@ -209,6 +241,18 @@
    "reason": "quote is off topic"
   }
  ],
+ "london/kiln-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
+ "london/king-s-head-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/lightroom": [
   {
    "field": "hearingLoop",
@@ -235,6 +279,16 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
+ "london/lyric-hammersmith-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/lyric-theatre": [
@@ -275,6 +329,16 @@
    "reason": "quote is off topic"
   }
  ],
+ "london/national-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "london/new-diorama-theatre": [
   {
    "field": "stepFree",
@@ -305,6 +369,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/orange-tree-theatre": [
@@ -313,6 +381,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/palace-theatre": [
@@ -331,14 +403,28 @@
   {
    "field": "stepFree",
    "reason": "quote is off topic"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/piccadilly-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
   {
    "field": "hearingLoop",
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  }
+ ],
+ "london/polka-theatre": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/queen-elizabeth-hall-southbank-centre": [
@@ -349,6 +435,10 @@
    "openai": null
   },
   {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "assistiveListening",
    "reason": "models disagree",
    "gemini": true,
@@ -356,6 +446,10 @@
   }
  ],
  "london/regent-s-park-open-air-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
   {
    "field": "hearingLoop",
    "reason": "models disagree",
@@ -373,6 +467,16 @@
   {
    "field": "assistiveListening",
    "reason": "quote is off topic"
+  }
+ ],
+ "london/riverside-studios": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/rose-theatre": [
@@ -407,6 +511,10 @@
  ],
  "london/savoy-theatre": [
   {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "assistiveListening",
    "reason": "quote is off topic"
   }
@@ -421,6 +529,12 @@
   {
    "field": "wheelchair",
    "reason": "quote is off topic"
+  }
+ ],
+ "london/shoreditch-town-hall": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/soho-place": [
@@ -440,6 +554,10 @@
   }
  ],
  "london/soho-theatre-walthamstow": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
   {
    "field": "elevator",
    "reason": "models disagree",
@@ -491,6 +609,10 @@
  ],
  "london/the-old-vic": [
   {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "hearingLoop",
    "reason": "models disagree",
    "gemini": true,
@@ -499,6 +621,12 @@
   {
    "field": "assistiveListening",
    "reason": "quote is off topic"
+  }
+ ],
+ "london/the-other-palace": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "london/the-other-palace-main-auditorium": [
@@ -520,6 +648,14 @@
   }
  ],
  "london/the-other-palace-studio": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
   {
    "field": "assistiveListening",
    "reason": "quote is off topic"
@@ -629,12 +765,24 @@
    "openai": null
   }
  ],
+ "off-broadway/59e59-theater-a": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "off-broadway/59e59-theater-b": [
   {
    "field": "hearingLoop",
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "off-broadway/59e59-theaters": [
+  {
+   "field": "stepFree",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/59e59-theaters-theater-a": [
@@ -751,6 +899,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/atlantic-theater-company": [
@@ -759,6 +911,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/atlantic-theater-company-linda-gross-theater": [
@@ -767,6 +923,10 @@
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/atlantic-theater-company-stage-2": [
@@ -891,6 +1051,10 @@
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/harvey-theater-at-bam-strong": [
@@ -921,6 +1085,10 @@
  ],
  "off-broadway/irish-repertory-studio-theatre": [
   {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "hearingLoop",
    "reason": "models disagree",
    "gemini": false,
@@ -937,6 +1105,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/jeffrey-and-paula-gural-theatre-a-r-t-new-york-theatres": [
@@ -979,6 +1151,10 @@
   {
    "field": "wheelchair",
    "reason": "quote is off topic"
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/martinson-theater-at-joseph-papp-public-theater": [
@@ -1063,6 +1239,10 @@
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/new-world-stages-stage-1": [
@@ -1081,10 +1261,20 @@
  ],
  "off-broadway/nyu-skirball": [
   {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  },
+  {
    "field": "hearingLoop",
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  }
+ ],
+ "off-broadway/nyu-skirball-center-for-the-performing-arts": [
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/park-avenue-armory": [
@@ -1571,6 +1761,10 @@
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
   }
  ],
  "off-broadway/the-triad-theatre": [
