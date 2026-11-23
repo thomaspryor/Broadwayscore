@@ -150,6 +150,23 @@ test('buildBundle: a small budget omits files visibly (never silently); budget 0
   assert.match(none.text, /No repository files were attached/);
 });
 
+test('buildBundle: a changed file over the whole-file size cap is sent as windows, an unchanged one is not', () => {
+  const repo = fixtureRepo();
+  const big = Array.from({ length: 12000 }, (_, i) => `line ${i} ${'x'.repeat(20)}`).join('\n') + '\n';
+  fs.writeFileSync(path.join(repo, 'huge.yml'), big);
+  fs.writeFileSync(path.join(repo, 'huge2.yml'), big);
+  sh(repo, 'add', '-A'); sh(repo, 'commit', '-qm', 'huge');
+  sh(repo, 'branch', '-f', 'hugebase');
+  fs.writeFileSync(path.join(repo, 'huge.yml'), big.replace('line 6000 ', 'line 6000 CHANGED '));
+  sh(repo, 'commit', '-qam', 'edit huge');
+  assert.ok(fs.statSync(path.join(repo, 'huge.yml')).size > bundleLib.MAX_FILE_BYTES);
+  const b = bundleLib.buildBundle({ cwd: repo, base: 'hugebase' });
+  assert.deepEqual(b.partial, ['huge.yml']);
+  assert.match(b.text, /CHANGED/);
+  const p = bundleLib.buildBundle({ cwd: repo, prompt: 'see huge2.yml' });
+  assert.equal(p.omitted.find((o) => o.path === 'huge2.yml').why, 'over 200KB');
+});
+
 test('buildBundle: the OMITTED list is capped so a huge change cannot bloat the request', () => {
   const repo = fixtureRepo();
   for (let i = 0; i < 60; i++) fs.writeFileSync(path.join(repo, `gen${i}.js`), `module.exports = ${i};\n`);

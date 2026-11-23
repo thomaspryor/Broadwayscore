@@ -30,6 +30,8 @@ const SECRET_RE = /(^|\/)(\.env(\.[^/]*)?|\.npmrc|\.netrc|\.pypirc|id_(rsa|dsa|e
 const CODE_EXT_RE = /\.(c?js|mjs|tsx?|jsx|sh|py|md)$/i;
 const isSecretPath = (p) => SECRET_RE.test(p) && !(CODE_EXT_RE.test(p) && !/(^|\/)(\.env|id_)/.test(p) && !/\.(pem|key|p12|pfx|keystore|jks)$/i.test(p));
 const MAX_FILE_BYTES = 200 * 1024;
+// A changed file is sent as windows around its changes, so a big one (test.yml is ~480KB) still fits.
+const WINDOWED_MAX_BYTES = 5 * 1024 * 1024;
 const FULL_FILE_CHARS = 60_000;
 const WINDOW_PAD = 60;
 const DEFAULT_BUDGET_CHARS = 480_000; // about 120K tokens, about $0.18 of input on gemini-3.8-flash
@@ -132,13 +134,13 @@ function windows(text, ranges, pad = WINDOW_PAD) {
 const fmtRanges = (r) => r.map(([a, b]) => (a === b ? `${a}` : `${a}-${b}`)).join(', ');
 
 /** Read a file for the bundle, or say why not. */
-function readAllowed(root, p, tracked) {
+function readAllowed(root, p, tracked, maxBytes = MAX_FILE_BYTES) {
   if (!tracked.has(p)) return { why: 'not a tracked file' };
   if (isSecretPath(p)) return { why: 'name looks like a secret, never sent' };
   let st;
   try { st = fs.statSync(path.join(root, p)); } catch { return { why: 'missing from the working tree' }; }
   if (!st.isFile()) return { why: 'not a regular file' };
-  if (st.size > MAX_FILE_BYTES) return { why: `over ${MAX_FILE_BYTES / 1024}KB` };
+  if (st.size > maxBytes) return { why: `over ${Math.round(maxBytes / 1024)}KB` };
   const buf = fs.readFileSync(path.join(root, p));
   if (buf.subarray(0, 8000).includes(0)) return { why: 'binary' };
   return { text: buf.toString('utf8') };
@@ -200,7 +202,7 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
   const omitted = [];
   let left = budgetChars;
   for (const f of files) {
-    const r = readAllowed(root, f.path, tracked);
+    const r = readAllowed(root, f.path, tracked, f.ranges.length ? WINDOWED_MAX_BYTES : MAX_FILE_BYTES);
     if (!r.text) { omitted.push({ path: f.path, why: r.why }); continue; }
     const lines = r.text.split('\n');
     const head = `=== FILE ${f.path} (${lines.length} lines${f.ranges.length ? `; changed lines ${fmtRanges(f.ranges)}` : ''}) ===\n`;
@@ -258,5 +260,5 @@ function buildBundle({ cwd, base, prompt = '', budgetChars = DEFAULT_BUDGET_CHAR
 
 module.exports = {
   buildBundle, parseNameStatus, parseHunks, definedNames, pathsFromPrompt, windows, readAllowed,
-  SECRET_RE, isSecretPath, MAX_FILE_BYTES, FULL_FILE_CHARS, DEFAULT_BUDGET_CHARS,
+  SECRET_RE, isSecretPath, MAX_FILE_BYTES, WINDOWED_MAX_BYTES, FULL_FILE_CHARS, DEFAULT_BUDGET_CHARS,
 };
