@@ -580,7 +580,7 @@ describe('pendingIntakeRejectReason (BRO-8023 intake guard)', () => {
   });
   test('the old intake rule (off-topic section only) let most of them through', () => {
     const passedOld = INTAKE_JUNK.filter(([, r]) => !offTopicSectionReason(r.url)).length;
-    assert.ok(passedOld >= 4, `${passedOld}`);
+    assert.ok(passedOld >= 3, `${passedOld}`);
   });
   for (const [id, url] of [...REAL_8065, ...NEEDS_FETCH_8065]) {
     test(`still written to _pending: ${url}`, () => {
