@@ -81,7 +81,11 @@ Usage:
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 // --- Text similarity (word trigram Jaccard): scripts/lib/trigram-similarity.js (BRO-7957 extraction) ---
-const { trigramSimilarity } = require('./lib/trigram-similarity');
+const { trigramSimilarity, trigramContainment } = require('./lib/trigram-similarity');
+// BRO-7391: a truncated syndicated copy (one outlet ran a prefix of the other's
+// review) is invisible to Jaccard. Same critic + same show + the shorter text
+// almost entirely inside the longer one is the same article.
+const CONTAINMENT_THRESHOLD = 90;
 
 // --- Main ---
 console.log('=== Detect Syndicated Duplicate Reviews ===');
@@ -201,15 +205,27 @@ for (const [key, revs] of multiOutlet) {
 
       const t1 = f1.data.fullText;
       const t2 = f2.data.fullText;
-      const sim = trigramSimilarity(t1, t2);
-
-      if (sim < THRESHOLD) continue;
+      let sim = trigramSimilarity(t1, t2);
+      let byContainment = null;
+      if (sim < THRESHOLD) {
+        const c = trigramContainment(t1, t2);
+        if (c.containment < CONTAINMENT_THRESHOLD) continue;
+        byContainment = c;
+        sim = c.containment;
+      }
 
       // This is syndication
       const primaryOutlet = choosePrimary(critic, o1, o2, showById[revs[0].showId]);
       const secondaryOutlet = primaryOutlet === o1 ? o2 : o1;
       const primaryFile = primaryOutlet === o1 ? f1 : f2;
       const secondaryFile = primaryOutlet === o1 ? f2 : f1;
+      // Containment only proves the shorter copy is a fragment of the longer one.
+      // Never let it demote the FULL text behind a fragment: if the outlet rules
+      // pick the shorter file as primary, leave the pair for a human.
+      if (byContainment && (byContainment.shorter === 1 ? f1 : f2) !== secondaryFile) {
+        console.log(`  containment ${sim}% but primary rule keeps the fragment: ${revs[0].showId} ${o1} vs ${o2} (skipped)`);
+        continue;
+      }
 
       // Check if already flagged
       if (secondaryFile.data.isSyndicatedDuplicate) {
@@ -230,6 +246,7 @@ for (const [key, revs] of multiOutlet) {
         primaryFile: primaryFile.filename,
         secondaryFile: secondaryFile.filename,
         similarity: sim,
+        method: byContainment ? 'containment' : 'jaccard',
         primaryScore: r1 ? r1.assignedScore : null,
         secondaryScore: r2 ? r2.assignedScore : null,
         scoreDiff: Math.abs((r1?.assignedScore || 0) - (r2?.assignedScore || 0)),
@@ -244,6 +261,7 @@ for (const [key, revs] of multiOutlet) {
           secondaryFile.data.isSyndicatedDuplicate = true;
           secondaryFile.data.syndicatedPrimaryFile = `${primaryFile.data.showId || revs[0].showId}/${primaryFile.filename}`;
           secondaryFile.data.syndicationSimilarity = sim;
+          if (byContainment) secondaryFile.data.syndicationMethod = 'trigram-containment';
           const r = safeWriteReview(secondaryFile.path, secondaryFile.data);
           if (r.lockedSkipped) lockedSkipCount++;
           filesWritten++;
