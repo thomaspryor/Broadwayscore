@@ -83,7 +83,19 @@
     "clue-tour-2025/folio-weekly--cessy-newmon.json",
     "clue-tour-2025/kxrm-colorado-springs--kenny-johnson.json",
     "clue-tour-2025/northwest-arkansas-democrat-gazette--monica-hooper.json",
-    "13-going-on-30-manchester-regional-2025/lancashire-telegraph--john-anson.json"
+    "13-going-on-30-manchester-regional-2025/lancashire-telegraph--john-anson.json",
+    "la-distance-bam-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "hamlet-2009/usatoday--elysa-gardner.json",
@@ -224,7 +236,17 @@
     "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "wuthering-heights-off-broadway-2026/letterboxd--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -264,7 +286,15 @@
       "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
       "betrayal-1980/theatermania--unknown.json",
       "clue-tour-2025/cw33--abbey-bowling.json",
-      "clue-tour-2025/kxrm-colorado-springs--kenny-johnson.json"
+      "clue-tour-2025/kxrm-colorado-springs--kenny-johnson.json",
+      "la-distance-bam-off-broadway-2026/exeunt-magazine--loren-noveck.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/new-york-city-theatre--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -276,7 +306,8 @@
       "data/review-texts/bad-cinderella-2023/hollywood-reporter--unknown.json",
       "bad-cinderella-2023/hollywood-reporter--unknown.json",
       "data/review-texts/all-about-me-2010/nytimes--unknown.json",
-      "all-about-me-2010/nytimes--unknown.json"
+      "all-about-me-2010/nytimes--unknown.json",
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -289,7 +320,11 @@
       "bad-cinderella-2023/rollingstone--unknown.json",
       "jitney-west-end-2022/daily-mail--patrick-marmion.json",
       "fully-committed-2016/theatrely--unknown.json",
-      "arcadia-1995/sfgate--lily-janiak.json"
+      "arcadia-1995/sfgate--lily-janiak.json",
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
     ],
     "brightdata": [
       "after-miss-julie-2009/variety--unknown.json",
@@ -333,7 +368,7 @@
     ]
   },
   "startTime": "2026-11-22T22:18:56.368Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "downstate-2026/nytimes--unknown.json",
   "log": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -388,6 +423,50 @@
     },
     {
       "t": "2026-11-23T02:07:39.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:45:54.167Z",
+      "event": "bb-session",
+      "session": "e60b3de9",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T02:45:55.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:48:00.672Z",
+      "event": "bb-session",
+      "session": "f8acf56d",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T02:48:01.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:49:57.304Z",
+      "event": "bb-session",
+      "session": "54cacaa3",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T02:49:58.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:50:15.913Z",
+      "event": "bb-session",
+      "session": "4e7c76e9",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T02:50:16.722Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

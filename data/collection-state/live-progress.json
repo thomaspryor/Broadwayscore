@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-23T02:34:06.108Z",
-  "processed": 84,
-  "failed": 139,
-  "successRate": "37.7%",
+  "updatedAt": "2026-11-23T02:50:55.789Z",
+  "processed": 96,
+  "failed": 149,
+  "successRate": "39.2%",
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingdog": 3,
-    "scrapingbee": 5,
+    "scrapingbee": 9,
     "brightdata": 8,
     "archiveToday": 0,
     "archive": 27
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-23T00:07:05.783Z",
@@ -69,6 +69,50 @@
     },
     {
       "t": "2026-11-23T02:07:39.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:45:54.167Z",
+      "event": "bb-session",
+      "session": "e60b3de9",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-23T02:45:55.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:48:00.672Z",
+      "event": "bb-session",
+      "session": "f8acf56d",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-23T02:48:01.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:49:57.304Z",
+      "event": "bb-session",
+      "session": "54cacaa3",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T02:49:58.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-23T02:50:15.913Z",
+      "event": "bb-session",
+      "session": "4e7c76e9",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-23T02:50:16.722Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
