@@ -1395,5 +1395,36 @@
       }
     ],
     "queuedAt": "2026-11-23T05:41:35.067Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8084-pullquote-trailer-truncation-3",
+    "title": "Landing blocked: rebase red on land/bro-8084-pullquote-trailer-truncation-3",
+    "description": "land.yml did not land land/bro-8084-pullquote-trailer-truncation-3: the rebase gate went red at 898e2436c3. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-8084-pullquote-trailer-truncation-3 @ 898e2436c3 (origin/land/bro-8084-pullquote-trailer-truncation-3) → origin/main @ e39b34aac5 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e39b34aac5: Rebasing (1/1) error: could not apply 898e2436c3b... BRO-8084: quote reviews tiered truncated only for a trailing star line (trailer-only truncation) hint: Resolve all confli Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45117946509",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8084-pullquote-trailer-truncation-3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "898e2436c3bc49af85b45a10bc21a74ae4fe97d3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45117946509"
+      }
+    ],
+    "queuedAt": "2026-11-23T05:44:20.779Z"
   }
 ]
