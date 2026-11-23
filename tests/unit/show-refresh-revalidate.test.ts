@@ -65,7 +65,9 @@ test('gap 6: showSurfacePaths covers every route under show/[slug] that reads ge
 
 test('all: expands to the refreshable slugs of this deployment, merged with explicit slugs', () => {
   const plan = planRevalidate({ configuredSecret: SECRET, givenSecret: SECRET, body: { all: true, tag: true, slugs: ['wicked'] }, refreshableSlugs: () => ['hamilton', 'wicked', 'Bad Slug'] });
-  assert.deepEqual(plan, { ok: true, tag: true, pointerTag: true, paths: [...showSurfacePaths('wicked'), ...showSurfacePaths('hamilton')] });
+  assert.deepEqual(plan, { ok: true, tag: true, pointerTag: true, refreshable: 2, paths: [...showSurfacePaths('wicked'), ...showSurfacePaths('hamilton')] });
+  const held = planRevalidate({ configuredSecret: SECRET, givenSecret: SECRET, body: { all: true, tag: true }, refreshableSlugs: () => [] });
+  assert.equal((held as { refreshable?: number }).refreshable, 0, 'every show held: refreshable 0, which the kill script treats as a warning');
   const none = planRevalidate({ configuredSecret: SECRET, givenSecret: SECRET, body: { all: true, tag: true }, refreshableSlugs: () => null });
   assert.deepEqual(none, { ok: false, status: 503, error: 'no build manifest in this deployment' });
   assert.equal((call({ all: 'yes' }) as { status: number }).status, 400);

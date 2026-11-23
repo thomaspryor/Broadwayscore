@@ -84,6 +84,19 @@ test('wiring: the page passes its marker only while the reader is on; ReviewsLis
   assert.match(route, /SHOW_REFRESH_REV_HEADER\]: render\?\.rev/);
 });
 
+test('class guard: every refresh marker (page meta, page prop, reviews.json header) keys on the flag as configured', () => {
+  // showRefreshEnabled() is false during `next build`, so a marker gated on it is
+  // missing from every page a flag-on build prerenders: the kill script's probe
+  // would read "reader off" and ReviewsList would skip its revision check.
+  const dir = path.join(__dirname, '../../src/app/show/[slug]');
+  const files = ['page.tsx', 'reviews.json/route.ts', 'opengraph-image.tsx'].map(f => path.join(dir, f)).filter(f => fs.existsSync(f));
+  for (const f of files) {
+    const src = fs.readFileSync(f, 'utf8');
+    assert.doesNotMatch(src, /showRefreshEnabled\(\)/, `${path.relative(dir, f)} gates on showRefreshEnabled(); use showRefreshConfigured()`);
+  }
+  assert.match(fs.readFileSync(path.join(dir, 'page.tsx'), 'utf8'), /showRefreshConfigured\(\) \? \{ other: \{ \[SHOW_REFRESH_REV_META\]/);
+});
+
 test('flag-on build: the reader does not run, but the page still passes its marker', () => {
   const build = { SHOW_REFRESH_READER: 'on', NEXT_PHASE: 'phase-production-build' } as unknown as NodeJS.ProcessEnv;
   assert.equal(showRefreshEnabled(build), false);

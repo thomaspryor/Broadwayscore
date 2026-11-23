@@ -263,6 +263,10 @@ test('gap 7: the deadline is shared: reads under it pass, the read that crosses 
   const hung = await readWithDeadline(() => new Promise<StoreRead>(() => {}), Date.now() + 30);
   assert.deepEqual(hung, { state: 'error', error: READ_DEADLINE_ERROR });
   assert.deepEqual(await readWithDeadline(async () => { throw new Error('x'); }, null), { state: 'error', error: 'x' });
+  // A synchronous throw (not a rejected promise) also becomes an error read, with or without a deadline.
+  const syncThrow = (() => { throw new Error('sync'); }) as unknown as () => Promise<StoreRead>;
+  assert.deepEqual(await readWithDeadline(syncThrow, Date.now() + 1000), { state: 'error', error: 'sync' });
+  assert.deepEqual(await readWithDeadline(syncThrow, null), { state: 'error', error: 'sync' });
 });
 
 // ---- BRO-8170 gap 5: parity expects the page's TBD verdict (computeShowTBD) ----

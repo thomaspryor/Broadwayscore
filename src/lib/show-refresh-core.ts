@@ -113,7 +113,8 @@ export async function readWithDeadline(
     timer = setTimeout(() => resolve({ state: 'error', error: READ_DEADLINE_ERROR }), remaining);
   });
   try {
-    return await Promise.race([read().catch(asErr), expired]);
+    // Promise.resolve().then: a read() that throws synchronously still resolves to an error.
+    return await Promise.race([Promise.resolve().then(read).catch(asErr), expired]);
   } finally {
     clearTimeout(timer);
   }
