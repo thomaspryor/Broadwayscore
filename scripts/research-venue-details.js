@@ -279,18 +279,31 @@ async function main() {
   let i = 0;
   for (const v of all) {
     const raw = rawStore[key(v)];
-    if (!raw) continue;
+    const donorKeys = foldedInto.get(key(v)) || [];
+    // A page researched only under a spelling that now folds into it still gets those facts.
+    if (!raw && !donorKeys.length) continue;
     i++;
     const prev = existing.venues?.[key(v)];
-    const sameRaw = prev && prev.researchedAt === raw.at && (!prev.fields?.address || prev.lat != null);
+    const donorsAt = Object.fromEntries(donorKeys.map((k) => [k, rawStore[k].at]));
+    const sameDonors = JSON.stringify(prev?.foldedDonorsAt || {}) === JSON.stringify(donorsAt);
+    const sameRaw = prev && prev.researchedAt === (raw?.at ?? null) && (!prev.fields?.address || prev.lat != null);
     // Reuse the previous decision when the raw answers did not change (saves geocode calls).
-    const d = sameRaw && !args.redecide
-      ? { fields: prev.fields, how: prev.how, geo: prev.lat != null ? { lat: prev.lat, lng: prev.lng } : null, disagreements: prev._disagreements || [] }
-      : await decide(v, raw);
-    const donorKeys = foldedInto.get(key(v)) || [];
-    if (donorKeys.length && ['address', 'website', 'capacity', 'yearOpened', 'operator'].some((f) => d.fields[f] == null)) {
+    let d;
+    if (sameRaw && sameDonors && !args.redecide) {
+      d = { fields: prev.fields, how: prev.how, geo: prev.lat != null ? { lat: prev.lat, lng: prev.lng } : null, disagreements: prev._disagreements || [], foldedFrom: prev.foldedFrom };
+    } else if (sameRaw && !args.redecide) {
+      // Own answers unchanged, a folded-in spelling changed: drop what it gave last time, refill below.
+      const fields = { ...prev.fields }; const how = { ...prev.how };
+      let geo = prev.lat != null ? { lat: prev.lat, lng: prev.lng } : null;
+      for (const f of Object.keys(prev.foldedFrom || {})) { delete fields[f]; delete how[f]; if (f === 'address') geo = null; }
+      d = { fields, how, geo, disagreements: prev._disagreements || [] };
+    } else {
+      d = raw ? await decide(v, raw) : { fields: {}, how: {}, geo: null, disagreements: [] };
+    }
+    const reused = sameRaw && sameDonors && !args.redecide;
+    if (!reused && donorKeys.length && ['address', 'website', 'capacity', 'yearOpened', 'operator'].some((f) => d.fields[f] == null)) {
       const donors = [];
-      for (const k of donorKeys) donors.push(await decide({ ...v, name: rawStore[k].name }, rawStore[k]));
+      for (const k of donorKeys) donors.push({ key: k, ...(await decide({ ...v, name: rawStore[k].name }, rawStore[k])) });
       fillFromFolded(d, donors);
     }
     if (d.disagreements.length) disputes[key(v)] = { name: v.name, disagreements: d.disagreements };
@@ -300,14 +313,17 @@ async function main() {
       }
     }
     if (!Object.keys(d.fields).length) continue;
-    const sources = [...new Set([...(raw.gemini?.sources || []), ...(raw.openai?.sources || [])])].filter((s) => /^https?:\/\//.test(s)).slice(0, 6);
+    const usedRaws = [raw, ...new Set(Object.values(d.foldedFrom || {}))].map((x) => (typeof x === 'string' ? rawStore[x] : x)).filter(Boolean);
+    const sources = [...new Set(usedRaws.flatMap((r) => [...(r.gemini?.sources || []), ...(r.openai?.sources || [])]))].filter((s) => /^https?:\/\//.test(s)).slice(0, 6);
     outVenues[key(v)] = {
       name: v.name,
       fields: d.fields,
       how: d.how,
       ...(d.geo ? { lat: Math.round(d.geo.lat * 1e6) / 1e6, lng: Math.round(d.geo.lng * 1e6) / 1e6 } : {}),
       sources,
-      researchedAt: raw.at,
+      researchedAt: raw?.at ?? null,
+      ...(d.foldedFrom && Object.keys(d.foldedFrom).length ? { foldedFrom: d.foldedFrom } : {}),
+      ...(donorKeys.length ? { foldedDonorsAt: donorsAt } : {}),
       ...(d.disagreements.length ? { _disagreements: d.disagreements } : {}),
     };
     if (i % 25 === 0) console.log(`  decided ${i}`);

@@ -73,13 +73,26 @@ test('venue folds do not chain and every vercel redirect destination is a fold t
   // BRO-8173: a folded spelling's old page was indexed; it must 308 to the merged page, not 404.
   const { slugify } = require('../../scripts/lib/url-slug.js');
   const redirects = JSON.parse(fs.readFileSync(new URL('../../vercel.json', import.meta.url), 'utf8')).redirects;
-  for (const [from, to] of Object.entries(VENUE_PAGE_NAME_FOLDS)) {
-    const a = slugify(from), b = slugify(to);
-    if (a === b) continue;
-    const hit = redirects.find((r) => /\/theater\/[^/]+$/.test(r.source) && r.source.endsWith(`/theater/${a}`));
-    assert.ok(hit, `fold "${from}" retired /theater/${a} with no vercel.json redirect`);
-    assert.ok(hit.destination.endsWith(`/theater/${b}`), `${hit.source} redirects to ${hit.destination}, expected .../theater/${b}`);
+  // Per market: a fold retires the page only in a market whose shows use that spelling.
+  const P = require('../../scripts/lib/page-name-sources.js');
+  const raw = JSON.parse(fs.readFileSync(new URL('../../data/shows.json', import.meta.url), 'utf8'));
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  const norm = (v) => (typeof v === 'string' ? v.trim().replace(/\s+/g, ' ') : v);
+  const markets = { '/theater/': P.broadwayShows(shows), '/off-broadway/theater/': P.offBroadwayShows(shows), '/west-end/theater/': P.londonShows(shows) };
+  let checked = 0;
+  for (const [prefix, list] of Object.entries(markets)) {
+    const used = new Set(list.map((s) => norm(s.venue)));
+    for (const [from, to] of Object.entries(VENUE_PAGE_NAME_FOLDS)) {
+      const a = slugify(from), b = slugify(to);
+      if (a === b || !used.has(from)) continue;
+      checked++;
+      const hit = redirects.find((r) => r.source === `${prefix}${a}`);
+      assert.ok(hit, `fold "${from}" retired ${prefix}${a} with no vercel.json redirect`);
+      assert.equal(hit.destination, `${prefix}${b}`);
+      assert.equal(hit.permanent, true);
+    }
   }
+  assert.ok(checked > 10, `only ${checked} folds matched a show; the venue lookup is broken`);
 });
 
 test('thin rules are off by default and only SEO_THIN_NOINDEX=1 turns them on', () => {

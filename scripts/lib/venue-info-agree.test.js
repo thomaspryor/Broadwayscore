@@ -114,3 +114,22 @@ test('access/seat answers researched under a folded spelling reach the merged pa
   assert.deepEqual(pickWithFolded({ 'off-broadway/sheen-center': { own: 1 }, 'off-broadway/the-sheen-center': { a: 1 } }, 'off-broadway/sheen-center'), { own: 1 });
   assert.equal(pickWithFolded(store, 'london/sheen-center'), undefined, 'never crosses markets');
 });
+
+test('pickWithFolded: a failed own record never hides a usable folded one', () => {
+  const { pickWithFolded } = require('./venue-info-agree');
+  const ok = (r) => !!(r.gemini && r.openai && !r.gemini.error && !r.openai.error);
+  const good = { gemini: { a: 1 }, openai: { a: 1 } };
+  const store = { 'off-broadway/sheen-center': { gemini: { error: 'x' }, openai: {} }, 'off-broadway/the-sheen-center': good };
+  assert.equal(pickWithFolded(store, 'off-broadway/sheen-center', undefined, ok), good);
+  const none = { 'off-broadway/sheen-center': { none: 'no access wording' } };
+  assert.deepEqual(pickWithFolded(none, 'off-broadway/sheen-center', undefined, ok), { none: 'no access wording' }, 'nothing usable: own record as-is');
+  const seats = { 'off-broadway/sheen-center': { seatplan: null, aviewfrommyseat: null }, 'off-broadway/the-sheen-center': { seatplan: 'u' } };
+  assert.deepEqual(pickWithFolded(seats, 'off-broadway/sheen-center', undefined, (r) => !!(r.seatplan || r.aviewfrommyseat)), { seatplan: 'u' });
+});
+
+test('fillFromFolded records which folded spelling gave each field', () => {
+  const { fillFromFolded } = require('./venue-info-agree');
+  const d = fillFromFolded({ fields: { website: 'w' }, how: {}, geo: null }, [{ key: 'london/dorfman', fields: { website: 'x', capacity: 400 }, how: { capacity: 'gemini+openai' }, geo: null }]);
+  assert.deepEqual(d.foldedFrom, { capacity: 'london/dorfman' });
+  assert.equal(d.fields.website, 'w');
+});
