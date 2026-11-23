@@ -4,6 +4,10 @@ import { detectFromReview } from '@/lib/admin-ingest-detect';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+// BRO-8155: a distinct maxDuration keeps this route out of the shared Vercel function
+// group, because it alone fs-reads data/reviews.json (46MB) and would add it to every
+// route packed with it. scripts/lib/trace-route-excludes.js, tests/unit/trace-route-excludes.test.mjs.
+export const maxDuration = 60;
 
 /**
  * POST /api/admin/ingest-review/detect

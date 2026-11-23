@@ -20,6 +20,12 @@ require('./scripts/lib/site-image-versions').writeSiteImageVersions();
 const builtFeatures = (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map((s) => s.trim());
 const heldBoxOfficeBuild = builtFeatures.includes('boxOfficeV2');
 
+// BRO-8155: reviews.json is inlined into the server chunk by webpack; its file copy is
+// only needed by routes that fs-read it (scripts/lib/trace-route-excludes.js).
+const redundantJsonExcludes = require('./scripts/lib/trace-route-excludes').redundantInlinedJsonExcludes({
+  appDir: require('node:path').join(__dirname, 'src', 'app'),
+});
+
 const nextConfig = {
   reactStrictMode: true,
   // AGENTS.md contains project instructions. Next dev must not append its
@@ -112,7 +118,15 @@ const nextConfig = {
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',
+      // BRO-8155: Vercel functions run on glibc. The musl sharp/libvips build
+      // (~19MB of libvips) is never loaded there; Next's trace pulls in both.
+      'node_modules/@img/sharp-libvips-linuxmusl-*/**',
+      'node_modules/@img/sharp-linuxmusl-*/**',
+      // BRO-8155: scraper.js lazy-requires playwright; Vercel has no browser, so it can never run there.
+      'node_modules/playwright/**',
+      'node_modules/playwright-core/**',
     ],
+    ...redundantJsonExcludes,
   },
 }
 

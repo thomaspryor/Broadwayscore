@@ -494,6 +494,10 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+          # BRO-8155: @vercel/next packs routes with equal options into one function until it would pass
+          # (this cap - 25MiB reserved). Default 250MiB packed functions to ~217MiB. 170MiB packs to 145MiB,
+          # measured with a local vercel build: 14 functions, largest 147.8MiB (a lone route can still exceed it).
+          MAX_UNCOMPRESSED_LAMBDA_SIZE: '178257920'
         run: |
           # Card #90 (2026-08-14): under a burst of concurrent pushes, Vercel's
           # server-side "latest wins" dedup can CANCEL this run's deployment
@@ -549,6 +553,15 @@ jobs:
         # Advisory first (§19).
         continue-on-error: true
         run: node scripts/lib/check-coverage-floor-trace.js .next
+
+      - name: Guard — no route fs-reads a data file its trace dropped (advisory)
+        # BRO-8155: next.config.js drops the inlined copies of reviews.json,
+        # grosses-history.json and cast-manifest.json from every route that does
+        # not fs-read them (scripts/lib/trace-route-excludes.js). A route that
+        # starts reading one by path would lose it at runtime; this fails then.
+        # Advisory first (§19).
+        continue-on-error: true
+        run: node scripts/lib/check-trace-runtime-reads.js .next
 
       # BRO-7983: supersede stacked dispatches. This run's Build succeeded and it is about
       # to deploy, so cancel older main runs still before their own "Deploy to Production":

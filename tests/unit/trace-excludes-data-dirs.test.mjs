@@ -29,7 +29,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 // would make this blocking test depend on live data (BRO-7101 live-data lane).
 function readExcludes() {
   const text = readFileSync(join(ROOT, 'next.config.js'), 'utf8');
-  const m = text.match(/outputFileTracingExcludes:\s*\{\s*'\*\*\/\*':\s*\[([\s\S]*?)\n\s*\],\s*\n\s*\},/);
+  const m = text.match(/outputFileTracingExcludes:\s*\{\s*'\*\*\/\*':\s*\[([\s\S]*?)\n\s*\],\s*\n(?:\s*\.\.\.[^\n]*\n)?\s*\},/);
   assert.ok(m, 'could not find outputFileTracingExcludes["**/*"] in next.config.js');
   return new Function(`return [${m[1]}];`)();
 }
