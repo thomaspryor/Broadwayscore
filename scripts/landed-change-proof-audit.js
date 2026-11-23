@@ -231,11 +231,11 @@ async function main() {
   let recordGaps = [];
   try {
     const gaps = await import('./lib/retro-coverage-stop.mjs');
-    const jl = (f) => readLedger(path.join(ROOT, f));
+    const jl = (f) => readLedger(path.isAbsolute(f) ? f : path.join(ROOT, f)); // read-only; paths come from the owning libs so the orphaned-write audit sees no write
     const gapFile = path.join(ROOT, gaps.GAP_LEDGER);
     recordGaps = gaps.findRecordGaps({
       landed: rows.filter((r) => r.source === 'cloud' && !r.marker).map((r) => ({ session: r.session, landedDay: r.landedDay, sha: r.sha })), ledgerSessions,
-      retroRows: jl('data/audit/session-retro.jsonl'), costRows: jl('data/audit/claude-session-cost.jsonl'), gapRows: jl(gaps.GAP_LEDGER), asOf: lib.dayMinus(auditDay, 1), // a full day of grace: the window ends at 00:00Z, so landedDay < auditDay alone is ~4h
+      retroRows, costRows: jl(require('./lib/claude-session-cost.js').ledgerPath(ROOT)), gapRows: jl(gaps.GAP_LEDGER), asOf: lib.dayMinus(auditDay, 1), // a full day of grace: the window ends at 00:00Z, so landedDay < auditDay alone is ~4h
     });
     console.error(`[landed-proof] record gaps: ${recordGaps.length} (${recordGaps.filter((g) => g.kind === 'retro').length} retro, ${recordGaps.filter((g) => g.kind === 'cost').length} cost)`);
     if (recordGaps.length && !dryRun && typeof only !== 'string') { // a --sha proof check is read-only
