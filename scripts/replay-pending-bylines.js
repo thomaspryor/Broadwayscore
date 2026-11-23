@@ -38,7 +38,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { readPageBylineWithMetaFallback } = require('./lib/page-byline-for-show');
 const { normalizeCritic } = require('./lib/review-normalization');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
-const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+const { verifyAggregatorUrl, OPAQUE_INCONCLUSIVE } = require('./lib/show-match-verifier');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -106,6 +106,9 @@ const NON_THEATRE_SECTIONS = new Set([
  *   extracted from `html` (kept optional so 3-arg unit-test calls still work).
  * @returns {string|null}
  */
+// BRO-8090: a reject reason that means "cannot tell" (opaque url, page does not name the show), never a settle.
+const INCONCLUSIVE_PREFIX = 'inconclusive:';
+const isInconclusiveReject = (r) => typeof r === 'string' && r.startsWith(INCONCLUSIVE_PREFIX);
 function pendingPromoteRejectReason(url, html, show, publishDate) {
   if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
   let seg = [];
@@ -113,7 +116,7 @@ function pendingPromoteRejectReason(url, html, show, publishDate) {
   const badSection = seg.find(s => NON_THEATRE_SECTIONS.has(s));
   if (badSection) return `non-theatre section (${badSection}) — wrong production`;
   const v = verifyAggregatorUrl({ url, html, show, openingDate: show && show.openingDate });
-  if (!v.isValid) return `not this show (${v.rejectReason})`;
+  if (!v.isValid) return v.rejectReason === OPAQUE_INCONCLUSIVE ? `${INCONCLUSIVE_PREFIX} ${v.rejectReason}` : `not this show (${v.rejectReason})`;
   // Temporal wrong-production gate. verifyAggregatorUrl matches on the title
   // token, so a same-title earlier/later production sails through it — the
   // article's publish date is the only signal that separates them. Reuse the
@@ -285,7 +288,7 @@ function loadShow(showId) {
 
 // BRO-7945 Part B: one paid fetch per URL per run, shared by every show's copy of the article
 // (1,006 basenames sit under 2+ shows; the same ew article was fetched 4x at 4 credits each).
-const { makeFetchCache, siblingForArticle } = require('./lib/pending-sibling-productions');
+const { makeFetchCache, resolveOutOfWindowStub, rehomeStubFile, siblingHoldsSameUrl } = require('./lib/pending-sibling-productions');
 const runFetchCache = makeFetchCache((u) => fetchPage(u));
 let _allShowsMemo = null;
 function loadAllShows() {
@@ -712,7 +715,22 @@ async function processShow(showId, deps = {}) {
 
     // BRO-8023: the no-fetch triage. A url another show already scores, a non-review section/listing, or a
     // stub date outside the production window is settled here (tagged, KEPT), never fetched.
-    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, sameTitleShows: sameTitleShowsOf(show, deps), showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
+    const allShowsForSiblings = deps.allShows || (deps.root ? [] : loadAllShows());
+    const tri = pendingTriage.triagePendingStub(data, { showId, show, heldIndex, allShows: allShowsForSiblings, sameTitleShows: sameTitleShowsOf(show, deps),
+      siblingHasCopy: (sid) => siblingHoldsSameUrl({ root, toShowId: sid, file, url }), showTitleOf: (id) => ((deps.allShows || (deps.root ? [] : loadAllShows())).find(sh => sh.id === id) || {}).title });
+    if (tri.verdict === 'rehome') {
+      console.log(`  [${file}] triage: ${tri.reason} — rehomed to ${tri.sibling} (BRO-8090)`);
+      const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: tri.sibling, data, publishDate: tri.publishDate, nowIso: now().toISOString(), dry });
+      if (out === 'sibling-has-copy' && !dry) {
+        data.promoteSkippedReason = `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
+        data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
+        fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+      }
+      redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
+      tagged++;
+      kept++;
+      continue;
+    }
     if (tri.verdict === 'junk') {
       console.log(`  [${file}] triage: ${tri.reason} — tagged, not fetched (BRO-8023)`);
       verdictCount(`junk: ${verdictBucket(tri.reason)}`);
@@ -776,24 +794,36 @@ async function processShow(showId, deps = {}) {
       // wrong-production articles (the Beetlejuice *film* / a Tim Burton interview filed
       // under 'times-uk'), and wrong-show hits. Promoting these contaminates the show.
       const rejectReason = pendingPromoteRejectReason(url, html, show, publishDate);
+      if (isInconclusiveReject(rejectReason)) {
+        // BRO-8090: an opaque url whose page does not name the show is "cannot tell", not "not this show". Left
+        // unsettled (never tagged) so a later fetch or a human still sees it as a candidate.
+        console.log(`  [${file}] ${rejectReason} — not settled, kept as a candidate`);
+        stampFetchAttempt(filepath, data, dry, now().toISOString(), 'opaque-url-inconclusive');
+        kept++;
+        continue;
+      }
       if (rejectReason) {
         // KEEP, never delete. The URL-level checks have false positives (outlets file
-        // real theatre reviews under odd sections; verifyAggregatorUrl can miss on opaque
-        // slugs). Deleting was irreversible data loss (ship-check 2026-06-05). Annotate so
-        // future cron runs skip it without re-fetching, and leave it in _pending for a
-        // human / better tooling — promotion just doesn't happen.
-        // BRO-7945: an out-of-window copy whose date sits inside a same-title sibling's window belongs to that
-        // sibling's copy (processed on its own turn from the cached fetch); settle this one so it is never
-        // re-judged. Outside every same-title window = settled junk. Both stay on disk (never delete).
+        // real theatre reviews under odd sections). Deleting was irreversible data loss (ship-check 2026-06-05).
+        // BRO-7945/BRO-8090: an out-of-window copy whose date sits inside exactly one same-title sibling's window
+        // BELONGS to that sibling: rehome it there (or settle as a duplicate if the sibling already holds the url).
+        // Outside every same-title window = settled junk. Nothing is deleted.
         let settle = null;
         if (/is outside this production's window|date-out-of-window/.test(rejectReason)) {
-          const sib = siblingForArticle(show, deps.allShows || loadAllShows(), publishDate,
-            { hasCopy: (sid) => { // the sibling's copy exists and has not itself been settled
-              try { return !JSON.parse(fs.readFileSync(path.join(root, '_pending', sid, file), 'utf8')).promoteSkippedReason; } catch { return false; }
-            } });
-          settle = sib
-            ? { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${sib.id}, whose _pending copy carries it (BRO-7945)`, sibling: sib.id }
-            : { kind: 'outside-all', reason: rejectReason };
+          const allSh = deps.allShows || loadAllShows();
+          const r = resolveOutOfWindowStub({ show, allShows: allSh, publishDate, stub: data,
+            hasCopy: (sid) => siblingHoldsSameUrl({ root, toShowId: sid, file, url }),
+            holdsUrl: (sid) => !!(heldIndex && (heldIndex.get(pendingTriage.normalizeReviewUrl(url)) || new Set()).has(sid)) });
+          if (r.kind === 'rehome') {
+            const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: r.sibling, data, publishDate: String(publishDate).slice(0, 10), nowIso: now().toISOString(), dry });
+            console.log(`  [${file}] ${rejectReason}; belongs to ${r.sibling} — ${out} (BRO-8090)`);
+            if (out === 'rehomed') { redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1; tagged++; kept++; continue; }
+            settle = { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, whose _pending copy carries it (BRO-7945)`, sibling: r.sibling };
+          } else if (r.kind === 'duplicate') {
+            settle = { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${r.sibling}, which already holds this url (BRO-8090)`, sibling: r.sibling };
+          } else {
+            settle = { kind: r.kind, reason: rejectReason };
+          }
           redundantCopies[settle.kind] = (redundantCopies[settle.kind] || 0) + 1;
         }
         console.log(`  [${file}] SKIP (kept in _pending): ${settle ? settle.reason : rejectReason}`);
@@ -1028,6 +1058,7 @@ async function raiseDrainHealthAlerts(history, deps = {}) {
 module.exports = {
   inShard,
   pendingPromoteRejectReason,
+  isInconclusiveReject,
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
   isRedundantPendingStub,

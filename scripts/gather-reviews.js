@@ -4336,7 +4336,12 @@ function createReviewFile(showId, reviewData, options = {}) {
       console.log(`    ⊘ ${normalizedOutletId}: ${_intakeReject} — not routed to _pending (BRO-8023): ${review.url}`);
       return 'pendingIntakeReject'; // a string so the caller's logExclusion records it (audit trail)
     }
-    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
+    // BRO-8090 root cause: the show was picked by TITLE alone, so a sibling production's review was filed (and
+    // later settled out-of-window) under the wrong one. File it under the unique same-title sibling whose window
+    // holds its date.
+    const pendingShowId = require('./lib/pending-sibling-productions').intakeShowIdForStub(_showMeta, _allShows, require('./lib/pending-triage').stubDateIso(review.publishDate), review) || showId;
+    if (pendingShowId !== showId) { review.showId = pendingShowId; review.rehomedFrom = showId; require('./lib/pending-sibling-productions').stripForeignShowFlags(review); }
+    const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', pendingShowId);
     const urlHash = (() => {
       let h = 0;
       for (const c of review.url) { h = ((h << 5) - h + c.charCodeAt(0)) | 0; }
@@ -4353,9 +4358,10 @@ function createReviewFile(showId, reviewData, options = {}) {
     // sibling venue, url another production scores) used to run only at the weekly drain, so a NEW stub it already
     // calls junk sat open in _pending for up to a week. Tag it settled now, exactly as the drain would: KEPT and
     // recoverable, never refused (those rules flag 82 scored reviews, so refusal stays page-kind only, BRO-8023).
+    // Judged against the show it is filed under (pendingShowId, BRO-8090), so a rehomed stub is in its own window.
     let _record = mergePendingRecord(existingPending, review);
     if (!existingPending) {
-      const _intake = require('./lib/pending-intake').intakeVerdict(_record, showId);
+      const _intake = require('./lib/pending-intake').intakeVerdict(_record, pendingShowId);
       if (_intake.verdict === 'junk') {
         _record = { ..._record, promoteSkippedReason: `${_intake.reason} (BRO-8089 intake triage)`, promoteSkippedAt: new Date().toISOString() };
         console.log(`    ⊘ ${normalizedOutletId}: ${_intake.reason} — settled at intake (kept in _pending, BRO-8089): ${review.url}`);
@@ -4363,7 +4369,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     fs.writeFileSync(pendingPath, JSON.stringify(_record, null, 2));
-    console.log(`    → no byline — routing to pending: _pending/${showId}/${pendingFilename}`);
+    console.log(`    → no byline — routing to pending: _pending/${pendingShowId}/${pendingFilename}`);
     return true;
   }
 

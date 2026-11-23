@@ -82,6 +82,28 @@ function _getSiblingOpenings(showId) {
   return _siblingOpeningsCache.get(showId) || [];
 }
 
+/**
+ * BRO-8090 root cause: both quarantines below "belong to the sibling" yet were filed under _pending/<this show>, where
+ * the drain later settled them as out-of-window junk. Quarantine under the unique corroborated same-title sibling whose
+ * window holds the date (same rule as the drain, pending-sibling-productions.resolveOutOfWindowStub); otherwise here.
+ * Returns { dirId, payload }.
+ */
+function _quarantineTarget(parentDirName, show, payload, filePath) {
+  try {
+    _getShowById(parentDirName);
+    const dirId = require('./pending-sibling-productions').intakeShowIdForStub(show && { ...show, id: show.id || parentDirName },
+      [..._showsByIdCache.values()], require('./pending-triage').stubDateIso(payload && payload.publishDate), payload);
+    if (dirId && dirId !== parentDirName) {
+      // Never overwrite a file the sibling already has under that name: keep the quarantine in our own dir then.
+      const dest = filePath && path.join(path.dirname(path.dirname(filePath)), '_pending', dirId, path.basename(filePath));
+      if (dest && fs.existsSync(dest)) return { dirId: parentDirName, payload };
+      const moved = require('./pending-sibling-productions').stripForeignShowFlags({ ...payload, showId: dirId, rehomedFrom: parentDirName, rehomedAt: new Date().toISOString() });
+      return { dirId, payload: moved };
+    }
+  } catch (e) { console.warn(`[review-write-guard] sibling quarantine routing skipped: ${e.message}`); }
+  return { dirId: parentDirName, payload };
+}
+
 // Test-only: seed the shows cache directly so date-plausibility.test.mjs can
 // exercise safeWriteReview's quarantine routing without depending on the real
 // data/shows.json corpus.
@@ -1972,17 +1994,17 @@ function safeWriteReview(filePath, newData, options = {}) {
           } else if (deferToCi) {
             console.warn(`[review-write-guard] date-implausible on ${onDiskIsLocked ? 'LOCKED' : 'override-cleared/human-verdict'} ${onDiskHadLiveScore ? 'live-scored record' : 'dateless stub'}: ${parentDirName}/${path.basename(filePath)} → deferring to push-time CI catch, not auto-stamping (${verdict.daysBefore}d before earliest date)`);
           } else {
-            const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
-            fs.mkdirSync(pendingDir, { recursive: true });
-            const pendingPath = path.join(pendingDir, path.basename(filePath));
-            const quarantined = {
+            const qt = _quarantineTarget(parentDirName, show, {
               ...newData,
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
-            };
-            const _qPath = _writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n', { settleJunk: true });
+            }, filePath);
+            const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', qt.dirId);
+            fs.mkdirSync(pendingDir, { recursive: true });
+            const pendingPath = path.join(pendingDir, path.basename(filePath));
+            const _qPath = _writeQuarantine(pendingPath, JSON.stringify(qt.payload, null, 2) + '\n', { settleJunk: true });
             if (!_qPath) return { ...QUARANTINE_NOT_SAVED };
-            console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
+            console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${qt.dirId}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
             return { wrote: false, skipped: 'date_implausible', quarantinedPath: _qPath, daysBefore: verdict.daysBefore };
           }
         }
@@ -2023,16 +2045,13 @@ function safeWriteReview(filePath, newData, options = {}) {
               } else if (deferToCi) {
                 console.warn(`[review-write-guard] cross-market (class A) on ${onDiskIsLocked ? 'LOCKED' : 'override-cleared/human-verdict'} ${onDiskHadLiveScore ? 'live-scored record' : 'dateless stub'}: ${parentDirName}/${path.basename(filePath)} → deferring to push-time CI catch, not auto-stamping (${detail})`);
               } else {
-                const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+                const qt = _quarantineTarget(parentDirName, show, { ...newData, pendingReason: 'cross_market_contamination', _crossMarketDetail: detail }, filePath);
+                const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', qt.dirId);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                const _qPath = _writeQuarantine(pendingPath, JSON.stringify({
-                  ...newData,
-                  pendingReason: 'cross_market_contamination',
-                  _crossMarketDetail: detail,
-                }, null, 2) + '\n', { settleJunk: true });
+                const _qPath = _writeQuarantine(pendingPath, JSON.stringify(qt.payload, null, 2) + '\n', { settleJunk: true });
                 if (!_qPath) return { ...QUARANTINE_NOT_SAVED };
-                console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
+                console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${qt.dirId}/${path.basename(filePath)} (${detail})`);
                 return {
                   wrote: false,
                   skipped: 'cross_market_contamination',
@@ -4229,4 +4248,5 @@ function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
   return { flagged: true, detail };
 }
 
-module.exports = { safeWriteReview, writeReviewFileAtomic, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+module.exports = {
+  _quarantineTarget, safeWriteReview, writeReviewFileAtomic, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
