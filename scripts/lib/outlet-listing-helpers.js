@@ -476,7 +476,7 @@ function computeTitleForms(show) {
     const split = mainTitleSplit(show && show.title);
     if (split && mainTitleIsUnique(show.title, split.main, registryShowTitles())) {
       const main = hyphenSpaced(split.main.replace(/[_/]+/g, ' '));
-      for (const f of [main, /s$/.test(main) ? '' : main + 's']) if (f && !forms.includes(f) && !COMMON_WORD_SHOW_TITLES.has(f)) forms.push(f);
+      for (const f of [main, split.form === 'quoted' && !/s$/.test(main) ? main + 's' : '']) if (f && !forms.includes(f) && !COMMON_WORD_SHOW_TITLES.has(f)) forms.push(f);
     }
   } catch { /* registry unavailable: full-title forms only */ }
   return forms;

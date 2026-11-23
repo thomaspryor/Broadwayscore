@@ -33,3 +33,8 @@ test('a main title another registry show shares gets no main-title form', () => 
   const forms = titleForms(sibling);
   assert.ok(!forms.includes('blue man group'), forms.join('|'));
 });
+
+test('colon-subtitle shows get no possessive fold (census title-only guard stays tight)', () => {
+  const forms = titleForms({ id: 'derren-brown-only-human-off-west-end-2026', title: 'Derren Brown: Only Human', status: 'open' });
+  assert.ok(!forms.some((f) => /browns$/.test(f)), forms.join('|'));
+});
