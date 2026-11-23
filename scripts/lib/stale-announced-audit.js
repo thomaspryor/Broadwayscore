@@ -282,7 +282,35 @@ function carryFirstFlagged(prevSnap, nowFlagged, nowIso) {
   return { flagged, history };
 }
 
-/** Split flagged rows into persistent (flagged >= graceDays) and settling. */
+/**
+ * BRO-7277 (second pass): when does automation already on the schedule fix this
+ * flag by itself? A previews row with no openingDate in a fallback market gets
+ * openingDate = previewsStartDate from update-show-status.js's previews-fallback
+ * (opening-date-fallback.js) once previews have run PREVIEWS_FALLBACK_GRACE_DAYS,
+ * and the flag clears the next audit run. Before this, the 2-day grace fired
+ * first: reviews land on day 2-5 of previews, the check warned ~2 days later,
+ * and a card was filed for a show the fallback fixed on day 7 (santas-first-
+ * christmas, peter-pan, club-nvrlnd, julius-caesar-globe, Nov 2026; dick-
+ * whittington would have been next). Eligibility comes from the real
+ * previewsFallbackOpening, not a copy (CLAUDE.md §15).
+ * @returns {Date|null} end of the wait (fire day + AUTOMATION_BUFFER_DAYS), or null
+ */
+const AUTOMATION_BUFFER_DAYS = 1; // update-show-status runs once a day; one late cron must not file a card
+function automationResolvesBy(f) {
+  if (!f || f.openingDate || f.status !== 'previews') return null;
+  const start = f.previewsStartDate;
+  if (!start || !/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
+  const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./opening-date-fallback');
+  const startMs = Date.parse(start + 'T00:00:00Z');
+  const fireDay = new Date(startMs + PREVIEWS_FALLBACK_GRACE_DAYS * 86400000).toISOString().slice(0, 10);
+  if (!previewsFallbackOpening(f, fireDay)) return null;
+  return new Date(startMs + (PREVIEWS_FALLBACK_GRACE_DAYS + 1 + AUTOMATION_BUFFER_DAYS) * 86400000);
+}
+
+/**
+ * Split flagged rows into persistent (flagged >= graceDays, and no scheduled
+ * automation still due to fix it) and settling.
+ */
 function partitionByGrace(flagged, now, graceDays = GRACE_DAYS) {
   const persistent = [];
   const settling = [];
@@ -290,7 +318,9 @@ function partitionByGrace(flagged, now, graceDays = GRACE_DAYS) {
     // No stamp (snapshot from before BRO-7277) = age unknown: fail loud, not quiet.
     const t = f && f.firstFlaggedAt ? Date.parse(f.firstFlaggedAt) : NaN;
     const ageDays = Number.isFinite(t) ? (now.getTime() - t) / 86400000 : Infinity;
-    (ageDays >= graceDays ? persistent : settling).push(f);
+    const resolvesBy = automationResolvesBy(f);
+    const automationPending = !!resolvesBy && now.getTime() < resolvesBy.getTime();
+    (ageDays >= graceDays && !automationPending ? persistent : settling).push(f);
   }
   return { persistent, settling };
 }
@@ -307,7 +337,7 @@ function staleAnnouncedFlagResult(snap, ageHours, now, graceDays = GRACE_DAYS) {
     return { name, status: 'warn', message: `${persistent.length} show(s) stuck announced/upcoming/previews ${graceDays}+ days after apparently opening: ${persistent.map(f => f.id).join(', ')} (${settling.length} newer still settling, ${silencedNote}, ${age} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
   }
   if (settling.length > 0) {
-    return { name, status: 'pass', message: `${settling.length} show(s) flagged < ${graceDays}d, waiting on the status flip (${silencedNote}, ${age} ago)` };
+    return { name, status: 'pass', message: `${settling.length} show(s) flagged < ${graceDays}d or awaiting scheduled automation, waiting on the status flip or the previews-fallback date (${silencedNote}, ${age} ago)` };
   }
   return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${age} ago)` };
 }
@@ -317,6 +347,7 @@ module.exports = {
   GRACE_DAYS,
   carryFirstFlagged,
   partitionByGrace,
+  automationResolvesBy,
   ACK_PATH,
   loadAcks,
   isAcked,

@@ -51,3 +51,35 @@ test('replay of the 30-day history: every transient flag run stays silent, persi
   assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-22T06:00:00Z')).status, 'pass');
   assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-24T06:00:00Z')).status, 'warn');
 });
+
+// BRO-7277 second pass: previews rows the previews-fallback will date on its own
+// stay settling until that run has had time to land (dick-whittington, Nov 2026).
+const { automationResolvesBy } = require('../lib/stale-announced-audit.js');
+const dw = { id: 'dick-whittington-and-his-cat-off-west-end-2026', category: 'off-west-end', status: 'previews', previewsStartDate: '2026-11-22', openingDate: null, firstFlaggedAt: '2026-11-23T11:56:02Z' };
+
+test('fallback-eligible previews flag past the 2-day grace does not warn before the fallback date', () => {
+  const r = staleAnnouncedFlagResult({ flagged: [dw] }, 3, new Date('2026-11-27T11:00:00Z'));
+  assert.equal(r.status, 'pass');
+  assert.match(r.message, /awaiting scheduled automation/);
+});
+
+test('fallback-eligible flag still unresolved after the fallback date + buffer warns', () => {
+  const r = staleAnnouncedFlagResult({ flagged: [dw] }, 3, new Date('2026-12-01T11:00:00Z'));
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /dick-whittington/);
+});
+
+test('no scheduled automation for non-fallback markets, announced rows, or dated rows', () => {
+  assert.equal(automationResolvesBy({ ...dw, category: 'west-end' }), null);
+  assert.equal(automationResolvesBy({ ...dw, status: 'announced', previewsStartDate: null }), null);
+  assert.equal(automationResolvesBy({ ...dw, openingDate: '2026-11-25' }), null);
+  const now = new Date('2026-11-27T11:00:00Z');
+  // long-running previews: the fallback window ended long ago, so it warns
+  assert.equal(staleAnnouncedFlagResult({ flagged: [{ ...dw, previewsStartDate: '2026-01-01' }] }, 3, now).status, 'warn');
+  assert.equal(staleAnnouncedFlagResult({ flagged: [{ ...dw, category: 'west-end' }] }, 3, now).status, 'warn');
+  assert.equal(staleAnnouncedFlagResult({ flagged: [{ id: 'x', status: 'announced', category: 'off-broadway', previewsStartDate: null, openingDate: null, firstFlaggedAt: '2026-11-20T10:00:00Z' }] }, 3, now).status, 'warn');
+});
+
+test('automationResolvesBy = previews start + fallback grace + 1 day + buffer', () => {
+  assert.equal(automationResolvesBy(dw).toISOString(), '2026-12-01T00:00:00.000Z');
+});
