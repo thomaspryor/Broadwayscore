@@ -1505,5 +1505,32 @@
       }
     ],
     "queuedAt": "2026-11-23T22:22:49.355Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-11-23T22:32:39.613906+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nFalls for Jodie — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"The link attributed to Michael Dale of Talkin Broadway leads to a review for the Harry Ape. \r\n\r\nAlix Cohen doesn't review for Talkin' Broadway she reviews for Theatre Pizzaz. The link leads to Michale Dale's review of Falls for Jodie for Talkin' Broadway. I submitted Alix' review again with the correct link. \r\n\r\nJust submitted many more reviews to show as well. \"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1203",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45280685480",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-23T22:47:45.450Z"
   }
 ]
