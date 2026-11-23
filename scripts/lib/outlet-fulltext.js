@@ -93,9 +93,7 @@ function readJson(p) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } ca
 // Same resolution as gap-recovery-driver.js showsPath(): env, repo data/, then
 // the data clone (worktrees have no data/; review 2026-11-19 reproduced a crash).
 function defaultShowsPath() {
-  if (process.env.SHOWS_JSON_PATH) return process.env.SHOWS_JSON_PATH;
-  const local = path.join(__dirname, '..', '..', 'data', 'shows.json');
-  return fs.existsSync(local) ? local : path.join(require('os').homedir(), 'broadway-scorecard-data', 'shows.json');
+  return require('./shows-json-path').showsJsonPath({ homeFallback: true });
 }
 
 function scannerExclusions(base, showsPath = defaultShowsPath()) {

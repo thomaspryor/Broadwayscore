@@ -139,7 +139,20 @@ function warnIfStampedCopy(reviewTextsDir, warn = console.warn) {
     + 'On the Mac, run ./scripts/setup-local-data.sh --all to link it to ~/broadway-review-texts (BRO-5938).');
   return true;
 }
-const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+// shows.json path resolved per call (BRO-8107): SHOWS_JSON_PATH points a test
+// at a fixture. _syncShowCaches() drops every lazy shows cache below when the
+// path changes, so the require() cache of each path stays the parse source.
+const { showsJsonPath: _showsJsonPath } = require('./shows-json-path');
+let _showCachesPath = null;
+function _syncShowCaches() {
+  const p = _showsJsonPath();
+  if (p !== _showCachesPath) {
+    _siblingIndexCache = null; _siblingCache = null; _showCategoryCache = null;
+    _showTitleCache = null; _showByIdCache = null; _freshShowIds = null; _freshShowIdsMtime = null;
+    _showCachesPath = p;
+  }
+  return p;
+}
 // BSC_CRITIC_REGISTRY_PATH lets tests point Guard G at a fixture registry; the live
 // file is rewritten by rebuild bots, so assertions against it drift (BRO-4550).
 const CRITIC_REGISTRY_PATH = process.env.BSC_CRITIC_REGISTRY_PATH
@@ -167,9 +180,10 @@ function _getCriticRegistry() {
 // this writer share one decision function. Loaded once, cached for process lifetime.
 let _siblingIndexCache = null;
 function _getSiblingIndex() {
+  _syncShowCaches();
   if (_siblingIndexCache) return _siblingIndexCache;
   try {
-    const shows = require(SHOWS_PATH).shows;
+    const shows = require(_syncShowCaches()).shows;
     _siblingIndexCache = buildSiblingIndex(shows);
   } catch {
     _siblingIndexCache = new Map();
@@ -180,9 +194,10 @@ function _getSiblingIndex() {
 // ─── Legacy sibling lookup (kept for any external callers; delegates to new index) ───
 let _siblingCache = null;
 function _getSiblingData() {
+  _syncShowCaches();
   if (_siblingCache) return _siblingCache;
   try {
-    const shows = require(SHOWS_PATH).shows;
+    const shows = require(_syncShowCaches()).shows;
     // Group by normalized title
     const byTitle = {};
     for (const s of shows) {
@@ -226,9 +241,10 @@ function _getSiblingData() {
 // ─── Lazy-loaded show category map for cross-market guard ───
 let _showCategoryCache = null;
 function _getShowCategory(showId) {
+  _syncShowCaches();
   if (!_showCategoryCache) {
     try {
-      const shows = require(SHOWS_PATH).shows;
+      const shows = require(_syncShowCaches()).shows;
       _showCategoryCache = {};
       for (const s of shows) {
         if (s.id && s.category) _showCategoryCache[s.id] = s.category;
@@ -247,9 +263,10 @@ function _getShowCategory(showId) {
 // ─── Lazy-loaded show title map for the maybeUpgradeUrl cross-show guard ───
 let _showTitleCache = null;
 function _getShowTitle(showId) {
+  _syncShowCaches();
   if (!_showTitleCache) {
     try {
-      const shows = require(SHOWS_PATH).shows;
+      const shows = require(_syncShowCaches()).shows;
       _showTitleCache = {};
       for (const s of shows) {
         if (s.id && s.title) _showTitleCache[s.id] = s.title;
@@ -264,9 +281,10 @@ function _getShowTitle(showId) {
 // ─── Lazy-loaded full show object map for Guard J/K (wrongProduction URL-date checks) ───
 let _showByIdCache = null;
 function _getShowById(showId) {
+  _syncShowCaches();
   if (!_showByIdCache) {
     try {
-      const shows = require(SHOWS_PATH).shows;
+      const shows = require(_syncShowCaches()).shows;
       _showByIdCache = {};
       for (const s of shows) {
         if (s.id) _showByIdCache[s.id] = s;
@@ -293,9 +311,10 @@ let _freshShowIdsMtime = null;
 function _isKnownShowId(showId) {
   if (_getShowById(showId)) return true;
   try {
-    const mtime = fs.statSync(SHOWS_PATH).mtimeMs;
+    const showsPath = _syncShowCaches();
+    const mtime = fs.statSync(showsPath).mtimeMs;
     if (!_freshShowIds || mtime !== _freshShowIdsMtime) {
-      const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+      const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows || [];
       _freshShowIds = new Set(shows.map((s) => s && s.id).filter(Boolean));
       _freshShowIdsMtime = mtime;
     }

@@ -47,16 +47,20 @@ const { shouldFlipDuplicateDirection } = require('./duplicate-direction-heal');
 
 // Lazy-loaded, memoized once per process — safeWriteReview is called
 // thousands of times per rebuild run and shows.json rarely changes mid-run.
+// Keyed by the shows.json path (BRO-8107): SHOWS_JSON_PATH points a test at a
+// fixture, and a change of path rebuilds the cache.
+const { showsJsonPath: _showsJsonPath, readShowsList: _readShowsList } = require('./shows-json-path');
 let _showsByIdCache = null;
+let _showsByIdCachePath = null;
 let _siblingOpeningsCache = null;
 function _getShowById(showId) {
-  if (!_showsByIdCache) {
+  const p = _showsJsonPath();
+  if (!_showsByIdCache || _showsByIdCachePath !== p) {
     _showsByIdCache = new Map();
+    _showsByIdCachePath = p;
+    _siblingOpeningsCache = null;
     try {
-      const repoRoot = path.resolve(__dirname, '..', '..');
-      const parsed = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'shows.json'), 'utf-8'));
-      const shows = Array.isArray(parsed) ? parsed : (parsed.shows || []);
-      for (const s of shows) { if (s && s.id) _showsByIdCache.set(s.id, s); }
+      for (const s of _readShowsList(p)) { if (s && s.id) _showsByIdCache.set(s.id, s); }
     } catch { /* leave cache empty — guard below just no-ops */ }
   }
   return _showsByIdCache.get(showId) || null;
@@ -81,7 +85,7 @@ function _getSiblingOpenings(showId) {
 // Test-only: seed the shows cache directly so date-plausibility.test.mjs can
 // exercise safeWriteReview's quarantine routing without depending on the real
 // data/shows.json corpus.
-function _setShowsCacheForTest(map) { _showsByIdCache = map; _siblingOpeningsCache = null; }
+function _setShowsCacheForTest(map) { _showsByIdCache = map; _showsByIdCachePath = map ? _showsJsonPath() : null; _siblingOpeningsCache = null; }
 
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.

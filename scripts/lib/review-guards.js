@@ -5272,12 +5272,14 @@ function isCombinedReviewOfOtherMemberOnly(data, show, opts = {}) {
   if (!opaque || data.combinedWith.length > 3 || text.length < 150 || namesOwn(text)) return false;
   if (!titles.buildShowTitleVariants(show.title).some((v) => v.length >= 4)
     && !names.some((n) => titles.textMentionsShortTitle(n, n, 1))) return false;
-  let titleOf = opts.titleOf || isCombinedReviewOfOtherMemberOnly._titleOf;
+  const { showsJsonPath, readShowsList } = require('./shows-json-path');
+  const showsPath = showsJsonPath();
+  let titleOf = opts.titleOf || (isCombinedReviewOfOtherMemberOnly._titleOfPath === showsPath ? isCombinedReviewOfOtherMemberOnly._titleOf : null);
   if (!titleOf) {
     try {
-      const raw = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-      titleOf = new Map(((Array.isArray(raw) ? raw : raw.shows) || []).map((s) => [s.id, s.title]));
+      titleOf = new Map(readShowsList(showsPath).map((s) => [s.id, s.title]));
       isCombinedReviewOfOtherMemberOnly._titleOf = titleOf;
+      isCombinedReviewOfOtherMemberOnly._titleOfPath = showsPath;
     } catch { return false; /* no shows.json: only the url rule applies (not cached, so a later call retries) */ }
   }
   // A one-word co-member title is often an ordinary word ("the company of
@@ -5495,21 +5497,22 @@ function evaluateDirectorGuard(data, show, directorMap) {
 // explainExclusion has no shows list, so it builds the two multi-production
 // lookups once from data/shows.json (same lazy pattern as getCriticRegistry).
 // Missing/unreadable shows.json -> empty lookups (the guards simply don't fire).
+// Keyed by the shows.json path (BRO-8107): SHOWS_JSON_PATH points a test at a
+// fixture instead of the live corpus, and a change of path rebuilds the lookups.
 let _multiProdGuardsCache = null;
+let _multiProdGuardsPath = null;
 function getMultiProdGuards() {
-  if (_multiProdGuardsCache) return _multiProdGuardsCache;
+  const { showsJsonPath, readShowsList } = require('./shows-json-path');
+  const p = showsJsonPath();
+  if (_multiProdGuardsCache && _multiProdGuardsPath === p) return _multiProdGuardsCache;
   let shows = [];
-  try {
-    const path = require('path');
-    const fs = require('fs');
-    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-    shows = Array.isArray(raw) ? raw : (raw.shows || []);
-  } catch { /* fall through with no shows */ }
+  try { shows = readShowsList(p); } catch { /* fall through with no shows */ }
   return setMultiProdGuardShows(shows);
 }
 /** Test seam (and cache reset): build the lookups from an explicit shows list. */
 function setMultiProdGuardShows(shows) {
   const { buildMultiProdDirectorGuard, buildPriorProductionDirectors } = require('./prior-run-sibling');
+  _multiProdGuardsPath = require('./shows-json-path').showsJsonPath();
   _multiProdGuardsCache = {
     year: buildMultiProdYearGuard(shows || []),
     director: buildMultiProdDirectorGuard(shows || []),

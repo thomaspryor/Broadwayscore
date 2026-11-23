@@ -568,9 +568,7 @@ function getShowById(showId, showsPath) {
 }
 
 function defaultShowsPath() {
-  if (process.env.SHOWS_JSON_PATH) return process.env.SHOWS_JSON_PATH;
-  const local = path.join(__dirname, '..', '..', 'data', 'shows.json');
-  return fs.existsSync(local) ? local : path.join(require('os').homedir(), 'broadway-scorecard-data', 'shows.json');
+  return require('./shows-json-path').showsJsonPath({ homeFallback: true });
 }
 
 let _knownIndex = null;
