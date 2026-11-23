@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-23T02:08:39.007Z",
+  "generatedAt": "2026-11-23T02:26:25.744Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 72,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -143,7 +143,7 @@
       "secondaryOutlets": [
         "culturesauce"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "david cote",
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Thom Geier",
+      "showId": "brief-encounter-2010",
+      "primaryOutlet": "ew",
+      "secondaryOutlet": "culturesauce",
+      "primaryFile": "ew--thom-geier.json",
+      "secondaryFile": "culturesauce--thom-geier.json",
+      "similarity": 72,
+      "primaryScore": 86,
+      "secondaryScore": 85,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
