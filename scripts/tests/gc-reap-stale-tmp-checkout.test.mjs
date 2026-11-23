@@ -87,9 +87,10 @@ function buildFixture() {
   return { tmp, repo, leaked, fresh, unique, wrong, foreign };
 }
 
-function runGc(fx, { dryRun }) {
+function runGc(fx, { dryRun, extraEnv = {} }) {
   const env = {
     ...process.env,
+    ...extraEnv,
     WORKTREE_GC_LOG: path.join(fx.tmp, dryRun ? 'dry.log' : 'real.log'),
     WORKTREE_GC_LOCK_DIR: path.join(fx.tmp, `${dryRun ? 'dry' : 'real'}.lock`),
     WORKTREE_GC_REPOS_JSON: JSON.stringify([
@@ -169,4 +170,20 @@ test('dead owners are reaped promptly while live, dirty, unmerged and locked tre
   const out = runGc(fx, { dryRun: false });
   assert.ok(!fs.existsSync(fx.leaked.wt), out);
   for (const wt of [fx.fresh.wt, fx.unique.wt, dirty, locked]) assert.ok(fs.existsSync(wt), wt);
+});
+
+// BRO-8124: on 2026-11-23 one GC pass held the global lock for 10 hours, so
+// every other invocation (hourly launchd, bsc-runner's disk-pressure
+// self-heal) hit SKIP-RUN and no leaked checkout was reaped. The temp-checkout
+// pass now runs BEFORE the lock: a SKIP-RUN invocation must still reap.
+test('a SKIP-RUN invocation (lock held by a live run) still reaps leaked temp checkouts', () => {
+  const fx = buildFixture();
+  const lock = path.join(fx.tmp, 'real.lock');
+  fs.mkdirSync(lock);
+  fs.writeFileSync(path.join(lock, 'pid'), String(process.pid));
+  const out = runGc(fx, { dryRun: false, extraEnv: { TEMP_CHECKOUT_REAP_ROOTS: fx.tmp } });
+  assert.match(out, /SKIP-RUN/, out);
+  assert.match(out, /REMOVE-TMP /, out);
+  assert.ok(!fs.existsSync(fx.leaked.parent), `leaked checkout must be reaped despite the held lock:\n${out}`);
+  for (const k of ['fresh', 'unique', 'wrong', 'foreign']) assert.ok(fs.existsSync(fx[k].wt), k);
 });

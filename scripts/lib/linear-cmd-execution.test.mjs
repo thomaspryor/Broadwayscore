@@ -212,3 +212,21 @@ __test7632('BRO-7632: bullet, bold and lowercase VERIFY forms are checked too; s
   const h = __r7632.envRefusalHint({ status: 'unverifiable', detail: 'check exited 3 (cannot verify): upstream timeout error' }, {});
   __assert7632.match(h, /environment problem/);
 });
+
+// BRO-8124 class guard: this file leaked 3 linear-done-verify-* checkouts per
+// run (109 found in /tmp on 2026-11-23). Runs last: any checkout this process
+// still owns after the tests above finished is a leak.
+test('BRO-8124: no linear-done-verify checkout owned by this process survives the tests', () => {
+  const leaked = [];
+  for (const root of new Set([os.tmpdir(), '/tmp'])) {
+    let names = [];
+    try { names = fs.readdirSync(root).filter((n) => n.startsWith('linear-done-verify-')); } catch { continue; }
+    for (const n of names) {
+      try {
+        const owner = JSON.parse(fs.readFileSync(path.join(root, n, '.acceptance-owner.json'), 'utf8'));
+        if (owner.pid === process.pid) leaked.push(path.join(root, n));
+      } catch { /* not ours */ }
+    }
+  }
+  assert.deepEqual(leaked, []);
+});

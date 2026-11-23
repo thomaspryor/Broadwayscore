@@ -143,7 +143,9 @@ mkdir -p "$(dirname "$GC_LOCK_DIR")" 2>/dev/null || true
 # its own TEMP_CHECKOUT_REAP_ROOTS, so a fixture run never scans the real /tmp.
 if [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] || [ -n "${TEMP_CHECKOUT_REAP_ROOTS:-}" ]; then
   if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/reap-temp-checkouts.js" ]; then
-    _tcr_args=(--all --repo "$PRIMARY_REPO")
+    _tcr_args=(--all)
+    # Registered tmp worktrees of the real repo too, unless a test seam is set.
+    [ -z "${WORKTREE_GC_REPOS_JSON:-}" ] && _tcr_args+=(--repo "$PRIMARY_REPO")
     [ "$DRY_RUN" = "1" ] && _tcr_args+=(--dry-run)
     node "$SCRIPT_DIR/lib/reap-temp-checkouts.js" "${_tcr_args[@]}" 2>&1 \
       | while IFS= read -r _tcr_line; do echo "[$(date -u '+%Y-%m-%d %H:%M:%S')] $_tcr_line"; done | tee -a "$LOG" || true
