@@ -1239,6 +1239,34 @@ function wordpressAttachmentParentUrl(url) {
   return `${u.protocol}//${u.host}${m[1]}/`;
 }
 
+// Substack's app/profile share links (substack.com/home/post/p-<id>,
+// substack.com/@<user>/p-<id>) name no publication: the host is the bare
+// platform, so outlet resolution fell back to a generic "substack" outlet and
+// the misattribution guard held the review out of the site (BRO-8204, issue
+// #1198: a BroadGAYS review submitted as substack.com/home/post/p-218072386).
+// The fetched page carries the publication's own canonical URL
+// (<name>.substack.com/p/<slug> or a custom domain); ingest adopts it.
+// Returns that canonical URL, or null when url is not a share link or the html
+// has no usable canonical.
+const SUBSTACK_SHARE_PATH_RE = /^\/(?:home\/post|@[^/]+)\/p-\d+\/?$/i;
+function isSubstackShareUrl(url) {
+  let u;
+  try { u = new URL(url); } catch { return false; }
+  const host = u.hostname.toLowerCase().replace(/^www\./, '');
+  return host === 'substack.com' && SUBSTACK_SHARE_PATH_RE.test(u.pathname);
+}
+function substackShareCanonicalUrl(url, html) {
+  if (!isSubstackShareUrl(url) || typeof html !== 'string') return null;
+  const tag = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i);
+  const href = tag && tag[0].match(/\bhref=["']([^"']+)["']/i);
+  let c;
+  try { c = new URL(href ? href[1].replace(/&amp;/g, '&') : ''); } catch { return null; }
+  if (!/^https?:$/.test(c.protocol)) return null;
+  const host = c.hostname.toLowerCase().replace(/^www\./, '');
+  if (host === 'substack.com' || host === 'open.substack.com') return null;
+  return c.toString();
+}
+
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28). Single source for ingest-review-from-url.js's refusal AND
 // the gap audit's pre-check (BRO-5500), so a refused URL is classified as an
@@ -1261,6 +1289,8 @@ module.exports = {
   isChallengeUrl,
   publicationHostOf,
   wordpressAttachmentParentUrl,
+  isSubstackShareUrl,
+  substackShareCanonicalUrl,
   INGEST_REFUSED_URL_REASONS,
   ingestRefusalReason,
   isBwwShowHubUrl,

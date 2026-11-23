@@ -84,7 +84,8 @@ const showId = getArg('show');
 // here at the entry point so the fetch, blocklist, lookup and stale-merge check
 // all see the url the writer will store.
 const rawUrl = getArg('url');
-const url = (rawUrl && require('./lib/non-review-url-patterns').wordpressAttachmentParentUrl(rawUrl)) || rawUrl;
+// `let`: a Substack share link is swapped for the publication's canonical URL after the fetch (BRO-8204).
+let url = (rawUrl && require('./lib/non-review-url-patterns').wordpressAttachmentParentUrl(rawUrl)) || rawUrl;
 if (url !== rawUrl) console.log(`↪ ${rawUrl} is a WordPress attachment page; ingesting its article ${url}`);
 const outletArg = getArg('outlet');
 const criticArg = nameFromAuthorUrl(getArg('critic'));
@@ -323,6 +324,23 @@ if (!show) {
     fetchFailure = `no usable HTML (${html ? html.length : 0} chars)`;
   }
   if (fetchFailure) html = '';
+
+  // BRO-8204: substack.com/home/post/p-<id> names no publication, so the outlet
+  // resolved to a generic "substack" and the misattribution guard held the review.
+  // Adopt the page's own canonical URL so outlet, filename and stored url are the
+  // publication's; re-check the blocklist against it.
+  if (!fetchFailure) {
+    const canonical = require('./lib/non-review-url-patterns').substackShareCanonicalUrl(url, html);
+    if (canonical && canonical !== url) {
+      console.log(`↪ ${url} is a Substack share link; ingesting its canonical URL ${canonical}`);
+      url = canonical;
+      const _blockedCanon = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
+      if (_blockedCanon) {
+        console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blockedCanon.reason || 'no reason recorded'}.`);
+        process.exit(1);
+      }
+    }
+  }
 
   // Time Out serves listing capsules at the same URL shape as its reviews; the
   // collector refuses them (BRO-5222), so this path must too (BRO-5134: the gap
