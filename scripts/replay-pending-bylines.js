@@ -392,7 +392,7 @@ function primaryBodyIsSound(primary) {
   if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf || primary.fullTextWrongAuthor) return false;
   return ['complete', 'truncated'].includes(primary.contentTier);
 }
-const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore'];
+const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore', 'dtliThumb', 'bwwThumb', 'bwwScore', 'originalRating']; // thumbs/ratings feed the rebuild's score fallback + rave flag (BRO-8091 review)
 const present = (v) => v != null && v !== '';
 /**
  * BRO-8023: why a text-bearing stub whose article a sound primary already files can be SETTLED (tagged, kept on
@@ -410,8 +410,9 @@ function sameArticleSettleReason(data, primary, primaryFile) {
   const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
   if (!a || a !== b) return null;
   if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
-  // An excerpt (a scoring fallback) the primary lacks keeps it open too.
-  if (Object.keys(data).some((k) => /Excerpt$/.test(k) && typeof data[k] === 'string' && data[k].trim() && !present(primary[k]))) return null;
+  // BRO-8091: an aggregator excerpt (dtliExcerpt/showScoreExcerpt/bwwExcerpt) is only a scoring FALLBACK for a
+  // body-less review. This primary already has a sound body (primaryBodyIsSound above), so an excerpt it lacks
+  // carries nothing: requiring it left 12 of 30 fetched 2025-26 candidates open as "target-exists" forever.
   const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
   return `same article already filed as ${primaryFile} (stub body ${len(data.fullText)} chars vs primary ${len(primary.fullText)}; not merged) (BRO-8023)`;
 }

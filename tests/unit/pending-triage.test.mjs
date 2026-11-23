@@ -200,10 +200,12 @@ describe('BRO-8023: sameArticleSettleReason (text-bearing same-url stubs are tag
       assert.equal(sameArticleSettleReason(stub, p, 'f.json'), null, JSON.stringify(Object.keys(p)));
     }
   });
-  test('a score or excerpt the primary lacks keeps it open', () => {
+  test('a score the primary lacks keeps it open; an excerpt does not (BRO-8091: sound body outranks excerpt)', () => {
     assert.equal(sameArticleSettleReason({ ...stub, originalScore: '4/5' }, good, 'f.json'), null);
     assert.equal(sameArticleSettleReason({ ...stub, aggregatorStars: '4/5' }, good, 'f.json'), null);
-    assert.equal(sameArticleSettleReason({ ...stub, dtliExcerpt: 'A fine show' }, good, 'f.json'), null);
+    for (const k of ['dtliThumb', 'bwwThumb', 'bwwScore', 'originalRating']) assert.equal(sameArticleSettleReason({ ...stub, [k]: 'Up', dtliExcerpt: 'x' }, good, 'f.json'), null, k);
+    assert.ok(sameArticleSettleReason({ ...stub, dtliExcerpt: 'A fine show', showScoreExcerpt: 'x', bwwExcerpt: 'y' }, good, 'f.json'), 'excerpt-only stub settles against a sound primary');
+    assert.equal(sameArticleSettleReason({ ...stub, dtliExcerpt: 'A fine show' }, { ...good, contentTier: 'stub' }, 'f.json'), null, 'unsound primary still keeps it open');
     assert.ok(sameArticleSettleReason({ ...stub, originalScore: '4/5' }, { ...good, originalScore: '4/5' }, 'f.json'));
   });
   test('a stub naming a different critic than the primary stays open (two critics, one url)', () => {
