@@ -11,12 +11,23 @@
  * shows (NYSR/NYT publish several critics per outlet). Keeping it in one place
  * makes that drift impossible. Pure — testable.
  */
+/**
+ * The (outlet, critic) identity key. ONE definition: compute-critic-score.js
+ * scoreReviews() dedups with it too (BRO-8104). They used to differ for an
+ * unbylined review ('unknown' here, '__unknown__' there), so a critic literally
+ * named "Unknown" collapsed with unbylined rows on the slim path and not on the
+ * page path.
+ */
+function reviewIdentityKey(review) {
+  const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
+  const criticKey = (review.criticName || '__unknown__').toLowerCase();
+  return `${outletKey}|${criticKey}`;
+}
+
 function dedupByCritic(reviews) {
   const byCriticKey = new Map();
   for (const review of reviews) {
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const criticKey = (review.criticName || 'unknown').toLowerCase();
-    const key = `${outletKey}|${criticKey}`;
+    const key = reviewIdentityKey(review);
     const existing = byCriticKey.get(key);
     if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
       byCriticKey.set(key, review);
@@ -25,4 +36,4 @@ function dedupByCritic(reviews) {
   return Array.from(byCriticKey.values());
 }
 
-module.exports = { dedupByCritic };
+module.exports = { dedupByCritic, reviewIdentityKey };

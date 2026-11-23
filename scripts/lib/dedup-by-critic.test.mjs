@@ -42,3 +42,19 @@ test('deduped scored count matches "1 per (outlet,critic)" — the prod rv contr
   const liveCount = dedupByCritic(raw).filter((r) => r.assignedScore != null).length;
   assert.equal(liveCount, 2, 'Finkle(once) + Sommers; unscored Akbar excluded');
 });
+
+// BRO-8104: the slim path (dedupByCritic then scoreReviews) and the page path
+// (scoreReviews alone) must give the same score, including for unbylined and
+// literal-"Unknown" critics, which the two dedups used to key differently.
+test('slim path and page path agree when a critic is named "Unknown"', () => {
+  const { scoreReviews } = require('./compute-critic-score.js');
+  const reviews = [
+    { showId: 's', outletId: 'guardian', criticName: undefined, assignedScore: 90, publishDate: '2026-01-01' },
+    { showId: 's', outletId: 'guardian', criticName: 'Unknown', assignedScore: 40, publishDate: '2026-01-02' },
+    { showId: 's', outletId: 'timeout', criticName: 'A', assignedScore: 70 },
+  ];
+  const page = scoreReviews(reviews, {}, 'off-west-end');
+  const slim = scoreReviews(dedupByCritic(reviews), {}, 'off-west-end');
+  assert.equal(slim.s, page.s);
+  assert.equal(slim.rc, page.rc);
+});

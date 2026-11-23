@@ -20,6 +20,7 @@
  */
 
 const path = require('path');
+const { reviewIdentityKey } = require('./dedup-by-critic');
 
 // Tier weights, default tier, and off-market multiplier are SHARED with
 // scripts/lib/outlet-tiers.js — re-imported here instead of duplicated so
@@ -112,9 +113,7 @@ function scoreReviews(showReviews, outletRegistry = {}, showCategory, showType) 
   // while exposing every critic to the UI and SEO schema.
   const byCritic = new Map();
   for (const review of showReviews) {
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const criticKey = (review.criticName || '__unknown__').toLowerCase();
-    const key = `${outletKey}|${criticKey}`;
+    const key = reviewIdentityKey(review);
     const existing = byCritic.get(key);
     if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
       byCritic.set(key, review);
