@@ -2,7 +2,7 @@
 // network calls stubbed. Requires the real module, no copied logic.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine, judgePrompt, roundupProblems } from './subject-writer.mjs';
+import { cardDetailRepeats, receptionOf, receptionLine, buildPool, checkCandidate, writeSubject, aiSubjectDisabledReason, numbersIn, reusable, writerPrompt, firstSentence, closedFactLine, judgePrompt, roundupProblems, weekSubject } from './subject-writer.mjs';
 
 const facts = {
   edition: 'west-end',
@@ -637,6 +637,14 @@ test('BRO-8064 follow-up (owner 2026-11-23): editorial not recap, bare-verb scor
   // The NYC example the prompt gives would itself pass the subject rules.
   const m = writerPrompt(buildPool({ ...we16Facts, edition: 'broadway' })).match(/Good subject: "([^"]+)"/);
   assert.ok(m && m[1].length <= 60 && !/with critics/i.test(m[1]), m && m[1]);
+});
+
+test('BRO-8064: the template fallback subject covers a roundup week, never one show', () => {
+  const s = weekSubject(we16Pool);
+  assert.equal(s, "How London's seven openings scored this week, from 67 to 87".replace('87', String(Math.max(...we16Pool.weekOpenings.map(t => we16Pool.showStats.get(t).score)))));
+  assert.ok(s.length <= 60);
+  assert.deepEqual(roundupProblems({ ...we16Good, subject: s }, we16Pool).filter(x => /subject/.test(x)), []);
+  assert.equal(weekSubject({ ...we16Pool, weekOpenings: we16Pool.weekOpenings.slice(0, 2) }), null, 'two openings: the per-show template stays');
 });
 
 test('BRO-8064: the writer and judge are told to cover the week and use the lead', () => {

@@ -225,6 +225,29 @@ const TOP_RE = /\b(?:tops|topped|topping|top(?! form| billing)|highest|(?<!\b(?:
 const BOTTOM_RE = /\b(?:trails?(?! only\b)|trailing(?! only\b)|trailed(?! only\b)|lowest|worst|bottom|weakest|last place|low point|the (?:[\w'’-]+ )?low)\b/i;
 const toNum = (w) => /^\d+$/.test(w) ? Number(w) : ONES.indexOf(String(w).toLowerCase());
 
+/**
+ * The template subject for a roundup week (3+ openings) when the AI subject is
+ * off or failed: the week, never one show (owner, 2026-11-22/23), e.g.
+ * "How NYC's six openings scored this week, from 48 to 82". Null otherwise.
+ */
+export function weekSubject(pool) {
+  const o = pool.weekOpenings || [];
+  if (o.length < ROUNDUP_MIN) return null;
+  const sc = o.map(t => (pool.showStats || new Map()).get(t)).filter(Boolean).map(s => s.score);
+  if (sc.length < 2) return null;
+  const where = pool.edition === 'west-end' ? "London's" : "NYC's";
+  const n = ONES[o.length] || String(o.length);
+  const lo = Math.min(...sc), hi = Math.max(...sc);
+  const range = lo === hi ? `all at ${lo}` : `from ${lo} to ${hi}`;
+  // London names its West End lead first when one opened (owner, 2026-11-15), still covering the week.
+  const L = pool.edition === 'west-end' && (pool.topLeadTitles || []).length && (pool.leadShows || [])[0];
+  const more = ONES[o.length - 1] || String(o.length - 1);
+  const opts = L
+    ? [`${L} and ${more} more London openings, ${lo} to ${hi}`, `${L} and ${more} more London openings`]
+    : [`How ${where} ${n} openings scored this week, ${range}`, `How ${where} ${n} openings scored, ${range}`];
+  return opts.find(x => x.length <= SUBJECT_MAX) || null;
+}
+
 /** Each show's Critic Score and critic count, read from its Opening or Closing soon line. */
 export function showStatsOf(facts) {
   const out = new Map();

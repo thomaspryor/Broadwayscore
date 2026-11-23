@@ -3227,12 +3227,14 @@ if (_weekVoice && !process.env.LEDE_OVERRIDE) {
 // a fact sheet of THIS issue, code + GPT-5.5 check every fact, Claude ranks
 // the survivors; runners-up go to meta.subjectAlternates for the owner's
 // [DRAFT] preview. Any failure keeps the template subject/lede above.
-let _ai = null, _aiOff = null;
+let _ai = null, _aiOff = null, _weekSubject = null;
 // The whole block is best-effort: any error keeps the template subject.
 try {
   const _sw = await import('./subject-writer.mjs');
   const { writeSubject, aiSubjectDisabledReason, reusable } = _sw;
   _aiOff = aiSubjectDisabledReason();
+  // Template fallback for a roundup week: a week-level subject, never one show (BRO-8064).
+  try { _weekSubject = _sw.weekSubject(_sw.buildPool(buildSubjectFacts(_sw))); } catch { _weekSubject = null; }
   // Debug aid: print the fact sheet the writer would get (no API calls).
   if (process.env.NEWSLETTER_PRINT_SUBJECT_FACTS === '1') {
     const f = buildSubjectFacts(_sw);
@@ -3427,7 +3429,7 @@ async function recentSubjects() {
 
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
-const subjectLine = stripEmphasisMarkers(_ai ? _ai.subject : _subjectRaw);
+const subjectLine = stripEmphasisMarkers(_ai ? _ai.subject : (!process.env.SUBJECT_OVERRIDE && _weekSubject) || _subjectRaw);
 
 // Show titles to italicize in the editorial lede. Bounded to currently-running
 // or recently-opened shows so a common-word title (Pride, Camping) can't match
