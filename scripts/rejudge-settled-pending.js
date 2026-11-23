@@ -26,7 +26,7 @@ function hasArticlePath(url) { try { return new URL(String(url)).pathname.replac
 function rejudgeSettledStub({ stub, show, allShows, hasCopy = () => false, holdsUrl = () => false, sameTitleShows, heldIndex }) {
   const reason = String((stub && stub.promoteSkippedReason) || '');
   if (!reason) return { action: 'keep', why: 'not settled' };
-  if (stub.promoteSettled === 'sibling') return { action: 'keep', why: 'already settled onto a sibling' };
+  if (stub.promoteSettled === 'sibling' || stub.promoteSettled === 'sibling-settled') return { action: 'keep', why: 'already settled onto a sibling' };
   if (/url-token-mismatch/.test(reason) && isOpaqueSlug(stub.url) && hasArticlePath(stub.url)) return { action: 'unsettle', why: 'opaque url settled by url-token-mismatch' };
   // BRO-8023 no-fetch cousins: the url's own date, or a sibling's venue in the slug. Re-run the corrected triage on the
   // stub with its settle stripped; only a rehome / sibling-duplicate verdict changes anything.

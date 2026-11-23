@@ -1825,6 +1825,8 @@ test('BRO-8195: misfiled stub whose sibling holds a settled copy settles in plac
   const after = JSON.parse(fs.readFileSync(stub, 'utf8'));
   assert.ok(T.isSettledPendingStub(after), `stub must be settled, got ${JSON.stringify(after)}`);
   assert.match(after.promoteSkippedReason, /private-lives-2011.*already settled/);
+  assert.equal(after.promoteSettled, 'sibling-settled');
+  assert.equal(after.promoteSettledSibling, 'private-lives-2011');
   fs.rmSync(root, { recursive: true, force: true });
 });
 
@@ -1834,6 +1836,10 @@ test('BRO-8195: drain names the critic from the stub text when the page has no b
   assert.equal(T.textBylineFallback({ outletId: 'all-that-dazzles-uk', fullText: 'Review: The Invention of Love (Hampstead Theatre) Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long does it take' }, { title: 'The Invention of Love' }), 'Evan Prenter');
   assert.equal(T.textBylineFallback({ outletId: 'sierz-co-uk', fullText: 'Home » Reviews » The Invention of Love. Can men really love each other' }, {}), null);
   assert.equal(T.textBylineFallback({ outletId: 'x' }, {}), null);
+  // the rebuild's otherNamedCriticAtOutlet rule: never a second named critic at an outlet the show already has
+  const atd = { outletId: 'all-that-dazzles-uk', fullText: 'Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long' };
+  assert.equal(T.textBylineFallback(atd, {}, ['all-that-dazzles-uk--daz-gale.json']), null);
+  assert.equal(T.textBylineFallback(atd, {}, ['all-that-dazzles-uk--unknown.json', 'all-that-dazzles-uk--evan-prenter.json', 'standard--x.json']), 'Evan Prenter');
 
   const { processShow } = require('../../scripts/replay-pending-bylines.js');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-txt-'));
@@ -1854,5 +1860,6 @@ test('BRO-8195: drain names the critic from the stub text when the page has no b
   const promoted = path.join(root, show.id, 'all-that-dazzles-uk--evan-prenter.json');
   assert.ok(fs.existsSync(promoted), `expected promotion to ${promoted}; _pending now: ${fs.existsSync(stub) ? fs.readFileSync(stub, 'utf8').slice(0, 300) : 'gone'}`);
   assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).criticName, 'Evan Prenter');
+  assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).bylineSource, 'replay-pending-bylines:stub-text');
   fs.rmSync(root, { recursive: true, force: true });
 });

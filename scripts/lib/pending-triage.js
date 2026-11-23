@@ -555,11 +555,22 @@ function pendingIntakeRejectReason(review, show) {
  * corpus byline reader (outlet extractors + the strict closing-credit rule), so a stub is never named by a
  * looser rule than a scored file. Pure. Returns the name or null.
  */
-function textBylineFallback(data, show) {
+function textBylineFallback(data, show, showFileNames = []) {
   if (!data || !data.fullText) return null;
   const { extractBylineFromText } = require('./byline-from-text');
   const hit = extractBylineFromText(data.outletId, String(data.fullText), { showTitle: show && show.title });
-  return hit && hit.known && hit.name ? hit.name : null;
+  if (!(hit && hit.known && hit.name)) return null;
+  // The rebuild's rule (otherNamedCriticAtOutlet): a text credit never adds a second named critic at an outlet
+  // the show already scores under another name; a misfiled text there stays unpromoted.
+  const { normalizeCritic } = require('./review-normalization');
+  const slug = normalizeCritic(hit.name);
+  const prefix = `${data.outletId}--`;
+  const other = showFileNames.some((f) => {
+    if (!f.startsWith(prefix) || !f.endsWith('.json')) return false;
+    const c = f.slice(prefix.length, -5);
+    return c !== slug && !/^(unknown|unnamed)$/.test(c);
+  });
+  return other ? null : hit.name;
 }
 
 module.exports = {

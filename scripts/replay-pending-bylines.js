@@ -872,10 +872,12 @@ async function processShow(showId, deps = {}) {
         data.promoteSkippedReason = out === 'sibling-copy-settled'
           ? `belongs to same-title production ${tri.sibling}, whose _pending copy is already settled (BRO-8195)`
           : `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
-        data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
+        // Same settle kind as the post-fetch path for this case (promoteSettled 'sibling-settled').
+        data.promoteSettled = out === 'sibling-copy-settled' ? 'sibling-settled' : 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
         try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
       }
-      redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
+      const copyKey = out === 'sibling-copy-settled' ? 'sibling-settled' : 'rehomed';
+      redundantCopies[copyKey] = (redundantCopies[copyKey] || 0) + 1;
       tagged++;
       kept++;
       continue;
@@ -922,6 +924,7 @@ async function processShow(showId, deps = {}) {
     verdictCount('fetched'); // BRO-8023: a fetch candidate, left for the fetching drain
 
     let byline = null;
+    let bylineFromStubText = false;
     let html = null;
     let publishDate = null;
     let fetchResult = null;
@@ -1020,8 +1023,10 @@ async function processShow(showId, deps = {}) {
     // All That Dazzles headline whose page author is the shared "Sam - Admin" account). The same reader the
     // corpus backfill uses; without it these stubs sat open as "no byline detected" every run.
     if ((!byline || byline === 'Unknown') && data.fullText) {
-      const printed = pendingTriage.textBylineFallback(data, show);
-      if (printed) { console.log(`  [${file}] byline from the stub's own text: ${printed} (BRO-8195)`); byline = printed; }
+      let showFiles = [];
+      try { showFiles = fs.readdirSync(path.join(root, showId)); } catch { /* no show dir yet */ }
+      const printed = pendingTriage.textBylineFallback(data, show, showFiles);
+      if (printed) { console.log(`  [${file}] byline from the stub's own text: ${printed} (BRO-8195)`); byline = printed; bylineFromStubText = true; }
     }
 
     // BRO-8023: the byline is the show's own playwright/composer: a venue or listing page, never a review.
@@ -1170,7 +1175,7 @@ async function processShow(showId, deps = {}) {
       continue;
     }
     data.criticName = byline;
-    data.bylineSource = 'replay-pending-bylines';
+    data.bylineSource = bylineFromStubText ? 'replay-pending-bylines:stub-text' : 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();
     markEmptyBodyForRetry(data);
     // Persist the extracted date. The pre-fix promoted files carried
