@@ -4,7 +4,7 @@
 // broken work. The Mac gates have no budget, and cloud never loads them, so the count lives here: the one Stop hook
 // cloud runs (.claude/hooks/verify-edits.sh, [VE:BYPASSBUDGET]).
 // Counts lines "NO-<TOKEN>: <reason of 10+ chars>" for the six cloud tokens, across ALL assistant text in the
-// transcript plus the closing message, outside code fences. Each distinct (token, reason) line counts once.
+// transcript plus the closing message, outside code fences. Each distinct token counts once (repeats and rewording are free).
 // Over BYPASS_BUDGET blocks the stop (at most BLOCK_BUDGET times per session); the way out is to do the skipped
 // steps for real, not another bypass. Kill switch BYPASS_BUDGET_STOP_DISABLE=1. Fails open on any error.
 import { createHash } from 'node:crypto';
@@ -16,14 +16,14 @@ import { isMainModule } from './is-main-module.mjs';
 export const BYPASS_BUDGET = 3;
 export const BLOCK_BUDGET = 2;
 export const TOKENS = ['NO-VERIFY', 'NO-CARD', 'NO-SHIP-CHECK', 'NO-WRAP-UP', 'NO-WHAT-ELSE', 'NO-OWNER-STEPS'];
-const LINE_RE = new RegExp(`^[ \\t>*_-]*(${TOKENS.join('|')})(?:\\*\\*)?[ \\t]*:[ \\t]*(\\S.{9,})$`, 'i');
+const LINE_RE = new RegExp(`^[ \\t*_-]*(${TOKENS.join('|')})(?:\\*\\*)?[ \\t]*:[ \\t]*(\\S.{9,})$`);
 
 /** Bypass lines in one message: fenced blocks dropped, one entry per distinct token+reason. */
 export function bypassLines(text) {
   const out = new Map();
-  for (const ln of String(text || '').replace(/```[\s\S]*?```/g, '').split('\n')) {
+  for (const ln of String(text || '').replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, '').split('\n')) {
     const m = LINE_RE.exec(ln);
-    if (m) out.set(`${m[1].toUpperCase()}|${m[2].trim().toLowerCase()}`, m[1].toUpperCase());
+    if (m) out.set(m[1], m[1]); // one per distinct token: rewording or repeating the same bypass is not a new one
   }
   return out;
 }
@@ -33,7 +33,7 @@ export function assistantTexts(transcriptPath) {
   for (const raw of fs.readFileSync(transcriptPath, 'utf8').split('\n')) {
     if (!raw.trim()) continue;
     let o; try { o = JSON.parse(raw); } catch { continue; }
-    if (o.type !== 'assistant') continue;
+    if (o.type !== 'assistant' || o.isSidechain) continue;
     const c = o.message && o.message.content;
     if (typeof c === 'string') texts.push(c);
     else if (Array.isArray(c)) for (const b of c) if (b && b.type === 'text' && typeof b.text === 'string') texts.push(b.text);
@@ -52,9 +52,9 @@ export function decide({ texts = [], closing = '', env = process.env }) {
   return {
     decision: 'block', count: seen.size,
     message: [
-      `BLOCKED (BRO-8083): this session has used ${seen.size} NO-* bypass lines (${tokens.join(', ')}); the budget is ${BYPASS_BUDGET}.`,
+      `BLOCKED (BRO-8083): this session has used ${seen.size} different NO-* bypasses (${tokens.join(', ')}); the budget is ${BYPASS_BUDGET}.`,
       'A bypass line asserts a step was not needed; it does not prove it. Past the budget, do the skipped steps for real: run /ship-check, /what-else and /wrap-up, file or close the card, run the verification, then stop again.',
-      'Writing another NO-* line will not clear this.',
+      'Another NO-* line will not clear this; the check repeats at most twice per session.',
     ].join('\n'),
   };
 }
@@ -67,12 +67,12 @@ export function main(argv, { env = process.env, stdin = null } = {}) {
   try { if (input.transcript_path) texts = assistantTexts(input.transcript_path); } catch { return 0; }
   const d = decide({ texts, closing: input.last_assistant_message || '', env });
   if (d.decision !== 'block') return 0;
-  const id = createHash('sha1').update(String(input.transcript_path || input.session_id || '')).digest('hex').slice(0, 12);
+  const id = createHash('sha1').update(String(input.transcript_path || '') + '\u0000' + String(input.session_id || '')).digest('hex').slice(0, 12);
   const counter = path.join(os.tmpdir(), `bypass-budget-stop-${id}`);
   let n = 0;
   try { n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0; } catch { /* first */ }
   if (n >= BLOCK_BUDGET) return 0;
-  try { fs.writeFileSync(counter, String(n + 1)); } catch { /* best effort */ }
+  try { fs.writeFileSync(counter, String(n + 1)); } catch { return 0; } // cannot persist the cap: fail open, never wedge Stop
   process.stderr.write(d.message + '\n');
   return 2;
 }
