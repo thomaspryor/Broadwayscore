@@ -48,7 +48,7 @@ function parseArgs(argv) {
  */
 function statusHealthy(st) {
   return st.bucket !== 'missing' && st.public === false && st.kill.state === 'ok' && st.home.state === 'ok'
-    && (!st.reader || (st.reader.kill === 'ok' && st.reader.home === 'ok'));
+    && (!st.reader || (st.reader.kill === 'ok' && st.reader.home === 'ok' && !st.reader.stale));
 }
 
 const validKill = (v) => Boolean(v) && typeof v === 'object' && typeof v.killed === 'boolean';
@@ -68,15 +68,25 @@ async function status(ctx, reader) {
     home: { state: shape(home, validHome), generation: home.value && home.value.generation, shows: home.value && home.value.shows ? Object.keys(home.value.shows).length : null },
   };
   if (reader) {
-    out.reader = {
-      kill: shape(await store.readJsonObject(reader.state, store.PATHS.kill), validKill),
-      home: shape(await store.readJsonObject(reader.state, store.PATHS.home), validHome),
-    };
+    const rk = await store.readJsonObject(reader.state, store.PATHS.kill);
+    const rh = await store.readJsonObject(reader.state, store.PATHS.home);
+    out.reader = { kill: shape(rk, validKill), home: shape(rh, validHome) };
+    // The site reads with the anon key: it must see the same kill and home as the
+    // writer, or a kill written here is not what visitors get.
+    const stale = [];
+    if (out.reader.kill === 'ok' && out.kill.state === 'ok'
+      && (rk.value.killed !== kill.value.killed || rk.value.seq !== kill.value.seq)) stale.push(`kill (reader killed=${rk.value.killed} seq=${rk.value.seq})`);
+    if (out.reader.home === 'ok' && out.home.state === 'ok' && rh.value.generation !== home.value.generation) stale.push(`home (reader generation=${rh.value.generation})`);
+    if (stale.length) out.reader.stale = stale;
   }
   return out;
 }
 
-const refused = async (fn) => { try { const n = await fn(); return n === 0; } catch { return true; } };
+// Refused means the server said no (401/403) or changed 0 rows. A timeout, a
+// 5xx or a network error proves nothing about permissions, so it is a failure.
+const refused = async (fn) => {
+  try { const n = await fn(); return n === 0; } catch (e) { return /\b(401|403)\b|42501|permission denied|row-level security/i.test(String(e && e.message)); }
+};
 
 /**
  * Plan row 15, on the reader's real path.
@@ -123,6 +133,12 @@ async function selftest(ctx, reader, { now = Date.now, rounds = 3 } = {}) {
   if (internal.status === 200) failures.push(`anon READ internal ${SELFTEST_INTERNAL_PATH}`);
   if (!(await refused(() => reader.state.put(store.PATHS.probe, JSON.stringify(probe('anon')))))) failures.push('anon state write succeeded');
   if (!(await refused(() => reader.state.remove(store.PATHS.probe)))) failures.push('anon state delete succeeded');
+  const killBefore = await store.readJsonObject(ctx.state, store.PATHS.kill);
+  if (killBefore.state === 'ok' && Number.isInteger(killBefore.value.seq)) {
+    // Writes the row's own current value back, so even a leaky policy that lets
+    // it through cannot flip the kill; a 1-row answer still proves the leak.
+    if (!(await refused(() => reader.state.putIfSeq(store.PATHS.kill, JSON.stringify(killBefore.value), killBefore.value.seq)))) failures.push('anon compare-and-swap on the kill row was not refused');
+  }
   const stateAfter = await store.readJsonObject(ctx.state, store.PATHS.probe);
   if (stateAfter.state !== 'ok' || store.canonical(stateAfter.value) !== store.canonical(last)) failures.push(`anon write/delete changed the probe row (now ${stateAfter.state})`);
   if (!(await refused(() => reader.storage.put(slicePath, 'x', { cacheControl: store.CACHE.mutable })))) failures.push('anon Storage PUT succeeded');
@@ -130,6 +146,7 @@ async function selftest(ctx, reader, { now = Date.now, rounds = 3 } = {}) {
   const sliceAfter = await ctx.storage.get(slicePath, { cacheBust: now() });
   if (sliceAfter.status !== 200 || sliceAfter.text !== sliceText) failures.push(`anon write/delete changed the slice probe (now ${sliceAfter.status})`);
   await ctx.storage.remove(slicePath).catch(() => {});
+  await ctx.storage.remove(SELFTEST_INTERNAL_PATH).catch(() => {});
   return { ok: failures.length === 0, ms, rounds, failures };
 }
 

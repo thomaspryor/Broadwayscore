@@ -121,6 +121,23 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     if (!Array.isArray(rows)) throw new Error(`state putIfSeq ${path}: not an array`);
     return rows.length;
   }
+  /**
+   * Insert the row only if no row with this key exists (never overwrites).
+   * Returns 1 if inserted, 0 if a row was already there.
+   */
+  async function insertIfAbsent(path, text) {
+    const res = await call(`${root}?on_conflict=key`, {
+      method: 'POST',
+      headers: { ...auth, 'content-type': 'application/json', prefer: 'resolution=ignore-duplicates,return=representation' },
+      body: JSON.stringify({ key: rowKey(path), value: JSON.parse(text), updated_at: new Date().toISOString() }),
+    });
+    const body = await res.text().catch(() => '');
+    if (!res.ok) throw new Error(`state insertIfAbsent ${path} ${res.status} ${body.slice(0, 200)}`);
+    let rows;
+    try { rows = JSON.parse(body); } catch { throw new Error(`state insertIfAbsent ${path}: invalid JSON from PostgREST`); }
+    if (!Array.isArray(rows)) throw new Error(`state insertIfAbsent ${path}: not an array`);
+    return rows.length;
+  }
   async function remove(path) {
     // return=representation: RLS silently filters a forbidden DELETE to 0 rows,
     // so the caller needs the count to tell "deleted" from "not allowed".
@@ -131,7 +148,7 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     try { n = JSON.parse(body).length; } catch { /* empty body */ }
     return n;
   }
-  return { get, put, putIfSeq, remove, table: STATE_TABLE };
+  return { get, put, putIfSeq, insertIfAbsent, remove, table: STATE_TABLE };
 }
 
 function envUrl(env) { return env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL; }
@@ -207,7 +224,8 @@ async function putMutable(client, path, value) {
   const text = JSON.stringify(value);
   await client.put(path, text, { cacheControl: CACHE.mutable });
   const back = await readJsonObject(client, path);
-  if (back.state !== 'ok' || canonical(back.value) !== canonical(value)) {
+  // Compare with what was sent (JSON.stringify drops undefined keys), not the raw object.
+  if (back.state !== 'ok' || canonical(back.value) !== canonical(JSON.parse(text))) {
     throw new Error(`verify mismatch for ${path} (${back.state})`);
   }
   return text;
@@ -231,26 +249,38 @@ async function putShowObject(storage, id, hash, text) {
  */
 async function setKill(state, { killed, reason = '', by = '', now = Date.now() }) {
   const want = Boolean(killed);
-  const cur = await readJsonObject(state, PATHS.kill);
-  const unreadable = cur.state === 'error' && cur.error !== 'invalid JSON';
-  if (unreadable && !want) throw new Error(`setKill: kill.json unreadable (${cur.error}); refusing a blind unkill`);
-  const prevSeq = cur.state === 'ok' && cur.value && Number.isInteger(cur.value.seq) ? cur.value.seq : 0;
-  const seq = unreadable ? Math.max(prevSeq + 1, now) : prevSeq + 1;
   // jsonb rejects NUL, so one would make the write fail; strip control characters
-  // other than tab and newline (multi-line reasons are allowed).
-  const clean = (v, n) => String(v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ' ').slice(0, n);
-  const next = { schema: 1, killed: want, reason: clean(reason, 500), by: clean(by, 200), at: new Date(now).toISOString(), seq };
-  if (!want && cur.state === 'ok' && Number.isInteger(prevSeq) && prevSeq > 0 && typeof state.putIfSeq === 'function') {
-    // An unkill only applies to the kill state it read. Without this, a kill and
-    // an unkill that both read seq N each write N+1 and each re-check passes, so
-    // the kill reports success and is lost. A kill always writes (kills win).
-    const changed = await state.putIfSeq(PATHS.kill, JSON.stringify(next), prevSeq);
-    if (changed !== 1) throw new Error(`setKill: kill.json changed since it was read (seq ${prevSeq}); refusing the unkill, re-run it after checking --status`);
-  } else {
+  // other than tab and newline (multi-line reasons are allowed). Truncate by code
+  // point so an emoji is never cut in half (a lone surrogate is invalid JSON text).
+  const clean = (v, n) => Array.from(String(v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, ' ')).slice(0, n).join('');
+  const build = (seq) => ({ schema: 1, killed: want, reason: clean(reason, 500), by: clean(by, 200), at: new Date(now).toISOString(), seq });
+  const canSwap = typeof state.putIfSeq === 'function';
+  let next;
+  for (let attempt = 0; ; attempt++) {
+    const cur = await readJsonObject(state, PATHS.kill);
+    const unreadable = cur.state === 'error' && cur.error !== 'invalid JSON';
+    if (unreadable && !want) throw new Error(`setKill: kill.json unreadable (${cur.error}); refusing a blind unkill`);
+    const readSeq = cur.state === 'ok' && cur.value && Number.isInteger(cur.value.seq) ? cur.value.seq : null;
+    if (readSeq !== null && canSwap) {
+      // Compare-and-swap on the seq we read. Two writers that both read seq N can
+      // no longer both write N+1 and both pass their re-check, so neither a kill
+      // nor an unkill is silently lost.
+      next = build(readSeq + 1);
+      const changed = await state.putIfSeq(PATHS.kill, JSON.stringify(next), readSeq);
+      if (changed === 1) break;
+      if (!want) throw new Error(`setKill: kill.json changed since it was read (seq ${readSeq}); refusing the unkill, re-run it after checking --status`);
+      if (attempt >= 4) throw new Error(`setKill: kill.json kept changing (last seq ${readSeq}); the kill was not written, re-run it`);
+      continue; // a kill retries on the fresh row: kills win
+    }
+    // Missing, unreadable or malformed row (or a client without swap): only a kill
+    // gets here with an unreadable row. Seed seq past anything a lost row held.
+    const prevSeq = readSeq === null ? 0 : readSeq;
+    next = build(unreadable || readSeq === null ? Math.max(prevSeq + 1, now) : prevSeq + 1);
     await putMutable(state, PATHS.kill, next);
+    break;
   }
   const back = await readJsonObject(state, PATHS.kill);
-  if (back.state !== 'ok' || !back.value || back.value.killed !== want || back.value.seq !== seq) {
+  if (back.state !== 'ok' || !back.value || back.value.killed !== want || back.value.seq !== next.seq) {
     throw new Error(`setKill: kill.json changed under us (now ${back.state === 'ok' ? `killed=${back.value && back.value.killed} seq=${back.value && back.value.seq}` : back.state})`);
   }
   return next;
@@ -279,12 +309,23 @@ async function setupStore(storage, state, { by = 'setup' } = {}) {
   if (!meta) throw new Error('setupStore: bucket missing after ensureBucket');
   if (meta.public !== false) throw new Error(`setupStore: bucket ${storage.bucket} is public; it must be private`);
   const seeded = [];
-  const kill = await readJsonObject(state, PATHS.kill);
-  if (kill.state === 'error') throw new Error(`setupStore: kill row unreadable (${kill.error})`);
-  if (kill.state === 'missing') { await setKill(state, { killed: false, reason: 'initial', by }); seeded.push('kill'); }
-  const home = await readJsonObject(state, PATHS.home);
-  if (home.state === 'error') throw new Error(`setupStore: home row unreadable (${home.error})`);
-  if (home.state === 'missing') { await putMutable(state, PATHS.home, HOME_PLACEHOLDER); seeded.push('home'); }
+  // Seed with insert-if-absent: a setup that races a kill must never overwrite it
+  // with killed:false. A row that is already there (any content) is left alone.
+  const seedRow = async (path, value, check) => {
+    const cur = await readJsonObject(state, path);
+    if (cur.state === 'error') throw new Error(`setupStore: ${path} row unreadable (${cur.error})`);
+    if (cur.state !== 'missing') return;
+    const text = JSON.stringify(value);
+    const inserted = typeof state.insertIfAbsent === 'function'
+      ? await state.insertIfAbsent(path, text)
+      : (await state.put(path, text), 1);
+    const back = await readJsonObject(state, path);
+    if (back.state !== 'ok' || !check(back.value)) throw new Error(`setupStore: ${path} row not readable after seeding (${back.state})`);
+    if (inserted === 1) seeded.push(path === PATHS.kill ? 'kill' : 'home');
+  };
+  await seedRow(PATHS.kill, { schema: 1, killed: false, reason: 'initial', by: String(by).slice(0, 200), at: new Date().toISOString(), seq: 1 },
+    (v) => v && typeof v.killed === 'boolean' && Number.isInteger(v.seq));
+  await seedRow(PATHS.home, HOME_PLACEHOLDER, (v) => v && typeof v === 'object');
   return { bucket: created, seeded };
 }
 

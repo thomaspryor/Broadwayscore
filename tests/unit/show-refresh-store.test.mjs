@@ -56,12 +56,18 @@ function startFake() {
           if (!STATE_ROW_KEYS.includes(row.key)) return done(400, '{"code":"23514"}');
           // jsonb reorders keys: store with keys sorted so callers cannot rely on text equality.
           const sorted = Object.fromEntries(Object.keys(row.value).sort().reverse().map((x) => [x, row.value[x]]));
+          if (/ignore-duplicates/.test(req.headers.prefer || '')) {
+            if (state.rows.has(row.key)) return done(201, '[]');
+            state.rows.set(row.key, sorted);
+            return done(201, JSON.stringify([{ key: row.key, value: sorted }]));
+          }
           state.rows.set(row.key, sorted);
           return done(201, '');
         }
         if (req.method === 'PATCH') {
           // value->>seq=eq.N compare-and-swap: 0 rows when the stored seq moved on.
           const want = (url.searchParams.get('value->>seq') || '').replace(/^eq\./, '');
+          if (typeof state.onPatch === 'function') { const f = state.onPatch; state.onPatch = null; f(state); }
           const cur = state.rows.get(k);
           if (!cur || String(cur.seq) !== want) return done(200, '[]');
           const row = JSON.parse(body);
@@ -279,10 +285,10 @@ describe('show-refresh store', () => {
     reset();
     const w = await setup();
     let gets = 0;
-    // The third GET (after the pre-read and putMutable's read-back) sees a rival write.
+    // The second GET (the read-back after the compare-and-swap) sees a rival write.
     const s = { ...w.state, get: async (path) => {
       gets++;
-      if (gets === 3) fake.state.rows.set('kill', { schema: 1, killed: false, seq: 99 });
+      if (gets === 2) fake.state.rows.set('kill', { schema: 1, killed: false, seq: 99 });
       return w.state.get(path);
     } };
     await assert.rejects(store.setKill(s, { killed: true, reason: 'x' }), /changed under us .*killed=false seq=99/);
@@ -305,6 +311,55 @@ describe('show-refresh store', () => {
     const u = await store.setKill(w.state, { killed: false, reason: 'fixed' });
     assert.equal(u.seq, 3);
     assert.equal(fake.state.rows.get('kill').killed, false);
+  });
+
+  test('two kills that read the same seq both land: the loser retries on the fresh row', async () => {
+    reset();
+    const w = await setup();
+    // A rival kill lands (seq 2) between our read (seq 1) and our swap.
+    fake.state.onPatch = (st) => st.rows.set('kill', { schema: 1, killed: true, reason: 'rival', seq: 2 });
+    const k = await store.setKill(w.state, { killed: true, reason: 'mine' });
+    assert.equal(k.seq, 3);
+    assert.equal(fake.state.rows.get('kill').reason, 'mine');
+    assert.equal(fake.state.rows.get('kill').killed, true);
+  });
+
+  test('a kill gives up loudly when the row never stops changing', async () => {
+    reset();
+    const w = await setup();
+    const s = { ...w.state, putIfSeq: async () => 0 };
+    await assert.rejects(store.setKill(s, { killed: true, reason: 'x' }), /kept changing/);
+  });
+
+  test('setupStore never overwrites a kill that lands between its read and its insert', async () => {
+    reset();
+    const w = writer();
+    await w.storage.ensureBucket();
+    let first = true;
+    const s = { ...w.state, get: async (path) => {
+      const r = await w.state.get(path);
+      if (first && path === store.PATHS.kill) { first = false; fake.state.rows.set('kill', { schema: 1, killed: true, reason: 'racing kill', seq: 5 }); }
+      return r;
+    } };
+    const out = await store.setupStore(w.storage, s, { by: 'test' });
+    assert.equal(fake.state.rows.get('kill').killed, true, 'the racing kill survives setup');
+    assert.equal(fake.state.rows.get('kill').seq, 5);
+    assert.deepEqual(out.seeded, ['home']);
+  });
+
+  test('a long reason with emoji is cut on a code point, never half a surrogate pair', async () => {
+    reset();
+    const w = await setup();
+    const k = await store.setKill(w.state, { killed: true, reason: 'x' + '\u{1F3AD}'.repeat(600) });
+    assert.equal(Array.from(k.reason).length, 500);
+    assert.ok(!/[\uD800-\uDBFF]$/.test(k.reason), 'no lone high surrogate at the end');
+    JSON.parse(JSON.stringify(k));
+  });
+
+  test('putMutable compares with what was sent, so an undefined field is not a mismatch', async () => {
+    reset();
+    const w = await setup();
+    await store.putMutable(w.state, store.PATHS.home, { ...store.HOME_PLACEHOLDER, extra: undefined });
   });
 
   test('control characters in reason/by are stripped (jsonb rejects NUL)', async () => {
@@ -450,6 +505,41 @@ describe('show-refresh-store CLI', () => {
     assert.equal(r.ok, false);
     assert.ok(r.failures.some((f) => /anon READ internal/.test(f)), r.failures.join('; '));
     assert.ok(r.failures.some((f) => /anon state write succeeded/.test(f)), r.failures.join('; '));
+    assert.ok(r.failures.some((f) => /compare-and-swap on the kill row was not refused/.test(f)), r.failures.join('; '));
+    assert.equal(fake.state.rows.get('kill').killed, false, 'the leak probe never flips the kill');
+  });
+
+  test('selftest counts a timeout or 5xx on an anon write as a FAILURE, not a refusal', async () => {
+    reset();
+    const w = await setup();
+    const r0 = reader();
+    const flaky = { storage: r0.storage, state: { ...r0.state,
+      put: async () => { throw new Error('state put probe 503 upstream timeout'); },
+      remove: async () => { throw new Error('The operation was aborted due to timeout'); } } };
+    const r = await cli.selftest(w, flaky);
+    assert.equal(r.ok, false);
+    assert.ok(r.failures.some((f) => /anon state write succeeded/.test(f)), r.failures.join('; '));
+    assert.ok(r.failures.some((f) => /anon state delete succeeded/.test(f)), r.failures.join('; '));
+  });
+
+  test('selftest removes its internal probe object', async () => {
+    reset();
+    const w = await setup();
+    const r = await cli.selftest(w, reader());
+    assert.equal(r.ok, true, r.failures.join('; '));
+    assert.equal([...fake.state.objects.keys()].filter((k) => /_selftest/.test(k)).length, 0, [...fake.state.objects.keys()].join(','));
+  });
+
+  test('--status exits 1 when the reader sees a different kill or home than the writer', async () => {
+    reset();
+    await run(['--setup']);
+    assert.equal((await run(['--status'])).code, 0);
+    fake.state.staleAnonRows = true;
+    await run(['--status']); // primes the anon cache with the current rows
+    fake.state.rows.set('kill', { ...fake.state.rows.get('kill'), killed: true, seq: 9 });
+    const r = await run(['--status']);
+    assert.equal(r.code, 1);
+    assert.match(r.out, /reader killed=false seq=1/);
   });
 
   test('a multi-line reason is accepted', async () => {
