@@ -233,7 +233,16 @@ test('foldSessionRows copies only session rows and never folds the main ledger',
   fs.writeFileSync(from, JSON.stringify({ kind: 'api', script: 'ci.js' }) + '\n' + sess + '\n');
   assert.equal(L.foldSessionRows({ from, to }), 1);
   assert.equal(fs.readFileSync(to, 'utf8'), sess + '\n');
-  assert.equal(L.foldSessionRows({ from: L.LEDGER_PATH, to: path.join(dir, 't2.jsonl') }), 0, 'the main ledger is never folded');
+  // A fixture main ledger (never the real bot ledger: live-data-lane, BRO-8108).
+  const main = path.join(dir, 'main-ledger.jsonl');
+  fs.writeFileSync(main, sess + '\n');
+  const prev = process.env.GEMINI_USAGE_LEDGER_PATH;
+  process.env.GEMINI_USAGE_LEDGER_PATH = main;
+  try {
+    assert.equal(L.foldSessionRows({ from: main, to: path.join(dir, 't2.jsonl') }), 0, 'the main ledger is never folded');
+  } finally {
+    if (prev === undefined) delete process.env.GEMINI_USAGE_LEDGER_PATH; else process.env.GEMINI_USAGE_LEDGER_PATH = prev;
+  }
   assert.equal(fs.existsSync(path.join(dir, 't2.jsonl')), false);
   fs.mkdirSync(path.join(dir, 'adir.jsonl'));
   assert.throws(() => L.foldSessionRows({ from: path.join(dir, 'adir.jsonl'), to }), 'an unreadable source is an error, not "nothing to fold"');
