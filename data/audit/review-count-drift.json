@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-22T16:57:54.106Z",
+  "generatedAt": "2026-11-23T20:56:39.932Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-22T16:49:14.175Z",
-    "reviewsJsonAgeHours": 0.1,
+    "reviewsJsonLastUpdated": "2026-11-23T20:40:56.020Z",
+    "reviewsJsonAgeHours": 0.3,
     "freshnessBreach": false,
-    "showsScanned": 35,
-    "allShowsScanned": 4935,
-    "filesScanned": 83906,
+    "showsScanned": 30,
+    "allShowsScanned": 4945,
+    "filesScanned": 84386,
     "showsOverThreshold": 0,
     "newOffenders": 0,
-    "blindShows": 25,
+    "blindShows": 26,
     "orphanReviews": 2
   },
   "thresholds": {
@@ -50,7 +50,7 @@
     {
       "showDir": "a-christmas-carol-west-end-2026",
       "actual": 1,
-      "scanned": 46,
+      "scanned": 47,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -65,8 +65,16 @@
     },
     {
       "showDir": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
-      "actual": 12,
-      "scanned": 20,
+      "actual": 13,
+      "scanned": 21,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "a-midsummer-nights-dream-jentes-regional-2026",
+      "actual": 2,
+      "scanned": 3,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -81,56 +89,48 @@
     },
     {
       "showDir": "blue-man-group-a-new-holiday-surprise-2026",
-      "actual": 9,
-      "scanned": 13,
+      "actual": 10,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "actual": 6,
-      "scanned": 16,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "destiny-of-desire-regional-2026",
-      "actual": 9,
-      "scanned": 12,
+      "actual": 13,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "elektra-off-broadway-2026",
-      "actual": 7,
-      "scanned": 19,
+      "actual": 10,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
-      "actual": 5,
-      "scanned": 5,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "entre-dos-sombras-regional-2026",
-      "actual": 1,
-      "scanned": 2,
+      "actual": 6,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "eurotrash-off-west-end-2026",
-      "actual": 27,
-      "scanned": 35,
+      "actual": 29,
+      "scanned": 37,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "fantasma-off-broadway-2026",
+      "actual": 5,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -153,32 +153,46 @@
     },
     {
       "showDir": "goblin-off-west-end-2026",
-      "actual": 5,
-      "scanned": 10,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "redbuslondinium--red-bus-londinium.json",
-          "outletId": "redbuslondinium",
-          "criticName": "Red Bus Londinium",
-          "publishDate": "2026-11-21",
-          "url": "https://redbuslondinium.uk/2026/11/21/review-goblin-park-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "its-a-wonderful-life-a-live-radio-play-2026",
-      "actual": 1,
+      "actual": 6,
       "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "jenufa-off-broadway-2026",
-      "actual": 7,
-      "scanned": 10,
+      "showDir": "its-a-wonderful-life-a-live-radio-play-2026",
+      "actual": 12,
+      "scanned": 25,
+      "suppressedCount": 3,
+      "suppressed": [
+        {
+          "file": "nyt-theater--jonathan-mandell.json",
+          "outletId": "nyt-theater",
+          "criticName": "Jonathan Mandell",
+          "publishDate": "2026-11-23",
+          "url": "https://newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review/"
+        },
+        {
+          "file": "nytg--joe-dziemianowicz.json",
+          "outletId": "nytg",
+          "criticName": "Joe Dziemianowicz",
+          "publishDate": "2026-11-23",
+          "url": "https://www.newyorktheatreguide.com/reviews/its-a-wonderful-life-a-live-radio-play-broadway-review"
+        },
+        {
+          "file": "the-contending--frank-j-avella.json",
+          "outletId": "the-contending",
+          "criticName": "Frank J. Avella",
+          "publishDate": "2026-11-23",
+          "url": "https://thecontending.com/broadways-its-a-wonderful-life-a-live-radio-play-poor-sacrificial-george-in-pleasing-production/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "la-distance-bam-off-broadway-2026",
+      "actual": 1,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -186,31 +200,7 @@
     {
       "showDir": "much-ado-about-nothing-2026",
       "actual": 23,
-      "scanned": 70,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "my-english-persian-kitchen-regional-2026",
-      "actual": 3,
-      "scanned": 7,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "now-you-see-me-live-2026",
-      "actual": 8,
-      "scanned": 20,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "takes-all-kinds-regional-2026",
-      "actual": 2,
-      "scanned": 2,
+      "scanned": 71,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -218,15 +208,15 @@
     {
       "showDir": "the-afronauts-west-end-2026",
       "actual": 1,
-      "scanned": 2,
+      "scanned": 7,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-beauty-queen-of-leenane-regional-2026",
-      "actual": 2,
-      "scanned": 2,
+      "actual": 4,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -240,25 +230,17 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-fantasticks-2026",
-      "actual": 29,
-      "scanned": 40,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-farce-awakens-feydeau-x-2-regional-2026",
       "actual": 3,
-      "scanned": 4,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-good-thief-off-broadway-2026",
-      "actual": 9,
-      "scanned": 12,
+      "actual": 10,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -281,8 +263,8 @@
     },
     {
       "showDir": "the-ugly-one-off-west-end-2026",
-      "actual": 7,
-      "scanned": 9,
+      "actual": 9,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
