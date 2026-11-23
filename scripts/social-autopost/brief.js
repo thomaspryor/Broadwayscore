@@ -50,6 +50,8 @@ async function preview() {
   };
   const built = briefs.buildBrief(template, { descA: run.describe(find(arg('a')), ctx), descB: run.describe(find(arg('b')), ctx), hook: arg('hook') || '', now });
   const { older, newer } = built;
+  const refusal = run.briefRefusal(newer.show); // BRO-8085: before any render, upload or approval ask
+  if (refusal) throw new Error(refusal);
 
   const outDir = arg('out') || path.join(require('os').tmpdir(), 'social-brief');
   fs.mkdirSync(outDir, { recursive: true });

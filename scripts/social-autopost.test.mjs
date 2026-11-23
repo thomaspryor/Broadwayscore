@@ -610,6 +610,16 @@ test('routing: a transfer link on either end makes both shows high profile', () 
   assert.deepEqual(routing.targetSets(lon, NONE, SETS_BOTH, [lon, nyc]), ['west-end'], 'London never cross-posts (BRO-8085)');
 });
 
+test('brief refusal (BRO-8085): a London-newer brief is refused at preview until the West End accounts exist', () => {
+  const { briefRefusal } = require('./social-autopost/run.js');
+  const C = require('./social-autopost/config.js');
+  const full = { ...C.CHANNEL_SETS, 'west-end': Object.fromEntries(Object.keys(C.CHANNEL_SETS.broadway).map(svc => [svc, `we-${svc}`])) };
+  const empty = { ...C.CHANNEL_SETS, 'west-end': {} };
+  assert.match(briefRefusal(london, empty), /no west-end social accounts are connected yet/);
+  assert.equal(briefRefusal(london, full), null);
+  assert.equal(briefRefusal(offb, empty), null, 'a Broadway-side brief still posts');
+});
+
 test('retry guard (BRO-8085): a pending London retry on a Broadway channel is dropped, never resent', async () => {
   const { retryBlocked, retryFailedChannels } = require('./social-autopost/run.js');
   const lon = show({ id: 'r-lon', category: 'west-end' });

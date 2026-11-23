@@ -183,6 +183,16 @@ function recordPlanStatus(all) {
  * The usable channels a brief posts to: the newer production's home set (routing.js;
  * none until that market's accounts are configured, BRO-8085). Never cross-posted.
  */
+/**
+ * Why an owner-approved brief can never post, or null: its newer production's accounts are
+ * not connected (a London brief before the West End accounts exist; BRO-8085, never Broadway).
+ * brief.js checks this at preview, so the owner is never asked to approve an unpostable brief.
+ */
+function briefRefusal(newer, sets = CHANNEL_SETS) {
+  if (targetSetsUngated(newer, null, sets, null).length) return null;
+  return `${newer.id}: no ${homeSet(newer) || newer.category} social accounts are connected yet, so this brief could not post anywhere`;
+}
+
 function briefChannels(channels, newer, { ungated = false, slim } = {}) {
   // BRO-7417: an owner-approved brief is the owner's own call, so it skips the BRO-7413 notability gate;
   // every automatic lane (roundup, closing-soon, london-compare) keeps it.
@@ -1085,4 +1095,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { retryBlocked, retryFailedChannels, buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, recordPlanStatus, LEDGER_FILE };
+module.exports = { briefRefusal, retryBlocked, retryFailedChannels, buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, recordPlanStatus, LEDGER_FILE };
