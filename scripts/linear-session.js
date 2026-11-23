@@ -48,7 +48,7 @@ const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
 const chg = require('./lib/claim-holder-guard');
-const { checkHiddenOwnerQuestion } = require('./lib/report-owner-question-guard');
+const { checkHiddenOwnerQuestion, promotedDecisionDescription } = require('./lib/report-owner-question-guard');
 const { classifyPauseReport, ADVISORY_MARKER: PAUSE_GUARD_MARKER } = require('./lib/pause-report-guard');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const rootCauseClose = require('./lib/root-cause-close.js');
@@ -395,6 +395,30 @@ async function cmdReport(args, deps = {}) {
   // double-post it. A later gate refusal or state-move failure is reported by
   // the JSON line / exit code, as before.
   console.log(lsr.buildIssueIdMarker(issue.id));
+  // BRO-8152: a question in the report comment never reaches the owner email (it reads the
+  // description only), so copy the block to the top of the description. Never fails the report.
+  if (!deps.skipOwnerQuestionGuard) {
+    let promoteErr = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        // Re-read just before writing so an edit made since the first read is kept.
+        const fresh = (await linear.getIssue(issue.identifier)) || issue;
+        const promoted = promotedDecisionDescription({
+          status: args.status, summary: args.summary, verification: args.verification, description: fresh.description,
+        });
+        if (promoted) {
+          await linear.updateIssue(issue.id, { description: promoted });
+          console.error(`ℹ️  ${issue.identifier}: DECISION NEEDED copied to the card description so the owner email carries it.`);
+        }
+        promoteErr = null;
+        break;
+      } catch (err) { promoteErr = err; }
+    }
+    if (promoteErr) {
+      console.error(`⚠️  ${issue.identifier}: could not copy DECISION NEEDED to the description (${String(promoteErr && promoteErr.message).slice(0, 160)}). `
+        + 'The owner email will miss it: put the DECISION NEEDED block at the top of the card description (linear-brain.js update).');
+    }
+  }
 
   const team = await linear.getTeam();
   const completion = lsr.planCompletion({ status: args.status, states: team.states });

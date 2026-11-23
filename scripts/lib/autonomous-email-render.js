@@ -275,7 +275,7 @@ const PLAIN_HEALTH = [
   [/^Coverage: adversarial probe/, () => 'A published review has not been picked up yet'],
   [/^Quality: DMARC deliverability/, () => 'Email deliverability reports stopped arriving'],
   [/^Coverage: SERP census recall/, () => 'Finding fewer published reviews than usual'],
-  [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
+  [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting to be sorted'],
   // BRO-7040: the two rows that reached the owner under their raw check names
   // on 2026-11-05. Quality: Show Score gap is refined with show names below.
   [/^Quality: Show Score gap/, () => 'Some shows have no audience score yet'],
@@ -310,8 +310,9 @@ const PLAIN_HEALTH = [
   [/^Quality: coverageExpectation drift/, () => 'Expected review counts for some shows are drifting'],
   [/^Quality: outlet-heartbeat red flags/, () => 'Some review outlets look like they stopped publishing'],
   [/^Quality: outlet feed staleness/, () => 'Some outlet feeds have not updated in a while'],
-  [/^Commercial pending-review queue/, () => 'Commercial figures are waiting for a manual check'],
-  [/^Commercial: rows held for a person/, () => 'Some commercial figures are held back for a manual check'],
+  // BRO-8152: this queue is cleared by the daily automatic check (commercial-pending-daily.yml), never a person.
+  [/^Commercial pending-review queue/, () => 'Profitability research results are waiting for the daily automatic check'],
+  [/^Commercial: rows held for a person/, () => 'Some profitability research results need a closer look; a fix worker is settling them'],
   [/^Commercial model: Boring Waltz fit/, () => 'The recoupment model fits one show poorly'],
   [/^Commercial model: running-show bar revisit/, () => 'Some running shows\u2019 recoupment estimates need a fresh look'],
   [/^Commercial: season share cards/, () => 'Season share cards for the commercial page are out of date'],
