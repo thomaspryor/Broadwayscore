@@ -4,24 +4,24 @@
  * BRO-8179: flag test files that create temp dirs (mkdtemp / mktemp -d) and
  * never remove anything. Those leaked ~200k dirs/day into /private/tmp.
  *
- *   node scripts/audit-test-tmpdir-cleanup.js            report (exit 0)
- *   node scripts/audit-test-tmpdir-cleanup.js --strict   exit 1 on a flagged
+ *   node scripts/lib/test-tmpdir-cleanup-audit.js            report (exit 0)
+ *   node scripts/lib/test-tmpdir-cleanup-audit.js --strict   exit 1 on a flagged
  *        file NOT in scripts/lib/test-tmpdir-cleanup-baseline.json
- *   node scripts/audit-test-tmpdir-cleanup.js --write-baseline
- *   node scripts/audit-test-tmpdir-cleanup.js --files a.test.mjs,b.test.js
+ *   node scripts/lib/test-tmpdir-cleanup-audit.js --write-baseline
+ *   node scripts/lib/test-tmpdir-cleanup-audit.js --files a.test.mjs,b.test.js
  *
  * Fix a flagged file with makeTmpDir(t, prefix) from scripts/lib/test-tmpdir.js
  * (registers t.after rm -rf) or an explicit fs.rmSync in an after() hook.
  * Advisory in CI first (CLAUDE.md section 19).
  */
-require('./lib/cli-help').exitOnHelp(module);
+require('./cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { mkdtempWithoutCleanup } = require('./lib/test-tmpdir.js');
+const { mkdtempWithoutCleanup } = require('./test-tmpdir.js');
 
-const ROOT = path.join(__dirname, '..');
-const BASELINE = path.join(__dirname, 'lib', 'test-tmpdir-cleanup-baseline.json');
+const ROOT = path.join(__dirname, '..', '..');
+const BASELINE = path.join(__dirname, 'test-tmpdir-cleanup-baseline.json');
 const TEST_RE = /\.test\.(?:m|c)?[jt]sx?$/;
 
 function listTestFiles() {

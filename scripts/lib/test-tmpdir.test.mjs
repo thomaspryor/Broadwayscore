@@ -45,10 +45,10 @@ test('audit CLI --strict: a new leaking file fails, the baseline passes', () => 
   try {
     const f = `${tmp.dir}/leaky.test.mjs`;
     fs.writeFileSync(f, "import fs from 'node:fs'; fs.mkdtempSync('/tmp/orj-');\n");
-    const bad = spawnSync(process.execPath, ['scripts/audit-test-tmpdir-cleanup.js', '--strict', '--files', f], { encoding: 'utf8' });
+    const bad = spawnSync(process.execPath, ['scripts/lib/test-tmpdir-cleanup-audit.js', '--strict', '--files', f], { encoding: 'utf8' });
     assert.equal(bad.status, 1, bad.stdout);
     assert.match(bad.stdout, /NEW .*leaky\.test\.mjs/);
-    const ok = spawnSync(process.execPath, ['scripts/audit-test-tmpdir-cleanup.js', '--strict'], { encoding: 'utf8' });
+    const ok = spawnSync(process.execPath, ['scripts/lib/test-tmpdir-cleanup-audit.js', '--strict'], { encoding: 'utf8' });
     assert.equal(ok.status, 0, ok.stdout);
   } finally { tmp.cleanup(); }
 });

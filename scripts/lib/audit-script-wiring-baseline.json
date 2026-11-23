@@ -487,11 +487,6 @@
       "bucket": "b",
       "rank": 0,
       "reason": "BRO-7748 offline dry run of the press-night near-miss detector over recent press nights (hit rate and false alarms); read-only, no fetches; logic covered by tests/unit/lane-near-miss-alarm.test.mjs, which CI runs"
-    },
-    "audit-test-tmpdir-cleanup.js": {
-      "bucket": "b",
-      "rank": 0,
-      "reason": "BRO-8179 test-tmpdir leak lint; its --strict run against its own baseline is exercised by scripts/lib/test-tmpdir.test.mjs (the CI/land class guard), so no workflow step is needed"
     }
   }
 }
