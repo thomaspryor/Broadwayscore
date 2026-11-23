@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/alert-ledger.json (bot ledger) in CI: owner-alert-router merges the tracked ledger (BRO-8107 moved its shows.json reads to a fixture). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7930: _pending drain rotation, mtime fallback, collision settling, bare-title guard, health alerts,
 // and the limbo gate. Every test requires the REAL module (CLAUDE.md §15); nothing is restated.
 import test from 'node:test';
