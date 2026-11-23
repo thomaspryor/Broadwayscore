@@ -906,20 +906,6 @@
     "queuedAt": "2026-11-22T23:56:54.742Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-23T01:03:45.462Z"
-  },
-  {
     "conditionKey": "land-preexisting:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure]",
     "title": "Test red on main: open hub shows are not past a sourced closing date [testCodeFailure]",
     "description": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8071-run-show-ranks-ci. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45087272914",
@@ -1128,18 +1114,18 @@
     "queuedAt": "2026-11-23T01:45:49.752Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
-    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline — escalated after 30 notifications",
-    "description": "Filed BRO-8102 for owner triage after 30 repeats with no tracker.\n\nreplay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
-    "severity": "warning",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
-    "tracked": "BRO-8102",
+    "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-23T02:07:49.914Z"
+    "queuedAt": "2026-11-23T02:37:21.012Z"
   },
   {
     "conditionKey": "test-yml:data-validation-red:audit-review-contamination",
