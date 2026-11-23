@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getAllOffBroadwayTheaters, getAllOffBroadwayComplexes } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
+import { getTheaterAvgScore } from '@/lib/theater-avg-score';
 import OffBroadwayTheaterIndexClient from './OffBroadwayTheaterIndexClient';
 
 
@@ -40,10 +41,7 @@ export default function OffBroadwayTheaterIndexPage() {
 
   // Strip heavy show data — only pass what the client needs
   const theaterSummaries = rows.map(t => {
-    const scoredShows = t.allShows.filter(s => s.criticScore?.score != null);
-    const avgScore = scoredShows.length > 0
-      ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)
-      : null;
+    const { avgScore } = getTheaterAvgScore(t.allShows);
 
     return {
       name: t.name,

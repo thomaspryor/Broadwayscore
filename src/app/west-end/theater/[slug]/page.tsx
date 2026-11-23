@@ -15,6 +15,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import { ScoreBadge, StatGrid, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getTheaterAvgScore } from '@/lib/theater-avg-score';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from '../../../theater/[slug]/TheaterDetailClient';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -101,10 +102,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
   });
 
   // Compute stats
-  const scoredShows = theater.allShows.filter(s => s.criticScore?.score != null);
-  const avgScore = scoredShows.length > 0
-    ? Math.round(scoredShows.reduce((sum, s) => sum + (s.criticScore?.score ?? 0), 0) / scoredShows.length)
-    : null;
+  const { avgScore, sampleLabel: avgScoreLabel } = getTheaterAvgScore(theater.allShows);
 
   // Serialize shows for client component (identical shape to Broadway detail page)
   const theaterShows = theater.allShows.map(show => {
@@ -192,7 +190,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
             className="mb-4"
             stats={[
               { label: 'Past Shows', value: theater.allShows.length },
-              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" /> },
+              { label: 'Avg Score', value: avgScore ?? '–', node: <ScoreBadge score={avgScore ?? undefined} size="sm" />, subtitle: avgScoreLabel },
             ]}
           />
 
