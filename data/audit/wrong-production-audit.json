@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-23T02:55:50.773Z",
+  "timestamp": "2026-11-23T03:10:03.364Z",
   "stats": {
-    "totalReviews": 84169,
+    "totalReviews": 84174,
     "alreadyFlagged": 22505,
     "dateGuardCatches": 240,
-    "directorMismatch": 3883,
+    "directorMismatch": 3884,
     "tvFilmSignals": 2419,
     "londonSignals": 3972,
     "offBroadwaySignals": 786,
@@ -44569,6 +44569,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "pioneer-press--rob-hubbard.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.twincities.com/2026/11/18/theater-review-maybe-happy-ending-a-tender-touching-tale-of-robots-in-love/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
         }
       ]
     },
