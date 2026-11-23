@@ -47,7 +47,7 @@ function hasRecoupedClaim(entry) {
 // estimate or recoupment claim) has nothing to publish. Holding it for a person just ages it into the health
 // row "Commercial: rows held for a person"; it belongs in the rejected log.
 function carriesNoFigures(entry) {
-  if (!entry || hasRecoupedClaim(entry)) return false;
+  if (!entry || hasRecoupedClaim(entry) || entry.recouped === false) return false; // "did not recoup" is a claim too
   const has = v => v !== null && v !== undefined && v !== '';
   return !['capitalization', 'weeklyRunningCost', 'recoupedDate', 'estimatedRecoupmentPct'].some(k => has(entry[k]));
 }

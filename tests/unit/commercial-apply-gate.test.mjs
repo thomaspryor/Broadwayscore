@@ -872,6 +872,7 @@ describe('carriesNoFigures (BRO-8137)', () => {
     assert.equal(gate.carriesNoFigures({ capitalization: 12000000 }), false);
     assert.equal(gate.carriesNoFigures({ weeklyRunningCost: 700000 }), false);
     assert.equal(gate.carriesNoFigures({ recouped: true }), false);
+    assert.equal(gate.carriesNoFigures({ recouped: false }), false);
     assert.equal(gate.carriesNoFigures({ _recoupedClaim: true }), false);
   });
 });

@@ -461,8 +461,10 @@ async function main() {
     if (rowErrors.length) {
       console.log(`  🛑 "${showId}" — left pending for review: ${rowErrors[0]}`);
       // BRO-8137: a row that only asserts a designation, with no figure and no recoupment to back it, can never apply.
-      if (gate.carriesNoFigures(row)) {
-        if (VERIFIED_ONLY && !DRY_RUN) rejectedIds.set(showId, { reason: `the row cites no figures and fails record validation (${rowErrors[0]})`, archivedReason: 'no-new-figures', prefix: 'unverified' });
+      // Only when the existing record is clean on its own: otherwise the defect is the record's, and a person must see it.
+      const recordAloneErrors = existing ? commercialRecordErrors(commercialKey, existing, { showRecord: keyShowRecord, allRecords: commercial.shows }) : [];
+      if (gate.carriesNoFigures(row) && recordAloneErrors.length === 0) {
+        if (VERIFIED_ONLY && !DRY_RUN) rejectedIds.set(showId, { reason: `the row cites no figures and fails record validation (${rowErrors[0]})`, archivedReason: 'no-new-figures', prefix: 'superseded' });
       } else {
         noteBlocked(showId, `record validation: ${rowErrors[0]}`);
       }
