@@ -230,6 +230,7 @@ function stripForeignShowFlags(o) {
   const human = o.wrongProductionManual || o.humanReviewed || o.manualReview || /manual|owner|human/i.test(String(o.wrongProductionSource || ''));
   if (o.wrongProduction && !human && AUTO_WRONG_PRODUCTION_RE.test(String(o.wrongProductionNote || ''))) {
     delete o.wrongProduction; delete o.wrongProductionNote;
+    require('./wrongproduction-provenance').dropWrongProductionProvenance(o); // BRO-7575: no orphaned provenance
   }
   return o;
 }

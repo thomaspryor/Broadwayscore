@@ -724,7 +724,7 @@ async function processShow(showId, deps = {}) {
       if (out === 'sibling-has-copy' && !dry) {
         data.promoteSkippedReason = `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
         data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
-        fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
       }
       redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
       tagged++;
