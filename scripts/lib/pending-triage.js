@@ -425,6 +425,14 @@ function triagePendingStub(data, ctx = {}) {
  *    when that sibling already files the same name, else rehomed to it.
  * ctx: { show, allShows, file, showHasFile(name), siblingHasFile(showId, name) }. Pure over ctx. null = no verdict.
  */
+const TITLE_KEY_STOP = new Set(['the', 'and', 'into', 'with', 'from', 'that', 'this', 'your', 'what', 'when', 'where', 'show', 'musical', 'play']);
+/** The title's most distinctive word: its longest word of 4+ letters outside a small stop list. Pure. */
+function distinctiveTitleWord(title) {
+  const words = String(title || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z]+/)
+    .filter((w) => w.length >= 4 && !TITLE_KEY_STOP.has(w));
+  return words.sort((a, b) => b.length - a.length)[0] || null;
+}
+
 function noUrlStubVerdict(data, ctx = {}) {
   if (!data || data.url || !ctx.file) return null;
   const pdIso = stubDateIso(data.publishDate);
@@ -432,18 +440,27 @@ function noUrlStubVerdict(data, ctx = {}) {
   // stamped 2026-10-24 would rehome a London review to the New York run): judge nothing on that date.
   const trYear = (String(data.theatreRecordUrl || '').match(/\/archive\/((?:19|20)\d{2})\//) || [])[1];
   const dateTrusted = pdIso && (!trYear || trYear === pdIso.slice(0, 4));
-  if (dateTrusted && ctx.show && ctx.allShows && isArticleOutsideProductionWindow(ctx.show, pdIso)) {
-    const has = (sid) => !!(ctx.siblingHasFile && ctx.siblingHasFile(sid, ctx.file));
+  const outside = dateTrusted && ctx.show && ctx.allShows && isArticleOutsideProductionWindow(ctx.show, pdIso);
+  const has = (sid) => !!(ctx.siblingHasFile && ctx.siblingHasFile(sid, ctx.file));
+  if (outside) {
     // The same outlet--critic name already filed under exactly one sibling whose run holds the date: a duplicate,
     // with no venue corroboration needed (the name and the date both point at that sibling).
     const holders = require('./pending-sibling-productions').fittingSiblings(ctx.show, ctx.allShows, pdIso).filter((x) => has(x.id));
     if (holders.length === 1) return { verdict: 'junk', reason: `url-less stub published ${pdIso} belongs to same-title production ${holders[0].id}, which already files ${ctx.file}`, sibling: holders[0].id };
+  } else if (ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  // Theatre Record's PDF pages run several shows together: 11 "Joseph" stubs were reviews of Anna X (by playwright
+  // Joseph Charlton). Text that never names the title's distinctive word is another show's review. A url-less stub
+  // is never promoted by the drain, so this settle loses nothing; clearing promoteSkippedReason re-opens it.
+  const key = data.source === 'theatre-record' && ctx.show && distinctiveTitleWord(ctx.show.title);
+  const text = String(data.fullText || '');
+  if (key && text.length >= 200 && !text.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').includes(key)) {
+    return { verdict: 'junk', reason: `url-less Theatre Record text never names "${ctx.show.title}" (no "${key}"): another show's review from the archive page` };
+  }
+  if (outside) {
     const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
     if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
-    return null;
-  }
-  if (ctx.showHasFile && ctx.showHasFile(ctx.file)) {
-    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
   }
   return null;
 }
@@ -514,4 +531,4 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { noUrlStubVerdict, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, settledPendingReason, showEra };
+module.exports = { noUrlStubVerdict, distinctiveTitleWord, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };

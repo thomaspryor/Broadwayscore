@@ -1688,7 +1688,7 @@ describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on nam
   const U25 = { id: 'the-unbelievers-west-end-2025', title: 'The Unbelievers', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2025-10-10', openingDate: '2025-10-16', closingDate: '2025-11-29' };
   const U26 = { id: 'the-unbelievers-off-broadway-2026', title: 'The Unbelievers', category: 'off-broadway', venue: 'New York City Center', previewsStartDate: '2026-10-20', openingDate: '2026-11-05', closingDate: '2026-12-20' };
   const all = [S19, S21, U25, U26];
-  const stub = { outletId: 'guardian', criticName: 'Kate Wyver', url: null, publishDate: '2021-06-23', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/06/1-seven-methods', fullText: 'x'.repeat(2000) };
+  const stub = { outletId: 'guardian', criticName: 'Kate Wyver', url: null, publishDate: '2021-06-23', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/06/1-seven-methods', fullText: 'Seven Methods of Killing Kylie Jenner returns to the Royal Court. '.repeat(30) };
   const file = 'guardian--kate-wyver.json';
 
   test('dated in exactly one sibling run that already files the same outlet--critic: settled as a duplicate', () => {
@@ -1699,7 +1699,7 @@ describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on nam
   });
 
   test('a Theatre Record date whose year disagrees with its archive link judges nothing (no New York rehome)', () => {
-    const bad = { ...stub, outletId: 'daily-mail', criticName: 'Patrick Marmion', publishDate: '2026-10-24', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/10/34295-the-unbelievers' };
+    const bad = { ...stub, fullText: 'A CHILD going missing ought to be the trigger. Yet The Unbelievers, the new play from Nick Payne, fails. '.repeat(10), outletId: 'daily-mail', criticName: 'Patrick Marmion', publishDate: '2026-10-24', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/10/34295-the-unbelievers' };
     assert.equal(T.noUrlStubVerdict(bad, { show: U25, allShows: all, file: 'daily-mail--patrick-marmion.json', showHasFile: () => false, siblingHasFile: () => false }), null);
   });
 
@@ -1708,5 +1708,18 @@ describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on nam
     assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: (n) => n === file, siblingHasFile: () => false }).verdict, 'junk');
     assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: () => false, siblingHasFile: () => false }), null);
     assert.equal(T.noUrlStubVerdict({ ...stub, url: 'https://www.theguardian.com/x' }, { show: S19, allShows: all, file, showHasFile: () => true }), null);
+  });
+});
+
+describe('BRO-8195: a Theatre Record stub whose text never names the show is another show\'s review', () => {
+  const J19 = { id: 'joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019', title: 'Joseph and the Amazing Technicolor Dreamcoat', category: 'west-end', venue: 'London Palladium', openingDate: '2019-07-11', closingDate: '2019-09-08' };
+  test('Anna X text (playwright Joseph Charlton) filed under Joseph settles; a real Joseph review does not', () => {
+    assert.equal(T.distinctiveTitleWord(J19.title), 'technicolor');
+    const annaX = { source: 'theatre-record', url: null, publishDate: '2021-07-22', theatreRecordUrl: 'https://www.theatrerecord.com/archive/volume/41/dest/14_joseph', fullText: 'JOSEPH Charlton’s razor-sharp play is inspired by the life of “fake heiress” Anna Sorokin. '.repeat(5) };
+    const v = T.noUrlStubVerdict(annaX, { show: J19, allShows: [J19], file: 'camdennewjournal--lucy-popescu.json', showHasFile: () => false, siblingHasFile: () => false });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /never names "Joseph and the Amazing Technicolor Dreamcoat"/);
+    const real = { ...annaX, fullText: 'Go go go Joseph! The Technicolor coat is back at the Palladium. '.repeat(5), publishDate: '2019-07-12' };
+    assert.equal(T.noUrlStubVerdict(real, { show: J19, allShows: [J19], file: 'x--y.json', showHasFile: () => false, siblingHasFile: () => false }), null);
   });
 });
