@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8209-c",
+  "planId": "c3d2f6a1-5b7e-4c1a-9a43-8e2d7b1f0c65",
+  "status": "pending",
+  "createdAt": "2026-11-24T17:36:48.830Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Falls for Jodie: Michael Dale's Talkin' Broadway review is stored at page/ob/10_05_26.html, which is The Hairy Ape page. Talkin' Broadway's own Off Broadway index lists Falls for Jodie at 10_05_26b.html and The Hairy Ape at 10_05_26.html. Point Dale's file at the b page (the collector refetches it).",
+    "steps": [
+      "Talkin' Broadway Off Broadway index (page/ob/past.html, read 2026-11-24 via the collector's Browserbase session, run 45438285573): 'Falls for Jodie' -> 10_05_26b.html, 'The Hairy Ape' -> 10_05_26.html.",
+      "Dale's current url equals the Hairy Ape review's url (the same url is stored on the Marc Miller Hairy Ape file), so it is another show's page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "falls-for-jodie-off-broadway-2026/talkinbroadway--michael-dale.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/page/ob/10_05_26.html",
+        "newValue": "https://www.talkinbroadway.com/page/ob/10_05_26b.html",
+        "description": "Dale's review lives at the b page; the current url is The Hairy Ape's page (feedback #1203 follow-up)."
+      }
+    ]
+  }
+}
