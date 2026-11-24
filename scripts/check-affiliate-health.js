@@ -82,8 +82,21 @@ function isTransientHttpError(err) {
   return status >= 500 || status === 429 || status === 408;
 }
 
+// Network-level failures (undici "fetch failed", resets, DNS blips) clear on
+// a retry just like a 5xx, and are never a credentials fault (BRO-8220).
+function isTransientNetworkError(err) {
+  return /\bfetch failed\b|ECONNRESET|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|socket hang up/i.test((err && err.message) || '');
+}
+
 function isTransientFetchError(err) {
-  return isAbortError(err) || isTransientHttpError(err);
+  return isAbortError(err) || isTransientHttpError(err) || isTransientNetworkError(err);
+}
+
+// The only failures the owner can fix by re-authorizing: the provider
+// rejected the credentials (HTTP 401/403, or Impact's 200-with-error body
+// naming an auth problem), or they are not configured at all.
+function isAuthFetchError(err) {
+  return /\bHTTP 40[13]\b|credentials missing|unauthori[sz]ed|authenticat|invalid (api )?(key|token|credentials)/i.test((err && err.message) || '');
 }
 
 // One retry, for timeouts/aborts and provider 5xx/429/408 only. An auth or
@@ -193,14 +206,54 @@ function runChecks({ impactDaily, posthogDaily, actions, errors, asOf }) {
   // 1. Provider auth/API liveness — a revoked key surfaces TODAY, not as
   //    healthy-looking zeroes next Monday. (Partnerize deliberately excluded:
   //    dormant integration, hidden since 2026-04-11.)
-  for (const provider of ['impact', 'posthog']) {
-    const err = errors.find((e) => e.provider === provider || e.provider === `${provider}-actions`);
+  //    Two checks per provider, on SEPARATE condition keys (BRO-8220):
+  //    - provider-auth pages: only a real credentials fault (HTTP 401/403,
+  //      an auth message in the body, or missing credentials). Its owner
+  //      action is "re-authorize". Emitted only when we have evidence either
+  //      way: if every endpoint for the provider failed for non-auth reasons
+  //      the login state is unknown, so the check is omitted (neither routed
+  //      nor resolved) rather than claiming "credentials accepted".
+  //    - provider-fetch never pages: a transient failure that survived the
+  //      retry (5xx/429/408, timeout, network) is a provider outage -> warn;
+  //      any other error (404, 400, broken body) is critical-but-digest
+  //      because it needs a code/config fix, not the owner.
+  //    Separate keys matter: the router mutes repeats by key alone, so an
+  //    outage warn under the auth key would silence a real revocation page
+  //    for the whole cooldown. (2026-11-22: an Impact 503 emailed
+  //    "Re-authorize the Impact API credentials" while the same login worked
+  //    on the Actions endpoint in the same run.)
+  const PROVIDER_ENDPOINTS = { impact: ['impact', 'impact-actions'], posthog: ['posthog'] };
+  for (const [provider, endpoints] of Object.entries(PROVIDER_ENDPOINTS)) {
+    const provErrors = errors.filter((e) => endpoints.includes(e.provider));
+    const authErrs = provErrors.filter((e) => isAuthFetchError(e));
+    const fetchErrs = provErrors.filter((e) => !isAuthFetchError(e));
+    const anyEndpointSucceeded = endpoints.some((ep) => !provErrors.some((e) => e.provider === ep));
+    const describe = (errs) => errs.map((e) => `${e.provider}: ${e.message}`).join('; ');
+    if (authErrs.length || anyEndpointSucceeded) {
+      checks.push({
+        key: `affiliate:provider-auth:${provider}`,
+        label: `${provider} API login`,
+        verdict: authErrs.length ? 'critical' : 'pass',
+        reason: authErrs.length ? `${provider} credentials rejected (${describe(authErrs)})` : 'credentials accepted',
+        wantsPage: true,
+      });
+    }
+    const allTransient = fetchErrs.every((e) => isTransientFetchError(e));
+    let verdict = 'pass';
+    let reason = 'reachable';
+    if (fetchErrs.length && allTransient) {
+      verdict = 'warn';
+      reason = `${provider} unavailable after retry (${describe(fetchErrs)}); provider-side outage, not a credentials fault. Checks needing that data were skipped today.`;
+    } else if (fetchErrs.length) {
+      verdict = 'critical';
+      reason = `${provider} fetch failed with a non-outage, non-auth error (${describe(fetchErrs)}); likely a config or API change needing a code fix. Checks needing that data were skipped today.`;
+    }
     checks.push({
-      key: `affiliate:provider-auth:${provider}`,
-      label: `${provider} API`,
-      verdict: err ? 'critical' : 'pass',
-      reason: err ? `${provider} fetch failed: ${err.message}` : 'reachable',
-      wantsPage: true,
+      key: `affiliate:provider-fetch:${provider}`,
+      label: `${provider} API reachable`,
+      verdict,
+      reason,
+      wantsPage: false,
     });
   }
   const impactDead = errors.some((e) => e.provider === 'impact');
@@ -304,15 +357,18 @@ function runChecks({ impactDaily, posthogDaily, actions, errors, asOf }) {
     });
   }
 
-  // 9. Payout economics.
-  const payout = checkPayoutAnomaly({ actions, asOf });
-  checks.push({
-    key: 'affiliate:payout-anomaly',
-    label: 'Payout economics',
-    verdict: payout.verdict === 'anomalous' ? 'warn' : 'pass',
-    reason: payout.reason,
-    wantsPage: false,
-  });
+  // 9. Payout economics. Skipped when the actions fetch failed: judging an
+  //    empty list would read as a healthy "0 zero-payout" pass.
+  if (!errors.some((e) => e.provider === 'impact-actions')) {
+    const payout = checkPayoutAnomaly({ actions, asOf });
+    checks.push({
+      key: 'affiliate:payout-anomaly',
+      label: 'Payout economics',
+      verdict: payout.verdict === 'anomalous' ? 'warn' : 'pass',
+      reason: payout.reason,
+      wantsPage: false,
+    });
+  }
 
   return checks;
 }
@@ -414,10 +470,12 @@ if (require.main === module) {
 
 module.exports = {
   runChecks,
+  routeResults,
   isShadow,
   SHADOW_UNTIL,
   LOOKBACK_DAYS,
   isTransientFetchError,
+  isAuthFetchError,
   fetchWithOneRetry,
   MONITOR_FETCH_TIMEOUT_MS,
 };

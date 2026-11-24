@@ -14,7 +14,7 @@ const {
   findRepeatBuyers,
   baselineComparison,
 } = require('./affiliate-anomaly.js');
-const { runChecks, isTransientFetchError, fetchWithOneRetry } = require('../check-affiliate-health.js');
+const { runChecks, isTransientFetchError, isAuthFetchError, fetchWithOneRetry } = require('../check-affiliate-health.js');
 
 // ── REAL July–August 2026 data (the incident that motivated this monitor) ──
 // Impact partner_performance_by_day + PostHog daily ticket_click (real-users
@@ -245,6 +245,116 @@ test('SYNTHETIC: missing provider credentials surface as critical auth checks, n
   assert.equal(auth.verdict, 'critical');
   // and no conversion checks pretend to have judged missing data
   assert.ok(!checks.some((c) => c.key === 'affiliate:conversions-flatline'));
+});
+
+// BRO-8220: Impact's report endpoint returned 503 (after the retry) on
+// 2026-11-22 and the monitor emailed "Re-authorize the Impact API
+// credentials". A provider-side outage must not page as an auth fault, and
+// must live on its OWN condition key: the router mutes repeats by key alone,
+// so an outage warn on the auth key would silence a real revocation page.
+const byKey = (checks, key) => checks.find((c) => c.key === key);
+
+test('REAL 2026-11-22: provider outage is a digest warn on its own key, never an auth page', () => {
+  for (const message of [
+    'Impact performance-by-day error: HTTP 503',
+    'Impact performance-by-day error: HTTP 429',
+    'This operation was aborted',
+    'fetch failed',
+  ]) {
+    const checks = runChecks({
+      impactDaily: [], posthogDaily: REAL_POSTHOG_DAILY, actions: [],
+      errors: [{ provider: 'impact', message }],
+      asOf: '2026-08-02',
+    });
+    // actions endpoint succeeded, so the login is proven good
+    assert.equal(byKey(checks, 'affiliate:provider-auth:impact').verdict, 'pass', message);
+    const fetchCheck = byKey(checks, 'affiliate:provider-fetch:impact');
+    assert.equal(fetchCheck.verdict, 'warn', message);
+    assert.equal(fetchCheck.wantsPage, false, message);
+    assert.match(fetchCheck.reason, /not a credentials fault/);
+    assert.ok(!checks.some((c) => c.key === 'affiliate:conversions-flatline'), 'impact-dependent checks skipped');
+  }
+});
+
+test('every endpoint down: login state unknown, so no auth check is routed or resolved', () => {
+  const checks = runChecks({
+    impactDaily: [], posthogDaily: REAL_POSTHOG_DAILY, actions: [],
+    errors: [
+      { provider: 'impact', message: 'Impact performance-by-day error: HTTP 503' },
+      { provider: 'impact-actions', message: 'fetch failed' },
+    ],
+    asOf: '2026-08-02',
+  });
+  assert.equal(byKey(checks, 'affiliate:provider-auth:impact'), undefined);
+  const fetchCheck = byKey(checks, 'affiliate:provider-fetch:impact');
+  assert.equal(fetchCheck.verdict, 'warn');
+  assert.match(fetchCheck.reason, /impact: .*503.*impact-actions: fetch failed/);
+});
+
+test('non-outage, non-auth errors (404, broken body) are critical but never page', () => {
+  for (const message of ['Impact performance-by-day error: HTTP 404', 'Unexpected token < in JSON at position 0']) {
+    const checks = runChecks({
+      impactDaily: [], posthogDaily: REAL_POSTHOG_DAILY, actions: [],
+      errors: [{ provider: 'impact', message }], asOf: '2026-08-02',
+    });
+    const fetchCheck = byKey(checks, 'affiliate:provider-fetch:impact');
+    assert.equal(fetchCheck.verdict, 'critical', message);
+    assert.equal(fetchCheck.wantsPage, false, message);
+  }
+});
+
+test('posthog outage likewise warns on its own key; posthog login unknown when its only endpoint failed', () => {
+  const checks = runChecks({
+    impactDaily: REAL_IMPACT_DAILY, posthogDaily: [], actions: [],
+    errors: [{ provider: 'posthog', message: 'PostHog daily clicks error: HTTP 502' }],
+    asOf: '2026-08-02',
+  });
+  assert.equal(byKey(checks, 'affiliate:provider-auth:posthog'), undefined);
+  assert.equal(byKey(checks, 'affiliate:provider-fetch:posthog').verdict, 'warn');
+});
+
+test('auth-class errors page on the auth key; a concurrent outage is still reported on its own key', () => {
+  for (const errors of [
+    [{ provider: 'impact', message: 'Impact performance-by-day error: HTTP 401' }],
+    [{ provider: 'impact', message: 'Impact performance-by-day error: HTTP 403' }],
+    [{ provider: 'impact', message: 'Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)' }],
+    [{ provider: 'impact-actions', message: 'Impact API error: Unauthorized' }],
+  ]) {
+    const checks = runChecks({ impactDaily: [], posthogDaily: REAL_POSTHOG_DAILY, actions: [], errors, asOf: '2026-08-02' });
+    const auth = byKey(checks, 'affiliate:provider-auth:impact');
+    assert.equal(auth.verdict, 'critical', JSON.stringify(errors));
+    assert.equal(auth.wantsPage, true);
+    assert.equal(byKey(checks, 'affiliate:provider-fetch:impact').verdict, 'pass');
+  }
+  const mixed = runChecks({
+    impactDaily: [], posthogDaily: REAL_POSTHOG_DAILY, actions: [],
+    errors: [
+      { provider: 'impact', message: 'Impact performance-by-day error: HTTP 503' },
+      { provider: 'impact-actions', message: 'Impact API error: HTTP 401' },
+    ],
+    asOf: '2026-08-02',
+  });
+  assert.equal(byKey(mixed, 'affiliate:provider-auth:impact').verdict, 'critical');
+  assert.equal(byKey(mixed, 'affiliate:provider-fetch:impact').verdict, 'warn');
+});
+
+test('payout check is skipped, not passed, when the Impact actions fetch failed', () => {
+  const checks = runChecks({
+    impactDaily: REAL_IMPACT_DAILY, posthogDaily: REAL_POSTHOG_DAILY, actions: [],
+    errors: [{ provider: 'impact-actions', message: 'Impact API error: HTTP 503' }],
+    asOf: '2026-08-02',
+  });
+  assert.ok(!checks.some((c) => c.key === 'affiliate:payout-anomaly'));
+  assert.equal(byKey(checks, 'affiliate:provider-fetch:impact').verdict, 'warn');
+});
+
+test('network-level failures get the retry and never count as auth faults', () => {
+  for (const m of ['fetch failed', 'read ECONNRESET', 'getaddrinfo ENOTFOUND api.impact.com', 'socket hang up']) {
+    assert.equal(isTransientFetchError(new Error(m)), true, m);
+    assert.equal(isAuthFetchError(new Error(m)), false, m);
+  }
+  assert.equal(isAuthFetchError(new Error('Impact performance-by-day error: HTTP 503')), false);
+  assert.equal(isAuthFetchError(new Error('PostHog daily clicks error: HTTP 401')), true);
 });
 
 test('baselineComparison computes window-vs-trailing-baseline per-day deltas', () => {

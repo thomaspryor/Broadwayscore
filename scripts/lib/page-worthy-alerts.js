@@ -163,8 +163,8 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   'affiliate:zero-conversions', // 0 conversions for 7 straight days, beyond any observed variance
   'affiliate:conversions-flatline', // conversions silent beyond own baseline WHILE clicks flow
   'affiliate:handoff-break', // site clicks flowing but Impact stopped recording them
-  'affiliate:provider-auth:impact', // Impact API/credentials failing — monitor is blind
-  'affiliate:provider-auth:posthog', // PostHog API/credentials failing — monitor is blind
+  'affiliate:provider-auth:impact', // Impact credentials rejected/missing (outages use the non-paging affiliate:provider-fetch:* key, BRO-8220)
+  'affiliate:provider-auth:posthog', // PostHog credentials rejected/missing (outages: affiliate:provider-fetch:*, BRO-8220)
 
   // 'opening-night-sla:pages-stuck' was here (Category 2) and REMOVED
   // 2026-10-16 (BRO-5480, owner: "Should I even get emails about this at
