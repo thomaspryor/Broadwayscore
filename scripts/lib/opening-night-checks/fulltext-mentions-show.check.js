@@ -22,6 +22,7 @@ function run(show, context) {
   if (!mentionRe) {
     return { ok: true, severity: 'ok', message: 'Could not derive title patterns — skipping' };
   }
+  const headlineRe = buildMentionRegex(show, { titleWords: false });
 
   const shippedByUrl = new Set(
     (context.reviewsDoc[show.id] || []).map(r => r.url).filter(Boolean)
@@ -76,6 +77,24 @@ function run(show, context) {
     // and every accented-title review was reported as unmatched. Fold accents.
     if (mentionRe.test(haystack) || mentionRe.test(haystack.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) continue;
 
+    // BRO-8004: ingestion already honors this documented article review
+    // (evaluateShowMentionGuard). A body can describe the verified production
+    // without printing its title. Keep short-text warnings above and explicit
+    // contamination findings; a title-only clear cannot override either.
+    const cv = data.contentVerification || {};
+    const manualClear = typeof data.showNotMentionedManualClear === 'string'
+      && data.showNotMentionedManualClear.trim();
+    // gap-acceptance saves the fetched page's headline, never a URL-derived
+    // title. Recheck that it names this show before accepting the evidence.
+    const headline = typeof data.showIdentityHeadline === 'string' ? data.showIdentityHeadline : '';
+    const headlineMatch = headline && headlineRe
+      && headlineRe.test(headline.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+    if ((manualClear || headlineMatch)
+        && data.wrongShow !== true && data.wrongProduction !== true
+        && data.isRoundupArticle !== true
+        && cv.wrongShow !== true && cv.wrongProduction !== true
+        && cv.wrongArticle !== true) continue;
+
     // Also honor explicit textIssues signal written by the ingest pipeline
     const hasTitleMissingFlag = Array.isArray(data.textIssues)
       && data.textIssues.some(s => /show title not found/i.test(String(s)));
@@ -95,7 +114,7 @@ function run(show, context) {
     return {
       ok: true,
       severity: 'ok',
-      message: `All shipped source files mention show title at least once`,
+      message: `All shipped source files mention the show title or have documented attribution evidence`,
     };
   }
 

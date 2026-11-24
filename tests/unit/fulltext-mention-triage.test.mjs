@@ -101,6 +101,40 @@ test('the real detector adds hints without waiving mismatches, excerpts, or shor
   assert.equal(JSON.stringify(records), before);
 });
 
+test('documented title evidence is honored without hiding short or flagged reviews', t => {
+  const { dir, show, context, records } = corpus(t);
+  const file = path.join(dir, 'review-texts', show.id, '0.json');
+  context.reviewsDoc[show.id] = [records[0]];
+  const reason = 'Article checked against the current cast, director and publication date.';
+  const cases = [
+    [{ showNotMentionedManualClear: reason }, 'ok'],
+    [{ showIdentityHeadline: 'Synthetic Title review' }, 'ok'],
+    [{ showIdentityHeadline: 'A completely different play review' }, 'error'],
+    [{ showIdentityHeadline: 'Synthetic performances in a different play' }, 'error'],
+    [{ showIdentityHeadline: true }, 'error'],
+    [{ showIdentityHeadline: 'Synthetic Title review', wrongProduction: true }, 'error'],
+    [{}, 'error'],
+    [{ showNotMentionedManualClear: '' }, 'error'],
+    [{ showNotMentionedManualClear: '   ' }, 'error'],
+    [{ showNotMentionedManualClear: true }, 'error'],
+    [{ showNotMentionedManualClear: reason, wrongShow: true }, 'error'],
+    [{ showNotMentionedManualClear: reason, wrongProduction: true }, 'error'],
+    [{ showNotMentionedManualClear: reason, isRoundupArticle: true }, 'error'],
+    [{ showNotMentionedManualClear: reason, contentVerification: { wrongProduction: true } }, 'error'],
+    [{ showNotMentionedManualClear: reason, contentVerification: { wrongShow: true } }, 'error'],
+    [{ showNotMentionedManualClear: reason, contentVerification: { wrongArticle: true } }, 'error'],
+    [{ showIdentityHeadline: 'Synthetic Title review', fullText: 'Paywall' }, 'warning'],
+    [{ showNotMentionedManualClear: reason, fullText: 'Paywall' }, 'warning'],
+  ];
+  for (const [fields, severity] of cases) {
+    fs.writeFileSync(file, JSON.stringify({ ...records[0], ...fields }));
+    const result = check.run(show, context);
+    assert.equal(result.severity, severity, JSON.stringify(fields));
+    // Public check output must never expose the private verification note.
+    assert.ok(!JSON.stringify(result).includes(reason));
+  }
+});
+
 test('the existing sweep serializes outlet plans and preserves its failure exit', t => {
   const { dir } = corpus(t);
   const logs = [];
