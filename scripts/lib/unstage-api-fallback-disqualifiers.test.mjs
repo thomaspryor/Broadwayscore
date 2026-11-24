@@ -4,17 +4,19 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const { makeTmpDir } = createRequire(import.meta.url)('./tmpdir-for-tests.js');
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '..', '..');
 const helper = path.join(here, 'unstage-api-fallback-disqualifiers.js');
 
-test('helper unstages disqualifying audit paths and keeps fallback-safe ledgers staged', () => {
-  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'unstage-'));
+test('helper unstages disqualifying audit paths and keeps fallback-safe ledgers staged', (t) => {
+  const d = makeTmpDir(t, 'unstage-');
   const g = (...a) => execFileSync('git', a, { cwd: d, encoding: 'utf8' });
   g('init', '-q');
   fs.mkdirSync(path.join(d, 'data/audit/validation'), { recursive: true });
