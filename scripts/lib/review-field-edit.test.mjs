@@ -1192,4 +1192,12 @@ test('url repair: a TB dated page held by another show may move to the same-day 
   put('the-hairy-ape-irish-repertory-theatre-off-broadway-2026', 'talkinbroadway--marc-miller.json', { outletId: 'talkinbroadway', criticName: 'Marc Miller', url: page });
   const res = edit(page.replace('.html', 'b.html'));
   assert.equal(res.ok, true, res.reason);
+  // a human url lock on this file, or a third show already on the destination page, refuses the move
+  put('falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json', { showId: 'falls-for-jodie-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Michael Dale', url: page, urlVerified: true });
+  assert.equal(edit(page.replace('.html', 'b.html')).ok, false, 'human url lock');
+  put('falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json', { showId: 'falls-for-jodie-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Michael Dale', url: page });
+  put('some-third-show-off-broadway-2026', 'talkinbroadway--x.json', { outletId: 'talkinbroadway', url: page.replace('.html', 'b.html') });
+  assert.equal(edit(page.replace('.html', 'b.html')).ok, false, 'destination already held by a third show');
+  // padded and unpadded months are separate pages
+  assert.equal(isTbSameDaySuffixRepair('https://www.talkinbroadway.com/page/ob/09_29_26.html', 'https://www.talkinbroadway.com/page/ob/9_29_26a.html'), false);
 });

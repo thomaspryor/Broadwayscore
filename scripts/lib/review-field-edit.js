@@ -391,7 +391,13 @@ const FIELD_VALUE_CHECKS = {
       || ctx.currentUrlOwnedByOtherCritic === true
       || ctx.currentUrlOwnedByOtherShow === true
       // BRO-8209: a Talkin' Broadway dated page two shows both hold; only the same-day a/b/c repair is allowed.
-      || (ctx.currentUrlSharedTbDatedPage === true && require('./review-slot-guards').isTbSameDaySuffixRepair(current, v))
+      // The executor cannot tell WHICH of the two shows' files is wrong (the plan carries that evidence, e.g. TB's own
+      // index), so the rule is closed around it: no human url lock on this file, and no third show already holds the
+      // destination page (a new collision).
+      || (ctx.currentUrlSharedTbDatedPage === true
+        && !((record.urlVerified === true && !record.urlVerifiedAuto) || record.urlManualOverride)
+        && require('./review-slot-guards').isTbSameDaySuffixRepair(current, v)
+        && !require('./review-slot-guards').tbDatedPageHeldByOtherShow({ reviewTextsDir: ctx.reviewTextsDir, folder: ctx.folder, url: v }))
       || unverifiedSearchUrl
       || verifiedNonReviewSameHost(record, v);
     if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, another show\'s review, or an unverified legacy web-search url)';
@@ -827,7 +833,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
   // url edits (BRO-4430) may repair a url that a sibling file holds for a
   // different named critic; that needs the show dir, so it is computed here.
-  const ctx = { folder: path.basename(path.dirname(abs)), file: path.basename(abs) };
+  const ctx = { folder: path.basename(path.dirname(abs)), file: path.basename(abs), reviewTextsDir };
   if (action.field === 'url' && record.url) {
     const { urlOwnedByOtherCritic } = require('./review-slot-guards');
     ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({

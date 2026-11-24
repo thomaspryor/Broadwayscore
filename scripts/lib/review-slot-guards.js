@@ -273,7 +273,8 @@ const TB_DATED_PAGE_RE = /^https?:\/\/(?:www\.)?talkinbroadway\.com\/page\/ob\/(
 
 function tbDatedPage(url) {
   const m = TB_DATED_PAGE_RE.exec(String(url || '').trim());
-  return m ? { date: `${Number(m[1])}_${m[2]}_${m[3]}`, suffix: m[4].toLowerCase() } : null;
+  // The month keeps its written form: 09_29_26 and 9_29_26 are separate pages in tb-direct-url's candidate list.
+  return m ? { date: `${m[1]}_${m[2]}_${m[3]}`, suffix: m[4].toLowerCase() } : null;
 }
 
 /**
@@ -298,6 +299,9 @@ function tbDatedPageHeldByOtherShow({ reviewTextsDir, folder, url, fs: fsImpl } 
       const held = tbDatedPage(data && data.url);
       if (!held || held.date !== want.date || held.suffix !== want.suffix) continue;
       if (data.duplicateOf || data.wrongAttribution === true || data.wrongShow === true) continue;
+      // A holder that is itself a non-review, a round-up or an uncleared wrong-production row is no proof of ownership.
+      if (data.isRoundupArticle === true || data.nonReview === true || data.isNonReview === true) continue;
+      if (data.wrongProduction === true && !data.wrongProductionManualClear && !data.wrongProductionOverride) continue;
       return { showId, filename: file };
     }
   }
