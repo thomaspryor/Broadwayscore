@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8256",
   "planId": "89d7af7a-53b3-4d59-9198-f161d2276599",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T16:18:04.749Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "a-body-of-water-regional-2026/stage-raw--steven-leigh-morris.json: wrongProductionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T16:27:32.604Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-body-of-water-regional-2026/stage-raw--steven-leigh-morris.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-body-of-water-regional-2026/stage-raw--steven-leigh-morris.json wrongProductionReason: null -> \"Review is of At the Very Bottom of a Body of Water at The Theatre at Boston Court, 70 N. Mentor Ave., Pasadena CA, a different play and city (gemini+openai city-hub audit BRO-8256)\""
+    }
+  ],
+  "executedIn": "ci"
 }
