@@ -178,7 +178,7 @@ for mode in ci local off ours; do
   out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS="$ga" PUSH_AUTOSTASH_REGENERATED_QUIET="$quiet" PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
   if [ "$rc" -ne 0 ]; then echo "FAIL[9 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
   elif ! grep -q t-upstream "$TMP/$n-work/gen/a.json" || ! grep -q t-upstream "$TMP/$n-work/gen/b.json"; then echo "FAIL[9 $mode]: upstream copy not on disk"; fail=1
-  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*is a regenerated snapshot' <<<"$out")" != "2" ]; }; then
+  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*is a regenerated or latest-wins snapshot' <<<"$out")" != "2" ]; }; then
     echo "FAIL[9 ci]: regenerated conflict should be one notice per file, no ledger row/error"; echo "$out" | grep autostash; fail=1
   elif [ "$mode" != ci ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
     echo "FAIL[9 $mode]: this conflict must still be recorded"; fail=1
