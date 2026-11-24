@@ -122,4 +122,23 @@ function suspiciousInheritedYear(show, currentYear, opts = {}) {
     && DATE_CHECKED_STATUSES.has(show.status);
 }
 
-module.exports = { previewsAfterOpening, excessivePreviewGap, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };
+/**
+ * BRO-8234: would applying these enricher changes leave the show failing the
+ * validate-data.js date gates (previews after opening, or a >365d previews gap)?
+ * The West End enricher matched a closed 2014 show to a 2027 listing and wrote
+ * openingDate 2027-07-01; validate-data then failed every scheduled run (and
+ * Check Cron Health went red on the stale cron). The enricher vetoes such
+ * changes instead of writing them. Only judges changes that touch a date field.
+ * @param {object} show
+ * @param {{field:string,new:any}[]} changes
+ * @returns {boolean}
+ */
+function changesBreakDateIntegrity(show, changes) {
+  const dateChanges = (changes || []).filter((c) => c && (c.field === 'openingDate' || c.field === 'previewsStartDate'));
+  if (!show || dateChanges.length === 0) return false;
+  const projected = { ...show };
+  for (const c of dateChanges) projected[c.field] = c.new;
+  return previewsAfterOpening(projected) || excessivePreviewGap(projected);
+}
+
+module.exports = { previewsAfterOpening, excessivePreviewGap, changesBreakDateIntegrity, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear } = require('./show-date-integrity.js');
+const { changesBreakDateIntegrity, previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear } = require('./show-date-integrity.js');
 
 test('excessivePreviewGap: flags previews implausibly far before opening (wrong-production previews)', () => {
   // sunset-baby: 2013 original's previews on the 2024 revival.
@@ -92,4 +92,27 @@ test('longPreviewGap warns on a 2024+ opening with >120 days of previews', () =>
   assert.equal(_lpg({ previewsStartDate: '2019-01-01', openingDate: '2019-08-01' }), false); // pre-2024: out of scope
   assert.equal(_lpg({ previewsStartDate: '2026-11-06', openingDate: '2026-11-06' }), false);
   assert.equal(_lpg({ openingDate: '2026-11-06' }), false);
+});
+
+test('changesBreakDateIntegrity (BRO-8234): vetoes the wrong-production enricher writes that failed validate-data', () => {
+  // assassins-off-west-end-2014 matched to a 2027 listing.
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: '2014-11-21', openingDate: '2014-12-01' },
+    [{ field: 'openingDate', old: '2014-12-01', new: '2027-07-01' }]), true);
+  // west-side-story-west-end-2026: previews 2026-11-12, opening null -> 2027-11-25 (378d).
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: '2026-11-12', openingDate: null },
+    [{ field: 'openingDate', old: null, new: '2027-11-25' }]), true);
+  // previews written after the existing opening.
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: null, openingDate: '2026-05-01' },
+    [{ field: 'previewsStartDate', old: null, new: '2026-06-01' }]), true);
+  // sane press night passes; non-date changes are never judged.
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: '2026-11-12', openingDate: null },
+    [{ field: 'openingDate', old: null, new: '2026-12-02' }]), false);
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: '2014-11-21', openingDate: '2027-07-01' },
+    [{ field: 'openingDateSource', old: null, new: 'theatremonkey' }]), false);
+  assert.equal(changesBreakDateIntegrity(null, []), false);
 });

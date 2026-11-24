@@ -38,6 +38,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
+const { changesBreakDateIntegrity } = require('./lib/show-date-integrity');
 const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
 const { crossCheckOpeningDate, mergePressNightChanges, westEndOpeningSource } = require('./lib/press-night-cross-check');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -806,7 +807,18 @@ async function main() {
       }
     }
 
-    const checkedChanges = mergePressNightChanges(show, isCandidate ? showChanges : [], pressCheck);
+    let checkedChanges = mergePressNightChanges(show, isCandidate ? showChanges : [], pressCheck);
+    // BRO-8234: never write dates that validate-data.js would reject (wrong-production
+    // match, e.g. a 2014 show given a 2027 opening). Report as a discrepancy instead.
+    if (changesBreakDateIntegrity(show, checkedChanges)) {
+      console.warn(`  VETO ${show.title}: ${checkedChanges.filter(c => c.field === 'openingDate' || c.field === 'previewsStartDate').map(c => `${c.field} ${c.old} -> ${c.new}`).join(', ')} would fail the date-integrity gates (likely a wrong-production match)`);
+      for (const c of checkedChanges) {
+        if (c.field === 'openingDate' || c.field === 'previewsStartDate') {
+          showDiscrepancies.push({ field: c.field, current: c.old, external: c.new, source: entry.source, reason: 'vetoed: breaks date-integrity gates' });
+        }
+      }
+      checkedChanges = [];
+    }
     if (checkedChanges.length > 0) {
       changes.push({ show: show.title, slug: show.slug, id: show.id, changes: checkedChanges });
     }
