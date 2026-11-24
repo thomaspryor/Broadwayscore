@@ -253,6 +253,41 @@ function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false, o
 // I'm Already Kicking Myself About Missing Sleuth"). A host here still needs the show's title in the headline or slug.
 const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'offoffonline.com', 'theaterscene.net', 'theaterlife.com', 'thefrontrowcenter.com', 'pagesonstages.com', 'thekomisarscoop.com'];
 
+// Outlets whose review headlines and slugs often carry no review word, but whose article pages tag every review. Vulture
+// titles reviews editorially ("God Help Us, Every One: It's a Wonderful Life on Broadway", its-a-wonderful-life-on-
+// broadway-god-help-us-every-one.html) and tags them "theater review" in article:tag / parsely-tags; its news pieces carry
+// no such tag (checked 2026-11-24 on the IAWL review, a Seven Guitars review and two Broadway news stories). 47 of 138
+// Vulture reviews in reviews.json since 2025-06 have no review word in the URL. The lane refused the IAWL review
+// not-review-like for 2.5 hours on 2026-11-23, though Vulture's theater index listed it. A section-index find from one of
+// these hosts with no review signal (from the section index, Google News or SERP, all source 'outlet-index') is no longer
+// refused outright: its page is fetched, even when a feed already dated it, and must carry the review tag. Use
+// REVIEW_WITHOUT_WORD_HOSTS instead only for an outlet that publishes nothing on a show but its review.
+const PAGE_TAGGED_REVIEW_HOSTS = ['vulture.com'];
+// Whole tags only, and never a bare "review": a page tagged "movie review" or a generic "review" keyword is not a theater review.
+const PAGE_REVIEW_TAG = /^(?:theater review|theatre review|featuretype:review)$/i;
+const decodeTagEntities = (t) => t.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&');
+
+/** True when the article page's own tag metadata (article:tag, parsely-tags, keywords) names it a review. */
+function pageTagsSayReview(html) {
+  if (typeof html !== 'string' || !html) return false;
+  const lists = [];
+  const metaRe = /<meta\b[^>]*>/gi;
+  let m;
+  while ((m = metaRe.exec(html))) {
+    const tag = m[0];
+    if (!/(?:name|property)\s*=\s*["'](?:article:tag|parsely-tags|keywords|news_keywords)["']/i.test(tag)) continue;
+    const content = /(?:^|\s)content\s*=\s*(?:"([^"]*)"|'([^']*)')/i.exec(tag);
+    if (content) lists.push(content[1] ?? content[2]);
+  }
+  return lists.some((list) => decodeTagEntities(list).split(',').some((t) => PAGE_REVIEW_TAG.test(t.replace(/\s+/g, ' ').trim())));
+}
+
+/** An outlet find whose page tags decide whether it is a review, because its host titles reviews with no review word. */
+function pageTagDecides(c) {
+  return !!c && c.source === 'outlet-index' && hostMatches(hostOf(c.url), PAGE_TAGGED_REVIEW_HOSTS);
+}
+
 /** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
 function hostSignalsReview(url, title, showTitle) {
   if (!showTitle || !hostMatches(hostOf(url), REVIEW_WITHOUT_WORD_HOSTS)) return false;
@@ -1379,7 +1414,7 @@ function withTimeout(fetchText, ms, remainingMs = () => Infinity, { unref = fals
 // Final rejections are remembered so they are not re-fetched every 2 minutes; a dateless candidate gets a few tries.
 // Per-URL claims a source can vouch for; collect() keeps them from every source that saw the URL.
 const TRUST_FLAGS = ['vettedOutlet', 'outletListed', 'reviewSignalGiven'];
-const FINAL_REASONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'not-review-like', 'unknown-outlet-host', 'wrapped-url', 'unknown-source', 'not-cited-by-an-aggregator']);
+const FINAL_REASONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'not-review-like', 'page-not-tagged-review', 'unknown-outlet-host', 'wrapped-url', 'unknown-source', 'not-cited-by-an-aggregator']);
 const AGGREGATOR_FINAL = new Set(['non-review-path', 'non-review-slug', 'homepage', 'wrapped-url', 'unknown-outlet-host']);
 // Date checks still running when a pass ends, kept on the memo object between passes (never saved: saveMemo writes only
 // `rejected`). Talkin' Broadway answers a date check in 35-40 s through Bright Data; with the pass cut at 15 s, or at the
@@ -1578,7 +1613,10 @@ async function runDiscoveryPass({
       // And a 'not-review-like' rejection, made for a sighting with no review signal (a Talkin' Broadway link on an index
       // page whose anchor text is the bare title), is judged again when this sighting has one (the TB named-page probe sets
       // reviewSignalGiven). Other Desert Cities, p15 replay: the probe found the review every pass and the memo refused it.
-      const reviewLikeNow = memoed && memoed.reason === 'not-review-like' && c.source !== 'aggregator' && looksReviewLike(c, show);
+      // A page-tagged host's find refused not-review-like (by an earlier deploy's code) gets its one page check. Its own
+      // verdict is 'page-not-tagged-review', which is final, so a news story is fetched once a night, not every pass.
+      const reviewLikeNow = memoed && c.source !== 'aggregator' && ((memoed.reason === 'not-review-like' && (looksReviewLike(c, show) || pageTagDecides(c)))
+        || (memoed.reason === 'page-not-tagged-review' && looksReviewLike(c, show)));
       const rejudge = citedNow || vettedNow || reviewLikeNow;
       const stands = memoed && !rejudge && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
       const tries = memoed && (memoed.reason === 'date-check-failed' ? dateFailsOf(memoed) : memoed.attempts);
@@ -1594,10 +1632,11 @@ async function runDiscoveryPass({
         // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
         if (!resolveOutletFromUrl(c.url)) { unknownHosts.add(hostOf(c.url)); reject(c, key, 'unknown-outlet-host'); continue; }
       } else if (!looksReviewLike(c, show)) {
-        reject(c, key, 'not-review-like'); continue;
+        if (!pageTagDecides(c)) { reject(c, key, 'not-review-like'); continue; }
+        c.pageReviewTagRequired = true; // judged on the date-check page below
       }
 
-      if (c.source === 'outlet-index' && !c.publishDate && c.needsDate) {
+      if ((c.source === 'outlet-index' && !c.publishDate && c.needsDate) || c.pageReviewTagRequired) {
         let check = inFlight.get(key);
         pending.set(key, c); // until its date is read or it is given up, also when the date-check cap defers it
         if (!check) {
@@ -1670,6 +1709,16 @@ async function runDiscoveryPass({
             deferredDateChecks.push(c.url);
             continue;
           }
+          if (c.pageReviewTagRequired) {
+            // A page that does not date itself may be a challenge page, which has no tags either: a strike, not a verdict.
+            // BRO-7282: an incomplete direct-only response is retried with the full chain, no strike.
+            if (!pageDated && page && page.laneDirectOnly) { deferredDateChecks.push(c.url); continue; }
+            if (!pageDated) { dateFail(key); deferredDateChecks.push(c.url); continue; }
+            // The tags must be this article's: a redirect to another page (a section front, a soft 404) is no verdict.
+            const landed = page && typeof page === 'object' && page.finalUrl;
+            if (landed && canonicalUrl(landed) !== key) { dateFail(key); deferredDateChecks.push(c.url); continue; }
+            if (!pageTagsSayReview(html)) { reject(c, key, 'page-not-tagged-review'); continue; }
+          }
           // Only a page that dates itself is carried for scoring: one dated by the index's fallback day may be a challenge
           // or interstitial page (BRO-6872 review).
           judge(c, key, publishDate, pageDated ? html : undefined);
@@ -1736,7 +1785,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, roundupPageDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
-  nonReviewReason, nearMissFind, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, nearMissFind, SECTION_INDEX_PARSERS, pageTagsSayReview, pageTagDecides, PAGE_TAGGED_REVIEW_HOSTS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, LATE_DATE_CHECK_STARTS, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };
