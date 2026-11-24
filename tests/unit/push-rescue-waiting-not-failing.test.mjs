@@ -21,9 +21,12 @@ test('cliPrune never sets a failing exit code for waiting branches', () => {
   assert.ok(!/process\.exitCode\s*=\s*1/.test(prune), 'cliPrune must not fail the run for a branch waiting on a person');
 });
 
-test('workflow reports waiting branches through a non-failing notify step', () => {
+test('workflow reports waiting branches through a parked Linear card, not notify-failure', () => {
   assert.match(wf, /id: prune/);
   assert.match(wf, /steps\.prune\.outputs\.waiting/);
   const step = wf.slice(wf.indexOf('Report branches waiting for a person'));
-  assert.match(step.slice(0, 700), /notify-failure/);
+  const body = step.slice(0, 1800);
+  assert.match(body, /linear-brain\.js create/);
+  assert.match(body, /LINEAR_API_KEY/);
+  assert.doesNotMatch(body, /notify-failure/, 'notify-failure only delivers for severity=critical; a warning there is silent');
 });
