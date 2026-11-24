@@ -26,7 +26,10 @@ on:
   workflow_dispatch: # Manual trigger — "ship NOW" path (opening night, broken page)
     inputs:
       source:
-        description: 'Who asked. Urgent sources (should-deploy-gate.js URGENT_SOURCES): urgent / rebuild-fast / opening-night / opening-night-reveal / lane-press-night / press-night-watchdog. urgent, lane-press-night and press-night-watchdog always ship now; the others ship now only when the live..HEAD range holds a visitor-visible reveal (deploy-reveal.js, BRO-8236/8261), else they are routine. Anything else, including empty and "land" (BRO-5670), is routine (BRO-8028): judged like a scheduled tick and held until the live deploy is 45 min old unless src/config/dependency files changed.'
+        # Urgent sources: should-deploy-gate.js URGENT_SOURCES. Always-ship subset:
+        # ALWAYS_SHIP_SOURCES. The rest ship now only on a visitor-visible reveal
+        # in live..HEAD (deploy-reveal.js, BRO-8236/8261).
+        description: 'Who asked. Always ship now: urgent / lane-press-night / press-night-watchdog. Ship now only if live..HEAD has a visible reveal, else routine: rebuild-fast / opening-night / opening-night-reveal. Anything else, including empty and "land" (BRO-5670), is routine (BRO-8028): held until the live deploy is 45 min old unless src/config/dependency files changed.'
         required: false
         default: ''
       wait_for_run:
