@@ -1353,6 +1353,8 @@ const showById = {};
 for (const s of showsData.shows) {
   showById[s.id] = s;
 }
+// BRO-8229: allowCrossMarket/allowEarlyDate must never un-flag a strict class-A leak.
+const isClassAContaminated = require('./lib/cross-market-contamination').makeClassAVeto(showsData.shows, parseDate);
 
 // priorRuns as every pre-window guard call in this file must see them
 // (BRO-5333): an inheritReviews:false run that has its own sibling entry no
@@ -3855,7 +3857,7 @@ showDirs.forEach(showId => {
       // OR contentVerification confirms wrongProduction with high confidence, keep the flag. Cross-market
       // contamination flags set by audit-review-contamination.js were getting stripped here, leaving
       // contamination unflagged on the next rebuild. See scripts/lib/wrong-production-autoclear.js.
-      if (shouldAutoClearWrongProduction(data)) {
+      if (shouldAutoClearWrongProduction(data, { classA: isClassAContaminated(data, showById[showId]) })) {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';

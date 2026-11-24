@@ -907,6 +907,13 @@ function listingPatternsKey(guards) {
     + String(lib.listingPageUrlReason || '');
 }
 
+// BRO-8229: mirrors rebuild-all-reviews.js's class-A veto on the allowCrossMarket auto-clear.
+let _classAVeto = null;
+function classAVeto() {
+  if (!_classAVeto) _classAVeto = require('./lib/cross-market-contamination').makeClassAVeto(ALL_SHOWS_RAW || [], parseDate);
+  return _classAVeto;
+}
+
 function decideInclusion(review, show, guards, filePath) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
@@ -1090,7 +1097,7 @@ function decideInclusion(review, show, guards, filePath) {
   }
 
   if (review.wrongProduction === true && typeof autoClear.shouldAutoClearWrongProduction === 'function') {
-    wrongProductionCleared = wrongProductionCleared || autoClear.shouldAutoClearWrongProduction(review);
+    wrongProductionCleared = wrongProductionCleared || autoClear.shouldAutoClearWrongProduction(review, { classA: classAVeto()(review, show) });
   }
   // UK/dual-market auto-clear (task #1190) — mirrors rebuild-all-reviews.js:2608-2687's
   // ctx computation exactly, including its outer short-circuit (isStructuralFlag ||

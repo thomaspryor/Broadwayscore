@@ -110,7 +110,30 @@ function classAApplies(show) {
   return !!show && show.category !== 'tour' && show.market !== 'tour';
 }
 
+/**
+ * Build a `(reviewData, show) => boolean` class-A check for callers that decide
+ * per file whether a human-approval bypass (allowCrossMarket / allowEarlyDate)
+ * may strip a wrongProduction flag (BRO-8229). Sibling openings are computed
+ * once, lazily, from `shows`. `_auditAllowCrossMarket` (the audit's own manual
+ * allowlist) opts a file out, exactly as the audit and the write guard do.
+ *
+ * @param {Array<object>} shows  shows.json entries
+ * @param {(v:*)=>*} parseDate   date parser
+ * @returns {(data:object, show:object)=>boolean}
+ */
+function makeClassAVeto(shows, parseDate) {
+  let siblings = null;
+  return function isClassAContaminated(data, show) {
+    if (!data || !show || data._auditAllowCrossMarket || !data.publishDate || !classAApplies(show)) return false;
+    if (!siblings) siblings = buildSiblingOpeningsMap(shows, parseDate);
+    const openings = siblings.get(show.id);
+    if (!openings || !openings.length) return false;
+    return classifyClassAContamination(parseDate(data.publishDate), parseDate(show.openingDate), openings).isClassA;
+  };
+}
+
 module.exports = {
+  makeClassAVeto,
   classAApplies,
   classifyClassAContamination,
   normalizeShowTitle,

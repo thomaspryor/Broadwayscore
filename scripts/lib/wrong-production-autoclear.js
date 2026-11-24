@@ -679,11 +679,19 @@ function isWrongShowHeld(data) {
  *     safe to clear)
  *
  * @param {object} data - The review JSON object
+ * @param {{classA?: boolean}} [ctx] - classA: the file is a strict Category-A
+ *   cross-market leak (cross-market-contamination.js makeClassAVeto). A bypass
+ *   flag is a human approving "this review is OK despite an early/cross-market
+ *   date"; it was never approval to show a sibling run's review (BRO-8229:
+ *   a-christmas-carol-west-end-2026 kept a 2025 Old Vic review live because an
+ *   allowCrossMarket rescue made every rebuild strip its flag, and the
+ *   zero-tolerance audit gate reddened main and filed a card each time).
  * @returns {boolean} - true if it's safe to delete wrongProduction
  */
-function shouldAutoClearWrongProduction(data) {
+function shouldAutoClearWrongProduction(data, ctx = {}) {
   if (data.wrongProduction !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
+  if (ctx && ctx.classA === true) return false;
   const hasManualReason = !!data.wrongProductionReason
     && !(data.allowEarlyDate && isDateOnlyAutoReason(data.wrongProductionReason));
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true

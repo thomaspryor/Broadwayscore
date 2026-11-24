@@ -218,7 +218,7 @@ test('BRO-720 wiring: every date-based wrongProduction writer is behind an allow
   assert.ok(/if \(d\.allowEarlyDate\) continue;[\s\S]{0,9000}\[PRE-OPENING\][\s\S]{0,6000}\[DATELESS-REVIVAL\]/.test(src));
   // inclusion-pass pre-opening guard
   assert.ok(src.includes('data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId'));
-  assert.ok(src.includes('shouldAutoClearWrongProduction(data)'));
+  assert.ok(src.includes('shouldAutoClearWrongProduction(data, { classA: isClassAContaminated(data, showById[showId]) })'));
 });
 
 test('BRO-720: ingest anticipatory gate and rebuild clear agree on allowEarlyDate (no re-flag loop)', () => {
