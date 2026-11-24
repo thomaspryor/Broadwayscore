@@ -806,9 +806,21 @@
     "ragtime-regional-2023/new-city-stage--dennis-polkow.json",
     "now-you-see-me-live-2026/culturesauce--unknown.json",
     "now-you-see-me-live-2026/washpost--unknown.json",
-    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -1181,7 +1193,8 @@
       "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json",
       "ragtime-regional-2023/new-city-stage--dennis-polkow.json",
       "now-you-see-me-live-2026/culturesauce--unknown.json",
-      "now-you-see-me-live-2026/washpost--unknown.json"
+      "now-you-see-me-live-2026/washpost--unknown.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -1195,7 +1208,7 @@
     "archive": []
   },
   "startTime": "2026-11-24T00:20:31.199Z",
-  "lastProcessed": "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+  "lastProcessed": "the-fantasticks-2026/bobs-theater-blog--unknown.json",
   "log": [
     {
       "t": "2026-11-24T00:38:45.344Z",
@@ -1716,6 +1729,72 @@
       "t": "2026-11-24T10:59:01.782Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T11:13:46.347Z",
+      "event": "bb-session",
+      "session": "eb8d88ae",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T11:13:46.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T11:15:13.269Z",
+      "event": "bb-session",
+      "session": "1dbfc649",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T11:15:13.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T11:15:30.004Z",
+      "event": "bb-session",
+      "session": "968e3bbc",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T11:15:30.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T11:18:09.672Z",
+      "event": "bb-session",
+      "session": "ca3b5ebc",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T11:18:09.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T11:18:26.186Z",
+      "event": "bb-session",
+      "session": "8d0f4ced",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T11:18:26.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T11:18:29.749Z",
+      "event": "bb-session",
+      "session": "782a8669",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T11:18:30.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
