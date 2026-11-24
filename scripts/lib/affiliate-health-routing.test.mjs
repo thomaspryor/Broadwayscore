@@ -24,7 +24,7 @@ function loadWithFakes() {
   fs.writeFileSync(process.env.ALERT_LEDGER_PATH, JSON.stringify({ conditions: {} }));
   process.env.ALERT_DIGEST_QUEUE_PATH = path.join(tmp, 'alert-digest-queue.json');
   process.env.ALERT_ATTEMPTS_LOG_PATH = path.join(tmp, 'alert-router-attempts.jsonl');
-  process.env.START_NOW_ROUTER_DISABLED = '1';
+  process.env.START_NOW_ROUTER_DISABLED = 'true';
   delete process.env.GITHUB_ACTIONS;
   delete process.env.CI;
   const sent = [];
