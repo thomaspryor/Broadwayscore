@@ -1,45 +1,21 @@
 {
-  "updatedAt": "2026-11-24T05:18:23.489Z",
-  "processed": 637,
-  "failed": 305,
-  "successRate": "67.6%",
+  "updatedAt": "2026-11-24T05:53:06.819Z",
+  "processed": 734,
+  "failed": 338,
+  "successRate": "68.5%",
   "tierBreakdown": {
-    "playwright": 299,
+    "playwright": 336,
     "amp": 1,
-    "browserbase": 17,
+    "browserbase": 21,
     "directCookies": 0,
-    "scrapingdog": 35,
-    "scrapingbee": 46,
+    "scrapingdog": 37,
+    "scrapingbee": 67,
     "brightdata": 11,
     "archiveToday": 0,
-    "archive": 229
+    "archive": 266
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-11-24T02:55:46.500Z",
-      "event": "bb-session",
-      "session": "b8982912",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
-    },
-    {
-      "t": "2026-11-24T03:25:58.053Z",
-      "event": "bb-session",
-      "session": "5fb3af49",
-      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
-    },
-    {
-      "t": "2026-11-24T03:34:58.845Z",
-      "event": "bb-session",
-      "session": "f063e9d7",
-      "url": "https://www.the-tls.com/arts/theatre/twelfth-night-royal-shakespeare-theatre-ora"
-    },
-    {
-      "t": "2026-11-24T03:38:08.847Z",
-      "event": "bb-session",
-      "session": "47e8a970",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/beyonce-kelly-rowland"
-    },
     {
       "t": "2026-11-24T03:43:59.460Z",
       "event": "bb-session",
@@ -127,6 +103,28 @@
       "t": "2026-11-24T04:57:50.220Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T05:27:33.915Z",
+      "event": "bb-session",
+      "session": "8de181ad",
+      "url": "https://www.nytimes.com/2024/04/20/theater/peter-morgan-patriots-the-crown.html"
+    },
+    {
+      "t": "2026-11-24T05:27:34.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T05:44:26.324Z",
+      "event": "bb-session",
+      "session": "112d44eb",
+      "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannel"
+    },
+    {
+      "t": "2026-11-24T05:44:27.243Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
