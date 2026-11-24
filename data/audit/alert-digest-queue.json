@@ -330,5 +330,32 @@
     "tracked": "BRO-7661",
     "fields": [],
     "queuedAt": "2026-11-24T13:02:48.433Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-11-24T13:27:04.248524+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report, and they left no email address, so there was nobody to reply to.\n  They wrote: \"Hello,\r\n\r\nWe build DataPallas (datapallas.com), a free and open-source BI and data platform. It does pixel-perfect reports and report bursting (reports that go out to the people who need them), dashboards and AI data exploration. It can stand in for Power BI, Tableau, Qlik, Looker, Crystal Reports or JasperReports, and if a job involves \"data\", chances are it can help.\r\n\r\nWith DataPallas, your invoices would reach your customers by email straight from the data you already have; it takes minutes \"",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45403560430",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-24T13:29:13.490Z"
   }
 ]
