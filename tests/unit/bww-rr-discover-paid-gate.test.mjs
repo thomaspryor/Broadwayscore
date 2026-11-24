@@ -82,6 +82,36 @@ describe('BRO-8262 paid reviews.php gate', () => {
     assert.strictEqual(r.url, hit[0]);
   });
 
+  it('canary divergence is logged as a ::warning::', async () => {
+    const hit = ['https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-SEVEN-GUITARS-20261120'];
+    const lines = [];
+    const orig = console.log;
+    console.log = (...a) => { lines.push(a.join(' ')); };
+    try {
+      await discover(broadwayShow, { cheap: LISTING, paidSpy: spyPaid(hit), opts: { paidCanary: true } });
+    } finally { console.log = orig; }
+    assert.ok(lines.some(l => l.startsWith('::warning::') && l.includes('DIVERGENCE') && l.includes(hit[0])), lines.join('\n'));
+  });
+
+  it('canary hash does not put any two shows in lockstep', () => {
+    // A 31-multiplier rolling hash put some pairs of these ids in the same
+    // canary hour every time (worst pair 21 of 200 hours, its full count).
+    // Independent 10% samples share ~2 hours; deterministic sha1 worst is 9.
+    const base = Date.UTC(2026, 10, 1);
+    const hours = [...Array(200)].map((_, i) => new Date(base + i * 3600e3));
+    const ids = [...Array(120)].map((_, n) => `show-${n}-2026`);
+    const vec = ids.map(id => hours.map(h => isPaidCanaryCall({ id }, h, 10)));
+    let worst = 0;
+    for (let i = 0; i < vec.length; i++) {
+      for (let j = i + 1; j < vec.length; j++) {
+        let both = 0;
+        for (let k = 0; k < hours.length; k++) if (vec[i][k] && vec[j][k]) both++;
+        worst = Math.max(worst, both);
+      }
+    }
+    assert.ok(worst < 15, `two shows shared ${worst} of 200 canary hours (lockstep)`);
+  });
+
   it('canary samples roughly 1 in 10 show-hours and can be disabled', () => {
     let hits = 0;
     const base = Date.UTC(2026, 10, 1);

@@ -572,6 +572,16 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
     && process.env.BWW_PAID_AFTER_CHEAP_MISS !== '1';
   const canary = gateOn && (typeof opts.paidCanary === 'boolean' ? opts.paidCanary : isPaidCanaryCall(show));
   if (gateOn && !canary) {
+    // A paid listing already in the memo (a canary or forced probe in the last
+    // 15 min, same process or the CI-restored cache) costs nothing to consult,
+    // and it is the second look the pre-gate code got for free.
+    const cachedPaid = (opts.fetchAnchors || opts.fetchPaidAnchors) ? null : _anchorCache.get('reviews.php');
+    if (Array.isArray(cachedPaid) && cachedPaid.length > 0) {
+      const paidCandidates = score(cachedPaid);
+      if (paidCandidates.length > 0) {
+        return { url: paidCandidates[0].url, candidates: paidCandidates, via: 'reviews.php' };
+      }
+    }
     console.log(`  bww-rr-discover: show not in cheap /reviews/ listing (${cheapAnchors.length} roundups); paid Browserbase probe skipped (BRO-8262)`);
     return { url: null, candidates: [], via: 'not-found', tier: 'cheap-listing' };
   }
@@ -615,8 +625,10 @@ let _warnedEmptyCheap = false;
 function isPaidCanaryCall(show, now = new Date(), every = PAID_CANARY_EVERY) {
   if (!every) return false;
   const key = `${(show && (show.id || show.title)) || ''}|${now.toISOString().slice(0, 13)}`;
-  let h = 0;
-  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  // sha1, not a 31-multiplier rolling hash: 31 = 1 (mod 10), so that hash mod
+  // 10 collapses to a character sum and shows with equal sums canary in lockstep
+  // (ship-check, Gemini).
+  const h = require('crypto').createHash('sha1').update(key).digest().readUInt32BE(0);
   return h % every === 0;
 }
 
