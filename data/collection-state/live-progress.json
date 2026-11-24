@@ -1,37 +1,21 @@
 {
-  "updatedAt": "2026-11-24T02:56:51.696Z",
-  "processed": 360,
-  "failed": 16,
-  "successRate": "95.7%",
+  "updatedAt": "2026-11-24T03:16:32.518Z",
+  "processed": 487,
+  "failed": 224,
+  "successRate": "68.5%",
   "tierBreakdown": {
-    "playwright": 202,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 244,
+    "amp": 1,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 29,
-    "scrapingbee": 23,
-    "brightdata": 4,
+    "scrapingdog": 31,
+    "scrapingbee": 25,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 100
+    "archive": 174
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-11-24T00:55:16.501Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T01:24:46.993Z",
-      "event": "bb-session",
-      "session": "0ed0451f",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-11-24T01:24:47.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-11-24T01:24:53.821Z",
       "event": "bb-session",
@@ -129,6 +113,24 @@
       "t": "2026-11-24T02:31:52.963Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T02:51:05.310Z",
+      "event": "bb-session",
+      "session": "06f57a76",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/beaches-musical-to-close-2026-t"
+    },
+    {
+      "t": "2026-11-24T02:55:30.597Z",
+      "event": "bb-session",
+      "session": "91ca81fa",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/giant-recoups-broadway-investme"
+    },
+    {
+      "t": "2026-11-24T02:55:46.500Z",
+      "event": "bb-session",
+      "session": "b8982912",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     }
   ]
 }
