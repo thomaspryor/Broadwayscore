@@ -140,14 +140,14 @@ test('isReviewedArt matches only the exact show id + file md5 a human confirmed 
 });
 
 test('every reviewed-art entry still points at a real file (stale entries must not linger)', () => {
-  const root = path.resolve(import.meta.dirname, '..', '..');
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
   const hash = (f) => require('node:crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex');
   let found = 0;
   for (const [id, md5s] of Object.entries(reviewed)) {
     if (id.startsWith('_')) continue;
     const dir = path.join(root, 'public', 'images', 'shows', id);
     const have = new Set(fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => /^(thumbnail|poster|hero)\./.test(f)).map(f => hash(path.join(dir, f))) : []);
-    for (const m of Object.keys(md5s)) { assert.ok(have.has(m), `${id}: reviewed md5 ${m} matches no served file`); found++; }
+    for (const m of Object.keys(md5s)) { assert.ok(have.has(m), `${id}: reviewed md5 ${m} matches no served file (image replaced? remove its entry from scripts/lib/live-art-reviewed.json, or re-review the new art)`); found++; }
   }
   assert.ok(found > 0);
 });
