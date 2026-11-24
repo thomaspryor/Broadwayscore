@@ -54,18 +54,38 @@ function scanFinancialTerms(text) {
 }
 
 /**
- * Walk the whole Substack archive. Substack caps page size below the requested
- * limit (limit=50 returned 23 live), so advance by what came back, never by limit.
- * @param {(url:string)=>Promise<any[]>} fetchJson
+ * Walk the whole Substack archive.
+ * Substack changed /api/v1/archive in Nov 2026 (BRO sweep failed 3 weeks running):
+ * it now rejects `offset` with HTTP 400, caps `limit` at 25, and returns
+ * { posts, nextCursor }. Follow nextCursor; keep the legacy bare-array +
+ * offset shape as a fallback. Any other shape throws, so an API change fails
+ * the run loudly instead of reporting an empty archive.
+ * @param {(url:string)=>Promise<any>} fetchJson
  */
-async function fetchArchive(fetchJson, { base = 'https://www.broadwayjournal.com', limit = 50, maxPages = 200 } = {}) {
+async function fetchArchive(fetchJson, { base = 'https://www.broadwayjournal.com', limit = 25, maxPages = 200 } = {}) {
   const posts = [];
   let offset = 0;
+  let cursor = null;
   for (let page = 0; page < maxPages; page++) {
-    const batch = await fetchJson(`${base}/api/v1/archive?sort=new&limit=${limit}&offset=${offset}`);
-    if (!Array.isArray(batch) || batch.length === 0) return { posts, complete: true };
-    posts.push(...batch);
-    offset += batch.length;
+    let url = `${base}/api/v1/archive?sort=new&limit=${limit}`;
+    if (cursor) url += `&cursor=${encodeURIComponent(cursor)}`;
+    else if (offset > 0) url += `&offset=${offset}`;
+    const res = await fetchJson(url);
+    if (Array.isArray(res)) {
+      // Legacy shape: advance by what came back (Substack caps page size below limit).
+      if (res.length === 0) return { posts, complete: true };
+      posts.push(...res);
+      offset += res.length;
+      continue;
+    }
+    if (res && Array.isArray(res.posts)) {
+      posts.push(...res.posts);
+      if (!res.nextCursor || res.posts.length === 0) return { posts, complete: true };
+      if (res.nextCursor === cursor) throw new Error('Substack archive returned the same cursor twice');
+      cursor = res.nextCursor;
+      continue;
+    }
+    throw new Error(`Unrecognized Substack archive response: ${JSON.stringify(res).slice(0, 200)}`);
   }
   return { posts, complete: false };
 }

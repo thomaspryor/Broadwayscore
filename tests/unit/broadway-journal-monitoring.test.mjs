@@ -121,6 +121,20 @@ describe('archive walk', () => {
     assert.match(calls[1], /offset=2/);
     assert.match(calls[2], /offset=3/);
   });
+  it('follows Substack nextCursor (Nov 2026 API) and never sends offset', async () => {
+    const calls = [];
+    const pages = [{ posts: [{ slug: 'a' }, { slug: 'b' }], nextCursor: 'c1' }, { posts: [{ slug: 'c' }], nextCursor: null }];
+    const fetchJson = async (url) => { calls.push(url); return pages[calls.length - 1]; };
+    const { posts, complete } = await bj.fetchArchive(fetchJson);
+    assert.equal(posts.length, 3);
+    assert.ok(complete);
+    assert.doesNotMatch(calls[0], /offset=/);
+    assert.match(calls[0], /limit=25/);
+    assert.match(calls[1], /cursor=c1/);
+  });
+  it('throws on an unrecognized response instead of reporting an empty archive', async () => {
+    await assert.rejects(bj.fetchArchive(async () => ({ errors: [{ param: 'offset' }] })), /Unrecognized/);
+  });
   it('reports incomplete when the page cap is hit', async () => {
     const { complete } = await bj.fetchArchive(async () => [{ slug: 'x' }], { maxPages: 3 });
     assert.equal(complete, false);
