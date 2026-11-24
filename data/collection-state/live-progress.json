@@ -1,23 +1,95 @@
 {
-  "updatedAt": "2026-11-24T06:28:01.919Z",
-  "processed": 770,
-  "failed": 362,
-  "successRate": "68.0%",
+  "updatedAt": "2026-11-24T06:32:25.171Z",
+  "processed": 775,
+  "failed": 367,
+  "successRate": "67.9%",
   "tierBreakdown": {
-    "playwright": 351,
+    "playwright": 353,
     "amp": 1,
-    "browserbase": 22,
-    "directCookies": 0,
-    "scrapingdog": 37,
+    "browserbase": 21,
+    "directCookies": 1,
+    "scrapingdog": 38,
     "scrapingbee": 72,
     "brightdata": 11,
     "archiveToday": 0,
-    "archive": 282
+    "archive": 283
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-11-24T03:44:00.245Z",
+      "t": "2026-11-24T03:45:03.608Z",
+      "event": "bb-session",
+      "session": "c22c45f5",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-11-24T03:45:04.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T03:45:12.892Z",
+      "event": "bb-session",
+      "session": "ae3137fb",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-11-24T03:45:13.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T03:46:00.155Z",
+      "event": "bb-session",
+      "session": "26861537",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-11-24T03:46:00.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T03:46:08.059Z",
+      "event": "bb-session",
+      "session": "5b7fb70b",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-11-24T03:46:08.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T04:55:17.068Z",
+      "event": "bb-session",
+      "session": "5f74805c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T04:55:17.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T04:57:31.349Z",
+      "event": "bb-session",
+      "session": "4a0224cd",
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
+    },
+    {
+      "t": "2026-11-24T04:57:32.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T04:57:49.363Z",
+      "event": "bb-session",
+      "session": "325f7460",
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
+    },
+    {
+      "t": "2026-11-24T04:57:50.220Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -44,87 +116,15 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-11-24T06:12:29.166Z",
+      "t": "2026-11-24T06:31:54.524Z",
       "event": "bb-session",
-      "session": "fea06dc2",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+      "session": "246df892",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23"
     },
     {
-      "t": "2026-11-24T06:12:29.487Z",
+      "t": "2026-11-24T06:31:55.457Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T06:13:41.451Z",
-      "event": "bb-session",
-      "session": "b05c9092",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-24T06:13:41.785Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T06:16:01.459Z",
-      "event": "bb-session",
-      "session": "e024a0da",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
-    },
-    {
-      "t": "2026-11-24T06:16:01.739Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T06:16:26.527Z",
-      "event": "bb-session",
-      "session": "55eece90",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-24T06:16:26.795Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T06:16:43.774Z",
-      "event": "bb-session",
-      "session": "00c6994b",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-24T06:16:44.007Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T06:19:17.909Z",
-      "event": "bb-session",
-      "session": "c1269cf2",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-24T06:19:18.258Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T06:19:34.613Z",
-      "event": "bb-session",
-      "session": "52ac31a9",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-24T06:19:34.846Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-24T06:18:21.554Z",
-      "event": "bb-session",
-      "session": "d0fcdb4b",
-      "url": "https://bachtrack.com/review-my-first-ballet-cinderella-williamson-english-natio"
+      "domain": "newyorker.com"
     }
   ]
 }

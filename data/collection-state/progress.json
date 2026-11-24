@@ -769,7 +769,12 @@
     "once-upon-a-one-more-time-2023/broadwaynews--brittani-samuel.json",
     "once-upon-a-one-more-time-2023/culturesauce--thom-geier.json",
     "once-upon-a-one-more-time-2023/rollingstone--larisha-paul.json",
-    "the-pillowman-west-end-2023/independent--jessie-thompson.json"
+    "the-pillowman-west-end-2023/independent--jessie-thompson.json",
+    "the-pillowman-west-end-2023/jonathan-baz--unknown.json",
+    "idiots-assemble-spitting-image-the-musical-west-end-2023/jonathan-baz--unknown.json",
+    "groundhog-day-west-end-2023/metro-uk--brooke-ivey-johnson.json",
+    "wet-brain-off-broadway-2023/newyorker--conde-nast.json",
+    "wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "the-bands-visit-2017/wnyc--jennifer-vanasco.json",
@@ -1046,6 +1051,7 @@
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1794226237072.json",
     "eurotrash-off-west-end-2026/partially-obstructed-view--unknown.json",
     "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json",
+    "nine-night-off-west-end-2026/londonlivinglarge--unknown.json",
     "othello-bedlam-off-broadway-2026/nytimes--helen-shaw.json",
     "the-heart-off-broadway-2026/theater-mirror--jamie-lin.json",
     "harry-potter-2021/broadway-and-me--janice-c-simpson.json",
@@ -1132,7 +1138,12 @@
     "dr-semmelweis-west-end-2023/times-uk--unknown.json",
     "crazy-for-you-west-end-2023/sunday-times--quentin-letts.json",
     "accidental-death-of-an-anarchist-west-end-2023/shy-strange-manic--kariss-ainsworth.json",
-    "lane-call-a-night-of-closing-regional-2023/chicago-reader--unknown.json"
+    "lane-call-a-night-of-closing-regional-2023/chicago-reader--unknown.json",
+    "groundhog-day-west-end-2023/loureviews--louise-penn.json",
+    "groundhog-day-west-end-2023/a-younger-theatre--unknown.json",
+    "groundhog-day-west-end-2023/city-am--adam-bloodworth.json",
+    "groundhog-day-west-end-2023/sunday-express--unknown.json",
+    "we-will-rock-you-west-end-2023/city-am--adam-bloodworth.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1487,7 +1498,9 @@
       "accidental-death-of-an-anarchist-west-end-2023/whatsonstage--tom-millward.json",
       "just-for-us-2023/theater-life--david-sheward.json",
       "just-for-us-2023/theater-life--paulanne-simmons.json",
-      "once-upon-a-one-more-time-2023/culturesauce--thom-geier.json"
+      "once-upon-a-one-more-time-2023/culturesauce--thom-geier.json",
+      "the-pillowman-west-end-2023/jonathan-baz--unknown.json",
+      "idiots-assemble-spitting-image-the-musical-west-end-2023/jonathan-baz--unknown.json"
     ],
     "amp": [
       "data/review-texts/brief-encounter-2010/variety--steven-suskin.json"
@@ -1513,10 +1526,11 @@
       "data/review-texts/patriots-2024/nytimes--maureen-dowd.json",
       "patriots-2024/nytimes--maureen-dowd.json",
       "data/review-texts/gutenberg-2023/wsj--charles-isherwood.json",
-      "gutenberg-2023/wsj--charles-isherwood.json",
-      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "gutenberg-2023/wsj--charles-isherwood.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "wet-brain-off-broadway-2023/newyorker--conde-nast.json"
+    ],
     "scrapingdog": [
       "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
       "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
@@ -1554,7 +1568,8 @@
       "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
       "echo-every-cold-hearted-oxygen-west-end-2024/british-theatre--unknown.json",
-      "peter-pan-goes-wrong-west-end-2023/lost-in-theatreland--amy-rye.json"
+      "peter-pan-goes-wrong-west-end-2023/lost-in-theatreland--amy-rye.json",
+      "groundhog-day-west-end-2023/metro-uk--brooke-ivey-johnson.json"
     ],
     "scrapingbee": [
       "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
@@ -1926,11 +1941,12 @@
       "crazy-for-you-west-end-2023/times-uk--dominic-maxwell.json",
       "buddy-the-buddy-holly-story-regional-2023/daily-herald--barbara-vitello.json",
       "the-gospel-according-to-heather-off-broadway-2023/nytimes--elisabeth-vincentelli.json",
-      "the-pillowman-west-end-2023/independent--jessie-thompson.json"
+      "the-pillowman-west-end-2023/independent--jessie-thompson.json",
+      "wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json"
     ]
   },
   "startTime": "2026-11-24T00:20:31.199Z",
-  "lastProcessed": "the-pillowman-west-end-2023/independent--jessie-thompson.json",
+  "lastProcessed": "wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json",
   "log": [
     {
       "t": "2026-11-24T00:38:45.344Z",
@@ -2221,13 +2237,15 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-11-24T06:18:21.554Z",
+      "t": "2026-11-24T06:31:54.524Z",
       "event": "bb-session",
-      "session": "d0fcdb4b",
-      "url": "https://bachtrack.com/review-my-first-ballet-cinderella-williamson-english-natio"
+      "session": "246df892",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23"
+    },
+    {
+      "t": "2026-11-24T06:31:55.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
-  ],
-  "recoveredAfterFailure": [
-    "nine-night-off-west-end-2026/londonlivinglarge--unknown.json"
   ]
 }
