@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T02:22:37.423Z",
+  "timestamp": "2026-11-24T03:27:10.668Z",
   "stats": {
-    "totalReviews": 84524,
-    "alreadyFlagged": 22548,
+    "totalReviews": 84553,
+    "alreadyFlagged": 22551,
     "dateGuardCatches": 243,
     "directorMismatch": 3888,
-    "tvFilmSignals": 2428,
-    "londonSignals": 3992,
+    "tvFilmSignals": 2429,
+    "londonSignals": 3994,
     "offBroadwaySignals": 789,
-    "yearMismatch": 395,
-    "noPublishDate": 8278
+    "yearMismatch": 396,
+    "noPublishDate": 8273
   },
   "findings": [
     {
@@ -49494,6 +49494,20 @@
     },
     {
       "showId": "nine-night-off-west-end-2026",
+      "file": "afridiziak-theatre-news--basil-g-lumsden.json",
+      "score": 79,
+      "publishDate": "2026-11-23",
+      "url": "https://www.afridiziak.com/reviews/nine-night-written-by-natasha-gordon/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: nine-night-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
       "file": "afridiziak-theatre-news--unknown.json",
       "score": 79,
       "publishDate": "2026-11-23",
@@ -82880,6 +82894,20 @@
     },
     {
       "showId": "the-unbelievers-off-broadway-2026",
+      "file": "josh-at-the-movies--joshua-m-hayes.json",
+      "score": 75,
+      "publishDate": "2026-11-23",
+      "url": "https://joshatthemovies.com/2026/11/23/theater-review-the-unbelievers/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
       "file": "josh-at-the-movies--unknown.json",
       "score": 75,
       "publishDate": "2026-11-23",
@@ -92321,20 +92349,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "timeout-london--caroline-mcginn.json",
-      "score": null,
-      "publishDate": "2026-10-06",
-      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-old-vic",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 37d before show (2026-10-06 vs 2026-11-12)"
         }
       ]
     },
@@ -125053,7 +125067,7 @@
     {
       "showId": "nine-night-west-end-2018",
       "file": "londontheatre1--peter-yates.json",
-      "score": 95,
+      "score": 98,
       "publishDate": "2018-05-03",
       "url": "https://www.londontheatre1.com/reviews/review-nine-night-national-theatre-dorfman-theatre/",
       "findings": [
@@ -127285,6 +127299,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 183d before show (2026-05-08T00:00:00-04:00 vs 2026-11-07)"
+        }
+      ]
+    },
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
+      "file": "off-off-online--deirdre-donovan.json",
+      "score": 89,
+      "publishDate": "2026-05-06",
+      "url": "https://www.offoffonline.com/offoffonline/2026/5/2/othello",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 185d before show (2026-05-06 vs 2026-11-07)"
         }
       ]
     },
@@ -142918,6 +142946,19 @@
     },
     {
       "showId": "the-maids-west-end-2025",
+      "file": "broadwayworld--cheryl-markosky.json",
+      "publishDate": "2025-10-22",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-MAIDS-at-Donmar-Warehouse-20251022",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-maids-west-end-2025",
       "file": "express-uk--stefan-kyriazis.json",
       "score": 12,
       "publishDate": "2025-10-22",
@@ -148664,6 +148705,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "till-the-stars-come-down-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2025-07-10",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/till-the-stars-come-down-theatre-royal-haymarket-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
