@@ -138,7 +138,10 @@ function changesBreakDateIntegrity(show, changes) {
   if (!show || dateChanges.length === 0) return false;
   const projected = { ...show };
   for (const c of dateChanges) projected[c.field] = c.new;
-  return previewsAfterOpening(projected) || excessivePreviewGap(projected);
+  // A new opening later than the stored closing date is the same wrong-production
+  // signal when the show has no previews date (validate-data only warns on it).
+  const closedBeforeOpening = !!(projected.openingDate && projected.closingDate && projected.openingDate > projected.closingDate);
+  return previewsAfterOpening(projected) || excessivePreviewGap(projected) || closedBeforeOpening;
 }
 
 module.exports = { previewsAfterOpening, excessivePreviewGap, changesBreakDateIntegrity, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };

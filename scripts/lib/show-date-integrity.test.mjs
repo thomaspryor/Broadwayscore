@@ -116,3 +116,13 @@ test('changesBreakDateIntegrity (BRO-8234): vetoes the wrong-production enricher
     [{ field: 'openingDateSource', old: null, new: 'theatremonkey' }]), false);
   assert.equal(changesBreakDateIntegrity(null, []), false);
 });
+
+test('changesBreakDateIntegrity: closing-date signal and cold opens', () => {
+  assert.equal(changesBreakDateIntegrity(
+    { openingDate: '2014-12-01', closingDate: '2015-01-31' },
+    [{ field: 'openingDate', old: '2014-12-01', new: '2027-07-01' }]), true);
+  // cold open (previews == opening) is legitimate.
+  assert.equal(changesBreakDateIntegrity(
+    { previewsStartDate: '2026-05-01', openingDate: null },
+    [{ field: 'openingDate', old: null, new: '2026-05-01' }]), false);
+});
