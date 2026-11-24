@@ -558,5 +558,47 @@
       }
     ],
     "queuedAt": "2026-11-24T17:22:45.993Z"
+  },
+  {
+    "conditionKey": "opening-night-review-cards-complete-a-christmas-carol-west-end-2026",
+    "title": "Review cards missing outlet name or quote on A Christmas Carol",
+    "description": "2/5 review card(s) missing outlet name or quote (2 no outlet, 4 no criticName, 4 no publishDate)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T17:48:45.000Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:the-afronauts-west-end-2026",
+    "title": "Shipped review too short to verify on The Afronauts",
+    "description": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://thestage.co.uk/reviews/the-afronauts-review-royal-court-theatre-london-ryan-calais-cameron-monique-touko",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T17:48:45.023Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:seven-guitars-off-broadway-2026",
+    "title": "Auto-remediation gave up on seven-guitars-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"seven-guitars-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T17:48:49.026Z"
   }
 ]
