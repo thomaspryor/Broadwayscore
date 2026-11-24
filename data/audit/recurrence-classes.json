@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T00:21:55.990Z",
+  "generatedAt": "2026-11-24T03:36:35.480Z",
   "complete": true,
   "windowDays": 30,
   "quietDays": 21,
@@ -9,26 +9,26 @@
   "missesFresh": true,
   "share": {
     "thisWeek": {
-      "total": 408,
-      "root-cause": 58,
-      "system": 213,
-      "instance": 137,
-      "share": 66.4
+      "total": 416,
+      "root-cause": 60,
+      "system": 211,
+      "instance": 145,
+      "share": 65.1
     },
     "lastWeek": {
-      "total": 294,
+      "total": 299,
       "root-cause": 39,
-      "system": 131,
+      "system": 136,
       "instance": 124,
-      "share": 57.8
+      "share": 58.5
     }
   },
-  "recurringCount": 59,
-  "withRootCause": 52,
+  "recurringCount": 61,
+  "withRootCause": 55,
   "preventions": {
     "claimed": 8,
     "failed": 5,
-    "unclaimed": 164
+    "unclaimed": 169
   },
   "classes": [
     {
@@ -797,9 +797,9 @@
       "firstSeen": "2026-11-11T21:00:00.000Z",
       "lastSeen": "2026-11-20T22:00:00.000Z",
       "rootCause": "BRO-8215",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T00:22:45.239Z",
+      "rootCauseCreatedAt": "2026-11-24T00:22:44.784Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -851,9 +851,9 @@
       "firstSeen": "2026-11-14T22:00:00.000Z",
       "lastSeen": "2026-11-19T21:00:00.000Z",
       "rootCause": "BRO-8216",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T00:22:45.720Z",
+      "rootCauseCreatedAt": "2026-11-24T00:22:45.429Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -980,12 +980,12 @@
     {
       "key": "unit tests run",
       "slug": "unit-tests-run",
-      "inWindow": 31,
-      "total": 44,
+      "inWindow": 30,
+      "total": 43,
       "reasons": [
-        "31 cards in 30 days"
+        "30 cards in 30 days"
       ],
-      "firstSeen": "2026-10-18T02:35:26.155Z",
+      "firstSeen": "2026-10-18T05:39:06.053Z",
       "lastSeen": "2026-11-07T10:30:12.358Z",
       "rootCause": "BRO-3425",
       "rootCauseState": "completed",
@@ -997,7 +997,6 @@
       },
       "example": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once\"",
       "instances": [
-        "BRO-5594",
         "BRO-5606",
         "BRO-5609",
         "BRO-5642",
@@ -1359,6 +1358,33 @@
       "recurredAfterRootClosed": []
     },
     {
+      "key": "production show pages disagree deployed critic data",
+      "slug": "production-show-pages-disagree-deployed-critic-data",
+      "inWindow": 4,
+      "total": 4,
+      "reasons": [
+        "4 cards in 30 days"
+      ],
+      "firstSeen": "2026-11-15T09:26:34.543Z",
+      "lastSeen": "2026-11-24T00:26:46.614Z",
+      "rootCause": "BRO-8227",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T03:37:19.060Z",
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {},
+      "example": "Production show pages disagree with deployed critic data",
+      "instances": [
+        "BRO-7507",
+        "BRO-7760",
+        "BRO-8037",
+        "BRO-8219"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
       "key": "stale announced shows",
       "slug": "stale-announced-shows",
       "inWindow": 4,
@@ -1558,6 +1584,32 @@
       "recurredAfterRootClosed": []
     },
     {
+      "key": "run data validation",
+      "slug": "run-data-validation",
+      "inWindow": 3,
+      "total": 3,
+      "reasons": [
+        "3 cards in 30 days"
+      ],
+      "firstSeen": "2026-11-14T12:44:58.373Z",
+      "lastSeen": "2026-11-24T01:38:24.477Z",
+      "rootCause": "BRO-8228",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T03:37:19.624Z",
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {},
+      "example": "Data audit failing: Run data validation",
+      "instances": [
+        "BRO-7482",
+        "BRO-7775",
+        "BRO-8225"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
       "key": "reviews json new critic page split byline spelling",
       "slug": "reviews-json-new-critic-page-split-byline-spelling",
       "inWindow": 3,
@@ -1568,9 +1620,9 @@
       "firstSeen": "2026-11-09T12:37:20.784Z",
       "lastSeen": "2026-11-23T12:45:59.495Z",
       "rootCause": "BRO-8217",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T00:22:46.204Z",
+      "rootCauseCreatedAt": "2026-11-24T00:22:45.917Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
@@ -1601,10 +1653,10 @@
       ],
       "firstSeen": "2026-11-14T12:48:52.397Z",
       "lastSeen": "2026-11-23T12:44:28.332Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-8229",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T03:37:20.474Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -2273,10 +2325,6 @@
     }
   ],
   "instances": {
-    "BRO-5594": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests run"
-    },
     "BRO-5606": {
       "rootCause": "BRO-3425",
       "classKey": "unit tests run"
@@ -2757,6 +2805,22 @@
       "rootCause": "BRO-3425",
       "classKey": "main test yml red auto dispatch did resolve"
     },
+    "BRO-7507": {
+      "rootCause": "BRO-8227",
+      "classKey": "production show pages disagree deployed critic data"
+    },
+    "BRO-7760": {
+      "rootCause": "BRO-8227",
+      "classKey": "production show pages disagree deployed critic data"
+    },
+    "BRO-8037": {
+      "rootCause": "BRO-8227",
+      "classKey": "production show pages disagree deployed critic data"
+    },
+    "BRO-8219": {
+      "rootCause": "BRO-8227",
+      "classKey": "production show pages disagree deployed critic data"
+    },
     "BRO-6815": {
       "rootCause": "BRO-7277",
       "classKey": "stale announced shows"
@@ -2877,6 +2941,18 @@
       "rootCause": "BRO-7758",
       "classKey": "outlet heartbeat red flags"
     },
+    "BRO-7482": {
+      "rootCause": "BRO-8228",
+      "classKey": "run data validation"
+    },
+    "BRO-7775": {
+      "rootCause": "BRO-8228",
+      "classKey": "run data validation"
+    },
+    "BRO-8225": {
+      "rootCause": "BRO-8228",
+      "classKey": "run data validation"
+    },
     "BRO-7222": {
       "rootCause": "BRO-8217",
       "classKey": "reviews json new critic page split byline spelling"
@@ -2890,15 +2966,15 @@
       "classKey": "reviews json new critic page split byline spelling"
     },
     "BRO-7483": {
-      "rootCause": null,
+      "rootCause": "BRO-8229",
       "classKey": "audit review contamination"
     },
     "BRO-7500": {
-      "rootCause": null,
+      "rootCause": "BRO-8229",
       "classKey": "audit review contamination"
     },
     "BRO-8140": {
-      "rootCause": null,
+      "rootCause": "BRO-8229",
       "classKey": "audit review contamination"
     },
     "BRO-6310": {
@@ -3199,6 +3275,14 @@
     }
   },
   "lastSeenByKey": {
+    "feedback falls jodie": "2026-11-24T01:51:06.138Z",
+    "run data validation": "2026-11-24T01:38:24.477Z",
+    "wire into collector paths guard bww new york": "2026-11-24T01:01:38.941Z",
+    "impact recording more todaytix clicks than real site": "2026-11-24T00:49:31.255Z",
+    "url less pending stub tagged cross market contamination": "2026-11-24T00:35:45.801Z",
+    "impact 5xx outage pages owner authorize credentials": "2026-11-24T00:32:14.080Z",
+    "production show pages disagree deployed critic data": "2026-11-24T00:26:46.614Z",
+    "merge originalscore stars from bro same article pending": "2026-11-24T00:26:23.052Z",
     "publisher app feed fast path reader off": "2026-11-24T00:17:57.115Z",
     "check claude byte cap before land push": "2026-11-24T00:14:49.556Z",
     "name critic corpus reviews filed unknown whose text": "2026-11-24T00:12:57.337Z",
@@ -3345,7 +3429,6 @@
     "outlet domain moves": "2026-11-22T12:43:04.971Z",
     "approved exclusion verdicts silently undone": "2026-11-22T10:03:40.067Z",
     "cross outlet attribution drift": "2026-11-22T09:58:59.423Z",
-    "production show pages disagree deployed critic data": "2026-11-22T09:54:34.282Z",
     "corpus files where auto clear overrode live unanimous": "2026-11-22T07:51:17.430Z",
     "scrapingbee smoke check fails bro closed too early": "2026-11-22T07:46:53.698Z",
     "ugcerror ugc insert reviews failed": "2026-11-22T06:57:11.739Z",
@@ -3573,7 +3656,6 @@
     "min collector gap non broadway sweeps watchdog early": "2026-11-18T14:36:58.014Z",
     "colon dash subtitles akatitles readiness check": "2026-11-18T14:36:56.360Z",
     "byline extraction follow ups from bro": "2026-11-18T12:57:15.884Z",
-    "run data validation": "2026-11-18T12:34:04.926Z",
     "silent review gaps": "2026-11-18T12:33:30.286Z",
     "seo health": "2026-11-18T12:33:21.734Z",
     "execute approved bro apply": "2026-11-18T12:33:13.272Z",
@@ -4798,12 +4880,6 @@
     "backfill marker collides historical theme tag": "2026-10-25T11:28:41.832Z",
     "add call site tests sanitizeplainlanguagetext redactemails": "2026-10-25T10:45:20.507Z",
     "version site page image refs replaced art busts": "2026-10-25T09:18:08.579Z",
-    "model registration wall exclusion scoring delta llm parity": "2026-10-25T02:35:21.270Z",
-    "prepare verify release change land agreed time": "2026-10-25T01:44:02.616Z",
-    "add loss side gate stop deep research adding": "2026-10-25T00:23:42.724Z",
-    "clean registration wall stub reviews check joint scored": "2026-10-25T00:22:40.522Z",
-    "let codex lane private data fixes through reviewed": "2026-10-25T02:56:51.896Z",
-    "verify cloud routine slots can dispatch apply workflow": "2026-10-25T02:56:51.896Z",
     "slam frank talkinbroadway": "2026-11-08T21:41:23.012Z",
     "susan elkin review held without text": "2026-11-08T21:41:23.012Z",
     "missed-at-first-pass:west-end:all-that-dazzles-uk": "2026-11-06T21:00:00.000Z",
@@ -5129,6 +5205,7 @@
     "reviews will score paywall truncated text",
     "revival unverified lifetime sweep",
     "roundup listed review captured",
+    "run data validation",
     "same title sibling review misrouted wrong production",
     "scope bash integration base check failing files",
     "score gate undecided",
@@ -5157,7 +5234,7 @@
     "update lottery rush",
     "wrongproduction lifetime sweep"
   ],
-  "pendingRootCards": 7,
+  "pendingRootCards": 6,
   "sample": {
     "generatedAt": "2026-11-20T10:01:13.278Z",
     "graded": 8,

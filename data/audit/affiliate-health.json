@@ -4,21 +4,69 @@
   "checks": [
     {
       "key": "affiliate:provider-auth:impact",
-      "label": "impact API",
-      "verdict": "critical",
-      "reason": "impact fetch failed: Impact performance-by-day error: HTTP 503"
+      "label": "impact API login",
+      "verdict": "pass",
+      "reason": "credentials accepted"
+    },
+    {
+      "key": "affiliate:provider-fetch:impact",
+      "label": "impact API reachable",
+      "verdict": "pass",
+      "reason": "reachable"
     },
     {
       "key": "affiliate:provider-auth:posthog",
-      "label": "posthog API",
+      "label": "posthog API login",
+      "verdict": "pass",
+      "reason": "credentials accepted"
+    },
+    {
+      "key": "affiliate:provider-fetch:posthog",
+      "label": "posthog API reachable",
       "verdict": "pass",
       "reason": "reachable"
+    },
+    {
+      "key": "affiliate:dead-man",
+      "label": "Dead-man (both click signals)",
+      "verdict": "pass",
+      "reason": "at least one click signal alive"
+    },
+    {
+      "key": "affiliate:conversions-flatline",
+      "label": "Conversions flatline",
+      "verdict": "pass",
+      "reason": "last yield 0d ago, under the 3d threshold"
+    },
+    {
+      "key": "affiliate:zero-conversions",
+      "label": "7-day zero-conversion ceiling",
+      "verdict": "pass",
+      "reason": "23 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
       "reason": "892/921 = 97% of peak, above the 20% floor"
+    },
+    {
+      "key": "affiliate:impact-click-collapse",
+      "label": "Impact click ingestion",
+      "verdict": "pass",
+      "reason": "1636/3326 = 49% of peak, above the 20% floor"
+    },
+    {
+      "key": "affiliate:handoff-break",
+      "label": "Click → Impact handoff",
+      "verdict": "pass",
+      "reason": "Impact/PostHog click ratio 350% over 3d"
+    },
+    {
+      "key": "affiliate:bot-divergence",
+      "label": "Bot click divergence",
+      "verdict": "warn",
+      "reason": "Impact recorded 630 clicks vs only 180 real PostHog TodayTix clicks over 3d (3.5x, ceiling 2.5x) — likely bots hitting the pxf.io tracking links; dilutes EPC and risks Impact compliance review if sustained"
     },
     {
       "key": "affiliate:payout-anomaly",
@@ -28,5 +76,5 @@
     }
   ],
   "failingCount": 1,
-  "updatedAt": "2026-11-24T00:20:34.046Z"
+  "updatedAt": "2026-11-24T03:36:08.268Z"
 }
