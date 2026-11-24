@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T17:14:00.060Z",
+  "generatedAt": "2026-11-24T18:12:49.396Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -398,24 +398,25 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 81.74,
+      "siteScore": 82.22,
       "liveScore": 82,
-      "scoreDrift": 0.2600000000000051,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
+      "scoreDrift": -0.21999999999999886,
+      "belowThreshold": true,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 5,
+      "total": 4,
       "t1": 0,
-      "t2": 2,
+      "t2": 1,
       "t3": 3,
-      "positive": 5,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "4/8 total",
           "T1:0/3",
+          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -499,6 +500,10 @@
         },
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -590,6 +595,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T18:12:49.396Z",
+          "rc": 4,
+          "s": 82.22,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -604,27 +621,27 @@
       "slug": "the-jungle-book-west-end",
       "thumbnail": "/images/shows/the-jungle-book-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 77,
+      "liveScore": 86,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 2,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -756,6 +773,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T18:12:49.396Z",
+          "rc": 2,
+          "s": 86,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -861,10 +890,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -1071,6 +1096,172 @@
           "t": "2026-11-24T16:57:40.763Z",
           "rc": 1,
           "s": 87,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "in-my-own-little-world-off-west-end-2026",
+      "title": "In My Own Little World",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-11-24",
+      "status": "open",
+      "slug": "in-my-own-little-world-off-west-end",
+      "thumbnail": "/images/shows/in-my-own-little-world-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 97,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-24T18:12:49.396Z",
+          "rc": 1,
+          "s": 97,
           "t1": 0,
           "t2": 0,
           "t3": 1,
@@ -1843,24 +2034,22 @@
       "status": "open",
       "slug": "the-afronauts-west-end",
       "thumbnail": "/images/shows/the-afronauts-west-end-2026/thumbnail.webp",
-      "siteScore": 68.17,
-      "liveScore": 68,
-      "scoreDrift": -0.1700000000000017,
+      "siteScore": 62.3,
+      "liveScore": 62,
+      "scoreDrift": -0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 4,
+      "total": 9,
+      "t1": 6,
       "t2": 2,
       "t3": 1,
-      "positive": 5,
+      "positive": 6,
       "mixed": 2,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "7/8 total"
-        ],
+        "ready": true,
+        "reasons": [],
         "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
@@ -1871,15 +2060,11 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -2049,6 +2234,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T18:12:49.396Z",
+          "rc": 9,
+          "s": 62.3,
+          "t1": 6,
+          "t2": 2,
+          "t3": 1,
+          "p": 6,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2201,14 +2398,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -2987,10 +3176,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
           "name": "Village Voice",
           "isDualMarket": false
         },
@@ -3064,10 +3249,6 @@
         },
         {
           "name": "Broadway Blog",
-          "isDualMarket": false
-        },
-        {
-          "name": "Exeunt Magazine",
           "isDualMarket": false
         },
         {

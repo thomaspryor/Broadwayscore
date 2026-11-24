@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T17:13:48.193Z",
+  "timestamp": "2026-11-24T18:12:31.049Z",
   "stats": {
-    "totalReviews": 84600,
-    "alreadyFlagged": 22569,
+    "totalReviews": 84616,
+    "alreadyFlagged": 22572,
     "dateGuardCatches": 244,
     "directorMismatch": 3887,
     "tvFilmSignals": 2440,
-    "londonSignals": 4000,
+    "londonSignals": 4003,
     "offBroadwaySignals": 791,
     "yearMismatch": 402,
-    "noPublishDate": 8241
+    "noPublishDate": 8247
   },
   "findings": [
     {
@@ -136300,6 +136300,34 @@
       ]
     },
     {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 65,
+      "publishDate": "2026-11-24",
+      "url": "https://www.timeout.com/london/news/review-the-afronauts-at-the-royal-court-theatre-112426",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-11-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/afronauts-review-zambian-space-njtldhxts",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-alchemist-off-broadway-2021",
       "file": "off-off-online--edward-karam.json",
       "score": 78,
@@ -141857,6 +141885,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-jungle-book-west-end-2026",
+      "file": "kiddoadventures--tasha.json",
+      "score": 90,
+      "publishDate": "2026-11-22",
+      "url": "https://kiddoadventures.com/2026/11/22/the-jungle-book-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
