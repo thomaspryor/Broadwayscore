@@ -66,26 +66,34 @@ async function fetchArchive(fetchJson, { base = 'https://www.broadwayjournal.com
   const posts = [];
   let offset = 0;
   let cursor = null;
+  let protocol = null; // 'legacy' | 'cursor', fixed by the first response
+  const seen = new Set();
   for (let page = 0; page < maxPages; page++) {
     let url = `${base}/api/v1/archive?sort=new&limit=${limit}`;
     if (cursor) url += `&cursor=${encodeURIComponent(cursor)}`;
     else if (offset > 0) url += `&offset=${offset}`;
     const res = await fetchJson(url);
-    if (Array.isArray(res)) {
-      // Legacy shape: advance by what came back (Substack caps page size below limit).
+    const shape = Array.isArray(res) ? 'legacy' : (res && Array.isArray(res.posts) ? 'cursor' : null);
+    if (!shape) throw new Error(`Unrecognized Substack archive response: ${JSON.stringify(res).slice(0, 200)}`);
+    if (protocol && shape !== protocol) throw new Error(`Substack archive switched from ${protocol} to ${shape} paging mid-walk`);
+    protocol = shape;
+    if (shape === 'legacy') {
+      // Advance by what came back (Substack caps page size below limit).
       if (res.length === 0) return { posts, complete: true };
       posts.push(...res);
       offset += res.length;
       continue;
     }
-    if (res && Array.isArray(res.posts)) {
+    if (res.nextCursor === null || res.nextCursor === undefined || res.nextCursor === '') {
       posts.push(...res.posts);
-      if (!res.nextCursor || res.posts.length === 0) return { posts, complete: true };
-      if (res.nextCursor === cursor) throw new Error('Substack archive returned the same cursor twice');
-      cursor = res.nextCursor;
-      continue;
+      return { posts, complete: true };
     }
-    throw new Error(`Unrecognized Substack archive response: ${JSON.stringify(res).slice(0, 200)}`);
+    if (typeof res.nextCursor !== 'string') throw new Error(`Substack archive nextCursor is not a string: ${JSON.stringify(res.nextCursor)}`);
+    if (res.posts.length === 0) throw new Error('Substack archive returned an empty page with a continuation cursor');
+    if (seen.has(res.nextCursor)) throw new Error('Substack archive cursor cycle');
+    seen.add(res.nextCursor);
+    posts.push(...res.posts);
+    cursor = res.nextCursor;
   }
   return { posts, complete: false };
 }

@@ -135,6 +135,12 @@ describe('archive walk', () => {
   it('throws on an unrecognized response instead of reporting an empty archive', async () => {
     await assert.rejects(bj.fetchArchive(async () => ({ errors: [{ param: 'offset' }] })), /Unrecognized/);
   });
+  it('throws on an empty page that still carries a cursor, a cursor cycle, or a paging-protocol switch', async () => {
+    const seq = (pages) => { let i = 0; return async () => pages[i++]; };
+    await assert.rejects(bj.fetchArchive(seq([{ posts: [], nextCursor: 'x' }])), /empty page/);
+    await assert.rejects(bj.fetchArchive(seq([{ posts: [{ slug: 'a' }], nextCursor: 'A' }, { posts: [{ slug: 'b' }], nextCursor: 'B' }, { posts: [{ slug: 'c' }], nextCursor: 'A' }])), /cycle/);
+    await assert.rejects(bj.fetchArchive(seq([{ posts: [{ slug: 'a' }], nextCursor: 'A' }, [{ slug: 'b' }]])), /switched/);
+  });
   it('reports incomplete when the page cap is hit', async () => {
     const { complete } = await bj.fetchArchive(async () => [{ slug: 'x' }], { maxPages: 3 });
     assert.equal(complete, false);
