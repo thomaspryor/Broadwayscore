@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-24T04:20:10.815Z",
+  "timestamp": "2026-11-24T04:57:29.174Z",
   "stats": {
-    "totalReviews": 84539,
-    "alreadyFlagged": 22553,
+    "totalReviews": 84547,
+    "alreadyFlagged": 22554,
     "dateGuardCatches": 244,
     "directorMismatch": 3886,
-    "tvFilmSignals": 2430,
+    "tvFilmSignals": 2431,
     "londonSignals": 3996,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
@@ -60580,6 +60580,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "seven-guitars-off-broadway-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 80,
+      "publishDate": "2026-11-23",
+      "url": "https://nystagereview.com/2026/11/23/seven-guitars-august-wilson-revived-through-expert-eyes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
