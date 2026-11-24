@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T00:46:22.155Z",
+  "generatedAt": "2026-11-24T03:51:58.979Z",
   "window": {
     "since": "2026-11-18",
     "until": "2026-11-24"
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 4 trip day(s); rerouted spend on trip days $0.01 (81 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1871"
+      "detail": "ACCEPTED: 4 trip day(s); rerouted spend on trip days $0.01 (81 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1875"
     },
     {
       "title": "sb-circuit-breaker",
@@ -53,7 +53,7 @@
         "source": null,
         "from": "state",
         "currentZero": false,
-        "median14d": 235,
+        "median14d": 253,
         "drift": false,
         "note": null
       }
@@ -85,7 +85,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 1871,
+        "median14d": 1875,
         "drift": true,
         "note": null
       }
@@ -108,11 +108,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 15993,
+        "ceiling": 15768,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 10623,
+        "median14d": 10512,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -139,7 +139,7 @@
         "source": null,
         "from": null,
         "currentZero": false,
-        "median14d": 10623,
+        "median14d": 10512,
         "drift": false,
         "note": "n/a"
       }
@@ -162,11 +162,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 427688,
+        "ceiling": 455275,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 101826,
+        "median14d": 99452,
         "drift": false,
         "note": null
       }
