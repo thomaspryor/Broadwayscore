@@ -49,6 +49,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_create_draft:
+        description: 'Make the Resend draft even when the stricter T1/T2/high-confidence floor is short (same bypass the 10am-ET-next-day deadline applies). Draft only; the owner still sends from Resend.'
+        required: false
+        type: boolean
+        default: false
       force_broadcast:
         description: 'Override checklist gate — send even if QA errors found (emergency use only)'
         required: false
@@ -999,6 +1004,11 @@ jobs:
           if [ "$CREATE_DRAFT" = "true" ] && [ -n "${{ steps.check.outputs.deadline_shows }}" ]; then
             DRAFT_FLAGS="--force-create-draft"
             echo "Draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: forcing the draft"
+          fi
+          # BRO-8188: owner asked for the draft now. Same flag as the deadline path; draft only.
+          if [ "$CREATE_DRAFT" = "true" ] && [ "${{ inputs.force_create_draft }}" = "true" ]; then
+            DRAFT_FLAGS="--force-create-draft"
+            echo "force_create_draft: making the draft past the T1/T2/high-confidence floor (owner request)"
           fi
 
           SENT="false"

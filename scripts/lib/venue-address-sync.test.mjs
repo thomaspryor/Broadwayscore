@@ -73,3 +73,28 @@ test('a registry address from another market is cleared (London Lyric got the Br
   assert.equal(registryAddressFor('Lyric Theatre', 'broadway'), '214 W 43rd St, New York, NY 10036');
   assert.equal(registryAddressFor('Crucible Theatre', 'broadway'), null);
 });
+
+test('market edges: Off-Broadway, regional, tour, missing market and borough addresses are never mis-cleared', async () => {
+  const { syncStaleTheaterAddresses } = await import('./venue-address-sync.js');
+  const { registryAddressFor, isNycAddress } = await import('./venue-addresses.js');
+  const NY = '214 W 43rd St, New York, NY 10036';
+  const shows = [
+    { id: 'ob', market: 'broadway', category: 'off-broadway', venue: 'Lyric Theatre', theaterAddress: NY },
+    { id: 'reg', market: 'regional', category: 'regional', venue: 'Lyric Theatre', theaterAddress: NY },
+    { id: 'tour', market: 'tour', category: 'tour', venue: 'Lyric Theatre', theaterAddress: NY },
+    { id: 'nomarket', venue: 'Lyric Theatre', theaterAddress: NY },
+    { id: 'we-nocat', market: 'west-end', venue: 'Crucible Theatre', theaterAddress: NY },
+  ];
+  const changed = syncStaleTheaterAddresses(shows).map((c) => c.id).sort();
+  assert.deepEqual(changed, ['reg', 'tour', 'we-nocat'].sort());
+  assert.equal(shows[0].theaterAddress, NY, 'Off-Broadway (market broadway) keeps its NYC address');
+  assert.equal(shows[3].theaterAddress, NY, 'no market: nothing is provable, nothing is touched');
+  assert.equal(shows[4].theaterAddress, null, 'a West End row with no category is never handed the NYC registry address');
+  // A category passed as a market, or a missing market, never yields a cross-market address.
+  assert.equal(registryAddressFor('Lyric Theatre', 'off-broadway'), NY);
+  assert.equal(registryAddressFor('Crucible Theatre', undefined), null);
+  assert.equal(registryAddressFor('Crucible Theatre', 'off-west-end'), null);
+  assert.ok(registryAddressFor('Crucible Theatre', 'regional'));
+  assert.ok(isNycAddress('45 Water St, Brooklyn, NY 11201'));
+  assert.ok(!isNycAddress('Crucible Theatre, 55 Norfolk Street, Sheffield S1 1DA'));
+});

@@ -163,7 +163,7 @@ jobs:
       # itself anyway: vercel-deploy.yml's 5-minute cron always has a run newer
       # than this one inside its 15-minute dedup window. should-deploy-gate.js
       # only fingerprints reviews.json and shows.json, so a grosses-only change
-      # goes live on the gate's 6-hour staleness backstop, as it always has.
+      # goes live on the gate's staleness backstop (3h default since BRO-8198, was 6h).
 
       # The integrity check's routeAlert()/resolveCondition() state lives on
       # this runner's disk; commit it or every run re-alerts from a blank

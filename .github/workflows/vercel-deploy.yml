@@ -52,7 +52,8 @@ jobs:
   #     old gh-run-list lookup).
   #   - Scheduled ticks skip only on positive proof: HEAD already live AND
   #     core data unchanged, or no site-path diff vs the live SHA AND core
-  #     data unchanged while the live deploy is <6h old (content-aware gate,
+  #     data unchanged while the live deploy is younger than the staleness backstop
+  #     (default 3h since BRO-8198, repo var DEPLOY_BACKSTOP_MIN; content-aware gate,
   #     2026-07-19 cost fix: ~93% of main commits are bookkeeping that
   #     rebuilt an identical site ~139x/day).
   #   - Core-data awareness (BRO-3149, 2026-09-16): reviews.json/shows.json
@@ -61,7 +62,7 @@ jobs:
   #     deployment (`--meta reviewsBlobSha=... --meta showsBlobSha=...`), and
   #     the gate compares that
   #     against the private repo's current blob SHA to catch a core-data-only
-  #     change without waiting on the 6h backstop.
+  #     change without waiting on the staleness backstop.
   #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
   #     when HEAD is already live AND core data hasn't advanced. Any
   #     gate-input failure fails OPEN (deploy).
@@ -111,6 +112,10 @@ jobs:
           GATE_SOURCE: ${{ inputs.source }}
           GATE_TRIGGER_WORKFLOW: ${{ github.event.workflow_run.name }}
           GATE_MIN_INTERVAL_MIN: ${{ vars.DEPLOY_MIN_INTERVAL_MIN }}
+          # BRO-8198: staleness backstop in minutes (default 180). Kill switch:
+          # set repo var DEPLOY_BACKSTOP_MIN=360 to restore the old 6h bound
+          # (health-check's freshness alert bars then move to 11h/15h with it).
+          GATE_BACKSTOP_MIN: ${{ vars.DEPLOY_BACKSTOP_MIN }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
           # The gate script fails OPEN internally (API/fetch/diff errors →

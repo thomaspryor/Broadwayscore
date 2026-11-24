@@ -434,6 +434,52 @@ function sameTrailingArticleId(u1, u2) {
   const a = key(u1), b = key(u2);
   return !!a && a === b;
 }
+/**
+ * BRO-8195: one article whose two stored urls differ by a typo, a censored word or an old host: 5 of the last 24
+ * open stubs (culturesauce "ther-desert" vs "other-desert", Time Out "mccartney" vs "mccarthy", The Times "org*sms",
+ * theater.nytimes.com vs www.nytimes.com, TheaterMania /news/x_76306/ vs /off-broadway/reviews/x_76306.html).
+ * Same site (subdomain dropped) and either the same distinctive last segment (an id or 4+ words) or paths within
+ * 2 edits of each other on a 30+ char path. Pure.
+ */
+function nearSameArticleUrl(u1, u2) {
+  const parse = (u) => {
+    try {
+      const x = new URL(String(u || ''));
+      const labels = x.hostname.toLowerCase().split('.');
+      const site = labels.slice(labels.length >= 3 && /^(co|com|org|ac)$/.test(labels[labels.length - 2]) ? -3 : -2).join('.');
+      // Id-routed urls (LSA story.asp?ID=) are different articles per id: id-like query params stay in the key.
+      // Every query param but tracking ones is identity (NYT treview.html?res=, wp ?p=, LSA ?ID=).
+      const ids = [...x.searchParams].filter(([k]) => !/^(utm_|fbclid$|gclid$|mc_|ref$|src$|source$|cmp$|smid$|smtyp$|_r$|pagewanted$|partner$|sniply)/i.test(k)).map(([k, v]) => `${k.toLowerCase()}=${v}`).sort().join('&');
+      const p = decodeURIComponent(x.pathname).toLowerCase().replace(/\.html?$/, '').replace(/\/+$/, '') + (ids ? `?${ids}` : '');
+      return { site, path: p, last: p.split('/').filter(Boolean).pop() || '' };
+    } catch { return null; }
+  };
+  const a = parse(u1), b = parse(u2);
+  if (!a || !b || a.site !== b.site) return false;
+  if (a.path === b.path) return true;
+  if (a.path.split('?')[1] !== b.path.split('?')[1]) return false; // different query identity = different article
+  // Ids decide: two article ids (a 4+ digit run, or an id query param) that differ are two articles.
+  const idsOf = (x) => (x.path.match(/\d{4,}/g) || []).join(',');
+  if (idsOf(a) !== idsOf(b)) return false;
+  const distinctive = (seg) => /\d{5,}/.test(seg) || seg.split(/[-_]+/).filter(Boolean).length >= 4;
+  if (a.last && a.last === b.last && distinctive(a.last)) return true;
+  if (Math.min(a.path.length, b.path.length) < 30 || Math.abs(a.path.length - b.path.length) > 2) return false;
+  // Bounded edit distance (<= 2), banded so it stays linear in the path length.
+  const n = a.path.length, m = b.path.length, K = 2;
+  let prev = Array.from({ length: m + 1 }, (_, j) => j);
+  for (let i = 1; i <= n; i++) {
+    const cur = new Array(m + 1).fill(K + 1);
+    cur[0] = i;
+    let best = cur[0];
+    for (let j = Math.max(1, i - K); j <= Math.min(m, i + K); j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.path[i - 1] === b.path[j - 1] ? 0 : 1));
+      if (cur[j] < best) best = cur[j];
+    }
+    if (best > K) return false;
+    prev = cur;
+  }
+  return prev[m] <= K;
+}
 const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore', 'dtliThumb', 'bwwThumb', 'bwwScore', 'originalRating']; // thumbs/ratings feed the rebuild's score fallback + rave flag (BRO-8091 review)
 const present = (v) => v != null && v !== '';
 /**
@@ -450,7 +496,7 @@ function sameArticleSettleReason(data, primary, primaryFile) {
   if (who(data.criticName) && who(data.criticName) !== 'unknown' && who(data.criticName) !== who(primary.criticName)) return null;
   const { normalizeArticleUrl } = require('./lib/combined-review-utils');
   const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
-  if (!a || (a !== b && !sameTrailingArticleId(data.url, primary.url))) return null;
+  if (!a || (a !== b && !sameTrailingArticleId(data.url, primary.url) && !nearSameArticleUrl(data.url, primary.url))) return null;
   if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
   // BRO-8091: an aggregator excerpt (dtliExcerpt/showScoreExcerpt/bwwExcerpt) is only a scoring FALLBACK for a
   // body-less review. This primary already has a sound body (primaryBodyIsSound above), so an excerpt it lacks
@@ -745,6 +791,32 @@ async function processShow(showId, deps = {}) {
     }
     const url = data.url;
     if (!url) {
+      // BRO-8195: judged on its own outlet--critic name and date (Theatre Record stubs carry no url, ever).
+      const exists = (sid, name) => fs.existsSync(path.join(root, sid, name));
+      const nu = pendingTriage.noUrlStubVerdict(data, { show, allShows: deps.allShows || (deps.root ? [] : loadAllShows()), file,
+        showHasFile: (name) => exists(showId, name),
+        siblingHasFile: (sid, name) => exists(sid, name) || exists(path.join('_pending', sid), name) });
+      if (nu && nu.verdict === 'rehome') {
+        const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: nu.sibling, data, publishDate: nu.publishDate, nowIso: now().toISOString(), dry });
+        if (out === 'rehomed') {
+          console.log(`  [${file}] triage: ${nu.reason} — rehomed to ${nu.sibling} (BRO-8195)`);
+          verdictCount('rehomed: url-less stub to its sibling');
+          redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
+          tagged++; kept++;
+          continue;
+        }
+      }
+      if (nu && nu.verdict === 'junk') {
+        console.log(`  [${file}] triage: ${nu.reason} — tagged (BRO-8195)`);
+        verdictCount('junk: url-less duplicate');
+        if (!dry) {
+          data.promoteSkippedReason = `${nu.reason} (BRO-8195 triage)`;
+          data.promoteSkippedAt = now().toISOString();
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        tagged++; kept++;
+        continue;
+      }
       console.log(`  [${file}] no URL — skip`);
       verdictCount('no url');
       if (isUnrecoverablePendingStub(data, null)) noteUnrecoverable(file, filepath, data, 'no URL to re-fetch');
@@ -790,18 +862,22 @@ async function processShow(showId, deps = {}) {
       console.log(`  [${file}] triage: ${tri.reason} — rehomed to ${tri.sibling} (BRO-8090)`);
       const out = rehomeStubFile({ root, file, fromShowId: showId, toShowId: tri.sibling, data, publishDate: tri.publishDate, nowIso: now().toISOString(), dry });
       if (out === 'sibling-copy-settled') {
-        // The owner's copy of this url is settled there: leave this one as it is (never two settled copies).
-        console.log(`  [${file}] ${tri.sibling} holds a settled copy of this url — left in place (BRO-8090)`);
-        verdictCount('kept: sibling holds a settled copy');
-        kept++;
-        continue;
+        // The owner's copy of this url is settled there: never move a second copy over it. This misfiled copy
+        // is settled in place too (BRO-8195): left untagged it counted as open forever and was re-triaged
+        // every run (private-lives-1975 holding the 2011 revival's NYT review).
+        console.log(`  [${file}] ${tri.sibling} holds a settled copy of this url — settled in place (BRO-8090/BRO-8195)`);
+        verdictCount('settled: sibling holds a settled copy');
       }
-      if (out === 'sibling-has-copy' && !dry) {
-        data.promoteSkippedReason = `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
-        data.promoteSettled = 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
+      if ((out === 'sibling-has-copy' || out === 'sibling-copy-settled') && !dry) {
+        data.promoteSkippedReason = out === 'sibling-copy-settled'
+          ? `belongs to same-title production ${tri.sibling}, whose _pending copy is already settled (BRO-8195)`
+          : `belongs to same-title production ${tri.sibling}, whose _pending copy already carries it (BRO-8090)`;
+        // Same settle kind as the post-fetch path for this case (promoteSettled 'sibling-settled').
+        data.promoteSettled = out === 'sibling-copy-settled' ? 'sibling-settled' : 'sibling'; data.promoteSettledSibling = tri.sibling; data.promoteSkippedAt = now().toISOString();
         try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
       }
-      redundantCopies.rehomed = (redundantCopies.rehomed || 0) + 1;
+      const copyKey = out === 'sibling-copy-settled' ? 'sibling-settled' : 'rehomed';
+      redundantCopies[copyKey] = (redundantCopies[copyKey] || 0) + 1;
       tagged++;
       kept++;
       continue;
@@ -848,6 +924,7 @@ async function processShow(showId, deps = {}) {
     verdictCount('fetched'); // BRO-8023: a fetch candidate, left for the fetching drain
 
     let byline = null;
+    let bylineFromStubText = false;
     let html = null;
     let publishDate = null;
     let fetchResult = null;
@@ -940,6 +1017,16 @@ async function processShow(showId, deps = {}) {
         refetched++;
         console.log(`  [${file}] re-fetched body rebuilt (${patch.wordCount || '?'} words, ${patch.contentTier})`);
       }
+    }
+
+    // BRO-8195: the page gave no byline but the stub's own text prints one ("Review by Evan Prenter" under an
+    // All That Dazzles headline whose page author is the shared "Sam - Admin" account). The same reader the
+    // corpus backfill uses; without it these stubs sat open as "no byline detected" every run.
+    if ((!byline || byline === 'Unknown') && data.fullText) {
+      let showFiles = [];
+      try { showFiles = fs.readdirSync(path.join(root, showId)); } catch { /* no show dir yet */ }
+      const printed = pendingTriage.textBylineFallback(data, show, showFiles);
+      if (printed) { console.log(`  [${file}] byline from the stub's own text: ${printed} (BRO-8195)`); byline = printed; bylineFromStubText = true; }
     }
 
     // BRO-8023: the byline is the show's own playwright/composer: a venue or listing page, never a review.
@@ -1088,7 +1175,7 @@ async function processShow(showId, deps = {}) {
       continue;
     }
     data.criticName = byline;
-    data.bylineSource = 'replay-pending-bylines';
+    data.bylineSource = bylineFromStubText ? 'replay-pending-bylines:stub-text' : 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();
     markEmptyBodyForRetry(data);
     // Persist the extracted date. The pre-fix promoted files carried
@@ -1172,6 +1259,7 @@ module.exports = {
   findExistingFileForUrl,
   isRedundantPendingStub,
   sameTrailingArticleId,
+  nearSameArticleUrl,
   nextFetchFailureCount,
   stampFetchAttempt,
   primaryBodyIsSound,

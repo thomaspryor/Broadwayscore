@@ -14,7 +14,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`. **Owner says ASAP → `/go-live-now`, unasked.**
-- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; off: `DEPLOY_GATE_DISABLED=true`). Never dispatch by hand (only `/go-live-now`). Core-data-only changes ride the next rebuild/6h backstop.
+- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >3h old (`scripts/lib/should-deploy-gate.js`; off: `DEPLOY_GATE_DISABLED=true`). Never dispatch by hand (only `/go-live-now`). Core-data-only changes ride the next rebuild/3h backstop.
 - **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` polls; ~10 min after landing). Only a READY prod deployment counts (a cancel-cascade run can say success while CANCELED).
 - **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`).
 

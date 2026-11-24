@@ -21,7 +21,7 @@ on:
 # HTML site with a pause between tours: no scraping secrets, no fetchPage().
 # The data file is committed only when a tour's stops changed. The site picks
 # it up on the next deploy (the deploy gate does not watch data/*.json, so up
-# to its 6h backstop on a quiet day).
+# to its staleness backstop, 3h since BRO-8198, on a quiet day).
 #
 # Tour key art (BRO-4726): right after the schedules refresh,
 # fetch-tour-images.js finds each tour's own poster/thumbnail (TodayTix

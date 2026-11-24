@@ -1,54 +1,50 @@
 {
   "outletId": "stagebuddy",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:20:10.516Z",
+  "generatedAt": "2026-11-23T23:26:17.461Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 327,
-    "inWindow": 327,
+    "enumerated": 328,
+    "inWindow": 328,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 189,
-      "gap": 5,
+      "held": 195,
       "not-review": 71,
       "catalog-gap": 34,
-      "out-of-window": 25,
+      "out-of-window": 24,
       "held-unmatched": 2,
+      "gap": 1,
       "held-alt-url": 1
     },
     "viaTitleVariant": {
-      "gap": 1,
-      "held": 30,
+      "held": 31,
       "held-alt-url": 1
     },
-    "recall": 0.974,
-    "recallWithCatalog": 0.83
+    "recall": 0.995,
+    "recallWithCatalog": 0.848
   },
   "seasons": {
     "2026-27": {
-      "held": 8,
-      "gap": 1
+      "held": 10
     },
     "2025-26": {
-      "held": 39,
+      "held": 40,
       "not-review": 4,
-      "catalog-gap": 2,
-      "gap": 1
+      "catalog-gap": 2
     },
     "2024-25": {
-      "gap": 1,
-      "held": 38,
-      "out-of-window": 2,
+      "held": 40,
       "catalog-gap": 2,
-      "not-review": 1
+      "not-review": 1,
+      "out-of-window": 1
     },
     "2023-24": {
       "held": 37,
@@ -59,11 +55,10 @@
       "catalog-gap": 2
     },
     "2022-23": {
-      "held": 39,
+      "held": 40,
       "catalog-gap": 9,
       "not-review": 24,
       "out-of-window": 4,
-      "gap": 1,
       "held-unmatched": 1
     },
     "2021-22": {
@@ -80,7 +75,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 274,
+    "rowsInWindow": 280,
+    "heldExcludedRows": 0,
     "notEnumerated": 19,
     "noUrl": 0,
     "samples": [
@@ -202,45 +198,6 @@
   },
   "gaps": [
     {
-      "url": "https://stagebuddy.com/theater/theater-review/other-desert-citites",
-      "headline": "Other Desert Cities",
-      "publishDate": "2026-10-28",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "other-desert-cities-2026"
-      ],
-      "outOfWindow": [
-        "other-desert-cities-2011"
-      ]
-    },
-    {
-      "url": "https://stagebuddy.com/theater/theater-review/tartuffe",
-      "headline": "Tartuffe",
-      "publishDate": "2025-12-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "tartuffe-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "tartuffe-2003",
-        "tartuffe-1996",
-        "tartuffe-1977"
-      ]
-    },
-    {
-      "url": "https://stagebuddy.com/theater/theater-review/the-weir",
-      "headline": "The Weir",
-      "publishDate": "2025-08-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-weir-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stagebuddy.com/theater/theater-review/heart-rock-roll",
       "headline": "The Heart of Rock and Roll",
       "publishDate": "2024-05-13",
@@ -250,20 +207,6 @@
         "heart-of-rock-and-roll-2024"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://stagebuddy.com/theater/theater-review/merrily-roll-along",
-      "headline": "Merrily We Roll Along",
-      "publishDate": "2023-01-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "merrily-we-roll-along-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "merrily-we-roll-along-2023",
-        "merrily-we-roll-along-1981"
-      ]
     }
   ],
   "heldAltUrl": [
@@ -618,17 +561,6 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
-      "headline": "The Imaginary Invalid",
-      "publishDate": "2025-06-03",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
-    },
-    {
       "url": "https://stagebuddy.com/theater/theater-review/the-merchant-of-venice",
       "headline": "The Merchant of Venice",
       "publishDate": "2024-12-18",
@@ -908,5 +840,9 @@
         "wings-1979"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

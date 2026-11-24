@@ -1,94 +1,93 @@
 {
   "outletId": "theatermania",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:21:04.602Z",
+  "generatedAt": "2026-11-23T23:11:09.497Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1417,
-    "inWindow": 1417,
+    "enumerated": 1424,
+    "inWindow": 1424,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 533,
-      "held-unmatched": 21,
-      "held-other-market": 22,
+      "out-of-window": 283,
+      "held": 549,
+      "held-other-market": 24,
+      "held-unmatched": 23,
       "catalog-gap": 292,
-      "out-of-window": 286,
-      "not-review": 161,
-      "held-alt-url": 82,
-      "gap": 20
+      "not-review": 160,
+      "held-alt-url": 88,
+      "gap": 5
     },
     "viaTitleVariant": {
+      "held-other-market": 1,
       "held": 29,
       "held-alt-url": 12,
       "not-review": 2
     },
-    "recall": 0.969,
-    "recallWithCatalog": 0.663
+    "recall": 0.992,
+    "recallWithCatalog": 0.682
   },
   "seasons": {
     "2026-27": {
-      "held": 66,
+      "out-of-window": 2,
+      "held": 70,
+      "held-other-market": 7,
       "held-unmatched": 7,
-      "held-other-market": 5,
       "catalog-gap": 2,
-      "out-of-window": 1,
       "not-review": 2
     },
     "2025-26": {
-      "held": 183,
+      "held": 185,
       "catalog-gap": 40,
       "held-alt-url": 5,
       "not-review": 15,
-      "gap": 4,
+      "gap": 2,
       "held-other-market": 13,
-      "out-of-window": 36,
-      "held-unmatched": 4
+      "out-of-window": 35,
+      "held-unmatched": 5
     },
     "2024-25": {
-      "out-of-window": 65,
+      "out-of-window": 63,
       "catalog-gap": 68,
-      "held": 121,
+      "held": 123,
       "held-unmatched": 6,
       "not-review": 23,
-      "held-other-market": 2,
-      "gap": 1,
-      "held-alt-url": 1
+      "held-alt-url": 2,
+      "held-other-market": 2
     },
     "2023-24": {
       "not-review": 22,
       "catalog-gap": 62,
-      "out-of-window": 55,
-      "held": 105,
-      "held-unmatched": 3,
+      "out-of-window": 54,
+      "held": 106,
+      "held-unmatched": 4,
       "held-other-market": 1,
-      "gap": 4,
-      "held-alt-url": 1
+      "gap": 2,
+      "held-alt-url": 2
     },
     "2022-23": {
       "out-of-window": 62,
-      "not-review": 41,
+      "not-review": 40,
       "catalog-gap": 67,
-      "gap": 6,
-      "held": 43,
+      "held": 47,
       "held-other-market": 1,
-      "held-alt-url": 38,
+      "held-alt-url": 40,
+      "gap": 1,
       "held-unmatched": 1
     },
     "2021-22": {
       "not-review": 52,
       "out-of-window": 63,
-      "held": 15,
+      "held": 18,
       "catalog-gap": 48,
-      "held-alt-url": 35,
-      "gap": 5
+      "held-alt-url": 37
     },
     "2020-21": {
       "held-alt-url": 2,
@@ -98,8 +97,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 980,
-    "notEnumerated": 99,
+    "rowsInWindow": 1053,
+    "heldExcludedRows": 0,
+    "notEnumerated": 104,
     "noUrl": 1,
     "samples": [
       {
@@ -127,9 +127,27 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-dolls-house-2023",
+        "url": "https://www.theatermania.com/broadway-theater/news/review-a-dolls-house_94950.html",
+        "publishDate": "2023-03-10",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-man-of-no-importance-off-broadway-2022",
         "url": "https://www.theatermania.com/off-broadway/reviews/review-jim-parsons-a-man-of-no-importance_94490.html",
         "publishDate": "2022-10-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-strange-loop-2022",
+        "url": "https://www.theatermania.com/broadway/reviews/review-a-strange-loop-michael-r-jackson-broadway_93704.html",
+        "publishDate": "2022-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-streetcar-named-desire-off-broadway-2025",
+        "url": "http://www.theatermania.com/off-broadway/reviews/a-streetcar-named-desire_76914.html",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -320,26 +338,8 @@
       },
       {
         "showId": "flying-over-sunset-2021",
-        "url": "https://www.theatermania.com/broadway/news/review-flying-over-sunset_93118.html",
+        "url": "https://www.theatermania.com/broadway/reviews/review-flying-over-sunset_93118.html",
         "publishDate": "2021-12-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
-        "url": "https://www.theatermania.com/broadway/news/review-for-colored-girls-broadway-revival_93677.html",
-        "publishDate": "2022-04-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "friends-the-musical-parody-off-broadway-2022",
-        "url": "http://www.theatermania.com/off-broadway/reviews/friends-the-musical-parody_82972.html",
-        "publishDate": "2022-06-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "funny-girl-2022",
-        "url": "https://www.theatermania.com/broadway/reviews/review-lea-michele-funny-girl-broadway_94440.html",
-        "publishDate": "2022-10-19",
         "why": "not-enumerated"
       }
     ]
@@ -357,17 +357,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.theatermania.com/news/review-cold-war-choir-practice-wants-us-to-remember-the-80s_1827269/",
-      "headline": "Review: Cold War Choir Practice Wants Us to Remember the ’80s",
-      "publishDate": "2026-03-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cold-war-choir-practice-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.theatermania.com/news/review-night-side-songs-the-sing-along-cancer-musical_1826273/",
       "headline": "Review: Night Side Songs, the Sing-Along Cancer Musical",
       "publishDate": "2026-03-02",
@@ -377,34 +366,6 @@
         "night-side-songs-off-broadway-2026"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-the-gods-arent-smiling-on-a-new-revival-of-shaws-pygmalion_1810261/",
-      "headline": "Review: The Gods Aren’t Smiling on a New Revival of Shaw’s Pygmalion",
-      "publishDate": "2025-11-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "pygmalion-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "pygmalion-2007",
-        "pygmalion-1987"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-henry-iv-tells-an-epic-royal-coming-of-age-story_1763401/",
-      "headline": "Review: Henry IV Tells an Epic Royal Coming-of-Age Story",
-      "publishDate": "2025-02-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "henry-iv-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "henry-iv-2003",
-        "henry-iv-off-broadway-2015"
-      ]
     },
     {
       "url": "https://www.theatermania.com/news/review-water-for-elephants-is-broadways-first-fully-integrated-circus-musical_1735237/",
@@ -417,36 +378,6 @@
       ],
       "outOfWindow": [
         "the-first-1981"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-munich-medea-happy-family-a-drama-about-finding-family-in-tough-circumstances_1729759/",
-      "headline": "Review: Munich Medea: Happy Family, a Drama About Finding Family in Tough Circumstances",
-      "publishDate": "2024-02-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "medea-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "medea-2002",
-        "medea-1994",
-        "medea-1973",
-        "medea-1982",
-        "medea-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-legendary-cuban-musicians-come-to-life-in-an-electric-buena-vista-social-club_1723903/",
-      "headline": "Review: Legendary Cuban Musicians Come to Life in an Electric Buena Vista Social Club",
-      "publishDate": "2023-12-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "buena-vista-social-club-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "buena-vista-social-club-2025"
       ]
     },
     {
@@ -463,17 +394,6 @@
       ]
     },
     {
-      "url": "https://www.theatermania.com/news/review-the-popular-sesame-street-musical-returns-off-broadway-in-a-new-theater_1712462/",
-      "headline": "Review: The Popular Sesame Street Musical Returns Off-Broadway in a New Theater",
-      "publishDate": "2023-08-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sesame-street-the-musical-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.theatermania.com/news/review-the-thanksgiving-play-is-checkmate-for-the-well-meaning-woke_1698978/",
       "headline": "Review: The Thanksgiving Play Is Checkmate for the Well-Meaning Woke",
       "publishDate": "2023-04-20",
@@ -481,111 +401,6 @@
       "held": [],
       "matched": [
         "the-thanksgiving-play-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-a-dolls-house-in-black-and-white-with-jessica-chastain_94950/",
-      "headline": "Review: A Doll’s House in Black and White With Jessica Chastain",
-      "publishDate": "2023-03-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "a-dolls-house-2023"
-      ],
-      "outOfWindow": [
-        "a-dolls-house-1997",
-        "a-dolls-house-1975"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-jonathan-groff-daniel-radcliffe-and-lindsay-mendez-in-a-revelatory-merrily-we-roll-along_94671/",
-      "headline": "Review: Jonathan Groff, Daniel Radcliffe, and Lindsay Mendez in a Revelatory Merrily We Roll Along",
-      "publishDate": "2022-12-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "merrily-we-roll-along-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "merrily-we-roll-along-2023",
-        "merrily-we-roll-along-1981"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-some-like-it-hot-serves-old-fashioned-broadway-with-a-twist_94668/",
-      "headline": "Review: Some Like It Hot Serves Old-Fashioned Broadway With a Twist",
-      "publishDate": "2022-12-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "some-like-it-hot-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-oh-candida-you-were-made-for-london-not-new-york_94475/",
-      "headline": "Review: Oh Candida, You Were Made for London, Not New York",
-      "publishDate": "2022-10-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "candida-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-a-strange-loop-champions-the-individual-in-a-culture-obsessed-with-group-identity_93704/",
-      "headline": "Review: A Strange Loop Champions the Individual in a Culture Obsessed With Group Identity",
-      "publishDate": "2022-04-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "a-strange-loop-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-a-richly-deserved-long-belated-broadway-bow-for-paula-vogels-how-i-learned-to-drive_93666/",
-      "headline": "Review: A Richly Deserved, Long-Belated Broadway Bow for Paula Vogel's How I Learned to Drive",
-      "publishDate": "2022-04-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "how-i-learned-to-drive-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-coal-country-gives-the-victims-of-the-ubb-mine-explosion-another-chance-at-vindication_93476/",
-      "headline": "Review: Coal Country Gives the Victims of the UBB Mine Explosion Another Chance at Vindication",
-      "publishDate": "2022-03-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "coal-country-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-musical-melodrama-the-streets-of-new-york-delivers-fun-moments-in-an-uneven-revival_93125/",
-      "headline": "REVIEW: Musical Melodrama The Streets of New York Delivers Fun Moments in an Uneven Revival",
-      "publishDate": "2021-12-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-streets-of-new-york-off-broadway-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-lachanze-and-chuck-cooper-astonish-in-alice-childresss-monumental-trouble-in-mind_93014/",
-      "headline": "Review: LaChanze and Chuck Cooper Astonish in Alice Childress's Monumental Trouble in Mind",
-      "publishDate": "2021-11-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "trouble-in-mind-2021"
       ],
       "outOfWindow": []
     }
@@ -647,6 +462,17 @@
       ]
     },
     {
+      "url": "https://www.theatermania.com/news/review-paul-mescal-led-a-streetcar-named-desire-violently-crashes-into-2025_1767057/",
+      "headline": "Review: Paul Mescal-led A Streetcar Named Desire Violently Crashes into 2025",
+      "publishDate": "2025-03-11",
+      "matched": [
+        "a-streetcar-named-desire-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "http://www.theatermania.com/off-broadway/reviews/a-streetcar-named-desire_76914.html"
+      ]
+    },
+    {
       "url": "https://www.theatermania.com/news/review-another-shot-shows-a-radio-host-stumbling-toward-sobriety_1754285/",
       "headline": "Review: Another Shot Shows a Radio Host Stumbling Toward Sobriety",
       "publishDate": "2024-10-29",
@@ -655,6 +481,17 @@
       ],
       "heldUrls": [
         "https://www.theatermania.com/news/review-another-shot-shows-a-radio-dj-stumbling-toward-sobriety_1754285/"
+      ]
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-munich-medea-happy-family-a-drama-about-finding-family-in-tough-circumstances_1729759/",
+      "headline": "Review: Munich Medea: Happy Family, a Drama About Finding Family in Tough Circumstances",
+      "publishDate": "2024-02-12",
+      "matched": [
+        "medea-off-broadway-2022"
+      ],
+      "heldUrls": [
+        "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/"
       ]
     },
     {
@@ -688,6 +525,17 @@
       ],
       "heldUrls": [
         "https://www.theatermania.com/off-broadway-theater/news/review-dark-disabled-stories_94954.html"
+      ]
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-a-dolls-house-in-black-and-white-with-jessica-chastain_94950/",
+      "headline": "Review: A Doll’s House in Black and White With Jessica Chastain",
+      "publishDate": "2023-03-20",
+      "matched": [
+        "a-dolls-house-2023"
+      ],
+      "heldUrls": [
+        "https://www.theatermania.com/broadway-theater/news/review-a-dolls-house_94950.html"
       ]
     },
     {
@@ -753,7 +601,7 @@
         "pictures-from-home-2023"
       ],
       "heldUrls": [
-        "https://www.theatermania.com/broadway/news/review-pictures-from-home-lane-burstein-wanamaker_94855.html"
+        "https://www.theatermania.com/broadway/reviews/review-pictures-from-home-lane-burstein-wanamaker_94855.html"
       ]
     },
     {
@@ -798,6 +646,17 @@
       ],
       "heldUrls": [
         "https://www.theatermania.com/off-broadway/reviews/des-moines_94690.html"
+      ]
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-some-like-it-hot-serves-old-fashioned-broadway-with-a-twist_94668/",
+      "headline": "Review: Some Like It Hot Serves Old-Fashioned Broadway With a Twist",
+      "publishDate": "2022-12-11",
+      "matched": [
+        "some-like-it-hot-2022"
+      ],
+      "heldUrls": [
+        "https://www.theatermania.com/broadway/reviews/review-some-like-it-hot-broadway_94668.html"
       ]
     },
     {
@@ -1197,58 +1056,14 @@
       ]
     },
     {
-      "url": "https://www.theatermania.com/news/review-a-new-jersey-family-survives-an-ice-age-and-more-in-the-skin-of-our-teeth_93694/",
-      "headline": "Review: A New Jersey Family Survives an Ice Age and More in The Skin of Our Teeth",
-      "publishDate": "2022-04-25",
+      "url": "https://www.theatermania.com/news/review-a-strange-loop-champions-the-individual-in-a-culture-obsessed-with-group-identity_93704/",
+      "headline": "Review: A Strange Loop Champions the Individual in a Culture Obsessed With Group Identity",
+      "publishDate": "2022-04-26",
       "matched": [
-        "the-skin-of-our-teeth-2022"
+        "a-strange-loop-2022"
       ],
       "heldUrls": [
-        "https://www.theatermania.com/broadway/reviews/the-skin-of-our-teeth_93694.html"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-is-she-the-greatest-star-beanie-feldstein-leads-funny-girl-back-to-broadway_93691/",
-      "headline": "Review: Is She the Greatest Star? Beanie Feldstein Leads Funny Girl Back to Broadway",
-      "publishDate": "2022-04-24",
-      "matched": [
-        "funny-girl-2022"
-      ],
-      "heldUrls": [
-        "https://www.theatermania.com/broadway/reviews/review-lea-michele-funny-girl-broadway_94440.html"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-martin-mcdonaghs-hangmen-is-a-fun-broadway-thriller-but-without-the-menace_93664/",
-      "headline": "Review: Martin McDonagh's Hangmen Is a Fun Broadway Thriller, But Without the Menace",
-      "publishDate": "2022-04-21",
-      "matched": [
-        "hangmen-2022"
-      ],
-      "heldUrls": [
-        "https://www.theatermania.com/broadway/reviews/review-martin-mcdonaghs-hangmen-is-a-fun-broadway_93664.html"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-the-minutes-is-a-horror-story-of-american-democracy_93660/",
-      "headline": "Review: The Minutes Is a Horror Story of American Democracy",
-      "publishDate": "2022-04-17",
-      "matched": [
-        "the-minutes-2022"
-      ],
-      "heldUrls": [
-        "https://www.theatermania.com/broadway/reviews/review-the-minutes-tracy-letts-broadway_93660.html"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-david-mamets-low-down-schemers-return-in-american-buffalo-revival_93652/",
-      "headline": "Review: David Mamet's Low-Down Schemers Return in American Buffalo Revival",
-      "publishDate": "2022-04-14",
-      "matched": [
-        "american-buffalo-2022"
-      ],
-      "heldUrls": [
-        "https://www.theatermania.com/broadway/reviews/review-american-buffalo_93652.html"
+        "https://www.theatermania.com/broadway/reviews/review-a-strange-loop-michael-r-jackson-broadway_93704.html"
       ]
     }
   ],
@@ -1384,6 +1199,19 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
+      "headline": "Review: Mexodus, a Hip-Hop Musical About an Enslaved Person’s Journey South to Freedom",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
       "url": "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
       "headline": "Review: Jamie Allan’s Amaze Will Wow Kids—and Their Gen-Xer Parents Too",
       "publishDate": "2025-08-13",
@@ -1481,6 +1309,20 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-shakespeare-and-shaw-are-a-deadly-combination-in-the-assassination-of-julius-caesar_1734169/",
+      "headline": "Review: Shakespeare and Shaw Are a Deadly Combination in The Assassination of Julius Caesar",
+      "publishDate": "2024-03-17",
+      "via": null,
+      "held": [
+        "the-assassination-of-julius-caesar-as-told-by-william-shakespeare-and-george-bernard-shaw-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-2005",
+        "julius-caesar-off-broadway-2017"
+      ]
     },
     {
       "url": "https://www.theatermania.com/news/review-amid-falling-walls-revives-the-holocaust-era-music-of-resistance_1721828/",
@@ -4141,6 +3983,17 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
+      "url": "https://www.theatermania.com/news/review-grim-is-too-dark-for-kids-too-tame-for-grown-ups_1860633/",
+      "headline": "Review: Grim Is Too Dark for Kids, Too Tame for Grown-Ups",
+      "publishDate": "2026-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "grown-ups-1981"
+      ]
+    },
+    {
       "url": "https://www.theatermania.com/news/review-dirty-dancing-has-the-moves-but-its-book-needs-a-lift_1856695/",
       "headline": "Review: Dirty Dancing Has the Moves, but Its Book Needs a Lift",
       "publishDate": "2026-10-09",
@@ -4562,17 +4415,6 @@
       ]
     },
     {
-      "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
-      "headline": "Review: Mexodus, a Hip-Hop Musical About an Enslaved Person’s Journey South to Freedom",
-      "publishDate": "2025-09-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://www.theatermania.com/news/review-a-noise-withins-one-man-two-guvnors-is-a-winner-with-kasey-mahaffy_1803781/",
       "headline": "Review: A Noise Within’s One Man, Two Guvnors Is a Winner With Kasey Mahaffy",
       "publishDate": "2025-09-17",
@@ -4746,6 +4588,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -4772,17 +4615,6 @@
       "matched": [],
       "outOfWindow": [
         "spread-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-the-imaginary-invalid-is-moliere-on-ozempic_1781730/",
-      "headline": "Review: The Imaginary Invalid Is Molière on Ozempic",
-      "publishDate": "2025-06-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
       ]
     },
     {
@@ -4934,21 +4766,6 @@
         "wonderland-2011",
         "the-island-1974",
         "frozen-2004"
-      ]
-    },
-    {
-      "url": "https://www.theatermania.com/news/review-paul-mescal-led-a-streetcar-named-desire-violently-crashes-into-2025_1767057/",
-      "headline": "Review: Paul Mescal-led A Streetcar Named Desire Violently Crashes into 2025",
-      "publishDate": "2025-03-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
       ]
     },
     {
@@ -5632,18 +5449,6 @@
       ]
     },
     {
-      "url": "https://www.theatermania.com/news/review-shakespeare-and-shaw-are-a-deadly-combination-in-the-assassination-of-julius-caesar_1734169/",
-      "headline": "Review: Shakespeare and Shaw Are a Deadly Combination in The Assassination of Julius Caesar",
-      "publishDate": "2024-03-17",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "julius-caesar-2005",
-        "julius-caesar-off-broadway-2017"
-      ]
-    },
-    {
       "url": "https://www.theatermania.com/news/review-in-ibsens-ghost-charles-busch-plays-the-widow-of-a-famous-playwright_1733944/",
       "headline": "Review: In Ibsen’s Ghost, Charles Busch Plays the Widow of a Famous Playwright",
       "publishDate": "2024-03-14",
@@ -6084,6 +5889,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -6443,7 +6249,8 @@
         "a-streetcar-named-desire-1992",
         "a-streetcar-named-desire-1988",
         "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
+        "a-streetcar-named-desire-2005",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -6869,6 +6676,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -7538,5 +7346,9 @@
         "after-midnight-2013"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

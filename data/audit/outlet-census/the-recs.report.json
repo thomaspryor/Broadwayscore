@@ -1,23 +1,23 @@
 {
   "outletId": "the-recs",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:34:27.058Z",
+  "generatedAt": "2026-11-23T23:25:54.016Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 419,
-    "inWindow": 419,
+    "enumerated": 422,
+    "inWindow": 422,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held-other-market": 30,
-      "not-review": 384,
+      "not-review": 386,
+      "held-other-market": 31,
       "held-unmatched": 1,
       "held": 4
     },
@@ -27,8 +27,8 @@
   },
   "seasons": {
     "2026-27": {
-      "held-other-market": 18,
-      "not-review": 22,
+      "not-review": 24,
+      "held-other-market": 19,
       "held-unmatched": 1
     },
     "2025-26": {
@@ -54,8 +54,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 55,
-    "notEnumerated": 50,
+    "rowsInWindow": 56,
+    "heldExcludedRows": 0,
+    "notEnumerated": 51,
     "noUrl": 0,
     "samples": [
       {
@@ -134,6 +135,12 @@
         "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
         "url": "https://therecs.co.uk/creation-stories-and-all-the-important-importants/",
         "publishDate": "2026-10-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "elektra-off-broadway-2026",
+        "url": "https://therecs.co.uk/elektra-theatre-for-a-new-audience/",
+        "publishDate": "2026-11-23",
         "why": "not-enumerated"
       },
       {
@@ -291,12 +298,6 @@
         "url": "https://therecs.co.uk/the-lost-boys/",
         "publishDate": "2026-04-27",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "the-maids-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-maids/",
-        "publishDate": "2026-06-10",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -319,5 +320,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

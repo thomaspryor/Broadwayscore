@@ -2190,7 +2190,10 @@ function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = fal
     const landed = fs.readdirSync(dir).filter(f => f.endsWith('.json')).some(f => {
       try {
         const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        return j.url && normalizeReviewUrl(j.url) === target;
+        // BRO-8204: ingest may store the page's canonical URL and keep the
+        // requested one (a Substack share link) in alternateUrls.
+        return [j.url, ...(Array.isArray(j.alternateUrls) ? j.alternateUrls : [])]
+          .some((u) => u && normalizeReviewUrl(u) === target);
       } catch { return false; }
     });
     if (landed) return { ok: true, reason: null, provisional };

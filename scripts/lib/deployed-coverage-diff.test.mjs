@@ -193,7 +193,7 @@ test('persistentDefects: only diffs older than the deploy-backstop grace count a
   const kept = persistentDefects([row('fresh', hoursAgo(1)), row('edge', hoursAgo(STALE_GRACE_HOURS)), row('old', hoursAgo(30)),
     row('nostamp', undefined), { showId: 'ok', ok: true, defects: [] }], nowMs).map(r => r.showId);
   assert.deepEqual(kept, ['edge', 'old']);
-  assert.equal(STALE_GRACE_HOURS, 6, 'matches the vercel-deploy.yml 6h backstop');
+  assert.equal(STALE_GRACE_HOURS, 6, 'covers the gate backstop even at its 6h kill-switch value (default 3h, BRO-8198)');
   // BRO-8056: a show-refresh publish can lag a data change by up to 3h; the
   // audit must not call a show stale while its refresh is still in flight.
   assert.ok(STALE_GRACE_HOURS >= 3, 'grace covers the show-refresh publish window');

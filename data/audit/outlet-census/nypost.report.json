@@ -1,7 +1,7 @@
 {
   "outletId": "nypost",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:50:10.343Z",
+  "generatedAt": "2026-11-23T23:41:38.944Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
@@ -25,8 +25,9 @@
   },
   "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 450,
-    "notEnumerated": 185,
+    "rowsInWindow": 453,
+    "heldExcludedRows": 0,
+    "notEnumerated": 188,
     "noUrl": 7,
     "samples": [
       {
@@ -278,5 +279,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

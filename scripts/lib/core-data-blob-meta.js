@@ -14,7 +14,7 @@
  *
  * audience-buzz.json is deliberately NOT tracked: it is rewritten by ~16
  * workflows (mezzanine, LTD, snapshots, opening-night pollers...), so tracking
- * it would turn nearly every tick into a Vercel build. It rides the 6h
+ * it would turn nearly every tick into a Vercel build. It rides the (3h default, BRO-8198)
  * staleness backstop instead (the cost the gate exists to avoid). Add it to
  * DATA_TRACKED_FILES only after measuring its commit rate.
  */

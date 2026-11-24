@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { decide, classifyDiffExit, SITE_PATHS, STALENESS_BACKSTOP_SEC } = require('./should-deploy-gate.js');
+const { decide, classifyDiffExit, SITE_PATHS, DEFAULT_STALENESS_BACKSTOP_SEC: STALENESS_BACKSTOP_SEC, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours } = require('./should-deploy-gate.js');
 
 const A = 'a'.repeat(40);
 const B = 'b'.repeat(40);
@@ -36,7 +36,7 @@ test('schedule: clean site diff + fresh deploy skips (content-gate)', () => {
 });
 
 // BRO-554: the "skip if deployed within 30 min" intent, delivered by the
-// content-aware gate (stronger: it skips for the whole 6h window while nothing
+// content-aware gate (stronger: it skips for the whole backstop window while nothing
 // site-relevant changed). A cron tick inside 30 min of a live deploy must never
 // rebuild when the site and core data are unchanged, and must still ship a real change.
 test('BRO-554: ticks within 30 min of a live deploy skip when nothing changed, ship when something did', () => {
@@ -51,15 +51,15 @@ test('schedule: dirty site diff deploys (content-changed)', () => {
   assert.deepEqual(r, { proceed: true, reason: 'content-changed' });
 });
 
-test('schedule: staleness backstop fires at >6h even with clean diff (seconds math)', () => {
+test('schedule: staleness backstop fires at >3h even with clean diff (seconds math)', () => {
   // check-prod-deploy.js --json returns ageSec (already converted from Vercel's
   // epoch-ms createdAt) — assert exact-boundary semantics so an ms/sec mixup or
   // an off-by-one can never silently disable the backstop.
   const atBoundary = decide({ ...base, deployAgeSec: STALENESS_BACKSTOP_SEC });
-  assert.equal(atBoundary.proceed, false, '6h exactly is NOT stale');
+  assert.equal(atBoundary.proceed, false, '3h exactly is NOT stale');
   const past = decide({ ...base, deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
   assert.deepEqual(past, { proceed: true, reason: 'staleness-backstop' });
-  assert.equal(STALENESS_BACKSTOP_SEC, 21600);
+  assert.equal(STALENESS_BACKSTOP_SEC, 10800, 'BRO-8198: owner approved list pages lagging up to 3h');
 });
 
 test('schedule: unknown deploy age fails OPEN', () => {
@@ -160,7 +160,7 @@ test('workflow_dispatch: HEAD already live but core data advanced — proceeds (
 // persistently-broken data lookup (missing token, API outage) combined with
 // a genuinely idle public repo could therefore strand core-data staleness
 // indefinitely — the ONE case in this file where an unknown signal used to
-// bypass the 6h backstop entirely rather than falling back to it.
+// bypass the staleness backstop entirely rather than falling back to it.
 test('schedule: baseline == HEAD, data status unknown, deploy is stale — backstop still fires', () => {
   const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
   assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
@@ -171,9 +171,13 @@ test('schedule: baseline == HEAD, data status unknown, deploy is fresh — still
   assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
 });
 
-test('schedule: baseline == HEAD, data positively clean, deploy is stale — skips WITHOUT checking age (genuine no-op)', () => {
+test('BRO-8198: baseline == HEAD, tracked data clean, deploy past the backstop — ships (untracked data like audience-buzz needs the bound)', () => {
   const r = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
-  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+  const fresh = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC });
+  assert.deepEqual(fresh, { proceed: false, reason: 'no-new-commits' });
+  const unknownAge = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: null });
+  assert.deepEqual(unknownAge, { proceed: false, reason: 'no-new-commits' });
 });
 
 test('kill switch forces proceed on every event, even baseline==HEAD', () => {
@@ -213,7 +217,7 @@ test('tracked set covers reviews, shows and the other private files read at buil
   for (const f of ['reviews.json', 'shows.json', 'commercial.json', 'grosses.json', 'grosses-history.json', 'critic-consensus.json']) {
     assert.ok(DATA_TRACKED_FILES.includes(f), f);
   }
-  // churn guard: audience-buzz is rewritten by ~16 workflows; it rides the 6h backstop.
+  // churn guard: audience-buzz is rewritten by ~16 workflows; it rides the staleness backstop.
   assert.ok(!DATA_TRACKED_FILES.includes('audience-buzz.json'));
 });
 
@@ -399,4 +403,91 @@ test('BRO-8028: a held run asks for a deferred retry, and the workflow wires it'
   assert.match(y, /retry_after_sec: \$\{\{ steps\.check\.outputs\.retry_after_sec \}\}/);
   const g = fs.readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
   assert.match(g, /retry_after_sec=\$\{retryAfterSec\}/);
+});
+
+// --- BRO-8198: configurable backstop (default 3h), kill switch, guards ---
+
+test('BRO-8198: decide() honours an explicit backstopSec (6h override restores the old bound)', () => {
+  const sixH = 6 * 3600;
+  assert.deepEqual(decide({ ...base, deployAgeSec: 4 * 3600 }), { proceed: true, reason: 'staleness-backstop' }, 'default 3h: a 4h-old deploy is stale');
+  assert.deepEqual(decide({ ...base, deployAgeSec: 4 * 3600, backstopSec: sixH }), { proceed: false, reason: 'content-gate' }, '6h override: 4h is not stale');
+  assert.deepEqual(decide({ ...base, deployAgeSec: sixH + 1, backstopSec: sixH }), { proceed: true, reason: 'staleness-backstop' });
+  // same-HEAD + unknown data branch uses the same bound
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 4 * 3600 }).reason, 'staleness-backstop');
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 4 * 3600, backstopSec: sixH }).reason, 'no-new-commits');
+});
+
+test('BRO-8198: resolveEnvNumber - strict decimal parse, default on empty/junk, clamp out of range', () => {
+  const o = { def: 180, min: 60, max: 1440 };
+  assert.deepEqual(resolveEnvNumber(undefined, o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('', o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('  ', o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('360', o), { value: 360, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber(' 360 ', o), { value: 360, invalid: false, clamped: false });
+  for (const junk of ['6h', 'six', '0x6', '1e3', 'NaN', '-']) {
+    assert.deepEqual(resolveEnvNumber(junk, o), { value: 180, invalid: true, clamped: false }, junk);
+  }
+  assert.deepEqual(resolveEnvNumber('2880', o), { value: 1440, invalid: false, clamped: true });
+  assert.deepEqual(resolveEnvNumber('5', o), { value: 60, invalid: false, clamped: true });
+  assert.deepEqual(resolveEnvNumber('90.5', o), { value: 90.5, invalid: false, clamped: false });
+});
+
+test('BRO-8198: resolveGateTiming - defaults, kill switch var, min-interval parsing, backstop floor', () => {
+  let t = resolveGateTiming({});
+  assert.equal(t.minIntervalSec, 45 * 60);
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.deepEqual(t.warnings, []);
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '', GATE_MIN_INTERVAL_MIN: '' }); // unset repo vars reach the step as ''
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.equal(t.minIntervalSec, 45 * 60);
+  // kill switch: repo var DEPLOY_BACKSTOP_MIN=360 restores the pre-BRO-8198 6h behaviour
+  assert.equal(resolveGateTiming({ GATE_BACKSTOP_MIN: '360' }).backstopSec, 6 * 3600);
+  // min-interval: 0 still disables the throttle (BRO-8028 contract)
+  assert.equal(resolveGateTiming({ GATE_MIN_INTERVAL_MIN: '0' }).minIntervalSec, 0);
+  // a junk value is warned about, never silently obeyed or silently ignored
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '6h' });
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.match(t.warnings.join(' '), /GATE_BACKSTOP_MIN/);
+  // a backstop at or below the min interval would be dead config (throttle runs first): lift it
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '60', GATE_MIN_INTERVAL_MIN: '90' });
+  assert.equal(t.backstopSec, (90 + 15) * 60);
+  assert.match(t.warnings.join(' '), /min interval/);
+});
+
+test('BRO-8198: diffWindowOpen agrees with decide() at the backstop boundary', () => {
+  const b = 3 * 3600;
+  assert.equal(diffWindowOpen(b, b), true, 'at the boundary the diff runs and the content gate can skip');
+  assert.deepEqual(decide({ ...base, deployAgeSec: b, backstopSec: b }), { proceed: false, reason: 'content-gate' });
+  assert.equal(diffWindowOpen(b + 1, b), false, 'past it no diff is needed');
+  assert.equal(decide({ ...base, deployAgeSec: b + 1, backstopSec: b, diffResult: null }).reason, 'staleness-backstop');
+  assert.equal(diffWindowOpen(null, b), false);
+});
+
+test('BRO-8198: freshness alert thresholds follow the backstop (3h default keeps today\'s 8h/12h)', () => {
+  assert.deepEqual(freshnessAlertHours(3 * 3600), { warnH: 8, errorH: 12 });
+  assert.deepEqual(freshnessAlertHours(6 * 3600), { warnH: 11, errorH: 15 }, '6h rollback must not raise false alarms');
+});
+
+// Regression nets (pass with or without BRO-8198; they pin the owner's hard constraints).
+test('constraint: routine data/content change on a new commit always ships once past the min interval', () => {
+  for (const age of [45 * 60, 60 * 60, 2 * 3600, 3 * 3600, 5 * 3600]) {
+    for (const dirty of [{ diffResult: 'dirty' }, { diffResult: 'clean', dataDiffResult: 'dirty' }]) {
+      const r = decide({ ...base, deployAgeSec: age, minIntervalSec: 45 * 60, ...dirty });
+      assert.equal(r.proceed, true, `age ${age}s ${JSON.stringify(dirty)} -> ${r.reason}`);
+    }
+  }
+  // same-HEAD core-data change ships too
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'dirty', deployAgeSec: 46 * 60, minIntervalSec: 45 * 60 }).proceed, true);
+});
+
+test('constraint: urgent triggers (opening night, /go-live-now) ignore min interval and backstop', () => {
+  for (const source of ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'press-night-watchdog']) {
+    assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  }
+  for (const backstopSec of [3 * 3600, 6 * 3600]) {
+    const r = decide({ ...base, eventName: 'workflow_dispatch', deployAgeSec: 60, minIntervalSec: 45 * 60, backstopSec });
+    assert.deepEqual(r, { proceed: true, reason: 'explicit-ship' });
+    // dedup when the exact SHA and data are live is unchanged
+    assert.deepEqual(decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean', backstopSec }), { proceed: false, reason: 'already-live' });
+  }
 });

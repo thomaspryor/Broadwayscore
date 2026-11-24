@@ -70,7 +70,11 @@ test('past-deadline shows get --force-create-draft, on the draft call only', () 
   const rule = SRC.match(/if \[ "\$CREATE_DRAFT" = "true" \] && \[ -n "\$\{\{ steps\.check\.outputs\.deadline_shows \}\}" \]; then\n\s*DRAFT_FLAGS="--force-create-draft"/);
   assert.ok(rule, 'force rule not found');
   assert.ok(SRC.indexOf(rule[0]) > SRC.indexOf('** DRAFT MODE'), 'force rule must follow the mode branch');
-  assert.equal(SRC.split('DRAFT_FLAGS="--force-create-draft"').length - 1, 1, 'exactly one place may set the force flag');
+  // BRO-8188: the only other place is the owner's explicit force_create_draft dispatch input.
+  const owner = SRC.match(/if \[ "\$CREATE_DRAFT" = "true" \] && \[ "\$\{\{ inputs\.force_create_draft \}\}" = "true" \]; then\n\s*DRAFT_FLAGS="--force-create-draft"/);
+  assert.ok(owner, 'owner force_create_draft rule not found');
+  assert.ok(SRC.indexOf(owner[0]) > SRC.indexOf(rule[0]), 'owner rule must follow the deadline rule');
+  assert.equal(SRC.split('DRAFT_FLAGS="--force-create-draft"').length - 1, 2, 'only the deadline rule and the owner input may set the force flag');
 });
 
 test('a number change updates the unsent draft in place and the reminder step exists', () => {

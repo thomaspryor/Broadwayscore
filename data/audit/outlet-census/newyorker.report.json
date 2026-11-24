@@ -1,7 +1,7 @@
 {
   "outletId": "newyorker",
   "market": "nyc",
-  "generatedAt": "2026-11-19T12:35:52.943Z",
+  "generatedAt": "2026-11-23T23:41:07.097Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
@@ -16,45 +16,42 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "out-of-window": 16,
-      "held": 27,
+      "held-unmatched": 32,
+      "held": 31,
       "not-review": 42,
-      "held-unmatched": 31,
-      "gap": 5
+      "out-of-window": 14,
+      "gap": 2
     },
     "viaTitleVariant": {
-      "gap": 1,
-      "held": 5
+      "held": 6
     },
-    "recall": 0.844,
-    "recallWithCatalog": 0.844
+    "recall": 0.939,
+    "recallWithCatalog": 0.939
   },
   "seasons": {
     "2026-27": {
-      "out-of-window": 1,
+      "held-unmatched": 3,
       "held": 1,
-      "not-review": 4,
-      "held-unmatched": 2
+      "not-review": 4
     },
     "2025-26": {
       "held-unmatched": 8,
-      "held": 8,
-      "not-review": 5,
-      "gap": 2
+      "held": 10,
+      "not-review": 5
     },
     "2024-25": {
-      "out-of-window": 5,
+      "out-of-window": 4,
       "not-review": 3,
-      "held": 7,
+      "held": 8,
       "held-unmatched": 7,
       "gap": 1
     },
     "2023-24": {
       "not-review": 9,
       "held-unmatched": 8,
-      "held": 6,
+      "held": 7,
       "out-of-window": 5,
-      "gap": 2
+      "gap": 1
     },
     "2022-23": {
       "held-unmatched": 6,
@@ -68,7 +65,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 157,
+    "rowsInWindow": 162,
+    "heldExcludedRows": 0,
     "notEnumerated": 40,
     "noUrl": 0,
     "samples": [
@@ -316,33 +314,6 @@
   },
   "gaps": [
     {
-      "url": "https://www.newyorker.com/magazine/2026/06/15/can-i-be-frank-theatre-review-heated-rivalry",
-      "headline": "can i be frank theatre review heated rivalry",
-      "publishDate": "2026-06-01",
-      "dateSoft": true,
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball",
-      "headline": "becky shaw theatre review cats the jellicle ball",
-      "publishDate": "2026-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cats-the-jellicle-ball-2026"
-      ],
-      "outOfWindow": [
-        "becky-shaw-2026",
-        "cats-the-jellicle-ball-off-broadway-2024"
-      ]
-    },
-    {
       "url": "https://www.newyorker.com/magazine/2025/03/10/grangeville-and-curse-of-the-starving-class-theatre-review",
       "headline": "grangeville and curse of the starving class theatre review",
       "publishDate": "2025-02-01",
@@ -369,23 +340,25 @@
       "outOfWindow": [
         "hells-kitchen-2024"
       ]
-    },
-    {
-      "url": "https://www.newyorker.com/magazine/2023/10/23/the-refuge-plays-zoetrope-theatre-reviews",
-      "headline": "the refuge plays zoetrope theatre reviews",
-      "publishDate": "2023-10-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-refuge-plays-off-broadway-2023"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [],
   "misfiles": [],
   "heldUnmatched": [
+    {
+      "url": "https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review",
+      "headline": "downstate theatre review",
+      "publishDate": "2026-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "downstate-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
     {
       "url": "https://www.newyorker.com/magazine/2026/11/02/other-desert-cities-theatre-review-a-bright-room-called-day",
       "headline": "other desert cities theatre review a bright room called day",
@@ -839,18 +812,6 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review",
-      "headline": "downstate theatre review",
-      "publishDate": "2026-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "downstate-2026"
-      ]
-    },
-    {
       "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
       "headline": "twelfth night theatre review",
       "publishDate": "2025-08-01",
@@ -875,24 +836,6 @@
       "outOfWindow": [
         "richard-ii-off-broadway-2025",
         "the-years-de-jaren-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://www.newyorker.com/magazine/2025/03/24/a-streetcar-named-desire-and-ghosts-theatre-review",
-      "headline": "a streetcar named desire and ghosts theatre review",
-      "publishDate": "2025-03-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005",
-        "ghosts-1982",
-        "ghosts-off-broadway-2025"
       ]
     },
     {
@@ -995,6 +938,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1053,5 +997,9 @@
         "the-merchant-of-venice-1973"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

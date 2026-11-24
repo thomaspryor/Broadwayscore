@@ -3971,12 +3971,14 @@ async function checkCmuxReachability() {
 // --- Category I2: Deploy freshness (content-aware gate watchdog) ---
 //
 // The should-deploy gate (scripts/lib/should-deploy-gate.js) skips scheduled
-// deploys when nothing site-relevant changed, with a 6h staleness backstop.
+// deploys when nothing site-relevant changed, with a staleness backstop
+// (default 3h since BRO-8198; repo var DEPLOY_BACKSTOP_MIN overrides).
 // All existing alerting keys off run FAILURES — a gate stuck wrongly-closed
 // produces green skip runs and zero deploys with no signal (plan-review
 // pre-mortem, 2026-07-19). This check is the stuck-closed detector: the
-// backstop guarantees a READY production deployment at least every ~6h
-// (plus cron delay), so age >8h means the gate, the cron, or Vercel is broken.
+// backstop guarantees a READY production deployment at least every backstop
+// (plus cron delay). Alert bars come from freshnessAlertHours() in the gate
+// module (3h backstop: warn >8h, error >12h), so they move with the backstop.
 // Uses check-prod-deploy.js (canonical READY-deployment query) — do not
 // hand-roll another copy of the Vercel API call.
 
@@ -3998,12 +4000,18 @@ function checkDeployFreshness() {
     }
     const dep = JSON.parse(out);
     const ageH = dep.ageSec / 3600;
+    const gate = require('./lib/should-deploy-gate.js');
+    const { backstopSec, warnings: timingWarnings } = gate.resolveGateTiming(process.env);
+    const { warnH: rawWarnH, errorH: rawErrorH } = gate.freshnessAlertHours(backstopSec);
+    const warnH = +rawWarnH.toFixed(1); const errorH = +rawErrorH.toFixed(1);
+    const backstopH = +(backstopSec / 3600).toFixed(2);
     const msg = `Latest READY production deploy: ${dep.deployedSha ? dep.deployedSha.slice(0, 10) : 'unknown-sha'}, age ${ageH.toFixed(1)}h`;
     // BRO-2771: this hint used to tell the owner to run `gh run list --workflow=...`,
     // the exact command BRO-2767 proved returns months-stale result sets on this repo.
     const hint = 'Gate stuck or cron dead? Check should-deploy runs with: gh api "repos/{owner}/{repo}/actions/workflows/vercel-deploy.yml/runs?per_page=10" --jq \'.workflow_runs[] | "\\(.created_at) \\(.conclusion)"\' — use that REST form, NOT the gh CLI run-listing shorthand, which is stale on this repo. Then dispatch "Rebuild Reviews (Fast)", or set repo var DEPLOY_GATE_DISABLED=true';
-    if (ageH > 12) return { name: 'Deploy: production freshness', status: 'error', message: msg + ' (>12h — 6h backstop is not firing)', hint };
-    if (ageH > 8) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ' (>8h — backstop late; GH cron delays can explain up to ~2h)', hint };
+    if (ageH > errorH) return { name: 'Deploy: production freshness', status: 'error', message: msg + ` (>${errorH}h — ${backstopH}h backstop is not firing)`, hint };
+    if (ageH > warnH) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ` (>${warnH}h — backstop late; GH cron delays can explain up to ~2h)`, hint };
+    if (timingWarnings.length) return { name: 'Deploy: production freshness', status: 'warn', message: msg + ` (gate timing vars: ${timingWarnings.join('; ')})`, hint };
     return { name: 'Deploy: production freshness', status: 'pass', message: msg };
   })];
 }

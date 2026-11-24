@@ -158,8 +158,24 @@ function getTheaterAddress(venueName) {
  */
 function registryAddressFor(venueName, market) {
   const addr = getTheaterAddress(venueName);
-  if (!addr || market === 'west-end' || market === 'tour') return null;
-  return (market === 'broadway') === /New York, NY/.test(addr) ? addr : null;
+  const area = marketArea(market);
+  if (!addr || !area) return null;
+  return (area === 'nyc') === isNycAddress(addr) ? addr : null;
 }
 
-module.exports = { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor };
+/** Any New York City address: "New York, NY" or a borough line like "Brooklyn, NY 11201". */
+function isNycAddress(address) {
+  return /New York, NY|,\s*NY\s+1[01]\d{3}\b/.test(String(address || ''));
+}
+
+/**
+ * Which registry half a market may use: 'nyc' (Broadway, and Off-Broadway if a category slips
+ * in as a market), 'uk-regional', or null (West End, tour, missing or unknown: no registry use).
+ */
+function marketArea(market) {
+  if (market === 'broadway' || market === 'off-broadway') return 'nyc';
+  if (market === 'regional') return 'uk-regional';
+  return null;
+}
+
+module.exports = { VENUE_ADDRESSES, getTheaterAddress, registryAddressFor, isNycAddress, marketArea };

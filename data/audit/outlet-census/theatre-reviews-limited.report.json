@@ -1,68 +1,67 @@
 {
   "outletId": "theatre-reviews-limited",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:33:40.485Z",
+  "generatedAt": "2026-11-23T23:24:48.327Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 305,
-    "inWindow": 305,
+    "enumerated": 307,
+    "inWindow": 307,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "gap": 11,
-      "held": 196,
-      "out-of-window": 12,
-      "not-review": 54,
-      "held-unmatched": 2,
+      "not-review": 55,
+      "gap": 5,
+      "held": 203,
+      "out-of-window": 11,
+      "held-unmatched": 3,
       "catalog-gap": 30
     },
     "viaTitleVariant": {
       "held": 8,
       "gap": 1
     },
-    "recall": 0.947,
-    "recallWithCatalog": 0.827
+    "recall": 0.976,
+    "recallWithCatalog": 0.853
   },
   "seasons": {
     "2026-27": {
+      "not-review": 1,
       "gap": 1,
-      "held": 10
+      "held": 11
     },
     "2025-26": {
       "held": 56,
-      "out-of-window": 3,
+      "out-of-window": 2,
       "not-review": 12,
-      "held-unmatched": 1,
+      "held-unmatched": 2,
       "gap": 1,
       "catalog-gap": 2
     },
     "2024-25": {
       "not-review": 14,
-      "held": 53,
+      "held": 54,
       "catalog-gap": 3,
-      "out-of-window": 1,
-      "gap": 1
+      "out-of-window": 1
     },
     "2023-24": {
       "not-review": 6,
-      "held": 23,
+      "held": 26,
       "held-unmatched": 1,
       "catalog-gap": 3,
-      "gap": 3,
       "out-of-window": 1
     },
     "2022-23": {
-      "held": 37,
+      "held": 39,
       "not-review": 11,
       "catalog-gap": 8,
-      "gap": 3,
+      "gap": 1,
       "out-of-window": 3
     },
     "2021-22": {
@@ -77,16 +76,11 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 300,
-    "notEnumerated": 13,
+    "rowsInWindow": 309,
+    "heldExcludedRows": 0,
+    "notEnumerated": 12,
     "noUrl": 0,
     "samples": [
-      {
-        "showId": "farinelli-and-the-king-2017",
-        "url": "https://www.theatrereviews.com/broadway-review-farinelli-and-the-king-at-the-belasco-theatre/",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
       {
         "showId": "indecent-2017",
         "url": "http://www.theatrereviews.com/broadway-review-indecent-shatters-the-comfort-of-safety-at-the-cort-theatre/",
@@ -163,17 +157,15 @@
   },
   "gaps": [
     {
-      "url": "https://www.theatrereviews.com/off-broadway-review-degenerates-at-playwrights-horizons-peter-jay-sharp-theater-extended-through-sunday-january-24-2027/",
-      "headline": "Off-Broadway Review: “Degenerates” at Playwrights Horizons Peter Jay Sharp Theater (Extended through Sunday, January 24, 2027)",
-      "publishDate": "2026-11-11",
+      "url": "https://www.theatrereviews.com/off-broadway-review-well-see-at-the-public-theaters-barbaralee-theater-through-sunday-november-29-2026/",
+      "headline": "Off-Broadway Review: “We’ll See” at the Public Theater’s Barbaralee Theater (Through Sunday, November 29, 2026)",
+      "publishDate": "2026-11-22",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "degenerates-off-broadway-2026"
+        "well-see-off-broadway-2026"
       ],
-      "outOfWindow": [
-        "degenerates-dec-jan-off-broadway-2026"
-      ]
+      "outOfWindow": []
     },
     {
       "url": "https://www.theatrereviews.com/off-broadway-review-the-monsters-at-new-york-city-center-stage-ii-through-sunday-march-22-2026/",
@@ -187,55 +179,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.theatrereviews.com/broadway-review-cult-of-love-at-the-helen-hayes-currently-on/",
-      "headline": "Broadway Review: “Cult of Love” at the Helen Hayes (Closed Sunday, February 2, 2025)",
-      "publishDate": "2024-12-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cult-of-love-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatrereviews.com/broadway-review-the-whos-tommy-at-the-nederlander-theatre-currently-on/",
-      "headline": "Broadway Review: The Who’s “Tommy” at the Nederlander Theatre (Closed on Sunday, July 21, 2024)",
-      "publishDate": "2024-04-07",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-whos-tommy-2024"
-      ],
-      "outOfWindow": [
-        "the-whos-tommy-1993"
-      ]
-    },
-    {
-      "url": "https://www.theatrereviews.com/broadway-review-harmony-at-the-ethel-barrymore-theatre-currently-on/",
-      "headline": "Broadway Review: “Harmony” at the Ethel Barrymore Theatre (Closed Sunday, April 4, 2024)",
-      "publishDate": "2023-12-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "harmony-2023"
-      ],
-      "outOfWindow": [
-        "barrymore-1997",
-        "harmony-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://www.theatrereviews.com/broadway-review-gutenberg-the-musical-at-the-james-earl-jones-theatre-through-sunday-january-28-2024/",
-      "headline": "Broadway Review: “Gutenberg! The Musical!” at the James Earl Jones Theatre (Closed Sunday, January 28, 2024)",
-      "publishDate": "2023-10-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "gutenberg-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.theatrereviews.com/__trashed/",
       "headline": "Broadway Review: “A Beautiful Noise” at the Broadhurst Theatre (Currently On)",
       "publishDate": "2023-01-26",
@@ -243,31 +186,6 @@
       "held": [],
       "matched": [
         "a-beautiful-noise-the-neil-diamond-musical-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.theatrereviews.com/off-broadway-review-merrily-we-roll-along/",
-      "headline": "Off-Broadway Review: “Merrily We Roll Along” at New York Theatre Workshop (Closed Sunday, January 22, 2023)",
-      "publishDate": "2022-12-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "merrily-we-roll-along-off-broadway-2022"
-      ],
-      "outOfWindow": [
-        "merrily-we-roll-along-2023",
-        "merrily-we-roll-along-1981"
-      ]
-    },
-    {
-      "url": "https://www.theatrereviews.com/off-broadway-review-you-will-get-sick-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-december-11-2022/",
-      "headline": "Off-Broadway Review: “You Will Get Sick” at Roundabout Theatre Company’s Laura Pels Theatre (Closed Sunday, December 11, 2022)",
-      "publishDate": "2022-11-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "you-will-get-sick-off-broadway-2022"
       ],
       "outOfWindow": []
     },
@@ -309,6 +227,19 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-mexodus-at-the-minetta-lane-theatre-through-saturday-october-18-2025/",
+      "headline": "Off-Broadway Review: “Mexodus” at the Minetta Lane Theatre (Closed Saturday, November 1, 2025)",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [
+        "mexodus-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
     },
     {
       "url": "https://www.theatrereviews.com/broadway-review-job-at-the-helen-hayes-theater-through-sunday-september-29-2024/",
@@ -624,17 +555,6 @@
       ]
     },
     {
-      "url": "https://www.theatrereviews.com/off-broadway-review-mexodus-at-the-minetta-lane-theatre-through-saturday-october-18-2025/",
-      "headline": "Off-Broadway Review: “Mexodus” at the Minetta Lane Theatre (Closed Saturday, November 1, 2025)",
-      "publishDate": "2025-09-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mexodus-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://www.theatrereviews.com/festival-review-julius-caesar-at-the-oregon-shakespeare-festival-examines-power-betrayal-and-gender-embodiment-through-october-26-2025/",
       "headline": "Festival Review: “Julius Caesar” at the Oregon Shakespeare Festival Examines Power, Betrayal, and Gender Embodiment (Through October 26, 2025)",
       "publishDate": "2025-03-17",
@@ -749,5 +669,9 @@
         "a-chorus-line-1975"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

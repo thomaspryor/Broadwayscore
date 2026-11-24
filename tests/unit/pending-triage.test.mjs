@@ -1589,3 +1589,277 @@ test('BRO-8202: WOS id variant + null-url primary settle as same article; real o
   assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).url, URL_);
   assert.ok(!fs.existsSync(stub) || !/different article/.test(JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason || ''));
 });
+
+describe('BRO-8195: browser recovery lists paywalled _pending stubs', () => {
+  // A fresh corpus dir, never the live one: the helper reads REVIEW_TEXTS_DIR at load.
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-rt-'));
+  process.on('exit', () => fs.rmSync(rt, { recursive: true, force: true }));
+  const write = (rel, obj) => { fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true }); fs.writeFileSync(path.join(rt, rel), JSON.stringify(obj, null, 2)); };
+  const NYT = 'https://www.nytimes.com/2017/01/05/theater/hundred-days-review-under-the-radar.html';
+  write('_pending/hundred-days-off-broadway-2017/nytimes--49a11b48.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: NYT, criticName: 'Unknown', pendingFetchFailures: 3,
+    promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed on paywalled outlet nytimes; needs the logged-in browser path, not retried by the paid scraper (BRO-8091)' });
+  write('_pending/hundred-days-off-broadway-2017/nytimes--junk0001.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: 'https://www.nytimes.com/2017/01/05/movies/x.html', promoteSkippedReason: 'off-topic URL, not a review (BRO-7078)' });
+  write('_pending/hundred-days-off-broadway-2017/nytimes--nourl.json', { showId: 'hundred-days-off-broadway-2017', outletId: 'nytimes', url: null });
+  write('_pending/cloud-9-west-end-2026/times-uk--63ed18d9.json', { showId: 'cloud-9-west-end-2026', outletId: 'times-uk', url: 'https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-fchw23k6r' });
+  write('some-show-2017/nytimes--ben-brantley.json', { url: 'https://www.nytimes.com/2017/a.html', contentTier: 'excerpt' });
+
+  const loadHelpers = () => {
+    const prev = process.env.REVIEW_TEXTS_DIR;
+    process.env.REVIEW_TEXTS_DIR = rt;
+    const key = require.resolve('../../scripts/lib/browser-recovery-helpers.js');
+    delete require.cache[key];
+    try { return require(key); } finally { process.env.REVIEW_TEXTS_DIR = prev; }
+  };
+  const H = loadHelpers();
+
+  test('a subscriber-fetch-failed _pending stub is a candidate; other settles and url-less stubs are not', () => {
+    const c = H.loadCandidates({ filePrefix: 'nytimes', includePending: true });
+    const ids = c.map((x) => x.reviewId).sort();
+    assert.deepEqual(ids, ['_pending/hundred-days-off-broadway-2017/nytimes--49a11b48.json', 'some-show-2017/nytimes--ben-brantley.json']);
+    const p = c.find((x) => x.pending);
+    assert.equal(p.url, NYT);
+    assert.equal(p.showId, 'hundred-days-off-broadway-2017');
+    assert.equal(p.file, 'nytimes--49a11b48.json');
+  });
+
+  test('an open subscriber stub with a url is listed too; without includePending nothing under _pending is', () => {
+    assert.ok(H.loadCandidates({ filePrefix: 'times-uk', includePending: true }).some((x) => x.reviewId === '_pending/cloud-9-west-end-2026/times-uk--63ed18d9.json'));
+    assert.ok(!H.loadCandidates({ filePrefix: ['nytimes', 'times-uk'] }).some((x) => x.pending));
+  });
+
+  test('processPendingCandidate hands the logged-in html to the drain, and settles a stub the drain keeps', async () => {
+    const [cand] = H.loadCandidates({ filePrefix: 'nytimes', includePending: true }).filter((x) => x.pending);
+    let seen = null;
+    const fakeDrain = async (showId, deps) => {
+      const d = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+      assert.equal(d.promoteSkippedReason, null, 'the subscriber settle is re-opened before the drain runs');
+      seen = { showId, files: deps.files, html: (await deps.fetch(cand.url)).content, other: await deps.fetch('https://x.test/') };
+      return { promoted: 0 };
+    };
+    const tracker = new Set();
+    const r = await H.processPendingCandidate(cand, '<html>logged in</html>', { processShow: fakeDrain, tracker });
+    assert.deepEqual(seen, { showId: 'hundred-days-off-broadway-2017', files: ['nytimes--49a11b48.json'], html: '<html>logged in</html>', other: null });
+    assert.equal(r.outcome, 'settled');
+    const after = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+    assert.match(after.promoteSkippedReason, /^subscriber-browser-read-no-promote/);
+    assert.ok(tracker.has(path.resolve(cand.filePath)));
+    assert.ok(!H.pendingSubscriberStubEligible(after), 'a stub the logged-in read could not promote is not retried every run');
+  });
+});
+
+describe('BRO-8195: a logged-in read that never reached the article never reaches the drain', () => {
+  const rt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-miss-'));
+  process.on('exit', () => fs.rmSync(rt, { recursive: true, force: true }));
+  // The real stub: an old WaPo story url that now redirects to the homepage (drain promoted a food writer's byline).
+  const URL0 = 'https://www.washingtonpost.com/entertainment/review-broadways-some-like-it-hot-blazes-righteous-path/2022/12/11/68e0a7b4-79c9-11ed-bb97-f47d47466b9a_story.html';
+  const rel = '_pending/some-like-it-hot-2022/washpost--177ae7da.json';
+  fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true });
+  fs.writeFileSync(path.join(rt, rel), JSON.stringify({ showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0, pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed on paywalled outlet washpost (BRO-8091)' }));
+  const prev = process.env.REVIEW_TEXTS_DIR;
+  process.env.REVIEW_TEXTS_DIR = rt;
+  const key = require.resolve('../../scripts/lib/browser-recovery-helpers.js');
+  delete require.cache[key];
+  const H = require(key);
+  process.env.REVIEW_TEXTS_DIR = prev;
+
+  test('pendingBrowserMissReason: homepage / section redirect or a near-empty read is a miss; a moved article is not', () => {
+    assert.match(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/', textLen: 69 }), /redirected off the article/);
+    assert.match(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/theater-dance/', textLen: 4000 }), /redirected off the article/);
+    assert.match(H.pendingBrowserMissReason({ finalUrl: URL0, textLen: 69 }), /only 69 chars/);
+    assert.equal(H.pendingBrowserMissReason({ finalUrl: 'https://www.washingtonpost.com/theater-dance/2022/12/12/some-like-it-hot-broadway-review/', textLen: 5200 }), null);
+  });
+
+  test('the homepage redirect settles the stub with a typed reason and the drain is never called', async () => {
+    const [cand] = H.loadCandidates({ filePrefix: 'washpost', includePending: true });
+    let called = false;
+    const r = await H.processPendingCandidate(cand, '<html>homepage</html>', { processShow: async () => { called = true; return { promoted: 1 }; }, tracker: new Set(), finalUrl: 'https://www.washingtonpost.com/', textLen: 69 });
+    assert.equal(called, false);
+    assert.equal(r.outcome, 'settled');
+    const d = JSON.parse(fs.readFileSync(cand.filePath, 'utf8'));
+    assert.match(d.promoteSkippedReason, /^subscriber-browser-no-article: the logged-in browser redirected off the article/);
+    assert.ok(!H.pendingSubscriberStubEligible(d));
+  });
+
+  test('a miss after the login dropped stamps nothing and stops the run (session-lost)', async () => {
+    const rel2 = '_pending/some-like-it-hot-2022/washpost--lost.json';
+    const body = { showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0 + '?x=lost', pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: 3 paid fetches failed (BRO-8091)' };
+    fs.writeFileSync(path.join(rt, rel2), JSON.stringify(body));
+    const cand = { reviewId: rel2, filePath: path.join(rt, rel2), url: body.url, showId: body.showId, file: 'washpost--lost.json', pending: true };
+    let called = false;
+    const r = await H.processPendingCandidate(cand, '<html>sign in</html>', { processShow: async () => { called = true; return {}; }, tracker: new Set(), finalUrl: 'https://www.washingtonpost.com/', textLen: 40, probe: async () => ({ text: 'Sign in', len: 7 }), minAuthChars: 1000 });
+    assert.equal(r.outcome, 'session-lost');
+    assert.equal(called, false);
+    assert.deepEqual(JSON.parse(fs.readFileSync(cand.filePath, 'utf8')), body, 'the stub is untouched');
+  });
+
+  test('a drain that rehomes the stub to a sibling: the rehomed copy is tracked for the commit', async () => {
+    const rel3 = '_pending/some-like-it-hot-2022/washpost--moved.json';
+    const body = { showId: 'some-like-it-hot-2022', outletId: 'washpost', url: URL0 + '?x=moved', pendingFetchFailures: 3, promoteSkippedReason: 'subscriber-fetch-failed: x (BRO-8091)' };
+    fs.writeFileSync(path.join(rt, rel3), JSON.stringify(body));
+    const cand = { reviewId: rel3, filePath: path.join(rt, rel3), url: body.url, showId: body.showId, file: 'washpost--moved.json', pending: true };
+    const dest = path.join(rt, '_pending/some-like-it-hot-2023/washpost--moved.json');
+    const drain = async () => { fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, JSON.stringify({ ...body, rehomedFrom: body.showId })); fs.unlinkSync(cand.filePath); return { promoted: 0 }; };
+    const tracker = new Set();
+    const r = await H.processPendingCandidate(cand, '<html>article</html>', { processShow: drain, tracker, finalUrl: URL0, textLen: 4000 });
+    assert.equal(r.outcome, 'settled');
+    assert.match(r.detail, /rehomed to _pending\/some-like-it-hot-2023/);
+    assert.ok(tracker.has(path.resolve(cand.filePath)) && tracker.has(path.resolve(dest)));
+  });
+});
+
+describe('BRO-8195 noUrlStubVerdict: url-less Theatre Record stubs judged on name and date', () => {
+  // Real rows (2026-11-23 open queue): Seven Methods 2019 stubs dated in the 2021 Royal Court run, which already files them.
+  const S19 = { id: 'seven-methods-of-killing-kylie-jenner-west-end-2019', title: 'Seven Methods of Killing Kylie Jenner', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2019-07-04', openingDate: '2019-07-09', closingDate: '2019-07-27' };
+  const S21 = { id: 'seven-methods-of-killing-kylie-jenner-west-end-2021', title: 'Seven Methods of Killing Kylie Jenner', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2021-06-17', openingDate: '2021-06-22', closingDate: '2021-07-17' };
+  const U25 = { id: 'the-unbelievers-west-end-2025', title: 'The Unbelievers', category: 'west-end', venue: 'Royal Court', previewsStartDate: '2025-10-10', openingDate: '2025-10-16', closingDate: '2025-11-29' };
+  const U26 = { id: 'the-unbelievers-off-broadway-2026', title: 'The Unbelievers', category: 'off-broadway', venue: 'New York City Center', previewsStartDate: '2026-10-20', openingDate: '2026-11-05', closingDate: '2026-12-20' };
+  const all = [S19, S21, U25, U26];
+  const stub = { outletId: 'guardian', criticName: 'Kate Wyver', url: null, publishDate: '2021-06-23', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/06/1-seven-methods', fullText: 'Seven Methods of Killing Kylie Jenner returns to the Royal Court. '.repeat(30) };
+  const file = 'guardian--kate-wyver.json';
+
+  test('dated in exactly one sibling run that already files the same outlet--critic: settled as a duplicate', () => {
+    const v = T.noUrlStubVerdict(stub, { show: S19, allShows: all, file, showHasFile: () => false, siblingHasFile: (sid, n) => sid === S21.id && n === file });
+    assert.equal(v.verdict, 'junk');
+    assert.equal(v.sibling, S21.id);
+    assert.match(v.reason, /already files guardian--kate-wyver\.json/);
+  });
+
+  test('a Theatre Record date whose year disagrees with its archive link judges nothing (no New York rehome)', () => {
+    const bad = { ...stub, fullText: 'A CHILD going missing ought to be the trigger. Yet The Unbelievers, the new play from Nick Payne, fails. '.repeat(10), outletId: 'daily-mail', criticName: 'Patrick Marmion', publishDate: '2026-10-24', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/10/34295-the-unbelievers' };
+    assert.equal(T.noUrlStubVerdict(bad, { show: U25, allShows: all, file: 'daily-mail--patrick-marmion.json', showHasFile: () => false, siblingHasFile: () => false }), null);
+  });
+
+  test('in-window stub this show already files: duplicate; a url stub or an unknown name: no verdict', () => {
+    const inWin = { ...stub, publishDate: '2019-07-10', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2019/07/1-x' };
+    assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: (n) => n === file, siblingHasFile: () => false }).verdict, 'junk');
+    assert.equal(T.noUrlStubVerdict(inWin, { show: S19, allShows: all, file, showHasFile: () => false, siblingHasFile: () => false }), null);
+    assert.equal(T.noUrlStubVerdict({ ...stub, url: 'https://www.theguardian.com/x' }, { show: S19, allShows: all, file, showHasFile: () => true }), null);
+  });
+});
+
+describe('BRO-8195: a Theatre Record stub whose text never names the show is another show\'s review', () => {
+  const J19 = { id: 'joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019', title: 'Joseph and the Amazing Technicolor Dreamcoat', category: 'west-end', venue: 'London Palladium', openingDate: '2019-07-11', closingDate: '2019-09-08' };
+  test('Anna X text (playwright Joseph Charlton) filed under Joseph settles; a real Joseph review does not', () => {
+    assert.equal(T.distinctiveTitleWord(J19.title), 'technicolor');
+    const annaX = { source: 'theatre-record', url: null, publishDate: '2021-07-22', theatreRecordUrl: 'https://www.theatrerecord.com/archive/volume/41/dest/14_joseph', fullText: 'JOSEPH Charlton’s razor-sharp play is inspired by the life of “fake heiress” Anna Sorokin. '.repeat(5) };
+    const v = T.noUrlStubVerdict(annaX, { show: J19, allShows: [J19], file: 'camdennewjournal--lucy-popescu.json', showHasFile: () => false, siblingHasFile: () => false });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /never names "Joseph and the Amazing Technicolor Dreamcoat"/);
+    const real = { ...annaX, fullText: 'Go go go Joseph! The Technicolor coat is back at the Palladium. '.repeat(5), publishDate: '2019-07-12' };
+    assert.equal(T.noUrlStubVerdict(real, { show: J19, allShows: [J19], file: 'x--y.json', showHasFile: () => false, siblingHasFile: () => false }), null);
+  });
+
+  test('two title words decide a long title: a real review that never says "Technicolor" stays; "Joseph" alone is not enough', () => {
+    // Real data 2026-11-23: times-uk--dominic-maxwell says joseph + dreamcoat only; the Anna X stubs say only joseph.
+    assert.equal(T.textMissesTitle('Joseph and his dreamcoat dazzle at the Palladium.', J19.title), false);
+    assert.equal(T.textMissesTitle('Joseph Charlton has written a sharp play about Anna Sorokin.', J19.title), true);
+    assert.equal(T.textMissesTitle('A thrilling night of Hamlet.', 'Hamlet'), false);
+    assert.equal(T.textMissesTitle('A thrilling night of Macbeth.', 'Hamlet'), true);
+  });
+
+  test('outside the window, a show that already files the same outlet--critic settles as a duplicate before any rehome', () => {
+    const J21 = { ...J19, id: 'joseph-2021', previewsStartDate: '2021-06-24', openingDate: '2021-07-08', closingDate: '2021-09-05' };
+    const s = { source: 'theatre-record', url: null, publishDate: '2021-07-12', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2021/07/1-joseph', fullText: 'Joseph and his Amazing Technicolor Dreamcoat is back. '.repeat(5) };
+    const v = T.noUrlStubVerdict(s, { show: J19, allShows: [J19, J21], file: 'x--y.json', showHasFile: (n) => n === 'x--y.json', siblingHasFile: () => false });
+    assert.equal(v.verdict, 'junk');
+    assert.match(v.reason, /this show already files x--y\.json/);
+  });
+});
+
+describe('BRO-8195 nearSameArticleUrl: one article under a typo / censored / old-host url settles as same-article', () => {
+  const { nearSameArticleUrl } = require('../../scripts/replay-pending-bylines.js');
+  test('the five real open pairs from 2026-11-23 match', () => {
+    const pairs = [
+      ['https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/', 'https://culturesauce.com/ther-desert-cities-julia-louis-dreyfus-broadway-review/'],
+      ['https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney', 'https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy'],
+      ['https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-orgasms-and-orgies-in-the-foliage-fchw23k6r', 'https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r'],
+      ['http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html', 'https://www.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html'],
+      ['https://www.theatermania.com/news/hold-on-to-me-darling_76306/', 'http://www.theatermania.com/off-broadway/reviews/hold-on-to-me-darling_76306.html'],
+    ];
+    for (const [a, b] of pairs) assert.equal(nearSameArticleUrl(a, b), true, `${a} ~ ${b}`);
+  });
+  test('different articles do not match', () => {
+    assert.equal(nearSameArticleUrl('https://www.nytimes.com/2011/11/18/theater/reviews/private-lives-review.html', 'https://www.washingtonpost.com/2011/11/18/theater/reviews/private-lives-review.html'), false);
+    assert.equal(nearSameArticleUrl('https://www.timeout.com/newyork/theater/hamlet-review-2019', 'https://www.timeout.com/newyork/theater/macbeth-review-2019'), false);
+    assert.equal(nearSameArticleUrl('https://deadline.com/2026/09/i-play-rocky-review-peter-farrelly-biopic-tallones-classic-1237100498/', 'https://deadline.com/2026/11/indie-films-opening-i-play-rocky-club-kid-wild-horse-nine-1237215727/'), false);
+    assert.equal(nearSameArticleUrl('https://deadline.com/2026/09/rocky-review-broadway-1237100498/', 'https://deadline.com/2026/09/rocky-review-broadway-1237100499/'), false);
+    assert.equal(nearSameArticleUrl('https://www.lsa.example/reviews/story.asp?ID=123456', 'https://www.lsa.example/reviews/story.asp?ID=123457'), false);
+    assert.equal(nearSameArticleUrl('https://www.theatermania.com/news/review_12/', 'https://www.theatermania.com/off-broadway/review_12.html'), false);
+    // NYT archive reviews share one path and differ only in ?res= (every non-tracking param is identity).
+    assert.equal(nearSameArticleUrl('https://www.nytimes.com/movie/review?res=9A0DE3D81E3EF93BA15751C1A961958260', 'https://www.nytimes.com/movie/review?res=9A0DE3D81E3EF93BA15751C1A961958261'), false);
+    assert.equal(nearSameArticleUrl('https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63', 'https://theater.nytimes.com/mem/theater/treview.html?res=9A01E2D9173BF932A05750C0A9659C8B63'), false);
+    assert.equal(nearSameArticleUrl('https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63', 'https://theater.nytimes.com/mem/theater/treview.html?res=9C0CE1DE1E3BF934A35757C0A9639C8B63&pagewanted=all&smid=tw'), true);
+  });
+});
+
+describe('BRO-8195: a url-less stub dated outside every tracked production settles', () => {
+  test('Jamie 2024 (Peacock) stub dated 2017-02-13 (Sheffield, untracked) settles; an in-window one does not', () => {
+    const J = { id: 'everybodys-talking-about-jamie-off-west-end-2024', title: "Everybody's Talking About Jamie", category: 'off-west-end', venue: 'Peacock Theatre', previewsStartDate: '2024-02-08', openingDate: '2024-02-14', closingDate: '2024-03-23' };
+    const stub = { outletId: 'observer', criticName: 'Clare Brennan', url: null, source: 'westendtheatre', publishDate: '2017-02-13', westEndTheatreExcerpt: 'John McCrea’s Jamie ...' };
+    const v = T.noUrlStubVerdict(stub, { show: J, allShows: [J], file: 'observer--clare-brennan.json', showHasFile: () => false, siblingHasFile: () => false });
+    assert.equal(v && v.verdict, 'junk');
+    assert.match(v.reason, /outside this production's window and every tracked same-title production's/);
+    assert.equal(T.noUrlStubVerdict({ ...stub, publishDate: '2024-02-15' }, { show: J, allShows: [J], file: 'observer--clare-brennan.json', showHasFile: () => false, siblingHasFile: () => false }), null);
+  });
+});
+
+// BRO-8195: a misfiled copy whose same-title sibling already holds a SETTLED copy of the url was left untagged,
+// so it counted as an open _pending stub forever and was re-triaged every run (private-lives-1975 / 2011 NYT).
+test('BRO-8195: misfiled stub whose sibling holds a settled copy settles in place (never stays open)', async () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-sib-'));
+  const old = { id: 'private-lives-1975', title: 'Private Lives', openingDate: '1975-02-06', closingDate: '1975-06-01', category: 'broadway' };
+  const rev = { id: 'private-lives-2011', title: 'Private Lives', openingDate: '2011-11-17', closingDate: '2011-12-31', category: 'broadway' };
+  const URL_ = 'http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html';
+  for (const s of [old, rev]) fs.mkdirSync(path.join(root, '_pending', s.id), { recursive: true });
+  const stub = path.join(root, '_pending', old.id, 'nytimes--unknown.json');
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'nytimes', criticName: 'Unknown', url: URL_, source: 'dtli' }));
+  fs.writeFileSync(path.join(root, '_pending', rev.id, 'nytimes--unknown.json'),
+    JSON.stringify({ outletId: 'nytimes', criticName: 'Unknown', url: URL_, promoteSkippedReason: 'subscriber-browser-read-no-promote: x (BRO-8195)' }));
+  const d = {
+    root, show: old, allShows: [old, rev], dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => { throw new Error('must not fetch'); },
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  await processShow(old.id, d);
+  const after = JSON.parse(fs.readFileSync(stub, 'utf8'));
+  assert.ok(T.isSettledPendingStub(after), `stub must be settled, got ${JSON.stringify(after)}`);
+  assert.match(after.promoteSkippedReason, /private-lives-2011.*already settled/);
+  assert.equal(after.promoteSettled, 'sibling-settled');
+  assert.equal(after.promoteSettledSibling, 'private-lives-2011');
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// BRO-8195: the drain read the byline from the fetched page only; a stub whose own text prints the critic
+// ("Review by Evan Prenter" under the shared "Sam - Admin" account) sat open as "no byline detected" forever.
+test('BRO-8195: drain names the critic from the stub text when the page has no byline, and promotes', async () => {
+  assert.equal(T.textBylineFallback({ outletId: 'all-that-dazzles-uk', fullText: 'Review: The Invention of Love (Hampstead Theatre) Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long does it take' }, { title: 'The Invention of Love' }), 'Evan Prenter');
+  assert.equal(T.textBylineFallback({ outletId: 'sierz-co-uk', fullText: 'Home » Reviews » The Invention of Love. Can men really love each other' }, {}), null);
+  assert.equal(T.textBylineFallback({ outletId: 'x' }, {}), null);
+  // the rebuild's otherNamedCriticAtOutlet rule: never a second named critic at an outlet the show already has
+  const atd = { outletId: 'all-that-dazzles-uk', fullText: 'Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long' };
+  assert.equal(T.textBylineFallback(atd, {}, ['all-that-dazzles-uk--daz-gale.json']), null);
+  assert.equal(T.textBylineFallback(atd, {}, ['all-that-dazzles-uk--unknown.json', 'all-that-dazzles-uk--evan-prenter.json', 'standard--x.json']), 'Evan Prenter');
+
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8195-txt-'));
+  const show = { id: 'the-invention-of-love-west-end-2024', title: 'The Invention of Love', openingDate: '2024-12-16', closingDate: '2025-02-01', category: 'west-end' };
+  fs.mkdirSync(path.join(root, '_pending', show.id), { recursive: true });
+  fs.mkdirSync(path.join(root, show.id), { recursive: true });
+  const body = 'Review: The Invention of Love (Hampstead Theatre) Sam - Admin Dec 18, 2024 3 min read Review by Evan Prenter ⭐️⭐️⭐️ How long does it take to work out the meaning of life? '
+    + 'The Invention of Love at Hampstead Theatre is Tom Stoppard at his densest. '.repeat(40);
+  const stub = path.join(root, '_pending', show.id, 'all-that-dazzles-uk--sam-admin.json');
+  fs.writeFileSync(stub, JSON.stringify({ outletId: 'all-that-dazzles-uk', outlet: 'All That Dazzles (UK)', criticName: 'Sam - Admin', source: 'submit-review-form',
+    url: 'https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre', publishDate: '2024-12-18', fullText: body, contentTier: 'complete' }));
+  const d = {
+    root, show, allShows: [show], dryRun: false, heldIndex: null, explicitScope: false,
+    fetch: async () => ({ content: '<html><head><title>Review: The Invention of Love</title></head><body><article><p>' + body + '</p></article></body></html>' }),
+    alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+  };
+  await processShow(show.id, d);
+  const promoted = path.join(root, show.id, 'all-that-dazzles-uk--evan-prenter.json');
+  assert.ok(fs.existsSync(promoted), `expected promotion to ${promoted}; _pending now: ${fs.existsSync(stub) ? fs.readFileSync(stub, 'utf8').slice(0, 300) : 'gone'}`);
+  assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).criticName, 'Evan Prenter');
+  assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).bylineSource, 'replay-pending-bylines:stub-text');
+  fs.rmSync(root, { recursive: true, force: true });
+});

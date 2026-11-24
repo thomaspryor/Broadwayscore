@@ -1,49 +1,49 @@
 {
   "outletId": "dc-theater-arts",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:36:00.761Z",
+  "generatedAt": "2026-11-23T23:27:09.943Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1767,
-    "inWindow": 1767,
+    "enumerated": 1773,
+    "inWindow": 1773,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "out-of-window": 642,
-      "not-review": 1033,
-      "held-other-market": 56,
+      "not-review": 1037,
+      "out-of-window": 643,
+      "held-other-market": 57,
       "catalog-gap": 34,
       "gap": 2
     },
     "viaTitleVariant": {
-      "not-review": 20
+      "not-review": 21
     },
     "recall": 0,
     "recallWithCatalog": 0
   },
   "seasons": {
     "2026-27": {
-      "out-of-window": 26,
-      "not-review": 33,
-      "held-other-market": 18,
+      "not-review": 38,
+      "out-of-window": 27,
+      "held-other-market": 19,
       "catalog-gap": 1
     },
     "2025-26": {
-      "not-review": 167,
+      "not-review": 166,
       "held-other-market": 27,
       "out-of-window": 127,
       "catalog-gap": 6
     },
     "2024-25": {
-      "not-review": 205,
-      "out-of-window": 129,
+      "not-review": 206,
+      "out-of-window": 128,
       "held-other-market": 10,
       "catalog-gap": 5,
       "gap": 1
@@ -55,8 +55,8 @@
       "held-other-market": 1
     },
     "2022-23": {
-      "not-review": 238,
-      "out-of-window": 138,
+      "not-review": 237,
+      "out-of-window": 139,
       "catalog-gap": 8,
       "gap": 1
     },
@@ -67,8 +67,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 128,
-    "notEnumerated": 37,
+    "rowsInWindow": 130,
+    "heldExcludedRows": 0,
+    "notEnumerated": 38,
     "noUrl": 0,
     "samples": [
       {
@@ -255,6 +256,12 @@
         "showId": "the-great-gatsby-2024",
         "url": "https://dctheaterarts.org/2024/04/25/opulence-and-excess-of-the-roaring-twenties-in-the-great-gatsby-at-the-broadway-theatre/",
         "publishDate": "2024-04-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-imaginary-invalid-off-broadway-2025",
+        "url": "https://dctheaterarts.org/2025/06/02/non-stop-hilarity-in-red-bulls-new-adaptation-of-molieres-the-imaginary-invalid-off-broadway-at-new-world-stages/",
+        "publishDate": "2025-06-02",
         "why": "not-enumerated"
       },
       {
@@ -638,6 +645,28 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
+      "url": "https://dctheaterarts.org/2026/11/22/joyful-spirited-charmz-the-other-reindeer-at-baltimore-center-stage/",
+      "headline": "Joyful, spirited ‘Charmz: The Other Reindeer’ at Baltimore Center Stage",
+      "publishDate": "2026-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/11/20/hells-kitchen-on-tour-a-musical-celebration-fueled-by-alicia-keys/",
+      "headline": "‘Hell’s Kitchen’ on tour: a musical celebration fueled by Alicia Keys",
+      "publishDate": "2026-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
       "url": "https://dctheaterarts.org/2026/11/17/bravo-to-young-artists-of-americas-titanic-the-musical-at-strathmore/",
       "headline": "Bravo to Young Artists of America’s ‘Titanic: The Musical’ at Strathmore",
       "publishDate": "2026-11-17",
@@ -646,17 +675,6 @@
       "matched": [],
       "outOfWindow": [
         "titanic-1997"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/11/15/in-takes-all-kinds-dan-hoyle-shares-a-secret-for-saving-democracy/",
-      "headline": "In ‘Takes All Kinds,’ Dan Hoyle shares a secret for saving democracy",
-      "publishDate": "2026-11-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "democracy-2004"
       ]
     },
     {
@@ -823,6 +841,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -1464,17 +1483,6 @@
       "outOfWindow": [
         "cabaret-2014",
         "cabaret-1987"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/04/12/mad-theater-launches-zany-moon-over-buffalo-at-goddard-space-center/",
-      "headline": "MAD Theater launches zany ‘Moon Over Buffalo’ at Goddard Space Center",
-      "publishDate": "2026-04-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "moon-over-buffalo-1995"
       ]
     },
     {
@@ -2423,6 +2431,17 @@
       ]
     },
     {
+      "url": "https://dctheaterarts.org/2025/09/14/part-musical-fable-and-part-social-dance-ceilidh-welcomes-all/",
+      "headline": "Part musical fable and part social dance, ‘Ceilidh’ welcomes all",
+      "publishDate": "2025-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ceilidh-off-broadway-2027"
+      ]
+    },
+    {
       "url": "https://dctheaterarts.org/2025/09/09/ancient-greek-tragedy-antigone-feels-alarmingly-prescient/",
       "headline": "Ancient Greek tragedy ‘Antigone’ feels alarmingly prescient",
       "publishDate": "2025-09-09",
@@ -2697,17 +2716,6 @@
       ]
     },
     {
-      "url": "https://dctheaterarts.org/2025/06/06/a-hilarious-imaginary-invalid-in-a-beer-garden-by-classic-theatre-of-maryland/",
-      "headline": "A hilarious ‘Imaginary Invalid’ in a beer garden by Classic Theatre of Maryland",
-      "publishDate": "2025-06-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-imaginary-invalid-2026"
-      ]
-    },
-    {
       "url": "https://dctheaterarts.org/2025/06/03/an-unsettling-new-frankenstein-comes-to-uncertain-life-at-stc/",
       "headline": "An unsettling new ‘Frankenstein’ comes to uncertain life at STC",
       "publishDate": "2025-06-03",
@@ -2778,6 +2786,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -3123,6 +3132,7 @@
         "hamlet-1975",
         "the-women-1973",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -3803,6 +3813,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -4101,6 +4112,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -4231,5 +4243,9 @@
         "beautiful-the-carole-king-musical-2014"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

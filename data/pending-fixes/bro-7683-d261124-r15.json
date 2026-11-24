@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-7683-d261124-r15",
+  "planId": "1debf1ce-6eca-422e-8c52-451324a065d9",
+  "status": "pending",
+  "createdAt": "2026-11-24T00:31:42.116Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 2 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add a-clockwork-orange-a-play-with-music-regional-2026 (BroadwayWorld review 2026-11-23)",
+      "add candide-regional-2026 (BroadwayWorld review 2026-11-22)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add a-clockwork-orange-a-play-with-music-regional-2026 (BroadwayWorld review 2026-11-23)",
+        "show": {
+          "id": "a-clockwork-orange-a-play-with-music-regional-2026",
+          "title": "A Clockwork Orange: A Play with Music",
+          "slug": "a-clockwork-orange-a-play-with-music-regional-2026",
+          "venue": "Chopin Theatre Mainstage, Chicago, IL",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-23",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2027-01-10",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "chicago-il",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/chicago/article/Review-A-CLOCKWORK-ORANGE-A-PLAY-WITH-MUSIC-at-Kokandy-Productions-20261123"
+          ],
+          "images": {
+            "poster": "/images/shows/a-clockwork-orange-a-play-with-music-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/a-clockwork-orange-a-play-with-music-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add candide-regional-2026 (BroadwayWorld review 2026-11-22)",
+        "show": {
+          "id": "candide-regional-2026",
+          "title": "Candide",
+          "slug": "candide-regional-2026",
+          "venue": "LA Opera, Los Angeles, CA",
+          "status": "open",
+          "type": "opera",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-22",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-13",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "los-angeles-ca",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/los-angeles/article/Review-CANDIDE-at-LA-Opera-20261122"
+          ],
+          "images": {
+            "poster": "/images/shows/candide-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/candide-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  }
+}

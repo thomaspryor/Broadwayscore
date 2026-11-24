@@ -1,64 +1,64 @@
 {
   "outletId": "stageandcinema",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:34:21.990Z",
+  "generatedAt": "2026-11-23T23:25:45.742Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 2129,
-    "inWindow": 2129,
+    "enumerated": 2139,
+    "inWindow": 2139,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 953,
-      "held": 124,
+      "held-other-market": 240,
       "out-of-window": 715,
-      "catalog-gap": 86,
-      "gap": 11,
-      "held-other-market": 235,
-      "held-unmatched": 2,
+      "not-review": 955,
+      "held": 128,
+      "catalog-gap": 85,
+      "gap": 10,
+      "held-unmatched": 3,
       "held-alt-url": 3
     },
     "viaTitleVariant": {
-      "held-other-market": 65,
+      "held-other-market": 66,
       "not-review": 73,
-      "gap": 1,
-      "held": 6
+      "held": 7
     },
-    "recall": 0.92,
-    "recallWithCatalog": 0.567
+    "recall": 0.929,
+    "recallWithCatalog": 0.58
   },
   "seasons": {
     "2026-27": {
-      "not-review": 63,
-      "held": 27,
-      "out-of-window": 30,
+      "held-other-market": 66,
+      "out-of-window": 31,
+      "not-review": 65,
+      "held": 29,
       "catalog-gap": 5,
-      "gap": 2,
-      "held-other-market": 61,
+      "gap": 1,
       "held-unmatched": 2
     },
     "2025-26": {
       "not-review": 294,
       "held-other-market": 123,
-      "held": 80,
-      "catalog-gap": 35,
+      "held": 81,
+      "catalog-gap": 34,
       "held-alt-url": 3,
-      "out-of-window": 180,
-      "gap": 2
+      "out-of-window": 179,
+      "gap": 2,
+      "held-unmatched": 1
     },
     "2024-25": {
       "held-other-market": 33,
       "out-of-window": 211,
       "not-review": 262,
       "catalog-gap": 26,
-      "held": 13,
+      "held": 14,
       "gap": 3
     },
     "2023-24": {
@@ -89,8 +89,9 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 178,
-    "notEnumerated": 33,
+    "rowsInWindow": 186,
+    "heldExcludedRows": 0,
+    "notEnumerated": 35,
     "noUrl": 0,
     "samples": [
       {
@@ -115,6 +116,12 @@
         "showId": "bad-krey-l-off-broadway-2026",
         "url": "https://stageandcinema.com/2024/10/28/bad-kreyol-signature-mtc/",
         "publishDate": "2024-10-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "birthday-candles-2022",
+        "url": "https://stageandcinema.com/2022/04/21/bway-review-birthday-candles/",
+        "publishDate": "2022-04-22",
         "why": "not-enumerated"
       },
       {
@@ -238,6 +245,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "skeleton-crew-2022",
+        "url": "https://stageandcinema.com/2022/01/28/bway-review-skeleton-crew/",
+        "publishDate": "2022-01-28",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "someone-spectacular-off-broadway-2024",
         "url": "https://stageandcinema.com/2024/07/31/someone-spectacular-pershing-square/",
         "publishDate": "2024-07-31",
@@ -306,24 +319,13 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2026/10/28/the-dog-show-triad-theatre-review/",
-      "headline": "Off-Broadway Review: THE DOG SHOW (Triad Theater)",
-      "publishDate": "2026-10-28",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "the-dog-show-come-sit-stay-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/18/broadway-review-operation-mincemeat-golden-theatre/",
-      "headline": "Broadway Review: OPERATION MINCEMEAT (Golden Theatre)",
-      "publishDate": "2025-11-18",
+      "url": "https://stageandcinema.com/2026/04/10/the-pushover-review-chain-theatre/",
+      "headline": "Off-Broadway Review: THE PUSHOVER (John Patrick Shanley World Premiere, Chain Theatre)",
+      "publishDate": "2026-04-10",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "operation-mincemeat-2025"
+        "the-pushover-by-john-patrick-shanley-off-broadway-2026"
       ],
       "outOfWindow": []
     },
@@ -339,17 +341,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2025/04/28/stranger-things-the-first-shadow-marquis/",
-      "headline": "Broadway Review: STRANGER THINGS: THE FIRST SHADOW (Marquis Theatre)",
-      "publishDate": "2025-04-28",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stranger-things-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2025/04/22/little-shop-of-horrors-nocturne/",
       "headline": "Theater Review: LITTLE SHOP OF HORRORS (Nocturne Theatre)",
       "publishDate": "2025-04-22",
@@ -361,6 +352,17 @@
       "outOfWindow": [
         "little-shop-of-horrors-2003"
       ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/21/broadway-review-purpose/",
+      "headline": "Broadway Review: PURPOSE (The Hayes Theater)",
+      "publishDate": "2025-03-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "purpose-2025"
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://stageandcinema.com/2025/01/28/play-that-goes-wrong-la-mirada/",
@@ -483,6 +485,19 @@
       "matched": [],
       "outOfWindow": [
         "copperfield-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/08/review-44-the-musical-daryl-roth/",
+      "headline": "Off-Broadway Review: 44 – THE MUSICAL (Daryl Roth)",
+      "publishDate": "2025-11-08",
+      "via": null,
+      "held": [
+        "44-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "44-off-broadway-2025"
       ]
     }
   ],
@@ -672,15 +687,6 @@
       "url": "https://stageandcinema.com/2026/04/14/revenge-of-the-soy-boy-review/",
       "headline": "Theater Review: REVENGE OF THE SOY BOY (FRIGID New York City Fringe Festival)",
       "publishDate": "2026-04-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/10/the-pushover-review-chain-theatre/",
-      "headline": "Off-Broadway Review: THE PUSHOVER (John Patrick Shanley World Premiere, Chain Theatre)",
-      "publishDate": "2026-04-10",
       "via": null,
       "held": [],
       "matched": [],
@@ -1266,6 +1272,17 @@
   "otherMarketReviews": [],
   "outOfWindow": [
     {
+      "url": "https://stageandcinema.com/2026/11/20/come-from-away-dezart-performs-review/",
+      "headline": "Theater Review: COME FROM AWAY (Dezart Performs / Palm Springs)",
+      "publishDate": "2026-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-2017"
+      ]
+    },
+    {
       "url": "https://stageandcinema.com/2026/11/17/covenant-berkeley-rep-review/",
       "headline": "Theater Review: COVENANT (Berkeley Rep)",
       "publishDate": "2026-11-17",
@@ -1310,6 +1327,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -2692,7 +2710,8 @@
         "a-streetcar-named-desire-1992",
         "a-streetcar-named-desire-1988",
         "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
+        "a-streetcar-named-desire-2005",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -2719,6 +2738,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -3190,17 +3210,6 @@
       "matched": [],
       "outOfWindow": [
         "the-hills-of-california-2024"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/08/review-44-the-musical-daryl-roth/",
-      "headline": "Off-Broadway Review: 44 – THE MUSICAL (Daryl Roth)",
-      "publishDate": "2025-11-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "44-off-broadway-2025"
       ]
     },
     {
@@ -3965,7 +3974,8 @@
         "a-streetcar-named-desire-1992",
         "a-streetcar-named-desire-1988",
         "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
+        "a-streetcar-named-desire-2005",
+        "a-streetcar-named-desire-off-broadway-2025"
       ]
     },
     {
@@ -4594,6 +4604,7 @@
         "hamlet-1995",
         "hamlet-1975",
         "hamlet-off-broadway-2026",
+        "hamlet-by-william-shakespeare-off-broadway-2026",
         "hamlet-off-broadway-2024",
         "hamlet-greenwich-house-off-broadway-2024"
       ]
@@ -4806,5 +4817,9 @@
         "small-off-broadway-2026"
       ]
     }
-  ]
+  ],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }

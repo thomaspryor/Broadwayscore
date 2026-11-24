@@ -46,7 +46,7 @@ const RUN_WRITES = createWriteTracker();
  * recent shows" (openingDate/publishDate parsing was too inconsistent
  * corpus-wide to rely on directly).
  */
-function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
+function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity, includePending = false }) {
   let dirs;
   try {
     dirs = fs.readdirSync(REVIEW_TEXTS_DIR);
@@ -60,6 +60,7 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
   const prefixes = [].concat(filePrefix);
   const candidates = [];
   for (const dir of dirs) {
+    if (dir.startsWith('_') || dir.startsWith('.')) continue; // _pending is scanned below, never as a show
     if (showsAllowlist && !showsAllowlist.has(dir)) continue;
     const showPath = path.join(REVIEW_TEXTS_DIR, dir);
     let stat;
@@ -88,6 +89,7 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
       });
     }
   }
+  if (includePending) candidates.push(...loadPendingCandidates({ prefixes, showsAllowlist }));
   candidates.sort((a, b) => {
     const ya = (a.showId.match(/-(\d{4})$/) || [])[1] || '0';
     const yb = (b.showId.match(/-(\d{4})$/) || [])[1] || '0';
@@ -95,6 +97,160 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
   });
 
   return candidates.slice(0, maxUrls);
+}
+
+/**
+ * BRO-8195: a paywalled _pending stub the paid scraper cannot read (the drain settles it as
+ * subscriber-fetch-failed, pending-triage.js) only ever reaches a review through the logged-in
+ * browser. Eligible: a subscriber outlet with a url, either settled by that reason or still open.
+ * Any other settle (junk, duplicate, identity reject) stays settled. Pure.
+ */
+function pendingSubscriberStubEligible(data) {
+  const { SUBSCRIBER_OUTLETS } = require('./pending-triage');
+  if (!data || !data.url || !SUBSCRIBER_OUTLETS.has(data.outletId)) return false;
+  if (data.duplicateOf || data.rssIdentityRejected) return false;
+  const settled = String(data.promoteSkippedReason || '');
+  return !settled || settled.startsWith('subscriber-fetch-failed');
+}
+
+/**
+ * BRO-8195: the logged-in browser did not reach the article: it was redirected to a home or section page
+ * (an old WaPo story url lands on the homepage, whose feature module carries a food writer's byline the drain
+ * then promoted), or it read almost no text. The drain trusts the url's slug for identity, so it must never
+ * see such a page. Pure. Returns the reason or null.
+ */
+const PENDING_MIN_ARTICLE_CHARS = 500;
+function pendingBrowserMissReason({ finalUrl, textLen }) {
+  if (finalUrl) {
+    let segs = null;
+    try { segs = new URL(finalUrl).pathname.split('/').filter(Boolean); } catch { /* unparseable: judged on text alone */ }
+    if (segs && segs.length <= 1) return `redirected off the article to ${finalUrl}`;
+  }
+  if (Number.isFinite(textLen) && textLen < PENDING_MIN_ARTICLE_CHARS) return `only ${textLen} chars of article text`;
+  return null;
+}
+
+function loadPendingCandidates({ prefixes, showsAllowlist }) {
+  const root = path.join(REVIEW_TEXTS_DIR, '_pending');
+  let dirs;
+  try { dirs = fs.readdirSync(root); } catch { return []; }
+  const out = [];
+  for (const dir of dirs) {
+    if (showsAllowlist && !showsAllowlist.has(dir)) continue;
+    let files;
+    try { files = fs.readdirSync(path.join(root, dir)); } catch { continue; }
+    for (const f of files) {
+      if (!prefixes.some((p) => f.startsWith(`${p}--`)) || !f.endsWith('.json')) continue;
+      const filePath = path.join(root, dir, f);
+      let data;
+      try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+      if (!pendingSubscriberStubEligible(data)) continue;
+      out.push({
+        reviewId: `_pending/${dir}/${f}`, filePath, url: data.url, showId: dir, file: f, pending: true,
+        existingChars: (data.fullText || '').length, contentTier: 'pending',
+      });
+    }
+  }
+  return out;
+}
+
+/** The rehomed copy of a vanished stub: same file name (or name--hash) under another _pending show, rehomedFrom this show. */
+function findRehomedCopy(candidate) {
+  const root = path.join(REVIEW_TEXTS_DIR, '_pending');
+  const stem = candidate.file.replace(/\.json$/, '');
+  let dirs = [];
+  try { dirs = fs.readdirSync(root); } catch { return null; }
+  for (const d of dirs) {
+    if (d === candidate.showId) continue;
+    let files;
+    try { files = fs.readdirSync(path.join(root, d)); } catch { continue; }
+    for (const f of files) {
+      if (f !== candidate.file && !(f.startsWith(`${stem}--`) && f.endsWith('.json'))) continue;
+      try { const j = JSON.parse(fs.readFileSync(path.join(root, d, f), 'utf8')); if (j.rehomedFrom === candidate.showId && j.url === candidate.url) return path.join(root, d, f); } catch { /* unreadable: not ours */ }
+    }
+  }
+  return null;
+}
+
+/**
+ * BRO-8195: promote a _pending subscriber stub from the logged-in page's own html. The drain
+ * (replay-pending-bylines.js processShow) does every check it does for a paid fetch (identity,
+ * window, byline, same-critic collision); only its fetch is swapped for the html already read.
+ * A subscriber-fetch-failed settle is re-opened first (the drain skips settled stubs). When the
+ * drain still leaves the stub open, it settles with a typed reason so it stops counting as open;
+ * clearing promoteSkippedReason re-opens it.
+ * @returns {Promise<{outcome: 'promoted'|'settled'|'kept'|'vanished', detail?: string}>}
+ */
+async function processPendingCandidate(candidate, html, opts = {}) {
+  const { safeWriteReview } = require('./review-write-guard');
+  const drain = opts.processShow || require('../replay-pending-bylines').processShow;
+  const tracker = opts.tracker || RUN_WRITES;
+  const dry = !!opts.dryRun;
+  const read = () => { try { return JSON.parse(fs.readFileSync(candidate.filePath, 'utf8')); } catch { return null; } };
+  const before = read();
+  if (!before) return { outcome: 'vanished' };
+  if (!pendingSubscriberStubEligible(before) || before.url !== candidate.url) return { outcome: 'kept', detail: 'stub changed since listing' };
+  const miss = pendingBrowserMissReason({ finalUrl: opts.finalUrl, textLen: opts.textLen });
+  if (miss && opts.probe) {
+    // A lost login or an access wall is never evidence about the article (BRO-7171): re-probe the session first.
+    let p = null;
+    try { p = await opts.probe(); } catch (e) { p = { error: e.message }; }
+    if (!p || p.error || !p.text || (p.len || 0) < (opts.minAuthChars || PENDING_MIN_ARTICLE_CHARS)) {
+      return { outcome: 'session-lost', detail: `${miss}; session probe failed (${(p && p.error) || `${(p && p.len) || 0} chars`})` };
+    }
+  }
+  if (miss) {
+    if (dry) return { outcome: 'settled', detail: `${miss} (dry run)` };
+    withReviewTextsLock(`settle:${candidate.file}`, () => {
+      const d = read();
+      if (!d) return;
+      d.promoteSkippedReason = `subscriber-browser-no-article: the logged-in browser ${miss}; the url no longer serves the review, clear to retry (BRO-8195)`;
+      d.promoteSkippedAt = new Date().toISOString();
+      safeWriteReview(candidate.filePath, d);
+    });
+    tracker.add(path.resolve(candidate.filePath));
+    return { outcome: 'settled', detail: miss };
+  }
+  if (before.promoteSkippedReason && !dry) {
+    withReviewTextsLock(`reopen:${candidate.file}`, () => {
+      const d = read();
+      if (!d) return;
+      d.reopenedFromSkip = d.promoteSkippedReason;
+      d.promoteSkippedReason = null; d.promoteSkippedAt = null; // null, not delete: the write guard merges absent keys back
+      d.pendingFetchFailures = 0;
+      safeWriteReview(candidate.filePath, d);
+    });
+  }
+  const showDir = path.join(REVIEW_TEXTS_DIR, candidate.showId);
+  const listShow = () => { try { return new Set(fs.readdirSync(showDir)); } catch { return new Set(); } };
+  const had = listShow();
+  if (!dry) tracker.add(path.resolve(candidate.filePath)); // a drain that throws after the reopen still lands the reopen
+  const res = await drain(candidate.showId, {
+    files: [candidate.file], dryRun: dry, explicitScope: false, // never an owner alert from this path: the stub settles with a typed reason below
+    fetch: async (u) => (u === candidate.url ? { content: html, success: true, method: 'subscriber-browser' } : null),
+    ...(opts.drainDeps || {}),
+  });
+  if (dry) return { outcome: res.promoted ? 'promoted' : 'kept', detail: 'dry run' };
+  tracker.add(path.resolve(candidate.filePath));
+  const added = [...listShow()].filter((f) => !had.has(f));
+  for (const f of added) tracker.add(path.resolve(path.join(showDir, f)));
+  if (res.promoted) return { outcome: 'promoted', detail: added.join(', ') };
+  const after = read();
+  if (!after) {
+    // Rehomed (rehomeStubFile writes _pending/<sibling>/<file or file--hash>): the copy must land with the deletion.
+    const moved = findRehomedCopy(candidate);
+    if (moved) { tracker.add(path.resolve(moved)); return { outcome: 'settled', detail: `rehomed to ${path.relative(REVIEW_TEXTS_DIR, moved)}` }; }
+    return { outcome: 'settled', detail: 'stub removed by the drain (redundant copy)' };
+  }
+  if (after.promoteSkippedReason || after.rssIdentityRejected) return { outcome: 'settled', detail: String(after.promoteSkippedReason || 'rss identity') };
+  withReviewTextsLock(`settle:${candidate.file}`, () => {
+    const d = read();
+    if (!d || d.promoteSkippedReason) return;
+    d.promoteSkippedReason = `subscriber-browser-read-no-promote: the logged-in page was read and the drain still could not promote it (${d.pendingFetchAttemptResult || 'kept'}); clear to retry (BRO-8195)`;
+    d.promoteSkippedAt = new Date().toISOString();
+    safeWriteReview(candidate.filePath, d);
+  });
+  return { outcome: 'settled', detail: 'logged-in read, drain kept it' };
 }
 
 /**
@@ -206,4 +362,4 @@ function acquireRecoveryRunLock(label) {
   return require('./recovery-run-lock').acquireRunLock(label);
 }
 
-module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, acquireRecoveryRunLock, RUN_WRITES, REVIEW_TEXTS_DIR };
+module.exports = { loadCandidates, pendingSubscriberStubEligible, pendingBrowserMissReason, processPendingCandidate, processRecoveredText, stampDead, startRun, checkpoint, acquireRecoveryRunLock, RUN_WRITES, REVIEW_TEXTS_DIR };

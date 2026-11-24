@@ -417,6 +417,74 @@ function triagePendingStub(data, ctx = {}) {
 }
 
 /**
+ * BRO-8195: a url-less stub (Theatre Record full text: critic + date, never a url) has nothing to fetch, so the
+ * url rules above never judge it and it stayed open forever (43 of the 46 url-less open stubs on 2026-11-23,
+ * each one tagged cross_market_contamination at intake). Judged on its own name and date instead:
+ *  - this show already files the same outlet--critic name: a duplicate, settled;
+ *  - its date sits in exactly one same-title sibling's window (the shared resolveOutOfWindowStub rule): settled
+ *    when that sibling already files the same name, else rehomed to it.
+ * ctx: { show, allShows, file, showHasFile(name), siblingHasFile(showId, name) }. Pure over ctx. null = no verdict.
+ */
+const TITLE_KEY_STOP = new Set(['the', 'and', 'into', 'with', 'from', 'that', 'this', 'your', 'what', 'when', 'where', 'show', 'musical', 'play']);
+/** The title's most distinctive word: its longest word of 4+ letters outside a small stop list. Pure. */
+function titleKeyWords(title) {
+  return [...new Set(String(title || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z]+/)
+    .filter((w) => w.length >= 4 && !TITLE_KEY_STOP.has(w)))];
+}
+function distinctiveTitleWord(title) {
+  return titleKeyWords(title).sort((a, b) => b.length - a.length)[0] || null;
+}
+/**
+ * The text never names the title: no key word at all for a one-word title, fewer than two of them for a longer one
+ * (a real Joseph review may never say "Technicolor" but says "Joseph" and "Dreamcoat"; Anna X by Joseph Charlton
+ * says only "Joseph"). Pure.
+ */
+function textMissesTitle(text, title) {
+  const keys = titleKeyWords(title);
+  if (!keys.length) return false;
+  const t = String(text || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  const hits = keys.filter((w) => t.includes(w)).length;
+  return keys.length === 1 ? hits === 0 : hits < 2;
+}
+
+function noUrlStubVerdict(data, ctx = {}) {
+  if (!data || data.url || !ctx.file) return null;
+  const pdIso = stubDateIso(data.publishDate);
+  // A Theatre Record stub whose date year disagrees with its archive link's year has a bad date (a 2025-10 review
+  // stamped 2026-10-24 would rehome a London review to the New York run): judge nothing on that date.
+  const trYear = (String(data.theatreRecordUrl || '').match(/\/archive\/((?:19|20)\d{2})\//) || [])[1];
+  const dateTrusted = pdIso && (!trYear || trYear === pdIso.slice(0, 4));
+  const outside = dateTrusted && ctx.show && ctx.allShows && isArticleOutsideProductionWindow(ctx.show, pdIso);
+  const has = (sid) => !!(ctx.siblingHasFile && ctx.siblingHasFile(sid, ctx.file));
+  if (outside) {
+    // The same outlet--critic name already filed under exactly one sibling whose run holds the date: a duplicate,
+    // with no venue corroboration needed (the name and the date both point at that sibling).
+    const holders = require('./pending-sibling-productions').fittingSiblings(ctx.show, ctx.allShows, pdIso).filter((x) => has(x.id));
+    if (holders.length === 1) return { verdict: 'junk', reason: `url-less stub published ${pdIso} belongs to same-title production ${holders[0].id}, which already files ${ctx.file}`, sibling: holders[0].id };
+  } else if (ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  // Theatre Record's PDF pages run several shows together: 11 "Joseph" stubs were reviews of Anna X (by playwright
+  // Joseph Charlton). Text that never names the title's distinctive word is another show's review. A url-less stub
+  // is never promoted by the drain, so this settle loses nothing; clearing promoteSkippedReason re-opens it.
+  const text = String(data.fullText || '');
+  if (data.source === 'theatre-record' && ctx.show && text.length >= 200 && textMissesTitle(text, ctx.show.title)) {
+    return { verdict: 'junk', reason: `url-less Theatre Record text never names "${ctx.show.title}" (${titleKeyWords(ctx.show.title).join('/')}): another show's review from the archive page` };
+  }
+  if (outside && ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  if (outside) {
+    const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
+    if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+    // No tracked production's window holds the date (Jamie 2024 stubs dated 2017, the untracked Sheffield run):
+    // the same settle the url triage gives a dated stub outside every window.
+    if (r.kind === 'outside-all') return { verdict: 'junk', reason: `url-less stub published ${pdIso} is outside this production's window and every tracked same-title production's` };
+  }
+  return null;
+}
+
+/**
  * A byline that is a member of the show's own creative team (the playwright on a
  * venue page: "William Shakespeare" on bam.org/Hamlet) means the page is about
  * the show, not a critic's review of it. Pure.
@@ -482,4 +550,28 @@ function pendingIntakeRejectReason(review, show) {
   // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
   return pageKindJunkReason(review.url, show || undefined);
 }
-module.exports = { fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, settledPendingReason, showEra };
+/**
+ * BRO-8195: the critic printed in a _pending stub's own text, when the fetched page named nobody. Uses the
+ * corpus byline reader (outlet extractors + the strict closing-credit rule), so a stub is never named by a
+ * looser rule than a scored file. Pure. Returns the name or null.
+ */
+function textBylineFallback(data, show, showFileNames = []) {
+  if (!data || !data.fullText) return null;
+  const { extractBylineFromText } = require('./byline-from-text');
+  const hit = extractBylineFromText(data.outletId, String(data.fullText), { showTitle: show && show.title });
+  if (!(hit && hit.known && hit.name)) return null;
+  // The rebuild's rule (otherNamedCriticAtOutlet): a text credit never adds a second named critic at an outlet
+  // the show already scores under another name; a misfiled text there stays unpromoted.
+  const { normalizeCritic } = require('./review-normalization');
+  const slug = normalizeCritic(hit.name);
+  const prefix = `${data.outletId}--`;
+  const other = showFileNames.some((f) => {
+    if (!f.startsWith(prefix) || !f.endsWith('.json')) return false;
+    const c = f.slice(prefix.length, -5);
+    return c !== slug && !/^(unknown|unnamed)$/.test(c);
+  });
+  return other ? null : hit.name;
+}
+
+module.exports = {
+  textBylineFallback, noUrlStubVerdict, distinctiveTitleWord, textMissesTitle, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };

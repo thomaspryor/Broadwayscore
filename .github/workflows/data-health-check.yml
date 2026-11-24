@@ -442,6 +442,9 @@ jobs:
           # slice (public anon reads) to know what that page must render.
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          # BRO-8198: the deploy-freshness alert bars follow the gate's backstop.
+          GATE_BACKSTOP_MIN: ${{ vars.DEPLOY_BACKSTOP_MIN }}
+          GATE_MIN_INTERVAL_MIN: ${{ vars.DEPLOY_MIN_INTERVAL_MIN }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included

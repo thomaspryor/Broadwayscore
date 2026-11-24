@@ -1,7 +1,7 @@
 {
   "outletId": "observer",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:50:10.349Z",
+  "generatedAt": "2026-11-23T23:41:38.953Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
@@ -25,8 +25,9 @@
   },
   "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 221,
-    "notEnumerated": 142,
+    "rowsInWindow": 226,
+    "heldExcludedRows": 0,
+    "notEnumerated": 146,
     "noUrl": 2,
     "samples": [
       {
@@ -168,6 +169,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "coal-country-off-broadway-2022",
+        "url": "https://observer.com/2022/03/coal-country-digs-deep-into-workers-rights-and-justice-review/",
+        "publishDate": "2022-03-10",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "company-2021",
         "url": "https://observer.com/2021/12/rise-rise-rise-this-gender-swapped-company-wins-our-hearts-review/",
         "publishDate": "2021-12-09",
@@ -177,6 +184,12 @@
         "showId": "constellations-2015",
         "url": "https://observer.com/2015/01/nick-paynes-constellations-is-a-load-of-arcane-rubbish-disguised-as-a-play/",
         "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "conversations-with-mother-off-broadway-2025",
+        "url": "https://observer.com/2025/02/review-family-feuds-and-plenty-of-punchlines-in-conversations-with-mother/",
+        "publishDate": "2025-02-24",
         "why": "not-enumerated"
       },
       {
@@ -256,18 +269,6 @@
         "url": "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/",
         "publishDate": "2024-12-17",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "eureka-day-2024",
-        "url": "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/",
-        "publishDate": "2024-12-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "floyd-collins-2025",
-        "url": "https://observer.com/2025/04/floyd-collins-review-adam-guettels-uneven-debut-at-lincoln-center/",
-        "publishDate": null,
-        "why": "not-enumerated"
       }
     ]
   },
@@ -278,5 +279,9 @@
   "ambiguous": [],
   "catalogGaps": [],
   "otherMarketReviews": [],
-  "outOfWindow": []
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
 }
