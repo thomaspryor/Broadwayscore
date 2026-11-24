@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-24T16:38:56.412Z",
+  "timestamp": "2026-11-24T16:57:22.500Z",
   "stats": {
-    "totalReviews": 84594,
-    "alreadyFlagged": 22565,
+    "totalReviews": 84596,
+    "alreadyFlagged": 22568,
     "dateGuardCatches": 244,
-    "directorMismatch": 3888,
-    "tvFilmSignals": 2439,
+    "directorMismatch": 3887,
+    "tvFilmSignals": 2440,
     "londonSignals": 4000,
     "offBroadwaySignals": 791,
     "yearMismatch": 402,
@@ -17538,20 +17538,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-evan-hansen-la-regional-2026",
-      "file": "nytg--margret-echeverria.json",
-      "score": 95,
-      "publishDate": "2026-11-16",
-      "url": "https://www.newyorktheatreguide.com/reviews/dear-evan-hansen",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
         }
       ]
     },
@@ -52378,6 +52364,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "orlando-off-west-end-2026",
+      "file": "flicker-magazine--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.flickermagazine.art/post/orlando-a-pornobiography-new-diorama-theatre-review-b714d",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -136261,6 +136261,7 @@
     {
       "showId": "the-afronauts-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 54,
       "publishDate": "2026-11-24",
       "url": "https://www.theguardian.com/stage/2026/nov/24/the-afronauts-royal-court-theatre-london-ryan-calais-cameron-",
       "findings": [
