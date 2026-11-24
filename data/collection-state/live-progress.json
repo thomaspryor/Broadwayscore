@@ -1,19 +1,53 @@
 {
-  "updatedAt": "2026-11-24T01:03:36.212Z",
-  "processed": 20,
-  "failed": 9,
-  "successRate": "69.0%",
+  "updatedAt": "2026-11-24T01:04:33.761Z",
+  "processed": 89,
+  "failed": 42,
+  "successRate": "67.9%",
   "tierBreakdown": {
-    "playwright": 17,
-    "amp": 0,
+    "playwright": 53,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 10,
+    "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-24T00:38:45.344Z",
+      "event": "bb-session",
+      "session": "61a82105",
+      "url": "https://www.washingtonpost.com/entertainment/review-broadways-some-like-it-hot-b"
+    },
+    {
+      "t": "2026-11-24T00:38:46.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T00:38:57.131Z",
+      "event": "bb-session",
+      "session": "5d55f4af",
+      "url": "https://www.washingtonpost.com/entertainment/review-broadways-some-like-it-hot-b"
+    },
+    {
+      "t": "2026-11-24T00:38:57.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T00:55:15.914Z",
+      "event": "bb-session",
+      "session": "3f90bac5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655598"
+    },
+    {
+      "t": "2026-11-24T00:55:16.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
