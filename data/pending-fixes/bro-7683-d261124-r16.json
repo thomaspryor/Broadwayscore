@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261124-r16",
   "planId": "9646205d-9aff-4314-bab2-57016a295bf8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T23:15:29.148Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,24 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T23:30:07.961Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hanukkah-spectacular-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added purpose-geffen-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bat-boy-the-musical-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
