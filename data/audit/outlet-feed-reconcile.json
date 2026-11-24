@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T04:06:57.568Z",
+  "generatedAt": "2026-11-24T05:16:58.285Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -160,75 +160,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
     }
   ],
-  "itemsScanned": 921,
-  "matchedGaps": 7,
-  "possibleGaps": 3,
+  "itemsScanned": 904,
+  "matchedGaps": 0,
+  "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/august-wilson-seven-guitars-lincoln-center-review/",
-      "headline": "In &#8216;August Wilson&#8217;s Seven Guitars,&#8217; a bluesman will get out of Pittsburgh if it kills him",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/seven-guitars-august-wilson-off-broadway-review/",
-      "headline": "August Wilson&#8217;s &#8216;Seven Guitars&#8217; swings like a jazz standard with no false notes (Off Broadway review)",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/23/seven-guitars-review/",
-      "headline": "Seven Guitars Review",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "nysr",
-      "url": "https://nystagereview.com/2026/11/23/seven-guitars-another-wilson-masterpiece-strikes-every-chord/",
-      "headline": "Seven Guitars: Another Wilson Masterpiece Strikes Every Chord",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "nysr",
-      "url": "https://nystagereview.com/2026/11/23/seven-guitars-august-wilson-revived-through-expert-eyes/",
-      "headline": "Seven Guitars: August Wilson Revived, Through Expert Eyes",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/11/23/seven-guitars/",
-      "headline": "A Revelation",
-      "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-new-revival-of-seven-guitars-elevates-a-lesser-august-wilson-play_1860613/",
-      "headline": "Review: New Revival of Seven Guitars Elevates a Lesser August Wilson Play",
-      "publishDate": "2026-11-23"
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -245,15 +186,6 @@
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "headline": "Much Ado About Nothing review: A deliciously detailed take",
-      "publishDate": null
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "possible",
-      "outletId": "nytg",
-      "url": "https://newyorktheatreguide.com/reviews/seven-guitars-off-broadway-review",
-      "headline": "'Seven Guitars' Off-Broadway review — a full-circle August Wilson revival finds its rhythm",
       "publishDate": null
     }
   ]

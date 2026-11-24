@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-24T04:06:57.095Z",
+  "generatedAt": "2026-11-24T05:16:57.927Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 369,
-  "clean": 369,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 374,
+  "clean": 373,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 66.51 vs local 70.08 (Δ3.57)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-24T05:16:51.162Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
