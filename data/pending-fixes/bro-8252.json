@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8252",
   "planId": "f3f74cde-da21-4bbd-a46f-1f8be2b6421c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T15:01:28.585Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "Clear the pin so a press-night source can still refine this date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T15:22:48.151Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-midsummer-nights-dream-jentes-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-midsummer-nights-dream-jentes-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for a-midsummer-nights-dream-jentes-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
