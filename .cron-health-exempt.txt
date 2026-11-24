@@ -336,3 +336,4 @@ critic-reach.yml  # BRO-6984 owner-only reach count for claimed critic pages; lo
 social-video.yml  # BRO-7414 TikTok + YouTube Shorts lane; failure step alerts, one video per network per day so a missed run only delays a post
 landed-change-proof.yml  # BRO-7790 advisory daily proof audit; a missed run makes the digest line say "not measured this morning", notify-failure on error
 backfill-cast-web.yml  # BRO-7381 weekly cast fill, 25 shows; a missed week only delays cast data, no alert needed
+publish-show-refresh.yml  # BRO-8214: nothing reads its output while SHOW_REFRESH_READER is off; the phase-4 flip runbook (BRO-8056) moves it to CRITICAL_CRONS before the reader goes on
