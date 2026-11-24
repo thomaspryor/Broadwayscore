@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8267",
   "planId": "5cf645ed-5cf5-4532-98eb-99107efba983",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -1849,5 +1849,79 @@
         "description": "operation-mincemeat: sources from Broadway Journal Operation Payback (2026-11-23)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T22:39:32.893Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for operation-mincemeat"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for operation-mincemeat"
+    }
+  ],
+  "executedIn": "ci"
 }
