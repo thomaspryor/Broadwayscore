@@ -46,6 +46,7 @@ test('place word pins one production; negated, origin and longer-name mentions d
   assert.equal(pickCandidateByPlace([BWAY, TORONTO], 'X Show is coming to Toronto'), null);
   const c = [CHICAGO, TORONTO, YORK];
   assert.equal(pickCandidateByPlace(c, 'X Show - Toronto run coming up').id, TORONTO.id);
+  assert.equal(pickCandidateByPlace([T('x-mtl', 'montreal-qc'), TORONTO], 'X Show in Montréal').id, 'x-mtl', 'accents fold');
   assert.equal(pickCandidateByPlace(c, 'X Show is coming to Toronto').id, TORONTO.id);
   assert.equal(pickCandidateByPlace(c, 'not the Toronto one'), null);
   assert.equal(pickCandidateByPlace(c, 'X Show transferred from Chicago and is missing reviews'), null);

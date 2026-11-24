@@ -41,6 +41,7 @@
  */
 
 const { resolveShowMatches, extractShowTitlesFromText, labelShowCandidates } = require('./resolve-show.js');
+const { foldDiacritics } = require('./title-match');
 
 /** Workflows this module is allowed to name. Keep in sync with .github/workflows/. */
 const WORKFLOW_IMAGE = 'fetch-all-image-formats.yml';
@@ -303,7 +304,8 @@ function cityMentions(t, city) {
   }
   return out;
 }
-const normWords = (s) => ` ${String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
+// Fold first so "Montréal" still matches a montreal-qc city slug (task #648).
+const normWords = (s) => ` ${foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
 
 /**
  * The one candidate whose city the text names, or null (#1190: "13 Going on 30 -
