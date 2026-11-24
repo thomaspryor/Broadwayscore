@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, rebuildStepAllowed, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
+import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, rebuildStepAllowed, sliceCodeClosure, SLICE_ENTRY_POINTS, CLOSURE_ALWAYS, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
 
 import tmpLib from './lib/tmpdir-for-tests.js';
 const tmp = (t) => tmpLib.makeTmpDir(t, 'publish-show-refresh-');
@@ -102,7 +102,7 @@ test('codeMatchOf: data-only commits since the deploy match; a code change or an
   git('config', 'user.email', 't@example.invalid'); git('config', 'user.name', 't');
   const commit = (file, body) => { fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true }); fs.writeFileSync(path.join(dir, file), body); git('add', '-A'); git('commit', '-qm', file); return git('rev-parse', 'HEAD'); };
   const deployed = commit('scripts/a.js', '1');
-  const env = { PUBLISH_CODE_FETCH: '0' };
+  const env = { PUBLISH_CODE_FETCH: '0', PUBLISH_CODE_CLOSURE: '0' };
   assert.deepEqual([codeMatchOf(env, deployed, dir).match, codeMatchOf(env, deployed, dir).how], [true, 'same commit']);
   commit('data/shows.json', '{}');
   const dataOnly = codeMatchOf(env, deployed, dir);
@@ -151,4 +151,16 @@ test('workflows: only rebuild-fast passes --rebuild-step, in a step gated on the
   }
   assert.equal(step.env.SHOW_REFRESH_SAFE, '${{ steps.staleness.outputs.safe_to_publish }}');
   assert.equal(step['continue-on-error'], true);
+});
+
+test('sliceCodeClosure: the slice computation\'s own imports, not every script; none in a dir without the code', (t) => {
+  const c = sliceCodeClosure();
+  assert.ok(Array.isArray(c), 'closure computed in the repo');
+  for (const f of [...SLICE_ENTRY_POINTS, 'scripts/lib/show-refresh/publish-plan.js', 'scripts/lib/show-refresh/manifest.js']) assert.ok(c.includes(f), `closure has ${f}`);
+  for (const f of ['scripts/lib/prod-data-parity.js', 'scripts/rebuild-all-reviews.js']) assert.ok(!c.includes(f), `closure leaves out ${f}`);
+  assert.ok(c.every((f) => !f.startsWith('data/') && !f.includes('node_modules')), 'no data or dependencies');
+  // Runtime-read config is not in the import graph, so code-dir JSON is always compared.
+  assert.ok(CLOSURE_ALWAYS.includes(':(glob)src/**/*.json') && CLOSURE_ALWAYS.includes(':(glob)scripts/**/*.json'));
+  // Outside the repo the closure cannot be computed: the caller uses the coarse diff.
+  assert.equal(sliceCodeClosure(tmp(t)), null);
 });
