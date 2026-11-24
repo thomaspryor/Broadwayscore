@@ -83,3 +83,17 @@ test('a manifest naming no shows fails verification (broken builder, not an empt
   assert.equal(probs.length, 1, probs.join('; '));
   assert.match(probs[0], /names no shows/);
 });
+
+test('reviewMetaById adds reviewCount/reviewsSig per show; old manifests without them stay usable', () => {
+  const { isUsableManifest } = require('./manifest.js');
+  const a = base(); a.reviewMetaById = new Map([['s1', { reviewCount: 3, reviewsSig: 'f'.repeat(16) }]]);
+  const m = buildManifest(a);
+  assert.equal(m.shows.s1.reviewCount, 3);
+  assert.equal(m.shows.s1.reviewsSig, 'f'.repeat(16));
+  const old = buildManifest(base());
+  assert.equal('reviewCount' in old.shows.s1, false, 'no meta given => no fields (old shape)');
+  assert.equal(isUsableManifest(old), true);
+  assert.deepEqual(verifyManifest(m, { dataFiles: base().dataFiles, publicSha: 'p'.repeat(40) }), []);
+  const partial = base(); partial.reviewMetaById = new Map();
+  assert.equal('reviewCount' in buildManifest(partial).shows.s1, false, 'a show missing from the map gets no fields');
+});

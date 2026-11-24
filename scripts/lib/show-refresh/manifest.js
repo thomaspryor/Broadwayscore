@@ -78,6 +78,9 @@ function imagesSig(images) {
  * @param {Array<{id: string, slug: string, images?: object}>} a.shows - computed shows that were prerendered
  * @param {Map<string, string>} a.sliceHashById
  * @param {Map<string, boolean>} a.heldById - computeShowTBD at buildInstant
+ * @param {Map<string, {reviewCount: number, reviewsSig: string}>} [a.reviewMetaById] - slice.reviewMeta per show;
+ *   the publisher's review guards. Shows without an entry carry no fields (old manifest shape: the
+ *   publisher skips them as no-review-meta).
  */
 function buildManifest(a) {
   for (const k of ['manifestId', 'buildInstant', 'registryFile', 'dataFiles', 'imageKeys', 'shows', 'sliceHashById', 'heldById']) {
@@ -90,6 +93,8 @@ function buildManifest(a) {
     if (!hash) throw new Error(`buildManifest: no slice hash for prerendered show ${s.id}`);
     if (!a.heldById.has(s.id)) throw new Error(`buildManifest: no held verdict for ${s.id}`);
     shows[s.id] = { slug: s.slug, hash, held: a.heldById.get(s.id) === true, imagesSig: imagesSig(s.images) };
+    const meta = a.reviewMetaById && a.reviewMetaById.get(s.id);
+    if (meta) Object.assign(shows[s.id], { reviewCount: meta.reviewCount, reviewsSig: meta.reviewsSig });
   }
   const dataShas = {};
   for (const name of Object.keys(a.dataFiles).sort()) dataShas[name] = gitBlobSha(a.dataFiles[name]);
