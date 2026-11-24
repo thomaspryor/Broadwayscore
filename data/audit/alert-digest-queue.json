@@ -1,5 +1,19 @@
 [
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T12:55:45.639Z"
+  },
+  {
     "conditionKey": "priority-queue:overdue",
     "title": "Overdue P0/P1 queue: 14 P0 older than 24h, 69 P1 older than 7d (still open — BRO-5613)",
     "description": "Still firing after 52 notifications since it was filed. Tracked at BRO-5613.\n\n15 P0 open (14 older than 24h, oldest 24d); 136 P1 open (69 older than 7d); 490 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-6716 (24d): Every-review backfill: resolve 175 aggregator-cited reviews not live across 1,007 shows opened in the last year, plus 397 shows never gap-audited\n- BRO-6751 (23d): Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\n- BRO-7081 (17d): Opening retro: aggregator-cited reviews never discovered cannot recur\n- BRO-7102 (17d): Main stays red too long: escalation that dispatches, auto-revert of breaking landings, per-spec E2E signatures, deduped filing, cause tags\n- BRO-7103 (17d): Continuous improvement loop: detect recurring problem classes, escalate the class to one root-cause card, gate instance closes, check PREVENTION claims\n- BRO-7138 (16d): Done claims that do not hold: prove the effect at close, honest recheck, route failed rechecks back to work\n- BRO-7139 (16d): Board invariant sweep: every open card is ready, machine-rechecked, asked where the owner sees it (with a default), or closed\n- BRO-7150 (16d): Small changes take hours to land: refusals arrive after 20-30 min, catch them locally in seconds\n- BRO-7167 (16d): Opening-night test bench: audit last 20 Broadway openings + sandboxed and time-causal redos with the new lane (plan for owner approval)\n- BRO-7312 (14d): Expected-critics gaps: auto-search and fix before ever telling the owner",
@@ -218,20 +232,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-24T06:16:28.805Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T07:28:31.053Z"
   },
   {
     "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
