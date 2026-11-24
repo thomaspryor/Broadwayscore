@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-24T06:55:53.530Z",
+  "generated": "2026-11-24T07:12:04.972Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 46,
+  "count": 49,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -109,6 +109,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "from-here-to-eternity-west-end-2013",
+      "loserFile": "thestage--paul-vale.json",
+      "targetFile": "thestage--unknown.json",
+      "reason": "orphaned-duplicate-heal: thestage--unknown.json was flagged invalid after thestage--paul-vale.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "girls-off-west-end-2026",
       "loserFile": "mail-on-sunday--ryan-hooper.json",
       "targetFile": "daily-mail--ryan-hooper.json",
@@ -148,6 +155,13 @@
       "loserFile": "mail-on-sunday--unknown.json",
       "targetFile": "daily-mail--unknown.json",
       "reason": "orphaned-duplicate-heal: daily-mail--unknown.json was flagged invalid after mail-on-sunday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "loserFile": "talkinbroadway--unknown.json",
+      "targetFile": "talkinbroadway--matthew-murray.json",
+      "reason": "orphaned-duplicate-heal: talkinbroadway--matthew-murray.json was flagged invalid after talkinbroadway--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -324,6 +338,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "from-here-to-eternity-west-end-2013",
+      "loserFile": "thestage--paul-vale.json",
+      "targetFile": "thestage--unknown.json",
+      "reason": "orphaned-duplicate-heal: thestage--unknown.json was flagged invalid after thestage--paul-vale.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

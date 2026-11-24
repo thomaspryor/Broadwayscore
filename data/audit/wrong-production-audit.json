@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T07:05:12.182Z",
+  "timestamp": "2026-11-24T07:22:16.830Z",
   "stats": {
     "totalReviews": 84565,
-    "alreadyFlagged": 22559,
+    "alreadyFlagged": 22562,
     "dateGuardCatches": 244,
     "directorMismatch": 3889,
-    "tvFilmSignals": 2436,
-    "londonSignals": 3997,
+    "tvFilmSignals": 2438,
+    "londonSignals": 3998,
     "offBroadwaySignals": 790,
-    "yearMismatch": 396,
-    "noPublishDate": 8256
+    "yearMismatch": 398,
+    "noPublishDate": 8246
   },
   "findings": [
     {
@@ -43211,6 +43211,34 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "theater-life--david-sheward.json",
+      "score": 82,
+      "publishDate": "2019-10-23",
+      "url": "https://theaterlife.com/scotland-pa-little-shop-of-horrors-forbidden-broadway-the-next-generation-the-lightning-thief-the-percy-jackson-musical/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2003 (2x) more than 2019 (0x). 2003 matches production: little-shop-of-horrors-2003"
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "theater-life--unknown.json",
+      "score": 78,
+      "publishDate": "2019-10-23",
+      "url": "https://theaterlife.com/scotland-pa-little-shop-of-horrors-forbidden-broadway-the-next-generation-the-lightning-thief-the-percy-jackson-musical/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2003 (2x) more than 2019 (1x). 2003 matches production: little-shop-of-horrors-2003"
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "thewrap--robert-hofler.json",
       "score": 74,
       "publishDate": "2019-10-18",
@@ -58048,6 +58076,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "promises-promises-2010",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 44,
+      "publishDate": "2010-04-25",
+      "url": "http://leisureblogs.chicagotribune.com/the_theater_loop/2010/04/promises-broadway-review-sean-hayes-promises-promises-no-love-connection.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "promises-promises-2010",
+      "file": "dctheatrescene--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://dctheatrescene.com/2010/04/26/promises-promises/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -81976,7 +82032,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "guardian--susannah-clapp.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2025-03-07",
       "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
       "findings": [
@@ -82009,7 +82065,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2025-03-07",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-seagull-barbican-theatre-review-cate-blanchett/",
       "findings": [
@@ -82023,7 +82079,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 57,
+      "score": 64,
       "publishDate": "2025-03-07",
       "url": "https://www.timeout.com/london/theatre/the-seagull-12-review",
       "findings": [
@@ -108640,6 +108696,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "from-here-to-eternity-west-end-2013",
+      "file": "thestage--paul-vale.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/from-here-to-eternity-review-at-charing-cross-theatre-london-from-tim-rice-stuart-brayson-donald-rice-and-bill-oakes",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -138159,7 +138229,7 @@
     {
       "showId": "the-confessions-west-end-2023",
       "file": "guardian--arifa-akbar.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "October 24th, 2023",
       "url": "https://www.theguardian.com/stage/2023/oct/24/the-confessions-review-national-theatre-london",
       "findings": [
@@ -146088,7 +146158,7 @@
     {
       "showId": "the-seagull-west-end-2025",
       "file": "broadwayworld--not-everyone-was-an-enthusiast.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2025-03-06",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-SEAGULL-starring-Cate-Blanchett-Barbican-Theatre-20250306",
       "findings": [
@@ -148892,7 +148962,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2025-07-10",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/till-the-stars-come-down-theatre-royal-haymarket-review/",
       "findings": [
