@@ -118,7 +118,8 @@ function findMatchingPriorRun(reviewDate, priorRuns) {
 }
 
 /**
- * The publish-date window a declared prior run covers: openingDate through
+ * The publish-date window a declared prior run covers: openingDate (or an
+ * earlier previewsStartDate, BRO-8133) through
  * closingDate (+ REVIEW_LAG_GRACE_DAYS when allowGrace and the close is
  * explicit), or openingDate + 180 days when no closingDate is recorded.
  * Single source for matchPriorRuns AND the LLM prompt notes
@@ -144,8 +145,17 @@ function priorRunWindow(run, { allowGrace = true } = {}) {
   }
   const graceMs = (allowGrace && hasExplicitClose) ? REVIEW_LAG_GRACE_DAYS * 86400000 : 0;
   const toMs = close.getTime() + graceMs;
+  // BRO-8133: a declared previewsStartDate opens the window. Press reviews a
+  // run during previews (Off Off Online reviewed Bedlam's spring Othello on
+  // 2026-05-02, the day before it opened), so starting at openingDate flagged
+  // the run's own reviews wrongProduction. Only an EARLIER valid date widens it.
+  let fromMs = open.getTime();
+  if (run.previewsStartDate) {
+    const prev = parseDate(run.previewsStartDate);
+    if (prev && !isNaN(prev.getTime()) && prev.getTime() < fromMs) fromMs = prev.getTime();
+  }
   const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
-  return { fromMs: open.getTime(), toMs, from: iso(open.getTime()), to: iso(toMs) };
+  return { fromMs, toMs, from: iso(fromMs), to: iso(toMs) };
 }
 
 function matchPriorRuns(rdMs, priorRuns, allowGrace) {

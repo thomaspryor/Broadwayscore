@@ -343,3 +343,28 @@ test('textNumericDates: whole-word reject list, dash is a range only after a dat
   assert.deepEqual(textNumericDates('September \u2014 18/09/2026'), []);
   assert.deepEqual(textNumericDates('Now playing 10/09/2026 \u2014 31/12/2026'), []);
 });
+
+// BRO-8133: press reviews a run during previews. Off Off Online reviewed
+// Bedlam's spring Othello on 2026-05-02, the day before it opened (2026-05-03);
+// a window starting at openingDate flagged the run's own review wrongProduction.
+test('priorRun previewsStartDate opens the window (BRO-8133)', () => {
+  const run = { previewsStartDate: '2026-04-19', openingDate: '2026-05-03', closingDate: '2026-05-31', venue: 'West End Theatre' };
+  const r = evaluatePreWindowInclusion({ pubDate: D('2026-05-02'), showEarliest: D('2026-11-07'), isFlexCategory: true, priorRuns: [run] });
+  assert.equal(r.exclude, false);
+  assert.equal(r.reason, 'prior-run window');
+  // Before the previews start is still another production.
+  const early = evaluatePreWindowInclusion({ pubDate: D('2026-04-10'), showEarliest: D('2026-11-07'), isFlexCategory: true, priorRuns: [run] });
+  assert.equal(early.exclude, true);
+  // Without previewsStartDate the old opening-date start is unchanged.
+  const { previewsStartDate, ...noPrev } = run; // eslint-disable-line no-unused-vars
+  assert.equal(evaluatePreWindowInclusion({ pubDate: D('2026-05-02'), showEarliest: D('2026-11-07'), isFlexCategory: true, priorRuns: [noPrev] }).exclude, true);
+  // A previewsStartDate AFTER the opening never narrows the window.
+  const odd = { ...run, previewsStartDate: '2026-05-20' };
+  assert.equal(evaluatePreWindowInclusion({ pubDate: D('2026-05-04'), showEarliest: D('2026-11-07'), isFlexCategory: true, priorRuns: [odd] }).exclude, false);
+});
+
+test('prior-runs LLM note shows the same previews-opened window (BRO-8133)', () => {
+  const { buildPriorRunsNote } = require('./prior-runs-note.js');
+  const note = buildPriorRunsNote([{ previewsStartDate: '2026-04-19', openingDate: '2026-05-03', closingDate: '2026-05-31', venue: 'West End Theatre' }]);
+  assert.match(note, /review window 2026-04-19 to 2026-06-07/);
+});

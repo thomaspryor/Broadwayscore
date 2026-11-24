@@ -58,8 +58,7 @@ test('gradeShow: no row is NO-AUDIT', () => {
 });
 
 // BRO-6751: OVERDUE reads the scheduler's own promise (real freshnessMsFor), never the grade.
-import { createRequire as _cr6751 } from 'node:module';
-const _req6751 = _cr6751(import.meta.url);
+const _req6751 = require;
 const F6751 = _req6751('./lib/gap-audit-freshness.js');
 const { isOverdue, OVERDUE_GRACE_HOURS } = _req6751('./slow-market-grade.js');
 const N6751 = Date.parse('2026-11-01T12:00:00Z');
@@ -162,4 +161,28 @@ test('main refuses a half or reversed window (exit 2) before reading data', () =
   assert.equal(main(['--opened-from=2025-10-31', '--check-gaps']), 2);
   assert.equal(main(['--opened-from=2026-10-31', '--opened-to=2025-10-31']), 2);
   assert.equal(main(['--opened-from=2025-1-1', '--opened-to=2026-10-31']), 2);
+});
+
+// BRO-8133: an audit row is a snapshot; a review that went live after the audit
+// ran is not a gap (nine-night / the-unbelievers FAILed the 2026-11-23 recheck
+// on rows already live in reviews.json).
+test('gradeShow: re-verify / cited rows already live in reviews.json do not FAIL (BRO-8133)', () => {
+  const url = 'https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj';
+  const row = {
+    showId: 'x', computedAt: '2026-11-23T14:44:23Z',
+    flaggedMisses: [{ url, exclusion: 'automatedExcluded', reverify: true }],
+    missing: [{ url: 'https://example.com/cited-review', host: 'example.com' }],
+  };
+  assert.equal(gradeShow(row, 3).grade, 'FAIL');
+  assert.equal(gradeShow(row, 3).reverify, 1);
+  const g = gradeShow(row, 3, null, NOW, { liveUrls: new Set([url, 'https://example.com/cited-review']) });
+  assert.equal(g.reverify, 0);
+  assert.equal(g.cited, 0);
+  assert.notEqual(g.grade, 'FAIL');
+  // A still-missing row keeps the FAIL.
+  const g2 = gradeShow(row, 3, null, NOW, { liveUrls: new Set([url]) });
+  assert.equal(g2.grade, 'FAIL');
+  assert.equal(g2.cited, 1);
+  assert.equal(g2.reverify, 0);
+  assert.deepEqual(g2.notLive, ['https://example.com/cited-review']);
 });

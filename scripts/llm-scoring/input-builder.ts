@@ -44,7 +44,7 @@ export interface ReviewInputData {
                        // are stored as category='off-broadway' but framed
                        // separately so the wrong_show check doesn't reject
                        // opera reviews as "not theater"
-  priorRuns?: Array<{ openingDate?: string; closingDate?: string; venue?: string; note?: string }>;
+  priorRuns?: Array<{ openingDate?: string; closingDate?: string; previewsStartDate?: string; venue?: string; note?: string }>;
                        // Declared earlier runs/tour legs of the SAME production.
                        // Without this the scoreability check rejects tour-venue
                        // reviews as wrong_production (The Car Man, 2026-08-02:

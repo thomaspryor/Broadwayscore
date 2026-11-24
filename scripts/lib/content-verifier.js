@@ -955,15 +955,15 @@ function buildPriorRunHint(priorRuns, tourLegs) {
   // BRO-8093: shared with the ensemble note so the two prompts cannot drift.
   const { DECLARED_RUN_AFFIRMATION } = require('./prior-runs-note');
   const sanitize = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
-  const describe = (venue, from, to) => {
-    const dates = require('./prior-runs-note').describeDates(from, to);
+  const describe = (venue, from, to, previewsFrom) => {
+    const dates = require('./prior-runs-note').describeDates(from, to, previewsFrom);
     return `${venue ? sanitize(venue) : 'earlier run'}${dates}`;
   };
   const legs = [];
   for (const p of Array.isArray(priorRuns) ? priorRuns : []) {
     // BRO-5724: inheritReviews:false is a SEPARATE production; telling the model its reviews are
     // "this production" is what let the stale-flag sweep release them.
-    if (p && typeof p === 'object' && p.inheritReviews !== false) legs.push(describe(p.venue, p.openingDate, p.closingDate));
+    if (p && typeof p === 'object' && p.inheritReviews !== false) legs.push(describe(p.venue, p.openingDate, p.closingDate, p.previewsStartDate));
   }
   for (const l of Array.isArray(tourLegs) ? tourLegs : []) {
     if (l && typeof l === 'object') legs.push(describe(l.venue, l.startDate, l.endDate));

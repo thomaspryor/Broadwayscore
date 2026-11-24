@@ -35,11 +35,11 @@ const DECLARED_RUN_AFFIRMATION = 'A review of a listed run at that venue, publis
  * a date the rebuild would not (BRO-8093 ship-check: an open-ended "until the
  * current engagement" rule drifted from the 180-day / +7-day guard window).
  */
-function describeDates(openingDate, closingDate) {
+function describeDates(openingDate, closingDate, previewsStartDate) {
   if (!openingDate && !closingDate) return '';
   const base = `${openingDate || 'unknown'} to ${closingDate || 'unknown'}`;
   const { priorRunWindow } = require('./wrong-production-autoclear');
-  const w = priorRunWindow({ openingDate, closingDate });
+  const w = priorRunWindow({ openingDate, closingDate, previewsStartDate });
   return w ? ` (${base}; review window ${w.from} to ${w.to})` : ` (${base})`;
 }
 
@@ -48,7 +48,7 @@ function sanitize(s) {
 }
 
 function describeRun(p) {
-  const dates = describeDates(p.openingDate, p.closingDate);
+  const dates = describeDates(p.openingDate, p.closingDate, p.previewsStartDate);
   const kind = p.note === 'tour leg' ? ' [tour leg]' : '';
   return `${p.venue ? sanitize(p.venue) : 'earlier run'}${dates}${kind}`;
 }

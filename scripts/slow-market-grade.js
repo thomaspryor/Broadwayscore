@@ -52,6 +52,7 @@ const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-bli
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { currentRunOnly } = require('./lib/prior-production-citations');
 const { censusExclusionReason } = require('./lib/gap-census-noise');
+const { canonicalizeUrlForDedup } = require('./lib/review-guards'); // BRO-8133
 const { titleTokens } = require('./lib/show-title-tokens');
 const { computeSeasonWindows, measureOutletCoverage } = require('./audit-standing-coverage');
 
@@ -67,19 +68,31 @@ const ROOT = path.join(__dirname, '..');
 // BRO-6910: `show` (optional) lets a clean row that found no Verdict/BWW
 // article grade BLIND instead of PASS: nothing to compare against. Judged at
 // the row's own audit time (computedAt), so ageing never turns BLIND into PASS.
-function gradeShow(row, liveCount, show = null, nowMs = Date.now(), { majorOutletCount = 0 } = {}) {
+// BRO-8133: `liveUrls` (optional Set of canonicalUrl() of this show's reviews.json
+// rows) drops audit rows whose review went live AFTER the audit ran. The audit
+// row is a snapshot; a review ingested or un-flagged since is not a gap
+// (nine-night/the-unbelievers 2026-11-23: both FAILed on rows already live).
+function canonicalUrl(u) {
+  return canonicalizeUrlForDedup(u) || u;
+}
+
+function gradeShow(row, liveCount, show = null, nowMs = Date.now(), { majorOutletCount = 0, liveUrls = null } = {}) {
   if (!row) return { grade: 'NO-AUDIT', live: liveCount, notLive: [], census: 0, hiddenAsNonReview: 0 };
   const g = slowMarketListedGap(row);
+  const isLiveNow = (m) => !!(liveUrls && m && m.url && liveUrls.has(canonicalUrl(m.url)));
+  const reverifyRows = g.rows.slice(g.rows.length - g.flaggedOut).filter((m) => !isLiveNow(m));
+  const citedRows = g.rows.slice(0, g.rows.length - g.flaggedOut).filter((m) => !isLiveNow(m));
+  const residual = citedRows.length + reverifyRows.length;
   const auditAt = Date.parse(row.computedAt || '');
-  const blind = g.residual === 0
+  const blind = residual === 0
     && isAggregatorBlind(show, row.aggregatorArticles, Number.isFinite(auditAt) ? auditAt : nowMs, { majorOutletCount });
   return {
-    grade: g.residual !== 0 ? 'FAIL' : (blind ? 'BLIND' : 'PASS'),
+    grade: residual !== 0 ? 'FAIL' : (blind ? 'BLIND' : 'PASS'),
     live: liveCount,
-    notLive: g.rows.map((m) => m.url),
-    cited: g.rows.length - g.flaggedOut,
+    notLive: [...citedRows, ...reverifyRows].map((m) => m.url),
+    cited: citedRows.length,
     capped: g.capped,
-    reverify: g.flaggedOut,
+    reverify: reverifyRows.length,
     // Census rows that are noise (syndication copies, other-title URLs) are not owed (BRO-6804).
     census: currentRunOnly(row.missing).filter((m) => m && m.serpCensus
       && !censusExclusionReason(m, 'missing', { show: { title: row.title, category: row.category, venue: row.venue, market: row.market, openingDate: row.openingDate, previewsStartDate: row.previewsStartDate, priorRuns: row.priorRuns }, tokensOf: titleTokens })).length,
@@ -247,8 +260,13 @@ function main(argv = process.argv.slice(2)) {
   } catch { /* no registry: match on outlet id only */ }
   const live = new Map();
   const liveOutlets = new Map();
+  const liveUrlsByShow = new Map(); // BRO-8133
   for (const r of reviews) {
     live.set(r.showId, (live.get(r.showId) || 0) + 1);
+    if (r.url) {
+      if (!liveUrlsByShow.has(r.showId)) liveUrlsByShow.set(r.showId, new Set());
+      liveUrlsByShow.get(r.showId).add(canonicalUrl(r.url));
+    }
     if (!liveOutlets.has(r.showId)) liveOutlets.set(r.showId, new Set());
     liveOutlets.get(r.showId).add(r.outletId);
   }
@@ -266,7 +284,7 @@ function main(argv = process.argv.slice(2)) {
     const row = byId.get(id);
     const majorOutletCount = showById.get(id)?.category === 'off-broadway'
       ? majorOutletCountFor(id, { reviews, ledgerRows: readCrossShowUrlRows({ showId: id }) }) : 0;
-    const g = gradeShow(row, live.get(id) || 0, showById.get(id), nowMs, { majorOutletCount });
+    const g = gradeShow(row, live.get(id) || 0, showById.get(id), nowMs, { majorOutletCount, liveUrls: liveUrlsByShow.get(id) || new Set() });
     const d = displayGrade(g, nowMs, maxAgeHours);
     const category = showById.get(id)?.category;
     if (category && !frequentByCategory.has(category)) frequentByCategory.set(category, frequentOutletsFor(category, shows, reviews, nowMs));
