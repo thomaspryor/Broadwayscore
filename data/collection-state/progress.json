@@ -590,7 +590,8 @@
     "shucked-tour-2024/reviewstl--angela-fulbright.json",
     "sunset-boulevard-2024/abc-news--carson-blackwelder.json",
     "shucked-tour-2024/axios--adam-tamburin.json",
-    "shucked-tour-2024/axios--linh-ta.json"
+    "shucked-tour-2024/axios--linh-ta.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "the-bands-visit-2017/wnyc--jennifer-vanasco.json",
@@ -843,7 +844,18 @@
     "left-on-tenth-2024/variety--aramide-tinubu.json",
     "left-on-tenth-2024/washpost--peter-marks.json",
     "sunset-boulevard-2024/thewrap--robert-hofler.json",
-    "the-afronauts-west-end-2026/consequence--langdon-hickman.json"
+    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1128,7 +1140,8 @@
       "dr-strangelove-west-end-2024/express-uk--neil-norman.json",
       "dr-strangelove-west-end-2024/londonlivinglarge--london-living-large.json",
       "drag-the-musical-off-broadway-2024/culturesauce--thom-geier.json",
-      "shucked-tour-2024/reviewstl--angela-fulbright.json"
+      "shucked-tour-2024/reviewstl--angela-fulbright.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [
       "data/review-texts/brief-encounter-2010/variety--steven-suskin.json"
@@ -1150,7 +1163,8 @@
       "data/review-texts/a-streetcar-named-desire-off-broadway-2025/deadline--greg-evans.json",
       "data/review-texts/death-becomes-her-2024/hollywood-reporter--hilary-lewis.json",
       "death-becomes-her-2024/hollywood-reporter--hilary-lewis.json",
-      "data/review-texts/dr-strangelove-west-end-2024/times-uk--dominic-maxwell.json"
+      "data/review-texts/dr-strangelove-west-end-2024/times-uk--dominic-maxwell.json",
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1459,7 +1473,7 @@
     ]
   },
   "startTime": "2026-11-24T00:20:31.199Z",
-  "lastProcessed": "the-afronauts-west-end-2026/consequence--langdon-hickman.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-24T00:38:45.344Z",
@@ -1693,6 +1707,61 @@
       "t": "2026-11-24T03:46:08.699Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T03:57:49.475Z",
+      "event": "bb-session",
+      "session": "2517142a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T03:57:50.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T03:59:25.305Z",
+      "event": "bb-session",
+      "session": "32675d9b",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T03:59:26.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T04:00:48.948Z",
+      "event": "bb-session",
+      "session": "62e0f784",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T04:00:49.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T04:02:23.952Z",
+      "event": "bb-session",
+      "session": "de3c4384",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T04:02:24.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T04:02:42.103Z",
+      "event": "bb-session",
+      "session": "9a4acdcb",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T04:02:42.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
