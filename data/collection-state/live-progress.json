@@ -1,40 +1,130 @@
 {
-  "updatedAt": "2026-11-24T05:04:10.037Z",
-  "processed": 2,
-  "failed": 3,
-  "successRate": "40.0%",
+  "updatedAt": "2026-11-24T05:18:23.489Z",
+  "processed": 637,
+  "failed": 305,
+  "successRate": "67.6%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 299,
+    "amp": 1,
+    "browserbase": 17,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 35,
+    "scrapingbee": 46,
+    "brightdata": 11,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 229
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-24T05:01:21.501Z",
+      "t": "2026-11-24T02:55:46.500Z",
       "event": "bb-session",
-      "session": "0d5884c0",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+      "session": "b8982912",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     },
     {
-      "t": "2026-11-24T05:01:21.820Z",
+      "t": "2026-11-24T03:25:58.053Z",
+      "event": "bb-session",
+      "session": "5fb3af49",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-11-24T03:34:58.845Z",
+      "event": "bb-session",
+      "session": "f063e9d7",
+      "url": "https://www.the-tls.com/arts/theatre/twelfth-night-royal-shakespeare-theatre-ora"
+    },
+    {
+      "t": "2026-11-24T03:38:08.847Z",
+      "event": "bb-session",
+      "session": "47e8a970",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/beyonce-kelly-rowland"
+    },
+    {
+      "t": "2026-11-24T03:43:59.460Z",
+      "event": "bb-session",
+      "session": "fc9249f0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/steve-coogan-dr-strangelo"
+    },
+    {
+      "t": "2026-11-24T03:44:00.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-24T03:45:03.608Z",
+      "event": "bb-session",
+      "session": "c22c45f5",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-11-24T03:45:04.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T03:45:12.892Z",
+      "event": "bb-session",
+      "session": "ae3137fb",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-11-24T03:45:13.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T03:46:00.155Z",
+      "event": "bb-session",
+      "session": "26861537",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-11-24T03:46:00.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T03:46:08.059Z",
+      "event": "bb-session",
+      "session": "5b7fb70b",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-11-24T03:46:08.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-24T04:55:17.068Z",
+      "event": "bb-session",
+      "session": "5f74805c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T04:55:17.973Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T04:57:31.349Z",
+      "event": "bb-session",
+      "session": "4a0224cd",
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
+    },
+    {
+      "t": "2026-11-24T04:57:32.194Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-24T05:01:38.267Z",
+      "t": "2026-11-24T04:57:49.363Z",
       "event": "bb-session",
-      "session": "bf136a07",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+      "session": "325f7460",
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
     },
     {
-      "t": "2026-11-24T05:01:38.543Z",
+      "t": "2026-11-24T04:57:50.220Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
