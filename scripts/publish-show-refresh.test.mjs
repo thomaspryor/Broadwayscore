@@ -156,7 +156,7 @@ test('workflows: only rebuild-fast passes --rebuild-step, in a step gated on the
 test('sliceCodeClosure: the slice computation\'s own imports, not every script; none in a dir without the code', (t) => {
   const c = sliceCodeClosure();
   assert.ok(Array.isArray(c), 'closure computed in the repo');
-  for (const f of [...SLICE_ENTRY_POINTS, 'scripts/lib/show-refresh/publish-plan.js', 'scripts/lib/show-refresh/manifest.js']) assert.ok(c.includes(f), `closure has ${f}`);
+  for (const f of [...SLICE_ENTRY_POINTS, 'scripts/lib/show-refresh/publish-plan.js', 'scripts/lib/show-refresh/manifest.js', 'scripts/lib/resolve-blog-show-id.js']) assert.ok(c.includes(f), `closure has ${f}`);
   for (const f of ['scripts/lib/prod-data-parity.js', 'scripts/rebuild-all-reviews.js']) assert.ok(!c.includes(f), `closure leaves out ${f}`);
   assert.ok(c.every((f) => !f.startsWith('data/') && !f.includes('node_modules')), 'no data or dependencies');
   // Runtime-read config is not in the import graph, so code-dir JSON is always compared.

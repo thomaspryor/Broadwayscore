@@ -117,7 +117,12 @@ export const CODE_PATH_DATA_EXCLUDES = ['src/config/genre-tags.json', 'src/confi
  */
 export const CLOSURE_ALWAYS = ['package.json', 'package-lock.json', 'tsconfig.json', ':(glob)src/**/*.json', ':(glob)scripts/**/*.json'];
 /** The slice computation's entry points: the publisher and the build-time manifest/slice writer. */
-export const SLICE_ENTRY_POINTS = ['scripts/publish-show-refresh.ts', 'scripts/build-show-refresh-manifest.ts'];
+// The build's prebuild generators write slice inputs (SLICE_INPUT_FILES) the
+// publisher reads from its own checkout, so their code is part of the slice too.
+export const SLICE_ENTRY_POINTS = [
+  'scripts/publish-show-refresh.ts', 'scripts/build-show-refresh-manifest.ts', 'scripts/run-show-refresh-manifest.js',
+  'scripts/generate-blog-reviews-for-scoring.js', 'scripts/build-coverage-floor-snapshot.js',
+];
 
 /**
  * Repo files (no node_modules, no data/) statically imported by the slice entry
@@ -130,7 +135,7 @@ export function sliceCodeClosure(cwd: string = ROOT): string[] | null {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const cp = require('child_process');
-    const prog = `require('esbuild').build({entryPoints:${JSON.stringify(SLICE_ENTRY_POINTS)},bundle:true,platform:'node',write:false,metafile:true,logLevel:'silent',packages:'external',format:'esm',outdir:'/tmp/show-refresh-closure',plugins:[{name:'data-external',setup(b){b.onResolve({filter:/(^|\\/)data\\//},a=>({path:a.path,external:true}))}}]}).then(r=>process.stdout.write(JSON.stringify(Object.keys(r.metafile.inputs))),e=>{process.stderr.write(String(e&&e.message));process.exit(1)})`;
+    const prog = `require('esbuild').build({entryPoints:${JSON.stringify(SLICE_ENTRY_POINTS)},bundle:true,platform:'node',write:false,metafile:true,logLevel:'silent',absWorkingDir:process.cwd(),packages:'external',format:'esm',outdir:'/tmp/show-refresh-closure',plugins:[{name:'data-external',setup(b){const D=require('path').join(process.cwd(),'data')+require('path').sep;b.onResolve({filter:/(^|\\/)data\\//},a=>require('path').resolve(a.resolveDir,a.path).startsWith(D)?{path:a.path,external:true}:undefined)}}]}).then(r=>{if(r.warnings.length){process.stderr.write('esbuild warnings: '+r.warnings.length);process.exit(1)}process.stdout.write(JSON.stringify(Object.keys(r.metafile.inputs)))},e=>{process.stderr.write(String(e&&e.message));process.exit(1)})`;
     const r = cp.spawnSync(process.execPath, ['-e', prog], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000 });
     if (r.status !== 0) return null;
     const files = (JSON.parse(r.stdout) as string[]).filter((f) => !f.startsWith('data/') && !f.includes('node_modules/') && !f.includes(':') && !f.startsWith('/') && !f.startsWith('..'));
