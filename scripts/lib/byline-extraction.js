@@ -85,6 +85,11 @@ const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash mer
 // Without the ',' / '&' stops the capture backtracked to the first word only
 // ("Meg") because "<word> <Capital>" was the only shape the lookahead allowed.
 const INLINE_BY_RE = />[Bb]y:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/,&]|\s+(?:[A-Z]|—))/;
+// A paragraph that is only the printed credit, "Review by Stuart Miller . . ." (Theater Pizzazz,
+// Seven Guitars 2026-11-23: meta and RSS name the site account, so the record said Unknown). The
+// whole element must be the credit (optional trailing ". . ." / "…"), so body prose that mentions
+// "a review by X" mid-sentence never matches.
+const REVIEW_BY_PARA_RE = />\s*Review by\s+([A-Z][A-Za-z'’-]+(?:\s+[A-Z][A-Za-z'’-]*\.?){1,2}?)\s*(?:(?:\.\s*){2,}|…|&#8230;|&hellip;)?\s*</;
 const SIGN_OFF_RE = /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/;
 const PROSE_NOT_A_NAME_RE = /\b(?:date|dates|numbers?|name|title|category|categories|price|popularity|rating|ratings|recommended|highly|stars?|sunday|monday|tuesday|wednesday|thursday|friday|saturday|january|february|march|april|june|july|august|september|october|november|december)\b/i;
 function looksLikeProseName(name) {
@@ -189,6 +194,7 @@ function extractByline(html, { outletId, text } = {}) {
     // theaterlife) are accepted; the old lookahead needed whitespace first,
     // so the capture backtracked to the first name only (BRO-3414).
     INLINE_BY_RE,
+    REVIEW_BY_PARA_RE,
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
@@ -235,7 +241,7 @@ function extractByline(html, { outletId, text } = {}) {
         // widget ("By Relevance, Date", "By Newest, Oldest"), not a co-author list.
         if (!/\s/.test(name) && /^\s*[,&]/.test(html.slice(m.index + m[0].length))) continue;
       }
-      if ((re === INLINE_BY_RE || re === SIGN_OFF_RE) && !looksLikeProseName(name)) continue;
+      if ((re === INLINE_BY_RE || re === SIGN_OFF_RE || re === REVIEW_BY_PARA_RE) && !looksLikeProseName(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {
         name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');

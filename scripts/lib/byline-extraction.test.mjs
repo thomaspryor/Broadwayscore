@@ -219,3 +219,13 @@ test('one-word capture before a comma is a sort widget, not a byline', () => {
   assert.equal(extractByline('<p>By Newest, Oldest</p>'), null);
   assert.equal(extractByline('<p>By Meg Masseron, Logan Culwell-Block</p>'), 'Meg Masseron');
 });
+
+test('a paragraph that is only "Review by Name . . ." is the byline (Theater Pizzazz, Seven Guitars 2026-11-23)', () => {
+  const page = (p) => `<meta property="og:site_name" content="Theater Pizzazz"><div class="post-content entry-content"><p class="wp-block-paragraph">${p}</p><p>For the third time in thirty years, the director returned.</p></div>`;
+  assert.equal(extractByline(page('Review by Stuart Miller . . .')), 'Stuart Miller');
+  assert.equal(extractByline(page('Review by Stuart Miller&#8230;')), 'Stuart Miller');
+  assert.equal(extractByline(page('Review by Stuart Miller')), 'Stuart Miller');
+  // Mid-sentence mentions and non-names stay out.
+  assert.equal(extractByline(page('I read the review by Ben Brantley yesterday')), null);
+  assert.equal(extractByline(page('Review by The Numbers')), null);
+});
