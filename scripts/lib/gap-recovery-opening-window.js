@@ -44,8 +44,9 @@ function selectOpeningWindowShows(shows, { nowMs = Date.now(), days = WINDOW_DAY
 }
 
 /** argv for one driver run: this market's subscriber outlet only, live, this show. */
-function driverArgsFor(showId, category = 'broadway') {
-  const outlet = MARKET_OUTLETS[category] || 'nytimes';
+function driverArgsFor(showId, category) {
+  const outlet = MARKET_OUTLETS[category];
+  if (!outlet) throw new Error(`driverArgsFor(${showId}): no subscriber outlet for category ${category}`); // no silent NYT default (BRO-8215)
   return [`--show=${showId}`, `--outlet=${outlet}`, '--recent-only'];
 }
 

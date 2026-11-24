@@ -37,7 +37,8 @@ test('a show whose window passed drops out (4 days)', () => {
 });
 
 test('driver runs nytimes only for the show', () => {
-  assert.deepEqual(driverArgsFor('x'), ['--show=x', '--outlet=nytimes', '--recent-only']);
+  assert.deepEqual(driverArgsFor('x', 'broadway'), ['--show=x', '--outlet=nytimes', '--recent-only']);
+  assert.throws(() => driverArgsFor('x'), /no subscriber outlet/);
 });
 
 test('a launchd job runs the opening-window script on a sub-hour interval', () => {
