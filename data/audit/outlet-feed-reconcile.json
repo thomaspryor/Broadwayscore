@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T12:53:44.087Z",
+  "generatedAt": "2026-11-24T13:32:05.147Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,6 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -166,8 +162,8 @@
       "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 906,
-  "matchedGaps": 2,
+  "itemsScanned": 924,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -177,15 +173,6 @@
       "outletId": "chicagotribune",
       "url": "https://www.chicagotribune.com/2026/11/24/review-all-world-northlight-theatre/",
       "headline": "Review: ‘All the World’ at Northlight Theatre is a sweet tribute to those on stage",
-      "publishDate": "2026-11-24"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/the-afronauts-at-the-royal-court-review_1738037/",
-      "headline": "The Afronauts at the Royal Court – review",
       "publishDate": "2026-11-24"
     },
     {
