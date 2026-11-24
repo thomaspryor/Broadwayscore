@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T03:36:35.480Z",
+  "generatedAt": "2026-11-24T12:28:50.155Z",
   "complete": true,
   "windowDays": 30,
   "quietDays": 21,
@@ -9,22 +9,22 @@
   "missesFresh": true,
   "share": {
     "thisWeek": {
-      "total": 416,
+      "total": 408,
       "root-cause": 60,
-      "system": 211,
-      "instance": 145,
-      "share": 65.1
+      "system": 206,
+      "instance": 142,
+      "share": 65.2
     },
     "lastWeek": {
-      "total": 299,
-      "root-cause": 39,
-      "system": 136,
-      "instance": 124,
-      "share": 58.5
+      "total": 294,
+      "root-cause": 37,
+      "system": 129,
+      "instance": 128,
+      "share": 56.5
     }
   },
   "recurringCount": 61,
-  "withRootCause": 55,
+  "withRootCause": 58,
   "preventions": {
     "claimed": 8,
     "failed": 5,
@@ -689,10 +689,10 @@
       "firstSeen": "2026-10-31T02:00:00.000Z",
       "lastSeen": "2026-11-18T03:00:00.000Z",
       "rootCause": "BRO-8190",
-      "rootCauseState": "started",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
       "rootCauseCreatedAt": "2026-11-23T20:35:29.051Z",
-      "rootCauseStartedAt": "2026-11-23T20:46:26.989Z",
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "theatermania (all markets)",
@@ -980,12 +980,12 @@
     {
       "key": "unit tests run",
       "slug": "unit-tests-run",
-      "inWindow": 30,
-      "total": 43,
+      "inWindow": 29,
+      "total": 41,
       "reasons": [
-        "30 cards in 30 days"
+        "29 cards in 30 days"
       ],
-      "firstSeen": "2026-10-18T05:39:06.053Z",
+      "firstSeen": "2026-10-18T19:37:16.015Z",
       "lastSeen": "2026-11-07T10:30:12.358Z",
       "rootCause": "BRO-3425",
       "rootCauseState": "completed",
@@ -997,8 +997,6 @@
       },
       "example": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once\"",
       "instances": [
-        "BRO-5606",
-        "BRO-5609",
         "BRO-5642",
         "BRO-5792",
         "BRO-6032",
@@ -1368,9 +1366,9 @@
       "firstSeen": "2026-11-15T09:26:34.543Z",
       "lastSeen": "2026-11-24T00:26:46.614Z",
       "rootCause": "BRO-8227",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T03:37:19.060Z",
+      "rootCauseCreatedAt": "2026-11-24T03:37:18.292Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -1594,9 +1592,9 @@
       "firstSeen": "2026-11-14T12:44:58.373Z",
       "lastSeen": "2026-11-24T01:38:24.477Z",
       "rootCause": "BRO-8228",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T03:37:19.624Z",
+      "rootCauseCreatedAt": "2026-11-24T03:37:19.294Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -1654,9 +1652,9 @@
       "firstSeen": "2026-11-14T12:48:52.397Z",
       "lastSeen": "2026-11-23T12:44:28.332Z",
       "rootCause": "BRO-8229",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-24T03:37:20.474Z",
+      "rootCauseCreatedAt": "2026-11-24T03:37:19.846Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -1679,10 +1677,10 @@
       ],
       "firstSeen": "2026-10-26T11:30:45.460Z",
       "lastSeen": "2026-11-23T12:39:03.501Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-8243",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T12:29:40.717Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -1705,10 +1703,10 @@
       ],
       "firstSeen": "2026-11-02T21:15:49.246Z",
       "lastSeen": "2026-11-22T18:55:21.244Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-8244",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T12:29:41.231Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -1731,10 +1729,10 @@
       ],
       "firstSeen": "2026-10-22T07:37:13.035Z",
       "lastSeen": "2026-11-22T12:46:24.665Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-8245",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-24T12:29:41.749Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -2294,19 +2292,24 @@
   ],
   "expected": [
     {
+      "key": "opening night audit",
+      "inWindow": 27,
+      "reason": "scheduled per-night opening-night audit/watch log card"
+    },
+    {
+      "key": "done claim longer hold main",
+      "inWindow": 3,
+      "reason": "nightly recheck-route batch (recheck-route.js): one card per night of distinct failed Done claims (BRO-7654)"
+    },
+    {
       "key": "needs manual check",
       "inWindow": 7,
       "reason": "one card per parked reader submission (file-review-submission-card.js, BRO-7606): count is queue size, not a recurring defect (BRO-8036)"
     },
     {
       "key": "touch data audit canary marker",
-      "inWindow": 26,
+      "inWindow": 25,
       "reason": "canary: filed on purpose to prove the alert chain works"
-    },
-    {
-      "key": "opening night audit",
-      "inWindow": 26,
-      "reason": "scheduled per-night opening-night audit/watch log card"
     },
     {
       "key": "tech scorecard weekly port",
@@ -2325,14 +2328,6 @@
     }
   ],
   "instances": {
-    "BRO-5606": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests run"
-    },
-    "BRO-5609": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests run"
-    },
     "BRO-5642": {
       "rootCause": "BRO-3425",
       "classKey": "unit tests run"
@@ -2978,43 +2973,43 @@
       "classKey": "audit review contamination"
     },
     "BRO-6310": {
-      "rootCause": null,
+      "rootCause": "BRO-8243",
       "classKey": "deploy vercel"
     },
     "BRO-6458": {
-      "rootCause": null,
+      "rootCause": "BRO-8243",
       "classKey": "deploy vercel"
     },
     "BRO-8136": {
-      "rootCause": null,
+      "rootCause": "BRO-8243",
       "classKey": "deploy vercel"
     },
     "BRO-6859": {
-      "rootCause": null,
+      "rootCause": "BRO-8244",
       "classKey": "replay push rescue"
     },
     "BRO-7493": {
-      "rootCause": null,
+      "rootCause": "BRO-8244",
       "classKey": "replay push rescue"
     },
     "BRO-8063": {
-      "rootCause": null,
+      "rootCause": "BRO-8244",
       "classKey": "replay push rescue"
     },
     "BRO-5927": {
-      "rootCause": null,
+      "rootCause": "BRO-8245",
       "classKey": "published scores outside critic rating"
     },
     "BRO-7577": {
-      "rootCause": null,
+      "rootCause": "BRO-8245",
       "classKey": "published scores outside critic rating"
     },
     "BRO-8039": {
-      "rootCause": null,
+      "rootCause": "BRO-8245",
       "classKey": "published scores outside critic rating"
     },
     "BRO-8048": {
-      "rootCause": null,
+      "rootCause": "BRO-8245",
       "classKey": "published scores outside critic rating"
     },
     "BRO-7726": {
@@ -3275,6 +3270,17 @@
     }
   },
   "lastSeenByKey": {
+    "opening night miss seven guitars": "2026-11-24T11:02:43.940Z",
+    "wonderful life live radio play": "2026-11-24T11:02:41.837Z",
+    "blocks one multi worker session": "2026-11-24T11:00:43.073Z",
+    "stop vercel creating cancelled git deployment every main": "2026-11-24T11:00:07.774Z",
+    "land push skip commit message starts yml wait": "2026-11-24T09:06:17.221Z",
+    "opening night jobs mark every deploy urgent bypassing": "2026-11-24T08:53:45.077Z",
+    "move job level vars disabled kill switches step": "2026-11-24T08:49:39.736Z",
+    "replay push rescue stale 98h deploy frequency 24h": "2026-11-24T08:47:05.075Z",
+    "cron redispatch coverage publish show refresh prove rebuild": "2026-11-24T06:37:34.276Z",
+    "vulture reviews review word refused like": "2026-11-24T05:36:17.052Z",
+    "extend dual market url year self heal wrongproduction": "2026-11-24T04:32:21.784Z",
     "feedback falls jodie": "2026-11-24T01:51:06.138Z",
     "run data validation": "2026-11-24T01:38:24.477Z",
     "wire into collector paths guard bww new york": "2026-11-24T01:01:38.941Z",
@@ -4876,10 +4882,6 @@
     "mexodus national tour": "2026-10-25T14:28:04.645Z",
     "withheld critic score printed raw mean box office": "2026-10-25T13:58:55.773Z",
     "show withheld critic score printed raw mean": "2026-10-25T13:04:02.496Z",
-    "other desert cities": "2026-10-25T11:31:57.189Z",
-    "backfill marker collides historical theme tag": "2026-10-25T11:28:41.832Z",
-    "add call site tests sanitizeplainlanguagetext redactemails": "2026-10-25T10:45:20.507Z",
-    "version site page image refs replaced art busts": "2026-10-25T09:18:08.579Z",
     "slam frank talkinbroadway": "2026-11-08T21:41:23.012Z",
     "susan elkin review held without text": "2026-11-08T21:41:23.012Z",
     "missed-at-first-pass:west-end:all-that-dazzles-uk": "2026-11-06T21:00:00.000Z",
@@ -5151,6 +5153,7 @@
     "commercial model drift",
     "cross outlet attribution drift",
     "deploy vercel",
+    "done claim longer hold main",
     "done claims longer hold main",
     "e2e tests run",
     "e2e tests run unit",
@@ -5234,7 +5237,7 @@
     "update lottery rush",
     "wrongproduction lifetime sweep"
   ],
-  "pendingRootCards": 6,
+  "pendingRootCards": 3,
   "sample": {
     "generatedAt": "2026-11-20T10:01:13.278Z",
     "graded": 8,
