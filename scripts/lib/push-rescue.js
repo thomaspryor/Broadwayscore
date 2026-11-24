@@ -537,7 +537,7 @@ function cliPrune(args) {
   // BRO-8244: a branch only a person can settle is a decision waiting, NOT a broken cron. It used to
   // set exitCode=1, so one waiting branch failed every hourly run, check-cron-health read "no success in
   // 13h" as a dead cron, and a "Cron stale: Replay Push Rescue" card was filed again (BRO-6859, BRO-7493,
-  // BRO-8063). The run stays green; the workflow's "waiting" step sends the digest alert (cooldown'd).
+  // BRO-8063). The run stays green; the workflow's "waiting" step files one parked Linear card.
   // Real replay failures (a branch that could not be replayed) still fail the run in the workflow.
   const human = waitingForPerson(manifest);
   if (human.length) {

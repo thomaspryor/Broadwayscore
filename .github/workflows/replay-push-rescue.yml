@@ -9,7 +9,7 @@ name: Replay Push Rescue
 # review stayed off the site (opening-night-poller run 41013824281).
 # The first step is one ls-remote; without a rescue branch the run stops there.
 # A branch kept for a conflict with main no longer fails the run (BRO-8244; one parked Linear card asks the owner); once the owner picks
-# main's copy, dispatch with main_wins=<branch>@<tip sha> (the failing run prints
+# main's copy, dispatch with main_wins=<branch>@<tip sha> (the run log prints
 # it). Prune then archives the tip as tag push-rescue-archive/... and deletes it.
 
 on:
@@ -103,12 +103,20 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           WAITING: ${{ steps.prune.outputs.waiting }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PARK_REASON: "owner call: pick main's copy or the rescued copy for conflicting review files"
+          CARD_NOTES: |
+            Push-rescue branches in broadway-review-texts conflict with main or were dropped by the ownership gate, and replay cannot pick a side. The latest run log lists each branch with a COMPARE line (metadata only) and prints the main_wins=<branch>@<tip> value to dispatch replay-push-rescue.yml with once main's copy is chosen. The replay cron itself is healthy (BRO-8244).
+
+            DECISION NEEDED: keep main's copy or the rescued copy of the conflicting review files?
+            My recommendation: main's copy when the COMPARE line shows main fuller or equal; otherwise restore the rescued copy by hand.
         run: |
+          # One card-reuse comment per day, not per hourly run (linear-brain adds a comment on every reuse).
+          case "$(date -u +%H)" in 12|13) ;; *) echo "waiting branches: $WAITING (card refreshed daily at 12-13 UTC)"; exit 0;; esac
           node scripts/linear-brain.js create "Rescued reviews waiting for an owner pick (push-rescue branches)" \
-            --park "owner call: pick main's copy or the rescued copy for conflicting review files" \
-            --no-verify "owner decision, not a machine check" --source replay-push-rescue \
-            --notes "$WAITING push-rescue branch(es) in broadway-review-texts conflict with main or were dropped by the ownership gate, and replay cannot pick a side. The run log ($RUN_URL) lists each branch with a COMPARE line (metadata only) and prints the main_wins=<branch>@<tip> value to dispatch replay-push-rescue.yml with once main's copy is chosen. The replay cron itself is healthy (BRO-8244)." \
-            || echo "::warning::could not file the waiting-branches card (an open one may already exist)"
+            --park "$PARK_REASON" --no-verify "owner decision, not a machine check" --source replay-push-rescue \
+            --notes "$WAITING branch(es) waiting. Run: $RUN_URL
+          $CARD_NOTES" \
+            || echo "::warning::could not file the waiting-branches card (see the error above)"
 
       - name: Fail if a rescue branch could not be replayed
         if: steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0'

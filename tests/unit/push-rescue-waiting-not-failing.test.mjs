@@ -30,3 +30,12 @@ test('workflow reports waiting branches through a parked Linear card, not notify
   assert.match(body, /LINEAR_API_KEY/);
   assert.doesNotMatch(body, /uses:.*notify-failure/, 'notify-failure only delivers for severity=critical; a warning there is silent');
 });
+
+test('the waiting-card step passes linear-brain\'s owner-limbo guard (BRO-6852), or it is silently refused', () => {
+  const { createLimboReason } = createRequire(import.meta.url)('../../scripts/lib/owner-judgment-limbo-guard.js');
+  const step = wf.slice(wf.indexOf('Report branches waiting for a person')).split('- name:')[0];
+  const park = /PARK_REASON: "([^"]+)"/.exec(step)[1];
+  const notes = /CARD_NOTES: \|\n((?:\s{12}.*\n?|\n)+)/.exec(step)[1].replace(/^ {12}/gm, '');
+  assert.match(notes, /^DECISION NEEDED:/m);
+  assert.equal(createLimboReason({ body: notes, parkReason: park }), null);
+});
