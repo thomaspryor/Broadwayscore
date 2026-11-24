@@ -179,4 +179,7 @@ test('hero date year before "Critic reviews" is not a review count (BRO-8227)', 
   assert.deepEqual(readPage(hero('<p>12 Critic Reviews</p>')), { score: null, reviewCount: 12 });
   assert.deepEqual(readPage(hero('<p>Updated today, 12 Critic Reviews</p>')), { score: null, reviewCount: 12 });
   assert.deepEqual(readPage(hero('<p>1,234 Critic Reviews</p>')), { score: null, reviewCount: 1234 });
+  // A venue name ending in a digit sits right before the empty-state label.
+  assert.deepEqual(readPage(hero('<p>Stage 42</p><p>Critic reviews after opening night</p>')), { score: null, reviewCount: 0 });
 });
+
