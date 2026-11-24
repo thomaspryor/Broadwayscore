@@ -1,32 +1,7 @@
 {
-  "generatedAt": "2026-11-23T21:15:08.724Z",
-  "bannerText": "204/254 Done(14d) verified on main · 9 FAILED · 0 vacuous · 26 stuck-but-done · 2 mis-armed, needs re-arming (BRO-8112, BRO-7841) — PARTIAL RUN: 33 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-24T00:55:20.648Z",
+  "bannerText": "180/263 Done(14d) verified on main · 6 FAILED · 0 vacuous · 29 stuck-but-done · 3 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8112) — PARTIAL RUN: 67 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
-    {
-      "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
-      "detail": "gap audit generated 2026-11-23T20:38:54.108Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
-    },
-    {
-      "title": "FAILED BRO-8133 — Recheck 2026-11-23: 1 done claim no longer hold on main",
-      "detail": "gap audit generated 2026-11-23T20:38:54.108Z PASS wanted-2022: 30 live, 0 cited not live; info: 6 census candidate(s), 1 exclusion(s) confirmed correct; audited 2026-11-23T04:27:2…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8133/recheck-2026-11-23-1-done-claim-no-longer-hold-on-main"
-    },
-    {
-      "title": "FAILED BRO-7818 — Quarantine 4 poisoned aggregator-archive pages that fail audit --strict (+ 93 cross-market pages awaiting quarantine)",
-      "detail": "❌ scanned 0 archive files — data/aggregator-archive is missing or empty (private data not set up). The gate cannot pass vacuously; run scripts/setup-local-data.sh first.",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7818/quarantine-4-poisoned-aggregator-archive-pages-that-fail-audit-strict"
-    },
-    {
-      "title": "FAILED BRO-7762 — BSC Daily: Data: BWW roundup discovery misses near opening",
-      "detail": "[check-health-row-absent] FAIL: \"Data: BWW roundup discovery misses near opening\" still listed in the 2026-11-23T20:39:17.401Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7762/bsc-daily-data-bww-roundup-discovery-misses-near-opening"
-    },
-    {
-      "title": "FAILED BRO-7730 — Land-follow check reads land pushes inside heredocs and test fixtures as real pushes",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7730/land-follow-check-reads-land-pushes-inside-heredocs-and-test-fixtures"
-    },
     {
       "title": "FAILED BRO-7677 — City hub audit chicago-il 2026-W47: 2 new finding(s)",
       "detail": "FAIL: \"chicago-il-hub-audit\" is not a class the detector has ever reported",
@@ -34,13 +9,38 @@
     },
     {
       "title": "FAILED BRO-7666 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-11-23T20:39:17.401Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-11-24T00:27:23.035Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7666/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
     },
     {
       "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
       "detail": "not ok: BRO-7531: ScrapingBee daily credits fell to a median of 10,…; BRO-7531: Scrapingdog stayed inside its plan (median day 10… | first failure: ScrapingBee median day is 10341…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
+    },
+    {
+      "title": "FAILED BRO-7218 — BSC Daily: Feedback: needs-manual-review backlog",
+      "detail": "[check-health-row-absent] FAIL: \"Feedback: needs-manual-review backlog\" still listed in the 2026-11-24T00:27:23.035Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7218/bsc-daily-feedback-needs-manual-review-backlog"
+    },
+    {
+      "title": "FAILED BRO-6703 — 2 show(s) still have no image after repeated self-heal attempts",
+      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-23T19:40:28.572Z (5.3h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6703/2-shows-still-have-no-image-after-repeated-self-heal-attempts"
+    },
+    {
+      "title": "FAILED BRO-4103 — BSC Daily: Feedback: needs-manual-review backlog",
+      "detail": "[check-health-row-absent] FAIL: \"Feedback: needs-manual-review backlog\" still listed in the 2026-11-24T00:27:23.035Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4103/bsc-daily-feedback-needs-manual-review-backlog"
+    },
+    {
+      "title": "STUCK BRO-7568 — Recheck 2026-11-15: 6 done claims no longer hold on main",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7568/recheck-2026-11-15-6-done-claims-no-longer-hold-on-main"
+    },
+    {
+      "title": "STUCK BRO-7136 — Land Dependabot PR #1182: chore(deps): Bump the all-updates group across 1 directory with 12 updates",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7136/land-dependabot-pr-1182-choredeps-bump-the-all-updates-group-across-1"
     }
   ],
   "moreCount": 27
