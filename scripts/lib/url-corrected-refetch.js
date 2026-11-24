@@ -73,7 +73,12 @@ function mayShortCircuitCollected(data, { isTruncated, hasGarbageText, datelessD
   if (isUrlCorrectedRefetch(data)) {
     // Protected files never clear needsRefetch (the write guard returns early),
     // so bypassing for them would cost a paid fetch on every run.
-    return data._locked === true || data.manualContentTier === 'complete'
+    // BRO-8209: only while they still HOLD text. The url change wipes fullText, and a
+    // manual-entry file (manualContentTier 'complete') keeps its tier, so it read as
+    // complete with nothing to protect and was never refetched (Michael Dale's Falls
+    // for Jodie review sat unscored until a forced refetch).
+    const hasText = typeof data.fullText === 'string' && data.fullText.length > 0;
+    return (data._locked === true || data.manualContentTier === 'complete') && hasText
       ? (completeSkip || scoredSkip)
       : false;
   }
