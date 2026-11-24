@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T01:32:57.745Z",
+  "timestamp": "2026-11-24T01:59:28.927Z",
   "stats": {
-    "totalReviews": 84501,
-    "alreadyFlagged": 22542,
-    "dateGuardCatches": 244,
+    "totalReviews": 84509,
+    "alreadyFlagged": 22546,
+    "dateGuardCatches": 242,
     "directorMismatch": 3888,
     "tvFilmSignals": 2428,
     "londonSignals": 3992,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
-    "noPublishDate": 8273
+    "noPublishDate": 8274
   },
   "findings": [
     {
@@ -2145,20 +2145,6 @@
       "score": 97,
       "publishDate": "2024-11-21",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/a-christmas-carol-review-john-simm-old-vic-w2wtzgpqq",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "london-theatre--anya-ryan.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-old-vic-2025",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36902,6 +36888,20 @@
       "score": 87,
       "publishDate": "2026-01-08",
       "url": "https://loureviews.blog/2026/01/08/musical-review-into-the-woods-at-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-off-west-end-2025",
+      "file": "mail-on-sunday--mark-cook.json",
+      "score": 76,
+      "publishDate": "2025-12-21",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -92321,34 +92321,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "timeout-london--chris-waywell.json",
-      "score": null,
-      "publishDate": "2026-10-06",
-      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-review-old-vic",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 37d before show (2026-10-06 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "timeout-london--ella-doyle.json",
-      "score": null,
-      "publishDate": "2026-10-06",
-      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-review-old-vic-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 37d before show (2026-10-06 vs 2026-11-12)"
         }
       ]
     },
