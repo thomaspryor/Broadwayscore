@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-11-24T07:59:24.635Z",
-  "processed": 780,
-  "failed": 380,
-  "successRate": "67.2%",
+  "updatedAt": "2026-11-24T08:21:39.850Z",
+  "processed": 788,
+  "failed": 370,
+  "successRate": "68.0%",
   "tierBreakdown": {
-    "playwright": 359,
+    "playwright": 361,
     "amp": 1,
-    "browserbase": 23,
-    "directCookies": 1,
-    "scrapingdog": 39,
+    "browserbase": 25,
+    "directCookies": 2,
+    "scrapingdog": 40,
     "scrapingbee": 72,
     "brightdata": 12,
     "archiveToday": 0,
-    "archive": 283
+    "archive": 286
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-11-24T03:46:08.059Z",
-      "event": "bb-session",
-      "session": "5b7fb70b",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
-    },
-    {
-      "t": "2026-11-24T03:46:08.699Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-11-24T04:55:17.068Z",
-      "event": "bb-session",
-      "session": "5f74805c",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
-    },
-    {
-      "t": "2026-11-24T04:55:17.973Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-11-24T04:57:31.349Z",
       "event": "bb-session",
@@ -47,7 +25,7 @@
     {
       "t": "2026-11-24T04:57:32.194Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "washingtonpost.com"
     },
     {
       "t": "2026-11-24T04:57:49.363Z",
@@ -58,7 +36,7 @@
     {
       "t": "2026-11-24T04:57:50.220Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
     },
     {
       "t": "2026-11-24T05:27:33.915Z",
@@ -125,6 +103,28 @@
       "t": "2026-11-24T07:39:30.987Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:17:16.118Z",
+      "event": "bb-session",
+      "session": "bb59a7df",
+      "url": "https://www.nytimes.com/2023/06/06/theater/wet-brain-review.html"
+    },
+    {
+      "t": "2026-11-24T08:17:16.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:20:55.975Z",
+      "event": "bb-session",
+      "session": "a4240070",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23"
+    },
+    {
+      "t": "2026-11-24T08:20:56.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
