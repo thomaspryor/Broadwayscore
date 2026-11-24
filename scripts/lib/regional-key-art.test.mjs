@@ -57,6 +57,7 @@ test('applier refuses entries it cannot attribute and builds a compare-and-set i
   assert.equal(entryProblem(ok, show), null);
   assert.match(entryProblem(ok, undefined), /not in shows.json/);
   assert.match(entryProblem(ok, { ...show, category: 'broadway' }), /not regional/);
+  assert.equal(entryProblem(ok, { ...show, category: 'off-west-end' }), null, 'BRO-8230: off-west-end accepted');
   assert.match(entryProblem({ ...ok, image: 'http://theatre.example/x.jpg' }, show), /https/);
   assert.match(entryProblem({ ...ok, page: '' }, show), /https/);
   assert.match(entryProblem(ok, { ...show, rejectedImageUrls: [ok.image] }), /rejectedImageUrls/);

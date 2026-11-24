@@ -73,11 +73,15 @@ async function writeRegionalFormats(sharpLib, buffer, dir, fsImpl = require('fs'
   fsImpl.writeFileSync(pathImpl.join(dir, 'hero.webp'), await fitCard(sharpLib, buffer, 1600, 1000, 82, { trim: false }));
 }
 
+const KEY_ART_CATEGORIES = ['regional', 'off-west-end'];
+
 /** Why an entry cannot be applied, or null. Pure. */
 function entryProblem(entry, show) {
   if (!entry || typeof entry !== 'object') return 'entry is not an object';
   if (!show) return `show ${entry.showId} not in shows.json`;
-  if (show.category !== 'regional') return `${show.id} is ${show.category || 'uncategorised'}, not regional`;
+  // BRO-8230: off-west-end rows (Rose Kingston, fringe) have the same gap as regional ones:
+  // no TodayTix/IBDB page, the producer's page is the only source. Same files, same layout.
+  if (!KEY_ART_CATEGORIES.includes(show.category)) return `${show.id} is ${show.category || 'uncategorised'}, not regional`;
   for (const k of ['page', 'image']) {
     if (typeof entry[k] !== 'string' || !/^https:\/\/\S+$/i.test(entry[k])) return `${k} must be an https URL`;
   }
