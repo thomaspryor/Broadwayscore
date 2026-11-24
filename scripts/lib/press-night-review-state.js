@@ -28,6 +28,8 @@ const WRONG_PRODUCTION_REASONS = new Set(['wrongProduction', 'wrongShow']);
 // reviews 2026-11-17: the page serves a 142-word teaser). The rebuild keeps it off the site whenever the file
 // was first seen, so a listing of that same URL can never go live and is not a night miss.
 const REJECTED_LISTING_REASONS = new Set(['rejectionReason']);
+// Only the ensemble's verdict on the page's CONTENT counts; garbage_text etc. say our fetch failed, not the page.
+const REJECTED_LISTING_KINDS = new Set(['not_a_review']);
 // Both sides go through normUrl first (BRO-6702): fileState urls are stored normalized, census urls are raw.
 const urlKey = (u) => String(normUrl(u) || u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
 
@@ -78,6 +80,7 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
       includable: reason === null,
       reason: reason || null,
       syndicatedUnder,
+      ...(reason === 'rejectionReason' && d.rejectionReason ? { rejectionKind: String(d.rejectionReason) } : {}),
     });
   }
   return { available: true, files };
@@ -99,7 +102,7 @@ function censusExclusions(census, files, opts = {}) {
   // aggregator row for a 2013 staging) is not a review of the night, whenever the file was first seen.
   const wrongListing = new Map();
   for (const f of files) {
-    if (f.url && !f.includable && (WRONG_PRODUCTION_REASONS.has(f.reason) || REJECTED_LISTING_REASONS.has(f.reason))) wrongListing.set(urlKey(f.url), f);
+    if (f.url && !f.includable && (WRONG_PRODUCTION_REASONS.has(f.reason) || (REJECTED_LISTING_REASONS.has(f.reason) && REJECTED_LISTING_KINDS.has(f.rejectionKind)))) wrongListing.set(urlKey(f.url), f);
   }
   if (windowStartMs != null) {
     files = files.filter((f) => {

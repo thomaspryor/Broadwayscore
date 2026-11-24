@@ -156,12 +156,14 @@ test('date-guard note names the date it used, never "undefined"', () => {
 test('BRO-8240: a listing whose exact URL the rebuild rejected (paywalled teaser) is excluded, narrowly', () => {
   const url = 'https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway/';
   const one = { hadAnySource: true, count: 1, entries: [{ outlet: 'Pages on Stages', critic: 'Unknown', stars: null, url, outletId: 'pages-on-stages' }] };
-  const rej = { outletId: 'pages-on-stages', url: 'pagesonstages.com/2026/11/18/its-a-wonderful-life-bway', firstSeenAt: '2026-11-19T06:27:12.676Z', publishDate: '2026-11-18', includable: false, reason: 'rejectionReason' };
+  const rej = { outletId: 'pages-on-stages', url: 'pagesonstages.com/2026/11/18/its-a-wonderful-life-bway', firstSeenAt: '2026-11-19T06:27:12.676Z', publishDate: '2026-11-18', includable: false, reason: 'rejectionReason', rejectionKind: 'not_a_review' };
   const o = { windowStartMs: Date.parse('2026-11-24T03:00:00.000Z') - pn.DEFAULT_GATES.nightStartH * 3600000, night: '2026-11-23' };
   const [x] = state.censusExclusions(one, [rej], o);
   assert.equal(x.outletId, 'pages-on-stages');
   assert.match(x.reason, /rejected as not a scoreable review/);
   assert.equal(x.priorRunCandidate, undefined);
   assert.deepEqual(state.censusExclusions(one, [{ ...rej, url: 'pagesonstages.com/2026/11/20/other-post' }], o), []); // different page
+  assert.deepEqual(state.censusExclusions(one, [{ ...rej, rejectionKind: 'garbage_text' }], o), []); // fetch failure, not a verdict on the page
+  assert.deepEqual(state.censusExclusions(one, [{ ...rej, rejectionKind: undefined }], o), []);
   assert.deepEqual(state.censusExclusions(one, [rej, { ...rej, url: 'x.com/night', includable: true, reason: null, firstSeenAt: '2026-11-24T04:00:00.000Z' }], o), []); // outlet has an includable review
 });
