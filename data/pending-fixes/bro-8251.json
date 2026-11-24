@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8251",
   "planId": "771069f5-1a0b-4c83-af44-3d5cbe0fc19e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T14:55:55.453Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "Clear the pin so a press-night source can still refine this date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T15:16:26.035Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
