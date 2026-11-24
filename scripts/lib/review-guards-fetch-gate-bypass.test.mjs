@@ -78,11 +78,11 @@ test('fresh-session retry is skipped on HTTP 401/403/404/410, kept for 200-empty
   assert.equal(shouldRetryBbInsufficientText(new Error('cap reached')), false);
 });
 
-test('browserbase ledger rows carry a query-stripped url, other providers do not', async () => {
+test('browserbase ledger rows carry a query-stripped url, other providers do not', async (t) => {
   const fs = await import('node:fs');
-  const os = await import('node:os');
   const path = await import('node:path');
-  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bbledger-')), 'ledger.jsonl');
+  const { makeTmpDir } = require('./tmpdir-for-tests.js');
+  const file = path.join(makeTmpDir(t, 'bbledger-'), 'ledger.jsonl');
   const prev = process.env.SCRAPER_SPEND_LEDGER_PATH;
   process.env.SCRAPER_SPEND_LEDGER_PATH = file;
   const { recordBbCall, recordProviderCall } = require('./provider-telemetry.js');
