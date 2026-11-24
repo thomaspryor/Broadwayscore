@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-24T11:32:09.004Z",
+  "runDate": "2026-11-24T12:05:52.583Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 100,
-    "priority": "all",
-    "showFilter": "a-clockwork-orange-a-play-with-music-regional-2026",
+    "batchSize": 5,
+    "maxReviews": 5,
+    "priority": "tier1",
+    "showFilter": "seven-guitars-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -19,10 +19,10 @@
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -32,23 +32,23 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 0,
-    "scrapingBeePageCredits": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -57,7 +57,7 @@
     "processed": 1,
     "failed": 0,
     "shows": [
-      "a-clockwork-orange-a-play-with-music-regional-2026"
+      "seven-guitars-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,24 +66,25 @@
     }
   },
   "processed": [
-    "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json"
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json"
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "failed": []
   },
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
