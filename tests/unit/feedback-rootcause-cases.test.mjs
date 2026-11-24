@@ -57,14 +57,15 @@ test('place word pins one production; negated, origin and longer-name mentions d
   assert.equal(pickCandidateByPlace([{ ...CHICAGO, title: 'Chicago' }, TORONTO], 'Chicago'), null, 'city that is the title');
 });
 
-test('bare ask rule: "add" alone closes, change wording and other productions stay parked', () => {
-  assert.equal(isBareAskForExisting('Please add X Show', undefined, BWAY), true);
-  assert.equal(isBareAskForExisting('Is X Show on here?', undefined, BWAY), true);
-  assert.equal(isBareAskForExisting('Please add the cast for X Show', undefined, BWAY), false);
-  assert.equal(isBareAskForExisting('Please add the new production of X Show', undefined, BWAY), false);
-  assert.equal(isBareAskForExisting('Please add the Toronto run of X Show', 'place', TORONTO), true);
-  assert.equal(isBareAskForExisting('Please add X Show', 'place', CHICAGO), false, 'closed production never closes');
-  assert.equal(isBareAskForExisting('Please add X Show', undefined, CHECK_CLOSED()), false);
+test('bare ask rule: "add <title>" closes, change wording and other productions stay parked', () => {
+  const o = { titles: ['X Show'] };
+  assert.equal(isBareAskForExisting('Please add X Show', undefined, BWAY, o), true);
+  assert.equal(isBareAskForExisting('Is X Show on here?', undefined, BWAY, o), true);
+  assert.equal(isBareAskForExisting('Please add the cast for X Show', undefined, BWAY, o), false);
+  assert.equal(isBareAskForExisting('Please add the new production of X Show', undefined, BWAY, o), false);
+  assert.equal(isBareAskForExisting('Please add the Toronto run of X Show', 'place', TORONTO, o), true);
+  assert.equal(isBareAskForExisting('Please add X Show', 'place', CHICAGO, o), false, 'closed production never closes');
+  assert.equal(isBareAskForExisting('Please add X Show', undefined, CHECK_CLOSED(), o), false);
 });
 function CHECK_CLOSED() { return { ...BWAY, status: 'closed' }; }
 
@@ -84,4 +85,27 @@ test('planner: router-closed ask returns its catalog row (no root-cause button);
   assert.match(hit[0].url, /\/show\/13-going-on-30-toronto-regional-2026$/);
   assert.deepEqual(routerAlreadyInCatalog('Please add 13 Going on 30', '13 Going on 30', c.shows), []);
   assert.deepEqual(routerAlreadyInCatalog(null, null, null), []);
+});
+
+// Ship-check findings (Claude reviewer + Codex): a city pin must not close an
+// ask for a different production, and "add <something else>" is a change.
+test('pinned ask naming another market or another known city stays parked', () => {
+  const c = CASES[1190];
+  const shows = [...c.shows, { id: 'zed-boston', title: 'Zed', city: 'boston-ma', status: 'open', category: 'regional' }, { id: 'zed-london', title: 'Zed2', city: 'london-uk', status: 'open', category: 'regional' }];
+  const closes = (show, message) => isAlreadyInCatalog(planContentRequestActions({ message, show, shows }));
+  assert.equal(closes(c.show, c.message), true, 'origin mention of London is fine');
+  assert.equal(closes('13 Going on 30 - Toronto', 'Please add the new national tour of 13 Going on 30 in Boston'), false);
+  assert.equal(closes('13 Going on 30', 'I live in Toronto. Please add the Boston production of 13 Going on 30'), false);
+  assert.equal(closes('13 Going on 30', 'Please add the London production; the Toronto one is already listed.'), false);
+  assert.equal(closes('13 Going on 30', 'I dont mean the Toronto run, please add the West End transfer'), false);
+  assert.equal(closes('13 Going on 30', '13 Going on 30 is coming to Toronto, please add it'), true);
+});
+
+test('"add" a detail to a show we carry is a change request; "add it" / "add <title>" is the bare ask', () => {
+  const shows = [{ id: 'hamilton-2015', title: 'Hamilton', status: 'open', category: 'broadway', market: 'broadway' }];
+  const closes = (message) => isAlreadyInCatalog(planContentRequestActions({ message, show: 'Hamilton', shows }));
+  for (const m of ['Please add the synopsis for Hamilton', 'Can you add the running time', 'Please add Tony awards info', 'add a link to the official site']) {
+    assert.equal(closes(m), false, m);
+  }
+  for (const m of ['Please add Hamilton', 'Is Hamilton on here?', 'can you add it']) assert.equal(closes(m), true, m);
 });

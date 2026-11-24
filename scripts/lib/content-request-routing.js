@@ -267,21 +267,42 @@ function inferMarketFromMessage(title, message) {
 }
 
 // BRO-7919: wording that asks for a change to a show we already carry.
-// "add" is NOT here: "please add X" for an X we already carry is the bare ask
-// (#1190); "add the cast / a photo / the reviews" is caught by those nouns.
-const CHANGE_REQUEST_RE = /\b(missing|wrong|incorrect|outdated|out of date|updat\w*|fix\w*|error|mistake|closing|closed|cast|leads?|scores?|ratings?|reviews?|images?|photos?|pictures?|posters?|dates?|prices?|tickets?|remove|delete|duplicate|merge)\b/i;
-// Wording that may point at a DIFFERENT production of a title we carry. It only
-// blocks the close when no place word pinned the production (#1190: "Toronto
-// run coming up" names exactly the run we already list).
+// "add" counts ("add the synopsis / running time / a link"), except the bare
+// "add it" / "add <the show>" ask itself, which stripBareAdd removes first (#1190).
+const CHANGE_REQUEST_RE = /\b(missing|wrong|incorrect|outdated|out of date|updat\w*|fix\w*|error|mistake|closing|closed|cast|leads?|scores?|ratings?|reviews?|images?|photos?|pictures?|posters?|dates?|prices?|tickets?|remove|delete|duplicate|merge|add\w*)\b/i;
+// Wording that may point at a DIFFERENT production of a title we carry. A place
+// pin relaxes it (#1190: "Toronto run coming up" names the run we list) only when
+// the message names no other market and no other known city.
 const OTHER_PRODUCTION_RE = /\b(runs?|production|tour|revival|revived|transfer\w*|new)\b/i;
 
+const escapeRe = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** The message with every "add it / add this show / add <title>" removed. */
+function stripBareAdd(message, titles = []) {
+  let m = String(message || '');
+  for (const t of titles.filter((x) => x && String(x).trim().length >= 2)) {
+    m = m.replace(new RegExp(escapeRe(String(t).trim()), 'gi'), ' THESHOW ');
+  }
+  return m.replace(/\badd(?:ed|ing)?\s+(?:it|this(?:\s+(?:one|show))?|that(?:\s+(?:one|show))?|them|(?:the\s+|this\s+|that\s+)?(?:new\s+)?show|THESHOW)\b/gi, ' ');
+}
 /** "toronto-on" -> "toronto", "new-york" -> "new york", "st-louis-mo" -> "st louis". */
 function cityName(citySlug) {
   const parts = String(citySlug || '').toLowerCase().split('-').filter(Boolean);
   if (parts.length > 1 && parts[parts.length - 1].length <= 3) parts.pop();
   return parts.join(' ');
 }
-const PLACE_AWAY_RE = /\b(not|no|isn t|isnt|wasn t|wasnt|from|played|playing|after|left|previously|transferred|transferring|came|moved|moving)\s+((?:the|a|an|in|at|its|short|run|production)\s+){0,3}$/;
+// Within three words before a city: the mention points AWAY from that production.
+const PLACE_AWAY_RE = /\b(not|no|isn t|isnt|wasn t|wasnt|don t|dont|mean|except|instead|other than|rather than|besides|unlike|before|from|played|playing|after|left|previously|transferred|transferring|came|moved|moving)\s+(?:\w+\s+){0,3}$/;
+const LONGER_PLACE_RE = /\b(new|north|south|east|west|upper|lower|port|fort|saint|st)\s$/;
+
+/** Each whole-word mention of `city` in normalised text `t`: { away: bool }[]. */
+function cityMentions(t, city) {
+  const out = [];
+  for (let idx = t.indexOf(` ${city} `); idx >= 0; idx = t.indexOf(` ${city} `, idx + 1)) {
+    if (LONGER_PLACE_RE.test(t.slice(Math.max(0, idx - 7), idx + 1))) continue;
+    out.push({ away: PLACE_AWAY_RE.test(t.slice(Math.max(0, idx - 40), idx + 1)) });
+  }
+  return out;
+}
 const normWords = (s) => ` ${String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
 
 /**
@@ -300,14 +321,12 @@ function pickCandidateByPlace(candidates, text) {
   for (const s of candidates) {
     const city = cityName(s && s.city);
     if (city.length < 4 || normWords(s.title).includes(` ${city} `)) continue;
-    const idx = t.indexOf(` ${city} `);
-    if (idx < 0) continue;
-    // A negated or origin mention ("not the Toronto one", "transferred from
-    // Chicago", "played Manchester") points AWAY from that production.
-    if (PLACE_AWAY_RE.test(t.slice(Math.max(0, idx - 30), idx + 1))) return null;
-    // Part of a longer place name: "york" inside "new york", "london" inside "new london".
-    if (/\b(new|north|south|east|west|upper|lower|port|fort|saint|st)\s$/.test(t.slice(Math.max(0, idx - 7), idx + 1))) continue;
-    hits.push(s);
+    // "york" inside "new york" is skipped by cityMentions. A negated or origin
+    // mention ("not the Toronto one", "transferred from Chicago", "played
+    // Manchester") anywhere points away from that production: no pin at all.
+    const ms = cityMentions(t, city);
+    if (ms.some((m) => m.away)) return null;
+    if (ms.length) hits.push(s);
   }
   if (hits.length !== 1) return null;
   if (candidates.some((s) => s !== hits[0] && cityName(s.city) === cityName(hits[0].city))) return null;
@@ -732,7 +751,7 @@ function planContentRequestActions({
           // Only for a bare "is X on here / please add X" ask: any wording that
           // asks for a change to the existing entry, or names another market,
           // is real work and stays parked for a human.
-          alreadyInCatalog: isBareAskForExisting(message, pinnedBy, existing),
+          alreadyInCatalog: isBareAskForExisting(message, pinnedBy, existing, { titles: [requestedTitle], shows: allShows }),
         });
       }
     }
@@ -755,18 +774,30 @@ function planContentRequestActions({
  * is real work and stays parked for a human. A closed production never counts:
  * "please add X" when we only list a past run usually means a new one.
  */
-function isBareAskForExisting(message, pinnedBy, show) {
-  const msg = String(message || '');
+function isBareAskForExisting(message, pinnedBy, show, { titles = [], shows = [] } = {}) {
   if (show && show.status === 'closed') return false;
+  const msg = stripBareAdd(message, [...titles, show && show.title]);
   if (CHANGE_REQUEST_RE.test(msg)) return false;
-  if (pinnedBy === 'place') return true;
-  return !OTHER_PRODUCTION_RE.test(msg) && marketsIn(msg).length === 0;
+  const markets = marketsIn(msg);
+  if (pinnedBy !== 'place') return !OTHER_PRODUCTION_RE.test(msg) && markets.length === 0;
+  // Place-pinned: production words are fine ("the Toronto run"), but another
+  // market ("the West End transfer") or another known city named outright ("add
+  // the Boston production", "I live in Boston") means a different production.
+  if (markets.some((m) => m !== show.category)) return false;
+  const pinned = cityName(show.city);
+  const t = normWords(msg);
+  const cities = new Set((shows || []).map((s) => s && cityName(s.city)).filter((c) => c && c.length >= 4 && c !== pinned));
+  for (const c of cities) {
+    if (cityMentions(t, c).some((m) => !m.away)) return false;
+  }
+  return true;
 }
 
 module.exports = {
   planContentRequestActions,
   isBareAskForExisting,
   pickCandidateByPlace,
+  stripBareAdd,
   // exported for tests / reuse
   cleanRequestedTitle,
   parseRequestedTitles,
