@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-24T03:05:14.309Z",
+    "lastUpdated": "2026-11-24T15:36:30.985Z",
     "version": "2.1.0",
-    "lastChange": "BRO-8210: register New York Theatre Review (newyorktheatrereview.blogspot.com)"
+    "lastChange": "BRO-6122: standingCoverage[broadway] demote chicagotribune (audit-standing-coverage --market=broadway lists chicagotribune under demote (14% overall, floor not met); a Chicago outl)"
   },
   "outlets": {
     "westendtheatre": {
@@ -438,11 +438,7 @@
       "domainAliases": [
         "wgnradio.com"
       ],
-      "metro": "chicago-il",
-      "standingCoverage": true,
-      "standingMarkets": [
-        "broadway"
-      ]
+      "metro": "chicago-il"
     },
     "latimes": {
       "displayName": "Los Angeles Times",
