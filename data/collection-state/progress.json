@@ -1,120 +1,27 @@
 {
   "processed": [
-    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
-    "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
-    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
+    "attention-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "attention-off-west-end-2026/londontheatre1--unknown.json",
+    "attention-off-west-end-2026/west-end-best-friend--unknown.json"
   ],
-  "failed": [
-    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
-    "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
-    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json"
-  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
-      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
-      "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
-      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
-      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
+      "attention-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "attention-off-west-end-2026/londontheatre1--unknown.json",
+      "attention-off-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-24T12:03:38.698Z",
-  "lastProcessed": "the-fantasticks-2026/nytimes--maya-phillips.json",
-  "log": [
-    {
-      "t": "2026-11-24T12:04:05.122Z",
-      "event": "bb-session",
-      "session": "a46527b5",
-      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
-    },
-    {
-      "t": "2026-11-24T12:04:05.636Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T12:18:21.384Z",
-      "event": "bb-session",
-      "session": "2ea1c271",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
-    },
-    {
-      "t": "2026-11-24T12:18:22.190Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T12:20:23.842Z",
-      "event": "bb-session",
-      "session": "387902e7",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-24T12:20:24.733Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T12:23:30.153Z",
-      "event": "bb-session",
-      "session": "2f2c89aa",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
-    },
-    {
-      "t": "2026-11-24T12:23:31.028Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T12:24:03.996Z",
-      "event": "bb-session",
-      "session": "b68f5888",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-24T12:24:04.870Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T12:24:22.118Z",
-      "event": "bb-session",
-      "session": "c2293e43",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-24T12:24:23.007Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-24T12:59:53.005Z",
+  "lastProcessed": "attention-off-west-end-2026/west-end-best-friend--unknown.json",
+  "log": []
 }
