@@ -786,5 +786,33 @@
       }
     ],
     "queuedAt": "2026-11-24T22:43:26.355Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker keeps tripping: web_unlocker2 (6 of last 14 days)",
+    "description": "Zone web_unlocker2 billed 1761 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n27 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (1611), opening-night-poller.js (706), audit-show-review-gap.js (443).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T22:55:29.426Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (1775/1750 reqs)",
+    "description": "Zone serp_api1 billed 1775 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n27 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (1611), opening-night-poller.js (706), audit-show-review-gap.js (443).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T22:55:29.744Z"
   }
 ]
