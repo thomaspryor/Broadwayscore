@@ -1266,16 +1266,6 @@ autostash_is_regenerated() {
   return 1
 }
 
-# BRO-4688: autostash=latest-wins is for a per-day snapshot (exclusion-daily-totals.json):
-# past days are never recomputed so both sides carry them identically, and a
-# same-day clash is two equally fresh runs of today, so upstream's copy stands.
-# Unlike regenerated it still tries the key-wise merge first and is not read by merge-keep-run.sh.
-autostash_keeps_upstream() {
-  autostash_is_regenerated "$1" && return 0
-  case "$(git check-attr autostash -- "$1" 2>/dev/null)" in *": autostash: latest-wins") return 0 ;; esac
-  return 1
-}
-
 # Put the snapshot back onto whatever HEAD this run ended on. Per path:
 #  - someone else edited it on disk during the run (local sessions can share a
 #    worktree): leave theirs alone, keep the ref, say so;
@@ -1348,14 +1338,23 @@ restore_autostash() {
       # autostash=regenerated files: a key-wise blend of two whole-file
       # regenerations is a snapshot no generator wrote.
       merged=1; restored+=("$p")
+    elif case "$(git check-attr autostash -- "$p" 2>/dev/null)" in *": autostash: latest-wins") true ;; *) false ;; esac \
+         && command -v node >/dev/null 2>&1 \
+         && git show "$AUTOSTASH_SHA:$p" >"$tmpd/ours.json" 2>/dev/null \
+         && _timeout 30 node "$SCRIPT_DIR/merge-daily-totals.js" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" 2>/dev/null \
+         && cp -f "$tmpd/merged.json" "$p" 2>/dev/null; then
+      # BRO-4688: autostash=latest-wins is the per-day snapshot data/audit/exclusion-daily-totals.json
+      # (one day per line, so the generic key-wise merge cannot rewrite it). Day-level union of
+      # both sides; this run's copy wins a day both hold (the writer's "latest run wins").
+      merged=1; restored+=("$p")
     elif [ "${GITHUB_ACTIONS:-}" = "true" ] && [ "${PUSH_AUTOSTASH_REGENERATED_QUIET:-1}" != "0" ] \
-         && autostash_keeps_upstream "$p"; then
+         && autostash_is_regenerated "$p"; then
       # BRO-4688: upstream's copy is an equally fresh regeneration of a file the
       # CI caller either committed before pushing or never commits, so keeping
       # it loses nothing. Not a conflict row: these were ~90% of the ~100/day
       # autostash-conflict rows that kept the deadman digest row red. CI only (a
       # local session may hand-edit one); kill switch PUSH_AUTOSTASH_REGENERATED_QUIET=0.
-      echo "::notice::push-with-retry: autostash: $p is a regenerated or latest-wins snapshot; kept upstream's copy of it. Your version: git show $AUTOSTASH_SHA:$p"
+      echo "::notice::push-with-retry: autostash: $p is a regenerated snapshot; kept upstream's copy of it. Your version: git show $AUTOSTASH_SHA:$p"
       kept=1
     else
       echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"
