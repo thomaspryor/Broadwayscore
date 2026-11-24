@@ -1739,6 +1739,17 @@ restore_head_if_moved() {
 #
 # During rebase: our commits = "theirs", remote base = "ours"
 # During merge:  our branch = "ours",   remote = "theirs"
+# BRO-6866: <show>/<file>.json, show dir not _- or .-prefixed, not failed-fetches.json.
+# Mirrors isReviewFilePath() in review-texts-api-fallback.js.
+_is_review_text_path() {
+  case "$1" in
+    */*/*|failed-fetches.json|*/failed-fetches.json) return 1 ;;
+    _*/*|.*/*) return 1 ;;
+    */*.json) return 0 ;;
+  esac
+  return 1
+}
+
 resolve_conflicts() {
   local mode="${1:-merge}"
   local resolved=false
@@ -1802,6 +1813,26 @@ resolve_conflicts() {
         git rm -f "$file" 2>/dev/null && resolved=true
       fi
       continue
+    fi
+
+    # BRO-6866: review-text file both runs wrote (add/add, or rename/delete
+    # where the other run named the same file). Run 45298776421 lost 21 files
+    # to a rescue branch here: the generic arm below refuses because our
+    # blob differs. The field-wise merge (BRO-5211) keeps both sides' fields.
+    # Gated on the review-texts remote and the exact <show>/<file>.json shape
+    # the API fallback uses (review-texts-api-fallback.js isReviewFilePath).
+    # Success is judged by the index, not the helper's exit status (it always
+    # exits 0 and leaves paths it cannot merge unmerged).
+    if [ "${PUSH_API_REVIEW_TEXTS:-}" = "1" ] && _is_review_text_path "$file"; then
+      local _swap=""
+      [ "$mode" = "rebase" ] || _swap="--swap-stages"
+      node "$SCRIPT_DIR/review-json-three-way-merge.js" --only="$file" --tie=upstream $_swap 2>&1 | sed 's/^/    /' || true
+      if [ -z "$(git ls-files -u -- "$file" 2>/dev/null)" ] && [ -f "$file" ]; then
+        echo "  Auto-resolving (review-text field merge): $file"
+        resolved=true
+        continue
+      fi
+      echo "  ::warning::review-text field merge could not resolve $file; falling through to the generic arm"
     fi
 
     case "$file" in
