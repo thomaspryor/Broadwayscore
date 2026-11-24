@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-7250-d261124-r15",
+  "planId": "e800aef0-e9d3-4507-86f0-af734ef1fbbc",
+  "status": "pending",
+  "createdAt": "2026-11-24T00:30:29.362Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7250: 1 local productions from theatre season pages",
+    "steps": [
+      "add teatro-la-plazas-hamlet-regional-2027"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add teatro-la-plazas-hamlet-regional-2027",
+        "show": {
+          "id": "teatro-la-plazas-hamlet-regional-2027",
+          "title": "Teatro La Plaza's Hamlet",
+          "slug": "teatro-la-plazas-hamlet-regional-2027",
+          "venue": "Huntington Theatre Company, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-03-04",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-03-07",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.huntingtontheatre.org/whats-on/hamlet/",
+            "https://www.broadwayworld.com/boston/regional/Teatro-La-Plaza-s-Hamlet-4370465"
+          ],
+          "images": {
+            "poster": "/images/shows/teatro-la-plazas-hamlet-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/teatro-la-plazas-hamlet-regional-2027/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  }
+}
