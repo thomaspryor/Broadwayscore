@@ -1091,7 +1091,7 @@ async function processShow(showId, deps = {}) {
       if (idDateSame && present(data.originalScore) && !present(existing.originalScore)) {
         if (!dry) {
           existing.originalScore = data.originalScore;
-          try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); scoreMerged++; } catch (e) { console.log(`  [${file}] could not merge originalScore: ${e.message}`); delete existing.originalScore; }
+          try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); if (present(JSON.parse(fs.readFileSync(newPath, 'utf8')).originalScore)) scoreMerged++; } catch (e) { console.log(`  [${file}] could not merge originalScore: ${e.message}`); delete existing.originalScore; }
         } else scoreMerged++;
         console.log(`  [${file}] ${dry ? 'would merge' : 'merged'} originalScore "${data.originalScore}" onto ${newFilename} (BRO-8218)`);
       }
