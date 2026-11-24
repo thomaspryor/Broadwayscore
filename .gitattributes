@@ -488,9 +488,12 @@ data/audit/feedback-proposals.json merge=ours merge-keyed=proposal-ledger
 # autostash=append below (a capped array log whose writers only append) so a
 # concurrent run's rows are unioned, never dropped. BRO-7595: these files
 # produced most of the ~2,300 autostash-conflict rows in the push-retry deadman row because both sides' appends conflicted as atomic arrays.
-# exclusion-daily-totals.json stays untagged on purpose: it carries 14 past days
-# that are never recomputed, and autostash=regenerated would also make
-# merge-keep-run.sh take a whole file on rebase.
+# exclusion-daily-totals.json is not autostash=regenerated on purpose: it carries 14 past days
+# that are never recomputed, and regenerated would also make merge-keep-run.sh
+# take a whole file on rebase. It takes autostash=latest-wins (BRO-4688): every
+# day still merges key-wise; only a same-day clash keeps upstream's copy.
+# It was 171 of ~250 autostash-conflict rows in a week.
+data/audit/exclusion-daily-totals.json autostash=latest-wins
 data/audit/deploy-watermark.json autostash=regenerated
 data/audit/needs-human-review.json autostash=regenerated
 data/audit/rebuild-score-drift.json autostash=regenerated
