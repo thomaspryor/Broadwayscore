@@ -662,5 +662,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-24T20:28:33.837Z"
+  },
+  {
+    "conditionKey": "land:land/bj-mincemeat-plan",
+    "title": "Landing blocked: unit-tests-node red on land/bj-mincemeat-plan",
+    "description": "land.yml did not land land/bj-mincemeat-plan: the unit-tests-node gate went red at 748f381848. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45474945680",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bj-mincemeat-plan"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "748f3818489787aaecbb7a3a1e71dba8db0243fe"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45474945680"
+      }
+    ],
+    "queuedAt": "2026-11-24T20:40:37.001Z"
   }
 ]
