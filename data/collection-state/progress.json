@@ -1,23 +1,79 @@
 {
-  "processed": [],
-  "failed": [
-    "the-afronauts-west-end-2026/consequence--langdon-hickman.json",
-    "the-afronauts-west-end-2026/thestage--unknown.json"
+  "processed": [
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+    "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json"
   ],
-  "failed": [],
+  "failed": [
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-24T12:59:59.558Z",
-  "lastProcessed": "the-afronauts-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-24T13:22:15.883Z",
+      "event": "bb-session",
+      "session": "b75f070d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T13:22:16.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T13:23:45.608Z",
+      "event": "bb-session",
+      "session": "b0ceb7ed",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T13:23:45.986Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T13:24:02.279Z",
+      "event": "bb-session",
+      "session": "86270612",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T13:24:02.578Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
