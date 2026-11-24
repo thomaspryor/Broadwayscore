@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-24T00:41:35.686Z",
+  "generatedAt": "2026-11-24T01:34:32.796Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 1,
+  "strandedFiles": 1,
   "blackoutShows": [],
   "agedStubHours": 48,
-  "agedStubFiles": 52,
-  "agedStubShows": 46,
+  "agedStubFiles": 49,
+  "agedStubShows": 43,
   "agedStubs": [
     {
       "showId": "suffs-2024",
@@ -213,18 +213,6 @@
       ]
     },
     {
-      "showId": "some-like-it-hot-2022",
-      "status": "closed",
-      "stubs": [
-        {
-          "file": "washpost--tieghan-gerard.json",
-          "url": "https://www.washingtonpost.com/entertainment/review-broadways-some-like-it-hot-blazes-righteous-path/2022/12/11/68e0a7b4-79c9-11ed-bb97-f47d47466b9a_story.html",
-          "outlet": "The Washington Post",
-          "ageHours": 632.7774166666667
-        }
-      ]
-    },
-    {
       "showId": "aint-no-mo-2022",
       "status": "closed",
       "stubs": [
@@ -232,7 +220,7 @@
           "file": "usatoday--matthew-j-palm.json",
           "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-review/10856338002/",
           "outlet": "USA Today",
-          "ageHours": 6672.269635
+          "ageHours": 6673.152165555555
         }
       ]
     },
@@ -484,7 +472,7 @@
           "file": "usatoday--elysa-gardner.json",
           "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm",
           "outlet": "USA Today",
-          "ageHours": 6672.269635
+          "ageHours": 6673.152165555555
         }
       ]
     },
@@ -496,18 +484,6 @@
           "file": "usatoday--elysa-gardner.json",
           "url": "https://www.usatoday.com/life/theater/reviews/2008-04-22-macbeth_N.htm",
           "outlet": "USA Today",
-          "ageHours": null
-        }
-      ]
-    },
-    {
-      "showId": "south-pacific-2008",
-      "status": "closed",
-      "stubs": [
-        {
-          "file": "theatermania--unknown.json",
-          "url": "https://www.theatermania.com/news/south-pacific_13396/",
-          "outlet": "TheaterMania",
           "ageHours": null
         }
       ]
@@ -573,29 +549,34 @@
       ]
     },
     {
-      "showId": "jersey-boys-2005",
-      "status": "closed",
+      "showId": "othello-bedlam-off-broadway-2026",
+      "status": "open",
       "stubs": [
         {
-          "file": "nytimes--unknown.json",
-          "url": "http://theater2.nytimes.com/2005/11/07/theater/reviews/07jers.html",
+          "file": "nytimes--helen-shaw.json",
+          "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
           "outlet": "The New York Times",
-          "ageHours": null
-        }
-      ]
-    },
-    {
-      "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
-      "status": "closed",
-      "stubs": [
-        {
-          "file": "broadwayworld--alexander-cohen.json",
-          "url": "https://www.broadwayworld.com/westend/article/Review-A-MOON-FOR-THE-MISBEGOTTEN-Almeida-20250626",
-          "outlet": "BroadwayWorld",
-          "ageHours": 5576.102968333334
+          "ageHours": 286.7682105555556
         }
       ]
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
+      "title": "Othello (Bedlam)",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--helen-shaw.json",
+          "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+          "outlet": "The New York Times",
+          "ageHours": 286.7682105555556
+        }
+      ],
+      "usable": 4,
+      "discovered": 6,
+      "totalBlackout": false
+    }
+  ]
 }
