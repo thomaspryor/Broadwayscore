@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6836",
+  "planId": "e0beb7e6-be04-4935-9e9f-a88ec9cee282",
+  "status": "pending",
+  "createdAt": "2026-11-24T21:01:59.983Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Null the wrong poster (summer-school flyer) on The Graddys London Semi Finals",
+    "steps": [
+      "shows.json: the-graddys-london-semi-finals-off-west-end-2026.images"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-graddys-london-semi-finals-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-graddys-london-semi-finals-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-graddys-london-semi-finals-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-graddys-london-semi-finals-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-graddys-london-semi-finals-off-west-end-2026.images"
+      }
+    ]
+  }
+}

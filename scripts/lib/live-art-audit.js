@@ -6,6 +6,7 @@
  */
 
 const { isVerifierError } = require('./verify-image');
+const REVIEWED_ART = require('./live-art-reviewed.json');
 
 const LIVE_STATUSES = ['open', 'previews', 'upcoming', 'announced'];
 const LIVE_ART_ALERT_KEY = 'live-show-art:wrong-work';
@@ -40,6 +41,11 @@ const EVENT_NOISE_KINDS = ['generic_image', 'non_theatre_work'];
 // sampled ones were Montauk, AMAZE, A View from the Bridge and Jason Manford showing their own title (BRO-6836).
 // Free-text description matching is deliberately NOT used: "not the correct title" and a same-title
 // different-author rejection (verify-image BRO-5022) both say "correct title" yet are real wrong art.
+
+/** True when a human already confirmed this exact file (by md5) shows the right work (BRO-6836). */
+function isReviewedArt(showId, md5, reviewed = REVIEWED_ART) {
+  return Boolean(showId && md5 && reviewed && reviewed[showId] && Object.prototype.hasOwnProperty.call(reviewed[showId], md5));
+}
 
 const hasPath = (v) => typeof v === 'string' && v.length > 0;
 
@@ -148,4 +154,4 @@ function buildLiveArtAlert(flagged) {
   });
 }
 
-module.exports = { EVENT_TYPES, LIVE_STATUSES, LIVE_ART_ALERT_KEY, AUDITED_FORMATS, selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert };
+module.exports = { isReviewedArt, EVENT_TYPES, LIVE_STATUSES, LIVE_ART_ALERT_KEY, AUDITED_FORMATS, selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert };

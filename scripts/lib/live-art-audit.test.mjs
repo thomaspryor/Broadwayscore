@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { selectLiveShows, artFilesToAudit, collapseRowsByShow, AUDITED_FORMATS, classifyResult, buildReport, buildLiveArtAlert } = require('./live-art-audit.js');
+const { selectLiveShows, artFilesToAudit, collapseRowsByShow, AUDITED_FORMATS, classifyResult, buildReport, buildLiveArtAlert, isReviewedArt } = require('./live-art-audit.js');
+const reviewed = require('./live-art-reviewed.json');
+import fs from 'node:fs';
+import path from 'node:path';
 
 test('selectLiveShows keeps live statuses with a thumbnail or poster', () => {
   const shows = [
@@ -125,4 +128,26 @@ test('classifyResult ignores wrong_production but keeps wrong_show, whatever the
   for (const description of ['A poster for The Lost Boys, not the correct title Rope.', "Shows the correct title 'Endgame' but credits a different playwright."]) {
     assert.deepEqual(classifyResult({ ...base, issues: ['wrong_show'], description }), { kind: 'wrong_show', errored: false });
   }
+});
+
+test('isReviewedArt matches only the exact show id + file md5 a human confirmed (BRO-6836)', () => {
+  const reg = { 'a-show': { abc123: 'thumbnail' } };
+  assert.equal(isReviewedArt('a-show', 'abc123', reg), true);
+  assert.equal(isReviewedArt('a-show', 'zzz', reg), false, 'a replaced image is audited again');
+  assert.equal(isReviewedArt('other', 'abc123', reg), false);
+  assert.equal(isReviewedArt('a-show', null, reg), false);
+  assert.equal(isReviewedArt('toString', 'abc123', reg), false);
+});
+
+test('every reviewed-art entry still points at a real file (stale entries must not linger)', () => {
+  const root = path.resolve(import.meta.dirname, '..', '..');
+  const hash = (f) => require('node:crypto').createHash('md5').update(fs.readFileSync(f)).digest('hex');
+  let found = 0;
+  for (const [id, md5s] of Object.entries(reviewed)) {
+    if (id.startsWith('_')) continue;
+    const dir = path.join(root, 'public', 'images', 'shows', id);
+    const have = new Set(fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => /^(thumbnail|poster|hero)\./.test(f)).map(f => hash(path.join(dir, f))) : []);
+    for (const m of Object.keys(md5s)) { assert.ok(have.has(m), `${id}: reviewed md5 ${m} matches no served file`); found++; }
+  }
+  assert.ok(found > 0);
 });

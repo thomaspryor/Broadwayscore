@@ -38,7 +38,7 @@ if (hasHelpFlag(process.argv)) {
 }
 
 const { verifyImage, createRateLimiter, creativesForVerify, resolveMarketSlug } = require('./lib/verify-image');
-const { selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } = require('./lib/live-art-audit');
+const { selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, isReviewedArt, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } = require('./lib/live-art-audit');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'tmp', 'live-art-audit.json');
@@ -92,6 +92,7 @@ async function auditShow(show, rateLimiter) {
       const md5 = fs.existsSync(full) ? require('crypto').createHash('md5').update(fs.readFileSync(full)).digest('hex') : null;
       if (md5 && seenBytes.has(md5)) continue;
       if (md5) seenBytes.add(md5);
+      if (isReviewedArt(show.id, md5)) continue; // a human already confirmed this exact file (BRO-6836)
     } catch { /* hash failure: audit the file anyway */ }
     const row = await auditFile(show, art, rateLimiter);
     if (row) rows.push(row);
