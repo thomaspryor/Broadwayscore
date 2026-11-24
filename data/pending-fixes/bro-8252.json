@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-8252",
+  "planId": "f3f74cde-da21-4bbd-a46f-1f8be2b6421c",
+  "status": "pending",
+  "createdAt": "2026-11-24T15:01:28.585Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional + theatreinchicago: move review-seeded opening dates to the earliest review date",
+    "steps": [
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so a press-night source can still refine this date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-jentes-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-21",
+        "newValue": "2026-11-17",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-jentes-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-jentes-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-11-17",
+        "newValue": null,
+        "description": "Clear the pin so a press-night source can still refine this date"
+      }
+    ]
+  }
+}
