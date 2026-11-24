@@ -17,7 +17,7 @@ import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, audiencePlatformUrlFrom } from '@/lib/data-audience';
 import { getShowForRender } from '@/lib/show-render';
-import { showRefreshEnabled, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
+import { showRefreshConfigured, isRefreshedRev, SHOW_REFRESH_REV_META } from '@/lib/show-refresh-core';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
@@ -268,7 +268,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     },
     // BRO-8056 refresh marker (plan row 10): which data this render used. Only
     // while the reader is on, so flag-off pages stay byte-identical to today.
-    ...(showRefreshEnabled() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
+    ...(showRefreshConfigured() ? { other: { [SHOW_REFRESH_REV_META]: render?.rev ?? 'base' } } : {}),
   };
 }
 
@@ -1036,6 +1036,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               reviews={reviewItems.slice(0, REVIEWS_INLINE_COUNT)}
               more={reviewItems.length > REVIEWS_INLINE_COUNT ? {
                 url: `/show/${show.slug}/reviews.json`,
+                rev: showRefreshConfigured() ? render.rev : undefined,
                 totalCount: reviewItems.length,
                 hasTierChips: reviewItems.some(r => r.tier),
                 hasStops: reviewItems.some(r => r.stopLabel),
