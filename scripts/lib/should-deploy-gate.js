@@ -208,11 +208,18 @@ const CODE_PATHS = [
 const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'opening-night-reveal', 'lane-press-night', 'press-night-watchdog'];
 // BRO-8236: urgent sources ship now only when the range holds a visitor-visible
 // reveal (scripts/lib/deploy-reveal.js); otherwise they are judged as routine.
-// These skip that check: /go-live-now, the poller after it classified its own
-// commit as a reveal, and the press-night lane + watchdog, whose reviews land in
-// private core data the public commit range cannot show (real-ports.js).
-const ALWAYS_SHIP_SOURCES = ['urgent', 'opening-night-reveal', 'lane-press-night', 'press-night-watchdog'];
+// These skip that check: /go-live-now and the press-night lane + watchdog,
+// whose reviews land in private core data the public commit range cannot show
+// (real-ports.js). BRO-8261: opening-night-reveal is NOT here. The poller forces
+// reveal=true on merge commits and classify errors, so the gate re-classifies
+// live..HEAD itself; a real reveal still ships at once, errors still fail open.
+const ALWAYS_SHIP_SOURCES = ['urgent', 'lane-press-night', 'press-night-watchdog'];
 const URGENT_WORKFLOW_RUN = 'Rebuild Reviews (Fast)';
+
+/** Pure: does this trigger skip the reveal check (ship now whatever the range holds)? */
+function isAlwaysShip({ eventName, source }) {
+  return eventName === 'workflow_dispatch' && ALWAYS_SHIP_SOURCES.includes(String(source || ''));
+}
 
 /** Pure: is this trigger an explicit ship-now request? */
 function isUrgent({ eventName, source, triggerWorkflow }) {
@@ -554,7 +561,7 @@ async function main() {
 
   // BRO-8236: an urgent trigger keeps ship-now only for a visitor-visible reveal.
   let reveal = null;
-  const alwaysShip = rawEvent === 'workflow_dispatch' && ALWAYS_SHIP_SOURCES.includes(String(process.env.GATE_SOURCE || ''));
+  const alwaysShip = isAlwaysShip({ eventName: rawEvent, source: process.env.GATE_SOURCE });
   if (!gateDisabled && urgentTrigger && !alwaysShip && baseline.sha && baseline.sha !== headSha) {
     try {
       git(['fetch', '--depth=1', 'origin', baseline.sha], { stdio: 'ignore', timeout: 45000 });
@@ -627,7 +634,7 @@ async function main() {
 
 module.exports = {
   // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
-  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the

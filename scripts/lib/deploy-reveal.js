@@ -88,6 +88,11 @@ function hasReviews(json) {
 }
 
 const showIdOf = (f) => f.slice(SHOW_DIR.length, -'.json'.length);
+// BRO-8261: only public/data/shows/<id>.json is a show file. Show ids have no
+// dot, so this skips siblings such as <id>.social.json (no reviews, but they
+// counted toward the show-file caps) and anything in a subfolder.
+const SHOW_FILE_RE = /^public\/data\/shows\/[^/.]+\.json$/;
+const isShowFile = (f) => SHOW_FILE_RE.test(f);
 
 /** Pure: NYT picks changed in a visible way (the url list), fail open on bad JSON. */
 function nytPicksChanged(pair) {
@@ -117,7 +122,7 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
     if (nytPicksChanged(pair)) return { reveal: true, reason: 'nyt-picks', file: NYT_PICKS };
   }
   const opening = openingIds ? new Set(openingIds) : null;
-  const allShows = files.filter((f) => f.startsWith(SHOW_DIR) && f.endsWith('.json'));
+  const allShows = files.filter(isShowFile);
   const shows = opening ? allShows.filter((f) => opening.has(showIdOf(f))) : allShows;
   if (shows.length > maxShowFiles) return { reveal: true, reason: `too-many-show-files(${shows.length})`, file: null };
   // A show outside the window that gets its FIRST reviews is an opening the
@@ -168,7 +173,7 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
 /**
  * Pure: should this trigger keep ship-now semantics?
  * - not urgent -> routine
- * - always-ship source (opening-night-reveal, urgent) -> urgent
+ * - always-ship source (urgent, press-night lane/watchdog) -> urgent
  * - baseline unknown or == HEAD -> unchanged (urgent); the existing data-dirty
  *   handling in decide() covers a private-only data advance
  * - otherwise urgent only on a reveal (classification error = reveal)
@@ -225,7 +230,7 @@ function classifyRange(base, head, { codePaths = [] } = {}) {
     // adds shows that just left the window.
     const openingIds = idsHead ? [...(idsBase || []), ...idsHead] : null;
     const opening = openingIds ? new Set(openingIds) : null;
-    const allShows = files.filter((f) => f.startsWith(SHOW_DIR) && f.endsWith('.json'));
+    const allShows = files.filter(isShowFile);
     const openingCount = opening ? allShows.filter((f) => opening.has(showIdOf(f))).length : allShows.length;
     // With a known window every changed show file is read (first-reviews check);
     // without one, only up to MAX_SHOW_FILES (beyond that classifyReveal fails open).
@@ -241,7 +246,7 @@ function classifyRange(base, head, { codePaths = [] } = {}) {
   }
 }
 
-module.exports = { reviewProjection, classifyReveal, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
+module.exports = { reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
 
 // CLI: `node scripts/lib/deploy-reveal.js <base> <head>` prints reveal=true|false
 // and reason=..., one per line (GITHUB_OUTPUT-ready). Used by the opening-night
