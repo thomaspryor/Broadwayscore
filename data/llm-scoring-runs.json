@@ -478516,5 +478516,71 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-23T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-24T15:09:58.918Z",
+    "completedAt": "2026-11-24T15:13:53.130Z",
+    "totalReviews": 84962,
+    "processed": 22,
+    "skipped": 84933,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 158162,
+      "output": 7917,
+      "cacheRead": 87561,
+      "cacheWrite": 22609,
+      "total": 411632
+    },
+    "costUsd": 0.175413975,
+    "runId": "45421455841",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-23T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-24T15:14:46.403Z",
+    "completedAt": "2026-11-24T15:19:53.044Z",
+    "totalReviews": 84962,
+    "processed": 184,
+    "skipped": 84745,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 1158878,
+      "output": 64287,
+      "cacheRead": 698015,
+      "cacheWrite": 60263,
+      "total": 2948899
+    },
+    "costUsd": 1.1958212,
+    "runId": "45421455841",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "some-like-it-hot-tour-2024",
+        "outletId": "orlando-sentinel",
+        "error": "hallucinated_score: LLM admitted scoring non-review content"
+      }
+    ],
+    "logKeepsSince": "2026-11-23T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-24T15:19:59.235Z",
+    "completedAt": "2026-11-24T15:23:32.276Z",
+    "totalReviews": 91,
+    "processed": 91,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 242651,
+      "output": 22518,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 265169
+    },
+    "costUsd": 0.22972905000000002,
+    "runId": "45421455841",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-23T00:00:00.000Z"
   }
 ]
