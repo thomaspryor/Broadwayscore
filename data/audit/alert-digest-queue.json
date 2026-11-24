@@ -1442,6 +1442,20 @@
     "queuedAt": "2026-11-24T05:16:36.720Z"
   },
   {
+    "conditionKey": "opening-night-lane-auto-fallback:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23",
+    "title": "Opening-night lane died for its-a-wonderful-life-a-live-radio-play-2026 (2026-11-23); the old path took over",
+    "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T06:16:28.805Z"
+  },
+  {
     "conditionKey": "land:land/bro-8232-vulture-page-tag",
     "title": "Landing blocked: unit-tests-node red on land/bro-8232-vulture-page-tag",
     "description": "land.yml did not land land/bro-8232-vulture-page-tag: the unit-tests-node gate went red at 6c3b699eba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335245379",
