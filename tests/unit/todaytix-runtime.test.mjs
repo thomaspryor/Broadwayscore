@@ -206,3 +206,10 @@ test('isPlaceholderRunningTime: BRO-8271 "3hr 15min (incl. intermission)" filler
     { id: 'cosi-fan-tutte-off-west-end-2027', todaytixId: 5, runtime: '3h 15m', intermissions: 1 },
   ]), ['slanted-floors-off-broadway-2026 (3h 15m)']);
 });
+
+test('storedFillerRows covers rows linked by todaytixUrl only (BRO-8271 Hate Radio)', () => {
+  const { storedFillerRows: fillerRows } = require('../../scripts/lib/todaytix-runtime.js');
+  assert.deepStrictEqual(fillerRows([
+    { id: 'hate-radio-off-broadway-2026', todaytixUrl: 'https://www.todaytix.com/nyc/shows/45851-hate-radio', runtime: '3h 15m', intermissions: null },
+  ]), ['hate-radio-off-broadway-2026 (3h 15m)']);
+});

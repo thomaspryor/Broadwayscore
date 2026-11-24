@@ -189,14 +189,15 @@ const STORED_FILLER_RUNTIMES = { '3h 12m': true, '1h 35m': false, '4h': false, '
 const STORED_FILLER_EXEMPT = new Set(['spare-parts-off-broadway-2026', 'fishing-for-alaska-off-broadway-2026']);
 
 /**
- * TodayTix-linked rows whose stored runtime is a filler value.
+ * TodayTix-linked rows (todaytixId or todaytixUrl; BRO-8271: Hate Radio had only
+ * the URL and stored the 3h 15m filler unnoticed) whose stored runtime is a filler value.
  *
  * @param {object[]} shows
  * @returns {string[]} "id (runtime)"
  */
 function storedFillerRows(shows) {
   return shows
-    .filter(s => s.todaytixId && Object.prototype.hasOwnProperty.call(STORED_FILLER_RUNTIMES, s.runtime) && !STORED_FILLER_EXEMPT.has(s.id))
+    .filter(s => (s.todaytixId || s.todaytixUrl) && Object.prototype.hasOwnProperty.call(STORED_FILLER_RUNTIMES, s.runtime) && !STORED_FILLER_EXEMPT.has(s.id))
     .filter(s => STORED_FILLER_RUNTIMES[s.runtime] || s.intermissions == null)
     .map(s => `${s.id} (${s.runtime})`);
 }
