@@ -494,8 +494,8 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   //    Off-Broadway roundups T4 was skipping (see shouldSkipReviewsPhp docstring
   //    for the three measured live misses). Only if this comes back empty or
   //    unusable do we consider spending a $0.10 Browserbase session.
+  let cheapAnchors = null;
   if (!opts.fetchAnchors) {
-    let cheapAnchors = null;
     try {
       const fetchCheap = opts.fetchCheapAnchors || fetchReviewsPageAnchorsCheap;
       cheapAnchors = await fetchCheap();
@@ -533,7 +533,25 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
-  const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
+  // BRO-8262: a USABLE cheap scan (an array, which only comes back after the
+  // title + article-link structural guards pass) is the same /reviews/ listing
+  // the paid Browserbase tier would load: same page, no scroll, narrower href
+  // filter. So a show missing from it is missing from the paid render too.
+  // Measured 11-17..24: 80 poller runs, 223 discovery misses, 0 roundups found
+  // by the paid tier, while broadwayworld.com took 311 Browserbase sessions
+  // (~$31/week). The paid tier now runs only when the cheap scan is UNUSABLE
+  // (null: blocked, interstitial, provider error), which is the case it exists
+  // for. Placed after the skip gate so shows the paid tier never probed keep
+  // 'section-only'; 'not-found' here matches what a paid miss returned, so
+  // downstream miss handling is unchanged. forceReviewsPhp (manual recovery)
+  // and BWW_PAID_AFTER_CHEAP_MISS=1 restore the paid probe.
+  if (Array.isArray(cheapAnchors) && opts.forceReviewsPhp !== true
+      && process.env.BWW_PAID_AFTER_CHEAP_MISS !== '1') {
+    return { url: null, candidates: [], via: 'not-found' };
+  }
+  // opts.fetchPaidAnchors: test hook for the paid tier that, unlike fetchAnchors,
+  // keeps the cheap tier running (BRO-8262 gate tests).
+  const fetchAnchors = opts.fetchAnchors || opts.fetchPaidAnchors || fetchReviewsPageAnchors;
   try {
     anchors = await fetchAnchors();
   } catch (err) {
