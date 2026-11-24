@@ -1088,10 +1088,10 @@ async function processShow(showId, deps = {}) {
       }
       // BRO-8218: a same-article url-variant stub's star rating belongs on the primary (stars are score bands);
       // copy it only when the primary has none, then the stub settles normally below.
-      if (idDateSame && present(data.originalScore) && !present(existing.originalScore)) {
+      if (idDateSame && present(data.originalScore) && !present(existing.originalScore) && !require('./lib/score-extractors').publishesNoCriticRating(existing.outletId, existing)) {
         if (!dry) {
           existing.originalScore = data.originalScore;
-          try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); if (present(JSON.parse(fs.readFileSync(newPath, 'utf8')).originalScore)) scoreMerged++; } catch (e) { console.log(`  [${file}] could not merge originalScore: ${e.message}`); delete existing.originalScore; }
+          try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); scoreMerged++; } catch (e) { console.log(`  [${file}] could not merge originalScore: ${e.message}`); delete existing.originalScore; }
         } else scoreMerged++;
         console.log(`  [${file}] ${dry ? 'would merge' : 'merged'} originalScore "${data.originalScore}" onto ${newFilename} (BRO-8218)`);
       }

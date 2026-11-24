@@ -8,6 +8,7 @@
 const { hasHelpFlag } = require('./lib/cli-help');
 if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/backfill-stub-originalscore.js [--dry-run]  (env REVIEW_TEXTS_DIR overrides the corpus path)'); process.exit(0); }
 const fs = require('fs');
+const { publishesNoCriticRating } = require('./lib/score-extractors');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const ROOT = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
@@ -28,13 +29,8 @@ for (const ent of fs.readdirSync(pdir, { withFileTypes: true })) {
     const prim = JSON.parse(fs.readFileSync(pp, 'utf8'));
     if (prim.originalScore) { already++; continue; }
     prim.originalScore = stub.originalScore;
-    if (!dry) {
-      const before = fs.readFileSync(pp, 'utf8');
-      safeWriteReview(pp, prim);
-      if (!JSON.parse(fs.readFileSync(pp, 'utf8')).originalScore) { // outlet publishes no critic rating: guard clears it (tier 1d); restore, don't merge
-        fs.writeFileSync(pp, before); guardRejected++; console.log(`GUARD-REJECTED ${showId}/${m[1]} (outlet publishes no critic rating)`); continue;
-      }
-    }
+    if (publishesNoCriticRating(prim.outletId, prim)) { guardRejected++; console.log(`SKIP ${showId}/${m[1]} (outlet publishes no critic rating; the write guard would clear it)`); continue; }
+    if (!dry) safeWriteReview(pp, prim);
     merged++;
     console.log(`${dry ? 'would merge' : 'merged'} "${stub.originalScore}" -> ${showId}/${m[1]}`);
   }
