@@ -88,3 +88,18 @@ test('COVERAGE_GATE_DISABLED empties the coverage inputs rebuilt from a slice', 
   const off = coverageInputsFromSlice(s, { COVERAGE_GATE_DISABLED: '1' });
   assert.equal(off.covByShowId.size + off.scorePublicSinceByShowId.size + off.coverageAckedShowIds.size, 0);
 });
+
+test('reviewMeta: count and an order-free signature of the critic review list', () => {
+  const { reviewMeta } = require('./slice.js');
+  const r = (o, c, u, extra = {}) => ({ showId: 'a', outletId: o, criticName: c, url: u, ...extra });
+  const s = { reviews: [r('nyt', 'A', 'u1', { assignedScore: 80 }), r('vult', 'B', 'u2')] };
+  const m = reviewMeta(s);
+  assert.equal(m.reviewCount, 2);
+  assert.match(m.reviewsSig, /^[0-9a-f]{16}$/);
+  assert.equal(reviewMeta({ reviews: [...s.reviews].reverse() }).reviewsSig, m.reviewsSig, 'order does not matter');
+  assert.equal(reviewMeta({ reviews: [r('nyt', 'A', 'u1', { assignedScore: 10 }), r('vult', 'B', 'u2')] }).reviewsSig, m.reviewsSig, 'a score change keeps the list');
+  assert.notEqual(reviewMeta({ reviews: [r('nyt', 'A', 'u1'), r('vult', 'B', 'u3')] }).reviewsSig, m.reviewsSig, 'a new url is a new list');
+  assert.notEqual(reviewMeta({ reviews: [r('nyt', 'A', 'u1')] }).reviewsSig, m.reviewsSig);
+  assert.deepEqual(reviewMeta({ reviews: [] }).reviewCount, 0);
+  assert.equal(reviewMeta(sliceFor('a', index())).reviewCount, 2);
+});

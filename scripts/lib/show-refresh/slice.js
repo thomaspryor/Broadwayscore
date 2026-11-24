@@ -73,6 +73,18 @@ function sliceHash(slice) {
 }
 
 /**
+ * The critic review list of a slice, for the publisher's review guards: the
+ * count (a drop is never published, like live-score shouldPublish) and an
+ * order-free signature of who reviewed where (outletId|criticName|url), so a
+ * score change keeps the signature and an added or swapped review changes it.
+ */
+function reviewMeta(slice) {
+  const reviews = (slice && slice.reviews) || [];
+  const lines = reviews.map((r) => `${r.outletId ?? ''}|${r.criticName ?? ''}|${r.url ?? ''}`).sort();
+  return { reviewCount: reviews.length, reviewsSig: hash16(lines.join('\n')) };
+}
+
+/**
  * The coverage-floor inputs computeOneShow needs, rebuilt from one slice (the
  * same three maps buildCoverageFloorInputs returns, holding only this show).
  * COVERAGE_GATE_DISABLED is read here, at render time, like the build-time
@@ -89,4 +101,4 @@ function coverageInputsFromSlice(slice, env = process.env) {
   return { covByShowId, scorePublicSinceByShowId, coverageAckedShowIds };
 }
 
-module.exports = { SLICE_VERSION, indexForSlices, sliceFor, sliceHash, coverageInputsFromSlice };
+module.exports = { SLICE_VERSION, indexForSlices, sliceFor, sliceHash, reviewMeta, coverageInputsFromSlice };
