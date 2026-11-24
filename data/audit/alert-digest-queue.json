@@ -1981,10 +1981,10 @@
   },
   {
     "conditionKey": "test-yml:data-validation-red:run-data-validation",
-    "title": "Data audit failing: Run data validation — escalated after 16 notifications",
-    "description": "Filed BRO-8225 for owner triage after 16 repeats with no tracker.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "title": "Data audit failing: Run data validation — already tracked at BRO-8225",
+    "description": "This condition already has an open tracker (BRO-8225); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45295963798",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45302078627",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -2001,10 +2001,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45295963798)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45302078627)"
       }
     ],
-    "queuedAt": "2026-11-24T01:38:24.642Z"
+    "queuedAt": "2026-11-24T02:14:07.626Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-8218-mwtyigms",
