@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-17T14:16:59.600Z",
+    "generatedAt": "2026-11-24T15:38:11.376Z",
     "threshold": 40,
-    "showsScanned": 4584,
-    "reviewsScanned": 68592,
-    "duplicatesFound": 178,
+    "showsScanned": 4680,
+    "reviewsScanned": 70376,
+    "duplicatesFound": 133,
     "byMethod": {
       "similarity": [
         {
@@ -50,21 +50,6 @@
           "primaryScore": 87,
           "secondaryScore": 87,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "a-few-good-men-2026",
-          "method": "similarity",
-          "similarity": 86,
-          "primaryFile": "deadline--greg-evans.json",
-          "primaryOutlet": "Deadline",
-          "primaryCritic": "Greg Evans",
-          "secondaryFile": "globalnews2--unknown.json",
-          "secondaryOutlet": "globalnews2",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 63,
-          "secondaryScore": 60,
-          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -218,6 +203,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "bad-cinderella-2023",
+          "method": "similarity",
+          "similarity": 80,
+          "primaryFile": "nydailynews--unknown.json",
+          "primaryOutlet": "New York Daily News",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "chicagotribune--chris-jones.json",
+          "secondaryOutlet": "Chicago Tribune",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 19,
+          "secondaryScore": 24,
+          "scoreDiff": 5,
+          "textSource": "fullText"
+        },
+        {
           "showId": "beautiful-the-carole-king-musical-2014",
           "method": "similarity",
           "similarity": 95,
@@ -257,9 +257,9 @@
           "secondaryFile": "thedaviddesk2--davidsheward.json",
           "secondaryOutlet": "Thedaviddesk2",
           "secondaryCritic": "David.sheward",
-          "primaryScore": 88,
+          "primaryScore": 80,
           "secondaryScore": 79,
-          "scoreDiff": 9,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -332,9 +332,9 @@
           "secondaryFile": "sierz-co-uk--unknown.json",
           "secondaryOutlet": "Aleks Sierz",
           "secondaryCritic": "Unknown",
-          "primaryScore": 84,
+          "primaryScore": 83,
           "secondaryScore": 91,
-          "scoreDiff": 7,
+          "scoreDiff": 8,
           "textSource": "fullText"
         },
         {
@@ -365,21 +365,6 @@
           "primaryScore": 76,
           "secondaryScore": 88,
           "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "cranford-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 82,
-          "primaryFile": "fringereview--unknown.json",
-          "primaryOutlet": "FringeReview",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "viewfromthegods--simon-jenner.json",
-          "secondaryOutlet": "View From The Gods",
-          "secondaryCritic": "Simon Jenner",
-          "primaryScore": 90,
-          "secondaryScore": 92,
-          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -707,9 +692,9 @@
           "secondaryFile": "sierz-co-uk--unknown.json",
           "secondaryOutlet": "Aleks Sierz",
           "secondaryCritic": "Unknown",
-          "primaryScore": 76,
+          "primaryScore": 80,
           "secondaryScore": 76,
-          "scoreDiff": 0,
+          "scoreDiff": 4,
           "textSource": "fullText"
         },
         {
@@ -878,6 +863,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "much-ado-about-nothing-2026",
+          "method": "similarity",
+          "similarity": 83,
+          "primaryFile": "theater-life--david-sheward.json",
+          "primaryOutlet": "Theater Life",
+          "primaryCritic": "David Sheward",
+          "secondaryFile": "thedaviddesk2--davidsheward.json",
+          "secondaryOutlet": "The David Desk 2",
+          "secondaryCritic": "David.sheward",
+          "primaryScore": 86,
+          "secondaryScore": null,
+          "scoreDiff": 86,
+          "textSource": "fullText"
+        },
+        {
           "showId": "much-ado-about-nothing-regional-2026",
           "method": "similarity",
           "similarity": 84,
@@ -902,9 +902,9 @@
           "secondaryFile": "sierz-co-uk--unknown.json",
           "secondaryOutlet": "Aleks Sierz",
           "secondaryCritic": "Unknown",
-          "primaryScore": 82,
+          "primaryScore": 81,
           "secondaryScore": 88,
-          "scoreDiff": 6,
+          "scoreDiff": 7,
           "textSource": "fullText"
         },
         {
@@ -962,9 +962,9 @@
           "secondaryFile": "thedaviddesk2--davidsheward.json",
           "secondaryOutlet": "The David Desk 2",
           "secondaryCritic": "David.sheward",
-          "primaryScore": 74,
+          "primaryScore": 57,
           "secondaryScore": 74,
-          "scoreDiff": 0,
+          "scoreDiff": 17,
           "textSource": "fullText"
         },
         {
@@ -1043,6 +1043,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "relative-motion-off-west-end-2026",
+          "method": "similarity",
+          "similarity": 78,
+          "primaryFile": "the-theatre-times--aleks-sierz.json",
+          "primaryOutlet": "The Theatre Times",
+          "primaryCritic": "Aleks Sierz",
+          "secondaryFile": "sierz-co-uk--unknown.json",
+          "secondaryOutlet": "Aleks Sierz",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 55,
+          "secondaryScore": 48,
+          "scoreDiff": 7,
+          "textSource": "fullText"
+        },
+        {
           "showId": "rock-of-ages-regional-2026",
           "method": "similarity",
           "similarity": 92,
@@ -1112,9 +1127,9 @@
           "secondaryFile": "thedaviddesk2--davidsheward.json",
           "secondaryOutlet": "Thedaviddesk2",
           "secondaryCritic": "David.sheward",
-          "primaryScore": 80,
+          "primaryScore": 84,
           "secondaryScore": 81,
-          "scoreDiff": 1,
+          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -1253,21 +1268,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-bridges-of-madison-county-2014",
-          "method": "similarity",
-          "similarity": 86,
-          "primaryFile": "variety--marilyn-stasio.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Marilyn Stasio",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 49,
-          "secondaryScore": 61,
-          "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-corn-is-green-west-end-2022",
           "method": "similarity",
           "similarity": 83,
@@ -1328,21 +1328,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-importance-of-being-oscar-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 86,
-          "primaryFile": "fringereview--unknown.json",
-          "primaryOutlet": "fringereview",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "viewfromthegods--simon-jenner.json",
-          "secondaryOutlet": "Viewfromthegods",
-          "secondaryCritic": "Simon Jenner",
-          "primaryScore": 77,
-          "secondaryScore": 77,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-misanthrope-west-end-2026",
           "method": "similarity",
           "similarity": 93,
@@ -1355,21 +1340,6 @@
           "primaryScore": 82,
           "secondaryScore": 78,
           "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-pianist-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "notesfromrowh--unknown.json",
-          "primaryOutlet": "Notes From Row H",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "theatre-south-east--helena-featherstone.json",
-          "secondaryOutlet": "Theatre South East",
-          "secondaryCritic": "Helena Featherstone",
-          "primaryScore": 98,
-          "secondaryScore": 97,
-          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -1517,9 +1487,9 @@
           "secondaryFile": "camdennewjournal--lucy-popescu.json",
           "secondaryOutlet": "Camden New Journal",
           "secondaryCritic": "Lucy Popescu",
-          "primaryScore": 87,
+          "primaryScore": 90,
           "secondaryScore": 88,
-          "scoreDiff": 1,
+          "scoreDiff": 2,
           "textSource": "fullText"
         }
       ],
@@ -1537,21 +1507,6 @@
           "primaryScore": null,
           "secondaryScore": 92,
           "scoreDiff": 92,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "bad-cinderella-2023",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "bloomberg--chris-rovzar.json",
-          "secondaryOutlet": "Bloomberg News",
-          "secondaryCritic": "Chris Rovzar",
-          "primaryScore": 41,
-          "secondaryScore": 20,
-          "scoreDiff": 21,
           "textSource": "fullText"
         },
         {
@@ -1600,21 +1555,6 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "master-class-2011",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "abc-news--mark-kennedy.json",
-          "secondaryOutlet": "ABC News",
-          "secondaryCritic": "Mark Kennedy",
-          "primaryScore": 77,
-          "secondaryScore": null,
-          "scoreDiff": 77,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "oh-mary-west-end-2025",
           "method": "fingerprint",
           "similarity": 100,
@@ -1643,21 +1583,6 @@
           "secondaryScore": 73,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "rent-west-end-2026",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "camdennewjournal--lucy-popescu.json",
-          "primaryOutlet": "Camden New Journal",
-          "primaryCritic": "Lucy Popescu",
-          "secondaryFile": "islingtontribune--unknown.json",
-          "secondaryOutlet": "Islington Tribune",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 75,
-          "secondaryScore": 75,
-          "scoreDiff": 0,
-          "textSource": "fullText"
         },
         {
           "showId": "stick-fly-2011",
@@ -1956,39 +1881,9 @@
           "secondaryFile": "front-row-center--casey-curtis.json",
           "secondaryOutlet": "The Front Row Center",
           "secondaryCritic": "Casey Curtis",
-          "primaryScore": null,
+          "primaryScore": 81,
           "secondaryScore": 86,
-          "scoreDiff": 86,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-book-of-mormon-west-end-2024",
-          "method": "similarity+llm",
-          "similarity": 57,
-          "primaryFile": "guardian--arifa-akbar.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Arifa Akbar",
-          "secondaryFile": "observer--euan-ferguson.json",
-          "secondaryOutlet": "Observer",
-          "secondaryCritic": "Euan Ferguson",
-          "primaryScore": 94,
-          "secondaryScore": 91,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-iceman-cometh-2018",
-          "method": "similarity+llm",
-          "similarity": 64,
-          "primaryFile": "nytg--unknown.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "front-row-center--stanford-friedman.json",
-          "secondaryOutlet": "Front Row Center",
-          "secondaryCritic": "Stanford Friedman",
-          "primaryScore": null,
-          "secondaryScore": 77,
-          "scoreDiff": 77,
+          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -2034,6 +1929,21 @@
           "primaryScore": 53,
           "secondaryScore": 42,
           "scoreDiff": 11,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "titanique-west-end-2024",
+          "method": "similarity+llm",
+          "similarity": 67,
+          "primaryFile": "times-uk--clive-davis.json",
+          "primaryOutlet": "The Times (UK)",
+          "primaryCritic": "Clive Davis",
+          "secondaryFile": "sunday-times--unknown.json",
+          "secondaryOutlet": "The Sunday Times",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 96,
+          "secondaryScore": 96,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -2096,593 +2006,6 @@
           "scoreDiff": 0,
           "textSource": "fullText"
         }
-      ],
-      "excerpt-containment": [
-        {
-          "showId": "anna-christie-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 45,
-          "secondaryScore": 41,
-          "scoreDiff": 4,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "beaches-2026",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 44,
-          "secondaryScore": 63,
-          "scoreDiff": 19,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "call-me-izzy-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nysr--david-finkle.json",
-          "primaryOutlet": "New York Stage Review",
-          "primaryCritic": "David Finkle",
-          "secondaryFile": "new-york-stage-reviewpp--unknown.json",
-          "secondaryOutlet": "new-york-stage-reviewpp",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": null,
-          "scoreDiff": 78,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "dog-day-afternoon-2026",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "theatrely--emily-wyrwa.json",
-          "primaryOutlet": "Theatrely",
-          "primaryCritic": "Emily Wyrwa",
-          "secondaryFile": "nytimes--unknown.json",
-          "secondaryOutlet": "The New York Times",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 64,
-          "secondaryScore": 71,
-          "scoreDiff": 7,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "duke-and-roya-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 77,
-          "secondaryScore": 72,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 89,
-          "secondaryScore": 81,
-          "scoreDiff": 8,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "grief-camp-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 86,
-          "secondaryScore": 78,
-          "scoreDiff": 8,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "hold-on-to-me-darling-off-broadway-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": 75,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "house-of-mcqueen-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 39,
-          "secondaryScore": 57,
-          "scoreDiff": 18,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "in-the-amazon-warehouse-parking-lot-off-broadway-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 62,
-          "secondaryScore": 48,
-          "scoreDiff": 14,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "just-in-time-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 80,
-          "secondaryScore": 88,
-          "scoreDiff": 8,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "life-of-pi-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 77,
-          "secondaryScore": 70,
-          "scoreDiff": 7,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "life-of-pi-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": 81,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "merrily-we-roll-along-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 79,
-          "secondaryScore": 74,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "merrily-we-roll-along-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 79,
-          "secondaryScore": 77,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "merrily-we-roll-along-off-broadway-2022",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": 81,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "messy-white-gays-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 63,
-          "secondaryScore": 65,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "oh-mary-off-broadway-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "vulture--unknown.json",
-          "secondaryOutlet": "Vulture",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 87,
-          "secondaryScore": 81,
-          "scoreDiff": 6,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "operation-mincemeat-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "whatsonstage--alex-wood.json",
-          "primaryOutlet": "WhatsOnStage",
-          "primaryCritic": "Alex Wood",
-          "secondaryFile": "theatermania--unknown.json",
-          "secondaryOutlet": "TheaterMania",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 87,
-          "secondaryScore": 87,
-          "scoreDiff": 0,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "othello-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 62,
-          "secondaryScore": 73,
-          "scoreDiff": 11,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "paranormal-activity-2026",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "showriz--frank-rizzo.json",
-          "primaryOutlet": "Showriz",
-          "primaryCritic": "Frank Rizzo",
-          "secondaryFile": "variety--unknown.json",
-          "secondaryOutlet": "Variety",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 77,
-          "secondaryScore": 87,
-          "scoreDiff": 10,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "picnic-at-hanging-rock-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 42,
-          "secondaryScore": 44,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "purlie-victorious-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 84,
-          "secondaryScore": 80,
-          "scoreDiff": 4,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "purlie-victorious-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Tim Teeman",
-          "secondaryCritic": "",
-          "primaryScore": 88,
-          "secondaryScore": 83,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "purlie-victorious-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 93,
-          "secondaryScore": 88,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "saturday-church-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 77,
-          "secondaryScore": 75,
-          "scoreDiff": 2,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "shucked-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 67,
-          "secondaryScore": 63,
-          "scoreDiff": 4,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "shucked-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 91,
-          "secondaryScore": 87,
-          "scoreDiff": 4,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "swing-state-off-broadway-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 79,
-          "secondaryScore": 70,
-          "scoreDiff": 9,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "tammy-faye-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nyt-theater--jonathan-mandell.json",
-          "primaryOutlet": "New York Theater",
-          "primaryCritic": "Jonathan Mandell",
-          "secondaryFile": "nytg--unknown.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 41,
-          "secondaryScore": 24,
-          "scoreDiff": 17,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-bakers-wife-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 71,
-          "secondaryScore": 65,
-          "scoreDiff": 6,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-bakers-wife-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 91,
-          "secondaryScore": 88,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-fantasticks-2026",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": 85,
-          "scoreDiff": 7,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-fear-of-13-2026",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 66,
-          "secondaryScore": 61,
-          "scoreDiff": 5,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "the-hills-of-california-2024",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "variety--frank-rizzo.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Frank Rizzo",
-          "secondaryFile": "vulture--unknown.json",
-          "secondaryOutlet": "Vulture",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 90,
-          "secondaryScore": 87,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "this-world-of-tomorrow-off-broadway-2025",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 25,
-          "secondaryScore": 42,
-          "scoreDiff": 17,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "waiting-for-godot-off-broadway-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "observer--david-cote.json",
-          "primaryOutlet": "Observer",
-          "primaryCritic": "David Cote",
-          "secondaryFile": "cote-notices--unknown.json",
-          "secondaryOutlet": "Cote Notices",
-          "secondaryCritic": "",
-          "primaryScore": 85,
-          "secondaryScore": 78,
-          "scoreDiff": 7,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "waiting-for-godot-off-broadway-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "dailybeast--tim-teeman.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Tim Teeman",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 89,
-          "secondaryScore": 74,
-          "scoreDiff": 15,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
-          "method": "excerpt-containment",
-          "similarity": 100,
-          "primaryFile": "nytg--joe-dziemianowicz.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "Joe Dziemianowicz",
-          "secondaryFile": "nydailynews--unknown.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "",
-          "primaryScore": 74,
-          "secondaryScore": 70,
-          "scoreDiff": 4,
-          "textSource": "excerpts"
-        }
       ]
     }
   },
@@ -2730,21 +2053,6 @@
       "primaryScore": 87,
       "secondaryScore": 87,
       "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "a-few-good-men-2026",
-      "method": "similarity",
-      "similarity": 86,
-      "primaryFile": "deadline--greg-evans.json",
-      "primaryOutlet": "Deadline",
-      "primaryCritic": "Greg Evans",
-      "secondaryFile": "globalnews2--unknown.json",
-      "secondaryOutlet": "globalnews2",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 63,
-      "secondaryScore": 60,
-      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
@@ -2913,21 +2221,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "anna-christie-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 45,
-      "secondaryScore": 41,
-      "scoreDiff": 4,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "anna-x-west-end-2021",
       "method": "similarity",
       "similarity": 93,
@@ -2974,33 +2267,18 @@
     },
     {
       "showId": "bad-cinderella-2023",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "bloomberg--chris-rovzar.json",
-      "secondaryOutlet": "Bloomberg News",
-      "secondaryCritic": "Chris Rovzar",
-      "primaryScore": 41,
-      "secondaryScore": 20,
-      "scoreDiff": 21,
+      "method": "similarity",
+      "similarity": 80,
+      "primaryFile": "nydailynews--unknown.json",
+      "primaryOutlet": "New York Daily News",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "chicagotribune--chris-jones.json",
+      "secondaryOutlet": "Chicago Tribune",
+      "secondaryCritic": "Chris Jones",
+      "primaryScore": 19,
+      "secondaryScore": 24,
+      "scoreDiff": 5,
       "textSource": "fullText"
-    },
-    {
-      "showId": "beaches-2026",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 44,
-      "secondaryScore": 63,
-      "scoreDiff": 19,
-      "textSource": "excerpts"
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
@@ -3042,9 +2320,9 @@
       "secondaryFile": "thedaviddesk2--davidsheward.json",
       "secondaryOutlet": "Thedaviddesk2",
       "secondaryCritic": "David.sheward",
-      "primaryScore": 88,
+      "primaryScore": 80,
       "secondaryScore": 79,
-      "scoreDiff": 9,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -3091,21 +2369,6 @@
       "secondaryScore": 78,
       "scoreDiff": 17,
       "textSource": "fullText"
-    },
-    {
-      "showId": "call-me-izzy-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nysr--david-finkle.json",
-      "primaryOutlet": "New York Stage Review",
-      "primaryCritic": "David Finkle",
-      "secondaryFile": "new-york-stage-reviewpp--unknown.json",
-      "secondaryOutlet": "new-york-stage-reviewpp",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": null,
-      "scoreDiff": 78,
-      "textSource": "excerpts"
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
@@ -3177,9 +2440,9 @@
       "secondaryFile": "sierz-co-uk--unknown.json",
       "secondaryOutlet": "Aleks Sierz",
       "secondaryCritic": "Unknown",
-      "primaryScore": 84,
+      "primaryScore": 83,
       "secondaryScore": 91,
-      "scoreDiff": 7,
+      "scoreDiff": 8,
       "textSource": "fullText"
     },
     {
@@ -3210,21 +2473,6 @@
       "primaryScore": 76,
       "secondaryScore": 88,
       "scoreDiff": 12,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "cranford-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 82,
-      "primaryFile": "fringereview--unknown.json",
-      "primaryOutlet": "FringeReview",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "viewfromthegods--simon-jenner.json",
-      "secondaryOutlet": "View From The Gods",
-      "secondaryCritic": "Simon Jenner",
-      "primaryScore": 90,
-      "secondaryScore": 92,
-      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -3273,21 +2521,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "dog-day-afternoon-2026",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "theatrely--emily-wyrwa.json",
-      "primaryOutlet": "Theatrely",
-      "primaryCritic": "Emily Wyrwa",
-      "secondaryFile": "nytimes--unknown.json",
-      "secondaryOutlet": "The New York Times",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 64,
-      "secondaryScore": 71,
-      "scoreDiff": 7,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "dog-mom-off-west-end-2026",
       "method": "similarity",
       "similarity": 91,
@@ -3331,21 +2564,6 @@
       "secondaryScore": 88,
       "scoreDiff": 2,
       "textSource": "fullText"
-    },
-    {
-      "showId": "duke-and-roya-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 77,
-      "secondaryScore": 72,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
     },
     {
       "showId": "elling-2010",
@@ -3423,21 +2641,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 89,
-      "secondaryScore": 81,
-      "scoreDiff": 8,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
       "method": "similarity",
       "similarity": 86,
@@ -3481,21 +2684,6 @@
       "secondaryScore": 88,
       "scoreDiff": 0,
       "textSource": "fullText"
-    },
-    {
-      "showId": "grief-camp-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 86,
-      "secondaryScore": 78,
-      "scoreDiff": 8,
-      "textSource": "excerpts"
     },
     {
       "showId": "groundhog-day-west-end-2023",
@@ -3574,21 +2762,6 @@
     },
     {
       "showId": "hold-on-to-me-darling-off-broadway-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": 75,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "hold-on-to-me-darling-off-broadway-2024",
       "method": "similarity+llm",
       "similarity": 45,
       "primaryFile": "dailybeast--unknown.json",
@@ -3616,21 +2789,6 @@
       "secondaryScore": 42,
       "scoreDiff": 25,
       "textSource": "fullText"
-    },
-    {
-      "showId": "house-of-mcqueen-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 39,
-      "secondaryScore": 57,
-      "scoreDiff": 18,
-      "textSource": "excerpts"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -3678,21 +2836,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "in-the-amazon-warehouse-parking-lot-off-broadway-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 62,
-      "secondaryScore": 48,
-      "scoreDiff": 14,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "in-transit-2016",
       "method": "similarity+llm",
       "similarity": 63,
@@ -3717,9 +2860,9 @@
       "secondaryFile": "sierz-co-uk--unknown.json",
       "secondaryOutlet": "Aleks Sierz",
       "secondaryCritic": "Unknown",
-      "primaryScore": 76,
+      "primaryScore": 80,
       "secondaryScore": 76,
-      "scoreDiff": 0,
+      "scoreDiff": 4,
       "textSource": "fullText"
     },
     {
@@ -3736,21 +2879,6 @@
       "secondaryScore": null,
       "scoreDiff": 97,
       "textSource": "fullText"
-    },
-    {
-      "showId": "just-in-time-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Chris Jones",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 80,
-      "secondaryScore": 88,
-      "scoreDiff": 8,
-      "textSource": "excerpts"
     },
     {
       "showId": "kimberly-akimbo-2022",
@@ -3811,36 +2939,6 @@
       "secondaryScore": 78,
       "scoreDiff": 2,
       "textSource": "fullText"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 77,
-      "secondaryScore": 70,
-      "scoreDiff": 7,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "life-of-pi-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": 81,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
     },
     {
       "showId": "lobby-hero-2018",
@@ -3933,21 +3031,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "master-class-2011",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "abc-news--mark-kennedy.json",
-      "secondaryOutlet": "ABC News",
-      "secondaryCritic": "Mark Kennedy",
-      "primaryScore": 77,
-      "secondaryScore": null,
-      "scoreDiff": 77,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "mensa-regional-2026",
       "method": "similarity",
       "similarity": 95,
@@ -3963,51 +3046,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "merrily-we-roll-along-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 79,
-      "secondaryScore": 74,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 79,
-      "secondaryScore": 77,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "merrily-we-roll-along-off-broadway-2022",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": 81,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "method": "similarity",
       "similarity": 94,
@@ -4021,21 +3059,6 @@
       "secondaryScore": 85,
       "scoreDiff": 7,
       "textSource": "fullText"
-    },
-    {
-      "showId": "messy-white-gays-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 63,
-      "secondaryScore": 65,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
     },
     {
       "showId": "mothers-and-sons-2014",
@@ -4068,6 +3091,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "much-ado-about-nothing-2026",
+      "method": "similarity",
+      "similarity": 83,
+      "primaryFile": "theater-life--david-sheward.json",
+      "primaryOutlet": "Theater Life",
+      "primaryCritic": "David Sheward",
+      "secondaryFile": "thedaviddesk2--davidsheward.json",
+      "secondaryOutlet": "The David Desk 2",
+      "secondaryCritic": "David.sheward",
+      "primaryScore": 86,
+      "secondaryScore": null,
+      "scoreDiff": 86,
+      "textSource": "fullText"
+    },
+    {
       "showId": "much-ado-about-nothing-regional-2026",
       "method": "similarity",
       "similarity": 84,
@@ -4081,21 +3119,6 @@
       "secondaryScore": 86,
       "scoreDiff": 1,
       "textSource": "fullText"
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Chris Jones",
-      "secondaryFile": "vulture--unknown.json",
-      "secondaryOutlet": "Vulture",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 87,
-      "secondaryScore": 81,
-      "scoreDiff": 6,
-      "textSource": "excerpts"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -4122,9 +3145,9 @@
       "secondaryFile": "sierz-co-uk--unknown.json",
       "secondaryOutlet": "Aleks Sierz",
       "secondaryCritic": "Unknown",
-      "primaryScore": 82,
+      "primaryScore": 81,
       "secondaryScore": 88,
-      "scoreDiff": 6,
+      "scoreDiff": 7,
       "textSource": "fullText"
     },
     {
@@ -4173,21 +3196,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "operation-mincemeat-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "whatsonstage--alex-wood.json",
-      "primaryOutlet": "WhatsOnStage",
-      "primaryCritic": "Alex Wood",
-      "secondaryFile": "theatermania--unknown.json",
-      "secondaryOutlet": "TheaterMania",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 87,
-      "secondaryScore": 87,
-      "scoreDiff": 0,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "operation-mincemeat-tour-2026",
       "method": "similarity",
       "similarity": 89,
@@ -4203,21 +3211,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "othello-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Chris Jones",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 62,
-      "secondaryScore": 73,
-      "scoreDiff": 11,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "other-desert-cities-2026",
       "method": "similarity",
       "similarity": 84,
@@ -4227,9 +3220,9 @@
       "secondaryFile": "thedaviddesk2--davidsheward.json",
       "secondaryOutlet": "The David Desk 2",
       "secondaryCritic": "David.sheward",
-      "primaryScore": 74,
+      "primaryScore": 57,
       "secondaryScore": 74,
-      "scoreDiff": 0,
+      "scoreDiff": 17,
       "textSource": "fullText"
     },
     {
@@ -4264,21 +3257,6 @@
     },
     {
       "showId": "paranormal-activity-2026",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "showriz--frank-rizzo.json",
-      "primaryOutlet": "Showriz",
-      "primaryCritic": "Frank Rizzo",
-      "secondaryFile": "variety--unknown.json",
-      "secondaryOutlet": "Variety",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 77,
-      "secondaryScore": 87,
-      "scoreDiff": 10,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "paranormal-activity-2026",
       "method": "similarity",
       "similarity": 90,
       "primaryFile": "theater-life--david-sheward.json",
@@ -4308,21 +3286,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "picnic-at-hanging-rock-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 42,
-      "secondaryScore": 44,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "prince-of-broadway-2017",
       "method": "similarity+llm",
       "similarity": 59,
@@ -4350,51 +3313,6 @@
       "primaryScore": 73,
       "secondaryScore": 73,
       "scoreDiff": 0,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 84,
-      "secondaryScore": 80,
-      "scoreDiff": 4,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Tim Teeman",
-      "secondaryCritic": "",
-      "primaryScore": 88,
-      "secondaryScore": 83,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "purlie-victorious-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 93,
-      "secondaryScore": 88,
-      "scoreDiff": 5,
       "textSource": "excerpts"
     },
     {
@@ -4428,18 +3346,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "rent-west-end-2026",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "camdennewjournal--lucy-popescu.json",
-      "primaryOutlet": "Camden New Journal",
-      "primaryCritic": "Lucy Popescu",
-      "secondaryFile": "islingtontribune--unknown.json",
-      "secondaryOutlet": "Islington Tribune",
+      "showId": "relative-motion-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 78,
+      "primaryFile": "the-theatre-times--aleks-sierz.json",
+      "primaryOutlet": "The Theatre Times",
+      "primaryCritic": "Aleks Sierz",
+      "secondaryFile": "sierz-co-uk--unknown.json",
+      "secondaryOutlet": "Aleks Sierz",
       "secondaryCritic": "Unknown",
-      "primaryScore": 75,
-      "secondaryScore": 75,
-      "scoreDiff": 0,
+      "primaryScore": 55,
+      "secondaryScore": 48,
+      "scoreDiff": 7,
       "textSource": "fullText"
     },
     {
@@ -4458,21 +3376,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "saturday-church-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 77,
-      "secondaryScore": 75,
-      "scoreDiff": 2,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "seminar-2011",
       "method": "similarity",
       "similarity": 70,
@@ -4486,36 +3389,6 @@
       "secondaryScore": 45,
       "scoreDiff": 4,
       "textSource": "fullText"
-    },
-    {
-      "showId": "shucked-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 67,
-      "secondaryScore": 63,
-      "scoreDiff": 4,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "shucked-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 91,
-      "secondaryScore": 87,
-      "scoreDiff": 4,
-      "textSource": "excerpts"
     },
     {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
@@ -4557,9 +3430,9 @@
       "secondaryFile": "thedaviddesk2--davidsheward.json",
       "secondaryOutlet": "Thedaviddesk2",
       "secondaryCritic": "David.sheward",
-      "primaryScore": 80,
+      "primaryScore": 84,
       "secondaryScore": 81,
-      "scoreDiff": 1,
+      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
@@ -4662,9 +3535,9 @@
       "secondaryFile": "front-row-center--casey-curtis.json",
       "secondaryOutlet": "The Front Row Center",
       "secondaryCritic": "Casey Curtis",
-      "primaryScore": null,
+      "primaryScore": 81,
       "secondaryScore": 86,
-      "scoreDiff": 86,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
@@ -4698,36 +3571,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "swing-state-off-broadway-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 79,
-      "secondaryScore": 70,
-      "scoreDiff": 9,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nyt-theater--jonathan-mandell.json",
-      "primaryOutlet": "New York Theater",
-      "primaryCritic": "Jonathan Mandell",
-      "secondaryFile": "nytg--unknown.json",
-      "secondaryOutlet": "New York Theatre Guide",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 41,
-      "secondaryScore": 24,
-      "scoreDiff": 17,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "the-47th-west-end-2022",
       "method": "similarity",
       "similarity": 86,
@@ -4755,51 +3598,6 @@
       "primaryScore": 60,
       "secondaryScore": 74,
       "scoreDiff": 14,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-bakers-wife-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 71,
-      "secondaryScore": 65,
-      "scoreDiff": 6,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "the-bakers-wife-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 91,
-      "secondaryScore": 88,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "method": "similarity+llm",
-      "similarity": 57,
-      "primaryFile": "guardian--arifa-akbar.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Arifa Akbar",
-      "secondaryFile": "observer--euan-ferguson.json",
-      "secondaryOutlet": "Observer",
-      "secondaryCritic": "Euan Ferguson",
-      "primaryScore": 94,
-      "secondaryScore": 91,
-      "scoreDiff": 3,
       "textSource": "fullText"
     },
     {
@@ -4833,21 +3631,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-bridges-of-madison-county-2014",
-      "method": "similarity",
-      "similarity": 86,
-      "primaryFile": "variety--marilyn-stasio.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Marilyn Stasio",
-      "secondaryFile": "chicagotribune--chris-jones.json",
-      "secondaryOutlet": "Chicago Tribune",
-      "secondaryCritic": "Chris Jones",
-      "primaryScore": 49,
-      "secondaryScore": 61,
-      "scoreDiff": 12,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-corn-is-green-west-end-2022",
       "method": "similarity",
       "similarity": 83,
@@ -4861,36 +3644,6 @@
       "secondaryScore": 62,
       "scoreDiff": 1,
       "textSource": "fullText"
-    },
-    {
-      "showId": "the-fantasticks-2026",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": 85,
-      "scoreDiff": 7,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "the-fear-of-13-2026",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 66,
-      "secondaryScore": 61,
-      "scoreDiff": 5,
-      "textSource": "excerpts"
     },
     {
       "showId": "the-glow-west-end-2022",
@@ -4923,21 +3676,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-hills-of-california-2024",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "variety--frank-rizzo.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Frank Rizzo",
-      "secondaryFile": "vulture--unknown.json",
-      "secondaryOutlet": "Vulture",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 90,
-      "secondaryScore": 87,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "the-holy-rosenbergs-off-west-end-2026",
       "method": "similarity",
       "similarity": 91,
@@ -4950,36 +3688,6 @@
       "primaryScore": 82,
       "secondaryScore": 81,
       "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-iceman-cometh-2018",
-      "method": "similarity+llm",
-      "similarity": 64,
-      "primaryFile": "nytg--unknown.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "front-row-center--stanford-friedman.json",
-      "secondaryOutlet": "Front Row Center",
-      "secondaryCritic": "Stanford Friedman",
-      "primaryScore": null,
-      "secondaryScore": 77,
-      "scoreDiff": 77,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 86,
-      "primaryFile": "fringereview--unknown.json",
-      "primaryOutlet": "fringereview",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "viewfromthegods--simon-jenner.json",
-      "secondaryOutlet": "Viewfromthegods",
-      "secondaryCritic": "Simon Jenner",
-      "primaryScore": 77,
-      "secondaryScore": 77,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -5010,21 +3718,6 @@
       "primaryScore": 85,
       "secondaryScore": 81,
       "scoreDiff": 4,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "notesfromrowh--unknown.json",
-      "primaryOutlet": "Notes From Row H",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "theatre-south-east--helena-featherstone.json",
-      "secondaryOutlet": "Theatre South East",
-      "secondaryCritic": "Helena Featherstone",
-      "primaryScore": 98,
-      "secondaryScore": 97,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -5163,21 +3856,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "this-world-of-tomorrow-off-broadway-2025",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 25,
-      "secondaryScore": 42,
-      "scoreDiff": 17,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "method": "similarity+llm",
       "similarity": 55,
@@ -5190,6 +3868,21 @@
       "primaryScore": 53,
       "secondaryScore": 42,
       "scoreDiff": 11,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "method": "similarity+llm",
+      "similarity": 67,
+      "primaryFile": "times-uk--clive-davis.json",
+      "primaryOutlet": "The Times (UK)",
+      "primaryCritic": "Clive Davis",
+      "secondaryFile": "sunday-times--unknown.json",
+      "secondaryOutlet": "The Sunday Times",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 96,
+      "secondaryScore": 96,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -5253,36 +3946,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "waiting-for-godot-off-broadway-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "observer--david-cote.json",
-      "primaryOutlet": "Observer",
-      "primaryCritic": "David Cote",
-      "secondaryFile": "cote-notices--unknown.json",
-      "secondaryOutlet": "Cote Notices",
-      "secondaryCritic": "",
-      "primaryScore": 85,
-      "secondaryScore": 78,
-      "scoreDiff": 7,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "waiting-for-godot-off-broadway-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "dailybeast--tim-teeman.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Tim Teeman",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 89,
-      "secondaryScore": 74,
-      "scoreDiff": 15,
-      "textSource": "excerpts"
-    },
-    {
       "showId": "walden-west-end-2021",
       "method": "similarity",
       "similarity": 90,
@@ -5296,21 +3959,6 @@
       "secondaryScore": 61,
       "scoreDiff": 6,
       "textSource": "fullText"
-    },
-    {
-      "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
-      "method": "excerpt-containment",
-      "similarity": 100,
-      "primaryFile": "nytg--joe-dziemianowicz.json",
-      "primaryOutlet": "New York Theatre Guide",
-      "primaryCritic": "Joe Dziemianowicz",
-      "secondaryFile": "nydailynews--unknown.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "",
-      "primaryScore": 74,
-      "secondaryScore": 70,
-      "scoreDiff": 4,
-      "textSource": "excerpts"
     },
     {
       "showId": "water-for-elephants-tour-2025",
@@ -5352,9 +4000,9 @@
       "secondaryFile": "camdennewjournal--lucy-popescu.json",
       "secondaryOutlet": "Camden New Journal",
       "secondaryCritic": "Lucy Popescu",
-      "primaryScore": 87,
+      "primaryScore": 90,
       "secondaryScore": 88,
-      "scoreDiff": 1,
+      "scoreDiff": 2,
       "textSource": "fullText"
     }
   ],
@@ -5841,6 +4489,22 @@
       ]
     },
     {
+      "showId": "broken-glass-off-west-end-2026",
+      "method": "fingerprint",
+      "files": [
+        "times-uk--clive-davis.json",
+        "sunday-times--unknown.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Clive Davis",
+        "Unknown"
+      ]
+    },
+    {
       "showId": "bullets-over-broadway-2014",
       "method": "fingerprint",
       "files": [
@@ -6225,22 +4889,6 @@
       ]
     },
     {
-      "showId": "falls-for-jodie-off-broadway-2026",
-      "method": "fingerprint",
-      "files": [
-        "theater-pizzazz--alix-cohen.json",
-        "talkinbroadway--alix-cohen.json"
-      ],
-      "outlets": [
-        "Theater Pizzazz",
-        "Talkin' Broadway"
-      ],
-      "critics": [
-        "Alix Cohen",
-        "Alix Cohen"
-      ]
-    },
-    {
       "showId": "falsettos-1992",
       "method": "fingerprint",
       "files": [
@@ -6318,6 +4966,22 @@
       "critics": [
         "Robert Kahn",
         "Steven Suskin"
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-off-west-end-2025",
+      "method": "fingerprint",
+      "files": [
+        "times-uk--dominic-maxwell.json",
+        "sunday-times--dominic-maxwell.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Dominic Maxwell",
+        "Dominic Maxwell"
       ]
     },
     {
@@ -6913,6 +5577,38 @@
       ]
     },
     {
+      "showId": "it-shoulda-been-you-2015",
+      "method": "fingerprint",
+      "files": [
+        "simon-parris-man-in-chair--simon-parris.json",
+        "jta--uriel-heilman.json"
+      ],
+      "outlets": [
+        "simon-parris-man-in-chair",
+        "jta"
+      ],
+      "critics": [
+        "Simon Parris",
+        "Uriel Heilman"
+      ]
+    },
+    {
+      "showId": "jerusalem-2011",
+      "method": "fingerprint",
+      "files": [
+        "newsday--matt-windman.json",
+        "amny--matt-windman.json"
+      ],
+      "outlets": [
+        "Newsday",
+        "am New York"
+      ],
+      "critics": [
+        "Matt Windman",
+        "Matt Windman"
+      ]
+    },
+    {
       "showId": "jerusalem-2011",
       "method": "fingerprint",
       "files": [
@@ -7297,6 +5993,22 @@
       ]
     },
     {
+      "showId": "mr-footes-other-leg-west-end-2015",
+      "method": "fingerprint",
+      "files": [
+        "times-uk--dominic-maxwell.json",
+        "sunday-times--dominic-maxwell.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Dominic Maxwell",
+        "Dominic Maxwell"
+      ]
+    },
+    {
       "showId": "mrs-doubtfire-2021",
       "method": "fingerprint",
       "files": [
@@ -7604,6 +6316,22 @@
       "showId": "rent-west-end-2026",
       "method": "fingerprint",
       "files": [
+        "islingtontribune--unknown.json",
+        "camdennewjournal--lucy-popescu.json"
+      ],
+      "outlets": [
+        "Islington Tribune",
+        "Camden New Journal"
+      ],
+      "critics": [
+        "Unknown",
+        "Lucy Popescu"
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "method": "fingerprint",
+      "files": [
         "sunday-times--clive-davis.json",
         "times-uk--clive-davis.json"
       ],
@@ -7614,6 +6342,22 @@
       "critics": [
         "Clive Davis",
         "Clive Davis"
+      ]
+    },
+    {
+      "showId": "rock-of-ages-2009",
+      "method": "fingerprint",
+      "files": [
+        "culturesauce--thom-geier.json",
+        "ew--thom-geier.json"
+      ],
+      "outlets": [
+        "Culture Sauce",
+        "Entertainment Weekly"
+      ],
+      "critics": [
+        "Thom Geier",
+        "Thom Geier"
       ]
     },
     {
@@ -7889,22 +6633,6 @@
       ]
     },
     {
-      "showId": "that-is-not-who-i-am-west-end-2022",
-      "method": "fingerprint",
-      "files": [
-        "guardian--susannah-clapp.json",
-        "observer--susannah-clapp.json"
-      ],
-      "outlets": [
-        "The Guardian",
-        "Observer"
-      ],
-      "critics": [
-        "Susannah Clapp",
-        "Susannah Clapp"
-      ]
-    },
-    {
       "showId": "the-authenticator-west-end-2026",
       "method": "fingerprint",
       "files": [
@@ -7985,19 +6713,19 @@
       ]
     },
     {
-      "showId": "the-devil-wears-prada-west-end-2024",
+      "showId": "the-crucible-west-end-2022",
       "method": "fingerprint",
       "files": [
-        "observer--susannah-clapp.json",
-        "guardian--susannah-clapp.json"
+        "hampstead-highgate-express--charlotte-l-rose.json",
+        "daily-echo--kieran-doody.json"
       ],
       "outlets": [
-        "Observer",
-        "The Guardian"
+        "Hampstead & Highgate Express",
+        "Daily Echo"
       ],
       "critics": [
-        "Susannah Clapp",
-        "Susannah Clapp"
+        "Charlotte L Rose",
+        "Kieran Doody"
       ]
     },
     {
@@ -8129,6 +6857,22 @@
       ]
     },
     {
+      "showId": "the-kid-stays-in-the-picture-west-end-2017",
+      "method": "fingerprint",
+      "files": [
+        "times-uk--ann-treneman.json",
+        "sunday-times--ann-treneman.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Ann Treneman",
+        "Ann Treneman"
+      ]
+    },
+    {
       "showId": "the-king-and-i-1996",
       "method": "fingerprint",
       "files": [
@@ -8181,7 +6925,7 @@
       "method": "fingerprint",
       "files": [
         "whatsonstage--pete-hempstead.json",
-        "theatermania--david-gordon.json"
+        "theatermania--pete-hempstead.json"
       ],
       "outlets": [
         "WhatsOnStage",
@@ -8189,7 +6933,7 @@
       ],
       "critics": [
         "Pete Hempstead",
-        "David Gordon"
+        "Editorial Staff"
       ]
     },
     {
@@ -8206,6 +6950,22 @@
       "critics": [
         "Holly Williams",
         "Holly Williams"
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "method": "fingerprint",
+      "files": [
+        "times-uk--dominic-maxwell.json",
+        "sunday-times--dominic-maxwell.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Dominic Maxwell",
+        "Dominic Maxwell"
       ]
     },
     {
@@ -8318,22 +7078,6 @@
       "critics": [
         "Stanford Friedman",
         "Stanford Friedman"
-      ]
-    },
-    {
-      "showId": "the-seagull-2008",
-      "method": "fingerprint",
-      "files": [
-        "observer--susannah-clapp.json",
-        "guardian--susannah-clapp.json"
-      ],
-      "outlets": [
-        "Observer",
-        "The Guardian"
-      ],
-      "critics": [
-        "Susannah Clapp",
-        "Susannah Clapp"
       ]
     },
     {
@@ -8709,6 +7453,24 @@
       ]
     },
     {
+      "showId": "a-raisin-in-the-sun-2014",
+      "method": "similarity",
+      "similarity": 92,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--david-finkle.json",
+        "northjerseycom--robert-feldberg.json"
+      ],
+      "outlets": [
+        "HuffPost",
+        "NorthJersey.com"
+      ],
+      "critics": [
+        "David Finkle",
+        "Robert Feldberg"
+      ]
+    },
+    {
       "showId": "a-strange-loop-2022",
       "method": "similarity",
       "similarity": 87,
@@ -8981,24 +7743,6 @@
     {
       "showId": "dog-mom-off-west-end-2026",
       "method": "similarity",
-      "similarity": 44,
-      "reason": "different-critics-unverified",
-      "files": [
-        "onin--caitlin-neal.json",
-        "rivertribe--lyndsay-kenwright.json"
-      ],
-      "outlets": [
-        "Onin",
-        "rivertribe"
-      ],
-      "critics": [
-        "Caitlin Neal",
-        "Lyndsay Kenwright"
-      ]
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "method": "similarity",
       "similarity": 71,
       "reason": "different-critics-unverified",
       "files": [
@@ -9029,42 +7773,6 @@
       ],
       "critics": [
         "Caitlin Neal",
-        "Unknown"
-      ]
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 46,
-      "reason": "different-critics-unverified",
-      "files": [
-        "rivertribe--lyndsay-kenwright.json",
-        "west-end-wilma--westendwilma.json"
-      ],
-      "outlets": [
-        "rivertribe",
-        "West End Wilma"
-      ],
-      "critics": [
-        "Lyndsay Kenwright",
-        "Westendwilma"
-      ]
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 45,
-      "reason": "different-critics-unverified",
-      "files": [
-        "rivertribe--lyndsay-kenwright.json",
-        "whatsgoodtodo--unknown.json"
-      ],
-      "outlets": [
-        "rivertribe",
-        "What's Good To Do"
-      ],
-      "critics": [
-        "Lyndsay Kenwright",
         "Unknown"
       ]
     },
@@ -9246,24 +7954,6 @@
       "critics": [
         "Patrick Marmion",
         "Robert Gore Langton"
-      ]
-    },
-    {
-      "showId": "it-shoulda-been-you-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "reason": "different-critics-unverified",
-      "files": [
-        "jta--uriel-heilman.json",
-        "simon-parris-man-in-chair--simon-parris.json"
-      ],
-      "outlets": [
-        "jta",
-        "simon-parris-man-in-chair"
-      ],
-      "critics": [
-        "Uriel Heilman",
-        "Simon Parris"
       ]
     },
     {
@@ -9771,24 +8461,6 @@
       ]
     },
     {
-      "showId": "the-crucible-west-end-2022",
-      "method": "fingerprint",
-      "similarity": 100,
-      "reason": "different-critics-unverified",
-      "files": [
-        "daily-echo--kieran-doody.json",
-        "hampstead-highgate-express--charlotte-l-rose.json"
-      ],
-      "outlets": [
-        "Daily Echo",
-        "Hampstead & Highgate Express"
-      ],
-      "critics": [
-        "Kieran Doody",
-        "Charlotte L Rose"
-      ]
-    },
-    {
       "showId": "the-drifters-girl-west-end-2021",
       "method": "similarity",
       "similarity": 49,
@@ -9804,6 +8476,24 @@
       "critics": [
         "Arifa Akbar",
         "Fiona Mountford"
+      ]
+    },
+    {
+      "showId": "the-drowsy-chaperone-regional-2026",
+      "method": "similarity",
+      "similarity": 41,
+      "reason": "different-critics-unverified",
+      "files": [
+        "around-the-town-chicago--alan-bresloff.json",
+        "curtaincallchicago--paul-lisnek.json"
+      ],
+      "outlets": [
+        "Around the Town Chicago",
+        "Curtain Call Chicago"
+      ],
+      "critics": [
+        "Alan Bresloff",
+        "Paul Lisnek"
       ]
     },
     {
@@ -9912,6 +8602,24 @@
       "critics": [
         "Clive Davis",
         "Sarah Crompton"
+      ]
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 96,
+      "reason": "different-critics-unverified",
+      "files": [
+        "notesfromrowh--helena6.json",
+        "theatre-south-east--helena-featherstone.json"
+      ],
+      "outlets": [
+        "Notes From Row H",
+        "Theatre South East"
+      ],
+      "critics": [
+        "helena6",
+        "Helena Featherstone"
       ]
     },
     {
@@ -10092,6 +8800,24 @@
       "critics": [
         "Greg Evans",
         "DEADLINE"
+      ]
+    },
+    {
+      "showId": "white-rooster-regional-2026",
+      "method": "similarity",
+      "similarity": 44,
+      "reason": "different-critics-unverified",
+      "files": [
+        "around-the-town-chicago--alan-bresloff.json",
+        "curtaincallchicago--paul-lisnek.json"
+      ],
+      "outlets": [
+        "Around the Town Chicago",
+        "Curtain Call Chicago"
+      ],
+      "critics": [
+        "Alan Bresloff",
+        "Paul Lisnek"
       ]
     }
   ],
@@ -10306,26 +9032,6 @@
         "nytg--unknown.json"
       ]
     },
-    "92bf679a1d9cb340~b888d359c0da2641": {
-      "verdict": true,
-      "promptVersion": "g1-2da6c54dee98",
-      "at": "2026-11-17T13:42:53.053Z",
-      "showId": "the-book-of-mormon-west-end-2024",
-      "files": [
-        "guardian--arifa-akbar.json",
-        "observer--euan-ferguson.json"
-      ]
-    },
-    "b7b3bfabed6fd85d~fbddc49552a58dac": {
-      "verdict": true,
-      "promptVersion": "g1-2da6c54dee98",
-      "at": "2026-11-17T13:43:17.266Z",
-      "showId": "the-iceman-cometh-2018",
-      "files": [
-        "front-row-center--stanford-friedman.json",
-        "nytg--unknown.json"
-      ]
-    },
     "35fbc5414c584cfb~e224f02fa7230dda": {
       "verdict": true,
       "promptVersion": "g1-2da6c54dee98",
@@ -10404,6 +9110,16 @@
       "files": [
         "headtopics--sdut.json",
         "san-diego-union-tribune--pam-kragen.json"
+      ]
+    },
+    "55abb6a438d8a2e7~e09cbd0d8c0d2057": {
+      "verdict": true,
+      "promptVersion": "g1-2da6c54dee98",
+      "at": "2026-11-24T15:37:56.887Z",
+      "showId": "titanique-west-end-2024",
+      "files": [
+        "sunday-times--unknown.json",
+        "times-uk--clive-davis.json"
       ]
     }
   }
