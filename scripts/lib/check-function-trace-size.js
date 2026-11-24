@@ -12,8 +12,8 @@
  * counts, Vercel counts it), and fail above the limit. Prints the function
  * name and its 5 biggest files.
  *
- * Usage: node scripts/lib/check-function-trace-size.js [.next dir] [--limit-mb=230]
- *        node scripts/lib/check-function-trace-size.js --vercel-output [.vercel/output dir] [--limit-mb=230]
+ * Usage: node scripts/lib/check-function-trace-size.js [.next dir] [--limit-mb=180]
+ *        node scripts/lib/check-function-trace-size.js --vercel-output [.vercel/output dir] [--limit-mb=180]
  *
  * --vercel-output (BRO-8165) measures the PACKAGED functions, the thing Vercel's
  * 250 MB limit actually applies to: every .vercel/output/functions/**\/*.func
@@ -30,9 +30,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Vercel's cap is 250 MB; fail at 230 MB so a function is caught before it is
-// close enough that one dependency bump breaks the deploy.
-const DEFAULT_LIMIT_MB = 230;
+// BRO-8159: the prior worker reported maxima across 10 main runs of 143.3 MB
+// traced and 147.5 MB packaged. 180 MB leaves 32.5 MB (22%) above the latter,
+// and 70 MB below Vercel's 250 MB cap. Run IDs were not retained in the report;
+// recheck the measurements as builds change. Both workflow checks are advisory.
+const DEFAULT_LIMIT_MB = 180;
 const MB = 1024 * 1024;
 const MAX_MISSING_RATIO = 0.5;
 

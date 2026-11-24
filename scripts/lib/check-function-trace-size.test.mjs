@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { sizeTrace, scanTraces } = require('./check-function-trace-size.js');
+const { sizeTrace, scanTraces, DEFAULT_LIMIT_MB } = require('./check-function-trace-size.js');
 const SCRIPT = join(import.meta.dirname, 'check-function-trace-size.js');
 const KB = 1024;
 
@@ -140,6 +140,23 @@ function vercelFixture() {
   writeFileSync(join(fns, 'c.func', '.vc-config.json'), JSON.stringify({ filePathMap: { 'mapped.bin': 'mapped.bin' } }));
   return { root, fns, out: join(root, '.vercel', 'output') };
 }
+
+test('calibrated default gates packaged functions on either side of 180 MB', () => {
+  assert.equal(DEFAULT_LIMIT_MB, 180);
+  const { root, fns, out } = vercelFixture();
+  try {
+    const big = join(fns, 'api', 'a.func', 'node_modules', 'x', 'boundary.bin');
+    writeFileSync(big, '');
+    // The other files in a.func total 310 KB, so these straddle the default.
+    truncateSync(big, DEFAULT_LIMIT_MB * MB - 310 * KB);
+    const under = spawnSync('node', [SCRIPT, '--vercel-output', out], { encoding: 'utf8' });
+    assert.equal(under.status, 0, under.stdout);
+    truncateSync(big, DEFAULT_LIMIT_MB * MB - 310 * KB + 1);
+    const over = spawnSync('node', [SCRIPT, '--vercel-output', out], { encoding: 'utf8' });
+    assert.equal(over.status, 1, over.stdout);
+    assert.match(over.stdout, /FAIL api\/a/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
 
 test('sizeFuncDir counts files, follows symlinks once, survives cycles, adds filePathMap targets', () => {
   const { root, fns } = vercelFixture();
