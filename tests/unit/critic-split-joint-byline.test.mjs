@@ -28,3 +28,10 @@ test('a genuine typo still reports', () => {
   const reviews = [...rv('Marilyn Stasio', 'Variety', 20), ...rv('Marylin Stasio', 'Variety')];
   assert.ok(keys(reviews).length > 0);
 });
+
+test('slash joint credit is recognised; Anderson / "Jr." names are not split', () => {
+  assert.deepEqual(keys([...rv('Sara Holdren', 'X', 5), ...rv('Jackson McHenry', 'X', 5), ...rv('Sara Holdren/Jackson McHenry', 'X')]), []);
+  const { jointParts } = require('../../scripts/audit-critic-splits.js');
+  assert.equal(jointParts('Jason Anderson'), null);
+  assert.equal(jointParts('Peter Marks, Jr.'), null);
+});

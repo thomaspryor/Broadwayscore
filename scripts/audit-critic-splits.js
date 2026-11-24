@@ -60,7 +60,7 @@ function buildPages(reviews) {
  * pair after the live gate failed; recognise the shape up front instead.
  */
 function jointParts(name) {
-  const parts = String(name).split(/\s*(?:,|&|\band\b|\+)\s*/i).map(s => s.trim()).filter(Boolean);
+  const parts = String(name).split(/\s*(?:,|&|\/|\band\b|\+)\s*/i).map(s => s.trim()).filter(Boolean);
   return parts.length >= 2 && parts.every(s => foldTokens(s).length >= 2) ? parts.map(s => foldTokens(s).join(' ')) : null;
 }
 /**
