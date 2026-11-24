@@ -97,6 +97,7 @@ jobs:
       # (linear-brain refuses a near-duplicate open card, so this does not file one per hour). notify-failure
       # is not used: it only delivers for severity=critical on page-worthy workflows.
       - name: Report branches waiting for a person
+        # lint-allow-swallow: advisory owner card; the replay result itself is checked by the prune and 'Fail if a rescue branch could not be replayed' steps
         if: steps.prune.outputs.waiting != '' && steps.prune.outputs.waiting != '0'
         continue-on-error: true
         env:
