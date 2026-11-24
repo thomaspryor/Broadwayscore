@@ -256,6 +256,10 @@ const OUTLET_STRATEGY_CONFIG = {
   'all-that-dazzles-uk':     { strategy: 'rss', url: 'https://www.allthatdazzles.co.uk/blog-feed.xml' },
   'plays-international':     { strategy: 'rss', url: 'https://playsinternational.org.uk/feed/' },
   theupcoming:               { strategy: 'rss', url: 'https://www.theupcoming.co.uk/feed/' },
+  // BRO-8216: Theatre and Tonic (Squarespace, live on the .co.uk alias) posts press-night reviews
+  // 0-6 days late and SERP never surfaced them (Desire Under the Elms, Eurotrash, A Homo Alone 2).
+  // /blog?format=rss lists every review; urlFilter keeps reviews only (interviews/features dropped).
+  theatreandtonic:           { strategy: 'rss', url: 'https://theatreandtonic.co.uk/blog?format=rss', urlFilter: /review/i },
   'the-spy-in-the-stalls':   { strategy: 'rss', url: 'https://thespyinthestalls.com/feed/' },
   liamodell:                 { strategy: 'rss', url: 'https://liamodell.com/feed/' },
   readaboutstuff:            { strategy: 'rss', url: 'https://readaboutstuff.com/feed/' },
