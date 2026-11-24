@@ -1355,7 +1355,7 @@ restore_autostash() {
       # it loses nothing. Not a conflict row: these were ~90% of the ~100/day
       # autostash-conflict rows that kept the deadman digest row red. CI only (a
       # local session may hand-edit one); kill switch PUSH_AUTOSTASH_REGENERATED_QUIET=0.
-      echo "::notice::push-with-retry: autostash: $p is a regenerated snapshot; kept upstream's copy of it. Your version: git show $AUTOSTASH_SHA:$p"
+      echo "::notice::push-with-retry: autostash: $p is a regenerated or latest-wins snapshot; kept upstream's copy of it. Your version: git show $AUTOSTASH_SHA:$p"
       kept=1
     else
       echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"

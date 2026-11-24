@@ -19,8 +19,8 @@ test('append-only array ledgers are autostash=append', () => {
   for (const p of APPEND) assert.equal(attr(p), 'append', p);
 });
 
-test('exclusion-daily-totals stays untagged (past days are never recomputed; regenerated would also change rebase merges)', () => {
-  assert.equal(attr('data/audit/exclusion-daily-totals.json'), 'unspecified');
+test('exclusion-daily-totals is autostash=latest-wins, not regenerated (regenerated would also change rebase merges)', () => {
+  assert.equal(attr('data/audit/exclusion-daily-totals.json'), 'latest-wins');
 });
 
 function merge(base, ours, theirs, flags = ['--append-arrays']) {
