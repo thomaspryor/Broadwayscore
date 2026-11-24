@@ -1616,6 +1616,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
   try {
     let results;
     let auditedCleanNoMatch = false;
+    let marketGateAudited = false; // BRO-8268
 
     // Custom fetch+parse path (e.g. Algolia JSON API, WP REST API, section page).
     // 4th arg (showId) used by opera outlets for WARN log context — see filterOperaUrls.
@@ -1685,6 +1686,31 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       const skipPaid = cleanNoMatch && !auditedCleanNoMatch;
       if (cleanNoMatch && verbose) console.log(`    Site search [${config.name}]: clean free no-match ${auditedCleanNoMatch ? 'audited with the paid render' : 'stands, paid render skipped'} (${show.category})`);
 
+      // BRO-8268: no paid render in a show category where this website has never
+      // had a single review (e.g. deadline.com on West End shows). A small random
+      // sample still renders so a first-ever review there is caught. See
+      // site-search-market-history.js for the evidence and the fail-open rules.
+      let skipNeverCovered = false;
+      if (!freeResults && !skipPaid && config.requiresJs) {
+        const _mh = require('./site-search-market-history');
+        const _d = options._deps || {};
+        const gate = _mh.neverCoveredMarketDecision({
+          domain: config.domain,
+          category: show && show.category,
+          counts: Object.prototype.hasOwnProperty.call(_d, 'marketHistoryCounts') ? _d.marketHistoryCounts : _mh.loadDomainCategoryCounts(),
+        });
+        if (gate.skip) {
+          marketGateAudited = (_d.random || Math.random)() < _mh.resolveAuditRate();
+          skipNeverCovered = !marketGateAudited;
+          if (verbose) console.log(`    Site search [${config.name}]: ${config.domain} has no ${show.category} reviews on record; ${marketGateAudited ? 'audit sample, rendering anyway' : 'paid render skipped'}`);
+        }
+      }
+      if (skipNeverCovered) {
+        // Nothing was searched on the paid tier, so this is not evidence of a miss.
+        if (options.outcomes) options.outcomes[outletId] = 'not-attempted';
+        return [];
+      }
+
       let html = '';
       if (freeResults || skipPaid) {
         // free search answered (a validated hit, or a clean no-match); skip the paid render
@@ -1728,6 +1754,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       if (missed.length) console.warn(`FREE-WP-CLEAN-MISS [${config.name}] "${showTitle}": paid render found ${missed.length} result(s) the free search did not: ${missed.slice(0, 3).map(r => r.url).join(' ')}`);
     }
 
+    // BRO-8268: the never-covered audit render found something, so the gate was
+    // wrong for this market. Always logged so it can be reviewed and the gate
+    // opens by itself once the review lands in reviews.json.
+    if (marketGateAudited && results.length) {
+      console.warn(`MARKET-HISTORY-AUDIT-HIT [${config.name}] "${showTitle}" (${show && show.category}): ${results.slice(0, 3).map(r => r.url).join(' ')}`);
+    }
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${results.length} result(s)`);
     }
