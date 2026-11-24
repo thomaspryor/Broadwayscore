@@ -534,19 +534,27 @@ function cliPrune(args) {
       : 'a restored file is not on main yet; the next run retries';
     console.log(`::warning::push-rescue: kept ${r.ref}: ${why}. Inspect: git log -1 --stat origin/${r.ref}`);
   }
-  // A branch only a person can settle fails the run every hour (warning severity,
-  // digest repeat-failure row) instead of sitting behind a green check.
-  const human = (manifest.refs || []).filter((r) => r.keepForHuman);
+  // BRO-8244: a branch only a person can settle is a decision waiting, NOT a broken cron. It used to
+  // set exitCode=1, so one waiting branch failed every hourly run, check-cron-health read "no success in
+  // 13h" as a dead cron, and a "Cron stale: Replay Push Rescue" card was filed again (BRO-6859, BRO-7493,
+  // BRO-8063). The run stays green; the workflow's "waiting" step sends the digest alert (cooldown'd).
+  // Real replay failures (a branch that could not be replayed) still fail the run in the workflow.
+  const human = waitingForPerson(manifest);
   if (human.length) {
-    console.log(`::error::push-rescue: ${human.length} rescue branch(es) need a person: ${human.map((r) => r.ref).join(', ')}`);
+    console.log(`::warning::push-rescue: ${human.length} rescue branch(es) wait for a person: ${human.map((r) => r.ref).join(', ')}`);
     for (const r of human.filter(onlyMainConflicts)) {
       console.log(`::notice::push-rescue: if the owner picks main's copy for ${r.ref}, dispatch replay-push-rescue.yml with main_wins=${r.ref}@${r.tip}`);
     }
-    process.exitCode = 1;
   }
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `waiting=${human.length}\n`);
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, AUTO_MAIN_WHY, describeReviewFile, reviewFacts, settleConflict, retryFetch, isTransientGitError };
+/** Branches kept because only a person can settle them (conflicts or ownership-gate drops). */
+function waitingForPerson(manifest) {
+  return (manifest.refs || []).filter((r) => r.keepForHuman);
+}
+
+module.exports = { waitingForPerson, RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY, AUTO_MAIN_WHY, describeReviewFile, reviewFacts, settleConflict, retryFetch, isTransientGitError };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);

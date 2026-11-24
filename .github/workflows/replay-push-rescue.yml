@@ -87,9 +87,21 @@ jobs:
           message: 'data: replay ${{ steps.replay.outputs.restored }} rescued review file(s) from push-rescue branches (BRO-6615)'
 
       - name: Delete replayed rescue branches
+        id: prune
         if: steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure'
         working-directory: data/review-texts
         run: node ../../scripts/lib/push-rescue.js prune --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      # BRO-8244: branches waiting for a person are a decision, not a cron failure. The run stays green
+      # (check-cron-health reads success as "cron alive"); this alert reaches the digest once a day.
+      - name: Report branches waiting for a person
+        if: steps.prune.outputs.waiting != '' && steps.prune.outputs.waiting != '0'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Rescued reviews waiting for a person'
+          description: '${{ steps.prune.outputs.waiting }} push-rescue branch(es) in broadway-review-texts conflict with main and need the owner to pick a copy (the run log prints the main_wins dispatch value). The cron itself is healthy.'
+          severity: 'warning'
+          cooldown_minutes: '1440'
 
       - name: Fail if a rescue branch could not be replayed
         if: steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0'
