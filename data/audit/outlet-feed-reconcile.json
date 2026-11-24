@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T14:46:58.274Z",
+  "generatedAt": "2026-11-24T16:40:20.278Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -104,11 +104,6 @@
       "openingDate": "2026-11-19"
     },
     {
-      "id": "a-midsummer-nights-dream-jentes-regional-2026",
-      "title": "A Midsummer Night's Dream",
-      "openingDate": "2026-11-21"
-    },
-    {
       "id": "a-clockwork-orange-a-play-with-music-regional-2026",
       "title": "A Clockwork Orange: A Play with Music",
       "openingDate": "2026-11-23"
@@ -150,10 +145,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "north-west-end",
-      "error": "Timeout fetching https://northwestend.com/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -166,9 +157,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 902,
+  "itemsScanned": 919,
   "matchedGaps": 1,
-  "possibleGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "all-the-world-regional-2026",
@@ -196,6 +187,15 @@
       "url": "https://standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "headline": "Much Ado About Nothing review: A deliciously detailed take",
       "publishDate": null
+    },
+    {
+      "showId": "seven-guitars-off-broadway-2026",
+      "title": "Seven Guitars",
+      "level": "possible",
+      "outletId": "lighting-and-sound-america",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TP0I34",
+      "headline": "Theatre&#32;in&#32;Review:&#32;Seven&#32;Guitars&#32;(Lincoln&#32;Center&#32;Theatre/Mitzi&#32;E.&#32;Newhouse&#32;Theater)",
+      "publishDate": "2026-11-23"
     }
   ]
 }
