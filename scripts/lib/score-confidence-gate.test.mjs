@@ -54,16 +54,44 @@ test('opening-night status readiness reads the same floors (no second copy)', ()
   }
 });
 
-// BRO-8188 (owner 2026-11-24): floors no longer hold back the draft, except a returning production's this-run check.
-test('draftMayProceed: floor shortfalls make the draft, this-run shortfall waits', () => {
+// BRO-8188 (owner 2026-11-24, option A): once the broadcast readiness gate passes, the
+// floors no longer hold back the draft. Thin shows and a returning production's this-run
+// shortfall still wait.
+test('draftMayProceed: readiness gate decides; floors waived; this-run and thin shows wait', () => {
   const { draftMayProceed } = require('./score-confidence-gate.js');
-  // Wonderful Life, 2026-11-23: 16 scored, T1 2/3.
+  const READY = { ready: true }, NOT_READY = { ready: false };
+  // Wonderful Life, 2026-11-23: 16 scored, T1 2/3, readiness gate passed (BWW).
   const wl = evaluateScoreConfidence({ showReviews: [...many(1, 2), ...many(2, 4), ...many(3, 10)], category: 'broadway', getOutletTier });
   assert.equal(wl.ok, false);
-  assert.equal(draftMayProceed(wl), true);
-  const ret = evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 3), ...many(3, 8)], category: 'broadway', getOutletTier, newReviewCount: 2 });
-  assert.ok(ret.reasons.some(r => r.startsWith('this-run:')));
-  assert.equal(draftMayProceed(ret), false);
-  assert.equal(draftMayProceed(evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 3), ...many(3, 6)], category: 'broadway', getOutletTier })), true);
-  assert.equal(draftMayProceed(null), false);
+  assert.equal(draftMayProceed(wl, READY), true);
+  // same show before the readiness gate passed: waits
+  assert.equal(draftMayProceed(wl, NOT_READY), false);
+  // zero reviews: every floor short, readiness not met: waits (hand run without --shows)
+  const empty = evaluateScoreConfidence({ showReviews: [], category: 'broadway', getOutletTier });
+  assert.equal(draftMayProceed(empty, NOT_READY), false);
+  // returning production short on this run's reviews, even with other floors short too
+  const ret = evaluateScoreConfidence({ showReviews: [...many(1, 2), ...many(2, 3), ...many(3, 12)], category: 'broadway', getOutletTier, newReviewCount: 2 });
+  assert.ok(ret.reasons.some(r => r.startsWith('this-run:')) && ret.reasons.some(r => r.startsWith('T1:')));
+  assert.equal(draftMayProceed(ret, READY), false);
+  // West End, T2 short only
+  const we = evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 1), ...many(3, 8)], category: 'west-end', getOutletTier });
+  assert.deepEqual(we.reasons, ['T2:1/2']);
+  assert.equal(draftMayProceed(we, READY), true);
+  // an unknown future reason is not waived
+  assert.equal(draftMayProceed({ ok: false, reasons: ['T1:1/3', 'wrong-production'] }, READY), false);
+  // passing floors still need readiness
+  const ok = evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 3), ...many(3, 6)], category: 'broadway', getOutletTier });
+  assert.equal(draftMayProceed(ok, READY), true);
+  assert.equal(draftMayProceed(ok, NOT_READY), false);
+  assert.equal(draftMayProceed(null, READY), false);
+  assert.equal(draftMayProceed(wl, null), false);
+});
+
+test('send-opening-night-broadcast.js wires draftMayProceed with readiness, drafts only (not previews), after force/update', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../send-opening-night-broadcast.js', import.meta.url), 'utf8');
+  const branch = src.indexOf('} else if (!SEND_TO && draftMayProceed(gate, evaluateBroadcastReadiness(');
+  assert.ok(branch > 0, 'draft-early branch missing or not passing readiness');
+  assert.ok(src.indexOf('} else if (FORCE_CREATE_DRAFT) {') < branch, 'force branch must come first');
+  assert.ok(src.indexOf('} else if (UPDATE_UNSENT) {') < branch, 'update branch must come first');
 });
