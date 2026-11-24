@@ -1,10 +1,20 @@
 {
-  "generatedAt": "2026-11-22T21:08:28.977Z",
+  "generatedAt": "2026-11-24T02:32:25.915Z",
   "promoted": [
     {
       "id": "jack-and-the-beanstalk-off-west-end-2027",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": "https://www.stratfordeast.com/whats-on"
+    },
+    {
+      "id": "the-shroud-maker-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "two-names-that-meet-and-part-off-west-end-2027",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
     }
   ],
   "rejected": [
@@ -217,14 +227,6 @@
       "reason": "already in shows.json as speculations-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Shakespeare Unplugged",
-      "venue": "Marylebone Theatre",
-      "source": "venue-page:marylebone-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as shakespeare-unplugged-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Jeremy Irons Reads Ts Eliots Masterpiece Four Quartets",
       "venue": "Marylebone Theatre",
       "source": "venue-page:marylebone-theatre",
@@ -417,12 +419,12 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Feeling Afraid",
+      "title": "Garry Starr Classic Penguins",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -433,12 +435,12 @@
       "reason": "already in shows.json as a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Studio\"))"
     },
     {
-      "title": "Garry Starr Classic Penguins",
+      "title": "Feeling Afraid",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
+      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Ayla A New Musical",
@@ -873,7 +875,7 @@
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Jellicle",
+      "title": "how to live a jellicle life: life lessons from the 2019 hit movie musical 'cats'",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
@@ -1153,14 +1155,6 @@
       "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
     },
     {
-      "title": "Cradle: Stories of Iran, Exile & Belonging",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-22))"
-    },
-    {
       "title": "Happy Families (Rehearsed Reading)",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1407,6 +1401,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Now You See Me Live",
+      "venue": "Troubadour Wembley Park Theatre",
+      "source": "venue-page:troubadour-wembley-park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as now-you-see-me-live-off-west-end-2027 (normalized-equal)"
     }
   ]
 }
