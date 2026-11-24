@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * gap-recovery-opening-window.js (BRO-7389): NYT subscriber text recovery for
+ * gap-recovery-opening-window.js (BRO-7389): NYT (New York) and The Stage (UK) subscriber text recovery for
  * shows in their opening window, run every 20 min by launchd
  * (scripts/launchd/com.broadwayscore.gap-recovery-opening-window.plist).
  * Same driver, kill switch, run lock and ceilings as the nightly; it only
- * narrows to nytimes + shows opened in the last few days. Cheap when there is
+ * narrows to the market's subscriber outlet + shows opened in the last few days. Cheap when there is
  * nothing to do (no window shows, or no open NYT gap: the driver exits fast).
  *
  * Usage: node scripts/gap-recovery-opening-window.js [--dry-run] [--list]
@@ -25,12 +25,14 @@ function main() {
   const dry = process.argv.includes('--dry-run');
   if (inNightlyWindow() && !process.argv.includes('--list')) { log('nightly window (01:20-03:10): skipping so the nightly never finds the lock held'); return 0; }
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
-  const ids = selectOpeningWindowShows(Array.isArray(raw) ? raw : raw.shows);
+  const all = Array.isArray(raw) ? raw : raw.shows;
+  const ids = selectOpeningWindowShows(all);
+  const catOf = new Map(all.map((s) => [s.id, s.category]));
   log(`${ids.length} show(s) in opening window${ids.length ? ': ' + ids.join(', ') : ''}`);
   if (process.argv.includes('--list')) return 0;
   let worst = 0;
   for (const id of ids) {
-    const args = [path.join(__dirname, 'gap-recovery-driver.js'), ...driverArgsFor(id), ...(dry ? ['--dry-run'] : [])];
+    const args = [path.join(__dirname, 'gap-recovery-driver.js'), ...driverArgsFor(id, catOf.get(id)), ...(dry ? ['--dry-run'] : [])];
     const r = spawnSync(process.execPath, args, {
       cwd: ROOT, env: { ...process.env, TIME_BUDGET_MIN: process.env.TIME_BUDGET_MIN || '15' },
       stdio: 'inherit', timeout: 20 * 60000, killSignal: 'SIGTERM',

@@ -18,8 +18,17 @@
 const DAY_MS = 86400000;
 const WINDOW_DAYS = 4; // press night plus the stragglers; matches opening-grade's window shape
 
-// NYT reviews New York theatre only: West End shows never have an nytimes gap.
-const MARKETS = new Set(['broadway', 'off-broadway']);
+// Subscriber-browser outlet recovered per market. NYT reviews New York theatre only; The Stage
+// (paywalled, cookie/browser session only) reviews UK theatre. BRO-8215: the window was NYT-only, so
+// every off-west-end opening (Act of God, Eurotrash, The Ugly One) got The Stage's review URL on the
+// first pass but its text only from the 01:30 nightly (text-gap, 3 shows in 30 days).
+const MARKET_OUTLETS = Object.freeze({
+  broadway: 'nytimes',
+  'off-broadway': 'nytimes',
+  'west-end': 'thestage',
+  'off-west-end': 'thestage',
+});
+const MARKETS = new Set(Object.keys(MARKET_OUTLETS));
 
 /** Shows whose opening night is within the last `days` (and not in the future by more than 1 day). */
 function selectOpeningWindowShows(shows, { nowMs = Date.now(), days = WINDOW_DAYS } = {}) {
@@ -34,9 +43,10 @@ function selectOpeningWindowShows(shows, { nowMs = Date.now(), days = WINDOW_DAY
   }).map((s) => s.id);
 }
 
-/** argv for one driver run: nytimes only, live, this show. */
-function driverArgsFor(showId) {
-  return [`--show=${showId}`, '--outlet=nytimes', '--recent-only'];
+/** argv for one driver run: this market's subscriber outlet only, live, this show. */
+function driverArgsFor(showId, category = 'broadway') {
+  const outlet = MARKET_OUTLETS[category] || 'nytimes';
+  return [`--show=${showId}`, `--outlet=${outlet}`, '--recent-only'];
 }
 
 // The 01:30 nightly takes the whole recovery lock for up to 90 min and records
@@ -46,4 +56,4 @@ function inNightlyWindow(date = new Date()) {
   return m >= 80 && m < 190;
 }
 
-module.exports = { selectOpeningWindowShows, driverArgsFor, inNightlyWindow, WINDOW_DAYS };
+module.exports = { MARKET_OUTLETS, selectOpeningWindowShows, driverArgsFor, inNightlyWindow, WINDOW_DAYS };

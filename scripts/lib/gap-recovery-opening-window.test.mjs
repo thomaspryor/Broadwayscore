@@ -47,9 +47,28 @@ test('a launchd job runs the opening-window script on a sub-hour interval', () =
   assert.ok(m && Number(m[1]) <= 3600, 'interval must be <= 1h');
 });
 
-test('ticks stay out of the nightly window and West End shows are not selected', () => {
+test('ticks stay out of the nightly window', () => {
   assert.equal(inNightlyWindow(new Date(2026, 10, 9, 1, 30)), true);
   assert.equal(inNightlyWindow(new Date(2026, 10, 9, 12, 0)), false);
-  const ids = selectOpeningWindowShows([{ id: 'w', category: 'west-end', openingDate: '2026-11-08', status: 'open' }], { nowMs: Date.parse('2026-11-09T03:00:00Z') });
-  assert.deepEqual(ids, []);
+});
+
+// BRO-8215 class guard: every market the window selects must have a subscriber outlet, and the UK
+// openings that missed The Stage's text at the first pass must be selected and routed to thestage.
+test('BRO-8215: off-west-end / west-end openings recover thestage text in the window', () => {
+  const uk = [
+    { id: 'act-of-god-off-west-end-2026', category: 'off-west-end', openingDate: '2026-11-11', status: 'open' },
+    { id: 'eurotrash-off-west-end-2026', category: 'off-west-end', openingDate: '2026-11-17', status: 'open' },
+    { id: 'the-ugly-one-off-west-end-2026', category: 'off-west-end', openingDate: '2026-11-20', status: 'open' },
+    { id: 'cloud-9-west-end-2026', category: 'west-end', openingDate: '2026-11-10', status: 'open' },
+  ];
+  const ids = selectOpeningWindowShows(uk, { nowMs: Date.parse('2026-11-12T03:00:00Z') });
+  assert.ok(ids.includes('act-of-god-off-west-end-2026'));
+  assert.ok(ids.includes('cloud-9-west-end-2026'));
+  assert.deepEqual(driverArgsFor('act-of-god-off-west-end-2026', 'off-west-end'), ['--show=act-of-god-off-west-end-2026', '--outlet=thestage', '--recent-only']);
+  assert.deepEqual(driverArgsFor('x', 'west-end'), ['--show=x', '--outlet=thestage', '--recent-only']);
+  assert.deepEqual(driverArgsFor('y', 'off-broadway'), ['--show=y', '--outlet=nytimes', '--recent-only']);
+});
+
+test('regional shows are still not selected', () => {
+  assert.deepEqual(selectOpeningWindowShows([{ id: 'r', category: 'regional', openingDate: '2026-11-08', status: 'open' }], { nowMs: Date.parse('2026-11-09T03:00:00Z') }), []);
 });
