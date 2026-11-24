@@ -77,7 +77,8 @@ function operaVenueForShowId(showId) {
   if (!showId) return '';
   try {
     if (!_showVenueById) {
-      const rows = require('../../data/shows.json').shows || [];
+      // shows-json-path honours SHOWS_JSON_PATH, so tests can point it at a fixture (BRO-7101 lane).
+      const rows = require('./shows-json-path').readShowsList();
       _showVenueById = new Map(rows.map(r => [r.id, r.venue || '']));
     }
     return _showVenueById.get(showId) || '';

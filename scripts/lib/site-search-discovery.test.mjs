@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// No live core data in the blocking batch (BRO-7101): an empty shows.json fixture.
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const { selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
 
 test('BRO-5617: both site-search branches reject producer news and retain reviews', async (t) => {

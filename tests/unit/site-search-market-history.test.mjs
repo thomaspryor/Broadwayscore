@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
+process.on('exit', require('../../scripts/lib/shows-json-fixture.js').useShowsFixture([]));
 const mh = require('../../scripts/lib/site-search-market-history.js');
 const ss = require('../../scripts/lib/site-search-discovery.js');
 
@@ -72,19 +73,7 @@ test('audit rate inside the opening window: 25% default, its own override, junk 
   assert.equal(mh.resolveAuditRate({ SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW: '-1' }, true), 0.25);
 });
 
-mh._resetCacheForTests();
-const REAL_COUNTS = mh.loadDomainCategoryCounts();
-test('real data loads and gives the expected answers for the four JS outlets',
-  { skip: !REAL_COUNTS && 'no data/reviews.json + shows.json in this checkout (CI checks out core data)' }, () => {
-  const counts = REAL_COUNTS;
-  const d = (domain, category) => mh.neverCoveredMarketDecision({ domain, category, counts, env: {} }).reason;
-  assert.equal(d('deadline.com', 'broadway'), 'covered');
-  assert.equal(d('ew.com', 'broadway'), 'covered');
-  assert.equal(d('timeout.com', 'broadway'), 'covered');
-  assert.equal(d('timeout.com', 'off-broadway'), 'covered');
-  assert.equal(d('hollywoodreporter.com', 'west-end'), 'covered');
-  assert.equal(d('deadline.com', 'west-end'), 'never-covered');
-});
+// The real-data check lives in site-search-market-history-live.test.mjs (live-data lane).
 
 // --- integration through searchOutletSite ---
 function withEndpoint(fn) {
