@@ -14,7 +14,8 @@
  *      (cas-lost): nothing is overwritten. kill is re-checked right before it.
  *
  * Every step before the CAS leaves the old pointer in place when it throws:
- * the reader only follows home, and orphan objects are harmless.
+ * the reader only follows home, and orphan objects are harmless. An error after
+ * a CAS that matched has err.pointerSwapped = true (the new pointer is live).
  */
 const store = require('./store');
 const { OUTCOMES } = require('./publish-plan');
@@ -132,11 +133,21 @@ async function writePublish({ storage, state, plan, manifest, sliceFor, expectGe
     log.push(`home CAS lost at generation ${prev.generation}: another run wrote first`);
     return result(OUTCOMES.CAS_LOST, { uploaded, existing });
   }
-  const back = await store.readJsonObject(state, store.PATHS.home);
-  if (back.state !== 'ok' || back.value.generation !== next.generation || !homeMatches(back.value, next)) {
-    throw new Error(`home read-back mismatch after CAS (${back.state})`);
+  // The CAS matched a row, so this run's pointer was written. A read-back that
+  // shows a LATER generation means another run swapped after us (not an error).
+  // Errors from here on carry pointerSwapped: the old pointer is NOT in place.
+  let back;
+  try { back = await store.readJsonObject(state, store.PATHS.home); } catch (e) {
+    throw Object.assign(new Error(`home swapped to generation ${next.generation} but read-back failed: ${e instanceof Error ? e.message : e}`), { pointerSwapped: true });
   }
-  log.push(`home generation ${prev.generation} -> ${next.generation}`);
+  const backGen = back.state === 'ok' && back.value ? back.value.generation : null;
+  if (Number.isInteger(backGen) && backGen > next.generation) {
+    log.push(`home generation ${prev.generation} -> ${next.generation}; another run has since moved it to ${backGen}`);
+  } else if (back.state !== 'ok' || backGen !== next.generation || !homeMatches(back.value, next)) {
+    throw Object.assign(new Error(`home swapped to generation ${next.generation} but read-back does not match (${back.state}, generation ${backGen})`), { pointerSwapped: true });
+  } else {
+    log.push(`home generation ${prev.generation} -> ${next.generation}`);
+  }
   return result(WRITE_OUTCOMES.PUBLISHED, { uploaded, existing, homeWritten: true, generation: next.generation, changedIds });
 }
 

@@ -22,8 +22,10 @@
  * targets and refuses to write if any differ (exit 1). Kill switch: the store's
  * kill row stops the run before any write. Writes the pointer only when it
  * changes, as a compare-and-swap on home.generation.
- * Every planned outcome (including killed, cas-lost, an unreachable or
- * unusable manifest) exits 0. A failed write exits 1 with the old pointer in place.
+ * Write also refuses (code-mismatch) unless the checked-out commit is the
+ * manifest's publicSha: slices must be made by the code that will render them.
+ * Every planned outcome (including killed, cas-lost, code-mismatch, an
+ * unreachable or unusable manifest) exits 0 with a ::warning:: annotation. A failed write exits 1 with the old pointer in place.
  */
 import fs from 'fs';
 import path from 'path';
@@ -85,6 +87,49 @@ export function parseArgs(argv: string[]): PublishArgs {
   }
   if (sawDry && sawWrite) throw new Error('--dry-run and --write are exclusive');
   return a;
+}
+
+/** The commit the checked-out code is at: PUBLISH_CODE_SHA, else git HEAD, else null. */
+export function codeShaOf(env: NodeJS.ProcessEnv): string | null {
+  return env.PUBLISH_CODE_SHA || gitHead(ROOT);
+}
+
+function gitHead(cwd: string): string | null {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('child_process').execFileSync('git', ['rev-parse', 'HEAD'], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null;
+  } catch { return null; }
+}
+
+/**
+ * Paths whose content decides how a slice is computed and rendered. data/ is
+ * deliberately absent: HEAD data moving past the deploy is the point.
+ */
+export const CODE_PATHS = ['src', 'scripts', 'package.json', 'package-lock.json', 'next.config.js', 'tsconfig.json'];
+
+/**
+ * Whether the checked-out code computes slices the way the deployed commit
+ * does: the same commit, or no change under CODE_PATHS between the two
+ * (data-only commits since the deploy are the normal case on main).
+ * PUBLISH_CODE_SHA (tests) pins HEAD and skips git; PUBLISH_CODE_FETCH=0 skips
+ * fetching a deployed commit the shallow checkout lacks.
+ */
+export function codeMatchOf(env: NodeJS.ProcessEnv, publicSha: string | null | undefined, cwd: string = ROOT): { codeSha: string | null; match: boolean; how: string } {
+  const codeSha = env.PUBLISH_CODE_SHA || gitHead(cwd);
+  if (!publicSha || !/^[0-9a-f]{40}$/.test(publicSha)) return { codeSha, match: false, how: 'manifest has no publicSha' };
+  if (!codeSha) return { codeSha, match: false, how: 'checked-out commit unknown' };
+  if (codeSha === publicSha) return { codeSha, match: true, how: 'same commit' };
+  if (env.PUBLISH_CODE_SHA) return { codeSha, match: false, how: 'different commit (pinned)' };
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const cp = require('child_process');
+  const git = (args: string[]) => cp.spawnSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120000 });
+  if (git(['cat-file', '-e', `${publicSha}^{commit}`]).status !== 0 && env.PUBLISH_CODE_FETCH !== '0') {
+    git(['fetch', '--no-tags', '--depth=1', 'origin', publicSha]);
+  }
+  const d = git(['diff', '--quiet', publicSha, 'HEAD', '--', ...CODE_PATHS]);
+  if (d.status === 0) return { codeSha, match: true, how: 'no code change since the deployed commit' };
+  if (d.status === 1) return { codeSha, match: false, how: 'code changed since the deployed commit' };
+  return { codeSha, match: false, how: `cannot compare with the deployed commit (${(d.stderr || '').trim().split('\n')[0] || 'git failed'})` };
 }
 
 /** Whitespace-separated ids (the --flagged-file format publish-live-scores.ts reads). */
@@ -194,9 +239,21 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     const report = { outcome: OUTCOMES.MANIFEST_UNUSABLE, mode: args.mode, manifestSource: args.manifest, manifestError, counts: { targets: 0 } };
     writeReport(args.report, report);
     console.log(`${summaryLine(report)} (${manifestError || 'manifest not usable'})`);
+    console.log(`::warning::show-refresh: live manifest not usable (${manifestError || 'unusable'}); nothing published`);
     return 0;
   }
-  const m = manifest as { manifestId: string; buildInstant: number; buildDate: string; coreSha: string | null; shows: Record<string, { hash: string; held: boolean; slug?: string }> };
+  const m = manifest as { manifestId: string; buildInstant: number; buildDate: string; coreSha: string | null; publicSha?: string | null; shows: Record<string, { hash: string; held: boolean; slug?: string }> };
+  // The reader renders slices with the DEPLOYED code, so slices (and their
+  // parity proof) must come from that same commit. Write refuses otherwise.
+  const { codeSha, match: codeMatch, how: codeHow } = codeMatchOf(env, m.publicSha);
+  if (write && !codeMatch) {
+    const why = `checked-out code ${codeSha ? codeSha.slice(0, 9) : 'unknown'} does not match the deployed commit ${m.publicSha ? m.publicSha.slice(0, 9) : '(manifest has none)'}: ${codeHow}`;
+    const report = { outcome: 'code-mismatch', mode: args.mode, manifestId: m.manifestId, publicSha: m.publicSha ?? null, codeSha, reason: why, counts: { targets: 0 } };
+    writeReport(args.report, report);
+    console.log(`${summaryLine(report)} (${why})`);
+    console.log(`::warning::show-refresh: ${why}; nothing written`);
+    return 0;
+  }
   const now = m.buildInstant;
   const dataDir = path.join(ROOT, 'data');
 
@@ -215,7 +272,7 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
   let maxSliceId: string | null = null;
   for (const id of states.order) {
     const s = states.perShow[id];
-    headShows[id] = s.error ? { error: s.error } : { hash: s.hash, held: s.held, imagesSig: s.imagesSig, reviewCount: s.reviewCount, reviewsSig: s.reviewsSig };
+    headShows[id] = s.error ? { error: s.error } : { hash: s.hash, held: s.held, slug: s.slug, imagesSig: s.imagesSig, reviewCount: s.reviewCount, reviewsSig: s.reviewsSig };
     headHashes[id] = s.hash ?? null;
     if (s.slice) {
       const bytes = Buffer.byteLength(JSON.stringify(s.slice));
@@ -299,7 +356,8 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
       } catch (e) {
         outcome = 'write-failed';
         exitCode = 1;
-        console.error(`::error::show-refresh write failed, old pointer left in place: ${e instanceof Error ? e.message : e}`);
+        const swapped = !!(e && typeof e === 'object' && (e as { pointerSwapped?: boolean }).pointerSwapped);
+        console.error(`::error::show-refresh write failed (${swapped ? 'the NEW pointer is live; check the home row' : 'old pointer left in place'}): ${e instanceof Error ? e.message : e}`);
       }
       if (writeResult && writeResult.homeWritten && writeResult.changedIds.length) {
         revalidate = await revalidateSlugs(env, writeResult.changedIds.map((id) => m.shows[id] && m.shows[id].slug).filter(Boolean) as string[]);
@@ -317,6 +375,10 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     revalidate,
     manifestSource: args.manifest,
     manifestId: m.manifestId,
+    publicSha: m.publicSha ?? null,
+    codeSha,
+    codeMatch,
+    codeHow,
     buildInstant: m.buildInstant,
     buildDate: m.buildDate,
     coreSha: m.coreSha,
@@ -337,6 +399,8 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
   };
   writeReport(args.report, report);
   console.log(summaryLine({ mode: args.mode, outcome, counts: plan.counts, parity, ms }));
+  if (outcome === OUTCOMES.KILLED) console.log(`::warning::show-refresh: stopped by the kill switch (${(kill && kill.reason) || 'see write log'})`);
+  if (!codeMatch) console.log(`::notice::show-refresh: code ${codeSha ? codeSha.slice(0, 9) : 'unknown'} vs deployed ${m.publicSha ? m.publicSha.slice(0, 9) : '(none)'}: ${codeHow}; a write would be refused`);
   return exitCode;
 }
 

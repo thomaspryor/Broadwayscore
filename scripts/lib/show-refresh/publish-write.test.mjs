@@ -67,7 +67,7 @@ const hshow = (o = {}) => ({ hash: h('b'), held: false, imagesSig: 'img', review
 /** Two changed shows x, y (build hash a -> HEAD hash b / c). */
 function fixture() {
   const m = manifest({ x: mshow({ slug: 'x' }), y: mshow({ slug: 'y' }) });
-  const headShows = { x: hshow(), y: hshow({ hash: h('c') }) };
+  const headShows = { x: hshow({ slug: 'x' }), y: hshow({ hash: h('c'), slug: 'y' }) };
   const slices = { x: { showId: 'x', n: 1 }, y: { showId: 'y', n: 2 } };
   const sliceFor = (id) => ({ slice: slices[id], hash: headShows[id].hash, held: false });
   const planWith = (prevHome) => planPublish({ manifest: m, head: { registrySha: 'reg', sliceVersion: 1, shows: headShows }, prevHome, now: NOW });
@@ -254,4 +254,36 @@ test('plans with nothing to write (manifest-unusable) write nothing', async () =
   assert.equal(r.outcome, OUTCOMES.MANIFEST_UNUSABLE);
   assert.equal(storage.calls.put.length, 0);
   assert.equal(state.calls.cas + state.calls.insert, 0);
+});
+
+test('another run swapping right after our CAS is not an error (our pointer was written)', async () => {
+  const f = fixture();
+  const old = { ...store.HOME_PLACEHOLDER, manifestId: 'm1', generation: 3, shows: {}, pending: {} };
+  const state = fakeState({ home: old });
+  const orig = state.putIfField;
+  state.putIfField = async (...args) => {
+    const n = await orig(...args);
+    state.rows.set('home.json', JSON.stringify({ ...JSON.parse(state.rows.get('home.json')), generation: 5 }));
+    return n;
+  };
+  const r = await writePublish({ storage: fakeStorage(), state, plan: f.planWith(old), manifest: f.m, sliceFor: f.sliceFor, expectGeneration: 3, now: NOW });
+  assert.equal(r.outcome, WRITE_OUTCOMES.PUBLISHED);
+  assert.equal(r.generation, 4);
+  assert.match(r.log.join('\n'), /moved it to 5/);
+});
+
+test('a read-back mismatch after a CAS that matched says the NEW pointer is live (pointerSwapped)', async () => {
+  const f = fixture();
+  const old = { ...store.HOME_PLACEHOLDER, manifestId: 'm1', generation: 3, shows: {}, pending: {} };
+  const state = fakeState({ home: old });
+  const orig = state.putIfField;
+  state.putIfField = async (...args) => {
+    const n = await orig(...args);
+    state.rows.set('home.json', JSON.stringify({ ...JSON.parse(state.rows.get('home.json')), shows: {} }));
+    return n;
+  };
+  await assert.rejects(
+    writePublish({ storage: fakeStorage(), state, plan: f.planWith(old), manifest: f.m, sliceFor: f.sliceFor, expectGeneration: 3, now: NOW }),
+    (e) => e.pointerSwapped === true && /swapped to generation 4/.test(e.message),
+  );
 });

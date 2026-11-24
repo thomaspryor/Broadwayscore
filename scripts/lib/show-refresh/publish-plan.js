@@ -6,7 +6,7 @@
  * Inputs:
  *   manifest  - the live build manifest (show-refresh/manifest.js)
  *   head      - the shows computed from HEAD data at the build's clock:
- *               { registrySha, sliceVersion, shows: { id: { hash, held, imagesSig, reviewCount, reviewsSig, error? } } }
+ *               { registrySha, sliceVersion, shows: { id: { hash, held, slug, imagesSig, reviewCount, reviewsSig, error? } } }
  *   prevHome  - the published index (home row) or null
  *   flagged   - ids the staleness guard flagged (Set or array)
  *   rebuildStep - true when run as the rebuild workflow's step (the review list
@@ -35,6 +35,9 @@ const SKIPS = Object.freeze({
   HELD_HEAD: 'held-head',
   UNCHANGED: 'unchanged',
   IMAGES_CHANGED: 'images-changed',
+  // The reader serves a slice only at the build's URL (show-refresh-core.ts
+  // rejects a slug mismatch), so a renamed show waits for the deploy.
+  SLUG_CHANGED: 'slug-changed',
   FLAGGED: 'flagged',
   NO_REVIEW_META: 'no-review-meta',
   REVIEW_COUNT_DROP: 'review-count-drop',
@@ -52,6 +55,7 @@ function skipReason(id, built, cur, { flagged, rebuildStep }) {
   if (cur.held) return SKIPS.HELD_HEAD;
   if (cur.hash === built.hash) return SKIPS.UNCHANGED;
   if (cur.imagesSig !== built.imagesSig) return SKIPS.IMAGES_CHANGED;
+  if (typeof built.slug === 'string' && cur.slug !== built.slug) return SKIPS.SLUG_CHANGED;
   if (flagged.has(id)) return SKIPS.FLAGGED;
   if (!Number.isFinite(built.reviewCount) || typeof built.reviewsSig !== 'string'
     || !Number.isFinite(cur.reviewCount) || typeof cur.reviewsSig !== 'string') return SKIPS.NO_REVIEW_META;

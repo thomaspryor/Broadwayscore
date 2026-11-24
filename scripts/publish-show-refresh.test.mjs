@@ -6,7 +6,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { parseArgs, readFlagged, loadManifest, main, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
+import { execFileSync } from 'node:child_process';
+import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'publish-show-refresh-'));
 const quiet = async (fn) => {
@@ -74,4 +75,48 @@ test('--write exits 2 outside CI or without the service key; unusable manifest i
   assert.equal(r.outcome, 'manifest-unusable');
   assert.equal(r.mode, 'write');
   assert.equal(await quiet(() => main(['--bogus'], {})), 2);
+});
+
+test('--write refuses (code-mismatch, exit 0, nothing written) unless the code is the deployed commit', async () => {
+  const dir = tmp();
+  const report = path.join(dir, 'r.json');
+  const man = path.join(dir, 'm.json');
+  const shaA = 'a'.repeat(40);
+  const ciEnv = { GITHUB_ACTIONS: 'true', SUPABASE_URL: 'http://127.0.0.1:9', SUPABASE_SERVICE_ROLE_KEY: 'x' };
+  fs.writeFileSync(man, JSON.stringify({ schema: 1, manifestId: 'm1', buildInstant: Date.now(), buildDate: '2026-11-24', publicSha: shaA, dataShas: {}, shows: {} }));
+  assert.equal(await quiet(() => main(['--write', `--manifest=${man}`, `--report=${report}`], { ...ciEnv, PUBLISH_CODE_SHA: 'b'.repeat(40) })), 0);
+  let r = JSON.parse(fs.readFileSync(report, 'utf8'));
+  assert.equal(r.outcome, 'code-mismatch');
+  assert.equal(r.publicSha, shaA);
+  // A manifest with no publicSha can never be written from.
+  fs.writeFileSync(man, JSON.stringify({ schema: 1, manifestId: 'm1', buildInstant: Date.now(), buildDate: '2026-11-24', dataShas: {}, shows: {} }));
+  assert.equal(await quiet(() => main(['--write', `--manifest=${man}`, `--report=${report}`], { ...ciEnv, PUBLISH_CODE_SHA: shaA })), 0);
+  r = JSON.parse(fs.readFileSync(report, 'utf8'));
+  assert.equal(r.outcome, 'code-mismatch');
+});
+
+test('codeMatchOf: data-only commits since the deploy match; a code change or an unknown commit does not', () => {
+  const dir = tmp();
+  const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  git('init', '-q');
+  git('config', 'user.email', 't@example.invalid'); git('config', 'user.name', 't');
+  const commit = (file, body) => { fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true }); fs.writeFileSync(path.join(dir, file), body); git('add', '-A'); git('commit', '-qm', file); return git('rev-parse', 'HEAD'); };
+  const deployed = commit('scripts/a.js', '1');
+  const env = { PUBLISH_CODE_FETCH: '0' };
+  assert.deepEqual([codeMatchOf(env, deployed, dir).match, codeMatchOf(env, deployed, dir).how], [true, 'same commit']);
+  commit('data/shows.json', '{}');
+  const dataOnly = codeMatchOf(env, deployed, dir);
+  assert.equal(dataOnly.match, true);
+  assert.match(dataOnly.how, /no code change/);
+  commit('src/page.tsx', 'x');
+  const changed = codeMatchOf(env, deployed, dir);
+  assert.equal(changed.match, false);
+  assert.match(changed.how, /code changed/);
+  const unknown = codeMatchOf(env, 'f'.repeat(40), dir);
+  assert.equal(unknown.match, false);
+  assert.match(unknown.how, /cannot compare/);
+  assert.equal(codeMatchOf(env, null, dir).match, false);
+  assert.equal(codeMatchOf(env, 'not-a-sha', dir).match, false);
+  // A pinned HEAD never shells out.
+  assert.equal(codeMatchOf({ PUBLISH_CODE_SHA: 'b'.repeat(40) }, deployed, dir).match, false);
 });

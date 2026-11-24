@@ -14,7 +14,7 @@ const manifest = (shows = { x: mshow() }, o = {}) => ({
   schema: 1, sliceVersion: 1, manifestId: 'm1', buildInstant: NOW - 3600e3, registrySha: 'reg',
   dataShas: { 'shows.json': 'z' }, showCount: Object.keys(shows).length, shows, ...o,
 });
-const hshow = (o = {}) => ({ hash: h('a'), held: false, imagesSig: 'img', reviewCount: 2, reviewsSig: 'sig', ...o });
+const hshow = (o = {}) => ({ hash: h('a'), held: false, slug: 's', imagesSig: 'img', reviewCount: 2, reviewsSig: 'sig', ...o });
 const head = (shows = { x: hshow() }, o = {}) => ({ registrySha: 'reg', sliceVersion: 1, shows, ...o });
 const plan = (a) => planPublish({ now: NOW, ...a });
 
@@ -157,4 +157,12 @@ test('same manifest: unchanged published targets are not re-queued; existing pen
 test('exports the CLI-only outcomes', () => {
   assert.equal(OUTCOMES.KILLED, 'killed');
   assert.equal(OUTCOMES.CAS_LOST, 'cas-lost');
+});
+
+test('a renamed show (HEAD slug != build slug) waits for the deploy: the reader would reject its slice', () => {
+  const r = plan({ manifest: manifest({ x: mshow({ slug: 'old' }) }), head: head({ x: hshow({ hash: h('b'), slug: 'new' }) }) });
+  assert.equal(r.skips.x, SKIPS.SLUG_CHANGED);
+  assert.deepEqual(r.targets, []);
+  const same = plan({ manifest: manifest({ x: mshow({ slug: 'old' }) }), head: head({ x: hshow({ hash: h('b'), slug: 'old' }) }) });
+  assert.deepEqual(same.targets, [{ id: 'x', hash: h('b') }]);
 });
