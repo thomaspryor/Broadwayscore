@@ -3,7 +3,7 @@
     "postedDetection": "ok",
     "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-24T23:11:53.823Z"
+    "lastRun": "2026-11-24T23:34:19.207Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3987,33 +3987,35 @@
       "showTitle": "Seven Guitars",
       "market": "off-broadway",
       "subreddit": "offbroadwayNYC",
-      "score": 84,
-      "reviewCount": 13,
+      "score": 86,
+      "reviewCount": 16,
       "url": "https://broadwayscorecard.com/show/seven-guitars-off-broadway",
-      "notability": 22,
+      "notability": 51,
       "createdAt": "2026-11-24T04:48:16.255Z",
       "status": "ready",
-      "source": "claude-sonnet-5-5",
-      "lintProblems": [],
-      "title": "Reviews are in for Seven Guitars at Lincoln Center. 84/100 from 13 critics, 7 raves and 6 positive",
-      "body": "I found 13 reviews: 7 raves and 6 positive. Audiences are a little cooler at a B+ (across Mezzanine, Theatr, and Show Score).\n\nhttps://broadwayscorecard.com/show/seven-guitars-off-broadway\n\nRoma Torre at New York Stage Review called it a play that \"finds beauty in sorrow, humor in hardship and poetry in pain.\" Meanwhile Sara Holdren at Vulture had some reservations about how consistently the production burns, but still wrote \"And that's not nothing.\" Most of the praise goes to Ruben Santiago-Hudson's direction and the ensemble, and a few critics found the play itself uneven.\n\nI haven't seen this one yet, and these reviews have me wanting to go. Anyone seen it at the Newhouse?",
-      "why": "It leads with the show and the number, then gives the 'mostly raves, with a lukewarm-ish note from Vulture' texture through two real quotes, ending on a genuine question to people who may have seen it.",
-      "expectedPushback": "Of course Lincoln Center gets 84, critics always go easy on August Wilson, and who cares about a number anyway?",
-      "suggestedReply": "Ha, fair, I'm just a nerd who likes reading all the reviews in one place. The number is only an average of what critics wrote, and the quotes are the part I'd actually trust.",
-      "personalLines": [
-        "I haven't seen it yet, but I'm pretty sure I'm going to.",
-        "Still undecided on this one, but the reviews are nudging me toward yes.",
-        "Not sure this one's for me, but I'm curious what people who've seen it think."
+      "source": "template",
+      "lintProblems": [
+        "body claims owner saw a show their history does not list",
+        "body claims there are no mixed reviews; describe what critics wrote instead"
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Reviews+are+in+for+Seven+Guitars+at+Lincoln+Center.+84%2F100+from+13+critics%2C+7+raves+and+6+positive&text=I+found+13+reviews%3A+7+raves+and+6+positive.+Audiences+are+a+little+cooler+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0ARoma+Torre+at+New+York+Stage+Review+called+it+a+play+that+%22finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Meanwhile+Sara+Holdren+at+Vulture+had+some+reservations+about+how+consistently+the+production+burns%2C+but+still+wrote+%22And+that%27s+not+nothing.%22+Most+of+the+praise+goes+to+Ruben+Santiago-Hudson%27s+direction+and+the+ensemble%2C+and+a+few+critics+found+the+play+itself+uneven.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+these+reviews+have+me+wanting+to+go.+Anyone+seen+it+at+the+Newhouse%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Reviews+are+in+for+Seven+Guitars+at+Lincoln+Center.+84%2F100+from+13+critics%2C+7+raves+and+6+positive&text=I+found+13+reviews%3A+7+raves+and+6+positive.+Audiences+are+a+little+cooler+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0ARoma+Torre+at+New+York+Stage+Review+called+it+a+play+that+%22finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Meanwhile+Sara+Holdren+at+Vulture+had+some+reservations+about+how+consistently+the+production+burns%2C+but+still+wrote+%22And+that%27s+not+nothing.%22+Most+of+the+praise+goes+to+Ruben+Santiago-Hudson%27s+direction+and+the+ensemble%2C+and+a+few+critics+found+the+play+itself+uneven.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+these+reviews+have+me+wanting+to+go.+Anyone+seen+it+at+the+Newhouse%3F",
+      "title": "16 reviews are in for Seven Guitars. 86/100",
+      "body": "It opened at Lincoln Center Theater/Mitzi E. Newhouse Theater, and I found 16 reviews: 9 raves, 7 positive. That works out to an 86/100.\n\nCritics largely rave over this Lincoln Center revival of Wilson's \"Seven Guitars,\" praising Santiago-Hudson's direction and a stellar ensemble cast. A few find the play itself uneven, but most call it breathtaking.\n\nAudiences are at a B+ (across Mezzanine, Theatr, and Show Score).\n\nI haven't seen it yet. Anyone been?\n\nhttps://broadwayscorecard.com/show/seven-guitars-off-broadway",
+      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
+      "expectedPushback": "Someone may say numbers can't capture theater.",
+      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?",
+      "personalLines": [
+        "I haven't seen it yet, and now I really want to.",
+        "Still undecided on going to this one."
+      ],
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=16+reviews+are+in+for+Seven+Guitars.+86%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+16+reviews%3A+9+raves%2C+7+positive.+That+works+out+to+an+86%2F100.%0A%0ACritics+largely+rave+over+this+Lincoln+Center+revival+of+Wilson%27s+%22Seven+Guitars%2C%22+praising+Santiago-Hudson%27s+direction+and+a+stellar+ensemble+cast.+A+few+find+the+play+itself+uneven%2C+but+most+call+it+breathtaking.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=16+reviews+are+in+for+Seven+Guitars.+86%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+16+reviews%3A+9+raves%2C+7+positive.+That+works+out+to+an+86%2F100.%0A%0ACritics+largely+rave+over+this+Lincoln+Center+revival+of+Wilson%27s+%22Seven+Guitars%2C%22+praising+Santiago-Hudson%27s+direction+and+a+stellar+ensemble+cast.+A+few+find+the+play+itself+uneven%2C+but+most+call+it+breathtaking.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+Seven+Guitars+at+Lincoln+Center.+84%2F100+from+13+critics%2C+7+raves+and+6+positive&text=I+found+13+reviews%3A+7+raves+and+6+positive.+Audiences+are+a+little+cooler+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0ARoma+Torre+at+New+York+Stage+Review+called+it+a+play+that+%22finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Meanwhile+Sara+Holdren+at+Vulture+had+some+reservations+about+how+consistently+the+production+burns%2C+but+still+wrote+%22And+that%27s+not+nothing.%22+Most+of+the+praise+goes+to+Ruben+Santiago-Hudson%27s+direction+and+the+ensemble%2C+and+a+few+critics+found+the+play+itself+uneven.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+these+reviews+have+me+wanting+to+go.+Anyone+seen+it+at+the+Newhouse%3F",
-      "emailedAt": "2026-11-24T12:54:45.324Z",
-      "reminderAt": "2026-11-24T12:54:45.324Z",
-      "emailedScore": 84,
-      "emailedReviewCount": 13,
-      "updateCount": 3
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=16+reviews+are+in+for+Seven+Guitars.+86%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+16+reviews%3A+9+raves%2C+7+positive.+That+works+out+to+an+86%2F100.%0A%0ACritics+largely+rave+over+this+Lincoln+Center+revival+of+Wilson%27s+%22Seven+Guitars%2C%22+praising+Santiago-Hudson%27s+direction+and+a+stellar+ensemble+cast.+A+few+find+the+play+itself+uneven%2C+but+most+call+it+breathtaking.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
+      "emailedAt": "2026-11-24T23:35:40.843Z",
+      "reminderAt": "2026-11-24T23:35:40.843Z",
+      "emailedScore": 86,
+      "emailedReviewCount": 16,
+      "updateCount": 4
     },
     "the-afronauts-west-end-2026": {
       "showId": "the-afronauts-west-end-2026",
