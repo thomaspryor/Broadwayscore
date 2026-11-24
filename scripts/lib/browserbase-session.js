@@ -161,6 +161,7 @@ function sanitizeMetadataValue(value) {
  * @param {string} [opts.projectId] - defaults to process.env.BROWSERBASE_PROJECT_ID
  * @param {string} opts.caller - short label for who's asking (e.g. 'gather-reviews:talkin-broadway')
  * @param {string} [opts.purpose] - free-text reason, surfaced in userMetadata for vendor-side lookup
+ * @param {string} [opts.url] - BRO-6867: page being fetched; recorded (query/fragment stripped) on the ledger row so repeat fetches of one URL are measurable.
  * @param {string} [opts.host] - target site this session is fetching (e.g. 'nytimes.com', 'broadwayworld.com').
  *   BRO-3097: recorded on the ledger row so spend is attributable by host, not just by caller script.
  * @param {'review-text'|'discovery'} opts.category - BRO-3097: splits ledger rows into Tier-1.5 paywalled
@@ -210,7 +211,7 @@ async function createBbSession(opts) {
   // costs no API call. Not a cap: the message must not read as one
   // (failed-fetch-policy.js routeCapFromBrowserbaseError).
   if (isDeniedHost(opts.host)) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'host-denied' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'host-denied' });
     throw refusal(`Browserbase host denied (${opts.host}): not a review host, session create blocked for ${opts.caller}`);
   }
 
@@ -271,18 +272,18 @@ async function createBbSession(opts) {
   // with the non-latching message, so a mixed run keeps serving Tier-1 rows.
   if (!exempt && liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay
     && hostCeiling === effectiveMaxPerDay && activeTier1Boost(boostNow) > 0) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
     throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${effectiveMaxPerDay}, the rest held for the Tier-1 boost) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
   }
   if (liveSessionsToday !== null && liveSessionsToday >= hostCeiling) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
     const reserveNote = hostCeiling < maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
     throw refusal(`Browserbase daily cap reached (${liveSessionsToday}/${hostCeiling}${reserveNote}) — session create blocked for ${opts.caller}`);
   }
   // A distinct message: this refusal holds only non-Tier-1 hosts, so callers
   // must not latch the whole run shut on it (collect-review-texts.js).
   if (liveSessionsToday !== null && liveSessionsToday >= hostLimit) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
     throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
   }
   // Allowance callers: an unknown account count or an unknown own count refuses
@@ -292,7 +293,7 @@ async function createBbSession(opts) {
       ? null
       : await browserbaseLiveUsage.fetchLiveBrowserbaseCallerSessionsToday(apiKey, projectId, sanitizeMetadataValue(opts.caller));
     if (callerUsed === null || callerUsed >= laneAllowance) {
-      recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'caller-allowance-used' });
+      recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'caller-allowance-used' });
       throw refusal(`Browserbase caller allowance used (${callerUsed === null ? 'count unknown' : `${callerUsed}/${laneAllowance}`}) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
     }
   }
@@ -326,23 +327,23 @@ async function createBbSession(opts) {
     });
     status = res.status;
   } catch (err) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: err.message || 'network-error' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: err.message || 'network-error' });
     throw err;
   }
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status });
     throw new Error(`Browserbase session create failed: ${status} ${text.slice(0, 200)}`);
   }
 
   const session = await res.json();
   if (!session || !session.id) {
-    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'no-session-id' });
+    recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: false, status: 'no-session-id' });
     throw new Error(`Browserbase session create returned no id: ${JSON.stringify(session).slice(0, 200)}`);
   }
 
-  recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: true, status });
+  recordBbCall({ caller: opts.caller, host: opts.host, url: opts.url, purpose: opts.purpose, category: opts.category, success: true, status });
 
   const connectUrl = session.connectUrl
     || `wss://connect.browserbase.com?apiKey=${apiKey}&sessionId=${session.id}`;

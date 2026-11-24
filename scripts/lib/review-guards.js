@@ -4667,23 +4667,59 @@ function shouldRetryFetch(show, review, failureEntry) {
   return { shouldRetry: true, reason: isStrict ? 'strict_retry' : 'lenient_retry' };
 }
 
-// Show-filtered runs skip the fetch-retry gate only inside the opening
-// window, where a 15-min poller retry is the point (BRO-3319). Outside it,
-// collect-review-texts.yml is dispatched with show_filter many times a day by
-// aggregator scrapers and gather-reviews; letting every one of those ignore
-// the cooldown re-ran the paid fetch waterfall on URLs failed hours earlier,
-// including closedOld URLs whose retry budget is 0.
-const SHOW_FILTER_BYPASS_LIFECYCLES = new Set(['previews', 'openWindow']);
+// BRO-6867: a show filter used to skip the whole fetch gate for every
+// previews/openWindow show. The poller's "auto" runs filter on every show in
+// its 14/21-day window, so a paywalled URL (NYT 403) was re-fetched on every
+// 15-minute run for days, past "Permanently failed (7 attempts)": 140 of 170
+// Browserbase sessions in three days went to three URLs. Now a show filter
+// only waives ABANDONMENT, and only in the hot window (pre-publication and
+// the first 48h after publication). The cooldown always applies.
+const PRESS_NIGHT_WINDOW_MS = 2 * DAY_MS;
+const PRESS_NIGHT_FETCH_COOLDOWN_MS = 3600 * 1000;
+
+/** First 48h after the publication moment of an openWindow show (BRO-6585). */
+function isPressNight(show, now = Date.now()) {
+  if (!show || typeof show !== 'object') return false;
+  if (classifyLifecycle(show) !== 'openWindow') return false;
+  const startMs = getPublicationMoment(show) ?? new Date(show.openingDate).getTime();
+  return Number.isFinite(startMs) && now >= startMs && now - startMs <= PRESS_NIGHT_WINDOW_MS;
+}
+
+/** Hot window: reviews are still arriving, so abandoning a URL is premature. */
+function isFetchHotWindow(show, now = Date.now()) {
+  return isPrePublication(show, now) || isPressNight(show, now);
+}
+
+// BRO-6867: the fresh-session retry on "Insufficient text" exists for the WSJ
+// 200-with-empty-body flake. A 401/403/404/410 is a block or a missing page;
+// a second session gets the same answer (0 of 45 retries succeeded).
+const BB_NO_RETRY_HTTP_STATUSES = new Set([401, 403, 404, 410]);
+function shouldRetryBbInsufficientText(error) {
+  if (!error || !/Insufficient text/.test(String(error.message))) return false;
+  return !BB_NO_RETRY_HTTP_STATUSES.has(Number(error.httpStatus));
+}
+
+const HOT_WINDOW_BYPASS_REASONS = new Set(['abandoned', 'max_retries_reached', 'cooldown']);
 
 /**
  * Should collect-review-texts.js let a gated (cooldown/abandoned) review
- * through anyway? Explicit per-file targeting always does; a show filter only
- * for shows in SHOW_FILTER_BYPASS_LIFECYCLES. RETRY_FAILED is deliberately
- * not a bypass: dispatchers pass retry_failed=true routinely.
+ * through anyway? Explicit per-file targeting always does. A show filter
+ * lets an ABANDONED review through only inside the hot window; a cooldown is
+ * never bypassed by a show filter. RETRY_FAILED is deliberately not a bypass:
+ * dispatchers pass retry_failed=true routinely.
  */
-function shouldBypassFetchGate({ reviewTargeted, showFilterActive, show }) {
+function shouldBypassFetchGate({ reviewTargeted, showFilterActive, show, gateReason, fetchRetryAfter, now = Date.now() }) {
   if (reviewTargeted) return true;
-  return !!showFilterActive && SHOW_FILTER_BYPASS_LIFECYCLES.has(classifyLifecycle(show));
+  if (!showFilterActive || !isFetchHotWindow(show, now)) return false;
+  // shouldRetryFetch checks the retry budget before the cooldown, so an
+  // abandoned review in cooldown reports 'max_retries_reached'; honour it here.
+  // Only a short wait (a press-night / pre-publication stamp, at most an hour
+  // ahead) holds the retry back. A longer one was stamped before the window
+  // opened (soft-404 waits run 3h to 7d): letting it stand would hold a
+  // review published tonight back for hours, so the hot window overrides it.
+  const after = fetchRetryAfter ? new Date(fetchRetryAfter).getTime() : NaN;
+  if (Number.isFinite(after) && now < after && after - now <= PRESS_NIGHT_FETCH_COOLDOWN_MS) return false;
+  return HOT_WINDOW_BYPASS_REASONS.has(gateReason);
 }
 
 /**
@@ -4736,8 +4772,12 @@ function recordFetchAttempt(show, review, failureEntry) {
   const failureReason = effectiveFailureReason(failureEntry);
   if (failureReason === SOFT_404_REASON) {
     const n = _counter(review && review.fetchSoft404Count);
+    let waitMs = SOFT_404_COOLDOWNS_MS[Math.min(n, SOFT_404_COOLDOWNS_MS.length - 1)];
+    // BRO-6867: in the hot window a "page not up yet" 404 retries hourly, not on a 3h to 7d ladder
+    // (the show-filter bypass no longer overrides a cooldown, so the stamp itself must be short).
+    if (isFetchHotWindow(show)) waitMs = Math.min(waitMs, PRESS_NIGHT_FETCH_COOLDOWN_MS);
     return {
-      fetchRetryAfter: new Date(Date.now() + SOFT_404_COOLDOWNS_MS[Math.min(n, SOFT_404_COOLDOWNS_MS.length - 1)]).toISOString(),
+      fetchRetryAfter: new Date(Date.now() + waitMs).toISOString(),
       fetchSoft404Count: n + 1,
     };
   }
@@ -4765,9 +4805,10 @@ function recordFetchAttempt(show, review, failureEntry) {
   // hourly and never abandon inside the window; normal tiers resume after it.
   // Measured from the publication moment, not openingDate midnight UTC: the
   // date-only openingDate would otherwise eat ~25h of the 48h window (BRO-6679).
-  const pressNightStartMs = getPublicationMoment(show) ?? new Date(show && show.openingDate).getTime();
-  if (lifecycle === 'openWindow' && now >= pressNightStartMs && now - pressNightStartMs <= PRESS_NIGHT_WINDOW_MS) {
-    return { fetchRetryAfter: new Date(now + PRESS_NIGHT_FETCH_COOLDOWN_MS).toISOString() };
+  if (isPressNight(show, now)) {
+    // Counted like a pre-publication failure (BRO-6867): the 48h of hourly
+    // retries must not use up the budget that applies once the window closes.
+    return { fetchRetryAfter: new Date(now + PRESS_NIGHT_FETCH_COOLDOWN_MS).toISOString(), fetchPrePubFailures: prePub + 1 };
   }
 
   const count = Math.max(0, _counter(failureEntry.failureCount) - prePub);
@@ -4777,9 +4818,6 @@ function recordFetchAttempt(show, review, failureEntry) {
 
   return { fetchRetryAfter: new Date(now + cooldown).toISOString() };
 }
-
-const PRESS_NIGHT_WINDOW_MS = 2 * DAY_MS;
-const PRESS_NIGHT_FETCH_COOLDOWN_MS = 3600 * 1000;
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Tier 2 stale wrongProduction recovery (BRO-53)
@@ -7342,8 +7380,10 @@ module.exports = {
   findShowKeywordInText,
   checkLlmVerificationAgainstKeywords,
   classifyLifecycle,
-  SHOW_FILTER_BYPASS_LIFECYCLES,
   shouldBypassFetchGate,
+  isFetchHotWindow,
+  shouldRetryBbInsufficientText,
+  isPressNight,
   isFetchLedgerEntryForOtherUrl,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,

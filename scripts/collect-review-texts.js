@@ -680,7 +680,7 @@ const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { sbHostCooldown } = require('./lib/scrapingbee-host-cooldown');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
-const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
+const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchHotWindow, shouldRetryBbInsufficientText, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
 const { clearAutomatedTextRejectionOnRefetch, isRejectedRefetchOnHold } = require('./lib/stale-automated-text-verdict');
 const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
@@ -2364,7 +2364,7 @@ async function fetchWithBrowserbase(url, review) {
   try {
     return await _fetchWithBrowserbaseAttempt(url, review);
   } catch (error) {
-    if (!/Insufficient text/.test(error.message)) throw error;
+    if (!shouldRetryBbInsufficientText(error)) throw error;
     // A second session needs ~40s; with less left before the per-review
     // REVIEW_TIMEOUT it would be paid for and then abandoned (BRO-5222).
     const startedAt = Number.isFinite(review && review._reviewStartedAt) ? review._reviewStartedAt : null;
@@ -2425,6 +2425,7 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
       caller: 'collect-review-texts.js',
       purpose: urlDomain ? `paywalled review fetch: ${urlDomain}` : 'paywalled review fetch',
       host: urlDomain || null,
+      url,
       category: 'review-text',
       body: {
         browserSettings: {
@@ -2591,7 +2592,9 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
     // BRO-5874: say what the browser got, so a 0-char result reads as a block (403, short page) or an extractor miss.
     const bbTitle = await bbPage.title().catch(() => '');
     console.log(`    Browserbase page: HTTP ${bbResponse ? bbResponse.status() : '?'}, ${html.length} bytes, title "${String(bbTitle).slice(0, 80)}"`);
-    throw new Error(`Insufficient text: ${text?.length || 0} chars`);
+    const insufficientErr = new Error(`Insufficient text: ${text?.length || 0} chars`);
+    insufficientErr.httpStatus = bbResponse ? bbResponse.status() : undefined;
+    throw insufficientErr;
 
   } catch (error) {
     // Track time even on failure
@@ -6780,6 +6783,8 @@ function findReviewsToProcess() {
             reviewTargeted: CONFIG.reviewFilter.size > 0,
             showFilterActive: isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter),
             show: showsById.get(showId) || null,
+            gateReason: fetchGate.reason,
+            fetchRetryAfter: data.fetchRetryAfter,
           });
           if (!fetchGate.shouldRetry && !gateBypassed) {
             logExclusion({
@@ -6795,7 +6800,10 @@ function findReviewsToProcess() {
                 nextAttemptAt: fetchGate.nextAttemptAt,
               },
             });
-            if (fetchGate.updates) {
+            // A show-filtered hot-window run that held back for a live cooldown
+            // must not stamp abandonment: the window exists to never abandon (BRO-6867).
+            const holdingHotWindow = isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter) && isFetchHotWindow(showsById.get(showId) || null);
+            if (fetchGate.updates && !holdingHotWindow) {
               try {
                 Object.assign(data, fetchGate.updates);
                 persistReviewSnapshot({ filePath: filePath, data: data, trailingNewline: true });

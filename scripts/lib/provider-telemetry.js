@@ -242,6 +242,16 @@ function _appendLedgerLine(record) {
  *   Tier-1.5 paywalled review-text fetch from an aggregator-discovery session (BWW/Stagedoor/WE listing
  *   crawls). Null for every other provider — they don't have this split.
  */
+/** URL without query/fragment, capped at 300 chars, for ledger rows. */
+function _ledgerUrl(u) {
+  try {
+    const parsed = new URL(String(u));
+    return (parsed.origin + parsed.pathname).slice(0, 300); // drops userinfo, query, fragment
+  } catch {
+    return String(u).split('#')[0].split('?')[0].replace(/^[a-z]+:\/\/[^/@]*@/i, '').slice(0, 300);
+  }
+}
+
 function recordProviderCall(opts) {
   if (process.env.BD_TELEMETRY_DISABLED === '1') return;
   try {
@@ -265,6 +275,9 @@ function recordProviderCall(opts) {
       showId: currentSpendShowId(opts.showId),
       ...(outletId ? { outletId: String(outletId).toLowerCase() } : {}),
       ...(typeof opts.host === 'string' && opts.host.startsWith('serp.') ? { run_id: SERP_RUN_ID, run_seq: ++_serpRunSequence } : {}),
+      // BRO-6867: browserbase only (row-size budget, BRO-6990). Query and
+      // fragment dropped: NYT gift tokens live there and the ledger is committed.
+      ...(provider === 'browserbase' && typeof opts.url === 'string' && opts.url ? { url: _ledgerUrl(opts.url) } : {}),
       ...(opts.breaker ? { breaker: opts.breaker } : {}),
       // Optional small diagnostic object (BRO-3344: why a SERP call failed).
       ...(opts.detail ? { detail: opts.detail } : {}),
