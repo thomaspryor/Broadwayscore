@@ -56,9 +56,9 @@ const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = 
 const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
 const { quarantineBody } = require('./lib/quarantine-body');
 const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
-const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
+const { guardianContentToResult } = require('./lib/guardian-api-result');
 const { GUARDIAN_API_FIELDS, GUARDIAN_API_TAGS, applyGuardianPublication, applyGuardianTone } = require('./lib/guardian-publication');
-const { isTitledBlogUrl, titledBlogMentionWaiver } = require('./lib/titled-blog-collect');
+const { isTitledBlogUrl } = require('./lib/titled-blog-collect');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
@@ -136,7 +136,7 @@ const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/
 const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { columnSectionAfterRoundupRejection } = require('./lib/column-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { detectBylineConflict } = require('./lib/byline-extraction');
@@ -669,7 +669,18 @@ function laneHeld(rec, guard) {
 // 2026: <title> read "The Heart", a real different show). Body-mention
 // evidence alone (htmlTitleMatch=null path, already the no-HTML behavior)
 // is the reliable signal for these outlets.
-const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
+// The set itself moved to scripts/lib/url-content-mismatch.js (BRO-7060).
+const { checkUrlContentMismatch } = require('./lib/url-content-mismatch');
+
+const MENTION_WAIVER_LABELS = {
+  'guardian-api': 'Guardian API headline leads with the show title',
+  'titled-blog': 'titledReviews blog, page title is the show title',
+  'review-headline': 'page title is a dedicated review headline for the show',
+};
+function logMentionWaiver(sanity, result) {
+  const head = sanity.waivedBy === 'guardian-api' ? result.pageTitle : sanity.htmlTitle;
+  console.log(`  ↪ Mention check (${sanity.waivedReason}) waived: ${MENTION_WAIVER_LABELS[sanity.waivedBy] || sanity.waivedBy} ("${head}")`);
+}
 
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate, isChallengeOrGarbage } = require('./lib/scraper');
@@ -7805,21 +7816,12 @@ async function processReview(review) {
       const canonicalTitle = _showsJsonCache
         ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
         : showTitle;
-      const trustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
-      const sanity = validateContentMentionsShow(
-        result.text,
-        trustHtmlTitle ? titleHtmlFor(result) : null,
-        canonicalTitle,
-        review.showId
-      );
-      if (!sanity.valid && guardianMentionWaiver(result, canonicalTitle)) {
-        console.log(`  ↪ Mention check (${sanity.reason}) waived: Guardian API headline leads with the show title ("${result.pageTitle}")`);
-        sanity.valid = true;
-      }
-      if (!sanity.valid && titledBlogMentionWaiver(review.url, sanity, canonicalTitle)) {
-        console.log(`  ↪ Mention check (${sanity.reason}) waived: titledReviews blog, page title is the show title ("${sanity.htmlTitle}")`);
-        sanity.valid = true;
-      }
+      // BRO-7060: the decision (body-mention count + Guardian API, titledReviews
+      // blog and dedicated-review-headline waivers) lives in url-content-mismatch.js.
+      const sanity = checkUrlContentMismatch({
+        result, showTitle: canonicalTitle, showId: review.showId, url: review.url, outletId: review.outletId,
+      });
+      if (sanity.waivedBy) logMentionWaiver(sanity, result);
       review._showMentionProven = sanity.valid; // BRO-7041: the Time Out re-credit below needs a proven show
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
@@ -8150,21 +8152,10 @@ async function processReview(review) {
           const retryCanonicalTitle = _showsJsonCache
             ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
             : showTitle;
-          const retryTrustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
-          const retrySanity = validateContentMentionsShow(
-            retryResult.text,
-            retryTrustHtmlTitle ? titleHtmlFor(retryResult) : null,
-            retryCanonicalTitle,
-            review.showId
-          );
-          if (!retrySanity.valid && guardianMentionWaiver(retryResult, retryCanonicalTitle)) {
-            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title ("${retryResult.pageTitle}")`);
-            retrySanity.valid = true;
-          }
-          if (!retrySanity.valid && titledBlogMentionWaiver(review.url, retrySanity, retryCanonicalTitle)) {
-            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: titledReviews blog, page title is the show title`);
-            retrySanity.valid = true;
-          }
+          const retrySanity = checkUrlContentMismatch({
+            result: retryResult, showTitle: retryCanonicalTitle, showId: review.showId, url: review.url, outletId: review.outletId,
+          });
+          if (retrySanity.waivedBy) logMentionWaiver(retrySanity, retryResult);
           if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {
             console.log(`  ✗ URL→CONTENT MISMATCH (retry): ${retrySanity.reason}`);
             recordFailedFetch(review, 'url_content_mismatch', {

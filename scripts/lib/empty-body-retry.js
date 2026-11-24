@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./article-extractor');
-const { classifyContentTier, validateContentMentionsShow, verifyFullTextContent } = require('./content-quality');
+const { classifyContentTier, verifyFullTextContent } = require('./content-quality');
+const { checkUrlContentMismatch } = require('./url-content-mismatch');
 const { isArticleOutsideProductionWindow } = require('./date-guard');
 const { createRunBudget } = require('./run-budget');
 const { leaseSkipReason } = require('./opening-night-lane/lease-guard');
@@ -32,7 +33,10 @@ function recoveryPatch(review, result, show, now = new Date().toISOString()) {
   if (!show?.title || typeof result?.content !== 'string' || result.format === 'markdown') return null;
   const fullText = extractArticleTextFromUrl(result.content, review.url, review.criticName);
   if (!fullText || fullText.trim().length < 300) return null;
-  const match = validateContentMentionsShow(fullText, result.content, show.title, show.id);
+  // Same URL→content decision as collect-review-texts.js (BRO-7060).
+  const match = checkUrlContentMismatch({
+    result: { text: fullText, html: result.content }, showTitle: show.title, showId: show.id, url: review.url, outletId: review.outletId,
+  });
   const verdict = verifyFullTextContent(fullText, show).verdict;
   if (!match.valid || ['probable_mismatch', 'confident_mismatch'].includes(verdict)) return null;
   const publishDate = extractPublishDate(result.content, review.url) || review.publishDate;
