@@ -49,9 +49,12 @@ function renderActionHtml(lines, cards, { dryRun = false, states = {} } = {}) {
     if (l.level === 'red') {
       const id = cards[l.conditionKey];
       const link = id ? `<a href="${LINEAR_ISSUE_URL}${escapeHtml(id)}">${escapeHtml(id)}</a>` : '';
-      if (id) tail = states[l.conditionKey] === 'started'
+      const st = states[l.conditionKey];
+      if (id) tail = st === 'started'
         ? `. A worker session is on it: ${link}`
-        : `. Queued, no worker session has taken it yet: ${link}`;
+        : st
+          ? `. Queued, no worker session has taken it yet: ${link}`
+          : `. Card filed (status unavailable this run): ${link}`;
       else if (dryRun) tail = ' (dry run: no card filed)';
       else tail = '. Could not file a worker card this run (see the workflow log)';
     }

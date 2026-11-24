@@ -78,7 +78,10 @@ test('email list names the card, or says filing failed; no em dashes; text escap
 test('email says queued, not "on it", for a card nobody has claimed', () => {
   const { lines } = evaluateCostReport({ ...QUIET, totalFailed: 15 });
   const key = KEYS.workflowFailures;
-  for (const states of [{}, { [key]: 'unstarted' }, { [key]: 'backlog' }]) {
+  const unknown = renderActionHtml(lines, { [key]: 'BRO-1' }, { states: {} });
+  assert.doesNotMatch(unknown, /worker session is on it|Queued/);
+  assert.match(unknown, /status unavailable/);
+  for (const states of [{ [key]: 'unstarted' }, { [key]: 'backlog' }]) {
     const html = renderActionHtml(lines, { [key]: 'BRO-1' }, { states });
     assert.doesNotMatch(html, /worker session is on it/);
     assert.match(html, /Queued, no worker session has taken it yet: <a href=/);
