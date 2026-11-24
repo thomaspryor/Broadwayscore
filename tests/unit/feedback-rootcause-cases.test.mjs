@@ -42,7 +42,9 @@ const YORK = T('x-york-regional-2026', 'york-uk');
 const BWAY = { id: 'x-2026', title: 'X Show', status: 'open', category: 'broadway', market: 'broadway', openingDate: '2026-01-01' };
 
 test('place word pins one production; negated, origin and longer-name mentions do not', () => {
-  const c = [BWAY, CHICAGO, TORONTO, YORK];
+  // A candidate with no city (Broadway/West End rows) means no pin at all.
+  assert.equal(pickCandidateByPlace([BWAY, TORONTO], 'X Show is coming to Toronto'), null);
+  const c = [CHICAGO, TORONTO, YORK];
   assert.equal(pickCandidateByPlace(c, 'X Show - Toronto run coming up').id, TORONTO.id);
   assert.equal(pickCandidateByPlace(c, 'X Show is coming to Toronto').id, TORONTO.id);
   assert.equal(pickCandidateByPlace(c, 'not the Toronto one'), null);
@@ -52,7 +54,7 @@ test('place word pins one production; negated, origin and longer-name mentions d
   assert.equal(pickCandidateByPlace(c, 'saw X Show in York').id, YORK.id);
   assert.equal(pickCandidateByPlace(c, 'X Show in Toronto and Chicago'), null);
   assert.equal(pickCandidateByPlace([TORONTO, { ...TORONTO, id: 'x-toronto-regional-2027' }], 'Toronto'), null);
-  assert.equal(pickCandidateByPlace([{ ...CHICAGO, title: 'Chicago' }, BWAY], 'Chicago'), null, 'city that is the title');
+  assert.equal(pickCandidateByPlace([{ ...CHICAGO, title: 'Chicago' }, TORONTO], 'Chicago'), null, 'city that is the title');
 });
 
 test('bare ask rule: "add" alone closes, change wording and other productions stay parked', () => {

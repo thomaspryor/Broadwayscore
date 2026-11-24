@@ -291,6 +291,10 @@ const normWords = (s) => ` ${String(s || '').toLowerCase().replace(/[^a-z0-9]+/g
  * ("Chicago"), two named cities, or a negated mention all return null.
  */
 function pickCandidateByPlace(candidates, text) {
+  // Broadway, West End and Off-Broadway rows carry no city: a London or New York
+  // word could mean one of them, so only pin when every candidate names its city
+  // (dry run over real asks: "the Globe production" pinned a London regional).
+  if (!candidates.length || candidates.some((s) => !s || cityName(s.city).length < 4)) return null;
   const t = normWords(text);
   const hits = [];
   for (const s of candidates) {
