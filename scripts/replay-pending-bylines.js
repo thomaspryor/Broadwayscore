@@ -578,7 +578,7 @@ async function processShow(showId, deps = {}) {
   const files = deps.files || fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
-  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0, urlBackfilled = 0;
+  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0, refetched = 0, urlBackfilled = 0, scoreMerged = 0;
   // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
   // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
   let tagged = 0, inspected = 0, lastFile = null;
@@ -624,7 +624,7 @@ async function processShow(showId, deps = {}) {
     stampFetchAttempt(filepath, data, dry, now().toISOString(), 'unrecoverable'); // BRO-8023: attempted, owner alerted
   };
   // A triage-only pass never fetches, so it cannot know a show has no unrecoverable stubs: never resolve on it.
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, urlBackfilled, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, urlBackfilled, scoreMerged, refetched, tagged, inspected, lastFile, redundantCopies, candidates, ...reportUnrecoverable(!extra.budgetExceeded && !triageOnlyRun), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -1085,6 +1085,15 @@ async function processShow(showId, deps = {}) {
           } else urlBackfilled++;
           console.log(`  [${file}] ${dry ? 'would backfill' : 'backfilled'} url onto ${newFilename}`);
         }
+      }
+      // BRO-8218: a same-article url-variant stub's star rating belongs on the primary (stars are score bands);
+      // copy it only when the primary has none, then the stub settles normally below.
+      if (idDateSame && present(data.originalScore) && !present(existing.originalScore)) {
+        if (!dry) {
+          existing.originalScore = data.originalScore;
+          try { require('./lib/review-write-guard').safeWriteReview(newPath, existing); scoreMerged++; } catch (e) { console.log(`  [${file}] could not merge originalScore: ${e.message}`); delete existing.originalScore; }
+        } else scoreMerged++;
+        console.log(`  [${file}] ${dry ? 'would merge' : 'merged'} originalScore "${data.originalScore}" onto ${newFilename} (BRO-8218)`);
       }
       if (idDateSame && !SCORE_FIELDS.some((k) => present(data[k]) && !present(existing[k])) && !isRedundantPendingStub(data, newFilename)) {
         if (settleStub(`same article as ${newFilename} (url variant) (BRO-8202)`)) tagged++;

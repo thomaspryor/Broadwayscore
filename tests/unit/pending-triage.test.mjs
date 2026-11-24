@@ -1883,6 +1883,44 @@ describe('BRO-8221: url-less Theatre Record stub in a 3+ entry title family reho
   test('a different-market sibling is not corroborated by the archive year', () => {
     const us = { ...BR, category: 'broadway' };
     assert.equal(T.noUrlStubVerdict(stub, ctx({ allShows: [NC, us, fam[2], fam[3]] })), null);
+
+// BRO-8218: a same-article url-variant stub's originalScore is merged onto the primary (only when it has none).
+describe('BRO-8218: same-article stub star rating merges into the primary', () => {
+  const { processShow } = require('../../scripts/replay-pending-bylines.js');
+  const show = { id: 'bonnie-and-clyde-west-end-2023', title: 'Bonnie & Clyde', openingDate: '2023-03-09', closingDate: '2023-06-01' };
+  const URL_ = 'https://www.thetimes.com/culture/theatre-dance/article/bonnie-amp-clyde-review-sing-when-youre-shooting-zv0z90lsh';
+  function setup(primaryExtra) {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8218-'));
+    fs.mkdirSync(path.join(root, '_pending', show.id), { recursive: true });
+    fs.mkdirSync(path.join(root, show.id), { recursive: true });
+    const prim = path.join(root, show.id, 'times-uk--dominic-maxwell.json');
+    fs.writeFileSync(prim, JSON.stringify({ outletId: 'times-uk', criticName: 'Dominic Maxwell', url: null, publishDate: '2023-03-09', fullText: 'word '.repeat(600), contentTier: 'complete', ...primaryExtra }));
+    const stub = path.join(root, '_pending', show.id, 'times-uk--344a463.json');
+    fs.writeFileSync(stub, JSON.stringify({ outletId: 'times-uk', criticName: 'Unknown', url: URL_, publishDate: '2023-03-09', fullText: 'word '.repeat(300), originalScore: '4/5 stars' }));
+    const d = {
+      root, show, dryRun: false, heldIndex: null, explicitScope: false,
+      fetch: async () => ({ content: '<html><head><meta name="author" content="Dominic Maxwell"><title>r</title></head><body><article><p>' + 'Bonnie and Clyde review. '.repeat(80) + '</p></article></body></html>' }),
+      alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
+    };
+    return { prim, stub, d };
+  }
+  test('copies originalScore onto a primary that lacks it', async () => {
+    const { prim, d } = setup({});
+    const r = await processShow(show.id, d);
+    assert.equal(r.scoreMerged, 1);
+    assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).originalScore, '4/5 stars');
+  });
+  test('never overwrites a primary that already has one', async () => {
+    const { prim, d } = setup({ originalScore: '3/5 stars' });
+    const r = await processShow(show.id, d);
+    assert.equal(r.scoreMerged, 0);
+    assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).originalScore, '3/5 stars');
+  });
+  test('dry run writes nothing', async () => {
+    const { prim, d } = setup({});
+    d.dryRun = true;
+    await processShow(show.id, d);
+    assert.equal(JSON.parse(fs.readFileSync(prim, 'utf8')).originalScore, undefined);
   });
 });
 
