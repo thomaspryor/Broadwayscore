@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-24T01:57:18.916Z",
-  "processed": 182,
-  "failed": 64,
-  "successRate": "74.0%",
+  "updatedAt": "2026-11-24T02:09:12.375Z",
+  "processed": 260,
+  "failed": 131,
+  "successRate": "66.5%",
   "tierBreakdown": {
-    "playwright": 107,
+    "playwright": 149,
     "amp": 1,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 14,
-    "scrapingbee": 15,
+    "scrapingdog": 22,
+    "scrapingbee": 18,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 43
+    "archive": 66
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 13,
   "recentActivity": [
     {
       "t": "2026-11-24T00:38:45.344Z",
@@ -111,6 +111,23 @@
       "t": "2026-11-24T01:32:13.275Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T01:42:23.946Z",
+      "event": "bb-session",
+      "session": "cab1cb6c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-24T01:42:24.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-24T01:57:42.906Z",
+      "event": "bb-session",
+      "session": "ea8861b7",
+      "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
     }
   ]
 }
