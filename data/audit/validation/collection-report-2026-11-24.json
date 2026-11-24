@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-24T05:01:03.176Z",
+  "runDate": "2026-11-24T05:04:16.604Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "seven-guitars-off-broadway-2026",
+    "showFilter": "eurotrash-off-west-end-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 4,
     "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 2,
+    "failed": 2,
     "shows": [
-      "seven-guitars-off-broadway-2026"
+      "eurotrash-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,24 +66,27 @@
     }
   },
   "processed": [
-    "seven-guitars-off-broadway-2026/front-row-center--unknown.json",
-    "seven-guitars-off-broadway-2026/pages-on-stages--unknown.json",
-    "seven-guitars-off-broadway-2026/theater-pizzazz--unknown.json"
+    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
   ],
-  "failed": [],
+  "failed": [
+    "eurotrash-off-west-end-2026/partially-obstructed-view--unknown.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "seven-guitars-off-broadway-2026/front-row-center--unknown.json",
-      "seven-guitars-off-broadway-2026/pages-on-stages--unknown.json",
-      "seven-guitars-off-broadway-2026/theater-pizzazz--unknown.json"
+      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
-    "failed": []
+    "failed": [
+      "eurotrash-off-west-end-2026/partially-obstructed-view--unknown.json",
+      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "seven-guitars-off-broadway-2026/front-row-center--unknown.json",
-      "seven-guitars-off-broadway-2026/pages-on-stages--unknown.json",
-      "seven-guitars-off-broadway-2026/theater-pizzazz--unknown.json"
+      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -94,6 +97,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Partially Obstructed View": {
+      "count": 1,
+      "domain": "partially-obstructed-view.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
