@@ -482,6 +482,20 @@
     "queuedAt": "2026-11-23T20:50:54.446Z"
   },
   {
+    "conditionKey": "opening-night-lane-summary:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23",
+    "title": "Opening-night lane for its-a-wonderful-life-a-live-radio-play-2026: 0 unpublished, 4 failed, 53 errors",
+    "description": "passes 125, admitted 2\nfailed: https://playbill.com/article/read-the-reviews-for-its-a-wonderful-life-on-broadway (score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation)))\nfailed: https://broadwayworld.com/article/Review-Roundup-ITS-A-WONDERFUL-LIFE-A-LIVE-RADIO-PLAY-on-Broadway-20261123 (score failed for good after 1 attempt(s): not a review: roundup page (BroadwayWorld Review-Roundup article (multi-outlet quote compilation)))\nfailed: https://irishtimes.com/culture/stage/review/2026/11/22/its-a-wonderful-life-review-gates-christmas-show-leans-into-joyous-moments-of-jimmy-stewart-classic (score failed for good after 1 attempt(s): scorer rejected the review: wrong_production)\nfailed: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway (score failed for good after 1 attempt(s): scorer rejected the review: not_a_review)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: show-score: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway: fetch deferred (pre-embargo direct-only window), retry at 2026-11-24T01:41:46.370Z: short page (559 chars) fetched direct-only\nerror: google-news: https://playbill.com/article/read-the-reviews-for-its-a-wonderful-life-on-broadway: score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation))\nerror: google-news: https://broadwayworld.com/article/Review-Roundup-ITS-A-WONDERFUL-LIFE-A-LIVE-RADIO-PLAY-on-Broadway-20261123: score failed for good after 1 attempt(s): not a review: roundup page (BroadwayWorld Review-Roundup article (multi-outlet quote compilation))\nerror: talkin-broadway: every Talkin' Broadway index failed",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T06:16:09.417Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:a-round-heeled-woman-west-end-2011",
     "title": "1 review(s) for a-round-heeled-woman-west-end-2011 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- times-uk--4fe08d73.json (times-uk): no byline in page and no recoverable body https://www.thetimes.com/culture/theatre-dance/article/a-round-heeled-woman-at-the-riverside-london-nzwbzxt062l",
@@ -1192,33 +1206,6 @@
     "queuedAt": "2026-11-24T00:09:03.149Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:run-data-validation",
-    "title": "Data audit failing: Run data validation — already tracked at BRO-8225",
-    "description": "This condition already has an open tracker (BRO-8225); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45305163083",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-8225",
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Run data validation"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45305163083)"
-      }
-    ],
-    "queuedAt": "2026-11-24T02:58:13.718Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-8218-mwtyigms",
     "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-8218-mwtyigms",
     "description": "land.yml did not land land/job/linear-BRO-8218-mwtyigms: the scripts-lib-tests gate went red at 40d9c49d0f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45298406940",
@@ -1428,34 +1415,6 @@
     "queuedAt": "2026-11-24T05:16:15.585Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T05:16:36.720Z"
-  },
-  {
-    "conditionKey": "opening-night-lane-auto-fallback:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23",
-    "title": "Opening-night lane died for its-a-wonderful-life-a-live-radio-play-2026 (2026-11-23); the old path took over",
-    "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T06:16:28.805Z"
-  },
-  {
     "conditionKey": "land:land/bro-8232-vulture-page-tag",
     "title": "Landing blocked: unit-tests-node red on land/bro-8232-vulture-page-tag",
     "description": "land.yml did not land land/bro-8232-vulture-page-tag: the unit-tests-node gate went red at 6c3b699eba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335245379",
@@ -1485,5 +1444,19 @@
       }
     ],
     "queuedAt": "2026-11-24T06:05:51.877Z"
+  },
+  {
+    "conditionKey": "opening-night-lane-auto-fallback:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23",
+    "title": "Opening-night lane died for its-a-wonderful-life-a-live-radio-play-2026 (2026-11-23); the old path took over",
+    "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T06:16:28.805Z"
   }
 ]
