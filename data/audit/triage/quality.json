@@ -1,15 +1,15 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-23T20:39:11.054Z",
+  "lastChecked": "2026-11-24T00:27:18.082Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "pass",
-      "message": "No opening date contradicts its reviews (1 acked)"
+      "status": "warn",
+      "message": "1 show(s) store an opening date later than their reviews: a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -19,17 +19,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.1% scored (52764/53786)"
+      "message": "98.1% scored (52837/53834)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "32 audit(s) drifting, each reported on its own card or the digest FYI line (0h ago)"
+      "message": "32 audit(s) drifting, each reported on its own card or the digest FYI line (3h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "23079 messages, 3 auth failures (p=reject)"
+      "message": "23772 messages, 3 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 408 unregistered host(s)"
+      "message": "No probable domain moves in 409 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1903 outlet(s), 84384 review(s)"
+      "message": "No broken-extractor signature in 1903 outlet(s), 84440 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1903 outlet(s), 84384 review(s)"
+      "message": "No broken-extractor signature in 1903 outlet(s), 84440 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -64,7 +64,7 @@
     {
       "name": "Quality: expected critics missing",
       "status": "warn",
-      "message": "6 usual-critic review(s) the automatic search could not settle (52 more still being searched for automatically): Talkin' Broadway on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Theater Scene on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running."
+      "message": "4 usual-critic review(s) the automatic search could not settle (36 more still being searched for automatically): Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running."
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -74,7 +74,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "150 outlet×market rows checked, none NEW silent 2+ consecutive weeks (14 known/baselined, 33 dormant 1y+, 7d ago)"
+      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 3h ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

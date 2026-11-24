@@ -1,15 +1,15 @@
 {
   "system": "revenue",
-  "status": "warn",
-  "lastChecked": "2026-11-23T20:39:11.054Z",
+  "status": "error",
+  "lastChecked": "2026-11-24T00:27:18.083Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Revenue: affiliate health",
-      "status": "warn",
-      "message": "1 anomaly: Bot click divergence"
+      "status": "error",
+      "message": "1 critical: impact API"
     }
   ]
 }

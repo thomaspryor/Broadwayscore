@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-23T20:39:11.053Z",
+  "lastChecked": "2026-11-24T00:27:18.081Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -28,43 +28,43 @@
     },
     {
       "name": "Data: tour automation stopped reporting",
-      "status": "pass",
-      "message": "All three national-tour jobs reported on schedule"
+      "status": "warn",
+      "message": "A national-tour job has not run on schedule: daily new-tour check (scrape-new-aggregators.yml, BWW landing job): last report 2 day(s) ago."
     },
     {
       "name": "Data: tour review sweep held",
       "status": "pass",
-      "message": "The daily tour sweep held nothing back"
+      "message": "Skipped (a tour job report is missing or stale): The daily tour sweep held nothing back"
     },
     {
       "name": "Data: tour dates need a look",
       "status": "pass",
-      "message": "Every tour was dated automatically"
+      "message": "Skipped (a tour job report is missing or stale): Every tour was dated automatically"
     },
     {
       "name": "Data: running-tour discovery failed",
       "status": "pass",
-      "message": "Running-tour discovery on Tours To You succeeded"
+      "message": "Skipped (a tour job report is missing or stale): Running-tour discovery on Tours To You succeeded"
     },
     {
       "name": "Data: Tours To You pages not checked",
       "status": "pass",
-      "message": "All 224 Tours To You show pages read within 4 days"
+      "message": "Skipped (a tour job report is missing or stale): All 224 Tours To You show pages read within 4 days"
     },
     {
       "name": "Data: national tours added automatically",
       "status": "pass",
-      "message": "No national tours added automatically this run"
+      "message": "Skipped (a tour job report is missing or stale): No national tours added automatically this run"
     },
     {
       "name": "Data: closed national tours reopened automatically",
       "status": "pass",
-      "message": "No closed national tours reopened"
+      "message": "Skipped (a tour job report is missing or stale): No closed national tours reopened"
     },
     {
       "name": "Data: closed national tour lists new dates",
       "status": "pass",
-      "message": "No closed national tour lists new dates"
+      "message": "Skipped (a tour job report is missing or stale): No closed national tour lists new dates"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -94,22 +94,22 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "81 review(s) with no usable text, 67 rejected although verified as a review, 23 never scored, 15 with a blocked URL (0 published on the site), across 759 current shows"
+      "message": "82 review(s) with no usable text, 68 rejected although verified as a review, 30 never scored, 15 with a blocked URL (0 published on the site), across 775 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (50788 checked)"
+      "message": "No published review score contradicts the critic's rating (50888 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "20 early publish date(s) awaiting recheck (limit 40); 218 already attempted and not yet confirmed"
+      "message": "23 early publish date(s) awaiting recheck (limit 40); 217 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "warn",
-      "message": "4 unexplained approved-fix drift(s) across 3964 files with approvals"
+      "message": "4 unexplained approved-fix drift(s) across 3965 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -125,11 +125,6 @@
       "name": "Data: reviewed shows missing from shows.json",
       "status": "pass",
       "message": "No aggregator-reviewed show is missing from the catalogue"
-    },
-    {
-      "name": "Data: BWW roundup discovery misses near opening",
-      "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: its-a-wonderful-life-a-live-radio-play-2026 (5 misses, last 2026-11-23T08:37:58.340Z)."
     }
   ]
 }
