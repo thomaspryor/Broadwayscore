@@ -1,13 +1,150 @@
 {
-  "generatedAt": "2026-11-23T16:33:18.832Z",
-  "total": 482,
-  "armedCount": 463,
-  "refusedCount": 19,
+  "generatedAt": "2026-11-24T16:07:40.341Z",
+  "total": 492,
+  "armedCount": 456,
+  "refusedCount": 36,
   "byKind": {
-    "shape": 18,
-    "no-section": 1
+    "shape": 27,
+    "no-section": 4,
+    "no-command": 5
   },
   "refused": [
+    {
+      "id": "BRO-8260",
+      "name": "Feedback proposals: already-fixed close can strand open; daily cap races; fallback closes closed-show matches",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8260/feedback-proposals-already-fixed-close-can-strand-open-daily-cap-races",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/feedback-proposal-email.test.mjs (add cases: closed-show fallback refused; ledger already-fixed +)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8259",
+      "name": "City hub audit boston-ma 2026-W48: 2 new finding(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8259/city-hub-audit-boston-ma-2026-w48-2-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8255",
+      "name": "Critic backfill stores trailing dot in name (artsfuse 'Michela Smith.')",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8255/critic-backfill-stores-trailing-dot-in-name-artsfuse-michela-smith",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/lib/byline-extraction.test.mjs (new case: trailing dot stripped on a generic byline))",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8254",
+      "name": "Recheck NYT Critic's Pick badge: Seven Guitars (Vincentelli, 2026-11-24)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8254/recheck-nyt-critics-pick-badge-seven-guitars-vincentelli-2026-11-24",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/data/shows/seven-guitars-off-broadway-2026.json](<https://broadwayscorecard.com/d)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8239",
+      "name": "Orchestrator-session hook friction: 57 blocks in one multi-worker session",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8239/orchestrator-session-hook-friction-57-blocks-in-one-multi-worker",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test for each hook's existing test file passes with a new case covering the change; next retro of a multi-worker )",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8222",
+      "name": "Affiliate: Impact recording 3.5x more TodayTix clicks than real site clicks (bot divergence warn, 2 days running)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8222/affiliate-impact-recording-35x-more-todaytix-clicks-than-real-site",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-affiliate-health.js --dry-run)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8212",
+      "name": "Name the critic on ~210 corpus reviews filed as --unknown whose text prints the byline (Islington Tribune, Aleks Sierz, A Younger Theatre)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8212/name-the-critic-on-210-corpus-reviews-filed-as-unknown-whose-text",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/byline-outlet-fixtures.test.mjs (add fixtures for both outlets); dry-run shows islingtontribune/s)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8203",
+      "name": "Sign-in box (desktop) + welcome screen: design options",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8203/sign-in-box-desktop-welcome-screen-design-options",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: PostHog sign-in funnel desktop start rate re-checked 2 weeks after landing)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8188",
+      "name": "It's a Wonderful Life opening: missed reviews (wrong opening date 11-18 vs real 11-23) + systemic fix",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8188/its-a-wonderful-life-opening-missed-reviews-wrong-opening-date-11-18",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('./data/reviews.json');const a=(Array.isArray(r)?r:r.reviews).filter(x=>x.showId==='its-a-wonde)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8186",
+      "name": "Missing show: Tales from Ovid",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8186/missing-show-tales-from-ovid",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8185",
+      "name": "Missing show: A Knight's Tale — The Musical",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8185/missing-show-a-knights-tale-the-musical",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8184",
+      "name": "Missing show: Betty Boop — The Musical",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8184/missing-show-betty-boop-the-musical",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8183",
+      "name": "Missing show: A Knight's Tale — The Musical",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8183/missing-show-a-knights-tale-the-musical",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8182",
+      "name": "Missing show: Betty Boop — The Musical (tour)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8182/missing-show-betty-boop-the-musical-tour",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8181",
+      "name": "Rage clicks on Downstate show page button",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8181/rage-clicks-on-downstate-show-page-button",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8180",
+      "name": "Rage clicks on 'NEWEST ↑' sort button on homepage",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8180/rage-clicks-on-newest-sort-button-on-homepage",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8177",
+      "name": "Visual gate: logic-only .tsx changes still ask the owner for visual approval",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8177/visual-gate-logic-only-tsx-changes-still-ask-the-owner-for-visual",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
     {
       "id": "BRO-8117",
       "name": "114 complete full-text reviews scored from a 1-2 sentence excerpt: text-quality.js corruption check misfires on photo credit + privacy-policy furniture",
@@ -162,12 +299,21 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 301,
-    "checked": 301,
+    "total": 320,
+    "checked": 320,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-8213",
+      "name": "Land preflight: check CLAUDE.md byte cap before land/** push",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8213/land-preflight-check-claudemd-byte-cap-before-land-push",
+      "cmd": "node --test scripts/lib/land-preflight.test.mjs",
+      "missingPaths": [
+        "scripts/lib/land-preflight.test.mjs"
+      ]
+    },
     {
       "id": "BRO-8164",
       "name": "Visual approval asks the owner again and again for the same change",
@@ -175,24 +321,6 @@
       "cmd": "node --test tests/unit/visual-approval-repeat-asks.test.mjs",
       "missingPaths": [
         "tests/unit/visual-approval-repeat-asks.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-8155",
-      "name": "Shrink serverless functions: 4 are 204-217MB of Vercel's 250MB limit",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8155/shrink-serverless-functions-4-are-204-217mb-of-vercels-250mb-limit",
-      "cmd": "node --test scripts/lib/check-function-bundle-size.test.mjs",
-      "missingPaths": [
-        "scripts/lib/check-function-bundle-size.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-8152",
-      "name": "Digest: paused fix cards hide owner decisions; 'manual check' wording misleads",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8152/digest-paused-fix-cards-hide-owner-decisions-manual-check-wording",
-      "cmd": "node --test scripts/lib/owner-judgment-limbo-guard.test.js",
-      "missingPaths": [
-        "scripts/lib/owner-judgment-limbo-guard.test.js"
       ]
     },
     {
@@ -211,15 +339,6 @@
       "cmd": "node --test scripts/e2e-gate.test.mjs",
       "missingPaths": [
         "scripts/e2e-gate.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-8112",
-      "name": "Theater pages parity: accessibility + seat-view links for OB/London venues; year opened + official site on Broadway pages",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8112/theater-pages-parity-accessibility-seat-view-links-for-oblondon-venues",
-      "cmd": "node --test tests/unit/venue-info-parity.test.mjs",
-      "missingPaths": [
-        "tests/unit/venue-info-parity.test.mjs"
       ]
     },
     {
@@ -346,15 +465,6 @@
       "cmd": "node --test scripts/asc-listing.test.mjs",
       "missingPaths": [
         "scripts/asc-listing.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7704",
-      "name": "Money welcome email: send within ~5 min of sign-up (event trigger + hourly backstop)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7704/money-welcome-email-send-within-5-min-of-sign-up-event-trigger-hourly",
-      "cmd": "node --test tests/unit/money-welcome-kick.test.mjs",
-      "missingPaths": [
-        "tests/unit/money-welcome-kick.test.mjs"
       ]
     },
     {
