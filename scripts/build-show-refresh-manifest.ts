@@ -65,11 +65,13 @@ export function main(argv = process.argv.slice(2)) {
   const shows: Array<{ id: string; slug: string; images?: object }> = [];
   const sliceHashById = new Map<string, string>();
   const heldById = new Map<string, boolean>();
+  const reviewMetaById = new Map<string, { reviewCount: number; reviewsSig: string }>();
   for (const id of states.order) {
     const st = states.perShow[id];
     shows.push({ id, slug: st.slug, images: st.images });
     sliceHashById.set(id, st.hash as string);
     heldById.set(id, st.held === true);
+    reviewMetaById.set(id, { reviewCount: st.reviewCount as number, reviewsSig: st.reviewsSig as string });
   }
 
   const coreShaFile = path.join(dataDir, '.core-data-sha');
@@ -86,6 +88,7 @@ export function main(argv = process.argv.slice(2)) {
     shows,
     sliceHashById,
     heldById,
+    reviewMetaById,
   });
   const text = JSON.stringify(manifest);
   writeAtomic(path.join(ROOT, MANIFEST_FILE), text);
