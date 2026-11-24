@@ -1468,6 +1468,7 @@ jobs:
       # 240s, backoffSum 77s). Same 20/600s pairing as rebuild-fast.yml's
       # #1891 fix.
       - name: Commit and push rebuilt data (fast_path)
+        id: commit
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
         env:
           PUSH_DEADLINE_SEC: '600'
@@ -1489,6 +1490,8 @@ jobs:
           git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }
           git commit -m "data: Opening night poller (fast path) — inline rebuild"
           bash scripts/lib/push-with-retry.sh 20 main
+          # BRO-8236: only a pushed commit can be classified as a reveal below.
+          echo "committed=true" >> "$GITHUB_OUTPUT"
 
       - name: Push core data to private repo (fast_path)
         if: always() && inputs.fast_path && steps.fast_rebuild.outcome == 'success'
@@ -1502,11 +1505,32 @@ jobs:
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          COMMITTED: ${{ steps.commit.outputs.committed }}
         run: |
           DEPLOY_SHA=$(git rev-parse HEAD)
           echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT
-          echo "Fast path: triggering deploy for $DEPLOY_SHA..."
-          if gh workflow run vercel-deploy.yml -f source=opening-night; then
+          # BRO-8236: ship-now (source=opening-night-reveal, then wait for live)
+          # only when this run's own commit changed what a visitor sees for a
+          # show in its opening window (new review, displayed score, counts) or
+          # NYT picks or site code. Otherwise dispatch source=opening-night and
+          # let the deploy gate judge it (routine: 45-min interval + deferred
+          # retry), without waiting. Classification errors print reveal=true.
+          REVEAL=false
+          if [ "$COMMITTED" = "true" ]; then
+            CLS=$(node scripts/lib/deploy-reveal.js "$DEPLOY_SHA~1" "$DEPLOY_SHA" || echo "reveal=true")
+            echo "$CLS"
+            grep -q '^reveal=true' <<<"$CLS" && REVEAL=true
+          else
+            echo "Nothing committed by this run: no reveal to ship."
+          fi
+          echo "reveal=$REVEAL" >> $GITHUB_OUTPUT
+          echo "Fast path: triggering deploy for $DEPLOY_SHA (reveal=$REVEAL)..."
+          if [ "$REVEAL" = "true" ]; then
+            gh workflow run vercel-deploy.yml -f source=opening-night-reveal && OK=1 || OK=0
+          else
+            gh workflow run vercel-deploy.yml -f source=opening-night && OK=1 || OK=0
+          fi
+          if [ "$OK" = "1" ]; then
             echo "dispatched=true" >> $GITHUB_OUTPUT
           else
             echo "::warning::Deploy dispatch call failed — will deploy on next 5-min content-aware cron gate"
@@ -1524,7 +1548,7 @@ jobs:
       # be visible in the pipeline verdict below, not swallowed.
       - name: Wait for deploy to go live (fast_path)
         id: deploy_verify
-        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.deploy.outputs.dispatched == 'true'
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.deploy.outputs.dispatched == 'true' && steps.deploy.outputs.reveal == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -1703,6 +1727,7 @@ jobs:
           LANE_ONLY_SUPPRESS: ${{ steps.lane_only.outputs.suppress }}
           DEPLOY_ATTEMPTED_RAW: ${{ steps.fast_rebuild.outcome }}
           DEPLOY_DISPATCHED: ${{ steps.deploy.outputs.dispatched }}
+          DEPLOY_REVEAL: ${{ steps.deploy.outputs.reveal }}
           DEPLOY_VERIFIED: ${{ steps.deploy_verify.outputs.verified }}
           DEPLOY_TIMED_OUT: ${{ steps.deploy_verify.outputs.timed_out }}
           DEPLOY_REASON: ${{ steps.deploy_verify.outputs.reason }}
@@ -1739,7 +1764,7 @@ jobs:
           COLLECT_ATTEMPTED="$COLLECT_ATTEMPTED" COLLECT_OUTCOME="$COLLECT_OUTCOME" \
           SCORE_FAILED="$SCORE_FAILED" SCORE_TOTAL="$SCORE_TOTAL" \
           REBUILD_ATTEMPTED="$REBUILD_ATTEMPTED" REBUILD_OUTCOME="$REBUILD_OUTCOME" \
-          DEPLOY_ATTEMPTED="$DEPLOY_ATTEMPTED" DEPLOY_DISPATCHED="$DEPLOY_DISPATCHED" \
+          DEPLOY_ATTEMPTED="$DEPLOY_ATTEMPTED" DEPLOY_DISPATCHED="$DEPLOY_DISPATCHED" DEPLOY_REVEAL="$DEPLOY_REVEAL" \
           DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
           node scripts/opening-night-pipeline-verify.js
 

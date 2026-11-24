@@ -391,7 +391,9 @@ jobs:
           GITHUB_OUTPUT="$GATE_OUT" GATE_EVENT_NAME=workflow_dispatch GATE_SOURCE=rebuild-fast node scripts/lib/should-deploy-gate.js || echo "::warning::[prewarm] gate crashed, deploying"
           # "Already live" seconds after the push may be a stale Contents API read of
           # the core-data blob; a normal deploy re-asks the gate a minute later.
-          if grep -q '^proceed=false' "$GATE_OUT"; then handoff "deploy gate says already live"; fi
+          # BRO-8236: the gate can also hold a no-reveal rebuild (min-interval); the
+          # hand-off run's gate job then schedules its deferred retry.
+          if grep -q '^proceed=false' "$GATE_OUT"; then handoff "deploy gate held it ($(sed -n 's/^reason=//p' "$GATE_OUT" | head -1))"; fi
           echo "go=true" >> "$GITHUB_OUTPUT"
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data

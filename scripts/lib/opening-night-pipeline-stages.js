@@ -119,7 +119,7 @@ function verifyRebuildStage({ attempted = true, outcome, fastPath = true, dispat
  * ALSO break the cron backstop's own deploy) should page. Not silent either
  * way — both are surfaced in the pipeline summary.
  */
-function verifyDeployStage({ attempted = true, dispatched, verified, timedOut, reason } = {}) {
+function verifyDeployStage({ attempted = true, dispatched, verified, timedOut, reason, reveal } = {}) {
   if (!attempted) return { ok: true, reason: 'deploy: skipped (no rebuild happened)' };
   if (!dispatched) {
     return {
@@ -128,6 +128,10 @@ function verifyDeployStage({ attempted = true, dispatched, verified, timedOut, r
       reason: 'deploy: dispatch call failed — 5-min cron gate will pick it up',
     };
   }
+  // BRO-8236: the run's commit had no visitor-visible change for an opening
+  // show, so the deploy gate holds it for the routine deploy (<=45 min) and
+  // the poller does not wait. Healthy, not degraded. undefined = older caller.
+  if (reveal === false) return { ok: true, reason: 'deploy: no visible change, held for the routine deploy' };
   if (verified) return { ok: true, reason: 'deploy: verified live on production' };
   if (timedOut) {
     return {

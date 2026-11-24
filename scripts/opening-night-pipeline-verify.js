@@ -19,7 +19,7 @@
  *     lib/collect-run-summary.js)
  *   SCORE_FAILED, SCORE_TOTAL
  *   REBUILD_ATTEMPTED, REBUILD_OUTCOME
- *   DEPLOY_ATTEMPTED, DEPLOY_DISPATCHED, DEPLOY_VERIFIED, DEPLOY_TIMED_OUT, DEPLOY_REASON
+ *   DEPLOY_ATTEMPTED, DEPLOY_DISPATCHED, DEPLOY_VERIFIED, DEPLOY_TIMED_OUT, DEPLOY_REASON, DEPLOY_REVEAL
  */
 
 const fs = require('fs');
@@ -61,6 +61,7 @@ function buildStageResults(env) {
       verified: bool(env.DEPLOY_VERIFIED),
       timedOut: bool(env.DEPLOY_TIMED_OUT),
       reason: env.DEPLOY_REASON,
+      reveal: env.DEPLOY_REVEAL ? bool(env.DEPLOY_REVEAL) : undefined, // BRO-8236
     }),
   ];
 }

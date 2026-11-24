@@ -106,6 +106,24 @@ describe('verifyDeployStage', () => {
     assert.equal(r.ok, false);
     assert.match(r.reason, /Vercel API 500/);
   });
+
+  test('BRO-8236: no reveal means held for the routine deploy, ok and not degraded (no wait ran)', () => {
+    const r = verifyDeployStage({ attempted: true, dispatched: true, verified: false, timedOut: false, reveal: false });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, undefined);
+    assert.match(r.reason, /held for the routine deploy/);
+    // A reveal still needs the live check: no wait result is a failure, as before.
+    assert.equal(verifyDeployStage({ attempted: true, dispatched: true, verified: false, timedOut: false, reveal: true }).ok, false);
+  });
+
+  test('BRO-8236: DEPLOY_REVEAL env reaches the deploy verdict', () => {
+    const env = { DEPLOY_ATTEMPTED: 'true', DEPLOY_DISPATCHED: 'true', DEPLOY_REVEAL: 'false' };
+    const dep = buildStageResults(env).find((x) => /deploy:/.test(x.reason));
+    assert.ok(dep);
+    assert.match(dep.reason, /held for the routine deploy/);
+    const old = buildStageResults({ DEPLOY_ATTEMPTED: 'true', DEPLOY_DISPATCHED: 'true' }).find((x) => /deploy:/.test(x.reason));
+    assert.equal(old.ok, false); // unset DEPLOY_REVEAL keeps the old strict behavior
+  });
 });
 
 describe('verifyPipeline — fail-fast aggregation', () => {

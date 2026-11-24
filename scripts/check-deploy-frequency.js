@@ -17,6 +17,13 @@ function evaluate(createdMs, { nowMs, hours, max }) {
   return { count, ok: count <= max, perDay: Math.round((count * 24) / hours) };
 }
 
+// BRO-8236: filter READY client-side too. The API's state=READY param does
+// filter today (verified 2026-11-24), but a silently-ignored param would count
+// ~10x more (CANCELED/ERROR builds) and fail this check for the wrong reason.
+function readyCreated(deployments) {
+  return (deployments || []).filter((d) => d && d.state === 'READY' && Number.isFinite(d.created)).map((d) => d.created);
+}
+
 async function fetchCreated(token, sinceMs) {
   const out = [];
   let until = '';
@@ -26,7 +33,7 @@ async function fetchCreated(token, sinceMs) {
     if (!res.ok) throw new Error(`Vercel API ${res.status}`);
     const j = await res.json();
     const ds = j.deployments || [];
-    out.push(...ds.map((d) => d.created));
+    out.push(...readyCreated(ds));
     if (!j.pagination || !j.pagination.next || ds.length === 0) break;
     until = `&until=${j.pagination.next}`;
   }
@@ -52,5 +59,5 @@ async function main() {
   }
 }
 
-module.exports = { evaluate };
+module.exports = { evaluate, readyCreated };
 if (require.main === module) main().catch((e) => { console.log(`::warning::[deploy-frequency] check skipped: ${e.message}`); });

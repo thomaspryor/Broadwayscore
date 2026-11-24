@@ -87,6 +87,7 @@ const fs = require('fs');
 const path = require('path');
 const { DATA_TRACKED_FILES, blobShaMetaKey } = require('./core-data-blob-meta.js');
 const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458
+const { classifyRange, resolveUrgency } = require('./deploy-reveal.js'); // BRO-8236
 
 // Tracked data/*.json the site imports from src/ (BRO-4614). Exact paths, not a
 // data/ prefix: data/audit/ churns constantly and never changes the site.
@@ -204,7 +205,12 @@ const CODE_PATHS = [
 // workflow_dispatch `source` values that mean "ship now": /go-live-now,
 // opening-night pipelines, rebuild-fast. An empty or unknown source is routine
 // (throttled), so a NEW dispatcher defaults to cheap, not to a deploy per call.
-const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'press-night-watchdog'];
+const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'opening-night-reveal', 'lane-press-night', 'press-night-watchdog'];
+// BRO-8236: urgent sources ship now only when the range holds a visitor-visible
+// reveal (scripts/lib/deploy-reveal.js); otherwise they are judged as routine.
+// These two skip that check: /go-live-now, and the poller after it classified
+// its own commit as a reveal.
+const ALWAYS_SHIP_SOURCES = ['urgent', 'opening-night-reveal'];
 const URGENT_WORKFLOW_RUN = 'Rebuild Reviews (Fast)';
 
 /** Pure: is this trigger an explicit ship-now request? */
@@ -535,8 +541,7 @@ async function main() {
   const rawEvent = process.env.GATE_EVENT_NAME || 'schedule';
   // Non-urgent dispatch/workflow_run triggers are judged like a cron tick
   // (content gate + min interval); urgent ones keep "ship now" semantics.
-  const urgent = isUrgent({ eventName: rawEvent, source: process.env.GATE_SOURCE, triggerWorkflow: process.env.GATE_TRIGGER_WORKFLOW });
-  const eventName = urgent ? rawEvent : 'schedule';
+  const urgentTrigger = isUrgent({ eventName: rawEvent, source: process.env.GATE_SOURCE, triggerWorkflow: process.env.GATE_TRIGGER_WORKFLOW });
   const { minIntervalSec, backstopSec, warnings } = resolveGateTiming(process.env);
   for (const w of warnings) console.log(`::warning::[content-gate] ${w}`);
   const gateDisabled = process.env.GATE_DISABLED === 'true';
@@ -545,6 +550,21 @@ async function main() {
   const baseline = gateDisabled
     ? { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null }
     : getBaseline();
+
+  // BRO-8236: an urgent trigger keeps ship-now only for a visitor-visible reveal.
+  let reveal = null;
+  const alwaysShip = rawEvent === 'workflow_dispatch' && ALWAYS_SHIP_SOURCES.includes(String(process.env.GATE_SOURCE || ''));
+  if (!gateDisabled && urgentTrigger && !alwaysShip && baseline.sha && baseline.sha !== headSha) {
+    try {
+      git(['fetch', '--depth=1', 'origin', baseline.sha], { stdio: 'ignore', timeout: 60000 });
+      reveal = classifyRange(baseline.sha, headSha, { codePaths: CODE_PATHS });
+    } catch {
+      reveal = { reveal: true, reason: 'baseline-fetch-error', file: null };
+    }
+  }
+  const urgency = resolveUrgency({ urgent: urgentTrigger, alwaysShip, baselineSha: baseline.sha, headSha, reveal });
+  const urgent = urgency.urgent;
+  const eventName = urgent ? rawEvent : 'schedule';
 
   // Only run the (fetch + diff) when the decision can actually depend on it.
   let diff = { result: null, files: [] };
@@ -591,8 +611,9 @@ async function main() {
   const short = (s) => (s ? s.slice(0, 10) : 'unknown');
   const verb = proceed ? 'DEPLOY' : 'SKIP';
   console.log(
-    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} urgent=${urgent} dataDiff=${dataDiffResult || 'unknown'} minInterval=${Math.round(minIntervalSec / 60)}m backstop=${Math.round(backstopSec / 60)}m`
+    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} source=${process.env.GATE_SOURCE || '-'} urgent=${urgent} urgency=${urgency.why} dataDiff=${dataDiffResult || 'unknown'} minInterval=${Math.round(minIntervalSec / 60)}m backstop=${Math.round(backstopSec / 60)}m`
   );
+  if (reveal) console.log(`::notice::[content-gate] reveal=${reveal.reveal} (${reveal.reason}${reveal.file ? ' ' + reveal.file : ''})`);
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
 
   // BRO-8028: a held (min-interval) run asks the workflow's deferred-retry job to
@@ -605,7 +626,7 @@ async function main() {
 
 module.exports = {
   // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
-  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, CODE_PATHS, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the
