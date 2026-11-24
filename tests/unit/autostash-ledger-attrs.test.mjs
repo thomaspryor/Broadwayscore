@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/url-mismatch-suspects.json (read by the test); the ledger merge checks run against live audit files. Runs in check-corpus-drift.yml, not test.yml's blocking batch.
 // BRO-7595: the append-only audit ledgers must
 // carry an autostash attribute, or two concurrent CI runs that both touch them
 // log an autostash-conflict row (2,309 of them kept the Push-retry deadman row red).
